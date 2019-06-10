@@ -1,0 +1,37 @@
+---
+defaults: &defaults
+  docker:
+    - image: canonicalwebteam/dev
+
+version: 2
+jobs:
+  prepare:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn install
+      - save_cache:
+        key: yarn-{{ checksum "yarn.lock" }}
+        paths:
+          - node_modules
+          - maas-fe/node_modules
+  maas-settings:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+        name: build
+        command: |
+          yarn run build
+      - run:
+        name: lint
+        command: |
+          yarn run lint
+      - run:
+        name: test
+        command: |
+          yarn run test
