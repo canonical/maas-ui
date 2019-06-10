@@ -5,33 +5,20 @@ defaults: &defaults
 
 version: 2
 jobs:
-  prepare:
+  build:
     <<: *defaults
     steps:
       - checkout
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
+      - run: cd maas-settings && yarn run build
+      - run: cd maas-settings && yarn run lint
+      - run: cd maas-settings && yarn run test
       - save_cache:
-        key: yarn-{{ checksum "yarn.lock" }}
-        paths:
-          - node_modules
-          - maas-fe/node_modules
-  maas-settings:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-        name: build
-        command: |
-          yarn run build
-      - run:
-        name: lint
-        command: |
-          yarn run lint
-      - run:
-        name: test
-        command: |
-          yarn run test
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - maas-settings/node_modules
