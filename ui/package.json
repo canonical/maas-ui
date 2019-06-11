@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "cross-env": "5.0.5",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-scripts": "3.0.1"
   },
   "scripts": {
@@ -32,7 +32,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "^1.18.2"
+    "eslint-plugin-prettier": "3.1.0",
+    "prettier": "1.18.2"
   }
 }
