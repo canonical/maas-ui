@@ -5,6 +5,12 @@ This is a mono repo for MAAS frontend projects.
 
 [![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-fe/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-fe/tree/master)
 
+# Projects
+
+## UI
+This is a React frontend. New work should be done here where possible.
+To run this project execute `cd ui` then `./run`.
+
 # Adding a new project
 To add a new project, edit `package.json` and add the project's directory name to the `workspaces` array.
 
