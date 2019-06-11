@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# run script
+.docker-project
+.yarn.*.hash
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
