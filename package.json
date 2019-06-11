@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "build": "cd ui && react-scripts build",
+    "serve": "cd ui && react-scripts start",
+    "test": "cd ui && react-scripts test"
+  },
   "private": true,
   "workspaces": ["ui"]
 }
