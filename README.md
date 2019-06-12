@@ -2,7 +2,7 @@
 
 This is a mono repo for MAAS frontend projects.
 
-[![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-fe/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-fe/tree/master)
+[![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master)
 
 # Projects
 
