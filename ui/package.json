@@ -11,7 +11,8 @@
     "react-redux": "7.1.0",
     "react-scripts": "3.0.1",
     "redux": "4.0.1",
-    "reselect": "4.0.0"
+    "reselect": "4.0.0",
+    "vanilla-framework": "2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
