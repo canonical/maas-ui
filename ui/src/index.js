@@ -10,6 +10,8 @@ import reducers from "./root-reducer";
 
 const store = createStore(
   reducers,
+  // This can be replaced with redux-devtools-extension when we are using
+  // middleware (e.g. sagas).
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
