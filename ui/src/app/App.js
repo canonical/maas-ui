@@ -34,6 +34,7 @@ const getReadyMachines = createSelector(
   machines => machines.filter(machine => machine.ready)
 );
 
+// Actions like this will live in an actions file.
 function fetchMachines() {
   return { type: "LIST_MACHINES" };
 }
