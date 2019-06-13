@@ -3,8 +3,10 @@
     "build": "cd ui && yarn run build",
     "serve": "cd ui && yarn run start",
     "test": "cd ui && yarn run test",
-    "clean": "cd ui && yarn run clean"
+    "clean": "rm -rf node_modules && cd ui && yarn run clean"
   },
   "private": true,
-  "workspaces": ["ui"]
+  "workspaces": [
+    "ui"
+  ]
 }
