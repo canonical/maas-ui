@@ -2,6 +2,9 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 import produce from "immer";
 
+import settingsReducers from "./app/settings/reducers";
+import baseReducers from "./app/base/reducers";
+
 const machine_data = [
   {
     id: 1,
@@ -39,5 +42,7 @@ const machines = (state = machine_data, action) =>
 export default history =>
   combineReducers({
     machines,
-    router: connectRouter(history)
+    repositories: settingsReducers.repositories,
+    router: connectRouter(history),
+    status: baseReducers.status
   });
