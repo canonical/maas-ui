@@ -1,6 +1,5 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
 
 import { App } from "./App";
 
@@ -10,7 +9,7 @@ describe("App", () => {
       <App
         connected={true}
         connectionError={false}
-        connectWebSocket={sinon.stub()}
+        connectWebSocket={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
@@ -21,7 +20,7 @@ describe("App", () => {
       <App
         connected={true}
         connectionError={true}
-        connectWebSocket={sinon.stub()}
+        connectWebSocket={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
@@ -32,14 +31,14 @@ describe("App", () => {
       <App
         connected={false}
         connectionError={false}
-        connectWebSocket={sinon.stub()}
+        connectWebSocket={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
   });
 
   it("connects to the WebSocket", () => {
-    const connectWebSocket = sinon.stub();
+    const connectWebSocket = jest.fn();
     shallow(
       <App
         connected={false}
@@ -47,6 +46,6 @@ describe("App", () => {
         connectWebSocket={connectWebSocket}
       />
     );
-    expect(connectWebSocket.callCount).toBe(1);
+    expect(connectWebSocket.mock.calls.length).toBe(1);
   });
 });
