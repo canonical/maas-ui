@@ -19,7 +19,6 @@ export class Repositories extends React.Component {
       <div>
         <h1>Repositories</h1>
         <ul>{repositories}</ul>
-        <button onClick={() => this.props.fetchRepositories()}>Load</button>
       </div>
     );
   }
