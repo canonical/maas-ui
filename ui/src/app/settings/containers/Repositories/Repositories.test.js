@@ -1,6 +1,5 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
 
 import { Repositories } from "./Repositories";
 
@@ -26,17 +25,17 @@ describe("Repositories", () => {
             url: ""
           }
         ]}
-        fetchRepositories={sinon.stub()}
+        fetchRepositories={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
   });
 
   it("connects to the WebSocket", () => {
-    const fetchRepositories = sinon.stub();
+    const fetchRepositories = jest.fn();
     shallow(
       <Repositories fetchRepositories={fetchRepositories} repositories={[]} />
     );
-    expect(fetchRepositories.callCount).toBe(1);
+    expect(fetchRepositories.mock.calls.length).toBe(1);
   });
 });
