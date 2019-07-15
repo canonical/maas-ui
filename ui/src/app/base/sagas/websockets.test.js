@@ -91,7 +91,11 @@ describe("websocket sagas", () => {
           message: { payload: "here" }
         }
       }).value
-    ).toEqual(call(socketClient.send, "TEST_ACTION", { payload: "here" }));
+    ).toEqual(
+      call([socketClient, socketClient.send], "TEST_ACTION", {
+        payload: "here"
+      })
+    );
   });
 
   it("can receive a succesful WebSocket message", () => {
@@ -99,7 +103,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
       saga.next({ request_id: 99, result: { response: "here" } }).value
-    ).toEqual(call(socketClient.getRequest, 99));
+    ).toEqual(call([socketClient, socketClient.getRequest], 99));
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({ type: "TEST_ACTION_SUCCESS", payload: { response: "here" } })
     );
@@ -113,7 +117,7 @@ describe("websocket sagas", () => {
         request_id: 99,
         error: '{"Message": "catastrophic failure"}'
       }).value
-    ).toEqual(call(socketClient.getRequest, 99));
+    ).toEqual(call([socketClient, socketClient.getRequest], 99));
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({
         type: "TEST_ACTION_ERROR",
