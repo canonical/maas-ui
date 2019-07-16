@@ -31,7 +31,7 @@ export class App extends React.Component {
 
 App.propTypes = {
   connected: PropTypes.bool,
-  connectionError: PropTypes.bool,
+  connectionError: PropTypes.object,
   connectWebSocket: PropTypes.func.isRequired
 };
 

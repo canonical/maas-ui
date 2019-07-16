@@ -4,7 +4,7 @@ describe("status", () => {
   it("should return the initial state", () => {
     expect(reducers.status(undefined, {})).toEqual({
       connected: false,
-      error: false
+      error: null
     });
   });
 
@@ -13,7 +13,7 @@ describe("status", () => {
       reducers.status(
         {
           connected: true,
-          error: false
+          error: null
         },
         {
           type: "WEBSOCKET_CONNECT"
@@ -21,7 +21,7 @@ describe("status", () => {
       )
     ).toEqual({
       connected: false,
-      error: false
+      error: null
     });
   });
 
@@ -32,18 +32,19 @@ describe("status", () => {
       })
     ).toEqual({
       connected: true,
-      error: false
+      error: null
     });
   });
 
   it("should correctly reduce WEBSOCKET_ERROR", () => {
     expect(
       reducers.status(undefined, {
-        type: "WEBSOCKET_ERROR"
+        type: "WEBSOCKET_ERROR",
+        error: "Error!"
       })
     ).toEqual({
       connected: false,
-      error: true
+      error: "Error!"
     });
   });
 });

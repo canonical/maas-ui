@@ -115,7 +115,7 @@ describe("websocket sagas", () => {
       })
     );
     expect(saga.next("ERROR!").value).toEqual(
-      put({ type: "TEST_ACTION_ERROR", payload: "ERROR!" })
+      put({ type: "TEST_ACTION_ERROR", error: "ERROR!" })
     );
   });
 
@@ -142,7 +142,7 @@ describe("websocket sagas", () => {
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({
         type: "TEST_ACTION_ERROR",
-        payload: { Message: "catastrophic failure" }
+        error: { Message: "catastrophic failure" }
       })
     );
   });
