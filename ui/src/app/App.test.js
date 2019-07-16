@@ -8,7 +8,7 @@ describe("App", () => {
     const wrapper = shallow(
       <App
         connected={true}
-        connectionError={false}
+        connectionError={null}
         connectWebSocket={jest.fn()}
       />
     );
@@ -19,7 +19,7 @@ describe("App", () => {
     const wrapper = shallow(
       <App
         connected={true}
-        connectionError={true}
+        connectionError={{ error: "Error!" }}
         connectWebSocket={jest.fn()}
       />
     );
@@ -32,7 +32,7 @@ describe("App", () => {
     const wrapper = shallow(
       <App
         connected={false}
-        connectionError={false}
+        connectionError={null}
         connectWebSocket={jest.fn()}
       />
     );
@@ -44,7 +44,7 @@ describe("App", () => {
     shallow(
       <App
         connected={false}
-        connectionError={false}
+        connectionError={null}
         connectWebSocket={connectWebSocket}
       />
     );

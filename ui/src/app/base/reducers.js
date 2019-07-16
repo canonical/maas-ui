@@ -10,7 +10,7 @@ const status = produce(
         draft.connected = true;
         return;
       case "WEBSOCKET_ERROR":
-        draft.error = true;
+        draft.error = action.error;
         return;
       default:
         return draft;
@@ -18,7 +18,7 @@ const status = produce(
   },
   {
     connected: false,
-    error: false
+    error: null
   }
 );
 

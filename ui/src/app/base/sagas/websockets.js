@@ -39,20 +39,18 @@ export function watchMessages(socketClient) {
 export function* handleMessage(socketChannel, socketClient) {
   while (true) {
     const response = yield take(socketChannel);
-    let payload;
-    let action;
     const action_type = yield call(
       [socketClient, socketClient.getRequest],
       response.request_id
     );
     if (response.error) {
-      action = `${action_type}_ERROR`;
-      payload = JSON.parse(response.error);
+      yield put({
+        type: `${action_type}_ERROR`,
+        error: JSON.parse(response.error)
+      });
     } else {
-      action = `${action_type}_SUCCESS`;
-      payload = response.result;
+      yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
     }
-    yield put({ type: action, payload });
   }
 }
 
@@ -68,7 +66,7 @@ export function* sendMessage(socketClient) {
       data.payload.message
     );
     if (error) {
-      yield put({ type: `${data.payload.actionType}_ERROR`, payload: error });
+      yield put({ type: `${data.payload.actionType}_ERROR`, error });
     }
   }
 }
@@ -95,6 +93,6 @@ export function* watchWebSockets() {
       }
     }
   } catch (error) {
-    yield put({ type: "WEBSOCKET_ERROR", payload: error });
+    yield put({ type: "WEBSOCKET_ERROR", error });
   }
 }
