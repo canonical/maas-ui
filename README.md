@@ -9,7 +9,7 @@ This is a mono repo for MAAS frontend projects.
 ## UI
 
 This is a React frontend. New work should be done here where possible.
-To run this project execute `cd ui` then `./run`.
+To run this project copy `ui/public/config.example.js` to `ui/public/config.js` and modify `websocket_url` to point to a real MAAS WebSocket. Then execute `./run`.
 
 # Adding a new project
 

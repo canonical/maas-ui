@@ -35,12 +35,8 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchRepositories: () => {
-      dispatch(actions.repositories.fetchRepositories());
-    }
-  };
+const mapDispatchToProps = {
+  fetchRepositories: actions.repositories.fetchRepositories
 };
 
 export default connect(

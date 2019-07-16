@@ -2,9 +2,9 @@ import { connect } from "react-redux";
 import Nav from "app/nav/components/Nav";
 import PropTypes from "prop-types";
 import React from "react";
-import Routes from "./Routes";
 
 import { connectWebSocket } from "./base/actions";
+import Routes from "./Routes";
 import selectors from "./base/selectors";
 
 export class App extends React.Component {
@@ -42,12 +42,8 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    connectWebSocket: () => {
-      dispatch(connectWebSocket());
-    }
-  };
+const mapDispatchToProps = {
+  connectWebSocket
 };
 
 export default connect(

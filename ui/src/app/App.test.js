@@ -23,7 +23,9 @@ describe("App", () => {
         connectWebSocket={jest.fn()}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.text()).toBe(
+      "Failed to connect. Please try refreshing your browser."
+    );
   });
 
   it("displays a loading message", () => {
@@ -34,7 +36,7 @@ describe("App", () => {
         connectWebSocket={jest.fn()}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.text()).toBe("Loading…");
   });
 
   it("connects to the WebSocket", () => {

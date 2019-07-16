@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App displays a loading message 1`] = `ShallowWrapper {}`;
-
-exports[`App displays connection errors 1`] = `ShallowWrapper {}`;
-
-exports[`App renders 1`] = `ShallowWrapper {}`;
+exports[`App renders 1`] = `
+<div>
+  <Nav />
+  <Routes />
+</div>
+`;
