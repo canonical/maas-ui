@@ -1,3 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Repositories renders 1`] = `ShallowWrapper {}`;
+exports[`Repositories renders 1`] = `
+<div>
+  <h1>
+    Repositories
+  </h1>
+  <ul>
+    <li
+      key="0"
+    />
+  </ul>
+</div>
+`;
