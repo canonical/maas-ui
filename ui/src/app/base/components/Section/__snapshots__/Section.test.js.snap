@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Section renders 1`] = `
+<div
+  className="section"
+>
+  <header
+    className="p-strip section__header"
+  >
+    <div
+      className="row"
+    >
+      <h1
+        className="p-heading--four u-no-margin--bottom"
+      >
+        Settings
+      </h1>
+    </div>
+  </header>
+  <div
+    className="p-strip u-no-padding"
+  >
+    <div
+      className="row u-equal-height section__content-wrapper"
+    >
+      <aside
+        className="section__sidebar col-2"
+      >
+        <div>
+          Sidebar
+        </div>
+      </aside>
+      <div
+        className="section__content col-10"
+      >
+        content
+      </div>
+    </div>
+  </div>
+</div>
+`;

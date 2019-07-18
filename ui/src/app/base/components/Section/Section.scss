@@ -1,0 +1,35 @@
+@import "src/scss/vanilla";
+
+.section {
+  background-color: $color-light;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100%;
+}
+
+.section__header {
+  @extend %vf-has-box-shadow;
+  // Display the shadow above the content.
+  z-index: 1;
+}
+
+.section__header.p-strip {
+  background-color: #fff;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.section__sidebar,
+.section__content {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.section__sidebar {
+  border-right: 1px solid $color-mid-x-light;
+  height: 100%;
+}
+
+.section__content-wrapper {
+  height: 100%;
+}

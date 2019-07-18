@@ -1,25 +1,27 @@
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 
-export class General extends React.Component {
-  componentDidMount() {
-    // Machines are fetched here in this demo for convenience.
-    this.props.fetchMachines();
-  }
+import Section from "app/base/components/Section";
 
-  render() {
-    const machines = this.props.machines.map(machine => (
-      <li key={machine.id}>{machine.title}</li>
-    ));
-    return (
-      <div>
-        <h1>General</h1>
-        <ul>{machines}</ul>
-      </div>
-    );
-  }
+export function General(props) {
+  const { fetchMachines } = props;
+  useEffect(() => {
+    fetchMachines();
+  }, [fetchMachines]);
+
+  const machines = props.machines.map(machine => (
+    <li key={machine.id}>{machine.title}</li>
+  ));
+  return (
+    <Section title="General">
+      <h4>General</h4>
+      <ul>{machines}</ul>
+      <Link to="/settings/users">Settings</Link>
+    </Section>
+  );
 }
 
 General.propTypes = {

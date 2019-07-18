@@ -1,0 +1,38 @@
+@import "src/scss/vanilla";
+
+.settings-nav__list {
+  @extend .p-list;
+  margin-bottom: $spv-inner--small;
+  margin-top: -$spv-inner--x-small;
+}
+
+.settings-nav__item {
+  padding-bottom: $spv-inner--x-small / 2;
+  padding-top: $spv-inner--x-small / 2;
+
+  &:first-of-type {
+    padding-top: $spv-inner--small;
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+}
+
+.settings-nav .is-active {
+  position: relative;
+
+  &::before {
+    background-color: $color-brand;
+    bottom: -$spv-inner--x-small;
+    content: "";
+    left: -$sph-inner;
+    position: absolute;
+    top: -$spv-inner--x-small;
+    width: $bar-thickness;
+  }
+}
+
+.settings-nav__item > .settings-nav__list {
+  padding-left: $sph-inner;
+}

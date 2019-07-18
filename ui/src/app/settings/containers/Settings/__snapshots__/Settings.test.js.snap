@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings renders 1`] = `
+<Section
+  sidebar={<withRouter(Nav) />}
+  title="Settings"
+>
+  <Routes />
+</Section>
+`;
