@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav renders 1`] = `
+<nav
+  className="settings-nav"
+>
+  <ul
+    className="settings-nav__list"
+  >
+    <li
+      className="settings-nav__item"
+      key="/general"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/general"
+        >
+          General
+        </Link>
+      </strong>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/settings/users"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/settings/users"
+        >
+          Users
+        </Link>
+      </strong>
+      <ul
+        className="settings-nav__list"
+      >
+        <li
+          className="settings-nav__item"
+          key="/settings/users#test"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/settings/users#test"
+          >
+            Test
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/settings/users#test2"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/settings/users#test2"
+          >
+            Test2
+          </HashLink>
+        </li>
+      </ul>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/settings/repositories"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/settings/repositories"
+        >
+          Package repos
+        </Link>
+      </strong>
+    </li>
+  </ul>
+</nav>
+`;

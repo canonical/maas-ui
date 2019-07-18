@@ -1,32 +1,28 @@
 import { connect } from "react-redux";
-import Nav from "app/nav/components/Nav";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { connectWebSocket } from "./base/actions";
 import Routes from "./Routes";
+import Section from "app/base/components/Section";
 import selectors from "./base/selectors";
 
-export class App extends React.Component {
-  componentDidMount() {
-    this.props.connectWebSocket();
-  }
+export function App(props) {
+  const { connectWebSocket } = props;
+  useEffect(() => {
+    connectWebSocket();
+  }, [connectWebSocket]);
 
-  render() {
-    const { connectionError, connected } = this.props;
-    if (connectionError) {
-      return <div>Failed to connect. Please try refreshing your browser.</div>;
-    }
-    if (!connected) {
-      return <div>Loading&hellip;</div>;
-    }
+  const { connectionError, connected } = props;
+  if (connectionError) {
     return (
-      <div>
-        <Nav />
-        <Routes />
-      </div>
+      <Section title="Failed to connect. Please try refreshing your browser." />
     );
   }
+  if (!connected) {
+    return <Section title="Loading&hellip;" />;
+  }
+  return <Routes />;
 }
 
 App.propTypes = {

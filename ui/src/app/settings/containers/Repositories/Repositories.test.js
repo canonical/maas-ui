@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import React from "react";
 
 import { Repositories } from "./Repositories";
@@ -33,7 +33,7 @@ describe("Repositories", () => {
 
   it("connects to the WebSocket", () => {
     const fetchRepositories = jest.fn();
-    shallow(
+    mount(
       <Repositories fetchRepositories={fetchRepositories} repositories={[]} />
     );
     expect(fetchRepositories.mock.calls.length).toBe(1);

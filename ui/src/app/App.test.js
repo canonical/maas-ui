@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import React from "react";
 
 import { App } from "./App";
@@ -23,7 +23,7 @@ describe("App", () => {
         connectWebSocket={jest.fn()}
       />
     );
-    expect(wrapper.text()).toBe(
+    expect(wrapper.prop("title")).toBe(
       "Failed to connect. Please try refreshing your browser."
     );
   });
@@ -36,12 +36,12 @@ describe("App", () => {
         connectWebSocket={jest.fn()}
       />
     );
-    expect(wrapper.text()).toBe("Loading…");
+    expect(wrapper.prop("title")).toBe("Loading…");
   });
 
   it("connects to the WebSocket", () => {
     const connectWebSocket = jest.fn();
-    shallow(
+    mount(
       <App
         connected={false}
         connectionError={null}

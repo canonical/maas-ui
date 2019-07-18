@@ -1,27 +1,26 @@
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { RepositoryShape } from "../../proptypes";
 import actions from "../../actions";
 import selectors from "../../selectors";
 
-export class Repositories extends React.Component {
-  componentDidMount() {
-    this.props.fetchRepositories();
-  }
+export function Repositories(props) {
+  const { fetchRepositories } = props;
+  useEffect(() => {
+    fetchRepositories();
+  }, [fetchRepositories]);
 
-  render() {
-    const repositories = this.props.repositories.map(repository => (
-      <li key={repository.id}>{repository.name}</li>
-    ));
-    return (
-      <div>
-        <h1>Repositories</h1>
-        <ul>{repositories}</ul>
-      </div>
-    );
-  }
+  const repositories = props.repositories.map(repository => (
+    <li key={repository.id}>{repository.name}</li>
+  ));
+  return (
+    <div>
+      <h4>Repositories</h4>
+      <ul>{repositories}</ul>
+    </div>
+  );
 }
 
 Repositories.propTypes = {

@@ -2,9 +2,9 @@
 
 exports[`Repositories renders 1`] = `
 <div>
-  <h1>
+  <h4>
     Repositories
-  </h1>
+  </h4>
   <ul>
     <li
       key="0"
