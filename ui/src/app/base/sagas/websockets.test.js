@@ -91,7 +91,8 @@ describe("websocket sagas", () => {
           message: { payload: "here" }
         }
       }).value
-    ).toEqual(
+    ).toEqual(put({ type: "TEST_ACTION_START" }));
+    expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         payload: "here"
       })
@@ -109,7 +110,8 @@ describe("websocket sagas", () => {
           message: { payload: "here" }
         }
       }).value
-    ).toEqual(
+    ).toEqual(put({ type: "TEST_ACTION_START" }));
+    expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         payload: "here"
       })

@@ -41,6 +41,7 @@ const machines = (state = machine_data, action) =>
 
 export default history =>
   combineReducers({
+    auth: baseReducers.auth,
     machines,
     repositories: settingsReducers.repositories,
     router: connectRouter(history),
