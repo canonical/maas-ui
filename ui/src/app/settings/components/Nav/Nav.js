@@ -7,7 +7,7 @@ import ReactRouterPropTypes from "react-router-prop-types";
 
 import "./Nav.scss";
 
-function _generateSection(section, location) {
+const _generateSection = (section, location) => {
   let subNav = null;
   if (section.subNav && section.subNav.length) {
     const items = section.subNav.map(item => {
@@ -33,7 +33,7 @@ function _generateSection(section, location) {
       {subNav}
     </li>
   );
-}
+};
 
 export const Nav = props => {
   const nav = [
