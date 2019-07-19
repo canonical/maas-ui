@@ -6,22 +6,21 @@ import { RepositoryShape } from "../../proptypes";
 import actions from "../../actions";
 import selectors from "../../selectors";
 
-export function Repositories(props) {
-  const { fetchRepositories } = props;
+export const Repositories = ({ fetchRepositories, repositories }) => {
   useEffect(() => {
     fetchRepositories();
   }, [fetchRepositories]);
 
-  const repositories = props.repositories.map(repository => (
+  const items = repositories.map(repository => (
     <li key={repository.id}>{repository.name}</li>
   ));
   return (
     <div>
       <h4>Repositories</h4>
-      <ul>{repositories}</ul>
+      <ul>{items}</ul>
     </div>
   );
-}
+};
 
 Repositories.propTypes = {
   fetchRepositories: PropTypes.func.isRequired,

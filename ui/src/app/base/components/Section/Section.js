@@ -4,25 +4,25 @@ import React from "react";
 
 import "./Section.scss";
 
-const Section = props => {
+const Section = ({ children, sidebar, title }) => {
   return (
     <div className="section">
       <header className="p-strip section__header">
         <div className="row">
-          <h1 className="p-heading--four u-no-margin--bottom">{props.title}</h1>
+          <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
         </div>
       </header>
       <div className="p-strip u-no-padding">
         <div className="row u-equal-height section__content-wrapper">
-          {props.sidebar ? (
-            <aside className="section__sidebar col-2">{props.sidebar}</aside>
-          ) : null}
+          {sidebar && (
+            <aside className="section__sidebar col-2">{sidebar}</aside>
+          )}
           <div
             className={classNames("section__content", {
-              "col-10": !!props.sidebar
+              "col-10": !!sidebar
             })}
           >
-            {props.children}
+            {children}
           </div>
         </div>
       </div>
