@@ -38,16 +38,12 @@ function _generateSection(section, location) {
 export const Nav = props => {
   const nav = [
     {
-      url: "/general",
-      label: "General"
-    },
-    {
-      url: "/settings/users",
+      url: "/users",
       label: "Users",
       subNav: [{ url: "test", label: "Test" }, { url: "test2", label: "Test2" }]
     },
     {
-      url: "/settings/repositories",
+      url: "/repositories",
       label: "Package repos"
     }
   ];

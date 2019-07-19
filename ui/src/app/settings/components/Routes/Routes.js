@@ -6,12 +6,12 @@ import Users from "app/users/components/Users";
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/settings/users" component={Users} />
-    <Route exact path="/settings/scripts" />
-    <Route exact path="/settings/storage" />
-    <Route exact path="/settings/network" />
-    <Route exact path="/settings/dhcp" />
-    <Route exact path="/settings/repositories" component={Repositories} />
+    <Route exact path="/users" component={Users} />
+    <Route exact path="/scripts" />
+    <Route exact path="/storage" />
+    <Route exact path="/network" />
+    <Route exact path="/dhcp" />
+    <Route exact path="/repositories" component={Repositories} />
   </Switch>
 );
 
