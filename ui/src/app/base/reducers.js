@@ -1,5 +1,25 @@
 import produce from "immer";
 
+const auth = produce(
+  (draft, action) => {
+    switch (action.type) {
+      case "FETCH_AUTH_USER_START":
+        draft.loading = true;
+        return;
+      case "FETCH_AUTH_USER_SUCCESS":
+        draft.loading = false;
+        draft.user = action.payload;
+        return;
+      default:
+        return draft;
+    }
+  },
+  {
+    loading: false,
+    user: null
+  }
+);
+
 const status = produce(
   (draft, action) => {
     switch (action.type) {
@@ -22,4 +42,4 @@ const status = produce(
   }
 );
 
-export default { status };
+export default { auth, status };

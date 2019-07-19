@@ -1,3 +1,12 @@
+const auth = {};
+
+/**
+ * Get the authenticated user.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} The authenticated user.
+ */
+auth.getAuthUser = state => state.auth;
+
 const status = {};
 
 /**
@@ -14,4 +23,4 @@ status.getConnected = state => state.status.connected;
  */
 status.getError = state => state.status.error;
 
-export default { status };
+export default { auth, status };

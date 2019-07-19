@@ -60,6 +60,7 @@ export function* handleMessage(socketChannel, socketClient) {
 export function* sendMessage(socketClient) {
   while (true) {
     const data = yield take("WEBSOCKET_SEND");
+    yield put({ type: `${data.payload.actionType}_START` });
     const error = yield call(
       [socketClient, socketClient.send],
       data.payload.actionType,

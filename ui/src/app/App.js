@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
 import { connectWebSocket } from "./base/actions";
-import Routes from "./Routes";
+import Main from "app/base/components/Main";
 import Section from "app/base/components/Section";
 import selectors from "./base/selectors";
 
 export function App(props) {
   const { connectWebSocket } = props;
   useEffect(() => {
+    // Connect the websocket before anything else in the app can be done.
     connectWebSocket();
   }, [connectWebSocket]);
 
@@ -22,7 +23,9 @@ export function App(props) {
   if (!connected) {
     return <Section title="Loading&hellip;" />;
   }
-  return <Routes />;
+  // Anything that needs to a websocket connection can be done in Main
+  // and children.
+  return <Main />;
 }
 
 App.propTypes = {

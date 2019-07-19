@@ -1,5 +1,8 @@
 // Vanilla settings:
 @import "vanilla";
+@import "./patterns_navigation";
+
+@include maas-navigation;
 
 html {
   height: 100%;
@@ -11,4 +14,9 @@ body {
 
 #root {
   height: 100vh;
+}
+
+.p-icon--chevron {
+  @extend %icon;
+  @include vf-icon-chevron($color-mid-dark);
 }
