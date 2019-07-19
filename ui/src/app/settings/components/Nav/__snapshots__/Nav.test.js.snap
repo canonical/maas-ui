@@ -9,29 +9,14 @@ exports[`Nav renders 1`] = `
   >
     <li
       className="settings-nav__item"
-      key="/general"
+      key="/users"
     >
       <strong
         className=""
       >
         <Link
           className="p-link--soft"
-          to="/general"
-        >
-          General
-        </Link>
-      </strong>
-    </li>
-    <li
-      className="settings-nav__item"
-      key="/settings/users"
-    >
-      <strong
-        className=""
-      >
-        <Link
-          className="p-link--soft"
-          to="/settings/users"
+          to="/users"
         >
           Users
         </Link>
@@ -41,22 +26,22 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/settings/users#test"
+          key="/users#test"
         >
           <HashLink
             className="p-link--soft"
-            to="/settings/users#test"
+            to="/users#test"
           >
             Test
           </HashLink>
         </li>
         <li
           className="settings-nav__item"
-          key="/settings/users#test2"
+          key="/users#test2"
         >
           <HashLink
             className="p-link--soft"
-            to="/settings/users#test2"
+            to="/users#test2"
           >
             Test2
           </HashLink>
@@ -65,14 +50,14 @@ exports[`Nav renders 1`] = `
     </li>
     <li
       className="settings-nav__item"
-      key="/settings/repositories"
+      key="/repositories"
     >
       <strong
         className=""
       >
         <Link
           className="p-link--soft"
-          to="/settings/repositories"
+          to="/repositories"
         >
           Package repos
         </Link>

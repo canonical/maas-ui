@@ -14,7 +14,10 @@ import App from "./app/App";
 import createRootReducer from "./root-reducer";
 
 const sagaMiddleware = createSagaMiddleware();
-export const history = createBrowserHistory();
+// This UI will be deployed at /MAAS/settings for now, so route everthing to that.
+export const history = createBrowserHistory({
+  basename: `${MAAS_config.ui.basename}/settings` // eslint-disable-line no-undef
+});
 const composeEnhancers = composeWithDevTools({});
 const middleware = [sagaMiddleware, routerMiddleware(history)];
 const enhancers = composeEnhancers(applyMiddleware(...middleware));

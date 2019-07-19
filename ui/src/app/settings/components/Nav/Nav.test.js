@@ -13,7 +13,7 @@ describe("Nav", () => {
 
   it("can set an active item", () => {
     const wrapper = shallow(
-      <Nav location={{ pathname: "/settings/users", hash: "", search: "" }} />
+      <Nav location={{ pathname: "/users", hash: "", search: "" }} />
     );
     expect(wrapper.find(".is-active Link").prop("children")).toEqual("Users");
   });
