@@ -7,14 +7,12 @@ import Main from "app/base/components/Main";
 import Section from "app/base/components/Section";
 import selectors from "./base/selectors";
 
-export function App(props) {
-  const { connectWebSocket } = props;
+export const App = ({ connected, connectionError, connectWebSocket }) => {
   useEffect(() => {
     // Connect the websocket before anything else in the app can be done.
     connectWebSocket();
   }, [connectWebSocket]);
 
-  const { connectionError, connected } = props;
   if (connectionError) {
     return (
       <Section title="Failed to connect. Please try refreshing your browser." />
@@ -26,7 +24,7 @@ export function App(props) {
   // Anything that needs to a websocket connection can be done in Main
   // and children.
   return <Main />;
-}
+};
 
 App.propTypes = {
   connected: PropTypes.bool,

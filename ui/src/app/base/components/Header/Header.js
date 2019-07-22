@@ -7,19 +7,18 @@ import ReactRouterPropTypes from "react-router-prop-types";
 import "./Header.scss";
 import { AuthUserShape } from "../../proptypes";
 
+const useVisible = initialValue => {
+  const [value, setValue] = useState(initialValue);
+  const toggleValue = evt => {
+    evt.preventDefault();
+    setValue(!value);
+  };
+  return [value, toggleValue];
+};
+
 export const Header = ({ authUser, location }) => {
-  const [hardwareVisible, toggleHardware] = useState(false);
-  const [mobileMenuVisible, toggleMobileMenu] = useState(false);
-
-  const _toggleMobileMenu = evt => {
-    evt.preventDefault();
-    toggleMobileMenu(!mobileMenuVisible);
-  };
-
-  const _toggleHardware = evt => {
-    evt.preventDefault();
-    toggleHardware(!hardwareVisible);
-  };
+  const [hardwareVisible, toggleHardware] = useVisible(false);
+  const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
 
   const _generateURL = url => `${MAAS_config.ui.maas_url}/${url}`; // eslint-disable-line no-undef
 
@@ -71,7 +70,7 @@ export const Header = ({ authUser, location }) => {
             className="p-navigation__toggle--open"
             href="#menu"
             title="toggle menu"
-            onClick={_toggleMobileMenu}
+            onClick={toggleMobileMenu}
           >
             Menu
           </a>
@@ -90,7 +89,7 @@ export const Header = ({ authUser, location }) => {
               role="menuitem"
               className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
             >
-              <a onClick={_toggleHardware} href="#menu">
+              <a onClick={toggleHardware} href="#menu">
                 Hardware <i className="p-icon--chevron"></i>
               </a>
               <ul
