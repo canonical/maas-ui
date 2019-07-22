@@ -2,6 +2,7 @@ import { mount, shallow } from "enzyme";
 import React from "react";
 
 import { App } from "./App";
+import Main from "app/base/components/Main";
 
 describe("App", () => {
   it("renders", () => {
@@ -12,7 +13,7 @@ describe("App", () => {
         connectWebSocket={jest.fn()}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.type()).toBe(Main);
   });
 
   it("displays connection errors", () => {
