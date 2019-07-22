@@ -38,9 +38,54 @@ const _generateSection = (section, location) => {
 export const Nav = props => {
   const nav = [
     {
+      url: "/configuration",
+      label: "Configuration",
+      subNav: [
+        { url: "general", label: "General" },
+        { url: "commissioning", label: "Commissioning" },
+        { url: "deploy", label: "Deploy" },
+        { url: "kernel-parameters", label: "Kernel parameters" }
+      ]
+    },
+    {
       url: "/users",
-      label: "Users",
-      subNav: [{ url: "test", label: "Test" }, { url: "test2", label: "Test2" }]
+      label: "Users"
+    },
+    {
+      url: "/images",
+      label: "Images",
+      subNav: [
+        { url: "ubuntu", label: "Ubuntu" },
+        { url: "centos", label: "CentOS" },
+        { url: "windows", label: "Windows" },
+        { url: "vmware", label: "VMware" }
+      ]
+    },
+    {
+      url: "/storage",
+      label: "Storage"
+    },
+    {
+      url: "/network",
+      label: "Network",
+      subNav: [
+        { url: "proxy", label: "Proxy" },
+        { url: "dns", label: "DNS" },
+        { url: "ntp", label: "NTP" },
+        { url: "syslog", label: "Syslog" }
+      ]
+    },
+    {
+      url: "/scripts",
+      label: "Scripts",
+      subNav: [
+        { url: "user-scripts", label: "User scripts" },
+        { url: "built-in-scripts", label: "Built-in scripts" }
+      ]
+    },
+    {
+      url: "/dhcp",
+      label: "DHCP snippets"
     },
     {
       url: "/repositories",

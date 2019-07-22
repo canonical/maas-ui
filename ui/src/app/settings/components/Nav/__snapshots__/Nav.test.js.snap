@@ -9,6 +9,69 @@ exports[`Nav renders 1`] = `
   >
     <li
       className="settings-nav__item"
+      key="/configuration"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/configuration"
+        >
+          Configuration
+        </Link>
+      </strong>
+      <ul
+        className="settings-nav__list"
+      >
+        <li
+          className="settings-nav__item"
+          key="/configuration#general"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/configuration#general"
+          >
+            General
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/configuration#commissioning"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/configuration#commissioning"
+          >
+            Commissioning
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/configuration#deploy"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/configuration#deploy"
+          >
+            Deploy
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/configuration#kernel-parameters"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/configuration#kernel-parameters"
+          >
+            Kernel parameters
+          </HashLink>
+        </li>
+      </ul>
+    </li>
+    <li
+      className="settings-nav__item"
       key="/users"
     >
       <strong
@@ -21,32 +84,203 @@ exports[`Nav renders 1`] = `
           Users
         </Link>
       </strong>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/images"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/images"
+        >
+          Images
+        </Link>
+      </strong>
       <ul
         className="settings-nav__list"
       >
         <li
           className="settings-nav__item"
-          key="/users#test"
+          key="/images#ubuntu"
         >
           <HashLink
             className="p-link--soft"
-            to="/users#test"
+            to="/images#ubuntu"
           >
-            Test
+            Ubuntu
           </HashLink>
         </li>
         <li
           className="settings-nav__item"
-          key="/users#test2"
+          key="/images#centos"
         >
           <HashLink
             className="p-link--soft"
-            to="/users#test2"
+            to="/images#centos"
           >
-            Test2
+            CentOS
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/images#windows"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/images#windows"
+          >
+            Windows
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/images#vmware"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/images#vmware"
+          >
+            VMware
           </HashLink>
         </li>
       </ul>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/storage"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/storage"
+        >
+          Storage
+        </Link>
+      </strong>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/network"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/network"
+        >
+          Network
+        </Link>
+      </strong>
+      <ul
+        className="settings-nav__list"
+      >
+        <li
+          className="settings-nav__item"
+          key="/network#proxy"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/network#proxy"
+          >
+            Proxy
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/network#dns"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/network#dns"
+          >
+            DNS
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/network#ntp"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/network#ntp"
+          >
+            NTP
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/network#syslog"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/network#syslog"
+          >
+            Syslog
+          </HashLink>
+        </li>
+      </ul>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/scripts"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/scripts"
+        >
+          Scripts
+        </Link>
+      </strong>
+      <ul
+        className="settings-nav__list"
+      >
+        <li
+          className="settings-nav__item"
+          key="/scripts#user-scripts"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/scripts#user-scripts"
+          >
+            User scripts
+          </HashLink>
+        </li>
+        <li
+          className="settings-nav__item"
+          key="/scripts#built-in-scripts"
+        >
+          <HashLink
+            className="p-link--soft"
+            to="/scripts#built-in-scripts"
+          >
+            Built-in scripts
+          </HashLink>
+        </li>
+      </ul>
+    </li>
+    <li
+      className="settings-nav__item"
+      key="/dhcp"
+    >
+      <strong
+        className=""
+      >
+        <Link
+          className="p-link--soft"
+          to="/dhcp"
+        >
+          DHCP snippets
+        </Link>
+      </strong>
     </li>
     <li
       className="settings-nav__item"
