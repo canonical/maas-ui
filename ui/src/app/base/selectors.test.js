@@ -24,12 +24,23 @@ describe("base selectors", () => {
     it("can get the current user details", () => {
       const state = {
         auth: {
+          user: { username: "admin" },
           loading: true
         }
       };
       expect(selectors.auth.getAuthUser(state)).toStrictEqual({
-        loading: true
+        username: "admin"
       });
+    });
+
+    it("can get the current user loading status", () => {
+      const state = {
+        auth: {
+          user: { username: "admin" },
+          loading: true
+        }
+      };
+      expect(selectors.auth.getAuthUserLoading(state)).toStrictEqual(true);
     });
   });
 });

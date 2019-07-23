@@ -1,7 +1,126 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`works with enzyme 1`] = `
-<h4>
-  Users
-</h4>
+<Fragment>
+  <h4>
+    Users
+  </h4>
+  <BasicTable
+    headerClasses={Array []}
+    headers={
+      Array [
+        Object {
+          "content": "Username",
+        },
+        Object {
+          "content": "Number of nodes in use",
+        },
+        Object {
+          "content": "Type",
+        },
+        Object {
+          "content": "Last seen",
+        },
+        Object {
+          "content": "MAAS admin",
+        },
+        Object {
+          "classes": Array [
+            "u-align--right",
+          ],
+          "content": "Actions",
+        },
+      ]
+    }
+    rowClasses={Array []}
+    rows={
+      Array [
+        Object {
+          "columns": Array [
+            Object {
+              "content": "admin",
+            },
+            Object {
+              "content": 37,
+            },
+            Object {
+              "content": "Local",
+            },
+            Object {
+              "content": "12 mins ago",
+            },
+            Object {
+              "content": "Yes",
+            },
+            Object {
+              "classes": Array [
+                "u-align--right",
+              ],
+              "content": <React.Fragment>
+                <Link
+                  className="p-button--base is-small"
+                  to="/users/1/edit"
+                >
+                  <i
+                    className="p-icon--edit"
+                  >
+                    Edit
+                  </i>
+                </Link>
+              </React.Fragment>,
+            },
+          ],
+          "key": "1",
+        },
+        Object {
+          "columns": Array [
+            Object {
+              "content": "simon",
+            },
+            Object {
+              "content": 37,
+            },
+            Object {
+              "content": "Local",
+            },
+            Object {
+              "content": "12 mins ago",
+            },
+            Object {
+              "content": null,
+            },
+            Object {
+              "classes": Array [
+                "u-align--right",
+              ],
+              "content": <React.Fragment>
+                <Link
+                  className="p-button--base is-small"
+                  to="/users/2/edit"
+                >
+                  <i
+                    className="p-icon--edit"
+                  >
+                    Edit
+                  </i>
+                </Link>
+                <Link
+                  className="p-button--base is-small"
+                  to="/users/2/delete"
+                >
+                  <i
+                    className="p-icon--delete"
+                  >
+                    Delete
+                  </i>
+                </Link>
+              </React.Fragment>,
+            },
+          ],
+          "key": "2",
+        },
+      ]
+    }
+  />
+</Fragment>
 `;
