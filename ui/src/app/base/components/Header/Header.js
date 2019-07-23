@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import ReactRouterPropTypes from "react-router-prop-types";
 
 import "./Header.scss";
-import { AuthUserShape } from "../../proptypes";
+import { UserShape } from "../../proptypes";
 
 const useVisible = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -212,7 +212,7 @@ export const Header = ({ authUser, location }) => {
 };
 
 Header.propTypes = {
-  authUser: AuthUserShape,
+  authUser: UserShape,
   location: ReactRouterPropTypes.location.isRequired
 };
 

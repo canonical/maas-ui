@@ -3,43 +3,42 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
 import { fetchAuthUser } from "app/base/actions";
-import { AuthUserShape } from "app/base/proptypes";
+import { UserShape } from "app/base/proptypes";
 import Header from "app/base/components/Header";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
 import selectors from "app/base/selectors";
 
-export function Main({ authUser, fetchAuthUser }) {
+export function Main({ authUser, authLoading, fetchAuthUser }) {
   useEffect(() => {
     fetchAuthUser();
   }, [fetchAuthUser]);
 
-  if (authUser.loading) {
+  if (authLoading) {
     return <Section title="Loading&hellip;" />;
   }
-  if (!authUser.user) {
+  if (!authUser) {
     return (
       <Section title="You are not authenticated. Please log in to MAAS." />
     );
   }
   return (
     <>
-      <Header authUser={authUser.user} />
+      <Header authUser={authUser} />
       <Routes />
     </>
   );
 }
 
 Main.propTypes = {
-  authUser: PropTypes.shape({
-    loading: PropTypes.bool,
-    user: AuthUserShape
-  }),
-  fetchAuthUser: PropTypes.func.isRequired
+  authUser: UserShape,
+  fetchAuthUser: PropTypes.func.isRequired,
+  authLoading: PropTypes.bool
 };
 
 const mapStateToProps = (state, props) => {
   return {
+    authLoading: selectors.auth.getAuthUserLoading(state, props),
     authUser: selectors.auth.getAuthUser(state, props)
   };
 };

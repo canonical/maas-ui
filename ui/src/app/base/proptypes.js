@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const AuthUserShape = PropTypes.shape({
+export const UserShape = PropTypes.shape({
   email: PropTypes.string.isRequired,
   first_name: PropTypes.string.isRequired,
   global_permissions: PropTypes.arrayOf(PropTypes.string).isRequired,
