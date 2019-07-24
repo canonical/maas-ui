@@ -11,10 +11,10 @@ const _generateSection = (section, location) => {
   let subNav = null;
   if (section.subNav && section.subNav.length) {
     const items = section.subNav.map(item => {
-      const url = `${section.url}#${item.url}`;
+      const path = `${section.path}#${item.path}`;
       return (
-        <li className="settings-nav__item" key={url}>
-          <HashLink to={url} className="p-link--soft">
+        <li className="settings-nav__item" key={path}>
+          <HashLink to={path} className="p-link--soft">
             {item.label}
           </HashLink>
         </li>
@@ -22,11 +22,11 @@ const _generateSection = (section, location) => {
     });
     subNav = <ul className="settings-nav__list">{items}</ul>;
   }
-  const isActive = section.url === location.pathname;
+  const isActive = section.path === location.pathname;
   return (
-    <li className="settings-nav__item" key={section.url}>
+    <li className="settings-nav__item" key={section.path}>
       <strong className={classNames({ "is-active": isActive })}>
-        <Link to={section.url} className="p-link--soft">
+        <Link to={section.path} className="p-link--soft">
           {section.label}
         </Link>
       </strong>
@@ -38,57 +38,57 @@ const _generateSection = (section, location) => {
 export const Nav = props => {
   const nav = [
     {
-      url: "/configuration",
+      path: "/configuration",
       label: "Configuration",
       subNav: [
-        { url: "general", label: "General" },
-        { url: "commissioning", label: "Commissioning" },
-        { url: "deploy", label: "Deploy" },
-        { url: "kernel-parameters", label: "Kernel parameters" }
+        { path: "general", label: "General" },
+        { path: "commissioning", label: "Commissioning" },
+        { path: "deploy", label: "Deploy" },
+        { path: "kernel-parameters", label: "Kernel parameters" }
       ]
     },
     {
-      url: "/users",
+      path: "/users",
       label: "Users"
     },
     {
-      url: "/images",
+      path: "/images",
       label: "Images",
       subNav: [
-        { url: "ubuntu", label: "Ubuntu" },
-        { url: "centos", label: "CentOS" },
-        { url: "windows", label: "Windows" },
-        { url: "vmware", label: "VMware" }
+        { path: "ubuntu", label: "Ubuntu" },
+        { path: "centos", label: "CentOS" },
+        { path: "windows", label: "Windows" },
+        { path: "vmware", label: "VMware" }
       ]
     },
     {
-      url: "/storage",
+      path: "/storage",
       label: "Storage"
     },
     {
-      url: "/network",
+      path: "/network",
       label: "Network",
       subNav: [
-        { url: "proxy", label: "Proxy" },
-        { url: "dns", label: "DNS" },
-        { url: "ntp", label: "NTP" },
-        { url: "syslog", label: "Syslog" }
+        { path: "proxy", label: "Proxy" },
+        { path: "dns", label: "DNS" },
+        { path: "ntp", label: "NTP" },
+        { path: "syslog", label: "Syslog" }
       ]
     },
     {
-      url: "/scripts",
+      path: "/scripts",
       label: "Scripts",
       subNav: [
-        { url: "user-scripts", label: "User scripts" },
-        { url: "built-in-scripts", label: "Built-in scripts" }
+        { path: "user-scripts", label: "User scripts" },
+        { path: "built-in-scripts", label: "Built-in scripts" }
       ]
     },
     {
-      url: "/dhcp",
+      path: "/dhcp",
       label: "DHCP snippets"
     },
     {
-      url: "/repositories",
+      path: "/repositories",
       label: "Package repos"
     }
   ];
