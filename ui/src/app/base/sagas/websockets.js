@@ -1,14 +1,16 @@
 import { eventChannel } from "redux-saga";
 import { all, call, put, take, race } from "redux-saga/effects";
 
+import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
 /**
  * Create a WebSocket connection via the client.
  */
-export function createConnection() {
+export function createConnection(csrftoken) {
   return new Promise((resolve, reject) => {
-    const socketClient = new WebSocketClient(MAAS_config.ui.websocket_url); // eslint-disable-line no-undef
+    const url = `${MAAS_config.ui.websocket_url}?csrftoken=${csrftoken}`; // eslint-disable-line no-undef
+    const socketClient = new WebSocketClient(url);
     socketClient.socket.onopen = () => {
       resolve(socketClient);
     };
@@ -78,7 +80,13 @@ export function* sendMessage(socketClient) {
 export function* watchWebSockets() {
   yield take("WEBSOCKET_CONNECT");
   try {
-    const socketClient = yield call(createConnection);
+    const csrftoken = yield call(getCookie, "csrftoken");
+    if (!csrftoken) {
+      throw new Error(
+        "No csrftoken found, please ensure you are logged into MAAS."
+      );
+    }
+    const socketClient = yield call(createConnection, csrftoken);
     yield put({ type: "WEBSOCKET_CONNECTED" });
     const socketChannel = yield call(watchMessages, socketClient);
     while (true) {

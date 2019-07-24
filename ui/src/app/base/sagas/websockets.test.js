@@ -8,6 +8,7 @@ import {
   watchMessages,
   watchWebSockets
 } from "./websockets";
+import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
 jest.mock("../../../websocket-client");
@@ -46,11 +47,31 @@ describe("websocket sagas", () => {
 
   it("connects to a WebSocket", () => {
     return expectSaga(watchWebSockets)
+      .provide([
+        [call(getCookie, "csrftoken"), "foo"],
+        [call(createConnection, "foo"), {}]
+      ])
       .take("WEBSOCKET_CONNECT")
-      .provide([[call(createConnection), {}]])
       .put({
         type: "WEBSOCKET_CONNECTED"
       })
+      .dispatch({
+        type: "WEBSOCKET_CONNECT"
+      })
+      .run();
+  });
+
+  it("raises an error if no csrftoken exists", () => {
+    const error = new Error(
+      "No csrftoken found, please ensure you are logged into MAAS."
+    );
+    return expectSaga(watchWebSockets)
+      .provide([
+        [call(getCookie, "csrftoken"), undefined],
+        [call(createConnection, "foo"), {}]
+      ])
+      .take("WEBSOCKET_CONNECT")
+      .put({ type: "WEBSOCKET_ERROR", error })
       .dispatch({
         type: "WEBSOCKET_CONNECT"
       })
