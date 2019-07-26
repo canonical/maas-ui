@@ -1,46 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`works with enzyme 1`] = `
+exports[`Users can render 1`] = `
 <Fragment>
   <h4>
     Users
   </h4>
-  <BasicTable
-    headerClasses={Array []}
+  <MainTable
+    defaultSort="username"
+    defaultSortDirection="ascending"
     headers={
       Array [
         Object {
           "content": "Username",
+          "sortKey": "username",
         },
         Object {
-          "content": "Number of nodes in use",
+          "content": "Email",
+          "sortKey": "email",
+        },
+        Object {
+          "className": "u-align--right",
+          "content": "Machines",
+          "sortKey": "machines",
         },
         Object {
           "content": "Type",
+          "sortKey": "type",
         },
         Object {
           "content": "Last seen",
+          "sortKey": "last-seen",
         },
         Object {
-          "content": "MAAS admin",
+          "content": "Role",
+          "sortKey": "role",
         },
         Object {
-          "classes": Array [
-            "u-align--right",
-          ],
+          "className": "u-align--right",
+          "content": "MAAS keys",
+          "sortKey": "maas-keys",
+        },
+        Object {
+          "className": "u-align--right",
           "content": "Actions",
         },
       ]
     }
-    rowClasses={Array []}
     rows={
       Array [
         Object {
           "columns": Array [
             Object {
               "content": "admin",
+              "role": "rowheader",
             },
             Object {
+              "content": "admin@example.com",
+            },
+            Object {
+              "className": "u-align--right",
               "content": 37,
             },
             Object {
@@ -50,12 +68,14 @@ exports[`works with enzyme 1`] = `
               "content": "12 mins ago",
             },
             Object {
-              "content": "Yes",
+              "content": "Admin",
             },
             Object {
-              "classes": Array [
-                "u-align--right",
-              ],
+              "className": "u-align--right",
+              "content": 2,
+            },
+            Object {
+              "className": "u-align--right",
               "content": <React.Fragment>
                 <Link
                   className="p-button--base is-small"
@@ -70,14 +90,27 @@ exports[`works with enzyme 1`] = `
               </React.Fragment>,
             },
           ],
-          "key": "1",
+          "sortData": Object {
+            "email": "admin@example.com",
+            "last-seen": "2018-05-12",
+            "maas-keys": 2,
+            "machines": 37,
+            "role": "Admin",
+            "type": "local",
+            "username": "admin",
+          },
         },
         Object {
           "columns": Array [
             Object {
               "content": "simon",
+              "role": "rowheader",
             },
             Object {
+              "content": "simon@example.com",
+            },
+            Object {
+              "className": "u-align--right",
               "content": 37,
             },
             Object {
@@ -90,9 +123,11 @@ exports[`works with enzyme 1`] = `
               "content": null,
             },
             Object {
-              "classes": Array [
-                "u-align--right",
-              ],
+              "className": "u-align--right",
+              "content": 9,
+            },
+            Object {
+              "className": "u-align--right",
               "content": <React.Fragment>
                 <Link
                   className="p-button--base is-small"
@@ -117,10 +152,19 @@ exports[`works with enzyme 1`] = `
               </React.Fragment>,
             },
           ],
-          "key": "2",
+          "sortData": Object {
+            "email": "simon@example.com",
+            "last-seen": "2018-05-12",
+            "maas-keys": 9,
+            "machines": 37,
+            "role": null,
+            "type": "local",
+            "username": "simon",
+          },
         },
       ]
     }
+    sortable={true}
   />
 </Fragment>
 `;

@@ -1,4 +1,3 @@
-import { BasicTable } from "@canonical/juju-react-components";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -6,27 +5,19 @@ import React from "react";
 
 import { UserShape } from "app/base/proptypes";
 import baseSelectors from "app/base/selectors";
+import MainTable from "app/base/components/MainTable";
 
 export const Users = ({ authUser, users }) => {
   const _generateUsers = users.map(user => ({
     columns: [
+      { content: user.username, role: "rowheader" },
+      { content: user.email },
+      { content: 37, className: "u-align--right" },
+      { content: "Local" },
+      { content: "12 mins ago" },
+      { content: user.is_superuser ? "Admin" : null },
+      { content: user.sshkeys_count, className: "u-align--right" },
       {
-        content: user.username
-      },
-      {
-        content: 37
-      },
-      {
-        content: "Local"
-      },
-      {
-        content: "12 mins ago"
-      },
-      {
-        content: user.is_superuser ? "Yes" : null
-      },
-      {
-        classes: ["u-align--right"],
         content: (
           <>
             <Link
@@ -44,37 +35,46 @@ export const Users = ({ authUser, users }) => {
               </Link>
             )}
           </>
-        )
+        ),
+        className: "u-align--right"
       }
     ],
-    key: `${user.id}`
+    sortData: {
+      username: user.username,
+      email: user.email,
+      machines: 37,
+      type: "local",
+      "last-seen": "2018-05-12",
+      role: user.is_superuser ? "Admin" : null,
+      "maas-keys": user.sshkeys_count
+    }
   }));
   return (
     <>
       <h4>Users</h4>
-      <BasicTable
+      <MainTable
+        defaultSort="username"
+        defaultSortDirection="ascending"
         headers={[
+          { content: "Username", sortKey: "username" },
+          { content: "Email", sortKey: "email" },
           {
-            content: "Username"
+            content: "Machines",
+            className: "u-align--right",
+            sortKey: "machines"
           },
+          { content: "Type", sortKey: "type" },
+          { content: "Last seen", sortKey: "last-seen" },
+          { content: "Role", sortKey: "role" },
           {
-            content: "Number of nodes in use"
+            content: "MAAS keys",
+            className: "u-align--right",
+            sortKey: "maas-keys"
           },
-          {
-            content: "Type"
-          },
-          {
-            content: "Last seen"
-          },
-          {
-            content: "MAAS admin"
-          },
-          {
-            classes: ["u-align--right"],
-            content: "Actions"
-          }
+          { content: "Actions", className: "u-align--right" }
         ]}
         rows={_generateUsers}
+        sortable={true}
       />
     </>
   );
@@ -88,23 +88,23 @@ Users.propTypes = {
 Users.defaultProps = {
   users: [
     {
-      email: "NN7ER2rH6x@example.com",
+      email: "admin@example.com",
       first_name: "",
       global_permissions: ["machine_create"],
       id: 1,
       is_superuser: true,
       last_name: "",
-      sshkeys_count: 0,
+      sshkeys_count: 2,
       username: "admin"
     },
     {
-      email: "NN7ER2rH6x@example.com",
+      email: "simon@example.com",
       first_name: "",
       global_permissions: ["machine_create"],
       id: 2,
       is_superuser: false,
       last_name: "",
-      sshkeys_count: 0,
+      sshkeys_count: 9,
       username: "simon"
     }
   ]
