@@ -20,7 +20,7 @@ export const Header = ({ authUser, location }) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
 
-  const _generateURL = url => `${MAAS_config.ui.maas_url}/${url}`; // eslint-disable-line no-undef
+  const _generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
 
   const _generateLocalLink = (url, label) => (
     <li

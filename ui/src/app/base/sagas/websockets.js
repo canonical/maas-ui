@@ -9,7 +9,7 @@ import WebSocketClient from "../../../websocket-client";
  */
 export function createConnection(csrftoken) {
   return new Promise((resolve, reject) => {
-    const url = `${MAAS_config.ui.websocket_url}?csrftoken=${csrftoken}`; // eslint-disable-line no-undef
+    const url = `${process.env.REACT_APP_WEBSOCKET_URL}?csrftoken=${csrftoken}`;
     const socketClient = new WebSocketClient(url);
     socketClient.socket.onopen = () => {
       resolve(socketClient);

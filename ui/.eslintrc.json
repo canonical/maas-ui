@@ -1,8 +1,5 @@
 {
   "extends": "react-app",
-  "globals": {
-    "MAAS_config": "readonly"
-  },
   "plugins": ["no-only-tests", "prettier"],
   "rules": {
     "no-only-tests/no-only-tests": "error",

@@ -4,26 +4,12 @@ import React from "react";
 import { Header } from "./Header";
 
 describe("Header", () => {
-  let maasConfig;
-
-  beforeAll(() => {
-    maasConfig = window.MAAS_config;
-  });
-
   beforeEach(() => {
-    window.MAAS_config = {
-      ui: {
-        maas_url: "http://maas.local:5240/MAAS"
-      }
-    };
+    process.env.REACT_APP_MAAS_URL = "http://maas.local:5240/MAAS";
   });
 
   afterEach(() => {
     jest.resetModules();
-  });
-
-  afterAll(() => {
-    window.MAAS_config = maasConfig;
   });
 
   it("renders", () => {
