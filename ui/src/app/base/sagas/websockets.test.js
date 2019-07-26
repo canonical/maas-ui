@@ -14,24 +14,18 @@ import WebSocketClient from "../../../websocket-client";
 jest.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
-  let maasConfig, socketChannel, socketClient;
-
-  beforeAll(() => {
-    maasConfig = window.MAAS_config;
-  });
+  let socketChannel, socketClient;
 
   beforeEach(() => {
+    process.env.REACT_APP_WEBSOCKET_URL = "ws://example.com/ws";
+
     socketClient = {
       getRequest: jest.fn(),
       send: jest.fn(),
       socket: {}
     };
     socketChannel = jest.fn();
-    window.MAAS_config = {
-      ui: {
-        websocket_url: "ws://example.com/ws"
-      }
-    };
+
     WebSocketClient.mockImplementation(() => {
       return socketClient;
     });
@@ -39,10 +33,6 @@ describe("websocket sagas", () => {
 
   afterEach(() => {
     jest.resetModules();
-  });
-
-  afterAll(() => {
-    window.MAAS_config = maasConfig;
   });
 
   it("connects to a WebSocket", () => {
