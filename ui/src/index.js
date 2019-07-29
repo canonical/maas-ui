@@ -14,9 +14,8 @@ import App from "./app/App";
 import createRootReducer from "./root-reducer";
 
 const sagaMiddleware = createSagaMiddleware();
-// This UI will be deployed at /MAAS/settings for now, so route everthing to that.
 export const history = createBrowserHistory({
-  basename: `${process.env.REACT_APP_BASENAME}/settings`
+  basename: process.env.REACT_APP_BASENAME
 });
 const composeEnhancers = composeWithDevTools({});
 const middleware = [sagaMiddleware, routerMiddleware(history)];
