@@ -16,9 +16,9 @@ const useVisible = initialValue => {
   return [value, toggleValue];
 };
 
-const _generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
+const generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
 
-const _generateLocalLink = (location, url, label) => (
+const generateLocalLink = (location, url, label) => (
   <li
     className={classNames("p-navigation__link", {
       "is-selected": location.pathname.startsWith(url)
@@ -39,10 +39,7 @@ export const Header = ({ authUser, location }) => {
       <div className="p-navigation__row row">
         <div className="p-navigation__banner">
           <div className="p-navigation__logo">
-            <a
-              href={_generateURL("#/dashboard")}
-              className="p-navigation__link"
-            >
+            <a href={generateURL("#/dashboard")} className="p-navigation__link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="100"
@@ -97,21 +94,21 @@ export const Header = ({ authUser, location }) => {
                 })}
               >
                 <li className="p-navigation__link" role="menuitem">
-                  <a href={_generateURL("#/machines")}>Machines</a>
+                  <a href={generateURL("#/machines")}>Machines</a>
                 </li>
                 <li className="p-navigation__link" role="menuitem">
-                  <a href={_generateURL("#/devices")}>Devices</a>
+                  <a href={generateURL("#/devices")}>Devices</a>
                 </li>
                 {authUser.is_superuser ? (
                   <li className="p-navigation__link" role="menuitem">
-                    <a href={_generateURL("#/controllers")}>Controllers</a>
+                    <a href={generateURL("#/controllers")}>Controllers</a>
                   </li>
                 ) : null}
                 <li className="p-navigation__link" role="menuitem">
-                  <a href={_generateURL("#/kvm")}>KVM</a>
+                  <a href={generateURL("#/kvm")}>KVM</a>
                 </li>
                 <li className="p-navigation__link" role="menuitem">
-                  <a href={_generateURL("#/rsd")}>RSD</a>
+                  <a href={generateURL("#/rsd")}>RSD</a>
                 </li>
               </ul>
             </li>
@@ -119,7 +116,7 @@ export const Header = ({ authUser, location }) => {
               className="p-navigation__link u-hide-nav-viewport--medium"
               role="menuitem"
             >
-              <a className="p-dropdown__item" href={_generateURL("#/machines")}>
+              <a className="p-dropdown__item" href={generateURL("#/machines")}>
                 Machines
               </a>
             </li>
@@ -127,7 +124,7 @@ export const Header = ({ authUser, location }) => {
               className="p-navigation__link u-hide-nav-viewport--medium"
               role="menuitem"
             >
-              <a className="p-dropdown__item" href={_generateURL("#/devices")}>
+              <a className="p-dropdown__item" href={generateURL("#/devices")}>
                 Devices
               </a>
             </li>
@@ -138,7 +135,7 @@ export const Header = ({ authUser, location }) => {
               >
                 <a
                   className="p-dropdown__item"
-                  href={_generateURL("#/controllers")}
+                  href={generateURL("#/controllers")}
                 >
                   Controllers
                 </a>
@@ -148,7 +145,7 @@ export const Header = ({ authUser, location }) => {
               className="p-navigation__link u-hide-nav-viewport--medium"
               role="menuitem"
             >
-              <a className="p-dropdown__item" href={_generateURL("#/kvm")}>
+              <a className="p-dropdown__item" href={generateURL("#/kvm")}>
                 KVM
               </a>
             </li>
@@ -156,35 +153,35 @@ export const Header = ({ authUser, location }) => {
               className="p-navigation__link u-hide-nav-viewport--medium"
               role="menuitem"
             >
-              <a className="p-dropdown__item" href={_generateURL("#/rsd")}>
+              <a className="p-dropdown__item" href={generateURL("#/rsd")}>
                 RSD
               </a>
             </li>
             <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={_generateURL("#/images")}>
+              <a className="p-dropdown__item" href={generateURL("#/images")}>
                 Images
               </a>
             </li>
             <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={_generateURL("#/domains")}>
+              <a className="p-dropdown__item" href={generateURL("#/domains")}>
                 DNS
               </a>
             </li>
             <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={_generateURL("#/zones")}>
+              <a className="p-dropdown__item" href={generateURL("#/zones")}>
                 AZs
               </a>
             </li>
             <li className="p-navigation__link" role="menuitem">
               <a
                 className="p-dropdown__item"
-                href={_generateURL("#/networks?by=fabric")}
+                href={generateURL("#/networks?by=fabric")}
               >
                 Subnets
               </a>
             </li>
             {authUser.is_superuser
-              ? _generateLocalLink(location, "/", "Settings")
+              ? generateLocalLink(location, "/", "Settings")
               : null}
           </ul>
           <ul className="p-navigation__links--right" role="menu">
@@ -192,7 +189,7 @@ export const Header = ({ authUser, location }) => {
               <a
                 className="p-dropdown__item"
                 role="menuitem"
-                href={_generateURL("account/prefs/")}
+                href={generateURL("account/prefs/")}
               >
                 {authUser.username}
               </a>
@@ -200,7 +197,7 @@ export const Header = ({ authUser, location }) => {
             <li className="p-navigation__link" role="menuitem">
               <a
                 className="p-dropdown__item"
-                href={_generateURL("accounts/logout/")}
+                href={generateURL("accounts/logout/")}
               >
                 Logout
               </a>
