@@ -6,12 +6,7 @@ import TableRow from "../TableRow";
 import TableHeader from "../TableHeader";
 import TableCell from "../TableCell";
 
-const _updateSort = (
-  _setSortKey,
-  _setSortDirection,
-  sortKey,
-  sortDirection
-) => {
+const updateSort = (setSortKey, setSortDirection, sortKey, sortDirection) => {
   let newDirection = null;
   if (sortDirection === "none") {
     newDirection = "ascending";
@@ -20,18 +15,18 @@ const _updateSort = (
   } else {
     sortKey = null;
   }
-  _setSortKey(sortKey);
-  _setSortDirection(newDirection);
+  setSortKey(sortKey);
+  setSortDirection(newDirection);
 };
 
-const _generateHeaders = (
+const generateHeaders = (
   currentSortKey,
   currentSortDirection,
   expanding,
   headers,
   sortable,
-  _setSortKey,
-  _setSortDirection
+  setSortKey,
+  setSortDirection
 ) => {
   const headerItems = headers.map(({ content, sortKey, ...props }, index) => {
     let sortDirection;
@@ -48,10 +43,10 @@ const _generateHeaders = (
         sort={sortDirection}
         onClick={
           sortable &&
-          _updateSort.bind(
+          updateSort.bind(
             this,
-            _setSortKey,
-            _setSortDirection,
+            setSortKey,
+            setSortDirection,
             sortKey,
             sortDirection
           )
@@ -73,7 +68,8 @@ const _generateHeaders = (
     </thead>
   );
 };
-const _generateRows = (
+
+const generateRows = (
   currentSortDirection,
   currentSortKey,
   expanding,
@@ -129,19 +125,19 @@ const MainTable = ({
   sortable,
   ...props
 }) => {
-  const [currentSortKey, _setSortKey] = useState(defaultSort);
-  const [currentSortDirection, _setSortDirection] = useState(
+  const [currentSortKey, setSortKey] = useState(defaultSort);
+  const [currentSortDirection, setSortDirection] = useState(
     defaultSortDirection
   );
 
   // Update the current sort state if the prop changes.
   useEffect(() => {
-    _setSortKey(defaultSort);
+    setSortKey(defaultSort);
   }, [defaultSort]);
 
   // Update the current sort direction state if the prop changes.
   useEffect(() => {
-    _setSortDirection(defaultSortDirection);
+    setSortDirection(defaultSortDirection);
   }, [defaultSortDirection]);
 
   return (
@@ -152,17 +148,17 @@ const MainTable = ({
       {...props}
     >
       {headers &&
-        _generateHeaders(
+        generateHeaders(
           currentSortKey,
           currentSortDirection,
           expanding,
           headers,
           sortable,
-          _setSortKey,
-          _setSortDirection
+          setSortKey,
+          setSortDirection
         )}
-      {headers &&
-        _generateRows(
+      {rows &&
+        generateRows(
           currentSortDirection,
           currentSortKey,
           expanding,
