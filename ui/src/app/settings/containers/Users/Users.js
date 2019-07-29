@@ -8,7 +8,7 @@ import baseSelectors from "app/base/selectors";
 import MainTable from "app/base/components/MainTable";
 
 export const Users = ({ authUser, users }) => {
-  const _generateUsers = users.map(user => ({
+  const userRows = users.map(user => ({
     columns: [
       { content: user.username, role: "rowheader" },
       { content: user.email },
@@ -73,7 +73,7 @@ export const Users = ({ authUser, users }) => {
           },
           { content: "Actions", className: "u-align--right" }
         ]}
-        rows={_generateUsers}
+        rows={userRows}
         sortable={true}
       />
     </>

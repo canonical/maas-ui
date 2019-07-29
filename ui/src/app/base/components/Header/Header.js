@@ -16,25 +16,24 @@ const useVisible = initialValue => {
   return [value, toggleValue];
 };
 
+const _generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
+
+const _generateLocalLink = (location, url, label) => (
+  <li
+    className={classNames("p-navigation__link", {
+      "is-selected": location.pathname.startsWith(url)
+    })}
+    role="menuitem"
+  >
+    <Link to={url} className="p-dropdown__item">
+      {label}
+    </Link>
+  </li>
+);
+
 export const Header = ({ authUser, location }) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
-
-  const _generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
-
-  const _generateLocalLink = (url, label) => (
-    <li
-      className={classNames("p-navigation__link", {
-        "is-selected": location.pathname.startsWith(url)
-      })}
-      role="menuitem"
-    >
-      <Link to={url} className="p-dropdown__item">
-        {label}
-      </Link>
-    </li>
-  );
-
   return (
     <header className="p-navigation">
       <div className="p-navigation__row row">
@@ -184,7 +183,9 @@ export const Header = ({ authUser, location }) => {
                 Subnets
               </a>
             </li>
-            {authUser.is_superuser ? _generateLocalLink("/", "Settings") : null}
+            {authUser.is_superuser
+              ? _generateLocalLink(location, "/", "Settings")
+              : null}
           </ul>
           <ul className="p-navigation__links--right" role="menu">
             <li className="p-navigation__link" role="menuitem">
