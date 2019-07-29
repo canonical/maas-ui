@@ -2,7 +2,7 @@ import repositories from "./repositories";
 
 describe("repository actions", () => {
   it("should handle fetching repositories", () => {
-    expect(repositories.fetchRepositories()).toEqual({
+    expect(repositories.fetch()).toEqual({
       type: "WEBSOCKET_SEND",
       payload: {
         actionType: "FETCH_REPOSITORIES",

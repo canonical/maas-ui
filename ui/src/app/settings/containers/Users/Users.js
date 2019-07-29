@@ -1,14 +1,15 @@
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { UserShape } from "app/base/proptypes";
+import actions from "app/settings/actions";
+import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
+import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 
-export const Users = ({ authUser, users }) => {
-  const userRows = users.map(user => ({
+const generateUserRows = (users, authUser) =>
+  users.map(user => ({
     columns: [
       { content: user.username, role: "rowheader" },
       { content: user.email },
@@ -39,6 +40,7 @@ export const Users = ({ authUser, users }) => {
         className: "u-align--right"
       }
     ],
+    key: user.username,
     sortData: {
       username: user.username,
       email: user.email,
@@ -49,74 +51,51 @@ export const Users = ({ authUser, users }) => {
       "maas-keys": user.sshkeys_count
     }
   }));
+
+const Users = () => {
+  const dispatch = useDispatch();
+  const users = useSelector(selectors.users.get);
+  const loading = useSelector(selectors.users.loading);
+  const authUser = useSelector(baseSelectors.auth.getAuthUser);
+
+  useEffect(() => {
+    dispatch(actions.users.fetch());
+  }, [dispatch]);
+
   return (
     <>
-      <h4>Users</h4>
-      <MainTable
-        defaultSort="username"
-        defaultSortDirection="ascending"
-        headers={[
-          { content: "Username", sortKey: "username" },
-          { content: "Email", sortKey: "email" },
-          {
-            content: "Machines",
-            className: "u-align--right",
-            sortKey: "machines"
-          },
-          { content: "Type", sortKey: "type" },
-          { content: "Last seen", sortKey: "last-seen" },
-          { content: "Role", sortKey: "role" },
-          {
-            content: "MAAS keys",
-            className: "u-align--right",
-            sortKey: "maas-keys"
-          },
-          { content: "Actions", className: "u-align--right" }
-        ]}
-        rows={userRows}
-        sortable={true}
-      />
+      <h4>
+        Users
+        {loading && <Loader text="Loading..." inline />}
+      </h4>
+      {!loading && (
+        <MainTable
+          defaultSort="username"
+          defaultSortDirection="ascending"
+          headers={[
+            { content: "Username", sortKey: "username" },
+            { content: "Email", sortKey: "email" },
+            {
+              content: "Machines",
+              className: "u-align--right",
+              sortKey: "machines"
+            },
+            { content: "Type", sortKey: "type" },
+            { content: "Last seen", sortKey: "last-seen" },
+            { content: "Role", sortKey: "role" },
+            {
+              content: "MAAS keys",
+              className: "u-align--right",
+              sortKey: "maas-keys"
+            },
+            { content: "Actions", className: "u-align--right" }
+          ]}
+          rows={generateUserRows(users, authUser)}
+          sortable={true}
+        />
+      )}
     </>
   );
 };
 
-Users.propTypes = {
-  authUser: UserShape.isRequired,
-  users: PropTypes.arrayOf(UserShape)
-};
-
-Users.defaultProps = {
-  users: [
-    {
-      email: "admin@example.com",
-      first_name: "",
-      global_permissions: ["machine_create"],
-      id: 1,
-      is_superuser: true,
-      last_name: "",
-      sshkeys_count: 2,
-      username: "admin"
-    },
-    {
-      email: "simon@example.com",
-      first_name: "",
-      global_permissions: ["machine_create"],
-      id: 2,
-      is_superuser: false,
-      last_name: "",
-      sshkeys_count: 9,
-      username: "simon"
-    }
-  ]
-};
-
-const mapStateToProps = (state, props) => {
-  return {
-    authUser: baseSelectors.auth.getAuthUser(state, props)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(Users);
+export default Users;

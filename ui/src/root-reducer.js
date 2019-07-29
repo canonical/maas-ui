@@ -8,6 +8,7 @@ export default history =>
   combineReducers({
     auth: baseReducers.auth,
     repositories: settingsReducers.repositories,
+    users: settingsReducers.users,
     router: connectRouter(history),
     status: baseReducers.status
   });

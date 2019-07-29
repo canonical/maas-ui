@@ -1,6 +1,6 @@
 const repositories = {};
 
-repositories.fetchRepositories = () => {
+repositories.fetch = () => {
   return {
     type: "WEBSOCKET_SEND",
     payload: {
