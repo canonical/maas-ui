@@ -1,426 +1,369 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Users can render 1`] = `
-<Provider
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <MemoryRouter
-    initialEntries={
+<Users>
+  <h4>
+    Users
+  </h4>
+  <MainTable
+    defaultSort="username"
+    defaultSortDirection="ascending"
+    headers={
       Array [
         Object {
-          "key": "testKey",
-          "pathname": "/settings/users",
+          "content": "Username",
+          "sortKey": "username",
+        },
+        Object {
+          "content": "Email",
+          "sortKey": "email",
+        },
+        Object {
+          "className": "u-align--right",
+          "content": "Machines",
+          "sortKey": "machines",
+        },
+        Object {
+          "content": "Type",
+          "sortKey": "type",
+        },
+        Object {
+          "content": "Last seen",
+          "sortKey": "last-seen",
+        },
+        Object {
+          "content": "Role",
+          "sortKey": "role",
+        },
+        Object {
+          "className": "u-align--right",
+          "content": "MAAS keys",
+          "sortKey": "maas-keys",
+        },
+        Object {
+          "className": "u-align--right",
+          "content": "Actions",
         },
       ]
     }
-  >
-    <Router
-      history={
+    rows={
+      Array [
         Object {
-          "action": "POP",
-          "block": [Function],
-          "canGo": [Function],
-          "createHref": [Function],
-          "entries": Array [
+          "columns": Array [
             Object {
-              "hash": "",
-              "key": "testKey",
-              "pathname": "/settings/users",
-              "search": "",
+              "content": undefined,
+              "role": "rowheader",
+            },
+            Object {
+              "content": undefined,
+            },
+            Object {
+              "className": "u-align--right",
+              "content": 37,
+            },
+            Object {
+              "content": "Local",
+            },
+            Object {
+              "content": "12 mins ago",
+            },
+            Object {
+              "content": null,
+            },
+            Object {
+              "className": "u-align--right",
+              "content": undefined,
+            },
+            Object {
+              "className": "u-align--right",
+              "content": <React.Fragment>
+                <Link
+                  className="p-button--base is-small"
+                  to="/users/undefined/edit"
+                >
+                  <i
+                    className="p-icon--edit"
+                  >
+                    Edit
+                  </i>
+                </Link>
+                <Link
+                  className="p-button--base is-small"
+                  to="/users/undefined/delete"
+                >
+                  <i
+                    className="p-icon--delete"
+                  >
+                    Delete
+                  </i>
+                </Link>
+              </React.Fragment>,
             },
           ],
-          "go": [Function],
-          "goBack": [Function],
-          "goForward": [Function],
-          "index": 0,
-          "length": 1,
-          "listen": [Function],
-          "location": Object {
-            "hash": "",
-            "key": "testKey",
-            "pathname": "/settings/users",
-            "search": "",
+          "key": undefined,
+          "sortData": Object {
+            "email": undefined,
+            "last-seen": "2018-05-12",
+            "maas-keys": undefined,
+            "machines": 37,
+            "role": null,
+            "type": "local",
+            "username": undefined,
           },
-          "push": [Function],
-          "replace": [Function],
-        }
-      }
+        },
+      ]
+    }
+    sortable={true}
+  >
+    <Table
+      sortable={true}
     >
-      <Users>
-        <h4>
-          Users
-        </h4>
-        <MainTable
-          defaultSort="username"
-          defaultSortDirection="ascending"
-          headers={
-            Array [
-              Object {
-                "content": "Username",
-                "sortKey": "username",
-              },
-              Object {
-                "content": "Email",
-                "sortKey": "email",
-              },
-              Object {
-                "className": "u-align--right",
-                "content": "Machines",
-                "sortKey": "machines",
-              },
-              Object {
-                "content": "Type",
-                "sortKey": "type",
-              },
-              Object {
-                "content": "Last seen",
-                "sortKey": "last-seen",
-              },
-              Object {
-                "content": "Role",
-                "sortKey": "role",
-              },
-              Object {
-                "className": "u-align--right",
-                "content": "MAAS keys",
-                "sortKey": "maas-keys",
-              },
-              Object {
-                "className": "u-align--right",
-                "content": "Actions",
-              },
-            ]
-          }
-          rows={
-            Array [
-              Object {
-                "columns": Array [
-                  Object {
-                    "content": undefined,
-                    "role": "rowheader",
-                  },
-                  Object {
-                    "content": undefined,
-                  },
-                  Object {
-                    "className": "u-align--right",
-                    "content": 37,
-                  },
-                  Object {
-                    "content": "Local",
-                  },
-                  Object {
-                    "content": "12 mins ago",
-                  },
-                  Object {
-                    "content": null,
-                  },
-                  Object {
-                    "className": "u-align--right",
-                    "content": undefined,
-                  },
-                  Object {
-                    "className": "u-align--right",
-                    "content": <React.Fragment>
-                      <Link
-                        className="p-button--base is-small"
-                        to="/users/undefined/edit"
-                      >
-                        <i
-                          className="p-icon--edit"
-                        >
-                          Edit
-                        </i>
-                      </Link>
-                      <Link
-                        className="p-button--base is-small"
-                        to="/users/undefined/delete"
-                      >
-                        <i
-                          className="p-icon--delete"
-                        >
-                          Delete
-                        </i>
-                      </Link>
-                    </React.Fragment>,
-                  },
-                ],
-                "key": undefined,
-                "sortData": Object {
-                  "email": undefined,
-                  "last-seen": "2018-05-12",
-                  "maas-keys": undefined,
-                  "machines": 37,
-                  "role": null,
-                  "type": "local",
-                  "username": undefined,
-                },
-              },
-            ]
-          }
-          sortable={true}
-        >
-          <Table
-            sortable={true}
-          >
-            <table
-              className="p-table--sortable"
-              role="grid"
+      <table
+        className="p-table--sortable"
+        role="grid"
+      >
+        <thead>
+          <TableRow>
+            <tr
+              role="row"
             >
-              <thead>
-                <TableRow>
-                  <tr
-                    role="row"
-                  >
-                    <TableHeader
-                      key="0"
-                      onClick={[Function]}
-                      sort="ascending"
-                    >
-                      <th
-                        aria-sort="ascending"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Username
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      key="1"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Email
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      className="u-align--right"
-                      key="2"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        className="u-align--right"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Machines
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      key="3"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Type
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      key="4"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Last seen
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      key="5"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Role
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      className="u-align--right"
-                      key="6"
-                      onClick={[Function]}
-                      sort="none"
-                    >
-                      <th
-                        aria-sort="none"
-                        className="u-align--right"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        MAAS keys
-                      </th>
-                    </TableHeader>
-                    <TableHeader
-                      className="u-align--right"
-                      key="7"
-                      onClick={[Function]}
-                    >
-                      <th
-                        className="u-align--right"
-                        onClick={[Function]}
-                        role="columnheader"
-                      >
-                        Actions
-                      </th>
-                    </TableHeader>
-                  </tr>
-                </TableRow>
-              </thead>
-              <tbody>
-                <TableRow
-                  key="0"
+              <TableHeader
+                key="0"
+                onClick={[Function]}
+                sort="ascending"
+              >
+                <th
+                  aria-sort="ascending"
+                  onClick={[Function]}
+                  role="columnheader"
                 >
-                  <tr
-                    role="row"
+                  Username
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="1"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Email
+                </th>
+              </TableHeader>
+              <TableHeader
+                className="u-align--right"
+                key="2"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  className="u-align--right"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Machines
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="3"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Type
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="4"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Last seen
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="5"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Role
+                </th>
+              </TableHeader>
+              <TableHeader
+                className="u-align--right"
+                key="6"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  className="u-align--right"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  MAAS keys
+                </th>
+              </TableHeader>
+              <TableHeader
+                className="u-align--right"
+                key="7"
+                onClick={[Function]}
+              >
+                <th
+                  className="u-align--right"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Actions
+                </th>
+              </TableHeader>
+            </tr>
+          </TableRow>
+        </thead>
+        <tbody>
+          <TableRow
+            key="0"
+          >
+            <tr
+              role="row"
+            >
+              <TableCell
+                key="0"
+                role="rowheader"
+              >
+                <td
+                  className=""
+                  role="rowheader"
+                />
+              </TableCell>
+              <TableCell
+                key="1"
+                role="gridcell"
+              >
+                <td
+                  className=""
+                  role="gridcell"
+                />
+              </TableCell>
+              <TableCell
+                className="u-align--right"
+                key="2"
+                role="gridcell"
+              >
+                <td
+                  className="u-align--right"
+                  role="gridcell"
+                >
+                  37
+                </td>
+              </TableCell>
+              <TableCell
+                key="3"
+                role="gridcell"
+              >
+                <td
+                  className=""
+                  role="gridcell"
+                >
+                  Local
+                </td>
+              </TableCell>
+              <TableCell
+                key="4"
+                role="gridcell"
+              >
+                <td
+                  className=""
+                  role="gridcell"
+                >
+                  12 mins ago
+                </td>
+              </TableCell>
+              <TableCell
+                key="5"
+                role="gridcell"
+              >
+                <td
+                  className=""
+                  role="gridcell"
+                />
+              </TableCell>
+              <TableCell
+                className="u-align--right"
+                key="6"
+                role="gridcell"
+              >
+                <td
+                  className="u-align--right"
+                  role="gridcell"
+                />
+              </TableCell>
+              <TableCell
+                className="u-align--right"
+                key="7"
+                role="gridcell"
+              >
+                <td
+                  className="u-align--right"
+                  role="gridcell"
+                >
+                  <Link
+                    className="p-button--base is-small"
+                    to="/users/undefined/edit"
                   >
-                    <TableCell
-                      key="0"
-                      role="rowheader"
+                    <a
+                      className="p-button--base is-small"
+                      href="/users/undefined/edit"
+                      onClick={[Function]}
                     >
-                      <td
-                        className=""
-                        role="rowheader"
-                      />
-                    </TableCell>
-                    <TableCell
-                      key="1"
-                      role="gridcell"
-                    >
-                      <td
-                        className=""
-                        role="gridcell"
-                      />
-                    </TableCell>
-                    <TableCell
-                      className="u-align--right"
-                      key="2"
-                      role="gridcell"
-                    >
-                      <td
-                        className="u-align--right"
-                        role="gridcell"
+                      <i
+                        className="p-icon--edit"
                       >
-                        37
-                      </td>
-                    </TableCell>
-                    <TableCell
-                      key="3"
-                      role="gridcell"
+                        Edit
+                      </i>
+                    </a>
+                  </Link>
+                  <Link
+                    className="p-button--base is-small"
+                    to="/users/undefined/delete"
+                  >
+                    <a
+                      className="p-button--base is-small"
+                      href="/users/undefined/delete"
+                      onClick={[Function]}
                     >
-                      <td
-                        className=""
-                        role="gridcell"
+                      <i
+                        className="p-icon--delete"
                       >
-                        Local
-                      </td>
-                    </TableCell>
-                    <TableCell
-                      key="4"
-                      role="gridcell"
-                    >
-                      <td
-                        className=""
-                        role="gridcell"
-                      >
-                        12 mins ago
-                      </td>
-                    </TableCell>
-                    <TableCell
-                      key="5"
-                      role="gridcell"
-                    >
-                      <td
-                        className=""
-                        role="gridcell"
-                      />
-                    </TableCell>
-                    <TableCell
-                      className="u-align--right"
-                      key="6"
-                      role="gridcell"
-                    >
-                      <td
-                        className="u-align--right"
-                        role="gridcell"
-                      />
-                    </TableCell>
-                    <TableCell
-                      className="u-align--right"
-                      key="7"
-                      role="gridcell"
-                    >
-                      <td
-                        className="u-align--right"
-                        role="gridcell"
-                      >
-                        <Link
-                          className="p-button--base is-small"
-                          to="/users/undefined/edit"
-                        >
-                          <a
-                            className="p-button--base is-small"
-                            href="/users/undefined/edit"
-                            onClick={[Function]}
-                          >
-                            <i
-                              className="p-icon--edit"
-                            >
-                              Edit
-                            </i>
-                          </a>
-                        </Link>
-                        <Link
-                          className="p-button--base is-small"
-                          to="/users/undefined/delete"
-                        >
-                          <a
-                            className="p-button--base is-small"
-                            href="/users/undefined/delete"
-                            onClick={[Function]}
-                          >
-                            <i
-                              className="p-icon--delete"
-                            >
-                              Delete
-                            </i>
-                          </a>
-                        </Link>
-                      </td>
-                    </TableCell>
-                  </tr>
-                </TableRow>
-              </tbody>
-            </table>
-          </Table>
-        </MainTable>
-      </Users>
-    </Router>
-  </MemoryRouter>
-</Provider>
+                        Delete
+                      </i>
+                    </a>
+                  </Link>
+                </td>
+              </TableCell>
+            </tr>
+          </TableRow>
+        </tbody>
+      </table>
+    </Table>
+  </MainTable>
+</Users>
 `;

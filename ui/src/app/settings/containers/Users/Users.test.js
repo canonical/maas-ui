@@ -41,6 +41,6 @@ describe("Users", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("Users")).toMatchSnapshot();
   });
 });
