@@ -4,6 +4,7 @@ describe("status", () => {
   it("should return the initial state", () => {
     expect(users(undefined, {})).toEqual({
       loading: false,
+      loaded: false,
       items: []
     });
   });
@@ -15,6 +16,7 @@ describe("status", () => {
       })
     ).toEqual({
       loading: true,
+      loaded: false,
       items: []
     });
   });
@@ -24,6 +26,7 @@ describe("status", () => {
       users(
         {
           loading: true,
+          loaded: false,
           items: []
         },
         {
@@ -33,6 +36,7 @@ describe("status", () => {
       )
     ).toEqual({
       loading: false,
+      loaded: true,
       items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
     });
   });

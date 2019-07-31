@@ -8,6 +8,7 @@ const users = produce(
         return;
       case "FETCH_USERS_SUCCESS":
         draft.loading = false;
+        draft.loaded = true;
         draft.items = action.payload;
         return;
       default:
@@ -16,6 +17,7 @@ const users = produce(
   },
   {
     loading: false,
+    loaded: false,
     items: []
   }
 );

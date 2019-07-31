@@ -20,6 +20,16 @@ describe("users", () => {
     expect(users.loading(state)).toEqual(true);
   });
 
+  it("can get the loaded state", () => {
+    const state = {
+      users: {
+        loaded: true,
+        items: []
+      }
+    };
+    expect(users.loaded(state)).toEqual(true);
+  });
+
   it("can get the count", () => {
     const state = {
       users: {

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 
 import actions from "app/settings/actions";
@@ -52,19 +53,25 @@ const generateUserRows = (users, authUser) =>
     }
   }));
 
+const useFetchOnce = (fetchAction, loadedSelector) => {
+  const dispatch = useDispatch();
+  const loaded = useSelector(loadedSelector);
+  useEffect(() => {
+    if (!loaded) {
+      dispatch(fetchAction());
+    }
+  }, [loaded, dispatch, fetchAction, loadedSelector]);
+  return loaded;
+};
+
 const Users = ({ initialCount = 20 }) => {
   const [batchSize, setBatch] = useState(initialCount);
-  const dispatch = useDispatch();
   const users = useSelector(state => selectors.users.get(state, batchSize));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
 
-  useEffect(() => {
-    if (!users.length) {
-      dispatch(actions.users.fetch());
-    }
-  }, [dispatch, users.length]);
+  const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
 
   return (
     <>
@@ -72,7 +79,7 @@ const Users = ({ initialCount = 20 }) => {
         Users
         {loading && <Loader text="Loading..." inline />}
       </h4>
-      {users.length > 0 && (
+      {loaded > 0 && (
         <MainTable
           defaultSort="username"
           defaultSortDirection="ascending"
@@ -109,6 +116,10 @@ const Users = ({ initialCount = 20 }) => {
       )}
     </>
   );
+};
+
+Users.propTypes = {
+  initialCount: PropTypes.number
 };
 
 export default Users;

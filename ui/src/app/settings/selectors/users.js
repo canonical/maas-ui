@@ -21,6 +21,13 @@ users.get = (state, batch) => {
 users.loading = state => state.users.loading;
 
 /**
+ * Returns true if users have been loaded.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} User has loaded.
+ */
+users.loaded = state => state.users.loaded;
+
+/**
  * Returns number of users
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all users.
