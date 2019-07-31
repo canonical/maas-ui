@@ -34,7 +34,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = {
-  fetchRepositories: actions.repositories.fetchRepositories
+  fetchRepositories: actions.repositories.fetch
 };
 
 export default connect(

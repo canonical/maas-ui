@@ -92,7 +92,10 @@ const generateRows = (
     });
   }
   const rowItems = sortedRows.map(
-    ({ columns, expanded, expandedContent, sortData, ...rowProps }, index) => {
+    (
+      { columns, expanded, expandedContent, key, sortData, ...rowProps },
+      index
+    ) => {
       const cellItems = columns.map(({ content, ...cellProps }, index) => (
         <TableCell key={index} {...cellProps}>
           {content}
@@ -101,7 +104,7 @@ const generateRows = (
       // The expanding cell is alway created to match the correct number of
       // table cells in rows that do have expanding content.
       return (
-        <TableRow key={index} {...rowProps}>
+        <TableRow key={key || index} {...rowProps}>
           {cellItems}
           {expanding && (
             <TableCell expanding={true} hidden={!expanded}>

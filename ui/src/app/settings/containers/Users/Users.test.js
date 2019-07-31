@@ -1,23 +1,126 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import React from "react";
-import { Users } from "./Users";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import { MemoryRouter } from "react-router-dom";
+import Users from "./Users";
+
+const mockStore = configureStore();
 
 describe("Users", () => {
-  it("can render", () => {
-    const wrapper = shallow(
-      <Users
-        authUser={{
-          email: "test@example.com",
-          first_name: "",
-          global_permissions: ["machine_create"],
-          id: 1,
-          is_superuser: true,
-          last_name: "",
-          sshkeys_count: 0,
-          username: "admin"
-        }}
-      />
+  it("displays a loading component if loading", () => {
+    const user = {
+      email: "admin@example.com",
+      first_name: "",
+      global_permissions: ["machine_create"],
+      id: 1,
+      is_superuser: true,
+      last_name: "",
+      sshkeys_count: 0,
+      username: "admin"
+    };
+    const store = mockStore({
+      auth: {
+        user
+      },
+      users: {
+        loading: true,
+        items: []
+      }
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <Users />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper).toMatchSnapshot();
+
+    expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("hides the table if no users have loaded", () => {
+    const user = {
+      email: "admin@example.com",
+      first_name: "",
+      global_permissions: ["machine_create"],
+      id: 1,
+      is_superuser: true,
+      last_name: "",
+      sshkeys_count: 0,
+      username: "admin"
+    };
+    const store = mockStore({
+      auth: {
+        user
+      },
+      users: {
+        loading: false,
+        items: []
+      }
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <Users />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("MainTable").exists()).toBe(false);
+  });
+
+  it("displays a view more button if more users exist", () => {
+    const users = [
+      {
+        email: "admin@example.com",
+        first_name: "",
+        global_permissions: ["machine_create"],
+        id: 1,
+        is_superuser: true,
+        last_name: "",
+        sshkeys_count: 0,
+        username: "admin"
+      },
+      {
+        email: "user@example.com",
+        first_name: "",
+        global_permissions: ["machine_create"],
+        id: 2,
+        is_superuser: false,
+        last_name: "",
+        sshkeys_count: 0,
+        username: "user1"
+      }
+    ];
+
+    const store = mockStore({
+      auth: {
+        user: users[0]
+      },
+      users: {
+        loading: true,
+        items: users
+      }
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <Users initialCount={1} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("button").exists()).toBe(true);
+    expect(wrapper.find("button").text()).toEqual("View all (1 more)");
   });
 });

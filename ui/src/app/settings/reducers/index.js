@@ -1,3 +1,4 @@
 import repositories from "./repositories";
+import users from "./users";
 
-export default { repositories };
+export default { repositories, users };

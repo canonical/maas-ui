@@ -1,0 +1,23 @@
+@import "src/scss/vanilla";
+
+.p-icon__text {
+  margin-left: $sph-inner--small;
+  font-size: 1rem;
+}
+
+.p-loader {
+  line-height: map-get($line-heights, default-text);
+  padding: ($spv-nudge - 0.0625rem) ($sph-inner--small * 1.5);
+  text-align: center;
+  width: 100%;
+
+  button & {
+    padding: 0;
+  }
+}
+
+.p-loader--inline {
+  display: inline;
+  text-align: left;
+  margin: 0 1rem;
+}
