@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserEdit can render 1`] = `
+<UserForm
+  title="Edit user"
+/>
+`;

@@ -25,7 +25,7 @@ const Card = ({
         <hr className="u-sv1" />
       </>
     )}
-    <h3 className="p-card__title">{title}</h3>
+    {title && <h3 className="p-card__title">{title}</h3>}
     <div className="p-card__content">{children}</div>
   </div>
 );
