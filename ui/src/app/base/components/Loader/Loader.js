@@ -10,9 +10,9 @@ const Loader = ({ text, isLight, inline }) => (
     })}
   >
     <i
-      className={`p-icon--spinner u-animation--spin ${
-        isLight ? "is-light" : ""
-      }`}
+      className={classNames("p-icon--spinner", "u-animation--spin", {
+        "is-light": isLight
+      })}
     />
     {text && <span className="p-icon__text">{text}</span>}
   </div>
