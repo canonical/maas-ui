@@ -79,7 +79,7 @@ const Users = ({ initialCount = 20 }) => {
         Users
         {loading && <Loader text="Loading..." inline />}
       </h4>
-      {loaded > 0 && (
+      {loaded && (
         <MainTable
           defaultSort="username"
           defaultSortDirection="ascending"
