@@ -3,9 +3,15 @@ const users = {};
 /**
  * Returns all users
  * @param {Object} state - The redux state.
+ * @param {Number} batch - Number of users to return.
  * @returns {Array} A list of all users.
  */
-users.get = state => state.users.items;
+users.get = (state, batch) => {
+  if (batch) {
+    return state.users.items.slice(0, batch);
+  }
+  return state.users.items;
+};
 
 /**
  * Returns true if users are loading.
@@ -13,5 +19,12 @@ users.get = state => state.users.items;
  * @returns {Boolean} User is loading.
  */
 users.loading = state => state.users.loading;
+
+/**
+ * Returns number of users
+ * @param {Object} state - The redux state.
+ * @returns {Array} A list of all users.
+ */
+users.count = state => state.users.items.length;
 
 export default users;

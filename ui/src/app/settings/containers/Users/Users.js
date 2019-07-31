@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
@@ -52,15 +52,19 @@ const generateUserRows = (users, authUser) =>
     }
   }));
 
-const Users = () => {
+const Users = ({ initialCount = 20 }) => {
+  const [batchSize, setBatch] = useState(initialCount);
   const dispatch = useDispatch();
-  const users = useSelector(selectors.users.get);
+  const users = useSelector(state => selectors.users.get(state, batchSize));
+  const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
 
   useEffect(() => {
-    dispatch(actions.users.fetch());
-  }, [dispatch]);
+    if (!users.length) {
+      dispatch(actions.users.fetch());
+    }
+  }, [dispatch, users.length]);
 
   return (
     <>
@@ -68,7 +72,7 @@ const Users = () => {
         Users
         {loading && <Loader text="Loading..." inline />}
       </h4>
-      {!loading && (
+      {users.length > 0 && (
         <MainTable
           defaultSort="username"
           defaultSortDirection="ascending"
@@ -93,6 +97,15 @@ const Users = () => {
           rows={generateUserRows(users, authUser)}
           sortable={true}
         />
+      )}
+      {userCount > users.length && (
+        <button
+          onClick={() => {
+            setBatch(undefined);
+          }}
+        >
+          View all (<small>{userCount - users.length} more</small>)
+        </button>
       )}
     </>
   );
