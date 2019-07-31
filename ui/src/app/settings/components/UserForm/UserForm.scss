@@ -1,0 +1,12 @@
+@import "src/scss/vanilla";
+
+.user-form {
+  margin-top: 0.5rem;
+}
+
+.user-form__buttons {
+  border-top: 1px solid $color-mid-light;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: right;
+}
