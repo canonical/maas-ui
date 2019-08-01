@@ -3,7 +3,6 @@
 exports[`Textarea  renders 1`] = `
 <Field
   forId="test-id"
-  labelFirst={true}
 >
   <textarea
     className="p-form-validation__input"
