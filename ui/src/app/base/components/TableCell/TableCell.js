@@ -7,7 +7,7 @@ const TableCell = ({
   className,
   expanding,
   hidden,
-  role,
+  role = "gridcell",
   ...props
 }) => (
   <td
@@ -28,10 +28,6 @@ TableCell.propTypes = {
   expanding: PropTypes.bool,
   hidden: PropTypes.bool,
   role: PropTypes.string
-};
-
-TableCell.defaultProps = {
-  role: "gridcell"
 };
 
 export default TableCell;
