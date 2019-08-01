@@ -42,21 +42,18 @@ exports[`MainTable renders 1`] = `
       <TableCell
         className="u-align--right"
         key="1"
-        role="gridcell"
       >
         1
       </TableCell>
       <TableCell
         className="u-align--right"
         key="2"
-        role="gridcell"
       >
         1 GiB
       </TableCell>
       <TableCell
         className="u-align--right"
         key="3"
-        role="gridcell"
       >
         2
       </TableCell>
@@ -73,21 +70,18 @@ exports[`MainTable renders 1`] = `
       <TableCell
         className="u-align--right"
         key="1"
-        role="gridcell"
       >
         1
       </TableCell>
       <TableCell
         className="u-align--right"
         key="2"
-        role="gridcell"
       >
         1 GiB
       </TableCell>
       <TableCell
         className="u-align--right"
         key="3"
-        role="gridcell"
       >
         2
       </TableCell>
@@ -104,21 +98,18 @@ exports[`MainTable renders 1`] = `
       <TableCell
         className="u-align--right"
         key="1"
-        role="gridcell"
       >
         8
       </TableCell>
       <TableCell
         className="u-align--right"
         key="2"
-        role="gridcell"
       >
         3.9 GiB
       </TableCell>
       <TableCell
         className="u-align--right"
         key="3"
-        role="gridcell"
       >
         3
       </TableCell>

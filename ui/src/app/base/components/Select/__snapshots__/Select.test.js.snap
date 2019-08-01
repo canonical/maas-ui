@@ -4,7 +4,6 @@ exports[`Select  renders 1`] = `
 <Field
   forId="test-id"
   isSelect={true}
-  labelFirst={true}
 >
   <select
     className="p-form-validation__input"

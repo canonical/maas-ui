@@ -65,7 +65,7 @@ const Field = ({
   help,
   isSelect,
   label,
-  labelFirst,
+  labelFirst = true,
   required,
   stacked,
   success,
@@ -76,7 +76,7 @@ const Field = ({
   const content = generateContent(
     isSelect,
     children,
-    (labelFirst = true),
+    labelFirst,
     labelNode,
     help,
     error,
