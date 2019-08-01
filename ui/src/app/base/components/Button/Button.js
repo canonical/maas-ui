@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const Button = ({
-  appearance,
+  appearance = "neutral",
   children,
   className,
   disabled,
-  element,
+  element = "button",
   hasIcon,
   inline,
   ...props
@@ -39,11 +39,6 @@ Button.propTypes = {
   element: PropTypes.oneOf(["button", "a"]),
   hasIcon: PropTypes.bool,
   inline: PropTypes.bool
-};
-
-Button.defaultProps = {
-  appearance: "neutral",
-  element: "button"
 };
 
 export default Button;

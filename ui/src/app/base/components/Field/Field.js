@@ -76,7 +76,7 @@ const Field = ({
   const content = generateContent(
     isSelect,
     children,
-    labelFirst,
+    (labelFirst = true),
     labelNode,
     help,
     error,
@@ -111,10 +111,6 @@ Field.propTypes = {
   required: PropTypes.bool,
   stacked: PropTypes.bool,
   success: PropTypes.string
-};
-
-Field.defaultProps = {
-  labelFirst: true
 };
 
 export default Field;
