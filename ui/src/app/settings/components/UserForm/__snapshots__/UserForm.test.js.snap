@@ -5,18 +5,16 @@ exports[`UserForm can render 1`] = `
   className="user-form"
   highlighted={true}
 >
-  <div
-    className="row"
-  >
-    <div
-      className="col-3"
+  <Row>
+    <Col
+      size="3"
     >
       <h4>
         Add user
       </h4>
-    </div>
-    <div
-      className="col-9"
+    </Col>
+    <Col
+      size="9"
     >
       <Formik
         enableReinitialize={false}
@@ -248,7 +246,7 @@ exports[`UserForm can render 1`] = `
       >
         <Component />
       </Formik>
-    </div>
-  </div>
+    </Col>
+  </Row>
 </Card>
 `;

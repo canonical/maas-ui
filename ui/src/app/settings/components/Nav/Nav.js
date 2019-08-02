@@ -22,7 +22,7 @@ const _generateSection = (section, location) => {
     });
     subNav = <ul className="settings-nav__list">{items}</ul>;
   }
-  const isActive = section.path === location.pathname;
+  const isActive = location.pathname.startsWith(section.path);
   return (
     <li className="settings-nav__item" key={section.path}>
       <strong className={classNames({ "is-active": isActive })}>

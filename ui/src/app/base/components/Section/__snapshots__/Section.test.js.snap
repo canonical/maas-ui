@@ -7,35 +7,36 @@ exports[`Section renders 1`] = `
   <header
     className="p-strip section__header"
   >
-    <div
-      className="row"
-    >
+    <Row>
       <h1
         className="p-heading--four u-no-margin--bottom"
       >
         Settings
       </h1>
-    </div>
+    </Row>
   </header>
   <div
     className="p-strip u-no-padding"
   >
-    <div
-      className="row u-equal-height section__content-wrapper"
+    <Row
+      className="u-equal-height section__content-wrapper"
     >
-      <aside
-        className="section__sidebar col-2"
+      <Col
+        className="section__sidebar"
+        element="aside"
+        size="2"
       >
         <div>
           Sidebar
         </div>
-      </aside>
-      <div
-        className="section__content col-10"
+      </Col>
+      <Col
+        className="section__content"
+        size={10}
       >
         content
-      </div>
-    </div>
+      </Col>
+    </Row>
   </div>
 </div>
 `;

@@ -6,8 +6,11 @@ import React, { useState, useEffect } from "react";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
+import Button from "app/base/components/Button";
+import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
+import Row from "app/base/components/Row";
 
 const generateUserRows = (users, authUser) =>
   users.map(user => ({
@@ -75,10 +78,14 @@ const Users = ({ initialCount = 20 }) => {
 
   return (
     <>
-      <h4>
-        Users
-        {loading && <Loader text="Loading..." inline />}
-      </h4>
+      {loading && <Loader text="Loading..." inline />}
+      <Row>
+        <Col size="1" emptyLarge="11" className="u-align--right">
+          <Button element={Link} to="/users/add">
+            Add user
+          </Button>
+        </Col>
+      </Row>
       {loaded && (
         <MainTable
           defaultSort="username"
@@ -106,13 +113,13 @@ const Users = ({ initialCount = 20 }) => {
         />
       )}
       {userCount > users.length && (
-        <button
+        <Button
           onClick={() => {
             setBatch(undefined);
           }}
         >
           View all (<small>{userCount - users.length} more</small>)
-        </button>
+        </Button>
       )}
     </>
   );
