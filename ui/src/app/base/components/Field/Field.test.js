@@ -81,9 +81,13 @@ describe("Field ", () => {
   it("can be stacked", () => {
     const wrapper = shallow(<Field stacked={true} label="Test label" />);
     // The Label should be inside a col-4.
-    expect(wrapper.find(".col-4 Label").length).toBe(1);
+    const labelCol = wrapper.find("Label").parent();
+    expect(labelCol.is("Col")).toBe(true);
+    expect(labelCol.prop("size")).toEqual("4");
     // The control should be inside a col-8.
-    expect(wrapper.find(".col-8 .p-form__control").length).toBe(1);
+    const inputCol = wrapper.find(".p-form__control").parent();
+    expect(inputCol.is("Col")).toBe(true);
+    expect(inputCol.prop("size")).toEqual("8");
     expect(wrapper.prop("className").includes("row")).toBe(true);
   });
 });

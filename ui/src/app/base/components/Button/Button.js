@@ -7,17 +7,17 @@ const Button = ({
   children,
   className,
   disabled,
-  element = "button",
+  element: Component = "button",
   hasIcon,
   inline,
   ...props
 }) => {
   const classes = classNames(className, `p-button--${appearance}`, {
     "has-icon": hasIcon,
-    "is-disabled": (element === "a") & disabled,
+    "is-disabled": (Component === "a") & disabled,
     "is-inline": inline
   });
-  if (element === "button") {
+  if (Component === "button") {
     return (
       <button className={classes} disabled={disabled} {...props}>
         {children}
@@ -25,9 +25,9 @@ const Button = ({
     );
   }
   return (
-    <a className={classes} aria-disabled={disabled} {...props}>
+    <Component className={classes} aria-disabled={disabled} {...props}>
       {children}
-    </a>
+    </Component>
   );
 };
 
@@ -36,7 +36,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  element: PropTypes.oneOf(["button", "a"]),
+  element: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   hasIcon: PropTypes.bool,
   inline: PropTypes.bool
 };
