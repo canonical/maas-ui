@@ -1,6 +1,6 @@
 import users from "./users";
 
-describe("status", () => {
+describe("users reducer", () => {
   it("should return the initial state", () => {
     expect(users(undefined, {})).toEqual({
       loading: false,

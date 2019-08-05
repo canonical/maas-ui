@@ -1,6 +1,6 @@
 import repositories from "./repositories";
 
-describe("repositories", () => {
+describe("repositories selectors", () => {
   it("can get repository items", () => {
     const state = {
       repositories: {

@@ -1,6 +1,6 @@
 import repositories from "./repositories";
 
-describe("repositories", () => {
+describe("repositories reducer", () => {
   it("should return the initial state", () => {
     expect(repositories(undefined, {})).toEqual({
       loading: false,
