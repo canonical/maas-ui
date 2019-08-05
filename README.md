@@ -10,7 +10,7 @@ This is a mono repo for MAAS frontend projects.
 
 This is a React frontend. New work should be done here where possible.
 
-To override local development configuration for this project copy `.env.development` to `.env.development.local` and modify the values you'd like to override. Then execute `./run`.
+[UI setup instructions](ui/README.md)
 
 # Adding a new project
 
