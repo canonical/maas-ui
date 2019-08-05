@@ -8,11 +8,14 @@ import baseSelectors from "app/base/selectors";
 import Loader from "app/base/components/Loader";
 
 const Configuration = () => {
+  const dispatch = useDispatch();
   const configuration = useSelector(state =>
     selectors.configuration.all(state)
   );
   const loading = useSelector(selectors.configuration.loading);
   const loaded = useSelector(selectors.configuration.loaded);
+
+  dispatch(actions.configuration.fetch());
 
   return (
     <>
