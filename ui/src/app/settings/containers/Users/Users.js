@@ -7,6 +7,7 @@ import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
 import Loader from "app/base/components/Loader";
+import Pager from "app/base/components/Pager";
 import MainTable from "app/base/components/MainTable";
 
 const generateUserRows = (users, authUser) =>
@@ -64,14 +65,22 @@ const useFetchOnce = (fetchAction, loadedSelector) => {
   return loaded;
 };
 
-const Users = ({ initialCount = 20 }) => {
-  const [batchSize, setBatch] = useState(initialCount);
-  const users = useSelector(state => selectors.users.get(state, batchSize));
+const Users = ({ initialCount = 12 }) => {
+  const users = useSelector(state => selectors.users.get(state));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
-
   const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
+
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(initialCount);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -101,19 +110,16 @@ const Users = ({ initialCount = 20 }) => {
             },
             { content: "Actions", className: "u-align--right" }
           ]}
-          rows={generateUserRows(users, authUser)}
+          rows={generateUserRows(currentUsers, authUser)}
           sortable={true}
         />
       )}
-      {userCount > users.length && (
-        <button
-          onClick={() => {
-            setBatch(undefined);
-          }}
-        >
-          View all (<small>{userCount - users.length} more</small>)
-        </button>
-      )}
+      <Pager
+        itemsPerPage={itemsPerPage}
+        totalItems={userCount}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </>
   );
 };
