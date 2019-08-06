@@ -1,30 +1,29 @@
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
 import "./Section.scss";
+import Col from "app/base/components/Col";
+import Row from "app/base/components/Row";
 
 const Section = ({ children, sidebar, title }) => {
   return (
     <div className="section">
       <header className="p-strip section__header">
-        <div className="row">
+        <Row>
           <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
-        </div>
+        </Row>
       </header>
       <div className="p-strip u-no-padding">
-        <div className="row u-equal-height section__content-wrapper">
+        <Row className="u-equal-height section__content-wrapper">
           {sidebar && (
-            <aside className="section__sidebar col-2">{sidebar}</aside>
+            <Col element="aside" size="2" className="section__sidebar">
+              {sidebar}
+            </Col>
           )}
-          <div
-            className={classNames("section__content", {
-              "col-10": !!sidebar
-            })}
-          >
+          <Col size={sidebar ? 10 : 12} className="section__content">
             {children}
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );

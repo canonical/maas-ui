@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import Label from "../Label";
+import Col from "../Col";
 
 const generateHelp = help => help && <p className="p-form-help-text">{help}</p>;
 
@@ -29,7 +30,7 @@ const generateLabel = (forId, required, label, stacked) => {
     </Label>
   );
   if (stacked) {
-    return <div className="col-4">{labelNode}</div>;
+    return <Col size="4">{labelNode}</Col>;
   }
   return labelNode;
 };
@@ -93,7 +94,7 @@ const Field = ({
       })}
     >
       {labelFirst && labelNode}
-      {stacked ? <div className="col-8">{content}</div> : content}
+      {stacked ? <Col size="8">{content}</Col> : content}
     </div>
   );
 };

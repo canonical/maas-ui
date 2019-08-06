@@ -6,9 +6,11 @@ import * as Yup from "yup";
 import "./UserForm.scss";
 import { UserShape } from "app/base/proptypes";
 import Button from "app/base/components/Button";
+import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
 import Input from "app/base/components/Input";
+import Row from "app/base/components/Row";
 
 const UserSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,11 +35,11 @@ const UserSchema = Yup.object().shape({
 export const UserForm = ({ title, user }) => {
   return (
     <Card highlighted={true} className="user-form">
-      <div className="row">
-        <div className="col-3">
+      <Row>
+        <Col size="3">
           <h4>{title}</h4>
-        </div>
-        <div className="col-9">
+        </Col>
+        <Col size="9">
           <Formik
             initialValues={{
               isSuperuser: user ? user.is_superuser : false,
@@ -65,8 +67,8 @@ export const UserForm = ({ title, user }) => {
               values
             }) => (
               <Form onSubmit={handleSubmit}>
-                <div className="row">
-                  <div className="col-8">
+                <Row>
+                  <Col size="8">
                     <Input
                       error={touched.username && errors.username}
                       help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
@@ -126,12 +128,13 @@ export const UserForm = ({ title, user }) => {
                       type="password"
                       value={values.passwordConfirm}
                     />
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 <div className="user-form__buttons">
                   <Button
                     appearance="base"
                     className="u-no-margin--bottom"
+                    onClick={() => window.history.back()}
                     type="button"
                   >
                     Cancel
@@ -148,8 +151,8 @@ export const UserForm = ({ title, user }) => {
               </Form>
             )}
           </Formik>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </Card>
   );
 };
