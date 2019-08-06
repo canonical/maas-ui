@@ -39,4 +39,14 @@ describe("users", () => {
     };
     expect(users.count(state)).toEqual(2);
   });
+
+  it("can get a user by id", () => {
+    const state = {
+      users: {
+        loading: true,
+        items: [{ name: "foo", id: 808 }, { name: "bar", id: 909 }]
+      }
+    };
+    expect(users.getById(state, 909)).toStrictEqual({ name: "bar", id: 909 });
+  });
 });
