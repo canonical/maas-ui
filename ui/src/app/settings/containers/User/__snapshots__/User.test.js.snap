@@ -1,0 +1,264 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User can display a user 1`] = `
+<User
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "canGo": [Function],
+      "createHref": [Function],
+      "entries": Array [
+        Object {
+          "hash": "",
+          "key": "testKey",
+          "pathname": "/settings/users/1",
+          "search": "",
+        },
+      ],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "index": 0,
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "testKey",
+        "pathname": "/settings/users/1",
+        "search": "",
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  location={
+    Object {
+      "hash": "",
+      "key": "testKey",
+      "pathname": "/settings/users/1",
+      "search": "",
+    }
+  }
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {
+        "id": "1",
+      },
+      "path": "/settings/users/:id",
+      "url": "/settings/users/1",
+    }
+  }
+>
+  <Row>
+    <div
+      className="row"
+    >
+      <Col
+        size="8"
+      >
+        <div
+          className="col-8"
+        >
+          <h4>
+            User: 
+            admin
+          </h4>
+        </div>
+      </Col>
+      <Col
+        className="u-align--right"
+        size="2"
+      >
+        <div
+          className="u-align--right col-2"
+        >
+          <Button
+            element={[Function]}
+            to="/users/1/edit"
+          >
+            <Link
+              className="p-button--neutral"
+              to="/users/1/edit"
+            >
+              <a
+                className="p-button--neutral"
+                href="/users/1/edit"
+                onClick={[Function]}
+              >
+                Edit
+              </a>
+            </Link>
+          </Button>
+          <Button
+            appearance="negative"
+            element={[Function]}
+            to="/users/1/delete"
+          >
+            <Link
+              className="p-button--negative"
+              to="/users/1/delete"
+            >
+              <a
+                className="p-button--negative"
+                href="/users/1/delete"
+                onClick={[Function]}
+              >
+                Delete
+              </a>
+            </Link>
+          </Button>
+        </div>
+      </Col>
+    </div>
+  </Row>
+  <List
+    items={
+      Array [
+        <React.Fragment>
+          <h5>
+            Real name
+          </h5>
+          <p>
+            
+             
+            
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            Email
+          </h5>
+          <p>
+            admin@example.com
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            Machines
+          </h5>
+          <p>
+            0
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            Type
+          </h5>
+          <p>
+            Local
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            Last seen
+          </h5>
+          <p>
+            --
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            Role
+          </h5>
+          <p>
+            Admin
+          </p>
+        </React.Fragment>,
+        <React.Fragment>
+          <h5>
+            MAAS keys
+          </h5>
+          <p>
+            0
+          </p>
+        </React.Fragment>,
+      ]
+    }
+    split={true}
+  >
+    <ul
+      className="p-list p-list is-split"
+    >
+      <li
+        className="p-list__item"
+        key="0"
+      >
+        <h5>
+          Real name
+        </h5>
+        <p>
+           
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="1"
+      >
+        <h5>
+          Email
+        </h5>
+        <p>
+          admin@example.com
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="2"
+      >
+        <h5>
+          Machines
+        </h5>
+        <p>
+          0
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="3"
+      >
+        <h5>
+          Type
+        </h5>
+        <p>
+          Local
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="4"
+      >
+        <h5>
+          Last seen
+        </h5>
+        <p>
+          --
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="5"
+      >
+        <h5>
+          Role
+        </h5>
+        <p>
+          Admin
+        </p>
+      </li>
+      <li
+        className="p-list__item"
+        key="6"
+      >
+        <h5>
+          MAAS keys
+        </h5>
+        <p>
+          0
+        </p>
+      </li>
+    </ul>
+  </List>
+</User>
+`;

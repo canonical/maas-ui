@@ -2,7 +2,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
-const colRange = [
+export const colSizes = [
   1,
   2,
   3,
@@ -61,13 +61,13 @@ Col.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   element: PropTypes.string,
-  emptyLarge: PropTypes.oneOf(colRange),
-  emptyMedium: PropTypes.oneOf(colRange),
-  emptySmall: PropTypes.oneOf(colRange),
-  large: PropTypes.oneOf(colRange),
-  medium: PropTypes.oneOf(colRange),
-  size: PropTypes.oneOf(colRange).isRequired,
-  small: PropTypes.oneOf(colRange)
+  emptyLarge: PropTypes.oneOf(colSizes),
+  emptyMedium: PropTypes.oneOf(colSizes),
+  emptySmall: PropTypes.oneOf(colSizes),
+  large: PropTypes.oneOf(colSizes),
+  medium: PropTypes.oneOf(colSizes),
+  size: PropTypes.oneOf(colSizes).isRequired,
+  small: PropTypes.oneOf(colSizes)
 };
 
 export default Col;

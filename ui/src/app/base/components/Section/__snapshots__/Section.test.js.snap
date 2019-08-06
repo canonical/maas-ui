@@ -4,39 +4,37 @@ exports[`Section renders 1`] = `
 <div
   className="section"
 >
-  <header
-    className="p-strip section__header"
+  <Strip
+    className="section__header"
+    element="header"
   >
-    <Row>
-      <h1
-        className="p-heading--four u-no-margin--bottom"
-      >
-        Settings
-      </h1>
-    </Row>
-  </header>
-  <div
-    className="p-strip u-no-padding"
-  >
-    <Row
-      className="u-equal-height section__content-wrapper"
+    <h1
+      className="p-heading--four u-no-margin--bottom"
     >
-      <Col
-        className="section__sidebar"
-        element="aside"
-        size="2"
-      >
-        <div>
-          Sidebar
-        </div>
-      </Col>
-      <Col
-        className="section__content"
-        size={10}
-      >
-        content
-      </Col>
-    </Row>
-  </div>
+      Settings
+    </h1>
+  </Strip>
+  <Strip
+    className="u-no-padding"
+    element="header"
+    includeCol={false}
+    rowClassName="u-equal-height section__content-wrapper"
+  >
+    <Col
+      className="section__sidebar"
+      element="aside"
+      size="2"
+    >
+      <div>
+        Sidebar
+      </div>
+    </Col>
+    <Col
+      className="section__content"
+      size={10}
+    >
+      content
+    </Col>
+  </Strip>
 </div>
 `;

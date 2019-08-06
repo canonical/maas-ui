@@ -1,8 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
+import { useFetchOnce } from "app/base/hooks";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
@@ -15,7 +16,10 @@ import Row from "app/base/components/Row";
 const generateUserRows = (users, authUser) =>
   users.map(user => ({
     columns: [
-      { content: user.username, role: "rowheader" },
+      {
+        content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
+        role: "rowheader"
+      },
       { content: user.email },
       { content: 37, className: "u-align--right" },
       { content: "Local" },
@@ -55,17 +59,6 @@ const generateUserRows = (users, authUser) =>
       "maas-keys": user.sshkeys_count
     }
   }));
-
-const useFetchOnce = (fetchAction, loadedSelector) => {
-  const dispatch = useDispatch();
-  const loaded = useSelector(loadedSelector);
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(fetchAction());
-    }
-  }, [loaded, dispatch, fetchAction, loadedSelector]);
-  return loaded;
-};
 
 const Users = ({ initialCount = 20 }) => {
   const [batchSize, setBatch] = useState(initialCount);
