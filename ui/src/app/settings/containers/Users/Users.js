@@ -1,8 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
+import { useFetchOnce } from "app/base/hooks";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
@@ -16,7 +17,10 @@ import Row from "app/base/components/Row";
 const generateUserRows = (users, authUser) =>
   users.map(user => ({
     columns: [
-      { content: user.username, role: "rowheader" },
+      {
+        content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
+        role: "rowheader"
+      },
       { content: user.email },
       { content: 37, className: "u-align--right" },
       { content: "Local" },
@@ -57,18 +61,7 @@ const generateUserRows = (users, authUser) =>
     }
   }));
 
-const useFetchOnce = (fetchAction, loadedSelector) => {
-  const dispatch = useDispatch();
-  const loaded = useSelector(loadedSelector);
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(fetchAction());
-    }
-  }, [loaded, dispatch, fetchAction, loadedSelector]);
-  return loaded;
-};
-
-const Users = ({ initialCount = 12 }) => {
+const Users = ({ initialCount = 20 }) => {
   const users = useSelector(state => selectors.users.get(state));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);

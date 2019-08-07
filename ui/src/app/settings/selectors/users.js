@@ -34,4 +34,12 @@ users.loaded = state => state.users.loaded;
  */
 users.count = state => state.users.items.length;
 
+/**
+ * Returns all users
+ * @param {Object} state - The redux state.
+ * @param {Number} batch - Number of users to return.
+ * @returns {Array} A list of all users.
+ */
+users.getById = (state, id) => state.users.items.find(user => user.id === id);
+
 export default users;
