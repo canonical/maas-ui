@@ -17,3 +17,26 @@ export const compareJSX = (actual, expected) => {
     .debug();
   expect(actualOutput).toBe(expectedOutput);
 };
+
+/**
+ * Replace objects in an array with objects that have new values, given a match
+ * criteria.
+ * @param {Array} array - Array to be reduced.
+ * @param {String} key - Object key to compare the match criteria e.g. "name".
+ * @param {String} match - Match criteria e.g. "Bob".
+ * @param {Object} newValues - Values to insert or update in the object.
+ * @returns {Array} The reduced array.
+ */
+export const reduceInitialState = (array, key, match, newValues) => {
+  return array.reduce((acc, item) => {
+    if (item[key] === match) {
+      acc.push({
+        ...item,
+        ...newValues
+      });
+    } else {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
+};

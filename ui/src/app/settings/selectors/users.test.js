@@ -1,6 +1,6 @@
 import users from "./users";
 
-describe("users", () => {
+describe("users selectors", () => {
   it("can get items", () => {
     const state = {
       users: {
