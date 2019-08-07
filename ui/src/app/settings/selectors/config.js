@@ -98,4 +98,37 @@ config.diskEraseWithQuick = createSelector(
   configs => getValueFromName(configs, "disk_erase_with_quick_erase")
 );
 
+config.httpProxy = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "http_proxy")
+);
+
+config.enableHttpProxy = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "enable_http_proxy")
+);
+
+config.usePeerProxy = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "use_peer_proxy")
+);
+
+config.proxyType = createSelector(
+  [config.httpProxy, config.enableHttpProxy, config.usePeerProxy],
+  (httpProxy, enableHttpProxy, usePeerProxy) => {
+    if (enableHttpProxy) {
+      if (httpProxy) {
+        if (usePeerProxy) {
+          return "peerProxy";
+        } else {
+          return "externalProxy";
+        }
+      } else {
+        return "builtInProxy";
+      }
+    }
+    return "noProxy";
+  }
+);
+
 export default config;
