@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PagerButton /> renders and matches the snapshot 1`] = `
+exports[`<PaginationButton /> renders and matches the snapshot 1`] = `
 <li
   className="p-pagination__item"
 >

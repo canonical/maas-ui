@@ -2,7 +2,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
-const PagerButton = ({ direction, onClick, disabled = false }) => {
+const PaginationButton = ({ direction, onClick, disabled = false }) => {
   const label = direction === "back" ? "Previous page" : "Next page";
   return (
     <li className="p-pagination__item">
@@ -20,10 +20,10 @@ const PagerButton = ({ direction, onClick, disabled = false }) => {
   );
 };
 
-PagerButton.propTypes = {
+PaginationButton.propTypes = {
   direction: PropTypes.oneOf(["forward", "back"]),
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool
 };
 
-export default PagerButton;
+export default PaginationButton;

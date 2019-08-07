@@ -2,7 +2,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
-const PagerItem = ({ number, onClick, isActive = false }) => (
+const PaginationItem = ({ number, onClick, isActive = false }) => (
   <li className="p-pagination__item">
     <button
       className={classNames("p-pagination__link", {
@@ -15,10 +15,10 @@ const PagerItem = ({ number, onClick, isActive = false }) => (
   </li>
 );
 
-PagerItem.propTypes = {
+PaginationItem.propTypes = {
   number: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
   isActive: PropTypes.bool
 };
 
-export default PagerItem;
+export default PaginationItem;

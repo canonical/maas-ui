@@ -1,13 +1,13 @@
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
 
-import PagerButton from "./PagerButton";
+import PaginationButton from "./PaginationButton";
 
-describe("<PagerButton />", () => {
+describe("<PaginationButton />", () => {
   // snapshot tests
   it("renders and matches the snapshot", () => {
     const component = shallow(
-      <PagerButton direction="back" onClick={jest.fn()} />
+      <PaginationButton direction="back" onClick={jest.fn()} />
     );
 
     expect(component).toMatchSnapshot();
@@ -16,7 +16,7 @@ describe("<PagerButton />", () => {
   // unit tests
   it("sets the appropriate classes and text if direction is 'back'", () => {
     const component = shallow(
-      <PagerButton direction="back" onClick={jest.fn()} />
+      <PaginationButton direction="back" onClick={jest.fn()} />
     );
 
     expect(component.find("button").hasClass("p-pagination__link--previous"));
@@ -25,7 +25,7 @@ describe("<PagerButton />", () => {
 
   it("sets the appropriate classes and text if direction is 'forward'", () => {
     const component = shallow(
-      <PagerButton direction="forward" onClick={jest.fn()} />
+      <PaginationButton direction="forward" onClick={jest.fn()} />
     );
 
     expect(component.find("button").hasClass("p-pagination__link--next"));

@@ -9,7 +9,7 @@ import baseSelectors from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
-import Pager from "app/base/components/Pager";
+import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 
@@ -121,7 +121,7 @@ const Users = ({ initialCount = 12 }) => {
           sortable={true}
         />
       )}
-      <Pager
+      <Pagination
         itemsPerPage={itemsPerPage}
         totalItems={userCount}
         paginate={paginate}
