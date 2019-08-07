@@ -10,6 +10,7 @@ import baseSelectors from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
+import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 
@@ -61,13 +62,21 @@ const generateUserRows = (users, authUser) =>
   }));
 
 const Users = ({ initialCount = 20 }) => {
-  const [batchSize, setBatch] = useState(initialCount);
-  const users = useSelector(state => selectors.users.get(state, batchSize));
+  const users = useSelector(state => selectors.users.get(state));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
-
   const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
+
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(initialCount);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -101,19 +110,16 @@ const Users = ({ initialCount = 20 }) => {
             },
             { content: "Actions", className: "u-align--right" }
           ]}
-          rows={generateUserRows(users, authUser)}
+          rows={generateUserRows(currentUsers, authUser)}
           sortable={true}
         />
       )}
-      {userCount > users.length && (
-        <Button
-          onClick={() => {
-            setBatch(undefined);
-          }}
-        >
-          View all (<small>{userCount - users.length} more</small>)
-        </Button>
-      )}
+      <Pagination
+        itemsPerPage={itemsPerPage}
+        totalItems={userCount}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </>
   );
 };
