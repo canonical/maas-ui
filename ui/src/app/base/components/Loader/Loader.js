@@ -3,9 +3,9 @@ import classNames from "classnames";
 
 import "./Loader.scss";
 
-const Loader = ({ text, isLight, inline }) => (
+const Loader = ({ className, text, isLight, inline }) => (
   <div
-    className={classNames("p-loader", "p-text--default", {
+    className={classNames(className, "p-loader", "p-text--default", {
       "p-loader--inline": inline
     })}
   >

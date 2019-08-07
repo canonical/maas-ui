@@ -11,6 +11,18 @@ const config = produce(
         draft.loaded = true;
         draft.items = action.payload;
         return;
+      case "UPDATE_CONFIG_START":
+        draft.saving = true;
+        return;
+      case "UPDATE_CONFIG_SUCCESS":
+        draft.saving = false;
+        draft.items = draft.items.map(item => {
+          if (item.name === action.payload.name) {
+            return action.payload;
+          }
+          return item;
+        });
+        return;
       default:
         return draft;
     }
@@ -18,6 +30,7 @@ const config = produce(
   {
     loading: false,
     loaded: false,
+    saving: false,
     items: []
   }
 );

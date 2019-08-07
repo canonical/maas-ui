@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton matches loading snapshot 1`] = `
+<Button
+  appearance="neutral"
+  className="p-action-button is-loading"
+  style={Object {}}
+>
+  <i
+    className="p-icon--spinner u-animation--spin"
+  />
+</Button>
+`;
+
+exports[`ActionButton matches success snapshot 1`] = `
+<Button
+  appearance="neutral"
+  className="p-action-button is-success"
+  style={Object {}}
+>
+  <i
+    className="p-icon--success"
+  />
+</Button>
+`;
