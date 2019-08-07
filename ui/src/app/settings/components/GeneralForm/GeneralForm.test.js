@@ -1,10 +1,111 @@
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import React from "react";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+
 import GeneralForm from "./GeneralForm";
 
+const mockStore = configureStore();
+
 describe("GeneralForm", () => {
+  let initialState;
+  beforeEach(() => {
+    initialState = {
+      config: {
+        loading: false,
+        loaded: true,
+        items: [
+          {
+            name: "maas_name",
+            value: "bionic-maas"
+          },
+          {
+            name: "enable_analytics",
+            value: true
+          }
+        ]
+      }
+    };
+  });
+
   it("can render", () => {
-    const wrapper = shallow(<GeneralForm />);
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = shallow(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it("sets maasName value", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("#maasName")
+        .first()
+        .props().value
+    ).toBe("bionic-maas");
+  });
+
+  it("sets enableAnalytics value", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("#enableAnalytics")
+        .first()
+        .props().value
+    ).toBe(true);
+  });
+
+  it("disables submit button if maasName has no value", () => {
+    const state = { ...initialState };
+    state.config.items = [{ name: "maas_name", value: "" }];
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("[type='submit']")
+        .first()
+        .props().disabled
+    ).toBe(true);
+  });
+
+  it("enables submit button if maasName has value", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("[type='submit']")
+        .first()
+        .props().disabled
+    ).toBe(false);
   });
 });

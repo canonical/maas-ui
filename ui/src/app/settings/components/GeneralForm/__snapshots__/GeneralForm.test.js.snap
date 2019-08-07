@@ -1,104 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GeneralForm can render 1`] = `
-<Formik
-  enableReinitialize={false}
-  initialValues={
+<ContextProvider
+  value={
     Object {
-      "enableAnalytics": undefined,
-      "maasName": undefined,
-    }
-  }
-  isInitialValid={false}
-  validateOnBlur={true}
-  validateOnChange={true}
-  validationSchema={
-    ObjectSchema {
-      "_blacklist": RefSet {
-        "list": Set {},
-        "refs": Map {},
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
       },
-      "_conditions": Array [],
-      "_defaultDefault": [Function],
-      "_deps": Array [],
-      "_excludedEdges": Array [],
-      "_exclusive": Object {},
-      "_mutate": undefined,
-      "_nodes": Array [
-        "enableAnalytics",
-        "maasName",
-      ],
-      "_options": Object {
-        "abortEarly": true,
-        "recursive": true,
-      },
-      "_type": "object",
-      "_typeError": [Function],
-      "_whitelist": RefSet {
-        "list": Set {},
-        "refs": Map {},
-      },
-      "fields": Object {
-        "enableAnalytics": BooleanSchema {
-          "_blacklist": RefSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "_conditions": Array [],
-          "_deps": Array [],
-          "_exclusive": Object {},
-          "_mutate": undefined,
-          "_options": Object {
-            "abortEarly": true,
-            "recursive": true,
-          },
-          "_type": "boolean",
-          "_typeError": [Function],
-          "_whitelist": RefSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "tests": Array [],
-          "transforms": Array [
-            [Function],
-          ],
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "clear": [Function],
+          "get": [Function],
+          "notify": [Function],
+          "subscribe": [Function],
         },
-        "maasName": StringSchema {
-          "_blacklist": RefSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "_conditions": Array [],
-          "_deps": Array [],
-          "_exclusive": Object {
-            "required": true,
-          },
-          "_mutate": undefined,
-          "_options": Object {
-            "abortEarly": true,
-            "recursive": true,
-          },
-          "_type": "string",
-          "_typeError": [Function],
-          "_whitelist": RefSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "tests": Array [
-            [Function],
-          ],
-          "transforms": Array [
-            [Function],
-          ],
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
         },
+        "unsubscribe": [Function],
       },
-      "tests": Array [],
-      "transforms": Array [
-        [Function],
-      ],
     }
   }
 >
-  <Component />
-</Formik>
+  <GeneralForm />
+</ContextProvider>
 `;

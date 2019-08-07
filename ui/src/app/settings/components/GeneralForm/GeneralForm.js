@@ -1,7 +1,9 @@
 import { Formik } from "formik";
 import React from "react";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
 import Form from "app/base/components/Form";
 import Input from "app/base/components/Input";
@@ -11,7 +13,10 @@ const GeneralSchema = Yup.object().shape({
   enableAnalytics: Yup.boolean()
 });
 
-const GeneralForm = ({ maasName, enableAnalytics }) => {
+const GeneralForm = () => {
+  const maasName = useSelector(selectors.config.maasName);
+  const enableAnalytics = useSelector(selectors.config.enableAnalytics);
+
   return (
     <Formik
       initialValues={{
@@ -48,6 +53,7 @@ const GeneralForm = ({ maasName, enableAnalytics }) => {
             onChange={handleChange}
             type="checkbox"
             value={values.enableAnalytics}
+            checked={values.enableAnalytics}
           />
           <Button
             appearance="positive"
