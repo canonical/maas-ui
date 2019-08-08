@@ -5,11 +5,32 @@ import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
 /**
+ * Dynamically build a websocket url from window.location
+ *
+ */
+const buildWsUrl = () => {
+  let protocol;
+  if (window.location.protocol === "https:") {
+    protocol = "wss:";
+  } else {
+    protocol = "ws:";
+  }
+  const host = window.location.hostname;
+  const port = window.location.port;
+  return `${protocol}//${host}:${port}/MAAS/ws`;
+};
+
+/**
  * Create a WebSocket connection via the client.
  */
 export function createConnection(csrftoken) {
   return new Promise((resolve, reject) => {
-    const url = `${process.env.REACT_APP_WEBSOCKET_URL}?csrftoken=${csrftoken}`;
+    let url;
+    if (process.env.REACT_APP_WEBSOCKET_URL) {
+      url = `${process.env.REACT_APP_WEBSOCKET_URL}?csrftoken=${csrftoken}`;
+    } else {
+      url = buildWsUrl();
+    }
     const socketClient = new WebSocketClient(url);
     socketClient.socket.onopen = () => {
       resolve(socketClient);
