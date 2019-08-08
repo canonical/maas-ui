@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 
+import "./Users.scss";
 import { useFetchOnce } from "app/base/hooks";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
@@ -14,54 +15,85 @@ import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 
-const generateUserRows = (users, authUser) =>
-  users.map(user => ({
-    columns: [
-      {
-        content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
-        role: "rowheader"
-      },
-      { content: user.email },
-      { content: 37, className: "u-align--right" },
-      { content: "Local" },
-      { content: "12 mins ago" },
-      { content: user.is_superuser ? "Admin" : null },
-      { content: user.sshkeys_count, className: "u-align--right" },
-      {
-        content: (
-          <>
-            <Link
-              to={`/users/${user.id}/edit`}
-              className="p-button--base is-small"
-            >
-              <i className="p-icon--edit">Edit</i>
-            </Link>
-            {user.id !== authUser.id && (
-              <Link
-                to={`/users/${user.id}/delete`}
-                className="p-button--base is-small"
+const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
+  users.map(user => {
+    const expanded = expandedId === user.id;
+    return {
+      className: expanded ? "user-list__expanded-row" : null,
+      columns: [
+        {
+          content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
+          role: "rowheader"
+        },
+        { content: user.email },
+        { content: 37, className: "u-align--right user-list__cell--small" },
+        { content: "Local", className: "user-list__cell--small" },
+        { content: "12 mins ago" },
+        {
+          content: user.is_superuser ? "Admin" : null,
+          className: "user-list__cell--small"
+        },
+        {
+          content: user.sshkeys_count,
+          className: "u-align--right user-list__cell--small"
+        },
+        {
+          content: (
+            <>
+              <Button
+                appearance="base"
+                element={Link}
+                to={`/users/${user.id}/edit`}
+                className="is-small user-list__button"
               >
-                <i className="p-icon--delete">Delete</i>
-              </Link>
-            )}
-          </>
-        ),
-        className: "u-align--right"
+                <i className="p-icon--edit">Edit</i>
+              </Button>
+              {user.id !== authUser.id && (
+                <Button
+                  appearance="base"
+                  className="is-small user-list__button"
+                  onClick={() => setExpandedId(user.id)}
+                >
+                  <i className="p-icon--delete">Delete</i>
+                </Button>
+              )}
+            </>
+          ),
+          className: "u-align--right user-list__cell--small"
+        }
+      ],
+      expanded: expanded,
+      expandedContent: expanded && (
+        <div className="user-list__expanded-content">
+          <Row>
+            <Col size="8">
+              Are you sure you want to delete user "{user.username}"?{" "}
+              <span className="u-text--light">
+                This action is permanent and can not be undone.
+              </span>
+            </Col>
+            <Col size="2" className="u-align--right">
+              <Button onClick={() => setExpandedId()}>Cancel</Button>
+              <Button appearance="negative">Delete</Button>
+            </Col>
+          </Row>
+        </div>
+      ),
+      key: user.username,
+      sortData: {
+        username: user.username,
+        email: user.email,
+        machines: 37,
+        type: "local",
+        "last-seen": "2018-05-12",
+        role: user.is_superuser ? "Admin" : null,
+        "maas-keys": user.sshkeys_count
       }
-    ],
-    key: user.username,
-    sortData: {
-      username: user.username,
-      email: user.email,
-      machines: 37,
-      type: "local",
-      "last-seen": "2018-05-12",
-      role: user.is_superuser ? "Admin" : null,
-      "maas-keys": user.sshkeys_count
-    }
-  }));
+    };
+  });
 
 const Users = ({ initialCount = 20 }) => {
+  const [expandedId, setExpandedId] = useState(null);
   const users = useSelector(state => selectors.users.get(state));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
@@ -90,27 +122,48 @@ const Users = ({ initialCount = 20 }) => {
       </Row>
       {loaded && (
         <MainTable
+          className="user-list"
           defaultSort="username"
           defaultSortDirection="ascending"
+          expanding={true}
           headers={[
             { content: "Username", sortKey: "username" },
             { content: "Email", sortKey: "email" },
             {
               content: "Machines",
-              className: "u-align--right",
+              className: "u-align--right user-list__cell--small",
               sortKey: "machines"
             },
-            { content: "Type", sortKey: "type" },
-            { content: "Last seen", sortKey: "last-seen" },
-            { content: "Role", sortKey: "role" },
+            {
+              content: "Type",
+              sortKey: "type",
+              className: "user-list__cell--small"
+            },
+            {
+              content: "Last seen",
+              sortKey: "last-seen"
+            },
+            {
+              content: "Role",
+              sortKey: "role",
+              className: "user-list__cell--small"
+            },
             {
               content: "MAAS keys",
-              className: "u-align--right",
+              className: "u-align--right user-list__cell--small",
               sortKey: "maas-keys"
             },
-            { content: "Actions", className: "u-align--right" }
+            {
+              content: "Actions",
+              className: "u-align--right user-list__cell--small"
+            }
           ]}
-          rows={generateUserRows(currentUsers, authUser)}
+          rows={generateUserRows(
+            currentUsers,
+            authUser,
+            expandedId,
+            setExpandedId
+          )}
           sortable={true}
         />
       )}

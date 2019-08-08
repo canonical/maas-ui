@@ -1,0 +1,29 @@
+@import "src/scss/vanilla";
+
+.user-list__button.p-button--base {
+  // Stop the icons from adding extra height to the row:
+  margin-top: -0.25rem;
+  margin-bottom: -0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.user-list .p-table-expanding__panel {
+  padding-top: 0;
+}
+
+.p-table-expanding th.user-list__cell--small,
+.p-table-expanding td.user-list__cell--small {
+  flex: 0 0 6rem;
+}
+
+.user-list__expanded-row {
+  background-color: #fff;
+}
+
+.user-list__expanded-content {
+  border-top: 1px solid $color-mid-light;
+  margin: 0.5rem 0.5rem 0 0.5rem;
+  padding-top: 0.5rem;
+  width: 100%;
+}
