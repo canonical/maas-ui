@@ -6,18 +6,14 @@ import WebSocketClient from "../../../websocket-client";
 
 /**
  * Dynamically build a websocket url from window.location
- *
+ * @param {string} csrftoken - A csrf token string.
+ * @return {string} The built websocket url.
  */
-const buildWsUrl = () => {
-  let protocol;
-  if (window.location.protocol === "https:") {
-    protocol = "wss:";
-  } else {
-    protocol = "ws:";
-  }
+const buildWsUrl = csrftoken => {
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   const host = window.location.hostname;
   const port = window.location.port;
-  return `${protocol}//${host}:${port}/MAAS/ws`;
+  return `${protocol}//${host}:${port}/MAAS/ws?csrftoken=${csrftoken}`;
 };
 
 /**
@@ -29,7 +25,7 @@ export function createConnection(csrftoken) {
     if (process.env.REACT_APP_WEBSOCKET_URL) {
       url = `${process.env.REACT_APP_WEBSOCKET_URL}?csrftoken=${csrftoken}`;
     } else {
-      url = buildWsUrl();
+      url = buildWsUrl(csrftoken);
     }
     const socketClient = new WebSocketClient(url);
     socketClient.socket.onopen = () => {
