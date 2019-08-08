@@ -99,4 +99,36 @@ describe("User", () => {
     );
     expect(wrapper.find("User").first()).toMatchSnapshot();
   });
+
+  it("can display a delete confirmation", () => {
+    const store = mockStore({
+      users: {
+        loading: false,
+        loaded: true,
+        items: users
+      }
+    });
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/settings/users/:id"
+            component={props => <User {...props} />}
+          />
+          <User />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Modal").exists()).toBe(false);
+    wrapper
+      .find("Button")
+      .at(1)
+      .simulate("click", {
+        nativeEvent: { stopImmediatePropagation: jest.fn() }
+      });
+    expect(wrapper.find("Modal").exists()).toBe(true);
+  });
 });

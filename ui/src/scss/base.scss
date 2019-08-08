@@ -31,3 +31,15 @@ body {
   @extend %icon;
   @include maas-icon-edit($color-mid-dark);
 }
+
+.u-text--light {
+  color: $color-mid-dark;
+}
+
+.p-modal {
+  // The modal needs to be above the header nav items.
+  z-index: 10;
+  // The modal needs to cover the screen when scrolling. This rule is being
+  // overwritten by multiple imports.
+  position: fixed !important;
+}
