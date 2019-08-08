@@ -93,21 +93,24 @@ exports[`User can display a user 1`] = `
           </Button>
           <Button
             appearance="negative"
-            element={[Function]}
-            to="/users/1/delete"
+            onClick={[Function]}
+            style={
+              Object {
+                "marginLeft": "1rem",
+              }
+            }
           >
-            <Link
+            <button
               className="p-button--negative"
-              to="/users/1/delete"
+              onClick={[Function]}
+              style={
+                Object {
+                  "marginLeft": "1rem",
+                }
+              }
             >
-              <a
-                className="p-button--negative"
-                href="/users/1/delete"
-                onClick={[Function]}
-              >
-                Delete
-              </a>
-            </Link>
+              Delete
+            </button>
           </Button>
         </div>
       </Col>

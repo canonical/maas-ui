@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import React from "react";
+import usePortal from "react-useportal";
 
 import { useFetchOnce, useParams } from "app/base/hooks";
 import actions from "app/settings/actions";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import List from "app/base/components/List";
+import Modal from "app/base/components/Modal";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
 import selectors from "app/settings/selectors";
 
 const User = () => {
+  const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const { id } = useParams();
   const loading = useSelector(selectors.users.loading);
   const user = useSelector(state =>
@@ -36,8 +39,8 @@ const User = () => {
           </Button>
           <Button
             appearance="negative"
-            element={Link}
-            to={`/users/${user.id}/delete`}
+            onClick={openPortal}
+            style={{ marginLeft: "1rem" }}
           >
             Delete
           </Button>
@@ -78,6 +81,27 @@ const User = () => {
         ]}
         split={true}
       />
+      {isOpen && (
+        <Portal>
+          <Modal close={closePortal} title="Confirm delete">
+            <p>
+              Are you sure you want to delete user "{user.username}"?{" "}
+              <span className="u-text--light">
+                This action is permanent and can not be undone.
+              </span>
+            </p>
+            <hr />
+            <div className="u-align--right">
+              <Button onClick={closePortal} className="u-no-margin--bottom">
+                Cancel
+              </Button>
+              <Button appearance="negative" className="u-no-margin--bottom">
+                Delete
+              </Button>
+            </div>
+          </Modal>
+        </Portal>
+      )}
     </>
   );
 };
