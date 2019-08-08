@@ -1,7 +1,895 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserEdit can render 1`] = `
-<UserForm
-  title="Edit user"
-/>
+exports[`UserEdit can display a user edit form 1`] = `
+<UserEdit
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "canGo": [Function],
+      "createHref": [Function],
+      "entries": Array [
+        Object {
+          "hash": "",
+          "key": "testKey",
+          "pathname": "/settings/users/1/edit",
+          "search": "",
+        },
+      ],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "index": 0,
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "testKey",
+        "pathname": "/settings/users/1/edit",
+        "search": "",
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  location={
+    Object {
+      "hash": "",
+      "key": "testKey",
+      "pathname": "/settings/users/1/edit",
+      "search": "",
+    }
+  }
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {
+        "id": "1",
+      },
+      "path": "/settings/users/:id/edit",
+      "url": "/settings/users/1/edit",
+    }
+  }
+>
+  <UserForm
+    title="Edit user"
+    user={
+      Object {
+        "email": "admin@example.com",
+        "first_name": "",
+        "global_permissions": Array [
+          "machine_create",
+        ],
+        "id": 1,
+        "is_superuser": true,
+        "last_name": "",
+        "sshkeys_count": 0,
+        "username": "admin",
+      }
+    }
+  >
+    <Card
+      className="user-form"
+      highlighted={true}
+    >
+      <div
+        className="user-form p-card--highlighted"
+      >
+        <div
+          className="p-card__content"
+        >
+          <Row>
+            <div
+              className="row"
+            >
+              <Col
+                size="3"
+              >
+                <div
+                  className="col-3"
+                >
+                  <h4>
+                    Edit user
+                  </h4>
+                </div>
+              </Col>
+              <Col
+                size="7"
+              >
+                <div
+                  className="col-7"
+                >
+                  <Formik
+                    enableReinitialize={false}
+                    initialValues={
+                      Object {
+                        "email": "admin@example.com",
+                        "fullName": " ",
+                        "isSuperuser": true,
+                        "password": "",
+                        "passwordConfirm": "",
+                        "username": "admin",
+                      }
+                    }
+                    isInitialValid={false}
+                    onSubmit={[Function]}
+                    render={[Function]}
+                    validateOnBlur={true}
+                    validateOnChange={true}
+                    validationSchema={
+                      ObjectSchema {
+                        "_blacklist": RefSet {
+                          "list": Set {},
+                          "refs": Map {},
+                        },
+                        "_conditions": Array [],
+                        "_defaultDefault": [Function],
+                        "_deps": Array [],
+                        "_excludedEdges": Array [],
+                        "_exclusive": Object {},
+                        "_mutate": undefined,
+                        "_nodes": Array [
+                          "username",
+                          "passwordConfirm",
+                          "password",
+                          "is_superuser",
+                          "fullName",
+                          "email",
+                        ],
+                        "_options": Object {
+                          "abortEarly": true,
+                          "recursive": true,
+                        },
+                        "_type": "object",
+                        "_typeError": [Function],
+                        "_whitelist": RefSet {
+                          "list": Set {},
+                          "refs": Map {},
+                        },
+                        "fields": Object {
+                          "email": StringSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {
+                              "required": true,
+                              "undefined": false,
+                            },
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "string",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "tests": Array [
+                              [Function],
+                              [Function],
+                            ],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                          "fullName": StringSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {},
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "string",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "tests": Array [],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                          "is_superuser": BooleanSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {},
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "boolean",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "tests": Array [],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                          "password": StringSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {
+                              "min": true,
+                            },
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "string",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "tests": Array [
+                              [Function],
+                            ],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                          "passwordConfirm": StringSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {},
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "string",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {
+                                "password" => Reference {
+                                  "getter": [Function],
+                                  "isContext": false,
+                                  "isSibling": true,
+                                  "isValue": false,
+                                  "key": "password",
+                                  "map": undefined,
+                                  "path": "password",
+                                },
+                              },
+                            },
+                            "_whitelistError": [Function],
+                            "tests": Array [],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                          "username": StringSchema {
+                            "_blacklist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "_conditions": Array [],
+                            "_deps": Array [],
+                            "_exclusive": Object {
+                              "max": true,
+                              "required": true,
+                              "undefined": false,
+                            },
+                            "_mutate": undefined,
+                            "_options": Object {
+                              "abortEarly": true,
+                              "recursive": true,
+                            },
+                            "_type": "string",
+                            "_typeError": [Function],
+                            "_whitelist": RefSet {
+                              "list": Set {},
+                              "refs": Map {},
+                            },
+                            "tests": Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ],
+                            "transforms": Array [
+                              [Function],
+                            ],
+                          },
+                        },
+                        "tests": Array [],
+                        "transforms": Array [
+                          [Function],
+                        ],
+                      }
+                    }
+                  >
+                    <UserFormFields
+                      editing={true}
+                      formikProps={
+                        Object {
+                          "dirty": false,
+                          "errors": Object {},
+                          "handleBlur": [Function],
+                          "handleChange": [Function],
+                          "handleReset": [Function],
+                          "handleSubmit": [Function],
+                          "initialValues": Object {
+                            "email": "admin@example.com",
+                            "fullName": " ",
+                            "isSuperuser": true,
+                            "password": "",
+                            "passwordConfirm": "",
+                            "username": "admin",
+                          },
+                          "isSubmitting": false,
+                          "isValid": false,
+                          "isValidating": false,
+                          "registerField": [Function],
+                          "resetForm": [Function],
+                          "setError": [Function],
+                          "setErrors": [Function],
+                          "setFieldError": [Function],
+                          "setFieldTouched": [Function],
+                          "setFieldValue": [Function],
+                          "setFormikState": [Function],
+                          "setStatus": [Function],
+                          "setSubmitting": [Function],
+                          "setTouched": [Function],
+                          "setValues": [Function],
+                          "status": undefined,
+                          "submitCount": 0,
+                          "submitForm": [Function],
+                          "touched": Object {},
+                          "unregisterField": [Function],
+                          "validateField": [Function],
+                          "validateForm": [Function],
+                          "validateOnBlur": true,
+                          "validateOnChange": true,
+                          "values": Object {
+                            "email": "admin@example.com",
+                            "fullName": " ",
+                            "isSuperuser": true,
+                            "password": "",
+                            "passwordConfirm": "",
+                            "username": "admin",
+                          },
+                        }
+                      }
+                    >
+                      <Form
+                        onSubmit={[Function]}
+                      >
+                        <form
+                          className=""
+                          onSubmit={[Function]}
+                        >
+                          <Row>
+                            <div
+                              className="row"
+                            >
+                              <Col
+                                size="8"
+                              >
+                                <div
+                                  className="col-8"
+                                >
+                                  <FormikField
+                                    fieldKey="username"
+                                    formikProps={
+                                      Object {
+                                        "dirty": false,
+                                        "errors": Object {},
+                                        "handleBlur": [Function],
+                                        "handleChange": [Function],
+                                        "handleReset": [Function],
+                                        "handleSubmit": [Function],
+                                        "initialValues": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                        "isSubmitting": false,
+                                        "isValid": false,
+                                        "isValidating": false,
+                                        "registerField": [Function],
+                                        "resetForm": [Function],
+                                        "setError": [Function],
+                                        "setErrors": [Function],
+                                        "setFieldError": [Function],
+                                        "setFieldTouched": [Function],
+                                        "setFieldValue": [Function],
+                                        "setFormikState": [Function],
+                                        "setStatus": [Function],
+                                        "setSubmitting": [Function],
+                                        "setTouched": [Function],
+                                        "setValues": [Function],
+                                        "status": undefined,
+                                        "submitCount": 0,
+                                        "submitForm": [Function],
+                                        "touched": Object {},
+                                        "unregisterField": [Function],
+                                        "validateField": [Function],
+                                        "validateForm": [Function],
+                                        "validateOnBlur": true,
+                                        "validateOnChange": true,
+                                        "values": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                      }
+                                    }
+                                    help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                    id="username"
+                                    label="Username"
+                                    required={true}
+                                    type="text"
+                                  >
+                                    <Input
+                                      help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                      id="username"
+                                      label="Username"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      required={true}
+                                      type="text"
+                                      value="admin"
+                                    >
+                                      <Field
+                                        forId="username"
+                                        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                        label="Username"
+                                        labelFirst={true}
+                                        required={true}
+                                      >
+                                        <div
+                                          className="p-form__group p-form-validation"
+                                        >
+                                          <Label
+                                            forId="username"
+                                            required={true}
+                                          >
+                                            <label
+                                              className="p-form__label is-required"
+                                              htmlFor="username"
+                                            >
+                                              Username
+                                            </label>
+                                          </Label>
+                                          <div
+                                            className="p-form__control u-clearfix"
+                                          >
+                                            <input
+                                              className="p-form-validation__input"
+                                              id="username"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              type="text"
+                                              value="admin"
+                                            />
+                                            <p
+                                              className="p-form-help-text"
+                                            >
+                                              Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </Field>
+                                    </Input>
+                                  </FormikField>
+                                  <FormikField
+                                    fieldKey="fullName"
+                                    formikProps={
+                                      Object {
+                                        "dirty": false,
+                                        "errors": Object {},
+                                        "handleBlur": [Function],
+                                        "handleChange": [Function],
+                                        "handleReset": [Function],
+                                        "handleSubmit": [Function],
+                                        "initialValues": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                        "isSubmitting": false,
+                                        "isValid": false,
+                                        "isValidating": false,
+                                        "registerField": [Function],
+                                        "resetForm": [Function],
+                                        "setError": [Function],
+                                        "setErrors": [Function],
+                                        "setFieldError": [Function],
+                                        "setFieldTouched": [Function],
+                                        "setFieldValue": [Function],
+                                        "setFormikState": [Function],
+                                        "setStatus": [Function],
+                                        "setSubmitting": [Function],
+                                        "setTouched": [Function],
+                                        "setValues": [Function],
+                                        "status": undefined,
+                                        "submitCount": 0,
+                                        "submitForm": [Function],
+                                        "touched": Object {},
+                                        "unregisterField": [Function],
+                                        "validateField": [Function],
+                                        "validateForm": [Function],
+                                        "validateOnBlur": true,
+                                        "validateOnChange": true,
+                                        "values": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                      }
+                                    }
+                                    id="fullName"
+                                    label="Full name (optional)"
+                                    type="text"
+                                  >
+                                    <Input
+                                      help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                      id="fullName"
+                                      label="Full name (optional)"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      required={true}
+                                      type="text"
+                                      value=" "
+                                    >
+                                      <Field
+                                        forId="fullName"
+                                        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                        label="Full name (optional)"
+                                        labelFirst={true}
+                                        required={true}
+                                      >
+                                        <div
+                                          className="p-form__group p-form-validation"
+                                        >
+                                          <Label
+                                            forId="fullName"
+                                            required={true}
+                                          >
+                                            <label
+                                              className="p-form__label is-required"
+                                              htmlFor="fullName"
+                                            >
+                                              Full name (optional)
+                                            </label>
+                                          </Label>
+                                          <div
+                                            className="p-form__control u-clearfix"
+                                          >
+                                            <input
+                                              className="p-form-validation__input"
+                                              id="fullName"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              type="text"
+                                              value=" "
+                                            />
+                                            <p
+                                              className="p-form-help-text"
+                                            >
+                                              Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </Field>
+                                    </Input>
+                                  </FormikField>
+                                  <FormikField
+                                    fieldKey="email"
+                                    formikProps={
+                                      Object {
+                                        "dirty": false,
+                                        "errors": Object {},
+                                        "handleBlur": [Function],
+                                        "handleChange": [Function],
+                                        "handleReset": [Function],
+                                        "handleSubmit": [Function],
+                                        "initialValues": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                        "isSubmitting": false,
+                                        "isValid": false,
+                                        "isValidating": false,
+                                        "registerField": [Function],
+                                        "resetForm": [Function],
+                                        "setError": [Function],
+                                        "setErrors": [Function],
+                                        "setFieldError": [Function],
+                                        "setFieldTouched": [Function],
+                                        "setFieldValue": [Function],
+                                        "setFormikState": [Function],
+                                        "setStatus": [Function],
+                                        "setSubmitting": [Function],
+                                        "setTouched": [Function],
+                                        "setValues": [Function],
+                                        "status": undefined,
+                                        "submitCount": 0,
+                                        "submitForm": [Function],
+                                        "touched": Object {},
+                                        "unregisterField": [Function],
+                                        "validateField": [Function],
+                                        "validateForm": [Function],
+                                        "validateOnBlur": true,
+                                        "validateOnChange": true,
+                                        "values": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                      }
+                                    }
+                                    id="email"
+                                    label="Email address"
+                                    type="email"
+                                  >
+                                    <Input
+                                      help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                      id="email"
+                                      label="Email address"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      required={true}
+                                      type="email"
+                                      value="admin@example.com"
+                                    >
+                                      <Field
+                                        forId="email"
+                                        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                        label="Email address"
+                                        labelFirst={true}
+                                        required={true}
+                                      >
+                                        <div
+                                          className="p-form__group p-form-validation"
+                                        >
+                                          <Label
+                                            forId="email"
+                                            required={true}
+                                          >
+                                            <label
+                                              className="p-form__label is-required"
+                                              htmlFor="email"
+                                            >
+                                              Email address
+                                            </label>
+                                          </Label>
+                                          <div
+                                            className="p-form__control u-clearfix"
+                                          >
+                                            <input
+                                              className="p-form-validation__input"
+                                              id="email"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              type="email"
+                                              value="admin@example.com"
+                                            />
+                                            <p
+                                              className="p-form-help-text"
+                                            >
+                                              Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </Field>
+                                    </Input>
+                                  </FormikField>
+                                  <FormikField
+                                    fieldKey="isSuperuser"
+                                    formikProps={
+                                      Object {
+                                        "dirty": false,
+                                        "errors": Object {},
+                                        "handleBlur": [Function],
+                                        "handleChange": [Function],
+                                        "handleReset": [Function],
+                                        "handleSubmit": [Function],
+                                        "initialValues": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                        "isSubmitting": false,
+                                        "isValid": false,
+                                        "isValidating": false,
+                                        "registerField": [Function],
+                                        "resetForm": [Function],
+                                        "setError": [Function],
+                                        "setErrors": [Function],
+                                        "setFieldError": [Function],
+                                        "setFieldTouched": [Function],
+                                        "setFieldValue": [Function],
+                                        "setFormikState": [Function],
+                                        "setStatus": [Function],
+                                        "setSubmitting": [Function],
+                                        "setTouched": [Function],
+                                        "setValues": [Function],
+                                        "status": undefined,
+                                        "submitCount": 0,
+                                        "submitForm": [Function],
+                                        "touched": Object {},
+                                        "unregisterField": [Function],
+                                        "validateField": [Function],
+                                        "validateForm": [Function],
+                                        "validateOnBlur": true,
+                                        "validateOnChange": true,
+                                        "values": Object {
+                                          "email": "admin@example.com",
+                                          "fullName": " ",
+                                          "isSuperuser": true,
+                                          "password": "",
+                                          "passwordConfirm": "",
+                                          "username": "admin",
+                                        },
+                                      }
+                                    }
+                                    id="isSuperuser"
+                                    label="MAAS administrator"
+                                    type="checkbox"
+                                  >
+                                    <Input
+                                      help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                      id="isSuperuser"
+                                      label="MAAS administrator"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      required={true}
+                                      type="checkbox"
+                                      value={true}
+                                    >
+                                      <Field
+                                        forId="isSuperuser"
+                                        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                        label="MAAS administrator"
+                                        labelFirst={false}
+                                        required={true}
+                                      >
+                                        <div
+                                          className="p-form__group p-form-validation"
+                                        >
+                                          <div
+                                            className="p-form__control u-clearfix"
+                                          >
+                                            <input
+                                              className="p-form-validation__input"
+                                              id="isSuperuser"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              type="checkbox"
+                                              value={true}
+                                            />
+                                            <Label
+                                              forId="isSuperuser"
+                                              required={true}
+                                            >
+                                              <label
+                                                className="p-form__label is-required"
+                                                htmlFor="isSuperuser"
+                                              >
+                                                MAAS administrator
+                                              </label>
+                                            </Label>
+                                            <p
+                                              className="p-form-help-text"
+                                            >
+                                              Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </Field>
+                                    </Input>
+                                  </FormikField>
+                                  <Link
+                                    onClick={[Function]}
+                                  >
+                                    <a
+                                      className=""
+                                      href="#"
+                                      onClick={[Function]}
+                                    >
+                                      Change password…
+                                    </a>
+                                  </Link>
+                                </div>
+                              </Col>
+                            </div>
+                          </Row>
+                          <div
+                            className="user-form__buttons"
+                          >
+                            <Button
+                              appearance="base"
+                              className="u-no-margin--bottom"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <button
+                                className="u-no-margin--bottom p-button--base"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                Cancel
+                              </button>
+                            </Button>
+                            <Button
+                              appearance="positive"
+                              className="u-no-margin--bottom"
+                              disabled={false}
+                              type="submit"
+                            >
+                              <button
+                                className="u-no-margin--bottom p-button--positive"
+                                disabled={false}
+                                type="submit"
+                              >
+                                Save user
+                              </button>
+                            </Button>
+                          </div>
+                        </form>
+                      </Form>
+                    </UserFormFields>
+                  </Formik>
+                </div>
+              </Col>
+            </div>
+          </Row>
+        </div>
+      </div>
+    </Card>
+  </UserForm>
+</UserEdit>
 `;

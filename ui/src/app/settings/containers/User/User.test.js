@@ -93,7 +93,6 @@ describe("User", () => {
             path="/settings/users/:id"
             component={props => <User {...props} />}
           />
-          <User />
         </MemoryRouter>
       </Provider>
     );

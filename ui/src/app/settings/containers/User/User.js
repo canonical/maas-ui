@@ -19,7 +19,7 @@ const User = () => {
   );
   const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
   if (loading || !loaded) {
-    return <Loader text="Loading..." inline />;
+    return <Loader text="Loading..." />;
   }
   if (!user) {
     return <h4>User not found</h4>;

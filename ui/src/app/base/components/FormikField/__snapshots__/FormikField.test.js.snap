@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormikField can render 1`] = `
+<Input
+  help="Required."
+  id="username"
+  label="Username"
+  onBlur={[MockFunction]}
+  onChange={[MockFunction]}
+  required={true}
+  type="text"
+/>
+`;

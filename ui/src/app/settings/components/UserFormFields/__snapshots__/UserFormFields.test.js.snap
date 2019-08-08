@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserFormFields can render 1`] = `
+<Form
+  onSubmit={[MockFunction]}
+>
+  <Row>
+    <Col
+      size="8"
+    >
+      <FormikField
+        fieldKey="username"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        id="username"
+        label="Username"
+        required={true}
+        type="text"
+      />
+      <FormikField
+        fieldKey="fullName"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        id="fullName"
+        label="Full name (optional)"
+        type="text"
+      />
+      <FormikField
+        fieldKey="email"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        id="email"
+        label="Email address"
+        type="email"
+      />
+      <FormikField
+        fieldKey="isSuperuser"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        id="isSuperuser"
+        label="MAAS administrator"
+        type="checkbox"
+      />
+      <FormikField
+        fieldKey="password"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        id="password"
+        label="Password"
+        required={true}
+        type="password"
+      />
+      <FormikField
+        fieldKey="passwordConfirm"
+        formikProps={
+          Object {
+            "errors": Object {},
+            "handleBlur": [MockFunction],
+            "handleChange": [MockFunction],
+            "handleSubmit": [MockFunction],
+            "touched": Object {},
+            "values": Object {},
+          }
+        }
+        help="Enter the same password as before, for verification"
+        id="passwordConfirm"
+        label="Password (again)"
+        required={true}
+        type="password"
+      />
+    </Col>
+  </Row>
+  <div
+    className="user-form__buttons"
+  >
+    <Button
+      appearance="base"
+      className="u-no-margin--bottom"
+      onClick={[Function]}
+      type="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      appearance="positive"
+      className="u-no-margin--bottom"
+      type="submit"
+    >
+      Save user
+    </Button>
+  </div>
+</Form>
+`;
