@@ -98,6 +98,8 @@ describe("UserEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("UserEdit").first()).toMatchSnapshot();
+    const form = wrapper.find("UserForm");
+    expect(form.exists()).toBe(true);
+    expect(form.prop("user")).toStrictEqual(users[0]);
   });
 });
