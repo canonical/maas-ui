@@ -17,9 +17,9 @@ const Routes = () => (
   <Switch>
     <Route exact path="/configuration" component={Configuration} />
     <Route exact path="/users" component={Users} />
+    <Route exact path="/users/add" component={UserAdd} />
     <Route exact path="/users/:id" component={User} />
     <Route exact path="/users/:id/edit" component={UserEdit} />
-    <Route exact path="/users/add" component={UserAdd} />
     <Route exact path="/images" component={Images} />
     <Route exact path="/storage" component={Storage} />
     <Route exact path="/network" component={Network} />

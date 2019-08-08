@@ -5,20 +5,18 @@ import * as Yup from "yup";
 
 import "./UserForm.scss";
 import { UserShape } from "app/base/proptypes";
-import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
-import Form from "app/base/components/Form";
-import Input from "app/base/components/Input";
 import Row from "app/base/components/Row";
+import UserFormFields from "app/settings/components/UserFormFields";
 
-const UserSchema = Yup.object().shape({
+const schemaFields = {
   email: Yup.string()
     .email("Must be a valid email address")
     .required(),
   fullName: Yup.string(),
   is_superuser: Yup.boolean(),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().min(8),
   passwordConfirm: Yup.string().oneOf(
     [Yup.ref("password")],
     "Passwords must be the same"
@@ -30,16 +28,25 @@ const UserSchema = Yup.object().shape({
       "Usernames must contain letters, digits and @/./+/-/_ only"
     )
     .required("Username is required")
+};
+
+const UserSchema = Yup.object().shape({
+  ...schemaFields,
+  password: schemaFields.password.required("Password is required")
 });
 
+const UserEditSchema = Yup.object().shape(schemaFields);
+
 export const UserForm = ({ title, user }) => {
+  const editing = !!user;
+
   return (
     <Card highlighted={true} className="user-form">
       <Row>
         <Col size="3">
           <h4>{title}</h4>
         </Col>
-        <Col size="9">
+        <Col size="7">
           <Formik
             initialValues={{
               isSuperuser: user ? user.is_superuser : false,
@@ -49,108 +56,30 @@ export const UserForm = ({ title, user }) => {
               passwordConfirm: "",
               username: user ? user.username : ""
             }}
-            validationSchema={UserSchema}
+            validationSchema={editing ? UserEditSchema : UserSchema}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                const nameParts = values.fullName && values.fullName.split(" ");
+                const user = {
+                  email: values.email,
+                  first_name: (nameParts && nameParts[0]) || null,
+                  is_superuser: values.isSuperuser,
+                  last_name:
+                    (nameParts.length > 1 && nameParts.slice(1).join(" ")) ||
+                    null,
+                  password: values.password,
+                  username: values.username
+                };
+                // TODO: Implement creating/updating a user once the API
+                // supports it.
+                console.log("user", user);
                 setSubmitting(false);
               }, 400);
             }}
-          >
-            {({
-              errors,
-              isSubmitting,
-              touched,
-              handleSubmit,
-              handleChange,
-              handleBlur,
-              values
-            }) => (
-              <Form onSubmit={handleSubmit}>
-                <Row>
-                  <Col size="8">
-                    <Input
-                      error={touched.username && errors.username}
-                      help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-                      id="username"
-                      label="Username"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      required={true}
-                      type="text"
-                      value={values.username}
-                    />
-                    <Input
-                      error={touched.fullName && errors.fullName}
-                      id="fullName"
-                      label="Full name (optional)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      type="text"
-                      value={values.fullName}
-                    />
-                    <Input
-                      error={touched.email && errors.email}
-                      id="email"
-                      label="Email address"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      type="email"
-                      value={values.email}
-                    />
-                    <Input
-                      error={touched.isSuperuser && errors.isSuperuser}
-                      id="isSuperuser"
-                      label="MAAS administrator"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      type="checkbox"
-                      value={values.isSuperuser}
-                    />
-                    <Input
-                      error={touched.password && errors.password}
-                      id="password"
-                      label="Password"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      required={true}
-                      type="password"
-                      value={values.password}
-                    />
-                    <Input
-                      error={touched.passwordConfirm && errors.passwordConfirm}
-                      help="Enter the same password as before, for verification"
-                      id="passwordConfirm"
-                      label="Password (again)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      required={true}
-                      type="password"
-                      value={values.passwordConfirm}
-                    />
-                  </Col>
-                </Row>
-                <div className="user-form__buttons">
-                  <Button
-                    appearance="base"
-                    className="u-no-margin--bottom"
-                    onClick={() => window.history.back()}
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    appearance="positive"
-                    className="u-no-margin--bottom"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    Save user
-                  </Button>
-                </div>
-              </Form>
+            render={formikProps => (
+              <UserFormFields editing={editing} formikProps={formikProps} />
             )}
-          </Formik>
+          ></Formik>
         </Col>
       </Row>
     </Card>

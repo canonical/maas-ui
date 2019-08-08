@@ -14,7 +14,7 @@ exports[`UserForm can render 1`] = `
       </h4>
     </Col>
     <Col
-      size="9"
+      size="7"
     >
       <Formik
         enableReinitialize={false}
@@ -30,6 +30,7 @@ exports[`UserForm can render 1`] = `
         }
         isInitialValid={false}
         onSubmit={[Function]}
+        render={[Function]}
         validateOnBlur={true}
         validateOnChange={true}
         validationSchema={
@@ -149,6 +150,7 @@ exports[`UserForm can render 1`] = `
                 "_conditions": Array [],
                 "_deps": Array [],
                 "_exclusive": Object {
+                  "min": true,
                   "required": true,
                 },
                 "_mutate": undefined,
@@ -163,6 +165,7 @@ exports[`UserForm can render 1`] = `
                   "refs": Map {},
                 },
                 "tests": Array [
+                  [Function],
                   [Function],
                 ],
                 "transforms": Array [
@@ -243,9 +246,7 @@ exports[`UserForm can render 1`] = `
             ],
           }
         }
-      >
-        <Component />
-      </Formik>
+      />
     </Col>
   </Row>
 </Card>
