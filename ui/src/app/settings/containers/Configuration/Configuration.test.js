@@ -19,20 +19,6 @@ describe("Configuration", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
-    const state = { ...initialState };
-    state.config.loading = true;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Configuration />
-      </Provider>
-    );
-
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
   it("displays the general form when loaded", () => {
     const state = { ...initialState };
     const store = mockStore(state);

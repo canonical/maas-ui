@@ -221,7 +221,7 @@ describe("config selectors", () => {
     });
   });
 
-  describe("enableAnalytics", () => {
+  describe("analyticsEnabled", () => {
     it("returns MAAS config for enable analytics", () => {
       const state = {
         config: {
@@ -230,7 +230,7 @@ describe("config selectors", () => {
           items: [{ name: "enable_analytics", value: true }]
         }
       };
-      expect(config.enableAnalytics(state)).toBe(true);
+      expect(config.analyticsEnabled(state)).toBe(true);
     });
   });
 });

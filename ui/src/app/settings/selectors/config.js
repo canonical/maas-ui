@@ -146,7 +146,7 @@ config.maasName = createSelector(
  * @param {Object} - The redux state.
  * @returns {Boolean} Enable analytics.
  */
-config.enableAnalytics = createSelector(
+config.analyticsEnabled = createSelector(
   [config.all],
   configs => getValueFromName(configs, "enable_analytics")
 );

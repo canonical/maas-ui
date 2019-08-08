@@ -1,70 +1,98 @@
 import { Formik } from "formik";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as Yup from "yup";
 
+import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
 import Form from "app/base/components/Form";
-import Input from "app/base/components/Input";
+import Loader from "app/base/components/Loader";
+import Row from "app/base/components/Row";
+import Col from "app/base/components/Col";
+import FormikField from "app/base/components/FormikField";
 
 const GeneralSchema = Yup.object().shape({
-  maasName: Yup.string().required(),
-  enableAnalytics: Yup.boolean()
+  maas_name: Yup.string().required(),
+  enable_analytics: Yup.boolean()
 });
 
 const GeneralForm = () => {
+  const dispatch = useDispatch();
+  const updateConfig = actions.config.update;
+
   const maasName = useSelector(selectors.config.maasName);
-  const enableAnalytics = useSelector(selectors.config.enableAnalytics);
+  const analyticsEnabled = useSelector(selectors.config.analyticsEnabled);
 
   return (
-    <Formik
-      initialValues={{
-        maasName,
-        enableAnalytics
-      }}
-      validationSchema={GeneralSchema}
-    >
-      {({
-        errors,
-        isSubmitting,
-        touched,
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        values
-      }) => (
-        <Form onSubmit={handleSubmit}>
-          <Input
-            error={touched.naasName && errors.maasName}
-            id="maasName"
-            label="MAAS name"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            required={true}
-            type="text"
-            value={values.maasName}
-          />
-          <Input
-            error={touched.enableAnalytics && errors.enableAnalytics}
-            id="enableAnalytics"
-            label="Enable Google Analytics in MAAS UI to shape improvements in user experience"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            type="checkbox"
-            value={values.enableAnalytics}
-            checked={values.enableAnalytics}
-          />
-          <Button
-            appearance="positive"
-            type="submit"
-            disabled={isSubmitting || !values.maasName}
-          >
-            Save
-          </Button>
-        </Form>
-      )}
-    </Formik>
+    <Row>
+      <Col size="6">
+        <Formik
+          initialValues={{
+            maas_name: maasName,
+            enable_analytics: analyticsEnabled
+          }}
+          validationSchema={GeneralSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              const params = Object.keys(values).map(key => {
+                return {
+                  name: key,
+                  value: values[key]
+                };
+              });
+              dispatch(updateConfig(params));
+              setSubmitting(false);
+            }, 500);
+          }}
+        >
+          {({
+            errors,
+            isSubmitting,
+            touched,
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            setFieldTouched,
+            values
+          }) => {
+            const formikProps = {
+              errors,
+              handleBlur,
+              handleChange,
+              touched,
+              setFieldTouched,
+              values
+            };
+            return (
+              <Form onSubmit={handleSubmit}>
+                <FormikField
+                  fieldKey="maas_name"
+                  label="MAAS name"
+                  required={true}
+                  type="text"
+                  formikProps={formikProps}
+                />
+                <FormikField
+                  fieldKey="enable_analytics"
+                  label="Enable Google Analytics in MAAS UI to shape improvements in user experience"
+                  type="checkbox"
+                  checked={values.enable_analytics}
+                  formikProps={formikProps}
+                />
+                <Button
+                  appearance="positive"
+                  type="submit"
+                  disabled={isSubmitting || !values.maas_name}
+                >
+                  {isSubmitting ? <Loader text="Saving..." isLight /> : "Save"}
+                </Button>
+              </Form>
+            );
+          }}
+        </Formik>
+      </Col>
+    </Row>
   );
 };
 

@@ -13,4 +13,23 @@ describe("config actions", () => {
       }
     });
   });
+
+  it("should handle saving config", () => {
+    const params = [
+      { name: "maas_name", value: "bionic-maas" },
+      { name: "enable_analytics", value: true }
+    ];
+
+    expect(config.update(params)).toEqual({
+      type: "WEBSOCKET_SEND",
+      payload: {
+        actionType: "UPDATE_CONFIG",
+        message: {
+          method: "config.update",
+          type: 0,
+          params
+        }
+      }
+    });
+  });
 });

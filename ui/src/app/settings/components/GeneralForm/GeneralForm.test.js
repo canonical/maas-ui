@@ -40,7 +40,7 @@ describe("GeneralForm", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("sets maasName value", () => {
+  it("sets maas_name value", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
@@ -51,13 +51,13 @@ describe("GeneralForm", () => {
     );
     expect(
       wrapper
-        .find("#maasName")
+        .find("[name='maas_name']")
         .first()
         .props().value
     ).toBe("bionic-maas");
   });
 
-  it("sets enableAnalytics value", () => {
+  it("sets enable_analytics value", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
@@ -68,13 +68,13 @@ describe("GeneralForm", () => {
     );
     expect(
       wrapper
-        .find("#enableAnalytics")
+        .find("[name='enable_analytics']")
         .first()
         .props().value
     ).toBe(true);
   });
 
-  it("disables submit button if maasName has no value", () => {
+  it("disables submit button if maas_name has no value", () => {
     const state = { ...initialState };
     state.config.items = [{ name: "maas_name", value: "" }];
     const store = mockStore(state);
@@ -92,7 +92,7 @@ describe("GeneralForm", () => {
     ).toBe(true);
   });
 
-  it("enables submit button if maasName has value", () => {
+  it("enables submit button if maas_name has value", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
