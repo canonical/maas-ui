@@ -46,7 +46,7 @@ jobs:
           keys:
             - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
-      - run: cd ui && yarn run test
+      - run: cd ui && yarn run test --max-workers=2
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
           paths:
