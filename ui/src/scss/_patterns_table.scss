@@ -1,0 +1,17 @@
+.p-table-expanding--light .p-table-expanding__panel {
+  border-top: 1px solid $color-mid-light;
+  margin: 0.5rem 0.5rem 0 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.p-table-expanding--light .p-table__row.is-active {
+  background-color: $color-x-light;
+}
+
+// Stop the icons from adding extra height to the row:
+td:not(.p-table-expanding__panel) [class*="p-button"] {
+  margin-top: -0.25rem;
+  margin-bottom: -0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}

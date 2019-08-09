@@ -1,4 +1,5 @@
-@import "src/scss/vanilla";
+@import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/base_placeholders";
 
 .section {
   background-color: $color-light;
