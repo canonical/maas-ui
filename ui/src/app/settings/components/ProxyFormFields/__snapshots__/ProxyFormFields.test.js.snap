@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProxyFormFields can render 1`] = `
+<Form
+  onSubmit={[MockFunction]}
+>
+  <FormikField
+    checked={false}
+    fieldKey="proxyType"
+    formikProps={
+      Object {
+        "errors": Object {},
+        "handleBlur": [MockFunction],
+        "handleChange": [MockFunction],
+        "handleSubmit": [MockFunction],
+        "touched": Object {},
+        "values": Object {},
+      }
+    }
+    label="Don't use a proxy"
+    type="radio"
+    value="noProxy"
+  />
+  <FormikField
+    checked={false}
+    fieldKey="proxyType"
+    formikProps={
+      Object {
+        "errors": Object {},
+        "handleBlur": [MockFunction],
+        "handleChange": [MockFunction],
+        "handleSubmit": [MockFunction],
+        "touched": Object {},
+        "values": Object {},
+      }
+    }
+    label="MAAS built-in"
+    type="radio"
+    value="builtInProxy"
+  />
+  <FormikField
+    checked={false}
+    fieldKey="proxyType"
+    formikProps={
+      Object {
+        "errors": Object {},
+        "handleBlur": [MockFunction],
+        "handleChange": [MockFunction],
+        "handleSubmit": [MockFunction],
+        "touched": Object {},
+        "values": Object {},
+      }
+    }
+    label="External"
+    type="radio"
+    value="externalProxy"
+  />
+  <FormikField
+    checked={false}
+    fieldKey="proxyType"
+    formikProps={
+      Object {
+        "errors": Object {},
+        "handleBlur": [MockFunction],
+        "handleChange": [MockFunction],
+        "handleSubmit": [MockFunction],
+        "touched": Object {},
+        "values": Object {},
+      }
+    }
+    label="Peer"
+    type="radio"
+    value="peerProxy"
+  />
+  <div
+    className="user-form__buttons"
+  >
+    <Button
+      appearance="positive"
+      className="u-no-margin--bottom"
+      disabled={true}
+      type="submit"
+    >
+      Save
+    </Button>
+  </div>
+</Form>
+`;

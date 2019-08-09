@@ -8,6 +8,7 @@ const FormikField = ({
   component: Component = Input,
   fieldKey,
   formikProps,
+  value = formikProps.values[fieldKey],
   ...props
 }) => {
   const id = useRef(uuidv4());
@@ -17,8 +18,11 @@ const FormikField = ({
       id={id.current}
       name={fieldKey}
       onBlur={formikProps.handleBlur}
-      onChange={formikProps.handleChange}
-      value={formikProps.values[fieldKey]}
+      onChange={e => {
+        formikProps.handleChange(e);
+        formikProps.setFieldTouched(fieldKey, true, true);
+      }}
+      value={value}
       {...props}
     />
   );

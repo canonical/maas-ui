@@ -8783,6 +8783,13 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.8.6"
     scheduler "^0.13.6"
 
+react-useportal@0.1.46:
+  version "0.1.46"
+  resolved "https://registry.yarnpkg.com/react-useportal/-/react-useportal-0.1.46.tgz#4a767eceb2b447f3346928bfcbeb00b7c5ac4511"
+  integrity sha512-WW8PTdaMNoLBnOU5z+7bnRYwBP1t+WbjSsIcF3ZuhxwEUQ3Sx4WDpJytNUKim6WPBdNpjqbXz7vp0gBSV82ddQ==
+  dependencies:
+    use-ssr "^1.0.13"
+
 react@16.9.0:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
@@ -10521,6 +10528,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-ssr@^1.0.13:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/use-ssr/-/use-ssr-1.0.18.tgz#a7bb7d96b128bc0940b77862cfaf69c40e74da1d"
+  integrity sha512-i+1J4Gbh9Vd2k/CEUoBjVDJfpNvMfq0+YulG+woBQwqbxvBAB89OScemseEULMQDIICiDbbpEBjUnqAiprVJyw==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
@@ -10576,7 +10588,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^3.0.1, uuid@^3.3.2:
+uuid@3.3.2, uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
