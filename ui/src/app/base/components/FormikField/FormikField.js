@@ -18,7 +18,10 @@ const FormikField = ({
       id={id.current}
       name={fieldKey}
       onBlur={formikProps.handleBlur}
-      onChange={formikProps.handleChange}
+      onChange={e => {
+        formikProps.handleChange(e);
+        formikProps.setFieldTouched(fieldKey, true, true);
+      }}
       value={value}
       {...props}
     />

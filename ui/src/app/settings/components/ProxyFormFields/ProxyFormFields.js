@@ -6,7 +6,8 @@ import Form from "app/base/components/Form";
 import FormikField from "app/base/components/FormikField";
 
 const ProxyFormFields = ({ formikProps }) => {
-  const { handleSubmit, isSubmitting, values } = formikProps;
+  const { handleSubmit, isSubmitting, touched, values } = formikProps;
+  const disabled = isSubmitting || !Object.keys(touched).length;
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -65,7 +66,7 @@ const ProxyFormFields = ({ formikProps }) => {
           appearance="positive"
           className="u-no-margin--bottom"
           type="submit"
-          disabled={isSubmitting}
+          disabled={disabled}
         >
           Save
         </Button>

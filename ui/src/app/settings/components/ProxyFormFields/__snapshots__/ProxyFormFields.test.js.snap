@@ -78,6 +78,7 @@ exports[`ProxyFormFields can render 1`] = `
     <Button
       appearance="positive"
       className="u-no-margin--bottom"
+      disabled={true}
       type="submit"
     >
       Save

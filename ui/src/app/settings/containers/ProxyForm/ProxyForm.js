@@ -26,7 +26,7 @@ const ProxyForm = () => {
         httpProxy,
         proxyType
       }}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { resetForm, setSubmitting }) => {
         const { httpProxy, proxyType } = values;
         const enable_http_proxy = proxyType !== "noProxy";
         const use_peer_proxy = proxyType === "peerProxy";
@@ -40,6 +40,7 @@ const ProxyForm = () => {
         setTimeout(() => {
           alert(JSON.stringify(payload, null, 2));
           setSubmitting(false);
+          resetForm(values);
         }, 400);
       }}
       validationSchema={ProxySchema}
