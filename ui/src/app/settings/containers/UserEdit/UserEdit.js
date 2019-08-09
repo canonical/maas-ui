@@ -13,8 +13,8 @@ export const UserEdit = () => {
   const user = useSelector(state =>
     selectors.users.getById(state, parseInt(id))
   );
-  const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
-  if (loading || !loaded) {
+  useFetchOnce(actions.users.fetch, selectors.users.loaded);
+  if (loading) {
     return <Loader text="Loading..." />;
   }
   if (!user) {

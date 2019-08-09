@@ -59,14 +59,14 @@ export const UserForm = ({ title, user }) => {
             validationSchema={editing ? UserEditSchema : UserSchema}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
-                const nameParts = values.fullName && values.fullName.split(" ");
+                const [firstName, ...lastNameParts] = values.fullName.split(
+                  " "
+                );
                 const user = {
                   email: values.email,
-                  first_name: (nameParts && nameParts[0]) || null,
+                  first_name: firstName,
                   is_superuser: values.isSuperuser,
-                  last_name:
-                    (nameParts.length > 1 && nameParts.slice(1).join(" ")) ||
-                    null,
+                  last_name: lastNameParts.join(" "),
                   password: values.password,
                   username: values.username
                 };

@@ -23,7 +23,6 @@ export const UserFormFields = ({ editing, formikProps }) => {
             formikProps={formikProps}
             fieldKey="username"
             help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-            id="username"
             label="Username"
             required={true}
             type="text"
@@ -31,21 +30,18 @@ export const UserFormFields = ({ editing, formikProps }) => {
           <FormikField
             formikProps={formikProps}
             fieldKey="fullName"
-            id="fullName"
             label="Full name (optional)"
             type="text"
           />
           <FormikField
             formikProps={formikProps}
             fieldKey="email"
-            id="email"
             label="Email address"
             type="email"
           />
           <FormikField
             formikProps={formikProps}
             fieldKey="isSuperuser"
-            id="isSuperuser"
             label="MAAS administrator"
             type="checkbox"
           />
@@ -63,7 +59,6 @@ export const UserFormFields = ({ editing, formikProps }) => {
               <FormikField
                 formikProps={formikProps}
                 fieldKey="password"
-                id="password"
                 label="Password"
                 required={true}
                 type="password"
@@ -72,7 +67,6 @@ export const UserFormFields = ({ editing, formikProps }) => {
                 formikProps={formikProps}
                 fieldKey="passwordConfirm"
                 help="Enter the same password as before, for verification"
-                id="passwordConfirm"
                 label="Password (again)"
                 required={true}
                 type="password"

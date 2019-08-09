@@ -4,6 +4,10 @@ import React from "react";
 import FormikField from "./FormikField";
 import Textarea from "app/base/components/Textarea";
 
+jest.mock("uuid/v4", () =>
+  jest.fn(() => "00000000-0000-0000-0000-000000000000")
+);
+
 describe("FormikField", () => {
   let formikProps;
 
