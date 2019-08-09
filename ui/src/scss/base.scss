@@ -1,6 +1,7 @@
 // Vanilla settings:
 @import "vanilla";
 @import "./patterns_navigation";
+@import "./patterns_table";
 
 @include maas-navigation;
 
@@ -39,7 +40,6 @@ body {
 .p-modal {
   // The modal needs to be above the header nav items.
   z-index: 10;
-  // The modal needs to cover the screen when scrolling. This rule is being
-  // overwritten by multiple imports.
-  position: fixed !important;
+  // The modal needs to cover the screen when scrolling.
+  position: fixed;
 }

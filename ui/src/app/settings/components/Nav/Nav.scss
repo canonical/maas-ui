@@ -1,9 +1,19 @@
-@import "src/scss/vanilla";
+@import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/settings_placeholders";
+@import "~vanilla-framework/scss/base_placeholders";
+@import "~vanilla-framework/scss/patterns_lists";
+@import "src/scss/settings";
 
 .settings-nav__list {
-  @extend .p-list;
+  @extend %vf-clearfix;
+  @include vf-list;
   margin-bottom: $spv-inner--small;
   margin-top: -$spv-inner--x-small;
+
+  &__item {
+    @extend %vf-list-item;
+  }
 }
 
 .settings-nav__item {

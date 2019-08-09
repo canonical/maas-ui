@@ -19,23 +19,22 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
   users.map(user => {
     const expanded = expandedId === user.id;
     return {
-      className: expanded ? "user-list__expanded-row" : null,
+      className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
           role: "rowheader"
         },
         { content: user.email },
-        { content: 37, className: "u-align--right user-list__cell--small" },
-        { content: "Local", className: "user-list__cell--small" },
+        { content: 37, className: "u-align--right" },
+        { content: "Local" },
         { content: "12 mins ago" },
         {
-          content: user.is_superuser ? "Admin" : null,
-          className: "user-list__cell--small"
+          content: user.is_superuser ? "Admin" : null
         },
         {
           content: user.sshkeys_count,
-          className: "u-align--right user-list__cell--small"
+          className: "u-align--right"
         },
         {
           content: (
@@ -44,14 +43,14 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
                 appearance="base"
                 element={Link}
                 to={`/users/${user.id}/edit`}
-                className="is-small user-list__button"
+                className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
               {user.id !== authUser.id && (
                 <Button
                   appearance="base"
-                  className="is-small user-list__button"
+                  className="is-small u-justify-table-icon"
                   onClick={() => setExpandedId(user.id)}
                 >
                   <i className="p-icon--delete">Delete</i>
@@ -59,25 +58,23 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
               )}
             </>
           ),
-          className: "u-align--right user-list__cell--small"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,
       expandedContent: expanded && (
-        <div className="user-list__expanded-content">
-          <Row>
-            <Col size="8">
-              Are you sure you want to delete user "{user.username}"?{" "}
-              <span className="u-text--light">
-                This action is permanent and can not be undone.
-              </span>
-            </Col>
-            <Col size="2" className="u-align--right">
-              <Button onClick={() => setExpandedId()}>Cancel</Button>
-              <Button appearance="negative">Delete</Button>
-            </Col>
-          </Row>
-        </div>
+        <Row>
+          <Col size="7">
+            Are you sure you want to delete user "{user.username}"?{" "}
+            <span className="u-text--light">
+              This action is permanent and can not be undone.
+            </span>
+          </Col>
+          <Col size="3" className="u-align--right">
+            <Button onClick={() => setExpandedId()}>Cancel</Button>
+            <Button appearance="negative">Delete</Button>
+          </Col>
+        </Row>
       ),
       key: user.username,
       sortData: {
@@ -122,7 +119,7 @@ const Users = ({ initialCount = 20 }) => {
       </Row>
       {loaded && (
         <MainTable
-          className="user-list"
+          className="p-table-expanding--light user-list"
           defaultSort="username"
           defaultSortDirection="ascending"
           expanding={true}
@@ -131,13 +128,12 @@ const Users = ({ initialCount = 20 }) => {
             { content: "Email", sortKey: "email" },
             {
               content: "Machines",
-              className: "u-align--right user-list__cell--small",
+              className: "u-align--right",
               sortKey: "machines"
             },
             {
               content: "Type",
-              sortKey: "type",
-              className: "user-list__cell--small"
+              sortKey: "type"
             },
             {
               content: "Last seen",
@@ -145,17 +141,16 @@ const Users = ({ initialCount = 20 }) => {
             },
             {
               content: "Role",
-              sortKey: "role",
-              className: "user-list__cell--small"
+              sortKey: "role"
             },
             {
               content: "MAAS keys",
-              className: "u-align--right user-list__cell--small",
+              className: "u-align--right",
               sortKey: "maas-keys"
             },
             {
               content: "Actions",
-              className: "u-align--right user-list__cell--small"
+              className: "u-align--right"
             }
           ]}
           rows={generateUserRows(

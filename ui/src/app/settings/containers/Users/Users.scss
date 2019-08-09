@@ -1,29 +1,39 @@
-@import "src/scss/vanilla";
+.user-list td,
+.user-list th {
+  $grid-size: 10% / 3;
 
-.user-list__button.p-button--base {
-  // Stop the icons from adding extra height to the row:
-  margin-top: -0.25rem;
-  margin-bottom: -0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
+  // Username:
+  &:nth-child(1) {
+    flex: 0 0 $grid-size * 6;
+  }
 
-.user-list .p-table-expanding__panel {
-  padding-top: 0;
-}
+  // Email
+  &:nth-child(2) {
+    flex: 0 0 $grid-size * 6;
+  }
 
-.p-table-expanding th.user-list__cell--small,
-.p-table-expanding td.user-list__cell--small {
-  flex: 0 0 6rem;
-}
+  // Machines
+  &:nth-child(3) {
+    flex: 0 0 $grid-size * 3;
+  }
 
-.user-list__expanded-row {
-  background-color: #fff;
-}
+  // Type
+  &:nth-child(4) {
+    flex: 0 0 $grid-size * 2;
+  }
 
-.user-list__expanded-content {
-  border-top: 1px solid $color-mid-light;
-  margin: 0.5rem 0.5rem 0 0.5rem;
-  padding-top: 0.5rem;
-  width: 100%;
+  // Last seen
+  &:nth-child(5) {
+    flex: 0 0 $grid-size * 5;
+  }
+
+  // Role
+  &:nth-child(6) {
+    flex: 0 0 $grid-size * 2;
+  }
+
+  // MAAS keys
+  &:nth-child(7) {
+    flex: 0 0 $grid-size * 3;
+  }
 }
