@@ -5,6 +5,7 @@ exports[`FormikField can render 1`] = `
   help="Required."
   id="username"
   label="Username"
+  name="username"
   onBlur={[MockFunction]}
   onChange={[MockFunction]}
   required={true}

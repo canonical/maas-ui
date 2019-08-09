@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef } from "react";
+import uuidv4 from "uuid/v4";
 
 import Input from "../Input";
 
@@ -8,20 +9,20 @@ const FormikField = ({
   fieldKey,
   formikProps,
   ...props
-}) => (
-  <Component
-    error={formikProps.touched[fieldKey] && formikProps.errors[fieldKey]}
-    help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-    id="username"
-    label="Username"
-    onBlur={formikProps.handleBlur}
-    onChange={formikProps.handleChange}
-    required={true}
-    type="text"
-    value={formikProps.values[fieldKey]}
-    {...props}
-  />
-);
+}) => {
+  const id = useRef(uuidv4());
+  return (
+    <Component
+      error={formikProps.touched[fieldKey] && formikProps.errors[fieldKey]}
+      id={id.current}
+      name={fieldKey}
+      onBlur={formikProps.handleBlur}
+      onChange={formikProps.handleChange}
+      value={formikProps.values[fieldKey]}
+      {...props}
+    />
+  );
+};
 
 FormikField.propTypes = {
   component: PropTypes.func,
