@@ -1,4 +1,4 @@
-import { call, put, take } from "redux-saga/effects";
+import { call, put, take, all } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 
 import {
@@ -107,6 +107,42 @@ describe("websocket sagas", () => {
       call([socketClient, socketClient.send], "TEST_ACTION", {
         payload: "here"
       })
+    );
+  });
+
+  it("can handle params as an array", () => {
+    const saga = sendMessage(socketClient);
+    saga.next();
+    expect(
+      saga.next({
+        type: "WEBSOCKET_SEND",
+        payload: {
+          actionType: "TEST_ACTION",
+          message: {
+            method: "test.method",
+            type: 0,
+            params: [
+              { name: "foo", value: "bar" },
+              { name: "baz", value: "qux" }
+            ]
+          }
+        }
+      }).value
+    ).toEqual(put({ type: "TEST_ACTION_START" }));
+    const effect = saga.next().value;
+    expect(effect).toEqual(
+      all([
+        call([socketClient, socketClient.send], "TEST_ACTION", {
+          method: "test.method",
+          type: 0,
+          params: { name: "foo", value: "bar" }
+        }),
+        call([socketClient, socketClient.send], "TEST_ACTION", {
+          method: "test.method",
+          type: 0,
+          params: { name: "baz", value: "qux" }
+        })
+      ])
     );
   });
 
