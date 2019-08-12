@@ -81,27 +81,30 @@ export function* sendMessage(socketClient) {
     const data = yield take("WEBSOCKET_SEND");
     const { actionType, message } = data.payload;
     yield put({ type: `${actionType}_START` });
-    if (
-      actionType.startsWith("CREATE") ||
-      actionType.startsWith("UPDATE") ||
-      actionType.startsWith("DELETE")
-    ) {
-      yield all(
-        message.params.map(param =>
-          call([socketClient, socketClient.send], actionType, {
-            method: message.method,
-            type: message.type,
-            params: {
-              name: Object.keys(param)[0],
-              value: Object.values(param)[0]
-            }
-          })
-        )
-      );
-    } else {
-      yield call([socketClient, socketClient.send], actionType, message);
+    try {
+      if (
+        actionType.startsWith("CREATE") ||
+        actionType.startsWith("UPDATE") ||
+        actionType.startsWith("DELETE")
+      ) {
+        yield all(
+          message.params.map(item =>
+            call([socketClient, socketClient.send], actionType, {
+              method: message.method,
+              type: message.type,
+              params: {
+                name: Object.keys(item)[0],
+                value: Object.values()[0]
+              }
+            })
+          )
+        );
+      } else {
+        yield call([socketClient, socketClient.send], actionType, message);
+      }
+    } catch (error) {
+      yield put({ type: `${data.payload.actionType}_ERROR`, error });
     }
-    // TODO: API provides no error responses
   }
 }
 

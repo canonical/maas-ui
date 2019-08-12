@@ -110,6 +110,22 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("can handle errors when sending a WebSocket message", () => {
+    const saga = sendMessage(socketClient);
+    saga.next();
+    saga.next({
+      type: "WEBSOCKET_SEND",
+      payload: {
+        actionType: "TEST_ACTION",
+        message: { payload: "here" }
+      }
+    });
+    saga.next();
+    expect(saga.throw("error!").value).toEqual(
+      put({ type: "TEST_ACTION_ERROR", error: "error!" })
+    );
+  });
+
   it("can receive a successful WebSocket message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));

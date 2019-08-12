@@ -46,11 +46,7 @@ class WebSocketClient {
       ...message,
       request_id: id
     };
-    try {
-      this.socket.send(JSON.stringify(payload));
-    } catch (error) {
-      return error;
-    }
+    this.socket.send(JSON.stringify(payload));
   }
 }
 
