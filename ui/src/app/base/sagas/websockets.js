@@ -79,13 +79,23 @@ export function* handleMessage(socketChannel, socketClient) {
 export function* sendMessage(socketClient) {
   while (true) {
     const data = yield take("WEBSOCKET_SEND");
-    yield put({ type: `${data.payload.actionType}_START` });
-    const error = yield call(
-      [socketClient, socketClient.send],
-      data.payload.actionType,
-      data.payload.message
-    );
-    if (error) {
+    const { actionType, message } = data.payload;
+    yield put({ type: `${actionType}_START` });
+    try {
+      if (message.params && Array.isArray(message.params)) {
+        yield all(
+          message.params.map(param =>
+            call([socketClient, socketClient.send], actionType, {
+              method: message.method,
+              type: message.type,
+              params: param
+            })
+          )
+        );
+      } else {
+        yield call([socketClient, socketClient.send], actionType, message);
+      }
+    } catch (error) {
       yield put({ type: `${data.payload.actionType}_ERROR`, error });
     }
   }

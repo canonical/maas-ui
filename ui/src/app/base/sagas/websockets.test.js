@@ -1,4 +1,4 @@
-import { call, put, take } from "redux-saga/effects";
+import { call, put, take, all } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 
 import {
@@ -110,29 +110,59 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can handle errors when sending a WebSocket message", () => {
+  it("can handle params as an array", () => {
     const saga = sendMessage(socketClient);
-    expect(saga.next().value).toEqual(take("WEBSOCKET_SEND"));
+    saga.next();
     expect(
       saga.next({
         type: "WEBSOCKET_SEND",
         payload: {
           actionType: "TEST_ACTION",
-          message: { payload: "here" }
+          message: {
+            method: "test.method",
+            type: 0,
+            params: [
+              { name: "foo", value: "bar" },
+              { name: "baz", value: "qux" }
+            ]
+          }
         }
       }).value
     ).toEqual(put({ type: "TEST_ACTION_START" }));
-    expect(saga.next().value).toEqual(
-      call([socketClient, socketClient.send], "TEST_ACTION", {
-        payload: "here"
-      })
-    );
-    expect(saga.next("ERROR!").value).toEqual(
-      put({ type: "TEST_ACTION_ERROR", error: "ERROR!" })
+    const effect = saga.next().value;
+    expect(effect).toEqual(
+      all([
+        call([socketClient, socketClient.send], "TEST_ACTION", {
+          method: "test.method",
+          type: 0,
+          params: { name: "foo", value: "bar" }
+        }),
+        call([socketClient, socketClient.send], "TEST_ACTION", {
+          method: "test.method",
+          type: 0,
+          params: { name: "baz", value: "qux" }
+        })
+      ])
     );
   });
 
-  it("can receive a succesful WebSocket message", () => {
+  it("can handle errors when sending a WebSocket message", () => {
+    const saga = sendMessage(socketClient);
+    saga.next();
+    saga.next({
+      type: "WEBSOCKET_SEND",
+      payload: {
+        actionType: "TEST_ACTION",
+        message: { payload: "here" }
+      }
+    });
+    saga.next();
+    expect(saga.throw("error!").value).toEqual(
+      put({ type: "TEST_ACTION_ERROR", error: "error!" })
+    );
+  });
+
+  it("can receive a successful WebSocket message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(

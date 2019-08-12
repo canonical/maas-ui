@@ -31,14 +31,6 @@ describe("websocket client", () => {
     });
   });
 
-  it("can handle exceptions when sending a message", () => {
-    let recursiveObject = {};
-    recursiveObject.bad = { recursive: recursiveObject };
-    const error = client.send("TEST_ACTION", recursiveObject);
-    expect(client.socket.send.mock.calls.length).toBe(0);
-    expect(error.message).toEqual("Converting circular structure to JSON");
-  });
-
   it("increments the id", () => {
     expect(client._nextId).toBe(0);
     client.send("TEST_ACTION", {});
