@@ -88,10 +88,7 @@ export function* sendMessage(socketClient) {
             call([socketClient, socketClient.send], actionType, {
               method: message.method,
               type: message.type,
-              params: {
-                name: Object.keys(param)[0],
-                value: Object.values(param)[0]
-              }
+              params: param
             })
           )
         );
