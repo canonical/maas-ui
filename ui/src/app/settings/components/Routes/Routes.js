@@ -10,7 +10,6 @@ import Scripts from "app/settings/containers/Scripts";
 import Storage from "app/settings/containers/Storage";
 import UserAdd from "app/settings/containers/UserAdd";
 import UserEdit from "app/settings/containers/UserEdit";
-import User from "app/settings/containers/User";
 import Users from "app/settings/containers/Users";
 
 const Routes = () => (
@@ -18,7 +17,6 @@ const Routes = () => (
     <Route exact path="/configuration" component={Configuration} />
     <Route exact path="/users" component={Users} />
     <Route exact path="/users/add" component={UserAdd} />
-    <Route exact path="/users/:id" component={User} />
     <Route exact path="/users/:id/edit" component={UserEdit} />
     <Route exact path="/images" component={Images} />
     <Route exact path="/storage" component={Storage} />
