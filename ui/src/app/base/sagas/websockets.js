@@ -88,13 +88,13 @@ export function* sendMessage(socketClient) {
         actionType.startsWith("DELETE")
       ) {
         yield all(
-          message.params.map(item =>
+          message.params.map(param =>
             call([socketClient, socketClient.send], actionType, {
               method: message.method,
               type: message.type,
               params: {
-                name: Object.keys(item)[0],
-                value: Object.values()[0]
+                name: Object.keys(param)[0],
+                value: Object.values(param)[0]
               }
             })
           )
