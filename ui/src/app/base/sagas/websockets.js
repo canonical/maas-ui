@@ -82,11 +82,7 @@ export function* sendMessage(socketClient) {
     const { actionType, message } = data.payload;
     yield put({ type: `${actionType}_START` });
     try {
-      if (
-        actionType.startsWith("CREATE") ||
-        actionType.startsWith("UPDATE") ||
-        actionType.startsWith("DELETE")
-      ) {
+      if (actionType.startsWith("UPDATE")) {
         yield all(
           message.params.map(param =>
             call([socketClient, socketClient.send], actionType, {
