@@ -22,7 +22,7 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
-          content: <Link to={`/users/${user.id}`}>{user.username}</Link>,
+          content: user.username,
           role: "rowheader"
         },
         { content: user.email },
