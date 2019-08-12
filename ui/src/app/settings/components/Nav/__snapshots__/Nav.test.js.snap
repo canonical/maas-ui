@@ -9,61 +9,54 @@ exports[`Nav renders 1`] = `
   >
     <li
       className="settings-nav__item"
-      key="/configuration"
+      key="Configuration"
     >
-      <strong
-        className=""
-      >
-        <Link
-          className="p-link--soft"
-          to="/configuration"
-        >
-          Configuration
-        </Link>
+      <strong>
+        Configuration
       </strong>
       <ul
         className="settings-nav__list"
       >
         <li
           className="settings-nav__item"
-          key="general"
+          key="/configuration/general"
         >
           <Link
             className="p-link--soft"
-            to="general"
+            to="/configuration/general"
           >
             General
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="commissioning"
+          key="/configuration/commissioning"
         >
           <Link
             className="p-link--soft"
-            to="commissioning"
+            to="/configuration/commissioning"
           >
             Commissioning
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="deploy"
+          key="/configuration/deploy"
         >
           <Link
             className="p-link--soft"
-            to="deploy"
+            to="/configuration/deploy"
           >
             Deploy
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="kernel-parameters"
+          key="/configuration/kernel-parameters"
         >
           <Link
             className="p-link--soft"
-            to="kernel-parameters"
+            to="/configuration/kernel-parameters"
           >
             Kernel parameters
           </Link>
