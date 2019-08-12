@@ -13,4 +13,18 @@ config.fetch = () => {
   };
 };
 
+config.update = params => {
+  return {
+    type: "WEBSOCKET_SEND",
+    payload: {
+      actionType: "UPDATE_CONFIG",
+      message: {
+        method: "config.update",
+        type: 0,
+        params
+      }
+    }
+  };
+};
+
 export default config;

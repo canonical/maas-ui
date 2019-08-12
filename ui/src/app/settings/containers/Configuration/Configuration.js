@@ -1,5 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const Configuration = () => <h4>Configuration</h4>;
+import selectors from "app/settings/selectors";
+import GeneralForm from "app/settings/components/GeneralForm";
+
+const Configuration = () => {
+  const loaded = useSelector(selectors.config.loaded);
+
+  return <>{loaded && <GeneralForm />}</>;
+};
 
 export default Configuration;

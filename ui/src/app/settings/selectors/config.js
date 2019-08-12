@@ -131,4 +131,24 @@ config.proxyType = createSelector(
   }
 );
 
+/**
+ * Returns the MAAS config for MAAS name.
+ * @param {Object} - The redux state.
+ * @returns {String} Then MAAS name.
+ */
+config.maasName = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "maas_name")
+);
+
+/**
+ * Returns the MAAS config for enable analytics.
+ * @param {Object} - The redux state.
+ * @returns {Boolean} Enable analytics.
+ */
+config.analyticsEnabled = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "enable_analytics")
+);
+
 export default config;

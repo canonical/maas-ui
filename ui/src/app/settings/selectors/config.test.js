@@ -207,4 +207,30 @@ describe("config selectors", () => {
       expect(config.proxyType(state)).toBe("peerProxy");
     });
   });
+
+  describe("maasName", () => {
+    it("returns MAAS config for maas name", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "maas_name", value: "bionic-maas" }]
+        }
+      };
+      expect(config.maasName(state)).toBe("bionic-maas");
+    });
+  });
+
+  describe("analyticsEnabled", () => {
+    it("returns MAAS config for enable analytics", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "enable_analytics", value: true }]
+        }
+      };
+      expect(config.analyticsEnabled(state)).toBe(true);
+    });
+  });
 });

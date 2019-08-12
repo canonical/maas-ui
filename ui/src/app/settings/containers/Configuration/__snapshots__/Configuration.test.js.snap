@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`works with enzyme 1`] = `
-<h4>
-  Configuration
-</h4>
-`;
