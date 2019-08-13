@@ -1,8 +1,9 @@
+import { act } from "react-dom/test-utils";
+import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
-import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
 import Users from "./Users";
 
 const mockStore = configureStore();
@@ -111,5 +112,29 @@ describe("Users", () => {
       .simulate("click");
     row = wrapper.find("MainTable").prop("rows")[1];
     expect(row.expanded).toBe(true);
+  });
+
+  it("can filter users", () => {
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <Users />
+        </MemoryRouter>
+      </Provider>
+    );
+    let rows = wrapper.find("MainTable").prop("rows");
+    expect(rows.length).toBe(2);
+    act(() =>
+      wrapper
+        .find("SearchBox")
+        .props()
+        .onChange("admin")
+    );
+    wrapper.update();
+    rows = wrapper.find("MainTable").prop("rows");
+    expect(rows.length).toBe(1);
   });
 });
