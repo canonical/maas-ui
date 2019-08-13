@@ -74,29 +74,58 @@ export function* handleMessage(socketChannel, socketClient) {
 }
 
 /**
+ * An action containing an RPC method is a websocket request action.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isWebsocketRequestAction = action => action.meta && action.meta.method;
+
+/**
+ * Build a message for websocket requests.
+ * @param {Object} meta - action meta object.
+ * @param {Objet} params - param object (optional).
+ * @returns {Object} message - serialisable websocket message.
+ */
+const buildMessage = (meta, params) => {
+  const message = {
+    method: meta.method,
+    type: meta.type
+  };
+  if (params) {
+    message.params = params;
+  }
+  return message;
+};
+
+/**
  * Send WebSocket messages via the client.
  */
 export function* sendMessage(socketClient) {
   while (true) {
-    const data = yield take("WEBSOCKET_SEND");
-    const { actionType, message } = data.payload;
-    yield put({ type: `${actionType}_START` });
+    const data = yield take(action => isWebsocketRequestAction(action));
+    const { type, meta } = data;
+    const params = data.payload ? data.payload.params : null;
+    yield put({ type: `${type}_START` });
     try {
-      if (message.params && Array.isArray(message.params)) {
+      if (params && Array.isArray(params)) {
         yield all(
-          message.params.map(param =>
-            call([socketClient, socketClient.send], actionType, {
-              method: message.method,
-              type: message.type,
-              params: param
-            })
+          params.map(param =>
+            call(
+              [socketClient, socketClient.send],
+              type,
+              buildMessage(meta, param)
+            )
           )
         );
       } else {
-        yield call([socketClient, socketClient.send], actionType, message);
+        yield call(
+          [socketClient, socketClient.send],
+          type,
+          buildMessage(meta, params)
+        );
       }
     } catch (error) {
-      yield put({ type: `${data.payload.actionType}_ERROR`, error });
+      yield put({ type: `${type}_ERROR`, error });
     }
   }
 }

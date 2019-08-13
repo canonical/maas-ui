@@ -6,13 +6,10 @@ export const connectWebSocket = () => {
 
 export const fetchAuthUser = () => {
   return {
-    type: "WEBSOCKET_SEND",
-    payload: {
-      actionType: "FETCH_AUTH_USER",
-      message: {
-        method: "user.auth_user",
-        type: 0
-      }
+    type: "FETCH_AUTH_USER",
+    meta: {
+      method: "user.auth_user",
+      type: 0
     }
   };
 };

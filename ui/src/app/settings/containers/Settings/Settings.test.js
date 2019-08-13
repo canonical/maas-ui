@@ -29,14 +29,11 @@ describe("Settings", () => {
 
     expect(store.getActions()).toEqual([
       {
-        payload: {
-          actionType: "FETCH_CONFIG",
-          message: {
-            method: "config.list",
-            type: 0
-          }
-        },
-        type: "WEBSOCKET_SEND"
+        type: "FETCH_CONFIG",
+        meta: {
+          method: "config.list",
+          type: 0
+        }
       }
     ]);
   });

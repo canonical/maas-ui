@@ -93,19 +93,24 @@ describe("websocket sagas", () => {
 
   it("can send a WebSocket message", () => {
     const saga = sendMessage(socketClient);
-    expect(saga.next().value).toEqual(take("WEBSOCKET_SEND"));
+    saga.next();
     expect(
       saga.next({
-        type: "WEBSOCKET_SEND",
+        type: "TEST_ACTION",
+        meta: {
+          method: "test.method",
+          type: 0
+        },
         payload: {
-          actionType: "TEST_ACTION",
-          message: { payload: "here" }
+          params: { foo: "bar" }
         }
       }).value
     ).toEqual(put({ type: "TEST_ACTION_START" }));
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
-        payload: "here"
+        method: "test.method",
+        type: 0,
+        params: { foo: "bar" }
       })
     );
   });
@@ -115,17 +120,13 @@ describe("websocket sagas", () => {
     saga.next();
     expect(
       saga.next({
-        type: "WEBSOCKET_SEND",
+        type: "TEST_ACTION",
+        meta: {
+          method: "test.method",
+          type: 0
+        },
         payload: {
-          actionType: "TEST_ACTION",
-          message: {
-            method: "test.method",
-            type: 0,
-            params: [
-              { name: "foo", value: "bar" },
-              { name: "baz", value: "qux" }
-            ]
-          }
+          params: [{ name: "foo", value: "bar" }, { name: "baz", value: "qux" }]
         }
       }).value
     ).toEqual(put({ type: "TEST_ACTION_START" }));
@@ -150,10 +151,13 @@ describe("websocket sagas", () => {
     const saga = sendMessage(socketClient);
     saga.next();
     saga.next({
-      type: "WEBSOCKET_SEND",
+      type: "TEST_ACTION",
+      meta: {
+        method: "test.method",
+        type: 0
+      },
       payload: {
-        actionType: "TEST_ACTION",
-        message: { payload: "here" }
+        params: { foo: "bar" }
       }
     });
     saga.next();
