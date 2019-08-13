@@ -1,6 +1,8 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 
+import { extendFormikShape } from "app/settings/proptypes";
 import config from "app/settings/selectors/config";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
@@ -35,5 +37,11 @@ const DnsFormFields = ({ formikProps }) => {
     </>
   );
 };
+
+DnsFormFields.propTypes = extendFormikShape({
+  dnssec_validation: PropTypes.string,
+  dns_trusted_acl: PropTypes.string,
+  upstream_dns: PropTypes.string
+});
 
 export default DnsFormFields;

@@ -1,8 +1,10 @@
+import PropTypes from "prop-types";
 import React from "react";
 
+import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
-const DnsFormFields = ({ formikProps }) => {
+const NtpFormFields = ({ formikProps }) => {
   return (
     <>
       <FormikField
@@ -23,4 +25,9 @@ const DnsFormFields = ({ formikProps }) => {
   );
 };
 
-export default DnsFormFields;
+NtpFormFields.propTypes = extendFormikShape({
+  ntp_external_only: PropTypes.bool,
+  ntp_servers: PropTypes.string
+});
+
+export default NtpFormFields;

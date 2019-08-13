@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
+import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
 const ProxyFormFields = ({ formikProps }) => {
@@ -62,25 +63,9 @@ const ProxyFormFields = ({ formikProps }) => {
   );
 };
 
-ProxyFormFields.propTypes = {
-  formikProps: PropTypes.shape({
-    errors: PropTypes.shape({
-      httpProxy: PropTypes.string,
-      proxyType: PropTypes.string
-    }).isRequired,
-    handleBlur: PropTypes.func.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool,
-    touched: PropTypes.shape({
-      httpProxy: PropTypes.bool,
-      proxyType: PropTypes.bool
-    }).isRequired,
-    values: PropTypes.shape({
-      httpProxy: PropTypes.string,
-      proxyType: PropTypes.string
-    }).isRequired
-  })
-};
+ProxyFormFields.propTypes = extendFormikShape({
+  httpProxy: PropTypes.string,
+  proxyType: PropTypes.string
+});
 
 export default ProxyFormFields;

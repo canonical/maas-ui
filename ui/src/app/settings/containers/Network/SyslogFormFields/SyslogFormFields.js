@@ -1,5 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
+import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
 const SyslogFormFields = ({ formikProps }) => {
@@ -15,5 +17,9 @@ const SyslogFormFields = ({ formikProps }) => {
     </>
   );
 };
+
+SyslogFormFields.propTypes = extendFormikShape({
+  remote_syslog: PropTypes.string
+});
 
 export default SyslogFormFields;
