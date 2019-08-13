@@ -7,17 +7,6 @@ import config from "app/settings/selectors/config";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
-const getStorageLayoutWarning = layout => {
-  switch (layout) {
-    case "blank":
-      return "You will not be able to deploy machines with this storage layout. Manual configuration is required.";
-    case "vmfs6":
-      return "The VMFS6 storage layout only allows for the deployment of VMware (ESXi).";
-    default:
-      return;
-  }
-};
-
 const StorageFormFields = ({ formikProps }) => {
   const { values } = formikProps;
   const storageLayoutOptions = useSelector(config.storageLayoutOptions);
@@ -29,10 +18,25 @@ const StorageFormFields = ({ formikProps }) => {
         component={Select}
         options={storageLayoutOptions}
         help="Storage layout that is applied to a node when it is commissioned."
-        caution={getStorageLayoutWarning(values.default_storage_layout)}
         fieldKey="default_storage_layout"
         formikProps={formikProps}
       />
+      {values.default_storage_layout === "blank" && (
+        <p className="p-form-validation__message">
+          <i className="p-icon--warning" />
+          <strong className="p-icon__text">Caution:</strong> You will not be
+          able to deploy machines with this storage layout. Manual configuration
+          is required.
+        </p>
+      )}
+      {values.default_storage_layout === "vmfs6" && (
+        <p className="p-form-validation__message">
+          <i className="p-icon--warning" />
+          <strong className="p-icon__text">Caution:</strong> The VMFS6 storage
+          layout only allows for the deployment of{" "}
+          <strong>VMware (ESXi)</strong>.
+        </p>
+      )}
       <FormikField
         label="Erase nodes' disks prior to releasing"
         type="checkbox"

@@ -53,7 +53,7 @@ export const useSettingsSave = (saving, setLoading, setSuccess) => {
   const prevSaving = usePrevious(saving);
 
   // Temporarily set success to true if saving changes from true to false
-  // TODO: Add a check for errors too
+  // TODO: Add a check for errors too: https://github.com/canonical-web-and-design/maas-ui/issues/39
   useEffect(() => {
     if (!prevSaving && saving) {
       setLoading(true);

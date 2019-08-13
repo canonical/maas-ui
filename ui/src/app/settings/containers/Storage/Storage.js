@@ -13,7 +13,7 @@ const Storage = () => {
 
   return (
     <Row>
-      <Col size={8}>
+      <Col size={6}>
         {loading && <Loader text="Loading..." />}
         {loaded && <StorageForm />}
       </Col>
