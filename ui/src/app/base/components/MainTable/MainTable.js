@@ -73,7 +73,9 @@ const generateRows = (
   currentSortDirection,
   currentSortKey,
   expanding,
+  rowLimit,
   rows,
+  rowStartIndex,
   sortable
 ) => {
   // Clone the rows so we can restore the original order.
@@ -91,7 +93,11 @@ const generateRows = (
       return 0;
     });
   }
-  const rowItems = sortedRows.map(
+  let slicedRows = sortedRows;
+  if (rowLimit) {
+    slicedRows = sortedRows.slice(rowStartIndex, rowStartIndex + rowLimit);
+  }
+  const rowItems = slicedRows.map(
     (
       { columns, expanded, expandedContent, key, sortData, ...rowProps },
       index
@@ -123,7 +129,9 @@ const MainTable = ({
   defaultSortDirection,
   expanding,
   headers,
+  rowLimit,
   rows,
+  rowStartIndex = 0,
   responsive,
   sortable,
   ...props
@@ -165,7 +173,9 @@ const MainTable = ({
           currentSortDirection,
           currentSortKey,
           expanding,
+          rowLimit,
           rows,
+          rowStartIndex,
           sortable
         )}
     </Table>
@@ -185,6 +195,7 @@ MainTable.propTypes = {
     })
   ),
   responsive: PropTypes.bool,
+  rowLimit: PropTypes.number,
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       columns: PropTypes.arrayOf(
@@ -202,6 +213,7 @@ MainTable.propTypes = {
       sortData: PropTypes.object
     })
   ),
+  rowStartIndex: PropTypes.number,
   sortable: PropTypes.bool
 };
 

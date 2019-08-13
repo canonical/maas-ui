@@ -136,6 +136,35 @@ describe("MainTable", () => {
       ).toEqual(undefined);
     });
 
+    it("can limit the number of rows shown", () => {
+      const wrapper = shallow(
+        <MainTable headers={headers} rowLimit={2} rows={rows} sortable={true} />
+      );
+      expect(wrapper.find("tbody TableRow").length).toEqual(2);
+    });
+
+    it("can set a start point for the visible rows", () => {
+      const wrapper = shallow(
+        <MainTable
+          headers={headers}
+          rowLimit={2}
+          rowStartIndex={2}
+          rows={rows}
+          sortable={true}
+        />
+      );
+      const rowItems = wrapper.find("tbody TableRow");
+      expect(rowItems.length).toEqual(1);
+      expect(
+        rowItems
+          .at(0)
+          .find("TableCell")
+          .first()
+          .children()
+          .text()
+      ).toEqual("Idle");
+    });
+
     it("can sort when clicking on a header", () => {
       const wrapper = shallow(
         <MainTable headers={headers} rows={rows} sortable={true} />
