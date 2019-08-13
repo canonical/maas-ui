@@ -5,6 +5,7 @@ describe("config reducer", () => {
     expect(config(undefined, {})).toEqual({
       loading: false,
       loaded: false,
+      saving: false,
       items: []
     });
   });
@@ -17,6 +18,7 @@ describe("config reducer", () => {
     ).toEqual({
       loading: true,
       loaded: false,
+      saving: false,
       items: []
     });
   });
@@ -27,6 +29,7 @@ describe("config reducer", () => {
         {
           loading: true,
           loaded: false,
+          saving: false,
           items: []
         },
         {
@@ -40,10 +43,54 @@ describe("config reducer", () => {
     ).toEqual({
       loading: false,
       loaded: true,
+      saving: false,
       items: [
         { name: "default_storage_layout", value: "bcache" },
         { name: "enable_disk_erasing_on_release", value: "foo" }
       ]
+    });
+  });
+
+  it("should correctly reduce UPDATE_CONFIG_START", () => {
+    expect(
+      config(
+        {
+          loading: false,
+          loaded: false,
+          saving: false,
+          items: []
+        },
+        {
+          type: "UPDATE_CONFIG_START"
+        }
+      )
+    ).toEqual({
+      loading: false,
+      loaded: false,
+      saving: true,
+      items: []
+    });
+  });
+
+  it("should correctly reduce UPDATE_CONFIG_SUCCESS", () => {
+    expect(
+      config(
+        {
+          loading: false,
+          loaded: false,
+          saving: true,
+          items: [{ name: "default_storage_layout", value: "bcache" }]
+        },
+        {
+          type: "UPDATE_CONFIG_SUCCESS",
+          payload: { name: "default_storage_layout", value: "flat" }
+        }
+      )
+    ).toEqual({
+      loading: false,
+      loaded: false,
+      saving: false,
+      items: [{ name: "default_storage_layout", value: "flat" }]
     });
   });
 });

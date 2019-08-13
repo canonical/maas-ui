@@ -33,6 +33,11 @@ body {
   @include maas-icon-edit($color-mid-dark);
 }
 
+.p-form-validation__message [class*="p-icon--"] {
+  @extend %icon;
+  @include vf-icon-size(.875rem);
+}
+
 .u-text--light {
   color: $color-mid-dark;
 }

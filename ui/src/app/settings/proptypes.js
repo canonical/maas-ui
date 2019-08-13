@@ -16,3 +16,21 @@ export const RepositoryShape = PropTypes.shape({
   updated: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired
 });
+
+export const extendFormikShape = values => {
+  let touchedShape = {};
+  Object.keys(values).forEach(key => {
+    touchedShape[key] = PropTypes.bool;
+  });
+  return {
+    formikProps: PropTypes.shape({
+      errors: PropTypes.shape(values).isRequired,
+      handleBlur: PropTypes.func.isRequired,
+      handleChange: PropTypes.func.isRequired,
+      handleSubmit: PropTypes.func.isRequired,
+      isSubmitting: PropTypes.bool,
+      touched: PropTypes.shape(touchedShape).isRequired,
+      values: PropTypes.shape(values).isRequired
+    })
+  };
+};

@@ -10,7 +10,12 @@ config.fetch = () => {
   };
 };
 
-config.update = params => {
+config.update = values => {
+  const params = Object.keys(values).map(key => ({
+    name: key,
+    value: values[key]
+  }));
+
   return {
     type: "UPDATE_CONFIG",
     payload: {

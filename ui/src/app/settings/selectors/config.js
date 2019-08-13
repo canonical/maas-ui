@@ -24,18 +24,25 @@ const getValueFromName = (arr, name) => {
 config.all = state => state.config.items;
 
 /**
- * Returns true if users are loading.
+ * Returns true if config is loading.
  * @param {Object} state - The redux state.
- * @returns {Boolean} User is loading.
+ * @returns {Boolean} Config is loading.
  */
 config.loading = state => state.config.loading;
 
 /**
- * Returns true if users have been loaded.
+ * Returns true if config has been loaded.
  * @param {Object} state - The redux state.
- * @returns {Boolean} User has loaded.
+ * @returns {Boolean} Config has loaded.
  */
 config.loaded = state => state.config.loaded;
+
+/**
+ * Returns true if config is saving.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Config is saving.
+ */
+config.saving = state => state.config.saving;
 
 /**
  * Returns the MAAS config for default storage layout.
@@ -98,21 +105,41 @@ config.diskEraseWithQuick = createSelector(
   configs => getValueFromName(configs, "disk_erase_with_quick_erase")
 );
 
+/**
+ * Returns the MAAS config for http proxy url.
+ * @param {Object} state - The redux state.
+ * @returns {String} HTTP proxy.
+ */
 config.httpProxy = createSelector(
   [config.all],
   configs => getValueFromName(configs, "http_proxy")
 );
 
+/**
+ * Returns the MAAS config for enabling http proxy.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Enable HTTP proxy.
+ */
 config.enableHttpProxy = createSelector(
   [config.all],
   configs => getValueFromName(configs, "enable_http_proxy")
 );
 
+/**
+ * Returns the MAAS config for using peer proxy.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Use peer proxy.
+ */
 config.usePeerProxy = createSelector(
   [config.all],
   configs => getValueFromName(configs, "use_peer_proxy")
 );
 
+/**
+ * Returns the proxy type, given other proxy config.
+ * @param {Object} state - The redux state.
+ * @returns {String} Proxy type.
+ */
 config.proxyType = createSelector(
   [config.httpProxy, config.enableHttpProxy, config.usePeerProxy],
   (httpProxy, enableHttpProxy, usePeerProxy) => {
