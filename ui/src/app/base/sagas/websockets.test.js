@@ -93,12 +93,11 @@ describe("websocket sagas", () => {
 
   it("can send a WebSocket message", () => {
     const saga = sendMessage(socketClient);
-    expect(saga.next().value).toEqual(take("WEBSOCKET_SEND"));
+    saga.next();
     expect(
       saga.next({
-        type: "WEBSOCKET_SEND",
+        type: "TEST_ACTION",
         payload: {
-          actionType: "TEST_ACTION",
           message: { payload: "here" }
         }
       }).value
@@ -115,9 +114,8 @@ describe("websocket sagas", () => {
     saga.next();
     expect(
       saga.next({
-        type: "WEBSOCKET_SEND",
+        type: "TEST_ACTION",
         payload: {
-          actionType: "TEST_ACTION",
           message: {
             method: "test.method",
             type: 0,
@@ -150,9 +148,8 @@ describe("websocket sagas", () => {
     const saga = sendMessage(socketClient);
     saga.next();
     saga.next({
-      type: "WEBSOCKET_SEND",
+      type: "TEST_ACTION",
       payload: {
-        actionType: "TEST_ACTION",
         message: { payload: "here" }
       }
     });

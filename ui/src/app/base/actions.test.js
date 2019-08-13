@@ -9,9 +9,8 @@ describe("base actions", () => {
 
   it("should handle fetching the current user", () => {
     expect(fetchAuthUser()).toEqual({
-      type: "WEBSOCKET_SEND",
+      type: "FETCH_AUTH_USER",
       payload: {
-        actionType: "FETCH_AUTH_USER",
         message: {
           method: "user.auth_user",
           type: 0

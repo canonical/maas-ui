@@ -74,18 +74,27 @@ export function* handleMessage(socketChannel, socketClient) {
 }
 
 /**
+ * An action containing an RPC method is a websocket request action.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isWebsocketRequestAction = action =>
+  action.payload && action.payload.message && action.payload.message.method;
+
+/**
  * Send WebSocket messages via the client.
  */
 export function* sendMessage(socketClient) {
   while (true) {
-    const data = yield take("WEBSOCKET_SEND");
-    const { actionType, message } = data.payload;
-    yield put({ type: `${actionType}_START` });
+    const data = yield take(action => isWebsocketRequestAction(action));
+    const { type } = data;
+    const { message } = data.payload;
+    yield put({ type: `${type}_START` });
     try {
       if (message.params && Array.isArray(message.params)) {
         yield all(
           message.params.map(param =>
-            call([socketClient, socketClient.send], actionType, {
+            call([socketClient, socketClient.send], type, {
               method: message.method,
               type: message.type,
               params: param
@@ -93,10 +102,10 @@ export function* sendMessage(socketClient) {
           )
         );
       } else {
-        yield call([socketClient, socketClient.send], actionType, message);
+        yield call([socketClient, socketClient.send], type, message);
       }
     } catch (error) {
-      yield put({ type: `${data.payload.actionType}_ERROR`, error });
+      yield put({ type: `${type}_ERROR`, error });
     }
   }
 }

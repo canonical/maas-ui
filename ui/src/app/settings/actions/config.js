@@ -2,9 +2,8 @@ const config = {};
 
 config.fetch = () => {
   return {
-    type: "WEBSOCKET_SEND",
+    type: "FETCH_CONFIG",
     payload: {
-      actionType: "FETCH_CONFIG",
       message: {
         method: "config.list",
         type: 0
@@ -15,9 +14,8 @@ config.fetch = () => {
 
 config.update = params => {
   return {
-    type: "WEBSOCKET_SEND",
+    type: "UPDATE_CONFIG",
     payload: {
-      actionType: "UPDATE_CONFIG",
       message: {
         method: "config.update",
         type: 0,

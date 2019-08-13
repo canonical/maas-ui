@@ -3,9 +3,8 @@ import config from "./config";
 describe("config actions", () => {
   it("should handle fetching config", () => {
     expect(config.fetch()).toEqual({
-      type: "WEBSOCKET_SEND",
+      type: "FETCH_CONFIG",
       payload: {
-        actionType: "FETCH_CONFIG",
         message: {
           method: "config.list",
           type: 0
@@ -21,9 +20,8 @@ describe("config actions", () => {
     ];
 
     expect(config.update(params)).toEqual({
-      type: "WEBSOCKET_SEND",
+      type: "UPDATE_CONFIG",
       payload: {
-        actionType: "UPDATE_CONFIG",
         message: {
           method: "config.update",
           type: 0,
