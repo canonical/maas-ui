@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProxyFormFields can render 1`] = `
-<Form
-  onSubmit={[MockFunction]}
->
+<Fragment>
   <FormikField
     checked={false}
     fieldKey="proxyType"
@@ -72,17 +70,5 @@ exports[`ProxyFormFields can render 1`] = `
     type="radio"
     value="peerProxy"
   />
-  <div
-    className="user-form__buttons"
-  >
-    <Button
-      appearance="positive"
-      className="u-no-margin--bottom"
-      disabled={true}
-      type="submit"
-    >
-      Save
-    </Button>
-  </div>
-</Form>
+</Fragment>
 `;

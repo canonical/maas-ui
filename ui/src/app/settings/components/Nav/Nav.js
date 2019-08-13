@@ -8,27 +8,41 @@ import "./Nav.scss";
 
 const _generateSection = (section, location) => {
   let subNav = null;
+
   if (section.subNav && section.subNav.length) {
-    const items = section.subNav.map(item => {
-      const path = `${section.path}/${item.path}`;
+    const subsections = section.subNav.map(subsection => {
+      const isActive = location.pathname === subsection.path;
       return (
-        <li className="settings-nav__item" key={path}>
-          <Link to={path} className="p-link--soft">
-            {item.label}
+        <li className="settings-nav__item" key={subsection.path}>
+          <Link
+            to={subsection.path}
+            className={classNames("p-link--soft", { "is-active": isActive })}
+          >
+            {subsection.label}
           </Link>
         </li>
       );
     });
-    subNav = <ul className="settings-nav__list">{items}</ul>;
+    subNav = <ul className="settings-nav__list">{subsections}</ul>;
   }
-  const isActive = location.pathname.startsWith(section.path);
+
+  if (section.path) {
+    const isActive = location.pathname === section.path;
+    return (
+      <li className="settings-nav__item" key={section.path}>
+        <strong className={classNames({ "is-active": isActive })}>
+          <Link to={section.path} className="p-link--soft">
+            {section.label}
+          </Link>
+        </strong>
+        {subNav}
+      </li>
+    );
+  }
+
   return (
-    <li className="settings-nav__item" key={section.path}>
-      <strong className={classNames({ "is-active": isActive })}>
-        <Link to={section.path} className="p-link--soft">
-          {section.label}
-        </Link>
-      </strong>
+    <li className="settings-nav__item" key={section.label}>
+      <strong>{section.label}</strong>
       {subNav}
     </li>
   );
@@ -65,13 +79,13 @@ export const Nav = props => {
       label: "Storage"
     },
     {
-      path: "/network",
       label: "Network",
       subNav: [
-        { path: "proxy", label: "Proxy" },
-        { path: "dns", label: "DNS" },
-        { path: "ntp", label: "NTP" },
-        { path: "syslog", label: "Syslog" }
+        { path: "/network/proxy", label: "Proxy" },
+        { path: "/network/dns", label: "DNS" },
+        { path: "/network/ntp", label: "NTP" },
+        { path: "/network/syslog", label: "Syslog" },
+        { path: "/network/network-discovery", label: "Network discovery" }
       ]
     },
     {

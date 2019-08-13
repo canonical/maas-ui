@@ -26,44 +26,44 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/configuration/general"
+          key="general"
         >
           <Link
             className="p-link--soft"
-            to="/configuration/general"
+            to="general"
           >
             General
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration/commissioning"
+          key="commissioning"
         >
           <Link
             className="p-link--soft"
-            to="/configuration/commissioning"
+            to="commissioning"
           >
             Commissioning
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration/deploy"
+          key="deploy"
         >
           <Link
             className="p-link--soft"
-            to="/configuration/deploy"
+            to="deploy"
           >
             Deploy
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration/kernel-parameters"
+          key="kernel-parameters"
         >
           <Link
             className="p-link--soft"
-            to="/configuration/kernel-parameters"
+            to="kernel-parameters"
           >
             Kernel parameters
           </Link>
@@ -104,44 +104,44 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/images/ubuntu"
+          key="ubuntu"
         >
           <Link
             className="p-link--soft"
-            to="/images/ubuntu"
+            to="ubuntu"
           >
             Ubuntu
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images/centos"
+          key="centos"
         >
           <Link
             className="p-link--soft"
-            to="/images/centos"
+            to="centos"
           >
             CentOS
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images/windows"
+          key="windows"
         >
           <Link
             className="p-link--soft"
-            to="/images/windows"
+            to="windows"
           >
             Windows
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images/vmware"
+          key="vmware"
         >
           <Link
             className="p-link--soft"
-            to="/images/vmware"
+            to="vmware"
           >
             VMware
           </Link>
@@ -165,17 +165,10 @@ exports[`Nav renders 1`] = `
     </li>
     <li
       className="settings-nav__item"
-      key="/network"
+      key="Network"
     >
-      <strong
-        className=""
-      >
-        <Link
-          className="p-link--soft"
-          to="/network"
-        >
-          Network
-        </Link>
+      <strong>
+        Network
       </strong>
       <ul
         className="settings-nav__list"
@@ -224,6 +217,17 @@ exports[`Nav renders 1`] = `
             Syslog
           </Link>
         </li>
+        <li
+          className="settings-nav__item"
+          key="/network/network-discovery"
+        >
+          <Link
+            className="p-link--soft"
+            to="/network/network-discovery"
+          >
+            Network discovery
+          </Link>
+        </li>
       </ul>
     </li>
     <li
@@ -245,22 +249,22 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/scripts/user-scripts"
+          key="user-scripts"
         >
           <Link
             className="p-link--soft"
-            to="/scripts/user-scripts"
+            to="user-scripts"
           >
             User scripts
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/scripts/built-in-scripts"
+          key="built-in-scripts"
         >
           <Link
             className="p-link--soft"
-            to="/scripts/built-in-scripts"
+            to="built-in-scripts"
           >
             Built-in scripts
           </Link>

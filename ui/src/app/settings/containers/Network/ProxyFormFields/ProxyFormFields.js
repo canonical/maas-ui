@@ -1,16 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import Button from "app/base/components/Button";
-import Form from "app/base/components/Form";
 import FormikField from "app/base/components/FormikField";
 
 const ProxyFormFields = ({ formikProps }) => {
-  const { handleSubmit, isSubmitting, touched, values } = formikProps;
-  const disabled = isSubmitting || !Object.keys(touched).length;
+  const { values } = formikProps;
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <>
       <FormikField
         formikProps={formikProps}
         fieldKey="proxyType"
@@ -61,17 +58,7 @@ const ProxyFormFields = ({ formikProps }) => {
           required={true}
         />
       )}
-      <div className="user-form__buttons">
-        <Button
-          appearance="positive"
-          className="u-no-margin--bottom"
-          type="submit"
-          disabled={disabled}
-        >
-          Save
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };
 
