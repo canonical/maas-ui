@@ -14,13 +14,37 @@ describe("General", () => {
       config: {
         loading: false,
         loaded: true,
-        items: []
+        items: [
+          {
+            name: "maas_name",
+            value: "bionic"
+          },
+          {
+            name: "enable_analytics",
+            value: true
+          }
+        ]
       }
     };
   });
 
-  it("displays the general form when loaded", () => {
+  it("displays a spinner if config is loading", () => {
     const state = { ...initialState };
+    state.config.loading = true;
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <General />
+      </Provider>
+    );
+
+    expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("displays the General form if config is loaded", () => {
+    const state = { ...initialState };
+    state.config.loaded = true;
     const store = mockStore(state);
 
     const wrapper = mount(

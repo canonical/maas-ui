@@ -73,39 +73,4 @@ describe("GeneralForm", () => {
         .props().value
     ).toBe(true);
   });
-
-  it("disables submit button if maas_name has no value", () => {
-    const state = { ...initialState };
-    state.config.items = [{ name: "maas_name", value: "" }];
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <GeneralForm />
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("[type='submit']")
-        .first()
-        .props().disabled
-    ).toBe(true);
-  });
-
-  it("enables submit button if maas_name has value", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <GeneralForm />
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("[type='submit']")
-        .first()
-        .props().disabled
-    ).toBe(false);
-  });
 });

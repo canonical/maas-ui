@@ -9,19 +9,19 @@ import { formikFormDisabled } from "app/settings/utils";
 import { useSettingsSave } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
-import CommissioningFormFields from "app/settings/containers/Configuration/CommissioningFormFields";
+import GeneralFormFields from "app/settings/containers/Configuration/GeneralFormFields";
 
 const CommissioningSchema = Yup.object().shape({
-  default_distro_series: Yup.string(),
-  default_min_hwe_kernel: Yup.string()
+  maas_name: Yup.string().required(),
+  enable_analytics: Yup.boolean()
 });
 
-const CommissioningForm = () => {
+const GeneralForm = () => {
   const dispatch = useDispatch();
   const updateConfig = actions.config.update;
 
-  const defaultDistroSeries = useSelector(config.defaultDistroSeries);
-  const defaultMinKernelVersion = useSelector(config.defaultMinKernelVersion);
+  const maasName = useSelector(config.maasName);
+  const analyticsEnabled = useSelector(config.analyticsEnabled);
 
   const saving = useSelector(config.saving);
   const [loading, setLoading] = useState(false);
@@ -31,8 +31,8 @@ const CommissioningForm = () => {
   return (
     <Formik
       initialValues={{
-        default_distro_series: defaultDistroSeries,
-        default_min_hwe_kernel: defaultMinKernelVersion
+        maas_name: maasName,
+        enable_analytics: analyticsEnabled
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
@@ -41,7 +41,7 @@ const CommissioningForm = () => {
       validationSchema={CommissioningSchema}
       render={formikProps => (
         <Form onSubmit={formikProps.handleSubmit}>
-          <CommissioningFormFields formikProps={formikProps} />
+          <GeneralFormFields formikProps={formikProps} />
           <ActionButton
             appearance="positive"
             className="u-no-margin--bottom"
@@ -59,4 +59,4 @@ const CommissioningForm = () => {
   );
 };
 
-export default CommissioningForm;
+export default GeneralForm;
