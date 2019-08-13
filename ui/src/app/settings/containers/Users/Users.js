@@ -26,11 +26,11 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
           role: "rowheader"
         },
         { content: user.email },
-        { content: 37, className: "u-align--right" },
-        { content: "Local" },
-        { content: "12 mins ago" },
+        { content: "--", className: "u-align--right" },
+        { content: "--" },
+        { content: "--" },
         {
-          content: user.is_superuser ? "Admin" : null
+          content: user.is_superuser ? "Admin" : "User"
         },
         {
           content: user.sshkeys_count,
@@ -80,10 +80,10 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
       sortData: {
         username: user.username,
         email: user.email,
-        machines: 37,
-        type: "local",
-        "last-seen": "2018-05-12",
-        role: user.is_superuser ? "Admin" : null,
+        machines: "--",
+        type: "--",
+        "last-seen": "--",
+        role: user.is_superuser ? "admin" : "user",
         "maas-keys": user.sshkeys_count
       }
     };
@@ -101,9 +101,7 @@ const Users = ({ initialCount = 20 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(initialCount);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentUsers = users.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -153,12 +151,9 @@ const Users = ({ initialCount = 20 }) => {
               className: "u-align--right"
             }
           ]}
-          rows={generateUserRows(
-            currentUsers,
-            authUser,
-            expandedId,
-            setExpandedId
-          )}
+          rowLimit={itemsPerPage}
+          rows={generateUserRows(users, authUser, expandedId, setExpandedId)}
+          rowStartIndex={indexOfFirstItem}
           sortable={true}
         />
       )}
