@@ -5,11 +5,11 @@ describe("repository actions", () => {
     expect(repositories.fetch()).toEqual({
       type: "FETCH_REPOSITORIES",
       payload: {
-        message: {
-          method: "packagerepository.list",
-          params: { limit: 50 },
-          type: 0
-        }
+        params: { limit: 50 }
+      },
+      meta: {
+        method: "packagerepository.list",
+        type: 0
       }
     });
   });

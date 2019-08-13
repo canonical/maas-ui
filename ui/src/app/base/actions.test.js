@@ -10,11 +10,9 @@ describe("base actions", () => {
   it("should handle fetching the current user", () => {
     expect(fetchAuthUser()).toEqual({
       type: "FETCH_AUTH_USER",
-      payload: {
-        message: {
-          method: "user.auth_user",
-          type: 0
-        }
+      meta: {
+        method: "user.auth_user",
+        type: 0
       }
     });
   });

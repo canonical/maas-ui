@@ -30,11 +30,9 @@ describe("Settings", () => {
     expect(store.getActions()).toEqual([
       {
         type: "FETCH_CONFIG",
-        payload: {
-          message: {
-            method: "config.list",
-            type: 0
-          }
+        meta: {
+          method: "config.list",
+          type: 0
         }
       }
     ]);

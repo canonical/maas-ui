@@ -4,11 +4,9 @@ describe("config actions", () => {
   it("should handle fetching config", () => {
     expect(config.fetch()).toEqual({
       type: "FETCH_CONFIG",
-      payload: {
-        message: {
-          method: "config.list",
-          type: 0
-        }
+      meta: {
+        method: "config.list",
+        type: 0
       }
     });
   });
@@ -22,11 +20,11 @@ describe("config actions", () => {
     expect(config.update(params)).toEqual({
       type: "UPDATE_CONFIG",
       payload: {
-        message: {
-          method: "config.update",
-          type: 0,
-          params
-        }
+        params
+      },
+      meta: {
+        method: "config.update",
+        type: 0
       }
     });
   });

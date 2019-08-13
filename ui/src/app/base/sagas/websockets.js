@@ -78,8 +78,24 @@ export function* handleMessage(socketChannel, socketClient) {
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
-const isWebsocketRequestAction = action =>
-  action.payload && action.payload.message && action.payload.message.method;
+const isWebsocketRequestAction = action => action.meta && action.meta.method;
+
+/**
+ * Build a message for websocket requests.
+ * @param {Object} meta - action meta object.
+ * @param {Objet} params - param object (optional).
+ * @returns {Object} message - serialisable websocket message.
+ */
+const buildMessage = (meta, params) => {
+  const message = {
+    method: meta.method,
+    type: meta.type
+  };
+  if (params) {
+    message.params = params;
+  }
+  return message;
+};
 
 /**
  * Send WebSocket messages via the client.
@@ -87,22 +103,26 @@ const isWebsocketRequestAction = action =>
 export function* sendMessage(socketClient) {
   while (true) {
     const data = yield take(action => isWebsocketRequestAction(action));
-    const { type } = data;
-    const { message } = data.payload;
+    const { type, meta } = data;
+    const params = data.payload ? data.payload.params : null;
     yield put({ type: `${type}_START` });
     try {
-      if (message.params && Array.isArray(message.params)) {
+      if (params && Array.isArray(params)) {
         yield all(
-          message.params.map(param =>
-            call([socketClient, socketClient.send], type, {
-              method: message.method,
-              type: message.type,
-              params: param
-            })
+          params.map(param =>
+            call(
+              [socketClient, socketClient.send],
+              type,
+              buildMessage(meta, param)
+            )
           )
         );
       } else {
-        yield call([socketClient, socketClient.send], type, message);
+        yield call(
+          [socketClient, socketClient.send],
+          type,
+          buildMessage(meta, params)
+        );
       }
     } catch (error) {
       yield put({ type: `${type}_ERROR`, error });
