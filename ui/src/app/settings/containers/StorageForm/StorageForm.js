@@ -20,7 +20,7 @@ const StorageSchema = Yup.object().shape({
 
 const StorageForm = () => {
   const dispatch = useDispatch();
-  const saveConfig = actions.config.update;
+  const updateConfig = actions.config.update;
 
   const defaultStorageLayout = useSelector(config.defaultStorageLayout);
   const diskEraseWithQuick = useSelector(config.diskEraseWithQuick);
@@ -41,11 +41,7 @@ const StorageForm = () => {
         enable_disk_erasing_on_release: enableDiskErasing
       }}
       onSubmit={(values, { resetForm }) => {
-        const payload = Object.keys(values).map(key => ({
-          name: key,
-          value: values[key]
-        }));
-        dispatch(saveConfig(payload));
+        dispatch(updateConfig(values));
         resetForm(values);
       }}
       validationSchema={StorageSchema}

@@ -35,13 +35,7 @@ const GeneralForm = () => {
           validationSchema={GeneralSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-              const params = Object.keys(values).map(key => {
-                return {
-                  name: key,
-                  value: values[key]
-                };
-              });
-              dispatch(updateConfig(params));
+              dispatch(updateConfig(values));
               setSubmitting(false);
             }, 500);
           }}
