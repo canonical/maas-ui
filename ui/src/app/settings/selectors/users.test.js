@@ -4,10 +4,10 @@ describe("users selectors", () => {
   it("can get items", () => {
     const state = {
       users: {
-        items: [{ name: "default" }]
+        items: [{ username: "default" }]
       }
     };
-    expect(users.get(state)).toEqual([{ name: "default" }]);
+    expect(users.get(state)).toEqual([{ username: "default" }]);
   });
 
   it("can get the loading state", () => {
@@ -34,7 +34,7 @@ describe("users selectors", () => {
     const state = {
       users: {
         loading: true,
-        items: [{ name: "foo" }, { name: "bar" }]
+        items: [{ username: "foo" }, { username: "bar" }]
       }
     };
     expect(users.count(state)).toEqual(2);
@@ -44,9 +44,28 @@ describe("users selectors", () => {
     const state = {
       users: {
         loading: true,
-        items: [{ name: "foo", id: 808 }, { name: "bar", id: 909 }]
+        items: [{ username: "foo", id: 808 }, { username: "bar", id: 909 }]
       }
     };
-    expect(users.getById(state, 909)).toStrictEqual({ name: "bar", id: 909 });
+    expect(users.getById(state, 909)).toStrictEqual({
+      username: "bar",
+      id: 909
+    });
+  });
+
+  it("can search items", () => {
+    const state = {
+      users: {
+        items: [
+          { username: "admin", emai: "test@example.com" },
+          { username: "me", email: "minnie@example.com" },
+          { username: "richie", email: "richie@example.com" }
+        ]
+      }
+    };
+    expect(users.search(state, "min")).toEqual([
+      { username: "admin", emai: "test@example.com" },
+      { username: "me", email: "minnie@example.com" }
+    ]);
   });
 });

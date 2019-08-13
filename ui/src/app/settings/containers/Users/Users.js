@@ -14,6 +14,7 @@ import Loader from "app/base/components/Loader";
 import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
+import SearchBox from "app/base/components/SearchBox";
 
 const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
   users.map(user => {
@@ -91,7 +92,8 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
 
 const Users = ({ initialCount = 20 }) => {
   const [expandedId, setExpandedId] = useState(null);
-  const users = useSelector(state => selectors.users.get(state));
+  const [searchText, setSearchText] = useState("");
+  const users = useSelector(state => selectors.users.search(state, searchText));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
@@ -108,13 +110,12 @@ const Users = ({ initialCount = 20 }) => {
   return (
     <>
       {loading && <Loader text="Loading..." inline />}
-      <Row>
-        <Col size="1" emptyLarge="11" className="u-align--right">
-          <Button element={Link} to="/users/add">
-            Add user
-          </Button>
-        </Col>
-      </Row>
+      <div className="p-table-actions">
+        <SearchBox onChange={setSearchText} value={searchText} />
+        <Button element={Link} to="/users/add">
+          Add user
+        </Button>
+      </div>
       {loaded && (
         <MainTable
           className="p-table-expanding--light user-list"

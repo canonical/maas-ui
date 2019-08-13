@@ -14,6 +14,18 @@ users.get = (state, batch) => {
 };
 
 /**
+ * Returns all users
+ * @param {Object} state - The redux state.
+ * @param {Number} batch - Number of users to return.
+ * @returns {Array} A list of all users.
+ */
+users.search = (state, term) => {
+  return state.users.items.filter(
+    user => user.username.includes(term) || user.email.includes(term)
+  );
+};
+
+/**
  * Returns true if users are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} User is loading.
