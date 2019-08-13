@@ -25,7 +25,11 @@ export function Main({ authUser, authLoading, fetchAuthUser }) {
   return (
     <>
       <Header authUser={authUser} />
-      <Routes />
+      {authUser.is_superuser ? (
+        <Routes />
+      ) : (
+        <Section title="You do not have permission to view this page." />
+      )}
     </>
   );
 }

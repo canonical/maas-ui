@@ -47,4 +47,26 @@ describe("Main", () => {
     );
     expect(fetchAuthUser.mock.calls.length).toBe(1);
   });
+
+  it("displays a message if not an admin", () => {
+    const wrapper = shallow(
+      <Main
+        authLoading={false}
+        authUser={{
+          email: "test@example.com",
+          first_name: "",
+          global_permissions: ["machine_create"],
+          id: 1,
+          is_superuser: false,
+          last_name: "",
+          sshkeys_count: 0,
+          username: "admin"
+        }}
+        fetchAuthUser={jest.fn()}
+      />
+    );
+    expect(wrapper.find("Section").prop("title")).toEqual(
+      "You do not have permission to view this page."
+    );
+  });
 });
