@@ -2,12 +2,14 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import { MemoryRouter } from "react-router-dom";
 
-import Storage from "./Storage";
+import { reduceInitialState } from "testing/utils";
+import ProxyForm from "./ProxyForm";
 
 const mockStore = configureStore();
 
-describe("Storage", () => {
+describe("ProxyForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
@@ -16,20 +18,15 @@ describe("Storage", () => {
         loaded: true,
         items: [
           {
-            name: "default_storage_layout",
-            value: "bcache",
-            choices: []
+            name: "http_proxy",
+            value: "http://www.url.com"
           },
           {
-            name: "enable_disk_erasing_on_release",
+            name: "enable_http_proxy",
             value: false
           },
           {
-            name: "disk_erase_with_secure_erase",
-            value: false
-          },
-          {
-            name: "disk_erase_with_quick_erase",
+            name: "use_peer_proxy",
             value: false
           }
         ]
@@ -44,24 +41,31 @@ describe("Storage", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Storage />
+        <ProxyForm />
       </Provider>
     );
 
     expect(wrapper.find("Loader").exists()).toBe(true);
   });
 
-  it("displays the StorageForm if config is loaded", () => {
+  it("displays a text input if http proxy is enabled", () => {
     const state = { ...initialState };
-    state.config.loaded = true;
+    state.config.items = reduceInitialState(
+      state.config.items,
+      "name",
+      "enable_http_proxy",
+      { value: true }
+    );
     const store = mockStore(state);
-
     const wrapper = mount(
       <Provider store={store}>
-        <Storage />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
+        >
+          <ProxyForm />
+        </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("StorageForm").exists()).toBe(true);
+    expect(wrapper.find("Input[type='text']").exists()).toBe(true);
   });
 });

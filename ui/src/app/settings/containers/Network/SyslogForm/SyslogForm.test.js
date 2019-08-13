@@ -2,13 +2,12 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { MemoryRouter } from "react-router-dom";
 
-import Network from "./Network";
+import SyslogForm from "./SyslogForm";
 
 const mockStore = configureStore();
 
-describe("Network", () => {
+describe("SyslogForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
@@ -20,18 +19,14 @@ describe("Network", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
+  it("displays a spinner if config is loading", () => {
     const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
-        >
-          <Network />
-        </MemoryRouter>
+        <SyslogForm />
       </Provider>
     );
 

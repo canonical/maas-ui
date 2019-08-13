@@ -21,15 +21,4 @@ describe("ProxyFormFields", () => {
     const wrapper = shallow(<ProxyFormFields formikProps={formikProps} />);
     expect(wrapper).toMatchSnapshot();
   });
-
-  it("disables the submit button when submitting", () => {
-    formikProps.isSubmitting = true;
-    const wrapper = shallow(<ProxyFormFields formikProps={formikProps} />);
-    expect(
-      wrapper
-        .find("Button")
-        .at(0)
-        .prop("disabled")
-    ).toBe(true);
-  });
 });
