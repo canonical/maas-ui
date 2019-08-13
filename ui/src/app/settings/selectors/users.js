@@ -14,10 +14,10 @@ users.get = (state, batch) => {
 };
 
 /**
- * Returns all users
+ * Get users that match a term.
  * @param {Object} state - The redux state.
- * @param {Number} batch - Number of users to return.
- * @returns {Array} A list of all users.
+ * @param {String} term - The term to match against.
+ * @returns {Array} A filtered list of users.
  */
 users.search = (state, term) => {
   return state.users.items.filter(

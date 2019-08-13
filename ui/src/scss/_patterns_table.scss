@@ -15,3 +15,8 @@ td:not(.p-table-expanding__panel) [class*="p-button"] {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+.u-align-icons--top {
+  align-items: flex-start;
+  display: flex;
+}
