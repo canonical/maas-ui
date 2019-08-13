@@ -59,7 +59,7 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
               )}
             </>
           ),
-          className: "u-align--right"
+          className: "u-align--right u-align-icons--top"
         }
       ],
       expanded: expanded,
