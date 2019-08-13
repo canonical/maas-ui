@@ -14,7 +14,12 @@ describe("SyslogForm", () => {
       config: {
         loading: false,
         loaded: true,
-        items: []
+        items: [
+          {
+            name: "remote_syslog",
+            value: ""
+          }
+        ]
       }
     };
   });
@@ -31,5 +36,38 @@ describe("SyslogForm", () => {
     );
 
     expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("dispatches an action to update config on save button click", done => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <SyslogForm />
+      </Provider>
+    );
+    wrapper.find("form").simulate("submit");
+
+    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
+    window.setTimeout(() => {
+      expect(store.getActions()).toEqual([
+        {
+          type: "UPDATE_CONFIG",
+          payload: {
+            params: [
+              {
+                name: "remote_syslog",
+                value: ""
+              }
+            ]
+          },
+          meta: {
+            method: "config.update",
+            type: 0
+          }
+        }
+      ]);
+      done();
+    }, 0);
   });
 });
