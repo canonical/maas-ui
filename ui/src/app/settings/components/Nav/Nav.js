@@ -1,4 +1,3 @@
-import { HashLink } from "react-router-hash-link";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import classNames from "classnames";
@@ -11,12 +10,12 @@ const _generateSection = (section, location) => {
   let subNav = null;
   if (section.subNav && section.subNav.length) {
     const items = section.subNav.map(item => {
-      const path = `${section.path}#${item.path}`;
+      const path = `${section.path}/${item.path}`;
       return (
         <li className="settings-nav__item" key={path}>
-          <HashLink to={path} className="p-link--soft">
+          <Link to={path} className="p-link--soft">
             {item.label}
-          </HashLink>
+          </Link>
         </li>
       );
     });

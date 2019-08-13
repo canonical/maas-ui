@@ -26,47 +26,47 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/configuration#general"
+          key="/configuration/general"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/configuration#general"
+            to="/configuration/general"
           >
             General
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration#commissioning"
+          key="/configuration/commissioning"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/configuration#commissioning"
+            to="/configuration/commissioning"
           >
             Commissioning
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration#deploy"
+          key="/configuration/deploy"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/configuration#deploy"
+            to="/configuration/deploy"
           >
             Deploy
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/configuration#kernel-parameters"
+          key="/configuration/kernel-parameters"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/configuration#kernel-parameters"
+            to="/configuration/kernel-parameters"
           >
             Kernel parameters
-          </HashLink>
+          </Link>
         </li>
       </ul>
     </li>
@@ -104,47 +104,47 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/images#ubuntu"
+          key="/images/ubuntu"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/images#ubuntu"
+            to="/images/ubuntu"
           >
             Ubuntu
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images#centos"
+          key="/images/centos"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/images#centos"
+            to="/images/centos"
           >
             CentOS
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images#windows"
+          key="/images/windows"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/images#windows"
+            to="/images/windows"
           >
             Windows
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/images#vmware"
+          key="/images/vmware"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/images#vmware"
+            to="/images/vmware"
           >
             VMware
-          </HashLink>
+          </Link>
         </li>
       </ul>
     </li>
@@ -182,47 +182,47 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/network#proxy"
+          key="/network/proxy"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/network#proxy"
+            to="/network/proxy"
           >
             Proxy
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/network#dns"
+          key="/network/dns"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/network#dns"
+            to="/network/dns"
           >
             DNS
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/network#ntp"
+          key="/network/ntp"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/network#ntp"
+            to="/network/ntp"
           >
             NTP
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/network#syslog"
+          key="/network/syslog"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/network#syslog"
+            to="/network/syslog"
           >
             Syslog
-          </HashLink>
+          </Link>
         </li>
       </ul>
     </li>
@@ -245,25 +245,25 @@ exports[`Nav renders 1`] = `
       >
         <li
           className="settings-nav__item"
-          key="/scripts#user-scripts"
+          key="/scripts/user-scripts"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/scripts#user-scripts"
+            to="/scripts/user-scripts"
           >
             User scripts
-          </HashLink>
+          </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="/scripts#built-in-scripts"
+          key="/scripts/built-in-scripts"
         >
-          <HashLink
+          <Link
             className="p-link--soft"
-            to="/scripts#built-in-scripts"
+            to="/scripts/built-in-scripts"
           >
             Built-in scripts
-          </HashLink>
+          </Link>
         </li>
       </ul>
     </li>
