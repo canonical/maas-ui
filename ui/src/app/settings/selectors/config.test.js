@@ -233,4 +233,90 @@ describe("config selectors", () => {
       expect(config.analyticsEnabled(state)).toBe(true);
     });
   });
+
+  describe("defaultDistroSeries", () => {
+    it("returns MAAS config for default distro series", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_distro_series", value: "bionic" }]
+        }
+      };
+      expect(config.defaultDistroSeries(state)).toBe("bionic");
+    });
+  });
+
+  describe("distroSeriesOptions", () => {
+    it("returns array of distro series options, formatted as objects", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [
+            {
+              name: "default_distro_series",
+              value: "bionic",
+              choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]]
+            }
+          ]
+        }
+      };
+      expect(config.distroSeriesOptions(state)).toStrictEqual([
+        {
+          value: "bionic",
+          label: "Ubuntu 18.04 LTS 'Bionic-Beaver'"
+        }
+      ]);
+    });
+  });
+
+  describe("defaultMinKernelVersion", () => {
+    it("returns MAAS config for default kernel version", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_min_hwe_kernel", value: "" }]
+        }
+      };
+      expect(config.defaultMinKernelVersion(state)).toBe("");
+    });
+  });
+
+  describe("minKernelVersionOptions", () => {
+    it("returns array of min kernel version options, formatted as objects", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [
+            {
+              name: "default_min_hwe_kernel",
+              value: "",
+              choices: [
+                ["", "--- No minimum kernel ---"],
+                ["ga-18.04-lowlatency", "bionic (ga-18.04-lowlatency)"],
+                ["ga-18.04", "bionic (ga-18.04)"]
+              ]
+            }
+          ]
+        }
+      };
+      expect(config.minKernelVersionOptions(state)).toStrictEqual([
+        {
+          value: "",
+          label: "--- No minimum kernel ---"
+        },
+        {
+          value: "ga-18.04-lowlatency",
+          label: "bionic (ga-18.04-lowlatency)"
+        },
+        {
+          value: "ga-18.04",
+          label: "bionic (ga-18.04)"
+        }
+      ]);
+    });
+  });
 });

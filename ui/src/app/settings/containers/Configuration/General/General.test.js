@@ -3,11 +3,11 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import Configuration from "./Configuration";
+import General from "./General";
 
 const mockStore = configureStore();
 
-describe("Configuration", () => {
+describe("General", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
@@ -25,7 +25,7 @@ describe("Configuration", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Configuration />
+        <General />
       </Provider>
     );
 

@@ -178,4 +178,66 @@ config.analyticsEnabled = createSelector(
   configs => getValueFromName(configs, "enable_analytics")
 );
 
+/**
+ * Returns the MAAS config for default distro series.
+ * @param {Object} state - The redux state.
+ * @returns {String} Default distro series.
+ */
+config.defaultDistroSeries = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_distro_series")
+);
+
+/**
+ * Returns the possible distro series options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Distro series options.
+ */
+config.distroSeriesOptions = createSelector(
+  [config.all],
+  configs => {
+    const configObj = configs.find(
+      config => config.name === "default_distro_series"
+    );
+    if (configObj) {
+      return configObj.choices.map(choice => ({
+        value: choice[0],
+        label: choice[1]
+      }));
+    }
+    return;
+  }
+);
+
+/**
+ * Returns the MAAS config for default min kernel version.
+ * @param {object} state - The redux state.
+ * @returns {String} Default min kernal version.
+ */
+config.defaultMinKernelVersion = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_min_hwe_kernel")
+);
+
+/**
+ * Returns the possible min kernel version options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Min kernel version options.
+ */
+config.minKernelVersionOptions = createSelector(
+  [config.all],
+  configs => {
+    const configObj = configs.find(
+      config => config.name === "default_min_hwe_kernel"
+    );
+    if (configObj) {
+      return configObj.choices.map(choice => ({
+        value: choice[0],
+        label: choice[1]
+      }));
+    }
+    return;
+  }
+);
+
 export default config;

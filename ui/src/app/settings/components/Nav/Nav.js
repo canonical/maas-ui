@@ -51,13 +51,12 @@ const _generateSection = (section, location) => {
 export const Nav = props => {
   const nav = [
     {
-      path: "/configuration",
       label: "Configuration",
       subNav: [
-        { path: "general", label: "General" },
-        { path: "commissioning", label: "Commissioning" },
-        { path: "deploy", label: "Deploy" },
-        { path: "kernel-parameters", label: "Kernel parameters" }
+        { path: "/configuration/general", label: "General" },
+        { path: "/configuration/commissioning", label: "Commissioning" },
+        { path: "/configuration/deploy", label: "Deploy" },
+        { path: "/configuration/kernel-parameters", label: "Kernel parameters" }
       ]
     },
     {
