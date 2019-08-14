@@ -62,4 +62,28 @@ describe("Commissioning", () => {
 
     expect(wrapper.find("CommissioningForm").exists()).toBe(true);
   });
+
+  it("dispatches action to fetch general on load", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <Commissioning />
+      </Provider>
+    );
+
+    const fetchGeneralOsinfoAction = store
+      .getActions()
+      .find(action => action.type === "FETCH_GENERAL_OSINFO");
+
+    expect(fetchGeneralOsinfoAction).toEqual({
+      type: "FETCH_GENERAL_OSINFO",
+      meta: {
+        model: "general",
+        method: "osinfo",
+        type: 0
+      }
+    });
+  });
 });

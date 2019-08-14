@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
 import Commissioning from "app/settings/views/Configuration/Commissioning";
+import Deploy from "app/settings/views/Configuration/Deploy";
 import Dhcp from "app/settings/views/Dhcp";
 import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
@@ -35,6 +36,7 @@ const Routes = () => (
       path="/configuration/kernel-parameters"
       component={KernelParameters}
     />
+    <Route exact path="/configuration/deploy" component={Deploy} />
     <Redirect from="/configuration" to="/configuration/general" />
     <Route exact path="/users" component={UsersList} />
     <Route exact path="/users/add" component={UserAdd} />

@@ -387,4 +387,58 @@ describe("config selectors", () => {
       expect(config.thirdPartyDriversEnabled(state)).toBe(true);
     });
   });
+
+  describe("defaultOSystem", () => {
+    it("returns MAAS config for default OS", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_osystem", value: "bionic" }]
+        }
+      };
+      expect(config.defaultOSystem(state)).toBe("bionic");
+    });
+  });
+
+  describe("defaultOSystemOptions", () => {
+    it("returns array of default OS options, formatted as objects", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [
+            {
+              name: "default_osystem",
+              value: "ubuntu",
+              choices: [["centos", "CentOS"], ["ubuntu", "Ubuntu"]]
+            }
+          ]
+        }
+      };
+      expect(config.defaultOSystemOptions(state)).toStrictEqual([
+        {
+          value: "centos",
+          label: "CentOS"
+        },
+        {
+          value: "ubuntu",
+          label: "Ubuntu"
+        }
+      ]);
+    });
+  });
+
+  describe("defaultDistroSeries", () => {
+    it("returns MAAS config for default distro series", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_distro_series", value: "bionic" }]
+        }
+      };
+      expect(config.defaultDistroSeries(state)).toBe("bionic");
+    });
+  });
 });

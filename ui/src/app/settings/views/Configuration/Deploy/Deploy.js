@@ -6,9 +6,9 @@ import selectors from "app/settings/selectors";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
-import CommissioningForm from "../CommissioningForm";
+import DeployForm from "app/settings/views/Configuration/DeployForm";
 
-const Commissioning = () => {
+const Deploy = () => {
   const loaded = useSelector(selectors.config.loaded);
   const loading = useSelector(selectors.config.loading);
 
@@ -22,10 +22,10 @@ const Commissioning = () => {
     <Row>
       <Col size={6}>
         {loading && <Loader text="Loading..." />}
-        {loaded && <CommissioningForm />}
+        {loaded && <DeployForm />}
       </Col>
     </Row>
   );
 };
 
-export default Commissioning;
+export default Deploy;
