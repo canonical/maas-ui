@@ -72,13 +72,14 @@ describe("config reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_CONFIG_SUCCESS", () => {
+  it("should correctly reduce UPDATE_CONFIG_SUCCESS, without a store update", () => {
     expect(
       config(
         {
           loading: false,
           loaded: false,
           saving: true,
+          saved: false,
           items: [{ name: "default_storage_layout", value: "bcache" }]
         },
         {
@@ -90,7 +91,38 @@ describe("config reducer", () => {
       loading: false,
       loaded: false,
       saving: false,
-      items: [{ name: "default_storage_layout", value: "flat" }]
+      saved: true,
+      items: [{ name: "default_storage_layout", value: "bcache" }]
+    });
+  });
+
+  it("should correctly reduce UPDATE_CONFIG_SYNC, updating the store", () => {
+    expect(
+      config(
+        {
+          loading: false,
+          loaded: false,
+          saving: false,
+          saved: true,
+          items: [
+            { name: "maas_name", value: "my-maas" },
+            { name: "default_storage_layout", value: "bcache" }
+          ]
+        },
+        {
+          type: "UPDATE_CONFIG_SYNC",
+          payload: { name: "default_storage_layout", value: "flat" }
+        }
+      )
+    ).toEqual({
+      loading: false,
+      loaded: false,
+      saving: false,
+      saved: true,
+      items: [
+        { name: "maas_name", value: "my-maas" },
+        { name: "default_storage_layout", value: "flat" }
+      ]
     });
   });
 });

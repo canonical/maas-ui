@@ -4,6 +4,7 @@ import { expectSaga } from "redux-saga-test-plan";
 import {
   createConnection,
   handleMessage,
+  handleSyncMessage,
   sendMessage,
   watchMessages,
   watchWebSockets
@@ -166,7 +167,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can receive a successful WebSocket message", () => {
+  it("can handle a WebSocket response message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
@@ -177,7 +178,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can receive a WebSocket error message", () => {
+  it("can handle a WebSocket error message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
@@ -192,5 +193,21 @@ describe("websocket sagas", () => {
         error: { Message: "catastrophic failure" }
       })
     );
+  });
+
+  it("can handle a WebSocket sync message", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    const response = {
+      type: 2,
+      name: "config",
+      action: "update",
+      data: { name: "foo", value: "bar" }
+    };
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(saga.next(response).value).toEqual(
+      call(handleSyncMessage, response)
+    );
+    // yield no further, take a new message
+    expect(saga.next().value).toEqual(take(socketChannel));
   });
 });
