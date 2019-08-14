@@ -1,12 +1,11 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import actions from "app/settings/actions";
 import config from "app/settings/selectors/config";
 import { formikFormDisabled } from "app/settings/utils";
-import { useSettingsSave } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Col from "app/base/components/Col";
 import Form from "app/base/components/Form";
@@ -30,13 +29,11 @@ const ProxyForm = () => {
 
   const loaded = useSelector(config.loaded);
   const loading = useSelector(config.loading);
+  const saved = useSelector(config.saved);
+  const saving = useSelector(config.saving);
+
   const httpProxy = useSelector(config.httpProxy);
   const proxyType = useSelector(config.proxyType);
-
-  const saving = useSelector(config.saving);
-  const [savingUI, setSavingUI] = useState(false);
-  const [success, setSuccess] = useState(false);
-  useSettingsSave(saving, setSavingUI, setSuccess);
 
   return (
     <Row>
@@ -96,9 +93,8 @@ const ProxyForm = () => {
                   className="u-no-margin--bottom"
                   type="submit"
                   disabled={formikFormDisabled(formikProps)}
-                  loading={savingUI}
-                  success={success}
-                  width="60px"
+                  loading={saving}
+                  success={saved}
                 >
                   Save
                 </ActionButton>

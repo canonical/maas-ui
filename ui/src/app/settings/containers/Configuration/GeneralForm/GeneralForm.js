@@ -1,12 +1,11 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import actions from "app/settings/actions";
 import config from "app/settings/selectors/config";
 import { formikFormDisabled } from "app/settings/utils";
-import { useSettingsSave } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
 import GeneralFormFields from "app/settings/containers/Configuration/GeneralFormFields";
@@ -20,13 +19,11 @@ const GeneralForm = () => {
   const dispatch = useDispatch();
   const updateConfig = actions.config.update;
 
+  const saved = useSelector(config.saved);
+  const saving = useSelector(config.saving);
+
   const maasName = useSelector(config.maasName);
   const analyticsEnabled = useSelector(config.analyticsEnabled);
-
-  const saving = useSelector(config.saving);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  useSettingsSave(saving, setLoading, setSuccess);
 
   return (
     <Formik
@@ -47,9 +44,8 @@ const GeneralForm = () => {
             className="u-no-margin--bottom"
             type="submit"
             disabled={formikFormDisabled(formikProps)}
-            loading={loading}
-            success={success}
-            width="60px"
+            loading={saving}
+            success={saved}
           >
             Save
           </ActionButton>

@@ -6,6 +6,7 @@ describe("config reducer", () => {
       loading: false,
       loaded: false,
       saving: false,
+      saved: false,
       items: []
     });
   });
@@ -19,6 +20,7 @@ describe("config reducer", () => {
       loading: true,
       loaded: false,
       saving: false,
+      saved: false,
       items: []
     });
   });
@@ -58,6 +60,7 @@ describe("config reducer", () => {
           loading: false,
           loaded: false,
           saving: false,
+          saved: false,
           items: []
         },
         {
@@ -68,6 +71,7 @@ describe("config reducer", () => {
       loading: false,
       loaded: false,
       saving: true,
+      saved: false,
       items: []
     });
   });

@@ -44,6 +44,19 @@ describe("config selectors", () => {
     });
   });
 
+  describe("saved", () => {
+    it("returns config saved state", () => {
+      const state = {
+        config: {
+          saving: false,
+          saved: true,
+          items: []
+        }
+      };
+      expect(config.saved(state)).toStrictEqual(true);
+    });
+  });
+
   describe("defaultStorageLayout", () => {
     it("returns MAAS config for default storage layout", () => {
       const state = {

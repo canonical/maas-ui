@@ -62,6 +62,13 @@ config.loaded = state => state.config.loaded;
 config.saving = state => state.config.saving;
 
 /**
+ * Returns true if config has saved.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Config has saved.
+ */
+config.saved = state => state.config.saved;
+
+/**
  * Returns the MAAS config for default storage layout.
  * @param {Object} state - The redux state.
  * @returns {String} Default storage layout.
