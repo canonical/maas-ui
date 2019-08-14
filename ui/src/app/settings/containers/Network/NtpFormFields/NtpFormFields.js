@@ -5,6 +5,8 @@ import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
 const NtpFormFields = ({ formikProps }) => {
+  const { values } = formikProps;
+
   return (
     <>
       <FormikField
@@ -20,6 +22,7 @@ const NtpFormFields = ({ formikProps }) => {
         label="Use external NTP servers only"
         help="Configure all region controller hosts, rack controller hosts, and subsequently deployed machines to refer directly to the configured external NTP servers. Otherwise only region controller hosts will be configured to use those external NTP servers, rack contoller hosts will in turn refer to the regions' NTP servers, and deployed machines will refer to the racks' NTP servers."
         type="checkbox"
+        checked={values.ntp_external_only}
       />
     </>
   );
