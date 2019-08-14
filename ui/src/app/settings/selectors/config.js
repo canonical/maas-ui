@@ -240,4 +240,14 @@ config.minKernelVersionOptions = createSelector(
   }
 );
 
+/**
+ * Returns the MAAS config for kernel parameters.
+ * @param {object} state - The redux state.
+ * @returns {String} Kernel parameters.
+ */
+config.kernelParams = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "kernel_opts")
+);
+
 export default config;

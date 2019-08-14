@@ -9,19 +9,17 @@ import { formikFormDisabled } from "app/settings/utils";
 import { useSettingsSave } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
-import GeneralFormFields from "app/settings/containers/Configuration/GeneralFormFields";
+import KernelParametersFormFields from "app/settings/containers/Configuration/KernelParametersFormFields";
 
-const GeneralSchema = Yup.object().shape({
-  maas_name: Yup.string().required(),
-  enable_analytics: Yup.boolean()
+const KernelParametersSchema = Yup.object().shape({
+  kernel_opts: Yup.string()
 });
 
-const GeneralForm = () => {
+const KernelParametersForm = () => {
   const dispatch = useDispatch();
   const updateConfig = actions.config.update;
 
-  const maasName = useSelector(config.maasName);
-  const analyticsEnabled = useSelector(config.analyticsEnabled);
+  const kernelParams = useSelector(config.kernelParams);
 
   const saving = useSelector(config.saving);
   const [loading, setLoading] = useState(false);
@@ -31,17 +29,16 @@ const GeneralForm = () => {
   return (
     <Formik
       initialValues={{
-        maas_name: maasName,
-        enable_analytics: analyticsEnabled
+        kernel_opts: kernelParams
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm(values);
       }}
-      validationSchema={GeneralSchema}
+      validationSchema={KernelParametersSchema}
       render={formikProps => (
         <Form onSubmit={formikProps.handleSubmit}>
-          <GeneralFormFields formikProps={formikProps} />
+          <KernelParametersFormFields formikProps={formikProps} />
           <ActionButton
             appearance="positive"
             className="u-no-margin--bottom"
@@ -59,4 +56,4 @@ const GeneralForm = () => {
   );
 };
 
-export default GeneralForm;
+export default KernelParametersForm;

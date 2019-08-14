@@ -16,6 +16,7 @@ import SyslogForm from "app/settings/containers/Network/SyslogForm";
 import UserAdd from "app/settings/containers/UserAdd";
 import UserEdit from "app/settings/containers/UserEdit";
 import Users from "app/settings/containers/Users";
+import KernelParameters from "app/settings/containers/Configuration/KernelParameters";
 
 const Routes = () => (
   <Switch>
@@ -24,6 +25,11 @@ const Routes = () => (
       exact
       path="/configuration/commissioning"
       component={Commissioning}
+    />
+    <Route
+      exact
+      path="/configuration/kernel-parameters"
+      component={KernelParameters}
     />
     <Redirect from="/configuration" to="/configuration/general" />
     <Route exact path="/users" component={Users} />

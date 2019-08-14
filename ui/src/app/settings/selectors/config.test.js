@@ -319,4 +319,17 @@ describe("config selectors", () => {
       ]);
     });
   });
+
+  describe("kernelParams", () => {
+    it("returns MAAS config for kernel parameters", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "kernel_opts", value: "foo" }]
+        }
+      };
+      expect(config.kernelParams(state)).toBe("foo");
+    });
+  });
 });
