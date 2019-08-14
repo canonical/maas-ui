@@ -34,7 +34,7 @@ const NetworkDiscoveryFormFields = ({ formikProps }) => {
 };
 
 NetworkDiscoveryFormFields.propTypes = extendFormikShape({
-  active_discovery_interval: PropTypes.string,
+  active_discovery_interval: PropTypes.number,
   network_discovery: PropTypes.string
 });
 

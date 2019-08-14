@@ -52,7 +52,7 @@ const SyslogForm = () => {
                   appearance="positive"
                   className="u-no-margin--bottom"
                   type="submit"
-                  disabled={formikFormDisabled(formikProps, success)}
+                  disabled={formikFormDisabled(formikProps)}
                   loading={savingUI}
                   success={success}
                   width="60px"

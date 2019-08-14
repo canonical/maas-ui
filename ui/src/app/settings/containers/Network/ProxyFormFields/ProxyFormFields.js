@@ -9,6 +9,10 @@ const ProxyFormFields = ({ formikProps }) => {
 
   return (
     <>
+      <label>
+        HTTP proxy used by MAAS to download images, and by provisioned machines
+        for APT and YUM packages.
+      </label>
       <FormikField
         formikProps={formikProps}
         fieldKey="proxyType"
