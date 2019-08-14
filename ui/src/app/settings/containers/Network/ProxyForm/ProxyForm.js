@@ -45,7 +45,7 @@ const ProxyForm = () => {
         {loaded && (
           <Formik
             initialValues={{
-              httpProxy,
+              httpProxy: httpProxy || "",
               proxyType
             }}
             onSubmit={(values, { resetForm }) => {
