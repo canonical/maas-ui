@@ -36,5 +36,15 @@ describe("settings utils", () => {
       };
       expect(formikFormDisabled(formikProps)).toBe(false);
     });
+
+    it("returns true if the form has errors", () => {
+      const formikProps = {
+        initialValues: { key: "value1" },
+        values: { key: "value1" },
+        isSubmitting: false,
+        errors: { value1: "foo" }
+      };
+      expect(formikFormDisabled(formikProps)).toBe(true);
+    });
   });
 });
