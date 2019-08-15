@@ -4,6 +4,8 @@ import { all, call, put, take, race } from "redux-saga/effects";
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
+const SYNC_MESSAGE = 2; // 'type: 2' in a ws message
+
 /**
  * Dynamically build a websocket url from window.location
  * @param {string} csrftoken - A csrf token string.
@@ -53,22 +55,49 @@ export function watchMessages(socketClient) {
 }
 
 /**
+ * Handle incoming 'sync' messages.
+ *
+ * 'sync' messages have an action and a payload:
+ * {"type": 2,
+ *  "name": "config",
+ *  "action": "update",
+ *  "data": {"name": "maas_name", "value": "maas-hysteria"}}
+ *
+ * Although we receive a corresponding response for each websocket requests,
+ * the store is only updated once a sync message has been received.
+ */
+export function* handleSyncMessage(response) {
+  const action = response.action.toUpperCase();
+  const name = response.name.toUpperCase();
+  yield put({
+    type: `${action}_${name}_SYNC`,
+    payload: response.data
+  });
+}
+
+/**
  * Handle messages received over the WebSocket.
  */
 export function* handleMessage(socketChannel, socketClient) {
   while (true) {
     const response = yield take(socketChannel);
-    const action_type = yield call(
-      [socketClient, socketClient.getRequest],
-      response.request_id
-    );
-    if (response.error) {
-      yield put({
-        type: `${action_type}_ERROR`,
-        error: JSON.parse(response.error)
-      });
+    if (response.type === SYNC_MESSAGE) {
+      // this is an incoming 'sync' message
+      yield call(handleSyncMessage, response);
     } else {
-      yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
+      // this is a response message
+      const action_type = yield call(
+        [socketClient, socketClient.getRequest],
+        response.request_id
+      );
+      if (response.error) {
+        yield put({
+          type: `${action_type}_ERROR`,
+          error: JSON.parse(response.error)
+        });
+      } else {
+        yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
+      }
     }
   }
 }
