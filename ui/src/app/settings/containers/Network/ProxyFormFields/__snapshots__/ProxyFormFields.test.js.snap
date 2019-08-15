@@ -2,6 +2,9 @@
 
 exports[`ProxyFormFields can render 1`] = `
 <Fragment>
+  <label>
+    HTTP proxy used by MAAS to download images, and by provisioned machines for APT and YUM packages.
+  </label>
   <FormikField
     checked={false}
     fieldKey="proxyType"

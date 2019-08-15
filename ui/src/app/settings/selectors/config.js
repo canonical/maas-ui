@@ -17,6 +17,23 @@ const getValueFromName = (arr, name) => {
 };
 
 /**
+ * Returns choices of an object in an array, given a certain name.
+ * @param {Array.<Object>} arr - Array to search for name.
+ * @param {String} name - Name paramenter of the object to search for.
+ * @returns {Array.<Object>} Available choices.
+ */
+const getOptionsFromName = (arr, name) => {
+  const found = arr.find(item => item.name === name);
+  if (found && found.choices) {
+    return found.choices.map(choice => ({
+      value: choice[0],
+      label: choice[1]
+    }));
+  }
+  return;
+};
+
+/**
  * Returns list of all MAAS configs
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.config.items.
@@ -61,18 +78,7 @@ config.defaultStorageLayout = createSelector(
  */
 config.storageLayoutOptions = createSelector(
   [config.all],
-  configs => {
-    const configObj = configs.find(
-      config => config.name === "default_storage_layout"
-    );
-    if (configObj) {
-      return configObj.choices.map(choice => ({
-        value: choice[0],
-        label: choice[1]
-      }));
-    }
-    return;
-  }
+  configs => getOptionsFromName(configs, "default_storage_layout")
 );
 
 /**
@@ -195,18 +201,7 @@ config.defaultDistroSeries = createSelector(
  */
 config.distroSeriesOptions = createSelector(
   [config.all],
-  configs => {
-    const configObj = configs.find(
-      config => config.name === "default_distro_series"
-    );
-    if (configObj) {
-      return configObj.choices.map(choice => ({
-        value: choice[0],
-        label: choice[1]
-      }));
-    }
-    return;
-  }
+  configs => getOptionsFromName(configs, "default_distro_series")
 );
 
 /**
@@ -226,18 +221,116 @@ config.defaultMinKernelVersion = createSelector(
  */
 config.minKernelVersionOptions = createSelector(
   [config.all],
-  configs => {
-    const configObj = configs.find(
-      config => config.name === "default_min_hwe_kernel"
-    );
-    if (configObj) {
-      return configObj.choices.map(choice => ({
-        value: choice[0],
-        label: choice[1]
-      }));
-    }
-    return;
-  }
+  configs => getOptionsFromName(configs, "default_min_hwe_kernel")
+);
+
+/* Returns the MAAS config for enabling DNSSEC validation of upstream zones.
+ * @param {Object} state - The redux state.
+ * @returns {String} DNSSEC validation type.
+ */
+config.dnssecValidation = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "dnssec_validation")
+);
+
+/**
+ * Returns the possible DNSSEC validation options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} DNSSEC validation options.
+ */
+config.dnssecOptions = createSelector(
+  [config.all],
+  configs => getOptionsFromName(configs, "dnssec_validation")
+);
+
+/**
+ * Returns the MAAS config for the list of external networks that will be allowed to use MAAS for DNS resolution.
+ * @param {Object} state - The redux state.
+ * @returns {String} External networks.
+ */
+config.dnsTrustedAcl = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "dns_trusted_acl")
+);
+
+/**
+ * Returns the MAAS config for upstream DNS.
+ * @param {Object} state - The redux state.
+ * @returns {String} Upstream DNS(s).
+ */
+config.upstreamDns = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "upstream_dns")
+);
+
+/**
+ * Returns the MAAS config for NTP servers.
+ * @param {Object} state - The redux state.
+ * @returns {String} NTP server(s).
+ */
+config.ntpServers = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "ntp_servers")
+);
+
+/**
+ * Returns the MAAS config for only enabling external NTP servers.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Enable external NTP servers only.
+ */
+config.ntpExternalOnly = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "ntp_external_only")
+);
+
+/**
+ * Returns the MAAS config for remote syslog server to forward machine logs.
+ * @param {Object} state - The redux state.
+ * @returns {String} Remote syslog server.
+ */
+config.remoteSyslog = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "remote_syslog")
+);
+
+/**
+ * Returns the MAAS config for enabling network discovery.
+ * @param {Object} state - The redux state.
+ * @returns {String} Enable network discovery.
+ */
+config.networkDiscovery = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "network_discovery")
+);
+
+/**
+ * Returns the possible network discovery options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Network discovery options.
+ */
+config.networkDiscoveryOptions = createSelector(
+  [config.all],
+  configs => getOptionsFromName(configs, "network_discovery")
+);
+
+/**
+ * Returns the MAAS config for active discovery interval.
+ * @param {Object} state - The redux state.
+ * @returns {Number} Active discovery interval in ms.
+ */
+config.activeDiscoveryInterval = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "active_discovery_interval")
+);
+
+/**
+ * Returns the possible active discovery intervals reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Active discovery intervals.
+ */
+config.discoveryIntervalOptions = createSelector(
+  [config.all],
+  configs => getOptionsFromName(configs, "active_discovery_interval")
 );
 
 /**

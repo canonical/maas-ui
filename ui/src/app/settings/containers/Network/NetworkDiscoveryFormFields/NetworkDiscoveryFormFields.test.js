@@ -3,13 +3,28 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
+import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 
 const mockStore = configureStore();
 
-describe("NetworkDiscoveryForm", () => {
+describe("NetworkDiscoveryFormFields", () => {
+  let baseFormikProps;
   let initialState;
+  let baseValues = {
+    active_discovery_interval: 0,
+    network_discovery: "disabled"
+  };
+
   beforeEach(() => {
+    baseFormikProps = {
+      errors: {},
+      handleBlur: jest.fn(),
+      handleChange: jest.fn(),
+      handleSubmit: jest.fn(),
+      initialValues: { ...baseValues },
+      touched: {},
+      values: { ...baseValues }
+    };
     initialState = {
       config: {
         loading: false,
@@ -40,54 +55,37 @@ describe("NetworkDiscoveryForm", () => {
     };
   });
 
-  it("displays a spinner if config is loading", () => {
+  it("correctly reflects active_discovery_interval state", () => {
     const state = { ...initialState };
-    state.config.loading = true;
+    const formikProps = { ...baseFormikProps };
+    formikProps.values.active_discovery_interval = 600;
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkDiscoveryForm />
+        <NetworkDiscoveryFormFields formikProps={formikProps} />
       </Provider>
     );
 
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(
+      wrapper.find("select[name='active_discovery_interval']").props().value
+    ).toBe(600);
   });
 
-  it("dispatches an action to update config on save button click", done => {
+  it("correctly reflects network_discovery state", () => {
     const state = { ...initialState };
+    const formikProps = { ...baseFormikProps };
+    formikProps.values.network_discovery = "enabled";
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkDiscoveryForm />
+        <NetworkDiscoveryFormFields formikProps={formikProps} />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
 
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
-        {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              {
-                name: "active_discovery_interval",
-                value: 0
-              },
-              {
-                name: "network_discovery",
-                value: "enabled"
-              }
-            ]
-          },
-          meta: {
-            method: "config.update",
-            type: 0
-          }
-        }
-      ]);
-      done();
-    }, 0);
+    expect(wrapper.find("select[name='network_discovery']").props().value).toBe(
+      "enabled"
+    );
   });
 });
