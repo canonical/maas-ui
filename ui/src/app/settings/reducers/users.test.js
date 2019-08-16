@@ -40,4 +40,23 @@ describe("users reducer", () => {
       items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
     });
   });
+
+  it("should correctly reduce FETCH_USERS_LOADED", () => {
+    expect(
+      users(
+        {
+          loading: true,
+          loaded: false,
+          items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
+        },
+        {
+          type: "FETCH_USERS_LOADED"
+        }
+      )
+    ).toEqual({
+      loading: false,
+      loaded: true,
+      items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
+    });
+  });
 });

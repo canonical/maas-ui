@@ -5,6 +5,7 @@ describe("user actions", () => {
     expect(users.fetch()).toEqual({
       type: "FETCH_USERS",
       meta: {
+        model: "users",
         method: "user.list",
         type: 0
       }

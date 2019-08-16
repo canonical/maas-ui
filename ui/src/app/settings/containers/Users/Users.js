@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./Users.scss";
-import { useFetchOnce } from "app/base/hooks";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
@@ -93,11 +92,17 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
 const Users = ({ initialCount = 20 }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.users.fetch());
+  }, [dispatch]);
+
   const users = useSelector(state => selectors.users.search(state, searchText));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
+  const loaded = useSelector(selectors.users.loaded);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
-  const loaded = useFetchOnce(actions.users.fetch, selectors.users.loaded);
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);

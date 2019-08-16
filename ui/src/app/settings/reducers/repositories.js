@@ -10,6 +10,10 @@ const repositories = produce(
         draft.items = action.payload;
         draft.loading = false;
         return;
+      case "FETCH_REPOSITORIES_LOADED":
+        draft.loading = false;
+        draft.loaded = true;
+        break;
       default:
         return;
     }

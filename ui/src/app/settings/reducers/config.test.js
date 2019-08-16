@@ -51,6 +51,25 @@ describe("config reducer", () => {
     });
   });
 
+  it("should correctly reduce FETCH_CONFIG_LOADED", () => {
+    expect(
+      config(
+        {
+          loading: true,
+          loaded: false,
+          items: [{ name: "default_storage_layout", value: "bcache" }]
+        },
+        {
+          type: "FETCH_CONFIG_LOADED"
+        }
+      )
+    ).toEqual({
+      loading: false,
+      loaded: true,
+      items: [{ name: "default_storage_layout", value: "bcache" }]
+    });
+  });
+
   it("should correctly reduce UPDATE_CONFIG_START", () => {
     expect(
       config(

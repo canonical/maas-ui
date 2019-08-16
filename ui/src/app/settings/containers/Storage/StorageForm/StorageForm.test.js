@@ -67,6 +67,7 @@ describe("StorageForm", () => {
             ]
           },
           meta: {
+            model: "config",
             method: "config.update",
             type: 0
           }

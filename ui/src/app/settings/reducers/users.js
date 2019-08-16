@@ -5,12 +5,16 @@ const users = produce(
     switch (action.type) {
       case "FETCH_USERS_START":
         draft.loading = true;
-        return;
+        break;
       case "FETCH_USERS_SUCCESS":
         draft.loading = false;
         draft.loaded = true;
         draft.items = action.payload;
-        return;
+        break;
+      case "FETCH_USERS_LOADED":
+        draft.loading = false;
+        draft.loaded = true;
+        break;
       default:
         return draft;
     }
