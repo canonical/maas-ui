@@ -16,7 +16,7 @@ describe("CommissioningForm", () => {
         loaded: true,
         items: [
           {
-            name: "default_distro_series",
+            name: "commissioning_distro_series",
             value: "bionic",
             choices: [
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
@@ -63,7 +63,7 @@ describe("CommissioningForm", () => {
           type: "UPDATE_CONFIG",
           payload: {
             params: [
-              { name: "default_distro_series", value: "bionic" },
+              { name: "commissioning_distro_series", value: "bionic" },
               { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
             ]
           },

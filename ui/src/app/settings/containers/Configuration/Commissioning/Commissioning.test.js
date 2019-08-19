@@ -16,7 +16,7 @@ describe("Commissioning", () => {
         loaded: true,
         items: [
           {
-            name: "default_distro_series",
+            name: "commissioning_distro_series",
             value: "bionic",
             choices: []
           },

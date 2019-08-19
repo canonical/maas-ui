@@ -11,7 +11,7 @@ import Form from "app/base/components/Form";
 import CommissioningFormFields from "app/settings/containers/Configuration/CommissioningFormFields";
 
 const CommissioningSchema = Yup.object().shape({
-  default_distro_series: Yup.string(),
+  commissioning_distro_series: Yup.string(),
   default_min_hwe_kernel: Yup.string()
 });
 
@@ -22,13 +22,13 @@ const CommissioningForm = () => {
   const saved = useSelector(config.saved);
   const saving = useSelector(config.saving);
 
-  const defaultDistroSeries = useSelector(config.defaultDistroSeries);
+  const commissioningDistroSeries = useSelector(config.commissioningDistroSeries);
   const defaultMinKernelVersion = useSelector(config.defaultMinKernelVersion);
 
   return (
     <Formik
       initialValues={{
-        default_distro_series: defaultDistroSeries,
+        commissioning_distro_series: commissioningDistroSeries,
         default_min_hwe_kernel: defaultMinKernelVersion
       }}
       onSubmit={(values, { resetForm }) => {
