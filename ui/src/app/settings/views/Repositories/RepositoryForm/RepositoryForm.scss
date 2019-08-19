@@ -1,0 +1,12 @@
+@import "~vanilla-framework/scss/settings_colors";
+
+.repo-form {
+  margin-top: 0.5rem;
+}
+
+.repo-form__buttons {
+  border-top: 1px solid $color-mid-light;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: right;
+}

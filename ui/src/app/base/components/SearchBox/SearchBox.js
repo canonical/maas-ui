@@ -7,6 +7,7 @@ const SearchBox = ({
   className,
   onChange,
   onSubmit,
+  placeholder = "Search",
   value,
   ...props
 }) => {
@@ -30,7 +31,7 @@ const SearchBox = ({
         disabled={disabled}
         name="search"
         onChange={evt => onChange(evt.target.value)}
-        placeholder="Search"
+        placeholder={placeholder}
         ref={input}
         type="search"
         defaultValue={value}
@@ -63,6 +64,7 @@ SearchBox.propTypes = {
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
+  placeholder: PropTypes.string,
   value: PropTypes.string
 };
 

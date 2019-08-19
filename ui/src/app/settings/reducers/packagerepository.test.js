@@ -4,6 +4,7 @@ describe("packagerepository reducer", () => {
   it("should return the initial state", () => {
     expect(packagerepository(undefined, {})).toEqual({
       loading: false,
+      loaded: false,
       items: []
     });
   });
@@ -15,6 +16,7 @@ describe("packagerepository reducer", () => {
       })
     ).toEqual({
       loading: true,
+      loaded: false,
       items: []
     });
   });
@@ -24,6 +26,7 @@ describe("packagerepository reducer", () => {
       packagerepository(
         {
           loading: true,
+          loaded: false,
           items: []
         },
         {
@@ -33,6 +36,7 @@ describe("packagerepository reducer", () => {
       )
     ).toEqual({
       loading: false,
+      loaded: true,
       items: [1, 2, 3]
     });
   });

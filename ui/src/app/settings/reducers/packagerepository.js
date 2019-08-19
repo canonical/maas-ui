@@ -5,17 +5,19 @@ const packagerepository = produce(
     switch (action.type) {
       case "FETCH_REPOSITORIES_START":
         draft.loading = true;
-        return;
+        break;
       case "FETCH_REPOSITORIES_SUCCESS":
-        draft.items = action.payload;
         draft.loading = false;
-        return;
+        draft.loaded = true;
+        draft.items = action.payload;
+        break;
       default:
-        return;
+        return draft;
     }
   },
   {
     loading: false,
+    loaded: false,
     items: []
   }
 );
