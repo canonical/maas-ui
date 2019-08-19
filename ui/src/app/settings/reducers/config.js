@@ -13,6 +13,7 @@ const config = produce(
         break;
       case "UPDATE_CONFIG_START":
         draft.saving = true;
+        draft.saved = false;
         break;
       case "UPDATE_CONFIG_SUCCESS":
         draft.saving = false;
@@ -34,6 +35,7 @@ const config = produce(
     loading: false,
     loaded: false,
     saving: false,
+    saved: false,
     items: []
   }
 );

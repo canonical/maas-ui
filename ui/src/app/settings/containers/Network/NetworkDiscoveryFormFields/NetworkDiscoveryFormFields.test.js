@@ -11,7 +11,7 @@ describe("NetworkDiscoveryFormFields", () => {
   let baseFormikProps;
   let initialState;
   let baseValues = {
-    active_discovery_interval: 0,
+    active_discovery_interval: "0",
     network_discovery: "disabled"
   };
 
@@ -58,7 +58,7 @@ describe("NetworkDiscoveryFormFields", () => {
   it("correctly reflects active_discovery_interval state", () => {
     const state = { ...initialState };
     const formikProps = { ...baseFormikProps };
-    formikProps.values.active_discovery_interval = 600;
+    formikProps.values.active_discovery_interval = "600";
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -69,7 +69,7 @@ describe("NetworkDiscoveryFormFields", () => {
 
     expect(
       wrapper.find("select[name='active_discovery_interval']").props().value
-    ).toBe(600);
+    ).toBe("600");
   });
 
   it("correctly reflects network_discovery state", () => {
