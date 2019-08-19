@@ -440,22 +440,13 @@ exports[`UserFormFields can render 1`] = `
           success={false}
           type="submit"
         >
-          <Button
-            appearance="positive"
-            className="u-no-margin--bottom p-action-button"
+          <button
+            className="p-action-button p-button--positive"
             disabled={false}
-            style={Object {}}
             type="submit"
           >
-            <button
-              className="u-no-margin--bottom p-action-button p-button--positive"
-              disabled={false}
-              style={Object {}}
-              type="submit"
-            >
-              Save user
-            </button>
-          </Button>
+            Save user
+          </button>
         </ActionButton>
       </div>
     </form>
