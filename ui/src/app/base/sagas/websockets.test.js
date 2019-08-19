@@ -116,6 +116,22 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("continues if data has already been fetched for list methods", () => {
+    const saga = sendMessage(socketClient);
+    const action = {
+      type: "FETCH_TEST",
+      meta: {
+        model: "test",
+        method: "test.list",
+        type: 0
+      }
+    };
+    saga.next();
+    saga.next(action);
+    // return to the first yield
+    expect(saga.next(true).value.type).toEqual("TAKE");
+  });
+
   it("can handle params as an array", () => {
     const saga = sendMessage(socketClient);
     saga.next();

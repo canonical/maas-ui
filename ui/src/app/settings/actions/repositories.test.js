@@ -8,6 +8,7 @@ describe("repository actions", () => {
         params: { limit: 50 }
       },
       meta: {
+        model: "repositories",
         method: "packagerepository.list",
         type: 0
       }

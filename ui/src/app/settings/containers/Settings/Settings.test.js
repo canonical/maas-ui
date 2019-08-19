@@ -31,6 +31,7 @@ describe("Settings", () => {
       {
         type: "FETCH_CONFIG",
         meta: {
+          model: "config",
           method: "config.list",
           type: 0
         }

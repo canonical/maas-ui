@@ -1,10 +1,21 @@
 import { eventChannel } from "redux-saga";
-import { all, call, put, take, race } from "redux-saga/effects";
+import { all, call, put, select, take, race } from "redux-saga/effects";
 
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
 const SYNC_MESSAGE = 2; // 'type: 2' in a ws message
+
+/**
+ * Has data already been fetched into state?
+ *
+ * @param {Object} state - redux state object.
+ * @param {String} model - root redux state model (e.g. 'config', 'users')
+ * @returns {Boolean} - has data been fetched?
+ */
+const isLoaded = (state, model) => {
+  return state[model].loaded;
+};
 
 /**
  * Dynamically build a websocket url from window.location
@@ -134,6 +145,16 @@ export function* sendMessage(socketClient) {
     const data = yield take(action => isWebsocketRequestAction(action));
     const { type, meta } = data;
     const params = data.payload ? data.payload.params : null;
+
+    const { method, model } = meta;
+    // If method is 'list' and data has loaded, do not fetch again.
+    if (method.endsWith("list")) {
+      const loaded = yield select(isLoaded, model);
+      if (loaded) {
+        continue;
+      }
+    }
+
     yield put({ type: `${type}_START` });
     try {
       if (params && Array.isArray(params)) {

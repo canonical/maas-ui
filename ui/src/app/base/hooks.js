@@ -1,21 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { useContext } from "react";
 import { __RouterContext as RouterContext } from "react-router";
 
 const DELAY_TIMER = 400; // minimium duration (ms) saving spinner displays
 const SUCCESS_TIMER = 2000; // duration (ms) success tick is displayed
-
-export const useFetchOnce = (fetchAction, loadedSelector) => {
-  const dispatch = useDispatch();
-  const loaded = useSelector(loadedSelector);
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(fetchAction());
-    }
-  }, [loaded, dispatch, fetchAction, loadedSelector]);
-  return loaded;
-};
 
 // Router hooks inspired by: https://github.com/ReactTraining/react-router/issues/6430#issuecomment-510266079
 // These should be replaced with official hooks if/when they become available.

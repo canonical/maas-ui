@@ -5,6 +5,7 @@ describe("config actions", () => {
     expect(config.fetch()).toEqual({
       type: "FETCH_CONFIG",
       meta: {
+        model: "config",
         method: "config.list",
         type: 0
       }
@@ -26,6 +27,7 @@ describe("config actions", () => {
         ]
       },
       meta: {
+        model: "config",
         method: "config.update",
         type: 0
       }

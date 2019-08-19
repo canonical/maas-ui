@@ -4,6 +4,7 @@ config.fetch = () => {
   return {
     type: "FETCH_CONFIG",
     meta: {
+      model: "config",
       method: "config.list",
       type: 0
     }
@@ -22,6 +23,7 @@ config.update = values => {
       params
     },
     meta: {
+      model: "config",
       method: "config.update",
       type: 0
     }

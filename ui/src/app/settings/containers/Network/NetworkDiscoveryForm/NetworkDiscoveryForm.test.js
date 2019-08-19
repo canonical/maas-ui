@@ -17,7 +17,7 @@ describe("NetworkDiscoveryForm", () => {
         items: [
           {
             name: "active_discovery_interval",
-            value: 0,
+            value: "0",
             choices: [
               [0, "Never (disabled)"],
               [604800, "Every week"],
@@ -73,7 +73,7 @@ describe("NetworkDiscoveryForm", () => {
             params: [
               {
                 name: "active_discovery_interval",
-                value: 0
+                value: "0"
               },
               {
                 name: "network_discovery",
@@ -82,6 +82,7 @@ describe("NetworkDiscoveryForm", () => {
             ]
           },
           meta: {
+            model: "config",
             method: "config.update",
             type: 0
           }

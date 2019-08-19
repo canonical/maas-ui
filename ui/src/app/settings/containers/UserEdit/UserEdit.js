@@ -1,19 +1,23 @@
-import { useSelector } from "react-redux";
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 
-import { useFetchOnce, useParams } from "app/base/hooks";
+import { useParams } from "app/base/hooks";
 import actions from "app/settings/actions";
 import Loader from "app/base/components/Loader";
 import selectors from "app/settings/selectors";
 import UserForm from "app/settings/components/UserForm";
 
 export const UserEdit = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.users.fetch());
+  }, [dispatch]);
+
   const { id } = useParams();
   const loading = useSelector(selectors.users.loading);
   const user = useSelector(state =>
     selectors.users.getById(state, parseInt(id))
   );
-  useFetchOnce(actions.users.fetch, selectors.users.loaded);
   if (loading) {
     return <Loader text="Loading..." />;
   }
