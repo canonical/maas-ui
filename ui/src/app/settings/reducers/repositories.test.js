@@ -36,5 +36,4 @@ describe("repositories reducer", () => {
       items: [1, 2, 3]
     });
   });
-
 });

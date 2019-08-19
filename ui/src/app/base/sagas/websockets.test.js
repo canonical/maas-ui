@@ -5,7 +5,6 @@ import {
   createConnection,
   handleMessage,
   handleSyncMessage,
-  isWebsocketRequestAction,
   sendMessage,
   watchMessages,
   watchWebSockets
@@ -129,6 +128,7 @@ describe("websocket sagas", () => {
     };
     saga.next();
     saga.next(action);
+    // return to the first yield
     expect(saga.next(true).value.type).toEqual("TAKE");
   });
 

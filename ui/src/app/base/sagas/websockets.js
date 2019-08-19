@@ -118,8 +118,7 @@ export function* handleMessage(socketChannel, socketClient) {
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
-export const isWebsocketRequestAction = action =>
-  action.meta && action.meta.method;
+const isWebsocketRequestAction = action => action.meta && action.meta.method;
 
 /**
  * Build a message for websocket requests.

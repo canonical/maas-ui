@@ -40,5 +40,4 @@ describe("users reducer", () => {
       items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
     });
   });
-
 });
