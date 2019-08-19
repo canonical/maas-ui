@@ -20,7 +20,7 @@
     "redux-devtools-extension": "2.13.8",
     "redux-saga": "1.0.5",
     "reselect": "4.0.0",
-    "uuid": "3.3.2",
+    "uuid": "3.3.3",
     "vanilla-framework": "2.3.0",
     "yup": "0.27.0"
   },
