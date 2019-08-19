@@ -5,6 +5,7 @@ import {
   createConnection,
   handleMessage,
   handleSyncMessage,
+  isWebsocketRequestAction,
   sendMessage,
   watchMessages,
   watchWebSockets
@@ -116,7 +117,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("sends *_LOADED if data has already been fetched for list methods", () => {
+  it("continues if data has already been fetched for list methods", () => {
     const saga = sendMessage(socketClient);
     const action = {
       type: "FETCH_TEST",
@@ -128,7 +129,7 @@ describe("websocket sagas", () => {
     };
     saga.next();
     saga.next(action);
-    expect(saga.next(true).value).toEqual(put({ type: "FETCH_TEST_LOADED" }));
+    expect(saga.next(true).value.type).toEqual("TAKE");
   });
 
   it("can handle params as an array", () => {

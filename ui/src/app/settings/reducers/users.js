@@ -11,10 +11,6 @@ const users = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
-      case "FETCH_USERS_LOADED":
-        draft.loading = false;
-        draft.loaded = true;
-        break;
       default:
         return draft;
     }

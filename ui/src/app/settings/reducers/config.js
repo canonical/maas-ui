@@ -11,10 +11,6 @@ const config = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
-      case "FETCH_CONFIG_LOADED":
-        draft.loading = false;
-        draft.loaded = true;
-        break;
       case "UPDATE_CONFIG_START":
         draft.saving = true;
         break;

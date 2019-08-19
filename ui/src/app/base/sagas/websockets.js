@@ -118,7 +118,8 @@ export function* handleMessage(socketChannel, socketClient) {
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
-const isWebsocketRequestAction = action => action.meta && action.meta.method;
+export const isWebsocketRequestAction = action =>
+  action.meta && action.meta.method;
 
 /**
  * Build a message for websocket requests.
@@ -151,7 +152,6 @@ export function* sendMessage(socketClient) {
     if (method.endsWith("list")) {
       const loaded = yield select(isLoaded, model);
       if (loaded) {
-        yield put({ type: `${type}_LOADED` });
         continue;
       }
     }

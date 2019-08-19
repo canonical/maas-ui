@@ -37,22 +37,4 @@ describe("repositories reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_REPOSITORIES_LOADED", () => {
-    expect(
-      repositories(
-        {
-          loading: true,
-          loaded: false,
-          items: [1, 2, 3]
-        },
-        {
-          type: "FETCH_REPOSITORIES_LOADED"
-        }
-      )
-    ).toEqual({
-      loading: false,
-      loaded: true,
-      items: [1, 2, 3]
-    });
-  });
 });
