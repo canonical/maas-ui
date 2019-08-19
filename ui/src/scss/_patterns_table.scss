@@ -7,16 +7,3 @@
 .p-table-expanding--light .p-table__row.is-active {
   background-color: $color-x-light;
 }
-
-// Stop the icons from adding extra height to the row:
-td:not(.p-table-expanding__panel) [class*="p-button"] {
-  margin-top: -0.25rem;
-  margin-bottom: -0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.u-align-icons--top {
-  align-items: flex-start;
-  display: flex;
-}
