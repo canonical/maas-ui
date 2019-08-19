@@ -3,13 +3,19 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
-import config from "app/settings/selectors/config";
+import selectors from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
 const CommissioningFormFields = ({ formikProps }) => {
-  const distroSeriesOptions = useSelector(config.distroSeriesOptions);
-  const minKernelVersionOptions = useSelector(config.minKernelVersionOptions);
+  const distroSeriesOptions = useSelector(selectors.config.distroSeriesOptions);
+
+  const ubuntuKernelOptions = useSelector(state =>
+    selectors.general.getUbuntuKernelOptions(
+      state,
+      formikProps.values.commissioning_distro_series
+    )
+  );
 
   return (
     <>
@@ -23,7 +29,7 @@ const CommissioningFormFields = ({ formikProps }) => {
       <FormikField
         label="Default minimum kernel version"
         component={Select}
-        options={minKernelVersionOptions}
+        options={ubuntuKernelOptions}
         help="The default minimum kernel version used on all new and commissioned nodes"
         fieldKey="default_min_hwe_kernel"
         formikProps={formikProps}

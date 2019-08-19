@@ -297,42 +297,6 @@ describe("config selectors", () => {
     });
   });
 
-  describe("minKernelVersionOptions", () => {
-    it("returns array of min kernel version options, formatted as objects", () => {
-      const state = {
-        config: {
-          loading: false,
-          loaded: true,
-          items: [
-            {
-              name: "default_min_hwe_kernel",
-              value: "",
-              choices: [
-                ["", "--- No minimum kernel ---"],
-                ["ga-18.04-lowlatency", "bionic (ga-18.04-lowlatency)"],
-                ["ga-18.04", "bionic (ga-18.04)"]
-              ]
-            }
-          ]
-        }
-      };
-      expect(config.minKernelVersionOptions(state)).toStrictEqual([
-        {
-          value: "",
-          label: "--- No minimum kernel ---"
-        },
-        {
-          value: "ga-18.04-lowlatency",
-          label: "bionic (ga-18.04-lowlatency)"
-        },
-        {
-          value: "ga-18.04",
-          label: "bionic (ga-18.04)"
-        }
-      ]);
-    });
-  });
-
   describe("kernelParams", () => {
     it("returns MAAS config for kernel parameters", () => {
       const state = {

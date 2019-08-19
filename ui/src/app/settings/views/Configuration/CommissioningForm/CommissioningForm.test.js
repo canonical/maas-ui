@@ -42,6 +42,11 @@ describe("CommissioningForm", () => {
             ]
           }
         ]
+      },
+      general: {
+        loading: false,
+        loaded: true,
+        osInfo: {}
       }
     };
   });
@@ -58,23 +63,48 @@ describe("CommissioningForm", () => {
 
     // since Formik handler is evaluated asynchronously we have to delay checking the assertion
     window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
-        {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              { name: "commissioning_distro_series", value: "bionic" },
-              { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
-            ]
-          },
-          meta: {
-            model: "config",
-            method: "update",
-            type: 0
-          }
+      const updateConfigAction = store
+        .getActions()
+        .find(action => action.type === "UPDATE_CONFIG");
+      expect(updateConfigAction).toEqual({
+        type: "UPDATE_CONFIG",
+        payload: {
+          params: [
+            { name: "commissioning_distro_series", value: "bionic" },
+            { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
+          ]
+        },
+        meta: {
+          model: "config",
+          method: "update",
+          type: 0
         }
-      ]);
+      });
       done();
     }, 0);
+  });
+
+  it("dispatches action to fetch general on load", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <CommissioningForm />
+      </Provider>
+    );
+
+    const fetchGeneralOsinfoAction = store
+      .getActions()
+      .find(action => action.type === "FETCH_GENERAL_OSINFO");
+
+    expect(fetchGeneralOsinfoAction).toEqual({
+      type: "FETCH_GENERAL_OSINFO",
+      meta: {
+        model: "general",
+        method: "osinfo",
+        type: 0
+      }
+    });
   });
 });

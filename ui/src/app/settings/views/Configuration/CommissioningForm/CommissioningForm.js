@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -21,6 +21,10 @@ const CommissioningForm = () => {
 
   const saved = useSelector(config.saved);
   const saving = useSelector(config.saving);
+
+  useEffect(() => {
+    dispatch(actions.general.fetchOsInfo());
+  }, [dispatch]);
 
   const commissioningDistroSeries = useSelector(
     config.commissioningDistroSeries

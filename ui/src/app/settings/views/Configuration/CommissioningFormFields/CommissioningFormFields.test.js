@@ -42,19 +42,21 @@ describe("CommissioningFormFields", () => {
           },
           {
             name: "default_min_hwe_kernel",
-            value: "ga-16.04-lowlatency",
-            choices: [
-              ["", "--- No minimum kernel ---"],
-              ["ga-16.04-lowlatency", "xenial (ga-16.04-lowlatency)"],
-              ["ga-16.04", "xenial (ga-16.04)"],
-              ["hwe-16.04-lowlatency", "xenial (hwe-16.04-lowlatency)"],
-              ["hwe-16.04", "xenial (hwe-16.04)"],
-              ["hwe-16.04-edge", "xenial (hwe-16.04-edge)"],
-              [
-                "hwe-16.04-lowlatency-edge",
-                "xenial (hwe-16.04-lowlatency-edge)"
-              ]
-            ]
+            value: "ga-16.04-lowlatency"
+          }
+        ]
+      },
+      general: {
+        osInfo: [
+          {
+            kernels: {
+              ubuntu: {
+                xenial: [
+                  ["hwe-16.04-edge", "xenial (hwe-16.04-edge)"],
+                  ["hwe-16.04", "xenial (hwe-16.04)"]
+                ]
+              }
+            }
           }
         ]
       }
