@@ -247,16 +247,16 @@ describe("config selectors", () => {
     });
   });
 
-  describe("defaultDistroSeries", () => {
+  describe("commissioningDistroSeries", () => {
     it("returns MAAS config for default distro series", () => {
       const state = {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "default_distro_series", value: "bionic" }]
+          items: [{ name: "commissioning_distro_series", value: "bionic" }]
         }
       };
-      expect(config.defaultDistroSeries(state)).toBe("bionic");
+      expect(config.commissioningDistroSeries(state)).toBe("bionic");
     });
   });
 
@@ -268,7 +268,7 @@ describe("config selectors", () => {
           loaded: true,
           items: [
             {
-              name: "default_distro_series",
+              name: "commissioning_distro_series",
               value: "bionic",
               choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]]
             }

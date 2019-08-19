@@ -17,7 +17,7 @@ const CommissioningFormFields = ({ formikProps }) => {
         label="Default Ubuntu release used for commissioning"
         component={Select}
         options={distroSeriesOptions}
-        fieldKey="default_distro_series"
+        fieldKey="commissioning_distro_series"
         formikProps={formikProps}
       />
       <FormikField
@@ -33,7 +33,7 @@ const CommissioningFormFields = ({ formikProps }) => {
 };
 
 CommissioningFormFields.propTypes = extendFormikShape({
-  default_distro_series: PropTypes.string,
+  commissioning_distro_series: PropTypes.string,
   default_min_hwe_kernel: PropTypes.string
 });
 
