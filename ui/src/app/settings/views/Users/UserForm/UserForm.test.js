@@ -1,11 +1,163 @@
-import { shallow } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 import React from "react";
 
 import { UserForm } from "./UserForm";
 
+jest.mock("uuid/v4", () =>
+  jest.fn(() => "00000000-0000-0000-0000-000000000000")
+);
+
+const mockStore = configureStore();
+
 describe("UserForm", () => {
+  let state;
+
+  beforeEach(() => {
+    state = {
+      users: {
+        errors: {},
+        items: [],
+        loaded: true,
+        loading: false,
+        saved: false,
+        saving: false
+      }
+    };
+  });
+
   it("can render", () => {
-    const wrapper = shallow(<UserForm title="Add user" />);
-    expect(wrapper).toMatchSnapshot();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UserForm title="Add user" />
+      </Provider>
+    );
+    expect(wrapper.find("UserForm")).toMatchSnapshot();
+  });
+
+  it("cleans up when unmounting", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UserForm title="Add user" />
+      </Provider>
+    );
+    wrapper.unmount();
+    expect(store.getActions()).toEqual([
+      {
+        type: "CLEANUP_USERS"
+      }
+    ]);
+  });
+
+  it("redirects when the user is saved", () => {
+    state.users.saved = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm title="Add user" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Redirect").exists()).toBe(true);
+  });
+
+  it("can update a user", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UserForm
+          title="Add user"
+          user={{
+            email: "old@example.com",
+            first_name: "Miss",
+            id: 808,
+            is_superuser: true,
+            last_name: "Wallaby",
+            password1: "test1234",
+            password2: "test1234",
+            username: "admin"
+          }}
+        />
+      </Provider>
+    );
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit({
+        isSuperuser: true,
+        email: "test@example.com",
+        fullName: "Miss Wallaby",
+        password: "test1234",
+        passwordConfirm: "test1234",
+        username: "admin"
+      });
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_USERS",
+        payload: {
+          params: {
+            email: "test@example.com",
+            first_name: "Miss",
+            id: 808,
+            is_superuser: true,
+            last_name: "Wallaby",
+            password1: "test1234",
+            password2: "test1234",
+            username: "admin"
+          }
+        },
+        meta: {
+          model: "users",
+          method: "user.update",
+          type: 0
+        }
+      }
+    ]);
+  });
+
+  it("can create a user", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UserForm title="Add user" />
+      </Provider>
+    );
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit({
+        isSuperuser: true,
+        email: "test@example.com",
+        fullName: "Miss Wallaby",
+        password: "test1234",
+        passwordConfirm: "test1234",
+        username: "admin"
+      });
+    expect(store.getActions()).toEqual([
+      {
+        type: "CREATE_USERS",
+        payload: {
+          params: {
+            email: "test@example.com",
+            first_name: "Miss",
+            is_superuser: true,
+            last_name: "Wallaby",
+            password1: "test1234",
+            password2: "test1234",
+            username: "admin"
+          }
+        },
+        meta: {
+          model: "users",
+          method: "user.create",
+          type: 0
+        }
+      }
+    ]);
   });
 });

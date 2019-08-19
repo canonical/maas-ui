@@ -47,6 +47,27 @@ users.loaded = state => state.users.loaded;
 users.count = state => state.users.items.length;
 
 /**
+ * Returns users errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Errors for a user.
+ */
+users.errors = state => state.users.errors;
+
+/**
+ * Get the saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether users are being saved.
+ */
+users.saving = state => state.users.saving;
+
+/**
+ * Get the saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether users have been saved.
+ */
+users.saved = state => state.users.saved;
+
+/**
  * Returns all users
  * @param {Object} state - The redux state.
  * @param {Number} batch - Number of users to return.

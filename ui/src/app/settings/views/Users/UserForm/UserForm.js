@@ -1,22 +1,26 @@
 import { Formik } from "formik";
-import PropTypes from "prop-types";
-import React from "react";
+import { Redirect } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 
 import "./UserForm.scss";
+import actions from "app/settings/actions";
 import { UserShape } from "app/base/proptypes";
 import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
 import Row from "app/base/components/Row";
 import UserFormFields from "../UserFormFields";
+import selectors from "app/settings/selectors";
 
 const schemaFields = {
   email: Yup.string()
     .email("Must be a valid email address")
-    .required(),
+    .required("Email is required"),
   fullName: Yup.string(),
   is_superuser: Yup.boolean(),
-  password: Yup.string().min(8),
+  password: Yup.string().min(8, "Passwords must be 8 characters or more"),
   passwordConfirm: Yup.string().oneOf(
     [Yup.ref("password")],
     "Passwords must be the same"
@@ -38,7 +42,21 @@ const UserSchema = Yup.object().shape({
 const UserEditSchema = Yup.object().shape(schemaFields);
 
 export const UserForm = ({ title, user }) => {
+  const dispatch = useDispatch();
+  const saved = useSelector(selectors.users.saved);
   const editing = !!user;
+
+  useEffect(() => {
+    return () => {
+      // Clean up saved and error states on unmount.
+      dispatch(actions.users.cleanup());
+    };
+  }, [dispatch]);
+
+  if (saved) {
+    // The user was successfully created/updated so redirect to the user list.
+    return <Redirect to="/users" />;
+  }
 
   return (
     <Card highlighted={true} className="user-form">
@@ -57,24 +75,25 @@ export const UserForm = ({ title, user }) => {
               username: user ? user.username : ""
             }}
             validationSchema={editing ? UserEditSchema : UserSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                const [firstName, ...lastNameParts] = values.fullName.split(
-                  " "
-                );
-                const user = {
-                  email: values.email,
-                  first_name: firstName,
-                  is_superuser: values.isSuperuser,
-                  last_name: lastNameParts.join(" "),
-                  password: values.password,
-                  username: values.username
-                };
-                // TODO: Implement creating/updating a user once the API
-                // supports it.
-                console.log("user", user);
-                setSubmitting(false);
-              }, 400);
+            onSubmit={values => {
+              const [firstName, ...lastNameParts] = values.fullName.split(" ");
+              const params = {
+                email: values.email,
+                first_name: firstName,
+                is_superuser: values.isSuperuser,
+                last_name: lastNameParts.join(" "),
+                username: values.username
+              };
+              if (values.password) {
+                params.password1 = values.password;
+                params.password2 = values.passwordConfirm;
+              }
+              if (editing) {
+                params.id = user.id;
+                dispatch(actions.users.update(params));
+              } else {
+                dispatch(actions.users.create(params));
+              }
             }}
             render={formikProps => (
               <UserFormFields editing={editing} formikProps={formikProps} />

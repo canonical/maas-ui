@@ -12,15 +12,29 @@ const FormikField = ({
   ...props
 }) => {
   const id = useRef(uuidv4());
+  const {
+    errors,
+    handleBlur,
+    handleChange,
+    setFieldTouched,
+    status = {},
+    touched
+  } = formikProps;
+  const { serverErrors = {}, invalidValues = {} } = status;
   return (
     <Component
-      error={formikProps.touched[fieldKey] && formikProps.errors[fieldKey]}
+      error={
+        (touched[fieldKey] &&
+          (errors[fieldKey] ||
+            (value === invalidValues[fieldKey] && serverErrors[fieldKey]))) ||
+        undefined
+      }
       id={id.current}
       name={fieldKey}
-      onBlur={formikProps.handleBlur}
+      onBlur={handleBlur}
       onChange={e => {
-        formikProps.handleChange(e);
-        formikProps.setFieldTouched(fieldKey, true, true);
+        handleChange(e);
+        setFieldTouched(fieldKey, true, true);
       }}
       value={value}
       {...props}

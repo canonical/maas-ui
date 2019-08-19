@@ -39,6 +39,7 @@ describe("UserEdit", () => {
   it("displays a loading component if loading", () => {
     const store = mockStore({
       users: {
+        errors: {},
         loading: true,
         items: users
       }
@@ -58,6 +59,7 @@ describe("UserEdit", () => {
   it("handles user not found", () => {
     const store = mockStore({
       users: {
+        errors: {},
         loading: false,
         loaded: true,
         items: []
@@ -78,6 +80,7 @@ describe("UserEdit", () => {
   it("can display a user edit form", () => {
     const store = mockStore({
       users: {
+        errors: {},
         loading: false,
         loaded: true,
         items: users
