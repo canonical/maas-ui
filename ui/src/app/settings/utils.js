@@ -20,16 +20,14 @@ const simpleObjectEquality = (obj1, obj2) => {
  * @returns {Boolean} Form is disabled.
  */
 const formikFormDisabled = formikProps => {
-  const { initialValues, isSubmitting, errors, values } = formikProps;
+  const { initialValues, errors, values } = formikProps;
   let hasErrors = false;
 
   if (errors) {
     hasErrors = Object.keys(errors).length > 0;
   }
 
-  return (
-    isSubmitting || simpleObjectEquality(initialValues, values) || hasErrors
-  );
+  return simpleObjectEquality(initialValues, values) || hasErrors;
 };
 
 export { formikFormDisabled, simpleObjectEquality };

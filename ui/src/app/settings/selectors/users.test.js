@@ -30,6 +30,26 @@ describe("users selectors", () => {
     expect(users.loaded(state)).toEqual(true);
   });
 
+  it("can get the saving state", () => {
+    const state = {
+      users: {
+        saving: true,
+        items: []
+      }
+    };
+    expect(users.saving(state)).toEqual(true);
+  });
+
+  it("can get the saved state", () => {
+    const state = {
+      users: {
+        saved: true,
+        items: []
+      }
+    };
+    expect(users.saved(state)).toEqual(true);
+  });
+
   it("can get the count", () => {
     const state = {
       users: {
@@ -67,5 +87,17 @@ describe("users selectors", () => {
       { username: "admin", emai: "test@example.com" },
       { username: "me", email: "minnie@example.com" }
     ]);
+  });
+
+  it("can get user errors", () => {
+    const state = {
+      users: {
+        errors: { username: "Username already exists" },
+        items: []
+      }
+    };
+    expect(users.errors(state)).toStrictEqual({
+      username: "Username already exists"
+    });
   });
 });

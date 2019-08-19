@@ -47,4 +47,59 @@ describe("FormikField", () => {
     );
     expect(wrapper.type()).toEqual(Textarea);
   });
+
+  it("can pass formik errors", () => {
+    formikProps.touched.username = true;
+    formikProps.errors.username = "Username already exists";
+    const wrapper = shallow(
+      <FormikField
+        component={Textarea}
+        formikProps={formikProps}
+        fieldKey="username"
+      />
+    );
+    expect(wrapper.prop("error")).toEqual("Username already exists");
+  });
+
+  it("can pass errors from status", () => {
+    formikProps.touched.username = true;
+    formikProps.status = {
+      invalidValues: {
+        username: "admin"
+      },
+      serverErrors: {
+        username: "Username already exists"
+      }
+    };
+    const wrapper = shallow(
+      <FormikField
+        component={Textarea}
+        formikProps={formikProps}
+        fieldKey="username"
+        value="admin"
+      />
+    );
+    expect(wrapper.type()).toEqual(Textarea);
+  });
+
+  it("does not show server errors if the value has changed", () => {
+    formikProps.touched.username = true;
+    formikProps.status = {
+      invalidValues: {
+        username: "admin"
+      },
+      serverErrors: {
+        username: "Username already exists"
+      }
+    };
+    const wrapper = shallow(
+      <FormikField
+        component={Textarea}
+        formikProps={formikProps}
+        fieldKey="username"
+        value="koala"
+      />
+    );
+    expect(wrapper.type()).toEqual(Textarea);
+  });
 });

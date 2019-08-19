@@ -10,20 +10,10 @@ describe("settings utils", () => {
   });
 
   describe("formikFormDisabled", () => {
-    it("returns true if form is submitting", () => {
-      const formikProps = {
-        initialValues: { key: "value" },
-        values: { key: "value" },
-        isSubmitting: true
-      };
-      expect(formikFormDisabled(formikProps)).toBe(true);
-    });
-
     it("returns true if the form values have not changed", () => {
       const formikProps = {
         initialValues: { key: "value" },
-        values: { key: "value" },
-        isSubmitting: false
+        values: { key: "value" }
       };
       expect(formikFormDisabled(formikProps)).toBe(true);
     });
@@ -31,8 +21,7 @@ describe("settings utils", () => {
     it("returns false if the form is not submitting and form values have changed", () => {
       const formikProps = {
         initialValues: { key: "value1" },
-        values: { key: "value2" },
-        isSubmitting: false
+        values: { key: "value2" }
       };
       expect(formikFormDisabled(formikProps)).toBe(false);
     });
@@ -41,7 +30,6 @@ describe("settings utils", () => {
       const formikProps = {
         initialValues: { key: "value1" },
         values: { key: "value1" },
-        isSubmitting: false,
         errors: { value1: "foo" }
       };
       expect(formikFormDisabled(formikProps)).toBe(true);

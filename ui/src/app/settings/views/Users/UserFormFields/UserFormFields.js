@@ -1,12 +1,16 @@
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { formikFormDisabled } from "app/settings/utils";
+import ActionButton from "app/base/components/ActionButton";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Form from "app/base/components/Form";
 import FormikField from "app/base/components/FormikField";
 import Link from "app/base/components/Link";
 import Row from "app/base/components/Row";
+import selectors from "app/settings/selectors";
 
 const togglePassword = (event, passwordVisible, showPassword) => {
   event.preventDefault();
@@ -15,6 +19,22 @@ const togglePassword = (event, passwordVisible, showPassword) => {
 
 export const UserFormFields = ({ editing, formikProps }) => {
   const [passwordVisible, showPassword] = useState(!editing);
+  const saving = useSelector(selectors.users.saving);
+  const saved = useSelector(selectors.users.saved);
+  const errors = useSelector(selectors.users.errors);
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      const formikErrors = {};
+      const invalidValues = {};
+      Object.keys(errors).forEach(field => {
+        formikErrors[field] = errors[field].join(" ");
+        invalidValues[field] = formikProps.values[field];
+      });
+      formikProps.setStatus({ serverErrors: formikErrors, invalidValues });
+    }
+  }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Form onSubmit={formikProps.handleSubmit}>
       <Row>
@@ -30,13 +50,14 @@ export const UserFormFields = ({ editing, formikProps }) => {
           <FormikField
             formikProps={formikProps}
             fieldKey="fullName"
-            label="Full name (optional)"
+            label="Full name"
             type="text"
           />
           <FormikField
             formikProps={formikProps}
             fieldKey="email"
             label="Email address"
+            required={true}
             type="email"
           />
           <FormikField
@@ -84,14 +105,16 @@ export const UserFormFields = ({ editing, formikProps }) => {
         >
           Cancel
         </Button>
-        <Button
+        <ActionButton
           appearance="positive"
           className="u-no-margin--bottom"
+          disabled={formikFormDisabled(formikProps)}
+          loading={saving}
+          success={saved}
           type="submit"
-          disabled={formikProps.isSubmitting}
         >
           Save user
-        </Button>
+        </ActionButton>
       </div>
     </Form>
   );
@@ -111,7 +134,6 @@ UserFormFields.propTypes = {
     handleBlur: PropTypes.func.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool,
     touched: PropTypes.shape({
       isSuperuser: PropTypes.bool,
       email: PropTypes.bool,
