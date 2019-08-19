@@ -5,7 +5,7 @@ import { useParams } from "app/base/hooks";
 import actions from "app/settings/actions";
 import Loader from "app/base/components/Loader";
 import selectors from "app/settings/selectors";
-import UserForm from "app/settings/components/UserForm";
+import UserForm from "../UserForm";
 
 export const UserEdit = () => {
   const dispatch = useDispatch();

@@ -1,22 +1,22 @@
 import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import Commissioning from "app/settings/containers/Configuration/Commissioning";
-import Dhcp from "app/settings/containers/Dhcp";
-import DnsForm from "app/settings/containers/Network/DnsForm";
-import General from "app/settings/containers/Configuration/General";
-import Images from "app/settings/containers/Images";
-import NetworkDiscoveryForm from "app/settings/containers/Network/NetworkDiscoveryForm";
-import NtpForm from "app/settings/containers/Network/NtpForm";
-import ProxyForm from "app/settings/containers/Network/ProxyForm";
-import Repositories from "app/settings/containers/Repositories";
-import Scripts from "app/settings/containers/Scripts";
-import StorageForm from "app/settings/containers/Storage/StorageForm";
-import SyslogForm from "app/settings/containers/Network/SyslogForm";
-import UserAdd from "app/settings/containers/UserAdd";
-import UserEdit from "app/settings/containers/UserEdit";
-import Users from "app/settings/containers/Users";
-import KernelParameters from "app/settings/containers/Configuration/KernelParameters";
+import Commissioning from "app/settings/views/Configuration/Commissioning";
+import Dhcp from "app/settings/views/Dhcp";
+import DnsForm from "app/settings/views/Network/DnsForm";
+import General from "app/settings/views/Configuration/General";
+import Images from "app/settings/views/Images";
+import KernelParameters from "app/settings/views/Configuration/KernelParameters";
+import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
+import NtpForm from "app/settings/views/Network/NtpForm";
+import ProxyForm from "app/settings/views/Network/ProxyForm";
+import Repositories from "app/settings/views/Repositories";
+import Scripts from "app/settings/views/Scripts";
+import StorageForm from "app/settings/views/Storage/StorageForm";
+import SyslogForm from "app/settings/views/Network/SyslogForm";
+import UserAdd from "app/settings/views/Users/UserAdd";
+import UserEdit from "app/settings/views/Users/UserEdit";
+import UsersList from "app/settings/views/Users/UsersList";
 
 const Routes = () => (
   <Switch>
@@ -32,7 +32,7 @@ const Routes = () => (
       component={KernelParameters}
     />
     <Redirect from="/configuration" to="/configuration/general" />
-    <Route exact path="/users" component={Users} />
+    <Route exact path="/users" component={UsersList} />
     <Route exact path="/users/add" component={UserAdd} />
     <Route exact path="/users/:id/edit" component={UserEdit} />
     <Route exact path="/images" component={Images} />
