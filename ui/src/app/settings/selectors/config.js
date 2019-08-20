@@ -196,9 +196,9 @@ config.analyticsEnabled = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Default distro series.
  */
-config.defaultDistroSeries = createSelector(
+config.commissioningDistroSeries = createSelector(
   [config.all],
-  configs => getValueFromName(configs, "default_distro_series")
+  configs => getValueFromName(configs, "commissioning_distro_series")
 );
 
 /**
@@ -208,7 +208,7 @@ config.defaultDistroSeries = createSelector(
  */
 config.distroSeriesOptions = createSelector(
   [config.all],
-  configs => getOptionsFromName(configs, "default_distro_series")
+  configs => getOptionsFromName(configs, "commissioning_distro_series")
 );
 
 /**

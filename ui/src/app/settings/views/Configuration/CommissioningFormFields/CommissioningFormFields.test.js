@@ -11,7 +11,7 @@ describe("CommissioningFormFields", () => {
   let baseFormikProps;
   let initialState;
   let baseValues = {
-    default_distro_series: "bionic",
+    commissioning_distro_series: "bionic",
     default_min_hwe_kernel: "ga-16.04-lowlatency"
   };
 
@@ -31,7 +31,7 @@ describe("CommissioningFormFields", () => {
         loaded: true,
         items: [
           {
-            name: "default_distro_series",
+            name: "commissioning_distro_series",
             value: "bionic",
             choices: [
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
@@ -64,7 +64,7 @@ describe("CommissioningFormFields", () => {
   it("updates value for default distro series", () => {
     const state = { ...initialState };
     const formikProps = { ...baseFormikProps };
-    formikProps.values.default_distro_series = "trusty";
+    formikProps.values.commissioning_distro_series = "trusty";
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -75,7 +75,7 @@ describe("CommissioningFormFields", () => {
 
     expect(
       wrapper
-        .find("[name='default_distro_series']")
+        .find("[name='commissioning_distro_series']")
         .first()
         .props().value
     ).toBe("trusty");
