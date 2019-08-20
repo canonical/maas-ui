@@ -21,12 +21,14 @@ const FormikField = ({
     touched
   } = formikProps;
   const { serverErrors = {}, invalidValues = {} } = status;
+  const isTouched = touched[fieldKey];
+  const valueChanged = value === invalidValues[fieldKey];
+  const validationError = errors[fieldKey];
+  const serverError = serverErrors[fieldKey];
   return (
     <Component
       error={
-        (touched[fieldKey] &&
-          (errors[fieldKey] ||
-            (value === invalidValues[fieldKey] && serverErrors[fieldKey]))) ||
+        (isTouched && (validationError || (!valueChanged && serverError))) ||
         undefined
       }
       id={id.current}
