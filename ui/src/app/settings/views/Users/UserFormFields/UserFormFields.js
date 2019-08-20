@@ -23,17 +23,19 @@ export const UserFormFields = ({ editing, formikProps }) => {
   const saved = useSelector(selectors.users.saved);
   const errors = useSelector(selectors.users.errors);
 
+  const { setStatus, values } = formikProps;
   useEffect(() => {
-    if (Object.keys(errors).length) {
+    var errorKeys = Object.keys(errors);
+    if (errorKeys.length) {
       const formikErrors = {};
       const invalidValues = {};
-      Object.keys(errors).forEach(field => {
+      errorKeys.forEach(field => {
         formikErrors[field] = errors[field].join(" ");
-        invalidValues[field] = formikProps.values[field];
+        invalidValues[field] = values[field];
       });
-      formikProps.setStatus({ serverErrors: formikErrors, invalidValues });
+      setStatus({ serverErrors: formikErrors, invalidValues });
     }
-  }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [errors, setStatus, values]);
 
   return (
     <Form onSubmit={formikProps.handleSubmit}>
