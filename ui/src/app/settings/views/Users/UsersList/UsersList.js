@@ -47,15 +47,22 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
-              {user.id !== authUser.id && (
+
+              <span className="p-tooltip p-tooltip--left">
                 <Button
                   appearance="base"
                   className="is-small u-justify-table-icon"
                   onClick={() => setExpandedId(user.id)}
+                  disabled={user.id === authUser.id}
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
-              )}
+                {user.id === authUser.id && (
+                  <span className="p-tooltip__message">
+                    You cannot delete your own user.
+                  </span>
+                )}
+              </span>
             </>
           ),
           className: "u-align--right u-align-icons--top"

@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RepositoryAdd can render 1`] = `
+<RepositoryAdd>
+  <RepositoryForm
+    title="Add repository"
+  >
+    <Card
+      className="repo-form"
+      highlighted={true}
+    >
+      <div
+        className="repo-form p-card--highlighted"
+      >
+        <div
+          className="p-card__content"
+        >
+          <Row>
+            <div
+              className="row"
+            >
+              <Col
+                size="3"
+              >
+                <div
+                  className="col-3"
+                >
+                  <h4>
+                    Add repository
+                  </h4>
+                </div>
+              </Col>
+              <Col
+                size="7"
+              >
+                <div
+                  className="col-7"
+                >
+                  <div
+                    className="repo-form__buttons"
+                  >
+                    <Button
+                      appearance="base"
+                      className="u-no-margin--bottom"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <button
+                        className="u-no-margin--bottom p-button--base"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Cancel
+                      </button>
+                    </Button>
+                    <Button
+                      appearance="positive"
+                      className="u-no-margin--bottom"
+                      type="button"
+                    >
+                      <button
+                        className="u-no-margin--bottom p-button--positive"
+                        type="button"
+                      >
+                        Save repository
+                      </button>
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </div>
+          </Row>
+        </div>
+      </div>
+    </Card>
+  </RepositoryForm>
+</RepositoryAdd>
+`;

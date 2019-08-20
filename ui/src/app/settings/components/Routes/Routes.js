@@ -10,7 +10,9 @@ import KernelParameters from "app/settings/views/Configuration/KernelParameters"
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 import NtpForm from "app/settings/views/Network/NtpForm";
 import ProxyForm from "app/settings/views/Network/ProxyForm";
-import Repositories from "app/settings/views/Repositories";
+import RepositoriesList from "app/settings/views/Repositories/RepositoriesList";
+import RepositoryAdd from "app/settings/views/Repositories/RepositoryAdd";
+import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import Scripts from "app/settings/views/Scripts";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import SyslogForm from "app/settings/views/Network/SyslogForm";
@@ -49,7 +51,9 @@ const Routes = () => (
     <Redirect from="/network" to="/network/proxy" />
     <Route exact path="/scripts" component={Scripts} />
     <Route exact path="/dhcp" component={Dhcp} />
-    <Route exact path="/repositories" component={Repositories} />
+    <Route exact path="/repositories" component={RepositoriesList} />
+    <Route exact path="/repositories/add" component={RepositoryAdd} />
+    <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
   </Switch>
 );
 
