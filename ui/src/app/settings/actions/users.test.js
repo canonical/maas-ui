@@ -5,8 +5,8 @@ describe("user actions", () => {
     expect(users.fetch()).toEqual({
       type: "FETCH_USERS",
       meta: {
-        model: "users",
-        method: "user.list",
+        model: "user",
+        method: "list",
         type: 0
       }
     });
@@ -16,8 +16,8 @@ describe("user actions", () => {
     expect(users.create({ name: "kangaroo" })).toEqual({
       type: "CREATE_USERS",
       meta: {
-        model: "users",
-        method: "user.create",
+        model: "user",
+        method: "create",
         type: 0
       },
       payload: {
@@ -32,8 +32,8 @@ describe("user actions", () => {
     expect(users.update({ name: "kookaburra" })).toEqual({
       type: "UPDATE_USERS",
       meta: {
-        model: "users",
-        method: "user.update",
+        model: "user",
+        method: "update",
         type: 0
       },
       payload: {

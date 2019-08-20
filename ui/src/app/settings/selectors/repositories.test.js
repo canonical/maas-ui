@@ -3,7 +3,7 @@ import repositories from "./repositories";
 describe("repositories selectors", () => {
   it("can get repository items", () => {
     const state = {
-      repositories: {
+      packagerepository: {
         items: [{ name: "default" }]
       }
     };

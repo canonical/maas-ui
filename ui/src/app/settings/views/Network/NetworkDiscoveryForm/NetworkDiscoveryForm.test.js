@@ -83,7 +83,7 @@ describe("NetworkDiscoveryForm", () => {
           },
           meta: {
             model: "config",
-            method: "config.update",
+            method: "update",
             type: 0
           }
         }

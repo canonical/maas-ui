@@ -17,7 +17,7 @@ describe("UserForm", () => {
 
   beforeEach(() => {
     state = {
-      users: {
+      user: {
         errors: {},
         items: [],
         loaded: true,
@@ -54,7 +54,7 @@ describe("UserForm", () => {
   });
 
   it("redirects when the user is saved", () => {
-    state.users.saved = true;
+    state.user.saved = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -112,8 +112,8 @@ describe("UserForm", () => {
           }
         },
         meta: {
-          model: "users",
-          method: "user.update",
+          model: "user",
+          method: "update",
           type: 0
         }
       }
@@ -153,8 +153,8 @@ describe("UserForm", () => {
           }
         },
         meta: {
-          model: "users",
-          method: "user.create",
+          model: "user",
+          method: "create",
           type: 0
         }
       }

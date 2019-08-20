@@ -65,7 +65,7 @@ describe("NtpForm", () => {
           },
           meta: {
             model: "config",
-            method: "config.update",
+            method: "update",
             type: 0
           }
         }

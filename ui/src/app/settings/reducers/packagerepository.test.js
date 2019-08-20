@@ -8,10 +8,10 @@ describe("packagerepository reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_PACKAGEREPOSITORY_START", () => {
+  it("should correctly reduce FETCH_REPOSITORIES_START", () => {
     expect(
       packagerepository(undefined, {
-        type: "FETCH_PACKAGEREPOSITORY_START"
+        type: "FETCH_REPOSITORIES_START"
       })
     ).toEqual({
       loading: true,
@@ -19,7 +19,7 @@ describe("packagerepository reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_PACKAGEREPOSITORY_SUCCESS", () => {
+  it("should correctly reduce FETCH_REPOSITORIES_SUCCESS", () => {
     expect(
       packagerepository(
         {
@@ -27,7 +27,7 @@ describe("packagerepository reducer", () => {
           items: []
         },
         {
-          type: "FETCH_PACKAGEREPOSITORY_SUCCESS",
+          type: "FETCH_REPOSITORIES_SUCCESS",
           payload: [1, 2, 3]
         }
       )

@@ -99,7 +99,8 @@ describe("websocket sagas", () => {
       saga.next({
         type: "TEST_ACTION",
         meta: {
-          method: "test.method",
+          model: "test",
+          method: "method",
           type: 0
         },
         payload: {
@@ -139,7 +140,8 @@ describe("websocket sagas", () => {
       saga.next({
         type: "TEST_ACTION",
         meta: {
-          method: "test.method",
+          model: "test",
+          method: "method",
           type: 0
         },
         payload: {
@@ -170,7 +172,8 @@ describe("websocket sagas", () => {
     saga.next({
       type: "TEST_ACTION",
       meta: {
-        method: "test.method",
+        model: "test",
+        method: "method",
         type: 0
       },
       payload: {

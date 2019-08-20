@@ -123,7 +123,7 @@ const isWebsocketRequestAction = action => action.meta && action.meta.method;
 /**
  * Build a message for websocket requests.
  * @param {Object} meta - action meta object.
- * @param {Objet} params - param object (optional).
+ * @param {Object} params - param object (optional).
  * @returns {Object} message - serialisable websocket message.
  */
 const buildMessage = (meta, params) => {
@@ -134,7 +134,6 @@ const buildMessage = (meta, params) => {
   if (params) {
     message.params = params;
   }
-  console.log('message', message)
   return message;
 };
 

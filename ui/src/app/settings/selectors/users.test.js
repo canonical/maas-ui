@@ -3,7 +3,7 @@ import users from "./users";
 describe("users selectors", () => {
   it("can get items", () => {
     const state = {
-      users: {
+      user: {
         items: [{ username: "default" }]
       }
     };
@@ -12,7 +12,7 @@ describe("users selectors", () => {
 
   it("can get the loading state", () => {
     const state = {
-      users: {
+      user: {
         loading: true,
         items: []
       }
@@ -22,7 +22,7 @@ describe("users selectors", () => {
 
   it("can get the loaded state", () => {
     const state = {
-      users: {
+      user: {
         loaded: true,
         items: []
       }
@@ -32,7 +32,7 @@ describe("users selectors", () => {
 
   it("can get the saving state", () => {
     const state = {
-      users: {
+      user: {
         saving: true,
         items: []
       }
@@ -42,7 +42,7 @@ describe("users selectors", () => {
 
   it("can get the saved state", () => {
     const state = {
-      users: {
+      user: {
         saved: true,
         items: []
       }
@@ -52,7 +52,7 @@ describe("users selectors", () => {
 
   it("can get the count", () => {
     const state = {
-      users: {
+      user: {
         loading: true,
         items: [{ username: "foo" }, { username: "bar" }]
       }
@@ -62,7 +62,7 @@ describe("users selectors", () => {
 
   it("can get a user by id", () => {
     const state = {
-      users: {
+      user: {
         loading: true,
         items: [{ username: "foo", id: 808 }, { username: "bar", id: 909 }]
       }
@@ -75,23 +75,23 @@ describe("users selectors", () => {
 
   it("can search items", () => {
     const state = {
-      users: {
+      user: {
         items: [
-          { username: "admin", emai: "test@example.com" },
+          { username: "admin", email: "test@example.com" },
           { username: "me", email: "minnie@example.com" },
           { username: "richie", email: "richie@example.com" }
         ]
       }
     };
     expect(users.search(state, "min")).toEqual([
-      { username: "admin", emai: "test@example.com" },
+      { username: "admin", email: "test@example.com" },
       { username: "me", email: "minnie@example.com" }
     ]);
   });
 
   it("can get user errors", () => {
     const state = {
-      users: {
+      user: {
         errors: { username: "Username already exists" },
         items: []
       }
