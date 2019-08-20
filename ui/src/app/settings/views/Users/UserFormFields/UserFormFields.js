@@ -108,7 +108,7 @@ export const UserFormFields = ({ editing, formikProps }) => {
         <ActionButton
           appearance="positive"
           className="u-no-margin--bottom"
-          disabled={formikFormDisabled(formikProps)}
+          disabled={saving || formikFormDisabled(formikProps)}
           loading={saving}
           success={saved}
           type="submit"
