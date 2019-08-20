@@ -128,12 +128,13 @@ const isWebsocketRequestAction = action => action.meta && action.meta.method;
  */
 const buildMessage = (meta, params) => {
   const message = {
-    method: meta.method,
+    method: `${meta.model}.${meta.method}`,
     type: meta.type
   };
   if (params) {
     message.params = params;
   }
+  console.log('message', message)
   return message;
 };
 

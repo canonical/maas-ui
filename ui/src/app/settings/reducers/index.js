@@ -1,5 +1,5 @@
 import config from "./config";
-import repositories from "./repositories";
-import users from "./users";
+import packagerepository from "./packagerepository";
+import user from "./user";
 
-export default { config, repositories, users };
+export default { config, packagerepository, user };

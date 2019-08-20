@@ -1,3 +1,4 @@
+import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
@@ -6,10 +7,9 @@ import baseReducers from "./app/base/reducers";
 
 export default history =>
   combineReducers({
-    auth: baseReducers.auth,
     config: settingsReducers.config,
-    repositories: settingsReducers.repositories,
-    users: settingsReducers.users,
+    packagerepository: settingsReducers.packagerepository,
+    user: reduceReducers(settingsReducers.user, baseReducers.auth),
     router: connectRouter(history),
     status: baseReducers.status
   });

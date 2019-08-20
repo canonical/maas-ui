@@ -8,7 +8,8 @@ export const fetchAuthUser = () => {
   return {
     type: "FETCH_AUTH_USER",
     meta: {
-      method: "user.auth_user",
+      model: "user",
+      method: "auth_user",
       type: 0
     }
   };

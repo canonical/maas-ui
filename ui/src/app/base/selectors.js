@@ -5,14 +5,14 @@ const auth = {};
  * @param {Object} state - The redux state.
  * @returns {Boolean} The authenticated user.
  */
-auth.getAuthUser = state => state.auth.user;
+auth.getAuthUser = state => state.user.auth.user;
 
 /**
  * Get the authenticated user.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The authenticated user.
  */
-auth.getAuthUserLoading = state => state.auth.loading;
+auth.getAuthUserLoading = state => state.user.auth.loading;
 
 const status = {};
 

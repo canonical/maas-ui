@@ -7,8 +7,8 @@ repositories.fetch = () => {
       params: { limit: 50 }
     },
     meta: {
-      model: "repositories",
-      method: "packagerepository.list",
+      model: "packagerepository",
+      method: "list",
       type: 0
     }
   };

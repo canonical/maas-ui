@@ -1,6 +1,6 @@
 import produce from "immer";
 
-const users = produce(
+const user = produce(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_USERS_START":
@@ -48,6 +48,7 @@ const users = produce(
     }
   },
   {
+    auth: {},
     errors: {},
     items: [],
     loaded: false,
@@ -57,4 +58,4 @@ const users = produce(
   }
 );
 
-export default users;
+export default user;
