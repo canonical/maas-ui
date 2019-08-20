@@ -4,11 +4,11 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
-import Users from "./Users";
+import UsersList from "./UsersList";
 
 const mockStore = configureStore();
 
-describe("Users", () => {
+describe("UsersList", () => {
   let defaultStore, users;
 
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe("Users", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <Users />
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +69,7 @@ describe("Users", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <Users />
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +83,7 @@ describe("Users", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <Users />
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +97,7 @@ describe("Users", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <Users />
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -121,7 +121,7 @@ describe("Users", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <Users />
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );

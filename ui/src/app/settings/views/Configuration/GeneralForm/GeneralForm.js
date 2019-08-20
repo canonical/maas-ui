@@ -8,37 +8,37 @@ import config from "app/settings/selectors/config";
 import { formikFormDisabled } from "app/settings/utils";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
-import CommissioningFormFields from "app/settings/containers/Configuration/CommissioningFormFields";
+import GeneralFormFields from "../GeneralFormFields";
 
-const CommissioningSchema = Yup.object().shape({
-  default_distro_series: Yup.string(),
-  default_min_hwe_kernel: Yup.string()
+const GeneralSchema = Yup.object().shape({
+  maas_name: Yup.string().required(),
+  enable_analytics: Yup.boolean()
 });
 
-const CommissioningForm = () => {
+const GeneralForm = () => {
   const dispatch = useDispatch();
   const updateConfig = actions.config.update;
 
   const saved = useSelector(config.saved);
   const saving = useSelector(config.saving);
 
-  const defaultDistroSeries = useSelector(config.defaultDistroSeries);
-  const defaultMinKernelVersion = useSelector(config.defaultMinKernelVersion);
+  const maasName = useSelector(config.maasName);
+  const analyticsEnabled = useSelector(config.analyticsEnabled);
 
   return (
     <Formik
       initialValues={{
-        default_distro_series: defaultDistroSeries,
-        default_min_hwe_kernel: defaultMinKernelVersion
+        maas_name: maasName,
+        enable_analytics: analyticsEnabled
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm(values);
       }}
-      validationSchema={CommissioningSchema}
+      validationSchema={GeneralSchema}
       render={formikProps => (
         <Form onSubmit={formikProps.handleSubmit}>
-          <CommissioningFormFields formikProps={formikProps} />
+          <GeneralFormFields formikProps={formikProps} />
           <ActionButton
             appearance="positive"
             className="u-no-margin--bottom"
@@ -55,4 +55,4 @@ const CommissioningForm = () => {
   );
 };
 
-export default CommissioningForm;
+export default GeneralForm;

@@ -8,7 +8,7 @@ import { UserShape } from "app/base/proptypes";
 import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
 import Row from "app/base/components/Row";
-import UserFormFields from "app/settings/components/UserFormFields";
+import UserFormFields from "../UserFormFields";
 
 const schemaFields = {
   email: Yup.string()

@@ -5,7 +5,7 @@ import selectors from "app/settings/selectors";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
-import CommissioningForm from "app/settings/containers/Configuration/CommissioningForm";
+import CommissioningForm from "../CommissioningForm";
 
 const Commissioning = () => {
   const loaded = useSelector(selectors.config.loaded);

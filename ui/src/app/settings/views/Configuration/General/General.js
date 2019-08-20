@@ -5,7 +5,7 @@ import selectors from "app/settings/selectors";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
-import GeneralForm from "app/settings/containers/Configuration/GeneralForm";
+import GeneralForm from "../GeneralForm";
 
 const General = () => {
   const loaded = useSelector(selectors.config.loaded);
