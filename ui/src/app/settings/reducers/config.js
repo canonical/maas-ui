@@ -20,12 +20,12 @@ const config = produce(
         draft.saved = true;
         break;
       case "UPDATE_CONFIG_SYNC":
-        draft.items = draft.items.map(item => {
-          if (item.name === action.payload.name) {
-            return action.payload;
+        for (let i in draft.items) {
+          if (draft.items[i].name === action.payload.name) {
+            draft.items[i] = action.payload;
+            break;
           }
-          return item;
-        });
+        }
         break;
       default:
         return draft;
