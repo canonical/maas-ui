@@ -35,7 +35,7 @@ describe("UserForm", () => {
         <UserForm title="Add user" />
       </Provider>
     );
-    expect(wrapper.find("UserForm")).toMatchSnapshot();
+    expect(wrapper.find("UserForm").exists()).toBe(true);
   });
 
   it("cleans up when unmounting", () => {

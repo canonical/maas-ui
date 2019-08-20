@@ -43,7 +43,7 @@ describe("UserFormFields", () => {
         <UserFormFields formikProps={formikProps} />
       </Provider>
     );
-    expect(wrapper.find("UserFormFields")).toMatchSnapshot();
+    expect(wrapper.find("UserFormFields").exists()).toBe(true);
   });
 
   it("hides the password fields when editing", () => {
