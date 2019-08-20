@@ -23,9 +23,11 @@ describe("base selectors", () => {
   describe("auth", () => {
     it("can get the current user details", () => {
       const state = {
-        auth: {
-          user: { username: "admin" },
-          loading: true
+        user: {
+          auth: {
+            user: { username: "admin" },
+            loading: true
+          }
         }
       };
       expect(selectors.auth.getAuthUser(state)).toStrictEqual({
@@ -35,9 +37,11 @@ describe("base selectors", () => {
 
     it("can get the current user loading status", () => {
       const state = {
-        auth: {
-          user: { username: "admin" },
-          loading: true
+        user: {
+          auth: {
+            user: { username: "admin" },
+            loading: true
+          }
         }
       };
       expect(selectors.auth.getAuthUserLoading(state)).toStrictEqual(true);

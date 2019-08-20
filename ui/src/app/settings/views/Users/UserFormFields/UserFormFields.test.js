@@ -25,7 +25,7 @@ describe("UserFormFields", () => {
       values: {}
     };
     state = {
-      users: {
+      user: {
         errors: {},
         items: [],
         loaded: true,
@@ -88,7 +88,7 @@ describe("UserFormFields", () => {
   });
 
   it("can set error status", () => {
-    state.users.errors = {
+    state.user.errors = {
       username: ["Username already exists"]
     };
     const store = mockStore(state);

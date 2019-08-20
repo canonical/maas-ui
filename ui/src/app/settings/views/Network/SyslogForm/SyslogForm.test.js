@@ -63,7 +63,7 @@ describe("SyslogForm", () => {
           },
           meta: {
             model: "config",
-            method: "config.update",
+            method: "update",
             type: 0
           }
         }

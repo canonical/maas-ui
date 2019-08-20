@@ -35,10 +35,10 @@ describe("UsersList", () => {
       }
     ];
     defaultStore = {
-      auth: {
-        user: users[0]
-      },
-      users: {
+      user: {
+        auth: {
+          user: users[0]
+        },
         loading: false,
         loaded: true,
         items: users
@@ -47,7 +47,7 @@ describe("UsersList", () => {
   });
 
   it("displays a loading component if loading", () => {
-    defaultStore.users.loading = true;
+    defaultStore.user.loading = true;
     const store = mockStore(defaultStore);
     const wrapper = mount(
       <Provider store={store}>
@@ -62,7 +62,7 @@ describe("UsersList", () => {
   });
 
   it("hides the table if no users have loaded", () => {
-    defaultStore.users.loaded = false;
+    defaultStore.user.loaded = false;
     const store = mockStore(defaultStore);
     const wrapper = mount(
       <Provider store={store}>

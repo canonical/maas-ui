@@ -1,8 +1,9 @@
-import users from "./users";
+import user from "./user";
 
 describe("users reducer", () => {
   it("should return the initial state", () => {
-    expect(users(undefined, {})).toEqual({
+    expect(user(undefined, {})).toEqual({
+      auth: {},
       errors: {},
       items: [],
       loaded: false,
@@ -14,10 +15,11 @@ describe("users reducer", () => {
 
   it("should correctly reduce FETCH_USERS_START", () => {
     expect(
-      users(undefined, {
+      user(undefined, {
         type: "FETCH_USERS_START"
       })
     ).toEqual({
+      auth: {},
       errors: {},
       items: [],
       loaded: false,
@@ -29,8 +31,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce FETCH_USERS_SUCCESS", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [],
           loaded: false,
@@ -44,6 +47,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       loading: false,
       loaded: true,
@@ -55,8 +59,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce UPDATE_USERS_START", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [],
           loaded: false,
@@ -69,6 +74,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       items: [],
       loaded: false,
@@ -80,8 +86,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce CREATE_USERS_START", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [],
           loaded: false,
@@ -94,6 +101,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       items: [],
       loaded: false,
@@ -105,8 +113,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce UPDATE_USERS_ERROR", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [],
           loaded: false,
@@ -120,6 +129,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: { username: "Username already exists" },
       items: [],
       loaded: false,
@@ -131,8 +141,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce CREATE_USERS_ERROR", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [],
           loaded: false,
@@ -146,6 +157,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: { username: "Username already exists" },
       items: [],
       loaded: false,
@@ -157,8 +169,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce UPDATE_USER_SYNC", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
           loaded: false,
@@ -175,6 +188,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       items: [{ id: 1, username: "kangaroo" }, { id: 2, username: "user1" }],
       loaded: false,
@@ -186,8 +200,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce CREATE_USER_SYNC", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: {},
           items: [{ id: 1, username: "admin" }],
           loaded: false,
@@ -201,6 +216,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
       loaded: false,
@@ -212,8 +228,9 @@ describe("users reducer", () => {
 
   it("should correctly reduce CLEANUP_USERS", () => {
     expect(
-      users(
+      user(
         {
+          auth: {},
           errors: { username: "Username already exists" },
           items: [],
           loaded: false,
@@ -226,6 +243,7 @@ describe("users reducer", () => {
         }
       )
     ).toEqual({
+      auth: {},
       errors: {},
       items: [],
       loaded: false,

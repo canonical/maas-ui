@@ -6,7 +6,7 @@ describe("config actions", () => {
       type: "FETCH_CONFIG",
       meta: {
         model: "config",
-        method: "config.list",
+        method: "list",
         type: 0
       }
     });
@@ -28,7 +28,7 @@ describe("config actions", () => {
       },
       meta: {
         model: "config",
-        method: "config.update",
+        method: "update",
         type: 0
       }
     });

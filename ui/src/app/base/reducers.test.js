@@ -62,16 +62,20 @@ describe("base reducers", () => {
       expect(
         reducers.auth(
           {
-            loading: false,
-            user: null
+            auth: {
+              loading: false,
+              user: null
+            }
           },
           {
             type: "FETCH_AUTH_USER_START"
           }
         )
       ).toStrictEqual({
-        loading: true,
-        user: null
+        auth: {
+          loading: true,
+          user: null
+        }
       });
     });
 
@@ -79,8 +83,10 @@ describe("base reducers", () => {
       expect(
         reducers.auth(
           {
-            loading: true,
-            user: null
+            auth: {
+              loading: true,
+              user: null
+            }
           },
           {
             payload: { username: "admin" },
@@ -88,8 +94,10 @@ describe("base reducers", () => {
           }
         )
       ).toStrictEqual({
-        loading: false,
-        user: { username: "admin" }
+        auth: {
+          loading: false,
+          user: { username: "admin" }
+        }
       });
     });
   });

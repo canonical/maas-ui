@@ -1,6 +1,6 @@
 import produce from "immer";
 
-const repositories = produce(
+const packagerepository = produce(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_REPOSITORIES_START":
@@ -20,4 +20,4 @@ const repositories = produce(
   }
 );
 
-export default repositories;
+export default packagerepository;

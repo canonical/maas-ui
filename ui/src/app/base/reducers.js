@@ -4,11 +4,11 @@ const auth = produce(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_AUTH_USER_START":
-        draft.loading = true;
+        draft.auth.loading = true;
         return;
       case "FETCH_AUTH_USER_SUCCESS":
-        draft.loading = false;
-        draft.user = action.payload;
+        draft.auth.loading = false;
+        draft.auth.user = action.payload;
         return;
       default:
         return draft;

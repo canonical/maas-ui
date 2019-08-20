@@ -8,9 +8,9 @@ const users = {};
  */
 users.get = (state, batch) => {
   if (batch) {
-    return state.users.items.slice(0, batch);
+    return state.user.items.slice(0, batch);
   }
-  return state.users.items;
+  return state.user.items;
 };
 
 /**
@@ -20,7 +20,7 @@ users.get = (state, batch) => {
  * @returns {Array} A filtered list of users.
  */
 users.search = (state, term) => {
-  return state.users.items.filter(
+  return state.user.items.filter(
     user => user.username.includes(term) || user.email.includes(term)
   );
 };
@@ -30,42 +30,42 @@ users.search = (state, term) => {
  * @param {Object} state - The redux state.
  * @returns {Boolean} User is loading.
  */
-users.loading = state => state.users.loading;
+users.loading = state => state.user.loading;
 
 /**
  * Returns true if users have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} User has loaded.
  */
-users.loaded = state => state.users.loaded;
+users.loaded = state => state.user.loaded;
 
 /**
  * Returns number of users
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all users.
  */
-users.count = state => state.users.items.length;
+users.count = state => state.user.items.length;
 
 /**
  * Returns users errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Errors for a user.
  */
-users.errors = state => state.users.errors;
+users.errors = state => state.user.errors;
 
 /**
  * Get the saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether users are being saved.
  */
-users.saving = state => state.users.saving;
+users.saving = state => state.user.saving;
 
 /**
  * Get the saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether users have been saved.
  */
-users.saved = state => state.users.saved;
+users.saved = state => state.user.saved;
 
 /**
  * Returns all users
@@ -73,6 +73,6 @@ users.saved = state => state.users.saved;
  * @param {Number} batch - Number of users to return.
  * @returns {Array} A list of all users.
  */
-users.getById = (state, id) => state.users.items.find(user => user.id === id);
+users.getById = (state, id) => state.user.items.find(user => user.id === id);
 
 export default users;

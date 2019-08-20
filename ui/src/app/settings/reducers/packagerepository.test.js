@@ -1,8 +1,8 @@
-import repositories from "./repositories";
+import packagerepository from "./packagerepository";
 
-describe("repositories reducer", () => {
+describe("packagerepository reducer", () => {
   it("should return the initial state", () => {
-    expect(repositories(undefined, {})).toEqual({
+    expect(packagerepository(undefined, {})).toEqual({
       loading: false,
       items: []
     });
@@ -10,7 +10,7 @@ describe("repositories reducer", () => {
 
   it("should correctly reduce FETCH_REPOSITORIES_START", () => {
     expect(
-      repositories(undefined, {
+      packagerepository(undefined, {
         type: "FETCH_REPOSITORIES_START"
       })
     ).toEqual({
@@ -21,7 +21,7 @@ describe("repositories reducer", () => {
 
   it("should correctly reduce FETCH_REPOSITORIES_SUCCESS", () => {
     expect(
-      repositories(
+      packagerepository(
         {
           loading: true,
           items: []
