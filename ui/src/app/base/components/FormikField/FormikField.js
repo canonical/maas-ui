@@ -39,6 +39,7 @@ const FormikField = ({
         setFieldTouched(fieldKey, true, true);
       }}
       value={value}
+      checked={["checkbox", "radio"].includes(props.type) ? value : undefined}
       {...props}
     />
   );
