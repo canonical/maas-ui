@@ -79,7 +79,7 @@ describe("FormikField", () => {
         value="admin"
       />
     );
-    expect(wrapper.type()).toEqual(Textarea);
+    expect(wrapper.prop("error")).toEqual("Username already exists");
   });
 
   it("does not show server errors if the value has changed", () => {
@@ -100,6 +100,6 @@ describe("FormikField", () => {
         value="koala"
       />
     );
-    expect(wrapper.type()).toEqual(Textarea);
+    expect(wrapper.prop("error")).toBe(undefined);
   });
 });
