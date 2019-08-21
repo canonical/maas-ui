@@ -104,7 +104,7 @@ export function* handleMessage(socketChannel, socketClient) {
       if (response.error) {
         yield put({
           type: `${action_type}_ERROR`,
-          error: JSON.parse(response.error)
+          error: response.error
         });
       } else {
         yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
