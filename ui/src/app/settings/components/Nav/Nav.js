@@ -69,13 +69,11 @@ export const Nav = props => {
       label: "Users"
     },
     {
-      path: "/images",
       label: "Images",
       subNav: [
-        { path: "ubuntu", label: "Ubuntu" },
-        { path: "centos", label: "CentOS" },
-        { path: "windows", label: "Windows" },
-        { path: "vmware", label: "VMware" }
+        { path: "/images/ubuntu", label: "Ubuntu" },
+        { path: "/images/windows", label: "Windows" },
+        { path: "/images/vmware", label: "VMware" }
       ]
     },
     {

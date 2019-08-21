@@ -80,61 +80,43 @@ exports[`Nav renders 1`] = `
     </li>
     <li
       className="settings-nav__item"
-      key="/images"
+      key="Images"
     >
-      <strong
-        className=""
-      >
-        <Link
-          className="p-link--soft"
-          to="/images"
-        >
-          Images
-        </Link>
+      <strong>
+        Images
       </strong>
       <ul
         className="settings-nav__list"
       >
         <li
           className="settings-nav__item"
-          key="ubuntu"
+          key="/images/ubuntu"
         >
           <Link
             className="p-link--soft"
-            to="ubuntu"
+            to="/images/ubuntu"
           >
             Ubuntu
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="centos"
+          key="/images/windows"
         >
           <Link
             className="p-link--soft"
-            to="centos"
-          >
-            CentOS
-          </Link>
-        </li>
-        <li
-          className="settings-nav__item"
-          key="windows"
-        >
-          <Link
-            className="p-link--soft"
-            to="windows"
+            to="/images/windows"
           >
             Windows
           </Link>
         </li>
         <li
           className="settings-nav__item"
-          key="vmware"
+          key="/images/vmware"
         >
           <Link
             className="p-link--soft"
-            to="vmware"
+            to="/images/vmware"
           >
             VMware
           </Link>

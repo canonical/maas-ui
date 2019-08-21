@@ -340,4 +340,14 @@ config.kernelParams = createSelector(
   configs => getValueFromName(configs, "kernel_opts")
 );
 
+/**
+ * Returns the MAAS config for Windows KMS host.
+ * @param {Object} state - The redux state.
+ * @returns {String} Windows KMS host.
+ */
+config.windowsKmsHost = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "windows_kms_host")
+);
+
 export default config;
