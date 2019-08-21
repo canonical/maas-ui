@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { formikFormDisabled } from "app/settings/utils";
+import { formikFormDisabled, simpleObjectEquality } from "app/settings/utils";
 import ActionButton from "app/base/components/ActionButton";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
@@ -23,17 +23,26 @@ export const UserFormFields = ({ editing, formikProps }) => {
   const saved = useSelector(selectors.users.saved);
   const errors = useSelector(selectors.users.errors);
 
+  // Store the previous errors.
+  const previousErrorsRef = useRef();
   useEffect(() => {
-    if (Object.keys(errors).length) {
+    previousErrorsRef.current = errors;
+  });
+  const previousErrors = previousErrorsRef.current;
+
+  const { values, setStatus } = formikProps;
+  useEffect(() => {
+    // Only run this effect if the errors have changed.
+    if (!simpleObjectEquality(errors, previousErrors)) {
       const formikErrors = {};
       const invalidValues = {};
       Object.keys(errors).forEach(field => {
         formikErrors[field] = errors[field].join(" ");
-        invalidValues[field] = formikProps.values[field];
+        invalidValues[field] = values[field];
       });
-      formikProps.setStatus({ serverErrors: formikErrors, invalidValues });
+      setStatus({ serverErrors: formikErrors, invalidValues });
     }
-  }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [errors, previousErrors, setStatus, values]);
 
   return (
     <Form onSubmit={formikProps.handleSubmit}>
