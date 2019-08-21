@@ -13,10 +13,10 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_USERS_START", () => {
+  it("should correctly reduce FETCH_USER_START", () => {
     expect(
       user(undefined, {
-        type: "FETCH_USERS_START"
+        type: "FETCH_USER_START"
       })
     ).toEqual({
       auth: {},
@@ -29,7 +29,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_USERS_SUCCESS", () => {
+  it("should correctly reduce FETCH_USER_SUCCESS", () => {
     expect(
       user(
         {
@@ -42,7 +42,7 @@ describe("users reducer", () => {
           saving: false
         },
         {
-          type: "FETCH_USERS_SUCCESS",
+          type: "FETCH_USER_SUCCESS",
           payload: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
         }
       )
@@ -57,7 +57,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_USERS_START", () => {
+  it("should correctly reduce UPDATE_USER_START", () => {
     expect(
       user(
         {
@@ -70,7 +70,7 @@ describe("users reducer", () => {
           saving: false
         },
         {
-          type: "UPDATE_USERS_START"
+          type: "UPDATE_USER_START"
         }
       )
     ).toEqual({
@@ -84,7 +84,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_USERS_START", () => {
+  it("should correctly reduce CREATE_USER_START", () => {
     expect(
       user(
         {
@@ -97,7 +97,7 @@ describe("users reducer", () => {
           saving: false
         },
         {
-          type: "CREATE_USERS_START"
+          type: "CREATE_USER_START"
         }
       )
     ).toEqual({
@@ -111,7 +111,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_USERS_START", () => {
+  it("should correctly reduce DELETE_USER_START", () => {
     expect(
       user(
         {
@@ -124,7 +124,7 @@ describe("users reducer", () => {
           saving: false
         },
         {
-          type: "DELETE_USERS_START"
+          type: "DELETE_USER_START"
         }
       )
     ).toEqual({
@@ -138,7 +138,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_USERS_ERROR", () => {
+  it("should correctly reduce UPDATE_USER_ERROR", () => {
     expect(
       user(
         {
@@ -152,7 +152,7 @@ describe("users reducer", () => {
         },
         {
           error: { username: "Username already exists" },
-          type: "UPDATE_USERS_ERROR"
+          type: "UPDATE_USER_ERROR"
         }
       )
     ).toEqual({
@@ -166,7 +166,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_USERS_ERROR", () => {
+  it("should correctly reduce CREATE_USER_ERROR", () => {
     expect(
       user(
         {
@@ -180,7 +180,7 @@ describe("users reducer", () => {
         },
         {
           error: { username: "Username already exists" },
-          type: "CREATE_USERS_ERROR"
+          type: "CREATE_USER_ERROR"
         }
       )
     ).toEqual({
@@ -194,7 +194,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_USERS_ERROR", () => {
+  it("should correctly reduce DELETE_USER_ERROR", () => {
     expect(
       user(
         {
@@ -208,7 +208,7 @@ describe("users reducer", () => {
         },
         {
           error: "Could not delete",
-          type: "DELETE_USERS_ERROR"
+          type: "DELETE_USER_ERROR"
         }
       )
     ).toEqual({
@@ -309,7 +309,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce CLEANUP_USERS", () => {
+  it("should correctly reduce CLEANUP_USER", () => {
     expect(
       user(
         {
@@ -322,7 +322,7 @@ describe("users reducer", () => {
           saving: true
         },
         {
-          type: "CLEANUP_USERS"
+          type: "CLEANUP_USER"
         }
       )
     ).toEqual({

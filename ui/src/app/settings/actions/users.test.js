@@ -3,7 +3,7 @@ import users from "./users";
 describe("user actions", () => {
   it("should handle fetching users", () => {
     expect(users.fetch()).toEqual({
-      type: "FETCH_USERS",
+      type: "FETCH_USER",
       meta: {
         model: "user",
         method: "list",
@@ -14,7 +14,7 @@ describe("user actions", () => {
 
   it("can handle creating users", () => {
     expect(users.create({ name: "kangaroo" })).toEqual({
-      type: "CREATE_USERS",
+      type: "CREATE_USER",
       meta: {
         model: "user",
         method: "create",
@@ -30,7 +30,7 @@ describe("user actions", () => {
 
   it("can handle updating users", () => {
     expect(users.update({ name: "kookaburra" })).toEqual({
-      type: "UPDATE_USERS",
+      type: "UPDATE_USER",
       meta: {
         model: "user",
         method: "update",
@@ -46,7 +46,7 @@ describe("user actions", () => {
 
   it("can handle deleting users", () => {
     expect(users.delete(808)).toEqual({
-      type: "DELETE_USERS",
+      type: "DELETE_USER",
       meta: {
         model: "user",
         method: "delete",
@@ -62,7 +62,7 @@ describe("user actions", () => {
 
   it("can handle cleaning users", () => {
     expect(users.cleanup({ name: "kookaburra" })).toEqual({
-      type: "CLEANUP_USERS"
+      type: "CLEANUP_USER"
     });
   });
 });

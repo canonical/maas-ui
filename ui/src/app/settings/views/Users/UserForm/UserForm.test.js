@@ -48,7 +48,7 @@ describe("UserForm", () => {
     wrapper.unmount();
     expect(store.getActions()).toEqual([
       {
-        type: "CLEANUP_USERS"
+        type: "CLEANUP_USER"
       }
     ]);
   });
@@ -98,7 +98,7 @@ describe("UserForm", () => {
       });
     expect(store.getActions()).toEqual([
       {
-        type: "UPDATE_USERS",
+        type: "UPDATE_USER",
         payload: {
           params: {
             email: "test@example.com",
@@ -140,7 +140,7 @@ describe("UserForm", () => {
       });
     expect(store.getActions()).toEqual([
       {
-        type: "CREATE_USERS",
+        type: "CREATE_USER",
         payload: {
           params: {
             email: "test@example.com",

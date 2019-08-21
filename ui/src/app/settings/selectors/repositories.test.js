@@ -30,6 +30,38 @@ describe("repositories selectors", () => {
     expect(repositories.loaded(state)).toEqual(true);
   });
 
+  it("can get the saving state", () => {
+    const state = {
+      packagerepository: {
+        saving: true,
+        items: []
+      }
+    };
+    expect(repositories.saving(state)).toEqual(true);
+  });
+
+  it("can get the saved state", () => {
+    const state = {
+      packagerepository: {
+        saved: true,
+        items: []
+      }
+    };
+    expect(repositories.saved(state)).toEqual(true);
+  });
+
+  it("can get packagerepository errors", () => {
+    const state = {
+      packagerepository: {
+        errors: { name: "Name already exists" },
+        items: []
+      }
+    };
+    expect(repositories.errors(state)).toStrictEqual({
+      name: "Name already exists"
+    });
+  });
+
   it("can get the count", () => {
     const state = {
       packagerepository: {
