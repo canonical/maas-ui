@@ -1,5 +1,5 @@
 import { eventChannel } from "redux-saga";
-import { all, call, delay, put, select, take, race } from "redux-saga/effects";
+import { all, call, put, select, take, race } from "redux-saga/effects";
 
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";

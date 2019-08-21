@@ -1,4 +1,4 @@
-import { call, put, take, all } from "redux-saga/effects";
+import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 
 import {
@@ -133,7 +133,7 @@ describe("websocket sagas", () => {
     expect(saga.next(true).value.type).toEqual("TAKE");
   });
 
-  it.only("can handle params as an array", () => {
+  it("can handle params as an array", () => {
     const saga = sendMessage(socketClient);
     saga.next();
     expect(
