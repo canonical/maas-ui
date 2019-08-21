@@ -26,6 +26,11 @@ describe("Commissioning", () => {
             choices: []
           }
         ]
+      },
+      general: {
+        loading: false,
+        loaded: true,
+        osInfo: {}
       }
     };
   });

@@ -221,16 +221,6 @@ config.defaultMinKernelVersion = createSelector(
   configs => getValueFromName(configs, "default_min_hwe_kernel")
 );
 
-/**
- * Returns the possible min kernel version options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Min kernel version options.
- */
-config.minKernelVersionOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "default_min_hwe_kernel")
-);
-
 /* Returns the MAAS config for enabling DNSSEC validation of upstream zones.
  * @param {Object} state - The redux state.
  * @returns {String} DNSSEC validation type.

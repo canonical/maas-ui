@@ -27,15 +27,17 @@ describe("Settings", () => {
       </Provider>
     );
 
-    expect(store.getActions()).toEqual([
-      {
-        type: "FETCH_CONFIG",
-        meta: {
-          model: "config",
-          method: "list",
-          type: 0
-        }
+    const fetchConfigAction = store
+      .getActions()
+      .find(action => action.type === "FETCH_CONFIG");
+
+    expect(fetchConfigAction).toEqual({
+      type: "FETCH_CONFIG",
+      meta: {
+        model: "config",
+        method: "list",
+        type: 0
       }
-    ]);
+    });
   });
 });

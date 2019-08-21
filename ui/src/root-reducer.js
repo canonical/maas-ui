@@ -8,6 +8,7 @@ import baseReducers from "./app/base/reducers";
 export default history =>
   combineReducers({
     config: settingsReducers.config,
+    general: settingsReducers.general,
     packagerepository: settingsReducers.packagerepository,
     user: reduceReducers(settingsReducers.user, baseReducers.auth),
     router: connectRouter(history),
