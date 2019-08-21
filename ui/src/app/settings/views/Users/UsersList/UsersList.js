@@ -15,7 +15,13 @@ import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 
-const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
+const generateUserRows = (
+  users,
+  authUser,
+  expandedId,
+  setExpandedId,
+  dispatch
+) =>
   users.map(user => {
     const expanded = expandedId === user.id;
     return {
@@ -79,7 +85,15 @@ const generateUserRows = (users, authUser, expandedId, setExpandedId) =>
           </Col>
           <Col size="3" className="u-align--right">
             <Button onClick={() => setExpandedId()}>Cancel</Button>
-            <Button appearance="negative">Delete</Button>
+            <Button
+              appearance="negative"
+              onClick={() => {
+                dispatch(actions.users.delete(user.id));
+                setExpandedId();
+              }}
+            >
+              Delete
+            </Button>
           </Col>
         </Row>
       ),
@@ -165,7 +179,13 @@ const Users = ({ initialCount = 20 }) => {
             }
           ]}
           rowLimit={itemsPerPage}
-          rows={generateUserRows(users, authUser, expandedId, setExpandedId)}
+          rows={generateUserRows(
+            users,
+            authUser,
+            expandedId,
+            setExpandedId,
+            dispatch
+          )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}
         />

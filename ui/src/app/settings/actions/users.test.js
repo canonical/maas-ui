@@ -44,6 +44,22 @@ describe("user actions", () => {
     });
   });
 
+  it("can handle deleting users", () => {
+    expect(users.delete(808)).toEqual({
+      type: "DELETE_USERS",
+      meta: {
+        model: "user",
+        method: "delete",
+        type: 0
+      },
+      payload: {
+        params: {
+          id: 808
+        }
+      }
+    });
+  });
+
   it("can handle cleaning users", () => {
     expect(users.cleanup({ name: "kookaburra" })).toEqual({
       type: "CLEANUP_USERS"

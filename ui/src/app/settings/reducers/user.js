@@ -13,16 +13,19 @@ const user = produce(
         break;
       case "UPDATE_USERS_START":
       case "CREATE_USERS_START":
+      case "DELETE_USERS_START":
         draft.saved = false;
         draft.saving = true;
         break;
       case "UPDATE_USERS_ERROR":
       case "CREATE_USERS_ERROR":
+      case "DELETE_USERS_ERROR":
         draft.errors = action.error;
         draft.saving = false;
         break;
       case "UPDATE_USERS_SUCCESS":
       case "CREATE_USERS_SUCCESS":
+      case "DELETE_USERS_SUCCESS":
         draft.errors = {};
         draft.saved = true;
         draft.saving = false;
@@ -37,6 +40,10 @@ const user = produce(
         break;
       case "CREATE_USER_SYNC":
         draft.items.push(action.payload);
+        break;
+      case "DELETE_USER_SYNC":
+        const index = draft.items.findIndex(item => item.id === action.payload);
+        draft.items.splice(index, 1);
         break;
       case "CLEANUP_USERS":
         draft.errors = {};
