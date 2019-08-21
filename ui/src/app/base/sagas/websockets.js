@@ -102,9 +102,19 @@ export function* handleMessage(socketChannel, socketClient) {
         response.request_id
       );
       if (response.error) {
+        let error;
+        try {
+          error = JSON.parse(response.error);
+        } catch {
+          // the API doesn't consistently return JSON, so we fallback
+          // to directly assign the error.
+          //
+          // https://bugs.launchpad.net/maas/+bug/1840887
+          error = response.error;
+        }
         yield put({
           type: `${action_type}_ERROR`,
-          error: JSON.parse(response.error)
+          error
         });
       } else {
         yield put({ type: `${action_type}_SUCCESS`, payload: response.result });

@@ -217,6 +217,23 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("can handle a WebSocket error message that is not JSON", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(
+      saga.next({
+        request_id: 99,
+        error: '("catastrophic failure")'
+      }).value
+    ).toEqual(call([socketClient, socketClient.getRequest], 99));
+    expect(saga.next("TEST_ACTION").value).toEqual(
+      put({
+        type: "TEST_ACTION_ERROR",
+        error: '("catastrophic failure")'
+      })
+    );
+  });
+
   it("can handle a WebSocket sync message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     const response = {
