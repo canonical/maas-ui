@@ -1,4 +1,4 @@
-import { call, put, take, all } from "redux-saga/effects";
+import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 
 import {
@@ -149,21 +149,24 @@ describe("websocket sagas", () => {
         }
       }).value
     ).toEqual(put({ type: "TEST_ACTION_START" }));
-    const effect = saga.next().value;
-    expect(effect).toEqual(
-      all([
-        call([socketClient, socketClient.send], "TEST_ACTION", {
-          method: "test.method",
-          type: 0,
-          params: { name: "foo", value: "bar" }
-        }),
-        call([socketClient, socketClient.send], "TEST_ACTION", {
-          method: "test.method",
-          type: 0,
-          params: { name: "baz", value: "qux" }
-        })
-      ])
+
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], "TEST_ACTION", {
+        method: "test.method",
+        type: 0,
+        params: { name: "foo", value: "bar" }
+      })
     );
+    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
+
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], "TEST_ACTION", {
+        method: "test.method",
+        type: 0,
+        params: { name: "baz", value: "qux" }
+      })
+    );
+    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {

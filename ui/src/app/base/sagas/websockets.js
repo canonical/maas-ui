@@ -158,15 +158,22 @@ export function* sendMessage(socketClient) {
     yield put({ type: `${type}_START` });
     try {
       if (params && Array.isArray(params)) {
-        yield all(
-          params.map(param =>
-            call(
-              [socketClient, socketClient.send],
-              type,
-              buildMessage(meta, param)
-            )
-          )
-        );
+        // We deliberately do not yield in parallel here with 'all'
+        // to avoid races for dependant config.
+        for (let param of params) {
+          yield call(
+            [socketClient, socketClient.send],
+            type,
+            buildMessage(meta, param)
+          );
+          // Ensure server has synced before sending next message,
+          // important for dependant config like commissioning_distro_series
+          // and default_min_hwe_kernel.
+          // There is an edge case where a different CLI or server event could
+          // dispatch a SYNC of the same type which is received before our expected SYNC,
+          // but this _probably_ does not matter in practice.
+          yield take(`${type}_SYNC`);
+        }
       } else {
         yield call(
           [socketClient, socketClient.send],
