@@ -133,7 +133,7 @@ describe("websocket sagas", () => {
     expect(saga.next(true).value.type).toEqual("TAKE");
   });
 
-  it("can handle params as an array", () => {
+  it.only("can handle params as an array", () => {
     const saga = sendMessage(socketClient);
     saga.next();
     expect(
@@ -149,21 +149,24 @@ describe("websocket sagas", () => {
         }
       }).value
     ).toEqual(put({ type: "TEST_ACTION_START" }));
-    const effect = saga.next().value;
-    expect(effect).toEqual(
-      all([
-        call([socketClient, socketClient.send], "TEST_ACTION", {
-          method: "test.method",
-          type: 0,
-          params: { name: "foo", value: "bar" }
-        }),
-        call([socketClient, socketClient.send], "TEST_ACTION", {
-          method: "test.method",
-          type: 0,
-          params: { name: "baz", value: "qux" }
-        })
-      ])
+
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], "TEST_ACTION", {
+        method: "test.method",
+        type: 0,
+        params: { name: "foo", value: "bar" }
+      })
     );
+    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
+
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], "TEST_ACTION", {
+        method: "test.method",
+        type: 0,
+        params: { name: "baz", value: "qux" }
+      })
+    );
+    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {
