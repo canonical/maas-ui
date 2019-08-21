@@ -13,7 +13,12 @@ import Pagination from "app/base/components/Pagination";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 
-const generateRepositoryRows = (repositories, expandedId, setExpandedId) =>
+const generateRepositoryRows = (
+  repositories,
+  expandedId,
+  setExpandedId,
+  dispatch
+) =>
   repositories.map(repo => {
     let name = "";
     if (repo.name === "main_archive") {
@@ -78,7 +83,15 @@ const generateRepositoryRows = (repositories, expandedId, setExpandedId) =>
           </Col>
           <Col size="3" className="u-align--right">
             <Button onClick={() => setExpandedId()}>Cancel</Button>
-            <Button appearance="negative">Delete</Button>
+            <Button
+              appearance="negative"
+              onClick={() => {
+                dispatch(actions.repositories.delete(repo.id));
+                setExpandedId();
+              }}
+            >
+              Delete
+            </Button>
           </Col>
         </Row>
       ),
@@ -142,7 +155,12 @@ export const Repositories = ({ initialCount = 20 }) => {
             { content: "Actions", className: "u-align--right" }
           ]}
           rowLimit={itemsPerPage}
-          rows={generateRepositoryRows(repositories, expandedId, setExpandedId)}
+          rows={generateRepositoryRows(
+            repositories,
+            expandedId,
+            setExpandedId,
+            dispatch
+          )}
           rowStartIndex={indexOfFirstItem}
           sortable
         />

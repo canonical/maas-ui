@@ -140,7 +140,7 @@ describe("UsersList", () => {
       .at(3)
       .simulate("click");
     expect(store.getActions()[1]).toEqual({
-      type: "DELETE_USERS",
+      type: "DELETE_USER",
       payload: {
         params: {
           id: 2

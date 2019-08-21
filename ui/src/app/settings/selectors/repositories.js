@@ -29,6 +29,27 @@ repositories.loading = state => state.packagerepository.loading;
 repositories.loaded = state => state.packagerepository.loaded;
 
 /**
+ * Get the saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Repositories are saving.
+ */
+repositories.saving = state => state.packagerepository.saving;
+
+/**
+ * Get the saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Repositories have saved.
+ */
+repositories.saved = state => state.packagerepository.saved;
+
+/**
+ * Returns repositories errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Errors for repositories.
+ */
+repositories.errors = state => state.packagerepository.errors;
+
+/**
  * Get repositories that match a term.
  * @param {Object} state - The redux state.
  * @param {String} term - The term to match against.

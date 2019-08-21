@@ -113,6 +113,49 @@ describe("RepositoriesList", () => {
     expect(row.expanded).toBe(true);
   });
 
+  it("can delete a repository", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/settings/repositories", key: "testKey" }
+          ]}
+        >
+          <RepositoriesList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(3)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(3)
+      .find("Button")
+      .at(3)
+      .simulate("click");
+    expect(store.getActions()[1]).toEqual({
+      type: "DELETE_PACKAGEREPOSITORY",
+      payload: {
+        params: {
+          id: 3
+        }
+      },
+      meta: {
+        model: "packagerepository",
+        method: "delete",
+        type: 0
+      }
+    });
+  });
+
   it("can filter repositories", () => {
     const state = { ...initialState };
     const store = mockStore(state);

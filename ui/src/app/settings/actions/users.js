@@ -2,7 +2,7 @@ const users = {};
 
 users.fetch = () => {
   return {
-    type: "FETCH_USERS",
+    type: "FETCH_USER",
     meta: {
       model: "user",
       method: "list",
@@ -13,7 +13,7 @@ users.fetch = () => {
 
 users.create = params => {
   return {
-    type: "CREATE_USERS",
+    type: "CREATE_USER",
     meta: {
       model: "user",
       method: "create",
@@ -27,7 +27,7 @@ users.create = params => {
 
 users.update = params => {
   return {
-    type: "UPDATE_USERS",
+    type: "UPDATE_USER",
     meta: {
       model: "user",
       method: "update",
@@ -41,7 +41,7 @@ users.update = params => {
 
 users.delete = id => {
   return {
-    type: "DELETE_USERS",
+    type: "DELETE_USER",
     meta: {
       model: "user",
       method: "delete",
@@ -57,7 +57,7 @@ users.delete = id => {
 
 users.cleanup = () => {
   return {
-    type: "CLEANUP_USERS"
+    type: "CLEANUP_USER"
   };
 };
 
