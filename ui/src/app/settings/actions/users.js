@@ -39,6 +39,22 @@ users.update = params => {
   };
 };
 
+users.delete = id => {
+  return {
+    type: "DELETE_USERS",
+    meta: {
+      model: "user",
+      method: "delete",
+      type: 0
+    },
+    payload: {
+      params: {
+        id
+      }
+    }
+  };
+};
+
 users.cleanup = () => {
   return {
     type: "CLEANUP_USERS"

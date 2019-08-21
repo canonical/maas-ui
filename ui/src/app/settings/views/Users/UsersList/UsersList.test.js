@@ -114,6 +114,46 @@ describe("UsersList", () => {
     expect(row.expanded).toBe(true);
   });
 
+  it("can delete a user", () => {
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .find("Button")
+      .at(3)
+      .simulate("click");
+    expect(store.getActions()[1]).toEqual({
+      type: "DELETE_USERS",
+      payload: {
+        params: {
+          id: 2
+        }
+      },
+      meta: {
+        model: "user",
+        method: "delete",
+        type: 0
+      }
+    });
+  });
+
   it("can filter users", () => {
     const store = mockStore(defaultStore);
     const wrapper = mount(

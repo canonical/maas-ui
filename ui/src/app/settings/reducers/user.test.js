@@ -111,6 +111,33 @@ describe("users reducer", () => {
     });
   });
 
+  it("should correctly reduce DELETE_USERS_START", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_USERS_START"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
   it("should correctly reduce UPDATE_USERS_ERROR", () => {
     expect(
       user(
@@ -159,6 +186,34 @@ describe("users reducer", () => {
     ).toEqual({
       auth: {},
       errors: { username: "Username already exists" },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_USERS_ERROR", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not delete",
+          type: "DELETE_USERS_ERROR"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: "Could not delete",
       items: [],
       loaded: false,
       loading: false,
@@ -219,6 +274,34 @@ describe("users reducer", () => {
       auth: {},
       errors: {},
       items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_USER_SYNC", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: 2,
+          type: "DELETE_USER_SYNC"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [{ id: 1, username: "admin" }],
       loaded: false,
       loading: false,
       saved: false,
