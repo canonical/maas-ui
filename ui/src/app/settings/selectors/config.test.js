@@ -309,4 +309,17 @@ describe("config selectors", () => {
       expect(config.kernelParams(state)).toBe("foo");
     });
   });
+
+  describe("windowsKmsHost", () => {
+    it("returns Windows KMS host", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "windows_kms_host", value: "127.0.0.1" }]
+        }
+      };
+      expect(config.windowsKmsHost(state)).toBe("127.0.0.1");
+    });
+  });
 });

@@ -5,7 +5,6 @@ import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Dhcp from "app/settings/views/Dhcp";
 import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
-import Images from "app/settings/views/Images";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 import NtpForm from "app/settings/views/Network/NtpForm";
@@ -19,6 +18,7 @@ import SyslogForm from "app/settings/views/Network/SyslogForm";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
+import Windows from "app/settings/views/Images/Windows";
 
 const Routes = () => (
   <Switch>
@@ -37,7 +37,6 @@ const Routes = () => (
     <Route exact path="/users" component={UsersList} />
     <Route exact path="/users/add" component={UserAdd} />
     <Route exact path="/users/:id/edit" component={UserEdit} />
-    <Route exact path="/images" component={Images} />
     <Route exact path="/storage" component={StorageForm} />
     <Route exact path="/network/proxy" component={ProxyForm} />
     <Route exact path="/network/dns" component={DnsForm} />
@@ -54,6 +53,7 @@ const Routes = () => (
     <Route exact path="/repositories" component={RepositoriesList} />
     <Route exact path="/repositories/add" component={RepositoryAdd} />
     <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
+    <Route exact path="/images/windows" component={Windows} />
   </Switch>
 );
 
