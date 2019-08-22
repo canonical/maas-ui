@@ -1,4 +1,4 @@
-## Text input
+### Text input
 
 ```jsx
 <Input
@@ -9,31 +9,31 @@
 />
 ```
 
-## Stacked
+### Stacked
 
 ```jsx
 <Input
   type="text"
   id="exampleTextInput3"
   placeholder="example@canonical.com"
-  stacked={true}
+  stacked
   label="Email address"
 />
 ```
 
-## Disabled
+### Disabled
 
 ```jsx
 <Input
   type="text"
   id="exampleTextInput4"
   placeholder="example@canonical.com"
-  disabled={true}
+  disabled
   label="Email address"
 />
 ```
 
-## Error
+### Error
 
 ```jsx
 <Input
@@ -45,7 +45,7 @@
 />
 ```
 
-## Success
+### Success
 
 ```jsx
 <Input
@@ -57,7 +57,7 @@
 />
 ```
 
-## Caution
+### Caution
 
 ```jsx
 <Input
@@ -69,32 +69,32 @@
 />
 ```
 
-## Required
+### Required
 
 ```jsx
 <Input
   type="text"
   id="exampleTextInput8"
   placeholder="example@canonical.com"
-  required={true}
+  required
   label="Email address"
 />
 ```
 
-## Checkbox
+### Checkbox
 
 ```jsx
 <Input
   type="checkbox"
   id="checkExample12"
-  defaultChecked={true}
+  defaultChecked
   label="HTML"
 />
 <Input type="checkbox" id="checkExample22" label="CSS" />
 <Input type="checkbox" id="checkExample32" disabled="disabled" label="PHP" />
 ```
 
-## Radio button
+### Radio button
 
 ```jsx
 <Input
@@ -103,7 +103,7 @@
   name="RadioOptions"
   id="Radio12"
   defaultValue="option1"
-  defaultChecked={true}
+  defaultChecked
 />
 <Input
   label="Mac OS"

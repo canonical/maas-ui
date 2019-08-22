@@ -1,4 +1,4 @@
-## Light strip
+### Light strip
 
 ```jsx
 <Strip type="light">
@@ -6,7 +6,7 @@
 </Strip>
 ```
 
-## Dark strip
+### Dark strip
 
 ```jsx
 <Strip type="dark">
@@ -14,7 +14,7 @@
 </Strip>
 ```
 
-## Accent strip
+### Accent strip
 
 ```jsx
 import Col from "../Col";
@@ -35,66 +35,67 @@ import Col from "../Col";
 </Strip>;
 ```
 
-## Image strip
+### Image strip
 
 ```jsx
 import Row from "../Row";
 import Col from "../Col";
-<Strip
-  background="https://assets.ubuntu.com/sites/ubuntu/latest/u/img/backgrounds/image-background-paper.png"
-  includeCol={false}
-  element="section"
-  light={true}
-  rowClassName="u-vertically-center"
-  type="image"
->
-  <Col size="8">
-    <h1>Get started with big software, fast</h1>
-    <p>
-      conjure-up lets you summon up a big-software stack as a “spell” — a
-      model of the stack, combined with extra know-how to get you from an
-      installed stack to a fully usable one. Start using your big software
-      instead of learning how to deploy it.
-    </p>
-  </Col>
-  <Col size="4" className="u-hide--small u-align--center">
-    <img
-      src="https://assets.ubuntu.com/v1/1abb8716-conjure-up-illustration.svg"
-      alt="Placeholder"
-    />
-  </Col>
-</Strip>
-<Strip
-  background="https://assets.ubuntu.com/v1/9b68976e-Aubergine_suru_background_2.png"
-  dark={true}
-  includeCol={false}
-  element="section"
-  type="image"
->
-  <Row className="u-vertically-center">
+<>
+  <Strip
+    background="https://assets.ubuntu.com/sites/ubuntu/latest/u/img/backgrounds/image-background-paper.png"
+    includeCol={false}
+    element="section"
+    light
+    rowClassName="u-vertically-center"
+    type="image"
+  >
     <Col size="8">
-      <h1>We are Canonical</h1>
+      <h1>Get started with big software, fast</h1>
       <p>
-        It is our mission to make open source software available to people
-        everywhere. We believe the best way to fuel innovation is to give
-        the innovators the technology they need.
+        conjure-up lets you summon up a big-software stack as a “spell” — a
+        model of the stack, combined with extra know-how to get you from an
+        installed stack to a fully usable one. Start using your big software
+        instead of learning how to deploy it.
       </p>
     </Col>
     <Col size="4" className="u-hide--small u-align--center">
       <img
-        src="https://assets.ubuntu.com/v1/9c74eb2d-logo-canonical-white.svg"
+        src="https://assets.ubuntu.com/v1/1abb8716-conjure-up-illustration.svg"
         alt="Placeholder"
       />
     </Col>
-  </Row>
-</Strip>
-
+  </Strip>
+  <Strip
+    background="https://assets.ubuntu.com/v1/9b68976e-Aubergine_suru_background_2.png"
+    dark
+    includeCol={false}
+    element="section"
+    type="image"
+  >
+    <Row className="u-vertically-center">
+      <Col size="8">
+        <h1>We are Canonical</h1>
+        <p>
+          It is our mission to make open source software available to people
+          everywhere. We believe the best way to fuel innovation is to give the
+          innovators the technology they need.
+        </p>
+      </Col>
+      <Col size="4" className="u-hide--small u-align--center">
+        <img
+          src="https://assets.ubuntu.com/v1/9c74eb2d-logo-canonical-white.svg"
+          alt="Placeholder"
+        />
+      </Col>
+    </Row>
+  </Strip>
+</>;
 ```
 
-## Bordered strip
+### Bordered strip
 
 ```jsx
-<Strip bordered={true} colSize="8" element="section">
+<Strip bordered colSize="8" element="section">
   <h2>The node lifecycle</h2>
   <p>
     Each machine (“node”) managed by MAAS goes through a lifecycle — from its
@@ -106,11 +107,12 @@ import Col from "../Col";
 </Strip>
 ```
 
-## Deep strip
+### Deep strip
 
 ```jsx
+import Col from "../Col";
 <Strip
-  deep={true}
+  deep
   includeCol={false}
   element="section"
   type="light"
@@ -129,14 +131,15 @@ import Col from "../Col";
       alt="Placeholder"
     />
   </Col>
-</Strip>
+</Strip>;
 ```
 
-## Shallow strip
+### Shallow strip
 
 ```jsx
+import Col from "../Col";
 <Strip
-  shallow={true}
+  shallow
   includeCol={false}
   element="section"
   type="light"
@@ -155,5 +158,5 @@ import Col from "../Col";
       alt="Placeholder"
     />
   </Col>
-</Strip>
+</Strip>;
 ```

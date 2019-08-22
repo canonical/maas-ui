@@ -1,4 +1,4 @@
-## Forms
+### Forms
 
 ```jsx
 import Input from "../Input";
@@ -24,7 +24,7 @@ import Input from "../Input";
 </Form>;
 ```
 
-## Fieldset
+### Fieldset
 
 ```jsx
 import Input from "../Input";
@@ -52,11 +52,11 @@ import Input from "../Input";
 </Form>;
 ```
 
-## Inline
+### Inline
 
 ```jsx
 import Input from "../Input";
-<Form inline={true}>
+<Form inline>
   <Input
     type="text"
     id="username-inline2"
@@ -75,42 +75,42 @@ import Input from "../Input";
 </Form>;
 ```
 
-## Stacked
+### Stacked
 
 ```jsx
 import Input from "../Input";
-<Form stacked={true}>
-  <Input type="text" id="full-name-stacked2" label="Full name" stacked={true} />
+<Form stacked>
+  <Input type="text" id="full-name-stacked2" label="Full name" stacked />
   <Input
     type="text"
     id="username-stacked2"
     label="Username"
-    stacked={true}
+    stacked
     help="30 characters or fewer."
   />
   <Input
     type="text"
     id="username-stacked-error2"
     label="Email address"
-    stacked={true}
+    stacked
     error="This field is required"
   />
   <Input
     type="text"
     id="address-optional-stacked2"
     label="Address line 1"
-    stacked={true}
+    stacked
   />
   <Input
     type="text"
     id="address-optional-stacked3"
     label="Address line 2"
-    stacked={true}
+    stacked
   />
 </Form>;
 ```
 
-## Disabled
+### Disabled
 
 ```jsx
 import Input from "../Input";
@@ -125,7 +125,7 @@ import Input from "../Input";
 </Form>;
 ```
 
-## Validation
+### Validation
 
 ```jsx
 import Input from "../Input";
@@ -167,7 +167,7 @@ import Select from "../Select";
 </Form>;
 ```
 
-## Required
+### Required
 
 ```jsx
 import Input from "../Input";
@@ -178,7 +178,7 @@ import Input from "../Input";
     placeholder="e.g joe@bloggs.com"
     error="This field is required."
     label="Email address"
-    required={true}
+    required
   />
 </Form>;
 ```

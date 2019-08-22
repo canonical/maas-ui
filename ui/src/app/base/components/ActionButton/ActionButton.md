@@ -1,21 +1,21 @@
-## Default
+### Default
 
 ```jsx
 <ActionButton appearance="positive">Click me!</ActionButton>
 ```
 
-## Loading
+### Loading
 
 ```jsx
-<ActionButton appearance="positive" loading={true}>
+<ActionButton appearance="positive" loading>
   Click me!
 </ActionButton>
 ```
 
-## Success
+### Success
 
 ```jsx
-<ActionButton appearance="positive" success={true}>
+<ActionButton appearance="positive" success>
   Click me!
 </ActionButton>
 ```

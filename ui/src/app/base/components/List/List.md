@@ -1,10 +1,10 @@
-## Default
+### Default
 
 ```jsx
 <List items={["Digital signage", "Robotics", "Gateways"]} />
 ```
 
-## Ticked
+### Ticked
 
 ```jsx
 <List
@@ -13,11 +13,11 @@
     "Fixed-price deployment",
     "Reference architecture"
   ]}
-  ticked={true}
+  ticked
 />
 ```
 
-## Horizontal divider
+### Horizontal divider
 
 ```jsx
 <List
@@ -26,11 +26,11 @@
     "Postgres database for reliable state",
     "High availability for all services"
   ]}
-  divided={true}
+  divided
 />
 ```
 
-## Ticked with horizontal divider
+### Ticked with horizontal divider
 
 ```jsx
 <List
@@ -39,27 +39,27 @@
     "Optimise for specific workloads",
     "Assess overcommit ratios"
   ]}
-  divided={true}
-  ticked={true}
+  divided
+  ticked
 />
 ```
 
-## Inline
+### Inline
 
 ```jsx
-<List items={["Community", "Careers", "Press centre"]} inline={true} />
+<List items={["Community", "Careers", "Press centre"]} inline />
 ```
 
-## Middot
+### Middot
 
 ```jsx
 <List
   items={["Legal information", "Data privacy", "Report a bug on this site"]}
-  middot={true}
+  middot
 />
 ```
 
-## Vertical stepped
+### Vertical stepped
 
 ```jsx
 <List
@@ -80,7 +80,7 @@
         "After having selected a cloud, a form will appear for submitting your credentials to JAAS. The below resources are available if you need help with gathering credentials."
     }
   ]}
-  stepped={true}
+  stepped
 />
 <List
   items={[
@@ -103,12 +103,12 @@
       titleElement: "h4"
     }
   ]}
-  stepped={true}
+  stepped
 />
 
 ```
 
-## Horizontal stepped
+### Horizontal stepped
 
 ```jsx
 <List
@@ -124,12 +124,12 @@
         'Applications are contained within models and are installed via charms. Configure your model by pressing the "Start a new model" button.'
     }
   ]}
-  stepped={true}
-  detailed={true}
+  stepped
+  detailed
 />
 ```
 
-## Split
+### Split
 
 ```jsx
 <List
@@ -141,8 +141,8 @@
     "Transparent audit, logging, monitoring and management",
     "When your team is ready, we hand over the keys"
   ]}
-  divided={true}
-  split={true}
-  ticked={true}
+  divided
+  split
+  ticked
 />
 ```
