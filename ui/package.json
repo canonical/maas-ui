@@ -29,11 +29,11 @@
     "start": "react-scripts start",
     "serve": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "tar -C build -czvf maas-ui-v$npm_package_version.tar.gz .",
+    "postbuild": "mkdir -p dist && tar -C build -czvf dist/maas-ui-v$npm_package_version.tar.gz .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "clean": "rm -rf node_modules build"
+    "clean": "rm -rf node_modules build dist"
   },
   "eslintConfig": {
     "extends": "react-app"
