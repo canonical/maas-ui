@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "cd ui && yarn run build",
+    "docs": "cd ui && yarn run docs",
     "release": "cd ui && yarn run release",
     "serve": "cd ui && yarn run start",
     "test": "cd ui && yarn run test",
