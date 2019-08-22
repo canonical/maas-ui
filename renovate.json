@@ -1,5 +1,50 @@
 {
-  "extends": [
-    "config:base"
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "packageNames": [
+        "^enzyme",
+        "^eslint",
+        "cross-env",
+        "prettier",
+        "prop-types",
+        "node-sass",
+        "react",
+        "redux-devtools-extension",
+        "react-dom",
+        "redux-mock-store",
+        "react-redux",
+        "react-router-dom",
+        "redux-saga-test-plan",
+        "react-scripts",
+        "reselect",
+        "uuid",
+        "yup"
+      ],
+      "minor": {
+        "automerge": true
+      },
+      "patch": {
+        "automerge": true
+      }
+    },
+    {
+      "packageNames": [
+        "classNames",
+        "connected-react-router",
+        "immer",
+        "formik",
+        "react-router-hash-link",
+        "react-router-prop-types",
+        "reduce-reducers",
+        "redux-saga"
+      ],
+      "minor": {
+        "automerge": false
+      },
+      "patch": {
+        "automerge": true
+      }
+    }
   ]
 }
