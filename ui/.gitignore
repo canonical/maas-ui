@@ -14,14 +14,15 @@ yarn.lock
 
 # production
 /build
+/dist
 
 # misc
 *.swp
 .DS_Store
-.env.local
 .env.development.local
-.env.test.local
+.env.local
 .env.production.local
+.env.test.local
 
 # [env] Local environment settings
 .docker-project
