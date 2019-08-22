@@ -72,3 +72,15 @@ From here you should be able to view the project at &lt;your-local-maas-ip>:8000
 When proposing changes to maas-ui, ensure you update CHANGELOG.md appropriately, describing your changes under either a "Fixed", "Added", "Removed", or "Changed" subheading under "Unreleased".
 
 See [keep a changelog](https://keepachangelog.com/en/1.0.0/) for details.
+
+# Release Process
+
+1. Run `yarn clean`.
+2. Run `yarn install`.
+3. Ensure tests pass with `yarn test`.
+4. Bump `version` in package.json with correct semantic versioning.
+5. Update CHANGELOG.md, moving unreleased changes to a new heading for the release version.
+6. Make a commit with `git commit -am "Release v${version}."`.
+7. Tag the commit with `git tag v${version}`, and push with `git push --tags <upstream> master`.
+8. Build maas-ui with `yarn build`.
+9. [Draft a new release on Github](https://github.com/canonical-web-and-design/maas-ui/releases/new), copying the changelog section for the new release into the description field, and uploading the production tarball produced by `yarn build`.
