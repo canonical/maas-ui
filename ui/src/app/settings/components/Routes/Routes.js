@@ -18,6 +18,7 @@ import SyslogForm from "app/settings/views/Network/SyslogForm";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
+import VMWare from "app/settings/views/Images/VMWare";
 import Windows from "app/settings/views/Images/Windows";
 
 const Routes = () => (
@@ -54,6 +55,7 @@ const Routes = () => (
     <Route exact path="/repositories/add" component={RepositoryAdd} />
     <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
     <Route exact path="/images/windows" component={Windows} />
+    <Route exact path="/images/vmware" component={VMWare} />
   </Switch>
 );
 
