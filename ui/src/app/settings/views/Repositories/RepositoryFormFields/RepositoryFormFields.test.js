@@ -7,7 +7,7 @@ import RepositoryFormFields from "./RepositoryFormFields";
 
 const mockStore = configureStore();
 
-describe("StorageFormFields", () => {
+describe("RepositoryFormFields", () => {
   let baseFormikProps;
   let initialState;
   let baseValues = {
@@ -31,6 +31,7 @@ describe("StorageFormFields", () => {
       handleChange: jest.fn(),
       handleSubmit: jest.fn(),
       initialValues: { ...baseValues },
+      setStatus: jest.fn(),
       touched: {},
       values: { ...baseValues }
     };
@@ -53,8 +54,11 @@ describe("StorageFormFields", () => {
         }
       },
       packagerepository: {
+        errors: {},
         loading: false,
         loaded: true,
+        saved: false,
+        saving: false,
         items: [
           {
             id: 1,
@@ -317,5 +321,21 @@ describe("StorageFormFields", () => {
     expect(wrapper.find("Input[value='multiverse']").props().checked).toBe(
       false
     );
+  });
+
+  it("can set error status", () => {
+    const state = { ...initialState };
+    state.packagerepository.errors = {
+      name: ["Name already exists"]
+    };
+    const store = mockStore(state);
+    const formikProps = { ...baseFormikProps };
+    mount(
+      <Provider store={store}>
+        <RepositoryFormFields formikProps={formikProps} type="repository" />
+      </Provider>
+    );
+
+    expect(formikProps.setStatus).toHaveBeenCalled();
   });
 });

@@ -13,6 +13,32 @@ repositories.fetch = () => {
   };
 };
 
+repositories.create = params => {
+  return {
+    type: "CREATE_PACKAGEREPOSITORY",
+    meta: {
+      model: "packagerepository",
+      method: "create"
+    },
+    payload: {
+      params
+    }
+  };
+};
+
+repositories.update = params => {
+  return {
+    type: "UPDATE_PACKAGEREPOSITORY",
+    meta: {
+      model: "packagerepository",
+      method: "update"
+    },
+    payload: {
+      params
+    }
+  };
+};
+
 repositories.delete = id => {
   return {
     type: "DELETE_PACKAGEREPOSITORY",
@@ -25,6 +51,12 @@ repositories.delete = id => {
         id
       }
     }
+  };
+};
+
+repositories.cleanup = () => {
+  return {
+    type: "CLEANUP_PACKAGEREPOSITORY"
   };
 };
 

@@ -1,15 +1,16 @@
 import { Formik } from "formik";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import "./RepositoryForm.scss";
 import actions from "app/settings/actions";
 import { formikFormDisabled } from "app/settings/utils";
-import { RepositoryShape } from "app/settings/proptypes";
-import { useRouter } from "app/base/hooks";
+import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
+import { useRouter } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
@@ -17,6 +18,7 @@ import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
 import Loader from "app/base/components/Loader";
 import RepositoryFormFields from "../RepositoryFormFields";
+import { RepositoryShape } from "app/settings/proptypes";
 import Row from "app/base/components/Row";
 
 const RepositorySchema = Yup.object().shape({
@@ -34,6 +36,7 @@ const RepositorySchema = Yup.object().shape({
 });
 
 export const RepositoryForm = ({ type, repository }) => {
+  const [savedRepo, setSavedRepo] = useState();
   const { history } = useRouter();
 
   const componentsToDisableLoaded = useSelector(
@@ -46,6 +49,8 @@ export const RepositoryForm = ({ type, repository }) => {
     selectors.general.pocketsToDisable.loaded
   );
   const repositoriesLoaded = useSelector(selectors.repositories.loaded);
+  const repositoriesSaved = useSelector(selectors.repositories.saved);
+  const repositoriesSaving = useSelector(selectors.repositories.saving);
   const allLoaded =
     componentsToDisableLoaded &&
     knownArchitecturesLoaded &&
@@ -53,26 +58,38 @@ export const RepositoryForm = ({ type, repository }) => {
     repositoriesLoaded;
 
   const dispatch = useDispatch();
+
+  // Fetch data if not all loaded.
   useEffect(() => {
-    if (!componentsToDisableLoaded) {
+    if (!allLoaded) {
       dispatch(actions.general.fetchComponentsToDisable());
-    }
-  }, [dispatch, componentsToDisableLoaded]);
-  useEffect(() => {
-    if (!knownArchitecturesLoaded) {
       dispatch(actions.general.fetchKnownArchitectures());
-    }
-  }, [dispatch, knownArchitecturesLoaded]);
-  useEffect(() => {
-    if (!pocketsToDisableLoaded) {
       dispatch(actions.general.fetchPocketsToDisable());
-    }
-  }, [dispatch, pocketsToDisableLoaded]);
-  useEffect(() => {
-    if (!repositoriesLoaded) {
       dispatch(actions.repositories.fetch());
     }
-  }, [dispatch, repositoriesLoaded]);
+  }, [dispatch, allLoaded]);
+
+  // Create a saved notification if successful
+  useEffect(() => {
+    if (repositoriesSaved) {
+      const action = repository ? "updated" : "added";
+      dispatch(actions.repositories.cleanup());
+      dispatch(
+        messages.add(`${savedRepo} ${action} successfully.`, "information")
+      );
+      setSavedRepo();
+    }
+  }, [dispatch, repository, repositoriesSaved, savedRepo]);
+
+  // Clean up saved and error states on unmount.
+  useEffect(() => {
+    dispatch(actions.repositories.cleanup());
+  }, [dispatch]);
+
+  if (repositoriesSaved) {
+    // The repo was successfully created/updated so redirect to the repo list.
+    return <Redirect to="/repositories" />;
+  }
 
   const typeString = type === "ppa" ? "PPA" : "repository";
   let initialValues;
@@ -123,8 +140,8 @@ export const RepositoryForm = ({ type, repository }) => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={RepositorySchema}
-                onSubmit={(values, { resetForm, setSubmitting }) => {
-                  const payload = {
+                onSubmit={values => {
+                  const params = {
                     arches: values.arches,
                     components: values.components.split(" ,").filter(Boolean),
                     default: values.default,
@@ -139,11 +156,13 @@ export const RepositoryForm = ({ type, repository }) => {
                     name: values.name,
                     url: values.url
                   };
-                  setTimeout(() => {
-                    alert(JSON.stringify(payload, null, 2));
-                    setSubmitting(false);
-                    resetForm();
-                  }, 1000);
+                  if (repository) {
+                    params.id = repository.id;
+                    dispatch(actions.repositories.update(params));
+                  } else {
+                    dispatch(actions.repositories.create(params));
+                  }
+                  setSavedRepo(values.name);
                 }}
                 render={formikProps => (
                   <Form onSubmit={formikProps.handleSubmit}>
@@ -163,8 +182,11 @@ export const RepositoryForm = ({ type, repository }) => {
                       <ActionButton
                         appearance="positive"
                         className="u-no-margin--bottom"
-                        disabled={formikFormDisabled(formikProps)}
-                        loading={formikProps.isSubmitting}
+                        disabled={
+                          repositoriesSaving || formikFormDisabled(formikProps)
+                        }
+                        loading={repositoriesSaving}
+                        success={repositoriesSaved}
                         type="submit"
                       >
                         {`Save ${typeString}`}
