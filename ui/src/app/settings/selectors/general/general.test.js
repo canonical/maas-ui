@@ -1,6 +1,45 @@
 import general from "./general";
 
 describe("general selectors", () => {
+  describe("componentsToDisable", () => {
+    it("returns componentsToDisable", () => {
+      const componentsToDisable = ["restricted", "universe", "multiverse"];
+      const state = {
+        general: {
+          loading: false,
+          loaded: true,
+          componentsToDisable
+        }
+      };
+      expect(general.componentsToDisable(state)).toStrictEqual(
+        componentsToDisable
+      );
+    });
+  });
+
+  describe("knownArchitectures", () => {
+    it("returns knownArchitectures", () => {
+      const knownArchitectures = [
+        "amd64",
+        "i386",
+        "armhf",
+        "arm64",
+        "ppc64el",
+        "s390x"
+      ];
+      const state = {
+        general: {
+          loading: false,
+          loaded: true,
+          knownArchitectures
+        }
+      };
+      expect(general.knownArchitectures(state)).toStrictEqual(
+        knownArchitectures
+      );
+    });
+  });
+
   describe("osinfo", () => {
     it("returns osinfo", () => {
       const osinfo = {
@@ -18,6 +57,20 @@ describe("general selectors", () => {
         }
       };
       expect(general.osinfo(state)).toStrictEqual(osinfo);
+    });
+  });
+
+  describe("pocketsToDisable", () => {
+    it("returns pocketsToDisable", () => {
+      const pocketsToDisable = ["updates", "security", "backports"];
+      const state = {
+        general: {
+          loading: false,
+          loaded: true,
+          pocketsToDisable
+        }
+      };
+      expect(general.pocketsToDisable(state)).toStrictEqual(pocketsToDisable);
     });
   });
 

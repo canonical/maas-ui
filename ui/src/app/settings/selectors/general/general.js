@@ -1,11 +1,32 @@
 const general = {};
 
 /**
+ * Returns list of components that can be disabled for default Ubuntu archives
+ * @param {Object} state - the redux state
+ * @returns {Array} Components to disable
+ */
+general.componentsToDisable = state => state.general.componentsToDisable;
+
+/**
+ * Returns list of all known architectures, usable or not
+ * @param {Object} state - the redux state
+ * @returns {Array} Known architectures
+ */
+general.knownArchitectures = state => state.general.knownArchitectures;
+
+/**
  * Returns object with osinfo data
  * @param {Object} state - the redux state
  * @returns {Object} The osinfo data
  */
 general.osinfo = state => state.general.osInfo;
+
+/**
+ * Returns list of pockets that can be disabled
+ * @param {Object} state - the redux state
+ * @returns {Array} Pockets to disable
+ */
+general.pocketsToDisable = state => state.general.pocketsToDisable;
 
 /**
  * Returns true if general is loading
