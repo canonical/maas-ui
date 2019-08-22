@@ -40,7 +40,7 @@ const WindowsForm = () => {
             appearance="positive"
             className="u-no-margin--bottom"
             type="submit"
-            disabled={formikFormDisabled(formikProps)}
+            disabled={saving || formikFormDisabled(formikProps)}
             loading={saving}
             success={saved}
           >
