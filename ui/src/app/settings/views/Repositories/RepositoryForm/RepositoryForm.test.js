@@ -32,7 +32,24 @@ describe("RepositoryForm", () => {
       packagerepository: {
         loading: false,
         loaded: true,
-        items: []
+        items: [
+          {
+            id: 1,
+            created: "Fri, 23 Aug. 2019 09:17:44",
+            updated: "Fri, 23 Aug. 2019 09:17:44",
+            name: "main_archive",
+            url: "http://archive.ubuntu.com/ubuntu",
+            distributions: [],
+            disabled_pockets: ["security"],
+            disabled_components: ["universe", "restricted"],
+            disable_sources: true,
+            components: [],
+            arches: ["amd64", "i386"],
+            key: "",
+            default: true,
+            enabled: true
+          }
+        ]
       }
     };
   });
@@ -47,7 +64,7 @@ describe("RepositoryForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
         >
-          <RepositoryForm title="Add repository" />
+          <RepositoryForm type="repository" />
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +95,7 @@ describe("RepositoryForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
         >
-          <RepositoryForm title="Add repository" />
+          <RepositoryForm type="repository" />
         </MemoryRouter>
       </Provider>
     );
@@ -104,7 +121,7 @@ describe("RepositoryForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
         >
-          <RepositoryForm title="Add repository" />
+          <RepositoryForm type="repository" />
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +147,7 @@ describe("RepositoryForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
         >
-          <RepositoryForm title="Add repository" />
+          <RepositoryForm type="repository" />
         </MemoryRouter>
       </Provider>
     );
@@ -144,5 +161,43 @@ describe("RepositoryForm", () => {
         }
       }
     ]);
+  });
+
+  it("correctly sets title given type and repository props", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    let component = mount(
+      <Provider store={store}>
+        <RepositoryForm type="repository" />
+      </Provider>
+    );
+    expect(component.find("h4").text()).toBe("Add repository");
+
+    component = mount(
+      <Provider store={store}>
+        <RepositoryForm type="ppa" />
+      </Provider>
+    );
+    expect(component.find("h4").text()).toBe("Add PPA");
+
+    component = mount(
+      <Provider store={store}>
+        <RepositoryForm
+          type="repository"
+          repository={state.packagerepository.items[0]}
+        />
+      </Provider>
+    );
+    expect(component.find("h4").text()).toBe("Edit repository");
+
+    component = mount(
+      <Provider store={store}>
+        <RepositoryForm
+          type="ppa"
+          repository={state.packagerepository.items[0]}
+        />
+      </Provider>
+    );
+    expect(component.find("h4").text()).toBe("Edit PPA");
   });
 });

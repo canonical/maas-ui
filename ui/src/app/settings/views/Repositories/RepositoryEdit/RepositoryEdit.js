@@ -13,7 +13,7 @@ export const RepositoryEdit = () => {
     dispatch(actions.repositories.fetch());
   }, [dispatch]);
 
-  const { id } = useParams();
+  const { id, type } = useParams();
   const loaded = useSelector(selectors.repositories.loaded);
   const loading = useSelector(selectors.repositories.loading);
   const repository = useSelector(state =>
@@ -26,7 +26,7 @@ export const RepositoryEdit = () => {
   if (loaded && !repository) {
     return <h4>Repository not found</h4>;
   }
-  return <RepositoryForm title="Edit repository" />;
+  return <RepositoryForm type={type} repository={repository} />;
 };
 
 export default RepositoryEdit;

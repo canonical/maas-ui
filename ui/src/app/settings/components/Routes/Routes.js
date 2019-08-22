@@ -56,8 +56,12 @@ const Routes = () => (
     <Route exact path="/scripts" component={Scripts} />
     <Route exact path="/dhcp" component={DhcpList} />
     <Route exact path="/repositories" component={RepositoriesList} />
-    <Route exact path="/repositories/add" component={RepositoryAdd} />
-    <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
+    <Route exact path="/repositories/add/:type" component={RepositoryAdd} />
+    <Route
+      exact
+      path="/repositories/edit/:type/:id"
+      component={RepositoryEdit}
+    />
     <Route exact path="/images/windows" component={Windows} />
     <Route exact path="/images/vmware" component={VMWare} />
     <Route exact path="/images/ubuntu" component={ThirdPartyDrivers} />
