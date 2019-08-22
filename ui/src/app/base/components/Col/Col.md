@@ -1,8 +1,8 @@
-## Grid
+### Grid
 
 ```jsx
 import Row from "../Row";
-<>
+<div className="grid-demo">
   <Row>
     <Col size="12">
       <span>.col-12</span>
@@ -96,44 +96,46 @@ import Row from "../Row";
       <span>.col-11</span>
     </Col>
   </Row>
-</>;
+</div>;
 ```
 
-## Nested columns
+### Nested columns
 
 ```jsx
 import Row from "../Row";
-<Row>
-  <Col small="4" medium="6" size="12">
-    col-small-4 .col-medium-6 .col-12
-    <Row>
-      <Col small="3" medium="3" size="9">
-        col-small-3 .col-medium-3 .col-9
-        <Row>
-          <Col small="1" medium="1" size="2">
-            col-small-1 col-medium-1 col-2
-          </Col>
-          <Col small="1" medium="1" size="3">
-            col-small-1 col-medium-1 col-2
-          </Col>
-          <Col small="1" medium="1" size="3">
-            col-small-1 col-medium-1 col-2
-          </Col>
-        </Row>
-      </Col>
-      <Col small="1" medium="3" size="3">
-        col-small-2 col-medium-3 col-3
-      </Col>
-    </Row>
-  </Col>
-</Row>;
+<div className="grid-demo">
+  <Row>
+    <Col small="4" medium="6" size="12">
+      col-small-4 .col-medium-6 .col-12
+      <Row>
+        <Col small="3" medium="3" size="9">
+          col-small-3 .col-medium-3 .col-9
+          <Row>
+            <Col small="1" medium="1" size="2">
+              col-small-1 col-medium-1 col-2
+            </Col>
+            <Col small="1" medium="1" size="3">
+              col-small-1 col-medium-1 col-2
+            </Col>
+            <Col small="1" medium="1" size="3">
+              col-small-1 col-medium-1 col-2
+            </Col>
+          </Row>
+        </Col>
+        <Col small="1" medium="3" size="3">
+          col-small-2 col-medium-3 col-3
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+</div>;
 ```
 
-## Empty columns
+### Empty columns
 
 ```jsx
 import Row from "../Row";
-<>
+<div className="grid-demo">
   <Row>
     <Col size="8">.col-8</Col>
     <Col size="4">.col-4</Col>
@@ -156,5 +158,5 @@ import Row from "../Row";
       </Row>
     </Col>
   </Row>
-</>;
+</div>;
 ```

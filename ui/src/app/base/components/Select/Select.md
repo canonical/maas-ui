@@ -1,4 +1,4 @@
-## Select
+### Select
 
 ```jsx
 <Select
@@ -15,7 +15,7 @@
 />
 ```
 
-## Select multiple
+### Select multiple
 
 ```jsx
 <Select
@@ -28,6 +28,6 @@
     { value: "3", label: "Xenial Xerus" }
   ]}
   label="Ubuntu releases"
-  multiple={true}
+  multiple
 />
 ```

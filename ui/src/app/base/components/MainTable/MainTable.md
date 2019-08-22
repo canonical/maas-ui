@@ -1,4 +1,4 @@
-## Default
+### Default
 
 ```jsx
 <MainTable
@@ -36,7 +36,7 @@
 />
 ```
 
-## Sortable
+### Sortable
 
 ```jsx
 <MainTable
@@ -90,11 +90,11 @@
       }
     }
   ]}
-  sortable={true}
+  sortable
 />
 ```
 
-## Expanding
+### Expanding
 
 ```jsx
 import Row from "../Row";
@@ -102,7 +102,7 @@ import Col from "../Col";
 // Expanded should be handled in your parent component.
 initialState = { expandedRow: null };
 <MainTable
-  expanding={true}
+  expanding
   headers={[
     { content: "Name" },
     { content: "Mac address" },
@@ -233,7 +233,7 @@ initialState = { expandedRow: null };
 />;
 ```
 
-## Responsive
+### Responsive
 
 ```jsx
 <MainTable
@@ -265,6 +265,6 @@ initialState = { expandedRow: null };
       ]
     }
   ]}
-  responsive={true}
+  responsive
 />
 ```

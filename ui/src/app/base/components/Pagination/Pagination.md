@@ -1,4 +1,4 @@
-## Default
+### Default
 
 ```jsx
 <Pagination
@@ -9,7 +9,7 @@
 />
 ```
 
-## Truncated
+### Truncated
 
 ```jsx
 <Pagination
@@ -20,7 +20,7 @@
 />
 ```
 
-## Disabled controls
+### Disabled controls
 
 ```jsx
 <Pagination

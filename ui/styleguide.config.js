@@ -8,6 +8,11 @@ module.exports = {
   ignore: ["src/app/base/components/**/*.test.js"],
   pagePerSection: true,
   skipComponentsWithoutExample: true,
+  styles: {
+    "grid-demo [class*='col-']": {
+      background: "rgba(199,22,43,0.1)"
+    }
+  },
   template: {
     head: {
       links: [

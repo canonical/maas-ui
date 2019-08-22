@@ -1,4 +1,4 @@
-## Default
+### Default
 
 ```jsx
 <Card title="We'd love to have you join us as a partner.">
@@ -7,7 +7,7 @@
 </Card>
 ```
 
-## Header
+### Header
 
 ```jsx
 <Card
@@ -20,16 +20,16 @@
 </Card>
 ```
 
-## Highlighted
+### Highlighted
 
 ```jsx
-<Card title="We'd love to have you join us as a partner." highlighted={true}>
+<Card title="We'd love to have you join us as a partner." highlighted>
   If you are an independent software vendor or bundle author, it's easy to
   apply. You can find out more below.
 </Card>
 ```
 
-## Overlay
+### Overlay
 
 ```jsx
 import Row from "../Row";
@@ -43,7 +43,7 @@ import Col from "../Col";
 >
   <Row>
     <Col size="6" emptyLarge="7">
-      <Card title="Web browsing" overlay={true}>
+      <Card title="Web browsing" overlay>
         Renowned for speed and security, Ubuntu and Firefox make browsing the
         web a pleasure again. Ubuntu also includes Chrome, Opera and other
         browsers that can be installed from the Ubuntu Software Centre.

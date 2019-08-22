@@ -1,16 +1,16 @@
-## Default
+### Default
 
 ```jsx
 <SearchBox />
 ```
 
-## Disabled
+### Disabled
 
 ```jsx
-<SearchBox disabled={true} />
+<SearchBox disabled />
 ```
 
-## Navigation
+### Navigation
 
 ```jsx
 <header id="navigation" className="p-navigation">
