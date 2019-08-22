@@ -79,4 +79,4 @@ See [keep a changelog](https://keepachangelog.com/en/1.0.0/) for details.
 2. Run `yarn release ${version}`. (e.g. `yarn release 0.1.1`, note no 'v'). Please ensure correct [semantic versioning](https://semver.org/).
 3. Make a commit with `git commit -am "Release v${version}."`.
 4. Push the release with `git push --tags <upstream> master`.
-5. [Draft a new release on Github](https://github.com/canonical-web-and-design/maas-ui/releases/new) using the new version as the *Release title*, copying the changelog section for the new release into the *description* field, and uploading the production tarball produced by `yarn build`.
+5. [Draft a new release on Github](https://github.com/canonical-web-and-design/maas-ui/releases/new) using the new version as the *Release title*, copying the changelog section for the new release into the *description* field, and uploading the production tarball in `./dist`.
