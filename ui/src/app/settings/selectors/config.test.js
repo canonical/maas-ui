@@ -374,4 +374,17 @@ describe("config selectors", () => {
       expect(config.vCenterDatacenter(state)).toBe("my datacenter");
     });
   });
+
+  describe("thirdPartyDriversEnabled", () => {
+    it("returns value of enable_third_party_drivers", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "enable_third_party_drivers", value: true }]
+        }
+      };
+      expect(config.thirdPartyDriversEnabled(state)).toBe(true);
+    });
+  });
 });

@@ -390,4 +390,14 @@ config.vCenterDatacenter = createSelector(
   configs => getValueFromName(configs, "vcenter_datacenter")
 );
 
+/**
+ * Returns the MAAS config for enable_third_party_drivers
+ * @param {Object} state - The redux state
+ * @returns {Boolean} - The value of enable_third_party_drivers
+ */
+config.thirdPartyDriversEnabled = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "enable_third_party_drivers")
+);
+
 export default config;
