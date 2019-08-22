@@ -1,6 +1,6 @@
-# Setting up MAAS UI
+# Setting up maas-ui
 
-**Note: You will need an instance of MAAS running in order to run MAAS UI.**
+**Note: You will need an instance of MAAS running in order to run maas-ui.**
 
 ## Generate an SSH key in your container (LXD and multipass)
 
@@ -8,7 +8,7 @@
 
 Inside your container (LXD or multipass) [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
 
-## Clone the repositiory
+## Clone the repository
 
 Inside your MAAS container (LXD or multipass) go to the directory that contains your local MAAS, e.g.
 
@@ -57,7 +57,7 @@ newgrp docker
 
 [Install Docker inside your container](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-## Running MAAS UI
+# Running maas-ui
 
 From the root of the MAAS UI project run:
 
@@ -66,3 +66,9 @@ From the root of the MAAS UI project run:
 ```
 
 From here you should be able to view the project at &lt;your-local-maas-ip>:8000
+
+# Changelog Process
+
+When proposing changes to maas-ui, ensure you update CHANGELOG.md appropriately, describing your changes under either a "Fixed", "Added", "Removed", or "Changed" subheading under "Unreleased".
+
+See [keep a changelog](https://keepachangelog.com/en/1.0.0/) for details.
