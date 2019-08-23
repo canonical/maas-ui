@@ -129,7 +129,7 @@ describe("packagerepository reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_PACKAGEREPOSITORY_SYNC", () => {
+  it("should correctly reduce DELETE_PACKAGEREPOSITORY_NOTIFY", () => {
     expect(
       packagerepository(
         {
@@ -143,7 +143,7 @@ describe("packagerepository reducer", () => {
         },
         {
           payload: 2,
-          type: "DELETE_PACKAGEREPOSITORY_SYNC"
+          type: "DELETE_PACKAGEREPOSITORY_NOTIFY"
         }
       )
     ).toEqual({

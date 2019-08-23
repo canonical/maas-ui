@@ -100,7 +100,7 @@ describe("config reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_CONFIG_SYNC, updating the store", () => {
+  it("should correctly reduce UPDATE_CONFIG_NOTIFY, updating the store", () => {
     expect(
       config(
         {
@@ -114,7 +114,7 @@ describe("config reducer", () => {
           ]
         },
         {
-          type: "UPDATE_CONFIG_SYNC",
+          type: "UPDATE_CONFIG_NOTIFY",
           payload: { name: "default_storage_layout", value: "flat" }
         }
       )

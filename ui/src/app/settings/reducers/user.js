@@ -30,7 +30,7 @@ const user = produce(
         draft.saved = true;
         draft.saving = false;
         break;
-      case "UPDATE_USER_SYNC":
+      case "UPDATE_USER_NOTIFY":
         for (let i in draft.items) {
           if (draft.items[i].id === action.payload.id) {
             draft.items[i] = action.payload;
@@ -38,10 +38,10 @@ const user = produce(
           }
         }
         break;
-      case "CREATE_USER_SYNC":
+      case "CREATE_USER_NOTIFY":
         draft.items.push(action.payload);
         break;
-      case "DELETE_USER_SYNC":
+      case "DELETE_USER_NOTIFY":
         const index = draft.items.findIndex(item => item.id === action.payload);
         draft.items.splice(index, 1);
         break;

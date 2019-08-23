@@ -4,7 +4,7 @@
 const MESSAGE_TYPES = {
   REQUEST: 0,
   RESPONSE: 1,
-  SYNC: 2
+  NOTIFY: 2
 };
 
 export default MESSAGE_TYPES;

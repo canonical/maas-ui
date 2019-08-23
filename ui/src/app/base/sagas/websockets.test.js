@@ -5,7 +5,7 @@ import MESSAGE_TYPES from "app/base/constants";
 import {
   createConnection,
   handleMessage,
-  handleSyncMessage,
+  handleNotifyMessage,
   sendMessage,
   watchMessages,
   watchWebSockets
@@ -158,7 +158,7 @@ describe("websocket sagas", () => {
         params: { name: "foo", value: "bar" }
       })
     );
-    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
+    expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
@@ -167,7 +167,7 @@ describe("websocket sagas", () => {
         params: { name: "baz", value: "qux" }
       })
     );
-    expect(saga.next().value).toEqual(take("TEST_ACTION_SYNC"));
+    expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {
@@ -235,17 +235,17 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can handle a WebSocket sync message", () => {
+  it("can handle a WebSocket notify message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     const response = {
-      type: MESSAGE_TYPES.SYNC,
+      type: MESSAGE_TYPES.NOTIFY,
       name: "config",
       action: "update",
       data: { name: "foo", value: "bar" }
     };
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next(response).value).toEqual(
-      call(handleSyncMessage, response)
+      call(handleNotifyMessage, response)
     );
     // yield no further, take a new message
     expect(saga.next().value).toEqual(take(socketChannel));
