@@ -16,7 +16,7 @@ describe("UsersList", () => {
     users = [
       {
         email: "admin@example.com",
-        first_name: "",
+        first_name: "Kangaroo",
         global_permissions: ["machine_create"],
         id: 1,
         is_superuser: true,
@@ -26,7 +26,7 @@ describe("UsersList", () => {
       },
       {
         email: "user@example.com",
-        first_name: "",
+        first_name: "Koala",
         global_permissions: ["machine_create"],
         id: 2,
         is_superuser: false,
@@ -176,5 +176,39 @@ describe("UsersList", () => {
     wrapper.update();
     rows = wrapper.find("MainTable").prop("rows");
     expect(rows.length).toBe(1);
+  });
+
+  it("can toggle username and real name", () => {
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(2)
+        .find("TableCell")
+        .at(0)
+        .text()
+    ).toEqual("user1");
+    // Click on the header toggle.
+    wrapper
+      .find(".p-table-multi-header__link")
+      .at(2)
+      .simulate("click");
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(2)
+        .find("TableCell")
+        .at(0)
+        .text()
+    ).toEqual("Kangaroo");
   });
 });

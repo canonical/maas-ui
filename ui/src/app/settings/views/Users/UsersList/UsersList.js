@@ -1,5 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { format, parse } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
@@ -9,6 +11,7 @@ import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
+import VanillaLink from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
 import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
@@ -20,21 +23,33 @@ const generateUserRows = (
   authUser,
   expandedId,
   setExpandedId,
-  dispatch
+  dispatch,
+  displayUsername
 ) =>
   users.map(user => {
     const expanded = expandedId === user.id;
+    // const last_login = parse(user.last_login, "yyyy-LL-DD H:mm", "bob");
+    // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
+    const last_login = user.last_login
+      ? format(
+          parse(user.last_login, "E, dd LLL. yyyy HH:mm:ss", new Date()),
+          "yyyy-LL-dd H:mm"
+        )
+      : "Never";
+    const fullName =
+      (user.first_name || user.last_name) &&
+      [user.first_name, user.last_name].filter(Boolean).join(" ");
     return {
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
-          content: user.username,
+          content: displayUsername ? user.username : fullName || "N/A",
           role: "rowheader"
         },
         { content: user.email },
-        { content: "--", className: "u-align--right" },
-        { content: "--" },
-        { content: "--" },
+        { content: user.machines_count, className: "u-align--right" },
+        { content: user.is_local && "Local" },
+        { content: last_login || "Never" },
         {
           content: user.is_superuser ? "Admin" : "User"
         },
@@ -100,10 +115,11 @@ const generateUserRows = (
       key: user.username,
       sortData: {
         username: user.username,
+        fullName: fullName,
         email: user.email,
-        machines: "--",
-        type: "--",
-        "last-seen": "--",
+        machines: user.machines_count,
+        type: user.is_local && "local",
+        "last-seen": last_login,
         role: user.is_superuser ? "admin" : "user",
         "maas-keys": user.sshkeys_count
       }
@@ -113,6 +129,7 @@ const generateUserRows = (
 const Users = ({ initialCount = 20 }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [displayUsername, setDisplayUsername] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -149,7 +166,37 @@ const Users = ({ initialCount = 20 }) => {
           defaultSortDirection="ascending"
           expanding={true}
           headers={[
-            { content: "Username", sortKey: "username" },
+            {
+              className: "p-table-multi-header",
+              content: (
+                <>
+                  <VanillaLink
+                    className={classNames("p-table-multi-header__link", {
+                      "is-active": displayUsername
+                    })}
+                    onClick={e => {
+                      e.preventDefault();
+                      setDisplayUsername(true);
+                    }}
+                  >
+                    Username
+                  </VanillaLink>
+                  <span className="p-table-multi-header__spacer">|</span>
+                  <VanillaLink
+                    className={classNames("p-table-multi-header__link", {
+                      "is-active": !displayUsername
+                    })}
+                    onClick={e => {
+                      e.preventDefault();
+                      setDisplayUsername(false);
+                    }}
+                  >
+                    Real name
+                  </VanillaLink>
+                </>
+              ),
+              sortKey: displayUsername ? "username" : "fullName"
+            },
             { content: "Email", sortKey: "email" },
             {
               content: "Machines",
@@ -184,7 +231,8 @@ const Users = ({ initialCount = 20 }) => {
             authUser,
             expandedId,
             setExpandedId,
-            dispatch
+            dispatch,
+            displayUsername
           )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}
