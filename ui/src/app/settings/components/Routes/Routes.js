@@ -15,6 +15,7 @@ import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import Scripts from "app/settings/views/Scripts";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import SyslogForm from "app/settings/views/Network/SyslogForm";
+import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
@@ -56,6 +57,7 @@ const Routes = () => (
     <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
     <Route exact path="/images/windows" component={Windows} />
     <Route exact path="/images/vmware" component={VMWare} />
+    <Route exact path="/images/ubuntu" component={ThirdPartyDrivers} />
   </Switch>
 );
 
