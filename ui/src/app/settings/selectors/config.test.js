@@ -322,4 +322,56 @@ describe("config selectors", () => {
       expect(config.windowsKmsHost(state)).toBe("127.0.0.1");
     });
   });
+
+  describe("vCenterServer", () => {
+    it("returns vCenter server", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_server", value: "my server" }]
+        }
+      };
+      expect(config.vCenterServer(state)).toBe("my server");
+    });
+  });
+
+  describe("vCenterUsername", () => {
+    it("returns vCenter username", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_username", value: "admin" }]
+        }
+      };
+      expect(config.vCenterUsername(state)).toBe("admin");
+    });
+  });
+
+  describe("vCenterPassword", () => {
+    it("returns vCenter password", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_password", value: "passwd" }]
+        }
+      };
+      expect(config.vCenterPassword(state)).toBe("passwd");
+    });
+  });
+
+  describe("vCenterDatacenter", () => {
+    it("returns vCenter datacenter", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_datacenter", value: "my datacenter" }]
+        }
+      };
+      expect(config.vCenterDatacenter(state)).toBe("my datacenter");
+    });
+  });
 });

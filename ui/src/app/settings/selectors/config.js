@@ -350,4 +350,44 @@ config.windowsKmsHost = createSelector(
   configs => getValueFromName(configs, "windows_kms_host")
 );
 
+/**
+ * Returns the MAAS config for vCenter server.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter server.
+ */
+config.vCenterServer = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_server")
+);
+
+/**
+ * Returns the MAAS config for vCenter username.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter username.
+ */
+config.vCenterUsername = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_username")
+);
+
+/**
+ * Returns the MAAS config for vCenter password.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter password.
+ */
+config.vCenterPassword = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_password")
+);
+
+/**
+ * Returns the MAAS config for vCenter datacenter.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter datacenter.
+ */
+config.vCenterDatacenter = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_datacenter")
+);
+
 export default config;
