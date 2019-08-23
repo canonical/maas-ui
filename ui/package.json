@@ -29,6 +29,7 @@
     "start": "react-scripts start",
     "serve": "react-scripts start",
     "build": "react-scripts build",
+    "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "postbuild": "mkdir -p dist && tar -C build -czvf dist/maas-ui-v$npm_package_version.tar.gz .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
