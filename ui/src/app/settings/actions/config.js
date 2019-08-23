@@ -1,3 +1,5 @@
+import MESSAGE_TYPES from "app/base/constants";
+
 const config = {};
 
 config.fetch = () => {
@@ -6,7 +8,7 @@ config.fetch = () => {
     meta: {
       model: "config",
       method: "list",
-      type: 0
+      type: MESSAGE_TYPES.REQUEST
     }
   };
 };
@@ -25,7 +27,7 @@ config.update = values => {
     meta: {
       model: "config",
       method: "update",
-      type: 0
+      type: MESSAGE_TYPES.REQUEST
     }
   };
 };

@@ -1,3 +1,4 @@
+import MESSAGE_TYPES from "app/base/constants";
 import users from "./users";
 
 describe("user actions", () => {
@@ -7,7 +8,7 @@ describe("user actions", () => {
       meta: {
         model: "user",
         method: "list",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });
@@ -18,7 +19,7 @@ describe("user actions", () => {
       meta: {
         model: "user",
         method: "create",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       },
       payload: {
         params: {
@@ -34,7 +35,7 @@ describe("user actions", () => {
       meta: {
         model: "user",
         method: "update",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       },
       payload: {
         params: {
@@ -50,7 +51,7 @@ describe("user actions", () => {
       meta: {
         model: "user",
         method: "delete",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       },
       payload: {
         params: {

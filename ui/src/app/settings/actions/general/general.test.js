@@ -1,3 +1,5 @@
+import MESSAGE_TYPES from "app/base/constants";
+
 import general from "./general";
 
 describe("general actions", () => {
@@ -7,7 +9,7 @@ describe("general actions", () => {
       meta: {
         model: "general",
         method: "osinfo",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });

@@ -1,6 +1,7 @@
 import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 
+import MESSAGE_TYPES from "app/base/constants";
 import {
   createConnection,
   handleMessage,
@@ -237,7 +238,7 @@ describe("websocket sagas", () => {
   it("can handle a WebSocket sync message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     const response = {
-      type: 2,
+      type: MESSAGE_TYPES.SYNC,
       name: "config",
       action: "update",
       data: { name: "foo", value: "bar" }

@@ -1,3 +1,4 @@
+import MESSAGE_TYPES from "app/base/constants";
 import repositories from "./repositories";
 
 describe("repository actions", () => {
@@ -10,7 +11,7 @@ describe("repository actions", () => {
       meta: {
         model: "packagerepository",
         method: "list",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });
@@ -21,7 +22,7 @@ describe("repository actions", () => {
       meta: {
         model: "packagerepository",
         method: "delete",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       },
       payload: {
         params: {

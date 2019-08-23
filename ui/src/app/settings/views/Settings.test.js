@@ -3,6 +3,8 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
+
+import MESSAGE_TYPES from "app/base/constants";
 import Settings from "./Settings";
 
 const mockStore = configureStore();
@@ -36,7 +38,7 @@ describe("Settings", () => {
       meta: {
         model: "config",
         method: "list",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });

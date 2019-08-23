@@ -1,3 +1,5 @@
+import MESSAGE_TYPES from "app/base/constants";
+
 export const connectWebSocket = () => {
   return {
     type: "WEBSOCKET_CONNECT"
@@ -10,7 +12,7 @@ export const fetchAuthUser = () => {
     meta: {
       model: "user",
       method: "auth_user",
-      type: 0
+      type: MESSAGE_TYPES.REQUEST
     }
   };
 };

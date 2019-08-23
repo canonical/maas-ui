@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import MESSAGE_TYPES from "app/base/constants";
 import RepositoriesList from "./RepositoriesList";
 
 const mockStore = configureStore();
@@ -151,7 +152,7 @@ describe("RepositoriesList", () => {
       meta: {
         model: "packagerepository",
         method: "delete",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });

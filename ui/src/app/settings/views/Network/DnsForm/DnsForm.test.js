@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import MESSAGE_TYPES from "app/base/constants";
 import DnsForm from "./DnsForm";
 
 const mockStore = configureStore();
@@ -73,7 +74,7 @@ describe("DnsForm", () => {
           meta: {
             model: "config",
             method: "update",
-            type: 0
+            type: MESSAGE_TYPES.REQUEST
           }
         }
       ]);

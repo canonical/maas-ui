@@ -1,3 +1,5 @@
+import MESSAGE_TYPES from "app/base/constants";
+
 const general = {};
 
 general.fetchOsInfo = () => {
@@ -6,7 +8,7 @@ general.fetchOsInfo = () => {
     meta: {
       model: "general",
       method: "osinfo",
-      type: 0
+      type: MESSAGE_TYPES.REQUEST
     }
   };
 };

@@ -1,10 +1,9 @@
 import { eventChannel } from "redux-saga";
 import { all, call, put, select, take, race } from "redux-saga/effects";
 
+import MESSAGE_TYPES from "app/base/constants";
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
-
-const SYNC_MESSAGE = 2; // 'type: 2' in a ws message
 
 /**
  * Has data already been fetched into state?
@@ -92,7 +91,7 @@ export function* handleSyncMessage(response) {
 export function* handleMessage(socketChannel, socketClient) {
   while (true) {
     const response = yield take(socketChannel);
-    if (response.type === SYNC_MESSAGE) {
+    if (response.type === MESSAGE_TYPES.SYNC) {
       // this is an incoming 'sync' message
       yield call(handleSyncMessage, response);
     } else {

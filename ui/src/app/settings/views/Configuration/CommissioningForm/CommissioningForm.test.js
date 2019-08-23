@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import MESSAGE_TYPES from "app/base/constants";
 import CommissioningForm from "./CommissioningForm";
 
 const mockStore = configureStore();
@@ -77,7 +78,7 @@ describe("CommissioningForm", () => {
         meta: {
           model: "config",
           method: "update",
-          type: 0
+          type: MESSAGE_TYPES.REQUEST
         }
       });
       done();
@@ -103,7 +104,7 @@ describe("CommissioningForm", () => {
       meta: {
         model: "general",
         method: "osinfo",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     });
   });
