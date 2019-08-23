@@ -75,6 +75,8 @@ See [keep a changelog](https://keepachangelog.com/en/1.0.0/) for details.
 
 # Release Process
 
+Note: Releasing is not currently supported by the `run` script (see [issue](https://github.com/canonical-web-and-design/generator-canonical-webteam/issues/116) for details), so please perform the following directly in a container or on your host.
+
 1. Update CHANGELOG.md, moving unreleased changes to a new heading for the release version.
 2. Run `yarn release ${version}`. (e.g. `yarn release 0.1.1`, note no 'v'). Please ensure correct [semantic versioning](https://semver.org/).
 3. Make a commit with `git commit -am "Release v${version}."`.
