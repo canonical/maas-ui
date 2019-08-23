@@ -37,6 +37,7 @@ const Routes = () => (
       component={KernelParameters}
     />
     <Route exact path="/configuration/deploy" component={Deploy} />
+    <Redirect exact from="/" to="/configuration" />
     <Redirect from="/configuration" to="/configuration/general" />
     <Route exact path="/users" component={UsersList} />
     <Route exact path="/users/add" component={UserAdd} />
