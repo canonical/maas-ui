@@ -28,7 +28,7 @@ describe("Deploy", () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it("dispatches action to fetch general on load", () => {
+  it("dispatches action to fetch general os info on load", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 

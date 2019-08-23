@@ -48,15 +48,17 @@ describe("DeployFormFields", () => {
         ]
       },
       general: {
-        loading: false,
-        loaded: true,
         osInfo: {
-          releases: [
-            ["centos/centos66", "CentOS 6"],
-            ["centos/centos70", "CentOS 7"],
-            ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
-            ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"]
-          ]
+          loading: false,
+          loaded: true,
+          data: {
+            releases: [
+              ["centos/centos66", "CentOS 6"],
+              ["centos/centos70", "CentOS 7"],
+              ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
+              ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"]
+            ]
+          }
         }
       }
     };

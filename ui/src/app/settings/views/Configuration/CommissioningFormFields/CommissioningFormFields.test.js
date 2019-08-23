@@ -47,18 +47,28 @@ describe("CommissioningFormFields", () => {
         ]
       },
       general: {
-        osInfo: [
-          {
+        osInfo: {
+          loaded: true,
+          loading: false,
+          data: {
             kernels: {
               ubuntu: {
+                trusty: [
+                  ["hwe-14.04-edge", "xenial (hwe-14.04-edge)"],
+                  ["hwe-14.04", "trusty (hwe-14.04)"]
+                ],
                 xenial: [
                   ["hwe-16.04-edge", "xenial (hwe-16.04-edge)"],
                   ["hwe-16.04", "xenial (hwe-16.04)"]
+                ],
+                bionic: [
+                  ["hwe-18.04-edge", "xenial (hwe-18.04-edge)"],
+                  ["hwe-18.04", "xenial (hwe-18.04)"]
                 ]
               }
             }
           }
-        ]
+        }
       }
     };
   });

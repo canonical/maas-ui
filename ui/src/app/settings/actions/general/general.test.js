@@ -6,8 +6,7 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_COMPONENTS_TO_DISABLE",
       meta: {
         model: "general",
-        method: "components_to_disable",
-        type: 0
+        method: "components_to_disable"
       }
     });
   });
@@ -17,8 +16,7 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_KNOWN_ARCHITECTURES",
       meta: {
         model: "general",
-        method: "known_architectures",
-        type: 0
+        method: "known_architectures"
       }
     });
   });
@@ -38,8 +36,7 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_POCKETS_TO_DISABLE",
       meta: {
         model: "general",
-        method: "pockets_to_disable",
-        type: 0
+        method: "pockets_to_disable"
       }
     });
   });
