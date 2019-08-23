@@ -332,7 +332,7 @@ config.discoveryIntervalOptions = createSelector(
 
 /**
  * Returns the MAAS config for kernel parameters.
- * @param {object} state - The redux state.
+ * @param {Object} state - The redux state.
  * @returns {String} Kernel parameters.
  */
 config.kernelParams = createSelector(
@@ -398,6 +398,36 @@ config.vCenterDatacenter = createSelector(
 config.thirdPartyDriversEnabled = createSelector(
   [config.all],
   configs => getValueFromName(configs, "enable_third_party_drivers")
+);
+
+/**
+ * Returns the MAAS config for default OS.
+ * @param {Object} state - The redux state.
+ * @returns {String} Default OS.
+ */
+config.defaultOSystem = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_osystem")
+);
+
+/**
+ * Returns the possible default OS options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Default OS options.
+ */
+config.defaultOSystemOptions = createSelector(
+  [config.all],
+  configs => getOptionsFromName(configs, "default_osystem")
+);
+
+/**
+ * Returns the MAAS config for default distro series.
+ * @param {Object} state - The redux state.
+ * @returns {String} Default distro series.
+ */
+config.defaultDistroSeries = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_distro_series")
 );
 
 export default config;
