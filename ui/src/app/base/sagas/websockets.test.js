@@ -102,7 +102,7 @@ describe("websocket sagas", () => {
         meta: {
           model: "test",
           method: "method",
-          type: 0
+          type: MESSAGE_TYPES.REQUEST
         },
         payload: {
           params: { foo: "bar" }
@@ -112,7 +112,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
-        type: 0,
+        type: MESSAGE_TYPES.REQUEST,
         params: { foo: "bar" }
       })
     );
@@ -125,7 +125,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       }
     };
     saga.next();
@@ -143,7 +143,7 @@ describe("websocket sagas", () => {
         meta: {
           model: "test",
           method: "method",
-          type: 0
+          type: MESSAGE_TYPES.REQUEST
         },
         payload: {
           params: [{ name: "foo", value: "bar" }, { name: "baz", value: "qux" }]
@@ -154,7 +154,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
-        type: 0,
+        type: MESSAGE_TYPES.REQUEST,
         params: { name: "foo", value: "bar" }
       })
     );
@@ -163,7 +163,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
-        type: 0,
+        type: MESSAGE_TYPES.REQUEST,
         params: { name: "baz", value: "qux" }
       })
     );
@@ -178,7 +178,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: 0
+        type: MESSAGE_TYPES.REQUEST
       },
       payload: {
         params: { foo: "bar" }
