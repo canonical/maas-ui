@@ -1,5 +1,3 @@
-import MESSAGE_TYPES from "app/base/constants";
-
 const users = {};
 
 users.fetch = () => {
@@ -7,8 +5,7 @@ users.fetch = () => {
     type: "FETCH_USER",
     meta: {
       model: "user",
-      method: "list",
-      type: MESSAGE_TYPES.REQUEST
+      method: "list"
     }
   };
 };
@@ -18,8 +15,7 @@ users.create = params => {
     type: "CREATE_USER",
     meta: {
       model: "user",
-      method: "create",
-      type: MESSAGE_TYPES.REQUEST
+      method: "create"
     },
     payload: {
       params
@@ -32,8 +28,7 @@ users.update = params => {
     type: "UPDATE_USER",
     meta: {
       model: "user",
-      method: "update",
-      type: MESSAGE_TYPES.REQUEST
+      method: "update"
     },
     payload: {
       params
@@ -46,8 +41,7 @@ users.delete = id => {
     type: "DELETE_USER",
     meta: {
       model: "user",
-      method: "delete",
-      type: MESSAGE_TYPES.REQUEST
+      method: "delete"
     },
     payload: {
       params: {

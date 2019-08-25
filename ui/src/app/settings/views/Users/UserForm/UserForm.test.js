@@ -114,8 +114,7 @@ describe("UserForm", () => {
         },
         meta: {
           model: "user",
-          method: "update",
-          type: MESSAGE_TYPES.REQUEST
+          method: "update"
         }
       }
     ]);
@@ -155,8 +154,7 @@ describe("UserForm", () => {
         },
         meta: {
           model: "user",
-          method: "create",
-          type: MESSAGE_TYPES.REQUEST
+          method: "create"
         }
       }
     ]);

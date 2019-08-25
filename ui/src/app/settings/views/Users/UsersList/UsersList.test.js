@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MESSAGE_TYPES from "app/base/constants";
 import UsersList from "./UsersList";
 
 const mockStore = configureStore();
@@ -150,8 +149,7 @@ describe("UsersList", () => {
       },
       meta: {
         model: "user",
-        method: "delete",
-        type: MESSAGE_TYPES.REQUEST
+        method: "delete"
       }
     });
   });

@@ -1,5 +1,4 @@
 import config from "./config";
-import MESSAGE_TYPES from "app/base/constants";
 
 describe("config actions", () => {
   it("should handle fetching config", () => {
@@ -7,8 +6,7 @@ describe("config actions", () => {
       type: "FETCH_CONFIG",
       meta: {
         model: "config",
-        method: "list",
-        type: MESSAGE_TYPES.REQUEST
+        method: "list"
       }
     });
   });
@@ -29,8 +27,7 @@ describe("config actions", () => {
       },
       meta: {
         model: "config",
-        method: "update",
-        type: MESSAGE_TYPES.REQUEST
+        method: "update"
       }
     });
   });

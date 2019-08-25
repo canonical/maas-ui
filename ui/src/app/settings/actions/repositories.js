@@ -1,5 +1,3 @@
-import MESSAGE_TYPES from "app/base/constants";
-
 const repositories = {};
 
 repositories.fetch = () => {
@@ -10,8 +8,7 @@ repositories.fetch = () => {
     },
     meta: {
       model: "packagerepository",
-      method: "list",
-      type: MESSAGE_TYPES.REQUEST
+      method: "list"
     }
   };
 };
@@ -21,8 +18,7 @@ repositories.delete = id => {
     type: "DELETE_PACKAGEREPOSITORY",
     meta: {
       model: "packagerepository",
-      method: "delete",
-      type: MESSAGE_TYPES.REQUEST
+      method: "delete"
     },
     payload: {
       params: {

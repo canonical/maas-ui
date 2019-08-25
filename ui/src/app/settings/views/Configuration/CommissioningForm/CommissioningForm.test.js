@@ -77,8 +77,7 @@ describe("CommissioningForm", () => {
         },
         meta: {
           model: "config",
-          method: "update",
-          type: MESSAGE_TYPES.REQUEST
+          method: "update"
         }
       });
       done();
@@ -103,8 +102,7 @@ describe("CommissioningForm", () => {
       type: "FETCH_GENERAL_OSINFO",
       meta: {
         model: "general",
-        method: "osinfo",
-        type: MESSAGE_TYPES.REQUEST
+        method: "osinfo"
       }
     });
   });

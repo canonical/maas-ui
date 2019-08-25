@@ -1,4 +1,3 @@
-import MESSAGE_TYPES from "app/base/constants";
 import { connectWebSocket, fetchAuthUser } from "./actions";
 
 describe("base actions", () => {
@@ -13,8 +12,7 @@ describe("base actions", () => {
       type: "FETCH_AUTH_USER",
       meta: {
         model: "user",
-        method: "auth_user",
-        type: MESSAGE_TYPES.REQUEST
+        method: "auth_user"
       }
     });
   });

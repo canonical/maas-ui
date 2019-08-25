@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
 
-import MESSAGE_TYPES from "app/base/constants";
 import Settings from "./Settings";
 
 const mockStore = configureStore();
@@ -37,8 +36,7 @@ describe("Settings", () => {
       type: "FETCH_CONFIG",
       meta: {
         model: "config",
-        method: "list",
-        type: MESSAGE_TYPES.REQUEST
+        method: "list"
       }
     });
   });
