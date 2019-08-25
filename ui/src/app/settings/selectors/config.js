@@ -332,7 +332,7 @@ config.discoveryIntervalOptions = createSelector(
 
 /**
  * Returns the MAAS config for kernel parameters.
- * @param {object} state - The redux state.
+ * @param {Object} state - The redux state.
  * @returns {String} Kernel parameters.
  */
 config.kernelParams = createSelector(
@@ -348,6 +348,86 @@ config.kernelParams = createSelector(
 config.windowsKmsHost = createSelector(
   [config.all],
   configs => getValueFromName(configs, "windows_kms_host")
+);
+
+/**
+ * Returns the MAAS config for vCenter server.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter server.
+ */
+config.vCenterServer = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_server")
+);
+
+/**
+ * Returns the MAAS config for vCenter username.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter username.
+ */
+config.vCenterUsername = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_username")
+);
+
+/**
+ * Returns the MAAS config for vCenter password.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter password.
+ */
+config.vCenterPassword = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_password")
+);
+
+/**
+ * Returns the MAAS config for vCenter datacenter.
+ * @param {Object} state - The redux state.
+ * @returns {String} - vCenter datacenter.
+ */
+config.vCenterDatacenter = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "vcenter_datacenter")
+);
+
+/**
+ * Returns the MAAS config for enable_third_party_drivers
+ * @param {Object} state - The redux state
+ * @returns {Boolean} - The value of enable_third_party_drivers
+ */
+config.thirdPartyDriversEnabled = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "enable_third_party_drivers")
+);
+
+/**
+ * Returns the MAAS config for default OS.
+ * @param {Object} state - The redux state.
+ * @returns {String} Default OS.
+ */
+config.defaultOSystem = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_osystem")
+);
+
+/**
+ * Returns the possible default OS options reformatted as objects.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Default OS options.
+ */
+config.defaultOSystemOptions = createSelector(
+  [config.all],
+  configs => getOptionsFromName(configs, "default_osystem")
+);
+
+/**
+ * Returns the MAAS config for default distro series.
+ * @param {Object} state - The redux state.
+ * @returns {String} Default distro series.
+ */
+config.defaultDistroSeries = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "default_distro_series")
 );
 
 export default config;

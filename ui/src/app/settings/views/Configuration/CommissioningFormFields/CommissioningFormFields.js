@@ -17,6 +17,10 @@ const CommissioningFormFields = ({ formikProps }) => {
     )
   );
 
+  const allUbuntuKernelOptions = useSelector(
+    selectors.general.getAllUbuntuKernelOptions
+  );
+
   return (
     <>
       <FormikField
@@ -25,6 +29,19 @@ const CommissioningFormFields = ({ formikProps }) => {
         options={distroSeriesOptions}
         fieldKey="commissioning_distro_series"
         formikProps={formikProps}
+        onChange={e => {
+          formikProps.handleChange(e);
+          formikProps.setFieldTouched(
+            "commissioning_distro_series",
+            true,
+            true
+          );
+          formikProps.setFieldValue(
+            "default_min_hwe_kernel",
+            allUbuntuKernelOptions[e.target.value][0].value
+          );
+          formikProps.setFieldTouched("default_min_hwe_kernel", true, true);
+        }}
       />
       <FormikField
         label="Default minimum kernel version"

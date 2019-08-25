@@ -12,6 +12,8 @@ This is a React frontend. New work should be done here where possible.
 
 [UI setup instructions](ui/README.md)
 
+To view component docs run `./run exec --expose-port 6060 yarn docs`.
+
 # Adding a new project
 
 To add a new project, edit `package.json` and add the project's directory name to the `workspaces` array.

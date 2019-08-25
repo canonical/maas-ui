@@ -322,4 +322,123 @@ describe("config selectors", () => {
       expect(config.windowsKmsHost(state)).toBe("127.0.0.1");
     });
   });
+
+  describe("vCenterServer", () => {
+    it("returns vCenter server", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_server", value: "my server" }]
+        }
+      };
+      expect(config.vCenterServer(state)).toBe("my server");
+    });
+  });
+
+  describe("vCenterUsername", () => {
+    it("returns vCenter username", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_username", value: "admin" }]
+        }
+      };
+      expect(config.vCenterUsername(state)).toBe("admin");
+    });
+  });
+
+  describe("vCenterPassword", () => {
+    it("returns vCenter password", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_password", value: "passwd" }]
+        }
+      };
+      expect(config.vCenterPassword(state)).toBe("passwd");
+    });
+  });
+
+  describe("vCenterDatacenter", () => {
+    it("returns vCenter datacenter", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "vcenter_datacenter", value: "my datacenter" }]
+        }
+      };
+      expect(config.vCenterDatacenter(state)).toBe("my datacenter");
+    });
+  });
+
+  describe("thirdPartyDriversEnabled", () => {
+    it("returns value of enable_third_party_drivers", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "enable_third_party_drivers", value: true }]
+        }
+      };
+      expect(config.thirdPartyDriversEnabled(state)).toBe(true);
+    });
+  });
+
+  describe("defaultOSystem", () => {
+    it("returns MAAS config for default OS", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_osystem", value: "bionic" }]
+        }
+      };
+      expect(config.defaultOSystem(state)).toBe("bionic");
+    });
+  });
+
+  describe("defaultOSystemOptions", () => {
+    it("returns array of default OS options, formatted as objects", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [
+            {
+              name: "default_osystem",
+              value: "ubuntu",
+              choices: [["centos", "CentOS"], ["ubuntu", "Ubuntu"]]
+            }
+          ]
+        }
+      };
+      expect(config.defaultOSystemOptions(state)).toStrictEqual([
+        {
+          value: "centos",
+          label: "CentOS"
+        },
+        {
+          value: "ubuntu",
+          label: "Ubuntu"
+        }
+      ]);
+    });
+  });
+
+  describe("defaultDistroSeries", () => {
+    it("returns MAAS config for default distro series", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "default_distro_series", value: "bionic" }]
+        }
+      };
+      expect(config.defaultDistroSeries(state)).toBe("bionic");
+    });
+  });
 });

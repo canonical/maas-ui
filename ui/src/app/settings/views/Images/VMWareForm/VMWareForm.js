@@ -8,44 +8,49 @@ import config from "app/settings/selectors/config";
 import { formikFormDisabled } from "app/settings/utils";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
-import CommissioningFormFields from "../CommissioningFormFields";
+import VMWareFormFields from "../VMWareFormFields";
 
-const CommissioningSchema = Yup.object().shape({
-  commissioning_distro_series: Yup.string(),
-  default_min_hwe_kernel: Yup.string()
+const VMWareSchema = Yup.object().shape({
+  vcenter_server: Yup.string(),
+  vcenter_username: Yup.string(),
+  vcenter_password: Yup.string(),
+  vcenter_datacenter: Yup.string()
 });
 
-const CommissioningForm = () => {
+const VMWareForm = () => {
   const dispatch = useDispatch();
   const updateConfig = actions.config.update;
 
   const saved = useSelector(config.saved);
   const saving = useSelector(config.saving);
 
-  const commissioningDistroSeries = useSelector(
-    config.commissioningDistroSeries
-  );
-  const defaultMinKernelVersion = useSelector(config.defaultMinKernelVersion);
+  // const windowsKmsHost = useSelector(config.windowsKmsHost);
+  const vCenterServer = useSelector(config.vCenterServer);
+  const vCenterUsername = useSelector(config.vCenterUsername);
+  const vCenterPassword = useSelector(config.vCenterPassword);
+  const vCenterDatacenter = useSelector(config.vCenterDatacenter);
 
   return (
     <Formik
       initialValues={{
-        commissioning_distro_series: commissioningDistroSeries,
-        default_min_hwe_kernel: defaultMinKernelVersion
+        vcenter_server: vCenterServer,
+        vcenter_username: vCenterUsername,
+        vcenter_password: vCenterPassword,
+        vcenter_datacenter: vCenterDatacenter
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm(values);
       }}
-      validationSchema={CommissioningSchema}
+      validationSchema={VMWareSchema}
       render={formikProps => (
         <Form onSubmit={formikProps.handleSubmit}>
-          <CommissioningFormFields formikProps={formikProps} />
+          <VMWareFormFields formikProps={formikProps} />
           <ActionButton
             appearance="positive"
             className="u-no-margin--bottom"
             type="submit"
-            disabled={formikFormDisabled(formikProps)}
+            disabled={saving || formikFormDisabled(formikProps)}
             loading={saving}
             success={saved}
           >
@@ -57,4 +62,4 @@ const CommissioningForm = () => {
   );
 };
 
-export default CommissioningForm;
+export default VMWareForm;

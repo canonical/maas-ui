@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
 import Commissioning from "app/settings/views/Configuration/Commissioning";
+import Deploy from "app/settings/views/Configuration/Deploy";
 import Dhcp from "app/settings/views/Dhcp";
 import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
@@ -15,9 +16,11 @@ import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import Scripts from "app/settings/views/Scripts";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import SyslogForm from "app/settings/views/Network/SyslogForm";
+import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
+import VMWare from "app/settings/views/Images/VMWare";
 import Windows from "app/settings/views/Images/Windows";
 
 const Routes = () => (
@@ -33,6 +36,8 @@ const Routes = () => (
       path="/configuration/kernel-parameters"
       component={KernelParameters}
     />
+    <Route exact path="/configuration/deploy" component={Deploy} />
+    <Redirect exact from="/" to="/configuration" />
     <Redirect from="/configuration" to="/configuration/general" />
     <Route exact path="/users" component={UsersList} />
     <Route exact path="/users/add" component={UserAdd} />
@@ -54,6 +59,8 @@ const Routes = () => (
     <Route exact path="/repositories/add" component={RepositoryAdd} />
     <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />
     <Route exact path="/images/windows" component={Windows} />
+    <Route exact path="/images/vmware" component={VMWare} />
+    <Route exact path="/images/ubuntu" component={ThirdPartyDrivers} />
   </Switch>
 );
 
