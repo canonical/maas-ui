@@ -77,15 +77,68 @@ describe("users selectors", () => {
     const state = {
       user: {
         items: [
-          { username: "admin", email: "test@example.com" },
-          { username: "me", email: "minnie@example.com" },
-          { username: "richie", email: "richie@example.com" }
+          {
+            username: "admin",
+            email: "test@example.com",
+            first_name: "",
+            last_name: ""
+          },
+          {
+            username: "me",
+            email: "minnie@example.com",
+            first_name: "",
+            last_name: ""
+          },
+          {
+            username: "richie",
+            email: "richie@example.com",
+            first_name: "",
+            last_name: ""
+          },
+          {
+            username: "boris",
+            email: "boris@example.com",
+            first_name: "mine",
+            last_name: ""
+          },
+          {
+            username: "adam",
+            email: "adam@example.com",
+            first_name: "",
+            last_name: "minichiello"
+          }
         ]
       }
     };
     expect(users.search(state, "min")).toEqual([
-      { username: "admin", email: "test@example.com" },
-      { username: "me", email: "minnie@example.com" }
+      // Matches username:
+      {
+        username: "admin",
+        email: "test@example.com",
+        first_name: "",
+        last_name: ""
+      },
+      // Matches email:
+      {
+        username: "me",
+        email: "minnie@example.com",
+        first_name: "",
+        last_name: ""
+      },
+      // Matches first name:
+      {
+        username: "boris",
+        email: "boris@example.com",
+        first_name: "mine",
+        last_name: ""
+      },
+      // Matches last name:
+      {
+        username: "adam",
+        email: "adam@example.com",
+        first_name: "",
+        last_name: "minichiello"
+      }
     ]);
   });
 

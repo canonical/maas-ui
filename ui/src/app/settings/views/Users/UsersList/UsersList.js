@@ -11,7 +11,6 @@ import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
-import VanillaLink from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
 import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
@@ -28,7 +27,6 @@ const generateUserRows = (
 ) =>
   users.map(user => {
     const expanded = expandedId === user.id;
-    // const last_login = parse(user.last_login, "yyyy-LL-DD H:mm", "bob");
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
       ? format(
@@ -43,7 +41,7 @@ const generateUserRows = (
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
-          content: displayUsername ? user.username : fullName || "N/A",
+          content: displayUsername ? user.username : fullName || <>&mdash;</>,
           role: "rowheader"
         },
         { content: user.email },
@@ -170,29 +168,25 @@ const Users = ({ initialCount = 20 }) => {
               className: "p-table-multi-header",
               content: (
                 <>
-                  <VanillaLink
+                  <Button
+                    appearance="link"
                     className={classNames("p-table-multi-header__link", {
                       "is-active": displayUsername
                     })}
-                    onClick={e => {
-                      e.preventDefault();
-                      setDisplayUsername(true);
-                    }}
+                    onClick={() => setDisplayUsername(true)}
                   >
                     Username
-                  </VanillaLink>
+                  </Button>
                   <span className="p-table-multi-header__spacer">|</span>
-                  <VanillaLink
+                  <Button
+                    appearance="link"
                     className={classNames("p-table-multi-header__link", {
                       "is-active": !displayUsername
                     })}
-                    onClick={e => {
-                      e.preventDefault();
-                      setDisplayUsername(false);
-                    }}
+                    onClick={() => setDisplayUsername(false)}
                   >
                     Real name
-                  </VanillaLink>
+                  </Button>
                 </>
               ),
               sortKey: displayUsername ? "username" : "fullName"

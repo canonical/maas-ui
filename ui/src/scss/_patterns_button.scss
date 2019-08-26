@@ -1,0 +1,30 @@
+.p-button--link {
+  @extend %p-button--base;
+  color: $color-link;
+  font-size: inherit;
+  line-height: 1.25rem;
+  margin-bottom: 0;
+  padding: 0;
+  pointer-events: all;
+  text-align: left;
+  text-transform: inherit;
+
+  &:hover {
+    background-color: inherit;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: $color-link;
+  }
+}
+
+table .p-button--link {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.p-button--link:not(:last-of-type):not(:only-of-type) {
+  margin-right: 0;
+}
