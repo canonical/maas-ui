@@ -13,10 +13,15 @@ const DeployFormFields = ({ formikProps }) => {
   );
 
   const distroSeriesOptions = useSelector(state =>
-    selectors.general.getOsReleases(state, formikProps.values.default_osystem)
+    selectors.general.osInfo.getOsReleases(
+      state,
+      formikProps.values.default_osystem
+    )
   );
 
-  const allDistroSeries = useSelector(selectors.general.getAllOsReleases);
+  const allDistroSeries = useSelector(
+    selectors.general.osInfo.getAllOsReleases
+  );
 
   return (
     <>

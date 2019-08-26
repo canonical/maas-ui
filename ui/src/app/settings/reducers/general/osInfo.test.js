@@ -1,33 +1,50 @@
-import general from "./general";
+import osInfo from "./osInfo";
 
-describe("general reducer", () => {
+describe("osInfo reducer", () => {
   it("should return the initial state", () => {
-    expect(general(undefined, {})).toEqual({
-      loading: false,
+    expect(osInfo(undefined, {})).toEqual({
+      data: {},
+      errors: {},
       loaded: false,
-      osInfo: {}
+      loading: false
     });
   });
 
   it("should correctly reduce FETCH_GENERAL_OSINFO_START", () => {
     expect(
-      general(undefined, {
+      osInfo(undefined, {
         type: "FETCH_GENERAL_OSINFO_START"
       })
     ).toEqual({
-      loading: true,
+      data: {},
+      errors: {},
       loaded: false,
-      osInfo: {}
+      loading: true
+    });
+  });
+
+  it("should correctly reduce FETCH_GENERAL_OSINFO_ERROR", () => {
+    expect(
+      osInfo(undefined, {
+        type: "FETCH_GENERAL_OSINFO_ERROR",
+        error: "Unable to fetch"
+      })
+    ).toEqual({
+      data: {},
+      errors: "Unable to fetch",
+      loaded: false,
+      loading: false
     });
   });
 
   it("should correctly reduce FETCH_GENERAL_OSINFO_SUCCESS", () => {
     expect(
-      general(
+      osInfo(
         {
-          loading: true,
+          data: {},
+          errors: {},
           loaded: false,
-          osInfo: {}
+          loading: true
         },
         {
           type: "FETCH_GENERAL_OSINFO_SUCCESS",
@@ -41,15 +58,16 @@ describe("general reducer", () => {
         }
       )
     ).toEqual({
-      loading: false,
-      loaded: true,
-      osInfo: {
+      data: {
         osystems: [],
         releases: [],
         kernels: {},
         default_osystem: "",
         default_release: ""
-      }
+      },
+      errors: {},
+      loaded: true,
+      loading: false
     });
   });
 });

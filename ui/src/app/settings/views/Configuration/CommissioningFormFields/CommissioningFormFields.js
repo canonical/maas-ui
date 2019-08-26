@@ -11,14 +11,14 @@ const CommissioningFormFields = ({ formikProps }) => {
   const distroSeriesOptions = useSelector(selectors.config.distroSeriesOptions);
 
   const ubuntuKernelOptions = useSelector(state =>
-    selectors.general.getUbuntuKernelOptions(
+    selectors.general.osInfo.getUbuntuKernelOptions(
       state,
       formikProps.values.commissioning_distro_series
     )
   );
 
   const allUbuntuKernelOptions = useSelector(
-    selectors.general.getAllUbuntuKernelOptions
+    selectors.general.osInfo.getAllUbuntuKernelOptions
   );
 
   return (

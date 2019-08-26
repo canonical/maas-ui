@@ -1,25 +1,30 @@
 import produce from "immer";
 
-const general = produce(
+const osInfo = produce(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_GENERAL_OSINFO_START":
         draft.loading = true;
         break;
+      case "FETCH_GENERAL_OSINFO_ERROR":
+        draft.errors = action.error;
+        draft.loading = false;
+        break;
       case "FETCH_GENERAL_OSINFO_SUCCESS":
         draft.loading = false;
         draft.loaded = true;
-        draft.osInfo = action.payload;
+        draft.data = action.payload;
         break;
       default:
         return draft;
     }
   },
   {
-    loading: false,
+    data: {},
+    errors: {},
     loaded: false,
-    osInfo: {}
+    loading: false
   }
 );
 
-export default general;
+export default osInfo;

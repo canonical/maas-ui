@@ -1,37 +1,38 @@
-const general = {};
+const osInfo = {};
 
 /**
  * Returns object with osinfo data
  * @param {Object} state - the redux state
  * @returns {Object} The osinfo data
  */
-general.osinfo = state => state.general.osInfo;
+osInfo.get = state => state.general.osInfo.data;
 
 /**
  * Returns true if general is loading
  * @param {Object} state - the redux state
  * @returns {Boolean} - general is loading
  */
-general.loading = state => state.general.loading;
+osInfo.loading = state => state.general.osInfo.loading;
 
 /**
  * Returns true if general is loaded
  * @param {Object} state - the redux state
  * @returns {Boolean} - general is loading
  */
-general.loaded = state => state.general.loaded;
+osInfo.loaded = state => state.general.osInfo.loaded;
 
 /**
  * Returns kernels data
  * @param {Object} state - the redux state
- * @param {String} os - the OS to get kernel options for
+ * @param {String} release - the release to get kernel options for
  * @returns {Array} - the available kernel options
  */
-general.getUbuntuKernelOptions = (state, os) => {
+osInfo.getUbuntuKernelOptions = (state, release) => {
+  const { data } = state.general.osInfo;
   let kernelOptions = [];
 
-  if (state.general.osInfo.kernels && state.general.osInfo.kernels.ubuntu) {
-    kernelOptions = state.general.osInfo.kernels.ubuntu[os];
+  if (data.kernels && data.kernels.ubuntu && data.kernels.ubuntu[release]) {
+    kernelOptions = data.kernels.ubuntu[release];
   }
 
   kernelOptions = [["", "No minimum kernel"]].concat(kernelOptions);
@@ -47,12 +48,13 @@ general.getUbuntuKernelOptions = (state, os) => {
  * @param {Object} state - the redux state
  * @returns {Object} - all ubuntu kernel options
  */
-general.getAllUbuntuKernelOptions = state => {
+osInfo.getAllUbuntuKernelOptions = state => {
+  const { data } = state.general.osInfo;
   let allUbuntuKernelOptions = {};
 
-  if (state.general.osInfo.kernels && state.general.osInfo.kernels.ubuntu) {
-    Object.keys(state.general.osInfo.kernels.ubuntu).forEach(key => {
-      allUbuntuKernelOptions[key] = general.getUbuntuKernelOptions(state, key);
+  if (data.kernels && data.kernels.ubuntu) {
+    Object.keys(data.kernels.ubuntu).forEach(key => {
+      allUbuntuKernelOptions[key] = osInfo.getUbuntuKernelOptions(state, key);
     });
   }
 
@@ -65,11 +67,12 @@ general.getAllUbuntuKernelOptions = state => {
  * @param {String} os - the OS to get releases of
  * @returns {Array} - the available OS releases
  */
-general.getOsReleases = (state, os) => {
+osInfo.getOsReleases = (state, os) => {
+  const { data } = state.general.osInfo;
   let osReleases = [];
 
-  if (state.general.osInfo.releases) {
-    osReleases = state.general.osInfo.releases
+  if (data.releases) {
+    osReleases = data.releases
       .filter(release => release[0].includes(os))
       .map(release => ({
         value: release[0].split("/")[1],
@@ -85,21 +88,18 @@ general.getOsReleases = (state, os) => {
  * @param {Object} state - the redux state
  * @returns {Object} - all OS releases
  */
-general.getAllOsReleases = state => {
+osInfo.getAllOsReleases = state => {
+  const { data } = state.general.osInfo;
   const allOsReleases = {};
 
-  if (
-    state.general.osInfo &&
-    state.general.osInfo.osystems &&
-    state.general.osInfo.releases
-  ) {
-    state.general.osInfo.osystems.forEach(osystem => {
+  if (data.osystems && data.releases) {
+    data.osystems.forEach(osystem => {
       const os = osystem[0];
-      allOsReleases[os] = general.getOsReleases(state, os);
+      allOsReleases[os] = osInfo.getOsReleases(state, os);
     });
   }
 
   return allOsReleases;
 };
 
-export default general;
+export default osInfo;

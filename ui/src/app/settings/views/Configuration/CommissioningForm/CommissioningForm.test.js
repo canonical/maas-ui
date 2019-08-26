@@ -44,9 +44,11 @@ describe("CommissioningForm", () => {
         ]
       },
       general: {
-        loading: false,
-        loaded: true,
-        osInfo: {}
+        osInfo: {
+          loading: false,
+          loaded: true,
+          data: {}
+        }
       }
     };
   });
