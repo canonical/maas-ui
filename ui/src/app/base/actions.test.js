@@ -12,8 +12,7 @@ describe("base actions", () => {
       type: "FETCH_AUTH_USER",
       meta: {
         model: "user",
-        method: "auth_user",
-        type: 0
+        method: "auth_user"
       }
     });
   });

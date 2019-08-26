@@ -8,8 +8,7 @@ repositories.fetch = () => {
     },
     meta: {
       model: "packagerepository",
-      method: "list",
-      type: 0
+      method: "list"
     }
   };
 };
@@ -19,8 +18,7 @@ repositories.delete = id => {
     type: "DELETE_PACKAGEREPOSITORY",
     meta: {
       model: "packagerepository",
-      method: "delete",
-      type: 0
+      method: "delete"
     },
     payload: {
       params: {

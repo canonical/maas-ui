@@ -5,8 +5,7 @@ users.fetch = () => {
     type: "FETCH_USER",
     meta: {
       model: "user",
-      method: "list",
-      type: 0
+      method: "list"
     }
   };
 };
@@ -16,8 +15,7 @@ users.create = params => {
     type: "CREATE_USER",
     meta: {
       model: "user",
-      method: "create",
-      type: 0
+      method: "create"
     },
     payload: {
       params
@@ -30,8 +28,7 @@ users.update = params => {
     type: "UPDATE_USER",
     meta: {
       model: "user",
-      method: "update",
-      type: 0
+      method: "update"
     },
     payload: {
       params
@@ -44,8 +41,7 @@ users.delete = id => {
     type: "DELETE_USER",
     meta: {
       model: "user",
-      method: "delete",
-      type: 0
+      method: "delete"
     },
     payload: {
       params: {

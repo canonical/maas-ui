@@ -6,8 +6,7 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_OSINFO",
       meta: {
         model: "general",
-        method: "osinfo",
-        type: 0
+        method: "osinfo"
       }
     });
   });

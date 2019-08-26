@@ -19,7 +19,7 @@ const config = produce(
         draft.saving = false;
         draft.saved = true;
         break;
-      case "UPDATE_CONFIG_SYNC":
+      case "UPDATE_CONFIG_NOTIFY":
         for (let i in draft.items) {
           if (draft.items[i].name === action.payload.name) {
             draft.items[i] = action.payload;

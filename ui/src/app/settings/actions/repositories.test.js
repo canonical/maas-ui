@@ -9,8 +9,7 @@ describe("repository actions", () => {
       },
       meta: {
         model: "packagerepository",
-        method: "list",
-        type: 0
+        method: "list"
       }
     });
   });
@@ -20,8 +19,7 @@ describe("repository actions", () => {
       type: "DELETE_PACKAGEREPOSITORY",
       meta: {
         model: "packagerepository",
-        method: "delete",
-        type: 0
+        method: "delete"
       },
       payload: {
         params: {

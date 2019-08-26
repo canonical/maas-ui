@@ -1,10 +1,9 @@
 import { eventChannel } from "redux-saga";
 import { all, call, put, select, take, race } from "redux-saga/effects";
 
+import MESSAGE_TYPES from "app/base/constants";
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
-
-const SYNC_MESSAGE = 2; // 'type: 2' in a ws message
 
 /**
  * Has data already been fetched into state?
@@ -66,22 +65,22 @@ export function watchMessages(socketClient) {
 }
 
 /**
- * Handle incoming 'sync' messages.
+ * Handle incoming notify messages.
  *
- * 'sync' messages have an action and a payload:
+ * Notify messages have an action and a payload:
  * {"type": 2,
  *  "name": "config",
  *  "action": "update",
  *  "data": {"name": "maas_name", "value": "maas-hysteria"}}
  *
  * Although we receive a corresponding response for each websocket requests,
- * the store is only updated once a sync message has been received.
+ * the store is only updated once a notify message has been received.
  */
-export function* handleSyncMessage(response) {
+export function* handleNotifyMessage(response) {
   const action = response.action.toUpperCase();
   const name = response.name.toUpperCase();
   yield put({
-    type: `${action}_${name}_SYNC`,
+    type: `${action}_${name}_NOTIFY`,
     payload: response.data
   });
 }
@@ -92,9 +91,8 @@ export function* handleSyncMessage(response) {
 export function* handleMessage(socketChannel, socketClient) {
   while (true) {
     const response = yield take(socketChannel);
-    if (response.type === SYNC_MESSAGE) {
-      // this is an incoming 'sync' message
-      yield call(handleSyncMessage, response);
+    if (response.type === MESSAGE_TYPES.NOTIFY) {
+      yield call(handleNotifyMessage, response);
     } else {
       // this is a response message
       const action_type = yield call(
@@ -139,7 +137,7 @@ const isWebsocketRequestAction = action => action.meta && action.meta.method;
 const buildMessage = (meta, params) => {
   const message = {
     method: `${meta.model}.${meta.method}`,
-    type: meta.type
+    type: MESSAGE_TYPES.REQUEST
   };
   if (params) {
     message.params = params;
@@ -180,9 +178,9 @@ export function* sendMessage(socketClient) {
           // important for dependant config like commissioning_distro_series
           // and default_min_hwe_kernel.
           // There is an edge case where a different CLI or server event could
-          // dispatch a SYNC of the same type which is received before our expected SYNC,
+          // dispatch a NOTIFY of the same type which is received before our expected NOTIFY,
           // but this _probably_ does not matter in practice.
-          yield take(`${type}_SYNC`);
+          yield take(`${type}_NOTIFY`);
         }
       } else {
         yield call(

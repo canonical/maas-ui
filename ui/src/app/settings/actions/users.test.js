@@ -6,8 +6,7 @@ describe("user actions", () => {
       type: "FETCH_USER",
       meta: {
         model: "user",
-        method: "list",
-        type: 0
+        method: "list"
       }
     });
   });
@@ -17,8 +16,7 @@ describe("user actions", () => {
       type: "CREATE_USER",
       meta: {
         model: "user",
-        method: "create",
-        type: 0
+        method: "create"
       },
       payload: {
         params: {
@@ -33,8 +31,7 @@ describe("user actions", () => {
       type: "UPDATE_USER",
       meta: {
         model: "user",
-        method: "update",
-        type: 0
+        method: "update"
       },
       payload: {
         params: {
@@ -49,8 +46,7 @@ describe("user actions", () => {
       type: "DELETE_USER",
       meta: {
         model: "user",
-        method: "delete",
-        type: 0
+        method: "delete"
       },
       payload: {
         params: {

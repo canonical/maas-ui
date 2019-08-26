@@ -4,6 +4,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
+
 import UsersList from "./UsersList";
 
 const mockStore = configureStore();
@@ -148,8 +149,7 @@ describe("UsersList", () => {
       },
       meta: {
         model: "user",
-        method: "delete",
-        type: 0
+        method: "delete"
       }
     });
   });

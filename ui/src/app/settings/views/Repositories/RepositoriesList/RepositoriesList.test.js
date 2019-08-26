@@ -150,8 +150,7 @@ describe("RepositoriesList", () => {
       },
       meta: {
         model: "packagerepository",
-        method: "delete",
-        type: 0
+        method: "delete"
       }
     });
   });

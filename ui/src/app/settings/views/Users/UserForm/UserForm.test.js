@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import MESSAGE_TYPES from "app/base/constants";
 import { UserForm } from "./UserForm";
 
 jest.mock("uuid/v4", () =>
@@ -113,8 +114,7 @@ describe("UserForm", () => {
         },
         meta: {
           model: "user",
-          method: "update",
-          type: 0
+          method: "update"
         }
       }
     ]);
@@ -154,8 +154,7 @@ describe("UserForm", () => {
         },
         meta: {
           model: "user",
-          method: "create",
-          type: 0
+          method: "create"
         }
       }
     ]);

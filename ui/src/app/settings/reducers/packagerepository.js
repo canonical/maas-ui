@@ -25,7 +25,7 @@ const packagerepository = produce(
         draft.errors = action.error;
         draft.saving = false;
         break;
-      case "DELETE_PACKAGEREPOSITORY_SYNC":
+      case "DELETE_PACKAGEREPOSITORY_NOTIFY":
         const index = draft.items.findIndex(item => item.id === action.payload);
         draft.items.splice(index, 1);
         break;

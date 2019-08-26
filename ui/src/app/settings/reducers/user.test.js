@@ -222,7 +222,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_USER_SYNC", () => {
+  it("should correctly reduce UPDATE_USER_NOTIFY", () => {
     expect(
       user(
         {
@@ -239,7 +239,7 @@ describe("users reducer", () => {
             id: 1,
             username: "kangaroo"
           },
-          type: "UPDATE_USER_SYNC"
+          type: "UPDATE_USER_NOTIFY"
         }
       )
     ).toEqual({
@@ -253,7 +253,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_USER_SYNC", () => {
+  it("should correctly reduce CREATE_USER_NOTIFY", () => {
     expect(
       user(
         {
@@ -267,7 +267,7 @@ describe("users reducer", () => {
         },
         {
           payload: { id: 2, username: "user1" },
-          type: "CREATE_USER_SYNC"
+          type: "CREATE_USER_NOTIFY"
         }
       )
     ).toEqual({
@@ -281,7 +281,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_USER_SYNC", () => {
+  it("should correctly reduce DELETE_USER_NOTIFY", () => {
     expect(
       user(
         {
@@ -295,7 +295,7 @@ describe("users reducer", () => {
         },
         {
           payload: 2,
-          type: "DELETE_USER_SYNC"
+          type: "DELETE_USER_NOTIFY"
         }
       )
     ).toEqual({
