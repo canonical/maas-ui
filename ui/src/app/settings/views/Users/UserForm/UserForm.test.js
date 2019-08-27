@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -86,17 +87,19 @@ describe("UserForm", () => {
         />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit({
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin"
-      });
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin"
+        })
+    );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_USER",
@@ -127,17 +130,19 @@ describe("UserForm", () => {
         <UserForm title="Add user" />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit({
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin"
-      });
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin"
+        })
+    );
     expect(store.getActions()).toEqual([
       {
         type: "CREATE_USER",
@@ -158,5 +163,20 @@ describe("UserForm", () => {
         }
       }
     ]);
+  });
+
+  it("adds a message when a user is added", () => {
+    state.user.saved = true;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm title="Add user" />
+        </MemoryRouter>
+      </Provider>
+    );
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

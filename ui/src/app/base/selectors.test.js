@@ -20,6 +20,7 @@ describe("base selectors", () => {
       expect(selectors.status.getError(state)).toBe(false);
     });
   });
+
   describe("auth", () => {
     it("can get the current user details", () => {
       const state = {
@@ -45,6 +46,27 @@ describe("base selectors", () => {
         }
       };
       expect(selectors.auth.getAuthUserLoading(state)).toStrictEqual(true);
+    });
+  });
+
+  describe("messages", () => {
+    it("can get all messages", () => {
+      const state = {
+        messages: {
+          items: [
+            {
+              id: 1,
+              message: "User added"
+            }
+          ]
+        }
+      };
+      expect(selectors.messages.all(state)).toStrictEqual([
+        {
+          id: 1,
+          message: "User added"
+        }
+      ]);
     });
   });
 });

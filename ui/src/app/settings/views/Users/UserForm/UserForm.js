@@ -3,10 +3,11 @@ import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./UserForm.scss";
 import actions from "app/settings/actions";
+import { messages } from "app/base/actions";
 import { UserShape } from "app/base/proptypes";
 import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
@@ -44,6 +45,7 @@ const UserEditSchema = Yup.object().shape(schemaFields);
 export const UserForm = ({ title, user }) => {
   const dispatch = useDispatch();
   const saved = useSelector(selectors.users.saved);
+  const [savingUser, setSaving] = useState();
   const editing = !!user;
 
   useEffect(() => {
@@ -52,6 +54,17 @@ export const UserForm = ({ title, user }) => {
       dispatch(actions.users.cleanup());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (saved) {
+      const action = editing ? "updated" : "added";
+      dispatch(actions.users.cleanup());
+      dispatch(
+        messages.add(`${savingUser} ${action} successfully`, "information")
+      );
+      setSaving();
+    }
+  }, [dispatch, editing, saved, savingUser]);
 
   if (saved) {
     // The user was successfully created/updated so redirect to the user list.
@@ -94,6 +107,7 @@ export const UserForm = ({ title, user }) => {
               } else {
                 dispatch(actions.users.create(params));
               }
+              setSaving(values.username);
             }}
             render={formikProps => (
               <UserFormFields editing={editing} formikProps={formikProps} />

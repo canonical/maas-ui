@@ -1,7 +1,11 @@
 import { mount, shallow } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 import React from "react";
 
 import { Main } from "./Main";
+
+const mockStore = configureStore();
 
 describe("Main", () => {
   it("renders", () => {
@@ -42,8 +46,18 @@ describe("Main", () => {
 
   it("fetches the user", () => {
     const fetchAuthUser = jest.fn();
+    const state = {
+      messages: { items: [] }
+    };
+    const store = mockStore(state);
     mount(
-      <Main authLoading={false} authUser={null} fetchAuthUser={fetchAuthUser} />
+      <Provider store={store}>
+        <Main
+          authLoading={false}
+          authUser={null}
+          fetchAuthUser={fetchAuthUser}
+        />
+      </Provider>
     );
     expect(fetchAuthUser.mock.calls.length).toBe(1);
   });

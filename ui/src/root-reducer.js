@@ -9,6 +9,7 @@ export default history =>
   combineReducers({
     config: settingsReducers.config,
     general: settingsReducers.general,
+    messages: baseReducers.messages,
     packagerepository: settingsReducers.packagerepository,
     user: reduceReducers(settingsReducers.user, baseReducers.auth),
     router: connectRouter(history),

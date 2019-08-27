@@ -1,4 +1,7 @@
-@import "src/scss/vanilla";
+@import "~vanilla-framework/scss/base_placeholders";
+@import "~vanilla-framework/scss/settings_animations";
+@import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/patterns_icons";
 
 // Identical to Vanilla success icon, but possible to alter tick color
 @mixin maas-icon-success($bg-color, $tick-color: $color-x-light) {
@@ -16,7 +19,14 @@
 }
 
 .p-action-button {
-  @include vf-animation($property: (background-color, border, opacity), $duration: snap);
+  @include vf-animation(
+    $property: (
+      background-color,
+      border,
+      opacity
+    ),
+    $duration: snap
+  );
 
   &.is-loading,
   &.is-success {

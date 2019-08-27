@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import "./UsersList.scss";
+import { messages } from "app/base/actions";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 import baseSelectors from "app/base/selectors";
@@ -23,7 +24,8 @@ const generateUserRows = (
   expandedId,
   setExpandedId,
   dispatch,
-  displayUsername
+  displayUsername,
+  setDeleting
 ) =>
   users.map(user => {
     const expanded = expandedId === user.id;
@@ -102,6 +104,7 @@ const generateUserRows = (
               appearance="negative"
               onClick={() => {
                 dispatch(actions.users.delete(user.id));
+                setDeleting(user.username);
                 setExpandedId();
               }}
             >
@@ -128,24 +131,39 @@ const Users = ({ initialCount = 20 }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(actions.users.fetch());
-  }, [dispatch]);
-
+  const [deletingUser, setDeleting] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(initialCount);
   const users = useSelector(state => selectors.users.search(state, searchText));
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const loaded = useSelector(selectors.users.loaded);
   const authUser = useSelector(baseSelectors.auth.getAuthUser);
+  const saved = useSelector(selectors.users.saved);
+  const dispatch = useDispatch();
 
-  // pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(initialCount);
+  useEffect(() => {
+    dispatch(actions.users.fetch());
+  }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      // Clean up saved and error states on unmount.
+      dispatch(actions.users.cleanup());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (saved) {
+      dispatch(
+        messages.add(`${deletingUser} removed successfully`, "information")
+      );
+      setDeleting();
+      dispatch(actions.users.cleanup());
+    }
+  }, [deletingUser, dispatch, saved]);
 
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
@@ -226,7 +244,8 @@ const Users = ({ initialCount = 20 }) => {
             expandedId,
             setExpandedId,
             dispatch,
-            displayUsername
+            displayUsername,
+            setDeleting
           )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}
