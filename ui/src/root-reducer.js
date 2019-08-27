@@ -10,6 +10,7 @@ export default history =>
     config: settingsReducers.config,
     dhcpsnippet: settingsReducers.dhcpsnippet,
     general: settingsReducers.general,
+    messages: baseReducers.messages,
     packagerepository: settingsReducers.packagerepository,
     router: connectRouter(history),
     status: baseReducers.status,

@@ -154,6 +154,23 @@ describe("UsersList", () => {
     });
   });
 
+  it("can add a message when a user is deleted", () => {
+    defaultStore.user.saved = true;
+    const store = mockStore(defaultStore);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+  });
+
   it("can filter users", () => {
     const store = mockStore(defaultStore);
     const wrapper = mount(

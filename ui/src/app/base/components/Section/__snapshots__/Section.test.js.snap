@@ -1,40 +1,108 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Section renders 1`] = `
-<div
-  className="section"
+<Section
+  sidebar={
+    <div>
+      Sidebar
+    </div>
+  }
+  title="Settings"
 >
-  <Strip
-    className="section__header"
-    element="header"
+  <div
+    className="section"
   >
-    <h1
-      className="p-heading--four u-no-margin--bottom"
+    <Strip
+      className="section__header"
+      element="header"
     >
-      Settings
-    </h1>
-  </Strip>
-  <Strip
-    className="u-no-padding"
-    element="header"
-    includeCol={false}
-    rowClassName="u-equal-height section__content-wrapper"
-  >
-    <Col
-      className="section__sidebar"
-      element="aside"
-      size="2"
+      <header
+        className="section__header p-strip"
+      >
+        <Row>
+          <div
+            className="row"
+          >
+            <Col
+              size="12"
+            >
+              <div
+                className="col-12"
+              >
+                <h1
+                  className="p-heading--four u-no-margin--bottom"
+                >
+                  Settings
+                </h1>
+              </div>
+            </Col>
+          </div>
+        </Row>
+      </header>
+    </Strip>
+    <Strip
+      className="u-no-padding"
+      element="header"
+      includeCol={false}
+      rowClassName="u-equal-height section__content-wrapper"
     >
-      <div>
-        Sidebar
-      </div>
-    </Col>
-    <Col
-      className="section__content"
-      size={10}
-    >
-      content
-    </Col>
-  </Strip>
-</div>
+      <header
+        className="u-no-padding p-strip"
+      >
+        <Row
+          className="u-equal-height section__content-wrapper"
+        >
+          <div
+            className="u-equal-height section__content-wrapper row"
+          >
+            <Col
+              className="section__sidebar"
+              element="aside"
+              size="2"
+            >
+              <aside
+                className="section__sidebar col-2"
+              >
+                <div>
+                  Sidebar
+                </div>
+              </aside>
+            </Col>
+            <Col
+              className="section__content"
+              size={10}
+            >
+              <div
+                className="section__content col-10"
+              >
+                <Notification
+                  close={[Function]}
+                  key="1"
+                >
+                  <div
+                    className="p-notification"
+                  >
+                    <p
+                      className="p-notification__response"
+                    >
+                      User deleted
+                    </p>
+                    <button
+                      aria-label="Close notification"
+                      className="p-icon--close"
+                      onClick={[Function]}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </Notification>
+                content
+              </div>
+            </Col>
+          </div>
+        </Row>
+      </header>
+    </Strip>
+  </div>
+</Section>
 `;

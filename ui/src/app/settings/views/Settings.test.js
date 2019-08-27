@@ -15,6 +15,9 @@ describe("Settings", () => {
         loading: false,
         loaded: false,
         items: []
+      },
+      messages: {
+        items: []
       }
     });
 

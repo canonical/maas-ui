@@ -1,8 +1,12 @@
 import { mount, shallow } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 import React from "react";
 
 import { App } from "./App";
 import Main from "app/base/components/Main";
+
+const mockStore = configureStore();
 
 describe("App", () => {
   it("renders", () => {
@@ -42,12 +46,18 @@ describe("App", () => {
 
   it("connects to the WebSocket", () => {
     const connectWebSocket = jest.fn();
+    const state = {
+      messages: { items: [] }
+    };
+    const store = mockStore(state);
     mount(
-      <App
-        connected={false}
-        connectionError={null}
-        connectWebSocket={connectWebSocket}
-      />
+      <Provider store={store}>
+        <App
+          connected={false}
+          connectionError={null}
+          connectWebSocket={connectWebSocket}
+        />
+      </Provider>
     );
     expect(connectWebSocket.mock.calls.length).toBe(1);
   });
