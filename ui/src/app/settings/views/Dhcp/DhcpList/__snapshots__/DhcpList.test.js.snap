@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DhcpList displays a list of dhcp snippets 1`] = `
+<DhcpList>
+  <ul>
+    <DhcpListItem
+      id={1}
+      key="1"
+      name="class"
+    >
+      <li>
+        class
+         
+      </li>
+    </DhcpListItem>
+    <DhcpListItem
+      id={2}
+      key="2"
+      name="lease"
+      subnet={2}
+    >
+      <li>
+        lease
+         
+        (subnet: test.maas)
+      </li>
+    </DhcpListItem>
+  </ul>
+</DhcpList>
+`;
