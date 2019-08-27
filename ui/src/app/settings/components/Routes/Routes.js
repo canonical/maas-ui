@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
-import Dhcp from "app/settings/views/Dhcp";
+import DhcpList from "app/settings/views/Dhcp/DhcpList";
 import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
@@ -54,7 +54,7 @@ const Routes = () => (
     />
     <Redirect from="/network" to="/network/proxy" />
     <Route exact path="/scripts" component={Scripts} />
-    <Route exact path="/dhcp" component={Dhcp} />
+    <Route exact path="/dhcp" component={DhcpList} />
     <Route exact path="/repositories" component={RepositoriesList} />
     <Route exact path="/repositories/add" component={RepositoryAdd} />
     <Route exact path="/repositories/:id/edit" component={RepositoryEdit} />

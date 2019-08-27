@@ -72,10 +72,9 @@ users.saving = state => state.user.saving;
 users.saved = state => state.user.saved;
 
 /**
- * Returns all users
+ * Returns a user for the given id.
  * @param {Object} state - The redux state.
- * @param {Number} batch - Number of users to return.
- * @returns {Array} A list of all users.
+ * @returns {Array} A user.
  */
 users.getById = (state, id) => state.user.items.find(user => user.id === id);
 
