@@ -8,7 +8,9 @@ import "./RepositoryForm.scss";
 import actions from "app/settings/actions";
 import { formikFormDisabled } from "app/settings/utils";
 import { RepositoryShape } from "app/settings/proptypes";
+import { useRouter } from "app/base/hooks";
 import selectors from "app/settings/selectors";
+import ActionButton from "app/base/components/ActionButton";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Card from "app/base/components/Card";
@@ -32,6 +34,8 @@ const RepositorySchema = Yup.object().shape({
 });
 
 export const RepositoryForm = ({ type, repository }) => {
+  const { history } = useRouter();
+
   const componentsToDisableLoaded = useSelector(
     selectors.general.componentsToDisable.loaded
   );
@@ -119,7 +123,7 @@ export const RepositoryForm = ({ type, repository }) => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={RepositorySchema}
-                onSubmit={(values, { resetForm }) => {
+                onSubmit={(values, { resetForm, setSubmitting }) => {
                   const payload = {
                     arches: values.arches,
                     components: values.components.split(" ,").filter(Boolean),
@@ -135,8 +139,11 @@ export const RepositoryForm = ({ type, repository }) => {
                     name: values.name,
                     url: values.url
                   };
-                  console.log(payload);
-                  resetForm(values);
+                  setTimeout(() => {
+                    alert(JSON.stringify(payload, null, 2));
+                    setSubmitting(false);
+                    resetForm();
+                  }, 1000);
                 }}
                 render={formikProps => (
                   <Form onSubmit={formikProps.handleSubmit}>
@@ -148,19 +155,20 @@ export const RepositoryForm = ({ type, repository }) => {
                       <Button
                         appearance="base"
                         className="u-no-margin--bottom"
-                        onClick={() => window.history.back()}
+                        onClick={() => history.goBack()}
                         type="button"
                       >
                         Cancel
                       </Button>
-                      <Button
+                      <ActionButton
                         appearance="positive"
                         className="u-no-margin--bottom"
                         disabled={formikFormDisabled(formikProps)}
+                        loading={formikProps.isSubmitting}
                         type="submit"
                       >
                         {`Save ${typeString}`}
-                      </Button>
+                      </ActionButton>
                     </div>
                   </Form>
                 )}

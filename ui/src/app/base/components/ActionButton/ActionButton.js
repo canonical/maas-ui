@@ -64,7 +64,7 @@ const ActionButton = ({
   }, [showSuccess]);
 
   const buttonClasses = classNames(
-    classNames,
+    className,
     "p-action-button",
     `p-button--${appearance}`,
     {

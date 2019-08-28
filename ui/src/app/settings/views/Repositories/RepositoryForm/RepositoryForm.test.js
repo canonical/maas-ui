@@ -168,34 +168,50 @@ describe("RepositoryForm", () => {
     const store = mockStore(state);
     let component = mount(
       <Provider store={store}>
-        <RepositoryForm type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm type="repository" />
+        </MemoryRouter>
       </Provider>
     );
     expect(component.find("h4").text()).toBe("Add repository");
 
     component = mount(
       <Provider store={store}>
-        <RepositoryForm type="ppa" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm type="ppa" />
+        </MemoryRouter>
       </Provider>
     );
     expect(component.find("h4").text()).toBe("Add PPA");
 
     component = mount(
       <Provider store={store}>
-        <RepositoryForm
-          type="repository"
-          repository={state.packagerepository.items[0]}
-        />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(component.find("h4").text()).toBe("Edit repository");
 
     component = mount(
       <Provider store={store}>
-        <RepositoryForm
-          type="ppa"
-          repository={state.packagerepository.items[0]}
-        />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="ppa"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(component.find("h4").text()).toBe("Edit PPA");
