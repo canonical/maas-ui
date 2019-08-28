@@ -28,6 +28,7 @@ const generateRepositoryRows = (
     } else {
       name = repo.name;
     }
+    const type = repo.url.startsWith("ppa:") ? "ppa" : "repository";
 
     const expanded = expandedId === repo.id;
     return {
@@ -47,7 +48,7 @@ const generateRepositoryRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/repositories/${repo.id}/edit`}
+                to={`/repositories/edit/${type}/${repo.id}`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -134,10 +135,10 @@ export const Repositories = ({ initialCount = 20 }) => {
           placeholder="Search package repositories"
           value={searchText}
         />
-        <Button element={Link} to="/repositories/add">
+        <Button element={Link} to="/repositories/add/ppa">
           Add PPA
         </Button>
-        <Button element={Link} to="/repositories/add">
+        <Button element={Link} to="/repositories/add/repository">
           Add repository
         </Button>
       </div>

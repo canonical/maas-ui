@@ -20,7 +20,10 @@ export const RepositoryShape = PropTypes.shape({
 export const extendFormikShape = values => {
   let touchedShape = {};
   Object.keys(values).forEach(key => {
-    touchedShape[key] = PropTypes.bool;
+    touchedShape[key] = PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.bool)
+    ]);
   });
   return {
     formikProps: PropTypes.shape({

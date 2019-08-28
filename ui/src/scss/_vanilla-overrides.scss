@@ -12,6 +12,12 @@ input:not([type="checkbox"]) ~ .p-form-help-text,
   line-height: 1.25;
 }
 
+// 26-08-2019 Caleb: Form validation text too close to input when $multi = 1
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/2513
+:not(.p-form-help-text) ~ .p-form-validation__message {
+  margin-top: 0;
+}
+
 // 19-08-2019 Caleb: Form submit button too close to input when $multi = 1
 // https://github.com/canonical-web-and-design/vanilla-framework/issues/2497
 .p-form__control:last-of-type {

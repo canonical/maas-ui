@@ -8,6 +8,7 @@ const Input = ({
   caution,
   className,
   error,
+  wrapperClassName,
   help,
   id,
   label,
@@ -21,6 +22,7 @@ const Input = ({
   return (
     <Field
       caution={caution}
+      className={wrapperClassName}
       error={error}
       forId={id}
       help={help}
@@ -43,6 +45,7 @@ const Input = ({
 Input.propTypes = {
   caution: PropTypes.string,
   className: PropTypes.string,
+  wrapperClassName: PropTypes.string,
   error: PropTypes.string,
   help: PropTypes.string,
   id: PropTypes.string,
