@@ -1,64 +1,84 @@
-import { mount, shallow } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
 import { App } from "./App";
-import Main from "app/base/components/Main";
 
 const mockStore = configureStore();
 
 describe("App", () => {
+  let state;
+
+  beforeEach(() => {
+    state = {
+      messages: {
+        items: []
+      },
+      status: {
+        connected: true
+      },
+      user: {
+        auth: {
+          loading: false,
+          user: {}
+        }
+      }
+    };
+  });
+
   it("renders", () => {
-    const wrapper = shallow(
-      <App
-        connected={true}
-        connectionError={null}
-        connectWebSocket={jest.fn()}
-      />
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper.type()).toBe(Main);
+    expect(wrapper.find("App").exists()).toBe(true);
   });
 
   it("displays connection errors", () => {
-    const wrapper = shallow(
-      <App
-        connected={true}
-        connectionError={{ error: "Error!" }}
-        connectWebSocket={jest.fn()}
-      />
+    state.status.error = "Error!";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper.prop("title")).toBe(
+    expect(wrapper.find("Section").prop("title")).toBe(
       "Failed to connect. Please try refreshing your browser."
     );
   });
 
   it("displays a loading message", () => {
-    const wrapper = shallow(
-      <App
-        connected={false}
-        connectionError={null}
-        connectWebSocket={jest.fn()}
-      />
+    state.status.connected = false;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper.prop("title")).toBe("Loading…");
+    expect(wrapper.find("Section").prop("title")).toBe("Loading…");
   });
 
   it("connects to the WebSocket", () => {
-    const connectWebSocket = jest.fn();
-    const state = {
-      messages: { items: [] }
-    };
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <App
-          connected={false}
-          connectionError={null}
-          connectWebSocket={connectWebSocket}
-        />
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <App />
+        </MemoryRouter>
       </Provider>
     );
-    expect(connectWebSocket.mock.calls.length).toBe(1);
+    expect(
+      store.getActions().some(action => action.type === "WEBSOCKET_CONNECT")
+    ).toBe(true);
   });
 });

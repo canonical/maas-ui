@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
+import { useSelector } from "react-redux";
 import classNames from "classnames";
 import React, { useState } from "react";
-import ReactRouterPropTypes from "react-router-prop-types";
 
 import "./Header.scss";
-import { UserShape } from "../../proptypes";
+import { auth } from "app/base/selectors";
+import { useLocation } from "app/base/hooks";
 
 const useVisible = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -31,9 +31,11 @@ const generateLocalLink = (location, url, label) => (
   </li>
 );
 
-export const Header = ({ authUser, location }) => {
+export const Header = () => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
+  const { location } = useLocation();
+  const authUser = useSelector(auth.get);
   return (
     <header className="p-navigation">
       <div className="p-navigation__row row">
@@ -209,9 +211,4 @@ export const Header = ({ authUser, location }) => {
   );
 };
 
-Header.propTypes = {
-  authUser: UserShape,
-  location: ReactRouterPropTypes.location.isRequired
-};
-
-export default withRouter(Header);
+export default Header;

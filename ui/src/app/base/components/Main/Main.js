@@ -1,18 +1,20 @@
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import { fetchAuthUser } from "app/base/actions";
-import { UserShape } from "app/base/proptypes";
+import { auth as authActions } from "app/base/actions";
 import Header from "app/base/components/Header";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
-import selectors from "app/base/selectors";
+import { auth as authSelectors } from "app/base/selectors";
 
-export function Main({ authUser, authLoading, fetchAuthUser }) {
+export function Main() {
+  const authUser = useSelector(authSelectors.get);
+  const authLoading = useSelector(authSelectors.loading);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    fetchAuthUser();
-  }, [fetchAuthUser]);
+    dispatch(authActions.fetch());
+  }, [dispatch]);
 
   if (authLoading) {
     return <Section title="Loading&hellip;" />;
@@ -34,24 +36,4 @@ export function Main({ authUser, authLoading, fetchAuthUser }) {
   );
 }
 
-Main.propTypes = {
-  authUser: UserShape,
-  fetchAuthUser: PropTypes.func.isRequired,
-  authLoading: PropTypes.bool
-};
-
-const mapStateToProps = (state, props) => {
-  return {
-    authLoading: selectors.auth.getAuthUserLoading(state, props),
-    authUser: selectors.auth.getAuthUser(state, props)
-  };
-};
-
-const mapDispatchToProps = {
-  fetchAuthUser
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Main);
+export default Main;

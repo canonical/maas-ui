@@ -3,7 +3,7 @@ import React from "react";
 
 import { messages as messageActions } from "app/base/actions";
 import Notification from "app/base/components/Notification";
-import selectors from "app/base/selectors";
+import { messages as messageSelectors } from "app/base/selectors";
 
 const generateMessages = (messages, dispatch) =>
   messages.map(({ id, message, status, temporary, type }) => (
@@ -19,7 +19,7 @@ const generateMessages = (messages, dispatch) =>
   ));
 
 const NotificationList = ({ children, sidebar, title }) => {
-  const messages = useSelector(selectors.messages.all);
+  const messages = useSelector(messageSelectors.all);
   const dispatch = useDispatch();
   return <>{generateMessages(messages, dispatch)}</>;
 };

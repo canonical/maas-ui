@@ -5,23 +5,7 @@ const getMessageId = () => {
   return messageId;
 };
 
-export const connectWebSocket = () => {
-  return {
-    type: "WEBSOCKET_CONNECT"
-  };
-};
-
-export const fetchAuthUser = () => {
-  return {
-    type: "FETCH_AUTH_USER",
-    meta: {
-      model: "user",
-      method: "auth_user"
-    }
-  };
-};
-
-export const messages = {};
+const messages = {};
 
 messages.add = (message, type, status, temporary = true) => {
   return {
@@ -42,3 +26,5 @@ messages.remove = id => {
     payload: id
   };
 };
+
+export default messages;

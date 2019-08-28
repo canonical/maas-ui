@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
 import classNames from "classnames";
 import React from "react";
-import ReactRouterPropTypes from "react-router-prop-types";
 
 import "./Nav.scss";
+import { useLocation } from "app/base/hooks";
 
 const _generateSection = (section, location) => {
   let subNav = null;
@@ -53,7 +52,8 @@ const _generateSection = (section, location) => {
   );
 };
 
-export const Nav = props => {
+export const Nav = () => {
+  const { location } = useLocation();
   const nav = [
     {
       label: "Configuration",
@@ -107,7 +107,7 @@ export const Nav = props => {
       label: "Package repos"
     }
   ];
-  const sections = nav.map(item => _generateSection(item, props.location));
+  const sections = nav.map(item => _generateSection(item, location));
   return (
     <nav className="settings-nav">
       <ul className="settings-nav__list">{sections}</ul>
@@ -115,8 +115,4 @@ export const Nav = props => {
   );
 };
 
-Nav.propTypes = {
-  location: ReactRouterPropTypes.location.isRequired
-};
-
-export default withRouter(Nav);
+export default Nav;

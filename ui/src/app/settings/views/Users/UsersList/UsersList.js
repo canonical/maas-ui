@@ -9,7 +9,7 @@ import "./UsersList.scss";
 import { messages } from "app/base/actions";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
-import baseSelectors from "app/base/selectors";
+import { auth } from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
@@ -138,7 +138,7 @@ const Users = ({ initialCount = 20 }) => {
   const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const loaded = useSelector(selectors.users.loaded);
-  const authUser = useSelector(baseSelectors.auth.getAuthUser);
+  const authUser = useSelector(auth.get);
   const saved = useSelector(selectors.users.saved);
   const dispatch = useDispatch();
 
