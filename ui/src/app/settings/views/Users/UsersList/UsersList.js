@@ -156,7 +156,7 @@ const Users = ({ initialCount = 20 }) => {
   useEffect(() => {
     if (saved) {
       dispatch(
-        messages.add(`${deletingUser} removed successfully`, "information")
+        messages.add(`${deletingUser} removed successfully.`, "information")
       );
       setDeleting();
       dispatch(actions.users.cleanup());
