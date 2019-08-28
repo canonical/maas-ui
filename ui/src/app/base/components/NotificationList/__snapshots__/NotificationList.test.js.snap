@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationList renders a list of messages 1`] = `
+<NotificationList>
+  <Notification
+    close={[Function]}
+    key="1"
+  >
+    <div
+      className="p-notification"
+    >
+      <p
+        className="p-notification__response"
+      >
+        User deleted
+      </p>
+      <button
+        aria-label="Close notification"
+        className="p-icon--close"
+        onClick={[Function]}
+      >
+        Close
+      </button>
+    </div>
+  </Notification>
+</NotificationList>
+`;

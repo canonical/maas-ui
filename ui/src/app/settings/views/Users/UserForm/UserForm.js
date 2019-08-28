@@ -60,7 +60,7 @@ export const UserForm = ({ title, user }) => {
       const action = editing ? "updated" : "added";
       dispatch(actions.users.cleanup());
       dispatch(
-        messages.add(`${savingUser} ${action} successfully`, "information")
+        messages.add(`${savingUser} ${action} successfully.`, "information")
       );
       setSaving();
     }
