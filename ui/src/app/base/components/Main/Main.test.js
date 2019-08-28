@@ -1,4 +1,5 @@
-import { mount, shallow } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
@@ -8,76 +9,82 @@ import { Main } from "./Main";
 const mockStore = configureStore();
 
 describe("Main", () => {
+  let state;
+
+  beforeEach(() => {
+    state = {
+      config: {},
+      messages: {
+        items: []
+      },
+      user: {
+        auth: {
+          loading: false,
+          user: {
+            email: "test@example.com",
+            first_name: "",
+            global_permissions: ["machine_create"],
+            id: 1,
+            is_superuser: true,
+            last_name: "",
+            sshkeys_count: 0,
+            username: "admin"
+          }
+        }
+      }
+    };
+  });
+
   it("renders", () => {
-    const wrapper = shallow(
-      <Main
-        authLoading={false}
-        authUser={{
-          email: "test@example.com",
-          first_name: "",
-          global_permissions: ["machine_create"],
-          id: 1,
-          is_superuser: true,
-          last_name: "",
-          sshkeys_count: 0,
-          username: "admin"
-        }}
-        fetchAuthUser={jest.fn()}
-      />
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Main />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("Header").exists()).toBe(true);
+    expect(wrapper.find("Routes").exists()).toBe(true);
   });
 
   it("displays a message when logged out", () => {
-    const wrapper = shallow(
-      <Main authLoading={false} authUser={null} fetchAuthUser={jest.fn()} />
+    state.user.auth.user = null;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Main />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(wrapper.prop("title")).toBe(
+    expect(wrapper.find("Section").prop("title")).toBe(
       "You are not authenticated. Please log in to MAAS."
     );
   });
 
   it("displays a loading message", () => {
-    const wrapper = shallow(
-      <Main authLoading={true} authUser={null} fetchAuthUser={jest.fn()} />
-    );
-    expect(wrapper.prop("title")).toBe("Loading…");
-  });
-
-  it("fetches the user", () => {
-    const fetchAuthUser = jest.fn();
-    const state = {
-      messages: { items: [] }
-    };
+    state.user.auth.loading = true;
     const store = mockStore(state);
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
-        <Main
-          authLoading={false}
-          authUser={null}
-          fetchAuthUser={fetchAuthUser}
-        />
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Main />
+        </MemoryRouter>
       </Provider>
     );
-    expect(fetchAuthUser.mock.calls.length).toBe(1);
+    expect(wrapper.find("Section").prop("title")).toBe("Loading…");
   });
 
   it("displays a message if not an admin", () => {
-    const wrapper = shallow(
-      <Main
-        authLoading={false}
-        authUser={{
-          email: "test@example.com",
-          first_name: "",
-          global_permissions: ["machine_create"],
-          id: 1,
-          is_superuser: false,
-          last_name: "",
-          sshkeys_count: 0,
-          username: "admin"
-        }}
-        fetchAuthUser={jest.fn()}
-      />
+    state.user.auth.user.is_superuser = false;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Main />
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper.find("Section").prop("title")).toEqual(
       "You do not have permission to view this page."

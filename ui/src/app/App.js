@@ -1,17 +1,20 @@
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import { connectWebSocket } from "./base/actions";
+import { websocket } from "./base/actions";
 import Main from "app/base/components/Main";
 import Section from "app/base/components/Section";
-import selectors from "./base/selectors";
+import { status } from "./base/selectors";
 
-export const App = ({ connected, connectionError, connectWebSocket }) => {
+export const App = () => {
+  const connected = useSelector(status.connected);
+  const connectionError = useSelector(status.error);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     // Connect the websocket before anything else in the app can be done.
-    connectWebSocket();
-  }, [connectWebSocket]);
+    dispatch(websocket.connect());
+  }, [dispatch]);
 
   if (connectionError) {
     return (
@@ -26,24 +29,4 @@ export const App = ({ connected, connectionError, connectWebSocket }) => {
   return <Main />;
 };
 
-App.propTypes = {
-  connected: PropTypes.bool,
-  connectionError: PropTypes.object,
-  connectWebSocket: PropTypes.func.isRequired
-};
-
-const mapStateToProps = (state, props) => {
-  return {
-    connected: selectors.status.getConnected(state, props),
-    connectionError: selectors.status.getError(state, props)
-  };
-};
-
-const mapDispatchToProps = {
-  connectWebSocket
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;

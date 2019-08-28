@@ -3,17 +3,17 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
 import settingsReducers from "./app/settings/reducers";
-import baseReducers from "./app/base/reducers";
+import { auth, messages, status } from "./app/base/reducers";
 
 export default history =>
   combineReducers({
     config: settingsReducers.config,
     dhcpsnippet: settingsReducers.dhcpsnippet,
     general: settingsReducers.general,
-    messages: baseReducers.messages,
+    messages: messages,
     packagerepository: settingsReducers.packagerepository,
     router: connectRouter(history),
-    status: baseReducers.status,
+    status: status,
     subnet: settingsReducers.subnet,
-    user: reduceReducers(settingsReducers.user, baseReducers.auth)
+    user: reduceReducers(settingsReducers.user, auth)
   });
