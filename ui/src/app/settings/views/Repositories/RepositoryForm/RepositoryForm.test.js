@@ -107,6 +107,9 @@ describe("RepositoryForm", () => {
             limit: 50
           }
         }
+      },
+      {
+        type: "CLEANUP_PACKAGEREPOSITORY"
       }
     ]);
   });
@@ -245,31 +248,27 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()).toEqual([
-      {
-        type: "UPDATE_PACKAGEREPOSITORY",
-        payload: {
-          params: {
-            id: 9,
-            name: "newName",
-            url: "http://www.website.com",
-            distributions: [],
-            disabled_pockets: [],
-            disabled_components: [],
-            disable_sources: false,
-            components: [],
-            arches: ["i386", "amd64"],
-            key: "",
-            default: false,
-            enabled: true
-          }
-        },
-        meta: {
-          model: "packagerepository",
-          method: "update"
+    expect(store.getActions()[1]).toEqual({
+      type: "UPDATE_PACKAGEREPOSITORY",
+      payload: {
+        params: {
+          id: 9,
+          name: "newName",
+          url: "http://www.website.com",
+          distributions: [],
+          disable_sources: false,
+          components: [],
+          arches: ["i386", "amd64"],
+          key: "",
+          default: false,
+          enabled: true
         }
+      },
+      meta: {
+        model: "packagerepository",
+        method: "update"
       }
-    ]);
+    });
   });
 
   it("can create a repository", () => {
@@ -302,30 +301,26 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()).toEqual([
-      {
-        type: "CREATE_PACKAGEREPOSITORY",
-        payload: {
-          params: {
-            name: "name",
-            url: "http://www.website.com",
-            distributions: [],
-            disabled_pockets: [],
-            disabled_components: [],
-            disable_sources: false,
-            components: [],
-            arches: ["i386", "amd64"],
-            key: "",
-            default: false,
-            enabled: true
-          }
-        },
-        meta: {
-          model: "packagerepository",
-          method: "create"
+    expect(store.getActions()[1]).toEqual({
+      type: "CREATE_PACKAGEREPOSITORY",
+      payload: {
+        params: {
+          name: "name",
+          url: "http://www.website.com",
+          distributions: [],
+          disable_sources: false,
+          components: [],
+          arches: ["i386", "amd64"],
+          key: "",
+          default: false,
+          enabled: true
         }
+      },
+      meta: {
+        model: "packagerepository",
+        method: "create"
       }
-    ]);
+    });
   });
 
   it("adds a message and cleans up packagerepository state when a repo is added", () => {

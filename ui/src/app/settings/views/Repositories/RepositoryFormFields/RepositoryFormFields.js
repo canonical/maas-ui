@@ -81,6 +81,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               fieldKey="enabled"
               checked={values.enabled}
               formikProps={formikProps}
+              disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"
@@ -103,7 +104,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
           formikProps={formikProps}
           style={{ height: "10rem", maxWidth: "100%" }}
         />
-        {type === "repository" && (
+        {type === "repository" && !values.default && (
           <>
             <FormikField
               label="Distributions"
@@ -130,6 +131,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               fieldKey="enabled"
               checked={values.enabled}
               formikProps={formikProps}
+              disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"

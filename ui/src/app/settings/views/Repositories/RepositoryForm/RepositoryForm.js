@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import "./RepositoryForm.scss";
 import actions from "app/settings/actions";
 import { formikFormDisabled } from "app/settings/utils";
+import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
 import { useRouter } from "app/base/hooks";
@@ -106,7 +107,7 @@ export const RepositoryForm = ({ type, repository }) => {
       distributions: repository.distributions.join(", "),
       enabled: repository.enabled,
       key: repository.key,
-      name: repository.name,
+      name: getRepoDisplayName(repository),
       url: repository.url
     };
   } else {
@@ -143,19 +144,26 @@ export const RepositoryForm = ({ type, repository }) => {
                 onSubmit={values => {
                   const params = {
                     arches: values.arches,
-                    components: values.components.split(" ,").filter(Boolean),
                     default: values.default,
                     disable_sources: values.disable_sources,
-                    disabled_components: values.disabled_components,
-                    disabled_pockets: values.disabled_pockets,
-                    distributions: values.distributions
-                      .split(" ,")
-                      .filter(Boolean),
-                    enabled: values.enabled,
-                    key: values.key,
-                    name: values.name,
-                    url: values.url
+                    key: values.key
                   };
+
+                  if (values.default) {
+                    params.disabled_components = values.disabled_components;
+                    params.disabled_pockets = values.disabled_pockets;
+                  } else {
+                    params.components = values.components
+                      .split(" ,")
+                      .filter(Boolean);
+                    params.distributions = values.distributions
+                      .split(" ,")
+                      .filter(Boolean);
+                    params.enabled = values.enabled;
+                    params.name = values.name;
+                    params.url = values.url;
+                  }
+
                   if (repository) {
                     params.id = repository.id;
                     dispatch(actions.repositories.update(params));

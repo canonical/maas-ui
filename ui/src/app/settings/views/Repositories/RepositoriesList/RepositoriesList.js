@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import "./RepositoriesList.scss";
 import actions from "app/settings/actions";
+import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
@@ -22,14 +23,7 @@ const generateRepositoryRows = (
   setExpandedId
 ) =>
   repositories.map(repo => {
-    let name = "";
-    if (repo.name === "main_archive") {
-      name = "Ubuntu archive";
-    } else if (repo.name === "ports_archive") {
-      name = "Ubuntu extra architectures";
-    } else {
-      name = repo.name;
-    }
+    const name = getRepoDisplayName(repo);
     const type = repo.url.startsWith("ppa:") ? "ppa" : "repository";
 
     const expanded = expandedId === repo.id;
@@ -66,7 +60,7 @@ const generateRepositoryRows = (
                 </Button>
                 {repo.default && (
                   <span className="p-tooltip__message">
-                    This repo cannot be deleted.
+                    Default repos cannot be deleted.
                   </span>
                 )}
               </span>

@@ -141,7 +141,9 @@ describe("RepositoriesList", () => {
       .find("Button")
       .at(3)
       .simulate("click");
-    expect(store.getActions()[1]).toEqual({
+
+    // 1. Fetch, 2. Cleanup, 3. Delete
+    expect(store.getActions()[2]).toEqual({
       type: "DELETE_PACKAGEREPOSITORY",
       payload: {
         params: {
