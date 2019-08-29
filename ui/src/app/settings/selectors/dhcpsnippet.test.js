@@ -29,4 +29,45 @@ describe("dhcpsnippet selectors", () => {
     };
     expect(dhcpsnippet.loaded(state)).toEqual(true);
   });
+
+  it("can search items", () => {
+    const state = {
+      dhcpsnippet: {
+        items: [
+          {
+            name: "class",
+            description: "adds"
+          },
+          {
+            name: "lease",
+            description: "changes"
+          },
+          {
+            name: "boot",
+            description: "boots class"
+          }
+        ]
+      }
+    };
+    expect(dhcpsnippet.search(state, "class")).toEqual([
+      {
+        name: "class",
+        description: "adds"
+      },
+      {
+        name: "boot",
+        description: "boots class"
+      }
+    ]);
+  });
+
+  it("can get the count", () => {
+    const state = {
+      dhcpsnippet: {
+        loading: true,
+        items: [{ name: "class" }, { name: "lease" }]
+      }
+    };
+    expect(dhcpsnippet.count(state)).toEqual(2);
+  });
 });

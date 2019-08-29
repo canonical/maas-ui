@@ -8,6 +8,26 @@ const dhcpsnippet = {};
 dhcpsnippet.all = state => state.dhcpsnippet.items;
 
 /**
+ * Get dhcp snippets that match a term.
+ * @param {Object} state - The redux state.
+ * @param {String} term - The term to match against.
+ * @returns {Array} A filtered list of dhcp snippets.
+ */
+dhcpsnippet.search = (state, term) => {
+  return state.dhcpsnippet.items.filter(
+    dhcpsnippet =>
+      dhcpsnippet.name.includes(term) || dhcpsnippet.description.includes(term)
+  );
+};
+
+/**
+ * Returns number of dhcp snippets
+ * @param {Object} state - The redux state.
+ * @returns {Array} A list of all dhcp snippets.
+ */
+dhcpsnippet.count = state => state.dhcpsnippet.items.length;
+
+/**
  * Whether dhcp snippets are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} DHCP snippets are loading.
