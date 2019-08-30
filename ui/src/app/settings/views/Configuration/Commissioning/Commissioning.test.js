@@ -65,8 +65,10 @@ describe("Commissioning", () => {
     expect(wrapper.find("CommissioningForm").exists()).toBe(true);
   });
 
-  it("dispatches action to fetch general os info on load", () => {
+  it(`dispatches actions to fetch config and general os info if either has not
+    already loaded`, () => {
     const state = { ...initialState };
+    state.config.loaded = false;
     const store = mockStore(state);
 
     mount(
@@ -75,16 +77,19 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    const fetchGeneralOsinfoAction = store
+    const fetchActions = store
       .getActions()
-      .find(action => action.type === "FETCH_GENERAL_OSINFO");
+      .filter(action => action.type.startsWith("FETCH"));
 
-    expect(fetchGeneralOsinfoAction).toEqual({
-      type: "FETCH_GENERAL_OSINFO",
-      meta: {
-        model: "general",
-        method: "osinfo"
+    expect(fetchActions).toEqual([
+      { type: "FETCH_CONFIG", meta: { model: "config", method: "list" } },
+      {
+        type: "FETCH_GENERAL_OSINFO",
+        meta: {
+          model: "general",
+          method: "osinfo"
+        }
       }
-    });
+    ]);
   });
 });

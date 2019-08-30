@@ -47,4 +47,30 @@ describe("Windows", () => {
 
     expect(wrapper.find("WindowsForm").exists()).toBe(true);
   });
+
+  it("dispatches action to fetch config if not already loaded", () => {
+    const state = { ...initialState };
+    state.config.loaded = false;
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <Windows />
+      </Provider>
+    );
+
+    const fetchActions = store
+      .getActions()
+      .filter(action => action.type.startsWith("FETCH"));
+
+    expect(fetchActions).toEqual([
+      {
+        type: "FETCH_CONFIG",
+        meta: {
+          model: "config",
+          method: "list"
+        }
+      }
+    ]);
+  });
 });

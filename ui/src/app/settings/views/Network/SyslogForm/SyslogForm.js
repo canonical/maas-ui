@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -27,6 +27,12 @@ const SyslogForm = () => {
   const saving = useSelector(config.saving);
 
   const remoteSyslog = useSelector(config.remoteSyslog);
+
+  useEffect(() => {
+    if (!loaded) {
+      dispatch(actions.config.fetch());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <Row>

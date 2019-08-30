@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -29,6 +29,12 @@ const NetworkDiscoveryForm = () => {
 
   const activeDiscoveryInterval = useSelector(config.activeDiscoveryInterval);
   const networkDiscovery = useSelector(config.networkDiscovery);
+
+  useEffect(() => {
+    if (!loaded) {
+      dispatch(actions.config.fetch());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <Row>

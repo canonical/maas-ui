@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -33,6 +33,12 @@ const DnsForm = () => {
   const dnssecValidation = useSelector(config.dnssecValidation);
   const dnsTrustedAcl = useSelector(config.dnsTrustedAcl);
   const upstreamDns = useSelector(config.upstreamDns);
+
+  useEffect(() => {
+    if (!loaded) {
+      dispatch(actions.config.fetch());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <Row>

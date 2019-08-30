@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -33,6 +33,12 @@ const StorageForm = () => {
   const diskEraseWithQuick = useSelector(config.diskEraseWithQuick);
   const diskEraseWithSecure = useSelector(config.diskEraseWithSecure);
   const enableDiskErasing = useSelector(config.enableDiskErasing);
+
+  useEffect(() => {
+    if (!loaded) {
+      dispatch(actions.config.fetch());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <Row>
