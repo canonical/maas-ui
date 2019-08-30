@@ -248,7 +248,7 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()[1]).toEqual({
+    expect(store.getActions()[2]).toEqual({
       type: "UPDATE_PACKAGEREPOSITORY",
       payload: {
         params: {
@@ -301,7 +301,7 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()[1]).toEqual({
+    expect(store.getActions()[2]).toEqual({
       type: "CREATE_PACKAGEREPOSITORY",
       payload: {
         params: {

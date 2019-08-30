@@ -164,6 +164,7 @@ export const RepositoryForm = ({ type, repository }) => {
                     params.url = values.url;
                   }
 
+                  dispatch(actions.repositories.cleanup());
                   if (repository) {
                     params.id = repository.id;
                     dispatch(actions.repositories.update(params));
