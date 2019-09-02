@@ -11,6 +11,7 @@ exports[`DhcpList displays a list of dhcp snippets 1`] = `
       <li>
         class
          
+         
       </li>
     </DhcpListItem>
     <DhcpListItem
@@ -23,6 +24,20 @@ exports[`DhcpList displays a list of dhcp snippets 1`] = `
         lease
          
         (subnet: test.maas)
+         
+      </li>
+    </DhcpListItem>
+    <DhcpListItem
+      id={3}
+      key="3"
+      name="boot"
+      node="xyz"
+    >
+      <li>
+        boot
+         
+         
+        (machine: machine.maas)
       </li>
     </DhcpListItem>
   </ul>

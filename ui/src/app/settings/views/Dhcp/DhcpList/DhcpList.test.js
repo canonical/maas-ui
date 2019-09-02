@@ -12,10 +12,29 @@ describe("DhcpList", () => {
 
   beforeEach(() => {
     state = {
+      controller: {
+        loading: false,
+        loaded: true,
+        items: []
+      },
+      device: {
+        loading: false,
+        loaded: true,
+        items: []
+      },
       dhcpsnippet: {
         loading: false,
         loaded: true,
-        items: [{ id: 1, name: "class" }, { id: 2, name: "lease", subnet: 2 }]
+        items: [
+          { id: 1, name: "class" },
+          { id: 2, name: "lease", subnet: 2 },
+          { id: 3, name: "boot", node: "xyz" }
+        ]
+      },
+      machine: {
+        loading: false,
+        loaded: true,
+        items: [{ system_id: "xyz", hostname: "machine.maas" }]
       },
       subnet: {
         loading: false,
@@ -26,7 +45,10 @@ describe("DhcpList", () => {
   });
 
   it("displays a loading component if loading", () => {
+    state.controller.loading = true;
+    state.device.loading = true;
     state.dhcpsnippet.loading = true;
+    state.machine.loading = true;
     state.subnet.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
