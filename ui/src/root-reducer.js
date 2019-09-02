@@ -10,10 +10,11 @@ export default history =>
     config: settingsReducers.config,
     dhcpsnippet: settingsReducers.dhcpsnippet,
     general: settingsReducers.general,
-    messages: messages,
+    messages,
     packagerepository: settingsReducers.packagerepository,
     router: connectRouter(history),
-    status: status,
+    scripts: settingsReducers.scripts,
+    status,
     subnet: settingsReducers.subnet,
     user: reduceReducers(settingsReducers.user, auth)
   });

@@ -91,11 +91,10 @@ export const Nav = () => {
       ]
     },
     {
-      path: "/scripts",
       label: "Scripts",
       subNav: [
-        { path: "user-scripts", label: "User scripts" },
-        { path: "built-in-scripts", label: "Built-in scripts" }
+        { path: "/scripts/commissioning", label: "Commissioning scripts" },
+        { path: "/scripts/testing", label: "Testing scripts" }
       ]
     },
     {
