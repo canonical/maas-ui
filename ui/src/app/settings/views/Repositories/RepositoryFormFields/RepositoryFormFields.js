@@ -4,7 +4,9 @@ import { useSelector } from "react-redux";
 
 import "./RepositoryFormFields.scss";
 import { extendFormikShape } from "app/settings/proptypes";
+import { useFormikErrors } from "app/base/hooks";
 import general from "app/settings/selectors/general";
+import repositories from "app/settings/selectors/repositories";
 import Col from "app/base/components/Col";
 import FormikField from "app/base/components/FormikField";
 import List from "app/base/components/List";
@@ -47,6 +49,9 @@ const RepositoryFormFields = ({ formikProps, type }) => {
   const componentsToDisable = useSelector(general.componentsToDisable.get);
   const knownArchitectures = useSelector(general.knownArchitectures.get);
   const pocketsToDisable = useSelector(general.pocketsToDisable.get);
+  const errors = useSelector(repositories.errors);
+
+  useFormikErrors(errors, formikProps);
 
   return (
     <Row>
@@ -76,6 +81,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               fieldKey="enabled"
               checked={values.enabled}
               formikProps={formikProps}
+              disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"
@@ -98,7 +104,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
           formikProps={formikProps}
           style={{ height: "10rem", maxWidth: "100%" }}
         />
-        {type === "repository" && (
+        {type === "repository" && !values.default && (
           <>
             <FormikField
               label="Distributions"
@@ -125,6 +131,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               fieldKey="enabled"
               checked={values.enabled}
               formikProps={formikProps}
+              disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"

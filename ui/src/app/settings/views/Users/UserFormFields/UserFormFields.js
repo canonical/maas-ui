@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
-import { formikFormDisabled, simpleObjectEquality } from "app/settings/utils";
+import { formikFormDisabled } from "app/settings/utils";
+import { useFormikErrors, useRouter } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
@@ -22,27 +23,8 @@ export const UserFormFields = ({ editing, formikProps }) => {
   const saving = useSelector(selectors.users.saving);
   const saved = useSelector(selectors.users.saved);
   const errors = useSelector(selectors.users.errors);
-
-  // Store the previous errors.
-  const previousErrorsRef = useRef();
-  useEffect(() => {
-    previousErrorsRef.current = errors;
-  });
-  const previousErrors = previousErrorsRef.current;
-
-  const { values, setStatus } = formikProps;
-  useEffect(() => {
-    // Only run this effect if the errors have changed.
-    if (!simpleObjectEquality(errors, previousErrors)) {
-      const formikErrors = {};
-      const invalidValues = {};
-      Object.keys(errors).forEach(field => {
-        formikErrors[field] = errors[field].join(" ");
-        invalidValues[field] = values[field];
-      });
-      setStatus({ serverErrors: formikErrors, invalidValues });
-    }
-  }, [errors, previousErrors, setStatus, values]);
+  const { history } = useRouter();
+  useFormikErrors(errors, formikProps);
 
   return (
     <Form onSubmit={formikProps.handleSubmit}>
@@ -109,7 +91,7 @@ export const UserFormFields = ({ editing, formikProps }) => {
         <Button
           appearance="base"
           className="u-no-margin--bottom"
-          onClick={() => window.history.back()}
+          onClick={() => history.goBack()}
           type="button"
         >
           Cancel

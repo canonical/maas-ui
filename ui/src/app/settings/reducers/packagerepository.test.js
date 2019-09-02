@@ -53,6 +53,214 @@ describe("packagerepository reducer", () => {
     });
   });
 
+  it("should correctly reduce CREATE_PACKAGEREPOSITORY_START", () => {
+    expect(
+      packagerepository(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "CREATE_PACKAGEREPOSITORY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce CREATE_PACKAGEREPOSITORY_SUCCESS", () => {
+    expect(
+      packagerepository(
+        {
+          errors: { name: "Name already exists" },
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          type: "CREATE_PACKAGEREPOSITORY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_PACKAGEREPOSITORY_ERROR", () => {
+    expect(
+      packagerepository(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not create repository",
+          type: "CREATE_PACKAGEREPOSITORY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not create repository",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_PACKAGEREPOSITORY_NOTIFY", () => {
+    expect(
+      packagerepository(
+        {
+          auth: {},
+          errors: {},
+          items: [{ id: 1, name: "repo1" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 2, name: "repo2" },
+          type: "CREATE_PACKAGEREPOSITORY_NOTIFY"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [{ id: 1, name: "repo1" }, { id: 2, name: "repo2" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_PACKAGEREPOSITORY_START", () => {
+    expect(
+      packagerepository(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "UPDATE_PACKAGEREPOSITORY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce UPDATE_PACKAGEREPOSITORY_SUCCESS", () => {
+    expect(
+      packagerepository(
+        {
+          errors: { name: "Name already exists" },
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          type: "UPDATE_PACKAGEREPOSITORY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_PACKAGEREPOSITORY_ERROR", () => {
+    expect(
+      packagerepository(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not update repository",
+          type: "UPDATE_PACKAGEREPOSITORY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not update repository",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_PACKAGEREPOSITORY_NOTIFY", () => {
+    expect(
+      packagerepository(
+        {
+          auth: {},
+          errors: {},
+          items: [{ id: 1, name: "repo1" }, { id: 2, name: "repo2" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 1, name: "newName" },
+          type: "UPDATE_PACKAGEREPOSITORY_NOTIFY"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [{ id: 1, name: "newName" }, { id: 2, name: "repo2" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   it("should correctly reduce DELETE_PACKAGEREPOSITORY_START", () => {
     expect(
       packagerepository(

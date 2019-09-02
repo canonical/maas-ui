@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 
 import "./RepositoriesList.scss";
 import actions from "app/settings/actions";
+import { getRepoDisplayName } from "../utils";
+import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
@@ -14,20 +16,14 @@ import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 
 const generateRepositoryRows = (
-  repositories,
+  dispatch,
   expandedId,
-  setExpandedId,
-  dispatch
+  repositories,
+  setDeletedRepo,
+  setExpandedId
 ) =>
   repositories.map(repo => {
-    let name = "";
-    if (repo.name === "main_archive") {
-      name = "Ubuntu archive";
-    } else if (repo.name === "ports_archive") {
-      name = "Ubuntu extra architectures";
-    } else {
-      name = repo.name;
-    }
+    const name = getRepoDisplayName(repo);
     const type = repo.url.startsWith("ppa:") ? "ppa" : "repository";
 
     const expanded = expandedId === repo.id;
@@ -64,7 +60,7 @@ const generateRepositoryRows = (
                 </Button>
                 {repo.default && (
                   <span className="p-tooltip__message">
-                    This repo cannot be deleted.
+                    Default repos cannot be deleted.
                   </span>
                 )}
               </span>
@@ -88,6 +84,7 @@ const generateRepositoryRows = (
               appearance="negative"
               onClick={() => {
                 dispatch(actions.repositories.delete(repo.id));
+                setDeletedRepo(repo.name);
                 setExpandedId();
               }}
             >
@@ -110,22 +107,42 @@ export const Repositories = ({ initialCount = 20 }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [itemsPerPage] = useState(initialCount);
   const [searchText, setSearchText] = useState("");
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(actions.repositories.fetch());
-  }, [dispatch]);
+  const [deletedRepo, setDeletedRepo] = useState();
 
   const loaded = useSelector(selectors.repositories.loaded);
   const loading = useSelector(selectors.repositories.loading);
+  const saved = useSelector(selectors.repositories.saved);
   const repositories = useSelector(state =>
     selectors.repositories.search(state, searchText)
   );
   const repositoryCount = useSelector(selectors.repositories.count);
 
-  // pagination
+  // Pagination
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
   const paginate = pageNumber => setCurrentPage(pageNumber);
+
+  const dispatch = useDispatch();
+
+  // Fetch repositories on load
+  useEffect(() => {
+    dispatch(actions.repositories.fetch());
+  }, [dispatch]);
+
+  // Create a deleted notification if successful
+  useEffect(() => {
+    if (saved) {
+      dispatch(actions.repositories.cleanup());
+      dispatch(
+        messages.add(`${deletedRepo} removed successfully.`, "information")
+      );
+      setDeletedRepo();
+    }
+  }, [deletedRepo, dispatch, saved]);
+
+  // Clean up saved and error states on unmount.
+  useEffect(() => {
+    dispatch(actions.repositories.cleanup());
+  }, [dispatch]);
 
   return (
     <>
@@ -157,10 +174,11 @@ export const Repositories = ({ initialCount = 20 }) => {
           ]}
           rowLimit={itemsPerPage}
           rows={generateRepositoryRows(
-            repositories,
+            dispatch,
             expandedId,
-            setExpandedId,
-            dispatch
+            repositories,
+            setDeletedRepo,
+            setExpandedId
           )}
           rowStartIndex={indexOfFirstItem}
           sortable

@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MESSAGE_TYPES from "app/base/constants";
 import { UserForm } from "./UserForm";
 
 jest.mock("uuid/v4", () =>
@@ -34,7 +33,9 @@ describe("UserForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserForm title="Add user" />
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm title="Add user" />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("UserForm").exists()).toBe(true);
@@ -44,7 +45,9 @@ describe("UserForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserForm title="Add user" />
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm title="Add user" />
+        </MemoryRouter>
       </Provider>
     );
     wrapper.unmount();
@@ -72,19 +75,21 @@ describe("UserForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserForm
-          title="Add user"
-          user={{
-            email: "old@example.com",
-            first_name: "Miss",
-            id: 808,
-            is_superuser: true,
-            last_name: "Wallaby",
-            password1: "test1234",
-            password2: "test1234",
-            username: "admin"
-          }}
-        />
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm
+            title="Add user"
+            user={{
+              email: "old@example.com",
+              first_name: "Miss",
+              id: 808,
+              is_superuser: true,
+              last_name: "Wallaby",
+              password1: "test1234",
+              password2: "test1234",
+              username: "admin"
+            }}
+          />
+        </MemoryRouter>
       </Provider>
     );
     act(() =>
@@ -127,7 +132,9 @@ describe("UserForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserForm title="Add user" />
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm title="Add user" />
+        </MemoryRouter>
       </Provider>
     );
     act(() =>

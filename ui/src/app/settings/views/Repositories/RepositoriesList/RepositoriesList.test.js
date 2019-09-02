@@ -141,7 +141,9 @@ describe("RepositoriesList", () => {
       .find("Button")
       .at(3)
       .simulate("click");
-    expect(store.getActions()[1]).toEqual({
+
+    // 1. Fetch, 2. Cleanup, 3. Delete
+    expect(store.getActions()[2]).toEqual({
       type: "DELETE_PACKAGEREPOSITORY",
       payload: {
         params: {
@@ -200,5 +202,27 @@ describe("RepositoriesList", () => {
     const extraRepoRow = wrapper.find("MainTable").prop("rows")[1];
     expect(mainRepoRow.columns[0].content).toBe("Ubuntu archive");
     expect(extraRepoRow.columns[0].content).toBe("Ubuntu extra architectures");
+  });
+
+  it("adds a message and cleans up packagerepository state when a repo is deleted", () => {
+    const state = { ...initialState };
+    state.packagerepository.saved = true;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/settings/repositories", key: "testKey" }
+          ]}
+        >
+          <RepositoriesList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const actions = store.getActions();
+    expect(
+      actions.some(action => action.type === "CLEANUP_PACKAGEREPOSITORY")
+    ).toBe(true);
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

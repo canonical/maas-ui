@@ -1,7 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import { mount } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
 import React from "react";
+import { Provider } from "react-redux";
 
 import { UserFormFields } from "./UserFormFields";
 
@@ -40,9 +41,14 @@ describe("UserFormFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserFormFields formikProps={formikProps} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields formikProps={formikProps} />
+        </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("UserFormFields").exists()).toBe(true);
   });
 
@@ -50,7 +56,11 @@ describe("UserFormFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserFormFields formikProps={formikProps} editing={true} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields formikProps={formikProps} editing={true} />
+        </MemoryRouter>
       </Provider>
     );
     expect(
@@ -71,7 +81,11 @@ describe("UserFormFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UserFormFields formikProps={formikProps} editing={true} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields formikProps={formikProps} editing={true} />
+        </MemoryRouter>
       </Provider>
     );
     expect(
@@ -94,7 +108,11 @@ describe("UserFormFields", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <UserFormFields formikProps={formikProps} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields formikProps={formikProps} />
+        </MemoryRouter>
       </Provider>
     );
     expect(formikProps.setStatus).toHaveBeenCalled();
