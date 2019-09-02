@@ -1,4 +1,3 @@
-import { call } from "redux-saga/effects";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { throwError } from "redux-saga-test-plan/providers";
 
