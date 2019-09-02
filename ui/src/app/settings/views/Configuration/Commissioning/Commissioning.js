@@ -9,14 +9,20 @@ import Row from "app/base/components/Row";
 import CommissioningForm from "../CommissioningForm";
 
 const Commissioning = () => {
-  const loaded = useSelector(selectors.config.loaded);
-  const loading = useSelector(selectors.config.loading);
+  const configLoaded = useSelector(selectors.config.loaded);
+  const configLoading = useSelector(selectors.config.loading);
+  const osInfoLoaded = useSelector(selectors.general.osInfo.loaded);
+  const osInfoLoading = useSelector(selectors.general.osInfo.loading);
+  const loaded = configLoaded && osInfoLoaded;
+  const loading = configLoading || osInfoLoading;
 
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(actions.general.fetchOsInfo());
-  }, [dispatch]);
+    if (!loaded) {
+      dispatch(actions.config.fetch());
+      dispatch(actions.general.fetchOsInfo());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <Row>
