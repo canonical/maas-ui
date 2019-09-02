@@ -198,6 +198,9 @@ const DhcpList = ({ initialCount = 20 }) => {
   const dhcpsnippetLoaded = useSelector(selectors.dhcpsnippet.loaded);
   const dhcpsnippets = useSelector(
     state => selectors.dhcpsnippet.search(state, searchText),
+    // Without this method of the comparing the state then the dispatches are
+    // not received by the websocket saga. See:
+    // https://github.com/canonical-web-and-design/maas-ui/issues/172
     shallowEqual
   );
   const dhcpsnippetCount = useSelector(selectors.dhcpsnippet.count);
