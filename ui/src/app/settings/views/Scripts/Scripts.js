@@ -12,7 +12,7 @@ const Scripts = ({ type = "commissioning" }) => {
 
   useEffect(() => {
     dispatch(actions.scripts.fetch());
-  }, [dispatch]);
+  }, [dispatch, type]);
 
   return (
     <>
