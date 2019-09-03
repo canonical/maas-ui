@@ -55,7 +55,8 @@ const generateRows = (
   devices,
   machines,
   subnets,
-  hideExpanded
+  hideExpanded,
+  machineLoaded
 ) =>
   dhcpsnippets.map(dhcpsnippet => {
     const expanded = expandedId === dhcpsnippet.id;
@@ -106,17 +107,25 @@ const generateRows = (
                 }
               }}
             >
-              {dhcpsnippet.name}
+              <span className="dhcp-list__toggle-name">{dhcpsnippet.name}</span>
             </Button>
           ),
           role: "rowheader"
         },
         { content: type },
         {
-          content: target && (
+          content: target ? (
             <VanillaLink href={url}>
-              {target.name || target.hostname}
+              {target.name || target.hostname}{" "}
+              {target.domain && target.domain.name && (
+                <small>.{target.domain.name}</small>
+              )}
             </VanillaLink>
+          ) : (
+            dhcpsnippet.node &&
+            !machineLoaded && (
+              <Loader inline className="u-no-margin u-no-padding" />
+            )
           )
         },
         { content: dhcpsnippet.description },
@@ -213,22 +222,13 @@ const DhcpList = ({ initialCount = 20 }) => {
   const deviceLoading = useSelector(deviceSelectors.loading);
   const deviceLoaded = useSelector(deviceSelectors.loaded);
   const devices = useSelector(deviceSelectors.all);
-  const machineLoading = useSelector(machineSelectors.loading);
   const machineLoaded = useSelector(machineSelectors.loaded);
   const machines = useSelector(machineSelectors.all);
   const dispatch = useDispatch();
   const isLoading =
-    dhcpsnippetLoading ||
-    subnetLoading ||
-    controllerLoading ||
-    deviceLoading ||
-    machineLoading;
+    dhcpsnippetLoading || subnetLoading || controllerLoading || deviceLoading;
   const hasLoaded =
-    dhcpsnippetLoaded &&
-    subnetLoaded &&
-    controllerLoaded &&
-    deviceLoaded &&
-    machineLoaded;
+    dhcpsnippetLoaded && subnetLoaded && controllerLoaded && deviceLoaded;
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -303,7 +303,8 @@ const DhcpList = ({ initialCount = 20 }) => {
             devices,
             machines,
             subnets,
-            hideExpanded
+            hideExpanded,
+            machineLoaded
           )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}

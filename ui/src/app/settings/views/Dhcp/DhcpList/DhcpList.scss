@@ -9,13 +9,12 @@
     size: 100%;
   }
   content: "";
-  display: inline-block;
-  float: right;
+  display: block;
+  flex: 0 0 $sp-medium;
   height: 0.4rem;
   margin-top: $sp-small;
   margin-left: $sp-x-small;
   vertical-align: middle;
-  width: $sp-medium;
 }
 
 .dhcp-list td,
@@ -27,12 +26,12 @@
 
   // Type
   &:nth-child(2) {
-    flex: 0 0 10%;
+    flex: 0 0 8%;
   }
 
   // Applies to
   &:nth-child(3) {
-    flex: 0 0 10%;
+    flex: 0 0 12%;
   }
 
   // Description
@@ -47,14 +46,24 @@
 
   // Last edited
   &:nth-child(6) {
-    flex: 0 0 10%;
+    flex: 0 0 12%;
   }
 }
 
+td:not(.p-table-expanding__panel) [class*="p-button"].dhcp-list__toggle,
 .dhcp-list__toggle {
+  align-self: flex-start;
   color: $color-dark;
+  margin: 0;
+  padding: 0;
   width: 100%;
+  display: flex;
 }
+
+.dhcp-list__toggle-name {
+  flex: 1 1 auto;
+}
+
 .dhcp-list__toggle::after {
   @extend %heading-icon;
 }

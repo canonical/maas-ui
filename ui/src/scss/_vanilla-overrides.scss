@@ -69,3 +69,9 @@ td > .p-tooltip {
 [class*="p-notification"] .p-icon--close {
   margin-top: 0.75rem;
 }
+
+// 03-09-2019 Huw: Fixes for searchbox clear button.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/1960
+.p-search-box__reset {
+  background: transparent;
+}
