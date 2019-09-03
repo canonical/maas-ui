@@ -23,7 +23,8 @@ const scripts = produce(
   {
     loading: false,
     loaded: false,
-    items: []
+    items: [],
+    error: {}
   }
 );
 

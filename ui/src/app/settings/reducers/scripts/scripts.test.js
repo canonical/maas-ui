@@ -3,6 +3,7 @@ import scripts from "./scripts";
 describe("scripts reducer", () => {
   it("should return the initial state", () => {
     expect(scripts(undefined, {})).toEqual({
+      error: {},
       items: [],
       loaded: false,
       loading: false
@@ -15,6 +16,7 @@ describe("scripts reducer", () => {
         type: "FETCH_SCRIPTS_START"
       })
     ).toEqual({
+      error: {},
       items: [],
       loaded: false,
       loading: true
