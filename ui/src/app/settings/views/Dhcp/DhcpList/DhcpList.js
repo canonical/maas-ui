@@ -1,6 +1,6 @@
 import { format, parse } from "date-fns";
 import { Link } from "react-router-dom";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -195,12 +195,8 @@ const DhcpList = ({ initialCount = 20 }) => {
   const [itemsPerPage] = useState(initialCount);
   const dhcpsnippetLoading = useSelector(selectors.dhcpsnippet.loading);
   const dhcpsnippetLoaded = useSelector(selectors.dhcpsnippet.loaded);
-  const dhcpsnippets = useSelector(
-    state => selectors.dhcpsnippet.search(state, searchText),
-    // Without this method of the comparing the state then the dispatches are
-    // not received by the websocket saga. See:
-    // https://github.com/canonical-web-and-design/maas-ui/issues/172
-    shallowEqual
+  const dhcpsnippets = useSelector(state =>
+    selectors.dhcpsnippet.search(state, searchText)
   );
   const dhcpsnippetCount = useSelector(selectors.dhcpsnippet.count);
   const subnets = useSelector(selectors.subnet.all);
