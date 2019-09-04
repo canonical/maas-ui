@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DhcpTarget can display a node link 1`] = `
+<Link
+  href="http://maas.local:5240/MAAS\\",/#/machine/xyz"
+>
+  <a
+    className=""
+    href="http://maas.local:5240/MAAS\\",/#/machine/xyz"
+  >
+    machine1
+    <small>
+      .
+      test
+    </small>
+  </a>
+</Link>
+`;

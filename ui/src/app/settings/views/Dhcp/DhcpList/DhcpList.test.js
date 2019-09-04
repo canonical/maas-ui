@@ -36,7 +36,9 @@ describe("DhcpList", () => {
       machine: {
         loading: false,
         loaded: true,
-        items: [{ system_id: "xyz", hostname: "machine.maas" }]
+        items: [
+          { system_id: "xyz", hostname: "machine1", domain: { name: "test" } }
+        ]
       },
       subnet: {
         loading: false,
