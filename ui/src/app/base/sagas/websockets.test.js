@@ -94,21 +94,18 @@ describe("websocket sagas", () => {
   });
 
   it("can send a WebSocket message", () => {
-    const saga = sendMessage(socketClient);
-    saga.next();
-    expect(
-      saga.next({
-        type: "TEST_ACTION",
-        meta: {
-          model: "test",
-          method: "method",
-          type: MESSAGE_TYPES.REQUEST
-        },
-        payload: {
-          params: { foo: "bar" }
-        }
-      }).value
-    ).toEqual(put({ type: "TEST_ACTION_START" }));
+    const saga = sendMessage(socketClient, {
+      type: "TEST_ACTION",
+      meta: {
+        model: "test",
+        method: "method",
+        type: MESSAGE_TYPES.REQUEST
+      },
+      payload: {
+        params: { foo: "bar" }
+      }
+    });
+    expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
@@ -119,7 +116,6 @@ describe("websocket sagas", () => {
   });
 
   it("continues if data has already been fetched for list methods", () => {
-    const saga = sendMessage(socketClient);
     const action = {
       type: "FETCH_TEST",
       meta: {
@@ -128,28 +124,25 @@ describe("websocket sagas", () => {
         type: MESSAGE_TYPES.REQUEST
       }
     };
+    const saga = sendMessage(socketClient, action);
     saga.next();
-    saga.next(action);
-    // return to the first yield
-    expect(saga.next(true).value.type).toEqual("TAKE");
+    // The saga should have finished.
+    expect(saga.next({ test: { loaded: true } }).done).toBe(true);
   });
 
   it("can handle params as an array", () => {
-    const saga = sendMessage(socketClient);
-    saga.next();
-    expect(
-      saga.next({
-        type: "TEST_ACTION",
-        meta: {
-          model: "test",
-          method: "method",
-          type: MESSAGE_TYPES.REQUEST
-        },
-        payload: {
-          params: [{ name: "foo", value: "bar" }, { name: "baz", value: "qux" }]
-        }
-      }).value
-    ).toEqual(put({ type: "TEST_ACTION_START" }));
+    const saga = sendMessage(socketClient, {
+      type: "TEST_ACTION",
+      meta: {
+        model: "test",
+        method: "method",
+        type: MESSAGE_TYPES.REQUEST
+      },
+      payload: {
+        params: [{ name: "foo", value: "bar" }, { name: "baz", value: "qux" }]
+      }
+    });
+    expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
@@ -171,9 +164,7 @@ describe("websocket sagas", () => {
   });
 
   it("can handle errors when sending a WebSocket message", () => {
-    const saga = sendMessage(socketClient);
-    saga.next();
-    saga.next({
+    const saga = sendMessage(socketClient, {
       type: "TEST_ACTION",
       meta: {
         model: "test",
@@ -184,6 +175,7 @@ describe("websocket sagas", () => {
         params: { foo: "bar" }
       }
     });
+    saga.next();
     saga.next();
     expect(saga.throw("error!").value).toEqual(
       put({ type: "TEST_ACTION_ERROR", error: "error!" })

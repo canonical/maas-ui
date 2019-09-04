@@ -1,5 +1,13 @@
 import { eventChannel } from "redux-saga";
-import { all, call, put, select, take, race } from "redux-saga/effects";
+import {
+  all,
+  call,
+  put,
+  select,
+  take,
+  takeEvery,
+  race
+} from "redux-saga/effects";
 
 import MESSAGE_TYPES from "app/base/constants";
 import getCookie from "./utils";
@@ -148,50 +156,46 @@ const buildMessage = (meta, params) => {
 /**
  * Send WebSocket messages via the client.
  */
-export function* sendMessage(socketClient) {
-  while (true) {
-    const data = yield take(action => isWebsocketRequestAction(action));
-    const { type, meta } = data;
-    const params = data.payload ? data.payload.params : null;
+export function* sendMessage(socketClient, { meta, payload, type }) {
+  const params = payload ? payload.params : null;
 
-    const { method, model } = meta;
-    // If method is 'list' and data has loaded, do not fetch again.
-    if (method.endsWith("list")) {
-      const loaded = yield select(isLoaded, model);
-      if (loaded) {
-        continue;
-      }
+  const { method, model } = meta;
+  // If method is 'list' and data has loaded, do not fetch again.
+  if (method.endsWith("list")) {
+    const loaded = yield select(isLoaded, model);
+    if (loaded) {
+      return;
     }
+  }
 
-    yield put({ type: `${type}_START` });
-    try {
-      if (params && Array.isArray(params)) {
-        // We deliberately do not yield in parallel here with 'all'
-        // to avoid races for dependant config.
-        for (let param of params) {
-          yield call(
-            [socketClient, socketClient.send],
-            type,
-            buildMessage(meta, param)
-          );
-          // Ensure server has synced before sending next message,
-          // important for dependant config like commissioning_distro_series
-          // and default_min_hwe_kernel.
-          // There is an edge case where a different CLI or server event could
-          // dispatch a NOTIFY of the same type which is received before our expected NOTIFY,
-          // but this _probably_ does not matter in practice.
-          yield take(`${type}_NOTIFY`);
-        }
-      } else {
+  yield put({ type: `${type}_START` });
+  try {
+    if (params && Array.isArray(params)) {
+      // We deliberately do not yield in parallel here with 'all'
+      // to avoid races for dependant config.
+      for (let param of params) {
         yield call(
           [socketClient, socketClient.send],
           type,
-          buildMessage(meta, params)
+          buildMessage(meta, param)
         );
+        // Ensure server has synced before sending next message,
+        // important for dependant config like commissioning_distro_series
+        // and default_min_hwe_kernel.
+        // There is an edge case where a different CLI or server event could
+        // dispatch a NOTIFY of the same type which is received before our expected NOTIFY,
+        // but this _probably_ does not matter in practice.
+        yield take(`${type}_NOTIFY`);
       }
-    } catch (error) {
-      yield put({ type: `${type}_ERROR`, error });
+    } else {
+      yield call(
+        [socketClient, socketClient.send],
+        type,
+        buildMessage(meta, params)
+      );
     }
+  } catch (error) {
+    yield put({ type: `${type}_ERROR`, error });
   }
 }
 
@@ -214,7 +218,11 @@ export function* watchWebSockets() {
       let { cancel } = yield race({
         task: all([
           call(handleMessage, socketChannel, socketClient),
-          call(sendMessage, socketClient)
+          takeEvery(
+            action => isWebsocketRequestAction(action),
+            sendMessage,
+            socketClient
+          )
         ]),
         cancel: take("WEBSOCKET_STOP")
       });
