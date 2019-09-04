@@ -218,6 +218,8 @@ export function* watchWebSockets() {
       let { cancel } = yield race({
         task: all([
           call(handleMessage, socketChannel, socketClient),
+          // Using takeEvery() instead of call() here to get around this issue:
+          // https://github.com/canonical-web-and-design/maas-ui/issues/172
           takeEvery(
             action => isWebsocketRequestAction(action),
             sendMessage,
