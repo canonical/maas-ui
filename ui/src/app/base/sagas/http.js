@@ -11,7 +11,12 @@ export const api = {
       Accept: "application/json",
       "X-CSRFToken": csrftoken
     };
-    return fetch(SCRIPTS_API, { headers }).then(response => response.json());
+    return fetch(SCRIPTS_API, { headers }).then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response.json();
+    });
   }
 };
 
@@ -28,7 +33,7 @@ export function* fetchScriptsSaga() {
   } catch (error) {
     yield put({
       type: `FETCH_SCRIPTS_ERROR`,
-      error
+      error: error.message
     });
   }
 }

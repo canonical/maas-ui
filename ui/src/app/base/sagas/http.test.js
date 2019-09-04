@@ -27,7 +27,7 @@ describe("http sagas", () => {
         [matchers.call.fn(api.fetchScripts, "csrf-token"), throwError(error)]
       ])
       .put({ type: "FETCH_SCRIPTS_START" })
-      .put({ type: "FETCH_SCRIPTS_ERROR", error })
+      .put({ type: "FETCH_SCRIPTS_ERROR", error: error.message })
       .run();
   });
 });
