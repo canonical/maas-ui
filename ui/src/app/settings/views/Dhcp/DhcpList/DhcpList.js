@@ -20,7 +20,7 @@ import {
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
-import VanillaLink from "app/base/components/Link";
+import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Pagination from "app/base/components/Pagination";
@@ -28,21 +28,25 @@ import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 import selectors from "app/settings/selectors";
 
-const generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
-
-const getNode = (controllers, devices, machines, nodeId) => {
-  const controllerItem = controllers.find(
-    controller => controller.system_id === nodeId
-  );
-  const deviceItem = devices.find(device => device.system_id === nodeId);
-  const machineItem = machines.find(machine => machine.system_id === nodeId);
-  return {
-    category:
-      (controllerItem && "controller") ||
-      (deviceItem && "device") ||
-      (machineItem && "machine"),
-    node: controllerItem || deviceItem || machineItem
-  };
+const getTargetName = (
+  controllers,
+  devices,
+  machines,
+  subnets,
+  { node, subnet: subnetId }
+) => {
+  let target;
+  if (subnetId) {
+    target = subnets.find(subnet => subnet.id === subnetId);
+  } else if (node) {
+    const controllerItem = controllers.find(
+      controller => controller.system_id === node
+    );
+    const deviceItem = devices.find(device => device.system_id === node);
+    const machineItem = machines.find(machine => machine.system_id === node);
+    target = controllerItem || deviceItem || machineItem;
+  }
+  return target && (target.name || target.hostname);
 };
 
 const generateRows = (
@@ -55,8 +59,7 @@ const generateRows = (
   devices,
   machines,
   subnets,
-  hideExpanded,
-  machineLoaded
+  hideExpanded
 ) =>
   dhcpsnippets.map(dhcpsnippet => {
     const expanded = expandedId === dhcpsnippet.id;
@@ -67,26 +70,12 @@ const generateRows = (
           "yyyy-LL-dd H:mm"
         )
       : "Never";
-    let type = "Global";
-    let target = null;
-    let url;
-    if (dhcpsnippet.node) {
-      type = "Node";
-      const { node, category } = getNode(
-        controllers,
-        devices,
-        machines,
-        dhcpsnippet.node
-      );
-      target = node;
-      url = generateURL(`#/${category}/${dhcpsnippet.node}`);
-    } else if (dhcpsnippet.subnet) {
-      type = "Subnet";
-      target = subnets.find(subnet => subnet.id === dhcpsnippet.subnet);
-      url = generateURL(`#/subnet/${dhcpsnippet.subnet}`);
-    }
     const enabled = dhcpsnippet.enabled ? "Yes" : "No";
     const showDelete = expandedType === "delete";
+    const type =
+      (dhcpsnippet.node && "Node") ||
+      (dhcpsnippet.subnet && "Subnet") ||
+      "Global";
     return {
       className: expanded ? "p-table__row is-active" : null,
       columns: [
@@ -112,20 +101,15 @@ const generateRows = (
           ),
           role: "rowheader"
         },
-        { content: type },
         {
-          content: target ? (
-            <VanillaLink href={url}>
-              {target.name || target.hostname}{" "}
-              {target.domain && target.domain.name && (
-                <small>.{target.domain.name}</small>
-              )}
-            </VanillaLink>
-          ) : (
-            dhcpsnippet.node &&
-            !machineLoaded && (
-              <Loader inline className="u-no-margin u-no-padding" />
-            )
+          content: type
+        },
+        {
+          content: (dhcpsnippet.node || dhcpsnippet.subnet) && (
+            <DhcpTarget
+              nodeId={dhcpsnippet.node}
+              subnetId={dhcpsnippet.subnet}
+            />
           )
         },
         { content: dhcpsnippet.description },
@@ -190,7 +174,13 @@ const generateRows = (
         name: dhcpsnippet.name,
         enabled,
         description: dhcpsnippet.description,
-        target: target && target.name,
+        target: getTargetName(
+          controllers,
+          devices,
+          machines,
+          subnets,
+          dhcpsnippet
+        ),
         type,
         updated
       }
@@ -213,22 +203,11 @@ const DhcpList = ({ initialCount = 20 }) => {
     shallowEqual
   );
   const dhcpsnippetCount = useSelector(selectors.dhcpsnippet.count);
-  const subnetLoading = useSelector(selectors.subnet.loading);
-  const subnetLoaded = useSelector(selectors.subnet.loaded);
   const subnets = useSelector(selectors.subnet.all);
-  const controllerLoading = useSelector(controllerSelectors.loading);
-  const controllerLoaded = useSelector(controllerSelectors.loaded);
   const controllers = useSelector(controllerSelectors.all);
-  const deviceLoading = useSelector(deviceSelectors.loading);
-  const deviceLoaded = useSelector(deviceSelectors.loaded);
   const devices = useSelector(deviceSelectors.all);
-  const machineLoaded = useSelector(machineSelectors.loaded);
   const machines = useSelector(machineSelectors.all);
   const dispatch = useDispatch();
-  const isLoading =
-    dhcpsnippetLoading || subnetLoading || controllerLoading || deviceLoading;
-  const hasLoaded =
-    dhcpsnippetLoaded && subnetLoaded && controllerLoaded && deviceLoaded;
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -239,26 +218,24 @@ const DhcpList = ({ initialCount = 20 }) => {
 
   useEffect(() => {
     dispatch(actions.dhcpsnippet.fetch());
+    // The following models are used in DhcpTarget, but they are requested here
+    // to prevent every DhcpTarget having to dispatch the actions.
     dispatch(actions.subnet.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
-  if (isLoading) {
-    return <Loader text="Loading..." />;
-  }
-
   return (
     <>
-      {isLoading && <Loader text="Loading..." />}
+      {dhcpsnippetLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <SearchBox onChange={setSearchText} value={searchText} />
         <Button element={Link} to="/dhcp/add">
           Add snippet
         </Button>
       </div>
-      {hasLoaded && (
+      {dhcpsnippetLoaded && (
         <MainTable
           className="p-table-expanding--light dhcp-list"
           expanding={true}
@@ -303,8 +280,7 @@ const DhcpList = ({ initialCount = 20 }) => {
             devices,
             machines,
             subnets,
-            hideExpanded,
-            machineLoaded
+            hideExpanded
           )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}
