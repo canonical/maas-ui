@@ -292,58 +292,45 @@ exports[`Nav renders 1`] = `
       </li>
       <li
         className="settings-nav__item"
-        key="/scripts"
+        key="Scripts"
       >
-        <strong
-          className=""
-        >
-          <Link
-            className="p-link--soft"
-            to="/scripts"
-          >
-            <a
-              className="p-link--soft"
-              href="/scripts"
-              onClick={[Function]}
-            >
-              Scripts
-            </a>
-          </Link>
+        <strong>
+          Scripts
         </strong>
         <ul
           className="settings-nav__list"
         >
           <li
             className="settings-nav__item"
-            key="user-scripts"
+            key="/scripts/commissioning"
           >
             <Link
               className="p-link--soft"
-              to="user-scripts"
+              to="/scripts/commissioning"
             >
               <a
                 className="p-link--soft"
-                href="/user-scripts"
+                href="/scripts/commissioning"
                 onClick={[Function]}
               >
-                User scripts
+                Commissioning scripts
               </a>
             </Link>
           </li>
           <li
             className="settings-nav__item"
-            key="built-in-scripts"
+            key="/scripts/testing"
           >
             <Link
               className="p-link--soft"
-              to="built-in-scripts"
+              to="/scripts/testing"
             >
               <a
                 className="p-link--soft"
-                href="/built-in-scripts"
+                href="/scripts/testing"
                 onClick={[Function]}
               >
-                Built-in scripts
+                Testing scripts
               </a>
             </Link>
           </li>

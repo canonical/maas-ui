@@ -23,6 +23,7 @@ export default history =>
     messages,
     packagerepository: settingsReducers.packagerepository,
     router: connectRouter(history),
+    scripts: settingsReducers.scripts,
     status,
     subnet: settingsReducers.subnet,
     user: reduceReducers(settingsReducers.user, auth)

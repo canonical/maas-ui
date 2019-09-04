@@ -67,6 +67,9 @@ From the root of the MAAS UI project run:
 
 From here you should be able to view the project at &lt;your-local-maas-ip>:8000
 
+## Note
+If you are running MAAS on a different host in development, you will need to copy both cookies for `csrftoken` and `sessionid` after authenticating with MAAS into your browser session for maas-ui.
+
 # Changelog Process
 
 When proposing changes to maas-ui, ensure you update CHANGELOG.md appropriately, describing your changes under either a "Fixed", "Added", "Removed", or "Changed" subheading under "Unreleased".

@@ -13,7 +13,7 @@ import ProxyForm from "app/settings/views/Network/ProxyForm";
 import RepositoriesList from "app/settings/views/Repositories/RepositoriesList";
 import RepositoryAdd from "app/settings/views/Repositories/RepositoryAdd";
 import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
-import Scripts from "app/settings/views/Scripts";
+import Scripts from "app/settings/views/Scripts/Scripts";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import SyslogForm from "app/settings/views/Network/SyslogForm";
 import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
@@ -53,7 +53,16 @@ const Routes = () => (
       component={NetworkDiscoveryForm}
     />
     <Redirect from="/network" to="/network/proxy" />
-    <Route exact path="/scripts" component={Scripts} />
+    <Route
+      exact
+      path="/scripts/commissioning"
+      render={props => <Scripts {...props} type="commissioning" />}
+    />
+    <Route
+      exact
+      path="/scripts/testing"
+      render={props => <Scripts {...props} type="testing" />}
+    />
     <Route exact path="/dhcp" component={DhcpList} />
     <Route exact path="/repositories" component={RepositoriesList} />
     <Route exact path="/repositories/add/:type" component={RepositoryAdd} />
