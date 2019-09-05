@@ -12,6 +12,7 @@ import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import SearchBox from "app/base/components/SearchBox";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
@@ -30,7 +31,6 @@ const generateRows = (
 
     const [lastHistory] = script.history.slice(-1);
     const scriptSrc = lastHistory.data ? atob(lastHistory.data) : "";
-
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
     let uploadedOn;
     if (lastHistory && lastHistory.created) {
@@ -101,20 +101,15 @@ const generateRows = (
       expandedContent:
         expanded &&
         (showDelete ? (
-          <Row>
-            <Col size="7">
-              Are you sure you want to delete script "{script.name}"?{" "}
-              <span className="u-text--light">
-                This action is permanent and can not be undone.
-              </span>
-            </Col>
-            <Col size="3" className="u-align--right">
-              <Button onClick={hideExpanded}>Cancel</Button>
-              <Button appearance="negative" onClick={hideExpanded}>
-                Delete
-              </Button>
-            </Col>
-          </Row>
+          <TableDeleteConfirm
+            modelName={script.name}
+            modelType="Script"
+            onCancel={hideExpanded}
+            onConfirm={() => {
+              // TODO: actually delete
+              hideExpanded();
+            }}
+          />
         ) : (
           <Row>
             <Col size="10">

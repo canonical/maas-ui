@@ -2,7 +2,6 @@ import { format, parse } from "date-fns";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import "./DhcpList.scss";
@@ -17,16 +16,17 @@ import {
   device as deviceSelectors,
   machine as machineSelectors
 } from "app/base/selectors";
+import { messages } from "app/base/actions";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
-import Pagination from "app/base/components/Pagination";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 import selectors from "app/settings/selectors";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const getTargetName = (
   controllers,
@@ -59,7 +59,9 @@ const generateRows = (
   devices,
   machines,
   subnets,
-  hideExpanded
+  hideExpanded,
+  dispatch,
+  setDeleting
 ) =>
   dhcpsnippets.map(dhcpsnippet => {
     const expanded = expandedId === dhcpsnippet.id;
@@ -148,20 +150,16 @@ const generateRows = (
       expandedContent:
         expanded &&
         (showDelete ? (
-          <Row>
-            <Col size="7">
-              Are you sure you want to delete DHCP snippet "{dhcpsnippet.name}"?{" "}
-              <span className="u-text--light">
-                This action is permanent and can not be undone.
-              </span>
-            </Col>
-            <Col size="3" className="u-align--right">
-              <Button onClick={hideExpanded}>Cancel</Button>
-              <Button appearance="negative" onClick={hideExpanded}>
-                Delete
-              </Button>
-            </Col>
-          </Row>
+          <TableDeleteConfirm
+            modelName={dhcpsnippet.name}
+            modelType="DHCP snippet"
+            onCancel={hideExpanded}
+            onConfirm={() => {
+              dispatch(actions.dhcpsnippet.delete(dhcpsnippet.id));
+              setDeleting(dhcpsnippet.name);
+              hideExpanded();
+            }}
+          />
         ) : (
           <Row>
             <Col size="10">
@@ -187,25 +185,22 @@ const generateRows = (
     };
   });
 
-const DhcpList = ({ initialCount = 20 }) => {
+const DhcpList = () => {
   const [expandedId, setExpandedId] = useState();
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(initialCount);
+  const [deletingName, setDeleting] = useState();
   const dhcpsnippetLoading = useSelector(selectors.dhcpsnippet.loading);
   const dhcpsnippetLoaded = useSelector(selectors.dhcpsnippet.loaded);
   const dhcpsnippets = useSelector(state =>
     selectors.dhcpsnippet.search(state, searchText)
   );
-  const dhcpsnippetCount = useSelector(selectors.dhcpsnippet.count);
+  const saved = useSelector(selectors.dhcpsnippet.saved);
   const subnets = useSelector(selectors.subnet.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
   const dispatch = useDispatch();
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const hideExpanded = () => {
     setExpandedId();
@@ -221,6 +216,16 @@ const DhcpList = ({ initialCount = 20 }) => {
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (saved && deletingName) {
+      dispatch(
+        messages.add(`${deletingName} removed successfully.`, "information")
+      );
+      setDeleting();
+      dispatch(actions.dhcpsnippet.cleanup());
+    }
+  }, [deletingName, dispatch, saved]);
 
   return (
     <>
@@ -265,7 +270,7 @@ const DhcpList = ({ initialCount = 20 }) => {
               className: "u-align--right"
             }
           ]}
-          rowLimit={itemsPerPage}
+          paginate={20}
           rows={generateRows(
             dhcpsnippets,
             expandedId,
@@ -276,6 +281,15 @@ const DhcpList = ({ initialCount = 20 }) => {
             devices,
             machines,
             subnets,
-            hideExpanded
+            hideExpanded,
+            dispatch,
+            setDeleting
           )}
-          rowStartIndex={indexOfFirstIt
+          sortable={true}
+        />
+      )}
+    </>
+  );
+};
+
+export default DhcpList;
