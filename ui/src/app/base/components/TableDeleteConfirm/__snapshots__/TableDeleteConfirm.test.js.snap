@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableDeleteConfirm renders 1`] = `
+<Row>
+  <Col
+    size="7"
+  >
+    Are you sure you want to delete 
+    user
+     "
+    Cobba
+    "?
+     
+    <span
+      className="u-text--light"
+    >
+      This action is permanent and can not be undone.
+    </span>
+  </Col>
+  <Col
+    className="u-align--right"
+    size="3"
+  >
+    <Button
+      onClick={[MockFunction]}
+    >
+      Cancel
+    </Button>
+    <Button
+      appearance="negative"
+      onClick={[MockFunction]}
+    >
+      Delete
+    </Button>
+  </Col>
+</Row>
+`;
