@@ -10,4 +10,25 @@ dhcpsnippet.fetch = () => {
   };
 };
 
+dhcpsnippet.delete = id => {
+  return {
+    type: "DELETE_DHCPSNIPPET",
+    meta: {
+      model: "dhcpsnippet",
+      method: "delete"
+    },
+    payload: {
+      params: {
+        id
+      }
+    }
+  };
+};
+
+dhcpsnippet.cleanup = () => {
+  return {
+    type: "CLEANUP_DHCPSNIPPET"
+  };
+};
+
 export default dhcpsnippet;

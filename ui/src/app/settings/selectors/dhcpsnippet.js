@@ -41,4 +41,25 @@ dhcpsnippet.loading = state => state.dhcpsnippet.loading;
  */
 dhcpsnippet.loaded = state => state.dhcpsnippet.loaded;
 
+/**
+ * Returns dhcp snippets errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Errors for a dhcp snippet.
+ */
+dhcpsnippet.errors = state => state.dhcpsnippet.errors;
+
+/**
+ * Get the saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether dhcp snippets are being saved.
+ */
+dhcpsnippet.saving = state => state.dhcpsnippet.saving;
+
+/**
+ * Get the saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether dhcp snippets have been saved.
+ */
+dhcpsnippet.saved = state => state.dhcpsnippet.saved;
+
 export default dhcpsnippet;
