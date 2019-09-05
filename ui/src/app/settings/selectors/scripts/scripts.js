@@ -58,13 +58,16 @@ scripts.testing = state =>
  * @param {String} type - The type of script.
  * @returns {Array} A filtered list of scripts.
  */
-scripts.search = (state, type, term) => {
-  return state.scripts.items.filter(
-    item =>
-      (item.type === SCRIPT_TYPES[type.toUpperCase()] &&
-        item.name.includes(term)) ||
-      item.description.includes(term)
+scripts.search = (state, term, type) => {
+  const scripts = state.scripts.items.filter(
+    item => item.type === SCRIPT_TYPES[type.toUpperCase()]
   );
+  if (term) {
+    return scripts.filter(
+      item => item.name.includes(term) || item.description.includes(term)
+    );
+  }
+  return scripts;
 };
 
 export default scripts;

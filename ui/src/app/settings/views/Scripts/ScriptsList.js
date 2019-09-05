@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 
+import "./ScriptsList.scss";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
-import Pagination from "app/base/components/Pagination";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 import actions from "app/settings/actions";
@@ -25,16 +25,28 @@ const generateRows = (
   hideExpanded
 ) =>
   scripts.map(script => {
-    console.log("script", script);
     const expanded = expandedId === script.id;
-    // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
-    const updated = script.updated
-      ? format(
-          parse(script.updated, "E, dd LLL. yyyy HH:mm:ss", new Date()),
-          "yyyy-LL-dd H:mm"
-        )
-      : "Never";
     const showDelete = expandedType === "delete";
+
+    const [lastHistory] = script.history.slice(-1);
+    const scriptSrc = lastHistory.data ? atob(lastHistory.data) : "";
+
+    // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
+    let uploadedOn;
+    if (lastHistory && lastHistory.created) {
+      try {
+        const parsed = parse(
+          lastHistory.created,
+          "EEE, dd LLL yyyy HH:mm:ss xxxx",
+          new Date()
+        );
+        uploadedOn = format(parsed, "yyyy-LL-dd H:mm");
+      } catch (error) {
+        uploadedOn = lastHistory.created;
+      }
+    } else {
+      uploadedOn = "Never";
+    }
 
     return {
       className: expanded ? "p-table__row is-active" : null,
@@ -43,7 +55,7 @@ const generateRows = (
           content: (
             <Button
               appearance="link"
-              className={classNames("dhcp-list__toggle", {
+              className={classNames("scripts-list__toggle", {
                 "is-active": expanded && !showDelete
               })}
               inline
@@ -56,7 +68,7 @@ const generateRows = (
                 }
               }}
             >
-              <span className="dhcp-list__toggle-name">{script.name}</span>
+              <span className="scripts-list__toggle-name">{script.name}</span>
             </Button>
           ),
           role: "rowheader"
@@ -64,20 +76,10 @@ const generateRows = (
         {
           content: script.description
         },
-        { content: updated },
-        { content: updated },
+        { content: uploadedOn },
         {
           content: (
             <>
-              <Button
-                appearance="base"
-                element={Link}
-                to={`/script/${script.id}/edit`}
-                className="is-small u-justify-table-icon"
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-
               <span className="p-tooltip p-tooltip--left">
                 <Button
                   appearance="base"
@@ -116,7 +118,7 @@ const generateRows = (
         ) : (
           <Row>
             <Col size="10">
-              <Code>{script.value}</Code>
+              <Code>{scriptSrc}</Code>
             </Col>
           </Row>
         )),
@@ -124,37 +126,26 @@ const generateRows = (
       sortData: {
         name: script.name,
         description: script.description,
-        updated
+        uploadedOn
       }
     };
   });
 
-const ScriptsList = ({ type = "commissioning", initialCount = 20 }) => {
+const ScriptsList = ({ type = "commissioning" }) => {
   const dispatch = useDispatch();
   const [expandedId, setExpandedId] = useState();
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(initialCount);
   const scriptsLoading = useSelector(selectors.scripts.loading);
   const scriptsLoaded = useSelector(selectors.scripts.loaded);
-  const scripts = useSelector(state =>
+  const userScripts = useSelector(state =>
     selectors.scripts.search(state, searchText, type)
   );
-  const scriptsCount = useSelector(selectors.scripts.count);
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const hideExpanded = () => {
     setExpandedId();
     setExpandedType();
   };
-
-  const scriptsSelector =
-    type === "commissioning"
-      ? selectors.scripts.commissioning
-      : selectors.scripts.testing;
-  const userScripts = useSelector(scriptsSelector);
 
   useEffect(() => {
     dispatch(actions.scripts.fetch());
@@ -165,13 +156,13 @@ const ScriptsList = ({ type = "commissioning", initialCount = 20 }) => {
       {scriptsLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to="/scripts/upload">
+        <Button element={Link} to={`/scripts/${type}/upload`}>
           Upload script
         </Button>
       </div>
       {scriptsLoaded && (
         <MainTable
-          className="p-table-expanding--light"
+          className="p-table-expanding--light scripts-list"
           expanding={true}
           headers={[
             {
@@ -183,10 +174,6 @@ const ScriptsList = ({ type = "commissioning", initialCount = 20 }) => {
               sortKey: "description"
             },
             {
-              content: "Uploaded by",
-              sortKey: "author"
-            },
-            {
               content: "Uploaded on",
               sortKey: "uploaded_on"
             },
@@ -195,7 +182,7 @@ const ScriptsList = ({ type = "commissioning", initialCount = 20 }) => {
               className: "u-align--right"
             }
           ]}
-          rowLimit={itemsPerPage}
+          paginate={20}
           rows={generateRows(
             userScripts,
             expandedId,
@@ -204,16 +191,9 @@ const ScriptsList = ({ type = "commissioning", initialCount = 20 }) => {
             setExpandedType,
             hideExpanded
           )}
-          rowStartIndex={indexOfFirstItem}
           sortable={true}
         />
       )}
-      <Pagination
-        itemsPerPage={itemsPerPage}
-        totalItems={scriptsCount}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
     </>
   );
 };
