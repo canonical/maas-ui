@@ -21,6 +21,14 @@ scripts.all = state => state.scripts.items;
 scripts.loading = state => state.scripts.loading;
 
 /**
+ * Returns count of scripts
+ * @param {Object} state - Redux state
+ * @returns {Number} Number of scripts
+ */
+
+scripts.count = state => state.scripts.items.length;
+
+/**
  * Returns true if scripts have loaded
  * @param {Object} state - Redux state
  * @returns {Boolean} Scripts have loaded
@@ -42,5 +50,21 @@ scripts.commissioning = state =>
  */
 scripts.testing = state =>
   state.scripts.items.filter(item => item.type === SCRIPT_TYPES.TESTING);
+
+/**
+ * Get scripts that match a term.
+ * @param {Object} state - The redux state.
+ * @param {String} term - The term to match against.
+ * @param {String} type - The type of script.
+ * @returns {Array} A filtered list of scripts.
+ */
+scripts.search = (state, type, term) => {
+  return state.scripts.items.filter(
+    item =>
+      (item.type === SCRIPT_TYPES[type.toUpperCase()] &&
+        item.name.includes(term)) ||
+      item.description.includes(term)
+  );
+};
 
 export default scripts;
