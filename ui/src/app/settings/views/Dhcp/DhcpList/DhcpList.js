@@ -28,6 +28,7 @@ import Pagination from "app/base/components/Pagination";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
 import selectors from "app/settings/selectors";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const getTargetName = (
   controllers,
@@ -151,27 +152,16 @@ const generateRows = (
       expandedContent:
         expanded &&
         (showDelete ? (
-          <Row>
-            <Col size="7">
-              Are you sure you want to delete DHCP snippet "{dhcpsnippet.name}"?{" "}
-              <span className="u-text--light">
-                This action is permanent and can not be undone.
-              </span>
-            </Col>
-            <Col size="3" className="u-align--right">
-              <Button onClick={hideExpanded}>Cancel</Button>
-              <Button
-                appearance="negative"
-                onClick={() => {
-                  dispatch(actions.dhcpsnippet.delete(dhcpsnippet.id));
-                  setDeleting(dhcpsnippet.name);
-                  hideExpanded();
-                }}
-              >
-                Delete
-              </Button>
-            </Col>
-          </Row>
+          <TableDeleteConfirm
+            modelName={dhcpsnippet.name}
+            modelType="DHCP snippet"
+            onCancel={hideExpanded}
+            onConfirm={() => {
+              dispatch(actions.dhcpsnippet.delete(dhcpsnippet.id));
+              setDeleting(dhcpsnippet.name);
+              hideExpanded();
+            }}
+          />
         ) : (
           <Row>
             <Col size="10">

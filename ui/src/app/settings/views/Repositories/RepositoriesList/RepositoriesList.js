@@ -8,12 +8,11 @@ import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
-import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Pagination from "app/base/components/Pagination";
-import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRepositoryRows = (
   dispatch,
@@ -71,27 +70,16 @@ const generateRepositoryRows = (
       ],
       expanded: expanded,
       expandedContent: expanded && (
-        <Row>
-          <Col size="7">
-            Are you sure you want to delete repository "{repo.name}"?{" "}
-            <span className="u-text--light">
-              This action is permanent and can not be undone.
-            </span>
-          </Col>
-          <Col size="3" className="u-align--right">
-            <Button onClick={() => setExpandedId()}>Cancel</Button>
-            <Button
-              appearance="negative"
-              onClick={() => {
-                dispatch(actions.repositories.delete(repo.id));
-                setDeletedRepo(repo.name);
-                setExpandedId();
-              }}
-            >
-              Delete
-            </Button>
-          </Col>
-        </Row>
+        <TableDeleteConfirm
+          modelName={repo.name}
+          modelType="repository"
+          onCancel={setExpandedId}
+          onConfirm={() => {
+            dispatch(actions.repositories.delete(repo.id));
+            setDeletedRepo(repo.name);
+            setExpandedId();
+          }}
+        />
       ),
       key: repo.id,
       sortData: {
