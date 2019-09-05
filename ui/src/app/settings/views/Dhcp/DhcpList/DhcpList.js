@@ -17,6 +17,7 @@ import {
   device as deviceSelectors,
   machine as machineSelectors
 } from "app/base/selectors";
+import { messages } from "app/base/actions";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -59,7 +60,9 @@ const generateRows = (
   devices,
   machines,
   subnets,
-  hideExpanded
+  hideExpanded,
+  dispatch,
+  setDeleting
 ) =>
   dhcpsnippets.map(dhcpsnippet => {
     const expanded = expandedId === dhcpsnippet.id;
@@ -157,7 +160,14 @@ const generateRows = (
             </Col>
             <Col size="3" className="u-align--right">
               <Button onClick={hideExpanded}>Cancel</Button>
-              <Button appearance="negative" onClick={hideExpanded}>
+              <Button
+                appearance="negative"
+                onClick={() => {
+                  dispatch(actions.dhcpsnippet.delete(dhcpsnippet.id));
+                  setDeleting(dhcpsnippet.name);
+                  hideExpanded();
+                }}
+              >
                 Delete
               </Button>
             </Col>
@@ -192,6 +202,7 @@ const DhcpList = ({ initialCount = 20 }) => {
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [deletingName, setDeleting] = useState();
   const [itemsPerPage] = useState(initialCount);
   const dhcpsnippetLoading = useSelector(selectors.dhcpsnippet.loading);
   const dhcpsnippetLoaded = useSelector(selectors.dhcpsnippet.loaded);
@@ -199,6 +210,7 @@ const DhcpList = ({ initialCount = 20 }) => {
     selectors.dhcpsnippet.search(state, searchText)
   );
   const dhcpsnippetCount = useSelector(selectors.dhcpsnippet.count);
+  const saved = useSelector(selectors.dhcpsnippet.saved);
   const subnets = useSelector(selectors.subnet.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
@@ -221,6 +233,16 @@ const DhcpList = ({ initialCount = 20 }) => {
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (saved && deletingName) {
+      dispatch(
+        messages.add(`${deletingName} removed successfully.`, "information")
+      );
+      setDeleting();
+      dispatch(actions.dhcpsnippet.cleanup());
+    }
+  }, [deletingName, dispatch, saved]);
 
   return (
     <>
@@ -276,7 +298,9 @@ const DhcpList = ({ initialCount = 20 }) => {
             devices,
             machines,
             subnets,
-            hideExpanded
+            hideExpanded,
+            dispatch,
+            setDeleting
           )}
           rowStartIndex={indexOfFirstItem}
           sortable={true}

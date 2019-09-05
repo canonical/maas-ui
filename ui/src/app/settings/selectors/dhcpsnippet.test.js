@@ -70,4 +70,36 @@ describe("dhcpsnippet selectors", () => {
     };
     expect(dhcpsnippet.count(state)).toEqual(2);
   });
+
+  it("can get the saving state", () => {
+    const state = {
+      dhcpsnippet: {
+        saving: true,
+        items: []
+      }
+    };
+    expect(dhcpsnippet.saving(state)).toEqual(true);
+  });
+
+  it("can get the saved state", () => {
+    const state = {
+      dhcpsnippet: {
+        saved: true,
+        items: []
+      }
+    };
+    expect(dhcpsnippet.saved(state)).toEqual(true);
+  });
+
+  it("can get errors", () => {
+    const state = {
+      dhcpsnippet: {
+        errors: { name: "Name not provided" },
+        items: []
+      }
+    };
+    expect(dhcpsnippet.errors(state)).toStrictEqual({
+      name: "Name not provided"
+    });
+  });
 });

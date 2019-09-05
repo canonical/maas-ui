@@ -116,6 +116,74 @@ describe("DhcpList", () => {
     expect(row.expanded).toBe(true);
   });
 
+  it("can delete a dhcp snippet", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <DhcpList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    expect(
+      store.getActions().find(action => action.type === "DELETE_DHCPSNIPPET")
+    ).toEqual({
+      type: "DELETE_DHCPSNIPPET",
+      payload: {
+        params: {
+          id: 2
+        }
+      },
+      meta: {
+        model: "dhcpsnippet",
+        method: "delete"
+      }
+    });
+  });
+
+  it("can add a message when a dhcp snippet is deleted", () => {
+    state.dhcpsnippet.saved = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <DhcpList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(2)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_DHCPSNIPPET")).toBe(
+      true
+    );
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+  });
+
   it("can show snippet details", () => {
     const store = mockStore(state);
     const wrapper = mount(
