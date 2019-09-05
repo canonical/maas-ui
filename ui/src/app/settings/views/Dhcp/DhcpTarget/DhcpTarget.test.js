@@ -1,11 +1,9 @@
-import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { compareJSX } from "testing/utils";
 import DhcpTarget from "./DhcpTarget";
 
 const mockStore = configureStore();

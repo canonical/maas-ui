@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
+import Pagination from "app/base/components/Pagination";
 import Table from "../Table";
 import TableRow from "../TableRow";
 import TableHeader from "../TableHeader";
@@ -73,9 +74,10 @@ const generateRows = (
   currentSortDirection,
   currentSortKey,
   expanding,
-  rowLimit,
+  paginate,
   rows,
-  rowStartIndex,
+  currentPage,
+  setCurrentPage,
   sortable
 ) => {
   // Clone the rows so we can restore the original order.
@@ -94,8 +96,14 @@ const generateRows = (
     });
   }
   let slicedRows = sortedRows;
-  if (rowLimit) {
-    slicedRows = sortedRows.slice(rowStartIndex, rowStartIndex + rowLimit);
+  if (paginate) {
+    let startIndex = (currentPage - 1) * paginate;
+    if (startIndex > rows.length) {
+      // If the rows have changed e.g. when filtering and the user is on a page
+      // that no longer exists then send them to the start.
+      setCurrentPage(1);
+    }
+    slicedRows = sortedRows.slice(startIndex, startIndex + paginate);
   }
   const rowItems = slicedRows.map(
     (
@@ -129,9 +137,8 @@ const MainTable = ({
   defaultSortDirection,
   expanding,
   headers,
-  rowLimit,
+  paginate,
   rows,
-  rowStartIndex = 0,
   responsive,
   sortable,
   ...props
@@ -140,6 +147,7 @@ const MainTable = ({
   const [currentSortDirection, setSortDirection] = useState(
     defaultSortDirection
   );
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Update the current sort state if the prop changes.
   useEffect(() => {
@@ -152,33 +160,45 @@ const MainTable = ({
   }, [defaultSortDirection]);
 
   return (
-    <Table
-      expanding={expanding}
-      sortable={sortable}
-      responsive={responsive}
-      {...props}
-    >
-      {headers &&
-        generateHeaders(
-          currentSortKey,
-          currentSortDirection,
-          expanding,
-          headers,
-          sortable,
-          setSortKey,
-          setSortDirection
-        )}
-      {rows &&
-        generateRows(
-          currentSortDirection,
-          currentSortKey,
-          expanding,
-          rowLimit,
-          rows,
-          rowStartIndex,
-          sortable
-        )}
-    </Table>
+    <>
+      <Table
+        expanding={expanding}
+        sortable={sortable}
+        responsive={responsive}
+        {...props}
+      >
+        {headers &&
+          generateHeaders(
+            currentSortKey,
+            currentSortDirection,
+            expanding,
+            headers,
+            sortable,
+            setSortKey,
+            setSortDirection
+          )}
+        {rows &&
+          generateRows(
+            currentSortDirection,
+            currentSortKey,
+            expanding,
+            paginate,
+            rows,
+            currentPage,
+            setCurrentPage,
+            sortable
+          )}
+      </Table>
+      {paginate && rows && rows.length && (
+        <Pagination
+          currentPage={currentPage}
+          itemsPerPage={paginate}
+          paginate={setCurrentPage}
+          style={{ marginTop: "1rem" }}
+          totalItems={rows.length}
+        />
+      )}
+    </>
   );
 };
 
@@ -194,8 +214,8 @@ MainTable.propTypes = {
       sortKey: PropTypes.string
     })
   ),
+  paginate: PropTypes.number,
   responsive: PropTypes.bool,
-  rowLimit: PropTypes.number,
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       columns: PropTypes.arrayOf(
@@ -213,7 +233,6 @@ MainTable.propTypes = {
       sortData: PropTypes.object
     })
   ),
-  rowStartIndex: PropTypes.number,
   sortable: PropTypes.bool
 };
 

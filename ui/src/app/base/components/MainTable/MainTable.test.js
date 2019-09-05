@@ -62,7 +62,7 @@ describe("MainTable", () => {
     const wrapper = shallow(
       <MainTable expanding={true} headers={headers} rows={rows} />
     );
-    expect(wrapper.prop("expanding")).toBe(true);
+    expect(wrapper.find("Table").prop("expanding")).toBe(true);
     const heads = wrapper.find("TableHeader");
     // There should be an additional hidden table header to account for the
     // expanding cell
@@ -91,7 +91,32 @@ describe("MainTable", () => {
     const wrapper = shallow(
       <MainTable headers={headers} responsive={true} rows={rows} />
     );
-    expect(wrapper.prop("responsive")).toBe(true);
+    expect(wrapper.find("Table").prop("responsive")).toBe(true);
+  });
+
+  it("can be paginated", () => {
+    const wrapper = shallow(<MainTable paginate={2} rows={rows} />);
+    expect(wrapper.find("Pagination").exists()).toBe(true);
+    expect(wrapper.find("TableRow").length).toBe(2);
+  });
+
+  it("can change the page", () => {
+    const wrapper = shallow(<MainTable paginate={2} rows={rows} />);
+    wrapper
+      .find("Pagination")
+      .props()
+      .paginate(2);
+    wrapper.update();
+    const rowItems = wrapper.find("TableRow");
+    expect(rowItems.length).toEqual(1);
+    expect(
+      rowItems
+        .at(0)
+        .find("TableCell")
+        .first()
+        .children()
+        .text()
+    ).toEqual("Idle");
   });
 
   describe("sorting", () => {
@@ -134,35 +159,6 @@ describe("MainTable", () => {
           .last()
           .prop("sort")
       ).toEqual(undefined);
-    });
-
-    it("can limit the number of rows shown", () => {
-      const wrapper = shallow(
-        <MainTable headers={headers} rowLimit={2} rows={rows} sortable={true} />
-      );
-      expect(wrapper.find("tbody TableRow").length).toEqual(2);
-    });
-
-    it("can set a start point for the visible rows", () => {
-      const wrapper = shallow(
-        <MainTable
-          headers={headers}
-          rowLimit={2}
-          rowStartIndex={2}
-          rows={rows}
-          sortable={true}
-        />
-      );
-      const rowItems = wrapper.find("tbody TableRow");
-      expect(rowItems.length).toEqual(1);
-      expect(
-        rowItems
-          .at(0)
-          .find("TableCell")
-          .first()
-          .children()
-          .text()
-      ).toEqual("Idle");
     });
 
     it("can sort when clicking on a header", () => {
