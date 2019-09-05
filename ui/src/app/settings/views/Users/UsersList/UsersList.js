@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import "./UsersList.scss";
@@ -12,7 +11,6 @@ import selectors from "app/settings/selectors";
 import { auth } from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
-import Pagination from "app/base/components/Pagination";
 import MainTable from "app/base/components/MainTable";
 import SearchBox from "app/base/components/SearchBox";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
@@ -115,15 +113,12 @@ const generateUserRows = (
     };
   });
 
-const Users = ({ initialCount = 20 }) => {
+const Users = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const [deletingUser, setDeleting] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(initialCount);
   const users = useSelector(state => selectors.users.search(state, searchText));
-  const userCount = useSelector(selectors.users.count);
   const loading = useSelector(selectors.users.loading);
   const loaded = useSelector(selectors.users.loaded);
   const authUser = useSelector(auth.get);
@@ -150,9 +145,6 @@ const Users = ({ initialCount = 20 }) => {
       dispatch(actions.users.cleanup());
     }
   }, [deletingUser, dispatch, saved]);
-
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -225,7 +217,7 @@ const Users = ({ initialCount = 20 }) => {
               className: "u-align--right"
             }
           ]}
-          rowLimit={itemsPerPage}
+          paginate={20}
           rows={generateUserRows(
             users,
             authUser,
@@ -235,22 +227,11 @@ const Users = ({ initialCount = 20 }) => {
             displayUsername,
             setDeleting
           )}
-          rowStartIndex={indexOfFirstItem}
           sortable={true}
         />
       )}
-      <Pagination
-        itemsPerPage={itemsPerPage}
-        totalItems={userCount}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
     </>
   );
-};
-
-Users.propTypes = {
-  initialCount: PropTypes.number
 };
 
 export default Users;

@@ -93,7 +93,8 @@ const Pagination = ({
   totalItems,
   paginate,
   currentPage,
-  truncateThreshold = 10
+  truncateThreshold = 10,
+  ...props
 }) => {
   // return early if no pagination is required
   if (totalItems <= itemsPerPage) {
@@ -107,7 +108,7 @@ const Pagination = ({
   }
 
   return (
-    <nav>
+    <nav {...props}>
       <ul className="p-pagination">
         <PaginationButton
           key="back"

@@ -10,7 +10,6 @@ import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
-import Pagination from "app/base/components/Pagination";
 import SearchBox from "app/base/components/SearchBox";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
@@ -90,10 +89,8 @@ const generateRepositoryRows = (
     };
   });
 
-export const Repositories = ({ initialCount = 20 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+export const Repositories = () => {
   const [expandedId, setExpandedId] = useState(null);
-  const [itemsPerPage] = useState(initialCount);
   const [searchText, setSearchText] = useState("");
   const [deletedRepo, setDeletedRepo] = useState();
 
@@ -103,11 +100,6 @@ export const Repositories = ({ initialCount = 20 }) => {
   const repositories = useSelector(state =>
     selectors.repositories.search(state, searchText)
   );
-  const repositoryCount = useSelector(selectors.repositories.count);
-
-  // Pagination
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const dispatch = useDispatch();
 
@@ -160,7 +152,7 @@ export const Repositories = ({ initialCount = 20 }) => {
             { content: "Enabled", sortKey: "enabled" },
             { content: "Actions", className: "u-align--right" }
           ]}
-          rowLimit={itemsPerPage}
+          paginate={20}
           rows={generateRepositoryRows(
             dispatch,
             expandedId,
@@ -168,16 +160,9 @@ export const Repositories = ({ initialCount = 20 }) => {
             setDeletedRepo,
             setExpandedId
           )}
-          rowStartIndex={indexOfFirstItem}
           sortable
         />
       )}
-      <Pagination
-        itemsPerPage={itemsPerPage}
-        totalItems={repositoryCount}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
     </>
   );
 };

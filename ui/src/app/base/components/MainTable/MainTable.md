@@ -268,3 +268,32 @@ initialState = { expandedRow: null };
   responsive
 />
 ```
+
+### Paginated
+
+```jsx
+<MainTable
+  headers={[{ content: "Status" }, { content: "Cores" }]}
+  paginate={5}
+  rows={[
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] },
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] },
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] },
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] },
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] },
+    { columns: [{ content: "Ready" }, { content: 1 }] },
+    { columns: [{ content: "Idle" }, { content: 4 }] },
+    { columns: [{ content: "Waiting" }, { content: 2 }] }
+  ]}
+/>
+```
