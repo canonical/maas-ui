@@ -30,19 +30,30 @@ const generateRows = (
     const showDelete = expandedType === "delete";
 
     const [lastHistory] = script.history.slice(-1);
-    const scriptSrc = lastHistory.data ? atob(lastHistory.data) : "";
+
+    let scriptSrc;
+    if (lastHistory.data) {
+      try {
+        scriptSrc = atob(lastHistory.data);
+      } catch {
+        console.error(`Unable to decode script src for ${script.name}.`);
+      }
+    }
+
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
     let uploadedOn;
     if (lastHistory && lastHistory.created) {
       try {
-        const parsed = parse(
-          lastHistory.created,
-          "EEE, dd LLL yyyy HH:mm:ss xxxx",
-          new Date()
+        uploadedOn = format(
+          parse(
+            lastHistory.created,
+            "EEE, dd LLL yyyy HH:mm:ss xxxx",
+            new Date()
+          ),
+          "yyyy-LL-dd H:mm"
         );
-        uploadedOn = format(parsed, "yyyy-LL-dd H:mm");
       } catch (error) {
-        uploadedOn = lastHistory.created;
+        console.error(`Unable to parse timestamp for ${script.name}.`);
       }
     } else {
       uploadedOn = "Never";
