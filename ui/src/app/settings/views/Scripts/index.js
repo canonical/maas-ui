@@ -1,1 +1,1 @@
-export { default } from "./Scripts";
+export { default } from "./ScriptsList";
