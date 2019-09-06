@@ -3,14 +3,11 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 
 import { formikFormDisabled } from "app/settings/utils";
-import { useFormikErrors, useRouter } from "app/base/hooks";
-import ActionButton from "app/base/components/ActionButton";
-import Button from "app/base/components/Button";
-import Col from "app/base/components/Col";
+import { useFormikErrors } from "app/base/hooks";
 import Form from "app/base/components/Form";
+import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import Link from "app/base/components/Link";
-import Row from "app/base/components/Row";
 import selectors from "app/settings/selectors";
 
 const togglePassword = (event, passwordVisible, showPassword) => {
@@ -23,90 +20,71 @@ export const UserFormFields = ({ editing, formikProps }) => {
   const saving = useSelector(selectors.users.saving);
   const saved = useSelector(selectors.users.saved);
   const errors = useSelector(selectors.users.errors);
-  const { history } = useRouter();
   useFormikErrors(errors, formikProps);
 
   return (
     <Form onSubmit={formikProps.handleSubmit}>
-      <Row>
-        <Col size="8">
-          <FormikField
-            formikProps={formikProps}
-            fieldKey="username"
-            help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-            label="Username"
-            required={true}
-            type="text"
-          />
-          <FormikField
-            formikProps={formikProps}
-            fieldKey="fullName"
-            label="Full name"
-            type="text"
-          />
-          <FormikField
-            formikProps={formikProps}
-            fieldKey="email"
-            label="Email address"
-            required={true}
-            type="email"
-          />
-          <FormikField
-            formikProps={formikProps}
-            fieldKey="isSuperuser"
-            label="MAAS administrator"
-            type="checkbox"
-          />
-          {editing && !passwordVisible && (
-            <Link
-              onClick={event =>
-                togglePassword(event, passwordVisible, showPassword)
-              }
-            >
-              Change password&hellip;
-            </Link>
-          )}
-          {passwordVisible && (
-            <>
-              <FormikField
-                formikProps={formikProps}
-                fieldKey="password"
-                label="Password"
-                required={true}
-                type="password"
-              />
-              <FormikField
-                formikProps={formikProps}
-                fieldKey="passwordConfirm"
-                help="Enter the same password as before, for verification"
-                label="Password (again)"
-                required={true}
-                type="password"
-              />
-            </>
-          )}
-        </Col>
-      </Row>
-      <div className="user-form__buttons">
-        <Button
-          appearance="base"
-          className="u-no-margin--bottom"
-          onClick={() => history.goBack()}
-          type="button"
+      <FormikField
+        formikProps={formikProps}
+        fieldKey="username"
+        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        label="Username"
+        required={true}
+        type="text"
+      />
+      <FormikField
+        formikProps={formikProps}
+        fieldKey="fullName"
+        label="Full name"
+        type="text"
+      />
+      <FormikField
+        formikProps={formikProps}
+        fieldKey="email"
+        label="Email address"
+        required={true}
+        type="email"
+      />
+      <FormikField
+        formikProps={formikProps}
+        fieldKey="isSuperuser"
+        label="MAAS administrator"
+        type="checkbox"
+      />
+      {editing && !passwordVisible && (
+        <Link
+          onClick={event =>
+            togglePassword(event, passwordVisible, showPassword)
+          }
         >
-          Cancel
-        </Button>
-        <ActionButton
-          appearance="positive"
-          className="u-no-margin--bottom"
-          disabled={saving || formikFormDisabled(formikProps)}
-          loading={saving}
-          success={saved}
-          type="submit"
-        >
-          Save user
-        </ActionButton>
-      </div>
+          Change password&hellip;
+        </Link>
+      )}
+      {passwordVisible && (
+        <>
+          <FormikField
+            formikProps={formikProps}
+            fieldKey="password"
+            label="Password"
+            required={true}
+            type="password"
+          />
+          <FormikField
+            formikProps={formikProps}
+            fieldKey="passwordConfirm"
+            help="Enter the same password as before, for verification"
+            label="Password (again)"
+            required={true}
+            type="password"
+          />
+        </>
+      )}
+      <FormCardButtons
+        actionDisabled={saving || formikFormDisabled(formikProps)}
+        actionLabel="Save user"
+        actionLoading={saving}
+        actionSuccess={saved}
+      />
     </Form>
   );
 };

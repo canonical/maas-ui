@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormCard  renders 1`] = `
+<Card
+  className="card-form"
+  highlighted={true}
+>
+  <Row>
+    <Col
+      size="2"
+    >
+      <h4>
+        Add user
+      </h4>
+    </Col>
+    <Col
+      size="8"
+    />
+  </Row>
+</Card>
+`;
