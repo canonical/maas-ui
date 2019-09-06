@@ -5,22 +5,17 @@ import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import "./RepositoryForm.scss";
 import actions from "app/settings/actions";
 import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
 import selectors from "app/settings/selectors";
-import { useRouter } from "app/base/hooks";
-import ActionButton from "app/base/components/ActionButton";
-import Button from "app/base/components/Button";
-import Col from "app/base/components/Col";
-import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
+import FormCard from "app/base/components/FormCard";
+import FormCardButtons from "app/base/components/FormCardButtons";
 import Loader from "app/base/components/Loader";
 import RepositoryFormFields from "../RepositoryFormFields";
 import { RepositoryShape } from "app/settings/proptypes";
-import Row from "app/base/components/Row";
 
 const RepositorySchema = Yup.object().shape({
   arches: Yup.array(),
@@ -38,7 +33,6 @@ const RepositorySchema = Yup.object().shape({
 
 export const RepositoryForm = ({ type, repository }) => {
   const [savedRepo, setSavedRepo] = useState();
-  const { history } = useRouter();
 
   const componentsToDisableLoaded = useSelector(
     selectors.general.componentsToDisable.loaded
@@ -132,81 +126,57 @@ export const RepositoryForm = ({ type, repository }) => {
       {!allLoaded ? (
         <Loader text="Loading..." />
       ) : (
-        <Card highlighted className="repo-form">
-          <Row>
-            <Col size="2">
-              <h4>{title}</h4>
-            </Col>
-            <Col size="8">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={RepositorySchema}
-                onSubmit={values => {
-                  const params = {
-                    arches: values.arches,
-                    default: values.default,
-                    disable_sources: values.disable_sources,
-                    key: values.key
-                  };
+        <FormCard title={title}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={RepositorySchema}
+            onSubmit={values => {
+              const params = {
+                arches: values.arches,
+                default: values.default,
+                disable_sources: values.disable_sources,
+                key: values.key
+              };
 
-                  if (values.default) {
-                    params.disabled_components = values.disabled_components;
-                    params.disabled_pockets = values.disabled_pockets;
-                  } else {
-                    params.components = values.components
-                      .split(" ,")
-                      .filter(Boolean);
-                    params.distributions = values.distributions
-                      .split(" ,")
-                      .filter(Boolean);
-                    params.enabled = values.enabled;
-                    params.name = values.name;
-                    params.url = values.url;
-                  }
+              if (values.default) {
+                params.disabled_components = values.disabled_components;
+                params.disabled_pockets = values.disabled_pockets;
+              } else {
+                params.components = values.components
+                  .split(" ,")
+                  .filter(Boolean);
+                params.distributions = values.distributions
+                  .split(" ,")
+                  .filter(Boolean);
+                params.enabled = values.enabled;
+                params.name = values.name;
+                params.url = values.url;
+              }
 
-                  dispatch(actions.repositories.cleanup());
-                  if (repository) {
-                    params.id = repository.id;
-                    dispatch(actions.repositories.update(params));
-                  } else {
-                    dispatch(actions.repositories.create(params));
+              dispatch(actions.repositories.cleanup());
+              if (repository) {
+                params.id = repository.id;
+                dispatch(actions.repositories.update(params));
+              } else {
+                dispatch(actions.repositories.create(params));
+              }
+              setSavedRepo(values.name);
+            }}
+            render={formikProps => (
+              <Form onSubmit={formikProps.handleSubmit}>
+                <RepositoryFormFields formikProps={formikProps} type={type} />
+                <FormCardButtons
+                  actionDisabled={
+                    repositoriesSaving || formikFormDisabled(formikProps)
                   }
-                  setSavedRepo(values.name);
-                }}
-                render={formikProps => (
-                  <Form onSubmit={formikProps.handleSubmit}>
-                    <RepositoryFormFields
-                      formikProps={formikProps}
-                      type={type}
-                    />
-                    <div className="repo-form__buttons">
-                      <Button
-                        appearance="base"
-                        className="u-no-margin--bottom"
-                        onClick={() => history.goBack()}
-                        type="button"
-                      >
-                        Cancel
-                      </Button>
-                      <ActionButton
-                        appearance="positive"
-                        className="u-no-margin--bottom"
-                        disabled={
-                          repositoriesSaving || formikFormDisabled(formikProps)
-                        }
-                        loading={repositoriesSaving}
-                        success={repositoriesSaved}
-                        type="submit"
-                      >
-                        {`Save ${typeString}`}
-                      </ActionButton>
-                    </div>
-                  </Form>
-                )}
-              ></Formik>
-            </Col>
-          </Row>
-        </Card>
+                  actionLabel={`Save ${typeString}`}
+                  actionLoading={repositoriesSaving}
+                  actionSuccess={repositoriesSaved}
+                />
+              </Form>
+            )}
+          ></Formik>
+        </FormCard>
       )}
     </>
   );

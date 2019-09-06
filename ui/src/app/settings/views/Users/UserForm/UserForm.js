@@ -5,13 +5,10 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import "./UserForm.scss";
 import actions from "app/settings/actions";
 import { messages } from "app/base/actions";
 import { UserShape } from "app/base/proptypes";
-import Col from "app/base/components/Col";
-import Card from "app/base/components/Card";
-import Row from "app/base/components/Row";
+import FormCard from "app/base/components/FormCard";
 import UserFormFields from "../UserFormFields";
 import selectors from "app/settings/selectors";
 
@@ -72,50 +69,43 @@ export const UserForm = ({ title, user }) => {
   }
 
   return (
-    <Card highlighted={true} className="user-form">
-      <Row>
-        <Col size="3">
-          <h4>{title}</h4>
-        </Col>
-        <Col size="7">
-          <Formik
-            initialValues={{
-              isSuperuser: user ? user.is_superuser : false,
-              email: user ? user.email : "",
-              fullName: user ? `${user.first_name} ${user.last_name}` : "",
-              password: "",
-              passwordConfirm: "",
-              username: user ? user.username : ""
-            }}
-            validationSchema={editing ? UserEditSchema : UserSchema}
-            onSubmit={values => {
-              const [firstName, ...lastNameParts] = values.fullName.split(" ");
-              const params = {
-                email: values.email,
-                first_name: firstName,
-                is_superuser: values.isSuperuser,
-                last_name: lastNameParts.join(" "),
-                username: values.username
-              };
-              if (values.password) {
-                params.password1 = values.password;
-                params.password2 = values.passwordConfirm;
-              }
-              if (editing) {
-                params.id = user.id;
-                dispatch(actions.users.update(params));
-              } else {
-                dispatch(actions.users.create(params));
-              }
-              setSaving(values.username);
-            }}
-            render={formikProps => (
-              <UserFormFields editing={editing} formikProps={formikProps} />
-            )}
-          ></Formik>
-        </Col>
-      </Row>
-    </Card>
+    <FormCard title={title}>
+      <Formik
+        initialValues={{
+          isSuperuser: user ? user.is_superuser : false,
+          email: user ? user.email : "",
+          fullName: user ? `${user.first_name} ${user.last_name}` : "",
+          password: "",
+          passwordConfirm: "",
+          username: user ? user.username : ""
+        }}
+        validationSchema={editing ? UserEditSchema : UserSchema}
+        onSubmit={values => {
+          const [firstName, ...lastNameParts] = values.fullName.split(" ");
+          const params = {
+            email: values.email,
+            first_name: firstName,
+            is_superuser: values.isSuperuser,
+            last_name: lastNameParts.join(" "),
+            username: values.username
+          };
+          if (values.password) {
+            params.password1 = values.password;
+            params.password2 = values.passwordConfirm;
+          }
+          if (editing) {
+            params.id = user.id;
+            dispatch(actions.users.update(params));
+          } else {
+            dispatch(actions.users.create(params));
+          }
+          setSaving(values.username);
+        }}
+        render={formikProps => (
+          <UserFormFields editing={editing} formikProps={formikProps} />
+        )}
+      ></Formik>
+    </FormCard>
   );
 };
 

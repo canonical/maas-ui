@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormCardButtons  renders 1`] = `
+<FormCardButtons
+  actionLabel="Save user"
+>
+  <div
+    className="form-card__buttons"
+  >
+    <Button
+      appearance="base"
+      className="u-no-margin--bottom"
+      onClick={[Function]}
+      type="button"
+    >
+      <button
+        className="u-no-margin--bottom p-button--base"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </Button>
+    <ActionButton
+      appearance="positive"
+      className="u-no-margin--bottom"
+      type="submit"
+    >
+      <button
+        className="u-no-margin--bottom p-action-button p-button--positive"
+        type="submit"
+      >
+        Save user
+      </button>
+    </ActionButton>
+  </div>
+</FormCardButtons>
+`;
