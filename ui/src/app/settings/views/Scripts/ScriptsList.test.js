@@ -18,7 +18,7 @@ describe("ScriptsList", () => {
         items: [
           {
             id: 1,
-            name: "commissioning script",
+            name: "commissioning-script",
             description: "a commissioning script",
             type: 0,
             history: [
@@ -32,7 +32,7 @@ describe("ScriptsList", () => {
           },
           {
             id: 2,
-            name: "testing script",
+            name: "testing-script",
             description: "a testing script",
             type: 2,
             history: [
@@ -46,7 +46,7 @@ describe("ScriptsList", () => {
           },
           {
             id: 3,
-            name: "testing script two",
+            name: "testing-script-2",
             description: "another testing script",
             type: 2,
             history: [
@@ -258,6 +258,57 @@ describe("ScriptsList", () => {
         .at(1)
         .props()["disabled"]
     ).toBe(false);
+  });
+
+  it("can delete a script", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(3)
+      .simulate("click");
+    expect(store.getActions()[1]).toEqual({
+      type: "DELETE_SCRIPT",
+      payload: {
+        name: "commissioning-script"
+      }
+    });
+  });
+
+  it("can add a message when a script is deleted", () => {
+    const state = { ...initialState };
+    state.scripts.saved = true;
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_SCRIPTS")).toBe(
+      true
+    );
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("can show script source", () => {
