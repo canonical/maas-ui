@@ -132,7 +132,7 @@ const generateRows = (
       sortData: {
         name: script.name,
         description: script.description,
-        uploadedOn
+        uploaded_on: uploadedOn
       }
     };
   });
