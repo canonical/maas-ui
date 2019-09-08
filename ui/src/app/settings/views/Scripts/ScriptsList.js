@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
+import { messages } from "app/base/actions";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -23,7 +24,9 @@ const generateRows = (
   setExpandedId,
   expandedType,
   setExpandedType,
-  hideExpanded
+  hideExpanded,
+  dispatch,
+  setDeleting
 ) =>
   scripts.map(script => {
     const expanded = expandedId === script.id;
@@ -124,6 +127,8 @@ const generateRows = (
             onCancel={hideExpanded}
             onConfirm={() => {
               // TODO: actually delete
+              dispatch(actions.scripts.delete(script.name));
+              setDeleting(script.name);
               hideExpanded();
             }}
           />
@@ -148,8 +153,10 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const [expandedId, setExpandedId] = useState();
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
+  const [deletingScript, setDeleting] = useState();
   const scriptsLoading = useSelector(selectors.scripts.loading);
   const scriptsLoaded = useSelector(selectors.scripts.loaded);
+  const saved = useSelector(selectors.scripts.saved);
   const userScripts = useSelector(state =>
     selectors.scripts.search(state, searchText, type)
   );
@@ -162,6 +169,16 @@ const ScriptsList = ({ type = "commissioning" }) => {
   useEffect(() => {
     dispatch(actions.scripts.fetch());
   }, [dispatch, type]);
+
+  useEffect(() => {
+    if (saved) {
+      dispatch(
+        messages.add(`${deletingScript} removed successfully.`, "information")
+      );
+      setDeleting();
+      dispatch(actions.scripts.cleanup());
+    }
+  }, [deletingScript, dispatch, saved]);
 
   return (
     <>
@@ -201,7 +218,9 @@ const ScriptsList = ({ type = "commissioning" }) => {
             setExpandedId,
             expandedType,
             setExpandedType,
-            hideExpanded
+            hideExpanded,
+            dispatch,
+            setDeleting
           )}
           sortable={true}
         />

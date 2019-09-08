@@ -56,4 +56,55 @@ describe("scripts reducer", () => {
       loading: false
     });
   });
+
+  it("should correctly reduce DELETE_SCRIPT_START", () => {
+    expect(
+      scripts(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_SCRIPT_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_SCRIPT_NOTIFY", () => {
+    expect(
+      scripts(
+        {
+          errors: {},
+          items: [{ id: 1, name: "script-1" }, { id: 2, name: "script-2" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: 2,
+          type: "DELETE_SCRIPT_NOTIFY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 1, name: "script-1" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
 });
