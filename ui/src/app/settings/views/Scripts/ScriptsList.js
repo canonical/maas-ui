@@ -94,6 +94,7 @@ const generateRows = (
               <span className="p-tooltip p-tooltip--left">
                 <Button
                   appearance="base"
+                  disabled={script.default}
                   className="is-small u-justify-table-icon"
                   onClick={() => {
                     setExpandedId(script.id);
@@ -102,6 +103,11 @@ const generateRows = (
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
+                {script.default && (
+                  <span className="p-tooltip__message">
+                    Default scripts cannot be deleted.
+                  </span>
+                )}
               </span>
             </>
           ),

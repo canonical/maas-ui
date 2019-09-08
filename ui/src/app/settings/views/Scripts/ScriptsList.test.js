@@ -193,6 +193,73 @@ describe("ScriptsList", () => {
     expect(row.expanded).toBe(true);
   });
 
+  it("disables the delete button if a default script", () => {
+    const state = {
+      scripts: {
+        loading: false,
+        loaded: true,
+        items: [
+          {
+            id: 1,
+            name: "testing script",
+            description: "a default testing script",
+            default: true,
+            type: 2,
+            history: [
+              {
+                id: 1,
+                comment: "a history item",
+                created: "Tue, 02 Jul 2019 05:24:10 -0000",
+                data: ""
+              }
+            ]
+          },
+          {
+            id: 2,
+            name: "user script",
+            description: "a non-default user script",
+            default: false,
+            type: 2,
+            history: [
+              {
+                id: 1,
+                comment: "a history item",
+                created: "Tue, 02 Jul 2019 05:24:10 -0000",
+                data: ""
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList type="testing" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(1)
+        .find("Button")
+        .at(1)
+        .props()["disabled"]
+    ).toBe(true);
+
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(2)
+        .find("Button")
+        .at(1)
+        .props()["disabled"]
+    ).toBe(false);
+  });
+
   it("can show script source", () => {
     const state = { ...initialState };
     const scriptSource = "#!/usr/bin/env bash/necho 'hello maas'";
