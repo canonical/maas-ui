@@ -8,9 +8,10 @@ describe("scripts actions", () => {
   });
 
   it("can handle deleting scripts", () => {
-    expect(scripts.delete("script-1")).toEqual({
+    expect(scripts.delete({ id: 1, name: "script-1" })).toEqual({
       type: "DELETE_SCRIPT",
       payload: {
+        id: 1,
         name: "script-1"
       }
     });

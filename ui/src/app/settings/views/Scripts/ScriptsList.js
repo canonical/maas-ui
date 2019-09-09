@@ -127,7 +127,7 @@ const generateRows = (
             onCancel={hideExpanded}
             onConfirm={() => {
               // TODO: actually delete
-              dispatch(actions.scripts.delete(script.name));
+              dispatch(actions.scripts.delete(script));
               setDeleting(script.name);
               hideExpanded();
             }}

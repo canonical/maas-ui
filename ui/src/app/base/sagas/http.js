@@ -31,6 +31,8 @@ export const api = {
         if (!response.ok) {
           throw Error(response.statusText);
         }
+        console.log(response)
+        console.log(response.body)
       });
     }
   }
@@ -59,10 +61,9 @@ export function* deleteScriptSaga(action) {
   try {
     yield put({ type: `DELETE_SCRIPT_START` });
     yield call(api.scripts.delete, csrftoken, action.payload.name);
-    // script state is updated by a websocket NOTIFY event,
-    // so we don't return a payload here.
     yield put({
-      type: `DELETE_SCRIPT_SUCCESS`
+      type: `DELETE_SCRIPT_SUCCESS`,
+      payload: action.payload.id
     });
   } catch (error) {
     yield put({

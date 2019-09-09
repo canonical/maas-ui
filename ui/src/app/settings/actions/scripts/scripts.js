@@ -4,10 +4,11 @@ scripts.fetch = () => ({
   type: "FETCH_SCRIPTS"
 });
 
-scripts.delete = name => ({
+scripts.delete = script => ({
   type: "DELETE_SCRIPT",
   payload: {
-    name
+    name: script.name,
+    id: script.id
   }
 });
 
