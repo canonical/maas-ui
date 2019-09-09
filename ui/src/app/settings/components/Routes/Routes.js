@@ -14,6 +14,7 @@ import RepositoriesList from "app/settings/views/Repositories/RepositoriesList";
 import RepositoryAdd from "app/settings/views/Repositories/RepositoryAdd";
 import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import Scripts from "app/settings/views/Scripts/Scripts";
+import ScriptsUpload from "app/settings/views/Scripts/ScriptsUpload";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import SyslogForm from "app/settings/views/Network/SyslogForm";
 import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
@@ -60,8 +61,18 @@ const Routes = () => (
     />
     <Route
       exact
+      path="/scripts/commissioning/upload"
+      render={props => <ScriptsUpload {...props} type="commissioning" />}
+    />
+    <Route
+      exact
       path="/scripts/testing"
       render={props => <Scripts {...props} type="testing" />}
+    />
+    <Route
+      exact
+      path="/scripts/testing/upload"
+      render={props => <ScriptsUpload {...props} type="testing" />}
     />
     <Route exact path="/dhcp" component={DhcpList} />
     <Route exact path="/repositories" component={RepositoriesList} />
