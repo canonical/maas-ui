@@ -31,7 +31,6 @@ export const api = {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        return response.ok;
       });
     }
   }
@@ -59,14 +58,12 @@ export function* deleteScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
     yield put({ type: `DELETE_SCRIPT_START` });
-    const ok = yield call(api.scripts.delete, csrftoken, action.payload.name);
-    if (ok) {
-      // script state is updated by a websocket NOTIFY event,
-      // so we don't return a payload here.
-      yield put({
-        type: `DELETE_SCRIPT_SUCCESS`
-      });
-    }
+    yield call(api.scripts.delete, csrftoken, action.payload.name);
+    // script state is updated by a websocket NOTIFY event,
+    // so we don't return a payload here.
+    yield put({
+      type: `DELETE_SCRIPT_SUCCESS`
+    });
   } catch (error) {
     yield put({
       type: `DELETE_SCRIPT_ERROR`,
