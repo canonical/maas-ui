@@ -4,14 +4,15 @@ import getCookie from "./utils";
 
 const SCRIPTS_API = `/MAAS/api/2.0/scripts/`;
 
+const DEFAULT_HEADERS = {
+  "Content-Type": "application/json",
+  Accept: "application/json"
+};
+
 export const api = {
   scripts: {
     fetch: csrftoken => {
-      const headers = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-CSRFToken": csrftoken
-      };
+      const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
       return fetch(`${SCRIPTS_API}?include_script=true`, { headers }).then(
         response => {
           if (!response.ok) {
@@ -22,11 +23,7 @@ export const api = {
       );
     },
     delete: (csrftoken, name) => {
-      const headers = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-CSRFToken": csrftoken
-      };
+      const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
       return fetch(`${SCRIPTS_API}${name}`, {
         method: "DELETE",
         headers
