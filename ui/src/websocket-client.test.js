@@ -1,21 +1,17 @@
 import WebSocketClient from "./websocket-client";
-
-class MockSocket {
-  constructor() {
-    this.send = jest.fn();
-  }
-}
+import { WebSocket } from "mock-socket";
 
 describe("websocket client", () => {
   let client, windowWebsocket;
 
   beforeAll(() => {
-    windowWebsocket = window.WebSocket;
+    windowWebsocket = WebSocket;
   });
 
   beforeEach(() => {
-    window.WebSocket = MockSocket;
+    window.WebSocket = WebSocket;
     client = new WebSocketClient("ws://example.com/ws");
+    client.socket.send = jest.fn();
   });
 
   afterAll(() => {
