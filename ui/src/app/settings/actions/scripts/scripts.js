@@ -14,6 +14,14 @@ scripts.upload = (title, description, type, contents) => ({
   }
 });
 
+scripts.delete = script => ({
+  type: "DELETE_SCRIPT",
+  payload: {
+    name: script.name,
+    id: script.id
+  }
+});
+
 scripts.cleanup = () => ({
   type: "CLEANUP_SCRIPTS"
 });

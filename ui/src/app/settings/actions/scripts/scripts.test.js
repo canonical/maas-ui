@@ -21,7 +21,17 @@ describe("scripts actions", () => {
     });
   });
 
-  it("should handle scripts cleanup", () => {
+  it("can handle deleting scripts", () => {
+    expect(scripts.delete({ id: 1, name: "script-1" })).toEqual({
+      type: "DELETE_SCRIPT",
+      payload: {
+        id: 1,
+        name: "script-1"
+      }
+    });
+  });
+
+  it("can handle cleaning scripts", () => {
     expect(scripts.cleanup()).toEqual({
       type: "CLEANUP_SCRIPTS"
     });

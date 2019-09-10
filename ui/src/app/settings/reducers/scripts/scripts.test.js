@@ -3,7 +3,7 @@ import scripts from "./scripts";
 describe("scripts reducer", () => {
   it("should return the initial state", () => {
     expect(scripts(undefined, {})).toEqual({
-      error: {},
+      errors: [],
       items: [],
       loaded: false,
       loading: false
@@ -16,7 +16,7 @@ describe("scripts reducer", () => {
         type: "FETCH_SCRIPTS_START"
       })
     ).toEqual({
-      error: {},
+      errors: [],
       items: [],
       loaded: false,
       loading: true
@@ -31,7 +31,7 @@ describe("scripts reducer", () => {
       })
     ).toEqual({
       items: [],
-      error: "Unable to fetch scripts",
+      errors: ["Unable to fetch scripts"],
       loaded: false,
       loading: false
     });
@@ -54,6 +54,83 @@ describe("scripts reducer", () => {
       items: [{ name: "script 1" }, { name: "script2" }],
       loaded: true,
       loading: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SCRIPT_START", () => {
+    expect(
+      scripts(
+        {
+          errors: [],
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_SCRIPT_START"
+        }
+      )
+    ).toEqual({
+      errors: [],
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_SCRIPT_SUCCESS", () => {
+    expect(
+      scripts(
+        {
+          errors: [],
+          items: [{ id: 1, name: "script-1" }, { id: 2, name: "script-2" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          type: "DELETE_SCRIPT_SUCCESS",
+          payload: 2
+        }
+      )
+    ).toEqual({
+      errors: [],
+      items: [{ id: 1, name: "script-1" }],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SCRIPT_ERROR", () => {
+    expect(
+      scripts(
+        {
+          errors: [],
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Not found",
+          type: "DELETE_SCRIPT_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: ["Not found"],
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });
