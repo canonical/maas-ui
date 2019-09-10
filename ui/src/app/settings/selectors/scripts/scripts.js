@@ -36,6 +36,20 @@ scripts.count = state => state.scripts.items.length;
 scripts.loaded = state => state.scripts.loaded;
 
 /**
+ * Returns true if scripts have saved
+ * @param {Object} state - Redux state
+ * @returns {Boolean} Scripts have saved
+ */
+scripts.saved = state => state.scripts.saved;
+
+/**
+ * Returns script errors.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Errors for a script.
+ */
+scripts.errors = state => state.scripts.errors;
+
+/**
  * Returns all commissioning scripts
  * @param {Object} state - Redux state
  * @returns {Array} Commissioning scripts

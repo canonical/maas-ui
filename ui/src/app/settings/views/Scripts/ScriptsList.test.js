@@ -15,10 +15,11 @@ describe("ScriptsList", () => {
       scripts: {
         loading: false,
         loaded: true,
+        errors: [],
         items: [
           {
             id: 1,
-            name: "commissioning script",
+            name: "commissioning-script",
             description: "a commissioning script",
             type: 0,
             history: [
@@ -32,7 +33,7 @@ describe("ScriptsList", () => {
           },
           {
             id: 2,
-            name: "testing script",
+            name: "testing-script",
             description: "a testing script",
             type: 2,
             history: [
@@ -46,7 +47,7 @@ describe("ScriptsList", () => {
           },
           {
             id: 3,
-            name: "testing script two",
+            name: "testing-script-2",
             description: "another testing script",
             type: 2,
             history: [
@@ -191,6 +192,125 @@ describe("ScriptsList", () => {
       .simulate("click");
     row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(true);
+  });
+
+  it("disables the delete button if a default script", () => {
+    const state = {
+      scripts: {
+        loading: false,
+        loaded: true,
+        items: [
+          {
+            id: 1,
+            name: "testing script",
+            description: "a default testing script",
+            default: true,
+            type: 2,
+            history: [
+              {
+                id: 1,
+                comment: "a history item",
+                created: "Tue, 02 Jul 2019 05:24:10 -0000",
+                data: ""
+              }
+            ]
+          },
+          {
+            id: 2,
+            name: "user script",
+            description: "a non-default user script",
+            default: false,
+            type: 2,
+            history: [
+              {
+                id: 1,
+                comment: "a history item",
+                created: "Tue, 02 Jul 2019 05:24:10 -0000",
+                data: ""
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList type="testing" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(1)
+        .find("Button")
+        .at(1)
+        .props()["disabled"]
+    ).toBe(true);
+
+    expect(
+      wrapper
+        .find("TableRow")
+        .at(2)
+        .find("Button")
+        .at(1)
+        .props()["disabled"]
+    ).toBe(false);
+  });
+
+  it("can delete a script", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(3)
+      .simulate("click");
+    expect(store.getActions()[1]).toEqual({
+      type: "DELETE_SCRIPT",
+      payload: {
+        id: 1,
+        name: "commissioning-script"
+      }
+    });
+  });
+
+  it("can add a message when a script is deleted", () => {
+    const state = { ...initialState };
+    state.scripts.saved = true;
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_SCRIPTS")).toBe(
+      true
+    );
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("can show script source", () => {

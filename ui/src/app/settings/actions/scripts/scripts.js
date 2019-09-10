@@ -1,8 +1,20 @@
 const scripts = {};
 
-scripts.fetch = () => {
+scripts.fetch = () => ({
+  type: "FETCH_SCRIPTS"
+});
+
+scripts.delete = script => ({
+  type: "DELETE_SCRIPT",
+  payload: {
+    name: script.name,
+    id: script.id
+  }
+});
+
+scripts.cleanup = () => {
   return {
-    type: "FETCH_SCRIPTS"
+    type: "CLEANUP_SCRIPTS"
   };
 };
 

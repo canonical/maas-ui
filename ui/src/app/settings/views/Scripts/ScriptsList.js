@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
+import { messages } from "app/base/actions";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -23,7 +24,9 @@ const generateRows = (
   setExpandedId,
   expandedType,
   setExpandedType,
-  hideExpanded
+  hideExpanded,
+  dispatch,
+  setDeleting
 ) =>
   scripts.map(script => {
     const expanded = expandedId === script.id;
@@ -94,6 +97,7 @@ const generateRows = (
               <span className="p-tooltip p-tooltip--left">
                 <Button
                   appearance="base"
+                  disabled={script.default}
                   className="is-small u-justify-table-icon"
                   onClick={() => {
                     setExpandedId(script.id);
@@ -102,6 +106,11 @@ const generateRows = (
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
+                {script.default && (
+                  <span className="p-tooltip__message">
+                    Default scripts cannot be deleted.
+                  </span>
+                )}
               </span>
             </>
           ),
@@ -117,7 +126,8 @@ const generateRows = (
             modelType="Script"
             onCancel={hideExpanded}
             onConfirm={() => {
-              // TODO: actually delete
+              dispatch(actions.scripts.delete(script));
+              setDeleting(script.name);
               hideExpanded();
             }}
           />
@@ -142,8 +152,11 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const [expandedId, setExpandedId] = useState();
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
+  const [deletingScript, setDeleting] = useState();
   const scriptsLoading = useSelector(selectors.scripts.loading);
   const scriptsLoaded = useSelector(selectors.scripts.loaded);
+  const scriptsErrors = useSelector(selectors.scripts.errors);
+  const saved = useSelector(selectors.scripts.saved);
   const userScripts = useSelector(state =>
     selectors.scripts.search(state, searchText, type)
   );
@@ -156,6 +169,28 @@ const ScriptsList = ({ type = "commissioning" }) => {
   useEffect(() => {
     dispatch(actions.scripts.fetch());
   }, [dispatch, type]);
+
+  useEffect(() => {
+    if (saved) {
+      dispatch(
+        messages.add(`${deletingScript} removed successfully.`, "information")
+      );
+      setDeleting();
+      dispatch(actions.scripts.cleanup());
+    }
+  }, [deletingScript, dispatch, saved]);
+
+  useEffect(() => {
+    if (scriptsErrors && scriptsErrors.length) {
+      dispatch(
+        messages.add(
+          `Error removing ${deletingScript}: ${scriptsErrors}`,
+          "negative"
+        )
+      );
+      dispatch(actions.scripts.cleanup());
+    }
+  }, [deletingScript, scriptsErrors, dispatch]);
 
   return (
     <>
@@ -195,7 +230,9 @@ const ScriptsList = ({ type = "commissioning" }) => {
             setExpandedId,
             expandedType,
             setExpandedType,
-            hideExpanded
+            hideExpanded,
+            dispatch,
+            setDeleting
           )}
           sortable={true}
         />
