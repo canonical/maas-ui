@@ -14,25 +14,25 @@ const scripts = produce(
       case "FETCH_SCRIPTS_ERROR":
         draft.loading = false;
         draft.loaded = false;
-        draft.error = action.error;
+        draft.errors.push(action.error);
         break;
       case "DELETE_SCRIPT_START":
         draft.saved = false;
         draft.saving = true;
         break;
       case "DELETE_SCRIPT_SUCCESS":
-        draft.errors = {};
+        draft.errors = [];
         draft.saved = true;
         draft.saving = false;
         const index = draft.items.findIndex(item => item.id === action.payload);
         draft.items.splice(index, 1);
         break;
       case "DELETE_SCRIPT_ERROR":
-        draft.errors = action.error;
+        draft.errors.push(action.error);
         draft.saving = false;
         break;
       case "CLEANUP_SCRIPTS":
-        draft.errors = {};
+        draft.errors = [];
         draft.saved = false;
         draft.saving = false;
         break;
@@ -44,7 +44,7 @@ const scripts = produce(
     loading: false,
     loaded: false,
     items: [],
-    error: {}
+    errors: []
   }
 );
 

@@ -15,6 +15,7 @@ describe("ScriptsList", () => {
       scripts: {
         loading: false,
         loaded: true,
+        errors: [],
         items: [
           {
             id: 1,

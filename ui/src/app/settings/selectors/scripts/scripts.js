@@ -45,7 +45,7 @@ scripts.saved = state => state.scripts.saved;
 /**
  * Returns script errors.
  * @param {Object} state - The redux state.
- * @returns {Object} Errors for a script.
+ * @returns {Array} Errors for a script.
  */
 scripts.errors = state => state.scripts.errors;
 

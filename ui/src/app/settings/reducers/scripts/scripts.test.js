@@ -3,7 +3,7 @@ import scripts from "./scripts";
 describe("scripts reducer", () => {
   it("should return the initial state", () => {
     expect(scripts(undefined, {})).toEqual({
-      error: {},
+      errors: [],
       items: [],
       loaded: false,
       loading: false
@@ -16,7 +16,7 @@ describe("scripts reducer", () => {
         type: "FETCH_SCRIPTS_START"
       })
     ).toEqual({
-      error: {},
+      errors: [],
       items: [],
       loaded: false,
       loading: true
@@ -31,7 +31,7 @@ describe("scripts reducer", () => {
       })
     ).toEqual({
       items: [],
-      error: "Unable to fetch scripts",
+      errors: ["Unable to fetch scripts"],
       loaded: false,
       loading: false
     });
@@ -61,7 +61,7 @@ describe("scripts reducer", () => {
     expect(
       scripts(
         {
-          errors: {},
+          errors: [],
           items: [],
           loaded: false,
           loading: false,
@@ -73,7 +73,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual({
-      errors: {},
+      errors: [],
       items: [],
       loaded: false,
       loading: false,
@@ -86,7 +86,7 @@ describe("scripts reducer", () => {
     expect(
       scripts(
         {
-          errors: {},
+          errors: [],
           items: [{ id: 1, name: "script-1" }, { id: 2, name: "script-2" }],
           loaded: false,
           loading: false,
@@ -99,7 +99,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual({
-      errors: {},
+      errors: [],
       items: [{ id: 1, name: "script-1" }],
       loaded: false,
       loading: false,
@@ -112,7 +112,7 @@ describe("scripts reducer", () => {
     expect(
       scripts(
         {
-          errors: {},
+          errors: [],
           items: [],
           loaded: false,
           loading: false,
@@ -125,7 +125,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual({
-      errors: "Not found",
+      errors: ["Not found"],
       items: [],
       loaded: false,
       loading: false,

@@ -181,7 +181,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
   }, [deletingScript, dispatch, saved]);
 
   useEffect(() => {
-    if (scriptsErrors) {
+    if (scriptsErrors && scriptsErrors.length) {
       dispatch(
         messages.add(
           `Error removing ${deletingScript}: ${scriptsErrors}`,
