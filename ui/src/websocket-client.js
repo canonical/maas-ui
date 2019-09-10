@@ -1,6 +1,8 @@
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 class WebSocketClient {
   constructor(websocket_url) {
-    this.socket = new WebSocket(websocket_url);
+    this.socket = new ReconnectingWebSocket(websocket_url);
     this._nextId = 0;
     this._requests = new Map();
   }
