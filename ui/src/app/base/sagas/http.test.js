@@ -35,14 +35,17 @@ describe("http sagas", () => {
 
   describe("delete scripts", () => {
     it("returns a SUCCESS action", () => {
-      const action = { type: "DELETE_SCRIPT", payload: { name: "script-1" } };
+      const action = {
+        type: "DELETE_SCRIPT",
+        payload: { id: 1, name: "script-1" }
+      };
       return expectSaga(deleteScriptSaga, action)
         .provide([
           [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
           [matchers.call.fn(api.scripts.delete, "csrf-token", "script-1"), true]
         ])
         .put({ type: "DELETE_SCRIPT_START" })
-        .put({ type: "DELETE_SCRIPT_SUCCESS" })
+        .put({ type: "DELETE_SCRIPT_SUCCESS", payload: 1 })
         .run();
     });
 

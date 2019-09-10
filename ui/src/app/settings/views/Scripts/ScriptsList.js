@@ -126,7 +126,6 @@ const generateRows = (
             modelType="Script"
             onCancel={hideExpanded}
             onConfirm={() => {
-              // TODO: actually delete
               dispatch(actions.scripts.delete(script));
               setDeleting(script.name);
               hideExpanded();
@@ -156,6 +155,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const [deletingScript, setDeleting] = useState();
   const scriptsLoading = useSelector(selectors.scripts.loading);
   const scriptsLoaded = useSelector(selectors.scripts.loaded);
+  const scriptsErrors = useSelector(selectors.scripts.errors);
   const saved = useSelector(selectors.scripts.saved);
   const userScripts = useSelector(state =>
     selectors.scripts.search(state, searchText, type)
@@ -179,6 +179,17 @@ const ScriptsList = ({ type = "commissioning" }) => {
       dispatch(actions.scripts.cleanup());
     }
   }, [deletingScript, dispatch, saved]);
+
+  useEffect(() => {
+    if (scriptsErrors) {
+      dispatch(
+        messages.add(
+          `Error removing ${deletingScript}: ${scriptsErrors}`,
+          "negative"
+        )
+      );
+    }
+  }, [deletingScript, scriptsErrors, dispatch]);
 
   return (
     <>

@@ -43,6 +43,13 @@ scripts.loaded = state => state.scripts.loaded;
 scripts.saved = state => state.scripts.saved;
 
 /**
+ * Returns script errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Errors for a script.
+ */
+scripts.errors = state => state.scripts.errors;
+
+/**
  * Returns all commissioning scripts
  * @param {Object} state - Redux state
  * @returns {Array} Commissioning scripts

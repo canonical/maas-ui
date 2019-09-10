@@ -82,7 +82,7 @@ describe("scripts reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_SCRIPT_NOTIFY", () => {
+  it("should correctly reduce DELETE_SCRIPT_SUCCESS", () => {
     expect(
       scripts(
         {
@@ -94,13 +94,39 @@ describe("scripts reducer", () => {
           saving: false
         },
         {
-          payload: 2,
-          type: "DELETE_SCRIPT_NOTIFY"
+          type: "DELETE_SCRIPT_SUCCESS",
+          payload: 2
         }
       )
     ).toEqual({
       errors: {},
       items: [{ id: 1, name: "script-1" }],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SCRIPT_ERROR", () => {
+    expect(
+      scripts(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Not found",
+          type: "DELETE_SCRIPT_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Not found",
+      items: [],
       loaded: false,
       loading: false,
       saved: false,

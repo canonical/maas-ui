@@ -31,8 +31,6 @@ export const api = {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        console.log(response)
-        console.log(response.body)
       });
     }
   }

@@ -287,6 +287,7 @@ describe("ScriptsList", () => {
     expect(store.getActions()[1]).toEqual({
       type: "DELETE_SCRIPT",
       payload: {
+        id: 1,
         name: "commissioning-script"
       }
     });

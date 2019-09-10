@@ -27,6 +27,10 @@ const scripts = produce(
         const index = draft.items.findIndex(item => item.id === action.payload);
         draft.items.splice(index, 1);
         break;
+      case "DELETE_SCRIPT_ERROR":
+        draft.errors = action.error;
+        draft.saving = false;
+        break;
       case "CLEANUP_SCRIPTS":
         draft.errors = {};
         draft.saved = false;
