@@ -65,7 +65,7 @@
     "prettier": "1.18.2",
     "react-styleguidist": "9.1.16",
     "redux-mock-store": "1.5.3",
-    "redux-saga-test-plan": "4.0.0-beta.4"
+    "redux-saga-test-plan": "4.0.0-rc.1"
   },
   "jest": {
     "snapshotSerializers": [
