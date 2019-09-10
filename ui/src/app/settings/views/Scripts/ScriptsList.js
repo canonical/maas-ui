@@ -188,6 +188,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
           "negative"
         )
       );
+      dispatch(actions.scripts.cleanup());
     }
   }, [deletingScript, scriptsErrors, dispatch]);
 
