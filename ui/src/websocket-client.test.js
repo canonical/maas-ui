@@ -5,7 +5,7 @@ describe("websocket client", () => {
   let client, windowWebsocket;
 
   beforeAll(() => {
-    windowWebsocket = WebSocket;
+    windowWebsocket = window.WebSocket;
   });
 
   beforeEach(() => {
