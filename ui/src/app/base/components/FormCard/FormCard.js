@@ -21,7 +21,7 @@ export const FormCard = ({ children, title }) => {
 
 FormCard.propTypes = {
   children: PropTypes.node,
-  title: PropTypes.string.isRequired
+  title: PropTypes.node.isRequired
 };
 
 export default FormCard;
