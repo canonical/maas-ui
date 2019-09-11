@@ -62,4 +62,12 @@ dhcpsnippet.saving = state => state.dhcpsnippet.saving;
  */
 dhcpsnippet.saved = state => state.dhcpsnippet.saved;
 
+/**
+ * Returns a dhcp snippet for the given id.
+ * @param {Object} state - The redux state.
+ * @returns {Array} A dhcp snippet.
+ */
+dhcpsnippet.getById = (state, id) =>
+  state.dhcpsnippet.items.find(dhcpsnippet => dhcpsnippet.id === id);
+
 export default dhcpsnippet;

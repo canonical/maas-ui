@@ -8,11 +8,14 @@ const Textarea = ({
   caution,
   className,
   error,
+  grow,
   help,
   id,
   label,
+  onKeyUp,
   required,
   stacked,
+  style,
   success,
   ...props
 }) => {
@@ -30,6 +33,21 @@ const Textarea = ({
       <textarea
         className={classNames("p-form-validation__input", className)}
         id={id}
+        onKeyUp={evt => {
+          if (grow) {
+            evt.currentTarget.style.height =
+              evt.currentTarget.scrollHeight + "px";
+          }
+        }}
+        style={
+          grow && {
+            minHeight: "5rem",
+            resize: "none",
+            overflow: "hidden",
+            boxSizing: "border-box",
+            ...style
+          }
+        }
         {...props}
       />
     </Field>
@@ -40,11 +58,14 @@ Textarea.propTypes = {
   caution: PropTypes.string,
   className: PropTypes.string,
   error: PropTypes.string,
+  grow: PropTypes.bool,
   help: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,
+  onKeyUp: PropTypes.func,
   required: PropTypes.bool,
   stacked: PropTypes.bool,
+  style: PropTypes.object,
   success: PropTypes.string
 };
 

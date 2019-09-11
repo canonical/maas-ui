@@ -102,4 +102,17 @@ describe("dhcpsnippet selectors", () => {
       name: "Name not provided"
     });
   });
+
+  it("can get a dhcp snippet by id", () => {
+    const state = {
+      dhcpsnippet: {
+        loading: true,
+        items: [{ name: "class", id: 808 }, { name: "lease", id: 909 }]
+      }
+    };
+    expect(dhcpsnippet.getById(state, 909)).toStrictEqual({
+      name: "lease",
+      id: 909
+    });
+  });
 });
