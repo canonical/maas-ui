@@ -1,23 +1,17 @@
-import { Formik } from "formik";
 import PropTypes from "prop-types";
-import React, { useCallback, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router";
 import { useDropzone } from "react-dropzone";
-import * as Yup from "yup";
+import pathParse from "path-parse";
 
-import actions from "app/settings/actions";
-import { formikFormDisabled } from "app/settings/utils";
-import Col from "app/base/components/Col";
+import { messages } from "app/base/actions";
+import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
-import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import FormikField from "app/base/components/FormikField";
 import Row from "app/base/components/Row";
-
-const ScriptSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  description: Yup.string().required()
-});
+import actions from "app/settings/actions";
+import selectors from "app/settings/selectors";
 
 const baseStyle = {
   flex: 1,
@@ -40,7 +34,7 @@ const activeStyle = {
 };
 
 const acceptStyle = {
-  borderColor: "#00e676"
+  borderColor: "#0e8420"
 };
 
 const rejectStyle = {
@@ -48,24 +42,68 @@ const rejectStyle = {
 };
 
 const ScriptsUpload = ({ type }) => {
+  const MAX_SIZE_BYTES = 2000000; // 2MB
+  const hasErrors = useSelector(selectors.scripts.hasErrors);
+  const errors = useSelector(selectors.scripts.errors);
+  const saved = useSelector(selectors.scripts.saved);
   const [savedScript, setSavedScript] = useState();
-  const [scriptContents, setScriptContents] = useState();
+  const [script, setScript] = useState();
   const dispatch = useDispatch();
 
-  const onDrop = useCallback(acceptedFiles => {
-    const reader = new FileReader();
-    reader.onabort = () => console.error("file reading was aborted");
-    reader.onerror = () => console.error("file reading has failed");
-    reader.onload = () => {
-      // Do whatever you want with the file contents
-      const binaryStr = reader.result;
-      console.log(binaryStr);
-      setScriptContents(binaryStr);
-    };
+  useEffect(() => {
+    if (hasErrors) {
+      Object.keys(errors).forEach(key => {
+        dispatch(
+          messages.add(
+            `Error uploading ${savedScript}: ${errors[key]}`,
+            "negative"
+          )
+        );
+      });
+      dispatch(actions.scripts.cleanup());
+    }
+  }, [savedScript, hasErrors, errors, dispatch]);
 
-    acceptedFiles.forEach(file => reader.readAsBinaryString(file));
-    console.log("got", acceptedFiles);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles, rejectedFiles) => {
+      if (acceptedFiles.length > 1 || rejectedFiles.length > 1) {
+        dispatch(
+          messages.add(`Only a single file may be uploaded.`, "caution")
+        );
+        return;
+      }
+
+      if (rejectedFiles.length > 0 && rejectedFiles[0].size > MAX_SIZE_BYTES) {
+        dispatch(
+          messages.add(
+            `File size must be ${MAX_SIZE_BYTES} bytes, or fewer.`,
+            "caution"
+          )
+        );
+        return;
+      }
+
+      if (rejectedFiles.length > 0) {
+        dispatch(
+          messages.add(`Invalid filetype, please try again.`, "negative")
+        );
+        return;
+      }
+
+      const acceptedFile = acceptedFiles[0];
+      const scriptName = pathParse(acceptedFile.path).name;
+      const reader = new FileReader();
+      reader.onabort = () => console.error("file reading was aborted");
+      reader.onerror = () => console.error("file reading has failed");
+      reader.onload = () => {
+        const binaryStr = reader.result;
+        setScript({ name: scriptName, script: binaryStr });
+      };
+
+      reader.readAsBinaryString(acceptedFile);
+    },
+    [dispatch]
+  );
 
   const {
     acceptedFiles,
@@ -76,7 +114,9 @@ const ScriptsUpload = ({ type }) => {
     isDragReject
   } = useDropzone({
     onDrop,
-    accept: "text/*"
+    accept: "text/*",
+    maxSize: MAX_SIZE_BYTES,
+    multiple: false
   });
 
   const style = useMemo(
@@ -89,82 +129,56 @@ const ScriptsUpload = ({ type }) => {
     [isDragAccept, isDragActive, isDragReject]
   );
 
-  const acceptedFilesItems = acceptedFiles.map(file => (
-    <span>
-      {file.path} - {file.size} bytes
-    </span>
-  ));
+  useEffect(() => {
+    if (saved) {
+      dispatch(actions.scripts.cleanup());
+      dispatch(
+        messages.add(`${savedScript} uploaded successfully.`, "information")
+      );
+      setSavedScript();
+    }
+  }, [dispatch, saved, savedScript]);
+
+  if (saved) {
+    // The script was successfully uploaded so redirect to the scripts list.
+    return <Redirect to={`/scripts/${type}`} />;
+  }
 
   return (
-    <>
-      <FormCard title={`Upload ${type} Script`}>
-        <Row>
-          <div {...getRootProps({ style })}>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop the file here ...</p>
-            ) : (
-              <p>Drag 'n' drop a file here, or click to select a file</p>
-            )}
-          </div>
-        </Row>
-        <Row>
-          <Formik
-            initialValues={{
-              name: "",
-              description: ""
-            }}
-            validationSchema={ScriptSchema}
-            onSubmit={values => {
-              dispatch(actions.scripts.cleanup());
-              dispatch(
-                actions.scripts.upload(
-                  values.name,
-                  values.description,
-                  type,
-                  scriptContents
-                )
-              );
-              setSavedScript(values.name);
-            }}
-            render={formikProps => (
-              <Form onSubmit={formikProps.handleSubmit}>
-                {acceptedFiles.length > 0 && (
-                  <>
-                    <h4>{acceptedFilesItems}</h4>
-                    <Row>
-                      <Col size={4}>
-                        <FormikField
-                          label="Name"
-                          type="text"
-                          fieldKey="name"
-                          formikProps={formikProps}
-                          required
-                        />
-                        <FormikField
-                          label="Description"
-                          type="text"
-                          fieldKey="description"
-                          formikProps={formikProps}
-                          required
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                )}
-                <FormCardButtons
-                  actionDisabled={
-                    acceptedFiles.length === 0 ||
-                    formikFormDisabled(formikProps)
-                  }
-                  actionLabel={`Upload script`}
-                />
-              </Form>
-            )}
-          ></Formik>
-        </Row>
-      </FormCard>
-    </>
+    <Card>
+      <h4>{`Upload ${type} Script`}</h4>
+      <Row>
+        <div {...getRootProps({ style })}>
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p>Drop the file here ...</p>
+          ) : (
+            <p>Drag 'n' drop a file here, or click to select a file</p>
+          )}
+        </div>
+      </Row>
+      <Row>
+        <Form
+          onSubmit={e => {
+            e.preventDefault();
+            dispatch(actions.scripts.cleanup());
+            dispatch(actions.scripts.upload(script.name, type, script.script));
+            setSavedScript(script.name);
+          }}
+        >
+          {acceptedFiles.length > 0 && (
+            <small>
+              {`${acceptedFiles[0].path} (${acceptedFiles[0].size} bytes) ready for upload.`}
+            </small>
+          )}
+
+          <FormCardButtons
+            actionDisabled={acceptedFiles.length === 0}
+            actionLabel={`Upload script`}
+          />
+        </Form>
+      </Row>
+    </Card>
   );
 };
 

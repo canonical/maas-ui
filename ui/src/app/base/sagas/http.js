@@ -9,41 +9,41 @@ const DEFAULT_HEADERS = {
   Accept: "application/json"
 };
 
+const handleErrors = response => {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+};
+
 export const api = {
   scripts: {
     fetch: csrftoken => {
       const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
-      return fetch(`${SCRIPTS_API}?include_script=true`, { headers }).then(
-        response => {
-          if (!response.ok) {
-            throw Error(response.statusText);
-          }
-          return response.json();
-        }
-      );
+      return fetch(`${SCRIPTS_API}?include_script=true`, { headers })
+        .then(handleErrors)
+        .then(response => response.json());
     },
     delete: (csrftoken, name) => {
       const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
       return fetch(`${SCRIPTS_API}${name}`, {
         method: "DELETE",
         headers
-      }).then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-      });
+      }).then(handleErrors);
     },
-    upload: (name, description, type, contents, csrftoken) => {
+    upload: (name, type, script, csrftoken) => {
       const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
-      return fetch(SCRIPTS_API, {
+      return fetch(`${SCRIPTS_API}`, {
         headers,
-        method: "PUT"
-      }).then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      });
+        method: "POST",
+        body: JSON.stringify({ name, type, script })
+      })
+        .then(response => Promise.all([response.ok, response.json()]))
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+        });
     }
   }
 };
@@ -59,34 +59,30 @@ export function* fetchScriptsSaga() {
       payload: response
     });
   } catch (error) {
+    // fetch doesn't return a complex error object, so we coerce the status text.
     yield put({
       type: `FETCH_SCRIPTS_ERROR`,
-      error: error.message
+      errors: { error: error.message }
     });
   }
 }
 
 export function* uploadScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
-  const { name, description, type, contents } = action.payload;
+  const { name, type, script } = action.payload;
   let response;
   try {
     yield put({ type: `UPLOAD_SCRIPT_START` });
-    response = yield call(
-      api.scripts.upload,
-      name,
-      description,
-      type,
-      contents,
-      csrftoken
-    );
+    response = yield call(api.scripts.upload, name, type, script, csrftoken);
+    console.log(response);
     yield put({
       type: `UPLOAD_SCRIPTS_SUCCESS`,
       payload: response
     });
-  } catch (error) {
+  } catch (errors) {
     yield put({
-      type: `UPLOAD_SCRIPTS_ERROR`
+      type: `UPLOAD_SCRIPTS_ERROR`,
+      errors
     });
   }
 }
@@ -101,9 +97,10 @@ export function* deleteScriptSaga(action) {
       payload: action.payload.id
     });
   } catch (error) {
+    // delete doesn't return a complex error object, so we coerce the status text.
     yield put({
       type: `DELETE_SCRIPT_ERROR`,
-      error: error.message
+      errors: { error: error.message }
     });
   }
 }

@@ -189,7 +189,7 @@ const MainTable = ({
             sortable
           )}
       </Table>
-      {paginate && rows && rows.length && (
+      {paginate && rows && rows.length > 0 && (
         <Pagination
           currentPage={currentPage}
           itemsPerPage={paginate}

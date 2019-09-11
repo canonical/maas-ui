@@ -8,15 +8,12 @@ describe("scripts actions", () => {
   });
 
   it("should handle uploading scripts", () => {
-    expect(
-      scripts.upload("title", "description", "testing", "contents")
-    ).toEqual({
+    expect(scripts.upload("script-1", "testing", "contents")).toEqual({
       type: "UPLOAD_SCRIPT",
       payload: {
-        title: "title",
-        description: "description",
+        name: "script-1",
         type: "testing",
-        contents: "contents"
+        script: "contents"
       }
     });
   });

@@ -43,6 +43,13 @@ scripts.loaded = state => state.scripts.loaded;
 scripts.saved = state => state.scripts.saved;
 
 /**
+ * Returns true if scripts have errors
+ * @param {Object} state - Redux state
+ * @returns {Boolean} Scripts have errors
+ */
+scripts.hasErrors = state => Object.entries(state.scripts.errors).length > 0;
+
+/**
  * Returns script errors.
  * @param {Object} state - The redux state.
  * @returns {Array} Errors for a script.

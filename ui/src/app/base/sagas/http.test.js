@@ -28,7 +28,7 @@ describe("http sagas", () => {
           [matchers.call.fn(api.scripts.fetch, "csrf-token"), throwError(error)]
         ])
         .put({ type: "FETCH_SCRIPTS_START" })
-        .put({ type: "FETCH_SCRIPTS_ERROR", error: error.message })
+        .put({ type: "FETCH_SCRIPTS_ERROR", errors: { error: error.message } })
         .run();
     });
   });
@@ -61,7 +61,7 @@ describe("http sagas", () => {
           ]
         ])
         .put({ type: "DELETE_SCRIPT_START" })
-        .put({ type: "DELETE_SCRIPT_ERROR", error: error.message })
+        .put({ type: "DELETE_SCRIPT_ERROR", errors: { error: error.message } })
         .run();
     });
   });
