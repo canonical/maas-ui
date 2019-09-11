@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import getCookie from "./utils";
 
@@ -19,22 +19,21 @@ const handleErrors = response => {
 export const api = {
   scripts: {
     fetch: csrftoken => {
-      const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
-      return fetch(`${SCRIPTS_API}?include_script=true`, { headers })
+      return fetch(`${SCRIPTS_API}?include_script=true`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+      })
         .then(handleErrors)
         .then(response => response.json());
     },
     delete: (csrftoken, name) => {
-      const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
       return fetch(`${SCRIPTS_API}${name}`, {
-        method: "DELETE",
-        headers
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+        method: "DELETE"
       }).then(handleErrors);
     },
     upload: (name, type, script, csrftoken) => {
-      const headers = { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken };
       return fetch(`${SCRIPTS_API}`, {
-        headers,
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
         body: JSON.stringify({ name, type, script })
       })
@@ -110,9 +109,9 @@ export function* watchFetchScripts() {
 }
 
 export function* watchUploadScript() {
-  yield takeLatest("UPLOAD_SCRIPT", uploadScriptSaga);
+  yield takeEvery("UPLOAD_SCRIPT", uploadScriptSaga);
 }
 
 export function* watchDeleteScript() {
-  yield takeLatest("DELETE_SCRIPT", deleteScriptSaga);
+  yield takeEvery("DELETE_SCRIPT", deleteScriptSaga);
 }
