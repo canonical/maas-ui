@@ -5526,10 +5526,10 @@ immer@1.10.0:
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
 
-immer@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-3.2.1.tgz#e3070a96508ffdb7331f8bf681f2a55f8729d0cd"
-  integrity sha512-tRu/ipavNRwxKcRSUW2jOJ6cZCitHAHdI5WdH9fYfFt35PvZXJ7GmNVR0s1ATt6DGhgQJMnu3tVtZ2C/UzTUQw==
+immer@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-3.3.0.tgz#ee7cf3a248d5dd2d4eedfbe7dfc1e9be8c72041d"
+  integrity sha512-vlWRjnZqoTHuEjadquVHK3GxsXe1gNoATffLEA8Qbrdd++Xb+wHEFiWtwAKTscMBoi1AsvEMXhYRzAXA8Ex9FQ==
 
 immutable@^3.8.1:
   version "3.8.2"
