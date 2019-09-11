@@ -4,7 +4,7 @@ import { throwError } from "redux-saga-test-plan/providers";
 import { expectSaga } from "redux-saga-test-plan";
 
 import getCookie from "./utils";
-import { api, fetchScriptsSaga, deleteScriptSaga } from "./http";
+import { api, fetchScriptsSaga, deleteScriptSaga, uploadScriptSaga } from "./http";
 
 describe("http sagas", () => {
   describe("fetch scripts", () => {
@@ -65,4 +65,39 @@ describe("http sagas", () => {
         .run();
     });
   });
+
+describe("upload scripts", () => {
+    it("returns a SUCCESS action", () => {
+      const script = { name: "script-1", type: "commissioning", script: "#!/bin/sh/necho 'hi'" };
+      const action = {
+        type: "UPLOAD_SCRIPT",
+        payload: script
+      };
+      return expectSaga(uploadScriptSaga, action)
+        .provide([
+          [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+          [matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"), script]
+        ])
+        .put({ type: "UPLOAD_SCRIPT_START" })
+        .put({ type: "UPLOAD_SCRIPT_SUCCESS", payload: script })
+        .run();
+    });
+
+    it.only("handles errors", () => {
+      const script = { name: "script-1", type: "commissioning", script: "#!/bin/sh/necho 'hi'" };
+      const action = { type: "UPLOAD_SCRIPT", payload: script };
+      const error = {
+        name: 'Script with that name already exists'
+      }
+      return expectSaga(uploadScriptSaga, action)
+        .provide([
+          [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+          [matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"), throwError(error)]
+        ])
+        .put({ type: "UPLOAD_SCRIPT_START" })
+        .put({ type: "UPLOAD_SCRIPT_ERROR", errors: { name: error.name } })
+        .run();
+    });
+  });
+
 });

@@ -28,11 +28,11 @@ const scripts = produce(
         draft.items.splice(index, 1);
         break;
       case "DELETE_SCRIPT_ERROR":
-      case "UPLOAD_SCRIPTS_ERROR":
+      case "UPLOAD_SCRIPT_ERROR":
         draft.errors = action.errors;
         draft.saving = false;
         break;
-      case "UPLOAD_SCRIPTS_SUCCESS":
+      case "UPLOAD_SCRIPT_SUCCESS":
         draft.saved = true;
         break;
       case "CLEANUP_SCRIPTS":

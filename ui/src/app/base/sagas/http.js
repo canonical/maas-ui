@@ -75,12 +75,12 @@ export function* uploadScriptSaga(action) {
     response = yield call(api.scripts.upload, name, type, script, csrftoken);
     console.log(response);
     yield put({
-      type: `UPLOAD_SCRIPTS_SUCCESS`,
+      type: `UPLOAD_SCRIPT_SUCCESS`,
       payload: response
     });
   } catch (errors) {
     yield put({
-      type: `UPLOAD_SCRIPTS_ERROR`,
+      type: `UPLOAD_SCRIPT_ERROR`,
       errors
     });
   }
