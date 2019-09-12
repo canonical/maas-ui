@@ -55,6 +55,7 @@ export const DhcpFormFields = ({ editing, formikProps }) => {
   const hasLoaded =
     subnetLoaded && controllerLoaded && deviceLoaded && machineLoaded;
   const { enabled, type } = formikProps.values;
+  const hasError = errors && typeof errors === "string";
   let models;
   switch (type) {
     case "subnet":
@@ -75,6 +76,11 @@ export const DhcpFormFields = ({ editing, formikProps }) => {
 
   return (
     <>
+      {hasError && (
+        <Notification type="negative" status="Error:">
+          {errors}
+        </Notification>
+      )}
       {editing && !enabled && (
         <Notification type="caution" status="Warning:">
           This snippet is disabled and will not be used by MAAS.

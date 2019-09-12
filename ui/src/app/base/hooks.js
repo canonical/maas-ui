@@ -50,7 +50,11 @@ export const useFormikErrors = (errors, formikProps) => {
   const previousErrors = usePrevious(errors);
   useEffect(() => {
     // Only run this effect if the errors have changed.
-    if (!simpleObjectEquality(errors, previousErrors)) {
+    if (
+      errors &&
+      typeof errors === "object" &&
+      !simpleObjectEquality(errors, previousErrors)
+    ) {
       const formikErrors = {};
       const invalidValues = {};
       Object.keys(errors).forEach(field => {
