@@ -25,17 +25,18 @@ export const api = {
         .then(handleErrors)
         .then(response => response.json());
     },
-    delete: (csrftoken, name) => {
+    delete: (name, csrftoken) => {
       return fetch(`${SCRIPTS_API}${name}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "DELETE"
       }).then(handleErrors);
     },
-    upload: (name, type, script, csrftoken) => {
+    upload: (script, csrftoken) => {
+      const { name, type, contents } = script;
       return fetch(`${SCRIPTS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
-        body: JSON.stringify({ name, type, script })
+        body: JSON.stringify({ name, type, script: contents })
       })
         .then(response => Promise.all([response.ok, response.json()]))
         .then(([responseOk, body]) => {
@@ -68,12 +69,11 @@ export function* fetchScriptsSaga() {
 
 export function* uploadScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
-  const { name, type, script } = action.payload;
+  const script = action.payload;
   let response;
   try {
     yield put({ type: `UPLOAD_SCRIPT_START` });
-    response = yield call(api.scripts.upload, name, type, script, csrftoken);
-    console.log(response);
+    response = yield call(api.scripts.upload, script, csrftoken);
     yield put({
       type: `UPLOAD_SCRIPT_SUCCESS`,
       payload: response
@@ -90,7 +90,7 @@ export function* deleteScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
     yield put({ type: `DELETE_SCRIPT_START` });
-    yield call(api.scripts.delete, csrftoken, action.payload.name);
+    yield call(api.scripts.delete, action.payload.name, csrftoken);
     yield put({
       type: `DELETE_SCRIPT_SUCCESS`,
       payload: action.payload.id

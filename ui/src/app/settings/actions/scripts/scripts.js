@@ -4,12 +4,12 @@ scripts.fetch = () => ({
   type: "FETCH_SCRIPTS"
 });
 
-scripts.upload = (name, type, script) => ({
+scripts.upload = (name, type, contents) => ({
   type: "UPLOAD_SCRIPT",
   payload: {
     name,
     type,
-    script
+    contents
   }
 });
 

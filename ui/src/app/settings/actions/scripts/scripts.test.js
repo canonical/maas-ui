@@ -13,7 +13,7 @@ describe("scripts actions", () => {
       payload: {
         name: "script-1",
         type: "testing",
-        script: "contents"
+        contents: "contents"
       }
     });
   });
