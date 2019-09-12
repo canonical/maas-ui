@@ -85,7 +85,9 @@ export const DhcpForm = ({ dhcpSnippet }) => {
         initialValues={{
           description: dhcpSnippet ? dhcpSnippet.description : "",
           enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
-          entity: dhcpSnippet ? dhcpSnippet.node || dhcpSnippet.subnet : "",
+          entity: dhcpSnippet
+            ? dhcpSnippet.node || dhcpSnippet.subnet || ""
+            : "",
           name: dhcpSnippet ? dhcpSnippet.name : "",
           type: dhcpSnippet ? type : "",
           value: dhcpSnippet ? dhcpSnippet.value : ""
