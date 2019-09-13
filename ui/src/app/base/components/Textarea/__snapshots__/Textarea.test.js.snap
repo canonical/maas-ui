@@ -7,6 +7,7 @@ exports[`Textarea  renders 1`] = `
   <textarea
     className="p-form-validation__input"
     id="test-id"
+    onKeyUp={[Function]}
   />
 </Field>
 `;
