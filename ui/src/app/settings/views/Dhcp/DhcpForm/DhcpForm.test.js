@@ -232,8 +232,8 @@ describe("DhcpForm", () => {
       </Provider>
     );
     compareJSX(
-      wrapper.find(".card-form h4"),
-      <h4>
+      wrapper.find(".card-form__title"),
+      <h4 className="card-form__title">
         <>Editing `{"lease"}`</>
       </h4>
     );

@@ -73,7 +73,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     return <Loader text="Loading..." />;
   }
 
-  let title = editing ? <>Editing `{name}`</> : "Add DHCP snippet";
+  const title = editing ? <>Editing `{name}`</> : "Add DHCP snippet";
 
   return (
     <FormCard title={title}>

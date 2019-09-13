@@ -22,7 +22,7 @@ export const UserEdit = () => {
   if (!user) {
     return <h4>User not found</h4>;
   }
-  return <UserForm title="Edit user" user={user} />;
+  return <UserForm user={user} />;
 };
 
 export default UserEdit;

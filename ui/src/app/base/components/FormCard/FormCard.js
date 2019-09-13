@@ -11,7 +11,7 @@ export const FormCard = ({ children, title }) => {
     <Card highlighted={true} className="card-form">
       <Row>
         <Col size="2">
-          <h4>{title}</h4>
+          <h4 className="card-form__title">{title}</h4>
         </Col>
         <Col size="8">{children}</Col>
       </Row>

@@ -4,6 +4,12 @@
   margin-top: 0.5rem;
 }
 
+.form-card__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .form-card__buttons {
   border-top: 1px solid $color-mid-light;
   margin-top: 1rem;
