@@ -19,7 +19,7 @@ import {
   machine as machineSelectors,
   subnet as subnetSelectors
 } from "app/base/selectors";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -203,6 +203,12 @@ const DhcpList = () => {
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
   const dispatch = useDispatch();
+  useAddMessage(
+    saved && deletingName,
+    dhcpsnippetActions.cleanup,
+    `${deletingName} removed successfully.`,
+    setDeleting
+  );
 
   const hideExpanded = () => {
     setExpandedId();
@@ -218,16 +224,6 @@ const DhcpList = () => {
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (saved && deletingName) {
-      dispatch(
-        messages.add(`${deletingName} removed successfully.`, "information")
-      );
-      setDeleting();
-      dispatch(dhcpsnippetActions.cleanup());
-    }
-  }, [deletingName, dispatch, saved]);
 
   return (
     <>

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
 import FormCard from "app/base/components/FormCard";
 import UserFormFields from "../UserFormFields";
@@ -44,6 +44,12 @@ export const UserForm = ({ title, user }) => {
   const saved = useSelector(userSelectors.saved);
   const [savingUser, setSaving] = useState();
   const editing = !!user;
+  useAddMessage(
+    saved,
+    userActions.cleanup,
+    `${savingUser} ${editing ? "updated" : "added"} successfully.`,
+    setSaving
+  );
 
   useEffect(() => {
     return () => {
@@ -51,17 +57,6 @@ export const UserForm = ({ title, user }) => {
       dispatch(userActions.cleanup());
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (saved) {
-      const action = editing ? "updated" : "added";
-      dispatch(userActions.cleanup());
-      dispatch(
-        messages.add(`${savingUser} ${action} successfully.`, "information")
-      );
-      setSaving();
-    }
-  }, [dispatch, editing, saved, savingUser]);
 
   if (saved) {
     // The user was successfully created/updated so redirect to the user list.

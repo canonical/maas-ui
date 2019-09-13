@@ -5,10 +5,10 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 
 import "./UsersList.scss";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
+import { auth as authActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
-import { auth } from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -121,9 +121,15 @@ const Users = () => {
   const users = useSelector(state => userSelectors.search(state, searchText));
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
-  const authUser = useSelector(auth.get);
+  const authUser = useSelector(authActions.fetch);
   const saved = useSelector(userSelectors.saved);
   const dispatch = useDispatch();
+  useAddMessage(
+    saved,
+    userActions.cleanup,
+    `${deletingUser} removed successfully.`,
+    setDeleting
+  );
 
   useEffect(() => {
     dispatch(userActions.fetch());
@@ -135,16 +141,6 @@ const Users = () => {
       dispatch(userActions.cleanup());
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (saved) {
-      dispatch(
-        messages.add(`${deletingUser} removed successfully.`, "information")
-      );
-      setDeleting();
-      dispatch(userActions.cleanup());
-    }
-  }, [deletingUser, dispatch, saved]);
 
   return (
     <>

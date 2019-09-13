@@ -12,8 +12,8 @@ import {
   subnet as subnetActions
 } from "app/base/actions";
 import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
-import { messages } from "app/base/actions";
 import { DhcpSnippetShape } from "app/settings/proptypes";
+import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
@@ -43,6 +43,12 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     editing ? dhcpSnippet.node : null,
     editing ? dhcpSnippet.subnet : null
   );
+  useAddMessage(
+    saved,
+    dhcpsnippetActions.cleanup,
+    `${savingDhcp} ${editing ? "updated" : "added"} successfully.`,
+    setSaving
+  );
 
   useEffect(() => {
     dispatch(subnetActions.fetch());
@@ -54,17 +60,6 @@ export const DhcpForm = ({ dhcpSnippet }) => {
       dispatch(dhcpsnippetActions.cleanup());
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (saved) {
-      const action = editing ? "updated" : "added";
-      dispatch(dhcpsnippetActions.cleanup());
-      dispatch(
-        messages.add(`${savingDhcp} ${action} successfully.`, "information")
-      );
-      setSaving();
-    }
-  }, [dispatch, editing, saved, savingDhcp]);
 
   if (saved) {
     // The snippet was successfully created/updated so redirect to the dhcp list.

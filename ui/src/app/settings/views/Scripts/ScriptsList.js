@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -163,6 +163,19 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const userScripts = useSelector(state =>
     scriptSelectors.search(state, searchText, type)
   );
+  useAddMessage(
+    saved,
+    scriptActions.cleanup,
+    `${deletingScript} removed successfully.`,
+    setDeleting
+  );
+  useAddMessage(
+    hasErrors,
+    scriptActions.cleanup,
+    `Error removing ${deletingScript}: ${errors}`,
+    null,
+    "negative"
+  );
 
   const hideExpanded = () => {
     setExpandedId();
@@ -172,30 +185,6 @@ const ScriptsList = ({ type = "commissioning" }) => {
   useEffect(() => {
     dispatch(scriptActions.fetch());
   }, [dispatch, type]);
-
-  useEffect(() => {
-    if (saved) {
-      dispatch(
-        messages.add(`${deletingScript} removed successfully.`, "information")
-      );
-      setDeleting();
-      dispatch(scriptActions.cleanup());
-    }
-  }, [deletingScript, dispatch, saved]);
-
-  useEffect(() => {
-    if (hasErrors) {
-      Object.keys(errors).forEach(key => {
-        dispatch(
-          messages.add(
-            `Error deleting ${deletingScript}: ${errors[key]}`,
-            "negative"
-          )
-        );
-      });
-      dispatch(scriptActions.cleanup());
-    }
-  }, [deletingScript, hasErrors, errors, dispatch]);
 
   return (
     <>

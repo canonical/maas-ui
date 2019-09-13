@@ -15,7 +15,7 @@ import {
 } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import Form from "app/base/components/Form";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -59,6 +59,12 @@ export const RepositoryForm = ({ type, repository }) => {
     repositoriesLoaded;
 
   const dispatch = useDispatch();
+  useAddMessage(
+    repositoriesSaved,
+    repositoryActions.cleanup,
+    `${savedRepo} ${repository ? "updated" : "added"} successfully.`,
+    setSavedRepo
+  );
 
   // Fetch data if not all loaded.
   useEffect(() => {
@@ -69,18 +75,6 @@ export const RepositoryForm = ({ type, repository }) => {
       dispatch(repositoryActions.fetch());
     }
   }, [dispatch, allLoaded]);
-
-  // Create a saved notification if successful
-  useEffect(() => {
-    if (repositoriesSaved) {
-      const action = repository ? "updated" : "added";
-      dispatch(repositoryActions.cleanup());
-      dispatch(
-        messages.add(`${savedRepo} ${action} successfully.`, "information")
-      );
-      setSavedRepo();
-    }
-  }, [dispatch, repository, repositoriesSaved, savedRepo]);
 
   // Clean up saved and error states on unmount.
   useEffect(() => {

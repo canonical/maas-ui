@@ -1,7 +1,10 @@
-import { useEffect, useRef } from "react";
-import { useContext } from "react";
 import { __RouterContext as RouterContext } from "react-router";
+import { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
 
+import { messages } from "app/base/actions";
+import { notificationTypes } from "app/base/components/Notification";
 import { simpleObjectEquality } from "app/settings/utils";
 
 // Router hooks inspired by: https://github.com/ReactTraining/react-router/issues/6430#issuecomment-510266079
@@ -64,4 +67,31 @@ export const useFormikErrors = (errors, formikProps) => {
       setStatus({ serverErrors: formikErrors, invalidValues });
     }
   }, [errors, previousErrors, setStatus, values]);
+};
+
+/**
+ * Add a message in response to a state change e.g. when something is created.
+ * @param {Boolean} addCondition - Whether the message should be added.
+ * @param {Function} cleanup - A cleanup action to fire.
+ * @param {String} message - The message to be displayed.
+ * @param {Function} onMessageAdded - A function to call once the message has
+                                      been displayed.
+ * @param {String} messageType - The notification type.
+ */
+export const useAddMessage = (
+  addCondition,
+  cleanup,
+  message,
+  onMessageAdded,
+  messageType = notificationTypes.INFORMATION
+) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (addCondition) {
+      dispatch(messages.add(message, messageType));
+      onMessageAdded && onMessageAdded();
+      dispatch(cleanup());
+    }
+  }, [addCondition, cleanup, dispatch, message, messageType, onMessageAdded]);
 };
