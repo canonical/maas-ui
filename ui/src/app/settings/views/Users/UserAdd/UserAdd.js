@@ -3,7 +3,7 @@ import React from "react";
 import UserForm from "../UserForm";
 
 export const UserAdd = () => {
-  return <UserForm title="Add user" />;
+  return <UserForm />;
 };
 
 export default UserAdd;

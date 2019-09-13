@@ -39,10 +39,11 @@ const UserSchema = Yup.object().shape({
 
 const UserEditSchema = Yup.object().shape(schemaFields);
 
-export const UserForm = ({ title, user }) => {
+export const UserForm = ({ user }) => {
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);
   const [savingUser, setSaving] = useState();
+  const [name, setName] = useState();
   const editing = !!user;
   useAddMessage(
     saved,
@@ -50,6 +51,7 @@ export const UserForm = ({ title, user }) => {
     `${savingUser} ${editing ? "updated" : "added"} successfully.`,
     setSaving
   );
+  const title = editing ? <>Editing `{name}`</> : "Add user";
 
   useEffect(() => {
     return () => {
@@ -96,16 +98,16 @@ export const UserForm = ({ title, user }) => {
           }
           setSaving(values.username);
         }}
-        render={formikProps => (
-          <UserFormFields editing={editing} formikProps={formikProps} />
-        )}
+        render={formikProps => {
+          setName(formikProps.values.username);
+          return <UserFormFields editing={editing} formikProps={formikProps} />;
+        }}
       ></Formik>
     </FormCard>
   );
 };
 
 UserForm.propTypes = {
-  title: PropTypes.string.isRequired,
   user: UserShape
 };
 

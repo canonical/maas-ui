@@ -34,7 +34,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm title="Add user" />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -46,7 +46,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm title="Add user" />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -64,7 +64,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm title="Add user" />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -77,7 +77,6 @@ describe("UserForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <UserForm
-            title="Add user"
             user={{
               email: "old@example.com",
               first_name: "Miss",
@@ -133,7 +132,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm title="Add user" />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -178,7 +177,7 @@ describe("UserForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm title="Add user" />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
