@@ -2,6 +2,13 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 
+export const notificationTypes = {
+  CAUTION: "caution",
+  INFORMATION: "information",
+  NEGATIVE: "negative",
+  POSITIVE: "positive"
+};
+
 const Notification = ({
   children,
   className,

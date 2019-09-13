@@ -6,7 +6,7 @@ import "./RepositoriesList.scss";
 import { packagerepository as repositoryActions } from "app/base/actions";
 import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
-import { messages } from "app/base/actions";
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -93,31 +93,24 @@ export const Repositories = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [deletedRepo, setDeletedRepo] = useState();
-
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
   const saved = useSelector(repositorySelectors.saved);
   const repositories = useSelector(state =>
     repositorySelectors.search(state, searchText)
   );
-
   const dispatch = useDispatch();
+  useAddMessage(
+    saved,
+    repositoryActions.cleanup,
+    `${deletedRepo} removed successfully.`,
+    setDeletedRepo
+  );
 
   // Fetch repositories on load
   useEffect(() => {
     dispatch(repositoryActions.fetch());
   }, [dispatch]);
-
-  // Create a deleted notification if successful
-  useEffect(() => {
-    if (saved) {
-      dispatch(repositoryActions.cleanup());
-      dispatch(
-        messages.add(`${deletedRepo} removed successfully.`, "information")
-      );
-      setDeletedRepo();
-    }
-  }, [deletedRepo, dispatch, saved]);
 
   // Clean up saved and error states on unmount.
   useEffect(() => {
