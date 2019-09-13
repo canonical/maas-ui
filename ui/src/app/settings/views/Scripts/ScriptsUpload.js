@@ -1,3 +1,5 @@
+
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -5,6 +7,7 @@ import { Redirect } from "react-router";
 import { useDropzone } from "react-dropzone";
 import pathParse from "path-parse";
 
+import "./ScriptsUpload.scss";
 import { messages } from "app/base/actions";
 import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
@@ -13,6 +16,7 @@ import Row from "app/base/components/Row";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
 
+/*
 const baseStyle = {
   flex: 1,
   display: "flex",
@@ -28,6 +32,7 @@ const baseStyle = {
   outline: "none",
   transition: "border .24s ease-in-out"
 };
+*/
 
 const activeStyle = {
   borderColor: "#2196f3"
@@ -121,10 +126,10 @@ const ScriptsUpload = ({ type }) => {
 
   const style = useMemo(
     () => ({
-      ...baseStyle,
-      ...(isDragActive ? activeStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {})
+      ...classNames("scripts-upload"),
+      ...(isDragActive ? classNames("scripts-upload--active") : {}),
+      ...(isDragAccept ? classNames("scripts-upload--accept") : {}),
+      ...(isDragReject ? classNames("scripts-upload--reject") : {})
     }),
     [isDragAccept, isDragActive, isDragReject]
   );
@@ -174,7 +179,7 @@ const ScriptsUpload = ({ type }) => {
 
           <FormCardButtons
             actionDisabled={acceptedFiles.length === 0}
-            actionLabel={`Upload script`}
+            actionLabel="Upload script"
           />
         </Form>
       </Row>

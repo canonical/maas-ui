@@ -52,16 +52,16 @@ export function* fetchScriptsSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
   let response;
   try {
-    yield put({ type: `FETCH_SCRIPTS_START` });
+    yield put({ type: "FETCH_SCRIPTS_START" });
     response = yield call(api.scripts.fetch, csrftoken);
     yield put({
-      type: `FETCH_SCRIPTS_SUCCESS`,
+      type: "FETCH_SCRIPTS_SUCCESS",
       payload: response
     });
   } catch (error) {
     // fetch doesn't return a complex error object, so we coerce the status text.
     yield put({
-      type: `FETCH_SCRIPTS_ERROR`,
+      type: "FETCH_SCRIPTS_ERROR",
       errors: { error: error.message }
     });
   }
@@ -72,15 +72,15 @@ export function* uploadScriptSaga(action) {
   const script = action.payload;
   let response;
   try {
-    yield put({ type: `UPLOAD_SCRIPT_START` });
+    yield put({ type: "UPLOAD_SCRIPT_START" });
     response = yield call(api.scripts.upload, script, csrftoken);
     yield put({
-      type: `UPLOAD_SCRIPT_SUCCESS`,
+      type: "UPLOAD_SCRIPT_SUCCESS",
       payload: response
     });
   } catch (errors) {
     yield put({
-      type: `UPLOAD_SCRIPT_ERROR`,
+      type: "UPLOAD_SCRIPT_ERROR",
       errors
     });
   }
@@ -89,16 +89,16 @@ export function* uploadScriptSaga(action) {
 export function* deleteScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
-    yield put({ type: `DELETE_SCRIPT_START` });
+    yield put({ type: "DELETE_SCRIPT_START" });
     yield call(api.scripts.delete, action.payload.name, csrftoken);
     yield put({
-      type: `DELETE_SCRIPT_SUCCESS`,
+      type: "DELETE_SCRIPT_SUCCESS",
       payload: action.payload.id
     });
   } catch (error) {
     // delete doesn't return a complex error object, so we coerce the status text.
     yield put({
-      type: `DELETE_SCRIPT_ERROR`,
+      type: "DELETE_SCRIPT_ERROR",
       errors: { error: error.message }
     });
   }
