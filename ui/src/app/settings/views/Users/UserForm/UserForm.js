@@ -2,7 +2,6 @@ import { Formik } from "formik";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import { user as userActions } from "app/base/actions";
