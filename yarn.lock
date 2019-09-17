@@ -11769,10 +11769,10 @@ value-equal@^0.4.0:
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.4.0.tgz#c5bdd2f54ee093c04839d71ce2e4758a6890abc7"
   integrity sha512-x+cYdNnaA3CxvMaTX0INdTCN8m8aF2uY9BvEqmxuYp8bL09cs/kWVQPVGcA35fMktdOsP69IgU7wFj/61dJHEw==
 
-vanilla-framework@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.3.0.tgz#420925e905ce451273bc54c8e5792f58fdd0ddf4"
-  integrity sha512-E208jQV9JIYDTciYInoy7gFZgRS9HKfS6TvCGja/pvYekom/zu4O/U4mWsUJ5Yq2vgjpa5w6CCSSAHhHxZ/Vxw==
+vanilla-framework@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.4.0.tgz#95fd15738ce72cbb30bb667ba255cc7e9ae3f13d"
+  integrity sha512-NacSE5eKsugHnKlWlwsfKm24cDpsmcer2RC0+PCmFz4US4BLrEanQ0mZUkXg3toEwue867FFvDB+I7jiKP+zow==
 
 vary@~1.1.2:
   version "1.1.2"
