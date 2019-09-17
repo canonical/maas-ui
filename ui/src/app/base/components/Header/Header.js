@@ -18,14 +18,26 @@ const useVisible = initialValue => {
 
 const generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
 
-const generateLocalLink = (location, url, label) => (
+const generateLocalLink = (
+  location,
+  url,
+  label,
+  isDropdown = false,
+  hideMobile = false
+) => (
   <li
     className={classNames("p-navigation__link", {
-      "is-selected": location.pathname.startsWith(url)
+      "is-selected": location.pathname.startsWith(url),
+      "u-hide-nav-viewport--medium": hideMobile
     })}
     role="menuitem"
   >
-    <Link to={url} className="p-dropdown__item">
+    <Link
+      to={url}
+      className={classNames({
+        "p-dropdown__item": isDropdown
+      })}
+    >
       {label}
     </Link>
   </li>
@@ -95,9 +107,13 @@ export const Header = () => {
                   "u-hide": !hardwareVisible
                 })}
               >
-                <li className="p-navigation__link" role="menuitem">
-                  <a href={generateURL("#/machines")}>Machines</a>
-                </li>
+                {generateLocalLink(
+                  location,
+                  "/machines",
+                  "Machines",
+                  false,
+                  false
+                )}
                 <li className="p-navigation__link" role="menuitem">
                   <a href={generateURL("#/devices")}>Devices</a>
                 </li>
@@ -114,14 +130,7 @@ export const Header = () => {
                 </li>
               </ul>
             </li>
-            <li
-              className="p-navigation__link u-hide-nav-viewport--medium"
-              role="menuitem"
-            >
-              <a className="p-dropdown__item" href={generateURL("#/machines")}>
-                Machines
-              </a>
-            </li>
+            {generateLocalLink(location, "/machines", "Machines", true, true)}
             <li
               className="p-navigation__link u-hide-nav-viewport--medium"
               role="menuitem"
@@ -183,7 +192,13 @@ export const Header = () => {
               </a>
             </li>
             {authUser.is_superuser
-              ? generateLocalLink(location, "/", "Settings")
+              ? generateLocalLink(
+                  location,
+                  "/settings",
+                  "Settings",
+                  true,
+                  false
+                )
               : null}
           </ul>
           <ul className="p-navigation__links--right" role="menu">

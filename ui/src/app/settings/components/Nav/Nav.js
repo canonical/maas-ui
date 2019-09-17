@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React from "react";
 
 import "./Nav.scss";
-import { useLocation } from "app/base/hooks";
+import { useLocation, useRouter } from "app/base/hooks";
 
 const _generateSection = (section, location) => {
   let subNav = null;
@@ -53,56 +53,69 @@ const _generateSection = (section, location) => {
 };
 
 export const Nav = () => {
+  const { match } = useRouter();
   const { location } = useLocation();
   const nav = [
     {
       label: "Configuration",
       subNav: [
-        { path: "/configuration/general", label: "General" },
-        { path: "/configuration/commissioning", label: "Commissioning" },
-        { path: "/configuration/deploy", label: "Deploy" },
-        { path: "/configuration/kernel-parameters", label: "Kernel parameters" }
+        { path: `${match.url}/configuration/general`, label: "General" },
+        {
+          path: `${match.url}/configuration/commissioning`,
+          label: "Commissioning"
+        },
+        { path: `${match.url}/configuration/deploy`, label: "Deploy" },
+        {
+          path: `${match.url}/configuration/kernel-parameters`,
+          label: "Kernel parameters"
+        }
       ]
     },
     {
-      path: "/users",
+      path: `${match.url}/users`,
       label: "Users"
     },
     {
       label: "Images",
       subNav: [
-        { path: "/images/ubuntu", label: "Ubuntu" },
-        { path: "/images/windows", label: "Windows" },
-        { path: "/images/vmware", label: "VMware" }
+        { path: `${match.url}/images/ubuntu`, label: "Ubuntu" },
+        { path: `${match.url}/images/windows`, label: "Windows" },
+        { path: `${match.url}/images/vmware`, label: "VMware" }
       ]
     },
     {
-      path: "/storage",
+      path: `${match.url}/storage`,
       label: "Storage"
     },
     {
       label: "Network",
       subNav: [
-        { path: "/network/proxy", label: "Proxy" },
-        { path: "/network/dns", label: "DNS" },
-        { path: "/network/ntp", label: "NTP" },
-        { path: "/network/syslog", label: "Syslog" },
-        { path: "/network/network-discovery", label: "Network discovery" }
+        { path: `${match.url}/network/proxy`, label: "Proxy" },
+        { path: `${match.url}/network/dns`, label: "DNS" },
+        { path: `${match.url}/network/ntp`, label: "NTP" },
+        { path: `${match.url}/network/syslog`, label: "Syslog" },
+        {
+          path: `${match.url}/network/network-discovery`,
+          label: "Network discovery"
+        }
       ]
     },
     {
       label: "Scripts",
       subNav: [
-        { path: "/scripts/commissioning", label: "Commissioning scripts" },
-        { path: "/scripts/testing", label: "Testing scripts" }
+        {
+          path: `${match.url}/scripts/commissioning`,
+          label: "Commissioning scripts"
+        },
+        { path: `${match.url}/scripts/testing`, label: "Testing scripts" }
       ]
     },
     {
-      path: "/dhcp",
+      path: `${match.url}/dhcp`,
       label: "DHCP snippets"
     },
     {
-      path: "/repositories",
+      path: `${match.url}/repositories`,
       label: "Package repos"
     }
   ];

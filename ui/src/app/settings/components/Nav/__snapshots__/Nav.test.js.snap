@@ -1,7 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Nav renders 1`] = `
-<Nav>
+<Nav
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "canGo": [Function],
+      "createHref": [Function],
+      "entries": Array [
+        Object {
+          "hash": "",
+          "key": "testKey",
+          "pathname": "/settings",
+          "search": "",
+        },
+      ],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "index": 0,
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "testKey",
+        "pathname": "/settings",
+        "search": "",
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  location={
+    Object {
+      "hash": "",
+      "key": "testKey",
+      "pathname": "/settings",
+      "search": "",
+    }
+  }
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {},
+      "path": "/settings",
+      "url": "/settings",
+    }
+  }
+>
   <nav
     className="settings-nav"
   >
@@ -20,15 +67,15 @@ exports[`Nav renders 1`] = `
         >
           <li
             className="settings-nav__item"
-            key="/configuration/general"
+            key="/settings/configuration/general"
           >
             <Link
               className="p-link--soft"
-              to="/configuration/general"
+              to="/settings/configuration/general"
             >
               <a
                 className="p-link--soft"
-                href="/configuration/general"
+                href="/settings/configuration/general"
                 onClick={[Function]}
               >
                 General
@@ -37,15 +84,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/configuration/commissioning"
+            key="/settings/configuration/commissioning"
           >
             <Link
               className="p-link--soft"
-              to="/configuration/commissioning"
+              to="/settings/configuration/commissioning"
             >
               <a
                 className="p-link--soft"
-                href="/configuration/commissioning"
+                href="/settings/configuration/commissioning"
                 onClick={[Function]}
               >
                 Commissioning
@@ -54,15 +101,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/configuration/deploy"
+            key="/settings/configuration/deploy"
           >
             <Link
               className="p-link--soft"
-              to="/configuration/deploy"
+              to="/settings/configuration/deploy"
             >
               <a
                 className="p-link--soft"
-                href="/configuration/deploy"
+                href="/settings/configuration/deploy"
                 onClick={[Function]}
               >
                 Deploy
@@ -71,15 +118,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/configuration/kernel-parameters"
+            key="/settings/configuration/kernel-parameters"
           >
             <Link
               className="p-link--soft"
-              to="/configuration/kernel-parameters"
+              to="/settings/configuration/kernel-parameters"
             >
               <a
                 className="p-link--soft"
-                href="/configuration/kernel-parameters"
+                href="/settings/configuration/kernel-parameters"
                 onClick={[Function]}
               >
                 Kernel parameters
@@ -90,18 +137,18 @@ exports[`Nav renders 1`] = `
       </li>
       <li
         className="settings-nav__item"
-        key="/users"
+        key="/settings/users"
       >
         <strong
           className=""
         >
           <Link
             className="p-link--soft"
-            to="/users"
+            to="/settings/users"
           >
             <a
               className="p-link--soft"
-              href="/users"
+              href="/settings/users"
               onClick={[Function]}
             >
               Users
@@ -121,15 +168,15 @@ exports[`Nav renders 1`] = `
         >
           <li
             className="settings-nav__item"
-            key="/images/ubuntu"
+            key="/settings/images/ubuntu"
           >
             <Link
               className="p-link--soft"
-              to="/images/ubuntu"
+              to="/settings/images/ubuntu"
             >
               <a
                 className="p-link--soft"
-                href="/images/ubuntu"
+                href="/settings/images/ubuntu"
                 onClick={[Function]}
               >
                 Ubuntu
@@ -138,15 +185,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/images/windows"
+            key="/settings/images/windows"
           >
             <Link
               className="p-link--soft"
-              to="/images/windows"
+              to="/settings/images/windows"
             >
               <a
                 className="p-link--soft"
-                href="/images/windows"
+                href="/settings/images/windows"
                 onClick={[Function]}
               >
                 Windows
@@ -155,15 +202,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/images/vmware"
+            key="/settings/images/vmware"
           >
             <Link
               className="p-link--soft"
-              to="/images/vmware"
+              to="/settings/images/vmware"
             >
               <a
                 className="p-link--soft"
-                href="/images/vmware"
+                href="/settings/images/vmware"
                 onClick={[Function]}
               >
                 VMware
@@ -174,18 +221,18 @@ exports[`Nav renders 1`] = `
       </li>
       <li
         className="settings-nav__item"
-        key="/storage"
+        key="/settings/storage"
       >
         <strong
           className=""
         >
           <Link
             className="p-link--soft"
-            to="/storage"
+            to="/settings/storage"
           >
             <a
               className="p-link--soft"
-              href="/storage"
+              href="/settings/storage"
               onClick={[Function]}
             >
               Storage
@@ -205,15 +252,15 @@ exports[`Nav renders 1`] = `
         >
           <li
             className="settings-nav__item"
-            key="/network/proxy"
+            key="/settings/network/proxy"
           >
             <Link
               className="p-link--soft"
-              to="/network/proxy"
+              to="/settings/network/proxy"
             >
               <a
                 className="p-link--soft"
-                href="/network/proxy"
+                href="/settings/network/proxy"
                 onClick={[Function]}
               >
                 Proxy
@@ -222,15 +269,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/network/dns"
+            key="/settings/network/dns"
           >
             <Link
               className="p-link--soft"
-              to="/network/dns"
+              to="/settings/network/dns"
             >
               <a
                 className="p-link--soft"
-                href="/network/dns"
+                href="/settings/network/dns"
                 onClick={[Function]}
               >
                 DNS
@@ -239,15 +286,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/network/ntp"
+            key="/settings/network/ntp"
           >
             <Link
               className="p-link--soft"
-              to="/network/ntp"
+              to="/settings/network/ntp"
             >
               <a
                 className="p-link--soft"
-                href="/network/ntp"
+                href="/settings/network/ntp"
                 onClick={[Function]}
               >
                 NTP
@@ -256,15 +303,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/network/syslog"
+            key="/settings/network/syslog"
           >
             <Link
               className="p-link--soft"
-              to="/network/syslog"
+              to="/settings/network/syslog"
             >
               <a
                 className="p-link--soft"
-                href="/network/syslog"
+                href="/settings/network/syslog"
                 onClick={[Function]}
               >
                 Syslog
@@ -273,15 +320,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/network/network-discovery"
+            key="/settings/network/network-discovery"
           >
             <Link
               className="p-link--soft"
-              to="/network/network-discovery"
+              to="/settings/network/network-discovery"
             >
               <a
                 className="p-link--soft"
-                href="/network/network-discovery"
+                href="/settings/network/network-discovery"
                 onClick={[Function]}
               >
                 Network discovery
@@ -302,15 +349,15 @@ exports[`Nav renders 1`] = `
         >
           <li
             className="settings-nav__item"
-            key="/scripts/commissioning"
+            key="/settings/scripts/commissioning"
           >
             <Link
               className="p-link--soft"
-              to="/scripts/commissioning"
+              to="/settings/scripts/commissioning"
             >
               <a
                 className="p-link--soft"
-                href="/scripts/commissioning"
+                href="/settings/scripts/commissioning"
                 onClick={[Function]}
               >
                 Commissioning scripts
@@ -319,15 +366,15 @@ exports[`Nav renders 1`] = `
           </li>
           <li
             className="settings-nav__item"
-            key="/scripts/testing"
+            key="/settings/scripts/testing"
           >
             <Link
               className="p-link--soft"
-              to="/scripts/testing"
+              to="/settings/scripts/testing"
             >
               <a
                 className="p-link--soft"
-                href="/scripts/testing"
+                href="/settings/scripts/testing"
                 onClick={[Function]}
               >
                 Testing scripts
@@ -338,18 +385,18 @@ exports[`Nav renders 1`] = `
       </li>
       <li
         className="settings-nav__item"
-        key="/dhcp"
+        key="/settings/dhcp"
       >
         <strong
           className=""
         >
           <Link
             className="p-link--soft"
-            to="/dhcp"
+            to="/settings/dhcp"
           >
             <a
               className="p-link--soft"
-              href="/dhcp"
+              href="/settings/dhcp"
               onClick={[Function]}
             >
               DHCP snippets
@@ -359,18 +406,18 @@ exports[`Nav renders 1`] = `
       </li>
       <li
         className="settings-nav__item"
-        key="/repositories"
+        key="/settings/repositories"
       >
         <strong
           className=""
         >
           <Link
             className="p-link--soft"
-            to="/repositories"
+            to="/settings/repositories"
           >
             <a
               className="p-link--soft"
-              href="/repositories"
+              href="/settings/repositories"
               onClick={[Function]}
             >
               Package repos

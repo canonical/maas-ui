@@ -191,7 +191,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
       {scriptsLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to={`/scripts/${type}/upload`}>
+        <Button element={Link} to={`/settings/scripts/${type}/upload`}>
           Upload script
         </Button>
       </div>

@@ -1,4 +1,4 @@
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import React from "react";
 
@@ -7,8 +7,11 @@ import { Nav } from "./Nav";
 describe("Nav", () => {
   it("renders", () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <Nav />
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings", key: "testKey" }]}
+        initialIndex={0}
+      >
+        <Route component={props => <Nav {...props} />} path="/settings" />
       </MemoryRouter>
     );
     expect(wrapper.find("Nav")).toMatchSnapshot();
@@ -16,8 +19,11 @@ describe("Nav", () => {
 
   it("can set an active item", () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: "/users" }]}>
-        <Nav />
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        initialIndex={0}
+      >
+        <Route component={props => <Nav {...props} />} path="/settings" />
       </MemoryRouter>
     );
     expect(wrapper.find(".is-active Link").prop("children")).toEqual("Users");
