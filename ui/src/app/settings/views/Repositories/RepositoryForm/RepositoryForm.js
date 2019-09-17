@@ -5,11 +5,17 @@ import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import actions from "app/settings/actions";
+import {
+  general as generalActions,
+  packagerepository as repositoryActions
+} from "app/base/actions";
+import {
+  general as generalSelectors,
+  packagerepository as repositorySelectors
+} from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
-import selectors from "app/settings/selectors";
 import Form from "app/base/components/Form";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -35,17 +41,17 @@ export const RepositoryForm = ({ type, repository }) => {
   const [savedRepo, setSavedRepo] = useState();
 
   const componentsToDisableLoaded = useSelector(
-    selectors.general.componentsToDisable.loaded
+    generalSelectors.componentsToDisable.loaded
   );
   const knownArchitecturesLoaded = useSelector(
-    selectors.general.knownArchitectures.loaded
+    generalSelectors.knownArchitectures.loaded
   );
   const pocketsToDisableLoaded = useSelector(
-    selectors.general.pocketsToDisable.loaded
+    generalSelectors.pocketsToDisable.loaded
   );
-  const repositoriesLoaded = useSelector(selectors.repositories.loaded);
-  const repositoriesSaved = useSelector(selectors.repositories.saved);
-  const repositoriesSaving = useSelector(selectors.repositories.saving);
+  const repositoriesLoaded = useSelector(repositorySelectors.loaded);
+  const repositoriesSaved = useSelector(repositorySelectors.saved);
+  const repositoriesSaving = useSelector(repositorySelectors.saving);
   const allLoaded =
     componentsToDisableLoaded &&
     knownArchitecturesLoaded &&
@@ -57,10 +63,10 @@ export const RepositoryForm = ({ type, repository }) => {
   // Fetch data if not all loaded.
   useEffect(() => {
     if (!allLoaded) {
-      dispatch(actions.general.fetchComponentsToDisable());
-      dispatch(actions.general.fetchKnownArchitectures());
-      dispatch(actions.general.fetchPocketsToDisable());
-      dispatch(actions.repositories.fetch());
+      dispatch(generalActions.fetchComponentsToDisable());
+      dispatch(generalActions.fetchKnownArchitectures());
+      dispatch(generalActions.fetchPocketsToDisable());
+      dispatch(repositoryActions.fetch());
     }
   }, [dispatch, allLoaded]);
 
@@ -68,7 +74,7 @@ export const RepositoryForm = ({ type, repository }) => {
   useEffect(() => {
     if (repositoriesSaved) {
       const action = repository ? "updated" : "added";
-      dispatch(actions.repositories.cleanup());
+      dispatch(repositoryActions.cleanup());
       dispatch(
         messages.add(`${savedRepo} ${action} successfully.`, "information")
       );
@@ -78,7 +84,7 @@ export const RepositoryForm = ({ type, repository }) => {
 
   // Clean up saved and error states on unmount.
   useEffect(() => {
-    dispatch(actions.repositories.cleanup());
+    dispatch(repositoryActions.cleanup());
   }, [dispatch]);
 
   if (repositoriesSaved) {
@@ -153,12 +159,12 @@ export const RepositoryForm = ({ type, repository }) => {
                 params.url = values.url;
               }
 
-              dispatch(actions.repositories.cleanup());
+              dispatch(repositoryActions.cleanup());
               if (repository) {
                 params.id = repository.id;
-                dispatch(actions.repositories.update(params));
+                dispatch(repositoryActions.update(params));
               } else {
-                dispatch(actions.repositories.create(params));
+                dispatch(repositoryActions.create(params));
               }
               setSavedRepo(values.name);
             }}

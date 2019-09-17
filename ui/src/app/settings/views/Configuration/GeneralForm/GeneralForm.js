@@ -3,8 +3,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import actions from "app/settings/actions";
-import config from "app/settings/selectors/config";
+import { config as configActions } from "app/settings/actions";
+import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import ActionButton from "app/base/components/ActionButton";
 import Form from "app/base/components/Form";
@@ -17,13 +17,13 @@ const GeneralSchema = Yup.object().shape({
 
 const GeneralForm = () => {
   const dispatch = useDispatch();
-  const updateConfig = actions.config.update;
+  const updateConfig = configActions.update;
 
-  const saved = useSelector(config.saved);
-  const saving = useSelector(config.saving);
+  const saved = useSelector(configSelectors.saved);
+  const saving = useSelector(configSelectors.saving);
 
-  const maasName = useSelector(config.maasName);
-  const analyticsEnabled = useSelector(config.analyticsEnabled);
+  const maasName = useSelector(configSelectors.maasName);
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
 
   return (
     <Formik

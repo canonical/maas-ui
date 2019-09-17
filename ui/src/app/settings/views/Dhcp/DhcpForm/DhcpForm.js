@@ -7,16 +7,17 @@ import React, { useEffect, useState } from "react";
 import {
   controller as controllerActions,
   device as deviceActions,
-  machine as machineActions
+  dhcpsnippet as dhcpsnippetActions,
+  machine as machineActions,
+  subnet as subnetActions
 } from "app/base/actions";
-import { DhcpSnippetShape } from "app/settings/proptypes";
+import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
+import { DhcpSnippetShape } from "app/settings/proptypes";
 import { useDhcpTarget } from "app/settings/hooks";
-import actions from "app/settings/actions";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
 import Loader from "app/base/components/Loader";
-import selectors from "app/settings/selectors";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),
@@ -35,7 +36,7 @@ const DhcpSchema = Yup.object().shape({
 export const DhcpForm = ({ dhcpSnippet }) => {
   const [savingDhcp, setSaving] = useState();
   const [name, setName] = useState();
-  const saved = useSelector(selectors.dhcpsnippet.saved);
+  const saved = useSelector(dhcpsnippetSelectors.saved);
   const dispatch = useDispatch();
   const editing = !!dhcpSnippet;
   const { loading, loaded, type } = useDhcpTarget(
@@ -44,20 +45,20 @@ export const DhcpForm = ({ dhcpSnippet }) => {
   );
 
   useEffect(() => {
-    dispatch(actions.subnet.fetch());
+    dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
     return () => {
       // Clean up saved and error states on unmount.
-      dispatch(actions.dhcpsnippet.cleanup());
+      dispatch(dhcpsnippetActions.cleanup());
     };
   }, [dispatch]);
 
   useEffect(() => {
     if (saved) {
       const action = editing ? "updated" : "added";
-      dispatch(actions.dhcpsnippet.cleanup());
+      dispatch(dhcpsnippetActions.cleanup());
       dispatch(
         messages.add(`${savingDhcp} ${action} successfully.`, "information")
       );
@@ -107,9 +108,9 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           }
           if (editing) {
             params.id = dhcpSnippet.id;
-            dispatch(actions.dhcpsnippet.update(params));
+            dispatch(dhcpsnippetActions.update(params));
           } else {
-            dispatch(actions.dhcpsnippet.create(params));
+            dispatch(dhcpsnippetActions.create(params));
           }
           setSaving(params.name);
         }}

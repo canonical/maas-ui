@@ -5,7 +5,9 @@ import React from "react";
 import {
   controller as controllerSelectors,
   device as deviceSelectors,
-  machine as machineSelectors
+  dhcpsnippet as dhcpsnippetSelectors,
+  machine as machineSelectors,
+  subnet as subnetSelectors
 } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
@@ -17,7 +19,6 @@ import Loader from "app/base/components/Loader";
 import Notification from "app/base/components/Notification";
 import Row from "app/base/components/Row";
 import Select from "app/base/components/Select";
-import selectors from "app/settings/selectors";
 import Textarea from "app/base/components/Textarea";
 
 const generateOptions = (type, models) =>
@@ -34,15 +35,15 @@ const generateOptions = (type, models) =>
   );
 
 export const DhcpFormFields = ({ editing, formikProps }) => {
-  const saving = useSelector(selectors.dhcpsnippet.saving);
-  const saved = useSelector(selectors.dhcpsnippet.saved);
-  const errors = useSelector(selectors.dhcpsnippet.errors);
-  const subnets = useSelector(selectors.subnet.all);
+  const saving = useSelector(dhcpsnippetSelectors.saving);
+  const saved = useSelector(dhcpsnippetSelectors.saved);
+  const errors = useSelector(dhcpsnippetSelectors.errors);
+  const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
-  const subnetLoading = useSelector(selectors.subnet.loading);
-  const subnetLoaded = useSelector(selectors.subnet.loaded);
+  const subnetLoading = useSelector(subnetSelectors.loading);
+  const subnetLoaded = useSelector(subnetSelectors.loaded);
   const controllerLoading = useSelector(controllerSelectors.loading);
   const controllerLoaded = useSelector(controllerSelectors.loaded);
   const deviceLoading = useSelector(deviceSelectors.loading);
