@@ -3,22 +3,23 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
-import selectors from "app/settings/selectors";
+import { config as configSelectors } from "app/settings/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
 const CommissioningFormFields = ({ formikProps }) => {
-  const distroSeriesOptions = useSelector(selectors.config.distroSeriesOptions);
+  const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 
   const ubuntuKernelOptions = useSelector(state =>
-    selectors.general.osInfo.getUbuntuKernelOptions(
+    generalSelectors.osInfo.getUbuntuKernelOptions(
       state,
       formikProps.values.commissioning_distro_series
     )
   );
 
   const allUbuntuKernelOptions = useSelector(
-    selectors.general.osInfo.getAllUbuntuKernelOptions
+    generalSelectors.osInfo.getAllUbuntuKernelOptions
   );
 
   return (

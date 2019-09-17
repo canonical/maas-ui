@@ -5,12 +5,12 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import actions from "app/settings/actions";
+import { user as userActions } from "app/base/actions";
+import { user as userSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
 import { UserShape } from "app/base/proptypes";
 import FormCard from "app/base/components/FormCard";
 import UserFormFields from "../UserFormFields";
-import selectors from "app/settings/selectors";
 
 const schemaFields = {
   email: Yup.string()
@@ -41,21 +41,21 @@ const UserEditSchema = Yup.object().shape(schemaFields);
 
 export const UserForm = ({ title, user }) => {
   const dispatch = useDispatch();
-  const saved = useSelector(selectors.users.saved);
+  const saved = useSelector(userSelectors.saved);
   const [savingUser, setSaving] = useState();
   const editing = !!user;
 
   useEffect(() => {
     return () => {
       // Clean up saved and error states on unmount.
-      dispatch(actions.users.cleanup());
+      dispatch(userActions.cleanup());
     };
   }, [dispatch]);
 
   useEffect(() => {
     if (saved) {
       const action = editing ? "updated" : "added";
-      dispatch(actions.users.cleanup());
+      dispatch(userActions.cleanup());
       dispatch(
         messages.add(`${savingUser} ${action} successfully.`, "information")
       );
@@ -95,9 +95,9 @@ export const UserForm = ({ title, user }) => {
           }
           if (editing) {
             params.id = user.id;
-            dispatch(actions.users.update(params));
+            dispatch(userActions.update(params));
           } else {
-            dispatch(actions.users.create(params));
+            dispatch(userActions.create(params));
           }
           setSaving(values.username);
         }}

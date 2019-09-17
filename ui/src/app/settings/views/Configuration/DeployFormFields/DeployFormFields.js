@@ -3,25 +3,24 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
-import selectors from "app/settings/selectors";
+import { config as configSelectors } from "app/settings/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
 const DeployFormFields = ({ formikProps }) => {
   const defaultOSystemOptions = useSelector(
-    selectors.config.defaultOSystemOptions
+    configSelectors.defaultOSystemOptions
   );
 
   const distroSeriesOptions = useSelector(state =>
-    selectors.general.osInfo.getOsReleases(
+    generalSelectors.osInfo.getOsReleases(
       state,
       formikProps.values.default_osystem
     )
   );
 
-  const allDistroSeries = useSelector(
-    selectors.general.osInfo.getAllOsReleases
-  );
+  const allDistroSeries = useSelector(generalSelectors.osInfo.getAllOsReleases);
 
   return (
     <>

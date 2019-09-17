@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import actions from "app/settings/actions";
-import config from "app/settings/selectors/config";
+import { config as configActions } from "app/settings/actions";
+import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import ActionButton from "app/base/components/ActionButton";
 import Col from "app/base/components/Col";
@@ -23,20 +23,20 @@ const DnsSchema = Yup.object().shape({
 
 const DnsForm = () => {
   const dispatch = useDispatch();
-  const updateConfig = actions.config.update;
+  const updateConfig = configActions.update;
 
-  const loaded = useSelector(config.loaded);
-  const loading = useSelector(config.loading);
-  const saved = useSelector(config.saved);
-  const saving = useSelector(config.saving);
+  const loaded = useSelector(configSelectors.loaded);
+  const loading = useSelector(configSelectors.loading);
+  const saved = useSelector(configSelectors.saved);
+  const saving = useSelector(configSelectors.saving);
 
-  const dnssecValidation = useSelector(config.dnssecValidation);
-  const dnsTrustedAcl = useSelector(config.dnsTrustedAcl);
-  const upstreamDns = useSelector(config.upstreamDns);
+  const dnssecValidation = useSelector(configSelectors.dnssecValidation);
+  const dnsTrustedAcl = useSelector(configSelectors.dnsTrustedAcl);
+  const upstreamDns = useSelector(configSelectors.upstreamDns);
 
   useEffect(() => {
     if (!loaded) {
-      dispatch(actions.config.fetch());
+      dispatch(configActions.fetch());
     }
   }, [dispatch, loaded]);
 

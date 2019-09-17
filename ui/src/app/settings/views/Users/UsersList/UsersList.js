@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 
 import "./UsersList.scss";
 import { messages } from "app/base/actions";
-import actions from "app/settings/actions";
-import selectors from "app/settings/selectors";
+import { user as userActions } from "app/base/actions";
+import { user as userSelectors } from "app/base/selectors";
 import { auth } from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
@@ -93,7 +93,7 @@ const generateUserRows = (
           modelType="user"
           onCancel={setExpandedId}
           onConfirm={() => {
-            dispatch(actions.users.delete(user.id));
+            dispatch(userActions.delete(user.id));
             setDeleting(user.username);
             setExpandedId();
           }}
@@ -118,21 +118,21 @@ const Users = () => {
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const [deletingUser, setDeleting] = useState();
-  const users = useSelector(state => selectors.users.search(state, searchText));
-  const loading = useSelector(selectors.users.loading);
-  const loaded = useSelector(selectors.users.loaded);
+  const users = useSelector(state => userSelectors.search(state, searchText));
+  const loading = useSelector(userSelectors.loading);
+  const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(auth.get);
-  const saved = useSelector(selectors.users.saved);
+  const saved = useSelector(userSelectors.saved);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.users.fetch());
+    dispatch(userActions.fetch());
   }, [dispatch]);
 
   useEffect(() => {
     return () => {
       // Clean up saved and error states on unmount.
-      dispatch(actions.users.cleanup());
+      dispatch(userActions.cleanup());
     };
   }, [dispatch]);
 
@@ -142,7 +142,7 @@ const Users = () => {
         messages.add(`${deletingUser} removed successfully.`, "information")
       );
       setDeleting();
-      dispatch(actions.users.cleanup());
+      dispatch(userActions.cleanup());
     }
   }, [deletingUser, dispatch, saved]);
 

@@ -5,16 +5,19 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 
 import "./DhcpList.scss";
-import actions from "app/settings/actions";
 import {
   controller as controllerActions,
   device as deviceActions,
-  machine as machineActions
+  dhcpsnippet as dhcpsnippetActions,
+  machine as machineActions,
+  subnet as subnetActions
 } from "app/base/actions";
 import {
   controller as controllerSelectors,
   device as deviceSelectors,
-  machine as machineSelectors
+  dhcpsnippet as dhcpsnippetSelectors,
+  machine as machineSelectors,
+  subnet as subnetSelectors
 } from "app/base/selectors";
 import { messages } from "app/base/actions";
 import Button from "app/base/components/Button";
@@ -25,7 +28,6 @@ import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 import SearchBox from "app/base/components/SearchBox";
-import selectors from "app/settings/selectors";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const getTargetName = (
@@ -155,7 +157,7 @@ const generateRows = (
             modelType="DHCP snippet"
             onCancel={hideExpanded}
             onConfirm={() => {
-              dispatch(actions.dhcpsnippet.delete(dhcpsnippet.id));
+              dispatch(dhcpsnippetActions.delete(dhcpsnippet.id));
               setDeleting(dhcpsnippet.name);
               hideExpanded();
             }}
@@ -190,13 +192,13 @@ const DhcpList = () => {
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
   const [deletingName, setDeleting] = useState();
-  const dhcpsnippetLoading = useSelector(selectors.dhcpsnippet.loading);
-  const dhcpsnippetLoaded = useSelector(selectors.dhcpsnippet.loaded);
+  const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
+  const dhcpsnippetLoaded = useSelector(dhcpsnippetSelectors.loaded);
   const dhcpsnippets = useSelector(state =>
-    selectors.dhcpsnippet.search(state, searchText)
+    dhcpsnippetSelectors.search(state, searchText)
   );
-  const saved = useSelector(selectors.dhcpsnippet.saved);
-  const subnets = useSelector(selectors.subnet.all);
+  const saved = useSelector(dhcpsnippetSelectors.saved);
+  const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
@@ -208,10 +210,10 @@ const DhcpList = () => {
   };
 
   useEffect(() => {
-    dispatch(actions.dhcpsnippet.fetch());
+    dispatch(dhcpsnippetActions.fetch());
     // The following models are used in DhcpTarget, but they are requested here
     // to prevent every DhcpTarget having to dispatch the actions.
-    dispatch(actions.subnet.fetch());
+    dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
@@ -223,7 +225,7 @@ const DhcpList = () => {
         messages.add(`${deletingName} removed successfully.`, "information")
       );
       setDeleting();
-      dispatch(actions.dhcpsnippet.cleanup());
+      dispatch(dhcpsnippetActions.cleanup());
     }
   }, [deletingName, dispatch, saved]);
 

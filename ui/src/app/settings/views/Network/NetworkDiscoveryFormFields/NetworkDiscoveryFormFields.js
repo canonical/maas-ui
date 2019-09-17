@@ -3,13 +3,17 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
-import config from "app/settings/selectors/config";
+import { config as configSelectors } from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
 const NetworkDiscoveryFormFields = ({ formikProps }) => {
-  const networkDiscoveryOptions = useSelector(config.networkDiscoveryOptions);
-  const discoveryIntervalOptions = useSelector(config.discoveryIntervalOptions);
+  const networkDiscoveryOptions = useSelector(
+    configSelectors.networkDiscoveryOptions
+  );
+  const discoveryIntervalOptions = useSelector(
+    configSelectors.discoveryIntervalOptions
+  );
 
   return (
     <>

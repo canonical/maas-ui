@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import actions from "app/settings/actions";
-import selectors from "app/settings/selectors";
+import { config as configActions } from "app/settings/actions";
+import { general as generalActions } from "app/base/actions";
+import { config as configSelectors } from "app/settings/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
 import DeployForm from "app/settings/views/Configuration/DeployForm";
 
 const Deploy = () => {
-  const configLoaded = useSelector(selectors.config.loaded);
-  const configLoading = useSelector(selectors.config.loading);
-  const osInfoLoaded = useSelector(selectors.general.osInfo.loaded);
-  const osInfoLoading = useSelector(selectors.general.osInfo.loading);
+  const configLoaded = useSelector(configSelectors.loaded);
+  const configLoading = useSelector(configSelectors.loading);
+  const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
+  const osInfoLoading = useSelector(generalSelectors.osInfo.loading);
   const loaded = configLoaded && osInfoLoaded;
   const loading = configLoading || osInfoLoading;
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (!loaded) {
-      dispatch(actions.config.fetch());
-      dispatch(actions.general.fetchOsInfo());
+      dispatch(configActions.fetch());
+      dispatch(generalActions.fetchOsInfo());
     }
   }, [dispatch, loaded]);
 

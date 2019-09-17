@@ -15,8 +15,8 @@ import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import SearchBox from "app/base/components/SearchBox";
-import actions from "app/settings/actions";
-import selectors from "app/settings/selectors";
+import { scripts as scriptActions } from "app/base/actions";
+import { scripts as scriptSelectors } from "app/base/selectors";
 
 const generateRows = (
   scripts,
@@ -126,7 +126,7 @@ const generateRows = (
             modelType="Script"
             onCancel={hideExpanded}
             onConfirm={() => {
-              dispatch(actions.scripts.delete(script));
+              dispatch(scriptActions.delete(script));
               setDeleting(script.name);
               hideExpanded();
             }}
@@ -153,12 +153,12 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
   const [deletingScript, setDeleting] = useState();
-  const scriptsLoading = useSelector(selectors.scripts.loading);
-  const scriptsLoaded = useSelector(selectors.scripts.loaded);
-  const scriptsErrors = useSelector(selectors.scripts.errors);
-  const saved = useSelector(selectors.scripts.saved);
+  const scriptsLoading = useSelector(scriptSelectors.loading);
+  const scriptsLoaded = useSelector(scriptSelectors.loaded);
+  const scriptsErrors = useSelector(scriptSelectors.errors);
+  const saved = useSelector(scriptSelectors.saved);
   const userScripts = useSelector(state =>
-    selectors.scripts.search(state, searchText, type)
+    scriptSelectors.search(state, searchText, type)
   );
 
   const hideExpanded = () => {
@@ -167,7 +167,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
   };
 
   useEffect(() => {
-    dispatch(actions.scripts.fetch());
+    dispatch(scriptActions.fetch());
   }, [dispatch, type]);
 
   useEffect(() => {
@@ -176,7 +176,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
         messages.add(`${deletingScript} removed successfully.`, "information")
       );
       setDeleting();
-      dispatch(actions.scripts.cleanup());
+      dispatch(scriptActions.cleanup());
     }
   }, [deletingScript, dispatch, saved]);
 
@@ -188,7 +188,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
           "negative"
         )
       );
-      dispatch(actions.scripts.cleanup());
+      dispatch(scriptActions.cleanup());
     }
   }, [deletingScript, scriptsErrors, dispatch]);
 
