@@ -109,7 +109,7 @@ const ScriptsUpload = ({ type }) => {
 
   if (saved) {
     // The script was successfully uploaded so redirect to the scripts list.
-    return <Redirect to={`/scripts/${type}`} />;
+    return <Redirect to={`/settings/scripts/${type}`} />;
   }
 
   return (
