@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { useDropzone } from "react-dropzone";
@@ -12,14 +12,14 @@ import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import Row from "app/base/components/Row";
-import actions from "app/settings/actions";
-import selectors from "app/settings/selectors";
+import { scripts as scriptActions } from "app/base/actions";
+import { scripts as scriptSelectors } from "app/base/selectors";
 
 const ScriptsUpload = ({ type }) => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
-  const hasErrors = useSelector(selectors.scripts.hasErrors);
-  const errors = useSelector(selectors.scripts.errors);
-  const saved = useSelector(selectors.scripts.saved);
+  const hasErrors = useSelector(scriptSelectors.hasErrors);
+  const errors = useSelector(scriptSelectors.errors);
+  const saved = useSelector(scriptSelectors.saved);
   const [savedScript, setSavedScript] = useState();
   const [script, setScript] = useState();
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const ScriptsUpload = ({ type }) => {
           )
         );
       });
-      dispatch(actions.scripts.cleanup());
+      dispatch(scriptActions.cleanup());
     }
   }, [savedScript, hasErrors, errors, dispatch]);
 
@@ -95,7 +95,7 @@ const ScriptsUpload = ({ type }) => {
 
   useEffect(() => {
     if (saved) {
-      dispatch(actions.scripts.cleanup());
+      dispatch(scriptActions.cleanup());
       dispatch(
         messages.add(`${savedScript} uploaded successfully.`, "information")
       );
@@ -134,8 +134,8 @@ const ScriptsUpload = ({ type }) => {
         <Form
           onSubmit={e => {
             e.preventDefault();
-            dispatch(actions.scripts.cleanup());
-            dispatch(actions.scripts.upload(script.name, type, script.script));
+            dispatch(scriptActions.cleanup());
+            dispatch(scriptActions.upload(script.name, type, script.script));
             setSavedScript(script.name);
           }}
         >
