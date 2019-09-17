@@ -15,7 +15,7 @@ describe("ScriptsList", () => {
       scripts: {
         loading: false,
         loaded: true,
-        errors: [],
+        errors: {},
         items: [
           {
             id: 1,
@@ -199,6 +199,7 @@ describe("ScriptsList", () => {
       scripts: {
         loading: false,
         loaded: true,
+        errors: {},
         items: [
           {
             id: 1,

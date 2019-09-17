@@ -1,4 +1,13 @@
 import { watchWebSockets } from "./websockets";
-import { watchFetchScripts, watchDeleteScript } from "./http";
+import {
+  watchFetchScripts,
+  watchDeleteScript,
+  watchUploadScript
+} from "./http";
 
-export { watchWebSockets, watchFetchScripts, watchDeleteScript };
+export {
+  watchWebSockets,
+  watchFetchScripts,
+  watchDeleteScript,
+  watchUploadScript
+};

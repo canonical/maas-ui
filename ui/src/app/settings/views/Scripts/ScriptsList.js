@@ -153,10 +153,13 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const [expandedType, setExpandedType] = useState();
   const [searchText, setSearchText] = useState("");
   const [deletingScript, setDeleting] = useState();
+
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
-  const scriptsErrors = useSelector(scriptSelectors.errors);
+  const hasErrors = useSelector(scriptSelectors.hasErrors);
+  const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
+
   const userScripts = useSelector(state =>
     scriptSelectors.search(state, searchText, type)
   );
@@ -181,16 +184,18 @@ const ScriptsList = ({ type = "commissioning" }) => {
   }, [deletingScript, dispatch, saved]);
 
   useEffect(() => {
-    if (scriptsErrors && scriptsErrors.length) {
-      dispatch(
-        messages.add(
-          `Error removing ${deletingScript}: ${scriptsErrors}`,
-          "negative"
-        )
-      );
+    if (hasErrors) {
+      Object.keys(errors).forEach(key => {
+        dispatch(
+          messages.add(
+            `Error deleting ${deletingScript}: ${errors[key]}`,
+            "negative"
+          )
+        );
+      });
       dispatch(scriptActions.cleanup());
     }
-  }, [deletingScript, scriptsErrors, dispatch]);
+  }, [deletingScript, hasErrors, errors, dispatch]);
 
   return (
     <>
