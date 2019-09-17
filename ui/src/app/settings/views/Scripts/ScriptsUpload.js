@@ -67,8 +67,12 @@ const ScriptsUpload = ({ type }) => {
       const acceptedFile = acceptedFiles[0];
       const scriptName = pathParse(acceptedFile.path).name;
       const reader = new FileReader();
-      reader.onabort = () => console.error("file reading was aborted");
-      reader.onerror = () => console.error("file reading has failed");
+      reader.onabort = () => {
+        dispatch(messages.add("Reading file aborted.", "negative"));
+      };
+      reader.onerror = () => {
+        dispatch(messages.add("Error reading file.", "negative"));
+      };
       reader.onload = () => {
         const binaryStr = reader.result;
         setScript({ name: scriptName, script: binaryStr });
