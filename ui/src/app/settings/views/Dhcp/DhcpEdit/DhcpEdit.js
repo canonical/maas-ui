@@ -2,21 +2,21 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
 import { useParams } from "app/base/hooks";
-import actions from "app/settings/actions";
+import { dhcpsnippet as dhcpsnippetActions } from "app/base/actions";
+import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
 import Loader from "app/base/components/Loader";
-import selectors from "app/settings/selectors";
 import DhcpForm from "../DhcpForm";
 
 export const DhcpEdit = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const loading = useSelector(selectors.dhcpsnippet.loading);
+  const loading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippet = useSelector(state =>
-    selectors.dhcpsnippet.getById(state, parseInt(id))
+    dhcpsnippetSelectors.getById(state, parseInt(id))
   );
 
   useEffect(() => {
-    dispatch(actions.dhcpsnippet.fetch());
+    dispatch(dhcpsnippetActions.fetch());
   }, [dispatch]);
 
   if (loading) {

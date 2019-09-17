@@ -1,6 +1,12 @@
 export { default as auth } from "./auth";
 export { default as controller } from "./controller";
 export { default as device } from "./device";
+export { default as dhcpsnippet } from "./dhcpsnippet";
+export { default as general } from "./general";
 export { default as machine } from "./machine";
 export { default as messages } from "./messages";
+export { default as packagerepository } from "./packagerepository";
+export { default as scripts } from "./scripts";
+export { default as subnet } from "./subnet";
+export { default as user } from "./user";
 export { default as websocket } from "./websocket";

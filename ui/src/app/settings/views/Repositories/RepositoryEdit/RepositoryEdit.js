@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import actions from "app/settings/actions";
-import selectors from "app/settings/selectors";
+import { packagerepository as repositoryActions } from "app/base/actions";
+import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { useParams } from "app/base/hooks";
 import Loader from "app/base/components/Loader";
 import RepositoryForm from "../RepositoryForm";
@@ -10,14 +10,14 @@ import RepositoryForm from "../RepositoryForm";
 export const RepositoryEdit = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(actions.repositories.fetch());
+    dispatch(repositoryActions.fetch());
   }, [dispatch]);
 
   const { id, type } = useParams();
-  const loaded = useSelector(selectors.repositories.loaded);
-  const loading = useSelector(selectors.repositories.loading);
+  const loaded = useSelector(repositorySelectors.loaded);
+  const loading = useSelector(repositorySelectors.loading);
   const repository = useSelector(state =>
-    selectors.repositories.getById(state, parseInt(id))
+    repositorySelectors.getById(state, parseInt(id))
   );
 
   if (loading) {

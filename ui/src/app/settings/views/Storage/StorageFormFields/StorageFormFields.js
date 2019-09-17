@@ -3,13 +3,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
-import config from "app/settings/selectors/config";
+import { config as configSelectors } from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
 import Select from "app/base/components/Select";
 
 const StorageFormFields = ({ formikProps }) => {
   const { values } = formikProps;
-  const storageLayoutOptions = useSelector(config.storageLayoutOptions);
+  const storageLayoutOptions = useSelector(
+    configSelectors.storageLayoutOptions
+  );
 
   return (
     <>

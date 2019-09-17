@@ -2,29 +2,35 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import settingsReducers from "./app/settings/reducers";
 import {
   auth,
   controller,
   device,
+  dhcpsnippet,
+  general,
   machine,
   messages,
-  status
+  packagerepository,
+  scripts,
+  status,
+  subnet,
+  user
 } from "./app/base/reducers";
+import { config } from "./app/settings/reducers";
 
 export default history =>
   combineReducers({
-    config: settingsReducers.config,
+    config,
     controller,
     device,
-    dhcpsnippet: settingsReducers.dhcpsnippet,
-    general: settingsReducers.general,
+    dhcpsnippet,
+    general,
     machine,
     messages,
-    packagerepository: settingsReducers.packagerepository,
+    packagerepository,
     router: connectRouter(history),
-    scripts: settingsReducers.scripts,
+    scripts,
     status,
-    subnet: settingsReducers.subnet,
-    user: reduceReducers(settingsReducers.user, auth)
+    subnet,
+    user: reduceReducers(user, auth)
   });

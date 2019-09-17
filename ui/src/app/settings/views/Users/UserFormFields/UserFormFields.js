@@ -8,7 +8,7 @@ import Form from "app/base/components/Form";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import Link from "app/base/components/Link";
-import selectors from "app/settings/selectors";
+import { user as userSelectors } from "app/base/selectors";
 
 const togglePassword = (event, passwordVisible, showPassword) => {
   event.preventDefault();
@@ -17,9 +17,9 @@ const togglePassword = (event, passwordVisible, showPassword) => {
 
 export const UserFormFields = ({ editing, formikProps }) => {
   const [passwordVisible, showPassword] = useState(!editing);
-  const saving = useSelector(selectors.users.saving);
-  const saved = useSelector(selectors.users.saved);
-  const errors = useSelector(selectors.users.errors);
+  const saving = useSelector(userSelectors.saving);
+  const saved = useSelector(userSelectors.saved);
+  const errors = useSelector(userSelectors.errors);
   useFormikErrors(errors, formikProps);
 
   return (

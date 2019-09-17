@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import "./RepositoriesList.scss";
-import actions from "app/settings/actions";
+import { packagerepository as repositoryActions } from "app/base/actions";
+import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
 import { messages } from "app/base/actions";
-import selectors from "app/settings/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -74,7 +74,7 @@ const generateRepositoryRows = (
           modelType="repository"
           onCancel={setExpandedId}
           onConfirm={() => {
-            dispatch(actions.repositories.delete(repo.id));
+            dispatch(repositoryActions.delete(repo.id));
             setDeletedRepo(repo.name);
             setExpandedId();
           }}
@@ -94,24 +94,24 @@ export const Repositories = () => {
   const [searchText, setSearchText] = useState("");
   const [deletedRepo, setDeletedRepo] = useState();
 
-  const loaded = useSelector(selectors.repositories.loaded);
-  const loading = useSelector(selectors.repositories.loading);
-  const saved = useSelector(selectors.repositories.saved);
+  const loaded = useSelector(repositorySelectors.loaded);
+  const loading = useSelector(repositorySelectors.loading);
+  const saved = useSelector(repositorySelectors.saved);
   const repositories = useSelector(state =>
-    selectors.repositories.search(state, searchText)
+    repositorySelectors.search(state, searchText)
   );
 
   const dispatch = useDispatch();
 
   // Fetch repositories on load
   useEffect(() => {
-    dispatch(actions.repositories.fetch());
+    dispatch(repositoryActions.fetch());
   }, [dispatch]);
 
   // Create a deleted notification if successful
   useEffect(() => {
     if (saved) {
-      dispatch(actions.repositories.cleanup());
+      dispatch(repositoryActions.cleanup());
       dispatch(
         messages.add(`${deletedRepo} removed successfully.`, "information")
       );
@@ -121,7 +121,7 @@ export const Repositories = () => {
 
   // Clean up saved and error states on unmount.
   useEffect(() => {
-    dispatch(actions.repositories.cleanup());
+    dispatch(repositoryActions.cleanup());
   }, [dispatch]);
 
   return (
