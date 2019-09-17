@@ -42,7 +42,7 @@ const generateRepositoryRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/repositories/edit/${type}/${repo.id}`}
+                to={`/settings/repositories/edit/${type}/${repo.id}`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -125,10 +125,10 @@ export const Repositories = () => {
           placeholder="Search package repositories"
           value={searchText}
         />
-        <Button element={Link} to="/repositories/add/ppa">
+        <Button element={Link} to="/settings/repositories/add/ppa">
           Add PPA
         </Button>
-        <Button element={Link} to="/repositories/add/repository">
+        <Button element={Link} to="/settings/repositories/add/repository">
           Add repository
         </Button>
       </div>

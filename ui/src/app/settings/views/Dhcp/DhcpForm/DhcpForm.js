@@ -63,7 +63,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
 
   if (saved) {
     // The snippet was successfully created/updated so redirect to the dhcp list.
-    return <Redirect to="/dhcp" />;
+    return <Redirect to="/settings/dhcp" />;
   }
 
   if (

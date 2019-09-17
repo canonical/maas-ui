@@ -1,10 +1,15 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
+import Machines from "app/machines/views/Machines";
 import Settings from "app/settings/views/Settings";
 
-// This component currently routes everything to settings, but exists to
-// facilitate more top level URLS in the future.
-const Routes = () => <Route path="/" component={Settings} />;
+const Routes = () => (
+  <Switch>
+    <Redirect exact from="/" to="/machines" />
+    <Route path="/settings" component={Settings} />
+    <Route path="/machines" component={Machines} />
+  </Switch>
+);
 
 export default Routes;

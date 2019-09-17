@@ -125,7 +125,7 @@ const generateRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/dhcp/${dhcpsnippet.id}/edit`}
+                to={`/settings/dhcp/${dhcpsnippet.id}/edit`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -230,7 +230,7 @@ const DhcpList = () => {
       {dhcpsnippetLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to="/dhcp/add">
+        <Button element={Link} to="/settings/dhcp/add">
           Add snippet
         </Button>
       </div>

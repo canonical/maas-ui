@@ -83,7 +83,7 @@ export const RepositoryForm = ({ type, repository }) => {
 
   if (repositoriesSaved) {
     // The repo was successfully created/updated so redirect to the repo list.
-    return <Redirect to="/repositories" />;
+    return <Redirect to="/settings/repositories" />;
   }
 
   const typeString = type === "ppa" ? "PPA" : "repository";

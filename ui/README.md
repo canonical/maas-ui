@@ -41,7 +41,7 @@ cp ui/.env.development ui/.env.development.local
 Update the contents of that file to:
 
 ```
-REACT_APP_BASENAME="/MAAS/settings"
+REACT_APP_BASENAME="/MAAS/r"
 REACT_APP_MAAS_URL="http://<your-local-maas-ip>:5240/MAAS"
 REACT_APP_WEBSOCKET_URL="ws://<your-local-maas-ip>:5240/MAAS/ws"
 ```
@@ -68,6 +68,7 @@ From the root of the MAAS UI project run:
 From here you should be able to view the project at &lt;your-local-maas-ip>:8000
 
 ## Note
+
 If you are running MAAS on a different host in development, you will need to copy both cookies for `csrftoken` and `sessionid` after authenticating with MAAS into your browser session for maas-ui.
 
 # Changelog Process
@@ -84,4 +85,4 @@ Note: Releasing is not currently supported by the `run` script (see [issue](http
 2. Run `yarn release ${version}`. (e.g. `yarn release 0.1.1`, note no 'v'). Please ensure correct [semantic versioning](https://semver.org/).
 3. Make a commit with `git commit -am "Release v${version}."`.
 4. Push the release with `git push --tags <upstream> master`.
-5. [Draft a new release on Github](https://github.com/canonical-web-and-design/maas-ui/releases/new) using the new version as the *Release title*, copying the changelog section for the new release into the *description* field, and uploading the production tarball in `./dist`.
+5. [Draft a new release on Github](https://github.com/canonical-web-and-design/maas-ui/releases/new) using the new version as the _Release title_, copying the changelog section for the new release into the _description_ field, and uploading the production tarball in `./dist`.

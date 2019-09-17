@@ -60,7 +60,7 @@ export const UserForm = ({ title, user }) => {
 
   if (saved) {
     // The user was successfully created/updated so redirect to the user list.
-    return <Redirect to="/users" />;
+    return <Redirect to="/settings/users" />;
   }
 
   return (

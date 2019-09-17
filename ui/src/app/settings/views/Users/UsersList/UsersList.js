@@ -60,7 +60,7 @@ const generateUserRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/users/${user.id}/edit`}
+                to={`/settings/users/${user.id}/edit`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -147,7 +147,7 @@ const Users = () => {
       {loading && <Loader text="Loading..." inline />}
       <div className="p-table-actions">
         <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to="/users/add">
+        <Button element={Link} to="/settings/users/add">
           Add user
         </Button>
       </div>
