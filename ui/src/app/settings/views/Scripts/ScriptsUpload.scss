@@ -1,18 +1,20 @@
 @import "~vanilla-framework/scss/settings_spacing";
 @import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/_global_functions";
 
 .scripts-upload {
+  @include vf-focus;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-width: 2;
-  border-radius: 2;
+  border-width: 1px;
+  border-radius: 2px;
   border-color: $color-mid-x-light;
   border-style: dashed;
   background-color: $color-light;
-  color: $color-mid-x-light;
+  color: $color-mid;
   outline: none;
   transition: border .24s ease-in-out;
 }

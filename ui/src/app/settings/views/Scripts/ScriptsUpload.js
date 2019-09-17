@@ -1,4 +1,3 @@
-
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -15,36 +14,6 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import Row from "app/base/components/Row";
 import actions from "app/settings/actions";
 import selectors from "app/settings/selectors";
-
-/*
-const baseStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out"
-};
-*/
-
-const activeStyle = {
-  borderColor: "#2196f3"
-};
-
-const acceptStyle = {
-  borderColor: "#0e8420"
-};
-
-const rejectStyle = {
-  borderColor: "#ff1744"
-};
 
 const ScriptsUpload = ({ type }) => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
@@ -124,16 +93,6 @@ const ScriptsUpload = ({ type }) => {
     multiple: false
   });
 
-  const style = useMemo(
-    () => ({
-      ...classNames("scripts-upload"),
-      ...(isDragActive ? classNames("scripts-upload--active") : {}),
-      ...(isDragAccept ? classNames("scripts-upload--accept") : {}),
-      ...(isDragReject ? classNames("scripts-upload--reject") : {})
-    }),
-    [isDragAccept, isDragActive, isDragReject]
-  );
-
   useEffect(() => {
     if (saved) {
       dispatch(actions.scripts.cleanup());
@@ -153,12 +112,21 @@ const ScriptsUpload = ({ type }) => {
     <Card>
       <h4>{`Upload ${type} Script`}</h4>
       <Row>
-        <div {...getRootProps({ style })}>
+        <div
+          {...getRootProps()}
+          className={classNames("scripts-upload", {
+            "scripts-upload--active": isDragActive,
+            "scripts-upload--accept": isDragAccept,
+            "scripts-upload--reject": isDragReject
+          })}
+        >
           <input {...getInputProps()} />
           {isDragActive ? (
-            <p>Drop the file here ...</p>
+            <p className="u-no-margin--bottom">Drop the file here ...</p>
           ) : (
-            <p>Drag 'n' drop a file here, or click to select a file</p>
+            <p className="u-no-margin--bottom">
+              Drag 'n' drop a file here, or click to select a file
+            </p>
           )}
         </div>
       </Row>
@@ -172,9 +140,9 @@ const ScriptsUpload = ({ type }) => {
           }}
         >
           {acceptedFiles.length > 0 && (
-            <small>
+            <p>
               {`${acceptedFiles[0].path} (${acceptedFiles[0].size} bytes) ready for upload.`}
-            </small>
+            </p>
           )}
 
           <FormCardButtons
