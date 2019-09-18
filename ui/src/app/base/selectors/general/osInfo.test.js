@@ -67,6 +67,23 @@ describe("osInfo selectors", () => {
     });
   });
 
+  describe("errors", () => {
+    it("returns osInfo errors state", () => {
+      const errors = "Cannot fetch os info.";
+      const state = {
+        general: {
+          osInfo: {
+            data: [],
+            errors,
+            loaded: true,
+            loading: false
+          }
+        }
+      };
+      expect(osInfo.errors(state)).toStrictEqual(errors);
+    });
+  });
+
   describe("getUbuntuKernelOptions", () => {
     it("returns options for supplied key", () => {
       const data = {

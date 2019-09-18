@@ -1,25 +1,10 @@
-const osInfo = {};
-
 /**
- * Returns object with osinfo data
- * @param {Object} state - the redux state
- * @returns {Object} The osinfo data
+ * Selector for os info.
  */
-osInfo.get = state => state.general.osInfo.data;
 
-/**
- * Returns true if general is loading
- * @param {Object} state - the redux state
- * @returns {Boolean} - general is loading
- */
-osInfo.loading = state => state.general.osInfo.loading;
+import { generateBaseSelector } from "./utils";
 
-/**
- * Returns true if general is loaded
- * @param {Object} state - the redux state
- * @returns {Boolean} - general is loading
- */
-osInfo.loaded = state => state.general.osInfo.loaded;
+const osInfo = generateBaseSelector("osInfo");
 
 /**
  * Returns kernels data

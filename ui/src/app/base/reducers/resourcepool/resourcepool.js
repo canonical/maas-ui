@@ -1,30 +1,30 @@
 import produce from "immer";
 
-const osInfo = produce(
+const resourcepool = produce(
   (draft, action) => {
     switch (action.type) {
-      case "FETCH_GENERAL_OSINFO_START":
+      case "FETCH_RESOURCEPOOL_START":
         draft.loading = true;
         break;
-      case "FETCH_GENERAL_OSINFO_ERROR":
+      case "FETCH_RESOURCEPOOL_ERROR":
         draft.errors = action.error;
         draft.loading = false;
         break;
-      case "FETCH_GENERAL_OSINFO_SUCCESS":
+      case "FETCH_RESOURCEPOOL_SUCCESS":
         draft.loading = false;
         draft.loaded = true;
-        draft.data = action.payload;
+        draft.items = action.payload;
         break;
       default:
         return draft;
     }
   },
   {
-    data: {},
     errors: {},
+    items: [],
     loaded: false,
     loading: false
   }
 );
 
-export default osInfo;
+export default resourcepool;

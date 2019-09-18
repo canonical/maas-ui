@@ -48,4 +48,21 @@ describe("componentsToDisable selectors", () => {
       expect(componentsToDisable.loaded(state)).toStrictEqual(true);
     });
   });
+
+  describe("errors", () => {
+    it("returns componentsToDisable errors state", () => {
+      const errors = "Cannot fetch components to disable.";
+      const state = {
+        general: {
+          componentsToDisable: {
+            data: [],
+            errors,
+            loaded: true,
+            loading: false
+          }
+        }
+      };
+      expect(componentsToDisable.errors(state)).toStrictEqual(errors);
+    });
+  });
 });
