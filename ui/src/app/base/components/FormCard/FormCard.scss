@@ -5,9 +5,7 @@
 }
 
 .form-card__title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-word;
 }
 
 .form-card__buttons {
