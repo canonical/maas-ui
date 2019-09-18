@@ -10,7 +10,7 @@ exports[`FormCard  renders 1`] = `
       size="2"
     >
       <h4
-        className="card-form__title"
+        className="form-card__title"
       >
         Add user
       </h4>
