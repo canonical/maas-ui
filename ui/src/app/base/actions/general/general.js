@@ -13,11 +13,20 @@ const generateGeneralAction = method => () => ({
   }
 });
 
+general.fetchArchitectures = generateGeneralAction("architectures");
 general.fetchComponentsToDisable = generateGeneralAction(
   "components_to_disable"
 );
+general.fetchDefaultMinHweKernel = generateGeneralAction(
+  "default_min_hwe_kernel"
+);
+general.fetchHweKernels = generateGeneralAction("hwe_kernels");
 general.fetchKnownArchitectures = generateGeneralAction("known_architectures");
+general.fetchMachineActions = generateGeneralAction("machine_actions");
+general.fetchNavigationOptions = generateGeneralAction("navigation_options");
 general.fetchOsInfo = generateGeneralAction("osinfo");
 general.fetchPocketsToDisable = generateGeneralAction("pockets_to_disable");
+general.fetchPowerTypes = generateGeneralAction("power_types");
+general.fetchVersion = generateGeneralAction("version");
 
 export default general;

@@ -48,4 +48,21 @@ describe("pocketsToDisable selectors", () => {
       expect(pocketsToDisable.loaded(state)).toStrictEqual(true);
     });
   });
+
+  describe("errors", () => {
+    it("returns pocketsToDisable errors state", () => {
+      const errors = "Cannot fetch pockets to disable.";
+      const state = {
+        general: {
+          pocketsToDisable: {
+            data: [],
+            errors,
+            loaded: true,
+            loading: false
+          }
+        }
+      };
+      expect(pocketsToDisable.errors(state)).toStrictEqual(errors);
+    });
+  });
 });

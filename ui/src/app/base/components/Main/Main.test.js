@@ -14,6 +14,80 @@ describe("Main", () => {
   beforeEach(() => {
     state = {
       config: {},
+      general: {
+        architectures: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        componentsToDisable: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        defaultMinHweKernel: {
+          data: "",
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        hweKernels: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        knownArchitectures: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        machineActions: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        navigationOptions: {
+          data: {},
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        osInfo: {
+          data: {},
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        pocketsToDisable: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        powerTypes: {
+          data: [],
+          errors: {},
+          loaded: false,
+          loading: false
+        },
+        version: {
+          data: "",
+          errors: {},
+          loaded: false,
+          loading: false
+        }
+      },
+      machine: {
+        errors: {},
+        items: [],
+        loaded: false,
+        loading: false
+      },
       messages: {
         items: []
       },

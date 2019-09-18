@@ -48,4 +48,21 @@ describe("knownArchitectures selectors", () => {
       expect(knownArchitectures.loaded(state)).toStrictEqual(true);
     });
   });
+
+  describe("errors", () => {
+    it("returns knownArchitectures errors state", () => {
+      const errors = "Cannot fetch known architectures.";
+      const state = {
+        general: {
+          knownArchitectures: {
+            data: [],
+            errors,
+            loaded: true,
+            loading: false
+          }
+        }
+      };
+      expect(knownArchitectures.errors(state)).toStrictEqual(errors);
+    });
+  });
 });

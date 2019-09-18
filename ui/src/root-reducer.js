@@ -11,10 +11,14 @@ import {
   machine,
   messages,
   packagerepository,
+  resourcepool,
   scripts,
+  service,
   status,
   subnet,
-  user
+  tag,
+  user,
+  zone
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 
@@ -28,9 +32,13 @@ export default history =>
     machine,
     messages,
     packagerepository,
+    resourcepool,
     router: connectRouter(history),
     scripts,
+    service,
     status,
     subnet,
-    user: reduceReducers(user, auth)
+    tag,
+    user: reduceReducers(user, auth),
+    zone
   });
