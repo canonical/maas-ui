@@ -2,8 +2,8 @@
  * Selector for all possible machine actions.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const machineActions = generateBaseSelector("machineActions");
+const machineActions = generateGeneralSelector("machineActions");
 
 export default machineActions;

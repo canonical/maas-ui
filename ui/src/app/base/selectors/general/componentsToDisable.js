@@ -2,8 +2,8 @@
  * Selector for components that can be disabled for default Ubuntu archives.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const componentsToDisable = generateBaseSelector("componentsToDisable");
+const componentsToDisable = generateGeneralSelector("componentsToDisable");
 
 export default componentsToDisable;

@@ -2,8 +2,8 @@
  * Selector for all supported hwe kernel.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const hweKernels = generateBaseSelector("hweKernels");
+const hweKernels = generateGeneralSelector("hweKernels");
 
 export default hweKernels;

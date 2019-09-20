@@ -2,8 +2,8 @@
  * Selector for the MAAS version.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const version = generateBaseSelector("version");
+const version = generateGeneralSelector("version");
 
 export default version;

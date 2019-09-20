@@ -1,4 +1,4 @@
-export const generateBaseSelector = name => {
+export const generateGeneralSelector = name => {
   const selector = {};
 
   selector.get = state => state.general[name].data;
@@ -9,4 +9,4 @@ export const generateBaseSelector = name => {
   return selector;
 };
 
-export default generateBaseSelector;
+export default generateGeneralSelector;
