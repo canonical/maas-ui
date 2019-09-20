@@ -2,8 +2,8 @@
  * Selector for options for navigation.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const navigationOptions = generateBaseSelector("navigationOptions");
+const navigationOptions = generateGeneralSelector("navigationOptions");
 
 export default navigationOptions;

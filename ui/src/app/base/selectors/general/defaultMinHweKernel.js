@@ -2,8 +2,8 @@
  * Selector for the default minimum hwe kernel.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const defaultMinHweKernel = generateBaseSelector("defaultMinHweKernel");
+const defaultMinHweKernel = generateGeneralSelector("defaultMinHweKernel");
 
 export default defaultMinHweKernel;

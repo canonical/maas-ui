@@ -2,9 +2,9 @@
  * Selector for os info.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const osInfo = generateBaseSelector("osInfo");
+const osInfo = generateGeneralSelector("osInfo");
 
 /**
  * Returns kernels data

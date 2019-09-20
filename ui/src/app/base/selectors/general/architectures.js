@@ -2,8 +2,8 @@
  * Selector for all usable architectures.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const architectures = generateBaseSelector("architectures");
+const architectures = generateGeneralSelector("architectures");
 
 export default architectures;

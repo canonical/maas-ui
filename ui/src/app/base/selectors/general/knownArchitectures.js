@@ -2,8 +2,8 @@
  * Selector for all known architectures, usable or not.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const knownArchitectures = generateBaseSelector("knownArchitectures");
+const knownArchitectures = generateGeneralSelector("knownArchitectures");
 
 export default knownArchitectures;

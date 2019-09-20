@@ -2,8 +2,8 @@
  * Selector for power types.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const powerTypes = generateBaseSelector("powerTypes");
+const powerTypes = generateGeneralSelector("powerTypes");
 
 export default powerTypes;

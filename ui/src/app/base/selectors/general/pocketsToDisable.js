@@ -2,8 +2,8 @@
  * Selector for pockets that can be disabled.
  */
 
-import { generateBaseSelector } from "./utils";
+import { generateGeneralSelector } from "./utils";
 
-const pocketsToDisable = generateBaseSelector("pocketsToDisable");
+const pocketsToDisable = generateGeneralSelector("pocketsToDisable");
 
 export default pocketsToDisable;
