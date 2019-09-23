@@ -246,7 +246,7 @@ exports[`Header renders 1`] = `
           >
             <Link
               className="p-dropdown__item"
-              to="account/prefs"
+              to="/account/prefs"
             >
               <a
                 className="p-dropdown__item"
