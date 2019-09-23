@@ -5,7 +5,7 @@
 @import "~vanilla-framework/scss/patterns_lists";
 @import "src/scss/settings";
 
-.settings-nav__list {
+.side-nav__list {
   @extend %vf-clearfix;
   @include vf-list;
   margin-bottom: $spv-inner--small;
@@ -16,7 +16,7 @@
   }
 }
 
-.settings-nav__item {
+.side-nav__item {
   padding-bottom: $spv-inner--x-small / 2;
   padding-top: $spv-inner--x-small / 2;
 
@@ -29,7 +29,7 @@
   }
 }
 
-.settings-nav .is-active {
+.side-nav .is-active {
   position: relative;
 
   &::before {
@@ -43,6 +43,6 @@
   }
 }
 
-.settings-nav__item > .settings-nav__list {
+.side-nav__item > .side-nav__list {
   padding-left: $sph-inner;
 }
