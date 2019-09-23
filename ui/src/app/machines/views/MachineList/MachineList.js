@@ -14,32 +14,51 @@ import {
 import { machine as machineSelectors } from "app/base/selectors";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
+import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
 
-const DnsForm = () => {
-  const dispatch = useDispatch();
+const generateRows = machines =>
+  machines.map(machine => ({
+    columns: [
+      {
+        content: machine.fqdn
+      }
+    ],
+    sortData: {
+      name: machine.fqdn,
+      power: machine.power_state,
+      status: machine.status,
+      owner: machine.owner,
+      pool: machine.pool.name,
+      zone: machine.zone.name,
+      cores: machine.cpu_count,
+      ram: machine.memory,
+      disks: machine.physical_disk_count,
+      storage: machine.storage
+    }
+  }));
 
+const MachineList = () => {
+  const dispatch = useDispatch();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
 
   useEffect(() => {
-    if (!machinesLoaded) {
-      dispatch(generalActions.fetchArchitectures());
-      dispatch(generalActions.fetchDefaultMinHweKernel());
-      dispatch(generalActions.fetchHweKernels());
-      dispatch(generalActions.fetchMachineActions());
-      dispatch(generalActions.fetchOsInfo());
-      dispatch(generalActions.fetchPowerTypes());
-      dispatch(generalActions.fetchVersion());
-      dispatch(machineActions.fetch());
-      dispatch(resourcePoolActions.fetch());
-      dispatch(scriptActions.fetch());
-      dispatch(serviceActions.fetch());
-      dispatch(tagActions.fetch());
-      dispatch(userActions.fetch());
-      dispatch(zoneActions.fetch());
-    }
+    dispatch(generalActions.fetchArchitectures());
+    dispatch(generalActions.fetchDefaultMinHweKernel());
+    dispatch(generalActions.fetchHweKernels());
+    dispatch(generalActions.fetchMachineActions());
+    dispatch(generalActions.fetchOsInfo());
+    dispatch(generalActions.fetchPowerTypes());
+    dispatch(generalActions.fetchVersion());
+    dispatch(machineActions.fetch());
+    dispatch(resourcePoolActions.fetch());
+    dispatch(scriptActions.fetch());
+    dispatch(serviceActions.fetch());
+    dispatch(tagActions.fetch());
+    dispatch(userActions.fetch());
+    dispatch(zoneActions.fetch());
   }, [dispatch, machinesLoaded]);
 
   return (
@@ -51,17 +70,24 @@ const DnsForm = () => {
           </div>
         )}
         {machinesLoaded && (
-          <ul className="p-list">
-            {machines.map(machine => (
-              <li className="p-list__item" key={machine.fqdn}>
-                {machine.fqdn}
-              </li>
-            ))}
-          </ul>
+          <MainTable
+            className="p-table-expanding--light"
+            defaultSort="status"
+            defaultSortDirection="ascending"
+            headers={[
+              {
+                content: "FQDN",
+                sortKey: "name"
+              }
+            ]}
+            paginate={150}
+            rows={generateRows(machines)}
+            sortable
+          />
         )}
       </Col>
     </Row>
   );
 };
 
-export default DnsForm;
+export default MachineList;

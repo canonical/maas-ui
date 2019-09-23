@@ -4,11 +4,13 @@ import React from "react";
 import PaginationButton from "app/base/components/PaginationButton";
 import PaginationItem from "app/base/components/PaginationItem";
 
+const scrollTop = () => window.scrollTo(0, 0);
+
 const generatePaginationItems = (
   pageNumbers,
   currentPage,
   truncateThreshold,
-  paginate
+  changePage
 ) => {
   const lastPage = pageNumbers.length;
   const truncated = lastPage > truncateThreshold;
@@ -46,7 +48,7 @@ const generatePaginationItems = (
         key={1}
         number={1}
         isActive={currentPage === 1}
-        onClick={() => paginate(1)}
+        onClick={() => changePage(1)}
       />
     );
     if (![1, 2, 3].includes(currentPage)) {
@@ -60,7 +62,7 @@ const generatePaginationItems = (
         key={number}
         number={number}
         isActive={number === currentPage}
-        onClick={() => paginate(number)}
+        onClick={() => changePage(number)}
       />
     ))
   );
@@ -75,7 +77,7 @@ const generatePaginationItems = (
         key={lastPage}
         number={lastPage}
         isActive={currentPage === lastPage}
-        onClick={() => paginate(lastPage)}
+        onClick={() => changePage(lastPage)}
       />
     );
   }
@@ -93,6 +95,7 @@ const Pagination = ({
   totalItems,
   paginate,
   currentPage,
+  scrollToTop,
   truncateThreshold = 10,
   ...props
 }) => {
@@ -107,6 +110,11 @@ const Pagination = ({
     pageNumbers.push(i);
   }
 
+  const changePage = page => {
+    paginate(page);
+    scrollToTop && scrollTop();
+  };
+
   return (
     <nav {...props}>
       <ul className="p-pagination">
@@ -114,21 +122,21 @@ const Pagination = ({
           key="back"
           direction="back"
           disabled={currentPage === 1}
-          onClick={() => paginate(currentPage - 1)}
+          onClick={() => changePage(currentPage - 1)}
         />
 
         {generatePaginationItems(
           pageNumbers,
           currentPage,
           truncateThreshold,
-          paginate
+          changePage
         )}
 
         <PaginationButton
           key="forward"
           direction="forward"
           disabled={currentPage === pageNumbers.length}
-          onClick={() => paginate(currentPage + 1)}
+          onClick={() => changePage(currentPage + 1)}
         />
       </ul>
     </nav>
@@ -136,10 +144,11 @@ const Pagination = ({
 };
 
 Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
-  totalItems: PropTypes.number.isRequired,
   paginate: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired
+  scrollToTop: PropTypes.bool,
+  totalItems: PropTypes.number.isRequired
 };
 
 export default Pagination;

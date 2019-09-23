@@ -78,22 +78,28 @@ const generateRows = (
   rows,
   currentPage,
   setCurrentPage,
-  sortable
+  sortable,
+  sortFunction
 ) => {
   // Clone the rows so we can restore the original order.
   const sortedRows = [...rows];
   if (sortable && currentSortKey) {
-    sortedRows.sort((a, b) => {
-      if (!a.sortData || !b.sortData) {
+    if (!sortFunction) {
+      sortFunction = (a, b) => {
+        if (!a.sortData || !b.sortData) {
+          return 0;
+        }
+        if (a.sortData[currentSortKey] > b.sortData[currentSortKey]) {
+          return currentSortDirection === "ascending" ? 1 : -1;
+        } else if (a.sortData[currentSortKey] < b.sortData[currentSortKey]) {
+          return currentSortDirection === "ascending" ? -1 : 1;
+        }
         return 0;
-      }
-      if (a.sortData[currentSortKey] > b.sortData[currentSortKey]) {
-        return currentSortDirection === "ascending" ? 1 : -1;
-      } else if (a.sortData[currentSortKey] < b.sortData[currentSortKey]) {
-        return currentSortDirection === "ascending" ? -1 : 1;
-      }
-      return 0;
-    });
+      };
+    }
+    sortedRows.sort((a, b) =>
+      sortFunction(a, b, currentSortDirection, currentSortKey)
+    );
   }
   let slicedRows = sortedRows;
   if (paginate) {
@@ -137,10 +143,12 @@ const MainTable = ({
   defaultSortDirection,
   expanding,
   headers,
+  onUpdateSort,
   paginate,
   rows,
   responsive,
   sortable,
+  sortFunction,
   ...props
 }) => {
   const [currentSortKey, setSortKey] = useState(defaultSort);
@@ -159,6 +167,11 @@ const MainTable = ({
     setSortDirection(defaultSortDirection);
   }, [defaultSortDirection]);
 
+  const updateSort = newSort => {
+    setSortKey(newSort);
+    onUpdateSort && onUpdateSort(newSort);
+  };
+
   return (
     <>
       <Table
@@ -174,7 +187,7 @@ const MainTable = ({
             expanding,
             headers,
             sortable,
-            setSortKey,
+            updateSort,
             setSortDirection
           )}
         {rows &&
@@ -186,7 +199,8 @@ const MainTable = ({
             rows,
             currentPage,
             setCurrentPage,
-            sortable
+            sortable,
+            sortFunction
           )}
       </Table>
       {paginate && rows && rows.length > 0 && (
@@ -214,6 +228,7 @@ MainTable.propTypes = {
       sortKey: PropTypes.string
     })
   ),
+  onUpdateSort: PropTypes.func,
   paginate: PropTypes.number,
   responsive: PropTypes.bool,
   rows: PropTypes.arrayOf(
@@ -233,7 +248,8 @@ MainTable.propTypes = {
       sortData: PropTypes.object
     })
   ),
-  sortable: PropTypes.bool
+  sortable: PropTypes.bool,
+  sortFunction: PropTypes.func
 };
 
 export default MainTable;
