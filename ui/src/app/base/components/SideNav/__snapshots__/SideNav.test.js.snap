@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SideNav renders 1`] = `
+<SideNav
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "canGo": [Function],
+      "createHref": [Function],
+      "entries": Array [
+        Object {
+          "hash": "",
+          "key": "testKey",
+          "pathname": "/settings",
+          "search": "",
+        },
+      ],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "index": 0,
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "testKey",
+        "pathname": "/settings",
+        "search": "",
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  items={
+    Array [
+      Object {
+        "label": "Configuration",
+        "subNav": Array [
+          Object {
+            "label": "General",
+            "path": "configuration/general",
+          },
+          Object {
+            "label": "Commissioning",
+            "path": "configuration/commissioning",
+          },
+          Object {
+            "label": "Deploy",
+            "path": "configuration/deploy",
+          },
+          Object {
+            "label": "Kernel parameters",
+            "path": "configuration/kernel-parameters",
+          },
+        ],
+      },
+      Object {
+        "label": "Users",
+        "path": "users",
+      },
+    ]
+  }
+  location={
+    Object {
+      "hash": "",
+      "key": "testKey",
+      "pathname": "/settings",
+      "search": "",
+    }
+  }
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {},
+      "path": "/settings",
+      "url": "/settings",
+    }
+  }
+>
+  <nav
+    className="side-nav"
+  >
+    <ul
+      className="side-nav__list"
+    >
+      <li
+        className="side-nav__item"
+        key="Configuration"
+      >
+        <strong>
+          Configuration
+        </strong>
+        <ul
+          className="side-nav__list"
+        >
+          <li
+            className="side-nav__item"
+            key="/settings/configuration/general"
+          >
+            <Link
+              className="p-link--soft"
+              to="/settings/configuration/general"
+            >
+              <a
+                className="p-link--soft"
+                href="/settings/configuration/general"
+                onClick={[Function]}
+              >
+                General
+              </a>
+            </Link>
+          </li>
+          <li
+            className="side-nav__item"
+            key="/settings/configuration/commissioning"
+          >
+            <Link
+              className="p-link--soft"
+              to="/settings/configuration/commissioning"
+            >
+              <a
+                className="p-link--soft"
+                href="/settings/configuration/commissioning"
+                onClick={[Function]}
+              >
+                Commissioning
+              </a>
+            </Link>
+          </li>
+          <li
+            className="side-nav__item"
+            key="/settings/configuration/deploy"
+          >
+            <Link
+              className="p-link--soft"
+              to="/settings/configuration/deploy"
+            >
+              <a
+                className="p-link--soft"
+                href="/settings/configuration/deploy"
+                onClick={[Function]}
+              >
+                Deploy
+              </a>
+            </Link>
+          </li>
+          <li
+            className="side-nav__item"
+            key="/settings/configuration/kernel-parameters"
+          >
+            <Link
+              className="p-link--soft"
+              to="/settings/configuration/kernel-parameters"
+            >
+              <a
+                className="p-link--soft"
+                href="/settings/configuration/kernel-parameters"
+                onClick={[Function]}
+              >
+                Kernel parameters
+              </a>
+            </Link>
+          </li>
+        </ul>
+      </li>
+      <li
+        className="side-nav__item"
+        key="/settings/users"
+      >
+        <strong
+          className=""
+        >
+          <Link
+            className="p-link--soft"
+            to="/settings/users"
+          >
+            <a
+              className="p-link--soft"
+              href="/settings/users"
+              onClick={[Function]}
+            >
+              Users
+            </a>
+          </Link>
+        </strong>
+      </li>
+    </ul>
+  </nav>
+</SideNav>
+`;

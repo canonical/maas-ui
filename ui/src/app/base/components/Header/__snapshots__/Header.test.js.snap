@@ -244,11 +244,16 @@ exports[`Header renders 1`] = `
             className="p-navigation__link"
             role="menuitem"
           >
-            <a
+            <Link
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/account/prefs/"
-              role="menuitem"
-            />
+              to="account/prefs"
+            >
+              <a
+                className="p-dropdown__item"
+                href="/account/prefs"
+                onClick={[Function]}
+              />
+            </Link>
           </li>
           <li
             className="p-navigation__link"

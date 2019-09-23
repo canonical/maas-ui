@@ -202,15 +202,13 @@ export const Header = () => {
               : null}
           </ul>
           <ul className="p-navigation__links--right" role="menu">
-            <li className="p-navigation__link" role="menuitem">
-              <a
-                className="p-dropdown__item"
-                role="menuitem"
-                href={generateURL("account/prefs/")}
-              >
-                {authUser.username}
-              </a>
-            </li>
+            {generateLocalLink(
+              location,
+              "account/prefs",
+              authUser.username,
+              true,
+              false
+            )}
             <li className="p-navigation__link" role="menuitem">
               <a
                 className="p-dropdown__item"
