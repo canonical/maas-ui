@@ -204,7 +204,7 @@ export const Header = () => {
           <ul className="p-navigation__links--right" role="menu">
             {generateLocalLink(
               location,
-              "account/prefs",
+              "/account/prefs",
               authUser.username,
               true,
               false
