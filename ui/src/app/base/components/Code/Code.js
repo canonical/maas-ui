@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef } from "react";
 
 const Code = ({
   children,
@@ -10,6 +10,7 @@ const Code = ({
   numbered,
   ...props
 }) => {
+  const input = useRef(null);
   if (inline) {
     return (
       <code className={className} {...props}>
@@ -17,14 +18,26 @@ const Code = ({
       </code>
     );
   } else if (copyable) {
+    const handleClick = evt => {
+      input.current.focus();
+      input.current.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.error("Copy was unsuccessful");
+      }
+    };
     return (
       <div className={classNames(className, "p-code-copyable")} {...props}>
         <input
           className="p-code-copyable__input"
-          value={children}
           readOnly="readonly"
+          ref={input}
+          value={children}
         />
-        <button className="p-code-copyable__action">Copy to clipboard</button>
+        <button className="p-code-copyable__action" onClick={handleClick}>
+          Copy to clipboard
+        </button>
       </div>
     );
   } else if (numbered) {

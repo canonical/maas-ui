@@ -19,6 +19,7 @@ exports[`Code  can render as copyable 1`] = `
   />
   <button
     className="p-code-copyable__action"
+    onClick={[Function]}
   >
     Copy to clipboard
   </button>
