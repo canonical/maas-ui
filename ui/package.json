@@ -6,7 +6,7 @@
     "classnames": "2.2.6",
     "connected-react-router": "6.5.2",
     "cross-env": "6.0.0",
-    "date-fns": "2.2.1",
+    "date-fns": "2.3.0",
     "formik": "1.5.8",
     "http-proxy-middleware": "0.20.0",
     "path-parse": "1.0.6",
