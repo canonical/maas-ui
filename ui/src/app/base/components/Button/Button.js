@@ -36,7 +36,11 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  element: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  element: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object,
+    PropTypes.string
+  ]),
   hasIcon: PropTypes.bool,
   inline: PropTypes.bool
 };
