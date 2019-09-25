@@ -74,10 +74,11 @@ const Routes = () => {
       />
       <Route
         exact
-        path={`${match.path}/network/network-discovery"`}
+        path={`${match.path}/network/network-discovery`}
         component={NetworkDiscoveryForm}
       />
       <Redirect
+        exact
         from={`${match.path}/network`}
         to={`${match.path}/network/proxy`}
       />
