@@ -10309,10 +10309,10 @@ redux-mock-store@1.5.3:
   dependencies:
     lodash.isplainobject "^4.0.6"
 
-redux-saga-test-plan@4.0.0-rc.1:
-  version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-4.0.0-rc.1.tgz#f3c4a17b95d080ac640e212312e119dee8020d67"
-  integrity sha512-pCdbQaR1V9ek0Q7Tu4FSWNnVns3tuNqUieyRXIJ95BRmpTqGEAKRUCj5Qkc936y7FT4Cuu7JVN51j972jIh8Fg==
+redux-saga-test-plan@4.0.0-rc.3:
+  version "4.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-4.0.0-rc.3.tgz#bde05527202be652859e68d15cdabe79ffa7509a"
+  integrity sha512-18Ha1AWmP4Xt64cSyJv2j7sH8lwQzdk/LByiyhoNyuqyhzkQzlKlflHr3LqiSCzn3e2AgFxagynto8XGRqsHcg==
   dependencies:
     core-js "^2.4.1"
     fsm-iterator "^1.1.0"
