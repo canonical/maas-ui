@@ -1,7 +1,6 @@
 import { format, parse } from "date-fns";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 
 import "./DhcpList.scss";
@@ -23,6 +22,7 @@ import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
+import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -85,23 +85,15 @@ const generateRows = (
       columns: [
         {
           content: (
-            <Button
-              appearance="link"
-              className={classNames("dhcp-list__toggle", {
-                "is-active": expanded && !showDelete
-              })}
-              inline
-              onClick={() => {
-                if (expandedId && !showDelete) {
-                  hideExpanded();
-                } else {
-                  setExpandedId(dhcpsnippet.id);
-                  setExpandedType("details");
-                }
+            <ColumnToggle
+              isExpanded={expanded && !showDelete}
+              label={dhcpsnippet.name}
+              onClose={hideExpanded}
+              onOpen={() => {
+                setExpandedId(dhcpsnippet.id);
+                setExpandedType("details");
               }}
-            >
-              <span className="dhcp-list__toggle-name">{dhcpsnippet.name}</span>
-            </Button>
+            />
           ),
           role: "rowheader"
         },

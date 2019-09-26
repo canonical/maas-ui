@@ -17,8 +17,8 @@
   vertical-align: middle;
 }
 
-td:not(.p-table-expanding__panel) [class*="p-button"].sshkey-list__toggle,
-.sshkey-list__toggle {
+td:not(.p-table-expanding__panel) [class*="p-button"].column-toggle,
+.column-toggle {
   align-self: flex-start;
   color: $color-dark;
   margin: 0;
@@ -27,15 +27,15 @@ td:not(.p-table-expanding__panel) [class*="p-button"].sshkey-list__toggle,
   display: flex;
 }
 
-.sshkey-list__toggle-name {
+.column-toggle__name {
   flex: 1 1 auto;
 }
 
-.sshkey-list__toggle::after {
+.column-toggle::after {
   @extend %heading-icon;
 }
 
-.sshkey-list__toggle.is-active::after {
+.column-toggle.is-active::after {
   @extend %heading-icon;
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
