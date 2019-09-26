@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 
-import "./SSHKeyList.scss";
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
 import Button from "app/base/components/Button";
 import Col from "app/base/components/Col";
+import ColumnToggle from "app/base/components/ColumnToggle";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
@@ -62,23 +61,15 @@ const generateRows = (
       columns: [
         {
           content: (
-            <Button
-              appearance="link"
-              className={classNames("sshkey-list__toggle", {
-                "is-active": expanded && !showDelete
-              })}
-              inline
-              onClick={() => {
-                if (expandedId && !showDelete) {
-                  hideExpanded();
-                } else {
-                  setExpandedId(id);
-                  setExpandedType("details");
-                }
+            <ColumnToggle
+              isExpanded={expanded && !showDelete}
+              label={group.source}
+              onClose={hideExpanded}
+              onOpen={() => {
+                setExpandedId(id);
+                setExpandedType("details");
               }}
-            >
-              <span className="sshkey-list__toggle-name">{group.source}</span>
-            </Button>
+            />
           ),
           role: "rowheader"
         },

@@ -2,7 +2,6 @@ import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
@@ -10,6 +9,7 @@ import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
+import ColumnToggle from "app/base/components/ColumnToggle";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
@@ -67,23 +67,15 @@ const generateRows = (
       columns: [
         {
           content: (
-            <Button
-              appearance="link"
-              className={classNames("scripts-list__toggle", {
-                "is-active": expanded && !showDelete
-              })}
-              inline
-              onClick={() => {
-                if (expandedId && !showDelete) {
-                  hideExpanded();
-                } else {
-                  setExpandedId(script.id);
-                  setExpandedType("details");
-                }
+            <ColumnToggle
+              isExpanded={expanded && !showDelete}
+              label={script.name}
+              onClose={hideExpanded}
+              onOpen={() => {
+                setExpandedId(script.id);
+                setExpandedType("details");
               }}
-            >
-              <span className="scripts-list__toggle-name">{script.name}</span>
-            </Button>
+            />
           ),
           role: "rowheader"
         },
