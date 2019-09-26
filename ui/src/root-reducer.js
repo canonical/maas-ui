@@ -21,6 +21,7 @@ import {
   zone
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
+import { sshkey } from "./app/preferences/reducers";
 
 export default history =>
   combineReducers({
@@ -36,6 +37,7 @@ export default history =>
     router: connectRouter(history),
     scripts,
     service,
+    sshkey,
     status,
     subnet,
     tag,
