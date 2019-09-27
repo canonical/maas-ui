@@ -10,7 +10,7 @@ exports[`ColumnToggle  renders 1`] = `
   <span
     className="column-toggle__name"
   >
-    label
+    maas.local
   </span>
 </Button>
 `;

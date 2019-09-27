@@ -10,8 +10,8 @@ export const Nav = () => (
         label: "Details"
       },
       {
-        path: "maas-keys",
-        label: "MAAS keys"
+        path: "api-keys",
+        label: "API keys"
       },
       {
         path: "ssh-keys",
