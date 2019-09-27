@@ -43,7 +43,7 @@ describe("SSHKeyList", () => {
     };
   });
 
-  it("displays a loading component if machines are loading", () => {
+  it("displays a loading component if SSH keys are loading", () => {
     state.sshkey.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -60,8 +60,26 @@ describe("SSHKeyList", () => {
     expect(wrapper.find("Loader").exists()).toBe(true);
   });
 
+  it("can display errors", () => {
+    state.sshkey.errors = "Unable to list SSH keys.";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").text()).toEqual(
+      "Error:Unable to list SSH keys."
+    );
+  });
+
   it("can group keys", () => {
-    state.sshkey.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -80,5 +98,49 @@ describe("SSHKeyList", () => {
     );
     // The grouped keys should be displayed in sub cols.
     expect(wrapper.find(".p-table-sub-cols__item").length).toBe(2);
+  });
+
+  it("can display uploaded keys", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const cols = wrapper
+      .find("MainTable tbody tr")
+      .at(3)
+      .find("td");
+    expect(cols.at(0).text()).toEqual("Upload");
+    expect(cols.at(1).text()).toEqual("");
+    expect(cols.at(2).text()).toEqual("ssh-rsa gghh...");
+  });
+
+  it("can display imported keys", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    const cols = wrapper
+      .find("MainTable tbody tr")
+      .at(0)
+      .find("td");
+    expect(cols.at(0).text()).toEqual("Launchpad");
+    expect(cols.at(1).text()).toEqual("koalaparty");
+    expect(cols.at(2).text()).toEqual("ssh-rsa aabb...");
   });
 });

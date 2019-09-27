@@ -45,4 +45,18 @@ describe("sshkey selectors", () => {
       expect(sshkey.loaded(state)).toStrictEqual(true);
     });
   });
+
+  describe("errors", () => {
+    it("returns sshkey error state", () => {
+      const state = {
+        sshkey: {
+          errors: "Unable to list SSH keys.",
+          loading: false,
+          loaded: true,
+          items: []
+        }
+      };
+      expect(sshkey.errors(state)).toEqual("Unable to list SSH keys.");
+    });
+  });
 });

@@ -9,6 +9,7 @@ import Button from "app/base/components/Button";
 import VanillaLink from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
+import Notification from "app/base/components/Notification";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const formatKey = key => {
@@ -122,6 +123,7 @@ const generateRows = (
 
 const SSHKeyList = () => {
   const [expandedId, setExpandedId] = useState();
+  const sshkeyErrors = useSelector(sshkeySelectors.errors);
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
   const sshkeys = useSelector(sshkeySelectors.all);
@@ -137,6 +139,11 @@ const SSHKeyList = () => {
 
   return (
     <>
+      {sshkeyErrors && (
+        <Notification type="negative" status="Error:">
+          {sshkeyErrors}
+        </Notification>
+      )}
       {sshkeyLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <div className="p-table-actions__space-left"></div>

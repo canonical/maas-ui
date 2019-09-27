@@ -11,11 +11,17 @@ const sshkey = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "FETCH_SSHKEY_ERROR":
+        draft.loading = false;
+        draft.loaded = false;
+        draft.errors = action.error;
+        break;
       default:
         return draft;
     }
   },
   {
+    errors: null,
     loading: false,
     loaded: false,
     items: []
