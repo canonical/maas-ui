@@ -1,18 +1,18 @@
 import produce from "immer";
 
-const sshkey = produce(
+const sslkey = produce(
   (draft, action) => {
     switch (action.type) {
-      case "FETCH_SSHKEY_START":
+      case "FETCH_SSLKEY_START":
         draft.loading = true;
         break;
-      case "FETCH_SSHKEY_SUCCESS":
+      case "FETCH_SSLKEY_SUCCESS":
         draft.errors = null;
         draft.loading = false;
         draft.loaded = true;
         draft.items = action.payload;
         break;
-      case "FETCH_SSHKEY_ERROR":
+      case "FETCH_SSLKEY_ERROR":
         draft.loading = false;
         draft.loaded = false;
         draft.errors = action.error;
@@ -29,4 +29,4 @@ const sshkey = produce(
   }
 );
 
-export default sshkey;
+export default sslkey;
