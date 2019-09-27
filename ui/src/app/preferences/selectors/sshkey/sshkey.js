@@ -21,4 +21,11 @@ sshkey.loading = state => state.sshkey.loading;
  */
 sshkey.loaded = state => state.sshkey.loaded;
 
+/**
+ * Get the SSH key errors.
+ * @param {Object} state - The redux state.
+ * @returns {String} The errors from the API.
+ */
+sshkey.errors = state => state.sshkey.errors;
+
 export default sshkey;
