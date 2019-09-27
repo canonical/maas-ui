@@ -147,7 +147,7 @@ const SSHKeyList = () => {
       {sshkeyLoading && <Loader text="Loading..." />}
       <div className="p-table-actions">
         <div className="p-table-actions__space-left"></div>
-        <Button element={Link} to="/settings/dhcp/add">
+        <Button element={Link} to="/account/prefs/ssh-keys/add">
           Import SSH key
         </Button>
       </div>

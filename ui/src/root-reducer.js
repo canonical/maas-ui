@@ -22,6 +22,7 @@ import {
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { sshkey } from "./app/preferences/reducers";
+import { sslkey } from "./app/preferences/reducers";
 
 export default history =>
   combineReducers({
@@ -38,6 +39,7 @@ export default history =>
     scripts,
     service,
     sshkey,
+    sslkey,
     status,
     subnet,
     tag,
