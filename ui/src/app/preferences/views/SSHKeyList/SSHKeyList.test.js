@@ -74,10 +74,11 @@ describe("SSHKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-    const rows = wrapper.find("MainTable").prop("rows");
     // Two of the keys should be grouped together.
-    expect(rows.length).toBe(state.sshkey.items.length - 1);
-    // The count column should match the grouped keys.
-    expect(rows[1].columns[2].content).toBe(2);
+    expect(wrapper.find("MainTable").prop("rows").length).toBe(
+      state.sshkey.items.length - 1
+    );
+    // The grouped keys should be displayed in sub cols.
+    expect(wrapper.find(".p-table-sub-cols__item").length).toBe(2);
   });
 });

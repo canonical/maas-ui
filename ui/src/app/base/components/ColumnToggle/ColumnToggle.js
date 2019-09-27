@@ -20,7 +20,7 @@ const ColumnToggle = ({ isExpanded, label, onClose, onOpen }) => (
       }
     }}
   >
-    <span className="column-toggle__name">label</span>
+    <span className="column-toggle__name">{label}</span>
   </Button>
 );
 

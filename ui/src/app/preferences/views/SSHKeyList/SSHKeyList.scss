@@ -1,0 +1,7 @@
+.sshkey-list td,
+.sshkey-list th {
+  // Actions:
+  &:nth-child(4) {
+    flex: 0 0 10%;
+  }
+}
