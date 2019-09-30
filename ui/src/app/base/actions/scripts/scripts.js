@@ -4,14 +4,19 @@ scripts.fetch = () => ({
   type: "FETCH_SCRIPTS"
 });
 
-scripts.upload = (name, type, contents) => ({
-  type: "UPLOAD_SCRIPT",
-  payload: {
-    name,
+scripts.upload = (type, contents, name) => {
+  const payload = {
     type,
     contents
+  };
+  if (name) {
+    payload.name = name;
   }
-});
+  return {
+    type: "UPLOAD_SCRIPT",
+    payload
+  };
+};
 
 scripts.delete = script => ({
   type: "DELETE_SCRIPT",

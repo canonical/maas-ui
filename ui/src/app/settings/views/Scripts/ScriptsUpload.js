@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { useDropzone } from "react-dropzone";
@@ -20,8 +20,8 @@ const ScriptsUpload = ({ type }) => {
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
-  const [savedScript, setSavedScript] = useState();
-  const [script, setScript] = useState();
+  const [savedScript, setSavedScript] = React.useState();
+  const [script, setScript] = React.useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,15 +67,32 @@ const ScriptsUpload = ({ type }) => {
       const acceptedFile = acceptedFiles[0];
       const scriptName = pathParse(acceptedFile.path).name;
       const reader = new FileReader();
+
       reader.onabort = () => {
         dispatch(messages.add("Reading file aborted.", "negative"));
       };
       reader.onerror = () => {
         dispatch(messages.add("Error reading file.", "negative"));
       };
+
+      let hasMetadata = false;
       reader.onload = () => {
         const binaryStr = reader.result;
-        setScript({ name: scriptName, script: binaryStr });
+        try {
+          const scriptArray = binaryStr.split("\n");
+          scriptArray.forEach(line => {
+            if (line.includes("--- Start MAAS 1.0 script metadata ---")) {
+              hasMetadata = true;
+            }
+          });
+        } catch {
+          console.error("Unable to parse script for metadata.");
+        }
+        setScript({
+          name: scriptName,
+          script: binaryStr,
+          hasMetadata
+        });
       };
 
       reader.readAsBinaryString(acceptedFile);
@@ -139,8 +156,17 @@ const ScriptsUpload = ({ type }) => {
           onSubmit={e => {
             e.preventDefault();
             dispatch(scriptActions.cleanup());
-            dispatch(scriptActions.upload(script.name, type, script.script));
-            setSavedScript(script.name);
+            if (script) {
+              if (script.hasMetadata) {
+                // we allow the API to parse the script name from the metadata header
+                dispatch(scriptActions.upload(type, script.script));
+              } else {
+                dispatch(
+                  scriptActions.upload(type, script.script, script.name)
+                );
+              }
+              setSavedScript(script.name);
+            }
           }}
         >
           {acceptedFiles.length > 0 && (

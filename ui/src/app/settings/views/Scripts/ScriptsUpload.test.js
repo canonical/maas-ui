@@ -133,4 +133,41 @@ describe("ScriptsUpload", () => {
       "Only a single file may be uploaded."
     );
   });
+
+  it("Correctly sets hasMetadata if script contains metadata header", async () => {
+    const setState = jest.fn();
+    const useStateSpy = jest.spyOn(React, "useState");
+    useStateSpy.mockImplementation(init => [init, setState]);
+
+    const store = mockStore(initialState);
+    const contents = "# --- Start MAAS 1.0 script metadata ---";
+
+    const files = [createFile("foo.sh", 1000, "text/script", contents)];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsUpload type="testing" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      wrapper.find("input").simulate("change", {
+        target: { files },
+        preventDefault: () => {},
+        persist: () => {}
+      });
+    });
+
+    await act(async () => {
+      wrapper.find("Form").simulate("submit");
+    });
+
+    expect(setState).toHaveBeenCalledWith({
+      hasMetadata: true,
+      name: "foo",
+      script: contents
+    });
+  });
 });
