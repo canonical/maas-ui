@@ -16,6 +16,17 @@ const handleErrors = response => {
   return response;
 };
 
+const handlePromise = response => {
+  if (response.headers) {
+    const contentType = response.headers.get("Content-Type");
+    if (contentType.includes("application/json")) {
+      return Promise.all([response.ok, response.json()]);
+    } else {
+      return Promise.all([response.ok, response.text()]);
+    }
+  }
+};
+
 export const api = {
   scripts: {
     fetch: csrftoken => {
@@ -38,7 +49,7 @@ export const api = {
         method: "POST",
         body: JSON.stringify({ name, type, script: contents })
       })
-        .then(response => Promise.all([response.ok, response.json()]))
+        .then(handlePromise)
         .then(([responseOk, body]) => {
           if (!responseOk) {
             throw body;
@@ -79,9 +90,13 @@ export function* uploadScriptSaga(action) {
       payload: response
     });
   } catch (errors) {
+    let error = errors;
+    if (typeof error === "string") {
+      error = { "Upload error": error };
+    }
     yield put({
       type: "UPLOAD_SCRIPT_ERROR",
-      errors
+      errors: error
     });
   }
 }
