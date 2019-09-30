@@ -154,6 +154,48 @@ describe("UsersList", () => {
     });
   });
 
+  it("disables delete for the current user", () => {
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("tbody TableRow")
+        .at(0)
+        .find("Button")
+        .at(1)
+        .prop("disabled")
+    ).toBe(true);
+  });
+
+  it("links to preferences for the current user", () => {
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("tbody TableRow")
+        .at(0)
+        .find("Button")
+        .at(0)
+        .prop("to")
+    ).toBe("/account/prefs/details");
+  });
+
   it("can add a message when a user is deleted", () => {
     defaultStore.user.saved = true;
     const store = mockStore(defaultStore);

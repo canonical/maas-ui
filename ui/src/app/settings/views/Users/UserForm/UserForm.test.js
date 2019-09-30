@@ -19,6 +19,7 @@ describe("UserForm", () => {
   beforeEach(() => {
     state = {
       user: {
+        auth: {},
         errors: {},
         items: [],
         loaded: true,
@@ -93,29 +94,32 @@ describe("UserForm", () => {
     );
     act(() =>
       wrapper
-        .find("Formik")
+        .find("UserForm")
+        .at(1)
         .props()
-        .onSubmit({
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin"
-        })
+        .onSave(
+          {
+            isSuperuser: true,
+            email: "test@example.com",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
+            username: "admin"
+          },
+          {},
+          true
+        )
     );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_USER",
         payload: {
           params: {
+            isSuperuser: true,
             email: "test@example.com",
-            first_name: "Miss",
-            id: 808,
-            is_superuser: true,
-            last_name: "Wallaby",
-            password1: "test1234",
-            password2: "test1234",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
             username: "admin"
           }
         },
@@ -138,28 +142,31 @@ describe("UserForm", () => {
     );
     act(() =>
       wrapper
-        .find("Formik")
+        .find("UserForm")
+        .at(1)
         .props()
-        .onSubmit({
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin"
-        })
+        .onSave(
+          {
+            isSuperuser: true,
+            email: "test@example.com",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
+            username: "admin"
+          },
+          {}
+        )
     );
     expect(store.getActions()).toEqual([
       {
         type: "CREATE_USER",
         payload: {
           params: {
+            isSuperuser: true,
             email: "test@example.com",
-            first_name: "Miss",
-            is_superuser: true,
-            last_name: "Wallaby",
-            password1: "test1234",
-            password2: "test1234",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
             username: "admin"
           }
         },

@@ -7,8 +7,10 @@ import React, { useEffect, useState } from "react";
 import "./UsersList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
-import { auth as authActions } from "app/base/actions";
-import { user as userSelectors } from "app/base/selectors";
+import {
+  user as userSelectors,
+  auth as authSelectors
+} from "app/base/selectors";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -26,6 +28,7 @@ const generateUserRows = (
 ) =>
   users.map(user => {
     const expanded = expandedId === user.id;
+    const isAuthUser = user.id === authUser.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
       ? format(
@@ -60,7 +63,11 @@ const generateUserRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/settings/users/${user.id}/edit`}
+                to={
+                  isAuthUser
+                    ? "/account/prefs/details"
+                    : `/settings/users/${user.id}/edit`
+                }
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -71,11 +78,11 @@ const generateUserRows = (
                   appearance="base"
                   className="is-small u-justify-table-icon"
                   onClick={() => setExpandedId(user.id)}
-                  disabled={user.id === authUser.id}
+                  disabled={isAuthUser}
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
-                {user.id === authUser.id && (
+                {isAuthUser && (
                   <span className="p-tooltip__message">
                     You cannot delete your own user.
                   </span>
@@ -121,7 +128,7 @@ const Users = () => {
   const users = useSelector(state => userSelectors.search(state, searchText));
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
-  const authUser = useSelector(authActions.fetch);
+  const authUser = useSelector(authSelectors.get);
   const saved = useSelector(userSelectors.saved);
   const dispatch = useDispatch();
   useAddMessage(

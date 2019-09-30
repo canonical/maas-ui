@@ -27,6 +27,7 @@ describe("UserFormFields", () => {
     };
     state = {
       user: {
+        auth: {},
         errors: {},
         items: [],
         loaded: true,
@@ -101,6 +102,29 @@ describe("UserFormFields", () => {
     ).toEqual(2);
   });
 
+  it("can show the current password field", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields
+            formikProps={formikProps}
+            editing={true}
+            includeCurrentPassword
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Link").simulate("click", { preventDefault: jest.fn() });
+    expect(
+      wrapper.findWhere(
+        n => n.name() === "FormikField" && n.prop("fieldKey") === "old_password"
+      ).length
+    ).toEqual(1);
+  });
+
   it("can set error status", () => {
     state.user.errors = {
       username: ["Username already exists"]
@@ -116,5 +140,28 @@ describe("UserFormFields", () => {
       </Provider>
     );
     expect(formikProps.setStatus).toHaveBeenCalled();
+  });
+
+  it("can include auth errors in the error status", () => {
+    state.user.errors = {
+      username: ["Username already exists"]
+    };
+    state.user.auth.errors = {
+      password: ["Password too short"]
+    };
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserFormFields formikProps={formikProps} includeCurrentPassword />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(formikProps.setStatus.mock.calls[0][0].serverErrors).toEqual({
+      username: "Username already exists",
+      password: "Password too short"
+    });
   });
 });

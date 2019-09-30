@@ -2,24 +2,46 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 
+import { auth as authSelectors } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
+import { user as userSelectors } from "app/base/selectors";
 import Form from "app/base/components/Form";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import Link from "app/base/components/Link";
-import { user as userSelectors } from "app/base/selectors";
 
-const togglePassword = (event, passwordVisible, showPassword) => {
+const togglePassword = (
+  event,
+  passwordVisible,
+  showPassword,
+  onShowPasswordFields
+) => {
   event.preventDefault();
+  onShowPasswordFields && onShowPasswordFields(!passwordVisible);
   showPassword(!passwordVisible);
 };
 
-export const UserFormFields = ({ editing, formikProps }) => {
+export const UserFormFields = ({
+  buttons: Buttons = FormCardButtons,
+  editing,
+  formikProps,
+  includeCurrentPassword,
+  includeUserType = true,
+  onShowPasswordFields
+}) => {
   const [passwordVisible, showPassword] = useState(!editing);
   const saving = useSelector(userSelectors.saving);
   const saved = useSelector(userSelectors.saved);
-  const errors = useSelector(userSelectors.errors);
+  const userErrors = useSelector(userSelectors.errors);
+  const authErrors = useSelector(authSelectors.errors);
+  let errors = userErrors;
+  if (includeCurrentPassword) {
+    errors = {
+      ...authErrors,
+      ...userErrors
+    };
+  }
   useFormikErrors(errors, formikProps);
 
   return (
@@ -35,7 +57,7 @@ export const UserFormFields = ({ editing, formikProps }) => {
       <FormikField
         formikProps={formikProps}
         fieldKey="fullName"
-        label="Full name"
+        label="Full name (optional)"
         type="text"
       />
       <FormikField
@@ -45,16 +67,23 @@ export const UserFormFields = ({ editing, formikProps }) => {
         required={true}
         type="email"
       />
-      <FormikField
-        formikProps={formikProps}
-        fieldKey="isSuperuser"
-        label="MAAS administrator"
-        type="checkbox"
-      />
+      {includeUserType && (
+        <FormikField
+          formikProps={formikProps}
+          fieldKey="isSuperuser"
+          label="MAAS administrator"
+          type="checkbox"
+        />
+      )}
       {editing && !passwordVisible && (
         <Link
           onClick={event =>
-            togglePassword(event, passwordVisible, showPassword)
+            togglePassword(
+              event,
+              passwordVisible,
+              showPassword,
+              onShowPasswordFields
+            )
           }
         >
           Change password&hellip;
@@ -62,10 +91,19 @@ export const UserFormFields = ({ editing, formikProps }) => {
       )}
       {passwordVisible && (
         <>
+          {includeCurrentPassword && (
+            <FormikField
+              formikProps={formikProps}
+              fieldKey="old_password"
+              label="Current password"
+              required={true}
+              type="password"
+            />
+          )}
           <FormikField
             formikProps={formikProps}
             fieldKey="password"
-            label="Password"
+            label={includeCurrentPassword ? "New password" : "Password"}
             required={true}
             type="password"
           />
@@ -73,13 +111,17 @@ export const UserFormFields = ({ editing, formikProps }) => {
             formikProps={formikProps}
             fieldKey="passwordConfirm"
             help="Enter the same password as before, for verification"
-            label="Password (again)"
+            label={
+              includeCurrentPassword
+                ? "New password (again)"
+                : "Password (again)"
+            }
             required={true}
             type="password"
           />
         </>
       )}
-      <FormCardButtons
+      <Buttons
         actionDisabled={saving || formikFormDisabled(formikProps)}
         actionLabel="Save user"
         actionLoading={saving}
@@ -90,6 +132,7 @@ export const UserFormFields = ({ editing, formikProps }) => {
 };
 
 UserFormFields.propTypes = {
+  buttons: PropTypes.func,
   editing: PropTypes.bool,
   formikProps: PropTypes.shape({
     errors: PropTypes.shape({
@@ -119,7 +162,10 @@ UserFormFields.propTypes = {
       passwordConfirm: PropTypes.string,
       username: PropTypes.string
     }).isRequired
-  })
+  }),
+  includeCurrentPassword: PropTypes.bool,
+  includeUserType: PropTypes.bool,
+  onShowPasswordFields: PropTypes.func
 };
 
 export default UserFormFields;
