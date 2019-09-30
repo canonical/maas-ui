@@ -146,7 +146,8 @@ const ScriptsUpload = ({ type }) => {
             <p className="u-no-margin--bottom">Drop the file here ...</p>
           ) : (
             <p className="u-no-margin--bottom">
-              Drag 'n' drop a script here ('.sh' file ext required), or click to select a file
+              Drag 'n' drop a script here ('.sh' file ext required), or click to
+              select a file
             </p>
           )}
         </div>
