@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailsButtons  renders 1`] = `
+<div
+  style={
+    Object {
+      "marginTop": "1rem",
+    }
+  }
+>
+  <ActionButton
+    appearance="positive"
+    className="u-no-margin--bottom"
+    type="submit"
+  >
+    Save user
+  </ActionButton>
+</div>
+`;
