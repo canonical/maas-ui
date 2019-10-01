@@ -138,16 +138,15 @@ describe("ScriptsUpload", () => {
   });
 
   it("dispatches uploadScript without a name if script has metadata", async () => {
+    const store = mockStore(initialState);
+    const contents = "# --- Start MAAS 1.0 script metadata ---";
     readScript.mockImplementation((file, dispatch, callback) => {
       callback({
         name: "foo",
-        script: "contents",
+        script: contents,
         hasMetadata: true
       });
     });
-    const store = mockStore(initialState);
-    const contents = "# --- Start MAAS 1.0 script metadata ---";
-
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     const wrapper = mount(
@@ -173,23 +172,22 @@ describe("ScriptsUpload", () => {
     expect(store.getActions()).toEqual([
       { type: "CLEANUP_SCRIPTS" },
       {
-        payload: { contents: "contents", type: "testing" },
+        payload: { contents, type: "testing" },
         type: "UPLOAD_SCRIPT"
       }
     ]);
   });
 
   it("dispatches uploadScript with a name if script has no metadata", async () => {
+    const store = mockStore(initialState);
+    const contents = "#!/bin/bash\necho 'foo';\n";
     readScript.mockImplementation((file, dispatch, callback) => {
       callback({
         name: "foo",
-        script: "contents",
+        script: contents,
         hasMetadata: false
       });
     });
-    const store = mockStore(initialState);
-    const contents = "# --- Start MAAS 1.0 script metadata ---";
-
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     const wrapper = mount(
@@ -215,7 +213,7 @@ describe("ScriptsUpload", () => {
     expect(store.getActions()).toEqual([
       { type: "CLEANUP_SCRIPTS" },
       {
-        payload: { contents: "contents", type: "testing", name: "foo" },
+        payload: { contents, type: "testing", name: "foo" },
         type: "UPLOAD_SCRIPT"
       }
     ]);
