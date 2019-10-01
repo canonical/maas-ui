@@ -28,4 +28,18 @@ sshkey.loaded = state => state.sshkey.loaded;
  */
 sshkey.errors = state => state.sshkey.errors;
 
+/**
+ * Whether the SSH keys are saving.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether SSH keys are saving.
+ */
+sshkey.saving = state => state.sshkey.saving;
+
+/**
+ * Whether the SSH keys have been saved.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether SSH keys have saved.
+ */
+sshkey.saved = state => state.sshkey.saved;
+
 export default sshkey;

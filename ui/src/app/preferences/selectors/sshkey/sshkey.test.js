@@ -59,4 +59,28 @@ describe("sshkey selectors", () => {
       expect(sshkey.errors(state)).toEqual("Unable to list SSH keys.");
     });
   });
+
+  describe("saving", () => {
+    it("returns sshkey saving state", () => {
+      const state = {
+        sshkey: {
+          saving: false,
+          items: []
+        }
+      };
+      expect(sshkey.saving(state)).toStrictEqual(false);
+    });
+  });
+
+  describe("saved", () => {
+    it("returns sshkey saved state", () => {
+      const state = {
+        sshkey: {
+          saved: true,
+          items: []
+        }
+      };
+      expect(sshkey.saved(state)).toStrictEqual(true);
+    });
+  });
 });

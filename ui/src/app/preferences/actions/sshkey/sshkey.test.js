@@ -10,4 +10,41 @@ describe("sshkey actions", () => {
       }
     });
   });
+
+  it("can handle creating SSH keys", () => {
+    expect(sshkey.create({ key: "id-rsa..." })).toEqual({
+      type: "CREATE_SSHKEY",
+      meta: {
+        model: "sshkey",
+        method: "create"
+      },
+      payload: {
+        params: {
+          key: "id-rsa..."
+        }
+      }
+    });
+  });
+
+  it("can handle importing SSH keys", () => {
+    expect(sshkey.import({ auth_id: "wallaroo", protocol: "lp" })).toEqual({
+      type: "IMPORT_SSHKEY",
+      meta: {
+        model: "sshkey",
+        method: "import_keys"
+      },
+      payload: {
+        params: {
+          auth_id: "wallaroo",
+          protocol: "lp"
+        }
+      }
+    });
+  });
+
+  it("can clean up", () => {
+    expect(sshkey.cleanup()).toEqual({
+      type: "CLEANUP_SSHKEY"
+    });
+  });
 });

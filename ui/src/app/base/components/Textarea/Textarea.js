@@ -62,7 +62,7 @@ Textarea.propTypes = {
   grow: PropTypes.bool,
   help: PropTypes.string,
   id: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.node,
   onKeyUp: PropTypes.func,
   required: PropTypes.bool,
   stacked: PropTypes.bool,
