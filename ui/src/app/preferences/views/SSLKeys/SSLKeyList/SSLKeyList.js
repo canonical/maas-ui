@@ -9,6 +9,7 @@ import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import Notification from "app/base/components/Notification";
+import CopyButton from "app/base/components/CopyButton";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
@@ -18,7 +19,7 @@ const generateRows = (
   hideExpanded,
   dispatch
 ) =>
-  sslkeys.map(({ id, display }) => {
+  sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
     return {
       className: expanded ? "p-table__row is-active" : null,
@@ -30,13 +31,7 @@ const generateRows = (
         {
           content: (
             <>
-              <Button
-                appearance="base"
-                className="is-small u-justify-table-icon u-no-margin--right"
-                onClick={() => {}}
-              >
-                <i className="p-icon--copy">Copy</i>
-              </Button>
+              <CopyButton value={key} />
               <Button
                 appearance="base"
                 className="is-small u-justify-table-icon"

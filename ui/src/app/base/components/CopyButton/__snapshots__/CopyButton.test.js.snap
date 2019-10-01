@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CopyButton  can render 1`] = `
+<CopyButton
+  value="Test key"
+>
+  <Button
+    appearance="base"
+    className="is-small u-justify-table-icon u-no-margin--right"
+    onClick={[Function]}
+  >
+    <button
+      className="is-small u-justify-table-icon u-no-margin--right p-button--base"
+      onClick={[Function]}
+    >
+      <i
+        className="p-icon--copy"
+      >
+        Copy
+      </i>
+    </button>
+  </Button>
+  <input
+    type="hidden"
+    value="Test key"
+  />
+</CopyButton>
+`;
