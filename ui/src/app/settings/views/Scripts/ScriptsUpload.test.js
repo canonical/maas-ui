@@ -6,8 +6,11 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload from "./ScriptsUpload";
+import readScript from "./readScript";
 
 const mockStore = configureStore();
+
+jest.mock("./readScript");
 
 const createFile = (name, size, type, contents = "") => {
   const file = new File([contents], name, { type });
@@ -22,6 +25,16 @@ const createFile = (name, size, type, contents = "") => {
 describe("ScriptsUpload", () => {
   let initialState;
   beforeEach(() => {
+    /*
+    readScript.mockImplementation((file, dispatch, callback) => {
+      callback({
+        name: "foo",
+        script: "contents",
+        hasMetadata: true
+      });
+    });
+    */
+
     initialState = {
       scripts: {
         loading: false,
@@ -134,11 +147,14 @@ describe("ScriptsUpload", () => {
     );
   });
 
-  it("Correctly sets hasMetadata if script contains metadata header", async () => {
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, "useState");
-    useStateSpy.mockImplementation(init => [init, setState]);
-
+  it("dispatches uploadScript without a name if script has metadata", async () => {
+    readScript.mockImplementation((file, dispatch, callback) => {
+      callback({
+        name: "foo",
+        script: "contents",
+        hasMetadata: true
+      });
+    });
     const store = mockStore(initialState);
     const contents = "# --- Start MAAS 1.0 script metadata ---";
 
@@ -164,10 +180,54 @@ describe("ScriptsUpload", () => {
       wrapper.find("Form").simulate("submit");
     });
 
-    expect(setState).toHaveBeenCalledWith({
-      hasMetadata: true,
-      name: "foo",
-      script: contents
+    expect(store.getActions()).toEqual([
+      { type: "CLEANUP_SCRIPTS" },
+      {
+        payload: { contents: "contents", type: "testing" },
+        type: "UPLOAD_SCRIPT"
+      }
+    ]);
+  });
+
+  it("dispatches uploadScript with a name if script has no metadata", async () => {
+    readScript.mockImplementation((file, dispatch, callback) => {
+      callback({
+        name: "foo",
+        script: "contents",
+        hasMetadata: false
+      });
     });
+    const store = mockStore(initialState);
+    const contents = "# --- Start MAAS 1.0 script metadata ---";
+
+    const files = [createFile("foo.sh", 1000, "text/script", contents)];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsUpload type="testing" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      wrapper.find("input").simulate("change", {
+        target: { files },
+        preventDefault: () => {},
+        persist: () => {}
+      });
+    });
+
+    await act(async () => {
+      wrapper.find("Form").simulate("submit");
+    });
+
+    expect(store.getActions()).toEqual([
+      { type: "CLEANUP_SCRIPTS" },
+      {
+        payload: { contents: "contents", type: "testing", name: "foo" },
+        type: "UPLOAD_SCRIPT"
+      }
+    ]);
   });
 });

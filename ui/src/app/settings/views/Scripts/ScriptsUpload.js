@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { useDropzone } from "react-dropzone";
-import pathParse from "path-parse";
 
 import "./ScriptsUpload.scss";
+import readScript from "./readScript";
 import { messages } from "app/base/actions";
 import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
@@ -20,8 +20,8 @@ const ScriptsUpload = ({ type }) => {
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
-  const [savedScript, setSavedScript] = React.useState();
-  const [script, setScript] = React.useState();
+  const [savedScript, setSavedScript] = useState();
+  const [script, setScript] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -65,37 +65,7 @@ const ScriptsUpload = ({ type }) => {
       }
 
       const acceptedFile = acceptedFiles[0];
-      const scriptName = pathParse(acceptedFile.path).name;
-      const reader = new FileReader();
-
-      reader.onabort = () => {
-        dispatch(messages.add("Reading file aborted.", "negative"));
-      };
-      reader.onerror = () => {
-        dispatch(messages.add("Error reading file.", "negative"));
-      };
-
-      let hasMetadata = false;
-      reader.onload = () => {
-        const binaryStr = reader.result;
-        try {
-          const scriptArray = binaryStr.split("\n");
-          scriptArray.forEach(line => {
-            if (line.includes("--- Start MAAS 1.0 script metadata ---")) {
-              hasMetadata = true;
-            }
-          });
-        } catch {
-          console.error("Unable to parse script for metadata.");
-        }
-        setScript({
-          name: scriptName,
-          script: binaryStr,
-          hasMetadata
-        });
-      };
-
-      reader.readAsBinaryString(acceptedFile);
+      readScript(acceptedFile, dispatch, setScript);
     },
     [dispatch]
   );
