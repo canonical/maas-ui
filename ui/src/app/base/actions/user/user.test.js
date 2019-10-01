@@ -57,7 +57,7 @@ describe("user actions", () => {
   });
 
   it("can handle cleaning users", () => {
-    expect(user.cleanup({ name: "kookaburra" })).toEqual({
+    expect(user.cleanup()).toEqual({
       type: "CLEANUP_USER"
     });
   });

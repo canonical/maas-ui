@@ -40,13 +40,14 @@ const Textarea = ({
           }
         }}
         style={
-          grow && {
+          (grow && {
             minHeight: "5rem",
             resize: "none",
             overflow: "hidden",
             boxSizing: "border-box",
             ...style
-          }
+          }) ||
+          style
         }
         {...props}
       />

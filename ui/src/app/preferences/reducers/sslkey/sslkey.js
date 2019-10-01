@@ -17,15 +17,35 @@ const sslkey = produce(
         draft.loaded = false;
         draft.errors = action.error;
         break;
+      case "CREATE_SSLKEY_START":
+        draft.saved = false;
+        draft.saving = true;
+        break;
+      case "CREATE_SSLKEY_ERROR":
+        draft.errors = action.error;
+        draft.saving = false;
+        break;
+      case "CREATE_SSLKEY_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
+        draft.saving = false;
+        break;
+      case "CLEANUP_SSLKEY":
+        draft.errors = {};
+        draft.saved = false;
+        draft.saving = false;
+        break;
       default:
         return draft;
     }
   },
   {
     errors: null,
-    loading: false,
+    items: [],
     loaded: false,
-    items: []
+    loading: false,
+    saved: false,
+    saving: false
   }
 );
 

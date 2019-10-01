@@ -80,7 +80,7 @@ const SSLKeyList = () => {
 
   return (
     <>
-      {sslkeyErrors && (
+      {sslkeyErrors && typeof sslkeyErrors === "string" && (
         <Notification type="negative" status="Error:">
           {sslkeyErrors}
         </Notification>
