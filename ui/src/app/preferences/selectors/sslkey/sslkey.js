@@ -28,4 +28,18 @@ sslkey.loaded = state => state.sslkey.loaded;
  */
 sslkey.errors = state => state.sslkey.errors;
 
+/**
+ * Whether the SSL keys are saving.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether SSL keys are saving.
+ */
+sslkey.saving = state => state.sslkey.saving;
+
+/**
+ * Whether the SSL keys have been saved.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether SSL keys have saved.
+ */
+sslkey.saved = state => state.sslkey.saved;
+
 export default sslkey;

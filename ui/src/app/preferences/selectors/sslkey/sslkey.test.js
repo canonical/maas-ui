@@ -59,4 +59,28 @@ describe("sslkey selectors", () => {
       expect(sslkey.errors(state)).toEqual("Unable to list SSL keys.");
     });
   });
+
+  describe("saving", () => {
+    it("returns sslkey saving state", () => {
+      const state = {
+        sslkey: {
+          saving: false,
+          items: []
+        }
+      };
+      expect(sslkey.saving(state)).toStrictEqual(false);
+    });
+  });
+
+  describe("saved", () => {
+    it("returns sslkey saved state", () => {
+      const state = {
+        sslkey: {
+          saved: true,
+          items: []
+        }
+      };
+      expect(sslkey.saved(state)).toStrictEqual(true);
+    });
+  });
 });

@@ -6,7 +6,9 @@ describe("sslkey reducer", () => {
       errors: null,
       loading: false,
       loaded: false,
-      items: []
+      items: [],
+      saved: false,
+      saving: false
     });
   });
 
@@ -19,7 +21,9 @@ describe("sslkey reducer", () => {
       errors: null,
       loading: true,
       loaded: false,
-      items: []
+      items: [],
+      saved: false,
+      saving: false
     });
   });
 
@@ -30,7 +34,9 @@ describe("sslkey reducer", () => {
           errors: null,
           loading: true,
           loaded: false,
-          items: []
+          items: [],
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_SSLKEY_SUCCESS",
@@ -44,7 +50,9 @@ describe("sslkey reducer", () => {
       errors: null,
       loading: false,
       loaded: true,
-      items: [{ id: 1, key: "ssh-rsa aabb" }, { id: 2, key: "ssh-rsa ccdd" }]
+      items: [{ id: 1, key: "ssh-rsa aabb" }, { id: 2, key: "ssh-rsa ccdd" }],
+      saved: false,
+      saving: false
     });
   });
 
@@ -58,7 +66,110 @@ describe("sslkey reducer", () => {
       errors: "Unable to list SSL keys",
       loading: false,
       loaded: false,
-      items: []
+      items: [],
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_SSLKEY_START", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          type: "CREATE_SSLKEY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce CREATE_SSLKEY_ERROR", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: { key: "Key already exists" },
+          type: "CREATE_SSLKEY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: { key: "Key already exists" },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_SSLKEY_SUCCESS", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          type: "CREATE_SSLKEY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CLEANUP_SSLKEY", () => {
+    expect(
+      sslkey(
+        {
+          errors: { key: "Key already exists" },
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: true
+        },
+        {
+          type: "CLEANUP_SSLKEY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });
