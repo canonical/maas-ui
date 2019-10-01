@@ -25,16 +25,6 @@ const createFile = (name, size, type, contents = "") => {
 describe("ScriptsUpload", () => {
   let initialState;
   beforeEach(() => {
-    /*
-    readScript.mockImplementation((file, dispatch, callback) => {
-      callback({
-        name: "foo",
-        script: "contents",
-        hasMetadata: true
-      });
-    });
-    */
-
     initialState = {
       scripts: {
         loading: false,
