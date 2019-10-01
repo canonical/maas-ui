@@ -49,7 +49,7 @@ Input.propTypes = {
   error: PropTypes.string,
   help: PropTypes.string,
   id: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.node,
   required: PropTypes.bool,
   stacked: PropTypes.bool,
   success: PropTypes.string,

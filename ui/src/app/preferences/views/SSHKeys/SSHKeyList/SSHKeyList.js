@@ -139,7 +139,7 @@ const SSHKeyList = () => {
 
   return (
     <>
-      {sshkeyErrors && (
+      {sshkeyErrors && typeof sshkeyErrors === "string" && (
         <Notification type="negative" status="Error:">
           {sshkeyErrors}
         </Notification>

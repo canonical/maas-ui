@@ -17,15 +17,41 @@ const sshkey = produce(
         draft.loaded = false;
         draft.errors = action.error;
         break;
+      case "IMPORT_SSHKEY_START":
+      case "CREATE_SSHKEY_START":
+        draft.saved = false;
+        draft.saving = true;
+        break;
+      case "IMPORT_SSHKEY_ERROR":
+      case "CREATE_SSHKEY_ERROR":
+        draft.errors = action.error;
+        draft.saving = false;
+        break;
+      case "IMPORT_SSHKEY_SUCCESS":
+      case "CREATE_SSHKEY_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
+        draft.saving = false;
+        break;
+      case "CREATE_SSHKEY_NOTIFY":
+        draft.items.push(action.payload);
+        break;
+      case "CLEANUP_SSHKEY":
+        draft.errors = {};
+        draft.saved = false;
+        draft.saving = false;
+        break;
       default:
         return draft;
     }
   },
   {
     errors: null,
-    loading: false,
+    items: [],
     loaded: false,
-    items: []
+    loading: false,
+    saved: false,
+    saving: false
   }
 );
 

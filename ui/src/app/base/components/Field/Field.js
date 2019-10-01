@@ -107,7 +107,7 @@ Field.propTypes = {
   forId: PropTypes.string,
   help: PropTypes.string,
   isSelect: PropTypes.bool,
-  label: PropTypes.string,
+  label: PropTypes.node,
   labelFirst: PropTypes.bool,
   required: PropTypes.bool,
   stacked: PropTypes.bool,
