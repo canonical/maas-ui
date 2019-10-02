@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./SSHKeyList.scss";
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import VanillaLink from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
@@ -38,14 +39,13 @@ const groupBySource = sshkeys => {
       groupId = sshkey.id;
     }
     const group = groups.get(groupId);
-    const keyDisplay = formatKey(sshkey.key);
     if (group) {
-      group.keys.push(keyDisplay);
+      group.keys.push(sshkey);
       groups.set(groupId, group);
     } else {
       groups.set(groupId, {
         id,
-        keys: [keyDisplay],
+        keys: [sshkey],
         source
       });
     }
@@ -55,13 +55,13 @@ const groupBySource = sshkeys => {
 
 const generateKeyCols = keys => {
   if (keys.length === 1) {
-    return keys[0];
+    return formatKey(keys[0].key);
   }
   return (
     <ul className="p-table-sub-cols__list">
       {keys.map(key => (
-        <div className="p-table-sub-cols__item" key={key}>
-          {key}
+        <div className="p-table-sub-cols__item" key={key.id}>
+          {formatKey(key.key)}
         </div>
       ))}
     </ul>
@@ -107,10 +107,16 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
-          modelName={[group.source, group.id].join("/")}
-          modelType={`SSH key${group.keys.length > 1 ? "s" : ""} for`}
+          message={`Are you sure you want to delete ${
+            group.keys.length > 1 ? "these SSH keys" : "this SSH key"
+          }?`}
           onCancel={hideExpanded}
-          onConfirm={() => {}}
+          onConfirm={() => {
+            group.keys.forEach(key => {
+              dispatch(sshkeyActions.delete(key.id));
+            });
+            hideExpanded();
+          }}
         />
       ),
       key: id,
@@ -127,7 +133,10 @@ const SSHKeyList = () => {
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
   const sshkeys = useSelector(sshkeySelectors.all);
+  const saved = useSelector(sshkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useAddMessage(saved, sshkeyActions.cleanup, "SSH key removed successfully.");
 
   const hideExpanded = () => {
     setExpandedId();

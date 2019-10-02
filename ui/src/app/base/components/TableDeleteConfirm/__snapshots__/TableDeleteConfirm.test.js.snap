@@ -5,11 +5,7 @@ exports[`TableDeleteConfirm renders 1`] = `
   <Col
     size="7"
   >
-    Are you sure you want to delete 
-    user
-     "
-    Cobba
-    "?
+    Are you sure you want to delete user "Cobba"?
      
     <span
       className="u-text--light"

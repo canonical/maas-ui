@@ -30,6 +30,19 @@ sshkey.import = params => ({
   }
 });
 
+sshkey.delete = id => ({
+  type: "DELETE_SSHKEY",
+  meta: {
+    model: "sshkey",
+    method: "delete"
+  },
+  payload: {
+    params: {
+      id
+    }
+  }
+});
+
 sshkey.cleanup = () => ({
   type: "CLEANUP_SSHKEY"
 });

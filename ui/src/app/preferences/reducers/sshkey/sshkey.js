@@ -19,22 +19,29 @@ const sshkey = produce(
         break;
       case "IMPORT_SSHKEY_START":
       case "CREATE_SSHKEY_START":
+      case "DELETE_SSHKEY_START":
         draft.saved = false;
         draft.saving = true;
         break;
       case "IMPORT_SSHKEY_ERROR":
       case "CREATE_SSHKEY_ERROR":
+      case "DELETE_SSHKEY_ERROR":
         draft.errors = action.error;
         draft.saving = false;
         break;
       case "IMPORT_SSHKEY_SUCCESS":
       case "CREATE_SSHKEY_SUCCESS":
+      case "DELETE_SSHKEY_SUCCESS":
         draft.errors = {};
         draft.saved = true;
         draft.saving = false;
         break;
       case "CREATE_SSHKEY_NOTIFY":
         draft.items.push(action.payload);
+        break;
+      case "DELETE_SSHKEY_NOTIFY":
+        const index = draft.items.findIndex(item => item.id === action.payload);
+        draft.items.splice(index, 1);
         break;
       case "CLEANUP_SSHKEY":
         draft.errors = {};
