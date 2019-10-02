@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React from "react";
 
+import "./SSLKeyFormFields.scss";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
@@ -29,16 +30,20 @@ export const SSLKeyFormFields = ({ editing, formikProps }) => {
       )}
       <Form onSubmit={formikProps.handleSubmit}>
         <Row>
-          <Col size="4">
+          <Col size="5">
             <FormikField
+              className="ssl-key-form-fields__key"
               component={Textarea}
               formikProps={formikProps}
               fieldKey="key"
               label="SSL key"
-              style={{ minHeight: "20rem" }}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </Col>
-          <Col size="4">
+          <Col size="3">
             <p className="p-form-help-text" style={{ marginTop: "0.5rem" }}>
               You will be able to access Windows winrm service with a registered
               key.
