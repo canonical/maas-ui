@@ -1,0 +1,6 @@
+@import "~vanilla-framework/scss/settings_font";
+
+.ssl-key-form-fields__key {
+  font-family: unquote($font-monospace);
+  min-height: 25rem;
+}
