@@ -57,7 +57,7 @@ const generateKeyCols = (keys, deleteButton) => {
   return (
     <ul className="p-table-sub-cols__list">
       {keys.map((key, i) => (
-        <div className="p-table-sub-cols__item" key={key}>
+        <div className="p-table-sub-cols__item" key={key.key}>
           {formatKey(key.key)}
           {i === 0 && deleteButton}
         </div>
