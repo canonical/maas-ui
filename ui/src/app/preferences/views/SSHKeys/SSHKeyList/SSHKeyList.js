@@ -53,15 +53,13 @@ const groupBySource = sshkeys => {
   return Array.from(groups);
 };
 
-const generateKeyCols = keys => {
-  if (keys.length === 1) {
-    return formatKey(keys[0].key);
-  }
+const generateKeyCols = (keys, deleteButton) => {
   return (
     <ul className="p-table-sub-cols__list">
-      {keys.map(key => (
-        <div className="p-table-sub-cols__item" key={key.id}>
+      {keys.map((key, i) => (
+        <div className="p-table-sub-cols__item" key={key}>
           {formatKey(key.key)}
+          {i === 0 && deleteButton}
         </div>
       ))}
     </ul>
@@ -86,22 +84,19 @@ const generateRows = (
         },
         { content: group.id },
         {
-          className: "p-table-sub-cols",
-          content: generateKeyCols(group.keys)
-        },
-        {
-          content: (
+          className: "p-table-sub-cols u-align-icons--top",
+          content: generateKeyCols(
+            group.keys,
             <Button
               appearance="base"
-              className="is-small u-justify-table-icon"
+              className="is-small u-justify-table-icon sshkey-list__delete"
               onClick={() => {
                 setExpandedId(id);
               }}
             >
               <i className="p-icon--delete">Delete</i>
             </Button>
-          ),
-          className: "u-align--right u-align-icons--top"
+          )
         }
       ],
       expanded: expanded,
@@ -174,11 +169,12 @@ const SSHKeyList = () => {
               sortKey: "id"
             },
             {
-              content: "Key"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
+              content: (
+                <>
+                  Key
+                  <span className="sshkey-list__header-delete">Actions</span>
+                </>
+              )
             }
           ]}
           paginate={20}

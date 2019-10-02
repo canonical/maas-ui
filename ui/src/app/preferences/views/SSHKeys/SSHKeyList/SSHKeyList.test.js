@@ -97,7 +97,12 @@ describe("SSHKeyList", () => {
       state.sshkey.items.length - 1
     );
     // The grouped keys should be displayed in sub cols.
-    expect(wrapper.find(".p-table-sub-cols__item").length).toBe(2);
+    expect(
+      wrapper
+        .find("MainTable tbody tr")
+        .at(1)
+        .find(".p-table-sub-cols__item").length
+    ).toBe(2);
   });
 
   it("can display uploaded keys", () => {
@@ -119,7 +124,12 @@ describe("SSHKeyList", () => {
       .find("td");
     expect(cols.at(0).text()).toEqual("Upload");
     expect(cols.at(1).text()).toEqual("");
-    expect(cols.at(2).text()).toEqual("ssh-rsa gghh...");
+    expect(
+      cols
+        .at(2)
+        .text()
+        .includes("ssh-rsa gghh...")
+    ).toBe(true);
   });
 
   it("can display imported keys", () => {
@@ -141,7 +151,12 @@ describe("SSHKeyList", () => {
       .find("td");
     expect(cols.at(0).text()).toEqual("Launchpad");
     expect(cols.at(1).text()).toEqual("koalaparty");
-    expect(cols.at(2).text()).toEqual("ssh-rsa aabb...");
+    expect(
+      cols
+        .at(2)
+        .text()
+        .includes("ssh-rsa aabb...")
+    ).toBe(true);
   });
 
   it("can show a delete confirmation", () => {
