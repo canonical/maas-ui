@@ -22,7 +22,7 @@ export const SSHKeyFormFields = ({ editing, formikProps }) => {
   useFormikErrors(errors, formikProps);
   let sshkeyErrors;
   if (errors) {
-    if (typeof sslkeyErrors === "string") {
+    if (typeof errors === "string") {
       sshkeyErrors = errors;
     } else if (errors["__all__"]) {
       sshkeyErrors = errors["__all__"].join(" ");
