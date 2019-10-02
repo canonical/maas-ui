@@ -252,6 +252,111 @@ describe("sshkey reducer", () => {
     });
   });
 
+  it("should correctly reduce DELETE_SSHKEY_START", () => {
+    expect(
+      sshkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_SSHKEY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_SSHKEY_ERROR", () => {
+    expect(
+      sshkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not delete",
+          type: "DELETE_SSHKEY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not delete",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SSHKEY_SUCCESS", () => {
+    expect(
+      sshkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: true,
+          saved: false,
+          saving: false
+        },
+        {
+          type: "DELETE_SSHKEY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loading: true,
+      loaded: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SSHKEY_NOTIFY", () => {
+    expect(
+      sshkey(
+        {
+          errors: {},
+          items: [
+            { id: 1, key: "ssh-rsa aabb" },
+            { id: 2, key: "ssh-rsa ccdd" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: 2,
+          type: "DELETE_SSHKEY_NOTIFY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 1, key: "ssh-rsa aabb" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   it("should correctly reduce CLEANUP_SSHKEY", () => {
     expect(
       sshkey(

@@ -143,4 +143,135 @@ describe("SSHKeyList", () => {
     expect(cols.at(1).text()).toEqual("koalaparty");
     expect(cols.at(2).text()).toEqual("ssh-rsa aabb...");
   });
+
+  it("can show a delete confirmation", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    let row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(false);
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(true);
+  });
+
+  it("can delete a SSH key", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    expect(
+      store.getActions().find(action => action.type === "DELETE_SSHKEY")
+    ).toEqual({
+      type: "DELETE_SSHKEY",
+      payload: {
+        params: {
+          id: 1
+        }
+      },
+      meta: {
+        model: "sshkey",
+        method: "delete"
+      }
+    });
+  });
+
+  it("can delete a group of SSH keys", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(1)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("tbody TableRow")
+      .at(1)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    expect(
+      store.getActions().filter(action => action.type === "DELETE_SSHKEY")
+        .length
+    ).toEqual(2);
+  });
+
+  it("can add a message when a SSH key is deleted", () => {
+    state.sshkey.saved = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+          ]}
+        >
+          <SSHKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_SSHKEY")).toBe(true);
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+  });
 });
