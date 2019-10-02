@@ -94,4 +94,103 @@ describe("SSLKeyList", () => {
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
   });
+
+  it("can show a delete confirmation", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssl-keys", key: "testKey" }
+          ]}
+        >
+          <SSLKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    let row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(false);
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(true);
+  });
+
+  it("can delete a SSL key", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssl-keys", key: "testKey" }
+          ]}
+        >
+          <SSLKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    expect(
+      store.getActions().find(action => action.type === "DELETE_SSLKEY")
+    ).toEqual({
+      type: "DELETE_SSLKEY",
+      payload: {
+        params: {
+          id: 1
+        }
+      },
+      meta: {
+        model: "sslkey",
+        method: "delete"
+      }
+    });
+  });
+
+  it("can add a message when a SSL key is deleted", () => {
+    state.sslkey.saved = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/account/prefs/ssl-keys", key: "testKey" }
+          ]}
+        >
+          <SSLKeyList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("tbody TableRow")
+      .at(0)
+      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .last()
+      .simulate("click");
+    const actions = store.getActions();
+    expect(actions.some(action => action.type === "CLEANUP_SSLKEY")).toBe(true);
+    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+  });
 });
