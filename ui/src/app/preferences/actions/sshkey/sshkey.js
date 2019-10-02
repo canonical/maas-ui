@@ -30,7 +30,7 @@ sshkey.import = params => ({
   }
 });
 
-sshkey.cleanup = params => ({
+sshkey.cleanup = () => ({
   type: "CLEANUP_SSHKEY"
 });
 

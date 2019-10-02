@@ -35,7 +35,7 @@ export const AddSSHKey = () => {
   }, [dispatch]);
 
   if (saved) {
-    // The snippet was successfully created/updated so redirect to the list.
+    // The key was successfully created/updated so redirect to the list.
     return <Redirect to="/account/prefs/ssh-keys" />;
   }
 
