@@ -1,7 +1,8 @@
-.sshkey-list td,
-.sshkey-list th {
-  // Actions:
-  &:nth-child(4) {
-    flex: 0 0 10%;
-  }
+.sshkey-list__delete {
+  float: right;
+}
+
+.sshkey-list__header-delete {
+  flex: 1 0 auto;
+  text-align: right;
 }
