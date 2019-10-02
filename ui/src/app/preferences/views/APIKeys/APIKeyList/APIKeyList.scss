@@ -1,0 +1,7 @@
+.apikey-list td,
+.apikey-list th {
+  // Actions:
+  &:nth-child(2) {
+    flex: 0 0 10%;
+  }
+}
