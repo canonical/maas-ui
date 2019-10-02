@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./SSLKeyList.scss";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -52,7 +53,10 @@ const generateRows = (
           modelName={display}
           modelType="SSL key"
           onCancel={hideExpanded}
-          onConfirm={() => {}}
+          onConfirm={() => {
+            dispatch(sslkeyActions.delete(id));
+            hideExpanded();
+          }}
         />
       ),
       key: id,
@@ -68,7 +72,10 @@ const SSLKeyList = () => {
   const sslkeyLoading = useSelector(sslkeySelectors.loading);
   const sslkeyLoaded = useSelector(sslkeySelectors.loaded);
   const sslkeys = useSelector(sslkeySelectors.all);
+  const saved = useSelector(sslkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 
   const hideExpanded = () => {
     setExpandedId();

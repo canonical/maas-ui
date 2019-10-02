@@ -19,6 +19,19 @@ sslkey.create = params => ({
   }
 });
 
+sslkey.delete = id => ({
+  type: "DELETE_SSLKEY",
+  meta: {
+    model: "sslkey",
+    method: "delete"
+  },
+  payload: {
+    params: {
+      id
+    }
+  }
+});
+
 sslkey.cleanup = params => ({
   type: "CLEANUP_SSLKEY"
 });

@@ -26,6 +26,21 @@ describe("sslkey actions", () => {
     });
   });
 
+  it("can handle deleting SSL keys", () => {
+    expect(sslkey.delete(808)).toEqual({
+      type: "DELETE_SSLKEY",
+      meta: {
+        model: "sslkey",
+        method: "delete"
+      },
+      payload: {
+        params: {
+          id: 808
+        }
+      }
+    });
+  });
+
   it("can clean up", () => {
     expect(sslkey.cleanup()).toEqual({
       type: "CLEANUP_SSLKEY"

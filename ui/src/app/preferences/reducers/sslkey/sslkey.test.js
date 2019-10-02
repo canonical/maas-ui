@@ -148,6 +148,82 @@ describe("sslkey reducer", () => {
     });
   });
 
+  it("should correctly reduce DELETE_SSLKEY_START", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_SSLKEY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_SSLKEY_ERROR", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not delete",
+          type: "DELETE_SSLKEY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not delete",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SSLKEY_SUCCESS", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: true,
+          saved: false,
+          saving: false
+        },
+        {
+          type: "DELETE_SSLKEY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loading: true,
+      loaded: false,
+      saved: true,
+      saving: false
+    });
+  });
+
   it("should correctly reduce CLEANUP_SSLKEY", () => {
     expect(
       sslkey(

@@ -18,14 +18,17 @@ const sslkey = produce(
         draft.errors = action.error;
         break;
       case "CREATE_SSLKEY_START":
+      case "DELETE_SSLKEY_START":
         draft.saved = false;
         draft.saving = true;
         break;
       case "CREATE_SSLKEY_ERROR":
+      case "DELETE_SSLKEY_ERROR":
         draft.errors = action.error;
         draft.saving = false;
         break;
       case "CREATE_SSLKEY_SUCCESS":
+      case "DELETE_SSLKEY_SUCCESS":
         draft.errors = {};
         draft.saved = true;
         draft.saving = false;
