@@ -37,4 +37,15 @@ licensekeys.hasErrors = state =>
  */
 licensekeys.errors = state => state.licensekeys.errors;
 
+/**
+ * Get license keys that match a term.
+ * @param {Object} state - The redux state.
+ * @param {String} term - The term to match against.
+ * @returns {Array} A filtered list of license keys.
+ */
+licensekeys.search = (state, term) =>
+  state.licensekeys.items.filter(
+    item => item.osystem.includes(term) || item.distro_series.includes(term)
+  );
+
 export default licensekeys;
