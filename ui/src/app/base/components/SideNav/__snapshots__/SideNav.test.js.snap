@@ -102,19 +102,13 @@ exports[`SideNav renders 1`] = `
               className="p-link--soft"
               to="/settings/configuration/general"
             >
-              <LinkAnchor
+              <a
                 className="p-link--soft"
                 href="/settings/configuration/general"
-                navigate={[Function]}
+                onClick={[Function]}
               >
-                <a
-                  className="p-link--soft"
-                  href="/settings/configuration/general"
-                  onClick={[Function]}
-                >
-                  General
-                </a>
-              </LinkAnchor>
+                General
+              </a>
             </Link>
           </li>
           <li
@@ -125,19 +119,13 @@ exports[`SideNav renders 1`] = `
               className="p-link--soft"
               to="/settings/configuration/commissioning"
             >
-              <LinkAnchor
+              <a
                 className="p-link--soft"
                 href="/settings/configuration/commissioning"
-                navigate={[Function]}
+                onClick={[Function]}
               >
-                <a
-                  className="p-link--soft"
-                  href="/settings/configuration/commissioning"
-                  onClick={[Function]}
-                >
-                  Commissioning
-                </a>
-              </LinkAnchor>
+                Commissioning
+              </a>
             </Link>
           </li>
           <li
@@ -148,19 +136,13 @@ exports[`SideNav renders 1`] = `
               className="p-link--soft"
               to="/settings/configuration/deploy"
             >
-              <LinkAnchor
+              <a
                 className="p-link--soft"
                 href="/settings/configuration/deploy"
-                navigate={[Function]}
+                onClick={[Function]}
               >
-                <a
-                  className="p-link--soft"
-                  href="/settings/configuration/deploy"
-                  onClick={[Function]}
-                >
-                  Deploy
-                </a>
-              </LinkAnchor>
+                Deploy
+              </a>
             </Link>
           </li>
           <li
@@ -171,19 +153,13 @@ exports[`SideNav renders 1`] = `
               className="p-link--soft"
               to="/settings/configuration/kernel-parameters"
             >
-              <LinkAnchor
+              <a
                 className="p-link--soft"
                 href="/settings/configuration/kernel-parameters"
-                navigate={[Function]}
+                onClick={[Function]}
               >
-                <a
-                  className="p-link--soft"
-                  href="/settings/configuration/kernel-parameters"
-                  onClick={[Function]}
-                >
-                  Kernel parameters
-                </a>
-              </LinkAnchor>
+                Kernel parameters
+              </a>
             </Link>
           </li>
         </ul>
@@ -199,19 +175,13 @@ exports[`SideNav renders 1`] = `
             className="p-link--soft"
             to="/settings/users"
           >
-            <LinkAnchor
+            <a
               className="p-link--soft"
               href="/settings/users"
-              navigate={[Function]}
+              onClick={[Function]}
             >
-              <a
-                className="p-link--soft"
-                href="/settings/users"
-                onClick={[Function]}
-              >
-                Users
-              </a>
-            </LinkAnchor>
+              Users
+            </a>
           </Link>
         </strong>
       </li>

@@ -100,19 +100,13 @@ exports[`Header renders 1`] = `
                   className=""
                   to="/machines"
                 >
-                  <LinkAnchor
+                  <a
                     className=""
                     href="/machines"
-                    navigate={[Function]}
+                    onClick={[Function]}
                   >
-                    <a
-                      className=""
-                      href="/machines"
-                      onClick={[Function]}
-                    >
-                      Machines
-                    </a>
-                  </LinkAnchor>
+                    Machines
+                  </a>
                 </Link>
               </li>
               <li
@@ -155,19 +149,13 @@ exports[`Header renders 1`] = `
               className="p-dropdown__item"
               to="/machines"
             >
-              <LinkAnchor
+              <a
                 className="p-dropdown__item"
                 href="/machines"
-                navigate={[Function]}
+                onClick={[Function]}
               >
-                <a
-                  className="p-dropdown__item"
-                  href="/machines"
-                  onClick={[Function]}
-                >
-                  Machines
-                </a>
-              </LinkAnchor>
+                Machines
+              </a>
             </Link>
           </li>
           <li
@@ -260,17 +248,11 @@ exports[`Header renders 1`] = `
               className="p-dropdown__item"
               to="/account/prefs"
             >
-              <LinkAnchor
+              <a
                 className="p-dropdown__item"
                 href="/account/prefs"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-dropdown__item"
-                  href="/account/prefs"
-                  onClick={[Function]}
-                />
-              </LinkAnchor>
+                onClick={[Function]}
+              />
             </Link>
           </li>
           <li

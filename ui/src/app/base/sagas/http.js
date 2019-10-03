@@ -2,7 +2,9 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import getCookie from "./utils";
 
-const SCRIPTS_API = `/MAAS/api/2.0/scripts/`;
+const ROOT_API = "/MAAS/api/2.0/";
+const SCRIPTS_API = `${ROOT_API}scripts/`;
+const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -28,6 +30,15 @@ const handlePromise = response => {
 };
 
 export const api = {
+  licenseKeys: {
+    fetch: csrftoken => {
+      return fetch(`${LICENSE_KEYS_API}`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+      })
+        .then(handleErrors)
+        .then(response => response.json());
+    }
+  },
   scripts: {
     fetch: csrftoken => {
       return fetch(`${SCRIPTS_API}?include_script=true`, {
@@ -58,6 +69,24 @@ export const api = {
     }
   }
 };
+
+export function* fetchLicenseKeysSaga() {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  let response;
+  try {
+    yield put({ type: "FETCH_LICENSE_KEYS_START" });
+    response = yield call(api.licenseKeys.fetch, csrftoken);
+    yield put({
+      type: "FETCH_LICENSE_KEYS_SUCCESS",
+      payload: response
+    });
+  } catch (error) {
+    yield put({
+      type: "FETCH_LICENSE_KEYS_ERROR",
+      errors: { error: error.message }
+    });
+  }
+}
 
 export function* fetchScriptsSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
@@ -117,6 +146,10 @@ export function* deleteScriptSaga(action) {
       errors: { error: error.message }
     });
   }
+}
+
+export function* watchFetchLicenseKeys() {
+  yield takeLatest("FETCH_LICENSE_KEYS", fetchLicenseKeysSaga);
 }
 
 export function* watchFetchScripts() {
