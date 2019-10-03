@@ -2,6 +2,7 @@ import { all } from "redux-saga/effects";
 
 import {
   watchWebSockets,
+  watchFetchLicenseKeys,
   watchFetchScripts,
   watchDeleteScript,
   watchUploadScript
@@ -10,6 +11,7 @@ import {
 export default function* rootSaga() {
   yield all([
     watchWebSockets(),
+    watchFetchLicenseKeys(),
     watchFetchScripts(),
     watchDeleteScript(),
     watchUploadScript()

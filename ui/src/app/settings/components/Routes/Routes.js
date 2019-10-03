@@ -10,6 +10,7 @@ import DhcpList from "app/settings/views/Dhcp/DhcpList";
 import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
+import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 import NtpForm from "app/settings/views/Network/NtpForm";
 import ProxyForm from "app/settings/views/Network/ProxyForm";
@@ -63,6 +64,11 @@ const Routes = () => {
       <Route exact path={`${match.path}/users`} component={UsersList} />
       <Route exact path={`${match.path}/users/add`} component={UserAdd} />
       <Route exact path={`${match.path}/users/:id/edit`} component={UserEdit} />
+      <Route
+        exact
+        path={`${match.path}/license-keys`}
+        component={LicenseKeyList}
+      />
       <Route exact path={`${match.path}/storage`} component={StorageForm} />
       <Route exact path={`${match.path}/network/proxy`} component={ProxyForm} />
       <Route exact path={`${match.path}/network/dns`} component={DnsForm} />

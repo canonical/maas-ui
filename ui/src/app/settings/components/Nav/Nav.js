@@ -33,6 +33,10 @@ export const Nav = () => (
         ]
       },
       {
+        path: "license-keys",
+        label: "License keys"
+      },
+      {
         path: "storage",
         label: "Storage"
       },
