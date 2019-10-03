@@ -3,7 +3,7 @@
 exports[`Header renders 1`] = `
 <Header>
   <header
-    className="p-navigation"
+    className="p-navigation is-dark"
   >
     <div
       className="p-navigation__row row"

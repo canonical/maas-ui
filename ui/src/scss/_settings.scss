@@ -1,7 +1,9 @@
+@import "~vanilla-framework/scss/settings_colors";
+
 // Vanilla settings:
 $grid-max-width: 1440 / 16 * 1rem; // express in rems for easier calculations
 
-$color-navigation-background: #333;
+$color-navigation-background: $color-accent;
 $color-navigation-background--hover: darken($color-navigation-background, 3%);
 
 $breakpoint-navigation-threshold: 870px;

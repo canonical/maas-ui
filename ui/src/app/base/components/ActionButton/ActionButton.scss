@@ -1,7 +1,11 @@
+@import "~vanilla-framework/scss/base_typography-max-widths";
 @import "~vanilla-framework/scss/base_placeholders";
 @import "~vanilla-framework/scss/settings_animations";
 @import "~vanilla-framework/scss/settings_colors";
 @import "~vanilla-framework/scss/patterns_icons";
+
+@include vf-b-placeholders;
+@include vf-p-icons;
 
 // Identical to Vanilla success icon, but possible to alter tick color
 @mixin maas-icon-success($bg-color, $tick-color: $color-x-light) {

@@ -1,5 +1,8 @@
 @import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/base_typography-max-widths";
 @import "~vanilla-framework/scss/base_placeholders";
+
+@include vf-b-placeholders;
 
 .section {
   background-color: $color-light;
