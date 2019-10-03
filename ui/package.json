@@ -27,7 +27,7 @@
     "redux-saga": "1.1.1",
     "reselect": "4.0.0",
     "uuid": "3.3.3",
-    "vanilla-framework": "2.3.0",
+    "vanilla-framework": "2.4.0",
     "yup": "0.27.0"
   },
   "scripts": {

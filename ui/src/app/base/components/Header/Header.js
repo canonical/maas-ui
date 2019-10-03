@@ -49,7 +49,7 @@ export const Header = () => {
   const { location } = useLocation();
   const authUser = useSelector(auth.get);
   return (
-    <header className="p-navigation">
+    <header className="p-navigation is-dark">
       <div className="p-navigation__row row">
         <div className="p-navigation__banner">
           <div className="p-navigation__logo">

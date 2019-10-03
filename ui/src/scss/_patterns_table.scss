@@ -27,14 +27,16 @@
   }
 }
 
-.p-table-multi-header[aria-sort="ascending"]
+.p-table-multi-header[aria-sort="descending"],
+.p-table-multi-header[aria-sort="ascending"] {
   .p-table-multi-header__link.is-active::after {
-  @extend %heading-icon;
+    @extend %heading-icon;
+    height: map-get($line-heights, default-text);
+  }
 }
 
 .p-table-multi-header[aria-sort="descending"]
   .p-table-multi-header__link.is-active::after {
-  @extend %heading-icon;
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }

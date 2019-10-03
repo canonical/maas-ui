@@ -37,3 +37,8 @@
     flex: 0 0 $grid-size * 3;
   }
 }
+
+// Actions
+.user-list th:nth-child(8) {
+  align-items: center;
+}

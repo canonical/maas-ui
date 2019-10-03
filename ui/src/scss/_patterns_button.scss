@@ -2,7 +2,7 @@
   @extend %p-button--base;
   color: $color-link;
   font-size: inherit;
-  line-height: 1.25rem;
+  line-height: map-get($line-heights, default-text);
   margin-bottom: 0;
   padding: 0;
   pointer-events: all;
