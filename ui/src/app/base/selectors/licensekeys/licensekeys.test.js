@@ -50,4 +50,50 @@ describe("licensekeys selectors", () => {
       expect(licensekeys.loaded(state)).toStrictEqual(true);
     });
   });
+
+  describe("saved", () => {
+    it("returns license keys saved state", () => {
+      const state = {
+        licensekeys: {
+          loading: false,
+          loaded: true,
+          saved: true,
+          items: []
+        }
+      };
+      expect(licensekeys.saved(state)).toStrictEqual(true);
+    });
+  });
+
+  describe("search", () => {
+    it("filters license keys by term", () => {
+      const items = [
+        {
+          osystem: "windows",
+          distro_series: "2012",
+          license_key: "foo"
+        },
+        {
+          osystem: "windows",
+          distro_series: "2019",
+          license_key: "bar"
+        }
+      ];
+      const state = {
+        licensekeys: {
+          loading: false,
+          loaded: true,
+          items
+        }
+      };
+
+      expect(licensekeys.search(state, "2019")).toStrictEqual([
+        {
+          osystem: "windows",
+          distro_series: "2019",
+          license_key: "bar"
+        }
+      ]);
+    });
+  });
 });
