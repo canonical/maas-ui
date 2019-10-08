@@ -23,6 +23,13 @@ licensekeys.loading = state => state.licensekeys.loading;
 licensekeys.loaded = state => state.licensekeys.loaded;
 
 /**
+ * Returns true if license keys have saved
+ * @param {Object} state - Redux state
+ * @returns {Boolean} License keys have saved
+ */
+licensekeys.saved = state => state.licensekeys.saved;
+
+/**
  * Returns true if license keys have errors
  * @param {Object} state - Redux state
  * @returns {Boolean} License keys have errors

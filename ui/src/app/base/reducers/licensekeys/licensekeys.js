@@ -16,6 +16,25 @@ const licensekeys = produce(
         draft.loaded = false;
         draft.errors = action.errors;
         break;
+      case "DELETE_LICENSE_KEY_START":
+        draft.saved = false;
+        draft.saving = true;
+        break;
+      case "DELETE_LICENSE_KEY_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
+        draft.saving = false;
+        const index = draft.items.findIndex(
+          item =>
+            item.osystem === action.payload.osystem &&
+            item.distro_series === action.payload.distro_series
+        );
+        draft.items.splice(index, 1);
+        break;
+      case "DELETE_LICENSE_KEY_ERROR":
+        draft.errors = action.errors;
+        draft.saving = false;
+        break;
       case "CLEANUP_LICENSE_KEYS":
         draft.errors = {};
         draft.saved = false;

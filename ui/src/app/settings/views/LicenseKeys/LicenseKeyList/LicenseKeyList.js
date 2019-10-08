@@ -2,18 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { useAddMessage } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
 import SearchBox from "app/base/components/SearchBox";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 
-const generateRows = licenseKeys =>
+const generateRows = (
+  licenseKeys,
+  expandedId,
+  setExpandedId,
+  hideExpanded,
+  dispatch,
+  setDeleting
+) =>
   licenseKeys.map(licenseKey => {
+    const expanded = expandedId === licenseKey.license_key;
+
     return {
-      className: "p-table__row",
+      className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: licenseKey.osystem,
@@ -36,6 +47,9 @@ const generateRows = licenseKeys =>
               <Button
                 appearance="base"
                 className="is-small u-justify-table-icon"
+                onClick={() => {
+                  setExpandedId(licenseKey.license_key);
+                }}
               >
                 <i className="p-icon--delete">Delete</i>
               </Button>
@@ -44,6 +58,19 @@ const generateRows = licenseKeys =>
           className: "u-align--right u-align-icons--top"
         }
       ],
+      expanded: expanded,
+      expandedContent: expanded && (
+        <TableDeleteConfirm
+          modelName={`${licenseKey.osystem} (${licenseKey.distro_series})`}
+          modelType="license key"
+          onCancel={hideExpanded}
+          onConfirm={() => {
+            dispatch(licenseKeysActions.delete(licenseKey));
+            setDeleting(licenseKey);
+            hideExpanded();
+          }}
+        />
+      ),
       key: licenseKey.license_key,
       sortData: {
         osystem: licenseKey.osystem,
@@ -53,14 +80,43 @@ const generateRows = licenseKeys =>
   });
 
 const LicenseKeyList = () => {
+  const dispatch = useDispatch();
+  const [expandedId, setExpandedId] = useState();
   const [searchText, setSearchText] = useState("");
+  const [deletingLicenseKey, setDeleting] = useState();
+
+  const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
+  const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
+  const hasErrors = useSelector(licenseKeysSelectors.hasErrors);
+  const errors = useSelector(licenseKeysSelectors.errors);
+  const saved = useSelector(licenseKeysSelectors.saved);
+
   const licenseKeys = useSelector(state =>
     licenseKeysSelectors.search(state, searchText)
   );
-  const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
-  const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
 
-  const dispatch = useDispatch();
+  const title = deletingLicenseKey
+    ? `${deletingLicenseKey.osystem} (${deletingLicenseKey.distro_series})`
+    : null;
+
+  useAddMessage(
+    saved,
+    licenseKeysActions.cleanup,
+    `License key ${title} removed successfully.`,
+    setDeleting
+  );
+  useAddMessage(
+    hasErrors,
+    licenseKeysActions.cleanup,
+    `Error removing license key ${title}: ${errors}`,
+    null,
+    "negative"
+  );
+
+  const hideExpanded = () => {
+    setExpandedId();
+  };
+
   useEffect(() => {
     dispatch(licenseKeysActions.fetch());
   }, [dispatch]);
@@ -94,7 +150,14 @@ const LicenseKeyList = () => {
             }
           ]}
           paginate={20}
-          rows={generateRows(licenseKeys)}
+          rows={generateRows(
+            licenseKeys,
+            expandedId,
+            setExpandedId,
+            hideExpanded,
+            dispatch,
+            setDeleting
+          )}
           sortable={true}
         />
       )}

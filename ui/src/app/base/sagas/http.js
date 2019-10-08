@@ -4,6 +4,7 @@ import getCookie from "./utils";
 
 const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
+const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 
 const DEFAULT_HEADERS = {
@@ -37,6 +38,12 @@ export const api = {
       })
         .then(handleErrors)
         .then(response => response.json());
+    },
+    delete: (osystem, distro_series, csrftoken) => {
+      return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+        method: "DELETE"
+      }).then(handleErrors);
     }
   },
   scripts: {
@@ -83,6 +90,28 @@ export function* fetchLicenseKeysSaga() {
   } catch (error) {
     yield put({
       type: "FETCH_LICENSE_KEYS_ERROR",
+      errors: { error: error.message }
+    });
+  }
+}
+
+export function* deleteLicenseKeySaga(action) {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  try {
+    yield put({ type: "DELETE_LICENSE_KEY_START" });
+    yield call(
+      api.licenseKeys.delete,
+      action.payload.osystem,
+      action.payload.distro_series,
+      csrftoken
+    );
+    yield put({
+      type: "DELETE_LICENSE_KEY_SUCCESS",
+      payload: action.payload
+    });
+  } catch (error) {
+    yield put({
+      type: "DELETE_LICENSE_KEY_ERROR",
       errors: { error: error.message }
     });
   }
@@ -150,6 +179,10 @@ export function* deleteScriptSaga(action) {
 
 export function* watchFetchLicenseKeys() {
   yield takeLatest("FETCH_LICENSE_KEYS", fetchLicenseKeysSaga);
+}
+
+export function* watchDeleteLicenseKey() {
+  yield takeEvery("DELETE_LICENSE_KEY", deleteLicenseKeySaga);
 }
 
 export function* watchFetchScripts() {
