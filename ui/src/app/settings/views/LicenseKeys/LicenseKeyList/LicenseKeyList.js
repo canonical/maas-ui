@@ -16,8 +16,6 @@ const generateRows = (
   licenseKeys,
   expandedId,
   setExpandedId,
-  expandedType,
-  setExpandedType,
   hideExpanded,
   dispatch,
   setDeleting
@@ -51,7 +49,6 @@ const generateRows = (
                 className="is-small u-justify-table-icon"
                 onClick={() => {
                   setExpandedId(licenseKey.license_key);
-                  setExpandedType("delete");
                 }}
               >
                 <i className="p-icon--delete">Delete</i>
@@ -84,7 +81,6 @@ const generateRows = (
 
 const LicenseKeyList = () => {
   const dispatch = useDispatch();
-  const [expandedType, setExpandedType] = useState();
   const [expandedId, setExpandedId] = useState();
   const [searchText, setSearchText] = useState("");
   const [deletingLicenseKey, setDeleting] = useState();
@@ -119,7 +115,6 @@ const LicenseKeyList = () => {
 
   const hideExpanded = () => {
     setExpandedId();
-    setExpandedType();
   };
 
   useEffect(() => {
@@ -159,8 +154,6 @@ const LicenseKeyList = () => {
             licenseKeys,
             expandedId,
             setExpandedId,
-            expandedType,
-            setExpandedType,
             hideExpanded,
             dispatch,
             setDeleting
