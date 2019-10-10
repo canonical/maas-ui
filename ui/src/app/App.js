@@ -1,14 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import { websocket } from "./base/actions";
-import Main from "app/base/components/Main";
-import Section from "app/base/components/Section";
+import { auth as authActions } from "app/base/actions";
+import { auth as authSelectors } from "app/base/selectors";
 import { status } from "./base/selectors";
+import { websocket } from "./base/actions";
+import Header from "app/base/components/Header";
+import Loader from "app/base/components/Loader";
+import Notification from "app/base/components/Notification";
+import Routes from "app/Routes";
+import Section from "app/base/components/Section";
 
 export const App = () => {
+  const authUser = useSelector(authSelectors.get);
   const connected = useSelector(status.connected);
   const connectionError = useSelector(status.error);
+  const authLoading = useSelector(authSelectors.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,17 +23,39 @@ export const App = () => {
     dispatch(websocket.connect());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (connected) {
+      dispatch(authActions.fetch());
+    }
+  }, [dispatch, connected]);
+
+  let content;
   if (connectionError) {
-    return (
-      <Section title="Failed to connect. Please try refreshing your browser." />
+    content = (
+      <Section title="Failed to connect.">
+        <Notification type="negative" status="Error:">
+          The websocket failed to connect with the error "{connectionError}".
+        </Notification>
+      </Section>
     );
+  } else if (!connected || authLoading) {
+    content = <Section title={<Loader text="Loading..." />} />;
+  } else if (!authUser) {
+    content = (
+      <Section title="You are not authenticated. Please log in to MAAS." />
+    );
+  } else if (!authUser.is_superuser) {
+    content = <Section title="You do not have permission to view this page." />;
+  } else {
+    content = <Routes />;
   }
-  if (!connected) {
-    return <Section title="Loading&hellip;" />;
-  }
-  // Anything that needs to a websocket connection can be done in Main
-  // and children.
-  return <Main />;
+
+  return (
+    <>
+      <Header />
+      {content}
+    </>
+  );
 };
 
 export default App;

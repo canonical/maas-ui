@@ -44,4 +44,17 @@ describe("Header", () => {
     );
     expect(wrapper.find("Header")).toMatchSnapshot();
   });
+
+  it("can handle a logged out user", () => {
+    state.user.auth.user = null;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Header />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("nav").exists()).toBe(false);
+  });
 });

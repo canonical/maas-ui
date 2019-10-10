@@ -63,7 +63,7 @@ describe("websocket sagas", () => {
         [call(createConnection, "foo"), {}]
       ])
       .take("WEBSOCKET_CONNECT")
-      .put({ type: "WEBSOCKET_ERROR", error })
+      .put({ type: "WEBSOCKET_ERROR", error: error.message })
       .dispatch({
         type: "WEBSOCKET_CONNECT"
       })
