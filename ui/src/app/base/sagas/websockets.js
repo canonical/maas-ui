@@ -233,6 +233,6 @@ export function* watchWebSockets() {
       }
     }
   } catch (error) {
-    yield put({ type: "WEBSOCKET_ERROR", error });
+    yield put({ type: "WEBSOCKET_ERROR", error: error.message });
   }
 }

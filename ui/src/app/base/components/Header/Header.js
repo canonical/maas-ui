@@ -85,140 +85,142 @@ export const Header = () => {
             Menu
           </a>
         </div>
-        <nav
-          className={classNames("p-navigation__nav", "p-dropdown__menu", {
-            "u-show": mobileMenuVisible
-          })}
-          role="menubar"
-        >
-          <span className="u-off-screen">
-            <a href="#main-content">Jump to main content</a>
-          </span>
-          <ul className="p-navigation__links" role="menu">
-            <li
-              role="menuitem"
-              className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
-            >
-              <a onClick={toggleHardware} href="#menu">
-                Hardware <i className="p-icon--chevron"></i>
-              </a>
-              <ul
-                className={classNames("p-dropdown__menu", {
-                  "u-hide": !hardwareVisible
-                })}
+        {authUser && (
+          <nav
+            className={classNames("p-navigation__nav", "p-dropdown__menu", {
+              "u-show": mobileMenuVisible
+            })}
+            role="menubar"
+          >
+            <span className="u-off-screen">
+              <a href="#main-content">Jump to main content</a>
+            </span>
+            <ul className="p-navigation__links" role="menu">
+              <li
+                role="menuitem"
+                className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
               >
-                {generateLocalLink(
-                  location,
-                  "/machines",
-                  "Machines",
-                  false,
-                  false
-                )}
-                <li className="p-navigation__link" role="menuitem">
-                  <a href={generateURL("#/devices")}>Devices</a>
-                </li>
-                {authUser.is_superuser ? (
+                <a onClick={toggleHardware} href="#menu">
+                  Hardware <i className="p-icon--chevron"></i>
+                </a>
+                <ul
+                  className={classNames("p-dropdown__menu", {
+                    "u-hide": !hardwareVisible
+                  })}
+                >
+                  {generateLocalLink(
+                    location,
+                    "/machines",
+                    "Machines",
+                    false,
+                    false
+                  )}
                   <li className="p-navigation__link" role="menuitem">
-                    <a href={generateURL("#/controllers")}>Controllers</a>
+                    <a href={generateURL("#/devices")}>Devices</a>
                   </li>
-                ) : null}
-                <li className="p-navigation__link" role="menuitem">
-                  <a href={generateURL("#/kvm")}>KVM</a>
-                </li>
-                <li className="p-navigation__link" role="menuitem">
-                  <a href={generateURL("#/rsd")}>RSD</a>
-                </li>
-              </ul>
-            </li>
-            {generateLocalLink(location, "/machines", "Machines", true, true)}
-            <li
-              className="p-navigation__link u-hide-nav-viewport--medium"
-              role="menuitem"
-            >
-              <a className="p-dropdown__item" href={generateURL("#/devices")}>
-                Devices
-              </a>
-            </li>
-            {authUser.is_superuser ? (
+                  {authUser.is_superuser ? (
+                    <li className="p-navigation__link" role="menuitem">
+                      <a href={generateURL("#/controllers")}>Controllers</a>
+                    </li>
+                  ) : null}
+                  <li className="p-navigation__link" role="menuitem">
+                    <a href={generateURL("#/kvm")}>KVM</a>
+                  </li>
+                  <li className="p-navigation__link" role="menuitem">
+                    <a href={generateURL("#/rsd")}>RSD</a>
+                  </li>
+                </ul>
+              </li>
+              {generateLocalLink(location, "/machines", "Machines", true, true)}
               <li
                 className="p-navigation__link u-hide-nav-viewport--medium"
                 role="menuitem"
               >
-                <a
-                  className="p-dropdown__item"
-                  href={generateURL("#/controllers")}
-                >
-                  Controllers
+                <a className="p-dropdown__item" href={generateURL("#/devices")}>
+                  Devices
                 </a>
               </li>
-            ) : null}
-            <li
-              className="p-navigation__link u-hide-nav-viewport--medium"
-              role="menuitem"
-            >
-              <a className="p-dropdown__item" href={generateURL("#/kvm")}>
-                KVM
-              </a>
-            </li>
-            <li
-              className="p-navigation__link u-hide-nav-viewport--medium"
-              role="menuitem"
-            >
-              <a className="p-dropdown__item" href={generateURL("#/rsd")}>
-                RSD
-              </a>
-            </li>
-            <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={generateURL("#/images")}>
-                Images
-              </a>
-            </li>
-            <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={generateURL("#/domains")}>
-                DNS
-              </a>
-            </li>
-            <li className="p-navigation__link" role="menuitem">
-              <a className="p-dropdown__item" href={generateURL("#/zones")}>
-                AZs
-              </a>
-            </li>
-            <li className="p-navigation__link" role="menuitem">
-              <a
-                className="p-dropdown__item"
-                href={generateURL("#/networks?by=fabric")}
+              {authUser.is_superuser ? (
+                <li
+                  className="p-navigation__link u-hide-nav-viewport--medium"
+                  role="menuitem"
+                >
+                  <a
+                    className="p-dropdown__item"
+                    href={generateURL("#/controllers")}
+                  >
+                    Controllers
+                  </a>
+                </li>
+              ) : null}
+              <li
+                className="p-navigation__link u-hide-nav-viewport--medium"
+                role="menuitem"
               >
-                Subnets
-              </a>
-            </li>
-            {authUser.is_superuser
-              ? generateLocalLink(
-                  location,
-                  "/settings",
-                  "Settings",
-                  true,
-                  false
-                )
-              : null}
-          </ul>
-          <ul className="p-navigation__links--right" role="menu">
-            {generateLocalLink(
-              location,
-              "/account/prefs",
-              authUser.username,
-              true,
-              false
-            )}
-            <li className="p-navigation__link" role="menuitem">
-              <a
-                className="p-dropdown__item"
-                href={generateURL("accounts/logout/")}
+                <a className="p-dropdown__item" href={generateURL("#/kvm")}>
+                  KVM
+                </a>
+              </li>
+              <li
+                className="p-navigation__link u-hide-nav-viewport--medium"
+                role="menuitem"
               >
-                Logout
-              </a>
-            </li>
-          </ul>
-        </nav>
+                <a className="p-dropdown__item" href={generateURL("#/rsd")}>
+                  RSD
+                </a>
+              </li>
+              <li className="p-navigation__link" role="menuitem">
+                <a className="p-dropdown__item" href={generateURL("#/images")}>
+                  Images
+                </a>
+              </li>
+              <li className="p-navigation__link" role="menuitem">
+                <a className="p-dropdown__item" href={generateURL("#/domains")}>
+                  DNS
+                </a>
+              </li>
+              <li className="p-navigation__link" role="menuitem">
+                <a className="p-dropdown__item" href={generateURL("#/zones")}>
+                  AZs
+                </a>
+              </li>
+              <li className="p-navigation__link" role="menuitem">
+                <a
+                  className="p-dropdown__item"
+                  href={generateURL("#/networks?by=fabric")}
+                >
+                  Subnets
+                </a>
+              </li>
+              {authUser.is_superuser
+                ? generateLocalLink(
+                    location,
+                    "/settings",
+                    "Settings",
+                    true,
+                    false
+                  )
+                : null}
+            </ul>
+            <ul className="p-navigation__links--right" role="menu">
+              {generateLocalLink(
+                location,
+                "/account/prefs",
+                authUser.username,
+                true,
+                false
+              )}
+              <li className="p-navigation__link" role="menuitem">
+                <a
+                  className="p-dropdown__item"
+                  href={generateURL("accounts/logout/")}
+                >
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </nav>
+        )}
       </div>
     </header>
   );
