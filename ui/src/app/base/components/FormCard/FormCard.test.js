@@ -8,4 +8,9 @@ describe("FormCard ", () => {
     const wrapper = shallow(<FormCard title="Add user" />);
     expect(wrapper).toMatchSnapshot();
   });
+
+  it("can display the heading on a separate row", () => {
+    const wrapper = shallow(<FormCard stacked title="Add user" />);
+    expect(wrapper.find("Col").exists()).toBe(false);
+  });
 });
