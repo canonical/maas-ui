@@ -16,6 +16,7 @@ const licensekeys = produce(
         draft.loaded = false;
         draft.errors = action.errors;
         break;
+      case "CREATE_LICENSE_KEY_START":
       case "DELETE_LICENSE_KEY_START":
         draft.saved = false;
         draft.saving = true;
@@ -31,8 +32,14 @@ const licensekeys = produce(
         );
         draft.items.splice(index, 1);
         break;
+      case "CREATE_LICENSE_KEY_ERROR":
       case "DELETE_LICENSE_KEY_ERROR":
         draft.errors = action.errors;
+        draft.saving = false;
+        break;
+      case "CREATE_LICENSE_KEY_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
         draft.saving = false;
         break;
       case "CLEANUP_LICENSE_KEYS":

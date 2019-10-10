@@ -1,7 +1,7 @@
 /**
  * Selector for os info.
  */
-
+import { createSelector } from "reselect";
 import { generateGeneralSelector } from "./utils";
 
 const osInfo = generateGeneralSelector("osInfo");
@@ -86,5 +86,46 @@ osInfo.getAllOsReleases = state => {
 
   return allOsReleases;
 };
+
+/**
+ * Returns an object with all OS releases
+ * @param {Object} state - the redux state
+ * @returns {Object} - all OS releases
+ *
+ */
+osInfo.getLicensedOsReleases = createSelector(
+  [osInfo.getAllOsReleases],
+  releases => {
+    let results = {};
+    for (let [key, value] of Object.entries(releases)) {
+      const licensedReleases = value.filter(release => {
+        return release.value.endsWith("*");
+      });
+
+      if (licensedReleases.length > 0) {
+        const releases = licensedReleases.map(r => {
+          r.value = r.value.slice(0, -1);
+          return r;
+        });
+        results[key] = releases;
+      }
+    }
+    return results;
+  }
+);
+
+osInfo.getLicensedOsystems = createSelector(
+  [osInfo.getLicensedOsReleases],
+  releases => {
+    const osystems = Object.keys(releases);
+    if (osystems) {
+      return osystems.map(osystem => [
+        osystem,
+        `${osystem.charAt(0).toUpperCase()}${osystem.slice(1)}`
+      ]);
+    }
+    return [];
+  }
+);
 
 export default osInfo;

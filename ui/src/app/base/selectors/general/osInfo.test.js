@@ -229,4 +229,64 @@ describe("osInfo selectors", () => {
       });
     });
   });
+
+  describe("getLicensedOsReleases", () => {
+    const data = {
+      osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+      releases: [
+        ["centos/centos66", "CentOS 6"],
+        ["centos/centos70", "CentOS 7"],
+        ["windows/win2012*", "Windows 2012 Server"]
+      ]
+    };
+    let state;
+
+    beforeEach(() => {
+      state = {
+        general: {
+          osInfo: {
+            loading: false,
+            loaded: true,
+            data
+          }
+        }
+      };
+    });
+
+    it("returns only licensed releases", () => {
+      expect(osInfo.getLicensedOsReleases(state)).toEqual({
+        windows: [{ value: "win2012", label: "Windows 2012 Server" }]
+      });
+    });
+  });
+
+  describe("getLicensedOsystems", () => {
+    const data = {
+      osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+      releases: [
+        ["centos/centos66", "CentOS 6"],
+        ["centos/centos70", "CentOS 7"],
+        ["windows/win2012*", "Windows 2012 Server"]
+      ]
+    };
+    let state;
+
+    beforeEach(() => {
+      state = {
+        general: {
+          osInfo: {
+            loading: false,
+            loaded: true,
+            data
+          }
+        }
+      };
+    });
+
+    it("returns only licensed operating systems", () => {
+      expect(osInfo.getLicensedOsystems(state)).toEqual([
+        ["windows", "Windows"]
+      ]);
+    });
+  });
 });

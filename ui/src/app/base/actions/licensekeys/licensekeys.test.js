@@ -1,6 +1,19 @@
 import licenseKeys from "./licensekeys";
 
 describe("licenseKeys actions", () => {
+  it("can create a license key", () => {
+    const payload = {
+      osystem: "windows",
+      distro_series: "2012",
+      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+    };
+
+    expect(licenseKeys.create(payload)).toEqual({
+      type: "CREATE_LICENSE_KEY",
+      payload
+    });
+  });
+
   it("can fetch license keys", () => {
     expect(licenseKeys.fetch()).toEqual({
       type: "FETCH_LICENSE_KEYS"

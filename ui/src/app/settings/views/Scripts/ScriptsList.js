@@ -161,6 +161,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
     `${deletingScript} removed successfully.`,
     setDeleting
   );
+
   useAddMessage(
     hasErrors,
     scriptActions.cleanup,

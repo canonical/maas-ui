@@ -10,6 +10,82 @@ describe("licenseKeys reducer", () => {
     });
   });
 
+  it("should correctly reduce CREATE_LICENSE_KEY_START", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "CREATE_LICENSE_KEY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce CREATE_LICENSE_KEY_SUCCESS", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          type: "CREATE_LICENSE_KEY_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_LICENSE_KEY_ERROR", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          errors: { error: "Invalid license key." },
+          type: "CREATE_LICENSE_KEY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: { error: "Invalid license key." },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   it("should correctly reduce FETCH_LICENSE_KEYS_START", () => {
     expect(
       licenseKeys(undefined, {
