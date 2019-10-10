@@ -32,18 +32,32 @@ const handlePromise = response => {
 
 export const api = {
   licenseKeys: {
-    fetch: csrftoken => {
+    create: (key, csrftoken) => {
+      const { osystem, distro_series, license_key } = key;
       return fetch(`${LICENSE_KEYS_API}`, {
-        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+        method: "POST",
+        body: JSON.stringify({ osystem, distro_series, license_key })
       })
-        .then(handleErrors)
-        .then(response => response.json());
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+        });
     },
     delete: (osystem, distro_series, csrftoken) => {
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "DELETE"
       }).then(handleErrors);
+    },
+    fetch: csrftoken => {
+      return fetch(`${LICENSE_KEYS_API}`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+      })
+        .then(handleErrors)
+        .then(response => response.json());
     }
   },
   scripts: {
@@ -117,6 +131,29 @@ export function* deleteLicenseKeySaga(action) {
   }
 }
 
+export function* createLicenseKeySaga(action) {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  const key = action.payload;
+  let response;
+  try {
+    yield put({ type: "CREATE_LICENSE_KEY_START" });
+    response = yield call(api.licenseKeys.create, key, csrftoken);
+    yield put({
+      type: "CREATE_LICENSE_KEY_SUCCESS",
+      payload: response
+    });
+  } catch (errors) {
+    let error = errors;
+    if (typeof error === "string") {
+      error = { "Create error": error };
+    }
+    yield put({
+      type: "CREATE_LICENSE_KEY_ERROR",
+      errors: error
+    });
+  }
+}
+
 export function* fetchScriptsSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
   let response;
@@ -177,12 +214,16 @@ export function* deleteScriptSaga(action) {
   }
 }
 
-export function* watchFetchLicenseKeys() {
-  yield takeLatest("FETCH_LICENSE_KEYS", fetchLicenseKeysSaga);
+export function* watchCreateLicenseKey() {
+  yield takeLatest("CREATE_LICENSE_KEY", createLicenseKeySaga);
 }
 
 export function* watchDeleteLicenseKey() {
   yield takeEvery("DELETE_LICENSE_KEY", deleteLicenseKeySaga);
+}
+
+export function* watchFetchLicenseKeys() {
+  yield takeLatest("FETCH_LICENSE_KEYS", fetchLicenseKeysSaga);
 }
 
 export function* watchFetchScripts() {

@@ -2,20 +2,22 @@ import { all } from "redux-saga/effects";
 
 import {
   watchWebSockets,
-  watchFetchLicenseKeys,
+  watchCreateLicenseKey,
   watchDeleteLicenseKey,
-  watchFetchScripts,
+  watchFetchLicenseKeys,
   watchDeleteScript,
+  watchFetchScripts,
   watchUploadScript
 } from "./app/base/sagas";
 
 export default function* rootSaga() {
   yield all([
     watchWebSockets(),
-    watchFetchLicenseKeys(),
+    watchCreateLicenseKey(),
     watchDeleteLicenseKey(),
-    watchFetchScripts(),
+    watchFetchLicenseKeys(),
     watchDeleteScript(),
+    watchFetchScripts(),
     watchUploadScript()
   ]);
 }

@@ -1,12 +1,19 @@
 const licenseKeys = {};
 
-licenseKeys.fetch = () => ({
-  type: "FETCH_LICENSE_KEYS"
-});
+licenseKeys.create = params => {
+  return {
+    type: "CREATE_LICENSE_KEY",
+    payload: params
+  };
+};
 
 licenseKeys.delete = licenseKey => ({
   type: "DELETE_LICENSE_KEY",
   payload: licenseKey
+});
+
+licenseKeys.fetch = () => ({
+  type: "FETCH_LICENSE_KEYS"
 });
 
 licenseKeys.cleanup = () => ({

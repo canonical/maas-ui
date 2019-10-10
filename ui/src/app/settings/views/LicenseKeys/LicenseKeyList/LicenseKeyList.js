@@ -105,8 +105,9 @@ const LicenseKeyList = () => {
     `License key ${title} removed successfully.`,
     setDeleting
   );
+
   useAddMessage(
-    hasErrors,
+    hasErrors && typeof errors === "string",
     licenseKeysActions.cleanup,
     `Error removing license key ${title}: ${errors}`,
     null,

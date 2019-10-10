@@ -11,6 +11,7 @@ import DnsForm from "app/settings/views/Network/DnsForm";
 import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
 import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
+import LicenseKeyAdd from "app/settings/views/LicenseKeys/LicenseKeyAdd";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 import NtpForm from "app/settings/views/Network/NtpForm";
 import ProxyForm from "app/settings/views/Network/ProxyForm";
@@ -68,6 +69,11 @@ const Routes = () => {
         exact
         path={`${match.path}/license-keys`}
         component={LicenseKeyList}
+      />
+      <Route
+        exact
+        path={`${match.path}/license-keys/add`}
+        component={LicenseKeyAdd}
       />
       <Route exact path={`${match.path}/storage`} component={StorageForm} />
       <Route exact path={`${match.path}/network/proxy`} component={ProxyForm} />

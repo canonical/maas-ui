@@ -55,4 +55,18 @@ licensekeys.search = (state, term) =>
     item => item.osystem.includes(term) || item.distro_series.includes(term)
   );
 
+/**
+ * Get the saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether license keys are being saved.
+ */
+licensekeys.saving = state => state.licensekeys.saving;
+
+/**
+ * Get the saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether license keys have been saved.
+ */
+licensekeys.saved = state => state.licensekeys.saved;
+
 export default licensekeys;

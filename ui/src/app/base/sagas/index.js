@@ -1,17 +1,19 @@
 import { watchWebSockets } from "./websockets";
 import {
-  watchFetchLicenseKeys,
+  watchCreateLicenseKey,
   watchDeleteLicenseKey,
-  watchFetchScripts,
+  watchFetchLicenseKeys,
   watchDeleteScript,
+  watchFetchScripts,
   watchUploadScript
 } from "./http";
 
 export {
   watchWebSockets,
-  watchFetchLicenseKeys,
+  watchCreateLicenseKey,
   watchDeleteLicenseKey,
-  watchFetchScripts,
+  watchFetchLicenseKeys,
   watchDeleteScript,
+  watchFetchScripts,
   watchUploadScript
 };
