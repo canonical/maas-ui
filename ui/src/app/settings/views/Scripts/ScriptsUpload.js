@@ -8,8 +8,8 @@ import { useDropzone } from "react-dropzone";
 import "./ScriptsUpload.scss";
 import readScript from "./readScript";
 import { messages } from "app/base/actions";
-import Card from "app/base/components/Card";
 import Form from "app/base/components/Form";
+import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import Row from "app/base/components/Row";
 import { scripts as scriptActions } from "app/base/actions";
@@ -100,8 +100,7 @@ const ScriptsUpload = ({ type }) => {
   }
 
   return (
-    <Card>
-      <h4>{`Upload ${type} Script`}</h4>
+    <FormCard stacked title={`Upload ${type} Script`}>
       <Row>
         <div
           {...getRootProps()}
@@ -152,7 +151,7 @@ const ScriptsUpload = ({ type }) => {
           />
         </Form>
       </Row>
-    </Card>
+    </FormCard>
   );
 };
 
