@@ -224,6 +224,63 @@ describe("sslkey reducer", () => {
     });
   });
 
+  it("should correctly reduce CREATE_SSLKEY_NOTIFY", () => {
+    expect(
+      sslkey(
+        {
+          auth: {},
+          errors: {},
+          items: [{ id: 1, key: "ssh-rsa aabb" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 2, key: "ssh-rsa ccdd" },
+          type: "CREATE_SSLKEY_NOTIFY"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [{ id: 1, key: "ssh-rsa aabb" }, { id: 2, key: "ssh-rsa ccdd" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce DELETE_SSLKEY_NOTIFY", () => {
+    expect(
+      sslkey(
+        {
+          errors: {},
+          items: [
+            { id: 1, key: "ssh-rsa aabb" },
+            { id: 2, key: "ssh-rsa ccdd" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: 2,
+          type: "DELETE_SSLKEY_NOTIFY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 1, key: "ssh-rsa aabb" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   it("should correctly reduce CLEANUP_SSLKEY", () => {
     expect(
       sslkey(
