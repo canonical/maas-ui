@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFound  can render 1`] = `
+<Section
+  title="Error: Page not found"
+>
+  <h2
+    className="p-heading--four"
+  >
+    The requested URL 
+    /
+     was not found on this server.
+  </h2>
+</Section>
+`;
