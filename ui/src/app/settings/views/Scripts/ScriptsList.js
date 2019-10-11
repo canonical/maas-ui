@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
@@ -155,6 +156,9 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const userScripts = useSelector(state =>
     scriptSelectors.search(state, searchText, type)
   );
+
+  useWindowTitle(`${type} scripts`);
+
   useAddMessage(
     saved,
     scriptActions.cleanup,

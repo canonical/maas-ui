@@ -9,6 +9,7 @@ import { general as generalSelectors } from "app/base/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Loader from "app/base/components/Loader";
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import FormCard from "app/base/components/FormCard";
@@ -28,6 +29,8 @@ export const LicenseKeyForm = () => {
   const isLoaded = licenseKeysLoaded && osInfoLoaded;
   const releases = useSelector(generalSelectors.osInfo.getLicensedOsReleases);
   const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
+
+  useWindowTitle("Add license key");
 
   useAddMessage(
     saved,

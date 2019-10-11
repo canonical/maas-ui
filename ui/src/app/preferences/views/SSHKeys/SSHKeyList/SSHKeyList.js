@@ -6,6 +6,7 @@ import "./SSHKeyList.scss";
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import VanillaLink from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
@@ -130,6 +131,8 @@ const SSHKeyList = () => {
   const sshkeys = useSelector(sshkeySelectors.all);
   const saved = useSelector(sshkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useWindowTitle("SSH keys");
 
   useAddMessage(saved, sshkeyActions.cleanup, "SSH key removed successfully.");
 

@@ -6,6 +6,7 @@ import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
+import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import BaseUserForm from "app/base/components/UserForm";
 
@@ -15,6 +16,9 @@ export const UserForm = ({ user }) => {
   const [savingUser, setSaving] = useState();
   const [name, setName] = useState();
   const editing = !!user;
+  const title = editing ? `Editing \`${name}\`` : "Add user";
+
+  useWindowTitle(title);
 
   useAddMessage(
     saved,
@@ -22,7 +26,6 @@ export const UserForm = ({ user }) => {
     `${savingUser} ${editing ? "updated" : "added"} successfully.`,
     setSaving
   );
-  const title = editing ? <>Editing `{name}`</> : "Add user";
 
   useEffect(() => {
     return () => {

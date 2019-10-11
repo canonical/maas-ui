@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
+import { useWindowTitle } from "app/base/hooks";
 import ActionButton from "app/base/components/ActionButton";
 import Col from "app/base/components/Col";
 import Form from "app/base/components/Form";
@@ -33,6 +34,8 @@ const DnsForm = () => {
   const dnssecValidation = useSelector(configSelectors.dnssecValidation);
   const dnsTrustedAcl = useSelector(configSelectors.dnsTrustedAcl);
   const upstreamDns = useSelector(configSelectors.upstreamDns);
+
+  useWindowTitle("DNS");
 
   useEffect(() => {
     if (!loaded) {

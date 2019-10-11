@@ -7,6 +7,7 @@ import { packagerepository as repositoryActions } from "app/base/actions";
 import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -100,6 +101,9 @@ export const Repositories = () => {
     repositorySelectors.search(state, searchText)
   );
   const dispatch = useDispatch();
+
+  useWindowTitle("Repositories");
+
   useAddMessage(
     saved,
     repositoryActions.cleanup,

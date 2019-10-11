@@ -8,10 +8,13 @@ import RepositoryAdd from "./RepositoryAdd";
 
 const mockStore = configureStore();
 
-describe("RepositoryEdit", () => {
+describe("RepositoryAdd", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       packagerepository: {
         loading: false,
         loaded: true,

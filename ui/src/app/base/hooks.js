@@ -1,8 +1,9 @@
 import { __RouterContext as RouterContext } from "react-router";
 import { useContext } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 
+import { config as configSelectors } from "app/settings/selectors";
 import { messages } from "app/base/actions";
 import { notificationTypes } from "app/base/components/Notification";
 import { simpleObjectEquality } from "app/settings/utils";
@@ -94,4 +95,17 @@ export const useAddMessage = (
       dispatch(cleanup());
     }
   }, [addCondition, cleanup, dispatch, message, messageType, onMessageAdded]);
+};
+
+/**
+ * Set the browser window title.
+ * @param {String} title - The title to set.
+ */
+export const useWindowTitle = title => {
+  const maasName = useSelector(configSelectors.maasName);
+  const maasNamePart = maasName ? `${maasName} ` : "";
+  const titlePart = title ? `${title} | ` : "";
+  useEffect(() => {
+    document.title = `${titlePart}${maasNamePart}MAAS`;
+  }, [maasNamePart, titlePart]);
 };

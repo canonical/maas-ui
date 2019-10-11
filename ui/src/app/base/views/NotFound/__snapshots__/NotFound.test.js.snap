@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NotFound  can render 1`] = `
-<Fragment>
+<NotFound>
   <h2
     className="p-heading--four"
   >
@@ -10,5 +10,5 @@ exports[`NotFound  can render 1`] = `
   <p>
     The requested URL / was not found on this server.
   </p>
-</Fragment>
+</NotFound>
 `;

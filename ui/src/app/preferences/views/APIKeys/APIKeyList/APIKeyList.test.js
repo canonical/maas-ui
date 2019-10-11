@@ -12,7 +12,11 @@ describe("APIKeyList", () => {
   let state;
 
   beforeEach(() => {
-    state = {};
+    state = {
+      config: {
+        items: []
+      }
+    };
   });
 
   it("can render the table", () => {

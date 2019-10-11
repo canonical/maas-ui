@@ -18,6 +18,9 @@ describe("AddSSHKey", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       sshkey: {
         loading: false,
         loaded: true,

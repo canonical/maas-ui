@@ -6,6 +6,7 @@ import "./SSLKeyList.scss";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -74,6 +75,8 @@ const SSLKeyList = () => {
   const sslkeys = useSelector(sslkeySelectors.all);
   const saved = useSelector(sslkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useWindowTitle("SSL keys");
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 

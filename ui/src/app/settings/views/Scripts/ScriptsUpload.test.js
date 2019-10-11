@@ -26,6 +26,9 @@ describe("ScriptsUpload", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       scripts: {
         loading: false,
         loaded: true,

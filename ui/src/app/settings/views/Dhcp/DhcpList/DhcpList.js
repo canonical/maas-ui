@@ -1,6 +1,7 @@
 import { format, parse } from "date-fns";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useWindowTitle } from "app/base/hooks";
 import React, { useEffect, useState } from "react";
 
 import "./DhcpList.scss";
@@ -195,6 +196,9 @@ const DhcpList = () => {
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
   const dispatch = useDispatch();
+
+  useWindowTitle("DHCP snippets");
+
   useAddMessage(
     saved && deletingName,
     dhcpsnippetActions.cleanup,

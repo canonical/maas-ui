@@ -14,6 +14,9 @@ describe("DhcpList", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       controller: {
         loading: false,
         loaded: true,

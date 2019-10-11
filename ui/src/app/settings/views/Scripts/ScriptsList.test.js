@@ -12,6 +12,9 @@ describe("ScriptsList", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       scripts: {
         loading: false,
         loaded: true,
@@ -196,6 +199,9 @@ describe("ScriptsList", () => {
 
   it("disables the delete button if a default script", () => {
     const state = {
+      config: {
+        items: []
+      },
       scripts: {
         loading: false,
         loaded: true,

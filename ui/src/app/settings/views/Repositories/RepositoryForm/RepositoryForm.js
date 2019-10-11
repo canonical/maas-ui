@@ -16,6 +16,7 @@ import {
 import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Form from "app/base/components/Form";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -59,6 +60,7 @@ export const RepositoryForm = ({ type, repository }) => {
     repositoriesLoaded;
 
   const dispatch = useDispatch();
+
   useAddMessage(
     repositoriesSaved,
     repositoryActions.cleanup,
@@ -80,11 +82,6 @@ export const RepositoryForm = ({ type, repository }) => {
   useEffect(() => {
     dispatch(repositoryActions.cleanup());
   }, [dispatch]);
-
-  if (repositoriesSaved) {
-    // The repo was successfully created/updated so redirect to the repo list.
-    return <Redirect to="/settings/repositories" />;
-  }
 
   const typeString = type === "ppa" ? "PPA" : "repository";
   let initialValues;
@@ -119,6 +116,13 @@ export const RepositoryForm = ({ type, repository }) => {
       name: "",
       url: type === "ppa" ? "ppa:" : ""
     };
+  }
+
+  useWindowTitle(title);
+
+  if (repositoriesSaved) {
+    // The repo was successfully created/updated so redirect to the repo list.
+    return <Redirect to="/settings/repositories" />;
   }
 
   return (

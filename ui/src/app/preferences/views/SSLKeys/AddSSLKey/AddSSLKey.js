@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import SSLKeyFormFields from "../SSLKeyFormFields";
 import FormCard from "app/base/components/FormCard";
 
@@ -17,6 +18,9 @@ const SSLKeySchema = Yup.object().shape({
 export const AddSSLKey = () => {
   const saved = useSelector(sslkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useWindowTitle("Add SSL key");
+
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 
   useEffect(() => {

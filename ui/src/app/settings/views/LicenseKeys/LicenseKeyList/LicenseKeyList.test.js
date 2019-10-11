@@ -12,6 +12,9 @@ describe("LicenseKeyList", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       licensekeys: {
         loading: false,
         loaded: true,
