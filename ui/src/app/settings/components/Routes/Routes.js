@@ -13,6 +13,7 @@ import KernelParameters from "app/settings/views/Configuration/KernelParameters"
 import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
 import LicenseKeyAdd from "app/settings/views/LicenseKeys/LicenseKeyAdd";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
+import NotFound from "app/base/views/NotFound";
 import NtpForm from "app/settings/views/Network/NtpForm";
 import ProxyForm from "app/settings/views/Network/ProxyForm";
 import RepositoriesList from "app/settings/views/Repositories/RepositoriesList";
@@ -139,6 +140,7 @@ const Routes = () => {
         path={`${match.path}/images/ubuntu`}
         component={ThirdPartyDrivers}
       />
+      <Route path="*" component={NotFound} />
     </Switch>
   );
 };
