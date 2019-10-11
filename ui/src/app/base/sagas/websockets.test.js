@@ -24,7 +24,9 @@ describe("websocket sagas", () => {
     socketClient = {
       getRequest: jest.fn(),
       send: jest.fn(),
-      socket: {}
+      socket: {
+        onerror: jest.fn()
+      }
     };
     socketChannel = jest.fn();
 
@@ -75,14 +77,6 @@ describe("websocket sagas", () => {
     const socket = createConnection();
     socketClient.socket.onopen();
     return expect(socket).resolves.toEqual(socketClient);
-  });
-
-  it("can handle WebSocket errors", () => {
-    expect.assertions(1);
-    const socket = createConnection();
-    const error = { error: "it's bad, real bad" };
-    socketClient.socket.onerror(error);
-    return expect(socket).rejects.toEqual(error);
   });
 
   it("can watch for WebSocket messages", () => {
@@ -241,5 +235,29 @@ describe("websocket sagas", () => {
     );
     // yield no further, take a new message
     expect(saga.next().value).toEqual(take(socketChannel));
+  });
+
+  it("can handle a WebSocket close message", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(saga.next({ type: "close" }).value).toEqual(
+      put({ type: "WEBSOCKET_DISCONNECTED" })
+    );
+  });
+
+  it("can handle a WebSocket error message", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(saga.next({ type: "error", message: "Timeout" }).value).toEqual(
+      put({ type: "WEBSOCKET_ERROR", error: "Timeout" })
+    );
+  });
+
+  it("can handle a WebSocket open message", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(saga.next({ type: "open" }).value).toEqual(
+      put({ type: "WEBSOCKET_CONNECTED" })
+    );
   });
 });

@@ -25,11 +25,34 @@ describe("status", () => {
     });
   });
 
+  it("should correctly reduce WEBSOCKET_DISCONNECTED", () => {
+    expect(
+      status(
+        {
+          connected: true,
+          error: null
+        },
+        {
+          type: "WEBSOCKET_CONNECT"
+        }
+      )
+    ).toStrictEqual({
+      connected: false,
+      error: null
+    });
+  });
+
   it("should correctly reduce WEBSOCKET_CONNECTED", () => {
     expect(
-      status(undefined, {
-        type: "WEBSOCKET_CONNECTED"
-      })
+      status(
+        {
+          connected: false,
+          error: "Timeout"
+        },
+        {
+          type: "WEBSOCKET_CONNECTED"
+        }
+      )
     ).toStrictEqual({
       connected: true,
       error: null

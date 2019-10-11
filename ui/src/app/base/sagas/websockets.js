@@ -48,11 +48,10 @@ export function createConnection(csrftoken) {
       url = buildWsUrl(csrftoken);
     }
     const socketClient = new WebSocketClient(url);
+    // As the socket automatically tries to reconnect we don't reject this
+    // promise, but rather wait for it to eventually connect.
     socketClient.socket.onopen = () => {
       resolve(socketClient);
-    };
-    socketClient.socket.onerror = evt => {
-      reject(evt);
     };
   });
 }
@@ -65,6 +64,15 @@ export function watchMessages(socketClient) {
     socketClient.socket.onmessage = event => {
       const response = JSON.parse(event.data);
       emit(response);
+    };
+    socketClient.socket.onopen = event => {
+      emit(event);
+    };
+    socketClient.socket.onerror = event => {
+      emit(event);
+    };
+    socketClient.socket.onclose = event => {
+      emit(event);
     };
     return () => {
       socketClient.socket.close();
@@ -101,6 +109,12 @@ export function* handleMessage(socketChannel, socketClient) {
     const response = yield take(socketChannel);
     if (response.type === MESSAGE_TYPES.NOTIFY) {
       yield call(handleNotifyMessage, response);
+    } else if (response.type === "error") {
+      yield put({ type: "WEBSOCKET_ERROR", error: response.message });
+    } else if (response.type === "close") {
+      yield put({ type: "WEBSOCKET_DISCONNECTED" });
+    } else if (response.type === "open") {
+      yield put({ type: "WEBSOCKET_CONNECTED" });
     } else {
       // this is a response message
       const action_type = yield call(
