@@ -9,9 +9,7 @@ import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
-import SearchBox from "app/base/components/SearchBox";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRepositoryRows = (
@@ -122,45 +120,35 @@ export const Repositories = () => {
   }, [dispatch]);
 
   return (
-    <>
-      <div className="p-table-actions">
-        <SearchBox
-          onChange={setSearchText}
-          placeholder="Search package repositories"
-          value={searchText}
-        />
-        <Button element={Link} to="/settings/repositories/add/ppa">
-          Add PPA
-        </Button>
-        <Button element={Link} to="/settings/repositories/add/repository">
-          Add repository
-        </Button>
-      </div>
-      {loading && <Loader text="Loading..." />}
-      {loaded && (
-        <MainTable
-          className="p-table-expanding--light repo-list"
-          defaultSort="id"
-          defaultSortDirection="ascending"
-          expanding={true}
-          headers={[
-            { content: "Name", sortKey: "name" },
-            { content: "URL", sortKey: "url" },
-            { content: "Enabled", sortKey: "enabled" },
-            { content: "Actions", className: "u-align--right" }
-          ]}
-          paginate={20}
-          rows={generateRepositoryRows(
-            dispatch,
-            expandedId,
-            repositories,
-            setDeletedRepo,
-            setExpandedId
-          )}
-          sortable
-        />
+    <SettingsTable
+      buttons={[
+        { label: "Add PPA", url: "/settings/repositories/add/ppa" },
+        {
+          label: "Add repository",
+          url: "/settings/repositories/add/repository"
+        }
+      ]}
+      defaultSort="id"
+      headers={[
+        { content: "Name", sortKey: "name" },
+        { content: "URL", sortKey: "url" },
+        { content: "Enabled", sortKey: "enabled" },
+        { content: "Actions", className: "u-align--right" }
+      ]}
+      loaded={loaded}
+      loading={loading}
+      rows={generateRepositoryRows(
+        dispatch,
+        expandedId,
+        repositories,
+        setDeletedRepo,
+        setExpandedId
       )}
-    </>
+      searchOnChange={setSearchText}
+      searchPlaceholder="Search package repositories"
+      searchText={searchText}
+      tableClassName="repo-list"
+    />
   );
 };
 

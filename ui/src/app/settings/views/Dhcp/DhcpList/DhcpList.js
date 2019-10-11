@@ -25,10 +25,8 @@ import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
-import SearchBox from "app/base/components/SearchBox";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const getTargetName = (
@@ -222,67 +220,59 @@ const DhcpList = () => {
   }, [dispatch]);
 
   return (
-    <>
-      {dhcpsnippetLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to="/settings/dhcp/add">
-          Add snippet
-        </Button>
-      </div>
-      {dhcpsnippetLoaded && (
-        <MainTable
-          className="p-table-expanding--light dhcp-list"
-          expanding={true}
-          headers={[
-            {
-              content: "Snippet name",
-              sortKey: "name"
-            },
-            {
-              content: "Type",
-              sortKey: "type"
-            },
-            {
-              content: "Applies to",
-              sortKey: "target"
-            },
-            {
-              content: "Description",
-              sortKey: "description"
-            },
-            {
-              content: "Enabled",
-              sortKey: "enabled"
-            },
-            {
-              content: "Last edited",
-              sortKey: "updated"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            dhcpsnippets,
-            expandedId,
-            setExpandedId,
-            expandedType,
-            setExpandedType,
-            controllers,
-            devices,
-            machines,
-            subnets,
-            hideExpanded,
-            dispatch,
-            setDeleting
-          )}
-          sortable={true}
-        />
+    <SettingsTable
+      buttons={[{ label: "Add snippet", url: "/settings/dhcp/add" }]}
+      headers={[
+        {
+          content: "Snippet name",
+          sortKey: "name"
+        },
+        {
+          content: "Type",
+          sortKey: "type"
+        },
+        {
+          content: "Applies to",
+          sortKey: "target"
+        },
+        {
+          content: "Description",
+          sortKey: "description"
+        },
+        {
+          content: "Enabled",
+          sortKey: "enabled"
+        },
+        {
+          content: "Last edited",
+          sortKey: "updated"
+        },
+        {
+          content: "Actions",
+          className: "u-align--right"
+        }
+      ]}
+      loaded={dhcpsnippetLoaded}
+      loading={dhcpsnippetLoading}
+      rows={generateRows(
+        dhcpsnippets,
+        expandedId,
+        setExpandedId,
+        expandedType,
+        setExpandedType,
+        controllers,
+        devices,
+        machines,
+        subnets,
+        hideExpanded,
+        dispatch,
+        setDeleting
       )}
-    </>
+      searchOnChange={setSearchText}
+      searchPlaceholder="Search DHCP snippets"
+      searchText={searchText}
+      tableClassName="dhcp-list"
+    />
   );
 };
 

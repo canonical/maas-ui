@@ -5,10 +5,9 @@ import React, { useState } from "react";
 import "./APIKeyList.scss";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
 import Notification from "app/base/components/Notification";
 import CopyButton from "app/base/components/CopyButton";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
@@ -111,42 +110,35 @@ const APIKeyList = () => {
           {apikeyErrors}
         </Notification>
       )}
-      {apikeyLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <div className="p-table-actions__space-left"></div>
-        <Button element={Link} to="/account/prefs/api-keys/add">
-          Generate MAAS API key
-        </Button>
-      </div>
-      {apikeyLoaded && (
-        <MainTable
-          className="p-table-expanding--light apikey-list"
-          expanding={true}
-          headers={[
-            {
-              content: "Name",
-              sortKey: "name"
-            },
-            {
-              content: "Key",
-              sortKey: "key"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            apikeys,
-            expandedId,
-            setExpandedId,
-            hideExpanded,
-            dispatch
-          )}
-          sortable={true}
-        />
-      )}
+      <SettingsTable
+        buttons={[
+          { label: "Generate MAAS API key", url: "/account/prefs/api-keys/add" }
+        ]}
+        headers={[
+          {
+            content: "Name",
+            sortKey: "name"
+          },
+          {
+            content: "Key",
+            sortKey: "key"
+          },
+          {
+            content: "Actions",
+            className: "u-align--right"
+          }
+        ]}
+        loaded={apikeyLoaded}
+        loading={apikeyLoading}
+        rows={generateRows(
+          apikeys,
+          expandedId,
+          setExpandedId,
+          hideExpanded,
+          dispatch
+        )}
+        tableClassName="apikey-list"
+      />
     </>
   );
 };

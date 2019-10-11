@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -9,9 +8,8 @@ import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import VanillaLink from "app/base/components/Link";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
 import Notification from "app/base/components/Notification";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const formatKey = key => {
@@ -151,46 +149,39 @@ const SSHKeyList = () => {
           {sshkeyErrors}
         </Notification>
       )}
-      {sshkeyLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <div className="p-table-actions__space-left"></div>
-        <Button element={Link} to="/account/prefs/ssh-keys/add">
-          Import SSH key
-        </Button>
-      </div>
-      {sshkeyLoaded && (
-        <MainTable
-          className="p-table-expanding--light sshkey-list"
-          expanding={true}
-          headers={[
-            {
-              content: "Source",
-              sortKey: "source"
-            },
-            {
-              content: "ID",
-              sortKey: "id"
-            },
-            {
-              content: (
-                <>
-                  Key
-                  <span className="sshkey-list__header-delete">Actions</span>
-                </>
-              )
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            sshkeys,
-            expandedId,
-            setExpandedId,
-            hideExpanded,
-            dispatch
-          )}
-          sortable={true}
-        />
-      )}
+      <SettingsTable
+        buttons={[
+          { label: "Import SSH key", url: "/account/prefs/ssh-keys/add" }
+        ]}
+        headers={[
+          {
+            content: "Source",
+            sortKey: "source"
+          },
+          {
+            content: "ID",
+            sortKey: "id"
+          },
+          {
+            content: (
+              <>
+                Key
+                <span className="sshkey-list__header-delete">Actions</span>
+              </>
+            )
+          }
+        ]}
+        loaded={sshkeyLoaded}
+        loading={sshkeyLoading}
+        rows={generateRows(
+          sshkeys,
+          expandedId,
+          setExpandedId,
+          hideExpanded,
+          dispatch
+        )}
+        tableClassName="sshkey-list"
+      />
       <VanillaLink
         external
         href="https://maas.io/docs/user-accounts#heading--ssh-keys"

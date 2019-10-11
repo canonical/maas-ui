@@ -1,0 +1,19 @@
+@import "~vanilla-framework/scss/settings_colors";
+
+.settings-table {
+  height: 100%;
+  position: relative;
+}
+
+.settings-table__loader {
+  align-items: center;
+  background-color: rgba($color-light, 0.3);
+  bottom: 0;
+  display: grid;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  // Needs to be above content.
+  z-index: 1;
+}

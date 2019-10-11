@@ -13,9 +13,7 @@ import {
 } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
-import SearchBox from "app/base/components/SearchBox";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateUserRows = (
@@ -154,90 +152,81 @@ const Users = () => {
   }, [dispatch]);
 
   return (
-    <>
-      {loading && <Loader text="Loading..." inline />}
-      <div className="p-table-actions">
-        <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to="/settings/users/add">
-          Add user
-        </Button>
-      </div>
-      {loaded && (
-        <MainTable
-          className="p-table-expanding--light user-list"
-          defaultSort="username"
-          defaultSortDirection="ascending"
-          expanding={true}
-          headers={[
-            {
-              className: "p-table-multi-header",
-              content: (
-                <>
-                  <Button
-                    appearance="link"
-                    className={classNames("p-table-multi-header__link", {
-                      "is-active": displayUsername
-                    })}
-                    onClick={() => setDisplayUsername(true)}
-                  >
-                    Username
-                  </Button>
-                  <span className="p-table-multi-header__spacer">|</span>
-                  <Button
-                    appearance="link"
-                    className={classNames("p-table-multi-header__link", {
-                      "is-active": !displayUsername
-                    })}
-                    onClick={() => setDisplayUsername(false)}
-                  >
-                    Real name
-                  </Button>
-                </>
-              ),
-              sortKey: displayUsername ? "username" : "fullName"
-            },
-            { content: "Email", sortKey: "email" },
-            {
-              content: "Machines",
-              className: "u-align--right",
-              sortKey: "machines"
-            },
-            {
-              content: "Type",
-              sortKey: "type"
-            },
-            {
-              content: "Last seen",
-              sortKey: "last-seen"
-            },
-            {
-              content: "Role",
-              sortKey: "role"
-            },
-            {
-              content: "MAAS keys",
-              className: "u-align--right",
-              sortKey: "maas-keys"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateUserRows(
-            users,
-            authUser,
-            expandedId,
-            setExpandedId,
-            dispatch,
-            displayUsername,
-            setDeleting
-          )}
-          sortable={true}
-        />
+    <SettingsTable
+      buttons={[{ label: "Add user", url: "/settings/users/add" }]}
+      defaultSort="username"
+      headers={[
+        {
+          className: "p-table-multi-header",
+          content: (
+            <>
+              <Button
+                appearance="link"
+                className={classNames("p-table-multi-header__link", {
+                  "is-active": displayUsername
+                })}
+                onClick={() => setDisplayUsername(true)}
+              >
+                Username
+              </Button>
+              <span className="p-table-multi-header__spacer">|</span>
+              <Button
+                appearance="link"
+                className={classNames("p-table-multi-header__link", {
+                  "is-active": !displayUsername
+                })}
+                onClick={() => setDisplayUsername(false)}
+              >
+                Real name
+              </Button>
+            </>
+          ),
+          sortKey: displayUsername ? "username" : "fullName"
+        },
+        { content: "Email", sortKey: "email" },
+        {
+          content: "Machines",
+          className: "u-align--right",
+          sortKey: "machines"
+        },
+        {
+          content: "Type",
+          sortKey: "type"
+        },
+        {
+          content: "Last seen",
+          sortKey: "last-seen"
+        },
+        {
+          content: "Role",
+          sortKey: "role"
+        },
+        {
+          content: "MAAS keys",
+          className: "u-align--right",
+          sortKey: "maas-keys"
+        },
+        {
+          content: "Actions",
+          className: "u-align--right"
+        }
+      ]}
+      loaded={loaded}
+      loading={loading}
+      rows={generateUserRows(
+        users,
+        authUser,
+        expandedId,
+        setExpandedId,
+        dispatch,
+        displayUsername,
+        setDeleting
       )}
-    </>
+      searchOnChange={setSearchText}
+      searchPlaceholder="Search users"
+      searchText={searchText}
+      tableClassName="user-list"
+    />
   );
 };
 
