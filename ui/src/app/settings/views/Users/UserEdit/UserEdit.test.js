@@ -13,6 +13,9 @@ describe("UserEdit", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       user: {
         auth: {},
         errors: {},

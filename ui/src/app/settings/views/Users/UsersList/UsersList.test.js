@@ -36,6 +36,9 @@ describe("UsersList", () => {
       }
     ];
     defaultStore = {
+      config: {
+        items: []
+      },
       user: {
         auth: {
           user: users[0]

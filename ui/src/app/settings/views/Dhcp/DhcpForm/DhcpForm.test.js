@@ -19,6 +19,9 @@ describe("DhcpForm", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       controller: { items: [] },
       device: { items: [] },
       dhcpsnippet: {
@@ -231,11 +234,6 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    compareJSX(
-      wrapper.find(".form-card__title"),
-      <h4 className="form-card__title">
-        <>Editing `{"lease"}`</>
-      </h4>
-    );
+    expect(wrapper.find(".form-card__title").text()).toEqual("Editing `lease`");
   });
 });

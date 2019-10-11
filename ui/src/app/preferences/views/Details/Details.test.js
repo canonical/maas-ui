@@ -18,6 +18,9 @@ describe("Details", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       user: {
         auth: {
           saved: false,

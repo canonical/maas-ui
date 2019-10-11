@@ -11,6 +11,9 @@ const mockStore = configureStore();
 describe("Preferences", () => {
   it("renders", () => {
     const store = mockStore({
+      config: {
+        items: []
+      },
       messages: {
         items: []
       }

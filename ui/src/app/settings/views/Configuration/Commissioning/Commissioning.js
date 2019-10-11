@@ -5,6 +5,7 @@ import { config as configActions } from "app/settings/actions";
 import { general as generalActions } from "app/base/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
+import { useWindowTitle } from "app/base/hooks";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import Row from "app/base/components/Row";
@@ -17,8 +18,10 @@ const Commissioning = () => {
   const osInfoLoading = useSelector(generalSelectors.osInfo.loading);
   const loaded = configLoaded && osInfoLoaded;
   const loading = configLoading || osInfoLoading;
-
   const dispatch = useDispatch();
+
+  useWindowTitle("Commissioning");
+
   useEffect(() => {
     if (!loaded) {
       dispatch(configActions.fetch());

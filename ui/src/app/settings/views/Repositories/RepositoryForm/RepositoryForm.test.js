@@ -13,6 +13,9 @@ describe("RepositoryForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       general: {
         componentsToDisable: {
           data: [],

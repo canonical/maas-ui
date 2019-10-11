@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 
 import { auth as authActions } from "app/base/actions";
 import { auth as authSelectors } from "app/base/selectors";
+import { config as configActions } from "app/settings/actions";
 import { status } from "./base/selectors";
 import { websocket } from "./base/actions";
 import Header from "app/base/components/Header";
@@ -26,6 +27,9 @@ export const App = () => {
   useEffect(() => {
     if (connected) {
       dispatch(authActions.fetch());
+      // Fetch the config at the top so we can access the MAAS name for the
+      // window title.
+      dispatch(configActions.fetch());
     }
   }, [dispatch, connected]);
 

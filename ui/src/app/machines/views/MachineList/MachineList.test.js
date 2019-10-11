@@ -12,6 +12,9 @@ describe("MachineList", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       machine: {
         errors: {},
         loading: false,

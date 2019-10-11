@@ -18,6 +18,9 @@ describe("UserForm", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       user: {
         auth: {},
         errors: {},

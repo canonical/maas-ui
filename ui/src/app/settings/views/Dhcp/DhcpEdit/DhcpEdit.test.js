@@ -13,6 +13,9 @@ describe("DhcpEdit", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       controller: { items: [] },
       device: { items: [] },
       dhcpsnippet: {

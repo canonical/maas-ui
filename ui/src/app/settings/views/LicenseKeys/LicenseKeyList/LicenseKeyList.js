@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -98,6 +99,8 @@ const LicenseKeyList = () => {
   const title = deletingLicenseKey
     ? `${deletingLicenseKey.osystem} (${deletingLicenseKey.distro_series})`
     : null;
+
+  useWindowTitle("License keys");
 
   useAddMessage(
     saved,

@@ -12,6 +12,7 @@ import {
   zone as zoneActions
 } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useWindowTitle } from "app/base/hooks";
 import Col from "app/base/components/Col";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -43,6 +44,8 @@ const MachineList = () => {
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
+
+  useWindowTitle("Machines");
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 
 import "./APIKeyList.scss";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -100,6 +101,8 @@ const APIKeyList = () => {
   const hideExpanded = () => {
     setExpandedId();
   };
+
+  useWindowTitle("API keys");
 
   return (
     <>

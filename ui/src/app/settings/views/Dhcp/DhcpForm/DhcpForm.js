@@ -15,6 +15,7 @@ import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
 import { DhcpSnippetShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
 import Loader from "app/base/components/Loader";
@@ -43,6 +44,10 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     editing ? dhcpSnippet.node : null,
     editing ? dhcpSnippet.subnet : null
   );
+  const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";
+
+  useWindowTitle(title);
+
   useAddMessage(
     saved,
     dhcpsnippetActions.cleanup,
@@ -72,8 +77,6 @@ export const DhcpForm = ({ dhcpSnippet }) => {
   ) {
     return <Loader text="Loading..." />;
   }
-
-  const title = editing ? <>Editing `{name}`</> : "Add DHCP snippet";
 
   return (
     <FormCard title={title}>

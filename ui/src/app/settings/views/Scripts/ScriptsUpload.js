@@ -8,6 +8,7 @@ import { useDropzone } from "react-dropzone";
 import "./ScriptsUpload.scss";
 import readScript from "./readScript";
 import { messages } from "app/base/actions";
+import { useWindowTitle } from "app/base/hooks";
 import Form from "app/base/components/Form";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -23,6 +24,9 @@ const ScriptsUpload = ({ type }) => {
   const [savedScript, setSavedScript] = useState();
   const [script, setScript] = useState();
   const dispatch = useDispatch();
+  const title = `Upload ${type} script`;
+
+  useWindowTitle(title);
 
   useEffect(() => {
     if (hasErrors) {
@@ -100,7 +104,7 @@ const ScriptsUpload = ({ type }) => {
   }
 
   return (
-    <FormCard stacked title={`Upload ${type} Script`}>
+    <FormCard stacked title={title}>
       <Row>
         <div
           {...getRootProps()}

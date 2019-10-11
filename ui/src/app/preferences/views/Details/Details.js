@@ -6,6 +6,7 @@ import { auth as authSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
+import { useWindowTitle } from "app/base/hooks";
 import Col from "app/base/components/Col";
 import DetailsButtons from "./DetailsButtons";
 import Row from "app/base/components/Row";
@@ -17,6 +18,8 @@ export const Details = () => {
   const usersSaved = useSelector(userSelectors.saved);
   const authUserSaved = useSelector(authSelectors.saved);
   const [passwordChanged, setPasswordChanged] = useState(false);
+
+  useWindowTitle("Details");
 
   useAddMessage(
     usersSaved && (!passwordChanged || authUserSaved),

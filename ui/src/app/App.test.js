@@ -13,7 +13,9 @@ describe("App", () => {
 
   beforeEach(() => {
     state = {
-      config: {},
+      config: {
+        items: []
+      },
       general: {
         architectures: {
           data: [],

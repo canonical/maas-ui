@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
+import { useWindowTitle } from "app/base/hooks";
 import SSHKeyFormFields from "../SSHKeyFormFields";
 import FormCard from "app/base/components/FormCard";
 
@@ -25,6 +26,9 @@ const SSHKeySchema = Yup.object().shape({
 export const AddSSHKey = () => {
   const saved = useSelector(sshkeySelectors.saved);
   const dispatch = useDispatch();
+
+  useWindowTitle("Add SSH key");
+
   useAddMessage(saved, sshkeyActions.cleanup, "SSH key successfully imported.");
 
   useEffect(() => {

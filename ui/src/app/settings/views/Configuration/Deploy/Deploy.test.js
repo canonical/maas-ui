@@ -11,7 +11,9 @@ describe("Deploy", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
-      config: {},
+      config: {
+        items: []
+      },
       general: {
         osInfo: {}
       }

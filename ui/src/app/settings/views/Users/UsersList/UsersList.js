@@ -11,6 +11,7 @@ import {
   user as userSelectors,
   auth as authSelectors
 } from "app/base/selectors";
+import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
 import Loader from "app/base/components/Loader";
 import MainTable from "app/base/components/MainTable";
@@ -131,6 +132,9 @@ const Users = () => {
   const authUser = useSelector(authSelectors.get);
   const saved = useSelector(userSelectors.saved);
   const dispatch = useDispatch();
+
+  useWindowTitle("Users");
+
   useAddMessage(
     saved,
     userActions.cleanup,

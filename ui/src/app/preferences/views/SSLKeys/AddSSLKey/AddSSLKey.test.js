@@ -18,6 +18,9 @@ describe("AddSSLKey", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       sslkey: {
         loading: false,
         loaded: true,

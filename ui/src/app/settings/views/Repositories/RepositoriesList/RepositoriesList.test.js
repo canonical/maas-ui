@@ -13,6 +13,9 @@ describe("RepositoriesList", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      config: {
+        items: []
+      },
       packagerepository: {
         loading: false,
         loaded: true,
