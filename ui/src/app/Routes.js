@@ -12,7 +12,7 @@ const Routes = () => (
     <Route path="/settings" component={Settings} />
     <Route path="/machines" component={Machines} />
     <Route path="/account/prefs" component={Preferences} />
-    <Route path="*" component={NotFound} />
+    <Route path="*" component={() => <NotFound includeSection />} />
   </Switch>
 );
 

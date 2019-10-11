@@ -6,6 +6,7 @@ import AddSSHKey from "app/preferences/views/SSHKeys/AddSSHKey";
 import AddSSLKey from "app/preferences/views/SSLKeys/AddSSLKey";
 import APIKeyList from "app/preferences/views/APIKeys/APIKeyList";
 import Details from "app/preferences/views/Details";
+import NotFound from "app/base/views/NotFound";
 import SSHKeyList from "app/preferences/views/SSHKeys/SSHKeyList";
 import SSLKeyList from "app/preferences/views/SSLKeys/SSLKeyList";
 
@@ -20,6 +21,7 @@ const Routes = () => {
       <Route exact path={`${match.path}/ssh-keys/add`} component={AddSSHKey} />
       <Route exact path={`${match.path}/ssl-keys`} component={SSLKeyList} />
       <Route exact path={`${match.path}/ssl-keys/add`} component={AddSSLKey} />
+      <Route path="*" component={NotFound} />
     </Switch>
   );
 };
