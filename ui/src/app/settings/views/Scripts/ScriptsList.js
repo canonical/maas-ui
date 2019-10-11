@@ -2,7 +2,6 @@ import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import "./ScriptsList.scss";
 import { useAddMessage } from "app/base/hooks";
@@ -11,11 +10,9 @@ import Button from "app/base/components/Button";
 import Code from "app/base/components/Code";
 import Col from "app/base/components/Col";
 import ColumnToggle from "app/base/components/ColumnToggle";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
 import Row from "app/base/components/Row";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import SearchBox from "app/base/components/SearchBox";
 import { scripts as scriptActions } from "app/base/actions";
 import { scripts as scriptSelectors } from "app/base/selectors";
 
@@ -184,51 +181,45 @@ const ScriptsList = ({ type = "commissioning" }) => {
   }, [dispatch, type]);
 
   return (
-    <>
-      {scriptsLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to={`/settings/scripts/${type}/upload`}>
-          Upload script
-        </Button>
-      </div>
-      {scriptsLoaded && (
-        <MainTable
-          className="p-table-expanding--light scripts-list"
-          expanding={true}
-          headers={[
-            {
-              content: "Script name",
-              sortKey: "name"
-            },
-            {
-              content: "Description",
-              sortKey: "description"
-            },
-            {
-              content: "Uploaded on",
-              sortKey: "uploaded_on"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            userScripts,
-            expandedId,
-            setExpandedId,
-            expandedType,
-            setExpandedType,
-            hideExpanded,
-            dispatch,
-            setDeleting
-          )}
-          sortable={true}
-        />
+    <SettingsTable
+      buttons={[
+        { label: "Upload script", url: `/settings/scripts/${type}/upload` }
+      ]}
+      headers={[
+        {
+          content: "Script name",
+          sortKey: "name"
+        },
+        {
+          content: "Description",
+          sortKey: "description"
+        },
+        {
+          content: "Uploaded on",
+          sortKey: "uploaded_on"
+        },
+        {
+          content: "Actions",
+          className: "u-align--right"
+        }
+      ]}
+      loaded={scriptsLoaded}
+      loading={scriptsLoading}
+      rows={generateRows(
+        userScripts,
+        expandedId,
+        setExpandedId,
+        expandedType,
+        setExpandedType,
+        hideExpanded,
+        dispatch,
+        setDeleting
       )}
-    </>
+      searchOnChange={setSearchText}
+      searchPlaceholder={`Search ${type} scripts`}
+      searchText={searchText}
+      tableClassName="scripts-list"
+    />
   );
 };
 

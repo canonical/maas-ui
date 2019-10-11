@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
-import SearchBox from "app/base/components/SearchBox";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
@@ -126,46 +124,38 @@ const LicenseKeyList = () => {
   }, [dispatch]);
 
   return (
-    <>
-      {licenseKeysLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <SearchBox onChange={setSearchText} value={searchText} />
-        <Button element={Link} to={`/settings/license-keys/add`}>
-          Add license key
-        </Button>
-      </div>
-
-      {licenseKeysLoaded && (
-        <MainTable
-          className="p-table-expanding--light"
-          expanding={true}
-          headers={[
-            {
-              content: "Operating System",
-              sortKey: "osystem"
-            },
-            {
-              content: "Distro Series",
-              sortKey: "distro_series"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            licenseKeys,
-            expandedId,
-            setExpandedId,
-            hideExpanded,
-            dispatch,
-            setDeleting
-          )}
-          sortable={true}
-        />
+    <SettingsTable
+      buttons={[
+        { label: "Add license key", url: "/settings/license-keys/add" }
+      ]}
+      headers={[
+        {
+          content: "Operating System",
+          sortKey: "osystem"
+        },
+        {
+          content: "Distro Series",
+          sortKey: "distro_series"
+        },
+        {
+          content: "Actions",
+          className: "u-align--right"
+        }
+      ]}
+      loaded={licenseKeysLoaded}
+      loading={licenseKeysLoading}
+      rows={generateRows(
+        licenseKeys,
+        expandedId,
+        setExpandedId,
+        hideExpanded,
+        dispatch,
+        setDeleting
       )}
-    </>
+      searchOnChange={setSearchText}
+      searchPlaceholder="Search license keys"
+      searchText={searchText}
+    />
   );
 };
 

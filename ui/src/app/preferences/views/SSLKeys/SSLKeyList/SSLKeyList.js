@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -8,10 +7,9 @@ import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import Button from "app/base/components/Button";
-import Loader from "app/base/components/Loader";
-import MainTable from "app/base/components/MainTable";
 import Notification from "app/base/components/Notification";
 import CopyButton from "app/base/components/CopyButton";
+import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
@@ -95,38 +93,29 @@ const SSLKeyList = () => {
           {sslkeyErrors}
         </Notification>
       )}
-      {sslkeyLoading && <Loader text="Loading..." />}
-      <div className="p-table-actions">
-        <div className="p-table-actions__space-left"></div>
-        <Button element={Link} to="/account/prefs/ssl-keys/add">
-          Add SSL key
-        </Button>
-      </div>
-      {sslkeyLoaded && (
-        <MainTable
-          className="p-table-expanding--light sslkey-list"
-          expanding={true}
-          headers={[
-            {
-              content: "Key",
-              sortKey: "key"
-            },
-            {
-              content: "Actions",
-              className: "u-align--right"
-            }
-          ]}
-          paginate={20}
-          rows={generateRows(
-            sslkeys,
-            expandedId,
-            setExpandedId,
-            hideExpanded,
-            dispatch
-          )}
-          sortable={true}
-        />
-      )}
+      <SettingsTable
+        buttons={[{ label: "Add SSL key", url: "/account/prefs/ssl-keys/add" }]}
+        headers={[
+          {
+            content: "Key",
+            sortKey: "key"
+          },
+          {
+            content: "Actions",
+            className: "u-align--right"
+          }
+        ]}
+        loaded={sslkeyLoaded}
+        loading={sslkeyLoading}
+        rows={generateRows(
+          sslkeys,
+          expandedId,
+          setExpandedId,
+          hideExpanded,
+          dispatch
+        )}
+        tableClassName="sslkey-list"
+      />
     </>
   );
 };
