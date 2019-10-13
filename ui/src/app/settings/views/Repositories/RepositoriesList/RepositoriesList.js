@@ -102,7 +102,7 @@ export const Repositories = () => {
   );
   const dispatch = useDispatch();
 
-  useWindowTitle("Repositories");
+  useWindowTitle("Package repos");
 
   useAddMessage(
     saved,
