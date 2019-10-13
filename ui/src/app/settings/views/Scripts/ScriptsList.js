@@ -157,7 +157,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
     scriptSelectors.search(state, searchText, type)
   );
 
-  useWindowTitle(`${type} scripts`);
+  useWindowTitle(`${type[0].toUpperCase()}${type.slice(1)} scripts`);
 
   useAddMessage(
     saved,
