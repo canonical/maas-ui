@@ -46,6 +46,21 @@ export const api = {
           }
         });
     },
+    update: (key, csrftoken) => {
+      const { osystem, distro_series, license_key } = key;
+      return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+        method: "PUT",
+        body: JSON.stringify({ license_key })
+      })
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+          return body;
+        });
+    },
     delete: (osystem, distro_series, csrftoken) => {
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
@@ -154,6 +169,29 @@ export function* createLicenseKeySaga(action) {
   }
 }
 
+export function* updateLicenseKeySaga(action) {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  const key = action.payload;
+  let response;
+  try {
+    yield put({ type: "UPDATE_LICENSE_KEY_START" });
+    response = yield call(api.licenseKeys.update, key, csrftoken);
+    yield put({
+      type: "UPDATE_LICENSE_KEY_SUCCESS",
+      payload: response
+    });
+  } catch (errors) {
+    let error = errors;
+    if (typeof error === "string") {
+      error = { "Create error": error };
+    }
+    yield put({
+      type: "UPDATE_LICENSE_KEY_ERROR",
+      errors: error
+    });
+  }
+}
+
 export function* fetchScriptsSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
   let response;
@@ -216,6 +254,10 @@ export function* deleteScriptSaga(action) {
 
 export function* watchCreateLicenseKey() {
   yield takeLatest("CREATE_LICENSE_KEY", createLicenseKeySaga);
+}
+
+export function* watchUpdateLicenseKey() {
+  yield takeLatest("UPDATE_LICENSE_KEY", updateLicenseKeySaga);
 }
 
 export function* watchDeleteLicenseKey() {

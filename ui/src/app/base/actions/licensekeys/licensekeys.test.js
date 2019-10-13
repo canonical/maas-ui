@@ -28,6 +28,14 @@ describe("licenseKeys actions", () => {
     });
   });
 
+  it("can update license keys", () => {
+    const payload = { osystem: "windows", distro_series: "2012" };
+    expect(licenseKeys.update(payload)).toEqual({
+      type: "UPDATE_LICENSE_KEY",
+      payload
+    });
+  });
+
   it("can clean up license keys", () => {
     expect(licenseKeys.cleanup()).toEqual({
       type: "CLEANUP_LICENSE_KEYS"

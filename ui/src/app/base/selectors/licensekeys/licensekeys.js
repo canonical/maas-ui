@@ -56,6 +56,18 @@ licensekeys.search = (state, term) =>
   );
 
 /**
+ * Get license keys for a given osystem and distro_series.
+ * @param {Object} state - The redux state.
+ * @param {String} osystem - The operating system for the license key.
+ * @param {String} distro_series - The distro series for the license key.
+ * @returns {Object} A matching license key.
+ */
+licensekeys.getByOsystemAndDistroSeries = (state, osystem, distro_series) =>
+  state.licensekeys.items.filter(
+    item => item.osystem === osystem && item.distro_series === distro_series
+  )[0];
+
+/**
  * Get the saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether license keys are being saved.

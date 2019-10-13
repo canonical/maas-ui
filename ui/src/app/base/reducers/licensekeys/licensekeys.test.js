@@ -139,6 +139,93 @@ describe("licenseKeys reducer", () => {
     });
   });
 
+  it("should correctly reduce UPDATE_LICENSE_KEY_START", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "UPDATE_LICENSE_KEY_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce UPDATE_LICENSE_KEY_SUCCESS", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [
+            { osystem: "windows", distro_series: "2012", license_key: "foo" },
+            { osystem: "windows", distro_series: "2019", license_key: "bar" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          type: "UPDATE_LICENSE_KEY_SUCCESS",
+          payload: {
+            osystem: "windows",
+            distro_series: "2019",
+            license_key: "baz"
+          }
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [
+        { osystem: "windows", distro_series: "2012", license_key: "foo" },
+        { osystem: "windows", distro_series: "2019", license_key: "baz" }
+      ],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_LICENSE_KEY_ERROR", () => {
+    expect(
+      licenseKeys(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          errors: { error: "Not found" },
+          type: "UPDATE_LICENSE_KEY_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: { error: "Not found" },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   it("should correctly reduce DELETE_LICENSE_KEY_START", () => {
     expect(
       licenseKeys(

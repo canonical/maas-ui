@@ -11,7 +11,12 @@ import FormikField from "app/base/components/FormikField";
 import Notification from "app/base/components/Notification";
 import Select from "app/base/components/Select";
 
-export const LicenseKeyFormFields = ({ osystems, releases, formikProps }) => {
+export const LicenseKeyFormFields = ({
+  editing = false,
+  osystems,
+  releases,
+  formikProps
+}) => {
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
@@ -79,7 +84,7 @@ export const LicenseKeyFormFields = ({ osystems, releases, formikProps }) => {
         </>
         <FormCardButtons
           actionDisabled={saving || formikFormDisabled(formikProps)}
-          actionLabel="Add license key"
+          actionLabel={editing ? "Update license key" : "Add license key"}
           actionLoading={saving}
           actionSuccess={saved}
         />
@@ -89,6 +94,7 @@ export const LicenseKeyFormFields = ({ osystems, releases, formikProps }) => {
 };
 
 LicenseKeyFormFields.propTypes = {
+  editing: PropTypes.bool,
   osystems: PropTypes.array.isRequired,
   releases: PropTypes.object.isRequired,
   formikProps: PropTypes.shape({

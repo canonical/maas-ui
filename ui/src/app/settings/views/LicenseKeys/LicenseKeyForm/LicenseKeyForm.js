@@ -20,7 +20,7 @@ const LicenseKeySchema = Yup.object().shape({
   license_key: Yup.string().required("A license key is required")
 });
 
-export const LicenseKeyForm = () => {
+export const LicenseKeyForm = ({ licenseKey }) => {
   const [savingLicenseKey, setSaving] = useState();
   const saved = useSelector(licenseKeysSelectors.saved);
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
@@ -32,10 +32,12 @@ export const LicenseKeyForm = () => {
 
   useWindowTitle("Add license key");
 
+  const editing = !!licenseKey;
+
   useAddMessage(
     saved,
     licenseKeysActions.cleanup,
-    `${savingLicenseKey} added successfully.`,
+    `${savingLicenseKey} ${editing ? "updated" : "added"} successfully.`,
     setSaving
   );
 
@@ -57,16 +59,20 @@ export const LicenseKeyForm = () => {
     return <Redirect to="/settings/license-keys" />;
   }
 
+  const title = licenseKey ? "Update license key" : "Add license key";
+
   return (
-    <FormCard title="Add license key">
+    <FormCard title={title}>
       {!isLoaded ? (
         <Loader text="loading..." />
       ) : (
         <Formik
           initialValues={{
-            osystem: osystems[0][0],
-            distro_series: releases[osystems[0][0]][0].value,
-            license_key: ""
+            osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
+            distro_series: licenseKey
+              ? licenseKey.distro_series
+              : releases[osystems[0][0]][0].value,
+            license_key: licenseKey ? licenseKey.license_key : ""
           }}
           validationSchema={LicenseKeySchema}
           onSubmit={values => {
@@ -75,12 +81,17 @@ export const LicenseKeyForm = () => {
               distro_series: values.distro_series,
               license_key: values.license_key
             };
-            dispatch(licenseKeysActions.create(params));
+            if (editing) {
+              dispatch(licenseKeysActions.update(params));
+            } else {
+              dispatch(licenseKeysActions.create(params));
+            }
             setSaving(`${params.osystem} (${params.distro_series})`);
           }}
           render={formikProps => {
             return (
               <LicenseKeyFormFields
+                editing={editing}
                 osystems={osystems}
                 releases={releases}
                 formikProps={formikProps}

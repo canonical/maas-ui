@@ -12,6 +12,7 @@ import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
 import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
 import LicenseKeyAdd from "app/settings/views/LicenseKeys/LicenseKeyAdd";
+import LicenseKeyEdit from "app/settings/views/LicenseKeys/LicenseKeyEdit";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 import NotFound from "app/base/views/NotFound";
 import NtpForm from "app/settings/views/Network/NtpForm";
@@ -75,6 +76,11 @@ const Routes = () => {
         exact
         path={`${match.path}/license-keys/add`}
         component={LicenseKeyAdd}
+      />
+      <Route
+        exact
+        path={`${match.path}/license-keys/:osystem/:distro_series/edit`}
+        component={LicenseKeyEdit}
       />
       <Route exact path={`${match.path}/storage`} component={StorageForm} />
       <Route exact path={`${match.path}/network/proxy`} component={ProxyForm} />
