@@ -51,52 +51,6 @@ describe("DhcpList", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
-    state.controller.loading = true;
-    state.device.loading = true;
-    state.dhcpsnippet.loading = true;
-    state.machine.loading = true;
-    state.subnet.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
-  it("hides the table if the models haven't loaded", () => {
-    state.controller.loaded = false;
-    state.device.loaded = false;
-    state.dhcpsnippet.loaded = false;
-    state.machine.loaded = false;
-    state.subnet.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainTable").exists()).toBe(false);
-  });
-
-  it("shows the table if there are dhcp snippets", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
-  });
-
   it("can show a delete confirmation", () => {
     const store = mockStore(state);
     const wrapper = mount(
