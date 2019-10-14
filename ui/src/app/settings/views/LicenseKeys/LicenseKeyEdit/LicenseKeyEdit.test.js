@@ -13,6 +13,9 @@ describe("LicenseKeyEdit", () => {
 
   beforeEach(() => {
     state = {
+      config: {
+        items: []
+      },
       general: {
         osInfo: {
           loaded: true,
