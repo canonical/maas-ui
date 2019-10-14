@@ -44,18 +44,19 @@ export const SettingsTable = ({
           <Loader />
         </div>
       )}
-      {loaded && (
-        <MainTable
-          className={classNames("p-table-expanding--light", tableClassName)}
-          defaultSort={defaultSort}
-          defaultSortDirection="ascending"
-          expanding={true}
-          headers={headers}
-          paginate={20}
-          rows={rows}
-          sortable
-        />
-      )}
+      <MainTable
+        className={classNames("p-table-expanding--light", tableClassName, {
+          "u-no-padding--bottom": loading && !loaded
+        })}
+        defaultSort={defaultSort}
+        defaultSortDirection="ascending"
+        expanding={true}
+        headers={headers}
+        paginate={20}
+        rows={loaded ? rows : null}
+        sortable
+      />
+      {loading && !loaded && <div className="settings-table__lines"></div>}
     </div>
   );
 };
