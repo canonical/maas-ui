@@ -1,6 +1,12 @@
 @import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/utilities_baseline-grid";
+
+@include vf-u-baseline-grid;
 
 .settings-table {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
   height: 100%;
   position: relative;
 }
@@ -16,4 +22,19 @@
   top: 0;
   // Needs to be above content.
   z-index: 1;
+}
+
+.settings-table__lines {
+  @extend .u-baseline-grid;
+
+  &::after {
+    background: linear-gradient(
+      to top,
+      transparentize($color-mid-light, 0.85),
+      transparentize($color-mid-light, 0.85) 1px,
+      transparent 1px,
+      transparent
+    );
+    background-size: 100% $sp-x-large;
+  }
 }
