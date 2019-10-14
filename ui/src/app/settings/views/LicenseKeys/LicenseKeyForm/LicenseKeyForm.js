@@ -26,11 +26,13 @@ export const LicenseKeyForm = ({ licenseKey }) => {
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
   const dispatch = useDispatch();
-  const isLoaded = licenseKeysLoaded && osInfoLoaded;
   const releases = useSelector(generalSelectors.osInfo.getLicensedOsReleases);
   const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
+  const isLoaded = licenseKeysLoaded && osInfoLoaded;
 
-  useWindowTitle("Add license key");
+  const title = licenseKey ? "Update license key" : "Add license key";
+
+  useWindowTitle(title);
 
   const editing = !!licenseKey;
 
@@ -59,13 +61,11 @@ export const LicenseKeyForm = ({ licenseKey }) => {
     return <Redirect to="/settings/license-keys" />;
   }
 
-  const title = licenseKey ? "Update license key" : "Add license key";
-
   return (
     <FormCard title={title}>
       {!isLoaded ? (
         <Loader text="loading..." />
-      ) : (
+      ) : osystems.length > 0 ? (
         <Formik
           initialValues={{
             osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
@@ -99,6 +99,8 @@ export const LicenseKeyForm = ({ licenseKey }) => {
             );
           }}
         />
+      ) : (
+        <span>No available licensed operating systems.</span>
       )}
     </FormCard>
   );
