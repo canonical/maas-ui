@@ -12,6 +12,11 @@ licenseKeys.delete = licenseKey => ({
   payload: licenseKey
 });
 
+licenseKeys.update = licenseKey => ({
+  type: "UPDATE_LICENSE_KEY",
+  payload: licenseKey
+});
+
 licenseKeys.fetch = () => ({
   type: "FETCH_LICENSE_KEYS"
 });

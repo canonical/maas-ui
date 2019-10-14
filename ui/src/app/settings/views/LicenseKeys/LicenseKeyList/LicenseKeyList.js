@@ -38,7 +38,7 @@ const generateRows = (
               <Button
                 appearance="base"
                 element={Link}
-                to={`/settings/license-keys/edit`}
+                to={`/settings/license-keys/${licenseKey.osystem}/${licenseKey.distro_series}/edit`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>

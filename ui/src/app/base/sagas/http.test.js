@@ -10,6 +10,7 @@ import {
   deleteScriptSaga,
   uploadScriptSaga,
   fetchLicenseKeysSaga,
+  updateLicenseKeySaga,
   deleteLicenseKeySaga
 } from "./http";
 
@@ -146,6 +147,35 @@ describe("http sagas", () => {
           ])
           .put({ type: "FETCH_LICENSE_KEYS_START" })
           .put({ type: "FETCH_LICENSE_KEYS_SUCCESS", payload })
+          .run();
+      });
+    });
+
+    describe("update license keys", () => {
+      it("returns a SUCCESS action", () => {
+        const payload = {
+          osystem: "windows",
+          distro_series: "2012",
+          license_key: "foo"
+        };
+        const action = {
+          type: "UPDATE_LICENSE_KEY",
+          payload
+        };
+        return expectSaga(updateLicenseKeySaga, action)
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [
+              matchers.call.fn(
+                api.licenseKeys.update,
+                payload.license_key,
+                "csrf-token"
+              ),
+              payload
+            ]
+          ])
+          .put({ type: "UPDATE_LICENSE_KEY_START" })
+          .put({ type: "UPDATE_LICENSE_KEY_SUCCESS", payload })
           .run();
       });
     });

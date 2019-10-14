@@ -147,6 +147,39 @@ describe("LicenseKeyForm", () => {
     });
   });
 
+  it("can update a key", () => {
+    const store = mockStore(state);
+    const licenseKey = {
+      osystem: "windows",
+      distro_series: "win2012",
+      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <LicenseKeyForm licenseKey={licenseKey} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit(licenseKey)
+    );
+
+    expect(
+      store.getActions().find(action => action.type === "UPDATE_LICENSE_KEY")
+    ).toStrictEqual({
+      type: "UPDATE_LICENSE_KEY",
+      payload: {
+        osystem: "windows",
+        distro_series: "win2012",
+        license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+      }
+    });
+  });
+
   it("adds a message when a license key is created", () => {
     state.licensekeys.saved = true;
     const store = mockStore(state);
