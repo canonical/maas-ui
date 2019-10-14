@@ -1,5 +1,3 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { shallow } from "enzyme";
 import React from "react";
 
@@ -45,7 +43,8 @@ describe("SettingsTable", () => {
       </SettingsTable>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
-    expect(wrapper.find("MainTable").exists()).toBe(false);
+    expect(wrapper.find(".settings-table__lines").exists()).toBe(true);
+    expect(wrapper.find("MainTable").prop("rows")).toBe(null);
   });
 
   it("can display without search", () => {

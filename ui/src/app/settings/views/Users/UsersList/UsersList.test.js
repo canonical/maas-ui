@@ -50,50 +50,6 @@ describe("UsersList", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
-    defaultStore.user.loading = true;
-    const store = mockStore(defaultStore);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <UsersList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
-  it("hides the table if no users have loaded", () => {
-    defaultStore.user.loaded = false;
-    const store = mockStore(defaultStore);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <UsersList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainTable").exists()).toBe(false);
-  });
-
-  it("shows the table if there are users", () => {
-    const store = mockStore(defaultStore);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <UsersList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
-  });
-
   it("can show a delete confirmation", () => {
     const store = mockStore(defaultStore);
     const wrapper = mount(

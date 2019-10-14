@@ -67,53 +67,6 @@ describe("ScriptsList", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
-    const state = { ...initialState };
-    state.scripts.loading = true;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
-  it("hides the table if scripts haven't loaded", () => {
-    const state = { ...initialState };
-    state.scripts.loaded = false;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("MainTable").exists()).toBe(false);
-  });
-
-  it("shows the table if there are scripts", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("MainTable").exists()).toBe(true);
-  });
-
   it("dispatches action to fetch scripts load", () => {
     const state = { ...initialState };
     const store = mockStore(state);

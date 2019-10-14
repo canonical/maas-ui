@@ -35,53 +35,6 @@ describe("LicenseKeyList", () => {
     };
   });
 
-  it("displays a loading component if loading", () => {
-    const state = { ...initialState };
-    state.licensekeys.loading = true;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <LicenseKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
-  it("hides the table if license keys haven't loaded", () => {
-    const state = { ...initialState };
-    state.licensekeys.loaded = false;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <LicenseKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("MainTable").exists()).toBe(false);
-  });
-
-  it("shows the table if there are license keys", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <LicenseKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("MainTable").exists()).toBe(true);
-  });
-
   it("dispatches action to fetch license keys on load", () => {
     const state = { ...initialState };
     const store = mockStore(state);
