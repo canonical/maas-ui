@@ -6,6 +6,8 @@ const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
+const LOGIN_API = "/MAAS/accounts/login/";
+const AUTH_CANARY = `${ROOT_API}account/?op=list_authorisation_tokens`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -31,6 +33,25 @@ const handlePromise = response => {
 };
 
 export const api = {
+  auth: {
+    checkAuthenticated: () => {
+      return fetch(AUTH_CANARY).then(handleErrors);
+    },
+    login: credentials => {
+      return fetch(LOGIN_API, {
+        method: "POST",
+        mode: "no-cors",
+        credentials: "include",
+        headers: new Headers({
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest"
+        }),
+        body: Object.keys(credentials)
+          .map(key => key + "=" + credentials[key])
+          .join("&")
+      }).then(handleErrors);
+    }
+  },
   licenseKeys: {
     create: (key, csrftoken) => {
       const { osystem, distro_series, license_key } = key;
@@ -105,6 +126,36 @@ export const api = {
     }
   }
 };
+
+export function* checkAuthenticatedSaga(action) {
+  try {
+    yield put({ type: "CHECK_AUTHENTICATED_START" });
+    yield call(api.auth.checkAuthenticated);
+    yield put({
+      type: "CHECK_AUTHENTICATED_SUCCESS"
+    });
+  } catch (error) {
+    yield put({
+      type: "CHECK_AUTHENTICATED_ERROR",
+      errors: { error: error.message }
+    });
+  }
+}
+
+export function* loginSaga(action) {
+  try {
+    yield put({ type: "LOGIN_START" });
+    yield call(api.auth.login, action.payload);
+    yield put({
+      type: "LOGIN_SUCCESS"
+    });
+  } catch (error) {
+    yield put({
+      type: "LOGIN_ERROR",
+      errors: { error: error.message }
+    });
+  }
+}
 
 export function* fetchLicenseKeysSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
@@ -250,6 +301,14 @@ export function* deleteScriptSaga(action) {
       errors: { error: error.message }
     });
   }
+}
+
+export function* watchLogin() {
+  yield takeLatest("LOGIN", loginSaga);
+}
+
+export function* watchCheckAuthenticated() {
+  yield takeLatest("CHECK_AUTHENTICATED", checkAuthenticatedSaga);
 }
 
 export function* watchCreateLicenseKey() {
