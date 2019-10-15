@@ -31,16 +31,17 @@ const CommissioningFormFields = ({ formikProps }) => {
         fieldKey="commissioning_distro_series"
         formikProps={formikProps}
         onChange={e => {
+          const kernelValue =
+            allUbuntuKernelOptions[e.target.value] &&
+            allUbuntuKernelOptions[e.target.value][0].value;
+
           formikProps.handleChange(e);
           formikProps.setFieldTouched(
             "commissioning_distro_series",
             true,
             true
           );
-          formikProps.setFieldValue(
-            "default_min_hwe_kernel",
-            allUbuntuKernelOptions[e.target.value][0].value
-          );
+          formikProps.setFieldValue("default_min_hwe_kernel", kernelValue);
           formikProps.setFieldTouched("default_min_hwe_kernel", true, true);
         }}
       />
