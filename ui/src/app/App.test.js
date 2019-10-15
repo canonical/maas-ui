@@ -93,9 +93,7 @@ describe("App", () => {
       messages: {
         items: []
       },
-      status: {
-        connected: true
-      },
+      status: {},
       user: {
         auth: {
           loading: false,
@@ -114,7 +112,9 @@ describe("App", () => {
     };
   });
 
-  it("renders", () => {
+  it("renders routes if logged in", () => {
+    state.status.connected = true;
+    state.status.authenticated = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -123,11 +123,12 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("App").exists()).toBe(true);
+    expect(wrapper.find("Routes").exists()).toBe(true);
   });
 
   it("displays connection errors", () => {
     state.status.error = "Error!";
+    state.status.authenticated = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -139,8 +140,21 @@ describe("App", () => {
     expect(wrapper.find("Section").prop("title")).toBe("Failed to connect.");
   });
 
-  it("displays a loading message if not connected", () => {
-    state.status.connected = false;
+  it("displays a loading message if connecting", () => {
+    state.status.connecting = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("displays a loading message when authenticating", () => {
+    state.status.authenticating = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -166,6 +180,7 @@ describe("App", () => {
   });
 
   it("connects to the WebSocket", () => {
+    state.status.authenticated = true;
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -180,6 +195,8 @@ describe("App", () => {
   });
 
   it("fetches the auth user when connected", () => {
+    state.status.connected = true;
+    state.status.authenticated = true;
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -189,12 +206,12 @@ describe("App", () => {
       </Provider>
     );
     expect(
-      store.getActions().some(action => action.type === "WEBSOCKET_CONNECT")
+      store.getActions().some(action => action.type === "FETCH_AUTH_USER")
     ).toBe(true);
   });
 
-  it("displays a message when logged out", () => {
-    state.user.auth.user = null;
+  it("shows a login screen when logged out", () => {
+    state.status.authenticated = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -203,12 +220,11 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Section").prop("title")).toBe(
-      "You are not authenticated. Please log in to MAAS."
-    );
+    expect(wrapper.find("Login").exists()).toBe(true);
   });
 
   it("displays a message if not an admin", () => {
+    state.status.authenticated = true;
     state.user.auth.user.is_superuser = false;
     const store = mockStore(state);
     const wrapper = mount(

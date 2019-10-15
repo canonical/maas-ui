@@ -3,6 +3,8 @@ import status from "./status";
 describe("status", () => {
   it("should return the initial state", () => {
     expect(status(undefined, {})).toStrictEqual({
+      authenticating: true,
+      authenticated: false,
       connected: false,
       error: null
     });
@@ -13,6 +15,7 @@ describe("status", () => {
       status(
         {
           connected: true,
+          connecting: false,
           error: null
         },
         {
@@ -21,6 +24,7 @@ describe("status", () => {
       )
     ).toStrictEqual({
       connected: false,
+      connecting: true,
       error: null
     });
   });
@@ -30,6 +34,7 @@ describe("status", () => {
       status(
         {
           connected: true,
+          connecting: false,
           error: null
         },
         {
@@ -38,6 +43,7 @@ describe("status", () => {
       )
     ).toStrictEqual({
       connected: false,
+      connecting: true,
       error: null
     });
   });
@@ -47,6 +53,7 @@ describe("status", () => {
       status(
         {
           connected: false,
+          connecting: true,
           error: "Timeout"
         },
         {
@@ -55,19 +62,119 @@ describe("status", () => {
       )
     ).toStrictEqual({
       connected: true,
+      connecting: false,
       error: null
     });
   });
 
   it("should correctly reduce WEBSOCKET_ERROR", () => {
     expect(
-      status(undefined, {
-        type: "WEBSOCKET_ERROR",
-        error: "Error!"
-      })
+      status(
+        { error: null },
+        {
+          type: "WEBSOCKET_ERROR",
+          error: "Error!"
+        }
+      )
     ).toStrictEqual({
-      connected: false,
       error: "Error!"
+    });
+  });
+
+  it("should correctly reduce CHECK_AUTHENTICATED_START", () => {
+    expect(
+      status(
+        {
+          authenticating: false
+        },
+        {
+          type: "CHECK_AUTHENTICATED_START"
+        }
+      )
+    ).toStrictEqual({
+      authenticating: true
+    });
+  });
+
+  it("should correctly reduce CHECK_AUTHENTICATED_SUCCESS", () => {
+    expect(
+      status(
+        {
+          authenticating: true,
+          authenticated: false
+        },
+        {
+          type: "CHECK_AUTHENTICATED_SUCCESS"
+        }
+      )
+    ).toStrictEqual({
+      authenticating: false,
+      authenticated: true
+    });
+  });
+
+  it("should correctly reduce LOGIN_START", () => {
+    expect(
+      status(
+        {
+          authenticating: false
+        },
+        {
+          type: "LOGIN_START"
+        }
+      )
+    ).toStrictEqual({
+      authenticating: true
+    });
+  });
+
+  it("should correctly reduce LOGIN_SUCCESS", () => {
+    expect(
+      status(
+        {
+          authenticated: false,
+          authenticating: true
+        },
+        {
+          type: "LOGIN_SUCCESS"
+        }
+      )
+    ).toStrictEqual({
+      authenticated: true,
+      authenticating: false
+    });
+  });
+
+  it("should correctly reduce LOGIN_ERROR", () => {
+    expect(
+      status(
+        {
+          error: null
+        },
+        {
+          type: "LOGIN_ERROR",
+          error: "Username not provided"
+        }
+      )
+    ).toStrictEqual({
+      error: "Username not provided"
+    });
+  });
+
+  it("should correctly reduce CHECK_AUTHENTICATED_ERROR", () => {
+    expect(
+      status(
+        {
+          authenticating: true,
+          authenticated: true
+        },
+        {
+          type: "CHECK_AUTHENTICATED_ERROR"
+        }
+      )
+    ).toStrictEqual({
+      authenticating: false,
+      authenticated: false
     });
   });
 });

@@ -18,4 +18,31 @@ describe("status", () => {
     };
     expect(status.error(state)).toBe(false);
   });
+
+  it("can get the authenticated status", () => {
+    const state = {
+      status: {
+        authenticated: false
+      }
+    };
+    expect(status.authenticated(state)).toBe(false);
+  });
+
+  it("can get the authenticating status", () => {
+    const state = {
+      status: {
+        authenticating: false
+      }
+    };
+    expect(status.authenticating(state)).toBe(false);
+  });
+
+  it("can get the connecting status", () => {
+    const state = {
+      status: {
+        connecting: false
+      }
+    };
+    expect(status.connecting(state)).toBe(false);
+  });
 });

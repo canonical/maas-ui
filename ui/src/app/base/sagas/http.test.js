@@ -6,6 +6,8 @@ import { expectSaga } from "redux-saga-test-plan";
 import getCookie from "./utils";
 import {
   api,
+  checkAuthenticatedSaga,
+  loginSaga,
   fetchScriptsSaga,
   deleteScriptSaga,
   uploadScriptSaga,
@@ -15,6 +17,70 @@ import {
 } from "./http";
 
 describe("http sagas", () => {
+  describe("Auth API", () => {
+    describe("check authenticated", () => {
+      it("returns a SUCCESS action", () => {
+        return expectSaga(checkAuthenticatedSaga)
+          .provide([[matchers.call.fn(api.auth.checkAuthenticated)]])
+          .put({ type: "CHECK_AUTHENTICATED_START" })
+          .put({ type: "CHECK_AUTHENTICATED_SUCCESS" })
+          .run();
+      });
+
+      it("handles errors", () => {
+        const error = new Error("kerblam!");
+        return expectSaga(checkAuthenticatedSaga)
+          .provide([
+            [matchers.call.fn(api.auth.checkAuthenticated), throwError(error)]
+          ])
+          .put({ type: "CHECK_AUTHENTICATED_START" })
+          .put({
+            type: "CHECK_AUTHENTICATED_ERROR",
+            errors: { error: error.message }
+          })
+          .run();
+      });
+    });
+
+    describe("login", () => {
+      it("returns a SUCCESS action", () => {
+        const payload = {
+          username: "koala",
+          password: "gumtree"
+        };
+        const action = {
+          type: "LOGIN",
+          payload
+        };
+        return expectSaga(loginSaga, action)
+          .provide([[matchers.call.fn(api.auth.login, payload)]])
+          .put({ type: "LOGIN_START" })
+          .put({ type: "LOGIN_SUCCESS" })
+          .run();
+      });
+
+      it("handles errors", () => {
+        const payload = {
+          username: "koala",
+          password: "gumtree"
+        };
+        const action = {
+          type: "LOGIN",
+          payload
+        };
+        const error = {
+          message: "Username not provided"
+        };
+        return expectSaga(loginSaga, action)
+          .provide([
+            [matchers.call.fn(api.auth.login, payload), throwError(error)]
+          ])
+          .put({ type: "LOGIN_START" })
+          .put({ type: "LOGIN_ERROR", errors: { error: error.message } })
+          .run();
+      });
+    });
+  });
   describe("Scripts API", () => {
     describe("fetch scripts", () => {
       it("returns a SUCCESS action", () => {
