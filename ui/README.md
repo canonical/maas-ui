@@ -32,7 +32,7 @@ git clone git@github.com:<github-username>/maas-ui
 
 ## Setup local config
 
-Create a local env config:
+By default maas-ui will connect to `karura.internal`. If you wish to develop against a different MAAS then you can create a local env config:
 
 ```
 cp ui/.env.development ui/.env.development.local
