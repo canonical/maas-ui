@@ -9,8 +9,10 @@ import Settings from "./Settings";
 const mockStore = configureStore();
 
 describe("Settings", () => {
-  it("dispatches action to fetch config on load", () => {
-    const store = mockStore({
+  let state;
+
+  beforeEach(() => {
+    state = {
       config: {
         loading: false,
         loaded: false,
@@ -18,9 +20,19 @@ describe("Settings", () => {
       },
       messages: {
         items: []
+      },
+      user: {
+        auth: {
+          user: {
+            is_superuser: true
+          }
+        }
       }
-    });
+    };
+  });
 
+  it("dispatches action to fetch config on load", () => {
+    const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter
@@ -42,5 +54,22 @@ describe("Settings", () => {
         method: "list"
       }
     });
+  });
+
+  it("displays a message if not an admin", () => {
+    state.user.auth.user.is_superuser = false;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings", key: "testKey" }]}
+        >
+          <Settings />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Section").prop("title")).toEqual(
+      "You do not have permission to view this page."
+    );
   });
 });
