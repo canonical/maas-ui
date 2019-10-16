@@ -124,6 +124,21 @@ describe("websocket sagas", () => {
     expect(saga.next({ test: { loaded: true } }).done).toBe(true);
   });
 
+  it("continues if data has is being fetched for list methods", () => {
+    const action = {
+      type: "FETCH_TEST",
+      meta: {
+        model: "test",
+        method: "test.list",
+        type: MESSAGE_TYPES.REQUEST
+      }
+    };
+    const saga = sendMessage(socketClient, action);
+    saga.next();
+    // The saga should have finished.
+    expect(saga.next({ test: { loading: true } }).done).toBe(true);
+  });
+
   it("can handle params as an array", () => {
     const saga = sendMessage(socketClient, {
       type: "TEST_ACTION",

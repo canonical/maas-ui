@@ -6,6 +6,7 @@ import {
   select,
   take,
   takeEvery,
+  takeLatest,
   race
 } from "redux-saga/effects";
 
@@ -14,14 +15,14 @@ import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
 /**
- * Has data already been fetched into state?
+ * Whether the data is fetching or has been fetched into state.
  *
  * @param {Object} state - redux state object.
  * @param {String} model - root redux state model (e.g. 'config', 'users')
  * @returns {Boolean} - has data been fetched?
  */
 const isLoaded = (state, model) => {
-  return state[model].loaded;
+  return state[model].loaded || state[model].loading;
 };
 
 /**
@@ -211,8 +212,7 @@ export function* sendMessage(socketClient, { meta, payload, type }) {
 /**
  * Connect to the WebSocket and watch for message.
  */
-export function* watchWebSockets() {
-  yield take("WEBSOCKET_CONNECT");
+export function* setupWebSocket() {
   try {
     const csrftoken = yield call(getCookie, "csrftoken");
     if (!csrftoken) {
@@ -235,13 +235,21 @@ export function* watchWebSockets() {
             socketClient
           )
         ]),
-        cancel: take("WEBSOCKET_STOP")
+        cancel: take("WEBSOCKET_DISCONNECT")
       });
       if (cancel) {
         socketChannel.close();
+        yield put({ type: "WEBSOCKET_DISCONNECTED" });
       }
     }
   } catch (error) {
     yield put({ type: "WEBSOCKET_ERROR", error: error.message });
   }
+}
+
+/**
+ * Set up websocket connections when requested.
+ */
+export function* watchWebSockets() {
+  yield takeLatest("WEBSOCKET_CONNECT", setupWebSocket);
 }

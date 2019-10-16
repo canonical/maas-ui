@@ -5,6 +5,10 @@ status.login = payload => ({
   payload
 });
 
+status.logout = () => ({
+  type: "LOGOUT"
+});
+
 status.checkAuthenticated = () => ({
   type: "CHECK_AUTHENTICATED"
 });

@@ -2,6 +2,7 @@ import { watchWebSockets } from "./websockets";
 import {
   watchCheckAuthenticated,
   watchLogin,
+  watchLogout,
   watchCreateLicenseKey,
   watchUpdateLicenseKey,
   watchDeleteLicenseKey,
@@ -14,6 +15,7 @@ import {
 export {
   watchCheckAuthenticated,
   watchLogin,
+  watchLogout,
   watchWebSockets,
   watchCreateLicenseKey,
   watchUpdateLicenseKey,
