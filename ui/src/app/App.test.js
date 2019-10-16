@@ -222,20 +222,4 @@ describe("App", () => {
     );
     expect(wrapper.find("Login").exists()).toBe(true);
   });
-
-  it("displays a message if not an admin", () => {
-    state.status.authenticated = true;
-    state.user.auth.user.is_superuser = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Section").prop("title")).toEqual(
-      "You do not have permission to view this page."
-    );
-  });
 });

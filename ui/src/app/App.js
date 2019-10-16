@@ -17,7 +17,6 @@ import Section from "app/base/components/Section";
 export const App = () => {
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
-  const authUser = useSelector(authSelectors.get);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
@@ -57,8 +56,6 @@ export const App = () => {
         </Notification>
       </Section>
     );
-  } else if (!authUser || !authUser.is_superuser) {
-    content = <Section title="You do not have permission to view this page." />;
   } else if (connected) {
     content = <Routes />;
   }
