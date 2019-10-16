@@ -17,6 +17,9 @@ const status = produce(
         draft.authenticated = true;
         draft.authenticating = false;
         break;
+      case "LOGOUT_SUCCESS":
+        draft.authenticated = false;
+        break;
       case "CHECK_AUTHENTICATED_ERROR":
         // Don't set the errors object here, this action is to check if a user
         // is authenticated, an error means they are not.
@@ -24,6 +27,8 @@ const status = produce(
         draft.authenticated = false;
         break;
       case "WEBSOCKET_DISCONNECTED":
+        draft.connected = false;
+        break;
       case "WEBSOCKET_CONNECT":
         draft.connected = false;
         draft.connecting = true;

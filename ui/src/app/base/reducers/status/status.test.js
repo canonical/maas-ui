@@ -33,18 +33,14 @@ describe("status", () => {
     expect(
       status(
         {
-          connected: true,
-          connecting: false,
-          error: null
+          connected: true
         },
         {
-          type: "WEBSOCKET_CONNECT"
+          type: "WEBSOCKET_DISCONNECTED"
         }
       )
     ).toStrictEqual({
-      connected: false,
-      connecting: true,
-      error: null
+      connected: false
     });
   });
 
@@ -174,6 +170,21 @@ describe("status", () => {
       )
     ).toStrictEqual({
       authenticating: false,
+      authenticated: false
+    });
+  });
+
+  it("should correctly reduce LOGOUT_SUCCESS", () => {
+    expect(
+      status(
+        {
+          authenticated: true
+        },
+        {
+          type: "LOGOUT_SUCCESS"
+        }
+      )
+    ).toStrictEqual({
       authenticated: false
     });
   });

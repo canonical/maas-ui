@@ -279,7 +279,8 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/accounts/logout/"
+              href="##"
+              onClick={[Function]}
             >
               Logout
             </a>

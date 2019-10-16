@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import React, { useState } from "react";
 
 import "./Header.scss";
 import { auth } from "app/base/selectors";
+import { status as statusActions } from "app/base/actions";
 import { useLocation } from "app/base/hooks";
 
 const useVisible = initialValue => {
@@ -44,6 +45,7 @@ const generateLocalLink = (
 );
 
 export const Header = () => {
+  const dispatch = useDispatch();
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
   const { location } = useLocation();
@@ -213,7 +215,11 @@ export const Header = () => {
               <li className="p-navigation__link" role="menuitem">
                 <a
                   className="p-dropdown__item"
-                  href={generateURL("accounts/logout/")}
+                  href="##"
+                  onClick={evt => {
+                    evt.preventDefault();
+                    dispatch(statusActions.logout());
+                  }}
                 >
                   Logout
                 </a>

@@ -9,6 +9,12 @@ describe("status actions", () => {
     expect(status.login(payload)).toStrictEqual({ payload, type: "LOGIN" });
   });
 
+  it("should handle logging out", () => {
+    expect(status.logout()).toStrictEqual({
+      type: "LOGOUT"
+    });
+  });
+
   it("should handle checking if the user is authenticated", () => {
     expect(status.checkAuthenticated()).toStrictEqual({
       type: "CHECK_AUTHENTICATED"

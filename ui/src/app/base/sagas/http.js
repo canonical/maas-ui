@@ -7,6 +7,7 @@ const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/accounts/login/";
+const LOGOUT_API = "/MAAS/accounts/logout/";
 const AUTH_CANARY = `${ROOT_API}account/?op=list_authorisation_tokens`;
 
 const DEFAULT_HEADERS = {
@@ -49,6 +50,12 @@ export const api = {
         body: Object.keys(credentials)
           .map(key => key + "=" + credentials[key])
           .join("&")
+      }).then(handleErrors);
+    },
+    logout: csrftoken => {
+      return fetch(LOGOUT_API, {
+        headers: { "X-CSRFToken": csrftoken },
+        method: "POST"
       }).then(handleErrors);
     }
   },
@@ -152,6 +159,25 @@ export function* loginSaga(action) {
   } catch (error) {
     yield put({
       type: "LOGIN_ERROR",
+      errors: { error: error.message }
+    });
+  }
+}
+
+export function* logoutSaga(action) {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  try {
+    yield put({ type: "LOGOUT_START" });
+    yield call(api.auth.logout, csrftoken);
+    yield put({
+      type: "LOGOUT_SUCCESS"
+    });
+    yield put({
+      type: "WEBSOCKET_DISCONNECT"
+    });
+  } catch (error) {
+    yield put({
+      type: "LOGOUT_ERROR",
       errors: { error: error.message }
     });
   }
@@ -305,6 +331,10 @@ export function* deleteScriptSaga(action) {
 
 export function* watchLogin() {
   yield takeLatest("LOGIN", loginSaga);
+}
+
+export function* watchLogout() {
+  yield takeLatest("LOGOUT", logoutSaga);
 }
 
 export function* watchCheckAuthenticated() {

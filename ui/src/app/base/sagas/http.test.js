@@ -8,6 +8,7 @@ import {
   api,
   checkAuthenticatedSaga,
   loginSaga,
+  logoutSaga,
   fetchScriptsSaga,
   deleteScriptSaga,
   uploadScriptSaga,
@@ -77,6 +78,38 @@ describe("http sagas", () => {
           ])
           .put({ type: "LOGIN_START" })
           .put({ type: "LOGIN_ERROR", errors: { error: error.message } })
+          .run();
+      });
+    });
+
+    describe("logout", () => {
+      it("returns a SUCCESS action", () => {
+        return expectSaga(logoutSaga, {
+          type: "LOGOUT"
+        })
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [matchers.call.fn(api.auth.logout, "csrf-token")]
+          ])
+          .put({ type: "LOGOUT_START" })
+          .put({ type: "LOGOUT_SUCCESS" })
+          .put({ type: "WEBSOCKET_DISCONNECT" })
+          .run();
+      });
+
+      it("handles errors", () => {
+        const error = {
+          message: "Username not provided"
+        };
+        return expectSaga(logoutSaga, {
+          type: "LOGOUT"
+        })
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [matchers.call.fn(api.auth.logout, "csrf-token"), throwError(error)]
+          ])
+          .put({ type: "LOGOUT_START" })
+          .put({ type: "LOGOUT_ERROR", errors: { error: error.message } })
           .run();
       });
     });

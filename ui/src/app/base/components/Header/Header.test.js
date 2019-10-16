@@ -57,4 +57,22 @@ describe("Header", () => {
     );
     expect(wrapper.find("nav").exists()).toBe(false);
   });
+
+  it("can handle logging out", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <Header />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .findWhere(n => n.name() === "a" && n.text() === "Logout")
+      .last()
+      .simulate("click");
+    expect(store.getActions().some(action => action.type === "LOGOUT")).toBe(
+      true
+    );
+  });
 });
