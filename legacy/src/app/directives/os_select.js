@@ -42,6 +42,37 @@ export function cacheOsSelect($templateCache) {
   );
 }
 
+const osSelectTmpl = [
+  '<label class="p-form__label">Choose your image</label>',
+  '<div class="p-form__control"> ',
+  '<select name="os" ',
+  'data-ng-model="ngModel.osystem" ',
+  'data-ng-change="selectedOSChanged()" ',
+  'data-ng-disabled="maasOsSelect.osystems.length <= 1" ',
+  'data-ng-options="',
+  "os[0] as os[1] disable when ",
+  "installKVMSelectedAndNotUbuntu(os) ",
+  'for os in maasOsSelect.osystems">',
+  "</select>",
+  '<select name="release" ',
+  'data-ng-model="ngModel.release" ',
+  'data-ng-change="selectedReleaseChanged()" ',
+  'data-ng-disabled="maasOsSelect.releases.length <= 1" ',
+  'data-ng-options="',
+  "release[0] as release[1] disable when osOutdated(release,",
+  "deployOptions)",
+  ' for release in releases">',
+  "</select>",
+  '<select name="hwe_kernel" data-ng-model="ngModel.hwe_kernel" ',
+  'data-ng-show="hwe_kernels.length"',
+  'data-ng-options="',
+  "hwe_kernel[0] as hwe_kernel[1] for hwe_kernel ",
+  'in hwe_kernels">',
+  '<option value="">Default kernel</option>',
+  "</select>",
+  "</div>"
+].join("");
+
 /* @ngInject */
 export function maasOsSelect(KVMDeployOSBlacklist) {
   return {
@@ -51,7 +82,7 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
       maasOsSelect: "=",
       ngModel: "="
     },
-    templateUrl: "directive/templates/os-select.html",
+    template: osSelectTmpl,
     controller: OsSelectController
   };
 

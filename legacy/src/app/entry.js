@@ -477,9 +477,10 @@ function configureMaas(
       reloadOnSearch: false
     })
     .when("/pools", {
-      templateUrl: "nodes-list.html",
+      template: nodesListTmpl,
       controller: "NodesListController"
     });
+
   if (MAAS_config.superuser) {
     // Only superuser's can access the dashboard at the moment.
     routes = routes.when("/dashboard", {
