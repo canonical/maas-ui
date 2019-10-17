@@ -150,6 +150,7 @@ import storageDisksPartitions
   from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
+import nodeDetailsSummary from "./directives/nodedetails/summary";
 import maasMachinesTable from "./directives/machines_table";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
 import addMachine from "./directives/nodelist/add_machine";
@@ -528,6 +529,7 @@ angular
   .directive("maasProxySettings", maasProxySettings)
   .directive("maasReleaseName", maasReleaseName)
   .directive("maasReleaseOptions", maasReleaseOptions)
+  .directive("nodeDetailsSummary", nodeDetailsSummary)
   .directive("pScriptExpander", pScriptExpander)
   .directive("maasScriptResultsList", maasScriptResultsList)
   .directive("maasScriptRunTime", maasScriptRunTime)

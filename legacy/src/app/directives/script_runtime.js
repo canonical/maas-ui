@@ -4,24 +4,7 @@
  * Script runtime counter directive.
  */
 
-/* @ngInject */
-export function cacheScriptRuntime($templateCache) {
-  // Inject the script_runtime.html into the template cache.
-  $templateCache.put(
-    "directive/templates/script_runtime.html",
-    [
-      '<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) &&',
-      " estimatedRunTime !== 'Unknown'" + '">{{counter}} of ',
-      "~{{estimatedRunTime}}</span>",
-      '<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) &&',
-      " estimatedRunTime == 'Unknown'" + '">{{counter}}</span>',
-      '<span data-ng-if="scriptStatus === 0 && estimatedRunTime !== ',
-      "'Unknown'" + '">~{{estimatedRunTime}}</span>',
-      '<span data-ng-if="scriptStatus !== 0 && scriptStatus !== 1 ',
-      '&& scriptStatus !== 7">{{runTime}}</span>'
-    ].join("")
-  );
-}
+import scriptRuntimeTmpl from "../partials/directives/script-runtime.html";
 
 export function maasScriptRunTime() {
   return {
@@ -33,7 +16,7 @@ export function maasScriptRunTime() {
       estimatedRunTime: "@",
       scriptStatus: "="
     },
-    templateUrl: "directive/templates/script_runtime.html",
+    template: scriptRuntimeTmpl,
     controller: ScriptRunTimeController
   };
 

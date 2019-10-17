@@ -1,3 +1,4 @@
+import dashboardTmpl from "./partials/dashboard.html";
 import domainDetailsTmpl from "./partials/domain-details.html";
 import domainsListTmpl from "./partials/domains-list.html";
 import fabricDetailsTmpl from "./partials/fabric-details.html";
@@ -7,10 +8,14 @@ import introUserTmpl from "./partials/intro-user.html";
 import networksListTmpl from "./partials/networks-list.html";
 import nodesListTmpl from "./partials/nodes-list.html";
 import nodeDetailsTmpl from "./partials/node-details.html";
+import nodeEventsTmpl from "./partials/node-events.html";
 import nodeResultTmpl from "./partials/node-result.html";
+import podDetailsTmpl from "./partials/pod-details.html";
 import podsListTmpl from "./partials/pods-list.html";
+import spaceDetailsTmpl from "./partials/space-details.html";
 import subnetDetailsTmpl from "./partials/subnet-details.html";
 import vlanDetailsTmpl from "./partials/vlan-details.html";
+import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
 const configureRoutes = ($routeProvider, MAAS_config) => {
@@ -32,7 +37,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "NodeResultController"
     })
     .when("/machine/:system_id/events", {
-      templateUrl: "node-events.html",
+      template: nodeEventsTmpl,
       controller: "NodeEventsController"
     })
     .when("/machine/:system_id", {
@@ -48,7 +53,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "NodeResultController"
     })
     .when("/device/:system_id/events", {
-      templateUrl: "node-events.html",
+      template: nodeEventsTmpl,
       controller: "NodeEventsController"
     })
     .when("/device/:system_id", {
@@ -64,7 +69,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "NodeResultController"
     })
     .when("/controller/:system_id/events", {
-      templateUrl: "node-events.html",
+      template: nodeEventsTmpl,
       controller: "NodeEventsController"
     })
     .when("/controller/:system_id", {
@@ -106,7 +111,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "PodsListController"
     })
     .when("/kvm/:id", {
-      templateUrl: "pod-details.html",
+      template: podDetailsTmpl,
       controller: "PodDetailsController"
     })
     .when("/pods", {
@@ -120,7 +125,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "PodsListController"
     })
     .when("/rsd/:id", {
-      templateUrl: "pod-details.html",
+      template: podDetailsTmpl,
       controller: "PodDetailsController"
     })
     .when("/images", {
@@ -136,7 +141,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "DomainDetailsController"
     })
     .when("/space/:space_id", {
-      templateUrl: "space-details.html",
+      template: spaceDetailsTmpl,
       controller: "SpaceDetailsController"
     })
     .when("/fabric/:fabric_id", {
@@ -160,12 +165,8 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "VLANDetailsController",
       controllerAs: "vlanDetails"
     })
-    .when("/settings/:section", {
-      templateUrl: "settings.html",
-      controller: "SettingsController"
-    })
     .when("/zone/:zone_id", {
-      templateUrl: "zone-details.html",
+      template: zoneDetailsTmpl,
       controller: "ZoneDetailsController"
     })
     .when("/zones", {
@@ -181,7 +182,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
   if (MAAS_config.superuser) {
     // Only superuser's can access the dashboard at the moment.
     routes = routes.when("/dashboard", {
-      templateUrl: "dashboard.html",
+      template: dashboardTmpl,
       controller: "DashboardController"
     });
   }
