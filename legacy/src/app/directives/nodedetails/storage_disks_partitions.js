@@ -1,9 +1,8 @@
-function storageDisksPartitions() {
-  const path = "static/partials/nodedetails/storage/disks-partitions.html";
-  return {
-    restrict: "E",
-    templateUrl: `${path}?v=${MAAS_config.files_version}`
-  };
-}
+import disksPartitionsTmpl from "../../partials/nodedetails/storage/disks-partitions.html";
+
+const storageDisksPartitions = () => ({
+  restrict: "E",
+  template: disksPartitionsTmpl
+});
 
 export default storageDisksPartitions;

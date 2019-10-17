@@ -9,13 +9,9 @@ function maasCardLoader($compile) {
   return {
     restrict: "A",
     link: function(scope, element, attrs) {
-      var templateUrl =
-        "static/partials/cards/" +
-        attrs.maasCardLoader +
-        (".html?v=" + MAAS_config.files_version);
-      var include = "<ng-include src=\"'" + templateUrl + "'\"></ng-include>";
-      element.html(include);
-      $compile(element.contents())(scope);
+      const card = require(`../partials/cards/${attrs.maasCardLoader}.html`);
+      const content = $compile(card)(scope);
+      element.replaceWith(content);
     }
   };
 }

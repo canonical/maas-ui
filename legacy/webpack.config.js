@@ -31,16 +31,6 @@ module.exports = {
           presets: ["@babel/preset-env", "@babel/preset-react"]
         }
       },
-      /*
-      {
-        test: /\.js$/,
-        loader: 'angularjs-template-loader',
-        options: {
-          relativeTo: path.resolve(__dirname, './src/app/partials/')
-        },
-        exclude: /node_modules/
-      },
-      */
       {
         test: /\.html$/,
         use: ['html-loader']

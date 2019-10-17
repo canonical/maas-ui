@@ -21,7 +21,6 @@
     "@types/react": "16.0.40",
     "@types/react-dom": "15.5.7",
     "angular-mocks": "^1.7.8",
-    "angularjs-template-loader": "^0.1.2",
     "babel-jest": "24.8.0",
     "babel-loader": "8.0.0-beta.0",
     "babel-plugin-angularjs-annotate": "0.10.0",

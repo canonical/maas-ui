@@ -4,6 +4,8 @@
  * DHCP snippets table directive.
  */
 
+import dhcpSnippetsTableTmpl from "../partials/dhcp-snippets-table.html";
+
 /* @ngInject */
 function maasDhcpSnippetsTable($window) {
   return {
@@ -14,9 +16,7 @@ function maasDhcpSnippetsTable($window) {
       allowDelete: "=",
       hideAllSnippetsLink: "="
     },
-    templateUrl:
-      "static/partials/dhcp-snippets-table.html?v=" +
-      $window.MAAS_config.files_version,
+    template: dhcpSnippetsTableTmpl,
     controller: DHCPSnippetsTableController
   };
 }

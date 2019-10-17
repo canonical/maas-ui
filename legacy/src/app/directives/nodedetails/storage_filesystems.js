@@ -1,9 +1,8 @@
-function storageFilesystems() {
-  const path = "static/partials/nodedetails/storage/filesystems.html";
-  return {
-    restrict: "E",
-    templateUrl: `${path}?v=${MAAS_config.files_version}`
-  };
-}
+import filesystemsTmpl from "../../partials/nodedetails/storage/filesystems.html";
+
+const storageFilesystems = () => ({
+  restrict: "E",
+  template: filesystemsTmpl
+});
 
 export default storageFilesystems;

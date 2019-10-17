@@ -223,6 +223,9 @@ import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
 
+// TODO
+// The following MAAS_config has the original django template conditionals
+// preserved here in comments, so that this can be transitioned to js.
 window.MAAS_config = {
   uris: {
     login: '{% url "login" %}',
@@ -252,31 +255,6 @@ window.MAAS_config = {
   analytics_user_id: "{{analytics_user_id}}",
   uuid: "{{maas_uuid}}"
 };
-
-/* example:
-
-window.MAAS_config = {
-  uris: {
-      login: '/MAAS/accounts/login/',
-      statics: '/MAAS/static/',
-      maas_handler: '/MAAS/api/2.0/maas/',
-      nodes_handler: '/MAAS/api/2.0/nodes/',
-      account_handler: '/MAAS/api/2.0/account/',
-      },
-  version: '2.7.0 (8101-g.b3b43022d)',
-  files_version: '2.7.0(8101-g.b3b43022d)',
-  superuser: true,
-
-  register_url: 'http://192.168.178.135:5240/MAAS',
-  register_secret: '58148e0dd902f200286e2725d7f45a32',
-
-  debug: false,
-  completed_intro: true,
-  user_completed_intro: true,
-  analytics_user_id: 'd2ed4319-9c10-46cb-ae82-226fe4ca97b9-user3',
-  uuid: 'd2ed4319-9c10-46cb-ae82-226fe4ca97b9'
-};
-*/
 
 /* @ngInject */
 function configureMaas(

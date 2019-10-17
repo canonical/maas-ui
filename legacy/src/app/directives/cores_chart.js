@@ -169,18 +169,10 @@ function createChart(totalCores, usedCores, overcommitRatio) {
 }
 
 /* @ngInject */
-export function cacheCoresChart($templateCache) {
-  $templateCache.put(
-    "directive/templates/cores-chart.html",
-    "<div class='p-cores-chart'></div>"
-  );
-}
-
-/* @ngInject */
 export function maasCoresChart() {
   return {
     restrict: "E",
-    templateUrl: "directive/templates/cores-chart.html",
+    template: "<div class='p-cores-chart'></div>",
     scope: {
       total: "=",
       used: "=",
