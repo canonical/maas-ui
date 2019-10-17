@@ -4,12 +4,14 @@
  * SSH keys directive.
  */
 
+ import sshKeysTmpl from "../partials/ssh-keys.html";
+
 /* @ngInject */
 function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
   return {
     restrict: "E",
     scope: {},
-    templateUrl: "static/partials/ssh-keys.html?v=" + MAAS_config.files_version,
+    template: sshKeysTmpl,
     controller: SSHKeysController
   };
 

@@ -1,9 +1,8 @@
-function storageDatastores() {
-  const path = "static/partials/nodedetails/storage/datastores.html";
-  return {
-    restrict: "E",
-    templateUrl: `${path}?v=${MAAS_config.files_version}`
-  };
-}
+import datastoresTmpl from "../../partials/nodedetails/storage/datastores.html";
+
+const storageDatastores = () => ({
+  restrict: "E",
+  template: datastoresTmpl
+});
 
 export default storageDatastores;

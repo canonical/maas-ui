@@ -4,12 +4,14 @@
  * Proxy settings directive.
  */
 
+ import proxySettingsTmpl from "../partials/proxy-settings.html";
+
 /* @ngInject */
 function maasProxySettings(ConfigsManager, ManagerHelperService) {
   return {
     restrict: "E",
     scope: {},
-    templateUrl: "static/partials/proxy-settings.html",
+    template: proxySettingsTmpl,
     controller: ProxySettingsController
   };
 

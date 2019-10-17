@@ -6,6 +6,8 @@
  * Renders the switches listing.
  */
 
+ import switchesTableTmpl from "../partials/switches-table.html";
+
 /* @ngInject */
 function maasSwitchesTable(SwitchesManager, GeneralManager) {
   return {
@@ -19,8 +21,7 @@ function maasSwitchesTable(SwitchesManager, GeneralManager) {
       onCheckAll: "&",
       onCheck: "&"
     },
-    templateUrl:
-      "static/partials/switches-table.html?v=" + MAAS_config.files_version,
+    template: switchesTableTmpl,
     link: function(scope, element, attrs) {
       // Statuses that should show spinner.
       var SPINNER_STATUSES = [

@@ -9,44 +9,31 @@
  * that will still receive click events.
  */
 
-/* @ngInject */
-export function cacheDoubleClickOverlay($templateCache) {
-  // Inject the style for the maas-dbl-overlay class. We inject the style
-  // instead of placing it in maas-styles.css because it is required for
-  // this directive to work at all.
-  var styleElement = document.createElement("style");
-  styleElement.innerHTML = [
-    ".maas-dbl-overlay {",
-    "display: inline-block;",
-    "position: relative;",
-    "}",
-    ".maas-dbl-overlay--overlay {",
-    "position: absolute;",
-    "left: 0;",
-    "right: 0;",
-    "top: 0;",
-    "bottom: 0;",
-    "-webkit-touch-callout: none;",
-    "-webkit-user-select: none;",
-    "-khtml-user-select: none;",
-    "-moz-user-select: none;",
-    "-ms-user-select: none;",
-    "user-select: none;",
-    "}"
-  ].join("");
-  document.getElementsByTagName("head")[0].appendChild(styleElement);
-
-  // Inject the double_click_overlay.html into the template cache.
-  $templateCache.put(
-    "directive/templates/double_click_overlay.html",
-    [
-      '<div class="maas-dbl-overlay">',
-      "<span data-ng-transclude></span>",
-      '<div class="maas-dbl-overlay--overlay"></div>',
-      "</div>"
-    ].join("")
-  );
-}
+const dblClickOverlayTmpl = [
+  '<div class="maas-dbl-overlay">',
+  "<span data-ng-transclude></span>",
+  '<div class="maas-dbl-overlay--overlay"></div>',
+  "</div>",
+  "<style>",
+  ".maas-dbl-overlay {",
+  "display: inline-block;",
+  "position: relative;",
+  "}",
+  ".maas-dbl-overlay--overlay {",
+  "position: absolute;",
+  "left: 0;",
+  "right: 0;",
+  "top: 0;",
+  "bottom: 0;",
+  "-webkit-touch-callout: none;",
+  "-webkit-user-select: none;",
+  "-khtml-user-select: none;",
+  "-moz-user-select: none;",
+  "-ms-user-select: none;",
+  "user-select: none;",
+  "}",
+  "</style>"
+].join("");
 
 /* @ngInject */
 export function maasDblClickOverlay(BrowserService) {
@@ -57,7 +44,7 @@ export function maasDblClickOverlay(BrowserService) {
     scope: {
       maasDblClickOverlay: "&"
     },
-    templateUrl: "directive/templates/double_click_overlay.html",
+    template: dblClickOverlayTmpl,
     link: function(scope, element) {
       // Create the click function that will be called when the
       // overlay is clicked. This changes based on the element that

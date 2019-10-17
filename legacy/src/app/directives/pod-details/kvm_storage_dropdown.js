@@ -4,6 +4,7 @@
  * Directive for KVM storage dropdown.
  *
  */
+import kvmStorageDropdownTmpl from "../../partials/pod-details/kvm-storage-dropdown.html";
 
 /* @ngInject */
 function kvmStorageDropdown($document) {
@@ -15,7 +16,7 @@ function kvmStorageDropdown($document) {
       storage: "<",
       updateRequests: "<"
     },
-    templateUrl: "static/partials/pod-details/kvm-storage-dropdown.html",
+    template: kvmStorageDropdownTmpl,
     link: (scope, element) => {
       scope.clickHandler = event => {
         const closestRow = element.closest("tr");

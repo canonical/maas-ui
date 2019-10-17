@@ -4,43 +4,36 @@
  * Release options directive.
  */
 
-/* @ngInject */
-export function cacheReleaseOptions($templateCache) {
-  // Inject the release-options.html into the template cache.
-  $templateCache.put(
-    "directive/templates/release-options.html",
-    [
-      '<ul class="p-inline-list--settings u-no-margin--top">',
-      '<li class="p-inline-list__item">',
-      '<input id="diskErase" ',
-      'type="checkbox" data-ng-model="maasReleaseOptions.erase" ',
-      'data-ng-disabled="globalOptions.erase" ',
-      'data-ng-change="onEraseChange()">',
-      '<label for="diskErase">',
-      "Erase disks before releasing",
-      "</label>",
-      "</li>",
-      '<li class="p-inline-list__item">',
-      '<input id="secureErase" ',
-      'type="checkbox" ',
-      'data-ng-model="maasReleaseOptions.secureErase" ',
-      'data-ng-disabled="!maasReleaseOptions.erase">',
-      '<label for="secureErase">',
-      "Use secure erase",
-      "</label>",
-      "</li>",
-      '<li class="p-inline-list__item">',
-      '<input id="quickErase" type="checkbox" ',
-      'data-ng-model="maasReleaseOptions.quickErase" ',
-      'data-ng-disabled="!maasReleaseOptions.erase">',
-      '<label for="quickErase">',
-      "Use quick erase (not secure)",
-      "</label>",
-      "</li>",
-      "</ul>"
-    ].join("")
-  );
-}
+const releaseOptionsTmpl = [
+  '<ul class="p-inline-list--settings u-no-margin--top">',
+  '<li class="p-inline-list__item">',
+  '<input id="diskErase" ',
+  'type="checkbox" data-ng-model="maasReleaseOptions.erase" ',
+  'data-ng-disabled="globalOptions.erase" ',
+  'data-ng-change="onEraseChange()">',
+  '<label for="diskErase">',
+  "Erase disks before releasing",
+  "</label>",
+  "</li>",
+  '<li class="p-inline-list__item">',
+  '<input id="secureErase" ',
+  'type="checkbox" ',
+  'data-ng-model="maasReleaseOptions.secureErase" ',
+  'data-ng-disabled="!maasReleaseOptions.erase">',
+  '<label for="secureErase">',
+  "Use secure erase",
+  "</label>",
+  "</li>",
+  '<li class="p-inline-list__item">',
+  '<input id="quickErase" type="checkbox" ',
+  'data-ng-model="maasReleaseOptions.quickErase" ',
+  'data-ng-disabled="!maasReleaseOptions.erase">',
+  '<label for="quickErase">',
+  "Use quick erase (not secure)",
+  "</label>",
+  "</li>",
+  "</ul>"
+].join("");
 
 /* @ngInject */
 export function maasReleaseOptions(GeneralManager) {
@@ -49,7 +42,7 @@ export function maasReleaseOptions(GeneralManager) {
     scope: {
       maasReleaseOptions: "="
     },
-    templateUrl: "directive/templates/release-options.html",
+    template: releaseOptionsTmpl,
     link: function(scope, element, attrs) {
       // On click of enabling erasing set the others to the
       // global default value.
