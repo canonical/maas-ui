@@ -3,24 +3,7 @@
  *
  * Pod parameters directive.
  */
-
-/* @ngInject */
-export function cachePodParameters($templateCache) {
-  // Inject the power-parameters.html into the template cache.
-  $templateCache.put(
-    "directive/templates/pod-parameters.html",
-    [
-      '<maas-obj-field type="options" key="type" label="Type" ',
-      'placeholder="Select the type" ',
-      'options="type.name as type.description for type in podTypes" ',
-      'label-width="2"  ',
-      'input-width="4"  ',
-      'ng-if="!hideType">',
-      "</maas-obj-field>",
-      "<div pod-fields class='col-6'></div>"
-    ].join("")
-  );
-}
+import podParametersTmpl from "../partials/directives/pod-parameters.html";
 
 /* @ngInject */
 export function maasPodParameters(
@@ -34,7 +17,7 @@ export function maasPodParameters(
     scope: {
       hideType: "="
     },
-    templateUrl: "directive/templates/pod-parameters.html",
+    template: podParametersTmpl,
     link: function(scope, element, attrs, controller) {
       scope.powerTypes = GeneralManager.getData("power_types");
       scope.podTypes = [];

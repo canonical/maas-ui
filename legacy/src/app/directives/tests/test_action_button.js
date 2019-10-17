@@ -4,6 +4,9 @@
  * Unit tests for action button directive.
  */
 
+ import angular from "angular";
+ import "angular-mocks";
+
 describe("maasActionButton", function() {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
@@ -40,6 +43,7 @@ describe("maasActionButton", function() {
 
   it("does not have any state classes by default", function() {
     var directive = compileDirective($scope);
+    console.log(directive)
 
     expect(directive.hasClass("is-indeterminate")).toBe(false);
     expect(directive.hasClass("is-done")).toBe(false);

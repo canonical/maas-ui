@@ -38,8 +38,6 @@ function NodesListController(
     static: "Static"
   };
 
-  console.log('loaded nodes list controller')
-
   // Set title and page.
   $rootScope.title = "Machines";
   $rootScope.page = "machines";

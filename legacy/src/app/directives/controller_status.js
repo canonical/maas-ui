@@ -4,20 +4,13 @@
  * Controller status icon. Used in the controllers listing on the nodes page.
  */
 
-/* @ngInject */
-export function cacheControllerStatus($templateCache) {
-  // Inject the controller-status.html into the template cache.
-  $templateCache.put(
-    "directive/templates/controller-status.html",
-    [
-      "<span>",
-      '<span class="p-icon--{$ serviceClass $}" data-ng-if="!textOnly">',
-      "</span>",
-      '<span data-ng-if="textOnly" data-ng-bind="serviceText"></span>',
-      "</span>"
-    ].join("")
-  );
-}
+const controllerStatusTmpl = [
+  "<span>",
+  '<span class="p-icon--{$ serviceClass $}" data-ng-if="!textOnly">',
+  "</span>",
+  '<span data-ng-if="textOnly" data-ng-bind="serviceText"></span>',
+  "</span>"
+].join("");
 
 /* @ngInject */
 export function maasControllerStatus(ControllersManager, ServicesManager) {
@@ -28,7 +21,7 @@ export function maasControllerStatus(ControllersManager, ServicesManager) {
       controller: "=maasControllerStatus",
       textOnly: "=?maasTextOnly"
     },
-    templateUrl: "directive/templates/controller-status.html",
+    template: controllerStatusTmpl,
     controller: maasControllerStatusController
   };
 

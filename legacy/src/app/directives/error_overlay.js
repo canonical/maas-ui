@@ -7,55 +7,7 @@
  * connection to the region over the websocket fails or becomes disconnected.
  */
 
-/* @ngInject */
-export function cacheErrorOverlay($templateCache, $window) {
-  // Inject the error_overlay.html into the template cache.
-  $templateCache.put(
-    "directive/templates/error_overlay.html",
-    [
-      '<header id="error-header" class="page-header" data-ng-show="show()">',
-      '<div class="row">',
-      '<h1 class="page-header__title">',
-      '<span class="p-icon--loading u-animation--spin ',
-      'u-margin--right-small"',
-      'data-ng-hide="clientError"></span>',
-      "{$ getTitle() $}",
-      "</h1>",
-      '<div class="page-header__controls">',
-      '<button class="button--secondary button--inline"',
-      'data-ng-click="reload()"',
-      'data-ng-show="clientError">Reload</button>',
-      "</div>",
-      '<div class="page-header__dropdown is-open" ',
-      'data-ng-show="error">',
-      '<div class="page-header__section>',
-      '<p class="page-header__message',
-      'page-header__message--error">',
-      "{$ error $}",
-      "</p>",
-      "</div>",
-      "</div>",
-      "</div>",
-      "</header>",
-      '<div class="ng-hide u-no-margin--top" data-ng-hide="show()">',
-      "<div data-ng-transclude></div>",
-      "</div>"
-    ].join("")
-  );
-
-  // Preload the svg and png error icon. Its possible that it has never been
-  // loaded by the browser and if the region connection goes down and the
-  // directive gets shown with an error the icon will be missing.
-  //
-  // Note: This is skipped if unit testing because it will throw 404 errors
-  // continuously.
-  if (angular.isUndefined($window.jasmine)) {
-    var image = new Image();
-    image.src = "static/assets/images/icons/error.svg";
-    image = new Image();
-    image.src = "static/assets/images/icons/error.png";
-  }
-}
+import errorOverlayTmpl from "../partials/directives/error_overlay.html";
 
 /* @ngInject */
 export function maasErrorOverlay(
@@ -68,7 +20,7 @@ export function maasErrorOverlay(
     restrict: "A",
     transclude: true,
     scope: true,
-    templateUrl: "directive/templates/error_overlay.html",
+    template: errorOverlayTmpl,
     link: function(scope) {
       scope.connected = false;
       scope.showDisconnected = false;

@@ -4,10 +4,11 @@
  * Unit tests for script select directive.
  */
 
+import angular from "angular";
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-import template from "../../../../partials/add-scripts.html";
+import template from "../../partials/add-scripts.html";
 
 describe("maasScriptSelect", function() {
   // Load the MAAS module.

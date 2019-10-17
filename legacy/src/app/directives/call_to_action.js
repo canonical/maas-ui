@@ -4,49 +4,7 @@
  * Call to action directive.
  */
 
-/* @ngInject */
-export function cacheCta($templateCache) {
-  // Inject the cta.html into the template cache.
-  $templateCache.put(
-    "directive/templates/cta.html",
-    [
-      '<div class="p-cta">',
-      '<button class="p-cta__toggle u-no-margin--right" ',
-      'aria-controls="#cta-menu" ',
-      'aria-expanded="false" aria-haspopup="true" ',
-      'data-ng-click="shown=!shown" ',
-      'data-ng-class="{',
-      "'p-button--positive': getTitle() === 'Take action', ",
-      "'is-selected': shown}\"",
-      ">",
-      "{$ getTitle() $}",
-      "</button>",
-      '<div class="p-cta__dropdown" id="cta-menu" ',
-      'aria-hidden="false" aria-label="submenu" ',
-      'data-ng-show="shown"',
-      ">",
-      '<span class="p-cta__group"',
-      'data-ng-repeat="type in getActionTypes()">',
-      '<button class="p-cta__link" ',
-      'data-ng-repeat="select in maasCta | ',
-      'filter:{ type: type }" ',
-      'data-ng-if="showAction(select)" ',
-      'data-ng-click="selectItem(select)" ',
-      "data-ng-class=\"{'is-unavailable': ",
-      'selectedItems && select.available == 0}"',
-      ">",
-      "{$ getOptionTitle(select) $}",
-      '<div class="p-cta__count" ',
-      'data-ng-if="showCount(select)">',
-      "<span>{$ select.available $}</span>",
-      "</div>",
-      "</button>",
-      "</span>",
-      "</div>",
-      "</div>"
-    ].join("")
-  );
-}
+import ctaTmpl from "../partials/directives/cta.html";
 
 export function maasCta() {
   return {
@@ -58,7 +16,7 @@ export function maasCta() {
       ngModel: "=",
       selectedItems: "="
     },
-    templateUrl: "directive/templates/cta.html",
+    template: ctaTmpl,
     link: link,
     controller: CtaController
   };

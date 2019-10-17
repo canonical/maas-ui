@@ -222,6 +222,8 @@ import windowWidth from "./directives/window_width";
 // templates
 import introTmpl from "./partials/intro.html";
 import nodesListTmpl from "./partials/nodes-list.html";
+import nodeDetailsTmpl from "./partials/node-details.html";
+import podsListTmpl from "./partials/pods-list.html";
 
 
 window.MAAS_config = {
@@ -339,7 +341,7 @@ function configureMaas(
       controller: "NodeEventsController"
     })
     .when("/machine/:system_id", {
-      templateUrl: "node-details.html",
+      template: nodeDetailsTmpl,
       controller: "NodeDetailsController"
     })
     .when("/devices", {
@@ -355,11 +357,11 @@ function configureMaas(
       controller: "NodeEventsController"
     })
     .when("/device/:system_id", {
-      templateUrl: "node-details.html",
+      template: nodeDetailsTmpl,
       controller: "NodeDetailsController"
     })
     .when("/controllers", {
-      templateUrl: "nodes-list.html",
+      template: nodesListTmpl,
       controller: "NodesListController"
     })
     .when("/controller/:system_id/:result_type/:id", {
@@ -371,7 +373,7 @@ function configureMaas(
       controller: "NodeEventsController"
     })
     .when("/controller/:system_id", {
-      templateUrl: "node-details.html",
+      template: nodeDetailsTmpl,
       controller: "NodeDetailsController"
     })
     .when("/nodes", {
@@ -405,7 +407,7 @@ function configureMaas(
       redirectTo: "/controller/:system_id/events"
     })
     .when("/kvm", {
-      templateUrl: "pods-list.html",
+      template: podsListTmpl,
       controller: "PodsListController"
     })
     .when("/kvm/:id", {
@@ -419,7 +421,7 @@ function configureMaas(
       redirectTo: "/kvm/:id"
     })
     .when("/rsd", {
-      templateUrl: "pods-list.html",
+      template: podsListTmpl,
       controller: "PodsListController"
     })
     .when("/rsd/:id", {
@@ -650,17 +652,17 @@ angular
   .controller("ZoneDetailsController", ZoneDetailsController)
   .controller("ZonesListController", ZonesListController)
   // directives
-  //.directive("storageDisksPartitions", storageDisksPartitions)
-  //.directive("storageFilesystems", storageFilesystems)
-  //.directive("storageDatastores", storageDatastores)
-  //.directive("addMachine", addMachine)
- // .directive("kvmStorageDropdown", kvmStorageDropdown)
+  .directive("storageDisksPartitions", storageDisksPartitions)
+  .directive("storageFilesystems", storageFilesystems)
+  .directive("storageDatastores", storageDatastores)
+  .directive("addMachine", addMachine)
+  .directive("kvmStorageDropdown", kvmStorageDropdown)
   .directive("nodesListFilter", nodesListFilter)
-  //.directive("maasAccordion", maasAccordion)
-  //.directive("maasActionButton", maasActionButton)
+  .directive("maasAccordion", maasAccordion)
+  .directive("maasActionButton", maasActionButton)
   .directive("maasBootImagesStatus", maasBootImagesStatus)
   .directive("maasBootImages", maasBootImages)
-  //.directive("maasCta", maasCta)
+  .directive("maasCta", maasCta)
   .directive("maasCardLoader", maasCardLoader)
   .directive("maasCodeLines", maasCodeLines)
   .directive("contenteditable", contenteditable)
@@ -670,8 +672,8 @@ angular
   .directive("maasDefaultOsSelect", maasDefaultOsSelect)
   .directive("maasEnterBlur", maasEnterBlur)
   .directive("maasEnter", maasEnter)
-  //.directive("maasErrorOverlay", maasErrorOverlay)
-  //.directive("maasErrorToggle", maasErrorToggle)
+  .directive("maasErrorOverlay", maasErrorOverlay)
+  .directive("maasErrorToggle", maasErrorToggle)
   .directive("maasIpRanges", maasIpRanges)
   .directive("externalLogin", externalLogin)
   .directive("maasObjForm", maasObjForm)
@@ -705,9 +707,9 @@ angular
   .directive("maasReleaseOptions", maasReleaseOptions)
   .directive("pScriptExpander", pScriptExpander)
   .directive("maasScriptResultsList", maasScriptResultsList)
-  //.directive("maasScriptRunTime", maasScriptRunTime)
-  //.directive("maasScriptSelect", maasScriptSelect)
-  //.directive("maasScriptStatus", maasScriptStatus)
+  .directive("maasScriptRunTime", maasScriptRunTime)
+  .directive("maasScriptSelect", maasScriptSelect)
+  .directive("maasScriptStatus", maasScriptStatus)
   .directive("maasSshKeys", maasSshKeys)
   .directive("maasSwitchesTable", maasSwitchesTable)
   .directive("toggleCtrl", toggleCtrl)
