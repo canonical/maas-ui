@@ -66,7 +66,7 @@
     "mock-socket": "9.0.2",
     "node-sass": "4.12.0",
     "prettier": "1.18.2",
-    "react-styleguidist": "9.1.16",
+    "react-styleguidist": "9.2.0",
     "redux-mock-store": "1.5.3",
     "redux-saga-test-plan": "4.0.0-rc.3"
   },
