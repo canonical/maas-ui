@@ -4,6 +4,8 @@
  * Boot images directive.
  */
 
+ import bootImagesTmpl from "../partials/boot-images.html";
+
 /* @ngInject */
 export function maasBootImagesStatus(BootResourcesManager) {
   return {
@@ -51,8 +53,7 @@ export function maasBootImages(
     scope: {
       design: "=?"
     },
-    templateUrl:
-      "static/partials/boot-images.html?v=" + MAAS_config.files_version,
+    template: bootImagesTmpl,
     controller: BootImagesController
   };
 

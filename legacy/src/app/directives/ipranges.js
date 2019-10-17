@@ -4,6 +4,8 @@
  * IP Ranges directive.
  */
 
+ import ipRangesTmpl from "../partials/ipranges.html";
+
 /* @ngInject */
 function maasIpRanges(
   IPRangesManager,
@@ -17,7 +19,7 @@ function maasIpRanges(
       subnet: "=",
       vlan: "="
     },
-    templateUrl: "static/partials/ipranges.html?v=" + MAAS_config.files_version,
+    template: ipRangesTmpl,
     controller: IpRangesController
   };
 

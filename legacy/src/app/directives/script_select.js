@@ -4,6 +4,8 @@
  * Script select directive.
  */
 
+ import addScriptsTmpl from "../partials/add-scripts.html";
+
 function filterScriptsByParam(scripts, param) {
   return scripts.filter(script => {
     const hasParam = Object.values(script.parameters).filter(value => {
@@ -24,7 +26,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
       setDefaultValues: "=",
       checkTestParameterValues: "="
     },
-    templateUrl: "static/partials/add-scripts.html",
+    template: addScriptsTmpl,
     link: ($scope, element) => {
       $scope.allScripts = ScriptsManager.getItems();
       $scope.scripts = [];

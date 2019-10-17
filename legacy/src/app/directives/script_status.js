@@ -4,15 +4,6 @@
  * Script status icon select directive.
  */
 
-/* @ngInject */
-export function cacheScriptStatus($templateCache) {
-  // Inject the script_status.html into the template cache.
-  $templateCache.put(
-    "directive/templates/script_status.html",
-    ['<span data-ng-class="icon" data-ng-show="show"></span>'].join("")
-  );
-}
-
 export function maasScriptStatus() {
   return {
     restrict: "A",
@@ -20,7 +11,7 @@ export function maasScriptStatus() {
     scope: {
       scriptStatus: "="
     },
-    templateUrl: "directive/templates/script_status.html",
+    template: '<span data-ng-class="icon" data-ng-show="show"></span>',
     controller: ScriptStatusController
   };
 

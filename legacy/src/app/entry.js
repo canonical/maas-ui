@@ -18,6 +18,8 @@ import ngSanitize from "angular-sanitize";
 require("ng-tags-input");
 require("angular-vs-repeat");
 
+import configureRoutes from "./routes";
+
 // filters
 import {
   filterByUnusedForInterface,
@@ -219,12 +221,6 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
-// templates
-import introTmpl from "./partials/intro.html";
-import nodesListTmpl from "./partials/nodes-list.html";
-import nodeDetailsTmpl from "./partials/node-details.html";
-import podsListTmpl from "./partials/pods-list.html";
-
 
 window.MAAS_config = {
   uris: {
@@ -319,180 +315,7 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  let routes = $routeProvider
-    .when("/intro", {
-      template: introTmpl,
-      controller: "IntroController"
-    })
-    .when("/intro/user", {
-      templateUrl: "intro-user.html",
-      controller: "IntroUserController"
-    })
-    .when("/machines", {
-      template: nodesListTmpl,
-      controller: "NodesListController"
-    })
-    .when("/machine/:system_id/:result_type/:id", {
-      templateUrl: "node-result.html",
-      controller: "NodeResultController"
-    })
-    .when("/machine/:system_id/events", {
-      templateUrl: "node-events.html",
-      controller: "NodeEventsController"
-    })
-    .when("/machine/:system_id", {
-      template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
-    })
-    .when("/devices", {
-      templateUrl: "nodes-list.html",
-      controller: "NodesListController"
-    })
-    .when("/device/:system_id/:result_type/:id", {
-      templateUrl: "node-result.html",
-      controller: "NodeResultController"
-    })
-    .when("/device/:system_id/events", {
-      templateUrl: "node-events.html",
-      controller: "NodeEventsController"
-    })
-    .when("/device/:system_id", {
-      template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
-    })
-    .when("/controllers", {
-      template: nodesListTmpl,
-      controller: "NodesListController"
-    })
-    .when("/controller/:system_id/:result_type/:id", {
-      templateUrl: "node-result.html",
-      controller: "NodeResultController"
-    })
-    .when("/controller/:system_id/events", {
-      templateUrl: "node-events.html",
-      controller: "NodeEventsController"
-    })
-    .when("/controller/:system_id", {
-      template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
-    })
-    .when("/nodes", {
-      redirectTo: "/machines"
-    })
-    .when("/node/machine/:system_id", {
-      redirectTo: "/machine/:system_id"
-    })
-    .when("/node/machine/:system_id/:result_type/:id", {
-      redirectTo: "/machine/:system_id/:result_type/:id"
-    })
-    .when("/node/machine/:system_id/events", {
-      redirectTo: "/machine/:system_id/events"
-    })
-    .when("/node/device/:system_id", {
-      redirectTo: "/device/:system_id"
-    })
-    .when("/node/device/:system_id/:result_type/:id", {
-      redirectTo: "/device/:system_id/:result_type/:id"
-    })
-    .when("/node/device/:system_id/events", {
-      redirectTo: "/device/:system_id/events"
-    })
-    .when("/node/controller/:system_id", {
-      redirectTo: "/controller/:system_id"
-    })
-    .when("/node/controller/:system_id/:result_type/:id", {
-      redirectTo: "/controller/:system_id/:result_type/:id"
-    })
-    .when("/node/controller/:system_id/events", {
-      redirectTo: "/controller/:system_id/events"
-    })
-    .when("/kvm", {
-      template: podsListTmpl,
-      controller: "PodsListController"
-    })
-    .when("/kvm/:id", {
-      templateUrl: "pod-details.html",
-      controller: "PodDetailsController"
-    })
-    .when("/pods", {
-      redirectTo: "/kvm"
-    })
-    .when("/pod/:id", {
-      redirectTo: "/kvm/:id"
-    })
-    .when("/rsd", {
-      template: podsListTmpl,
-      controller: "PodsListController"
-    })
-    .when("/rsd/:id", {
-      templateUrl: "pod-details.html",
-      controller: "PodDetailsController"
-    })
-    .when("/images", {
-      templateUrl: "images.html",
-      controller: "ImagesController"
-    })
-    .when("/domains", {
-      templateUrl: "domains-list.html",
-      controller: "DomainsListController"
-    })
-    .when("/domain/:domain_id", {
-      templateUrl: "domain-details.html",
-      controller: "DomainDetailsController"
-    })
-    .when("/space/:space_id", {
-      templateUrl: "space-details.html",
-      controller: "SpaceDetailsController"
-    })
-    .when("/fabric/:fabric_id", {
-      templateUrl: "fabric-details.html",
-      controller: "FabricDetailsController"
-    })
-    .when("/subnets", {
-      redirectTo: "/networks?by=fabric"
-    })
-    .when("/networks", {
-      templateUrl: "networks-list.html",
-      controller: "NetworksListController",
-      reloadOnSearch: false
-    })
-    .when("/subnet/:subnet_id", {
-      templateUrl: "subnet-details.html",
-      controller: "SubnetDetailsController"
-    })
-    .when("/vlan/:vlan_id", {
-      templateUrl: "vlan-details.html",
-      controller: "VLANDetailsController",
-      controllerAs: "vlanDetails"
-    })
-    .when("/settings/:section", {
-      templateUrl: "settings.html",
-      controller: "SettingsController"
-    })
-    .when("/zone/:zone_id", {
-      templateUrl: "zone-details.html",
-      controller: "ZoneDetailsController"
-    })
-    .when("/zones", {
-      templateUrl: "zones-list.html",
-      controller: "ZonesListController",
-      reloadOnSearch: false
-    })
-    .when("/pools", {
-      template: nodesListTmpl,
-      controller: "NodesListController"
-    });
-
-  if (MAAS_config.superuser) {
-    // Only superuser's can access the dashboard at the moment.
-    routes = routes.when("/dashboard", {
-      templateUrl: "dashboard.html",
-      controller: "DashboardController"
-    });
-  }
-  routes = routes.otherwise({
-    redirectTo: "/machines"
-  });
+  configureRoutes($routeProvider, MAAS_config);
 }
 
 // Force users to #/intro when it has not been completed.
