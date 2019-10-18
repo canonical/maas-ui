@@ -23,7 +23,7 @@
     "babel-plugin-angularjs-annotate": "0.10.0",
     "css-loader": "2.1.1",
     "dotenv-flow-webpack": "1.0.0",
-    "enzyme": "3.9.0",
+    "enzyme": "3.10.0",
     "enzyme-to-json": "3.3.5",
     "eslint": "5.15.3",
     "html-loader-jest": "0.2.1",
