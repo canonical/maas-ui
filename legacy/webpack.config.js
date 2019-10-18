@@ -11,7 +11,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: "[name]-min.js"
+    filename: "[name]-min.js",
+    publicPath: "/MAAS/"
   },
   mode: "development",
   devServer: {

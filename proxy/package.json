@@ -5,8 +5,9 @@
   "scripts": {
     "clean": "rm -rf node_modules",
     "serve-ui": "cd ../ui && PORT=8401 yarn run start",
+    "serve-legacy": "cd ../legacy && yarn run start",
     "serve-proxy": "node ./index.js",
-    "start": "concurrently \"yarn serve-ui\" \"yarn serve-proxy\""
+    "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\""
   },
   "devDependencies": {
     "concurrently": "5.0.0",
