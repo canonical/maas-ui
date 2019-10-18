@@ -8,7 +8,7 @@
     "lint": "eslint ./src/app/",
     "prettier": "prettier --write 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "prettier-check": "prettier --check 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
-    "start": "webpack-dev-server --mode development --open --config webpack.config.js --port 8085 --host 0.0.0.0",
+    "start": "webpack-dev-server --mode development --open --config webpack.config.js --port 8402 --host 0.0.0.0 --disable-host-check",
     "test": "jest",
     "watch": "NODE_ENV=development webpack --watch"
   },
