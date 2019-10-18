@@ -54,7 +54,7 @@ fi
 [ -f .env.local ] && env_file="${env_file} --env-file .env.local" || env_file=$env_file  # Do we have a local env file?
 
 # Defaults environment settings
-PORT=8000
+PORT=8400
 
 # Import environment settings
 if [ -f .env ]; then
