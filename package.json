@@ -8,8 +8,11 @@
     "clean": "rm -rf node_modules && cd ui && yarn run clean"
   },
   "private": true,
-  "workspaces": [
-    "ui",
-    "legacy"
-  ]
+  "workspaces": {
+    "packages": [
+    "legacy",
+    "ui"
+    ],
+    "nohoist": ["**/babel**", "**/eslint**", "**/jest"]
+  }
 }
