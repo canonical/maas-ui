@@ -5,7 +5,7 @@ import { useDhcpTarget } from "app/settings/hooks";
 import Link from "app/base/components/Link";
 import Loader from "app/base/components/Loader";
 
-const generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
+const generateURL = url => `${process.env.REACT_APP_BASENAME}/${url}`;
 
 const DhcpTarget = ({ nodeId, subnetId }) => {
   const { loading, loaded, target, type } = useDhcpTarget(nodeId, subnetId);

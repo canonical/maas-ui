@@ -1,0 +1,16 @@
+{
+  "name": "proxy",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "serve-ui": "cd ../ui && PORT=8401 yarn run start",
+    "serve-proxy": "node ./index.js",
+    "start": "concurrently \"yarn serve-ui\" \"yarn serve-proxy\""
+  },
+  "devDependencies": {
+    "concurrently": "5.0.0",
+    "dotenv-flow": "3.1.0",
+    "http-proxy-middleware": "0.20.0"
+  }
+}

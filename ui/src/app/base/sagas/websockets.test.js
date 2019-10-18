@@ -19,8 +19,6 @@ describe("websocket sagas", () => {
   let socketChannel, socketClient;
 
   beforeEach(() => {
-    process.env.REACT_APP_WEBSOCKET_URL = "ws://example.com/ws";
-
     socketClient = {
       getRequest: jest.fn(),
       send: jest.fn(),
