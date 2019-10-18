@@ -788,7 +788,7 @@ export function NodeNetworkingController(
   };
 
   // Get the text for the type of the interface.
-  $scope.getInterfaceTypeText = function(nic) {
+  $scope.getInterfaceTypeText = (nic, member) => {
     let text;
     let type = nic.type;
 
@@ -799,10 +799,19 @@ export function NodeNetworkingController(
     text = INTERFACE_TYPE_TEXTS[type];
 
     if (angular.isDefined(text)) {
+      if (angular.isDefined(member) && member.type === "physical") {
+        switch (text) {
+          case "Bond":
+            return "Bonded physical";
+          case "Bridge":
+            return "Bridged physical";
+          default:
+            return INTERFACE_TYPE_TEXTS[type] || type;
+        }
+      }
       return text;
-    } else {
-      return nic.type;
     }
+    return type;
   };
 
   // Get the text for the link mode of the interface.
@@ -1174,6 +1183,8 @@ export function NodeNetworkingController(
         link_connected: nic.link_connected,
         link_speed: nic.link_speed,
         interface_speed: nic.interface_speed,
+        formatted_link_speed: nic.link_speed / 1000,
+        formatted_interface_speed: nic.interface_speed / 1000,
         type: nic.type,
         bridge_fd: nic.params.bridge_fd,
         bridge_stp: nic.params.bridge_stp,
@@ -1371,6 +1382,12 @@ export function NodeNetworkingController(
     }
     if (nic.tags) {
       params.tags = nic.tags.map(tag => tag.text);
+    }
+    if (nic.link_speed && nic.formatted_link_speed) {
+      params.link_speed = nic.formatted_link_speed * 1000;
+    }
+    if (nic.interface_speed && nic.formatted_interface_speed) {
+      params.interface_speed = nic.formatted_interface_speed * 1000;
     }
     return params;
   };
@@ -2312,18 +2329,25 @@ export function NodeNetworkingController(
       .then(() => {
         $scope.isChangingConnectionStatus = false;
         $scope.selectedInterfaces = [];
+        $scope.isSaving = false;
       })
       .catch(err => $log.error(err));
   };
 
   $scope.showEditWarning = false;
-  $scope.checkIfConnected = nic => {
+  $scope.handleEdit = nic => {
+    if (!$scope.isInterface(nic)) {
+      $scope.edit(nic);
+      return;
+    }
+
     if (nic.link_connected) {
       $scope.edit(nic);
-    } else {
-      $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
-      $scope.showEditWarning = true;
+      return;
     }
+
+    $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
+    $scope.showEditWarning = true;
   };
 
   $scope.getNetworkTestingStatus = nic => {
@@ -2331,7 +2355,7 @@ export function NodeNetworkingController(
     const resultKey = `${nic.name} (${nic.mac_address})`;
     let failedTests = [];
 
-    if (results[resultKey]) {
+    if (results && results[resultKey]) {
       failedTests = results[resultKey].filter(
         res => res.status_name === "Failed"
       );
@@ -2346,6 +2370,26 @@ export function NodeNetworkingController(
     }
 
     return;
+  };
+
+  $scope.getInterfaceNumaNodes = iface => {
+    if (iface.parents && iface.parents.length) {
+      const { originalInterfaces } = $scope;
+
+      const allNumas = iface.parents.reduce(
+        (acc, parent) => {
+          const parentInterface = originalInterfaces[parent];
+          if (parentInterface && !acc.includes(parentInterface.numa_node)) {
+            acc.push(parentInterface.numa_node);
+          }
+          return acc;
+        },
+        iface.numa_node ? [iface.numa_node] : []
+      );
+
+      return allNumas.sort((a, b) => a - b);
+    }
+    return [iface.numa_node];
   };
 
   $scope.canMarkAsConnected = nic => {

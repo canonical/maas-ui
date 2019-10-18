@@ -55,32 +55,194 @@
       th,
       td {
         &:nth-child(1) {
-          width: 14%;
+          width: 16%;
         }
         &:nth-child(2) {
-          width: 8%;
+          width: 5%;
         }
         &:nth-child(3) {
           width: 14%;
         }
         &:nth-child(4) {
-          width: 10%;
+          width: 14%;
         }
         &:nth-child(5) {
-          width: 10%;
+          width: 11%;
         }
         &:nth-child(6) {
           width: 12%;
         }
         &:nth-child(7) {
-          width: 12%;
+          width: 11%;
         }
         &:nth-child(8) {
           width: 12%;
         }
         &:nth-child(9) {
-          width: 8%;
+          width: 5%;
         }
+
+        @media only screen and (max-width: $breakpoint-x-large) {
+          &:nth-child(1) {
+            width: 20%;
+          }
+          &:nth-child(2) {
+            width: 6%;
+          }
+          &:nth-child(3) {
+            width: 16%;
+          }
+          &:nth-child(4) {
+            width: 15%;
+          }
+          &:nth-child(5) {
+            width: 12%;
+          }
+          &:nth-child(6) {
+            width: 13%;
+          }
+          &:nth-child(7) {
+            width: 12%;
+          }
+          &:nth-child(8) {
+            display: none !important;
+            width: 0;
+          }
+          &:nth-child(9) {
+            width: 6%;
+          }
+        }
+
+        @media only screen and (max-width: $breakpoint-large) {
+          &:nth-child(1) {
+            width: 26%;
+          }
+          &:nth-child(2) {
+            width: 10%;
+          }
+          &:nth-child(3) {
+            display: none !important;
+            width: 0;
+          }
+          &:nth-child(4) {
+            width: 20%;
+          }
+          &:nth-child(5) {
+            width: 17%;
+          }
+          &:nth-child(6) {
+            width: 17%;
+          }
+          &:nth-child(7) {
+            display: none !important;
+            width: 0;
+          }
+          &:nth-child(9) {
+            width: 10%;
+          }
+        }
+
+        @media only screen and (max-width: $breakpoint-medium) {
+          &:nth-child(1) {
+            width: 45%;
+          }
+          &:nth-child(2) {
+            width: 14%;
+          }
+          &:nth-child(4) {
+            width: 45%;
+          }
+          &:nth-child(5) {
+            display: none !important;
+            width: 0;
+          }
+          &:nth-child(6) {
+            display: none !important;
+            width: 0;
+          }
+          &:nth-child(9) {
+            display: none !important;
+            width: 0;
+          }
+        }
+      }
+
+      th:nth-child(4) {
+        padding-left: $sph-inner--large;
+      }
+
+      .numa-tooltip {
+        padding-left: $sph-inner--large;
+
+        &.show-warning::after {
+          @include vf-icon-size(map-get($icon-sizes, default));
+          @include vf-icon-warning($color-warning);
+          content: "";
+          left: 0;
+          position: absolute;
+          top: #{$sp-unit / 2};
+        }
+      }
+
+      &.indented-border {
+        border-color: transparent;
+        position: relative;
+
+        &::after {
+          background-color: $color-light-new;
+          content: "";
+          height: 1px;
+          left: #{2 * map-get($icon-sizes, default) + $sph-inner--small};
+          position: absolute;
+          right: 0;
+        }
+      }
+    }
+  }
+
+  .p-table-interface {
+    th,
+    td {
+      &:nth-child(1) {
+        width: 20%;
+      }
+      &:nth-child(2) {
+        width: 5%;
+      }
+      &:nth-child(3) {
+        width: 15%;
+      }
+      &:nth-child(4) {
+        width: 12%;
+      }
+      &:nth-child(5) {
+        width: 12%;
+      }
+      &:nth-child(6) {
+        width: 12%;
+      }
+      &:nth-child(7) {
+        width: 12%;
+      }
+      &:nth-child(8) {
+        width: 12%;
+      }
+    }
+
+    th:nth-child(4) {
+      padding-left: $sph-inner--large;
+    }
+
+    .numa-tooltip {
+      padding-left: $sph-inner--large;
+
+      &.show-warning::after {
+        @include vf-icon-size(map-get($icon-sizes, default));
+        @include vf-icon-warning($color-warning);
+        content: "";
+        left: 0;
+        position: absolute;
+        top: #{$sp-unit / 2};
       }
     }
   }

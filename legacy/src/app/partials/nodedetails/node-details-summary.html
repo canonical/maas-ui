@@ -39,10 +39,18 @@
     <!-- Machine overview -->
     <div ng-if="node.node_type === 0">
         <div class="l-grid__machine-summary-cards">
-            <div class="overview-card" maas-card-loader="machine-overview"></div>
-            <div class="system-card" maas-card-loader="system"></div>
-            <div class="numa-card" maas-card-loader="numa"></div>
-            <div class="network-card" maas-card-loader="network"></div>
+            <div class="overview-card">
+                <div maas-card-loader="machine-overview"></div>
+            </div>
+            <div class="system-card">
+                <div maas-card-loader="system"></div>
+            </div>
+            <div class="numa-card">
+                <div maas-card-loader="numa"></div>
+            </div>
+            <div class="network-card">
+                <div maas-card-loader="network"></div>
+            </div>
         </div>
     </div>
 
