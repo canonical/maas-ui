@@ -1,0 +1,31 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# note: yarn.lock is in the parent directory as this project uses yarn workspaces
+# however ./run erroneously generates a yarn.lock here.
+yarn.lock
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/dist
+
+# misc
+*.swp
+*DS_Store
+.docker-project
+.*.hash
+
+# [env] Local environment settings
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

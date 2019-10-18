@@ -1,0 +1,9 @@
+<maas-obj-field
+    type="options" key="type" label="Type"
+    placeholder="Select the type"
+    options="type.name as type.description for type in podTypes"
+    label-width="2"
+    input-width="4"
+    ng-if="!hideType">
+</maas-obj-field>
+<div pod-fields class='col-6'></div>

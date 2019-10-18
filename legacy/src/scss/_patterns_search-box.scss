@@ -1,0 +1,10 @@
+@mixin maas-p-search-box {
+  .p-search-box {
+    box-shadow: none;
+    width: 100%;
+
+    &.u-min-margin--bottom {
+      margin-bottom: $spv-nudge-compensation * 2;
+    }
+  }
+}
