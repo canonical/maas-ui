@@ -13,6 +13,6 @@
     "legacy",
     "ui"
     ],
-    "nohoist": ["**/babel**", "**/eslint**", "**/jest"]
+    "nohoist": ["**/babel**", "**/eslint**", "**/react-scripts**", "**/jest"]
   }
 }
