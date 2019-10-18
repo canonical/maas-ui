@@ -46,7 +46,7 @@
     "angular-cookies": "1.7.8",
     "angular-route": "1.7.8",
     "angular-sanitize": "1.7.8",
-    "angular-vs-repeat": "1.1.11",
+    "angular-vs-repeat": "2.0.13",
     "babel-polyfill": "6.26.0",
     "cross-env": "6.0.3",
     "jquery": "3.4.1",
