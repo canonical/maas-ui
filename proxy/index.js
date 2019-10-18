@@ -25,7 +25,7 @@ app.use(
 
 app.use(
   proxy("/MAAS/", {
-    target: process.env.MAAS_URL
+    target: "http://localhost:8402/"
   })
 );
 
