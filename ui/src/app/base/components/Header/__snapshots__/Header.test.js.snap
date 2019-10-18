@@ -16,7 +16,7 @@ exports[`Header renders 1`] = `
         >
           <a
             className="p-navigation__link"
-            href="http://maas.local:5240/MAAS/#/dashboard"
+            href="/MAAS/#/dashboard"
           >
             <svg
               alt=""
@@ -120,7 +120,7 @@ exports[`Header renders 1`] = `
                 role="menuitem"
               >
                 <a
-                  href="http://maas.local:5240/MAAS/#/devices"
+                  href="/MAAS/#/devices"
                 >
                   Devices
                 </a>
@@ -130,7 +130,7 @@ exports[`Header renders 1`] = `
                 role="menuitem"
               >
                 <a
-                  href="http://maas.local:5240/MAAS/#/kvm"
+                  href="/MAAS/#/kvm"
                 >
                   KVM
                 </a>
@@ -140,7 +140,7 @@ exports[`Header renders 1`] = `
                 role="menuitem"
               >
                 <a
-                  href="http://maas.local:5240/MAAS/#/rsd"
+                  href="/MAAS/#/rsd"
                 >
                   RSD
                 </a>
@@ -176,7 +176,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/devices"
+              href="/MAAS/#/devices"
             >
               Devices
             </a>
@@ -187,7 +187,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/kvm"
+              href="/MAAS/#/kvm"
             >
               KVM
             </a>
@@ -198,7 +198,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/rsd"
+              href="/MAAS/#/rsd"
             >
               RSD
             </a>
@@ -209,7 +209,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/images"
+              href="/MAAS/#/images"
             >
               Images
             </a>
@@ -220,7 +220,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/domains"
+              href="/MAAS/#/domains"
             >
               DNS
             </a>
@@ -231,7 +231,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/zones"
+              href="/MAAS/#/zones"
             >
               AZs
             </a>
@@ -242,7 +242,7 @@ exports[`Header renders 1`] = `
           >
             <a
               className="p-dropdown__item"
-              href="http://maas.local:5240/MAAS/#/networks?by=fabric"
+              href="/MAAS/#/networks?by=fabric"
             >
               Subnets
             </a>

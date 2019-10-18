@@ -17,7 +17,7 @@ const useVisible = initialValue => {
   return [value, toggleValue];
 };
 
-const generateURL = url => `${process.env.REACT_APP_MAAS_URL}/${url}`;
+const generateURL = url => `${process.env.REACT_APP_BASENAME}/${url}`;
 
 const generateLocalLink = (
   location,

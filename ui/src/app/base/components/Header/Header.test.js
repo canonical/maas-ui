@@ -12,7 +12,7 @@ describe("Header", () => {
   let state;
 
   beforeEach(() => {
-    process.env.REACT_APP_MAAS_URL = "http://maas.local:5240/MAAS";
+    process.env.REACT_APP_BASENAME = "/MAAS";
     state = {
       messages: {
         items: []

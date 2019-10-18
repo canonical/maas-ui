@@ -15,7 +15,7 @@ const Settings = () => {
     dispatch(configActions.fetch());
   }, [dispatch]);
 
-  if (!authUser.is_superuser) {
+  if (!authUser || !authUser.is_superuser) {
     return <Section title="You do not have permission to view this page." />;
   }
 

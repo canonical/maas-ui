@@ -15,7 +15,7 @@ import createRootReducer from "./root-reducer";
 
 const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory({
-  basename: process.env.REACT_APP_BASENAME
+  basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`
 });
 const composeEnhancers = composeWithDevTools({});
 const middleware = [sagaMiddleware, routerMiddleware(history)];
