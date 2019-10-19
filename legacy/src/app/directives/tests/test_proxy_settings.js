@@ -4,7 +4,7 @@
  * Unit tests for MAAS proxy settings directive.
  */
 
-import template from "../../../../partials/proxy-settings.html";
+import template from "../../partials/proxy-settings.html";
 
 describe("maasProxySettings", function() {
   // Load the MAAS module.
