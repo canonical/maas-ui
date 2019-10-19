@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="p-table__row" data-ng-repeat="group in groupedKeys | orderBy:['source', 'authId']" data-ng-class="{ 'is-active': group.id === openRow }">
+                <tr class="p-table__row" data-ng-repeat="group in groupedKeys | orderBy:['source', 'authId'] track by group.id" data-ng-class="{ 'is-active': group.id === openRow }">
                     <td class="p-table__cell" aria-label="Source">
                         <div class="u-fill-container u-vertically-center">{$ sourceTitles[group.source] $}</div>
                     </td>
@@ -36,7 +36,7 @@
                     </td>
                     <td class="p-table-expanding__panel u-no-padding--top" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'view' }">
                         <ul class="p-list u-no-margin--bottom">
-                            <li class="p-list__item" data-ng-repeat="key in group.keys" data-ng-bind-html="trustAsHtml(key.display)"></li>
+                            <li class="p-list__item" data-ng-repeat="key in group.keys track by key.key" data-ng-bind-html="trustAsHtml(key.display)"></li>
                         </ul>
                     </td>
                     <td class="p-table-expanding__panel u-no-padding--top" data-ng-class="{ 'u-hide': group.id !== openRow || rowMode !== 'delete' }">
