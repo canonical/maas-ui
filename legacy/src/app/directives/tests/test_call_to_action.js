@@ -76,14 +76,14 @@ describe("maasCta", function() {
 
   it("sets default title to 'Take action'", function() {
     var directive = compileDirective("items", "active");
-    expect(directive.find("button.p-cta__toggle").text()).toBe("Take action");
+    expect(directive.find("button.p-cta__toggle").text().trim()).toBe("Take action");
   });
 
   it("sets default title to another name", function() {
     var name = makeName("title");
     var directive = compileDirective("items", "active", null, null, name);
     var selector = "button.p-cta__toggle";
-    expect(directive.find(selector).text()).toBe(name);
+    expect(directive.find(selector).text().trim()).toBe(name);
   });
 
   it("click link sets shown to true", function() {
@@ -121,7 +121,7 @@ describe("maasCta", function() {
 
     var listItems = [];
     angular.forEach(links, function(ele, i) {
-      listItems.push(angular.element(ele).text());
+      listItems.push(angular.element(ele).text().trim());
     });
 
     var expectTitles = [];
@@ -158,7 +158,7 @@ describe("maasCta", function() {
 
     angular.element(links[0]).click();
     var title = directive.find("button.p-cta__toggle").text();
-    expect(title).toBe($scope.items[0].title);
+    expect(title.trim()).toBe($scope.items[0].title);
   });
 
   it("dropdown select sets secondary", function() {
