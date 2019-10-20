@@ -5,6 +5,7 @@
  */
 
 import { makeName } from "testing/utils";
+import "angular-mocks";
 
 describe("maasMachinesTable", function() {
   // Load the MAAS module.
@@ -37,9 +38,12 @@ describe("maasMachinesTable", function() {
   // Makes a machine.
   function makeMachine() {
     var machine = {
+      architecture: 'amd64',
       system_id: makeName("system_id"),
       hostname: makeName("name"),
-      $selected: false
+      $selected: false,
+      testing_status: { status: -1},
+      other_test_status: {status: -1}
     };
     MachinesManager._items.push(machine);
     return machine;
@@ -534,7 +538,7 @@ describe("maasMachinesTable", function() {
       var directive = compileDirective();
       var scope = directive.isolateScope();
 
-      var machines = [{}];
+      var machines = [makeMachine()];
       scope.table.filteredMachines = machines;
 
       $scope.$digest();
