@@ -1419,7 +1419,7 @@ function NodeDetailsController(
     }
     if (node.cpu_speed) {
       const speedText =
-        node.cpu_speed > 1000
+        node.cpu_speed >= 1000
           ? `${node.cpu_speed / 1000} GHz`
           : `${node.cpu_speed} MHz`;
       text += `, ${speedText}`;
