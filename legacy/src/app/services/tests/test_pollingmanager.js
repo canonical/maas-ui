@@ -4,10 +4,23 @@
  * Unit tests for PollingManager.
  */
 
+import * as angular from "angular";
+import "angular-mocks";
+
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
 describe("PollingManager", function() {
+  beforeAll(() => {
+    jest.spyOn(console, "log").mockImplementation(() => {});
+  });
+  afterAll(() => {
+    console.log.mockRestore();
+  });
+  afterEach(() => {
+    console.log.mockClear();
+  });
+
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
