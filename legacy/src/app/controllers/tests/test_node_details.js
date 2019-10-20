@@ -2414,13 +2414,6 @@ describe("NodeDetailsController", function() {
   });
 
   describe("getCPUSubtext", () => {
-    function pluraliseCoresText(count) {
-      if (count === 1) {
-        return "core";
-      } else {
-        return "cores";
-      }
-    }
 
     it("returns only cores when unknown speed", () => {
       makeController();
