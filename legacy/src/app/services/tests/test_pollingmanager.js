@@ -4,10 +4,17 @@
  * Unit tests for PollingManager.
  */
 
+import * as angular from "angular";
+import "angular-mocks";
+
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
 describe("PollingManager", function() {
+  beforeAll(() => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -20,7 +27,7 @@ describe("PollingManager", function() {
   }));
 
   // Load the PollingManager and RegionConnection factory.
-  var TestManager, RegionConnection, webSocket;
+  let TestManager, RegionConnection, webSocket;
   beforeEach(inject(function($injector) {
     var PollingManager = $injector.get("PollingManager");
     RegionConnection = $injector.get("RegionConnection");
@@ -45,6 +52,10 @@ describe("PollingManager", function() {
       done();
     });
     RegionConnection.connect("");
+  });
+
+  afterAll(() => {
+    console.log.mockRestore(); // eslint-disable-line no-console
   });
 
   it("sets initial values", function() {

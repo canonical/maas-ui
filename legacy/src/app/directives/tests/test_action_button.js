@@ -43,7 +43,6 @@ describe("maasActionButton", function() {
 
   it("does not have any state classes by default", function() {
     var directive = compileDirective($scope);
-    console.log(directive)
 
     expect(directive.hasClass("is-indeterminate")).toBe(false);
     expect(directive.hasClass("is-done")).toBe(false);

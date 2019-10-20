@@ -19,7 +19,8 @@ import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
 const configureRoutes = ($routeProvider, MAAS_config) => {
-  let routes = $routeProvider
+  let routes;
+  routes = $routeProvider
     .when("/intro", {
       template: introTmpl,
       controller: "IntroController"
@@ -186,7 +187,7 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
       controller: "DashboardController"
     });
   }
-  routes = routes.otherwise({
+  routes.otherwise({
     redirectTo: "/machines"
   });
 }

@@ -141,7 +141,7 @@ describe("NodeDetailsController", function() {
   }
 
   // Create the node that will be used and set the routeParams.
-  var node, $routeParams;
+  let node, $routeParams;
   beforeEach(function() {
     node = makeNode();
     $routeParams = {
@@ -2414,48 +2414,32 @@ describe("NodeDetailsController", function() {
   });
 
   describe("getCPUSubtext", () => {
-    function pluraliseCoresText(count) {
-      if (count === 1) {
-        return "core";
-      } else {
-        return "cores";
-      }
-    }
 
     it("returns only cores when unknown speed", () => {
       makeController();
       $scope.node = node;
-      expect($scope.getCPUSubtext()).toEqual(
-        node.cpu_count + " " + pluraliseCoresText(node.cpu_count)
-      );
+      $scope.node.cpu_count = 2;
+      expect($scope.getCPUSubtext()).toEqual("2 cores");
     });
 
     it("returns speed in mhz", () => {
       makeController();
       $scope.node = node;
-      $scope.node.cpu_speed = makeInteger(100, 999);
-      expect($scope.getCPUSubtext()).toEqual(
-        node.cpu_count +
-          " " +
-          pluraliseCoresText(node.cpu_count) +
-          ", " +
-          node.cpu_speed +
-          " MHz"
-      );
+      $scope.node.cpu_count = 10;
+      $scope.node.cpu_speed = 100;
+      expect($scope.getCPUSubtext()).toEqual("10 cores, 100 MHz");
+      $scope.node.cpu_speed = 999;
+      expect($scope.getCPUSubtext()).toEqual("10 cores, 999 MHz");
     });
 
     it("returns speed in ghz", () => {
       makeController();
       $scope.node = node;
-      $scope.node.cpu_speed = makeInteger(1000, 10000);
-      expect($scope.getCPUSubtext()).toEqual(
-        node.cpu_count +
-          " " +
-          pluraliseCoresText(node.cpu_count) +
-          ", " +
-          node.cpu_speed / 1000 +
-          " GHz"
-      );
+      $scope.node.cpu_count = 1;
+      $scope.node.cpu_speed = 1000;
+      expect($scope.getCPUSubtext()).toEqual("1 core, 1 GHz");
+      $scope.node.cpu_speed = 10000;
+      expect($scope.getCPUSubtext()).toEqual("1 core, 10 GHz");
     });
   });
 

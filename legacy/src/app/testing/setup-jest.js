@@ -1,5 +1,5 @@
-import { jQuery as $ } from "jquery";
+import $ from 'jquery';
+
 /* eslint-disable no-undef */
-global.jQuery = $;
-global.$ = $;
+global.$ = global.jQuery = $;
 /* eslint-enable no-undef */

@@ -88,7 +88,9 @@ function PollingManager($q, $timeout, Manager) {
         self._pollAgain(self._pollErrorTimeout);
         return $q.reject(error);
       }
-    );
+    ).catch(function (err) {
+      console.error(err); // eslint-disable-line no-console
+    });
   };
 
   return PollingManager;

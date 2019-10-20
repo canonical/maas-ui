@@ -260,7 +260,7 @@ class RegionConnection {
   _buildUrl() {
     const host = process.env.MAAS_WEBSOCKET_HOST
       ? process.env.MAAS_WEBSOCKET_HOST
-      : this.$window.location.port;
+      : this.$window.location.hostname;
     let port = process.env.MAAS_WEBSOCKET_PORT
       ? process.env.MAAS_WEBSOCKET_PORT
       : this.$window.location.port;

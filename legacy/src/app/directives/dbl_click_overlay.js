@@ -13,7 +13,6 @@ const dblClickOverlayTmpl = [
   '<div class="maas-dbl-overlay">',
   "<span data-ng-transclude></span>",
   '<div class="maas-dbl-overlay--overlay"></div>',
-  "</div>",
   "<style>",
   ".maas-dbl-overlay {",
   "display: inline-block;",
@@ -32,7 +31,8 @@ const dblClickOverlayTmpl = [
   "-ms-user-select: none;",
   "user-select: none;",
   "}",
-  "</style>"
+  "</style>",
+  "</div>",
 ].join("");
 
 /* @ngInject */

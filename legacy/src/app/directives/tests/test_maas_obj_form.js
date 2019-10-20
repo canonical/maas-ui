@@ -438,7 +438,7 @@ describe("maasObjForm", function() {
     var directive;
     beforeEach(function() {
       $scope.obj = {
-        key: []
+        key: ''
       };
       $scope.manager = {};
       var html = [

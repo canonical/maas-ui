@@ -155,7 +155,7 @@ describe("maasSshKeys", function() {
     scope.keys.push.apply(scope.keys, keys);
     $scope.$digest();
 
-    expect(scope.groupedKeys).toEqual([
+    expect(angular.copy(scope.groupedKeys)).toEqual([
       {
         id: "lp/maas",
         source: "lp",
