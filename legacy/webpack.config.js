@@ -1,9 +1,9 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const path = require("path");
-const DotenvFlow = require('dotenv-flow-webpack');
+const DotenvFlow = require("dotenv-flow-webpack");
 
 module.exports = {
   entry: {
@@ -17,8 +17,10 @@ module.exports = {
   mode: "development",
   devServer: {
     contentBase: path.join(__dirname, "/src"),
-    host: '0.0.0.0',
-    compress: true
+    host: "0.0.0.0",
+    compress: true,
+    public: "0.0.0.0:8400",
+    sockPath: "/sockjs-legacy"
   },
   // This creates a .map file for debugging each bundle.
   devtool: "source-map",
@@ -34,7 +36,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: ['html-loader']
+        use: ["html-loader"]
       },
       {
         test: /\.(sa|sc|c)ss$/,

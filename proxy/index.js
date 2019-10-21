@@ -4,12 +4,14 @@ var proxy = require("http-proxy-middleware");
 
 var app = express();
 
+// Proxy API endpoints to the MAAS.
 app.use(
   proxy(["/MAAS/api", "/MAAS/accounts"], {
     target: process.env.MAAS_URL
   })
 );
 
+// Proxy the WebSocket API endpoint to the MAAS.
 app.use(
   proxy("/MAAS/ws", {
     target: process.env.MAAS_URL,
@@ -17,12 +19,30 @@ app.use(
   })
 );
 
+// Proxy the HMR endpoint to the React client.
+app.use(
+  proxy("/sockjs-node/", {
+    target: "http://localhost:8401/",
+    ws: true
+  })
+);
+
+// Proxy the HMR endpoint to the Angular client.
+app.use(
+  proxy("/sockjs-legacy/", {
+    target: "http://localhost:8402/",
+    ws: true
+  })
+);
+
+// Proxy URLs and assets to the React client.
 app.use(
   proxy(["/MAAS/r/", "/static/"], {
     target: "http://localhost:8401/"
   })
 );
 
+// Proxy the remaining URLs to the Angular client.
 app.use(
   proxy("/MAAS/", {
     target: "http://localhost:8402/"
