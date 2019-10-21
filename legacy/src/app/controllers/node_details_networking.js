@@ -886,7 +886,7 @@ export function NodeNetworkingController(
   $scope.isInterfaceNameInvalid = function(nic) {
     if (
       !angular.isObject(nic) ||
-      !nic.hasOwnProperty("name") ||
+      !Object.prototype.hasOwnProperty.call(nic, "name") ||
       nic.name.length === 0
     ) {
       return true;

@@ -6,9 +6,10 @@
     "serve": "cd proxy && yarn start",
     "test": "cd ui && yarn run test",
     "clean-monorepo": "rm -rf node_modules",
+    "clean-legacy": "cd legacy && yarn run clean",
     "clean-ui": "cd ui && yarn run clean",
     "clean-proxy": "cd proxy && yarn run clean",
-    "clean": "yarn clean-monorepo && yarn clean-ui && yarn clean-proxy"
+    "clean": "yarn clean-monorepo && yarn clean-legacy && yarn clean-ui && yarn clean-proxy"
   },
   "private": true,
   "workspaces": {

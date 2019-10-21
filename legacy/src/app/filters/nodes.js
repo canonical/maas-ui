@@ -150,7 +150,7 @@ function nodesFilter($filter, SearchService) {
           var value;
           if (angular.isFunction(mapFunc)) {
             value = mapFunc(node);
-          } else if (node.hasOwnProperty(attr)) {
+          } else if (Object.prototype.hasOwnProperty.call(node, attr)) {
             value = node[attr];
           }
 
