@@ -18,6 +18,12 @@
       "proxy",
       "ui"
     ],
-    "nohoist": ["**/babel**", "**/eslint**", "**/react-scripts**", "**/jest"]
+    "nohoist": [
+      "**/babel**",
+      "**/eslint**",
+      "**/react-scripts**",
+      "**/jest",
+      "**/webpack**"
+    ]
   }
 }
