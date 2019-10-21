@@ -227,15 +227,7 @@ import windowWidth from "./directives/window_width";
 // The following MAAS_config has the original django template conditionals
 // preserved here in comments, so that this can be transitioned to js.
 window.MAAS_config = {
-  uris: {
-    login: '{% url "login" %}',
-    statics: "{{ STATIC_URL }}",
-    maas_handler: '{% url "maas_handler" %}',
-    nodes_handler: '{% url "nodes_handler" %}',
-    account_handler: '{% url "account_handler" %}'
-  },
   version: "{{version}}",
-  files_version: "{{files_version}}",
   //superuser: {% if user.is_superuser %}true{% else %}false{% endif %},
   superuser: true,
   /*
