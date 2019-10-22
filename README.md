@@ -10,8 +10,6 @@ This is a mono repo for MAAS frontend projects.
 
 This is a React frontend. New work should be done here where possible.
 
-[UI setup instructions](ui/README.md)
-
 To view component docs run `./run exec --expose-port 6060 yarn docs`.
 
 # Adding a new project
