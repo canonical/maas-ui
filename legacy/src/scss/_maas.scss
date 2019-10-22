@@ -1,4 +1,22 @@
 @mixin maas {
+  // classes for displaying loading/errors for initial app bootstrap
+  #bootstrap-loading {
+    display: none;
+  }
+
+  .deferred-bootstrap-loading #loading {
+    display: block !important;
+  }
+
+  #bootstrap-error {
+    display: none;
+  }
+
+  .deferred-bootstrap-error #error {
+    display: block !important;
+    background: red;
+  }
+
   .u-baseline-grid {
     $baseline-color: #f00 !default;
     $baseline-offset: 0 !default;
