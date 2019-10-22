@@ -1,12 +1,6 @@
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
-
-import "./Header.scss";
-import { auth } from "app/base/selectors";
-import { status as statusActions } from "app/base/actions";
-import { useLocation } from "app/base/hooks";
 
 const useVisible = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -17,45 +11,131 @@ const useVisible = initialValue => {
   return [value, toggleValue];
 };
 
-const generateURL = url => `${process.env.REACT_APP_BASENAME}/${url}`;
-
-const generateLocalLink = (
+export const Header = ({
+  authUser,
+  basename,
+  generateLocalLink,
   location,
-  url,
-  label,
-  isDropdown = false,
-  hideMobile = false
-) => (
-  <li
-    className={classNames("p-navigation__link", {
-      "is-selected": location.pathname.startsWith(url),
-      "u-hide-nav-viewport--medium": hideMobile
-    })}
-    role="menuitem"
-  >
-    <Link
-      to={url}
-      className={classNames({
-        "p-dropdown__item": isDropdown
-      })}
-    >
-      {label}
-    </Link>
-  </li>
-);
-
-export const Header = () => {
-  const dispatch = useDispatch();
+  logout
+}) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
-  const { location } = useLocation();
-  const authUser = useSelector(auth.get);
+
+  const links = [
+    {
+      inHardwareMenu: true,
+      isLegacy: true,
+      label: "Machines",
+      url: "/machines"
+    },
+    {
+      inHardwareMenu: true,
+      isLegacy: true,
+      label: "Devices",
+      url: "/devices"
+    },
+    {
+      adminOnly: true,
+      inHardwareMenu: true,
+      isLegacy: true,
+      label: "Controllers",
+      url: "/controllers"
+    },
+    {
+      inHardwareMenu: true,
+      isLegacy: true,
+      label: "KVM",
+      url: "/kvm"
+    },
+    {
+      inHardwareMenu: true,
+      isLegacy: true,
+      label: "RSD",
+      url: "/rsd"
+    },
+    {
+      isLegacy: true,
+      label: "Images",
+      url: "/images"
+    },
+    {
+      isLegacy: true,
+      label: "DNS",
+      url: "/domains"
+    },
+    {
+      isLegacy: true,
+      label: "AZs",
+      url: "/zones"
+    },
+    {
+      isLegacy: true,
+      label: "Subnets",
+      url: "/networks?by=fabric"
+    },
+    {
+      adminOnly: true,
+      isLegacy: false,
+      label: "Settings",
+      url: "/settings"
+    }
+  ];
+
+  const generateLegacyURL = url => `${basename}/#${url}`;
+
+  const generateLink = (
+    url,
+    label,
+    isLegacy = false,
+    isDropdown = false,
+    hideMobile = false
+  ) => {
+    const linkClass = classNames({
+      "p-dropdown__item": isDropdown
+    });
+    if (isLegacy) {
+      url = generateLegacyURL(url);
+    }
+    return (
+      <li
+        className={classNames("p-navigation__link", {
+          "is-selected": location.pathname.startsWith(url),
+          "u-hide-nav-viewport--medium": hideMobile
+        })}
+        key={url}
+        role="menuitem"
+      >
+        {generateLocalLink && !isLegacy ? (
+          generateLocalLink(url, label, linkClass)
+        ) : (
+          <a className={linkClass} href={url}>
+            {label}
+          </a>
+        )}
+      </li>
+    );
+  };
+
+  const generateMenuItems = (items, isDropdown, hideMobile) =>
+    items.map(({ inHardwareMenu, isLegacy, label, url }) =>
+      generateLink(
+        url,
+        label,
+        isLegacy,
+        isDropdown,
+        inHardwareMenu && hideMobile
+      )
+    );
+
   return (
     <header className="p-navigation is-dark">
       <div className="p-navigation__row row">
         <div className="p-navigation__banner">
           <div className="p-navigation__logo">
-            <a href={generateURL("#/dashboard")} className="p-navigation__link">
+            <a
+              href={generateLegacyURL("/dashboard")}
+              className="p-navigation__link"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="100"
@@ -110,115 +190,20 @@ export const Header = () => {
                     "u-hide": !hardwareVisible
                   })}
                 >
-                  {generateLocalLink(
-                    location,
-                    "/machines",
-                    "Machines",
-                    false,
-                    false
-                  )}
-                  <li className="p-navigation__link" role="menuitem">
-                    <a href={generateURL("#/devices")}>Devices</a>
-                  </li>
-                  {authUser.is_superuser ? (
-                    <li className="p-navigation__link" role="menuitem">
-                      <a href={generateURL("#/controllers")}>Controllers</a>
-                    </li>
-                  ) : null}
-                  <li className="p-navigation__link" role="menuitem">
-                    <a href={generateURL("#/kvm")}>KVM</a>
-                  </li>
-                  <li className="p-navigation__link" role="menuitem">
-                    <a href={generateURL("#/rsd")}>RSD</a>
-                  </li>
+                  {generateMenuItems(links.filter(item => item.inHardwareMenu))}
                 </ul>
               </li>
-              {generateLocalLink(location, "/machines", "Machines", true, true)}
-              <li
-                className="p-navigation__link u-hide-nav-viewport--medium"
-                role="menuitem"
-              >
-                <a className="p-dropdown__item" href={generateURL("#/devices")}>
-                  Devices
-                </a>
-              </li>
-              {authUser.is_superuser ? (
-                <li
-                  className="p-navigation__link u-hide-nav-viewport--medium"
-                  role="menuitem"
-                >
-                  <a
-                    className="p-dropdown__item"
-                    href={generateURL("#/controllers")}
-                  >
-                    Controllers
-                  </a>
-                </li>
-              ) : null}
-              <li
-                className="p-navigation__link u-hide-nav-viewport--medium"
-                role="menuitem"
-              >
-                <a className="p-dropdown__item" href={generateURL("#/kvm")}>
-                  KVM
-                </a>
-              </li>
-              <li
-                className="p-navigation__link u-hide-nav-viewport--medium"
-                role="menuitem"
-              >
-                <a className="p-dropdown__item" href={generateURL("#/rsd")}>
-                  RSD
-                </a>
-              </li>
-              <li className="p-navigation__link" role="menuitem">
-                <a className="p-dropdown__item" href={generateURL("#/images")}>
-                  Images
-                </a>
-              </li>
-              <li className="p-navigation__link" role="menuitem">
-                <a className="p-dropdown__item" href={generateURL("#/domains")}>
-                  DNS
-                </a>
-              </li>
-              <li className="p-navigation__link" role="menuitem">
-                <a className="p-dropdown__item" href={generateURL("#/zones")}>
-                  AZs
-                </a>
-              </li>
-              <li className="p-navigation__link" role="menuitem">
-                <a
-                  className="p-dropdown__item"
-                  href={generateURL("#/networks?by=fabric")}
-                >
-                  Subnets
-                </a>
-              </li>
-              {authUser.is_superuser
-                ? generateLocalLink(
-                    location,
-                    "/settings",
-                    "Settings",
-                    true,
-                    false
-                  )
-                : null}
+              {generateMenuItems(links, true, true)}
             </ul>
             <ul className="p-navigation__links--right" role="menu">
-              {generateLocalLink(
-                location,
-                "/account/prefs",
-                authUser.username,
-                true,
-                false
-              )}
+              {generateLink("/account/prefs", authUser.username, false, true)}
               <li className="p-navigation__link" role="menuitem">
                 <a
                   className="p-dropdown__item"
                   href="##"
                   onClick={evt => {
                     evt.preventDefault();
-                    dispatch(statusActions.logout());
+                    logout();
                   }}
                 >
                   Logout
@@ -230,6 +215,19 @@ export const Header = () => {
       </div>
     </header>
   );
+};
+
+Header.propTypes = {
+  authUser: PropTypes.shape({
+    is_superuser: PropTypes.bool.isRequired,
+    username: PropTypes.string.isRequired
+  }),
+  basename: PropTypes.string.isRequired,
+  generateLocalLink: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired
+  }).isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 export default Header;
