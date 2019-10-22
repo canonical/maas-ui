@@ -294,7 +294,6 @@ function configureMaas(
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
 function introRedirect($rootScope, $location, COMPLETED_INTRO) {
-  console.log("COMPLETED_INTRO", COMPLETED_INTRO);
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
     if (!COMPLETED_INTRO) {
       if (next.controller !== "IntroController") {

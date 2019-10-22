@@ -23,6 +23,12 @@ angular.module("MAAS").run([
 
 beforeEach(function() {
   window.MAAS_config = {};
+
+  angular.mock.module("MAAS");
+  angular.mock.module(($provide) => {
+    $provide.constant("VERSION", { version: "1", subversion: "2" });
+    $provide.constant("COMPLETED_INTRO", true);
+  });
 });
 
 window.DEBUG = true;
