@@ -1700,6 +1700,26 @@ describe("NodeNetworkingController", function() {
       };
       expect($scope.getInterfaceTypeText(nic)).toBe("Open vSwitch");
     });
+
+    it(`returns correct text if physical interface
+      has a child with bond type`, () => {
+      makeController();
+      const child = { type: "bond" };
+      const parent = { type: "physical" };
+      expect($scope.getInterfaceTypeText(child, parent)).toBe(
+        "Bonded physical"
+      );
+    });
+
+    it(`returns correct text if physical interface
+      has a child with bridge type`, () => {
+      makeController();
+      const child = { type: "bridge" };
+      const parent = { type: "physical" };
+      expect($scope.getInterfaceTypeText(child, parent)).toBe(
+        "Bridged physical"
+      );
+    });
   });
 
   describe("getLinkModeText", function() {
@@ -5058,7 +5078,7 @@ describe("NodeNetworkingController", function() {
     });
   });
 
-  describe("checkIfConnected", () => {
+  describe("handleEdit", () => {
     it("calls edit method if connected", () => {
       makeController();
       const nic = {
@@ -5066,10 +5086,26 @@ describe("NodeNetworkingController", function() {
         link_id: -1,
         vlan: { id: 2 },
         fabric: { name: "fabric-2" },
-        link_connected: true
+        link_connected: true,
+        type: "physical"
       };
       spyOn($scope, "edit");
-      $scope.checkIfConnected(nic);
+      $scope.handleEdit(nic);
+      expect($scope.edit).toHaveBeenCalled();
+    });
+
+    it("calls edit method if not a physical interface", () => {
+      makeController();
+      const nic = {
+        id: 1,
+        link_id: -1,
+        vlan: { id: 2 },
+        fabric: { name: "fabric-2" },
+        link_connected: false,
+        type: "bond"
+      };
+      spyOn($scope, "edit");
+      $scope.handleEdit(nic);
       expect($scope.edit).toHaveBeenCalled();
     });
 
@@ -5080,10 +5116,11 @@ describe("NodeNetworkingController", function() {
         link_id: -1,
         vlan: { id: 2 },
         fabric: { name: "fabric-2" },
-        link_connected: false
+        link_connected: false,
+        type: "physical"
       };
       spyOn($scope, "edit");
-      $scope.checkIfConnected(nic);
+      $scope.handleEdit(nic);
       expect($scope.edit).not.toHaveBeenCalled();
     });
 
@@ -5093,9 +5130,10 @@ describe("NodeNetworkingController", function() {
         id: 1,
         link_id: -1,
         vlan: { id: 2 },
-        fabric: { name: "fabric-2" }
+        fabric: { name: "fabric-2" },
+        type: "physical"
       };
-      $scope.checkIfConnected(nic);
+      $scope.handleEdit(nic);
       expect($scope.selectedInterfaces).toEqual(["1/-1"]);
     });
   });
@@ -5222,6 +5260,30 @@ describe("NodeNetworkingController", function() {
     it("returns argument with Tbps if more than TB", () => {
       makeController();
       expect($scope.formatSpeedUnits(2000000)).toEqual("2 Tbps");
+    });
+  });
+
+  describe("getInterfaceNumaNodes", () => {
+    it("returns an interface's numa node if it has no parents", () => {
+      makeController();
+      const iface = {
+        numa_node: 2,
+        parents: []
+      };
+      expect($scope.getInterfaceNumaNodes(iface)).toEqual([2]);
+    });
+
+    it("returns numa nodes of interface and its parents", () => {
+      makeController();
+      $scope.originalInterfaces = {
+        0: { numa_node: 0 },
+        1: { numa_node: 1 }
+      };
+      const iface = {
+        numa_node: 2,
+        parents: [0, 1]
+      };
+      expect($scope.getInterfaceNumaNodes(iface)).toEqual([0, 1, 2]);
     });
   });
 });

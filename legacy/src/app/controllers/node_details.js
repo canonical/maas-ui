@@ -1472,39 +1472,19 @@ function NodeDetailsController(
     }
   };
 
-  $scope.powerParametersValid = function(power_parameters) {
-    if (!angular.isObject(power_parameters)) {
+  $scope.powerParametersValid = power => {
+    const { parameters, type } = power;
+    if (!angular.isObject(parameters) || !angular.isObject(type)) {
       return false;
     }
 
-    // If no keys in obj
-    if (Object.keys(power_parameters).length === 0) {
-      return false;
-    }
-
-    // Keys which are optional
-    const optionalKeys = ["mac_address"];
-
-    // If keys but no values in obj
-    var hasParameters = false;
-
-    Object.keys(power_parameters).forEach(function(key) {
-      if (optionalKeys.includes(key)) {
-        return true;
+    const fields = type.fields || [];
+    return fields.every(field => {
+      if (field.required) {
+        return !!parameters[field.name];
       }
-
-      if (power_parameters[key] !== "") {
-        hasParameters = true;
-      } else {
-        hasParameters = false;
-      }
+      return true;
     });
-
-    if (!hasParameters) {
-      return false;
-    }
-
-    return true;
   };
 
   $scope.toggleNumaExpanded = numaIndex => {
@@ -1525,7 +1505,14 @@ function NodeDetailsController(
     const testAction = $scope.action.availableOptions.find(action => {
       return action.name === "test";
     });
-    $scope.$broadcast("validate", testAction);
+    $scope.testSelection = $scope.scripts.filter(script => {
+      return script.apply_configured_networking;
+    });
+    $scope.$broadcast("validate", testAction, $scope.testSelection);
+  };
+
+  $scope.linkSpeedValid = nic => {
+    return parseInt(nic.link_speed, 10) <= parseInt(nic.interface_speed, 10);
   };
 
   var page_managers;

@@ -4,7 +4,7 @@
  * Script select directive.
  */
 
- import addScriptsTmpl from "../partials/add-scripts.html";
+import addScriptsTmpl from "../partials/add-scripts.html";
 
 function filterScriptsByParam(scripts, param) {
   return scripts.filter(script => {
@@ -77,6 +77,19 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
         $scope.onParameterChange();
         $scope.refocus();
       };
+
+      $scope.$on("validate", (e, action, testSelection) => {
+        $scope.ngModel = testSelection;
+        $scope.ngModel.forEach(script => {
+          $scope.setDefaultValues(script.parameters);
+        });
+        $scope.scriptsWithUrlParam = filterScriptsByParam(
+          $scope.ngModel,
+          "url"
+        );
+        $scope.onParameterChange();
+        $scope.refocus();
+      });
 
       $scope.onTagRemoved = () => {
         $scope.scriptsWithUrlParam = filterScriptsByParam(

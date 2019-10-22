@@ -2414,7 +2414,6 @@ describe("NodeDetailsController", function() {
   });
 
   describe("getCPUSubtext", () => {
-
     it("returns only cores when unknown speed", () => {
       makeController();
       $scope.node = node;
@@ -2559,36 +2558,53 @@ describe("NodeDetailsController", function() {
     }
   );
 
-  describe("powerParametersValid", function() {
-    it("returns false if no power_parameters", function() {
-      makeController();
-      expect($scope.powerParametersValid()).toBe(false);
-    });
-
-    it("returns false if power_parameters are empty", function() {
+  describe("powerParametersValid", () => {
+    it("returns false if no power or type", () => {
       makeController();
       expect($scope.powerParametersValid({})).toBe(false);
     });
 
-    it("returns true if power_parameters have values", function() {
+    it("returns false if required field is empty", () => {
       makeController();
-      expect(
-        $scope.powerParametersValid({
-          power_address: "qemu+ssh://ubuntu@172.16.3.247/system",
-          power_id: 26
-        })
-      ).toBe(true);
+      const power = {
+        parameters: {
+          power_address: ""
+        },
+        type: {
+          fields: [{ name: "power_address", required: true }]
+        }
+      };
+      expect($scope.powerParametersValid(power)).toBe(false);
     });
 
-    it("returns true if optional power_parameters are empty", function() {
+    it("returns true if field is not required", () => {
       makeController();
-      expect(
-        $scope.powerParametersValid({
+      const power = {
+        parameters: {
+          power_address: ""
+        },
+        type: {
+          fields: [{ name: "power_address", required: false }]
+        }
+      };
+      expect($scope.powerParametersValid(power)).toBe(true);
+    });
+
+    it("returns true if required field is not empty", () => {
+      makeController();
+      const power = {
+        parameters: {
           power_address: "qemu+ssh://ubuntu@172.16.3.247/system",
-          power_id: 26,
           mac_address: ""
-        })
-      ).toBe(true);
+        },
+        type: {
+          fields: [
+            { name: "power_address", required: true },
+            { name: "mac_address", required: false }
+          ]
+        }
+      };
+      expect($scope.powerParametersValid(power)).toBe(true);
     });
   });
 
@@ -2656,9 +2672,69 @@ describe("NodeDetailsController", function() {
       spyOn($rootScope, "$broadcast");
       $scope.action.availableOptions = [{ name: "test" }];
       $scope.validateNetworkConfiguration();
-      expect($rootScope.$broadcast).toHaveBeenCalledWith("validate", {
-        name: "test"
-      });
+      expect($rootScope.$broadcast).toHaveBeenCalledWith(
+        "validate",
+        {
+          name: "test"
+        },
+        []
+      );
+    });
+
+    it("adds network tests to testSelection", () => {
+      makeController();
+      $scope.testSelection = [];
+      $scope.scripts = [
+        {
+          apply_configured_networking: false,
+          hardware_type: 4,
+          name: "smartctl-validate"
+        },
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "internet-connectivity"
+        },
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "gateway-connectivity"
+        }
+      ];
+      $scope.validateNetworkConfiguration();
+      expect($scope.testSelection).toEqual([
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "internet-connectivity"
+        },
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "gateway-connectivity"
+        }
+      ]);
+    });
+
+    it("doesn't add tests that are already in testSelect", () => {
+      makeController();
+      $scope.testSelection = [];
+      $scope.scripts = [
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "internet-connectivity"
+        },
+        {
+          apply_configured_networking: true,
+          hardware_type: 4,
+          name: "gateway-connectivity"
+        }
+      ];
+      // Call twice to make sure deduped
+      $scope.validateNetworkConfiguration();
+      $scope.validateNetworkConfiguration();
+      expect($scope.testSelection.length).toBe(2);
     });
   });
 
@@ -2773,6 +2849,26 @@ describe("NodeDetailsController", function() {
       expect(grouped[1].firmware_version).toEqual("2");
       expect(grouped[2].product).toEqual("productB");
       expect(grouped[3].vendor).toEqual("vendorB");
+    });
+  });
+
+  describe("linkSpeedValid", () => {
+    it("returns false if link speed is higher than interface speed", () => {
+      makeController();
+      const nic = { link_speed: 10000, interface_speed: 1000 };
+      expect($scope.linkSpeedValid(nic)).toBe(false);
+    });
+
+    it("returns true if link speed is lower than interface speed", () => {
+      makeController();
+      const nic = { link_speed: 500, interface_speed: 1000 };
+      expect($scope.linkSpeedValid(nic)).toBe(true);
+    });
+
+    it("returns true if link speed is equal to interface speed", () => {
+      makeController();
+      const nic = { link_speed: 1000, interface_speed: 1000 };
+      expect($scope.linkSpeedValid(nic)).toBe(true);
     });
   });
 });
