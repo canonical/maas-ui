@@ -1,78 +1,63 @@
-import { MemoryRouter } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { shallow } from "enzyme";
 import React from "react";
 
 import { Header } from "./Header";
 
-const mockStore = configureStore();
-
 describe("Header", () => {
-  let state;
-
-  beforeEach(() => {
-    process.env.REACT_APP_BASENAME = "/MAAS";
-    state = {
-      messages: {
-        items: []
-      },
-      status: {
-        connected: true
-      },
-      user: {
-        auth: {
-          loading: false,
-          user: {}
-        }
-      }
-    };
-  });
-
   afterEach(() => {
     jest.resetModules();
   });
 
   it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <Header />
-        </MemoryRouter>
-      </Provider>
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala"
+        }}
+        basename="/MAAS"
+        location={{
+          pathname: "/"
+        }}
+        logout={jest.fn()}
+      />
     );
-    expect(wrapper.find("Header")).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it("can handle a logged out user", () => {
-    state.user.auth.user = null;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <Header />
-        </MemoryRouter>
-      </Provider>
+    const wrapper = shallow(
+      <Header
+        authUser={null}
+        basename="/MAAS"
+        location={{
+          pathname: "/"
+        }}
+        logout={jest.fn()}
+      />
     );
     expect(wrapper.find("nav").exists()).toBe(false);
   });
 
   it("can handle logging out", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <Header />
-        </MemoryRouter>
-      </Provider>
+    const logout = jest.fn();
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala"
+        }}
+        basename="/MAAS"
+        location={{
+          pathname: "/"
+        }}
+        logout={logout}
+      />
     );
     wrapper
       .findWhere(n => n.name() === "a" && n.text() === "Logout")
       .last()
-      .simulate("click");
-    expect(store.getActions().some(action => action.type === "LOGOUT")).toBe(
-      true
-    );
+      .simulate("click", { preventDefault: jest.fn() });
+    expect(logout).toHaveBeenCalled();
   });
 });
