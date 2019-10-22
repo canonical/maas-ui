@@ -12,6 +12,8 @@
 import "../scss/build.scss";
 
 import * as angular from "angular";
+import deferredBootstrapper from "angular-deferred-bootstrap";
+import Cookies from "js-cookie";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
@@ -223,12 +225,14 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
+const ROOT_API = "/MAAS/api/2.0/";
+const VERSION_API = `${ROOT_API}version/`;
+const CONFIG_API = `${ROOT_API}maas/?op=get_config`;
 
 // TODO
 // The following MAAS_config has the original django template conditionals
 // preserved here in comments, so that this can be transitioned to js.
 window.MAAS_config = {
-  version: "{{version}}",
   //superuser: {% if user.is_superuser %}true{% else %}false{% endif %},
   superuser: true,
   /*
@@ -239,14 +243,21 @@ window.MAAS_config = {
   /*
   {% endif %}
   */
-  //debug: {% if DEBUG %}true{% else %}false{% endif %},
-  debug: true,
-  //completed_intro: {% if completed_intro %}true{% else %}false{% endif %},
-  completed_intro: true,
   //user_completed_intro: {% if user_completed_intro %}true{% else %}false{% endif %},
   user_completed_intro: true,
   analytics_user_id: "{{analytics_user_id}}",
   uuid: "{{maas_uuid}}"
+};
+
+/* @ngInject */
+const configureHttp = $httpProvider => {
+  // Set the $httpProvider to send the csrftoken in the header of any
+  // http request.
+  $httpProvider.defaults.xsrfCookieName = "csrftoken";
+  $httpProvider.defaults.xsrfHeaderName = "X-CSRFToken";
+
+  // Batch http responses into digest cycles
+  $httpProvider.useApplyAsync(true);
 };
 
 /* @ngInject */
@@ -287,14 +298,15 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  configureRoutes($routeProvider, MAAS_config);
+  configureRoutes($routeProvider, window.MAAS_config);
 }
 
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
-function introRedirect($rootScope, $location) {
+function introRedirect($rootScope, $location, COMPLETED_INTRO) {
+  console.log("COMPLETED_INTRO", COMPLETED_INTRO);
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
-    if (!MAAS_config.completed_intro) {
+    if (!COMPLETED_INTRO) {
       if (next.controller !== "IntroController") {
         $location.path("/intro");
       }
@@ -308,7 +320,7 @@ function introRedirect($rootScope, $location) {
 
 // Send pageview to Google Analytics when the route has changed.
 /* @ngInject */
-function setupGA($rootScope, $window) {
+function setupGA($rootScope, $window, VERSION) {
   $window.ga =
     $window.ga ||
     function() {
@@ -318,7 +330,7 @@ function setupGA($rootScope, $window) {
   $window.ga("create", "UA-1018242-63", "auto", {
     userId: MAAS_config.analytics_user_id
   });
-  $window.ga("set", "dimension1", MAAS_config.version);
+  $window.ga("set", "dimension1", `${VERSION.version} (${VERSION.subversion})`);
   $window.ga("set", "dimension2", MAAS_config.uuid);
   $rootScope.$on("$routeChangeSuccess", function() {
     var path = $window.location.pathname + $window.location.hash;
@@ -333,6 +345,24 @@ function unhideRSDLinks() {
   let rsdLinks = document.querySelectorAll(".js-rsd-link");
   rsdLinks.forEach(link => link.classList.remove("u-hide"));
 }
+
+deferredBootstrapper.bootstrap({
+  bootstrapConfig: {
+    strictDi: true
+  },
+  element: document.body,
+  module: "MAAS",
+  resolve: {
+    VERSION: ["$http", $http => {
+      $http.defaults.headers.get = {"X-CSRFToken": Cookies.get("csrftoken")}
+      return $http.get(VERSION_API)
+    }],
+    COMPLETED_INTRO: [
+      "$http",
+      $http => $http.get(`${CONFIG_API}&name=completed_intro`)
+    ]
+  }
+});
 
 angular
   .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat"])
