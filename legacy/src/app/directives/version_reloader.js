@@ -12,7 +12,9 @@ function maasVersionReloader(
   $window,
   GeneralManager,
   ManagerHelperService,
-  LogService
+  LogService,
+  SITE_NAME,
+  VERSION
 ) {
   return {
     restrict: "A",
@@ -24,27 +26,20 @@ function maasVersionReloader(
     $scope.version = GeneralManager.getData("version");
 
     // Reload the page by-passing the browser cache.
-    $scope.reloadPage = function() {
+    $scope.reloadPage = () => {
       // Force cache reload by passing true.
       $window.location.reload(true);
     };
 
-    ManagerHelperService.loadManager($scope, GeneralManager).then(function() {
+    ManagerHelperService.loadManager($scope, GeneralManager).then(() => {
       GeneralManager.enableAutoReload(true);
       LogService.info(
-        'Version reloader: Monitoring MAAS "' + $scope.site + '"; version',
-        $scope.version.text,
-        "via",
-        $window.location.href
+        `Version reloader: Monitoring MAAS "${SITE_NAME}" version ${VERSION.version} (${VERSION.subversion}) via ${$window.location.href}.`
       );
-      $scope.$watch("version.text", function(newValue, oldValue) {
+      $scope.$watch("version.text", (newValue, oldValue) => {
         if (newValue !== oldValue) {
           LogService.info(
-            "MAAS version changed from '" +
-              oldValue +
-              "' to '" +
-              newValue +
-              "'; forcing reload."
+            `MAAS version changed from '${oldValue}' to '${newValue}'; forcing reload.`
           );
           $scope.reloadPage();
         }

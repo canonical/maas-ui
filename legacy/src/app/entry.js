@@ -353,6 +353,10 @@ deferredBootstrapper.bootstrap({
     COMPLETED_INTRO: [
       "$http",
       $http => $http.get(`${CONFIG_API}&name=completed_intro`)
+    ],
+    SITE_NAME: [
+      "$http",
+      $http => $http.get(`${CONFIG_API}&name=maas_name`)
     ]
   }
 });

@@ -27,6 +27,7 @@ beforeEach(function() {
   angular.mock.module(($provide) => {
     $provide.constant("VERSION", { version: "1", subversion: "2" });
     $provide.constant("COMPLETED_INTRO", true);
+    $provide.constant("SITE_NAME", "test");
   });
 });
 
