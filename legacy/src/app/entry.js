@@ -234,6 +234,7 @@ const CONFIG_API = `${ROOT_API}maas/?op=get_config`;
 // preserved here in comments, so that this can be transitioned to js.
 window.MAAS_config = {
   //superuser: {% if user.is_superuser %}true{% else %}false{% endif %},
+  debug: true,
   superuser: true,
   /*
   {% if user.is_superuser %}
@@ -247,17 +248,6 @@ window.MAAS_config = {
   user_completed_intro: true,
   analytics_user_id: "{{analytics_user_id}}",
   uuid: "{{maas_uuid}}"
-};
-
-/* @ngInject */
-const configureHttp = $httpProvider => {
-  // Set the $httpProvider to send the csrftoken in the header of any
-  // http request.
-  $httpProvider.defaults.xsrfCookieName = "csrftoken";
-  $httpProvider.defaults.xsrfHeaderName = "X-CSRFToken";
-
-  // Batch http responses into digest cycles
-  $httpProvider.useApplyAsync(true);
 };
 
 /* @ngInject */
