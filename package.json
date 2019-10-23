@@ -16,6 +16,7 @@
     "packages": [
       "legacy",
       "proxy",
+      "shared",
       "ui"
     ],
     "nohoist": [

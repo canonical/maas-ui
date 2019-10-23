@@ -1,7 +1,7 @@
 {
-    "presets": ["@babel/preset-env"],
-    "plugins": [
-        ["angularjs-annotate", { "explicitOnly" : true }],
-        "@babel/plugin-proposal-class-properties"
-    ]
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "plugins": [
+    ["angularjs-annotate", { "explicitOnly": true }],
+    "@babel/plugin-proposal-class-properties"
+  ]
 }
