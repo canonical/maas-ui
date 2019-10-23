@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -16,7 +17,7 @@ module.exports = {
   },
   mode: "development",
   devServer: {
-    contentBase: path.join(__dirname, "/src"),
+    contentBase: path.resolve(__dirname, "./src"),
     host: "0.0.0.0",
     compress: true,
     public: "0.0.0.0:8400",
@@ -66,9 +67,12 @@ module.exports = {
     minimizer: [new OptimizeCSSAssetsPlugin({})]
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: path.resolve(__dirname, "./src/assets"), to: "assets" }
+    ]),
     new MiniCssExtractPlugin({
       // This file is relative to output.path above.
-      filename: "dist/build.css",
+      filename: "build.css",
       chunkFilename: "[id].css"
     }),
     new HtmlWebpackPlugin({
