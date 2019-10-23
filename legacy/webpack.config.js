@@ -32,7 +32,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         loader: "babel-loader",
         exclude: /node_modules/,
         query: {
@@ -92,6 +92,7 @@ module.exports = {
     new DotenvFlow()
   ],
   resolve: {
+    extensions: ["*", ".js", ".jsx"],
     modules: [path.resolve(__dirname, "src/app/"), "node_modules"]
   },
   stats: {

@@ -17,10 +17,13 @@ import Cookies from "js-cookie";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
+import React from "react";
+import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
 
 import configureRoutes from "./routes";
+import { Header } from "@maas-ui/shared";
 
 // filters
 import {
@@ -327,7 +330,6 @@ function dashboardRedirect($rootScope, $location, CURRENT_USER) {
   });
 }
 
-
 // Send pageview to Google Analytics when the route has changed.
 /* @ngInject */
 function setupGA($rootScope, $window, VERSION) {
@@ -381,9 +383,26 @@ deferredBootstrapper.bootstrap({
   }
 });
 
+/* @ngInject */
+const displayTemplate = ($rootScope, $window, VERSION) => {
+  console.log(VERSION);
+  ReactDOM.render(
+    <Header
+      authUser={{ username: "fake" }}
+      basename={process.env.MAAS_WEBSOCKET_PATH}
+      location={window.location}
+      logout={() => {
+        console.log("logout!!!!!!!");
+      }}
+    />,
+    document.querySelector("#header")
+  );
+};
+
 angular
   .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat"])
   .config(configureMaas)
+  .run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)
   .run(setupGA)

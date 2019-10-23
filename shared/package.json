@@ -1,0 +1,21 @@
+{
+  "name": "@maas-ui/shared",
+  "private": true,
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "clean": "rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.6.4",
+    "@babel/core": "7.6.4",
+    "@babel/preset-env": "7.6.3",
+    "@babel/preset-react": "7.6.3"
+  },
+  "dependencies": {
+    "prop-types": "15.7.2",
+    "react": "16.10.2",
+    "react-dom": "16.10.2"
+  }
+}
