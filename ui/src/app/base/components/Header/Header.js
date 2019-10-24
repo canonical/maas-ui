@@ -110,13 +110,9 @@ export const Header = () => {
                     "u-hide": !hardwareVisible
                   })}
                 >
-                  {generateLocalLink(
-                    location,
-                    "/machines",
-                    "Machines",
-                    false,
-                    false
-                  )}
+                  <li className="p-navigation__link" role="menuitem">
+                    <a href={generateURL("#/machines")}>Machines</a>
+                  </li>
                   <li className="p-navigation__link" role="menuitem">
                     <a href={generateURL("#/devices")}>Devices</a>
                   </li>
@@ -133,7 +129,9 @@ export const Header = () => {
                   </li>
                 </ul>
               </li>
-              {generateLocalLink(location, "/machines", "Machines", true, true)}
+              <li className="p-navigation__link" role="menuitem">
+                <a href={generateURL("#/machines")}>Machines</a>
+              </li>
               <li
                 className="p-navigation__link u-hide-nav-viewport--medium"
                 role="menuitem"
