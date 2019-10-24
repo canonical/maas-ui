@@ -83,4 +83,4 @@ From the root of the MAAS UI project run:
 ./run
 ```
 
-From here you should be able to view the project at &lt;your-local-maas-ip>:8000
+From here you should be able to view the project at &lt;your-local-maas-ip>:8400/MAAS/
