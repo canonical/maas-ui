@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production webpack --mode production --config webpack.config.js",
+    "build": "webpack -p --config webpack.config.js",
     "build-dev": "NODE_ENV=development webpack --config webpack.config.js",
     "clean": "rm -rf node_modules dist",
+    "clean-build": "rm -rf dist",
     "lint": "eslint ./src/app/",
     "prettier": "prettier --write 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "prettier-check": "prettier --check 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
