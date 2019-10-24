@@ -1,8 +1,9 @@
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const DotenvFlow = require("dotenv-flow-webpack");
 
@@ -10,9 +11,12 @@ module.exports = {
   entry: {
     maas: ["babel-polyfill", "macaroon-bakery", "./src/app/entry.js"]
   },
+  optimization: {
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+  },
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: "[name]-min.js",
+    filename: "[name].[hash].bundle.js",
     publicPath: "/MAAS/"
   },
   mode: "development",
@@ -37,7 +41,14 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: ["html-loader"]
+        use: {
+          loader: "html-loader",
+          options: {
+            ignoreCustomFragments: [/\{\$.*?\$}/, /\{\{.*?\}\}/],
+            removeComments: true,
+            collapseWhitespace: true
+          }
+        }
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -63,17 +74,13 @@ module.exports = {
       }
     ]
   },
-  optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})]
-  },
   plugins: [
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, "./src/assets"), to: "assets" }
     ]),
     new MiniCssExtractPlugin({
       // This file is relative to output.path above.
-      filename: "build.css",
-      chunkFilename: "[id].css"
+      filename: "[name].[hash].css"
     }),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
