@@ -1,4 +1,4 @@
-<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) && estimatedRunTime !== 'Unknown'" + '">{{counter}} of ~{{estimatedRunTime}}</span>
-<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) && estimatedRunTime == 'Unknown'" + '">{{counter}}</span>
-<span data-ng-if="scriptStatus === 0 && estimatedRunTime !== 'Unknown'" + '">~{{estimatedRunTime}}</span>
+<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) && estimatedRunTime !== 'Unknown'">{{counter}} of ~{{estimatedRunTime}}</span>
+<span data-ng-if="(scriptStatus === 1 || scriptStatus === 7) && estimatedRunTime == 'Unknown'">{{counter}}</span>
+<span data-ng-if="scriptStatus === 0 && estimatedRunTime !== 'Unknown'">~{{estimatedRunTime}}</span>
 <span data-ng-if="scriptStatus !== 0 && scriptStatus !== 1 && scriptStatus !== 7">{{runTime}}</span>
