@@ -96,24 +96,11 @@ exports[`Header renders 1`] = `
                 className="p-navigation__link"
                 role="menuitem"
               >
-                <Link
-                  className=""
-                  to="/machines"
+                <a
+                  href="/MAAS/#/machines"
                 >
-                  <LinkAnchor
-                    className=""
-                    href="/machines"
-                    navigate={[Function]}
-                  >
-                    <a
-                      className=""
-                      href="/machines"
-                      onClick={[Function]}
-                    >
-                      Machines
-                    </a>
-                  </LinkAnchor>
-                </Link>
+                  Machines
+                </a>
               </li>
               <li
                 className="p-navigation__link"
@@ -148,27 +135,14 @@ exports[`Header renders 1`] = `
             </ul>
           </li>
           <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
+            className="p-navigation__link"
             role="menuitem"
           >
-            <Link
-              className="p-dropdown__item"
-              to="/machines"
+            <a
+              href="/MAAS/#/machines"
             >
-              <LinkAnchor
-                className="p-dropdown__item"
-                href="/machines"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-dropdown__item"
-                  href="/machines"
-                  onClick={[Function]}
-                >
-                  Machines
-                </a>
-              </LinkAnchor>
-            </Link>
+              Machines
+            </a>
           </li>
           <li
             className="p-navigation__link u-hide-nav-viewport--medium"
