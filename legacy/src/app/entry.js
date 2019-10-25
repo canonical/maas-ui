@@ -228,6 +228,7 @@ import windowWidth from "./directives/window_width";
 const ROOT_API = "/MAAS/api/2.0/";
 const VERSION_API = `${ROOT_API}version/`;
 const CONFIG_API = `${ROOT_API}maas/?op=get_config`;
+const WHOAMI_API = `${ROOT_API}users/?op=whoami`;
 
 // TODO
 // The following MAAS_config has the original django template conditionals
@@ -292,24 +293,40 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  configureRoutes($routeProvider, MAAS_config);
+  configureRoutes($routeProvider);
 }
 
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
-function introRedirect($rootScope, $location, COMPLETED_INTRO) {
+function introRedirect($rootScope, $location, COMPLETED_INTRO, CURRENT_USER) {
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
     if (!COMPLETED_INTRO) {
       if (next.controller !== "IntroController") {
         $location.path("/intro");
       }
-    } else if (!MAAS_config.user_completed_intro) {
+    } else if (
+      CURRENT_USER._userprofile_cache &&
+      !CURRENT_USER._userprofile_cache.completed_intro
+    ) {
       if (next.controller !== "IntroUserController") {
         $location.path("/intro/user");
       }
     }
   });
 }
+
+/* @ngInject */
+function dashboardRedirect($rootScope, $location, CURRENT_USER) {
+  $rootScope.$on("$routeChangeStart", function(event, next, current) {
+    // Only superusers currently have access to the dashboard
+    if (!CURRENT_USER.is_superuser) {
+      if (next.controller == "DashboardController") {
+        $location.path("/machines");
+      }
+    }
+  });
+}
+
 
 // Send pageview to Google Analytics when the route has changed.
 /* @ngInject */
@@ -346,25 +363,28 @@ deferredBootstrapper.bootstrap({
   element: document.body,
   module: "MAAS",
   resolve: {
-    VERSION: ["$http", $http => {
-      $http.defaults.headers.get = {"X-CSRFToken": Cookies.get("csrftoken")}
-      return $http.get(VERSION_API)
-    }],
+    VERSION: [
+      "$http",
+      $http => {
+        $http.defaults.headers.get = {
+          "X-CSRFToken": Cookies.get("csrftoken")
+        };
+        return $http.get(VERSION_API);
+      }
+    ],
     COMPLETED_INTRO: [
       "$http",
       $http => $http.get(`${CONFIG_API}&name=completed_intro`)
     ],
-    SITE_NAME: [
-      "$http",
-      $http => $http.get(`${CONFIG_API}&name=maas_name`)
-    ]
+    SITE_NAME: ["$http", $http => $http.get(`${CONFIG_API}&name=maas_name`)],
+    CURRENT_USER: ["$http", $http => $http.get(WHOAMI_API)]
   }
 });
-
 
 angular
   .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat"])
   .config(configureMaas)
+  .run(dashboardRedirect)
   .run(introRedirect)
   .run(setupGA)
   .run(unhideRSDLinks)
