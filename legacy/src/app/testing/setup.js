@@ -28,6 +28,7 @@ beforeEach(function() {
     $provide.constant("VERSION", { version: "1", subversion: "2" });
     $provide.constant("COMPLETED_INTRO", true);
     $provide.constant("SITE_NAME", "test");
+    $provide.constant("CURRENT_USER", {username: "testuser", _userprofile_cache: {}});
   });
 });
 

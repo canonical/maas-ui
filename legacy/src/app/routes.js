@@ -18,7 +18,7 @@ import vlanDetailsTmpl from "./partials/vlan-details.html";
 import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
-const configureRoutes = ($routeProvider, MAAS_config) => {
+const configureRoutes = $routeProvider => {
   let routes;
   routes = $routeProvider
     .when("/intro", {
@@ -178,15 +178,12 @@ const configureRoutes = ($routeProvider, MAAS_config) => {
     .when("/pools", {
       template: nodesListTmpl,
       controller: "NodesListController"
-    });
-
-  if (MAAS_config.superuser) {
-    // Only superuser's can access the dashboard at the moment.
-    routes = routes.when("/dashboard", {
+    })
+    .when("/dashboard", {
       template: dashboardTmpl,
       controller: "DashboardController"
     });
-  }
+
   routes.otherwise({
     redirectTo: "/machines"
   });
