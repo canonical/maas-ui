@@ -232,6 +232,7 @@ const ROOT_API = "/MAAS/api/2.0/";
 const VERSION_API = `${ROOT_API}version/`;
 const CONFIG_API = `${ROOT_API}maas/?op=get_config`;
 const WHOAMI_API = `${ROOT_API}users/?op=whoami`;
+const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
 // TODO
 // The following MAAS_config has the original django template conditionals
@@ -384,18 +385,24 @@ deferredBootstrapper.bootstrap({
 });
 
 /* @ngInject */
-const displayTemplate = ($rootScope, $window, VERSION) => {
-  console.log(VERSION);
+const displayTemplate = ($rootScope, $window, $http, CURRENT_USER) => {
+  const headerNode = document.querySelector("#header");
+  if (!headerNode) {
+    return;
+  }
   ReactDOM.render(
     <Header
-      authUser={{ username: "fake" }}
-      basename={process.env.MAAS_WEBSOCKET_PATH}
+      authUser={CURRENT_USER}
+      basename={process.env.BASENAME}
       location={window.location}
       logout={() => {
-        console.log("logout!!!!!!!");
+        $http.post(LOGOUT_API).then(() => {
+          window.location.href = process.env.BASENAME;
+        });
       }}
+      newURLPrefix={process.env.REACT_BASENAME}
     />,
-    document.querySelector("#header")
+    headerNode
   );
 };
 

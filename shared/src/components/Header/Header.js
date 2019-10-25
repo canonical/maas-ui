@@ -16,7 +16,8 @@ export const Header = ({
   basename,
   generateLocalLink,
   location,
-  logout
+  logout,
+  newURLPrefix
 }) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
@@ -79,7 +80,9 @@ export const Header = ({
       label: "Settings",
       url: "/settings"
     }
-  ];
+  ].filter(
+    ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
+  );
 
   const generateLegacyURL = url => `${basename}/#${url}`;
 
@@ -95,6 +98,8 @@ export const Header = ({
     });
     if (isLegacy) {
       url = generateLegacyURL(url);
+    } else if (newURLPrefix) {
+      url = `${basename}${newURLPrefix}${url}`;
     }
     return (
       <li
@@ -200,7 +205,7 @@ export const Header = ({
               <li className="p-navigation__link" role="menuitem">
                 <a
                   className="p-dropdown__item"
-                  href="##"
+                  href=""
                   onClick={evt => {
                     evt.preventDefault();
                     logout();
@@ -219,15 +224,16 @@ export const Header = ({
 
 Header.propTypes = {
   authUser: PropTypes.shape({
-    is_superuser: PropTypes.bool.isRequired,
-    username: PropTypes.string.isRequired
+    is_superuser: PropTypes.bool,
+    username: PropTypes.string
   }),
   basename: PropTypes.string.isRequired,
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  newURLPrefix: PropTypes.string
 };
 
 export default Header;

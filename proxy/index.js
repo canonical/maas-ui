@@ -49,6 +49,9 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => res.redirect("/MAAS/"));
+app.get("/MAAS", (req, res) => res.redirect("/MAAS/"));
+
 app.listen(8400);
 
 console.log("Serving on port 8400");

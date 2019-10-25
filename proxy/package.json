@@ -7,7 +7,8 @@
     "serve-ui": "cd ../ui && PORT=8401 yarn run start",
     "serve-legacy": "cd ../legacy && yarn run start",
     "serve-proxy": "node ./index.js",
-    "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\""
+    "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\" \"yarn watch-shared\"",
+    "watch-shared": "cd ../shared && yarn watch"
   },
   "devDependencies": {
     "concurrently": "5.0.0",

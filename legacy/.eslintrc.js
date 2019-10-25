@@ -5,7 +5,7 @@ module.exports = {
         "node": true,
         "jest": true
     },
-    "extends": ["eslint:recommended"],
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "globals": {
         "__dirname": false,
         "$": false,
@@ -30,6 +30,7 @@ module.exports = {
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "plugins": ["react"],
     "rules": {
         "no-unused-vars": [2, { "args": "none" }]
     }

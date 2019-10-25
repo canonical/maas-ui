@@ -4171,7 +4171,7 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.0.tgz#68d6084cab1b079767540d80e56a39b423e4abf4"
   integrity sha512-D9f7V0JSRwIxlRI2mjMqufDrRDnx8p+eEOz7aUM9SuvF8gsBzra0/6tbjl1m8eQHrZlYj6PxqE00hZ1SAIKPLw==
 
-enzyme-adapter-react-16@1.15.1:
+enzyme-adapter-react-16@1.15.1, enzyme-adapter-react-16@^1.15.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.15.1.tgz#8ad55332be7091dc53a25d7d38b3485fc2ba50d5"
   integrity sha512-yMPxrP3vjJP+4wL/qqfkT6JAIctcwKF+zXO6utlGPgUJT2l4tzrdjMDWGd/Pp1BjHBcljhN24OzNEGRteibJhA==
@@ -4449,6 +4449,21 @@ eslint-plugin-react@7.14.3:
     object.values "^1.1.0"
     prop-types "^15.7.2"
     resolve "^1.10.1"
+
+eslint-plugin-react@7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.16.0.tgz#9928e4f3e2122ed3ba6a5b56d0303ba3e41d8c09"
+  integrity sha512-GacBAATewhhptbK3/vTP09CbFrgUJmBSaaRcWdbQLFvUZy9yVcQxigBNHGPU/KE2AyHpzj3AWXpxoMTsIDiHug==
+  dependencies:
+    array-includes "^3.0.3"
+    doctrine "^2.1.0"
+    has "^1.0.3"
+    jsx-ast-utils "^2.2.1"
+    object.entries "^1.1.0"
+    object.fromentries "^2.0.0"
+    object.values "^1.1.0"
+    prop-types "^15.7.2"
+    resolve "^1.12.0"
 
 eslint-scope@^4.0.3:
   version "4.0.3"

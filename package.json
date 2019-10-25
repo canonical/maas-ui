@@ -9,7 +9,8 @@
     "clean-legacy": "cd legacy && yarn run clean",
     "clean-ui": "cd ui && yarn run clean",
     "clean-proxy": "cd proxy && yarn run clean",
-    "clean": "yarn clean-monorepo && yarn clean-legacy && yarn clean-ui && yarn clean-proxy"
+    "clean-shared": "cd shared && yarn run clean",
+    "clean": "yarn clean-monorepo && yarn clean-legacy && yarn clean-ui && yarn clean-proxy && yarn clean-shared"
   },
   "private": true,
   "workspaces": {

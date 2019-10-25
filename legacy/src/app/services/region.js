@@ -264,8 +264,8 @@ class RegionConnection {
     let port = process.env.MAAS_WEBSOCKET_PORT
       ? process.env.MAAS_WEBSOCKET_PORT
       : this.$window.location.port;
-    let path = process.env.MAAS_WEBSOCKET_PATH
-      ? process.env.MAAS_WEBSOCKET_PATH
+    let path = process.env.BASENAME
+      ? process.env.BASENAME
       : this.$window.location.pathname;
     let proto = "ws";
     if (this._getProtocol() === "https:") {
