@@ -44,7 +44,7 @@ const SyslogForm = () => {
         {loaded && (
           <Formik
             initialValues={{
-              remote_syslog: remoteSyslog
+              remote_syslog: remoteSyslog || ""
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

@@ -50,9 +50,9 @@ const DnsForm = () => {
         {loaded && (
           <Formik
             initialValues={{
-              dnssec_validation: dnssecValidation,
-              dns_trusted_acl: dnsTrustedAcl,
-              upstream_dns: upstreamDns
+              dnssec_validation: dnssecValidation || "",
+              dns_trusted_acl: dnsTrustedAcl || "",
+              upstream_dns: upstreamDns || ""
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
