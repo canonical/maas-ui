@@ -8,7 +8,7 @@ import Settings from "app/settings/views/Settings";
 
 const Routes = () => (
   <Switch>
-    <Redirect exact from="/" to="/machines" />
+    <Redirect exact from="/" to="/settings" />
     <Route path="/settings" component={Settings} />
     <Route path="/machines" component={Machines} />
     <Route path="/account/prefs" component={Preferences} />

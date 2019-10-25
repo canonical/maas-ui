@@ -296,7 +296,7 @@ exports[`Header renders 1`] = `
         >
           <a
             className="p-dropdown__item"
-            href="##"
+            href=""
             onClick={[Function]}
           >
             Logout
