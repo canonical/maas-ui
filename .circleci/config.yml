@@ -101,6 +101,54 @@ jobs:
             - node_modules
             - legacy/node_modules
 
+  build-shared:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: cd shared && yarn run build
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - shared/node_modules
+
+  lint-shared:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: cd shared && yarn run lint
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - shared/node_modules
+
+  test-shared:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: cd shared && yarn run test --max-workers=2
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - shared/node_modules
+
 workflows:
   version: 2
   build_lint_and_test:
@@ -111,4 +159,6 @@ workflows:
       - build-legacy
       - lint-legacy
       - test-legacy
-
+      - build-shared
+      - lint-shared
+      - test-shared
