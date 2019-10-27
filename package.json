@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "cd ui && yarn run build",
+    "build": "cd shared && yarn run build",
     "docs": "cd ui && yarn run docs",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
