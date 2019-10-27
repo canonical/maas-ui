@@ -14,6 +14,8 @@ jobs:
           keys:
             - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
+      # Build the shared module vefore it is imported:
+      - run: yarn run build
       - run: cd ui && yarn run build
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
@@ -46,6 +48,8 @@ jobs:
           keys:
             - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
+      # Build the shared module vefore it is imported:
+      - run: yarn run build
       - run: cd ui && yarn run test --max-workers=2
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
@@ -62,6 +66,8 @@ jobs:
           keys:
             - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
+      # Build the shared module vefore it is imported:
+      - run: yarn run build
       - run: cd legacy && yarn run build
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
@@ -94,6 +100,8 @@ jobs:
           keys:
             - yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
+      # Build the shared module vefore it is imported:
+      - run: yarn run build
       - run: cd legacy && yarn run test --max-workers=2
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
