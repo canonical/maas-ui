@@ -43,7 +43,6 @@ function NodesListController(
   $rootScope.page = "machines";
 
   // Set initial values.
-  $scope.MAAS_config = $window.MAAS_config;
   $scope.machines = MachinesManager.getItems();
   $scope.zones = ZonesManager.getItems();
   $scope.pools = ResourcePoolsManager.getItems();
@@ -272,8 +271,8 @@ function NodesListController(
   $scope.tabs.controllers.newPool = {};
   $scope.tabs.controllers.syncStatuses = {};
   $scope.tabs.controllers.addController = false;
-  $scope.tabs.controllers.registerUrl = $window.MAAS_config.register_url;
-  $scope.tabs.controllers.registerSecret = $window.MAAS_config.register_secret;
+  $scope.tabs.controllers.registerUrl = $window.CONFIG.register_url;
+  $scope.tabs.controllers.registerSecret = $window.CONFIG.register_secret;
 
   // Switch tab.
   $scope.tabs.switches = {};

@@ -22,14 +22,13 @@ angular.module("MAAS").run([
 ]);
 
 beforeEach(function() {
-  window.MAAS_config = {};
-  angular.mock.module("MAAS");
-  angular.mock.module(($provide) => {
-    $provide.constant("VERSION", { version: "1", subversion: "2" });
-    $provide.constant("COMPLETED_INTRO", true);
-    $provide.constant("SITE_NAME", "test");
-    $provide.constant("CURRENT_USER", {username: "testuser", _userprofile_cache: {}});
-  });
+  window.CONFIG = {
+    current_user: {
+      is_superuser: true,
+      completed_intro: true
+    },
+    enable_analytics: false
+  };
 });
 
 window.DEBUG = true;

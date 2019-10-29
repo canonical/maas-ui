@@ -53,7 +53,6 @@
     "@maas-ui/shared": "0.1.0",
     "angular": "1.7.8",
     "angular-cookies": "1.7.8",
-    "angular-deferred-bootstrap": "0.1.9",
     "angular-route": "1.7.8",
     "angular-sanitize": "1.7.8",
     "angular-vs-repeat": "1.1.11",

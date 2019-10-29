@@ -12,9 +12,7 @@ function maasVersionReloader(
   $window,
   GeneralManager,
   ManagerHelperService,
-  LogService,
-  SITE_NAME,
-  VERSION
+  LogService
 ) {
   return {
     restrict: "A",
@@ -34,7 +32,7 @@ function maasVersionReloader(
     ManagerHelperService.loadManager($scope, GeneralManager).then(() => {
       GeneralManager.enableAutoReload(true);
       LogService.info(
-        `Version reloader: Monitoring MAAS "${SITE_NAME}" version ${VERSION.version} (${VERSION.subversion}) via ${$window.location.href}.`
+        `Version reloader: Monitoring MAAS "${window.CONFIG.maas_name}" version ${window.CONFIG.version} via ${$window.location.href}.`
       );
       $scope.$watch("version.text", (newValue, oldValue) => {
         if (newValue !== oldValue) {

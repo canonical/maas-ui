@@ -143,8 +143,8 @@ function DashboardController(
   };
 
   $scope.formatMAASVersionNumber = function() {
-    if (MAAS_config.version) {
-      var versionWithPoint = MAAS_config.version.split(" ")[0];
+    if (window.CONFIG.version) {
+      var versionWithPoint = window.CONFIG.version.split(" ")[0];
 
       if (versionWithPoint) {
         if (versionWithPoint.split(".")[2] === "0") {

@@ -42,7 +42,7 @@ function IntroUserController(
     }
     if (force || $scope.canContinue()) {
       UsersManager.markIntroComplete().then(function() {
-        // Reload the whole page so that the MAAS_config will
+        // Reload the whole page so that CONFIG will
         // be set to the new value.
         $window.location.reload();
       });
@@ -50,7 +50,7 @@ function IntroUserController(
   };
 
   // If intro has been completed redirect to '/'.
-  if (MAAS_config.user_completed_intro) {
+  if ($window.CONFIG.current_user.completed_intro) {
     $location.path("/");
   } else {
     // Load the required managers.

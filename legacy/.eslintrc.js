@@ -19,7 +19,7 @@ module.exports = {
         "it": false,
         "jasmine": false,
         "jest": false,
-        "MAAS_config": false,
+        "CONFIG": false,
         "module": false,
         "require": false,
         "setTimeout": false,
