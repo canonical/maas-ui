@@ -38,7 +38,6 @@ const bootstrap = () => {
   const webSocket = new WebSocket(buildUrl());
 
   let CONFIG = {
-    uuid: "1234", // https://bugs.launchpad.net/maas/+bug/1850245
     register_url: "foo", // https://bugs.launchpad.net/maas/+bug/1850246
     register_secret: "bar" // https://bugs.launchpad.net/maas/+bug/1850246
   };
@@ -58,33 +57,34 @@ const bootstrap = () => {
   webSocket.onmessage = event => {
     const msg = JSON.parse(event.data);
     switch (msg.request_id) {
+      // user.auth_user
       case 1: {
         CONFIG.current_user = msg.result;
         messagesReceived.push(1);
         break;
       }
+
+      // config.list
       case 2: {
-        const completed_intro = msg.result.filter(
-          item => item.name === "completed_intro"
-        );
-        if (completed_intro.length > 0) {
-          CONFIG.completed_intro = completed_intro[0].value;
-        }
+        const requiredConfigKeys = [
+          "completed_intro",
+          "maas_name",
+          "maas_uuid",
+          "enable_analytics"
+        ];
 
-        const maas_name = msg.result.filter(item => item.name === "maas_name");
-        if (maas_name.length > 0) {
-          CONFIG.maas_name = maas_name[0].value;
-        }
+        requiredConfigKeys.forEach(key => {
+          let result = msg.result.filter(item => item.name === key)
+          if (result.length > 0) {
+            CONFIG[key] = result[0].value;
+          }
+        })
 
-        const enable_analytics = msg.result.filter(
-          item => item.name === "enable_analytics"
-        );
-        if (enable_analytics.length > 0) {
-          CONFIG.enable_analytics = enable_analytics[0].value;
-        }
         messagesReceived.push(2);
         break;
       }
+
+      // general.version
       case 3:
         CONFIG.version = msg.result;
         messagesReceived.push(3);
