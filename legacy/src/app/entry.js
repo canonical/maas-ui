@@ -323,10 +323,10 @@ function setupGA($rootScope, $window) {
       };
     $window.ga.l = +new Date();
     $window.ga("create", "UA-1018242-63", "auto", {
-      userId: `${$window.CONFIG.uuid}-${$window.CONFIG.current_user.id}`
+      userId: `${$window.CONFIG.maas_uuid}-${$window.CONFIG.current_user.id}`
     });
     $window.ga("set", "dimension1", $window.CONFIG.version);
-    $window.ga("set", "dimension2", $window.CONFIG.uuid);
+    $window.ga("set", "dimension2", $window.CONFIG.maas_uuid);
     $rootScope.$on("$routeChangeSuccess", function() {
       var path = $window.location.pathname + $window.location.hash;
       $window.ga("send", "pageview", path);
