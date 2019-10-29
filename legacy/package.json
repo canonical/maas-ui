@@ -62,7 +62,6 @@
     "js-cookie": "2.2.1",
     "macaroon-bakery": "0.2.1",
     "ng-tags-input": "3.2.0",
-    "ui": "0.1.0",
     "vanilla-framework": "2.0.1"
   },
   "resolutions": {
