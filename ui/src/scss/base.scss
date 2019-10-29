@@ -2,11 +2,13 @@
 @import "./vanilla";
 @import "./vanilla-overrides";
 @import "./patterns_button";
+@import "./patterns_footer";
 @import "./patterns_navigation";
 @import "./patterns_table";
 @import "./patterns_table-actions";
 
 @include maas-navigation;
+@include maas-p-sticky-footer;
 
 html {
   height: 100%;
@@ -19,6 +21,8 @@ body {
 
 #root {
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .p-icon--chevron {
