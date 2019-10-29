@@ -2,12 +2,17 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import { auth as authActions } from "app/base/actions";
-import { status as statusActions } from "app/base/actions";
+import {
+  auth as authActions,
+  general as generalActions
+} from "app/base/actions";
+import { general as generalSelectors } from "app/base/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
-import { Header } from "@maas-ui/shared";
+import { config as configSelectors } from "app/settings/selectors";
+import { Footer, Header } from "@maas-ui/shared";
 import { status } from "app/base/selectors";
+import { status as statusActions } from "app/base/actions";
 import { useLocation } from "app/base/hooks";
 import { websocket } from "./base/actions";
 import Loader from "app/base/components/Loader";
@@ -25,6 +30,8 @@ export const App = () => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const authLoading = useSelector(authSelectors.loading);
+  const version = useSelector(generalSelectors.version.get);
+  const maasName = useSelector(configSelectors.maasName);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,6 +48,7 @@ export const App = () => {
   useEffect(() => {
     if (connected) {
       dispatch(authActions.fetch());
+      dispatch(generalActions.fetchVersion());
       // Fetch the config at the top so we can access the MAAS name for the
       // window title.
       dispatch(configActions.fetch());
@@ -80,6 +88,13 @@ export const App = () => {
         }}
       />
       {content}
+      {maasName && version && (
+        <Footer
+          debug={process.env.NODE_ENV === "development"}
+          maasName={maasName}
+          version={version}
+        />
+      )}
     </>
   );
 };

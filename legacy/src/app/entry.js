@@ -22,7 +22,7 @@ require("angular-vs-repeat");
 
 import configureRoutes from "./routes";
 import bootstrap from "./bootstrap";
-import { Header } from "@maas-ui/shared";
+import { Footer, Header } from "@maas-ui/shared";
 
 // filters
 import {
@@ -328,8 +328,7 @@ function unhideRSDLinks() {
   rsdLinks.forEach(link => link.classList.remove("u-hide"));
 }
 
-/* @ngInject */
-const displayTemplate = ($rootScope, $window, $http) => {
+const renderHeader = ($window, $http) => {
   const headerNode = document.querySelector("#header");
   if (!headerNode) {
     return;
@@ -348,6 +347,27 @@ const displayTemplate = ($rootScope, $window, $http) => {
     />,
     headerNode
   );
+};
+
+const renderFooter = $window => {
+  const footerNode = document.querySelector("#footer");
+  if (!footerNode) {
+    return;
+  }
+  ReactDOM.render(
+    <Footer
+      debug={process.env.NODE_ENV === "development"}
+      maasName={$window.CONFIG.maas_name}
+      version={$window.CONFIG.version}
+    />,
+    footerNode
+  );
+};
+
+/* @ngInject */
+const displayTemplate = ($rootScope, $window, $http) => {
+  renderHeader($window, $http);
+  renderFooter($window);
 };
 
 angular

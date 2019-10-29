@@ -4,13 +4,20 @@
     "docs": "cd ui && yarn run docs",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
-    "test": "cd ui && yarn run test",
     "clean-monorepo": "rm -rf node_modules",
     "clean-legacy": "cd legacy && yarn run clean",
     "clean-ui": "cd ui && yarn run clean",
     "clean-proxy": "cd proxy && yarn run clean",
     "clean-shared": "cd shared && yarn run clean",
-    "clean": "yarn clean-monorepo && yarn clean-legacy && yarn clean-ui && yarn clean-proxy && yarn clean-shared"
+    "clean": "yarn clean-monorepo && yarn clean-legacy && yarn clean-ui && yarn clean-proxy && yarn clean-shared",
+    "lint-legacy": "cd legacy && yarn run lint",
+    "lint-ui": "cd ui && yarn run lint",
+    "lint-shared": "cd shared && yarn run lint",
+    "lint": "yarn lint-legacy && yarn lint-ui && yarn lint-shared",
+    "test-legacy": "cd legacy && yarn run test",
+    "test-ui": "cd ui && yarn run test --watchAll=false",
+    "test-shared": "cd shared && yarn run test",
+    "test": "yarn test-legacy && yarn test-ui && yarn test-shared"
   },
   "private": true,
   "workspaces": {

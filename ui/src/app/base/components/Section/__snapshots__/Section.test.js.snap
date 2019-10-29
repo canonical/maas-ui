@@ -16,7 +16,7 @@ exports[`Section renders 1`] = `
   </Strip>
   <Strip
     className="u-no-padding"
-    element="header"
+    element="main"
     includeCol={false}
     rowClassName="u-equal-height section__content-wrapper"
   >

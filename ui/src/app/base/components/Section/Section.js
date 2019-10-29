@@ -13,7 +13,7 @@ const Section = ({ children, sidebar, title }) => {
         <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
       </Strip>
       <Strip
-        element="header"
+        element="main"
         className="u-no-padding"
         rowClassName="u-equal-height section__content-wrapper"
         includeCol={false}
