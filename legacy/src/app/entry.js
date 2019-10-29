@@ -240,11 +240,8 @@ const checkAuthenticated = () => {
     }
   });
 };
-try {
-  checkAuthenticated();
-} catch (e) {
-  // Unable to verify authentication.
-}
+
+checkAuthenticated();
 
 /* @ngInject */
 function configureMaas(
