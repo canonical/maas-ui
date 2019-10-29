@@ -227,7 +227,24 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
+const ROOT_API = "/MAAS/api/2.0/";
 const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
+const WHOAMI_API = `${ROOT_API}users/?op=whoami`;
+
+const checkAuthenticated = () => {
+  // Check that the user is authenticated, otherwise redirect to the React
+  // login form.
+  fetch(WHOAMI_API).then(response => {
+    if (!response.ok) {
+      window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+    }
+  });
+};
+try {
+  checkAuthenticated();
+} catch (e) {
+  // Unable to verify authentication.
+}
 
 /* @ngInject */
 function configureMaas(

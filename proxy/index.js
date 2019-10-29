@@ -37,7 +37,7 @@ app.use(
 
 // Proxy URLs and assets to the React client.
 app.use(
-  proxy(["/MAAS/r/", "/static/"], {
+  proxy(["/MAAS/r", "/static/"], {
     target: "http://localhost:8401/"
   })
 );
@@ -49,8 +49,8 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => res.redirect("/MAAS/"));
 app.get("/MAAS", (req, res) => res.redirect("/MAAS/"));
+app.get("/", (req, res) => res.redirect("/MAAS/"));
 
 app.listen(8400);
 
