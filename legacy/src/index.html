@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="app">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -36,13 +36,8 @@
     <div id="header"></div>
     <main class="u-no-margin--top" id="main-content" data-maas-error-overlay>
       <div class="wrapper--inner">
+        <h3 ng-loading>Loading MAAS...</h3>
         <div class="ng-hide"></div>
-      </div>
-      <div id="bootstrap-loading">
-        Configuring MAAS...
-      </div>
-      <div id="bootstrap-error">
-        Could not configure MAAS!
       </div>
       <div class="u-no-margin--top" data-ng-view></div>
       <div class="push"></div>

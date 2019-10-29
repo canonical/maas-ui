@@ -453,7 +453,7 @@ describe("NodesListController", function() {
         if (tab === "controllers") {
           registerUrl = makeName("url");
           registerSecret = makeName("secret");
-          window.MAAS_config = {
+          window.CONFIG = {
             register_url: registerUrl,
             register_secret: registerSecret
           };

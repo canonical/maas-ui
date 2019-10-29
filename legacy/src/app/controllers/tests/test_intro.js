@@ -19,6 +19,9 @@ describe("IntroController", function() {
     $window = {
       location: {
         reload: jasmine.createSpy("reload")
+      },
+      CONFIG: {
+        completed_intro: false
       }
     };
   }));
@@ -33,13 +36,9 @@ describe("IntroController", function() {
     ManagerHelperService = $injector.get("ManagerHelperService");
   }));
 
-  // Before the test mark it as not complete, after each test mark
-  // it as complete.
-  beforeEach(function() {
-    window.MAAS_config.completed_intro = false;
-  });
+  // After each test mark it as complete.
   afterEach(function() {
-    window.MAAS_config.completed_intro = true;
+    $window.CONFIG.completed_intro = true;
   });
 
   // Makes the IntroController
@@ -103,7 +102,7 @@ describe("IntroController", function() {
   });
 
   it("calls $location.path if already completed", function() {
-    window.MAAS_config.completed_intro = true;
+    $window.CONFIG.completed_intro = true;
     spyOn($location, "path");
     makeController();
     expect($location.path).toHaveBeenCalledWith("/");

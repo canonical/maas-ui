@@ -80,7 +80,7 @@ function IntroController(
         name: "completed_intro",
         value: true
       }).then(function() {
-        // Reload the whole page so that the MAAS_config will be
+        // Reload the whole page so that the CONFIG will be
         // set to the new value.
         $window.location.reload();
       });
@@ -88,7 +88,7 @@ function IntroController(
   };
 
   // If intro has been completed redirect to '/'.
-  if (MAAS_config.completed_intro) {
+  if ($window.CONFIG.completed_intro) {
     $location.path("/");
   } else {
     // Load the required managers.

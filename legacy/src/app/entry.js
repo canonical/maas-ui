@@ -12,8 +12,6 @@
 import "../scss/build.scss";
 
 import * as angular from "angular";
-import deferredBootstrapper from "angular-deferred-bootstrap";
-import Cookies from "js-cookie";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
@@ -23,6 +21,7 @@ require("ng-tags-input");
 require("angular-vs-repeat");
 
 import configureRoutes from "./routes";
+import bootstrap from "./bootstrap";
 import { Header } from "@maas-ui/shared";
 
 // filters
@@ -151,8 +150,8 @@ import ZonesListController from "./controllers/zones_list";
 
 // directives
 // prettier-ignore
-import storageDisksPartitions
-  from "./directives/nodedetails/storage_disks_partitions";
+import loading from "./directives/loading";
+import storageDisksPartitions from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
 import nodeDetailsSummary from "./directives/nodedetails/summary";
@@ -228,36 +227,7 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
-const ROOT_API = "/MAAS/api/2.0/";
-const VERSION_API = `${ROOT_API}version/`;
-const CONFIG_API = `${ROOT_API}maas/?op=get_config`;
-const WHOAMI_API = `${ROOT_API}users/?op=whoami`;
 const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
-
-// TODO
-// The following MAAS_config has the original django template conditionals
-// preserved here in comments, so that this can be transitioned to js.
-window.MAAS_config = {
-  version: "{{version}}",
-  //superuser: {% if user.is_superuser %}true{% else %}false{% endif %},
-  superuser: true,
-  /*
-  {% if user.is_superuser %}
-  */
-  register_url: "{{register_url}}",
-  register_secret: "{{register_secret}}",
-  /*
-  {% endif %}
-  */
-  //debug: {% if DEBUG %}true{% else %}false{% endif %},
-  debug: true,
-  //completed_intro: {% if completed_intro %}true{% else %}false{% endif %},
-  completed_intro: true,
-  //user_completed_intro: {% if user_completed_intro %}true{% else %}false{% endif %},
-  user_completed_intro: true,
-  analytics_user_id: "{{analytics_user_id}}",
-  uuid: "{{maas_uuid}}"
-};
 
 /* @ngInject */
 function configureMaas(
@@ -302,16 +272,13 @@ function configureMaas(
 
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
-function introRedirect($rootScope, $location, COMPLETED_INTRO, CURRENT_USER) {
+function introRedirect($rootScope, $location, $window) {
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
-    if (!COMPLETED_INTRO) {
+    if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
         $location.path("/intro");
       }
-    } else if (
-      CURRENT_USER._userprofile_cache &&
-      !CURRENT_USER._userprofile_cache.completed_intro
-    ) {
+    } else if ($window.CONFIG && !$window.CONFIG.current_user.completed_intro) {
       if (next.controller !== "IntroUserController") {
         $location.path("/intro/user");
       }
@@ -320,10 +287,10 @@ function introRedirect($rootScope, $location, COMPLETED_INTRO, CURRENT_USER) {
 }
 
 /* @ngInject */
-function dashboardRedirect($rootScope, $location, CURRENT_USER) {
+function dashboardRedirect($rootScope, $location, $window) {
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
     // Only superusers currently have access to the dashboard
-    if (!CURRENT_USER.is_superuser) {
+    if ($window.CONFIG && !$window.CONFIG.current_user.is_superuser) {
       if (next.controller == "DashboardController") {
         $location.path("/machines");
       }
@@ -333,22 +300,24 @@ function dashboardRedirect($rootScope, $location, CURRENT_USER) {
 
 // Send pageview to Google Analytics when the route has changed.
 /* @ngInject */
-function setupGA($rootScope, $window, VERSION) {
-  $window.ga =
-    $window.ga ||
-    function() {
-      ($window.ga.q = $window.ga.q || []).push(arguments);
-    };
-  $window.ga.l = +new Date();
-  $window.ga("create", "UA-1018242-63", "auto", {
-    userId: MAAS_config.analytics_user_id
-  });
-  $window.ga("set", "dimension1", `${VERSION.version} (${VERSION.subversion})`);
-  $window.ga("set", "dimension2", MAAS_config.uuid);
-  $rootScope.$on("$routeChangeSuccess", function() {
-    var path = $window.location.pathname + $window.location.hash;
-    $window.ga("send", "pageview", path);
-  });
+function setupGA($rootScope, $window) {
+  if ($window.CONFIG && $window.CONFIG.enable_analytics) {
+    $window.ga =
+      $window.ga ||
+      function() {
+        ($window.ga.q = $window.ga.q || []).push(arguments);
+      };
+    $window.ga.l = +new Date();
+    $window.ga("create", "UA-1018242-63", "auto", {
+      userId: `${$window.CONFIG.uuid}-${$window.CONFIG.current_user.id}`
+    });
+    $window.ga("set", "dimension1", $window.CONFIG.version);
+    $window.ga("set", "dimension2", $window.CONFIG.uuid);
+    $rootScope.$on("$routeChangeSuccess", function() {
+      var path = $window.location.pathname + $window.location.hash;
+      $window.ga("send", "pageview", path);
+    });
+  }
 }
 
 /* @ngInject */
@@ -359,45 +328,20 @@ function unhideRSDLinks() {
   rsdLinks.forEach(link => link.classList.remove("u-hide"));
 }
 
-deferredBootstrapper.bootstrap({
-  bootstrapConfig: {
-    strictDi: true
-  },
-  element: document.body,
-  module: "MAAS",
-  resolve: {
-    VERSION: [
-      "$http",
-      $http => {
-        $http.defaults.headers.get = {
-          "X-CSRFToken": Cookies.get("csrftoken")
-        };
-        return $http.get(VERSION_API);
-      }
-    ],
-    COMPLETED_INTRO: [
-      "$http",
-      $http => $http.get(`${CONFIG_API}&name=completed_intro`)
-    ],
-    SITE_NAME: ["$http", $http => $http.get(`${CONFIG_API}&name=maas_name`)],
-    CURRENT_USER: ["$http", $http => $http.get(WHOAMI_API)]
-  }
-});
-
 /* @ngInject */
-const displayTemplate = ($rootScope, $window, $http, CURRENT_USER) => {
+const displayTemplate = ($rootScope, $window, $http) => {
   const headerNode = document.querySelector("#header");
   if (!headerNode) {
     return;
   }
   ReactDOM.render(
     <Header
-      authUser={CURRENT_USER}
+      authUser={$window.CONFIG.current_user}
       basename={process.env.BASENAME}
       location={window.location}
       logout={() => {
         $http.post(LOGOUT_API).then(() => {
-          window.location.href = process.env.BASENAME;
+          $window.location.href = process.env.BASENAME;
         });
       }}
       newURLPrefix={process.env.REACT_BASENAME}
@@ -521,6 +465,7 @@ angular
   .controller("ZoneDetailsController", ZoneDetailsController)
   .controller("ZonesListController", ZonesListController)
   // directives
+  .directive("ngLoading", loading)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)
@@ -587,3 +532,5 @@ angular
   .directive("ngType", ngType)
   .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
+
+bootstrap();

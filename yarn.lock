@@ -1735,11 +1735,6 @@ angular-cookies@1.7.8:
   resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.7.8.tgz#c674dcfd37168e3d7def6bed165a38f75f96dbc9"
   integrity sha512-oS2X8XLYyLrwSBUKmcGkHxphwTtAEdi3eriSwMX/WUl5D6fRZ4EcBY4DaHN+tYDnzJ1i2lFa82/oq0kTKxZmyg==
 
-angular-deferred-bootstrap@0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/angular-deferred-bootstrap/-/angular-deferred-bootstrap-0.1.9.tgz#fcff01b542bffcdd0d5dfb148942e77135de346e"
-  integrity sha1-/P8BtUK//N0NXfsUiULncTXeNG4=
-
 angular-mocks@1.7.8:
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.7.8.tgz#95e7887ca91d1a3e176cc22f2d1941d284ce9767"
