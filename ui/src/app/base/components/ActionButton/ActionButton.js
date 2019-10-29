@@ -17,23 +17,22 @@ const ActionButton = ({
   success,
   ...props
 }) => {
-  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState();
+  const [width, setWidth] = useState();
   const [showLoader, setShowLoader] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const ref = useRef(null);
-
-  // Store default button width
-  useEffect(() => {
-    if (ref.current && ref.current.getBoundingClientRect().width) {
-      setWidth(ref.current.getBoundingClientRect().width);
-    }
-  }, [children]);
 
   // Set up loader timer
   useEffect(() => {
     let loaderTimeout;
 
     if (loading) {
+      // Explicitly set button dimensions
+      if (ref.current && !!ref.current.getBoundingClientRect()) {
+        setHeight(ref.current.getBoundingClientRect().height);
+        setWidth(ref.current.getBoundingClientRect().width);
+      }
       setShowLoader(true);
     }
 
@@ -56,6 +55,8 @@ const ActionButton = ({
 
     if (showSuccess) {
       successTimeout = setTimeout(() => {
+        setHeight();
+        setWidth();
         setShowSuccess(false);
       }, SUCCESS_DURATION);
     }
@@ -89,7 +90,14 @@ const ActionButton = ({
       className={buttonClasses}
       disabled={disabled}
       ref={ref}
-      style={width ? { width: `${width}px` } : undefined}
+      style={
+        height && width
+          ? {
+              height: `${height}px`,
+              width: `${width}px`
+            }
+          : undefined
+      }
       {...props}
     >
       {showLoader || showSuccess ? <i className={iconClasses} /> : children}
