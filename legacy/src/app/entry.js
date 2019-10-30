@@ -380,6 +380,7 @@ const renderFooter = $window => {
 
 /* @ngInject */
 const displayTemplate = ($rootScope, $window, $http) => {
+  $rootScope.site = window.CONFIG.maas_name;
   renderHeader($window, $http);
   renderFooter($window);
 };
