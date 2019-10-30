@@ -7,7 +7,9 @@
     "build-dev": "NODE_ENV=development webpack --config webpack.config.js",
     "clean": "rm -rf node_modules build",
     "clean-build": "rm -rf build",
-    "lint": "eslint ./src/app/",
+    "lint": "yarn lint-package-json && yarn lint-js",
+    "lint-js": "eslint ./src/app/",
+    "lint-package-json": "npmPkgJsonLint .",
     "prettier": "prettier --write 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "prettier-check": "prettier --check 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "start": "webpack-dev-server --mode development --open --config webpack.config.js --port 8402 --host 0.0.0.0 --disable-host-check",
@@ -38,6 +40,7 @@
     "jest-fetch-mock": "2.1.2",
     "mini-css-extract-plugin": "0.8.0",
     "node-sass": "4.13.0",
+    "npm-package-json-lint": "4.0.3",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "prettier": "1.18.2",
     "prop-types": "15.7.2",
@@ -64,6 +67,14 @@
     "macaroon-bakery": "0.2.1",
     "ng-tags-input": "3.2.0",
     "vanilla-framework": "2.0.1"
+  },
+  "npmpackagejsonlint": {
+    "rules": {
+      "prefer-absolute-version-dependencies": "error",
+      "prefer-absolute-version-devDependencies": "error",
+      "prefer-alphabetical-dependencies": "error",
+      "prefer-alphabetical-devDependencies": "error"
+    }
   },
   "resolutions": {
     "lodash": "4.17.15"
