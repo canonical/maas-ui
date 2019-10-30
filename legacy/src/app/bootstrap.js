@@ -70,7 +70,7 @@ const bootstrapOverWebsocket = config => {
         const requiredConfigKeys = [
           "completed_intro",
           "maas_name",
-          "maas_uuid",
+          "uuid",
           "enable_analytics"
         ];
 
