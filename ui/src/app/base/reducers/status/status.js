@@ -16,6 +16,7 @@ const status = produce(
       case "LOGIN_SUCCESS":
         draft.authenticated = true;
         draft.authenticating = false;
+        draft.error = null;
         break;
       case "LOGOUT_SUCCESS":
         draft.authenticated = false;
@@ -39,6 +40,9 @@ const status = produce(
         draft.error = null;
         break;
       case "LOGIN_ERROR":
+        draft.error = action.error;
+        draft.authenticating = false;
+        break;
       case "WEBSOCKET_ERROR":
         draft.error = action.error;
         break;
