@@ -208,6 +208,7 @@ export const Header = ({
                   href=""
                   onClick={evt => {
                     evt.preventDefault();
+                    localStorage.removeItem("maas-config");
                     logout();
                   }}
                 >
