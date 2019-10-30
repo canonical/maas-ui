@@ -25,6 +25,16 @@ const auth = produce(
         draft.auth.saved = true;
         draft.auth.saving = false;
         break;
+      // If the user list has not yet been loaded the message will be to
+      // create the user.
+      case "CREATE_USER_NOTIFY":
+      case "UPDATE_USER_NOTIFY":
+        // Check to see whether the auth user has been updated and if so
+        // update the stored auth user.
+        if (draft.auth.user.id === action.payload.id) {
+          draft.auth.user = action.payload;
+        }
+        break;
       case "CLEANUP_AUTH_USER":
         draft.auth.errors = {};
         draft.auth.saved = false;
