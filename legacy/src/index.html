@@ -3,39 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <!--
-    <meta name="description" content="{% block meta_description %}{% endblock %}">
-     -->
     <meta name="author" content="Canonical" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <!--[if IE]>
       <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <![endif]-->
-
     <title data-ng-bind="title + ' | ' + site + ' MAAS'">Loading MAAS...</title>
-    <!--
-    {% if global_options.enable_analytics %}
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-P4TGJR9');</script>
-    {% endif %}
--->
-
     <link
       rel="shortcut icon"
       href="assets/images/icons/maas-favicon-32px.png"
     />
-
-    <!--
-    {% include "maasserver/css-conf.html" %}
-        -->
   </head>
-  <!--
-<body class="has-sticky-footer" data-ng-init="site = '{{ global_options.site_name|escapejs }}'" data-maas-version-reloader window-width>
--->
   <body class="has-sticky-footer" data-maas-version-reloader window-width>
     <div id="header">
       <header class="p-navigation is-dark">

@@ -29,10 +29,12 @@ export const App = () => {
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authLoading = useSelector(authSelectors.loading);
   const version = useSelector(generalSelectors.version.get);
   const maasName = useSelector(configSelectors.maasName);
   const dispatch = useDispatch();
+  const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -77,6 +79,7 @@ export const App = () => {
       <Header
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
+        enableAnalytics={!debug && analyticsEnabled}
         generateLocalLink={(url, label, linkClass) => (
           <Link className={linkClass} to={url}>
             {label}
@@ -89,11 +92,7 @@ export const App = () => {
       />
       {content}
       {maasName && version && (
-        <Footer
-          debug={process.env.NODE_ENV === "development"}
-          maasName={maasName}
-          version={version}
-        />
+        <Footer debug={debug} maasName={maasName} version={version} />
       )}
     </>
   );
