@@ -1,6 +1,15 @@
 import * as angular from "angular";
 import Cookies from "js-cookie";
 
+const bootstrapApp = config => {
+  // set global config, and bootstrap angular app
+  window.CONFIG = config;
+  angular.element(document).ready(() => {
+    const el = document.getElementById("app");
+    angular.bootstrap(el, ["MAAS"], { strictDi: true });
+  });
+};
+
 const buildUrl = () => {
   const host = process.env.MAAS_WEBSOCKET_HOST
     ? process.env.MAAS_WEBSOCKET_HOST
@@ -31,16 +40,8 @@ const buildUrl = () => {
   return url;
 };
 
-/**
- * Load configuration over websocket, then manually bootstrap angularjs app.
- */
-const bootstrap = () => {
+const bootstrapOverWebsocket = config => {
   const webSocket = new WebSocket(buildUrl());
-
-  let CONFIG = {
-    register_url: "foo", // https://bugs.launchpad.net/maas/+bug/1850246
-    register_secret: "bar" // https://bugs.launchpad.net/maas/+bug/1850246
-  };
 
   const sendMsg = (id, method) => {
     var msg = {
@@ -53,13 +54,13 @@ const bootstrap = () => {
   };
 
   const messagesReceived = [];
-
   webSocket.onmessage = event => {
     const msg = JSON.parse(event.data);
+
     switch (msg.request_id) {
       // user.auth_user
       case 1: {
-        CONFIG.current_user = msg.result;
+        config.current_user = msg.result;
         messagesReceived.push(1);
         break;
       }
@@ -74,11 +75,11 @@ const bootstrap = () => {
         ];
 
         requiredConfigKeys.forEach(key => {
-          let result = msg.result.filter(item => item.name === key)
+          let result = msg.result.filter(item => item.name === key);
           if (result.length > 0) {
-            CONFIG[key] = result[0].value;
+            config[key] = result[0].value;
           }
-        })
+        });
 
         messagesReceived.push(2);
         break;
@@ -86,11 +87,15 @@ const bootstrap = () => {
 
       // general.version
       case 3:
-        CONFIG.version = msg.result;
+        config.version = msg.result;
         messagesReceived.push(3);
         break;
     }
-    bootstrapApp();
+    if (messagesReceived.length === 3) {
+      window.localStorage.setItem("maas-config", JSON.stringify(config));
+      bootstrapApp(config);
+      webSocket.close();
+    }
   };
 
   webSocket.onopen = () => {
@@ -98,19 +103,27 @@ const bootstrap = () => {
     sendMsg(2, "config.list");
     sendMsg(3, "general.version");
   };
+};
 
-  const bootstrapApp = () => {
-    // all messages received, set global config,
-    // cleanup and bootstrap angular app
-    if (messagesReceived.length === 3) {
-      window.CONFIG = CONFIG;
-      webSocket.close();
-      angular.element(document).ready(() => {
-        const el = document.getElementById("app");
-        angular.bootstrap(el, ["MAAS"], { strictDi: true });
-      });
-    }
+/**
+ * Load configuration from localstorage or websocket,
+ * then manually bootstrap angularjs app.
+ */
+const bootstrap = () => {
+  let CONFIG = {
+    register_url: "foo", // https://bugs.launchpad.net/maas/+bug/1850246
+    register_secret: "bar" // https://bugs.launchpad.net/maas/+bug/1850246
   };
+
+  const savedConfig = window.localStorage.getItem("maas-config");
+  if (savedConfig) {
+    // Once register_url and register_secret are fetched from the
+    // ws API, merging here will no longer be necessary.
+    const mergedConfig = { ...CONFIG, ...JSON.parse(savedConfig) };
+    bootstrapApp(mergedConfig);
+  } else {
+    bootstrapOverWebsocket(CONFIG);
+  }
 };
 
 export default bootstrap;

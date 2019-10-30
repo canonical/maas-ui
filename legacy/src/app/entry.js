@@ -353,6 +353,7 @@ const renderHeader = ($window, $http) => {
       basename={process.env.BASENAME}
       location={window.location}
       logout={() => {
+        window.localStorage.removeItem("maas-config");
         $http.post(LOGOUT_API).then(() => {
           $window.location.href = process.env.BASENAME;
         });
