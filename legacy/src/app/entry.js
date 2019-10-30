@@ -347,10 +347,12 @@ const renderHeader = ($window, $http) => {
   if (!headerNode) {
     return;
   }
+  const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
     <Header
       authUser={$window.CONFIG.current_user}
       basename={process.env.BASENAME}
+      enableAnalytics={!debug && window.CONFIG.enable_analytics}
       location={window.location}
       logout={() => {
         $http.post(LOGOUT_API).then(() => {

@@ -37,7 +37,7 @@ app.use(
 
 // Proxy URLs and assets to the React client.
 app.use(
-  proxy(["/MAAS/r", "/static/"], {
+  proxy(["/MAAS/r", "/static/", "/maas-favicon-32px.png"], {
     target: "http://localhost:8401/"
   })
 );
