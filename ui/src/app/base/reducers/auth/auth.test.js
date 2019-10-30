@@ -125,6 +125,75 @@ describe("auth", () => {
     });
   });
 
+  it("should correctly reduce CREATE_USER_NOTIFY", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            user: { id: "808", username: "admin" }
+          }
+        },
+        {
+          payload: {
+            id: "808",
+            username: "admin2"
+          },
+          type: "CREATE_USER_NOTIFY"
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        user: { id: "808", username: "admin2" }
+      }
+    });
+  });
+
+  it("should correctly reduce UPDATE_USER_NOTIFY", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            user: { id: "808", username: "admin" }
+          }
+        },
+        {
+          payload: {
+            id: "808",
+            username: "admin2"
+          },
+          type: "CREATE_USER_NOTIFY"
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        user: { id: "808", username: "admin2" }
+      }
+    });
+  });
+
+  it("does not reduce UPDATE_USER_NOTIFY for other users", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            user: { id: "808", username: "admin" }
+          }
+        },
+        {
+          payload: {
+            id: "909",
+            username: "admin2"
+          },
+          type: "CREATE_USER_NOTIFY"
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        user: { id: "808", username: "admin" }
+      }
+    });
+  });
+
   it("should correctly reduce CLEANUP_AUTH_USER", () => {
     expect(
       auth(
