@@ -64,7 +64,7 @@ Update the contents of that file to:
 MAAS_URL="http://<your-local-maas-ip>:5240/"
 ```
 
-(For clarity, you need to follow the steps in https://docs.google.com/document/d/17Rc_wpaOylXADmh6yIDlGjOVzaAgyLWe3SbnK3C5SL0/edit?pli=1 set up maas locally, before you can point maas-ui to it.)
+To setup MAAS locally, you can follow the steps in this [guide](https://docs.google.com/document/d/17Rc_wpaOylXADmh6yIDlGjOVzaAgyLWe3SbnK3C5SL0/).
 
 ## Install Docker inside your container (LXD and multipass)
 
