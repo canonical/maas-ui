@@ -64,6 +64,8 @@ Update the contents of that file to:
 MAAS_URL="http://<your-local-maas-ip>:5240/"
 ```
 
+(For clarity, you need to follow the steps in https://docs.google.com/document/d/17Rc_wpaOylXADmh6yIDlGjOVzaAgyLWe3SbnK3C5SL0/edit?pli=1 set up maas locally, before you can point maas-ui to it.)
+
 ## Install Docker inside your container (LXD and multipass)
 
 The simplest way is to use [the convenience script](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script). Once the script has run you will need to add your user to the docker group:
