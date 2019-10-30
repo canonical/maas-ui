@@ -77,7 +77,7 @@ describe("http sagas", () => {
             [matchers.call.fn(api.auth.login, payload), throwError(error)]
           ])
           .put({ type: "LOGIN_START" })
-          .put({ type: "LOGIN_ERROR", errors: { error: error.message } })
+          .put({ type: "LOGIN_ERROR", error })
           .run();
       });
     });

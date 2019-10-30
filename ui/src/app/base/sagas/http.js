@@ -44,13 +44,20 @@ export const api = {
         mode: "no-cors",
         credentials: "include",
         headers: new Headers({
+          Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest"
         }),
         body: Object.keys(credentials)
           .map(key => key + "=" + credentials[key])
           .join("&")
-      }).then(handleErrors);
+      })
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+        });
     },
     logout: csrftoken => {
       return fetch(LOGOUT_API, {
@@ -159,7 +166,7 @@ export function* loginSaga(action) {
   } catch (error) {
     yield put({
       type: "LOGIN_ERROR",
-      errors: { error: error.message }
+      error
     });
   }
 }

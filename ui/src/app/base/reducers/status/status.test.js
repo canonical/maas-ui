@@ -137,7 +137,8 @@ describe("status", () => {
       )
     ).toStrictEqual({
       authenticated: true,
-      authenticating: false
+      authenticating: false,
+      error: null
     });
   });
 
@@ -153,6 +154,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual({
+      authenticating: false,
       error: "Username not provided"
     });
   });
