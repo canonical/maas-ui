@@ -16,6 +16,7 @@ describe("Header", () => {
           username: "koala"
         }}
         basename="/MAAS"
+        completedIntro={true}
         location={{
           pathname: "/"
         }}
@@ -59,5 +60,28 @@ describe("Header", () => {
       .last()
       .simulate("click", { preventDefault: jest.fn() });
     expect(logout).toHaveBeenCalled();
+  });
+
+  it("can show the intro flow state", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala"
+        }}
+        basename="/MAAS"
+        completedIntro={false}
+        location={{
+          pathname: "/"
+        }}
+        logout={jest.fn()}
+      />
+    );
+    expect(
+      wrapper.findWhere(n => n.name() === "a" && n.text() === "Skip").exists()
+    ).toBe(true);
+    expect(
+      wrapper.find(".p-navigation__links .p-navigation__link").exists()
+    ).toBe(false);
   });
 });

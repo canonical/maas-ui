@@ -8438,7 +8438,7 @@ npm-bundled@^1.0.1:
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
   integrity sha512-8/JCaftHwbd//k6y2rEWp6k1wxVfpFzB6t1p825+cUb7Ym2XQfhwIC5KwhrvzZRJu+LtDE585zVaS32+CGtf0g==
 
-npm-package-json-lint@^4.0.3:
+npm-package-json-lint@4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.0.3.tgz#3f869195a238bd67c273c7ecb32b80a1e433a866"
   integrity sha512-cuvTR2l5dOjjlRR3a1CCp+mh2A2HyQRxydwdcYi0Z77NRlADpf7wF3Jf8XFLGZM7J6afXNRBofBjQ1UWFyOtKA==

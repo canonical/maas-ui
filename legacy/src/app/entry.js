@@ -342,16 +342,18 @@ function unhideRSDLinks() {
   rsdLinks.forEach(link => link.classList.remove("u-hide"));
 }
 
-const renderHeader = ($window, $http) => {
+const renderHeader = ($rootScope, $window, $http) => {
   const headerNode = document.querySelector("#header");
   if (!headerNode) {
     return;
   }
+  const { completed_intro, current_user } = $window.CONFIG;
   const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
     <Header
-      authUser={$window.CONFIG.current_user}
+      authUser={current_user}
       basename={process.env.BASENAME}
+      completedIntro={completed_intro && current_user.completed_intro}
       enableAnalytics={!debug && window.CONFIG.enable_analytics}
       location={window.location}
       logout={() => {
@@ -360,6 +362,11 @@ const renderHeader = ($window, $http) => {
         });
       }}
       newURLPrefix={process.env.REACT_BASENAME}
+      onSkip={() => {
+        // Call skip inside this function because skip won't exist when the
+        // header is first rendered.
+        $rootScope.skip();
+      }}
     />,
     headerNode
   );
@@ -383,7 +390,7 @@ const renderFooter = $window => {
 /* @ngInject */
 const displayTemplate = ($rootScope, $window, $http) => {
   $rootScope.site = window.CONFIG.maas_name;
-  renderHeader($window, $http);
+  renderHeader($rootScope, $window, $http);
   renderFooter($window);
 };
 
