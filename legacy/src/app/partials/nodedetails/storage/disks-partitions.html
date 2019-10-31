@@ -16,7 +16,7 @@
                 </th>
                 <th class="p-table__cell"><div class="u-align--center">Boot</div></th>
                 <th class="p-table__cell">Size</th>
-                <th class="p-double-row p-table__cell">
+                <th class="p-double-row p-table__cell numa-tooltip">
                     <div>Type</div>
                     <div>NUMA node</div>
                 </th>
@@ -80,7 +80,7 @@
                     </div>
                 </td>
                 <td class="p-double-row p-table__cell" aria-label="Size">
-                    <div class="p-double-rows__container" ng-hide="availableMode === 'edit' && item.$selected">
+                    <div class="p-double-row" ng-hide="availableMode === 'edit' && item.$selected">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 <span title="{$ item.size_human $}">
@@ -95,22 +95,27 @@
                         </div>
                     </div>
                 </td>
-                <td class="p-double-row p-table__cell" aria-label="Type, NUMA node">
-                    <div class="p-double-rows__container">
-                        <div class="p-double-row__main-row">
-                            <div class="u-text-overflow">
+                <td aria-label="Type, NUMA node" class="p-double-row">
+                    <div
+                        class="p-tooltip--top-left numa-tooltip"
+                        ng-class="{ 'show-warning': item.numa_nodes.length > 1 }"
+                    >
+                        <div class="p-double-row__rows-container">
+                            <div class="p-double-row__main-row">
                                 {$ getDeviceType(item) $}
                             </div>
-                        </div>
-                        <div class="p-double-row__muted-row">
-                            <div class="u-text-overflow">
-                                {$ item.original.numa_node $}
+                            <div class="p-double-row__muted-row">
+                                {$ item.numa_nodes.join(", ") $}
                             </div>
                         </div>
+                        <span
+                            class="p-tooltip__message"
+                            ng-if="item.numa_nodes.length > 1"
+                        >This volume is spread over multiple NUMA nodes.<br>This may lead to suboptimal performance.</span>
                     </div>
                 </td>
                 <td class="p-table__cell" aria-label="Health, Tags">
-                    <div class="p-double-rows__container">
+                    <div class="p-double-row">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 <span data-maas-script-status="script-status" data-script-status="item.test_status" data-ng-if="item.type === 'physical'"></span>
@@ -133,7 +138,7 @@
                     <div class="u-align--right">
                         <div class="p-contextual-menu" toggle-ctrl
                             data-ng-if="canAddLogicalVolume(item) || canAddPartition(item) || canEdit(item) || canDelete(item)">
-                            <button class="p-contextual-menu__toggle p-button--base is-small" aria-controls="#{$ item.name $}-menu"
+                            <button class="p-contextual-menu__toggle p-button--base is-small u-no-margin" aria-controls="#{$ item.name $}-menu"
                                 data-ng-click="toggleMenu()" aria-haspopup="true"><i class="p-icon--contextual-menu u-no-margin--right">Actions</i></button>
                             <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" id="{$ item.name $}-menu">
                                 <button class="p-contextual-menu__link"
@@ -1045,7 +1050,7 @@
                 </th>
                 <th class="p-table__cell"><div class="u-align--center">Boot</div></th>
                 <th class="p-table__cell">Size</th>
-                <th class="p-double-row p-table__cell">
+                <th class="p-double-row p-table__cell numa-tooltip">
                     <div>Type</div>
                     <div>NUMA node</div>
                 </th>
@@ -1067,7 +1072,7 @@
             </tr>
             <tr data-ng-repeat="item in used" class="table__row details__used p-table__row">
                 <td class="p-double-row p-table__cell" aria-label="Name">
-                    <div class="p-double-rows__container">
+                    <div class="p-double-row">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 {$ item.name $}
@@ -1081,7 +1086,7 @@
                     </div>
                 </td>
                 <td class="p-double-row p-table__cell">
-                    <div class="p-double-rows__container">
+                    <div class="p-double-row">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 {$ item.model $}
@@ -1106,22 +1111,27 @@
                     </div>
                 </td>
                 <td class="p-table__cell">{$ item.size_human $}</td>
-                <td aria-label="Type, NUMA node" class="p-double-row p-table__cell">
-                    <div class="p-double-rows__container">
-                        <div class="p-double-row__main-row">
-                            <div class="u-text-overflow">
+                <td aria-label="Type, NUMA node" class="p-double-row">
+                    <div
+                        class="p-tooltip--top-left numa-tooltip"
+                        ng-class="{ 'show-warning': item.numa_nodes.length > 1 }"
+                    >
+                        <div class="p-double-row__rows-container">
+                            <div class="p-double-row__main-row">
                                 {$ getDeviceType(item) $}
                             </div>
-                        </div>
-                        <div class="p-double-row__muted-row">
-                            <div class="u-text-overflow">
-                                {$ item.numa_node $}
+                            <div class="p-double-row__muted-row">
+                                {$ item.numa_nodes.join(", ") $}
                             </div>
                         </div>
+                        <span
+                            class="p-tooltip__message"
+                            ng-if="item.numa_nodes.length > 1"
+                        >This volume is spread over multiple NUMA nodes.<br>This may lead to suboptimal performance.</span>
                     </div>
                 </td>
                 <td aria-label="Health, Tags" class="p-double-row p-table__cell">
-                    <div class="p-double-rows__container">
+                    <div class="p-double-row">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 <span data-ng-if="item.type === 'physical'">
@@ -1146,7 +1156,7 @@
                     </div>
                 </td>
                 <td class="p-double-row p-table__cell" aria-label="Used for" title="{$ item.used_for $}">
-                    <div class="p-double-rows__container">
+                    <div class="p-double-row">
                         <div class="p-double-row__main-row">
                             <div class="u-text-overflow">
                                 {$ item.used_for $}

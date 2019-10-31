@@ -292,7 +292,7 @@ export function NodeNetworkingController(
     }
   ];
 
-  $scope.section = {
+  $scope.networkSection = {
     area: angular.isString($routeParams.area) ? $routeParams.area : "summary"
   };
 
@@ -703,7 +703,7 @@ export function NodeNetworkingController(
     }
     $scope.nodeResultsManager = NodeResultsManagerFactory.getManager(
       $scope.node,
-      $scope.section.area
+      $scope.networkSection.area
     );
 
     $scope.nodeResultsManager.loadItems().then(() => {
@@ -895,7 +895,8 @@ export function NodeNetworkingController(
   $scope.isInterfaceNameInvalid = function(nic) {
     if (
       !angular.isObject(nic) ||
-      !Object.prototype.hasOwnProperty.call(nic, "name") ||
+      // eslint-disable-next-line no-prototype-builtins
+      !nic.hasOwnProperty("name") ||
       nic.name.length === 0
     ) {
       return true;
@@ -2225,7 +2226,7 @@ export function NodeNetworkingController(
 
   // Has to call parent so event can be broadcast
   $scope.validateNetworkConfiguration = () => {
-    $scope.$parent.validateNetworkConfiguration();
+    $scope.$parent.openTestDropdown("validateNetwork");
   };
 
   // Return true if cannot add the interface.

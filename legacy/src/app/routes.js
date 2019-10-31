@@ -43,7 +43,8 @@ const configureRoutes = $routeProvider => {
     })
     .when("/machine/:system_id", {
       template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
+      controller: "NodeDetailsController",
+      reloadOnSearch: false
     })
     .when("/devices", {
       template: nodesListTmpl,
@@ -59,7 +60,8 @@ const configureRoutes = $routeProvider => {
     })
     .when("/device/:system_id", {
       template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
+      controller: "NodeDetailsController",
+      reloadOnSearch: false
     })
     .when("/controllers", {
       template: nodesListTmpl,
@@ -75,7 +77,8 @@ const configureRoutes = $routeProvider => {
     })
     .when("/controller/:system_id", {
       template: nodeDetailsTmpl,
-      controller: "NodeDetailsController"
+      controller: "NodeDetailsController",
+      reloadOnSearch: false
     })
     .when("/nodes", {
       redirectTo: "/machines"

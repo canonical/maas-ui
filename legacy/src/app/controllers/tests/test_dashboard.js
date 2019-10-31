@@ -24,6 +24,7 @@ describe("DashboardController", function() {
   // Load any injected managers and services.
   var DiscoveriesManager, DomainsManager, MachinesManager, DevicesManager;
   var SubnetsManager, VLANsManager, ConfigsManager, ManagerHelperService;
+  var FabricsManager;
   let SearchService, RegionConnection, webSocket;
   beforeEach(inject(function($injector) {
     DiscoveriesManager = $injector.get("DiscoveriesManager");
@@ -33,6 +34,7 @@ describe("DashboardController", function() {
     SubnetsManager = $injector.get("SubnetsManager");
     VLANsManager = $injector.get("VLANsManager");
     ConfigsManager = $injector.get("ConfigsManager");
+    FabricsManager = $injector.get("FabricsManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
     SearchService = $injector.get("SearchService");
     RegionConnection = $injector.get("RegionConnection");
@@ -61,6 +63,7 @@ describe("DashboardController", function() {
       MachinesManager: MachinesManager,
       DevicesManager: DevicesManager,
       SubnetsManager: SubnetsManager,
+      FabricsManager: FabricsManager,
       VLANsManager: VLANsManager,
       ConfigsManager: ConfigsManager,
       ManagerHelperService: ManagerHelperService
@@ -83,6 +86,7 @@ describe("DashboardController", function() {
       MachinesManager,
       DevicesManager,
       SubnetsManager,
+      FabricsManager,
       VLANsManager,
       ConfigsManager
     ]);
@@ -99,6 +103,7 @@ describe("DashboardController", function() {
     expect($scope.column).toBe("mac");
     expect($scope.selectedDevice).toBeNull();
     expect($scope.convertTo).toBeNull();
+    expect($scope.tempNotifications).toEqual([]);
   });
 
   describe("proxyManager", function() {
@@ -647,6 +652,73 @@ describe("DashboardController", function() {
       $scope.updateFilters();
       expect($scope.filters).toEqual(SearchService.getEmptyFilter());
       expect($scope.searchValid).toBe(false);
+    });
+  });
+
+  describe("getSubnetFabric", () => {
+    it("correctly returns the fabric obj associated with a subnet", () => {
+      makeController();
+      const vlan = { id: 0 };
+      const subnet = { vlan: 0 };
+      const fabric = { vlan: 0 };
+      spyOn(VLANsManager, "getItemFromList").and.returnValue(vlan);
+      spyOn(FabricsManager, "getItemFromList").and.returnValue(fabric);
+      expect($scope.getSubnetFabric(subnet)).toEqual(fabric);
+    });
+  });
+
+  describe("closeTempNotification", () => {
+    it("removes notification with id", () => {
+      makeController();
+      $scope.tempNotifications = [
+        {
+          id: 0,
+          text: "notification1"
+        },
+        {
+          id: 1,
+          text: "notification2"
+        }
+      ];
+      $scope.closeTempNotification(1);
+      expect($scope.tempNotifications).toEqual([
+        {
+          id: 0,
+          text: "notification1"
+        }
+      ]);
+    });
+  });
+
+  describe("createSubnetNotification", () => {
+    it(`creates a temp notification about enabling
+      a subnet's active discovery`, () => {
+      makeController();
+      const subnet = { active_discovery: true, cidr: "192.168.1.1" };
+      const fabric = { name: "fabric-x" };
+      spyOn($scope, "getSubnetFabric").and.returnValue(fabric);
+      $scope.createSubnetNotification(subnet);
+      expect($scope.tempNotifications).toEqual([
+        {
+          id: 0,
+          text: `Active discovery enabled on ${subnet.cidr} on ${fabric.name}.`
+        }
+      ]);
+    });
+
+    it(`creates a temp notification about disabling
+      a subnet's active discovery`, () => {
+      makeController();
+      const subnet = { active_discovery: false, cidr: "192.168.1.1" };
+      const fabric = { name: "fabric-x" };
+      spyOn($scope, "getSubnetFabric").and.returnValue(fabric);
+      $scope.createSubnetNotification(subnet);
+      expect($scope.tempNotifications).toEqual([
+        {
+          id: 0,
+          text: `Active discovery disabled on ${subnet.cidr} on ${fabric.name}.`
+        }
+      ]);
     });
   });
 });

@@ -5,19 +5,21 @@
  *
  */
 
- import nodesListFilterTmpl from "../../partials/nodelist/nodes-list-filter.html";
+import nodesListFilterTmpl from "../../partials/nodelist/nodes-list-filter.html";
 
 // Map of names displayed in the UI for each metadata option
 const displayNames = new Map([
   ["architecture", "Architecture"],
   ["fabric", "Fabric"],
   ["fabrics", "Fabric"],
+  ["numa_nodes_count", "NUMA nodes"],
   ["owner", "Owner"],
   ["pod", "KVM"],
   ["pool", "Resource pool"],
   ["rack", "Rack"],
   ["release", "OS/Release"],
   ["spaces", "Space"],
+  ["sriov_support", "SR-IOV support"],
   ["status", "Status"],
   ["storage_tags", "Storage tags"],
   ["subnet", "Subnet"],

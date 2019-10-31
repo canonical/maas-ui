@@ -298,59 +298,36 @@ describe("NodesManager", function() {
     });
   });
 
-  describe("isModernUbuntu", function() {
-    it("returns false when not ubuntu", function() {
-      var osSelection = {
+  describe("canBeKvmHost", () => {
+    it("returns false if no osSelection arg", () => {
+      expect(MachinesManager.canBeKvmHost()).toBe(false);
+    });
+
+    it("returns false when not ubuntu", () => {
+      const osSelection = {
         osystem: "centos",
         release: "CentOS 7"
       };
 
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(false);
+      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(false);
     });
 
-    it("returns false when ubuntu and precise", function() {
-      var osSelection = {
+    it("returns false when ubuntu and not bionic", () => {
+      const osSelection = {
         osystem: "ubuntu",
-        release: "ubuntu/precise"
+        release: "ubuntu/cosmic"
       };
 
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(false);
+      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(false);
     });
 
-    it("returns false when ubuntu and trusty", function() {
-      var osSelection = {
-        osystem: "ubuntu",
-        release: "ubuntu/trusty"
-      };
-
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(false);
-    });
-
-    it("returns false when ubuntu and xenial", function() {
-      var osSelection = {
-        osystem: "ubuntu",
-        release: "ubuntu/xenial"
-      };
-
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(false);
-    });
-
-    it("returns true when ubuntu and bionic", function() {
-      var osSelection = {
+    it("returns true when ubuntu and bionic", () => {
+      const osSelection = {
         osystem: "ubuntu",
         release: "ubuntu/bionic"
       };
 
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(true);
-    });
-
-    it("returns true when ubuntu and cosmic", function() {
-      var osSelection = {
-        osystem: "ubuntu",
-        release: "cosmic"
-      };
-
-      expect(MachinesManager.isModernUbuntu(osSelection)).toBe(true);
+      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(true);
     });
   });
 
@@ -861,6 +838,55 @@ describe("NodesManager", function() {
         );
         done();
       });
+    });
+  });
+
+  describe("urlValuesValid", () => {
+    it("returns true if passed a valid URL", () => {
+      const url = "https://example.com";
+      expect(MachinesManager.urlValuesValid(url)).toBe(true);
+    });
+
+    it("returns true if passed a valid domain", () => {
+      const domain = "example.com";
+      expect(MachinesManager.urlValuesValid(domain)).toBe(true);
+    });
+
+    it("returns true if passed a valid IP address", () => {
+      const ip = "127.0.0.1";
+      expect(MachinesManager.urlValuesValid(ip)).toBe(true);
+    });
+
+    it("returns false if passed an invalid URL, domain or IP address", () => {
+      const url = "foobarbaz";
+      expect(MachinesManager.urlValuesValid(url)).toBe(false);
+    });
+
+    it("returns true if passed a comma separated list of URLs", () => {
+      const urls = "https://example.com,http://foobar.com,http://hello.com";
+      expect(MachinesManager.urlValuesValid(urls)).toBe(true);
+    });
+
+    it("returns true if passed a comma separated list of domains", () => {
+      const domains = "example.com,foobar.com,hello.com";
+      expect(MachinesManager.urlValuesValid(domains)).toBe(true);
+    });
+
+    it("returns true if passed a comma separated list of IPs", () => {
+      const ips = "127.0.0.1,198.64.0.43,198.64.33.25";
+      expect(MachinesManager.urlValuesValid(ips)).toBe(true);
+    });
+
+    it(`returns true if passed a comma separated list of URLS,
+      domains and IPs`, () => {
+      const values = "http://example.com,foobar.com,127.0.0.1";
+      expect(MachinesManager.urlValuesValid(values)).toBe(true);
+    });
+
+    it(`returns false if passed a comma separated list
+      that contains an invalid URL, domain or IP`, () => {
+      const values = "http://example.com,google";
+      expect(MachinesManager.urlValuesValid(values)).toBe(false);
     });
   });
 });
