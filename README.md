@@ -77,6 +77,8 @@ newgrp docker
 
 [Install Docker inside your container](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
+[If on a Mac, download the Docker client](https://docs.docker.com/v17.12/docker-for-mac/install/#download-docker-for-mac)
+
 # Running maas-ui
 
 From the root of the MAAS UI project run:
