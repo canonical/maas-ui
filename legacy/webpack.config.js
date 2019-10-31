@@ -15,7 +15,7 @@ module.exports = {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
   },
   output: {
-    path: path.resolve(__dirname, "./dist"),
+    path: path.resolve(__dirname, "./build"),
     filename: "[name].[hash].bundle.js",
     publicPath: "/MAAS/"
   },
