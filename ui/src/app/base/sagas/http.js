@@ -7,8 +7,8 @@ const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/accounts/login/";
+const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 const LOGOUT_API = "/MAAS/accounts/logout/";
-const WHOAMI_API = `${ROOT_API}users/?op=whoami`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const handlePromise = response => {
 export const api = {
   auth: {
     checkAuthenticated: () => {
-      return fetch(WHOAMI_API).then(handleErrors);
+      return fetch(LOGIN_CANARY_API).then(handleErrors);
     },
     login: credentials => {
       return fetch(LOGIN_API, {
