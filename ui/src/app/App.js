@@ -33,7 +33,9 @@ export const App = () => {
   const authLoading = useSelector(authSelectors.loading);
   const version = useSelector(generalSelectors.version.get);
   const maasName = useSelector(configSelectors.maasName);
+  const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
+  const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {
@@ -57,6 +59,14 @@ export const App = () => {
     }
   }, [dispatch, connected]);
 
+  // Explicitly check that completedIntro is false so that it doesn't redirect
+  // if the config isn't defined yet.
+  if (completedIntro === false) {
+    window.location = `${basename}/#/intro`;
+  } else if (authUser && !authUser.completed_intro) {
+    window.location = `${basename}/#/intro/user`;
+  }
+
   let content;
   if (authLoading || connecting || authenticating) {
     content = <Section title={<Loader text="Loading..." />} />;
@@ -79,6 +89,7 @@ export const App = () => {
       <Header
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
+        completedIntro={completedIntro && authUser.completed_intro}
         enableAnalytics={!debug && analyticsEnabled}
         generateLocalLink={(url, label, linkClass) => (
           <Link className={linkClass} to={url}>

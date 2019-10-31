@@ -430,4 +430,14 @@ config.defaultDistroSeries = createSelector(
   configs => getValueFromName(configs, "default_distro_series")
 );
 
+/**
+ * Returns the MAAS config for whether the intro has been completed.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether the intro has been completed
+ */
+config.completedIntro = createSelector(
+  [config.all],
+  configs => getValueFromName(configs, "completed_intro")
+);
+
 export default config;

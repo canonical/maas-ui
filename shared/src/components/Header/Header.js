@@ -14,11 +14,13 @@ const useVisible = initialValue => {
 export const Header = ({
   authUser,
   basename,
+  completedIntro,
   enableAnalytics,
   generateLocalLink,
   location,
   logout,
-  newURLPrefix
+  newURLPrefix,
+  onSkip
 }) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
@@ -198,26 +200,43 @@ export const Header = ({
                 <a href="#main-content">Jump to main content</a>
               </span>
               <ul className="p-navigation__links" role="menu">
-                <li
-                  role="menuitem"
-                  className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
-                >
-                  <a onClick={toggleHardware} href="#menu">
-                    Hardware <i className="p-icon--chevron"></i>
-                  </a>
-                  <ul
-                    className={classNames("p-dropdown__menu", {
-                      "u-hide": !hardwareVisible
-                    })}
-                  >
-                    {generateMenuItems(
-                      links.filter(item => item.inHardwareMenu)
-                    )}
-                  </ul>
-                </li>
-                {generateMenuItems(links, true, true)}
+                {completedIntro && (
+                  <>
+                    <li
+                      role="menuitem"
+                      className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
+                    >
+                      <a onClick={toggleHardware} href="#menu">
+                        Hardware <i className="p-icon--chevron"></i>
+                      </a>
+                      <ul
+                        className={classNames("p-dropdown__menu", {
+                          "u-hide": !hardwareVisible
+                        })}
+                      >
+                        {generateMenuItems(
+                          links.filter(item => item.inHardwareMenu)
+                        )}
+                      </ul>
+                    </li>
+                    {generateMenuItems(links, true, true)}
+                  </>
+                )}
               </ul>
               <ul className="p-navigation__links--right" role="menu">
+                {!completedIntro && (
+                  <li className="p-navigation__link" role="menuitem">
+                    <a
+                      href=""
+                      onClick={evt => {
+                        evt.preventDefault();
+                        onSkip();
+                      }}
+                    >
+                      Skip
+                    </a>
+                  </li>
+                )}
                 {generateLink("/account/prefs", authUser.username, false, true)}
                 <li className="p-navigation__link" role="menuitem">
                   <a
@@ -247,13 +266,15 @@ Header.propTypes = {
     username: PropTypes.string
   }),
   basename: PropTypes.string.isRequired,
+  completedIntro: PropTypes.bool,
   enableAnalytics: PropTypes.bool,
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired,
   logout: PropTypes.func.isRequired,
-  newURLPrefix: PropTypes.string
+  newURLPrefix: PropTypes.string,
+  onSkip: PropTypes.func
 };
 
 export default Header;

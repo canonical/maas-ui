@@ -441,4 +441,17 @@ describe("config selectors", () => {
       expect(config.defaultDistroSeries(state)).toBe("bionic");
     });
   });
+
+  describe("completedIntro", () => {
+    it("returns MAAS config for completed intro", () => {
+      const state = {
+        config: {
+          loading: false,
+          loaded: true,
+          items: [{ name: "completed_intro", value: true }]
+        }
+      };
+      expect(config.completedIntro(state)).toBe(true);
+    });
+  });
 });

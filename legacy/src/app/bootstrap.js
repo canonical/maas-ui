@@ -92,7 +92,14 @@ const bootstrapOverWebsocket = config => {
         break;
     }
     if (messagesReceived.length === 3) {
-      window.localStorage.setItem("maas-config", JSON.stringify(config));
+      // Only store the config once the MAAS has been set up. The intro pages
+      // refresh the window when each one completes, so we don't want the
+      // stored config to get out of sync (there is also little optimisation to
+      // be gained as the user won't be switching between the AngularJS and
+      // React clients during the intro flow).
+      if (config.completed_intro && config.current_user.completed_intro) {
+        window.localStorage.setItem("maas-config", JSON.stringify(config));
+      }
       bootstrapApp(config);
       webSocket.close();
     }
