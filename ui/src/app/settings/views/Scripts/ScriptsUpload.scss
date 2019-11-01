@@ -1,5 +1,6 @@
-@import "~vanilla-framework/scss/settings_spacing";
 @import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/settings_placeholders";
 @import "~vanilla-framework/scss/_global_functions";
 
 .scripts-upload {
@@ -16,17 +17,17 @@
   background-color: $color-light;
   color: $color-mid;
   outline: none;
-  transition: border .24s ease-in-out;
+  transition: border 0.24s ease-in-out;
 }
 
 .scripts-upload--active {
   border-color: $color-link;
-};
+}
 
 .scripts-upload--accept {
   border-color: $color-positive;
-};
+}
 
 .scripts-upload--reject {
   border-color: $color-negative;
-};
+}
