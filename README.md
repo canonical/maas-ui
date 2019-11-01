@@ -88,3 +88,15 @@ From the root of the MAAS UI project run:
 ```
 
 From here you should be able to view the project at &lt;your-local-maas-ip>:8400/MAAS/
+
+# Building maas-ui
+
+Ensure both node (current LTS) and yarn are installed.
+
+From the root of the MAAS UI project run:
+
+```
+yarn build-all
+```
+
+Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
