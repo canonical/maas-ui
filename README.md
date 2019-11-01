@@ -8,8 +8,8 @@ It is comprised of the following [yarn workspaces](https://yarnpkg.com/lang/en/d
 
   - *legacy*: the angularjs maas client.
   - *ui*: the new react maas client (all new work should be in this workspace).
-  - *shared*: shared components consumed by both legacy and ui.
-  - *proxy*: a proxying webpack dev server project, used for serving both legacy and ui projects in development.
+  - *shared*: code shared between both legacy and ui.
+  - *proxy*: a proxying express project, used for serving both legacy and ui projects in development.
 
 ## Adding a new workspace
 
