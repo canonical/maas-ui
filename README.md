@@ -1,22 +1,28 @@
 # MAAS Frontend
 
-This is a mono repo for MAAS frontend projects.
+This is a mono repo for the MAAS frontend.
 
 [![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master)
 
+It is comprised of the following yarn workspaces:
+
+  - legacy: the angularjs maas client.
+  - ui: the new react maas client (all new work should be in this workspace).
+  - shared: shared components consumed by both legacy and ui.
+  - proxy: a proxying webpack dev server project, used for serving both legacy and ui projects in development.
+
 # Projects
 
-## UI
 
-This is a React frontend. New work should be done here where possible.
-
-To view component docs run `./run exec --expose-port 6060 yarn docs`.
-
-# Adding a new project
+# Adding a new project (workspace)
 
 To add a new project, edit `package.json` and add the project's directory name to the `workspaces` array.
 
 To import modules from existing projects in your new project, add the dependant projects to your projects dependencies in `package.json`. See [Yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) for details.
+
+# Component documentation
+
+To view component docs run `./run exec --expose-port 6060 yarn docs`.
 
 # Setting up maas-ui
 
