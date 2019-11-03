@@ -1,9 +1,6 @@
+import { Button, Col, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
-
-import { Button } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
 
 const TableDeleteConfirm = ({
   message,

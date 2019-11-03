@@ -1,3 +1,12 @@
+import {
+  Col,
+  Form,
+  Loader,
+  Notification,
+  Row,
+  Select,
+  Textarea
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React from "react";
@@ -11,15 +20,8 @@ import {
 } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
-import { Col } from "@canonical/react-components";
-import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import { Loader } from "@canonical/react-components";
-import { Notification } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
-import { Select } from "@canonical/react-components";
-import { Textarea } from "@canonical/react-components";
 
 const generateOptions = (type, models) =>
   [

@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import "./SettingsTable.scss";
-import { Button } from "@canonical/react-components";
-import { Loader } from "@canonical/react-components";
-import { MainTable } from "@canonical/react-components";
-import { SearchBox } from "@canonical/react-components";
+import {
+  Button,
+  Loader,
+  MainTable,
+  SearchBox
+} from "@canonical/react-components";
 
 export const SettingsTable = ({
   buttons,

@@ -1,3 +1,4 @@
+import { Button, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -6,8 +7,6 @@ import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
-import { Notification } from "@canonical/react-components";
 import CopyButton from "app/base/components/CopyButton";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";

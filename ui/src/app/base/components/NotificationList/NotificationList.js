@@ -1,8 +1,8 @@
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 
 import { messages as messageActions } from "app/base/actions";
-import { Notification } from "@canonical/react-components";
 import { messages as messageSelectors } from "app/base/selectors";
 
 const generateMessages = (messages, dispatch) =>

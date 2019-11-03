@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import { Col, Loader, MainTable, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 
 import {
   general as generalActions,
@@ -13,10 +14,6 @@ import {
 } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import { Col } from "@canonical/react-components";
-import { Loader } from "@canonical/react-components";
-import { MainTable } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
 
 const generateRows = machines =>
   machines.map(machine => ({

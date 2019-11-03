@@ -1,3 +1,4 @@
+import { Form, Notification, Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React from "react";
@@ -5,11 +6,8 @@ import React from "react";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
-import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import { Notification } from "@canonical/react-components";
-import { Select } from "@canonical/react-components";
 
 export const LicenseKeyFormFields = ({
   editing = false,

@@ -1,11 +1,11 @@
+import { Select } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React from "react";
-import { useSelector } from "react-redux";
 
 import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
-import { Select } from "@canonical/react-components";
 
 const StorageFormFields = ({ formikProps }) => {
   const { values } = formikProps;

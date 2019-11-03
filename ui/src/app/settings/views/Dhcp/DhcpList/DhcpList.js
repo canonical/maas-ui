@@ -1,3 +1,4 @@
+import { Button, Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,12 +21,8 @@ import {
   subnet as subnetSelectors
 } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
-import { Code } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
-import { Row } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 

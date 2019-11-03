@@ -1,17 +1,19 @@
+import {
+  ActionButton,
+  Col,
+  Form,
+  Loader,
+  Row
+} from "@canonical/react-components";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
-import { ActionButton } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
-import { Form } from "@canonical/react-components";
-import { Loader } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
 import ProxyFormFields from "../ProxyFormFields";
 
 const ProxySchema = Yup.object().shape({

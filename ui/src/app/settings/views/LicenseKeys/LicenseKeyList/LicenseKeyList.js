@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@canonical/react-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 

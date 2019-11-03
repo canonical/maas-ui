@@ -1,3 +1,10 @@
+import {
+  Card,
+  Col,
+  Notification,
+  Row,
+  Strip
+} from "@canonical/react-components";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -6,12 +13,7 @@ import React from "react";
 import { status as statusActions } from "app/base/actions";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import { Card } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
 import LoginFormFields from "../LoginFormFields";
-import { Notification } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
-import { Strip } from "@canonical/react-components";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),

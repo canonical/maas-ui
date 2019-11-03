@@ -1,3 +1,4 @@
+import { Loader } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -5,7 +6,6 @@ import { useParams } from "app/base/hooks";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 
-import { Loader } from "@canonical/react-components";
 import LicenseKeyForm from "../LicenseKeyForm";
 
 export const LicenseKeyEdit = () => {

@@ -1,16 +1,13 @@
+import { Button, Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import "./ScriptsList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
-import { Code } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
 import ColumnToggle from "app/base/components/ColumnToggle";
-import { Row } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { scripts as scriptActions } from "app/base/actions";

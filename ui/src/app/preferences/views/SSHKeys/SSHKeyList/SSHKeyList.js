@@ -1,3 +1,8 @@
+import {
+  Button,
+  Link as VanillaLink,
+  Notification
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -6,9 +11,6 @@ import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
-import { Link as VanillaLink } from "@canonical/react-components";
-import { Notification } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
