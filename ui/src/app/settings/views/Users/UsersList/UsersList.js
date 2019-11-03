@@ -1,3 +1,4 @@
+import { Button } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +13,6 @@ import {
   auth as authSelectors
 } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import { Button } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 

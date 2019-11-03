@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Loader, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -15,9 +16,7 @@ import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
 import { useLocation } from "app/base/hooks";
 import { websocket } from "./base/actions";
-import { Loader } from "@canonical/react-components";
 import Login from "app/base/components/Login";
-import { Notification } from "@canonical/react-components";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
 

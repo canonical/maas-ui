@@ -1,10 +1,10 @@
+import { Loader } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
 import { useParams } from "app/base/hooks";
 import { dhcpsnippet as dhcpsnippetActions } from "app/base/actions";
 import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
-import { Loader } from "@canonical/react-components";
 import DhcpForm from "../DhcpForm";
 
 export const DhcpEdit = () => {

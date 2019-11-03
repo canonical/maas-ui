@@ -1,8 +1,8 @@
 import { shallow } from "enzyme";
+import { Textarea } from "@canonical/react-components";
 import React from "react";
 
 import FormikField from "./FormikField";
-import { Textarea } from "@canonical/react-components";
 
 jest.mock("uuid/v4", () =>
   jest.fn(() => "00000000-0000-0000-0000-000000000000")

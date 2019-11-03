@@ -1,8 +1,9 @@
+import { Form, Loader } from "@canonical/react-components";
 import { Formik } from "formik";
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 import {
@@ -17,10 +18,8 @@ import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import { Form } from "@canonical/react-components";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import { Loader } from "@canonical/react-components";
 import RepositoryFormFields from "../RepositoryFormFields";
 import { RepositoryShape } from "app/settings/proptypes";
 

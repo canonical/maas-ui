@@ -1,3 +1,10 @@
+import {
+  ActionButton,
+  Col,
+  Form,
+  Loader,
+  Row
+} from "@canonical/react-components";
 import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,11 +14,6 @@ import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
-import { ActionButton } from "@canonical/react-components";
-import { Col } from "@canonical/react-components";
-import { Form } from "@canonical/react-components";
-import { Loader } from "@canonical/react-components";
-import { Row } from "@canonical/react-components";
 import NtpFormFields from "../NtpFormFields";
 
 const NtpSchema = Yup.object().shape({

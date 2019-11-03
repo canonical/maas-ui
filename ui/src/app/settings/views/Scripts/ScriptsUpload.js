@@ -1,18 +1,17 @@
+import { Form, Row } from "@canonical/react-components";
+import { Redirect } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
-import { useDropzone } from "react-dropzone";
 
 import "./ScriptsUpload.scss";
 import readScript from "./readScript";
 import { messages } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
-import { Form } from "@canonical/react-components";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import { Row } from "@canonical/react-components";
 import { scripts as scriptActions } from "app/base/actions";
 import { scripts as scriptSelectors } from "app/base/selectors";
 

@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { Loader } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -18,7 +19,6 @@ import { useDhcpTarget } from "app/settings/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
-import { Loader } from "@canonical/react-components";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),

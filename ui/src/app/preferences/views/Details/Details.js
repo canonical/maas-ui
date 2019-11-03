@@ -1,3 +1,4 @@
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -7,9 +8,7 @@ import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import { Col } from "@canonical/react-components";
 import DetailsButtons from "./DetailsButtons";
-import { Row } from "@canonical/react-components";
 import UserForm from "app/base/components/UserForm";
 
 export const Details = () => {

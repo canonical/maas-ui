@@ -1,3 +1,4 @@
+import { Form, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -6,10 +7,8 @@ import { auth as authSelectors } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
 import { user as userSelectors } from "app/base/selectors";
-import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import { Link } from "@canonical/react-components";
 
 const togglePassword = (
   event,

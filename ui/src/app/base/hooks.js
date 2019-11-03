@@ -1,11 +1,11 @@
 import { __RouterContext as RouterContext } from "react-router";
+import { notificationTypes } from "@canonical/react-components";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 
 import { config as configSelectors } from "app/settings/selectors";
 import { messages } from "app/base/actions";
-import { notificationTypes } from "@canonical/react-components";
 import { simpleObjectEquality } from "app/settings/utils";
 
 // Router hooks inspired by: https://github.com/ReactTraining/react-router/issues/6430#issuecomment-510266079

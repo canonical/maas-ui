@@ -1,7 +1,6 @@
+import { ActionButton } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
-
-import { ActionButton } from "@canonical/react-components";
 
 export const DetailsButtons = ({
   actionDisabled,

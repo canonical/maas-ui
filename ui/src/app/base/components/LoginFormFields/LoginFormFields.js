@@ -1,3 +1,4 @@
+import { ActionButton, Form } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React from "react";
@@ -5,8 +6,6 @@ import React from "react";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
 import { status } from "app/base/selectors";
-import { ActionButton } from "@canonical/react-components";
-import { Form } from "@canonical/react-components";
 import FormikField from "app/base/components/FormikField";
 
 export const LoginFormFields = ({ formikProps }) => {

@@ -1,13 +1,12 @@
+import { ActionButton, Form } from "@canonical/react-components";
 import { Formik } from "formik";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
-import { ActionButton } from "@canonical/react-components";
-import { Form } from "@canonical/react-components";
 import CommissioningFormFields from "../CommissioningFormFields";
 
 const CommissioningSchema = Yup.object().shape({
