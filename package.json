@@ -6,7 +6,6 @@
     "build-legacy": "cd legacy && yarn install && yarn build",
     "build-ui": "cd ui && yarn install && yarn build",
     "copy-build": "mkdir -p build/legacy build/ui && cp -R legacy/build/* build/legacy/ && cp -R ui/build/* build/ui/",
-    "docs": "cd ui && yarn run docs",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "clean": "yarn clean-all",
