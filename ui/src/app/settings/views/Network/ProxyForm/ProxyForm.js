@@ -7,11 +7,11 @@ import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
-import ActionButton from "app/base/components/ActionButton";
-import Col from "app/base/components/Col";
-import Form from "app/base/components/Form";
-import Loader from "app/base/components/Loader";
-import Row from "app/base/components/Row";
+import { ActionButton } from "@canonical/react-components";
+import { Col } from "@canonical/react-components";
+import { Form } from "@canonical/react-components";
+import { Loader } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
 import ProxyFormFields from "../ProxyFormFields";
 
 const ProxySchema = Yup.object().shape({

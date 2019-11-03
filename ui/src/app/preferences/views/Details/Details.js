@@ -7,9 +7,9 @@ import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import Col from "app/base/components/Col";
+import { Col } from "@canonical/react-components";
 import DetailsButtons from "./DetailsButtons";
-import Row from "app/base/components/Row";
+import { Row } from "@canonical/react-components";
 import UserForm from "app/base/components/UserForm";
 
 export const Details = () => {

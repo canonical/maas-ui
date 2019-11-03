@@ -20,12 +20,12 @@ import {
   subnet as subnetSelectors
 } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
-import Button from "app/base/components/Button";
-import Code from "app/base/components/Code";
-import Col from "app/base/components/Col";
+import { Button } from "@canonical/react-components";
+import { Code } from "@canonical/react-components";
+import { Col } from "@canonical/react-components";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
-import Row from "app/base/components/Row";
+import { Row } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 

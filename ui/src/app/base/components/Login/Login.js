@@ -6,12 +6,12 @@ import React from "react";
 import { status as statusActions } from "app/base/actions";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import Card from "app/base/components/Card";
-import Col from "app/base/components/Col";
+import { Card } from "@canonical/react-components";
+import { Col } from "@canonical/react-components";
 import LoginFormFields from "../LoginFormFields";
-import Notification from "app/base/components/Notification";
-import Row from "app/base/components/Row";
-import Strip from "app/base/components/Strip";
+import { Notification } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),

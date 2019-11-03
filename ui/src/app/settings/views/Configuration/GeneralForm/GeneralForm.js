@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { formikFormDisabled } from "app/settings/utils";
-import ActionButton from "app/base/components/ActionButton";
-import Form from "app/base/components/Form";
+import { ActionButton } from "@canonical/react-components";
+import { Form } from "@canonical/react-components";
 import GeneralFormFields from "../GeneralFormFields";
 
 const GeneralSchema = Yup.object().shape({

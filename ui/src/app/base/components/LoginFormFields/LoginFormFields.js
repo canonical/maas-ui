@@ -5,8 +5,8 @@ import React from "react";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
 import { status } from "app/base/selectors";
-import ActionButton from "app/base/components/ActionButton";
-import Form from "app/base/components/Form";
+import { ActionButton } from "@canonical/react-components";
+import { Form } from "@canonical/react-components";
 import FormikField from "app/base/components/FormikField";
 
 export const LoginFormFields = ({ formikProps }) => {

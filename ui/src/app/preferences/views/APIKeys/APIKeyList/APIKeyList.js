@@ -4,8 +4,8 @@ import React, { useState } from "react";
 
 import "./APIKeyList.scss";
 import { useWindowTitle } from "app/base/hooks";
-import Button from "app/base/components/Button";
-import Notification from "app/base/components/Notification";
+import { Button } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import CopyButton from "app/base/components/CopyButton";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";

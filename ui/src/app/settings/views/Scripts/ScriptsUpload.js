@@ -9,10 +9,10 @@ import "./ScriptsUpload.scss";
 import readScript from "./readScript";
 import { messages } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
-import Form from "app/base/components/Form";
+import { Form } from "@canonical/react-components";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import Row from "app/base/components/Row";
+import { Row } from "@canonical/react-components";
 import { scripts as scriptActions } from "app/base/actions";
 import { scripts as scriptSelectors } from "app/base/selectors";
 

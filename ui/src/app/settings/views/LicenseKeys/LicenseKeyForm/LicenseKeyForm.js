@@ -10,7 +10,7 @@ import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import Loader from "app/base/components/Loader";
+import { Loader } from "@canonical/react-components";
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import FormCard from "app/base/components/FormCard";
 

@@ -11,15 +11,15 @@ import {
 } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
-import Col from "app/base/components/Col";
-import Form from "app/base/components/Form";
+import { Col } from "@canonical/react-components";
+import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import Loader from "app/base/components/Loader";
-import Notification from "app/base/components/Notification";
-import Row from "app/base/components/Row";
-import Select from "app/base/components/Select";
-import Textarea from "app/base/components/Textarea";
+import { Loader } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
+import { Select } from "@canonical/react-components";
+import { Textarea } from "@canonical/react-components";
 
 const generateOptions = (type, models) =>
   [

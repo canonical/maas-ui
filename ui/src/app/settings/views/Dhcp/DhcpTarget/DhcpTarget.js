@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { useDhcpTarget } from "app/settings/hooks";
-import Link from "app/base/components/Link";
-import Loader from "app/base/components/Loader";
+import { Link } from "@canonical/react-components";
+import { Loader } from "@canonical/react-components";
 
 const generateURL = url => `${process.env.REACT_APP_BASENAME}/${url}`;
 

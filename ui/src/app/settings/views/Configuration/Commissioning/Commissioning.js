@@ -6,9 +6,9 @@ import { general as generalActions } from "app/base/actions";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import Col from "app/base/components/Col";
-import Loader from "app/base/components/Loader";
-import Row from "app/base/components/Row";
+import { Col } from "@canonical/react-components";
+import { Loader } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
 import CommissioningForm from "../CommissioningForm";
 
 const Commissioning = () => {
