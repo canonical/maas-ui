@@ -36,7 +36,6 @@
     "start": "react-scripts start",
     "serve": "react-scripts start",
     "build": "react-scripts build",
-    "docs": "styleguidist server",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "postbuild": "mkdir -p dist && tar -C build -czvf dist/maas-ui-v$npm_package_version.tar.gz .",
     "test": "react-scripts test",
@@ -71,7 +70,6 @@
     "node-sass": "4.13.0",
     "npm-package-json-lint": "4.0.3",
     "prettier": "1.18.2",
-    "react-styleguidist": "10.0.1",
     "redux-mock-store": "1.5.3",
     "redux-saga-test-plan": "4.0.0-rc.3"
   },
