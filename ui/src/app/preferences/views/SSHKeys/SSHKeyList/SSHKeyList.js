@@ -6,9 +6,9 @@ import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import Button from "app/base/components/Button";
-import VanillaLink from "app/base/components/Link";
-import Notification from "app/base/components/Notification";
+import { Button } from "@canonical/react-components";
+import { Link as VanillaLink } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 

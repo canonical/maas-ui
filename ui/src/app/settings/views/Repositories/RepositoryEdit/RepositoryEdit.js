@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { packagerepository as repositoryActions } from "app/base/actions";
 import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { useParams } from "app/base/hooks";
-import Loader from "app/base/components/Loader";
+import { Loader } from "@canonical/react-components";
 import RepositoryForm from "../RepositoryForm";
 
 export const RepositoryEdit = () => {

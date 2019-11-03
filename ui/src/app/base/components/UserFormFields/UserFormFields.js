@@ -6,10 +6,10 @@ import { auth as authSelectors } from "app/base/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
 import { user as userSelectors } from "app/base/selectors";
-import Form from "app/base/components/Form";
+import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import Link from "app/base/components/Link";
+import { Link } from "@canonical/react-components";
 
 const togglePassword = (
   event,

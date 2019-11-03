@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
 
-import Button from "app/base/components/Button";
+import { Button } from "@canonical/react-components";
 
 const CopyButton = ({ value }) => {
   const input = useRef(null);

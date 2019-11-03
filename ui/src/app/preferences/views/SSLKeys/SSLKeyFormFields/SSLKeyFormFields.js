@@ -6,13 +6,13 @@ import "./SSLKeyFormFields.scss";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { formikFormDisabled } from "app/settings/utils";
 import { useFormikErrors } from "app/base/hooks";
-import Col from "app/base/components/Col";
-import Form from "app/base/components/Form";
+import { Col } from "@canonical/react-components";
+import { Form } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
-import Notification from "app/base/components/Notification";
-import Row from "app/base/components/Row";
-import Textarea from "app/base/components/Textarea";
+import { Notification } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
+import { Textarea } from "@canonical/react-components";
 
 export const SSLKeyFormFields = ({ editing, formikProps }) => {
   const saving = useSelector(sslkeySelectors.saving);

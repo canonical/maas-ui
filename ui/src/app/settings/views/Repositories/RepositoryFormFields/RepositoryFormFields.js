@@ -9,11 +9,11 @@ import {
   general as generalSelectors,
   packagerepository as repositorySelectors
 } from "app/base/selectors";
-import Col from "app/base/components/Col";
+import { Col } from "@canonical/react-components";
 import FormikField from "app/base/components/FormikField";
-import List from "app/base/components/List";
-import Row from "app/base/components/Row";
-import Textarea from "app/base/components/Textarea";
+import { List } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
+import { Textarea } from "@canonical/react-components";
 
 const generateCheckboxGroup = (key, fields, formikProps) => {
   const { setFieldTouched, setFieldValue, values } = formikProps;

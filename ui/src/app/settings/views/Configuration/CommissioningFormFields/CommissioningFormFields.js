@@ -6,7 +6,7 @@ import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
-import Select from "app/base/components/Select";
+import { Select } from "@canonical/react-components";
 
 const CommissioningFormFields = ({ formikProps }) => {
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);

@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import Button from "app/base/components/Button";
-import Col from "app/base/components/Col";
-import Row from "app/base/components/Row";
+import { Button } from "@canonical/react-components";
+import { Col } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
 
 const TableDeleteConfirm = ({
   message,

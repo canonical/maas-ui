@@ -17,10 +17,10 @@ import { formikFormDisabled } from "app/settings/utils";
 import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import Form from "app/base/components/Form";
+import { Form } from "@canonical/react-components";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import Loader from "app/base/components/Loader";
+import { Loader } from "@canonical/react-components";
 import RepositoryFormFields from "../RepositoryFormFields";
 import { RepositoryShape } from "app/settings/proptypes";
 

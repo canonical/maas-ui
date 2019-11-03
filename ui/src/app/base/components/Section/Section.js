@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import "./Section.scss";
-import Col from "app/base/components/Col";
+import { Col } from "@canonical/react-components";
 import NotificationList from "app/base/components/NotificationList";
-import Strip from "app/base/components/Strip";
+import { Strip } from "@canonical/react-components";
 
 const Section = ({ children, sidebar, title }) => {
   return (

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@canonical/react-components": "0.1.0",
     "@maas-ui/shared": "0.1.0",
     "classnames": "2.2.6",
     "connected-react-router": "6.5.2",

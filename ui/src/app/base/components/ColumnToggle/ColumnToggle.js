@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import "./ColumnToggle.scss";
-import Button from "app/base/components/Button";
+import { Button } from "@canonical/react-components";
 
 const ColumnToggle = ({ isExpanded, label, onClose, onOpen }) => (
   <Button

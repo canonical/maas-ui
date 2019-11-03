@@ -18,7 +18,7 @@ import { useDhcpTarget } from "app/settings/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
-import Loader from "app/base/components/Loader";
+import { Loader } from "@canonical/react-components";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),

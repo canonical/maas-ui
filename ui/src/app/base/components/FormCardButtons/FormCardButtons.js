@@ -2,8 +2,8 @@ import { useRouter } from "app/base/hooks";
 import PropTypes from "prop-types";
 import React from "react";
 
-import ActionButton from "app/base/components/ActionButton";
-import Button from "app/base/components/Button";
+import { ActionButton } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 
 export const FormCardButtons = ({
   actionDisabled,

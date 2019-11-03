@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
-import Select from "app/base/components/Select";
+import { Select } from "@canonical/react-components";
 
 const DnsFormFields = ({ formikProps }) => {
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);

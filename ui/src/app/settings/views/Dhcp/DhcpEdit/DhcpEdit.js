@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useParams } from "app/base/hooks";
 import { dhcpsnippet as dhcpsnippetActions } from "app/base/actions";
 import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
-import Loader from "app/base/components/Loader";
+import { Loader } from "@canonical/react-components";
 import DhcpForm from "../DhcpForm";
 
 export const DhcpEdit = () => {
