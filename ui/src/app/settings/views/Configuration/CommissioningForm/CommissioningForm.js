@@ -36,7 +36,7 @@ const CommissioningForm = () => {
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
-        resetForm(values);
+        resetForm({ values });
       }}
       validationSchema={CommissioningSchema}
       render={formikProps => (

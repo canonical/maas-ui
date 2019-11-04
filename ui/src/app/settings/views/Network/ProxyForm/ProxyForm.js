@@ -93,7 +93,7 @@ const ProxyForm = () => {
               }
 
               dispatch(updateConfig(formattedValues));
-              resetForm(values);
+              resetForm({ values });
             }}
             validationSchema={ProxySchema}
             render={formikProps => (

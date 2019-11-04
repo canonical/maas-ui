@@ -50,7 +50,7 @@ const SyslogForm = () => {
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
-              resetForm(values);
+              resetForm({ values });
             }}
             validationSchema={SyslogSchema}
             render={formikProps => (

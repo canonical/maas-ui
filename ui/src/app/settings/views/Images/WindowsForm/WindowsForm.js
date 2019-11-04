@@ -29,7 +29,7 @@ const WindowsForm = () => {
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
-        resetForm(values);
+        resetForm({ values });
       }}
       validationSchema={WindowsSchema}
       render={formikProps => (

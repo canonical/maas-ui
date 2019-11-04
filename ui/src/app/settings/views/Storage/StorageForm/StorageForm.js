@@ -61,7 +61,7 @@ const StorageForm = () => {
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
-              resetForm(values);
+              resetForm({ values });
             }}
             validationSchema={StorageSchema}
             render={formikProps => (
