@@ -18,18 +18,16 @@ const NetworkDiscoveryFormFields = ({ formikProps }) => {
   return (
     <>
       <FormikField
-        formikProps={formikProps}
         component={Select}
         options={networkDiscoveryOptions}
-        fieldKey="network_discovery"
+        name="network_discovery"
         label="Network discovery"
         help="When enabled, MAAS will use passive techniques (such as listening to ARP requests and mDNS advertisements) to observe networks attached to rack controllers. Active subnet mapping will also be available to be enabled on the configured subnets."
       />
       <FormikField
-        formikProps={formikProps}
         component={Select}
         options={discoveryIntervalOptions}
-        fieldKey="active_discovery_interval"
+        name="active_discovery_interval"
         label="Active subnet mapping interval"
         help="When enabled, each rack will scan subnets enabled for active mapping. This helps ensure discovery information is accurate and complete."
       />

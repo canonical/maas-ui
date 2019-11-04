@@ -26,7 +26,7 @@ describe("FormikField", () => {
     const wrapper = shallow(
       <FormikField
         formikProps={formikProps}
-        fieldKey="username"
+        name="username"
         help="Required."
         id="username"
         label="Username"
@@ -42,7 +42,7 @@ describe("FormikField", () => {
       <FormikField
         component={Textarea}
         formikProps={formikProps}
-        fieldKey="username"
+        name="username"
       />
     );
     expect(wrapper.type()).toEqual(Textarea);
@@ -55,7 +55,7 @@ describe("FormikField", () => {
       <FormikField
         component={Textarea}
         formikProps={formikProps}
-        fieldKey="username"
+        name="username"
       />
     );
     expect(wrapper.prop("error")).toEqual("Username already exists");
@@ -75,7 +75,7 @@ describe("FormikField", () => {
       <FormikField
         component={Textarea}
         formikProps={formikProps}
-        fieldKey="username"
+        name="username"
         value="admin"
       />
     );
@@ -96,7 +96,7 @@ describe("FormikField", () => {
       <FormikField
         component={Textarea}
         formikProps={formikProps}
-        fieldKey="username"
+        name="username"
         value="koala"
       />
     );

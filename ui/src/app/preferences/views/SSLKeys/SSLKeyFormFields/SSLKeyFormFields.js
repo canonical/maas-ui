@@ -36,8 +36,7 @@ export const SSLKeyFormFields = ({ editing, formikProps }) => {
             <FormikField
               className="ssl-key-form-fields__key"
               component={Textarea}
-              formikProps={formikProps}
-              fieldKey="key"
+              name="key"
               label="SSL key"
               autoComplete="off"
               autoCorrect="off"

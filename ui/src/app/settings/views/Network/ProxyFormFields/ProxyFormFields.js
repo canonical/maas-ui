@@ -14,24 +14,21 @@ const ProxyFormFields = ({ formikProps }) => {
         for APT and YUM packages.
       </label>
       <FormikField
-        formikProps={formikProps}
-        fieldKey="proxyType"
+        name="proxyType"
         value="noProxy"
         label="Don't use a proxy"
         type="radio"
         checked={values.proxyType === "noProxy"}
       />
       <FormikField
-        formikProps={formikProps}
-        fieldKey="proxyType"
+        name="proxyType"
         value="builtInProxy"
         label="MAAS built-in"
         type="radio"
         checked={values.proxyType === "builtInProxy"}
       />
       <FormikField
-        formikProps={formikProps}
-        fieldKey="proxyType"
+        name="proxyType"
         value="externalProxy"
         label="External"
         type="radio"
@@ -39,16 +36,14 @@ const ProxyFormFields = ({ formikProps }) => {
       />
       {values.proxyType === "externalProxy" && (
         <FormikField
-          formikProps={formikProps}
-          fieldKey="httpProxy"
+          name="httpProxy"
           help="Enter the external proxy URL MAAS will use to download images and machines to download APT packages."
           type="text"
           required={true}
         />
       )}
       <FormikField
-        formikProps={formikProps}
-        fieldKey="proxyType"
+        name="proxyType"
         value="peerProxy"
         label="Peer"
         type="radio"
@@ -56,8 +51,7 @@ const ProxyFormFields = ({ formikProps }) => {
       />
       {values.proxyType === "peerProxy" && (
         <FormikField
-          formikProps={formikProps}
-          fieldKey="httpProxy"
+          name="httpProxy"
           help="Enter the external proxy URL that the MAAS built-in proxy will use as an upstream cache peer. Machines will be configured to use MAAS' built-in proxy to download APT packages."
           type="text"
           required={true}

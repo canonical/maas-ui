@@ -8,9 +8,8 @@ const ThirdPartyFormFields = ({ formikProps }) => (
   <FormikField
     label="Enable the installation of proprietary drivers (i.e. HPVSA)"
     type="checkbox"
-    fieldKey="enable_third_party_drivers"
+    name="enable_third_party_drivers"
     checked={formikProps.values.enable_third_party_drivers}
-    formikProps={formikProps}
   />
 );
 

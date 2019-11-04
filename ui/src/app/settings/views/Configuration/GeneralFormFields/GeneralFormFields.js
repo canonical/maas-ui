@@ -5,23 +5,18 @@ import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
 const GeneralFormFields = ({ formikProps }) => {
-  const { values } = formikProps;
-
   return (
     <>
       <FormikField
         label="MAAS name"
         type="text"
-        fieldKey="maas_name"
+        name="maas_name"
         required={true}
-        formikProps={formikProps}
       />
       <FormikField
         label="Enable Google Analytics in MAAS UI to shape improvements in user experience"
         type="checkbox"
-        fieldKey="enable_analytics"
-        checked={values.enable_analytics}
-        formikProps={formikProps}
+        name="enable_analytics"
       />
     </>
   );

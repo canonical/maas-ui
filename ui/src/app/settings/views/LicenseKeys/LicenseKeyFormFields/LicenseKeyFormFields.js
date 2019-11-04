@@ -42,9 +42,8 @@ export const LicenseKeyFormFields = ({
       <Form onSubmit={formikProps.handleSubmit}>
         <>
           <FormikField
-            formikProps={formikProps}
             component={Select}
-            fieldKey="osystem"
+            name="osystem"
             label="Operating System"
             required={true}
             options={osystems.map(osystem => {
@@ -61,9 +60,8 @@ export const LicenseKeyFormFields = ({
             }}
           />
           <FormikField
-            formikProps={formikProps}
             component={Select}
-            fieldKey="distro_series"
+            name="distro_series"
             label="Release"
             required={true}
             options={distroSeriesOptions}
@@ -73,8 +71,7 @@ export const LicenseKeyFormFields = ({
             }}
           />
           <FormikField
-            formikProps={formikProps}
-            fieldKey="license_key"
+            name="license_key"
             label="License key"
             type="text"
             required={true}

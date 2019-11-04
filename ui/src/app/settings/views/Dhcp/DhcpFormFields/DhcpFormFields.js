@@ -93,30 +93,22 @@ export const DhcpFormFields = ({ editing, formikProps }) => {
         <Row>
           <Col size="4">
             <FormikField
-              formikProps={formikProps}
-              fieldKey="name"
+              name="name"
               label="Snippet name"
               required={true}
               type="text"
             />
-            <FormikField
-              formikProps={formikProps}
-              fieldKey="enabled"
-              label="Enabled"
-              type="checkbox"
-            />
+            <FormikField name="enabled" label="Enabled" type="checkbox" />
             <FormikField
               component={Textarea}
-              formikProps={formikProps}
-              fieldKey="description"
+              name="description"
               label="Description"
             />
           </Col>
           <Col size="4">
             <FormikField
               component={Select}
-              formikProps={formikProps}
-              fieldKey="type"
+              name="type"
               label="Type"
               onChange={e => {
                 formikProps.handleChange(e);
@@ -137,8 +129,7 @@ export const DhcpFormFields = ({ editing, formikProps }) => {
               ) : (
                 <FormikField
                   component={Select}
-                  formikProps={formikProps}
-                  fieldKey="entity"
+                  name="entity"
                   label="Applies to"
                   options={generateOptions(type, models)}
                 />
@@ -147,8 +138,7 @@ export const DhcpFormFields = ({ editing, formikProps }) => {
         </Row>
         <FormikField
           component={Textarea}
-          formikProps={formikProps}
-          fieldKey="value"
+          name="value"
           grow
           label="DHCP snippet"
           placeholder="Custom DHCP snippet"

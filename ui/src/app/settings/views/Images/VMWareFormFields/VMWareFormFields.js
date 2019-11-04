@@ -9,30 +9,26 @@ const VMWareFormFields = ({ formikProps }) => (
     <FormikField
       label="VMware vCenter server FQDN or IP address"
       type="text"
-      fieldKey="vcenter_server"
+      name="vcenter_server"
       help="VMware vCenter server FQDN or IP address which is passed to a deployed VMware ESXi host."
-      formikProps={formikProps}
     />
     <FormikField
       label="VMware vCenter username"
       type="text"
-      fieldKey="vcenter_username"
+      name="vcenter_username"
       help="VMware vCenter server username which is passed to a deployed VMware ESXi host."
-      formikProps={formikProps}
     />
     <FormikField
       label="VMware vCenter password"
       type="text"
-      fieldKey="vcenter_password"
+      name="vcenter_password"
       help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
-      formikProps={formikProps}
     />
     <FormikField
       label="VMware vCenter datacenter"
       type="text"
-      fieldKey="vcenter_datacenter"
+      name="vcenter_datacenter"
       help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
-      formikProps={formikProps}
     />
   </>
 );

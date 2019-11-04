@@ -46,30 +46,22 @@ export const UserFormFields = ({
   return (
     <Form onSubmit={formikProps.handleSubmit}>
       <FormikField
-        formikProps={formikProps}
-        fieldKey="username"
+        name="username"
         help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         label="Username"
         required={true}
         type="text"
       />
+      <FormikField name="fullName" label="Full name (optional)" type="text" />
       <FormikField
-        formikProps={formikProps}
-        fieldKey="fullName"
-        label="Full name (optional)"
-        type="text"
-      />
-      <FormikField
-        formikProps={formikProps}
-        fieldKey="email"
+        name="email"
         label="Email address"
         required={true}
         type="email"
       />
       {includeUserType && (
         <FormikField
-          formikProps={formikProps}
-          fieldKey="isSuperuser"
+          name="isSuperuser"
           label="MAAS administrator"
           type="checkbox"
         />
@@ -92,23 +84,20 @@ export const UserFormFields = ({
         <>
           {includeCurrentPassword && (
             <FormikField
-              formikProps={formikProps}
-              fieldKey="old_password"
+              name="old_password"
               label="Current password"
               required={true}
               type="password"
             />
           )}
           <FormikField
-            formikProps={formikProps}
-            fieldKey="password"
+            name="password"
             label={includeCurrentPassword ? "New password" : "Password"}
             required={true}
             type="password"
           />
           <FormikField
-            formikProps={formikProps}
-            fieldKey="passwordConfirm"
+            name="passwordConfirm"
             help="Enter the same password as before, for verification"
             label={
               includeCurrentPassword

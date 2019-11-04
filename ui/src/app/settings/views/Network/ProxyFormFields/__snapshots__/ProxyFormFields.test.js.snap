@@ -7,7 +7,7 @@ exports[`ProxyFormFields can render 1`] = `
   </label>
   <FormikField
     checked={false}
-    fieldKey="proxyType"
+    name="proxyType"
     formikProps={
       Object {
         "errors": Object {},
@@ -24,7 +24,7 @@ exports[`ProxyFormFields can render 1`] = `
   />
   <FormikField
     checked={false}
-    fieldKey="proxyType"
+    name="proxyType"
     formikProps={
       Object {
         "errors": Object {},
@@ -41,7 +41,7 @@ exports[`ProxyFormFields can render 1`] = `
   />
   <FormikField
     checked={false}
-    fieldKey="proxyType"
+    name="proxyType"
     formikProps={
       Object {
         "errors": Object {},
@@ -58,7 +58,7 @@ exports[`ProxyFormFields can render 1`] = `
   />
   <FormikField
     checked={false}
-    fieldKey="proxyType"
+    name="proxyType"
     formikProps={
       Object {
         "errors": Object {},
