@@ -20,8 +20,7 @@ const StorageFormFields = ({ formikProps }) => {
         component={Select}
         options={storageLayoutOptions}
         help="Storage layout that is applied to a node when it is commissioned."
-        fieldKey="default_storage_layout"
-        formikProps={formikProps}
+        name="default_storage_layout"
       />
       {values.default_storage_layout === "blank" && (
         <p className="p-form-validation__message">
@@ -44,24 +43,21 @@ const StorageFormFields = ({ formikProps }) => {
         type="checkbox"
         checked={values.enable_disk_erasing_on_release}
         help="Forces users to always erase disks when releasing."
-        fieldKey="enable_disk_erasing_on_release"
-        formikProps={formikProps}
+        name="enable_disk_erasing_on_release"
       />
       <FormikField
         label="Use secure erase by default when erasing disks"
         type="checkbox"
         checked={values.disk_erase_with_secure_erase}
         help="Will only be used on devices that support secure erase. Other devices will fall back to full wipe or quick erase depending on the selected options."
-        fieldKey="disk_erase_with_secure_erase"
-        formikProps={formikProps}
+        name="disk_erase_with_secure_erase"
       />
       <FormikField
         label="Use quick erase by default when erasing disks"
         type="checkbox"
         checked={values.disk_erase_with_quick_erase}
         help="This is not a secure erase; it wipes only the beginning and end of each disk."
-        fieldKey="disk_erase_with_quick_erase"
-        formikProps={formikProps}
+        name="disk_erase_with_quick_erase"
       />
     </>
   );

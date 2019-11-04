@@ -45,8 +45,7 @@ export const SSHKeyFormFields = ({ editing, formikProps }) => {
           <Col size="4">
             <FormikField
               component={Select}
-              formikProps={formikProps}
-              fieldKey="protocol"
+              name="protocol"
               label="Source"
               options={[
                 { value: "", label: "Select source" },
@@ -57,8 +56,7 @@ export const SSHKeyFormFields = ({ editing, formikProps }) => {
             />
             {protocol && !uploadSelected && (
               <FormikField
-                formikProps={formikProps}
-                fieldKey="auth_id"
+                name="auth_id"
                 label={protocol === "lp" ? "Launchpad ID" : "GitHub username"}
                 required={true}
                 type="text"
@@ -67,8 +65,7 @@ export const SSHKeyFormFields = ({ editing, formikProps }) => {
             {uploadSelected && (
               <FormikField
                 component={Textarea}
-                formikProps={formikProps}
-                fieldKey="key"
+                name="key"
                 help="Usually at ~/.ssh/id_rsa.pub, ~/.ssh/id_dsa.pub, or ~/.ssh/id_ecdsa.pub"
                 label={
                   <>

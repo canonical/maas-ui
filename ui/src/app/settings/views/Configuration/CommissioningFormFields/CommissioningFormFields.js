@@ -28,8 +28,7 @@ const CommissioningFormFields = ({ formikProps }) => {
         label="Default Ubuntu release used for commissioning"
         component={Select}
         options={distroSeriesOptions}
-        fieldKey="commissioning_distro_series"
-        formikProps={formikProps}
+        name="commissioning_distro_series"
         onChange={e => {
           const kernelValue =
             allUbuntuKernelOptions[e.target.value] &&
@@ -50,8 +49,7 @@ const CommissioningFormFields = ({ formikProps }) => {
         component={Select}
         options={ubuntuKernelOptions}
         help="The default minimum kernel version used on all new and commissioned nodes"
-        fieldKey="default_min_hwe_kernel"
-        formikProps={formikProps}
+        name="default_min_hwe_kernel"
       />
     </>
   );

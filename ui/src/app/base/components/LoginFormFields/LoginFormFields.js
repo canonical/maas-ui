@@ -18,15 +18,13 @@ export const LoginFormFields = ({ formikProps }) => {
   return (
     <Form onSubmit={formikProps.handleSubmit}>
       <FormikField
-        formikProps={formikProps}
-        fieldKey="username"
+        name="username"
         label="Username"
         required={true}
         type="text"
       />
       <FormikField
-        formikProps={formikProps}
-        fieldKey="password"
+        name="password"
         label="Password"
         required={true}
         type="password"

@@ -50,7 +50,7 @@ export const usePrevious = value => {
  * @param {Object} formikProps - Entire formik props object.
  */
 export const useFormikErrors = (errors, formikProps) => {
-  const { setStatus, values } = formikProps;
+  const { setFieldError, values } = formikProps;
   const previousErrors = usePrevious(errors);
   useEffect(() => {
     // Only run this effect if the errors have changed.
@@ -59,15 +59,11 @@ export const useFormikErrors = (errors, formikProps) => {
       typeof errors === "object" &&
       !simpleObjectEquality(errors, previousErrors)
     ) {
-      const formikErrors = {};
-      const invalidValues = {};
       Object.keys(errors).forEach(field => {
-        formikErrors[field] = errors[field].join(" ");
-        invalidValues[field] = values[field];
+        setFieldError(field, errors[field].join(" "));
       });
-      setStatus({ serverErrors: formikErrors, invalidValues });
     }
-  }, [errors, previousErrors, setStatus, values]);
+  }, [errors, previousErrors, setFieldError, values]);
 };
 
 /**

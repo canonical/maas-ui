@@ -21,10 +21,9 @@ const generateCheckboxGroup = (key, fields, formikProps) => {
       key={field}
       label={field}
       type="checkbox"
-      fieldKey={key}
+      name={key}
       value={field}
       checked={values[key].includes(field)}
-      formikProps={formikProps}
       onChange={() => {
         let newFields = [];
         if (values[key].includes(field)) {
@@ -62,16 +61,14 @@ const RepositoryFormFields = ({ formikProps, type }) => {
         <FormikField
           label="Name"
           type="text"
-          fieldKey="name"
-          formikProps={formikProps}
+          name="name"
           disabled={values.default}
           required
         />
         <FormikField
           label="URL"
           type="text"
-          fieldKey="url"
-          formikProps={formikProps}
+          name="url"
           disabled={values.default}
           required
         />
@@ -81,18 +78,16 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               wrapperClassName="u-no-margin--bottom"
               label="Enable repository"
               type="checkbox"
-              fieldKey="enabled"
+              name="enabled"
               checked={values.enabled}
-              formikProps={formikProps}
               disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"
               label="Enable sources"
               type="checkbox"
-              fieldKey="disable_sources"
+              name="disable_sources"
               checked={!values.disable_sources}
-              formikProps={formikProps}
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}
@@ -103,8 +98,7 @@ const RepositoryFormFields = ({ formikProps, type }) => {
         <FormikField
           label="Key"
           component={Textarea}
-          fieldKey="key"
-          formikProps={formikProps}
+          name="key"
           style={{ height: "10rem", maxWidth: "100%" }}
         />
         {type === "repository" && !values.default && (
@@ -112,15 +106,9 @@ const RepositoryFormFields = ({ formikProps, type }) => {
             <FormikField
               label="Distributions"
               type="text"
-              fieldKey="distributions"
-              formikProps={formikProps}
+              name="distributions"
             />
-            <FormikField
-              label="Components"
-              type="text"
-              fieldKey="components"
-              formikProps={formikProps}
-            />
+            <FormikField label="Components" type="text" name="components" />
           </>
         )}
       </Col>
@@ -131,18 +119,16 @@ const RepositoryFormFields = ({ formikProps, type }) => {
               wrapperClassName="u-no-margin--bottom"
               label="Enable repository"
               type="checkbox"
-              fieldKey="enabled"
+              name="enabled"
               checked={values.enabled}
-              formikProps={formikProps}
               disabled={values.default}
             />,
             <FormikField
               wrapperClassName="u-no-margin--bottom"
               label="Enable sources"
               type="checkbox"
-              fieldKey="disable_sources"
+              name="disable_sources"
               checked={!values.disable_sources}
-              formikProps={formikProps}
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}

@@ -10,8 +10,7 @@ const KernelParametersFormFields = ({ formikProps }) => {
       <FormikField
         label="Boot parameters to pass to the kernel by default"
         type="text"
-        fieldKey="kernel_opts"
-        formikProps={formikProps}
+        name="kernel_opts"
       />
     </>
   );

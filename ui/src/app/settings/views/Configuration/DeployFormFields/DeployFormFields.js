@@ -28,8 +28,7 @@ const DeployFormFields = ({ formikProps }) => {
         label="Default operating system used for deployment"
         component={Select}
         options={defaultOSystemOptions}
-        fieldKey="default_osystem"
-        formikProps={formikProps}
+        name="default_osystem"
         onChange={e => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("default_osystem", true, true);
@@ -44,8 +43,7 @@ const DeployFormFields = ({ formikProps }) => {
         label="Default OS release used for deployment"
         component={Select}
         options={distroSeriesOptions}
-        fieldKey="default_distro_series"
-        formikProps={formikProps}
+        name="default_distro_series"
       />
     </>
   );
