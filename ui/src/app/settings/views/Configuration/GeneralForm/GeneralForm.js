@@ -32,7 +32,7 @@ const GeneralForm = () => {
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
-        resetForm(values);
+        resetForm({ values });
       }}
       validationSchema={GeneralSchema}
       render={formikProps => (

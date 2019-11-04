@@ -31,7 +31,7 @@ const ThirdPartyDriversForm = () => {
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
-        resetForm(values);
+        resetForm({ values });
       }}
       validationSchema={ThirdPartyDriversSchema}
       render={formikProps => (

@@ -53,7 +53,7 @@ const NtpForm = () => {
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
-              resetForm(values);
+              resetForm({ values });
             }}
             validationSchema={NtpSchema}
             render={formikProps => (
