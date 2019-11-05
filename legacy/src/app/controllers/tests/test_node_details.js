@@ -1875,14 +1875,6 @@ describe("NodeDetailsController", function() {
       expect($scope.summary.editing).toBe(false);
     });
 
-    it("doesnt set editing to false if invalid architecture", function() {
-      makeController();
-      $scope.node = node;
-      $scope.summary.editing = true;
-      $scope.cancelEditSummary();
-      expect($scope.summary.editing).toBe(true);
-    });
-
     it("does set editing to true if device", function() {
       makeController();
       $scope.isDevice = true;
@@ -2414,31 +2406,42 @@ describe("NodeDetailsController", function() {
   });
 
   describe("getCPUSubtext", () => {
+    function pluraliseCoresText(count) {
+      if (!count || count < 1) {
+        return "Unknown";
+      }
+
+      if (count === 1) {
+        return `${count} core`;
+      }
+
+      return `${count} cores`;
+    }
+
     it("returns only cores when unknown speed", () => {
       makeController();
       $scope.node = node;
-      $scope.node.cpu_count = 2;
-      expect($scope.getCPUSubtext()).toEqual("2 cores");
+      expect($scope.getCPUSubtext()).toEqual(
+        pluraliseCoresText(node.cpu_count)
+      );
     });
 
     it("returns speed in mhz", () => {
       makeController();
       $scope.node = node;
-      $scope.node.cpu_count = 10;
-      $scope.node.cpu_speed = 100;
-      expect($scope.getCPUSubtext()).toEqual("10 cores, 100 MHz");
-      $scope.node.cpu_speed = 999;
-      expect($scope.getCPUSubtext()).toEqual("10 cores, 999 MHz");
+      $scope.node.cpu_speed = makeInteger(100, 999);
+      expect($scope.getCPUSubtext()).toEqual(
+        `${pluraliseCoresText(node.cpu_count)}, ${node.cpu_speed} MHz`
+      );
     });
 
     it("returns speed in ghz", () => {
       makeController();
       $scope.node = node;
-      $scope.node.cpu_count = 1;
-      $scope.node.cpu_speed = 1000;
-      expect($scope.getCPUSubtext()).toEqual("1 core, 1 GHz");
-      $scope.node.cpu_speed = 10000;
-      expect($scope.getCPUSubtext()).toEqual("1 core, 10 GHz");
+      $scope.node.cpu_speed = makeInteger(1000, 10000);
+      expect($scope.getCPUSubtext()).toEqual(
+        `${pluraliseCoresText(node.cpu_count)}, ${node.cpu_speed / 1000} GHz`
+      );
     });
   });
 
@@ -2666,12 +2669,12 @@ describe("NodeDetailsController", function() {
     });
   });
 
-  describe("validateNetworkConfiguration", () => {
+  describe("openTestDropdown", () => {
     it("broadcasts validate event with test action", () => {
       makeController();
       spyOn($rootScope, "$broadcast");
       $scope.action.availableOptions = [{ name: "test" }];
-      $scope.validateNetworkConfiguration();
+      $scope.openTestDropdown();
       expect($rootScope.$broadcast).toHaveBeenCalledWith(
         "validate",
         {
@@ -2681,37 +2684,85 @@ describe("NodeDetailsController", function() {
       );
     });
 
-    it("adds network tests to testSelection", () => {
+    it(`adds network tests to testSelection if type is
+      'validateNetwork'`, () => {
       makeController();
       $scope.testSelection = [];
       $scope.scripts = [
         {
           apply_configured_networking: false,
-          hardware_type: 4,
           name: "smartctl-validate"
         },
         {
           apply_configured_networking: true,
-          hardware_type: 4,
           name: "internet-connectivity"
         },
         {
           apply_configured_networking: true,
-          hardware_type: 4,
           name: "gateway-connectivity"
         }
       ];
-      $scope.validateNetworkConfiguration();
+      $scope.openTestDropdown("validateNetwork");
       expect($scope.testSelection).toEqual([
         {
           apply_configured_networking: true,
-          hardware_type: 4,
           name: "internet-connectivity"
         },
         {
           apply_configured_networking: true,
-          hardware_type: 4,
           name: "gateway-connectivity"
+        }
+      ]);
+    });
+
+    it(`adds hardware tests to testSelection if type is
+      a hardware type`, () => {
+      makeController();
+      $scope.testSelection = [];
+      $scope.scripts = [
+        {
+          hardware_type: 1,
+          name: "cpu-test"
+        },
+        {
+          hardware_type: 2,
+          name: "memory-test"
+        },
+        {
+          hardware_type: 3,
+          name: "storage-test"
+        },
+        {
+          hardware_type: 4,
+          name: "network-test"
+        }
+      ];
+      $scope.openTestDropdown("cpu");
+      expect($scope.testSelection).toEqual([
+        {
+          hardware_type: 1,
+          name: "cpu-test"
+        }
+      ]);
+      $scope.openTestDropdown("memory");
+      expect($scope.testSelection).toEqual([
+        {
+          hardware_type: 2,
+          name: "memory-test"
+        }
+      ]);
+      $scope.openTestDropdown("storage");
+      expect($scope.testSelection).toEqual([
+        {
+          hardware_type: 3,
+          name: "storage-test"
+        }
+      ]);
+      $scope.openTestDropdown("network");
+      expect($scope.testSelection).toEqual([
+        {
+          hardware_type: 4,
+          name: "network-test"
         }
       ]);
     });
@@ -2721,19 +2772,17 @@ describe("NodeDetailsController", function() {
       $scope.testSelection = [];
       $scope.scripts = [
         {
-          apply_configured_networking: true,
           hardware_type: 4,
           name: "internet-connectivity"
         },
         {
-          apply_configured_networking: true,
           hardware_type: 4,
           name: "gateway-connectivity"
         }
       ];
       // Call twice to make sure deduped
-      $scope.validateNetworkConfiguration();
-      $scope.validateNetworkConfiguration();
+      $scope.openTestDropdown("network");
+      $scope.openTestDropdown("network");
       expect($scope.testSelection.length).toBe(2);
     });
   });

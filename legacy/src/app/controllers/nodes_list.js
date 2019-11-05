@@ -137,7 +137,9 @@ function NodesListController(
     "pod",
     "subnets",
     "fabrics",
-    "zone"
+    "zone",
+    "numa_nodes_count",
+    "sriov_support"
   ];
 
   // Pools tab.
@@ -525,12 +527,18 @@ function NodesListController(
     $scope.tabs.machines.testSelection.forEach(test => {
       const params = test.parameters;
       for (let key in params) {
-        if (
-          params[key].type === "url" &&
-          !disableButton &&
-          !params[key].value
-        ) {
+        const isTypeOfUrl = params[key].type === "url";
+
+        if (isTypeOfUrl && !disableButton && !params[key].value) {
           disableButton = true;
+          return;
+        }
+
+        if (isTypeOfUrl && params[key].value) {
+          disableButton = !$scope.nodesManager.urlValuesValid(
+            params[key].value
+          );
+          return;
         }
       }
     });

@@ -4,7 +4,7 @@
  * MAAS Node Details Controller
  */
 
-import { NodeTypes } from "../enum";
+import { HardwareType, NodeTypes } from "../enum";
 
 /* @ngInject */
 function NodeDetailsController(
@@ -194,12 +194,18 @@ function NodeDetailsController(
     $scope.testSelection.forEach(test => {
       const params = test.parameters;
       for (let key in params) {
-        if (
-          params[key].type === "url" &&
-          !disableButton &&
-          !params[key].value
-        ) {
+        const isTypeOfUrl = params[key].type === "url";
+
+        if (isTypeOfUrl && !disableButton && !params[key].value) {
           disableButton = true;
+          return;
+        }
+
+        if (isTypeOfUrl && params[key].value) {
+          disableButton = !$scope.nodesManager.urlValuesValid(
+            params[key].value
+          );
+          return;
         }
       }
     });
@@ -1140,21 +1146,22 @@ function NodeDetailsController(
   };
 
   // Called to enter edit mode in the summary section.
-  $scope.editSummary = function() {
+  $scope.editSummary = () => {
     if (!$scope.canEdit()) {
       return;
     }
     $scope.summary.editing = true;
   };
 
+  // Shortcut to open configuration tab and have editing ready
+  $scope.openEditConfig = () => {
+    $scope.openSection("configuration");
+    $scope.editSummary();
+  };
+
   // Called to cancel editing in the summary section.
-  $scope.cancelEditSummary = function() {
-    // Leave edit mode only if node has valid architecture.
-    if ($scope.isDevice || $scope.isController) {
-      $scope.summary.editing = false;
-    } else if (!$scope.hasInvalidArchitecture()) {
-      $scope.summary.editing = false;
-    }
+  $scope.cancelEditSummary = () => {
+    $scope.summary.editing = false;
   };
 
   // Called to save the changes made in the summary section.
@@ -1418,7 +1425,7 @@ function NodeDetailsController(
     }
     if (node.cpu_speed) {
       const speedText =
-        node.cpu_speed >= 1000
+        node.cpu_speed > 1000
           ? `${node.cpu_speed / 1000} GHz`
           : `${node.cpu_speed} MHz`;
       text += `, ${speedText}`;
@@ -1500,13 +1507,19 @@ function NodeDetailsController(
   });
 
   // Event has to be broadcast from here so cta directive can listen for it
-  $scope.validateNetworkConfiguration = () => {
+  $scope.openTestDropdown = type => {
     const testAction = $scope.action.availableOptions.find(action => {
       return action.name === "test";
     });
-    $scope.testSelection = $scope.scripts.filter(script => {
-      return script.apply_configured_networking;
-    });
+    if (type === "validateNetwork") {
+      $scope.testSelection = $scope.scripts.filter(
+        script => script.apply_configured_networking
+      );
+    } else if (type) {
+      $scope.testSelection = $scope.scripts.filter(
+        script => script.hardware_type === HardwareType[type.toUpperCase()]
+      );
+    }
     $scope.$broadcast("validate", testAction, $scope.testSelection);
   };
 

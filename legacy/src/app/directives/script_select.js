@@ -8,8 +8,9 @@ import addScriptsTmpl from "../partials/add-scripts.html";
 
 function filterScriptsByParam(scripts, param) {
   return scripts.filter(script => {
-    const hasParam = Object.values(script.parameters).filter(value => {
-      return value.type === param;
+    const hasParam = Object.keys(script.parameters).filter(key => {
+      script.paramName = key;
+      return script.parameters[key].type === param;
     });
     return hasParam.length > 0;
   });

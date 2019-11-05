@@ -358,20 +358,15 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
     });
   };
 
-  NodesManager.prototype.isModernUbuntu = function(osSelection) {
-    if (!osSelection) {
-      return false;
+  NodesManager.prototype.canBeKvmHost = function(osSelection) {
+    if (
+      osSelection &&
+      osSelection.osystem === "ubuntu" &&
+      !KVMDeployOSBlacklist.includes(osSelection.release)
+    ) {
+      return true;
     }
-
-    if (osSelection.osystem !== "ubuntu") {
-      return false;
-    }
-
-    if (KVMDeployOSBlacklist.includes(osSelection.release)) {
-      return false;
-    }
-
-    return true;
+    return false;
   };
 
   NodesManager.prototype.suppressTests = function(node, scripts) {
@@ -401,6 +396,18 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
         system_ids: nodes.map(node => node.system_id)
       }
     ).then(results => results, error => error);
+  };
+
+  NodesManager.prototype.urlValuesValid = value => {
+    const values = value.split(",");
+    const validUrls = [];
+    const urlRegexp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
+    values.forEach(v => {
+      if (v.match(urlRegexp)) {
+        validUrls.push(v);
+      }
+    });
+    return validUrls.length === values.length;
   };
 
   return NodesManager;

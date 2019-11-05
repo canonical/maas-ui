@@ -14,6 +14,7 @@ function DashboardController(
   MachinesManager,
   DevicesManager,
   SubnetsManager,
+  FabricsManager,
   VLANsManager,
   ConfigsManager,
   ManagerHelperService,
@@ -26,6 +27,7 @@ function DashboardController(
     ["dynamic", "Dynamic"],
     ["external", "External"]
   ];
+  let notificationId = 0;
 
   // Set title and page.
   $rootScope.title = "Dashboard";
@@ -33,12 +35,16 @@ function DashboardController(
 
   // Set initial values.
   $scope.loaded = false;
+  $scope.currentTab = "discoveries";
   $scope.discoveredDevices = DiscoveriesManager.getItems();
   $scope.domains = DomainsManager.getItems();
   $scope.machines = MachinesManager.getItems();
   $scope.devices = DevicesManager.getItems();
+  $scope.subnets = SubnetsManager.getItems();
   $scope.configManager = ConfigsManager;
+  $scope.subnetsManager = SubnetsManager;
   $scope.networkDiscovery = null;
+  $scope.activeDiscoveryInterval = null;
   $scope.column = "mac";
   $scope.selectedDevice = null;
   $scope.convertTo = null;
@@ -50,14 +56,16 @@ function DashboardController(
   $scope.actionOption = null;
   $scope.filters = SearchService.getEmptyFilter();
   $scope.metadata = {};
-  $scope.filteredDevices = [];
+  $scope.tempNotifications = [];
+
+  $scope.changeTab = tabName => {
+    $scope.currentTab = tabName;
+  };
 
   $scope.clearSearch = function() {
     $scope.search = "";
     $scope.updateFilters();
   };
-
-  $scope.filteredDevices = [];
 
   $scope.updateFilters = function() {
     var searchQuery = $scope.search;
@@ -315,6 +323,32 @@ function DashboardController(
     }
   };
 
+  $scope.getSubnetFabric = subnet => {
+    const vlan = VLANsManager.getItemFromList(subnet.vlan) || {};
+    const fabricID = vlan.fabric;
+    const fabric = FabricsManager.getItemFromList(fabricID) || {};
+    return fabric;
+  };
+
+  $scope.closeTempNotification = id => {
+    const notifications = $scope.tempNotifications.filter(
+      notification => notification.id !== id
+    );
+    $scope.tempNotifications = notifications;
+  };
+
+  $scope.createSubnetNotification = subnet => {
+    const fabric = $scope.getSubnetFabric(subnet);
+    const status = subnet.active_discovery ? "enabled" : "disabled";
+    const notification = {
+      id: notificationId,
+      text: `Active discovery ${status} on ${subnet.cidr} on ${fabric.name}.`
+    };
+    $scope.tempNotifications.push(notification);
+    notificationId += 1;
+    setTimeout(() => $scope.closeTempNotification(notification.id), 30000);
+  };
+
   // Load all the managers and get the network discovery config item.
   ManagerHelperService.loadManagers($scope, [
     DiscoveriesManager,
@@ -322,6 +356,7 @@ function DashboardController(
     MachinesManager,
     DevicesManager,
     SubnetsManager,
+    FabricsManager,
     VLANsManager,
     ConfigsManager
   ]).then(function() {
@@ -336,6 +371,9 @@ function DashboardController(
 
     $scope.networkDiscovery = ConfigsManager.getItemFromList(
       "network_discovery"
+    );
+    $scope.activeDiscoveryInterval = ConfigsManager.getItemFromList(
+      "active_discovery_interval"
     );
 
     $scope.setMetadata();
