@@ -88,7 +88,7 @@ export const App = () => {
       <Header
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
-        completedIntro={completedIntro && authUser.completed_intro}
+        completedIntro={completedIntro && authUser && authUser.completed_intro}
         enableAnalytics={!debug && analyticsEnabled}
         generateLocalLink={(url, label, linkClass) => (
           <Link className={linkClass} to={url}>
