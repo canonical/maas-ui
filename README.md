@@ -76,7 +76,27 @@ newgrp docker
 
 [Install Docker inside your container](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-[If on a Mac, download the Docker client](https://docs.docker.com/v17.12/docker-for-mac/install/#download-docker-for-mac)
+### macOS
+
+#### VPN Configuration
+
+To connect to a remote MAAS over the VPN, you'll need to configure *nat* on your macOS host:
+
+1. run `ifconfig` and make note of the `utun` interfaces.
+2. For every `utun` interface, add the following line to `/etc/pf.conf` directly after any existing `nat-anchor` or `nat` commands (the order is significant):
+
+```
+nat on utun0 from bridge100:network to any -> (utun0)
+```
+
+3. Run `sudo pfctl -f /etc/pf.conf` to update configuration.
+4. You should be able to `ping karura.internal` from your maas multipass.
+
+Be aware that this may prevent reaching hosts on your internal network. You can of course comment out the `nat` configuration and rerun `sudo pfctl -f /etc/pf.conf` to reset everything.
+
+#### Docker
+
+If running `./run` from your macOS ost, you'll need to [download the Docker client](https://docs.docker.com/v17.12/docker-for-mac/install/#download-docker-for-mac) for macOS.
 
 ### Running
 
