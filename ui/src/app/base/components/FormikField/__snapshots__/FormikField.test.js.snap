@@ -1,14 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FormikField can render 1`] = `
-<Input
+<FormikField
   help="Required."
   id="username"
   label="Username"
   name="username"
-  onBlur={[MockFunction]}
-  onChange={[Function]}
   required={true}
   type="text"
-/>
+>
+  <Input
+    error={null}
+    help="Required."
+    id="username"
+    label="Username"
+    name="username"
+    onBlur={[Function]}
+    onChange={[Function]}
+    required={true}
+    type="text"
+  >
+    <Field
+      error={null}
+      forId="username"
+      help="Required."
+      label="Username"
+      labelFirst={true}
+      required={true}
+    >
+      <div
+        className="p-form__group p-form-validation"
+      >
+        <Label
+          forId="username"
+          required={true}
+        >
+          <label
+            className="p-form__label is-required"
+            htmlFor="username"
+          >
+            Username
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
+        >
+          <input
+            className="p-form-validation__input"
+            id="username"
+            name="username"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="text"
+          />
+          <p
+            className="p-form-help-text"
+          >
+            Required.
+          </p>
+        </div>
+      </div>
+    </Field>
+  </Input>
+</FormikField>
 `;

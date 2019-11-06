@@ -1,20 +1,13 @@
-import {
-  ActionButton,
-  Col,
-  Form,
-  Loader,
-  Row
-} from "@canonical/react-components";
-import { Formik } from "formik";
+import { Col, Loader, Row } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
-import NtpFormFields from "../NtpFormFields";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 
 const NtpSchema = Yup.object().shape({
   ntp_external_only: Yup.boolean().required(),
@@ -46,7 +39,7 @@ const NtpForm = () => {
       <Col size={6}>
         {loading && <Loader text="Loading..." />}
         {loaded && (
-          <Formik
+          <FormikForm
             initialValues={{
               ntp_external_only: ntpExternalOnly,
               ntp_servers: ntpServers
@@ -55,23 +48,23 @@ const NtpForm = () => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
+            saving={saving}
+            saved={saved}
             validationSchema={NtpSchema}
-            render={formikProps => (
-              <Form onSubmit={formikProps.handleSubmit}>
-                <NtpFormFields formikProps={formikProps} />
-                <ActionButton
-                  appearance="positive"
-                  className="u-no-margin--bottom"
-                  type="submit"
-                  disabled={formikFormDisabled(formikProps)}
-                  loading={saving}
-                  success={saved}
-                >
-                  Save
-                </ActionButton>
-              </Form>
-            )}
-          />
+          >
+            <FormikField
+              name="ntp_servers"
+              label="Addresses of NTP servers"
+              help="NTP servers, specified as IP addresses or hostnames delimited by commas and/or spaces, to be used as time references for MAAS itself, the machines MAAS deploys, and devices that make use of MAAS's DHCP services."
+              type="text"
+            />
+            <FormikField
+              name="ntp_external_only"
+              label="Use external NTP servers only"
+              help="Configure all region controller hosts, rack controller hosts, and subsequently deployed machines to refer directly to the configured external NTP servers. Otherwise only region controller hosts will be configured to use those external NTP servers, rack contoller hosts will in turn refer to the regions' NTP servers, and deployed machines will refer to the racks' NTP servers."
+              type="checkbox"
+            />
+          </FormikForm>
         )}
       </Col>
     </Row>

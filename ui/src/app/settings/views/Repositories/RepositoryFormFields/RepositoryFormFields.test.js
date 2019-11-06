@@ -1,41 +1,21 @@
+import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import RepositoryFormFields from "./RepositoryFormFields";
+import RepositoryForm from "../RepositoryForm";
 
 const mockStore = configureStore();
 
 describe("RepositoryFormFields", () => {
-  let baseFormikProps;
   let initialState;
-  let baseValues = {
-    arches: ["i386", "amd64"],
-    components: "",
-    default: false,
-    disable_sources: false,
-    disabled_components: [],
-    disabled_pockets: [],
-    distributions: "",
-    enabled: true,
-    key: "",
-    name: "",
-    url: ""
-  };
 
   beforeEach(() => {
-    baseFormikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      initialValues: { ...baseValues },
-      setStatus: jest.fn(),
-      touched: {},
-      values: { ...baseValues }
-    };
     initialState = {
+      config: {
+        items: []
+      },
       general: {
         componentsToDisable: {
           data: [],
@@ -99,12 +79,19 @@ describe("RepositoryFormFields", () => {
 
   it("displays disitribution and component inputs if type is repository", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].default = false;
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
 
     let wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='distributions']").exists()).toBe(true);
@@ -112,7 +99,14 @@ describe("RepositoryFormFields", () => {
 
     wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="ppa" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="ppa"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='distributions']").exists()).toBe(false);
@@ -122,22 +116,35 @@ describe("RepositoryFormFields", () => {
   it("displays disabled pockets checkboxes if repository is default", () => {
     const state = { ...initialState };
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
+    state.packagerepository.items[0].default = false;
+    state.packagerepository.items[0].disabled_pockets = ["updates"];
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default = false;
-    formikProps.values.disabled_pockets = ["updates"];
 
     let wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='disabled_pockets']").length).toBe(0);
+    state.packagerepository.items[0].default = true;
 
-    formikProps.values.default = true;
     wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='disabled_pockets']").length).toBe(3);
@@ -150,22 +157,35 @@ describe("RepositoryFormFields", () => {
       "universe",
       "multiverse"
     ];
+    state.packagerepository.items[0].default = false;
+    state.packagerepository.items[0].disabled_components = ["universe"];
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default = false;
-    formikProps.values.disabled_components = ["universe"];
 
     let wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='disabled_components']").length).toBe(0);
+    state.packagerepository.items[0].default = true;
 
-    formikProps.values.default = true;
     wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='disabled_components']").length).toBe(3);
@@ -173,13 +193,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository name", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].name = "repo-name";
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.name = "repo-name";
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -188,13 +214,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository url", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].url = "fake.url";
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.url = "fake.url";
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -203,13 +235,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository key", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].key = "fake-key";
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.key = "fake-key";
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -218,13 +256,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository enabled state", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].enabled = false;
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.enabled = false;
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -238,13 +282,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository disable_sources state by displaying the inverse", () => {
     const state = { ...initialState };
+    state.packagerepository.items[0].disable_sources = false;
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.disable_sources = false;
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -259,13 +309,19 @@ describe("RepositoryFormFields", () => {
   it("correctly reflects repository arches", () => {
     const state = { ...initialState };
     state.general.knownArchitectures.data = ["amd64", "i386", "ppc64el"];
+    state.packagerepository.items[0].arches = ["amd64", "ppc64el"];
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.arches = ["amd64", "ppc64el"];
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -278,14 +334,20 @@ describe("RepositoryFormFields", () => {
   it("correctly reflects repository disabled_pockets", () => {
     const state = { ...initialState };
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
+    state.packagerepository.items[0].default = true;
+    state.packagerepository.items[0].disabled_pockets = ["updates"];
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default = true;
-    formikProps.values.disabled_pockets = ["updates"];
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -303,14 +365,20 @@ describe("RepositoryFormFields", () => {
       "universe",
       "multiverse"
     ];
+    state.packagerepository.items[0].default = true;
+    state.packagerepository.items[0].disabled_components = ["universe"];
     const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default = true;
-    formikProps.values.disabled_components = ["universe"];
 
     const wrapper = mount(
       <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm
+            type="repository"
+            repository={state.packagerepository.items[0]}
+          />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -321,21 +389,5 @@ describe("RepositoryFormFields", () => {
     expect(wrapper.find("Input[value='multiverse']").props().checked).toBe(
       false
     );
-  });
-
-  it("can set error status", () => {
-    const state = { ...initialState };
-    state.packagerepository.errors = {
-      name: ["Name already exists"]
-    };
-    const store = mockStore(state);
-    const formikProps = { ...baseFormikProps };
-    mount(
-      <Provider store={store}>
-        <RepositoryFormFields formikProps={formikProps} type="repository" />
-      </Provider>
-    );
-
-    expect(formikProps.setStatus).toHaveBeenCalled();
   });
 });

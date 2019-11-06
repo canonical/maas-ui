@@ -47,7 +47,7 @@ describe("WindowsForm", () => {
     );
     expect(
       wrapper
-        .find("[name='windows_kms_host']")
+        .find("input[name='windows_kms_host']")
         .first()
         .props().value
     ).toBe("127.0.0.1");

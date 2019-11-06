@@ -3,6 +3,7 @@ import { notificationTypes } from "@canonical/react-components";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import { useFormikContext } from "formik";
 
 import { config as configSelectors } from "app/settings/selectors";
 import { messages } from "app/base/actions";
@@ -47,10 +48,9 @@ export const usePrevious = value => {
  * Combines formik validation errors and errors returned from server
  * for use in formik forms.
  * @param {Object} errors - The errors object in redux state.
- * @param {Object} formikProps - Entire formik props object.
  */
-export const useFormikErrors = (errors, formikProps) => {
-  const { setFieldError, values } = formikProps;
+export const useFormikErrors = errors => {
+  const { setFieldError, values } = useFormikContext();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
     // Only run this effect if the errors have changed.
@@ -64,6 +64,24 @@ export const useFormikErrors = (errors, formikProps) => {
       });
     }
   }, [errors, previousErrors, setFieldError, values]);
+};
+
+/**
+ * Returns whether a formik form should be disabled, given the current state
+ * of the form.
+ * @param {Object} formikProps - Props required for formik forms.
+ * @param {Boolean} success - Form is in success state.
+ * @returns {Boolean} Form is disabled.
+ */
+export const useFormikFormDisabled = () => {
+  const { initialValues, errors, values } = useFormikContext();
+  let hasErrors = false;
+
+  if (errors) {
+    hasErrors = Object.keys(errors).length > 0;
+  }
+
+  return simpleObjectEquality(initialValues, values) || hasErrors;
 };
 
 /**

@@ -57,12 +57,9 @@ describe("VMWareForm", () => {
         <VMWareForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='vcenter_server']")
-        .first()
-        .props().value
-    ).toBe("my server");
+    expect(wrapper.find("input[name='vcenter_server']").props().value).toBe(
+      "my server"
+    );
   });
 
   it("sets vcenter_username value", () => {
@@ -74,12 +71,9 @@ describe("VMWareForm", () => {
         <VMWareForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='vcenter_username']")
-        .first()
-        .props().value
-    ).toBe("admin");
+    expect(wrapper.find("input[name='vcenter_username']").props().value).toBe(
+      "admin"
+    );
   });
 
   it("sets vcenter_password value", () => {
@@ -91,12 +85,9 @@ describe("VMWareForm", () => {
         <VMWareForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='vcenter_password']")
-        .first()
-        .props().value
-    ).toBe("passwd");
+    expect(wrapper.find("input[name='vcenter_password']").props().value).toBe(
+      "passwd"
+    );
   });
 
   it("sets vcenter_datacenter value", () => {
@@ -108,11 +99,8 @@ describe("VMWareForm", () => {
         <VMWareForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='vcenter_datacenter']")
-        .first()
-        .props().value
-    ).toBe("my datacenter");
+    expect(wrapper.find("input[name='vcenter_datacenter']").props().value).toBe(
+      "my datacenter"
+    );
   });
 });

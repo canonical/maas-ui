@@ -43,7 +43,7 @@ describe("StorageForm", () => {
     };
   });
 
-  it("dispatches an action to update config on save button click", done => {
+  it("dispatches an action to update config on save button click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -51,29 +51,36 @@ describe("StorageForm", () => {
         <StorageForm />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit(
         {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              { name: "default_storage_layout", value: "bcache" },
-              { name: "disk_erase_with_quick_erase", value: false },
-              { name: "disk_erase_with_secure_erase", value: false },
-              { name: "enable_disk_erasing_on_release", value: false }
-            ]
-          },
-          meta: {
-            model: "config",
-            method: "update"
-          }
+          default_storage_layout: "bcache",
+          disk_erase_with_quick_erase: false,
+          disk_erase_with_secure_erase: false,
+          enable_disk_erasing_on_release: false
+        },
+        { resetForm: jest.fn() }
+      );
+
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_CONFIG",
+        payload: {
+          params: [
+            { name: "default_storage_layout", value: "bcache" },
+            { name: "disk_erase_with_quick_erase", value: false },
+            { name: "disk_erase_with_secure_erase", value: false },
+            { name: "enable_disk_erasing_on_release", value: false }
+          ]
+        },
+        meta: {
+          model: "config",
+          method: "update"
         }
-      ]);
-      done();
-    }, 0);
+      }
+    ]);
   });
 
   it("dispatches action to fetch config if not already loaded", () => {

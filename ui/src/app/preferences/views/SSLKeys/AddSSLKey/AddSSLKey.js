@@ -1,50 +1,69 @@
-import { Formik } from "formik";
-import { Redirect } from "react-router";
+import { Col, Row, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import React from "react";
 
+import "./AddSSLKey.scss";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import SSLKeyFormFields from "../SSLKeyFormFields";
 import FormCard from "app/base/components/FormCard";
+import FormikForm from "app/base/components/FormikForm";
+import FormikField from "app/base/components/FormikField";
+import FormCardButtons from "app/base/components/FormCardButtons";
 
 const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required")
 });
 
 export const AddSSLKey = () => {
+  const saving = useSelector(sslkeySelectors.saving);
   const saved = useSelector(sslkeySelectors.saved);
+  const errors = useSelector(sslkeySelectors.errors);
   const dispatch = useDispatch();
 
   useWindowTitle("Add SSL key");
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 
-  useEffect(() => {
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(sslkeyActions.cleanup());
-    };
-  }, [dispatch]);
-
-  if (saved) {
-    // The snippet was successfully created/updated so redirect to the list.
-    return <Redirect to="/account/prefs/ssl-keys" />;
-  }
-
   return (
     <FormCard title="Add SSL key">
-      <Formik
+      <FormikForm
+        buttons={FormCardButtons}
+        cleanup={sslkeyActions.cleanup}
+        errors={errors}
         initialValues={{ key: "" }}
-        validationSchema={SSLKeySchema}
         onSubmit={values => {
           dispatch(sslkeyActions.create(values));
         }}
-        render={formikProps => <SSLKeyFormFields formikProps={formikProps} />}
-      ></Formik>
+        saving={saving}
+        saved={saved}
+        savedRedirect="/account/prefs/ssl-keys"
+        submitLabel="Save SSL key"
+        validationSchema={SSLKeySchema}
+      >
+        <Row>
+          <Col size="5">
+            <FormikField
+              className="ssl-key-form-fields__key"
+              component={Textarea}
+              name="key"
+              label="SSL key"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+            />
+          </Col>
+          <Col size="3">
+            <p className="p-form-help-text" style={{ marginTop: "0.5rem" }}>
+              You will be able to access Windows winrm service with a registered
+              key.
+            </p>
+          </Col>
+        </Row>
+      </FormikForm>
     </FormCard>
   );
 };

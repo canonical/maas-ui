@@ -35,8 +35,8 @@ export const SettingsTable = ({
         ) : (
           <div className="p-table-actions__space-left"></div>
         )}
-        {buttons.map(({ label, url }) => (
-          <Button element={Link} to={url} key={url}>
+        {buttons.map(({ label, url, ...props }) => (
+          <Button element={Link} to={url} key={url} {...props}>
             {label}
           </Button>
         ))}

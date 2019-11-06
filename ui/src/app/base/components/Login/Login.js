@@ -1,11 +1,4 @@
-import {
-  Card,
-  Col,
-  Notification,
-  Row,
-  Strip
-} from "@canonical/react-components";
-import { Formik } from "formik";
+import { Card, Col, Row, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React from "react";
@@ -13,7 +6,8 @@ import React from "react";
 import { status as statusActions } from "app/base/actions";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import LoginFormFields from "../LoginFormFields";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -22,6 +16,8 @@ const LoginSchema = Yup.object().shape({
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const authenticated = useSelector(statusSelectors.authenticated);
+  const authenticating = useSelector(statusSelectors.authenticating);
   const error = useSelector(statusSelectors.error);
 
   useWindowTitle("Login");
@@ -30,25 +26,34 @@ export const Login = () => {
     <Strip>
       <Row>
         <Col size="6" emptyLarge="4">
-          {error && error.__all__ && (
-            <Notification type="negative" status="Error:">
-              {error.__all__.join(" ")}
-            </Notification>
-          )}
           <Card title="Login">
-            <Formik
+            <FormikForm
+              errors={error}
               initialValues={{
                 password: "",
                 username: ""
               }}
-              validationSchema={LoginSchema}
               onSubmit={values => {
                 dispatch(statusActions.login(values));
               }}
-              render={formikProps => (
-                <LoginFormFields formikProps={formikProps} />
-              )}
-            ></Formik>
+              saving={authenticating}
+              saved={authenticated}
+              submitLabel="Login"
+              validationSchema={LoginSchema}
+            >
+              <FormikField
+                name="username"
+                label="Username"
+                required={true}
+                type="text"
+              />
+              <FormikField
+                name="password"
+                label="Password"
+                required={true}
+                type="password"
+              />
+            </FormikForm>
           </Card>
         </Col>
       </Row>

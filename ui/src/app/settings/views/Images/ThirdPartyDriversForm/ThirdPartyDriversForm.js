@@ -1,13 +1,11 @@
-import { ActionButton, Form } from "@canonical/react-components";
-import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { formikFormDisabled } from "app/settings/utils";
-import ThirdPartyDriversFormFields from "../ThirdPartyDriversFormFields";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 
 const ThirdPartyDriversSchema = Yup.object().shape({
   enable_third_party_drivers: Yup.boolean()
@@ -25,7 +23,7 @@ const ThirdPartyDriversForm = () => {
   );
 
   return (
-    <Formik
+    <FormikForm
       initialValues={{
         enable_third_party_drivers: thirdPartyDriversEnabled
       }}
@@ -33,23 +31,16 @@ const ThirdPartyDriversForm = () => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
+      saving={saving}
+      saved={saved}
       validationSchema={ThirdPartyDriversSchema}
-      render={formikProps => (
-        <Form onSubmit={formikProps.handleSubmit}>
-          <ThirdPartyDriversFormFields formikProps={formikProps} />
-          <ActionButton
-            appearance="positive"
-            className="u-no-margin--bottom"
-            type="submit"
-            disabled={saving || formikFormDisabled(formikProps)}
-            loading={saving}
-            success={saved}
-          >
-            Save
-          </ActionButton>
-        </Form>
-      )}
-    />
+    >
+      <FormikField
+        label="Enable the installation of proprietary drivers (i.e. HPVSA)"
+        type="checkbox"
+        name="enable_third_party_drivers"
+      />
+    </FormikForm>
   );
 };
 

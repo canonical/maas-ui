@@ -3,28 +3,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import CommissioningFormFields from "./CommissioningFormFields";
+import CommissioningForm from "../CommissioningForm";
 
 const mockStore = configureStore();
 
 describe("CommissioningFormFields", () => {
-  let baseFormikProps;
   let initialState;
-  let baseValues = {
-    commissioning_distro_series: "bionic",
-    default_min_hwe_kernel: "ga-16.04-lowlatency"
-  };
 
   beforeEach(() => {
-    baseFormikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      initialValues: { ...baseValues },
-      touched: {},
-      values: { ...baseValues }
-    };
     initialState = {
       config: {
         loading: false,
@@ -75,41 +61,31 @@ describe("CommissioningFormFields", () => {
 
   it("updates value for default distro series", () => {
     const state = { ...initialState };
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.commissioning_distro_series = "trusty";
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <CommissioningFormFields formikProps={formikProps} />
+        <CommissioningForm />
       </Provider>
     );
 
     expect(
-      wrapper
-        .find("[name='commissioning_distro_series']")
-        .first()
-        .props().value
-    ).toBe("trusty");
+      wrapper.find("select[name='commissioning_distro_series']").props().value
+    ).toBe("bionic");
   });
 
   it("updates value for default min kernel", () => {
     const state = { ...initialState };
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default_min_hwe_kernel = "hwe-16.04-edge";
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <CommissioningFormFields formikProps={formikProps} />
+        <CommissioningForm />
       </Provider>
     );
 
     expect(
-      wrapper
-        .find("[name='default_min_hwe_kernel']")
-        .first()
-        .props().value
-    ).toBe("hwe-16.04-edge");
+      wrapper.find("select[name='default_min_hwe_kernel']").props().value
+    ).toBe("ga-16.04-lowlatency");
   });
 });

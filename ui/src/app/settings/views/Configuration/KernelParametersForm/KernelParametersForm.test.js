@@ -35,7 +35,7 @@ describe("KernelParametersForm", () => {
     );
     expect(
       wrapper
-        .find("[name='kernel_opts']")
+        .find("input[name='kernel_opts']")
         .first()
         .props().value
     ).toBe("foo");

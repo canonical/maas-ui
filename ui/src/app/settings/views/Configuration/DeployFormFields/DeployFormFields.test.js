@@ -1,31 +1,22 @@
+import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
-import DeployFormFields from "./DeployFormFields";
+import DeployForm from "../DeployForm";
+
+jest.mock("uuid/v4", () =>
+  jest.fn(() => "00000000-0000-0000-0000-000000000000")
+);
 
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {
-  let baseFormikProps;
-  let initialState;
-  let baseValues = {
-    default_osystem: "ubuntu",
-    default_distro_series: "bionic"
-  };
+  let state;
 
   beforeEach(() => {
-    baseFormikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      initialValues: { ...baseValues },
-      touched: {},
-      values: { ...baseValues }
-    };
-    initialState = {
+    state = {
       config: {
         loading: false,
         loaded: true,
@@ -64,43 +55,15 @@ describe("DeployFormFields", () => {
     };
   });
 
-  it("updates value for default osystem", () => {
-    const state = { ...initialState };
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default_osystem = "ubuntu";
+  it("can render", () => {
     const store = mockStore(state);
-
     const wrapper = mount(
       <Provider store={store}>
-        <DeployFormFields formikProps={formikProps} />
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <DeployForm />
+        </MemoryRouter>
       </Provider>
     );
-
-    expect(
-      wrapper
-        .find("[name='default_osystem']")
-        .first()
-        .props().value
-    ).toBe("ubuntu");
-  });
-
-  it("updates value for default distro series", () => {
-    const state = { ...initialState };
-    const formikProps = { ...baseFormikProps };
-    formikProps.values.default_distro_series = "centos66";
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <DeployFormFields formikProps={formikProps} />
-      </Provider>
-    );
-
-    expect(
-      wrapper
-        .find("[name='default_distro_series']")
-        .first()
-        .props().value
-    ).toBe("centos66");
+    expect(wrapper.find("DeployFormFields").exists()).toBe(true);
   });
 });

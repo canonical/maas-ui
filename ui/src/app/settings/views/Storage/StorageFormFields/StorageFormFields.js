@@ -1,14 +1,13 @@
 import { Select } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import React from "react";
 
-import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import FormikField from "app/base/components/FormikField";
 
-const StorageFormFields = ({ formikProps }) => {
-  const { values } = formikProps;
+const StorageFormFields = () => {
+  const { values } = useFormikContext();
   const storageLayoutOptions = useSelector(
     configSelectors.storageLayoutOptions
   );
@@ -41,33 +40,23 @@ const StorageFormFields = ({ formikProps }) => {
       <FormikField
         label="Erase nodes' disks prior to releasing"
         type="checkbox"
-        checked={values.enable_disk_erasing_on_release}
         help="Forces users to always erase disks when releasing."
         name="enable_disk_erasing_on_release"
       />
       <FormikField
         label="Use secure erase by default when erasing disks"
         type="checkbox"
-        checked={values.disk_erase_with_secure_erase}
         help="Will only be used on devices that support secure erase. Other devices will fall back to full wipe or quick erase depending on the selected options."
         name="disk_erase_with_secure_erase"
       />
       <FormikField
         label="Use quick erase by default when erasing disks"
         type="checkbox"
-        checked={values.disk_erase_with_quick_erase}
         help="This is not a secure erase; it wipes only the beginning and end of each disk."
         name="disk_erase_with_quick_erase"
       />
     </>
   );
 };
-
-StorageFormFields.propTypes = extendFormikShape({
-  default_storage_layout: PropTypes.string,
-  disk_erase_with_quick_erase: PropTypes.bool,
-  disk_erase_with_secure_erase: PropTypes.bool,
-  enable_disk_erasing_on_release: PropTypes.bool
-});
 
 export default StorageFormFields;

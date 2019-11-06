@@ -1,24 +1,49 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import React from "react";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import { MemoryRouter } from "react-router-dom";
 
-import ProxyFormFields from "./ProxyFormFields";
+import ProxyForm from "../ProxyForm";
+
+const mockStore = configureStore();
 
 describe("ProxyFormFields", () => {
-  let formikProps;
-
+  let state;
   beforeEach(() => {
-    formikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      touched: {},
-      values: {}
+    state = {
+      config: {
+        loading: false,
+        loaded: true,
+        items: [
+          {
+            name: "http_proxy",
+            value: "http://www.url.com"
+          },
+          {
+            name: "enable_http_proxy",
+            value: false
+          },
+          {
+            name: "use_peer_proxy",
+            value: false
+          }
+        ]
+      }
     };
   });
 
   it("can render", () => {
-    const wrapper = shallow(<ProxyFormFields formikProps={formikProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
+        >
+          <ProxyForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("ProxyFormFields").exists()).toBe(true);
   });
 });

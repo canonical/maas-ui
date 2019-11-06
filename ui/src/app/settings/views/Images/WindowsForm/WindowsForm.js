@@ -1,13 +1,11 @@
-import { ActionButton, Form } from "@canonical/react-components";
-import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { formikFormDisabled } from "app/settings/utils";
-import WindowsFormFields from "../WindowsFormFields";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 
 const WindowsSchema = Yup.object().shape({
   windows_kms_host: Yup.string()
@@ -23,7 +21,7 @@ const WindowsForm = () => {
   const windowsKmsHost = useSelector(configSelectors.windowsKmsHost);
 
   return (
-    <Formik
+    <FormikForm
       initialValues={{
         windows_kms_host: windowsKmsHost
       }}
@@ -31,23 +29,17 @@ const WindowsForm = () => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
+      saving={saving}
+      saved={saved}
       validationSchema={WindowsSchema}
-      render={formikProps => (
-        <Form onSubmit={formikProps.handleSubmit}>
-          <WindowsFormFields formikProps={formikProps} />
-          <ActionButton
-            appearance="positive"
-            className="u-no-margin--bottom"
-            type="submit"
-            disabled={saving || formikFormDisabled(formikProps)}
-            loading={saving}
-            success={saved}
-          >
-            Save
-          </ActionButton>
-        </Form>
-      )}
-    />
+    >
+      <FormikField
+        label="Windows KMS activation host"
+        type="text"
+        name="windows_kms_host"
+        help="FQDN or IP address of the host that provides the KMS Windows activation service. (Only needed for Windows deployments using KMS activation.)"
+      />
+    </FormikForm>
   );
 };
 

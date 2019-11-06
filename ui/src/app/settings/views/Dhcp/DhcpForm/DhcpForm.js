@@ -1,6 +1,4 @@
-import { Formik } from "formik";
 import { Loader } from "@canonical/react-components";
-import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
@@ -19,6 +17,8 @@ import { useDhcpTarget } from "app/settings/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
+import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),
@@ -37,7 +37,9 @@ const DhcpSchema = Yup.object().shape({
 export const DhcpForm = ({ dhcpSnippet }) => {
   const [savingDhcp, setSaving] = useState();
   const [name, setName] = useState();
+  const errors = useSelector(dhcpsnippetSelectors.errors);
   const saved = useSelector(dhcpsnippetSelectors.saved);
+  const saving = useSelector(dhcpsnippetSelectors.saving);
   const dispatch = useDispatch();
   const editing = !!dhcpSnippet;
   const { loading, loaded, type } = useDhcpTarget(
@@ -60,16 +62,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
     dispatch(machineActions.fetch());
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(dhcpsnippetActions.cleanup());
-    };
   }, [dispatch]);
-
-  if (saved) {
-    // The snippet was successfully created/updated so redirect to the dhcp list.
-    return <Redirect to="/settings/dhcp" />;
-  }
 
   if (
     editing &&
@@ -80,7 +73,10 @@ export const DhcpForm = ({ dhcpSnippet }) => {
 
   return (
     <FormCard title={title}>
-      <Formik
+      <FormikForm
+        buttons={FormCardButtons}
+        cleanup={dhcpsnippetActions.cleanup}
+        errors={errors}
         initialValues={{
           description: dhcpSnippet ? dhcpSnippet.description : "",
           enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
@@ -91,7 +87,6 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           type: dhcpSnippet ? type : "",
           value: dhcpSnippet ? dhcpSnippet.value : ""
         }}
-        validationSchema={DhcpSchema}
         onSubmit={values => {
           const params = {
             description: values.description,
@@ -112,11 +107,17 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           }
           setSaving(params.name);
         }}
-        render={formikProps => {
-          setName(formikProps.values.name);
-          return <DhcpFormFields editing={editing} formikProps={formikProps} />;
+        onValuesChanged={values => {
+          setName(values.name);
         }}
-      ></Formik>
+        saving={saving}
+        saved={saved}
+        savedRedirect="/settings/dhcp"
+        submitLabel="Save snippet"
+        validationSchema={DhcpSchema}
+      >
+        <DhcpFormFields editing={editing} />
+      </FormikForm>
     </FormCard>
   );
 };

@@ -12,22 +12,4 @@ const simpleObjectEquality = (obj1, obj2) => {
   return false;
 };
 
-/**
- * Returns whether a formik form should be disabled, given the current state
- * of the form.
- * @param {Object} formikProps - Props required for formik forms.
- * @param {Boolean} success - Form is in success state.
- * @returns {Boolean} Form is disabled.
- */
-const formikFormDisabled = formikProps => {
-  const { initialValues, errors, values } = formikProps;
-  let hasErrors = false;
-
-  if (errors) {
-    hasErrors = Object.keys(errors).length > 0;
-  }
-
-  return simpleObjectEquality(initialValues, values) || hasErrors;
-};
-
-export { formikFormDisabled, simpleObjectEquality };
+export { simpleObjectEquality };

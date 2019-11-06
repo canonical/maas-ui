@@ -1,10 +1,11 @@
-import configureStore from "redux-mock-store";
-import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
-import React from "react";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import React from "react";
 
-import { SSHKeyFormFields } from "./SSHKeyFormFields";
+import AddSSHKey from "../AddSSHKey";
 
 jest.mock("uuid/v4", () =>
   jest.fn(() => "00000000-0000-0000-0000-000000000000")
@@ -13,23 +14,13 @@ jest.mock("uuid/v4", () =>
 const mockStore = configureStore();
 
 describe("SSHKeyFormFields", () => {
-  let formikProps, state;
+  let state;
 
   beforeEach(() => {
-    formikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      setFieldTouched: jest.fn(),
-      setFieldValue: jest.fn(),
-      setStatus: jest.fn(),
-      touched: {},
-      values: {
-        protocol: ""
-      }
-    };
     state = {
+      config: {
+        items: []
+      },
       sshkey: {
         loading: false,
         loaded: true,
@@ -40,82 +31,64 @@ describe("SSHKeyFormFields", () => {
 
   it("can render", () => {
     const store = mockStore(state);
+    // This component needs to be tested within the wrapping form so the
+    // context exists.
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <SSHKeyFormFields formikProps={formikProps} />
+          <AddSSHKey />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SSHKeyFormFields").exists()).toBe(true);
   });
 
-  it("can set error status", () => {
-    state.sshkey.errors = {
-      key: ["Key not provided"]
-    };
+  it("can show id field", async () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <SSHKeyFormFields formikProps={formikProps} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(formikProps.setStatus).toHaveBeenCalled();
-  });
-
-  it("can set non-field errors", () => {
-    state.sshkey.errors = {
-      __all__: ["Key already exists"]
-    };
-    const store = mockStore(state);
+    // This component needs to be tested within the wrapping form so the
+    // context exists.
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <SSHKeyFormFields formikProps={formikProps} />
+          <AddSSHKey />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Notification").text()).toEqual(
-      "Error:Key already exists"
-    );
-  });
-
-  it("can show id field", () => {
-    const store = mockStore(state);
-    formikProps.values.protocol = "lp";
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <SSHKeyFormFields formikProps={formikProps} />
-        </MemoryRouter>
-      </Provider>
-    );
+    const protocol = wrapper.find("select[name='protocol']");
+    await act(async () => {
+      protocol.props().onChange({ target: { name: "protocol", value: "lp" } });
+    });
+    wrapper.update();
     expect(
       wrapper
         .findWhere(
-          n => n.name() === "FormikField" && n.prop("fieldKey") === "auth_id"
+          n => n.name() === "FormikField" && n.prop("name") === "auth_id"
         )
         .exists()
     ).toBe(true);
   });
 
-  it("can show key field", () => {
+  it("can show key field", async () => {
     const store = mockStore(state);
-    formikProps.values.protocol = "upload";
+    // This component needs to be tested within the wrapping form so the
+    // context exists.
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <SSHKeyFormFields formikProps={formikProps} />
+          <AddSSHKey />
         </MemoryRouter>
       </Provider>
     );
+    const protocol = wrapper.find("select[name='protocol']");
+    await act(async () => {
+      protocol
+        .props()
+        .onChange({ target: { name: "protocol", value: "upload" } });
+    });
+    wrapper.update();
     expect(
       wrapper
-        .findWhere(
-          n => n.name() === "FormikField" && n.prop("fieldKey") === "key"
-        )
+        .findWhere(n => n.name() === "FormikField" && n.prop("name") === "key")
         .exists()
     ).toBe(true);
   });

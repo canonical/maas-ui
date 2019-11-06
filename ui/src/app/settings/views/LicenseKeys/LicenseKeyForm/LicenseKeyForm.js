@@ -1,6 +1,4 @@
-import { Formik } from "formik";
 import { Loader } from "@canonical/react-components";
-import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
@@ -11,8 +9,10 @@ import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import FormCard from "app/base/components/FormCard";
+import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import LicenseKeyFormFields from "../LicenseKeyFormFields";
 
 const LicenseKeySchema = Yup.object().shape({
   osystem: Yup.string().required("Operating system is required"),
@@ -22,7 +22,9 @@ const LicenseKeySchema = Yup.object().shape({
 
 export const LicenseKeyForm = ({ licenseKey }) => {
   const [savingLicenseKey, setSaving] = useState();
+  const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
+  const errors = useSelector(licenseKeysSelectors.errors);
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
   const dispatch = useDispatch();
@@ -50,23 +52,17 @@ export const LicenseKeyForm = ({ licenseKey }) => {
     if (!licenseKeysLoaded) {
       dispatch(licenseKeysActions.fetch());
     }
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(licenseKeysActions.cleanup());
-    };
   }, [dispatch, osInfoLoaded, licenseKeysLoaded]);
-
-  if (saved) {
-    // The license key was successfully created/updated so redirect to the license key list.
-    return <Redirect to="/settings/license-keys" />;
-  }
 
   return (
     <FormCard title={title}>
       {!isLoaded ? (
         <Loader text="loading..." />
       ) : osystems.length > 0 ? (
-        <Formik
+        <FormikForm
+          buttons={FormCardButtons}
+          cleanup={licenseKeysActions.cleanup}
+          errors={errors}
           initialValues={{
             osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
             distro_series: licenseKey
@@ -74,7 +70,6 @@ export const LicenseKeyForm = ({ licenseKey }) => {
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : ""
           }}
-          validationSchema={LicenseKeySchema}
           onSubmit={values => {
             const params = {
               osystem: values.osystem,
@@ -88,17 +83,18 @@ export const LicenseKeyForm = ({ licenseKey }) => {
             }
             setSaving(`${params.osystem} (${params.distro_series})`);
           }}
-          render={formikProps => {
-            return (
-              <LicenseKeyFormFields
-                editing={editing}
-                osystems={osystems}
-                releases={releases}
-                formikProps={formikProps}
-              />
-            );
-          }}
-        />
+          saving={saving}
+          saved={saved}
+          savedRedirect="/settings/license-keys"
+          submitLabel={editing ? "Update license key" : "Add license key"}
+          validationSchema={LicenseKeySchema}
+        >
+          <LicenseKeyFormFields
+            editing={editing}
+            osystems={osystems}
+            releases={releases}
+          />
+        </FormikForm>
       ) : (
         <span>No available licensed operating systems.</span>
       )}
