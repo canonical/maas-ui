@@ -2,7 +2,7 @@ import { ActionButton } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
-export const DetailsButtons = ({
+export const FormikFormButtons = ({
   actionDisabled,
   actionLabel,
   actionLoading,
@@ -25,11 +25,11 @@ export const DetailsButtons = ({
   );
 };
 
-DetailsButtons.propTypes = {
+FormikFormButtons.propTypes = {
   actionDisabled: PropTypes.bool,
   actionLabel: PropTypes.string.isRequired,
   actionLoading: PropTypes.bool,
   actionSuccess: PropTypes.bool
 };
 
-export default DetailsButtons;
+export default FormikFormButtons;

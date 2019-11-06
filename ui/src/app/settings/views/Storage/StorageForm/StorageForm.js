@@ -1,19 +1,12 @@
-import {
-  ActionButton,
-  Col,
-  Form,
-  Loader,
-  Row
-} from "@canonical/react-components";
-import { Formik } from "formik";
+import { Col, Loader, Row } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
+import FormikForm from "app/base/components/FormikForm";
 import StorageFormFields from "../StorageFormFields";
 
 const StorageSchema = Yup.object().shape({
@@ -52,7 +45,7 @@ const StorageForm = () => {
       <Col size={6}>
         {loading && <Loader text="Loading..." />}
         {loaded && (
-          <Formik
+          <FormikForm
             initialValues={{
               default_storage_layout: defaultStorageLayout,
               disk_erase_with_quick_erase: diskEraseWithQuick,
@@ -63,23 +56,12 @@ const StorageForm = () => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
+            saving={saving}
+            saved={saved}
             validationSchema={StorageSchema}
-            render={formikProps => (
-              <Form onSubmit={formikProps.handleSubmit}>
-                <StorageFormFields formikProps={formikProps} />
-                <ActionButton
-                  appearance="positive"
-                  className="u-no-margin--bottom"
-                  type="submit"
-                  disabled={formikFormDisabled(formikProps)}
-                  loading={saving}
-                  success={saved}
-                >
-                  Save
-                </ActionButton>
-              </Form>
-            )}
-          />
+          >
+            <StorageFormFields />
+          </FormikForm>
         )}
       </Col>
     </Row>

@@ -1,11 +1,10 @@
-import PropTypes from "prop-types";
+import { useFormikContext } from "formik";
 import React from "react";
 
-import { extendFormikShape } from "app/settings/proptypes";
 import FormikField from "app/base/components/FormikField";
 
-const ProxyFormFields = ({ formikProps }) => {
-  const { values } = formikProps;
+const ProxyFormFields = () => {
+  const { values } = useFormikContext();
 
   return (
     <>
@@ -18,21 +17,18 @@ const ProxyFormFields = ({ formikProps }) => {
         value="noProxy"
         label="Don't use a proxy"
         type="radio"
-        checked={values.proxyType === "noProxy"}
       />
       <FormikField
         name="proxyType"
         value="builtInProxy"
         label="MAAS built-in"
         type="radio"
-        checked={values.proxyType === "builtInProxy"}
       />
       <FormikField
         name="proxyType"
         value="externalProxy"
         label="External"
         type="radio"
-        checked={values.proxyType === "externalProxy"}
       />
       {values.proxyType === "externalProxy" && (
         <FormikField
@@ -47,7 +43,6 @@ const ProxyFormFields = ({ formikProps }) => {
         value="peerProxy"
         label="Peer"
         type="radio"
-        checked={values.proxyType === "peerProxy"}
       />
       {values.proxyType === "peerProxy" && (
         <FormikField
@@ -60,10 +55,5 @@ const ProxyFormFields = ({ formikProps }) => {
     </>
   );
 };
-
-ProxyFormFields.propTypes = extendFormikShape({
-  httpProxy: PropTypes.string,
-  proxyType: PropTypes.string
-});
 
 export default ProxyFormFields;

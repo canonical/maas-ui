@@ -48,7 +48,7 @@ describe("DnsForm", () => {
     expect(wrapper.find("Loader").exists()).toBe(true);
   });
 
-  it("dispatches an action to update config on save button click", done => {
+  it("dispatches an action to update config on save button click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -56,28 +56,33 @@ describe("DnsForm", () => {
         <DnsForm />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit(
         {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              { name: "dnssec_validation", value: "auto" },
-              { name: "dns_trusted_acl", value: "" },
-              { name: "upstream_dns", value: "" }
-            ]
-          },
-          meta: {
-            model: "config",
-            method: "update"
-          }
+          dnssec_validation: "auto",
+          dns_trusted_acl: "",
+          upstream_dns: ""
+        },
+        { resetForm: jest.fn() }
+      );
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_CONFIG",
+        payload: {
+          params: [
+            { name: "dnssec_validation", value: "auto" },
+            { name: "dns_trusted_acl", value: "" },
+            { name: "upstream_dns", value: "" }
+          ]
+        },
+        meta: {
+          model: "config",
+          method: "update"
         }
-      ]);
-      done();
-    }, 0);
+      }
+    ]);
   });
 
   it("dispatches action to fetch config if not already loaded", () => {

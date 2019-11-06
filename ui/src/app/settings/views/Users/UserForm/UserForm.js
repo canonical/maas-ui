@@ -9,6 +9,7 @@ import { UserShape } from "app/base/proptypes";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import BaseUserForm from "app/base/components/UserForm";
+import FormCardButtons from "app/base/components/FormCardButtons";
 
 export const UserForm = ({ user }) => {
   const dispatch = useDispatch();
@@ -42,6 +43,8 @@ export const UserForm = ({ user }) => {
   return (
     <FormCard title={title}>
       <BaseUserForm
+        buttons={FormCardButtons}
+        submitLabel="Save user"
         onSave={(params, values, editing) => {
           if (editing) {
             dispatch(userActions.update(params));
@@ -50,8 +53,8 @@ export const UserForm = ({ user }) => {
           }
           setSaving(values.username);
         }}
-        onUpdateFields={formikProps => {
-          setName(formikProps.values.username);
+        onUpdateFields={values => {
+          setName(values.username);
         }}
         user={user}
       />

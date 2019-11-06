@@ -1,14 +1,14 @@
 import { Select } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import React from "react";
 
-import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 
-const DeployFormFields = ({ formikProps }) => {
+const DeployFormFields = () => {
+  const formikProps = useFormikContext();
   const defaultOSystemOptions = useSelector(
     configSelectors.defaultOSystemOptions
   );
@@ -48,10 +48,5 @@ const DeployFormFields = ({ formikProps }) => {
     </>
   );
 };
-
-DeployFormFields.propTypes = extendFormikShape({
-  default_distro_series: PropTypes.string,
-  default_osystem: PropTypes.string
-});
 
 export default DeployFormFields;

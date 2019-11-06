@@ -110,9 +110,6 @@ describe("RepositoryForm", () => {
             limit: 50
           }
         }
-      },
-      {
-        type: "CLEANUP_PACKAGEREPOSITORY"
       }
     ]);
   });
@@ -251,7 +248,10 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()[2]).toEqual({
+    const action = store
+      .getActions()
+      .find(action => action.type === "UPDATE_PACKAGEREPOSITORY");
+    expect(action).toEqual({
       type: "UPDATE_PACKAGEREPOSITORY",
       payload: {
         params: {
@@ -304,7 +304,10 @@ describe("RepositoryForm", () => {
           enabled: true
         });
     });
-    expect(store.getActions()[2]).toEqual({
+    const action = store
+      .getActions()
+      .find(action => action.type === "CREATE_PACKAGEREPOSITORY");
+    expect(action).toEqual({
       type: "CREATE_PACKAGEREPOSITORY",
       payload: {
         params: {

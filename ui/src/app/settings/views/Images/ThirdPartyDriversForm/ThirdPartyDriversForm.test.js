@@ -46,10 +46,7 @@ describe("ThirdPartyDriversForm", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("[name='enable_third_party_drivers']")
-        .first()
-        .props().value
+      wrapper.find("input[name='enable_third_party_drivers']").props().value
     ).toBe(true);
   });
 });

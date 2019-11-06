@@ -8,7 +8,6 @@ import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import DetailsButtons from "./DetailsButtons";
 import UserForm from "app/base/components/UserForm";
 
 export const Details = () => {
@@ -18,14 +17,16 @@ export const Details = () => {
   const authUserSaved = useSelector(authSelectors.saved);
   const [passwordChanged, setPasswordChanged] = useState(false);
 
+  const cleanup = () => {
+    dispatch(authActions.cleanup());
+    return userActions.cleanup();
+  };
+
   useWindowTitle("Details");
 
   useAddMessage(
     usersSaved && (!passwordChanged || authUserSaved),
-    () => {
-      dispatch(authActions.cleanup());
-      return userActions.cleanup();
-    },
+    cleanup,
     "Your details were updated successfully"
   );
 
@@ -41,7 +42,6 @@ export const Details = () => {
     <Row>
       <Col size="4">
         <UserForm
-          buttons={DetailsButtons}
           includeCurrentPassword
           includeUserType={false}
           onSave={(params, values, editing) => {

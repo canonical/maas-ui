@@ -1,10 +1,14 @@
-import { Formik } from "formik";
+import { Link } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 
+import { auth as authSelectors } from "app/base/selectors";
+import { user as userSelectors } from "app/base/selectors";
 import { UserShape } from "app/base/proptypes";
-import UserFormFields from "../UserFormFields";
+import FormikForm from "app/base/components/FormikForm";
+import FormikField from "app/base/components/FormikField";
 
 const schemaFields = {
   email: Yup.string()
@@ -47,10 +51,22 @@ export const UserForm = ({
   includeUserType,
   onSave,
   onUpdateFields,
+  submitLabel,
   user
 }) => {
   const editing = !!user;
   const [passwordVisible, showPassword] = useState(!editing);
+  const saving = useSelector(userSelectors.saving);
+  const saved = useSelector(userSelectors.saved);
+  const userErrors = useSelector(userSelectors.errors);
+  const authErrors = useSelector(authSelectors.errors);
+  let errors = userErrors;
+  if (includeCurrentPassword) {
+    errors = {
+      ...authErrors,
+      ...userErrors
+    };
+  }
   let initialValues = {
     isSuperuser: user ? user.is_superuser : false,
     email: user ? user.email : "",
@@ -66,11 +82,10 @@ export const UserForm = ({
     ? CurrentPasswordUserSchema
     : UserSchema;
   return (
-    <Formik
+    <FormikForm
+      buttons={buttons}
+      errors={errors}
       initialValues={initialValues}
-      validationSchema={
-        editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
-      }
       onSubmit={values => {
         const [firstName, ...lastNameParts] = values.fullName.split(" ");
         const params = {
@@ -89,20 +104,77 @@ export const UserForm = ({
         }
         onSave(params, values, editing);
       }}
-      render={formikProps => {
-        onUpdateFields && onUpdateFields(formikProps);
-        return (
-          <UserFormFields
-            buttons={buttons}
-            editing={editing}
-            formikProps={formikProps}
-            includeCurrentPassword={includeCurrentPassword}
-            includeUserType={includeUserType}
-            onShowPasswordFields={showPassword}
-          />
-        );
+      saving={saving}
+      saved={saved}
+      submitLabel={submitLabel}
+      onValuesChanged={values => {
+        onUpdateFields && onUpdateFields(values);
       }}
-    ></Formik>
+      validationSchema={
+        editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
+      }
+    >
+      <FormikField
+        name="username"
+        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        label="Username"
+        required={true}
+        type="text"
+      />
+      <FormikField name="fullName" label="Full name (optional)" type="text" />
+      <FormikField
+        name="email"
+        label="Email address"
+        required={true}
+        type="email"
+      />
+      {includeUserType && (
+        <FormikField
+          name="isSuperuser"
+          label="MAAS administrator"
+          type="checkbox"
+        />
+      )}
+      {editing && !passwordVisible && (
+        <Link
+          onClick={event => {
+            event.preventDefault();
+            showPassword(!passwordVisible);
+          }}
+        >
+          Change password&hellip;
+        </Link>
+      )}
+      {passwordVisible && (
+        <>
+          {includeCurrentPassword && (
+            <FormikField
+              name="old_password"
+              label="Current password"
+              required={true}
+              type="password"
+            />
+          )}
+          <FormikField
+            name="password"
+            label={includeCurrentPassword ? "New password" : "Password"}
+            required={true}
+            type="password"
+          />
+          <FormikField
+            name="passwordConfirm"
+            help="Enter the same password as before, for verification"
+            label={
+              includeCurrentPassword
+                ? "New password (again)"
+                : "Password (again)"
+            }
+            required={true}
+            type="password"
+          />
+        </>
+      )}
+    </FormikForm>
   );
 };
 
@@ -110,9 +182,10 @@ UserForm.propTypes = {
   buttons: PropTypes.func,
   includeCurrentPassword: PropTypes.bool,
   includeUserType: PropTypes.bool,
-  user: UserShape,
   onSave: PropTypes.func.isRequired,
-  onUpdateFields: PropTypes.func
+  onUpdateFields: PropTypes.func,
+  submitLabel: PropTypes.string,
+  user: UserShape
 };
 
 export default UserForm;

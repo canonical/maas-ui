@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DetailsButtons  renders 1`] = `
+exports[`FormikFormButtons  renders 1`] = `
 <div
   style={
     Object {

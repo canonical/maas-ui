@@ -1,8 +1,6 @@
-import { Formik } from "formik";
-import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
@@ -10,6 +8,8 @@ import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SSHKeyFormFields from "../SSHKeyFormFields";
 import FormCard from "app/base/components/FormCard";
+import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
 
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
@@ -24,30 +24,22 @@ const SSHKeySchema = Yup.object().shape({
 });
 
 export const AddSSHKey = () => {
-  const saved = useSelector(sshkeySelectors.saved);
   const dispatch = useDispatch();
+  const errors = useSelector(sshkeySelectors.errors);
+  const saved = useSelector(sshkeySelectors.saved);
+  const saving = useSelector(sshkeySelectors.saving);
 
   useWindowTitle("Add SSH key");
 
   useAddMessage(saved, sshkeyActions.cleanup, "SSH key successfully imported.");
 
-  useEffect(() => {
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(sshkeyActions.cleanup());
-    };
-  }, [dispatch]);
-
-  if (saved) {
-    // The key was successfully created/updated so redirect to the list.
-    return <Redirect to="/account/prefs/ssh-keys" />;
-  }
-
   return (
     <FormCard title="Add SSH key">
-      <Formik
+      <FormikForm
+        buttons={FormCardButtons}
+        cleanup={sshkeyActions.cleanup}
+        errors={errors}
         initialValues={{ auth_id: "", protocol: "", key: "" }}
-        validationSchema={SSHKeySchema}
         onSubmit={values => {
           if (values.key && values.key !== "") {
             dispatch(sshkeyActions.create(values));
@@ -55,8 +47,14 @@ export const AddSSHKey = () => {
             dispatch(sshkeyActions.import(values));
           }
         }}
-        render={formikProps => <SSHKeyFormFields formikProps={formikProps} />}
-      ></Formik>
+        saving={saving}
+        saved={saved}
+        savedRedirect="/account/prefs/ssh-keys"
+        submitLabel="Import SSH key"
+        validationSchema={SSHKeySchema}
+      >
+        <SSHKeyFormFields />
+      </FormikForm>
     </FormCard>
   );
 };

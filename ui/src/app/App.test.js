@@ -14,7 +14,7 @@ describe("App", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [{ name: "completed_intro", value: true }]
       },
       general: {
         architectures: {
@@ -98,6 +98,7 @@ describe("App", () => {
         auth: {
           loading: false,
           user: {
+            completed_intro: true,
             email: "test@example.com",
             first_name: "",
             global_permissions: ["machine_create"],
@@ -118,7 +119,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -132,7 +133,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -145,7 +146,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -158,7 +159,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -171,7 +172,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -184,7 +185,7 @@ describe("App", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -200,7 +201,7 @@ describe("App", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>
@@ -215,7 +216,7 @@ describe("App", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <App />
         </MemoryRouter>
       </Provider>

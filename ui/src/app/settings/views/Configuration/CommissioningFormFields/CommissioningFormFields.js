@@ -1,14 +1,14 @@
 import { Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
+import { useFormikContext } from "formik";
 import React from "react";
 
-import { extendFormikShape } from "app/settings/proptypes";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 
-const CommissioningFormFields = ({ formikProps }) => {
+const CommissioningFormFields = () => {
+  const formikProps = useFormikContext();
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 
   const ubuntuKernelOptions = useSelector(state =>
@@ -54,10 +54,5 @@ const CommissioningFormFields = ({ formikProps }) => {
     </>
   );
 };
-
-CommissioningFormFields.propTypes = extendFormikShape({
-  commissioning_distro_series: PropTypes.string,
-  default_min_hwe_kernel: PropTypes.string
-});
 
 export default CommissioningFormFields;

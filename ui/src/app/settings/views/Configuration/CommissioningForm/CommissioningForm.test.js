@@ -53,7 +53,7 @@ describe("CommissioningForm", () => {
     };
   });
 
-  it("dispatched an action to update config on save button click", done => {
+  it("dispatched an action to update config on save button click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -61,27 +61,32 @@ describe("CommissioningForm", () => {
         <CommissioningForm />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      const updateConfigAction = store
-        .getActions()
-        .find(action => action.type === "UPDATE_CONFIG");
-      expect(updateConfigAction).toEqual({
-        type: "UPDATE_CONFIG",
-        payload: {
-          params: [
-            { name: "commissioning_distro_series", value: "bionic" },
-            { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
-          ]
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit(
+        {
+          commissioning_distro_series: "bionic",
+          default_min_hwe_kernel: "ga-16.04-lowlatency"
         },
-        meta: {
-          model: "config",
-          method: "update"
-        }
-      });
-      done();
-    }, 0);
+        { resetForm: jest.fn() }
+      );
+
+    const updateConfigAction = store
+      .getActions()
+      .find(action => action.type === "UPDATE_CONFIG");
+    expect(updateConfigAction).toEqual({
+      type: "UPDATE_CONFIG",
+      payload: {
+        params: [
+          { name: "commissioning_distro_series", value: "bionic" },
+          { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
+        ]
+      },
+      meta: {
+        model: "config",
+        method: "update"
+      }
+    });
   });
 });

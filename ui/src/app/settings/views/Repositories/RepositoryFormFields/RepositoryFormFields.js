@@ -1,15 +1,10 @@
 import { Col, List, Row, Textarea } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import React from "react";
 
 import "./RepositoryFormFields.scss";
-import { extendFormikShape } from "app/settings/proptypes";
-import { useFormikErrors } from "app/base/hooks";
-import {
-  general as generalSelectors,
-  packagerepository as repositorySelectors
-} from "app/base/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 
 const generateCheckboxGroup = (key, fields, formikProps) => {
@@ -42,7 +37,8 @@ const generateCheckboxGroup = (key, fields, formikProps) => {
   return <List items={checkboxes} className="is-split--small" />;
 };
 
-const RepositoryFormFields = ({ formikProps, type }) => {
+const RepositoryFormFields = ({ type }) => {
+  const formikProps = useFormikContext();
   const { setFieldValue, values } = formikProps;
   const componentsToDisable = useSelector(
     generalSelectors.componentsToDisable.get
@@ -51,9 +47,6 @@ const RepositoryFormFields = ({ formikProps, type }) => {
     generalSelectors.knownArchitectures.get
   );
   const pocketsToDisable = useSelector(generalSelectors.pocketsToDisable.get);
-  const errors = useSelector(repositorySelectors.errors);
-
-  useFormikErrors(errors, formikProps);
 
   return (
     <Row>
@@ -158,19 +151,5 @@ const RepositoryFormFields = ({ formikProps, type }) => {
     </Row>
   );
 };
-
-RepositoryFormFields.propTypes = extendFormikShape({
-  arches: PropTypes.arrayOf(PropTypes.string),
-  components: PropTypes.string,
-  default: PropTypes.bool,
-  disable_sources: PropTypes.bool,
-  disabled_components: PropTypes.arrayOf(PropTypes.string),
-  disabled_pockets: PropTypes.arrayOf(PropTypes.string),
-  distributions: PropTypes.string,
-  enabled: PropTypes.bool,
-  key: PropTypes.string,
-  name: PropTypes.string,
-  url: PropTypes.string
-});
 
 export default RepositoryFormFields;

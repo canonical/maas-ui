@@ -1,4 +1,5 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Textarea } from "@canonical/react-components";
 import React from "react";
 
@@ -9,97 +10,28 @@ jest.mock("uuid/v4", () =>
 );
 
 describe("FormikField", () => {
-  let formikProps;
-
-  beforeEach(() => {
-    formikProps = {
-      errors: {},
-      handleBlur: jest.fn(),
-      handleChange: jest.fn(),
-      handleSubmit: jest.fn(),
-      touched: {},
-      values: {}
-    };
-  });
-
   it("can render", () => {
-    const wrapper = shallow(
-      <FormikField
-        formikProps={formikProps}
-        name="username"
-        help="Required."
-        id="username"
-        label="Username"
-        required={true}
-        type="text"
-      />
+    const wrapper = mount(
+      <Formik>
+        <FormikField
+          name="username"
+          help="Required."
+          id="username"
+          label="Username"
+          required={true}
+          type="text"
+        />
+      </Formik>
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("FormikField")).toMatchSnapshot();
   });
 
   it("can set a different component", () => {
-    const wrapper = shallow(
-      <FormikField
-        component={Textarea}
-        formikProps={formikProps}
-        name="username"
-      />
+    const wrapper = mount(
+      <Formik>
+        <FormikField component={Textarea} name="username" />
+      </Formik>
     );
-    expect(wrapper.type()).toEqual(Textarea);
-  });
-
-  it("can pass formik errors", () => {
-    formikProps.touched.username = true;
-    formikProps.errors.username = "Username already exists";
-    const wrapper = shallow(
-      <FormikField
-        component={Textarea}
-        formikProps={formikProps}
-        name="username"
-      />
-    );
-    expect(wrapper.prop("error")).toEqual("Username already exists");
-  });
-
-  it("can pass errors from status", () => {
-    formikProps.touched.username = true;
-    formikProps.status = {
-      invalidValues: {
-        username: "admin"
-      },
-      serverErrors: {
-        username: "Username already exists"
-      }
-    };
-    const wrapper = shallow(
-      <FormikField
-        component={Textarea}
-        formikProps={formikProps}
-        name="username"
-        value="admin"
-      />
-    );
-    expect(wrapper.prop("error")).toEqual("Username already exists");
-  });
-
-  it("does not show server errors if the value has changed", () => {
-    formikProps.touched.username = true;
-    formikProps.status = {
-      invalidValues: {
-        username: "admin"
-      },
-      serverErrors: {
-        username: "Username already exists"
-      }
-    };
-    const wrapper = shallow(
-      <FormikField
-        component={Textarea}
-        formikProps={formikProps}
-        name="username"
-        value="koala"
-      />
-    );
-    expect(wrapper.prop("error")).toBe(undefined);
+    expect(wrapper.find("Textarea").exists()).toBe(true);
   });
 });

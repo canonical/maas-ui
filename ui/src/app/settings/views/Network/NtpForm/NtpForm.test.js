@@ -39,7 +39,7 @@ describe("NtpForm", () => {
     expect(wrapper.find("Loader").exists()).toBe(true);
   });
 
-  it("dispatches an action to update config on save button click", done => {
+  it("dispatches an action to update config on save button click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -47,30 +47,34 @@ describe("NtpForm", () => {
         <NtpForm />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit(
         {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              {
-                name: "ntp_external_only",
-                value: false
-              },
-              { name: "ntp_servers", value: "" }
-            ]
-          },
-          meta: {
-            model: "config",
-            method: "update"
-          }
+          ntp_external_only: false,
+          ntp_servers: ""
+        },
+        { resetForm: jest.fn() }
+      );
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_CONFIG",
+        payload: {
+          params: [
+            {
+              name: "ntp_external_only",
+              value: false
+            },
+            { name: "ntp_servers", value: "" }
+          ]
+        },
+        meta: {
+          model: "config",
+          method: "update"
         }
-      ]);
-      done();
-    }, 0);
+      }
+    ]);
   });
 
   it("dispatches action to fetch config if not already loaded", () => {

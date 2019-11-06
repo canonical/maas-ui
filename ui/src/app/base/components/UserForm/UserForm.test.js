@@ -14,9 +14,19 @@ jest.mock("uuid/v4", () =>
 const mockStore = configureStore();
 
 describe("UserForm", () => {
-  let state;
+  let state, user;
 
   beforeEach(() => {
+    user = {
+      email: "old@example.com",
+      first_name: "Miss",
+      id: 808,
+      is_superuser: true,
+      last_name: "Wallaby",
+      password1: "test1234",
+      password2: "test1234",
+      username: "admin"
+    };
     state = {
       user: {
         auth: {},
@@ -48,19 +58,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm
-            onSave={onSave}
-            user={{
-              email: "old@example.com",
-              first_name: "Miss",
-              id: 808,
-              is_superuser: true,
-              last_name: "Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin"
-            }}
-          />
+          <UserForm onSave={onSave} user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -86,6 +84,97 @@ describe("UserForm", () => {
       password1: "test1234",
       password2: "test1234",
       username: "admin"
+    });
+  });
+
+  it("hides the password fields when editing", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm onSave={jest.fn()} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("Link")
+        .first()
+        .children()
+        .text()
+    ).toEqual("Change password…");
+    expect(
+      wrapper.findWhere(
+        n => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(0);
+  });
+
+  it("can toggle the password fields", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm onSave={jest.fn()} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.findWhere(
+        n => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(0);
+    wrapper.find("Link").simulate("click", { preventDefault: jest.fn() });
+    expect(
+      wrapper.findWhere(
+        n => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(2);
+  });
+
+  it("can show the current password field", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Link").simulate("click", { preventDefault: jest.fn() });
+    expect(
+      wrapper.findWhere(
+        n => n.name() === "FormikField" && n.prop("name") === "old_password"
+      ).length
+    ).toEqual(1);
+  });
+
+  it("can include auth errors in the error status", () => {
+    state.user.errors = {
+      username: ["Username already exists"]
+    };
+    state.user.auth.errors = {
+      password: ["Password too short"]
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikForm").prop("errors")).toEqual({
+      username: ["Username already exists"],
+      password: ["Password too short"]
     });
   });
 });

@@ -54,7 +54,7 @@ describe("NetworkDiscoveryForm", () => {
     expect(wrapper.find("Loader").exists()).toBe(true);
   });
 
-  it("dispatches an action to update config on save button click", done => {
+  it("dispatches an action to update config on save button click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -62,33 +62,37 @@ describe("NetworkDiscoveryForm", () => {
         <NetworkDiscoveryForm />
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-
-    // since Formik handler is evaluated asynchronously we have to delay checking the assertion
-    window.setTimeout(() => {
-      expect(store.getActions()).toEqual([
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit(
         {
-          type: "UPDATE_CONFIG",
-          payload: {
-            params: [
-              {
-                name: "active_discovery_interval",
-                value: "0"
-              },
-              {
-                name: "network_discovery",
-                value: "enabled"
-              }
-            ]
-          },
-          meta: {
-            model: "config",
-            method: "update"
-          }
+          active_discovery_interval: "0",
+          network_discovery: "enabled"
+        },
+        { resetForm: jest.fn() }
+      );
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_CONFIG",
+        payload: {
+          params: [
+            {
+              name: "active_discovery_interval",
+              value: "0"
+            },
+            {
+              name: "network_discovery",
+              value: "enabled"
+            }
+          ]
+        },
+        meta: {
+          model: "config",
+          method: "update"
         }
-      ]);
-      done();
-    }, 0);
+      }
+    ]);
   });
 
   it("dispatches action to fetch config if not already loaded", () => {

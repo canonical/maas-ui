@@ -1,20 +1,13 @@
-import {
-  ActionButton,
-  Col,
-  Form,
-  Loader,
-  Row
-} from "@canonical/react-components";
-import { Formik } from "formik";
+import { Col, Loader, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { formikFormDisabled } from "app/settings/utils";
 import { useWindowTitle } from "app/base/hooks";
-import NetworkDiscoveryFormFields from "../NetworkDiscoveryFormFields";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 
 const NetworkDiscoverySchema = Yup.object().shape({
   active_discovery_interval: Yup.number().required(),
@@ -33,6 +26,12 @@ const NetworkDiscoveryForm = () => {
   const activeDiscoveryInterval = useSelector(
     configSelectors.activeDiscoveryInterval
   );
+  const networkDiscoveryOptions = useSelector(
+    configSelectors.networkDiscoveryOptions
+  );
+  const discoveryIntervalOptions = useSelector(
+    configSelectors.discoveryIntervalOptions
+  );
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
 
   useWindowTitle("Network discovery");
@@ -48,7 +47,7 @@ const NetworkDiscoveryForm = () => {
       <Col size={6}>
         {loading && <Loader text="Loading..." />}
         {loaded && (
-          <Formik
+          <FormikForm
             initialValues={{
               active_discovery_interval: activeDiscoveryInterval,
               network_discovery: networkDiscovery
@@ -57,23 +56,25 @@ const NetworkDiscoveryForm = () => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
+            saving={saving}
+            saved={saved}
             validationSchema={NetworkDiscoverySchema}
-            render={formikProps => (
-              <Form onSubmit={formikProps.handleSubmit}>
-                <NetworkDiscoveryFormFields formikProps={formikProps} />
-                <ActionButton
-                  appearance="positive"
-                  className="u-no-margin--bottom"
-                  type="submit"
-                  disabled={formikFormDisabled(formikProps)}
-                  loading={saving}
-                  success={saved}
-                >
-                  Save
-                </ActionButton>
-              </Form>
-            )}
-          />
+          >
+            <FormikField
+              component={Select}
+              options={networkDiscoveryOptions}
+              name="network_discovery"
+              label="Network discovery"
+              help="When enabled, MAAS will use passive techniques (such as listening to ARP requests and mDNS advertisements) to observe networks attached to rack controllers. Active subnet mapping will also be available to be enabled on the configured subnets."
+            />
+            <FormikField
+              component={Select}
+              options={discoveryIntervalOptions}
+              name="active_discovery_interval"
+              label="Active subnet mapping interval"
+              help="When enabled, each rack will scan subnets enabled for active mapping. This helps ensure discovery information is accurate and complete."
+            />
+          </FormikForm>
         )}
       </Col>
     </Row>

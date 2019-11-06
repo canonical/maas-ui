@@ -37,7 +37,7 @@ describe("GeneralForm", () => {
         <GeneralForm />
       </Provider>
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("GeneralForm").exists()).toBe(true);
   });
 
   it("sets maas_name value", () => {
@@ -49,12 +49,9 @@ describe("GeneralForm", () => {
         <GeneralForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='maas_name']")
-        .first()
-        .props().value
-    ).toBe("bionic-maas");
+    expect(wrapper.find("input[name='maas_name']").props().value).toBe(
+      "bionic-maas"
+    );
   });
 
   it("sets enable_analytics value", () => {
@@ -66,11 +63,8 @@ describe("GeneralForm", () => {
         <GeneralForm />
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[name='enable_analytics']")
-        .first()
-        .props().value
-    ).toBe(true);
+    expect(wrapper.find("input[name='enable_analytics']").props().value).toBe(
+      true
+    );
   });
 });
