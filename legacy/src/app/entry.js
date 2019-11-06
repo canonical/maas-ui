@@ -353,7 +353,7 @@ const renderHeader = ($rootScope, $window, $http) => {
     <Header
       authUser={current_user}
       basename={process.env.BASENAME}
-      completedIntro={completed_intro && current_user.completed_intro}
+      completedIntro={completed_intro && current_user && current_user.completed_intro}
       enableAnalytics={!debug && window.CONFIG.enable_analytics}
       location={window.location}
       logout={() => {
