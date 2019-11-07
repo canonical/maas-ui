@@ -17,7 +17,11 @@ function maasDhcpSnippetsTable($window) {
       hideAllSnippetsLink: "="
     },
     template: dhcpSnippetsTableTmpl,
-    controller: DHCPSnippetsTableController
+    controller: DHCPSnippetsTableController,
+    link: scope => {
+      scope.BASENAME = process.env.BASENAME;
+      scope.REACT_BASENAME = process.env.REACT_BASENAME;
+    }
   };
 }
 
