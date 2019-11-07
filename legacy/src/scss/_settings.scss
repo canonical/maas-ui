@@ -11,6 +11,7 @@ $breakpoint-x-large: 1300px;
 $breakpoint-navigation-threshold: 870px;
 $increase-font-size-on-larger-screens: false;
 
-$assets-path: "assets/fonts/";
+// Relative to the built css dir.
+$assets-path: "../fonts/";
 
 $multi: 1;

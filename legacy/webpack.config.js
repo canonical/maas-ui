@@ -16,7 +16,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "./build"),
-    filename: "[name].[hash].bundle.js",
+    filename: "assets/js/[name].[hash].bundle.js",
     publicPath: "/MAAS/"
   },
   mode: "development",
@@ -80,7 +80,7 @@ module.exports = {
     ]),
     new MiniCssExtractPlugin({
       // This file is relative to output.path above.
-      filename: "[name].[hash].css"
+      filename: "assets/css/[name].[hash].css"
     }),
     new HtmlWebpackPlugin({
       template: "./src/index.html.ejs",
