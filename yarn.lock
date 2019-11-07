@@ -1348,10 +1348,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@canonical/react-components@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.1.0.tgz#c0706876b66413cbb37b08007662fd00f1401595"
-  integrity sha512-GBYurcL7VN1C5820jJfGLD6bZyLfqBe04kIkLhHtdko89idCn3xnbv59Lbr4eco1IyP9CkReXWpgBsW5Y35SkA==
+"@canonical/react-components@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.2.0.tgz#17707b3241b82652d146f14bb6ccc558677c9c38"
+  integrity sha512-ZUXQ2AN2lex0dDLwUKd111VpiQ6GmfXjr0Ew6zgIidvgiOl87d/Cbpai6clQ1jcwR+UUtYR3GEIoRk5Go4nybA==
   dependencies:
     classnames "2.2.6"
     prop-types "15.7.2"
