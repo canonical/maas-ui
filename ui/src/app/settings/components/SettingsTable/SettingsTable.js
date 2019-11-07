@@ -35,11 +35,20 @@ export const SettingsTable = ({
         ) : (
           <div className="p-table-actions__space-left"></div>
         )}
-        {buttons.map(({ label, url }) => (
-          <Button element={Link} to={url} key={url}>
-            {label}
-          </Button>
-        ))}
+        {buttons.map(({ label, url, disabled = false, tooltip }) =>
+          tooltip ? (
+            <span key={url} className="p-tooltip p-tooltip--left">
+              <Button element={Link} to={url} disabled={disabled}>
+                {label}
+              </Button>
+              <span className="p-tooltip__message">{tooltip}</span>
+            </span>
+          ) : (
+            <Button element={Link} to={url} key={url} disabled={disabled}>
+              {label}
+            </Button>
+          )
+        )}
       </div>
       {loading && (
         <div className="settings-table__loader">
@@ -67,7 +76,9 @@ SettingsTable.propTypes = {
   buttons: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired
+      url: PropTypes.string.isRequired,
+      disabled: PropTypes.bool,
+      tooltip: PropTypes.string
     })
   ).isRequired,
   defaultSort: PropTypes.string,

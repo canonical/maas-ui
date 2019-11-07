@@ -15,6 +15,19 @@ describe("LicenseKeyList", () => {
       config: {
         items: []
       },
+      general: {
+        osInfo: {
+          loaded: true,
+          loading: false,
+          data: {
+            osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+            releases: [
+              ["ubuntu/bionic", "Ubuntu 18.04 LTS 'Bionic Beaver'"],
+              ["windows/win2012*", "Windows Server 2012"]
+            ]
+          }
+        }
+      },
       licensekeys: {
         loading: false,
         loaded: true,
