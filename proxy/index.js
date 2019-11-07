@@ -6,14 +6,14 @@ var app = express();
 
 // Proxy API endpoints to the MAAS.
 app.use(
-  proxy(["/MAAS/api", "/MAAS/accounts"], {
+  proxy([`${process.env.BASENAME}/api`, `${process.env.BASENAME}/accounts`], {
     target: process.env.MAAS_URL
   })
 );
 
 // Proxy the WebSocket API endpoint to the MAAS.
 app.use(
-  proxy("/MAAS/ws", {
+  proxy(`${process.env.BASENAME}/ws`, {
     target: process.env.MAAS_URL,
     ws: true
   })
@@ -37,20 +37,20 @@ app.use(
 
 // Proxy URLs and assets to the React client.
 app.use(
-  proxy(["/MAAS/r", "/static/", "/maas-favicon-32px.png"], {
+  proxy([`${process.env.BASENAME}${process.env.REACT_BASENAME}`, "/static/", "/maas-favicon-32px.png"], {
     target: "http://localhost:8401/"
   })
 );
 
 // Proxy the remaining URLs to the Angular client.
 app.use(
-  proxy("/MAAS/", {
+  proxy(`${process.env.BASENAME}/`, {
     target: "http://localhost:8402/"
   })
 );
 
-app.get("/MAAS", (req, res) => res.redirect("/MAAS/"));
-app.get("/", (req, res) => res.redirect("/MAAS/"));
+app.get(process.env.BASENAME, (req, res) => res.redirect(`${process.env.BASENAME}/`));
+app.get("/", (req, res) => res.redirect(`${process.env.BASENAME}/`));
 
 app.listen(8400);
 

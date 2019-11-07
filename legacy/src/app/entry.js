@@ -227,7 +227,7 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
-const ROOT_API = "/MAAS/api/2.0/";
+const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
