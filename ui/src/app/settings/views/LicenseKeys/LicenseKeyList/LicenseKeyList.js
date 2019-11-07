@@ -10,6 +10,7 @@ import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 
 const generateRows = (
   licenseKeys,
@@ -86,6 +87,7 @@ const LicenseKeyList = () => {
 
   const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
+  const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
   const hasErrors = useSelector(licenseKeysSelectors.hasErrors);
   const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);
@@ -123,10 +125,20 @@ const LicenseKeyList = () => {
     dispatch(licenseKeysActions.fetch());
   }, [dispatch]);
 
+  const addBtnDisabled = osystems.length === 0;
+  const tooltip = addBtnDisabled
+    ? "No available licensed operating systems."
+    : null;
+
   return (
     <SettingsTable
       buttons={[
-        { label: "Add license key", url: "/settings/license-keys/add" }
+        {
+          label: "Add license key",
+          url: "/settings/license-keys/add",
+          disabled: addBtnDisabled,
+          tooltip
+        }
       ]}
       headers={[
         {

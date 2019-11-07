@@ -63,7 +63,37 @@ describe("SettingsTable", () => {
         <span>Content</span>
       </SettingsTable>
     );
+
     expect(wrapper.find(".p-table-actions__space-left").exists()).toBe(true);
     expect(wrapper.find("SearchBox").exists()).toBe(false);
   });
+});
+
+it("can render a disabled button ", () => {
+  const wrapper = shallow(
+    <SettingsTable
+      buttons={[{ label: "Add User", url: "/foo", disabled: true }]}
+      loaded={false}
+      loading={true}
+    >
+      <span>Content</span>
+    </SettingsTable>
+  );
+
+  expect(wrapper.find("Button").props().disabled).toBe(true);
+});
+
+it("can show render a button with a tooltip", () => {
+  const tooltip = "Add a user to MAAS";
+  const wrapper = shallow(
+    <SettingsTable
+      buttons={[{ label: "Add User", url: "/foo", tooltip }]}
+      loaded={false}
+      loading={true}
+    >
+      <span>Content</span>
+    </SettingsTable>
+  );
+
+  expect(wrapper.find("span.p-tooltip__message").text()).toEqual(tooltip);
 });
