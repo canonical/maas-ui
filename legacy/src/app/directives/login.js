@@ -50,7 +50,7 @@ export function externalLogin($window, getBakery) {
     const bakery = getBakery(visitPage);
     const nextPath = $element.attr("next-path");
     bakery.get(
-      "/MAAS/accounts/discharge-request/",
+      `${process.env.BASENAME}/accounts/discharge-request/`,
       {
         Accept: "application/json",
         "Content-Type": "application/json"

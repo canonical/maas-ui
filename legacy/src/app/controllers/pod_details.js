@@ -96,6 +96,8 @@ function PodDetailsController(
   };
   $scope.machinesSearch = "pod-id:=invalid";
   $scope.editing = false;
+  $scope.BASENAME = process.env.BASENAME;
+  $scope.ANGULAR_BASENAME = process.env.ANGULAR_BASENAME;
 
   // Pod name section.
   $scope.name = {
