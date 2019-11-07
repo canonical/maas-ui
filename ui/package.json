@@ -17,7 +17,7 @@
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-dropzone": "10.1.10",
-    "react-redux": "7.1.1",
+    "react-redux": "7.1.3",
     "react-router-dom": "5.1.2",
     "react-router-hash-link": "1.2.2",
     "react-router-prop-types": "1.0.4",
