@@ -83,8 +83,11 @@ module.exports = {
       filename: "[name].[hash].css"
     }),
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      inject: "body"
+      template: "./src/index.html.ejs",
+      inject: "body",
+      minify: {
+        removeAttributeQuotes: false
+      }
     }),
     new webpack.ProvidePlugin({
       "window.jQuery": "jquery"
