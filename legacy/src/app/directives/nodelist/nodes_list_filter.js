@@ -27,7 +27,7 @@ const displayNames = new Map([
   ["tags", "Tags"],
   ["vlan", "VLAN"],
   ["zone", "Zone"],
-  ["link_speeds", "link_speed"]
+  ["link_speeds", "Link speed"]
 ]);
 
 // Map of metadata names that use a different name for filtering
