@@ -1,6 +1,7 @@
 <div class="p-card">
   <strong class="p-muted-heading u-sv1">
-    <a ng-click="openSection('network')">Network&nbsp;&rsaquo;</a>
+    <a
+      ng-click="openSection('network'); sendAnalyticsEvent('Machine details', 'Card heading click: Network', 'Machine summary tab')">Network&nbsp;&rsaquo;</a>
   </strong>
   <div
     ng-class="{ 'u-sv-1': $index === groupedInterfaces.length - 1}"

@@ -15,6 +15,7 @@ function NodesListController(
   $location,
   $window,
   $log,
+  $filter,
   MachinesManager,
   DevicesManager,
   ControllersManager,
@@ -139,7 +140,8 @@ function NodesListController(
     "fabrics",
     "zone",
     "numa_nodes_count",
-    "sriov_support"
+    "sriov_support",
+    "link_speeds"
   ];
 
   // Pools tab.
@@ -1294,6 +1296,8 @@ function NodesListController(
     // managing a VLAN when confirming delete.
     page_managers.push(VLANsManager);
   }
+
+  $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
 
   // Load the required managers for this controller. The ServicesManager
   // is required by the maasControllerStatus directive that is used

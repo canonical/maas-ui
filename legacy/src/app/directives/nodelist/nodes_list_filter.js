@@ -26,7 +26,8 @@ const displayNames = new Map([
   ["subnets", "Subnet"],
   ["tags", "Tags"],
   ["vlan", "VLAN"],
-  ["zone", "Zone"]
+  ["zone", "Zone"],
+  ["link_speeds", "Link speed"]
 ]);
 
 // Map of metadata names that use a different name for filtering
@@ -36,8 +37,28 @@ const metadataNames = new Map([
   ["subnet", "subnet_cidr"]
 ]);
 
+function formatSpeedUnits(speedInMbytes) {
+  const megabytesInGigabyte = 1000;
+  const gigabytesInTerabyte = 1000;
+
+  if (
+    speedInMbytes >= megabytesInGigabyte &&
+    speedInMbytes < megabytesInGigabyte * gigabytesInTerabyte
+  ) {
+    return `${Math.round(speedInMbytes / megabytesInGigabyte)} Gbps`;
+  }
+
+  if (speedInMbytes >= megabytesInGigabyte * gigabytesInTerabyte) {
+    return `${Math.round(
+      speedInMbytes / megabytesInGigabyte / gigabytesInTerabyte
+    )} Tbps`;
+  }
+
+  return `${speedInMbytes} Mbps`;
+}
+
 /* @ngInject */
-function nodesListFilter($document) {
+function nodesListFilter($document, $window, $filter) {
   return {
     restrict: "E",
     scope: {
@@ -59,8 +80,18 @@ function nodesListFilter($document) {
         scope.$apply(() => (scope.openFilter = false));
       };
 
+      scope.formatFilterLabel = (entry, option) => {
+        if (option.name === "link_speeds") {
+          return `${formatSpeedUnits(entry.name)} (${entry.count})`;
+        }
+
+        return `${entry.name} (${entry.count})`;
+      };
+
       $document.on("click", scope.clickHandler);
       scope.$on("$destroy", () => $document.off("click", scope.clickHandler));
+
+      scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
     },
     controller: NodesListFilterController
   };
