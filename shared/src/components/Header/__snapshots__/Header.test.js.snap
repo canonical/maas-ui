@@ -140,18 +140,6 @@ exports[`Header renders 1`] = `
                   KVM
                 </a>
               </li>
-              <li
-                className="p-navigation__link"
-                key="/MAAS/#/rsd"
-                role="menuitem"
-              >
-                <a
-                  className=""
-                  href="/MAAS/#/rsd"
-                >
-                  RSD
-                </a>
-              </li>
             </ul>
           </li>
           <li
@@ -200,18 +188,6 @@ exports[`Header renders 1`] = `
               href="/MAAS/#/kvm"
             >
               KVM
-            </a>
-          </li>
-          <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
-            key="/MAAS/#/rsd"
-            role="menuitem"
-          >
-            <a
-              className="p-dropdown__item"
-              href="/MAAS/#/rsd"
-            >
-              RSD
             </a>
           </li>
           <li

@@ -30,6 +30,7 @@ export const App = () => {
   const connectionError = useSelector(status.error);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authLoading = useSelector(authSelectors.loading);
+  const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
   const version = useSelector(generalSelectors.version.get);
   const maasName = useSelector(configSelectors.maasName);
   const completedIntro = useSelector(configSelectors.completedIntro);
@@ -52,6 +53,7 @@ export const App = () => {
     if (connected) {
       dispatch(authActions.fetch());
       dispatch(generalActions.fetchVersion());
+      dispatch(generalActions.fetchNavigationOptions());
       // Fetch the config at the top so we can access the MAAS name for the
       // window title.
       dispatch(configActions.fetch());
@@ -99,6 +101,7 @@ export const App = () => {
         logout={() => {
           dispatch(statusActions.logout());
         }}
+        showRSD={navigationOptions.rsd}
       />
       {content}
       {maasName && version && (
