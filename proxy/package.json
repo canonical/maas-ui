@@ -1,5 +1,5 @@
 {
-  "name": "proxy",
+  "name": "@maas-ui/proxy",
   "private": true,
   "version": "0.1.0",
   "scripts": {
