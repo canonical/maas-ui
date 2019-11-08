@@ -58,7 +58,7 @@ function formatSpeedUnits(speedInMbytes) {
 }
 
 /* @ngInject */
-function nodesListFilter($document) {
+function nodesListFilter($document, $window, $filter) {
   return {
     restrict: "E",
     scope: {
@@ -90,6 +90,8 @@ function nodesListFilter($document) {
 
       $document.on("click", scope.clickHandler);
       scope.$on("$destroy", () => $document.off("click", scope.clickHandler));
+
+      scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
     },
     controller: NodesListFilterController
   };

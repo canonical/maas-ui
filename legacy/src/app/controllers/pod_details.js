@@ -103,6 +103,8 @@ function PodDetailsController(
     value: ""
   };
 
+  $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
+
   // Return true if at least a rack controller is connected to the
   // region controller.
   $scope.isRackControllerConnected = function() {
