@@ -10,7 +10,7 @@ function DashboardController(
   $rootScope,
   $location,
   $window,
-  $fitler,
+  $filter,
   DiscoveriesManager,
   DomainsManager,
   MachinesManager,
