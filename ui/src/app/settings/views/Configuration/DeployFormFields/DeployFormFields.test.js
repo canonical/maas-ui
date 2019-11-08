@@ -6,10 +6,6 @@ import { Provider } from "react-redux";
 
 import DeployForm from "../DeployForm";
 
-jest.mock("uuid/v4", () =>
-  jest.fn(() => "00000000-0000-0000-0000-000000000000")
-);
-
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {

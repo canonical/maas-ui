@@ -7,10 +7,6 @@ import React from "react";
 
 import { UserForm } from "./UserForm";
 
-jest.mock("uuid/v4", () =>
-  jest.fn(() => "00000000-0000-0000-0000-000000000000")
-);
-
 const mockStore = configureStore();
 
 describe("UserForm", () => {

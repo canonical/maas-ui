@@ -4,10 +4,6 @@ import React from "react";
 
 import FormikFormContent from "./FormikFormContent";
 
-jest.mock("uuid/v4", () =>
-  jest.fn(() => "00000000-0000-0000-0000-000000000000")
-);
-
 describe("FormikFormContent", () => {
   it("can render", () => {
     const wrapper = mount(
