@@ -273,8 +273,8 @@ function NodesListController(
   $scope.tabs.controllers.newPool = {};
   $scope.tabs.controllers.syncStatuses = {};
   $scope.tabs.controllers.addController = false;
-  $scope.tabs.controllers.registerUrl = $window.CONFIG.register_url;
-  $scope.tabs.controllers.registerSecret = $window.CONFIG.register_secret;
+  $scope.tabs.controllers.registerUrl = $window.CONFIG.maas_url;
+  $scope.tabs.controllers.registerSecret = $window.CONFIG.rpc_shared_secret;
 
   // Switch tab.
   $scope.tabs.switches = {};

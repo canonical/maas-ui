@@ -454,8 +454,8 @@ describe("NodesListController", function() {
           registerUrl = makeName("url");
           registerSecret = makeName("secret");
           window.CONFIG = {
-            register_url: registerUrl,
-            register_secret: registerSecret
+            maas_url: registerUrl,
+            rpc_shared_secret: registerSecret
           };
         }
 

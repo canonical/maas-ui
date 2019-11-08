@@ -40,7 +40,8 @@ const buildUrl = () => {
   return url;
 };
 
-const bootstrapOverWebsocket = config => {
+const bootstrapOverWebsocket = () => {
+  let config = {};
   const webSocket = new WebSocket(buildUrl());
 
   const sendMsg = (id, method) => {
@@ -70,6 +71,8 @@ const bootstrapOverWebsocket = config => {
         const requiredConfigKeys = [
           "completed_intro",
           "maas_name",
+          "maas_url",
+          "rpc_shared_secret",
           "uuid",
           "enable_analytics"
         ];
@@ -117,19 +120,11 @@ const bootstrapOverWebsocket = config => {
  * then manually bootstrap angularjs app.
  */
 const bootstrap = () => {
-  let CONFIG = {
-    register_url: "foo", // https://bugs.launchpad.net/maas/+bug/1850246
-    register_secret: "bar" // https://bugs.launchpad.net/maas/+bug/1850246
-  };
-
   const savedConfig = window.localStorage.getItem("maas-config");
   if (savedConfig) {
-    // Once register_url and register_secret are fetched from the
-    // ws API, merging here will no longer be necessary.
-    const mergedConfig = { ...CONFIG, ...JSON.parse(savedConfig) };
-    bootstrapApp(mergedConfig);
+    bootstrapApp(JSON.parse(savedConfig));
   } else {
-    bootstrapOverWebsocket(CONFIG);
+    bootstrapOverWebsocket();
   }
 };
 
