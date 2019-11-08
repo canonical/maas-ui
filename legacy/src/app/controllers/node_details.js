@@ -12,6 +12,7 @@ function NodeDetailsController(
   $rootScope,
   $routeParams,
   $location,
+  $filter,
   DevicesManager,
   MachinesManager,
   ControllersManager,
