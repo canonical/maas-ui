@@ -149,7 +149,10 @@ describe("packagerepository reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, name: "repo1" }, { id: 2, name: "repo2" }],
+      items: [
+        { id: 1, name: "repo1" },
+        { id: 2, name: "repo2" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -239,7 +242,10 @@ describe("packagerepository reducer", () => {
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, name: "repo1" }, { id: 2, name: "repo2" }],
+          items: [
+            { id: 1, name: "repo1" },
+            { id: 2, name: "repo2" }
+          ],
           loaded: false,
           loading: false,
           saved: false,
@@ -253,7 +259,10 @@ describe("packagerepository reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, name: "newName" }, { id: 2, name: "repo2" }],
+      items: [
+        { id: 1, name: "newName" },
+        { id: 2, name: "repo2" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -343,7 +352,10 @@ describe("packagerepository reducer", () => {
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, name: "repo1" }, { id: 2, name: "repo2" }],
+          items: [
+            { id: 1, name: "repo1" },
+            { id: 2, name: "repo2" }
+          ],
           loaded: false,
           loading: false,
           saved: false,

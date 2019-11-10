@@ -33,7 +33,10 @@ describe("NetworkDiscoveryForm", () => {
           {
             name: "network_discovery",
             value: "enabled",
-            choices: [["enabled", "Enabled"], ["disabled", "Disabled"]]
+            choices: [
+              ["enabled", "Enabled"],
+              ["disabled", "Disabled"]
+            ]
           }
         ]
       }

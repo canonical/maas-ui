@@ -46,7 +46,10 @@ describe("DhcpList", () => {
       subnet: {
         loading: false,
         loaded: true,
-        items: [{ id: 1, name: "10.0.0.99" }, { id: 2, name: "test.maas" }]
+        items: [
+          { id: 1, name: "10.0.0.99" },
+          { id: 2, name: "test.maas" }
+        ]
       }
     };
   });

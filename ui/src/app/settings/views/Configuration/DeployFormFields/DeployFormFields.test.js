@@ -20,7 +20,10 @@ describe("DeployFormFields", () => {
           {
             name: "default_osystem",
             value: "ubuntu",
-            choices: [["centos", "CentOS"], ["ubuntu", "Ubuntu"]]
+            choices: [
+              ["centos", "CentOS"],
+              ["ubuntu", "Ubuntu"]
+            ]
           },
           {
             name: "default_distro_series",

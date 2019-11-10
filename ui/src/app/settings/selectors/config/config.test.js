@@ -411,7 +411,10 @@ describe("config selectors", () => {
             {
               name: "default_osystem",
               value: "ubuntu",
-              choices: [["centos", "CentOS"], ["ubuntu", "Ubuntu"]]
+              choices: [
+                ["centos", "CentOS"],
+                ["ubuntu", "Ubuntu"]
+              ]
             }
           ]
         }

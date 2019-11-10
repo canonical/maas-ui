@@ -31,13 +31,19 @@ describe("controller reducer", () => {
         },
         {
           type: "FETCH_CONTROLLER_SUCCESS",
-          payload: [{ id: 1, hostname: "rack" }, { id: 2, hostname: "maas" }]
+          payload: [
+            { id: 1, hostname: "rack" },
+            { id: 2, hostname: "maas" }
+          ]
         }
       )
     ).toEqual({
       loading: false,
       loaded: true,
-      items: [{ id: 1, hostname: "rack" }, { id: 2, hostname: "maas" }]
+      items: [
+        { id: 1, hostname: "rack" },
+        { id: 2, hostname: "maas" }
+      ]
     });
   });
 });

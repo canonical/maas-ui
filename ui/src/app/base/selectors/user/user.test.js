@@ -64,7 +64,10 @@ describe("users selectors", () => {
     const state = {
       user: {
         loading: true,
-        items: [{ username: "foo", id: 808 }, { username: "bar", id: 909 }]
+        items: [
+          { username: "foo", id: 808 },
+          { username: "bar", id: 909 }
+        ]
       }
     };
     expect(user.getById(state, 909)).toStrictEqual({

@@ -146,7 +146,10 @@ describe("websocket sagas", () => {
         type: MESSAGE_TYPES.REQUEST
       },
       payload: {
-        params: [{ name: "foo", value: "bar" }, { name: "baz", value: "qux" }]
+        params: [
+          { name: "foo", value: "bar" },
+          { name: "baz", value: "qux" }
+        ]
       }
     });
     expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
