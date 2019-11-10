@@ -94,7 +94,7 @@ const bootstrapOverWebsocket = () => {
         messagesReceived.push(3);
         break;
 
-      // general.version
+      // general.navigation_options
       case 4:
         config.navigation_options = msg.result;
         messagesReceived.push(4);
