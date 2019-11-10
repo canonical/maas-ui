@@ -87,7 +87,10 @@ describe("scripts reducer", () => {
       scripts(
         {
           errors: {},
-          items: [{ id: 1, name: "script-1" }, { id: 2, name: "script-2" }],
+          items: [
+            { id: 1, name: "script-1" },
+            { id: 2, name: "script-2" }
+          ],
           loaded: false,
           loading: false,
           saved: false,

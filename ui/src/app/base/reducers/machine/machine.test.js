@@ -31,13 +31,19 @@ describe("machine reducer", () => {
         },
         {
           type: "FETCH_MACHINE_SUCCESS",
-          payload: [{ id: 1, hostname: "node1" }, { id: 2, hostname: "node2" }]
+          payload: [
+            { id: 1, hostname: "node1" },
+            { id: 2, hostname: "node2" }
+          ]
         }
       )
     ).toEqual({
       loading: false,
       loaded: true,
-      items: [{ id: 1, hostname: "node1" }, { id: 2, hostname: "node2" }]
+      items: [
+        { id: 1, hostname: "node1" },
+        { id: 2, hostname: "node2" }
+      ]
     });
   });
 });

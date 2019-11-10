@@ -93,7 +93,10 @@ describe("osInfo selectors", () => {
               ["hwe-p", "precise (hwe-p)"],
               ["hwe-q", "precise (hwe-q)"]
             ],
-            trusty: [["hwe-t", "trusty (hwe-t)"], ["hwe-u", "trusty (hwe-u)"]]
+            trusty: [
+              ["hwe-t", "trusty (hwe-t)"],
+              ["hwe-u", "trusty (hwe-u)"]
+            ]
           }
         }
       };
@@ -123,7 +126,10 @@ describe("osInfo selectors", () => {
               ["hwe-p", "precise (hwe-p)"],
               ["hwe-q", "precise (hwe-q)"]
             ],
-            trusty: [["hwe-t", "trusty (hwe-t)"], ["hwe-u", "trusty (hwe-u)"]]
+            trusty: [
+              ["hwe-t", "trusty (hwe-t)"],
+              ["hwe-u", "trusty (hwe-u)"]
+            ]
           }
         }
       };
@@ -194,7 +200,10 @@ describe("osInfo selectors", () => {
 
   describe("getAllOsReleases", () => {
     const data = {
-      osystems: [["ubuntu", "Ubuntu"], ["centos", "CentOS"]],
+      osystems: [
+        ["ubuntu", "Ubuntu"],
+        ["centos", "CentOS"]
+      ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
@@ -232,7 +241,10 @@ describe("osInfo selectors", () => {
 
   describe("getLicensedOsReleases", () => {
     const data = {
-      osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+      osystems: [
+        ["ubuntu", "Ubuntu"],
+        ["windows", "Windows"]
+      ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
@@ -262,7 +274,10 @@ describe("osInfo selectors", () => {
 
   describe("getLicensedOsystems", () => {
     const data = {
-      osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+      osystems: [
+        ["ubuntu", "Ubuntu"],
+        ["windows", "Windows"]
+      ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],

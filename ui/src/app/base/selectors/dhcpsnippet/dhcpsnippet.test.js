@@ -107,7 +107,10 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         loading: true,
-        items: [{ name: "class", id: 808 }, { name: "lease", id: 909 }]
+        items: [
+          { name: "class", id: 808 },
+          { name: "lease", id: 909 }
+        ]
       }
     };
     expect(dhcpsnippet.getById(state, 909)).toStrictEqual({

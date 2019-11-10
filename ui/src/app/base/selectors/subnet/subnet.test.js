@@ -33,7 +33,10 @@ describe("subnet selectors", () => {
   it("can get a subnet by id", () => {
     const state = {
       subnet: {
-        items: [{ name: "maas.test", id: 808 }, { name: "10.0.0.99", id: 909 }]
+        items: [
+          { name: "maas.test", id: 808 },
+          { name: "10.0.0.99", id: 909 }
+        ]
       }
     };
     expect(subnet.getById(state, 909)).toStrictEqual({

@@ -76,7 +76,10 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         loading: true,
-        items: [{ name: "foo", id: 101 }, { name: "bar", id: 123 }]
+        items: [
+          { name: "foo", id: 101 },
+          { name: "bar", id: 123 }
+        ]
       }
     };
     expect(packagerepository.getById(state, 101)).toStrictEqual({

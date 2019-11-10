@@ -73,9 +73,8 @@ config.saved = state => state.config.saved;
  * @param {Object} state - The redux state.
  * @returns {String} Default storage layout.
  */
-config.defaultStorageLayout = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "default_storage_layout")
+config.defaultStorageLayout = createSelector([config.all], configs =>
+  getValueFromName(configs, "default_storage_layout")
 );
 
 /**
@@ -83,9 +82,8 @@ config.defaultStorageLayout = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Storage layout options.
  */
-config.storageLayoutOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "default_storage_layout")
+config.storageLayoutOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "default_storage_layout")
 );
 
 /**
@@ -93,9 +91,8 @@ config.storageLayoutOptions = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing on release.
  */
-config.enableDiskErasing = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "enable_disk_erasing_on_release")
+config.enableDiskErasing = createSelector([config.all], configs =>
+  getValueFromName(configs, "enable_disk_erasing_on_release")
 );
 
 /**
@@ -103,9 +100,8 @@ config.enableDiskErasing = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing with secure erase.
  */
-config.diskEraseWithSecure = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "disk_erase_with_secure_erase")
+config.diskEraseWithSecure = createSelector([config.all], configs =>
+  getValueFromName(configs, "disk_erase_with_secure_erase")
 );
 
 /**
@@ -113,9 +109,8 @@ config.diskEraseWithSecure = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing with quick erase.
  */
-config.diskEraseWithQuick = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "disk_erase_with_quick_erase")
+config.diskEraseWithQuick = createSelector([config.all], configs =>
+  getValueFromName(configs, "disk_erase_with_quick_erase")
 );
 
 /**
@@ -123,9 +118,8 @@ config.diskEraseWithQuick = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} HTTP proxy.
  */
-config.httpProxy = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "http_proxy")
+config.httpProxy = createSelector([config.all], configs =>
+  getValueFromName(configs, "http_proxy")
 );
 
 /**
@@ -133,9 +127,8 @@ config.httpProxy = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable HTTP proxy.
  */
-config.enableHttpProxy = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "enable_http_proxy")
+config.enableHttpProxy = createSelector([config.all], configs =>
+  getValueFromName(configs, "enable_http_proxy")
 );
 
 /**
@@ -143,9 +136,8 @@ config.enableHttpProxy = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Use peer proxy.
  */
-config.usePeerProxy = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "use_peer_proxy")
+config.usePeerProxy = createSelector([config.all], configs =>
+  getValueFromName(configs, "use_peer_proxy")
 );
 
 /**
@@ -176,9 +168,8 @@ config.proxyType = createSelector(
  * @param {Object} - The redux state.
  * @returns {String} Then MAAS name.
  */
-config.maasName = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "maas_name")
+config.maasName = createSelector([config.all], configs =>
+  getValueFromName(configs, "maas_name")
 );
 
 /**
@@ -186,9 +177,8 @@ config.maasName = createSelector(
  * @param {Object} - The redux state.
  * @returns {Boolean} Enable analytics.
  */
-config.analyticsEnabled = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "enable_analytics")
+config.analyticsEnabled = createSelector([config.all], configs =>
+  getValueFromName(configs, "enable_analytics")
 );
 
 /**
@@ -196,9 +186,8 @@ config.analyticsEnabled = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Default distro series.
  */
-config.commissioningDistroSeries = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "commissioning_distro_series")
+config.commissioningDistroSeries = createSelector([config.all], configs =>
+  getValueFromName(configs, "commissioning_distro_series")
 );
 
 /**
@@ -206,9 +195,8 @@ config.commissioningDistroSeries = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Distro series options.
  */
-config.distroSeriesOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "commissioning_distro_series")
+config.distroSeriesOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "commissioning_distro_series")
 );
 
 /**
@@ -216,18 +204,16 @@ config.distroSeriesOptions = createSelector(
  * @param {object} state - The redux state.
  * @returns {String} Default min kernal version.
  */
-config.defaultMinKernelVersion = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "default_min_hwe_kernel")
+config.defaultMinKernelVersion = createSelector([config.all], configs =>
+  getValueFromName(configs, "default_min_hwe_kernel")
 );
 
 /* Returns the MAAS config for enabling DNSSEC validation of upstream zones.
  * @param {Object} state - The redux state.
  * @returns {String} DNSSEC validation type.
  */
-config.dnssecValidation = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "dnssec_validation")
+config.dnssecValidation = createSelector([config.all], configs =>
+  getValueFromName(configs, "dnssec_validation")
 );
 
 /**
@@ -235,9 +221,8 @@ config.dnssecValidation = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} DNSSEC validation options.
  */
-config.dnssecOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "dnssec_validation")
+config.dnssecOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "dnssec_validation")
 );
 
 /**
@@ -245,9 +230,8 @@ config.dnssecOptions = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} External networks.
  */
-config.dnsTrustedAcl = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "dns_trusted_acl")
+config.dnsTrustedAcl = createSelector([config.all], configs =>
+  getValueFromName(configs, "dns_trusted_acl")
 );
 
 /**
@@ -255,9 +239,8 @@ config.dnsTrustedAcl = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Upstream DNS(s).
  */
-config.upstreamDns = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "upstream_dns")
+config.upstreamDns = createSelector([config.all], configs =>
+  getValueFromName(configs, "upstream_dns")
 );
 
 /**
@@ -265,9 +248,8 @@ config.upstreamDns = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} NTP server(s).
  */
-config.ntpServers = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "ntp_servers")
+config.ntpServers = createSelector([config.all], configs =>
+  getValueFromName(configs, "ntp_servers")
 );
 
 /**
@@ -275,9 +257,8 @@ config.ntpServers = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable external NTP servers only.
  */
-config.ntpExternalOnly = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "ntp_external_only")
+config.ntpExternalOnly = createSelector([config.all], configs =>
+  getValueFromName(configs, "ntp_external_only")
 );
 
 /**
@@ -285,9 +266,8 @@ config.ntpExternalOnly = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Remote syslog server.
  */
-config.remoteSyslog = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "remote_syslog")
+config.remoteSyslog = createSelector([config.all], configs =>
+  getValueFromName(configs, "remote_syslog")
 );
 
 /**
@@ -295,9 +275,8 @@ config.remoteSyslog = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Enable network discovery.
  */
-config.networkDiscovery = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "network_discovery")
+config.networkDiscovery = createSelector([config.all], configs =>
+  getValueFromName(configs, "network_discovery")
 );
 
 /**
@@ -305,9 +284,8 @@ config.networkDiscovery = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Network discovery options.
  */
-config.networkDiscoveryOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "network_discovery")
+config.networkDiscoveryOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "network_discovery")
 );
 
 /**
@@ -315,9 +293,8 @@ config.networkDiscoveryOptions = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Number} Active discovery interval in ms.
  */
-config.activeDiscoveryInterval = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "active_discovery_interval")
+config.activeDiscoveryInterval = createSelector([config.all], configs =>
+  getValueFromName(configs, "active_discovery_interval")
 );
 
 /**
@@ -325,9 +302,8 @@ config.activeDiscoveryInterval = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Active discovery intervals.
  */
-config.discoveryIntervalOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "active_discovery_interval")
+config.discoveryIntervalOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "active_discovery_interval")
 );
 
 /**
@@ -335,9 +311,8 @@ config.discoveryIntervalOptions = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Kernel parameters.
  */
-config.kernelParams = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "kernel_opts")
+config.kernelParams = createSelector([config.all], configs =>
+  getValueFromName(configs, "kernel_opts")
 );
 
 /**
@@ -345,9 +320,8 @@ config.kernelParams = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Windows KMS host.
  */
-config.windowsKmsHost = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "windows_kms_host")
+config.windowsKmsHost = createSelector([config.all], configs =>
+  getValueFromName(configs, "windows_kms_host")
 );
 
 /**
@@ -355,9 +329,8 @@ config.windowsKmsHost = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter server.
  */
-config.vCenterServer = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "vcenter_server")
+config.vCenterServer = createSelector([config.all], configs =>
+  getValueFromName(configs, "vcenter_server")
 );
 
 /**
@@ -365,9 +338,8 @@ config.vCenterServer = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter username.
  */
-config.vCenterUsername = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "vcenter_username")
+config.vCenterUsername = createSelector([config.all], configs =>
+  getValueFromName(configs, "vcenter_username")
 );
 
 /**
@@ -375,9 +347,8 @@ config.vCenterUsername = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter password.
  */
-config.vCenterPassword = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "vcenter_password")
+config.vCenterPassword = createSelector([config.all], configs =>
+  getValueFromName(configs, "vcenter_password")
 );
 
 /**
@@ -385,9 +356,8 @@ config.vCenterPassword = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter datacenter.
  */
-config.vCenterDatacenter = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "vcenter_datacenter")
+config.vCenterDatacenter = createSelector([config.all], configs =>
+  getValueFromName(configs, "vcenter_datacenter")
 );
 
 /**
@@ -395,9 +365,8 @@ config.vCenterDatacenter = createSelector(
  * @param {Object} state - The redux state
  * @returns {Boolean} - The value of enable_third_party_drivers
  */
-config.thirdPartyDriversEnabled = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "enable_third_party_drivers")
+config.thirdPartyDriversEnabled = createSelector([config.all], configs =>
+  getValueFromName(configs, "enable_third_party_drivers")
 );
 
 /**
@@ -405,9 +374,8 @@ config.thirdPartyDriversEnabled = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Default OS.
  */
-config.defaultOSystem = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "default_osystem")
+config.defaultOSystem = createSelector([config.all], configs =>
+  getValueFromName(configs, "default_osystem")
 );
 
 /**
@@ -415,9 +383,8 @@ config.defaultOSystem = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Default OS options.
  */
-config.defaultOSystemOptions = createSelector(
-  [config.all],
-  configs => getOptionsFromName(configs, "default_osystem")
+config.defaultOSystemOptions = createSelector([config.all], configs =>
+  getOptionsFromName(configs, "default_osystem")
 );
 
 /**
@@ -425,9 +392,8 @@ config.defaultOSystemOptions = createSelector(
  * @param {Object} state - The redux state.
  * @returns {String} Default distro series.
  */
-config.defaultDistroSeries = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "default_distro_series")
+config.defaultDistroSeries = createSelector([config.all], configs =>
+  getValueFromName(configs, "default_distro_series")
 );
 
 /**
@@ -435,9 +401,8 @@ config.defaultDistroSeries = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether the intro has been completed
  */
-config.completedIntro = createSelector(
-  [config.all],
-  configs => getValueFromName(configs, "completed_intro")
+config.completedIntro = createSelector([config.all], configs =>
+  getValueFromName(configs, "completed_intro")
 );
 
 export default config;

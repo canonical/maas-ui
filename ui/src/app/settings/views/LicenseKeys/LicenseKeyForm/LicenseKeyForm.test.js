@@ -22,7 +22,10 @@ describe("LicenseKeyForm", () => {
           loaded: true,
           loading: false,
           data: {
-            osystems: [["ubuntu", "Ubuntu"], ["windows", "Windows"]],
+            osystems: [
+              ["ubuntu", "Ubuntu"],
+              ["windows", "Windows"]
+            ],
             releases: [
               ["ubuntu/bionic", "Ubuntu 18.04 LTS 'Bionic Beaver'"],
               ["windows/win2012*", "Windows Server 2012"]

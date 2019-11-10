@@ -40,12 +40,18 @@ describe("dhcpsnippet reducer", () => {
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
-          payload: [{ id: 1, name: "class" }, { id: 2, name: "lease" }]
+          payload: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ]
         }
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class" },
+        { id: 2, name: "lease" }
+      ],
       loading: false,
       loaded: true,
       saved: false,
@@ -227,12 +233,18 @@ describe("dhcpsnippet reducer", () => {
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
-          payload: [{ id: 1, name: "class" }, { id: 2, name: "lease" }]
+          payload: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ]
         }
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class" },
+        { id: 2, name: "lease" }
+      ],
       loading: false,
       loaded: true,
       saved: false,
@@ -253,12 +265,18 @@ describe("dhcpsnippet reducer", () => {
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
-          payload: [{ id: 1, name: "class" }, { id: 2, name: "lease" }]
+          payload: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ]
         }
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class" },
+        { id: 2, name: "lease" }
+      ],
       loading: false,
       loaded: true,
       saved: false,
@@ -279,12 +297,18 @@ describe("dhcpsnippet reducer", () => {
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
-          payload: [{ id: 1, name: "class" }, { id: 2, name: "lease" }]
+          payload: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ]
         }
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class" },
+        { id: 2, name: "lease" }
+      ],
       loading: false,
       loaded: true,
       saved: false,
@@ -298,7 +322,10 @@ describe("dhcpsnippet reducer", () => {
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+          items: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ],
           loaded: false,
           loading: false,
           saved: false,
@@ -315,7 +342,10 @@ describe("dhcpsnippet reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, name: "class2" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class2" },
+        { id: 2, name: "lease" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -343,7 +373,10 @@ describe("dhcpsnippet reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+      items: [
+        { id: 1, name: "class" },
+        { id: 2, name: "lease" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -356,7 +389,10 @@ describe("dhcpsnippet reducer", () => {
       dhcpsnippet(
         {
           errors: {},
-          items: [{ id: 1, name: "class" }, { id: 2, name: "lease" }],
+          items: [
+            { id: 1, name: "class" },
+            { id: 2, name: "lease" }
+          ],
           loaded: false,
           loading: false,
           saved: false,

@@ -31,13 +31,19 @@ describe("device reducer", () => {
         },
         {
           type: "FETCH_DEVICE_SUCCESS",
-          payload: [{ id: 1, hostname: "test1" }, { id: 2, hostname: "test2" }]
+          payload: [
+            { id: 1, hostname: "test1" },
+            { id: 2, hostname: "test2" }
+          ]
         }
       )
     ).toEqual({
       loading: false,
       loaded: true,
-      items: [{ id: 1, hostname: "test1" }, { id: 2, hostname: "test2" }]
+      items: [
+        { id: 1, hostname: "test1" },
+        { id: 2, hostname: "test2" }
+      ]
     });
   });
 });

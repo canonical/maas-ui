@@ -43,7 +43,10 @@ describe("users reducer", () => {
         },
         {
           type: "FETCH_USER_SUCCESS",
-          payload: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }]
+          payload: [
+            { id: 1, username: "admin" },
+            { id: 2, username: "user1" }
+          ]
         }
       )
     ).toEqual({
@@ -51,7 +54,10 @@ describe("users reducer", () => {
       errors: {},
       loading: false,
       loaded: true,
-      items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+      items: [
+        { id: 1, username: "admin" },
+        { id: 2, username: "user1" }
+      ],
       saved: false,
       saving: false
     });
@@ -228,7 +234,10 @@ describe("users reducer", () => {
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+          items: [
+            { id: 1, username: "admin" },
+            { id: 2, username: "user1" }
+          ],
           loaded: false,
           loading: false,
           saved: false,
@@ -245,7 +254,10 @@ describe("users reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, username: "kangaroo" }, { id: 2, username: "user1" }],
+      items: [
+        { id: 1, username: "kangaroo" },
+        { id: 2, username: "user1" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -273,7 +285,10 @@ describe("users reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+      items: [
+        { id: 1, username: "admin" },
+        { id: 2, username: "user1" }
+      ],
       loaded: false,
       loading: false,
       saved: false,
@@ -287,7 +302,10 @@ describe("users reducer", () => {
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, username: "admin" }, { id: 2, username: "user1" }],
+          items: [
+            { id: 1, username: "admin" },
+            { id: 2, username: "user1" }
+          ],
           loaded: false,
           loading: false,
           saved: false,

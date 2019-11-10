@@ -50,7 +50,10 @@ describe("sslkey reducer", () => {
       errors: null,
       loading: false,
       loaded: true,
-      items: [{ id: 1, key: "ssh-rsa aabb" }, { id: 2, key: "ssh-rsa ccdd" }],
+      items: [
+        { id: 1, key: "ssh-rsa aabb" },
+        { id: 2, key: "ssh-rsa ccdd" }
+      ],
       saved: false,
       saving: false
     });
@@ -244,7 +247,10 @@ describe("sslkey reducer", () => {
     ).toEqual({
       auth: {},
       errors: {},
-      items: [{ id: 1, key: "ssh-rsa aabb" }, { id: 2, key: "ssh-rsa ccdd" }],
+      items: [
+        { id: 1, key: "ssh-rsa aabb" },
+        { id: 2, key: "ssh-rsa ccdd" }
+      ],
       loaded: false,
       loading: false,
       saved: false,

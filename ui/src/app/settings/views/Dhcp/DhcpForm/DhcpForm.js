@@ -66,7 +66,8 @@ export const DhcpForm = ({ dhcpSnippet }) => {
 
   if (
     editing &&
-    ((dhcpSnippet.node || dhcpSnippet.subnet) && (loading || !loaded))
+    (dhcpSnippet.node || dhcpSnippet.subnet) &&
+    (loading || !loaded)
   ) {
     return <Loader text="Loading..." />;
   }
