@@ -121,7 +121,7 @@ const generateRows = (
         ) : (
           <Row>
             <Col size="10">
-              <Code>{scriptSrc}</Code>
+              <Code className="u-no-margin--bottom">{scriptSrc}</Code>
             </Col>
           </Row>
         )),

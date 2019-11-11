@@ -1,7 +1,7 @@
 .p-table-expanding--light .p-table-expanding__panel {
   border-top: 1px solid $color-mid-light;
-  margin: 0.5rem 0.5rem 0 0.5rem;
-  padding-top: 0.5rem;
+  margin: 0 $sp-small $sp-small $sp-small;
+  padding: $sp-small 0 0 0;
 }
 
 .p-table-expanding--light .p-table__row.is-active {
