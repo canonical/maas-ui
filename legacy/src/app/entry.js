@@ -348,7 +348,7 @@ const renderHeader = ($rootScope, $window, $http) => {
   if (!headerNode) {
     return;
   }
-  const { completed_intro, current_user } = $window.CONFIG;
+  const { completed_intro, navigation_options, current_user } = $window.CONFIG;
   const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
     <Header
@@ -370,7 +370,7 @@ const renderHeader = ($rootScope, $window, $http) => {
         // header is first rendered.
         $rootScope.skip();
       }}
-      showRSD={window.CONFIG.navigation_options.rsd}
+      showRSD={navigation_options && navigation_options.rsd}
     />,
     headerNode
   );
