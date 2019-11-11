@@ -93,8 +93,14 @@ const bootstrapOverWebsocket = () => {
         config.version = msg.result;
         messagesReceived.push(3);
         break;
+
+      // general.navigation_options
+      case 4:
+        config.navigation_options = msg.result;
+        messagesReceived.push(4);
+        break;
     }
-    if (messagesReceived.length === 3) {
+    if (messagesReceived.length === 4) {
       // Only store the config once the MAAS has been set up. The intro pages
       // refresh the window when each one completes, so we don't want the
       // stored config to get out of sync (there is also little optimisation to
@@ -112,6 +118,7 @@ const bootstrapOverWebsocket = () => {
     sendMsg(1, "user.auth_user");
     sendMsg(2, "config.list");
     sendMsg(3, "general.version");
+    sendMsg(4, "general.navigation_options");
   };
 };
 

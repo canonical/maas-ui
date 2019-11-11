@@ -20,7 +20,8 @@ export const Header = ({
   location,
   logout,
   newURLPrefix,
-  onSkip
+  onSkip,
+  showRSD
 }) => {
   const [hardwareVisible, toggleHardware] = useVisible(false);
   const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
@@ -52,6 +53,7 @@ export const Header = ({
       url: "/kvm"
     },
     {
+      hidden: !showRSD,
       inHardwareMenu: true,
       isLegacy: true,
       label: "RSD",
@@ -83,9 +85,13 @@ export const Header = ({
       label: "Settings",
       url: "/settings"
     }
-  ].filter(
-    ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
-  );
+  ]
+    // Remove the admin only items if the user is not an admin.
+    .filter(
+      ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
+    )
+    // Remove the hidden items.
+    .filter(({ hidden }) => !hidden);
 
   const generateLegacyURL = url => `${basename}/#${url}`;
 
@@ -274,7 +280,8 @@ Header.propTypes = {
   }).isRequired,
   logout: PropTypes.func.isRequired,
   newURLPrefix: PropTypes.string,
-  onSkip: PropTypes.func
+  onSkip: PropTypes.func,
+  showRSD: PropTypes.bool
 };
 
 export default Header;
