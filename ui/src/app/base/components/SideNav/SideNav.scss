@@ -13,8 +13,8 @@
 
 .side-nav__list {
   @extend %vf-clearfix;
-  margin-bottom: $spv-inner--small;
-  margin-top: -$spv-inner--x-small;
+  margin: -$spv-inner--x-small 0 $spv-inner--small;
+  padding: 0;
 
   &__item {
     @extend %vf-list-item;
