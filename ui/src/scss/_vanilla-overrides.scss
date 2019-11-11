@@ -37,3 +37,14 @@ td > .p-tooltip {
 [class*="p-notification"] .p-icon--close {
   margin-top: 0.75rem;
 }
+
+// 11-11-2019 Huw: The table sort icon uses old chevron.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/2634
+.p-table--sortable th[role="columnheader"][aria-sort="ascending"]::after,
+.p-table--sortable th[role="columnheader"][aria-sort="descending"]::after,
+.p-table-multi-header[aria-sort="descending"]
+  .p-table-multi-header__link.is-active::after,
+.p-table-multi-header[aria-sort="ascending"]
+  .p-table-multi-header__link.is-active::after {
+  @include vf-icon-chevron;
+}
