@@ -75,6 +75,11 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
     &:visited {
       color: $color-link;
     }
+
+    // Override inherited button style from Vanilla
+    &:active {
+      background-color: inherit !important;
+    }
   }
 
   [class*="p-button"] [class^="p-icon"],
