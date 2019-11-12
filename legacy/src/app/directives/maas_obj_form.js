@@ -132,7 +132,11 @@ export function maasObjForm(JSONService) {
     // Watch for changes on the value of the object.
     var self = this;
     this.scope.$watch("obj." + key, function() {
-      if (angular.isObject(self.obj) && !self.fields[key].editing) {
+      if (
+        angular.isObject(self.obj) &&
+        angular.isObject(self.fields[key]) &&
+        !self.fields[key].editing
+      ) {
         self.fields[key].scope.updateValue(self.obj[key]);
       }
     });
