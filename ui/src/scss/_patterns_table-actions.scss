@@ -1,18 +1,20 @@
-.p-table-actions {
-  display: flex;
-  margin-bottom: 1rem;
-}
+@media screen and (min-width: $breakpoint-x-small) {
+  .p-table-actions {
+    display: flex;
+    margin-bottom: 1rem;
+  }
 
-.p-table-actions__space-left,
-.p-table-actions .p-search-box {
-  flex: 1 1 auto;
-  margin: 0;
-}
+  .p-table-actions__space-left,
+  .p-table-actions .p-search-box {
+    flex: 1 1 auto;
+    margin: 0;
+  }
 
-.p-table-actions [class*="p-button"] {
-  margin: 0;
+  .p-table-actions [class*="p-button"] {
+    margin: 0;
 
-  &:first-of-type {
-    margin-left: 1rem;
+    &:first-of-type {
+      margin-left: 1rem;
+    }
   }
 }
