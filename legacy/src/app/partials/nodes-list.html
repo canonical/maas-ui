@@ -45,10 +45,10 @@
                  data-ng-show="canCreateResourcePool()">
               <button class="p-button--neutral"
                       data-ng-click="tabs.pools.addPool()"
-                      data-ng-hide="tabs.pools.actionOption">Add pool</button>
+                      data-ng-if="!tabs.pools.actionOption">Add pool</button>
               <button class="p-button--neutral ng-hide"
                       data-ng-click="tabs.pools.cancelAddPool()"
-                      data-ng-show="tabs.pools.actionOption">Cancel add pool</button>
+                      data-ng-if="tabs.pools.actionOption">Cancel add pool</button>
             </div>
         </div>
 
