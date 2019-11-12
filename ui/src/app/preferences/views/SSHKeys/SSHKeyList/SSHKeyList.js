@@ -58,9 +58,11 @@ const generateKeyCols = (keys, deleteButton) => {
   return (
     <ul className="p-table-sub-cols__list">
       {keys.map((key, i) => (
-        <div className="p-table-sub-cols__item" key={key.key}>
-          {formatKey(key.key)}
-          {i === 0 && deleteButton}
+        <div className="p-table-sub-cols__item sshkey-list__keys" key={key.key}>
+          <div className="sshkey-list__keys-key">{formatKey(key.key)}</div>
+          <div className="sshkey-list__keys-delete">
+            {i === 0 && deleteButton}
+          </div>
         </div>
       ))}
     </ul>
@@ -168,7 +170,7 @@ const SSHKeyList = () => {
             content: (
               <>
                 Key
-                <span className="sshkey-list__header-delete">Actions</span>
+                <span className="sshkey-list__header-action">Actions</span>
               </>
             )
           }

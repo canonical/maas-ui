@@ -1,7 +1,22 @@
 .apikey-list td,
 .apikey-list th {
   // Actions:
-  &:nth-child(2) {
-    flex: 0 0 10%;
+  &:nth-child(3) {
+    flex: 0.3 0 0;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .apikey-list td,
+  .apikey-list th {
+    // Key
+    &:nth-child(2) {
+      display: none;
+    }
+
+    // Actions:
+    &:nth-child(3) {
+      flex-grow: 0.4;
+    }
   }
 }
