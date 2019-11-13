@@ -90,11 +90,10 @@
             </div>
           </div>
           <div class="p-form__group row" data-ng-repeat="mac in machine.macs">
-            <label for="mac-address" class="p-form__label is-required col-2"
-              ><span data-ng-hide="mac !== machine.macs[0]">MAC Address</span
-              >&nbsp;</label
-            >
-            <div class="p-form__control p-search-box col-4">
+            <label for="mac-address" class="p-form__label col-2" ng-class="{ 'is-required': mac === machine.macs[0] }">
+              <span data-ng-if="mac === machine.macs[0]">MAC Address</span>&nbsp;
+            </label>
+            <div class="col-4 p-form__control p-search-box u-no-margin--bottom">
               <input
                 type="text"
                 id="mac-address"
@@ -119,7 +118,7 @@
             </div>
           </div>
           <div class="p-form__group u-align--right">
-            <button class="p-button--neutral" data-ng-click="addMac()">
+            <button class="p-button--neutral" data-ng-click="addMac()" type="button">
               + Add MAC Address
             </button>
           </div>
