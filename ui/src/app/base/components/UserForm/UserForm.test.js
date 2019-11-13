@@ -51,6 +51,7 @@ describe("UserForm", () => {
   it("can handle saving", () => {
     const store = mockStore(state);
     const onSave = jest.fn();
+    const resetForm = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
@@ -62,14 +63,17 @@ describe("UserForm", () => {
       wrapper
         .find("Formik")
         .props()
-        .onSubmit({
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin"
-        })
+        .onSubmit(
+          {
+            isSuperuser: true,
+            email: "test@example.com",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
+            username: "admin"
+          },
+          { resetForm }
+        )
     );
     expect(onSave.mock.calls[0][0]).toEqual({
       email: "test@example.com",
@@ -81,6 +85,7 @@ describe("UserForm", () => {
       password2: "test1234",
       username: "admin"
     });
+    expect(resetForm).toHaveBeenCalled();
   });
 
   it("hides the password fields when editing", () => {
