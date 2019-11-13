@@ -450,6 +450,21 @@ describe("AddHardwareController", function() {
       expect($scope.machineHasError()).toBe(true);
     });
 
+    it("returns true if a required field is empty", () => {
+      makeControllerWithMachine();
+      $scope.machine.zone = {};
+      $scope.machine.architecture = makeName("arch");
+      $scope.machine.macs[0].mac = "00:11:22:33:44:55";
+      $scope.machine.macs[0].error = false;
+      $scope.machine.power.type = {
+        fields: [{ name: "field", required: true }]
+      };
+      $scope.machine.power.parameters = {
+        field: null
+      };
+      expect($scope.machineHasError()).toBe(true);
+    });
+
     it("returns false if all is correct", function() {
       makeControllerWithMachine();
       $scope.machine.zone = {};
