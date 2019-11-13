@@ -1,13 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FormikFormButtons  renders 1`] = `
-<div
-  style={
-    Object {
-      "marginTop": "1rem",
-    }
-  }
->
+<div>
   <ActionButton
     appearance="positive"
     className="u-no-margin--bottom"

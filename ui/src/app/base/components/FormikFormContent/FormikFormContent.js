@@ -40,7 +40,7 @@ const FormikFormContent = ({
           {nonFieldError}
         </Notification>
       )}
-      {children}
+      <div>{children}</div>
       <Buttons
         actionDisabled={saving || formDisabled}
         actionLabel={submitLabel}
