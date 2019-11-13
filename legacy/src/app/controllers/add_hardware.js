@@ -368,18 +368,15 @@ function AddHardwareController(
   }
 
   // Validate that all the parameters are there for the given power type.
-  function powerParametersHasError(power_type, parameters) {
-    var i;
-    for (i = 0; i < power_type.fields.length; i++) {
-      var field = power_type.fields[i];
-      var value = parameters[field.name];
+  function powerParametersHasError(power) {
+    const { parameters, type } = power;
+    const fields = type.fields || [];
+    return fields.some(field => {
       if (field.required) {
-        if (angular.isUndefined(value) || value === "") {
-          return true;
-        }
+        return !parameters[field.name];
       }
-    }
-    return false;
+      return false;
+    });
   }
 
   // Called by the parent scope when this controller is viewable.
@@ -511,6 +508,12 @@ function AddHardwareController(
       return in_error;
     }
 
+    // Required power parameters fields not filled in.
+    const powerParametersError = powerParametersHasError($scope.machine.power);
+    if (powerParametersError) {
+      return true;
+    }
+
     // Make sure none of the mac addresses are in error. The first one
     // cannot be blank the remaining are allowed to be empty.
     if (
@@ -538,10 +541,7 @@ function AddHardwareController(
     if (in_error) {
       return in_error;
     }
-    return powerParametersHasError(
-      $scope.chassis.power.type,
-      $scope.chassis.power.parameters
-    );
+    return powerParametersHasError($scope.chassis.power);
   };
 
   // Called when the cancel button is pressed.
