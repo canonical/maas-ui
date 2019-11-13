@@ -6,11 +6,10 @@ export const FormikFormButtons = ({
   actionDisabled,
   actionLabel,
   actionLoading,
-  actionSuccess,
-  showCancel
+  actionSuccess
 }) => {
   return (
-    <div style={{ marginTop: "1rem" }}>
+    <div>
       <ActionButton
         appearance="positive"
         className="u-no-margin--bottom"
