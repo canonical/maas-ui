@@ -86,7 +86,7 @@ export const UserForm = ({
       buttons={buttons}
       errors={errors}
       initialValues={initialValues}
-      onSubmit={values => {
+      onSubmit={(values, { resetForm }) => {
         const [firstName, ...lastNameParts] = values.fullName.split(" ");
         const params = {
           email: values.email,
@@ -103,6 +103,7 @@ export const UserForm = ({
           params.id = user.id;
         }
         onSave(params, values, editing);
+        resetForm({ values });
       }}
       saving={saving}
       saved={saved}
