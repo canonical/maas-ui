@@ -173,6 +173,25 @@ jobs:
             - node_modules
             - proxy/node_modules
 
+  test-cypress:
+    docker:
+      - image: cypress/base:8
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+      - run: yarn install --frozen-lockfile
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache  ## cache both yarn and Cypress!
+      - run: yarn test-cypress
+
 workflows:
   version: 2
   build_lint_and_test:
@@ -187,3 +206,4 @@ workflows:
       - lint-shared
       - test-shared
       - lint-proxy
+      - test-cypress

@@ -100,13 +100,19 @@ If running `./run` from your macOS ost, you'll need to [download the Docker clie
 
 ### Running
 
-From the root of the MAAS UI project run:
+To run the MAAS UI project through a Docker container, from the root of the MAAS UI project run:
 
 ```
 ./run
 ```
 
-From here you should be able to view the project at &lt;your-local-maas-ip>:8400/MAAS/
+Otherwise you can run the project on your host machine directly if you have node and yarn installed, using:
+
+```
+yarn serve
+```
+
+From here you should be able to view the project at &lt;your-local-maas-ip&gt;:8400/MAAS/
 
 ## Building
 
@@ -119,3 +125,184 @@ yarn build-all
 ```
 
 Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
+
+## Testing with Cypress
+
+[Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
+
+### Running headless tests
+
+To run headless Cypress tests, enter the following command from the root of the project:
+
+```
+yarn test-cypress
+```
+
+This will automatically start legacy, ui and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
+
+### Interactive testing
+
+By launching the Cypress Test Runner, you will be able to to see commands as they execute while also viewing the UI while it's being tested. Note that because the Cypress Test Runner is a graphical application, launching it in a container or VM will require some extra steps because you will need to forward the XVFB messages from Cypress out of the container into an X11 server running on the host machine.
+
+#### Interactive testing on host machine
+
+If developing directly on your host machine, simply run maas-ui in development as normal:
+
+```
+yarn serve
+```
+
+Then open the Cypress Test Runner by running:
+
+```
+yarn cypress-open
+```
+
+You should then see a list of test specs in maas-ui. You can run all interactive tests by clicking "Run all specs" in the top-right of the window.
+
+#### Interactive testing in LXD
+
+You will need to create or update an LXD profile that allows running GUI applications. If creating a new profile, run:
+
+```
+lxc profile create gui
+```
+
+Open the profile config:
+
+```
+lxc profile edit gui
+```
+
+And replace with the following yaml:
+
+``` yaml
+config:
+  environment.DISPLAY: :0
+  raw.idmap: both 1000 1000
+  user.user-data: |
+    #cloud-config
+    runcmd:
+      - 'sed -i "s/; enable-shm = yes/enable-shm = no/g" /etc/pulse/client.conf'
+      - 'echo export PULSE_SERVER=unix:/tmp/.pulse-native | tee --append /home/ubuntu/.profile'
+    packages:
+      - x11-apps
+      - mesa-utils
+      - pulseaudio
+description: GUI LXD profile
+devices:
+  PASocket:
+    path: /tmp/.pulse-native
+    source: /run/user/1000/pulse/native
+    type: disk
+  X0:
+    path: /tmp/.X11-unix/X0
+    source: /tmp/.X11-unix/X0
+    type: disk
+  mygpu:
+    type: gpu
+name: gui
+used_by:
+```
+
+Now either launch a new container with this profile, for example using Ubuntu 18.04:
+
+```
+lxc launch --profile default --profile gui ubuntu:18.04 container-name
+```
+
+Or if you have an existing LXD container, you can update the profile by running:
+
+```
+lxc profile assign existing-container default,gui
+lxc restart existing-container
+```
+
+Install the following dependencies in your container, which are required for Cypress to relay information to the host machine:
+
+```
+sudo apt-get install xvfb libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
+```
+
+You may need to install Cypress explicitly if you've set up file-sharing with your host/container.
+
+```
+node_modules/.bin/cypress install
+```
+
+You should now be able to open the Cypress Test Runner in your container by running:
+
+```
+yarn cypress-open
+```
+
+If you encounter an error with file watchers e.g. `ENOSPC: System limit for number of file watchers reached`, run:
+
+```
+echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+
+For more information on running GUI applications in LXD, refer to [this blog post](https://blog.simos.info/how-to-easily-run-graphics-accelerated-gui-apps-in-lxd-containers-on-your-ubuntu-desktop/).
+
+#### Interactive testing in multipass
+
+Install the following dependencies in your multipass, which are required for Cypress to relay information to the host machine:
+
+```
+sudo apt-get install xvfb libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
+```
+
+Next, validate whether ssh on the multipass VM is configured to forward X11 communication. Ensure you have the following values in `/etc/ssh/ssh_config`:
+
+```
+ForwardX11 yes
+ForwardX11Trusted yes
+```
+
+And the following values in `/etc/ssh/sshd_config`:
+
+```
+X11Forwarding yes
+X11DisplayOffset 10
+PrintMotd no
+TCPKeepAlive yes
+```
+
+The following steps will differ depending on the OS of the host system.
+
+##### Ubuntu setup
+
+Since you are running from an Ubuntu graphical desktop then you already have an X11 server running locally so no further installation is necessary.
+
+##### MacOS setup
+
+First install XQuartz, which is the Mac version of X11. You can install XQuartz using homebrew with:
+
+```
+brew cask install xquartz
+```
+
+Or directly from the website [here](https://www.xquartz.org/). You will now need to restart your machine.
+
+Start XQuartz using:
+
+```
+open -a XQuartz
+```
+
+In the XQuartz preferences, go to the “Security” tab and make sure you’ve got “Allow connections from network clients” ticked.
+
+##### Establish connection
+
+Establish an ssh connection from your graphical desktop to the remote X client using the “-Y” switch for trusted X11 forwarding. Note that you may need to add your host's public SSH key to the multipass' list of allowed hosts.
+
+```
+ssh -Y multipass@<multipass-ip>
+```
+
+You should now be able to run the Cypress Test Runner by running:
+
+```
+yarn cypress-open
+```

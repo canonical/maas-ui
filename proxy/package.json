@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "scripts": {
     "clean": "rm -rf node_modules",
+    "cypress-ci": "start-server-and-test start '8400|8401|8402' cypress-run",
+    "cypress-open": "yarn cypress open",
+    "cypress-run": "yarn cypress run",
     "lint": "npmPkgJsonLint .",
     "serve-ui": "cd ../ui && PORT=8401 yarn run start",
     "serve-legacy": "cd ../legacy && yarn run start",
@@ -13,9 +16,11 @@
   },
   "devDependencies": {
     "concurrently": "5.0.0",
+    "cypress": "3.6.1",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "0.20.0",
-    "npm-package-json-lint": "4.2.0"
+    "npm-package-json-lint": "4.2.0",
+    "start-server-and-test": "1.10.6"
   },
   "npmpackagejsonlint": {
     "rules": {
