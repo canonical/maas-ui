@@ -137,14 +137,16 @@ export const UserForm = ({
         />
       )}
       {editing && !passwordVisible && (
-        <Link
-          onClick={event => {
-            event.preventDefault();
-            showPassword(!passwordVisible);
-          }}
-        >
-          Change password&hellip;
-        </Link>
+        <div className="p-form__group">
+          <Link
+            onClick={event => {
+              event.preventDefault();
+              showPassword(!passwordVisible);
+            }}
+          >
+            Change password&hellip;
+          </Link>
+        </div>
       )}
       {passwordVisible && (
         <>
