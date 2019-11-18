@@ -19,7 +19,14 @@ describe("MachineList", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: []
+        items: [
+          {
+            domain: {},
+            pool: {},
+            status: "Releasing",
+            zone: {}
+          }
+        ]
       }
     };
   });
@@ -38,5 +45,26 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("includes groups", () => {
+    const state = { ...initialState };
+    state.machine.loading = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find(".machine-list__group td")
+        .at(0)
+        .text()
+    ).toBe("Releasing");
   });
 });
