@@ -1,3 +1,12 @@
-.machine-list__group {
-  background-color: white;
+.machine-list--grouped .machine-list__machine td:first-child {
+  padding-left: 2rem;
+}
+
+.machine-list__group-toggle {
+  text-align: right;
+  vertical-align: middle;
+}
+
+.machine-list__group-toggle-button {
+  display: inline-block;
 }

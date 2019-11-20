@@ -49,7 +49,6 @@ describe("MachineList", () => {
 
   it("includes groups", () => {
     const state = { ...initialState };
-    state.machine.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -64,7 +63,29 @@ describe("MachineList", () => {
       wrapper
         .find(".machine-list__group td")
         .at(0)
+        .find("strong")
         .text()
     ).toBe("Releasing");
+  });
+
+  it("can filter groups", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("tr.machine-list__machine").length).toBe(1);
+    // Click the button to toggle the group.
+    wrapper
+      .find(".machine-list__group button")
+      .at(0)
+      .simulate("click");
+    expect(wrapper.find("tr.machine-list__machine").length).toBe(0);
   });
 });

@@ -1,6 +1,13 @@
-import { Col, Loader, MainTable, Row } from "@canonical/react-components";
+import {
+  Button,
+  Col,
+  Loader,
+  MainTable,
+  Row
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import classNames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./MachineList.scss";
 import {
@@ -43,93 +50,142 @@ const normaliseStatus = (statusCode, status) => {
   }
 };
 
-const generateRows = machines =>
-  machines.map(machine => {
-    if (machine.isGroup) {
+const getSortValue = (machine, currentSort) => {
+  switch (currentSort) {
+    case "domain":
+    case "zone":
+      return machine[currentSort].name;
+    default:
+      return machine[currentSort];
+  }
+};
+
+const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
+  rows.map(row => {
+    if (row.isGroup) {
       const sortData = {
-        [machine.sortKey]: machine.label
+        [row.sortKey]: row.label
       };
+      const collapsed = hiddenGroups.includes(row.label);
       return {
         className: "machine-list__group",
         columns: [
           {
-            content: machine.label
+            content: (
+              <>
+                <strong>{row.label}</strong>
+                <div className="u-text--light">{row.count} machines</div>
+              </>
+            )
           },
           {},
           {},
-          {}
+          {
+            className: "machine-list__group-toggle",
+            content: (
+              <Button
+                appearance="base"
+                className="machine-list__group-toggle-button"
+                onClick={() => {
+                  if (collapsed) {
+                    setHiddenGroups(
+                      hiddenGroups.filter(group => group !== row.label)
+                    );
+                  } else {
+                    setHiddenGroups(hiddenGroups.concat([row.label]));
+                  }
+                }}
+              >
+                {collapsed ? (
+                  <i className="p-icon--plus">Show</i>
+                ) : (
+                  <i className="p-icon--minus">Hide</i>
+                )}
+              </Button>
+            )
+          }
         ],
         sortData
       };
     }
     return {
+      className: "machine-list__machine",
       columns: [
         {
-          content: machine.fqdn
+          content: row.fqdn
         },
         {
-          content: machine.status
+          content: row.status
         },
         {
-          content: machine.domain.name
+          content: row.domain.name
         },
         {
-          content: machine.zone.name
+          content: row.zone.name
         }
       ],
       sortData: {
-        cores: machine.cpu_count,
-        disks: machine.physical_disk_count,
-        domain: machine.domain.name,
-        name: machine.fqdn,
-        owner: machine.owner,
-        pool: machine.pool.name,
-        power: machine.power_state,
-        ram: machine.memory,
-        normalisedStatus: machine.normalisedStatus,
-        storage: machine.storage,
-        zone: machine.zone.name
+        cores: row.cpu_count,
+        disks: row.physical_disk_count,
+        domain: row.domain.name,
+        name: row.fqdn,
+        owner: row.owner,
+        pool: row.pool.name,
+        power: row.power_state,
+        ram: row.memory,
+        normalisedStatus: row.normalisedStatus,
+        storage: row.storage,
+        zone: row.zone.name
       }
     };
   });
 
 const MachineList = () => {
+  const defaultSort = "normalisedStatus";
   const dispatch = useDispatch();
-  const [currentSort, setSort] = useState("normalisedStatus");
+  const [currentSort, setSort] = useState(defaultSort);
+  const [hiddenGroups, setHiddenGroups] = useState([]);
+  const lastSort = useRef(defaultSort);
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
-  machines.forEach(machine => {
-    machine.normalisedStatus = normaliseStatus(
-      machine.status_code,
-      machine.status
-    );
-  });
+  const normalisedMachines = machines.map(machine => ({
+    ...machine,
+    normalisedStatus: normaliseStatus(machine.status_code, machine.status)
+  }));
   const groupKeys = ["normalisedStatus", "domain", "zone"];
   let groups = [];
-  if (groupKeys.includes(currentSort)) {
-    const labels = [];
-    machines.forEach(machine => {
-      let sortKey;
-      switch (currentSort) {
-        case "domain":
-        case "zone":
-          sortKey = machine[currentSort].name;
-          break;
-        default:
-          sortKey = machine[currentSort];
-      }
-      if (!labels.includes(sortKey)) {
-        labels.push(sortKey);
+  const grouped = groupKeys.includes(currentSort);
+  if (grouped) {
+    const labels = {};
+    normalisedMachines.forEach(machine => {
+      const sortKey = getSortValue(machine, currentSort);
+      if (labels[sortKey]) {
+        labels[sortKey].count += 1;
+      } else {
+        labels[sortKey] = {
+          count: 1,
+          isGroup: true,
+          label: sortKey,
+          sortKey: currentSort
+        };
       }
     });
-    groups = labels.map(label => ({
-      label,
-      isGroup: true,
-      sortKey: currentSort
-    }));
+    groups = Object.keys(labels).map(label => labels[label]);
   }
-  const rows = groups.concat(machines);
+  const visibleMachines = normalisedMachines.filter(machine => {
+    return !hiddenGroups.includes(getSortValue(machine, currentSort));
+  });
+  const rows = groups.concat(visibleMachines);
+
+  const updateSort = newSort => {
+    // Reset the hidden groups if the sort changes.
+    if (newSort !== lastSort.current) {
+      setHiddenGroups([]);
+      lastSort.current = newSort;
+    }
+    setSort(newSort);
+  };
 
   useWindowTitle("Machines");
 
@@ -160,8 +216,10 @@ const MachineList = () => {
         )}
         {machinesLoaded && (
           <MainTable
-            className="p-table-expanding--light machine-list"
-            defaultSort="normalisedStatus"
+            className={classNames("p-table-expanding--light", "machine-list", {
+              "machine-list--grouped": grouped
+            })}
+            defaultSort={defaultSort}
             defaultSortDirection="ascending"
             headers={[
               {
@@ -181,9 +239,9 @@ const MachineList = () => {
                 sortKey: "zone"
               }
             ]}
-            onUpdateSort={setSort}
+            onUpdateSort={updateSort}
             paginate={150}
-            rows={generateRows(rows)}
+            rows={generateRows(rows, hiddenGroups, setHiddenGroups)}
             sortable
           />
         )}
