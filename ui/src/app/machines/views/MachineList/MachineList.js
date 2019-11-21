@@ -60,6 +60,14 @@ const getSortValue = (machine, currentSort) => {
   }
 };
 
+const pluraliseMachineCount = count => {
+  if (count === 1) {
+    return `${count} machine`;
+  }
+
+  return `${count} machines`;
+};
+
 const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
   rows.map(row => {
     if (row.isGroup) {
@@ -74,7 +82,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
             content: (
               <>
                 <strong>{row.label}</strong>
-                <div className="u-text--light">{row.count} machines</div>
+                <div className="u-text--light">{pluraliseMachineCount(row.count)}</div>
               </>
             )
           },
