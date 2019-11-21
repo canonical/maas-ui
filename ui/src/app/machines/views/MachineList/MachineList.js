@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
+import pluralize from "pluralize";
 
 import "./MachineList.scss";
 import {
@@ -60,14 +61,6 @@ const getSortValue = (machine, currentSort) => {
   }
 };
 
-const pluraliseMachineCount = count => {
-  if (count === 1) {
-    return `${count} machine`;
-  }
-
-  return `${count} machines`;
-};
-
 const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
   rows.map(row => {
     if (row.isGroup) {
@@ -82,7 +75,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
             content: (
               <>
                 <strong>{row.label}</strong>
-                <div className="u-text--light">{pluraliseMachineCount(row.count)}</div>
+                <div className="u-text--light">{`${row.count} ${pluralize("machine", row.count)}`}</div>
               </>
             )
           },
