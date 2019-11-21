@@ -56,3 +56,7 @@ body {
   // The modal needs to cover the screen when scrolling.
   position: fixed;
 }
+
+.u-upper-case--first:first-letter {
+  text-transform: capitalize;
+}

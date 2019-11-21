@@ -25,6 +25,30 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 
+const formatStorageUnit = gb => {
+  const MAX_GIGABYTES = 1000;
+  const storage = parseFloat(gb);
+
+  if (storage < MAX_GIGABYTES) {
+    return `${Number(storage.toPrecision(3)).toString()} GB`;
+  } else {
+    return `${Number((storage / MAX_GIGABYTES).toPrecision(3)).toString()} TB`;
+  }
+};
+
+const formatMemoryUnit = ram => {
+  const memory = parseFloat(ram);
+  return `${memory.toString()} GiB`;
+};
+
+const getFabricColValue = vlan => {
+  if (vlan && vlan.fabric_name) {
+    return vlan.fabric_name;
+  }
+
+  return "-";
+};
+
 const normaliseStatus = (statusCode, status) => {
   switch (statusCode) {
     case nodeStatus.FAILED_COMMISSIONING:
@@ -82,6 +106,13 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           },
           {},
           {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
           {
             className: "machine-list__group-toggle",
             content: (
@@ -117,13 +148,39 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: row.fqdn
         },
         {
+          content: row.power_state,
+          className: "u-upper-case--first"
+        },
+        {
           content: row.status
         },
         {
-          content: row.domain.name
+          content: row.owner
+        },
+        {
+          content: row.pool.name
         },
         {
           content: row.zone.name
+        },
+        {
+          content: getFabricColValue(row.vlan)
+        },
+        {
+          content: row.cpu_count,
+          className: "u-align--right"
+        },
+        {
+          content: formatMemoryUnit(row.memory),
+          className: "u-align--right"
+        },
+        {
+          content: row.physical_disk_count,
+          className: "u-align--right"
+        },
+        {
+          content: formatStorageUnit(row.storage),
+          className: "u-align--right"
         }
       ],
       sortData: {
@@ -225,20 +282,52 @@ const MachineList = () => {
             defaultSortDirection="ascending"
             headers={[
               {
-                content: "FQDN",
+                content: "FQDN | MAC",
                 sortKey: "name"
+              },
+              {
+                content: "Power",
+                sortKey: "power_state"
               },
               {
                 content: "Status",
                 sortKey: "normalisedStatus"
               },
               {
-                content: "Domain",
-                sortKey: "domain"
+                content: "Owner",
+                sortKey: "owner"
+              },
+              {
+                content: "Pool",
+                sortkey: "pool.name"
               },
               {
                 content: "Zone",
                 sortKey: "zone"
+              },
+              {
+                content: "Fabric",
+                sortKey: "vlan.fabric_name"
+              },
+              {
+                content: "Cores",
+                sortKey: "cpu_count",
+                className: "u-align--right"
+              },
+              {
+                content: "RAM",
+                sortKey: "memory",
+                className: "u-align--right"
+              },
+              {
+                content: "Disks",
+                sortKey: "physical_disk_count",
+                className: "u-align--right"
+              },
+              {
+                content: "Storage",
+                sortKey: "storage",
+                className: "u-align--right"
               }
             ]}
             onUpdateSort={updateSort}
