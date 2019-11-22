@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
+import pluralize from "pluralize";
 
 import "./MachineList.scss";
 import {
@@ -74,7 +75,8 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
             content: (
               <>
                 <strong>{row.label}</strong>
-                <div className="u-text--light">{row.count} machines</div>
+                <div className="u-text--light">{`
+                ${row.count} ${pluralize("machine", row.count)}`}</div>
               </>
             )
           },
