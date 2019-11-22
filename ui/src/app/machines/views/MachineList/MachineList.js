@@ -75,7 +75,8 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
             content: (
               <>
                 <strong>{row.label}</strong>
-                <div className="u-text--light">{`${row.count} ${pluralize("machine", row.count)}`}</div>
+                <div className="u-text--light">{`
+                ${row.count} ${pluralize("machine", row.count)}`}</div>
               </>
             )
           },
