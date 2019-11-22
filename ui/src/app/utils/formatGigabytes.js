@@ -4,6 +4,7 @@
  * @param {Number} valueInGB
  * @returns {String} - The formatted value
  */
+
 function formatGigabytes(valueInGB) {
   const TERABYTE = 1000;
   if (valueInGB < TERABYTE) {

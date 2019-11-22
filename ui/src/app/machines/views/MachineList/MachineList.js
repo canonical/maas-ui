@@ -24,12 +24,7 @@ import {
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
-import { formatGigabytes } from "app/utils";
-
-const formatMemoryUnit = ram => {
-  const memory = parseFloat(ram);
-  return `${memory.toString()} GiB`;
-};
+import { formatGigabytes, formatGigabits } from "app/utils";
 
 const getFabricColValue = vlan => {
   if (vlan && vlan.fabric_name) {
@@ -161,7 +156,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           className: "u-align--right"
         },
         {
-          content: formatMemoryUnit(row.memory),
+          content: formatGigabits(row.memory),
           className: "u-align--right"
         },
         {

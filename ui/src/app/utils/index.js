@@ -1,5 +1,7 @@
-import formatGigabytes from './formatGigabytes';
+import formatGigabytes from "./formatGigabytes";
+import formatGigabits from "./formatGigabits";
 
 export {
-  formatGigabytes
+  formatGigabytes,
+  formatGigabits
 };
