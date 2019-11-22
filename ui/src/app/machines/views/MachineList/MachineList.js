@@ -24,17 +24,7 @@ import {
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
-
-const formatStorageUnit = gb => {
-  const MAX_GIGABYTES = 1000;
-  const storage = parseFloat(gb);
-
-  if (storage < MAX_GIGABYTES) {
-    return `${Number(storage.toPrecision(3)).toString()} GB`;
-  } else {
-    return `${Number((storage / MAX_GIGABYTES).toPrecision(3)).toString()} TB`;
-  }
-};
+import { formatGigabytes } from "app/utils";
 
 const formatMemoryUnit = ram => {
   const memory = parseFloat(ram);
@@ -179,7 +169,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           className: "u-align--right"
         },
         {
-          content: formatStorageUnit(row.storage),
+          content: formatGigabytes(row.storage),
           className: "u-align--right"
         }
       ],
