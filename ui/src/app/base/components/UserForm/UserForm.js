@@ -70,7 +70,9 @@ export const UserForm = ({
   let initialValues = {
     isSuperuser: user ? user.is_superuser : false,
     email: user ? user.email : "",
-    fullName: user ? `${user.first_name} ${user.last_name}` : "",
+    // first_name is not exposed by the websocket, so only last_name is used.
+    // https://bugs.launchpad.net/maas/+bug/1853579
+    fullName: user ? user.last_name : "",
     password: "",
     passwordConfirm: "",
     username: user ? user.username : ""
@@ -87,12 +89,10 @@ export const UserForm = ({
       errors={errors}
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
-        const [firstName, ...lastNameParts] = values.fullName.split(" ");
         const params = {
           email: values.email,
-          first_name: firstName,
           is_superuser: values.isSuperuser,
-          last_name: lastNameParts.join(" "),
+          last_name: values.fullName,
           username: values.username
         };
         if (values.password) {

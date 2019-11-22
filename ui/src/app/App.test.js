@@ -100,7 +100,6 @@ describe("App", () => {
           user: {
             completed_intro: true,
             email: "test@example.com",
-            first_name: "",
             global_permissions: ["machine_create"],
             id: 1,
             is_superuser: true,

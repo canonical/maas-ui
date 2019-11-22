@@ -35,9 +35,7 @@ const generateUserRows = (
           "yyyy-LL-dd H:mm"
         )
       : "Never";
-    const fullName =
-      (user.first_name || user.last_name) &&
-      [user.first_name, user.last_name].filter(Boolean).join(" ");
+    const fullName = user.last_name;
     return {
       className: expanded ? "p-table__row is-active" : null,
       columns: [

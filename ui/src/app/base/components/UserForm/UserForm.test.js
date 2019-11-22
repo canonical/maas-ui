@@ -15,10 +15,9 @@ describe("UserForm", () => {
   beforeEach(() => {
     user = {
       email: "old@example.com",
-      first_name: "Miss",
       id: 808,
       is_superuser: true,
-      last_name: "Wallaby",
+      last_name: "Miss Wallaby",
       password1: "test1234",
       password2: "test1234",
       username: "admin"
@@ -77,10 +76,9 @@ describe("UserForm", () => {
     );
     expect(onSave.mock.calls[0][0]).toEqual({
       email: "test@example.com",
-      first_name: "Miss",
       id: 808,
       is_superuser: true,
-      last_name: "Wallaby",
+      last_name: "Miss Wallaby",
       password1: "test1234",
       password2: "test1234",
       username: "admin"

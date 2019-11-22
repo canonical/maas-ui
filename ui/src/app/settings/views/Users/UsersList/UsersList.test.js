@@ -16,21 +16,19 @@ describe("UsersList", () => {
     users = [
       {
         email: "admin@example.com",
-        first_name: "Kangaroo",
         global_permissions: ["machine_create"],
         id: 1,
         is_superuser: true,
-        last_name: "",
+        last_name: "Kangaroo",
         sshkeys_count: 0,
         username: "admin"
       },
       {
         email: "user@example.com",
-        first_name: "Koala",
         global_permissions: ["machine_create"],
         id: 2,
         is_superuser: false,
-        last_name: "",
+        last_name: "Koala",
         sshkeys_count: 0,
         username: "user1"
       }
