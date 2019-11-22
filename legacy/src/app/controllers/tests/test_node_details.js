@@ -1238,6 +1238,7 @@ describe("NodeDetailsController", function() {
         "commission",
         {
           enable_ssh: true,
+          script_input: {},
           skip_bmc_config: false,
           skip_networking: false,
           skip_storage: false,

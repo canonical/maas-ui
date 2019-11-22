@@ -870,6 +870,32 @@ function NodeDetailsController(
         // Tell the region not to run any tests.
         extra.testing_scripts.push("none");
       }
+
+      const testingScriptsWithUrlParam = $scope.testSelection.filter(test => {
+        const paramsWithUrl = [];
+        for (let key in test.parameters) {
+          if (test.parameters[key].type === "url") {
+            paramsWithUrl.push(test.parameters[key]);
+          }
+        }
+        return paramsWithUrl.length;
+      });
+
+      testingScriptsWithUrlParam.forEach(test => {
+        let urlValue;
+        for (let key in test.parameters) {
+          if (test.parameters[key].type === "url") {
+            urlValue =
+              test.parameters[key].value || test.parameters[key].default;
+            break;
+          }
+        }
+        scriptInput[test.name] = {
+          url: urlValue
+        };
+      });
+
+      extra.script_input = scriptInput;
     } else if ($scope.action.option.name === "test") {
       if (
         $scope.node.status_code === 6 &&
