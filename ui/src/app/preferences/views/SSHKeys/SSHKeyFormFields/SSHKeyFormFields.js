@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import React from "react";
 
 import FormikField from "app/base/components/FormikField";
+import Tooltip from "app/base/components/Tooltip";
 
 export const SSHKeyFormFields = () => {
   const { values } = useFormikContext();
@@ -40,14 +41,12 @@ export const SSHKeyFormFields = () => {
               label={
                 <>
                   Public key{" "}
-                  <span className="p-tooltip">
+                  <Tooltip
+                    position="btm-left"
+                    message={`Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',\n 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or\n 'ecdsa-sha2-nistp521`}
+                  >
                     <i className="p-icon--help"></i>
-                    <span className="p-tooltip__message" role="tooltip">
-                      Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',
-                      'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or
-                      'ecdsa-sha2-nistp521'
-                    </span>
-                  </span>
+                  </Tooltip>
                 </>
               }
               style={{ minHeight: "10rem" }}

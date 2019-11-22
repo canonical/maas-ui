@@ -15,6 +15,7 @@ import {
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import Tooltip from "app/base/components/Tooltip";
 
 const generateUserRows = (
   users,
@@ -71,8 +72,10 @@ const generateUserRows = (
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
-
-              <span className="p-tooltip p-tooltip--left">
+              <Tooltip
+                position="left"
+                message={isAuthUser && "You cannot delete your own user."}
+              >
                 <Button
                   appearance="base"
                   className="is-small u-justify-table-icon"
@@ -81,12 +84,7 @@ const generateUserRows = (
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
-                {isAuthUser && (
-                  <span className="p-tooltip__message">
-                    You cannot delete your own user.
-                  </span>
-                )}
-              </span>
+              </Tooltip>
             </>
           ),
           className: "u-align--right u-align-icons--top"

@@ -45,3 +45,9 @@ td > .p-tooltip {
   .p-table-multi-header__link.is-active::after {
   @include vf-icon-chevron;
 }
+
+// 27-11-2019 Caleb: Tooltips cannot be used with React Portals.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/2672
+.p-tooltip__message--portal {
+  display: inline;
+}

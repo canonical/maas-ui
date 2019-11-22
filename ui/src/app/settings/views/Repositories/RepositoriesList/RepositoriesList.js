@@ -11,6 +11,7 @@ import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import Tooltip from "app/base/components/Tooltip";
 
 const generateRepositoryRows = (
   dispatch,
@@ -46,7 +47,10 @@ const generateRepositoryRows = (
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
-              <span className="p-tooltip p-tooltip--left">
+              <Tooltip
+                position="left"
+                message={repo.default && "Default repos cannot be deleted."}
+              >
                 <Button
                   appearance="base"
                   className="is-small u-justify-table-icon"
@@ -55,12 +59,7 @@ const generateRepositoryRows = (
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
-                {repo.default && (
-                  <span className="p-tooltip__message">
-                    Default repos cannot be deleted.
-                  </span>
-                )}
-              </span>
+              </Tooltip>
             </>
           ),
           className: "u-align--right u-align-icons--top"

@@ -118,19 +118,16 @@ const generateRows = (
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
-
-              <span className="p-tooltip p-tooltip--left">
-                <Button
-                  appearance="base"
-                  className="is-small u-justify-table-icon"
-                  onClick={() => {
-                    setExpandedId(dhcpsnippet.id);
-                    setExpandedType("delete");
-                  }}
-                >
-                  <i className="p-icon--delete">Delete</i>
-                </Button>
-              </span>
+              <Button
+                appearance="base"
+                className="is-small u-justify-table-icon"
+                onClick={() => {
+                  setExpandedId(dhcpsnippet.id);
+                  setExpandedType("delete");
+                }}
+              >
+                <i className="p-icon--delete">Delete</i>
+              </Button>
             </>
           ),
           className: "u-align--right u-align-icons--top"
