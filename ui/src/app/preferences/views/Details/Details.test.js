@@ -22,7 +22,6 @@ describe("Details", () => {
           saved: false,
           user: {
             email: "test@example.com",
-            first_name: "",
             global_permissions: ["machine_create"],
             id: 1,
             is_superuser: true,
@@ -78,10 +77,9 @@ describe("Details", () => {
           <Details
             user={{
               email: "old@example.com",
-              first_name: "Miss",
               id: 808,
               is_superuser: true,
-              last_name: "Wallaby",
+              last_name: "Miss Wallaby",
               password1: "test1234",
               password2: "test1234",
               username: "admin"
@@ -135,10 +133,9 @@ describe("Details", () => {
           <Details
             user={{
               email: "old@example.com",
-              first_name: "Miss",
               id: 808,
               is_superuser: true,
-              last_name: "Wallaby",
+              last_name: "Miss Wallaby",
               password1: "test1234",
               password2: "test1234",
               username: "admin"

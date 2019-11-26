@@ -24,7 +24,6 @@ describe("UserEdit", () => {
         items: [
           {
             email: "admin@example.com",
-            first_name: "",
             global_permissions: ["machine_create"],
             id: 1,
             is_superuser: true,
@@ -34,7 +33,6 @@ describe("UserEdit", () => {
           },
           {
             email: "user@example.com",
-            first_name: "",
             global_permissions: ["machine_create"],
             id: 2,
             is_superuser: false,

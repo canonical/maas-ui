@@ -24,7 +24,6 @@ user.search = (state, term) => {
     user =>
       user.username.includes(term) ||
       user.email.includes(term) ||
-      user.first_name.includes(term) ||
       user.last_name.includes(term)
   );
 };
