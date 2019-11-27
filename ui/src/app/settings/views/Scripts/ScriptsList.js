@@ -12,6 +12,7 @@ import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { scripts as scriptActions } from "app/base/actions";
 import { scripts as scriptSelectors } from "app/base/selectors";
+import Tooltip from "app/base/components/Tooltip";
 
 const generateRows = (
   scripts,
@@ -80,26 +81,22 @@ const generateRows = (
         { content: uploadedOn },
         {
           content: (
-            <>
-              <span className="p-tooltip p-tooltip--left">
-                <Button
-                  appearance="base"
-                  disabled={script.default}
-                  className="is-small u-justify-table-icon"
-                  onClick={() => {
-                    setExpandedId(script.id);
-                    setExpandedType("delete");
-                  }}
-                >
-                  <i className="p-icon--delete">Delete</i>
-                </Button>
-                {script.default && (
-                  <span className="p-tooltip__message">
-                    Default scripts cannot be deleted.
-                  </span>
-                )}
-              </span>
-            </>
+            <Tooltip
+              position="left"
+              message={script.default && "Default scripts cannot be deleted."}
+            >
+              <Button
+                appearance="base"
+                disabled={script.default}
+                className="is-small u-justify-table-icon"
+                onClick={() => {
+                  setExpandedId(script.id);
+                  setExpandedType("delete");
+                }}
+              >
+                <i className="p-icon--delete">Delete</i>
+              </Button>
+            </Tooltip>
           ),
           className: "u-align--right u-align-icons--top"
         }

@@ -10,6 +10,7 @@ import {
   MainTable,
   SearchBox
 } from "@canonical/react-components";
+import Tooltip from "app/base/components/Tooltip";
 
 export const SettingsTable = ({
   buttons,
@@ -37,12 +38,11 @@ export const SettingsTable = ({
         )}
         {buttons.map(({ label, url, disabled = false, tooltip }) =>
           tooltip ? (
-            <span key={url} className="p-tooltip p-tooltip--left">
+            <Tooltip key={url} position="left" message={tooltip}>
               <Button element={Link} to={url} disabled={disabled}>
                 {label}
               </Button>
-              <span className="p-tooltip__message">{tooltip}</span>
-            </span>
+            </Tooltip>
           ) : (
             <Button element={Link} to={url} key={url} disabled={disabled}>
               {label}

@@ -83,7 +83,7 @@ it("can render a disabled button ", () => {
   expect(wrapper.find("Button").props().disabled).toBe(true);
 });
 
-it("can show render a button with a tooltip", () => {
+it("can render a button with a tooltip", () => {
   const tooltip = "Add a user to MAAS";
   const wrapper = shallow(
     <SettingsTable
@@ -95,5 +95,5 @@ it("can show render a button with a tooltip", () => {
     </SettingsTable>
   );
 
-  expect(wrapper.find("span.p-tooltip__message").text()).toEqual(tooltip);
+  expect(wrapper.find("Tooltip").props().message).toEqual(tooltip);
 });
