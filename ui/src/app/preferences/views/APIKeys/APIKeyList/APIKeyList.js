@@ -1,41 +1,46 @@
 import { Button, Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 
 import "./APIKeyList.scss";
+import { token as tokenActions } from "app/preferences/actions";
+import { token as tokenSelectors } from "app/preferences/selectors";
+import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import CopyButton from "app/base/components/CopyButton";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
-  apikeys,
+  tokens,
   expandedId,
   setExpandedId,
   hideExpanded,
   dispatch
 ) =>
-  apikeys.map(({ key, consumer }) => {
-    const expanded = expandedId === key;
+  tokens.map(({ consumer, id, key, secret }) => {
+    const { name } = consumer;
+    const expanded = expandedId === id;
+    const token = `${consumer.key}:${key}:${secret}`;
     return {
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
-          content: consumer.name,
+          content: name,
           role: "rowheader"
         },
         {
-          content: key
+          content: token
         },
         {
           content: (
             <>
-              <CopyButton value={key} />
+              <CopyButton value={token} />
               <Button
                 appearance="base"
                 element={Link}
-                to={`/account/prefs/api-keys/${key}/edit`}
+                to={`/account/prefs/api-keys/${id}/edit`}
                 className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
@@ -44,7 +49,7 @@ const generateRows = (
                 appearance="base"
                 className="is-small u-justify-table-icon"
                 onClick={() => {
-                  setExpandedId(key);
+                  setExpandedId(id);
                 }}
               >
                 <i className="p-icon--delete">Delete</i>
@@ -57,56 +62,53 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
-          modelName={consumer.name}
+          modelName={name}
           modelType="API key"
           onCancel={hideExpanded}
-          onConfirm={() => {}}
+          onConfirm={() => {
+            dispatch(tokenActions.delete(id));
+            hideExpanded();
+          }}
         />
       ),
-      key: key,
+      key: id,
       sortData: {
-        key,
-        name: consumer.name
+        name: name
       }
     };
   });
 
 const APIKeyList = () => {
+  // TODO:
+  // the displayed key and the copied value should be:
+  // {$ token.consumer.key $}:{$ token.key $}:{$ token.secret $}
+  // ALSO
+  // check the responsive view.
   const [expandedId, setExpandedId] = useState();
-  const apikeyErrors = null;
-  const apikeyLoading = false;
-  const apikeyLoaded = true;
-  const apikeys = [
-    {
-      key: "aaa",
-      secret: "aaa",
-      consumer: {
-        key: "aaa",
-        name: "aaa"
-      }
-    },
-    {
-      key: "bbb",
-      secret: "bbb",
-      consumer: {
-        key: "bbb",
-        name: "bbb"
-      }
-    }
-  ];
+  const errors = useSelector(tokenSelectors.errors);
+  const loading = useSelector(tokenSelectors.loading);
+  const loaded = useSelector(tokenSelectors.loaded);
+  const tokens = useSelector(tokenSelectors.all);
+  const saved = useSelector(tokenSelectors.saved);
   const dispatch = useDispatch();
 
   const hideExpanded = () => {
     setExpandedId();
   };
 
+  useAddMessage(saved, tokenActions.cleanup, "API key removed successfully.");
+
+  useEffect(() => {
+    dispatch(tokenActions.fetch());
+  }, [dispatch]);
+
   useWindowTitle("API keys");
 
   return (
     <>
-      {apikeyErrors && typeof apikeyErrors === "string" && (
+      {errors && typeof errors === "string" && (
         <Notification type="negative" status="Error:">
-          {apikeyErrors}
+          {errors}
         </Notification>
       )}
       <SettingsTable
@@ -119,18 +121,17 @@ const APIKeyList = () => {
             sortKey: "name"
           },
           {
-            content: "Key",
-            sortKey: "key"
+            content: "Key"
           },
           {
             content: "Actions",
             className: "u-align--right"
           }
         ]}
-        loaded={apikeyLoaded}
-        loading={apikeyLoading}
+        loaded={loaded}
+        loading={loading}
         rows={generateRows(
-          apikeys,
+          tokens,
           expandedId,
           setExpandedId,
           hideExpanded,

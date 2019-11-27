@@ -22,8 +22,7 @@ import {
   zone
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
-import { sshkey } from "./app/preferences/reducers";
-import { sslkey } from "./app/preferences/reducers";
+import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 export default history =>
   combineReducers({
@@ -45,6 +44,7 @@ export default history =>
     status,
     subnet,
     tag,
+    token,
     user: reduceReducers(user, auth),
     zone
   });
