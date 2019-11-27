@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import FormikFormContent from "app/base/components/FormikFormContent";
 
 const FormikForm = ({
+  allowAllEmpty,
   buttons,
   cleanup,
   children,
@@ -41,6 +42,7 @@ const FormikForm = ({
       {...props}
     >
       <FormikFormContent
+        allowAllEmpty={allowAllEmpty}
         buttons={buttons}
         errors={errors}
         onValuesChanged={onValuesChanged}
@@ -55,6 +57,7 @@ const FormikForm = ({
 };
 
 FormikForm.propTypes = {
+  allowAllEmpty: PropTypes.bool,
   buttons: PropTypes.func,
   cleanup: PropTypes.func,
   children: PropTypes.node.isRequired,

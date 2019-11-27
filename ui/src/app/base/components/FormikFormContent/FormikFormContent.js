@@ -7,6 +7,7 @@ import { useFormikErrors, useFormikFormDisabled } from "app/base/hooks";
 import FormikFormButtons from "app/base/components/FormikFormButtons";
 
 const FormikFormContent = ({
+  allowAllEmpty,
   buttons: Buttons = FormikFormButtons,
   children,
   errors,
@@ -16,7 +17,7 @@ const FormikFormContent = ({
   submitLabel = "Save"
 }) => {
   const { handleSubmit, values } = useFormikContext();
-  const formDisabled = useFormikFormDisabled();
+  const formDisabled = useFormikFormDisabled(allowAllEmpty);
 
   useFormikErrors(errors);
 
@@ -52,6 +53,7 @@ const FormikFormContent = ({
 };
 
 FormikFormContent.propTypes = {
+  allowAllEmpty: PropTypes.bool,
   buttons: PropTypes.func,
   children: PropTypes.node.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

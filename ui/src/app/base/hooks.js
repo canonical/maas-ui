@@ -69,19 +69,30 @@ export const useFormikErrors = errors => {
 /**
  * Returns whether a formik form should be disabled, given the current state
  * of the form.
- * @param {Object} formikProps - Props required for formik forms.
- * @param {Boolean} success - Form is in success state.
+ * @param {Object} allowAllEmpty - Whether all fields are allowed to be empty.
  * @returns {Boolean} Form is disabled.
  */
-export const useFormikFormDisabled = () => {
+export const useFormikFormDisabled = allowAllEmpty => {
   const { initialValues, errors, values } = useFormikContext();
   let hasErrors = false;
-
   if (errors) {
     hasErrors = Object.keys(errors).length > 0;
   }
-
-  return simpleObjectEquality(initialValues, values) || hasErrors;
+  if (allowAllEmpty) {
+    // If all fields are allowed to be empty then remove the from the values.
+    Object.keys(values).forEach(key => {
+      if (!values[key]) {
+        delete values[key];
+      }
+    });
+  }
+  let matchesInitial = false;
+  // Now that fields have been removed then make sure there are some fields left
+  // to compare.
+  if (Object.keys(values).length) {
+    matchesInitial = simpleObjectEquality(initialValues, values);
+  }
+  return matchesInitial || hasErrors;
 };
 
 /**
