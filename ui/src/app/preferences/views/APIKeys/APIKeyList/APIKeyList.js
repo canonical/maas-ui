@@ -79,11 +79,6 @@ const generateRows = (
   });
 
 const APIKeyList = () => {
-  // TODO:
-  // the displayed key and the copied value should be:
-  // {$ token.consumer.key $}:{$ token.key $}:{$ token.secret $}
-  // ALSO
-  // check the responsive view.
   const [expandedId, setExpandedId] = useState();
   const errors = useSelector(tokenSelectors.errors);
   const loading = useSelector(tokenSelectors.loading);

@@ -1,4 +1,9 @@
 @import "~vanilla-framework/scss/settings_colors";
+@import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/base_placeholders";
+@import "~vanilla-framework/scss/base_typography-max-widths";
+
+@include vf-b-placeholders;
 
 .form-card {
   margin-top: 0.5rem;
@@ -13,4 +18,10 @@
   margin-top: 1rem;
   padding-top: 1rem;
   text-align: right;
+}
+
+.form-card__help {
+  @extend %small-text;
+  color: $color-mid-dark;
+  margin-top: $sp-x-small;
 }

@@ -57,7 +57,7 @@ export const AddSSLKey = () => {
             />
           </Col>
           <Col size="3">
-            <p className="p-form-help-text" style={{ marginTop: "0.5rem" }}>
+            <p className="form-card__help">
               You will be able to access Windows winrm service with a registered
               key.
             </p>

@@ -74,7 +74,7 @@ export const APIKeyForm = ({ token }) => {
             />
           </Col>
           <Col size="4">
-            <p className="p-form-help-text" style={{ marginTop: "0.5rem" }}>
+            <p className="form-card__help">
               The API key is used to log in to the API from the MAAS CLI and by
               other services connecting to MAAS, such as Juju.
             </p>
