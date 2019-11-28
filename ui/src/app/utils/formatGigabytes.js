@@ -1,6 +1,6 @@
 /**
  * Format gigabytes with the appropriate unit, e.g GB or TB
- * 
+ *
  * @param {Number} valueInGB
  * @returns {String} - The formatted value
  */
@@ -12,6 +12,6 @@ function formatGigabytes(valueInGB) {
   } else {
     return `${valueInGB / TERABYTE} TB`;
   }
-};
+}
 
 export default formatGigabytes;

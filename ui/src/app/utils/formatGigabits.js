@@ -1,6 +1,6 @@
 /**
  * Format gigabits with GiB unti
- * 
+ *
  * @param {Number} valueInGiB
  * @returns {String} - The formatted value
  */
