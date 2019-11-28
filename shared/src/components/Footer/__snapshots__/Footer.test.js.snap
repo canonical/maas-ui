@@ -39,7 +39,7 @@ exports[`Footer renders 1`] = `
         >
           <a
             className="p-footer__link"
-            href="http://docs.ubuntu.com/maas/2.7/en/release-notes"
+            href="https://maas.io/docs/release-notes"
           >
             View release notes
           </a>
@@ -49,7 +49,7 @@ exports[`Footer renders 1`] = `
         >
           <a
             className="p-footer__link"
-            href="https://docs.ubuntu.com/maas/2.7/"
+            href="https://maas.io/docs/"
           >
             View documentation
           </a>
