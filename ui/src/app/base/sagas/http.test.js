@@ -21,10 +21,14 @@ describe("http sagas", () => {
   describe("Auth API", () => {
     describe("check authenticated", () => {
       it("returns a SUCCESS action", () => {
+        const payload = { authenticated: true };
         return expectSaga(checkAuthenticatedSaga)
-          .provide([[matchers.call.fn(api.auth.checkAuthenticated)]])
+          .provide([[matchers.call.fn(api.auth.checkAuthenticated), payload]])
           .put({ type: "CHECK_AUTHENTICATED_START" })
-          .put({ type: "CHECK_AUTHENTICATED_SUCCESS" })
+          .put({
+            type: "CHECK_AUTHENTICATED_SUCCESS",
+            payload
+          })
           .run();
       });
 

@@ -8,7 +8,7 @@ const status = produce(
         break;
       case "CHECK_AUTHENTICATED_SUCCESS":
         draft.authenticating = false;
-        draft.authenticated = true;
+        draft.authenticated = action.payload.authenticated;
         break;
       case "LOGIN_START":
         draft.authenticating = true;

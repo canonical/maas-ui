@@ -100,7 +100,8 @@ describe("status", () => {
           authenticated: false
         },
         {
-          type: "CHECK_AUTHENTICATED_SUCCESS"
+          type: "CHECK_AUTHENTICATED_SUCCESS",
+          payload: { authenticated: true }
         }
       )
     ).toStrictEqual({
