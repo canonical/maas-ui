@@ -54,7 +54,7 @@ export const SSHKeyFormFields = () => {
           )}
         </Col>
         <Col size="4">
-          <p className="p-form-help-text" style={{ marginTop: "0.5rem" }}>
+          <p className="form-card__help">
             Before you can deploy a machine you must import at least one public
             SSH key into MAAS, so the deployed machine can be accessed.
           </p>
