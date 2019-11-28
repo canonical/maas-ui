@@ -7,7 +7,6 @@ const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/accounts/login/";
-const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 const LOGOUT_API = "/MAAS/accounts/logout/";
 
 const DEFAULT_HEADERS = {
@@ -36,7 +35,9 @@ const handlePromise = response => {
 export const api = {
   auth: {
     checkAuthenticated: () => {
-      return fetch(LOGIN_CANARY_API).then(handleErrors);
+      return fetch(LOGIN_API)
+        .then(handleErrors)
+        .then(response => response.json());
     },
     login: credentials => {
       return fetch(LOGIN_API, {
@@ -144,8 +145,9 @@ export const api = {
 export function* checkAuthenticatedSaga(action) {
   try {
     yield put({ type: "CHECK_AUTHENTICATED_START" });
-    yield call(api.auth.checkAuthenticated);
+    const response = yield call(api.auth.checkAuthenticated);
     yield put({
+      payload: response,
       type: "CHECK_AUTHENTICATED_SUCCESS"
     });
   } catch (error) {
@@ -239,7 +241,7 @@ export function* createLicenseKeySaga(action) {
     response = yield call(api.licenseKeys.create, key, csrftoken);
     yield put({
       type: "CREATE_LICENSE_KEY_SUCCESS",
-      payload: response
+      payload: response.payload
     });
   } catch (errors) {
     let error = errors;
