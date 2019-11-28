@@ -2,10 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 
 export const Footer = ({ debug, maasName, version }) => {
-  const docVersion = version
-    .split(".")
-    .slice(0, 2)
-    .join(".");
   return (
     <footer className="p-strip--light is-shallow p-footer">
       <div className="row">
@@ -25,7 +21,7 @@ export const Footer = ({ debug, maasName, version }) => {
           <ul className="p-inline-list--middot">
             <li className="p-inline-list__item">
               <a
-                href={`http://docs.ubuntu.com/maas/${docVersion}/en/release-notes`}
+                href={`https://maas.io/docs/release-notes`}
                 className="p-footer__link"
               >
                 View release notes
@@ -33,7 +29,7 @@ export const Footer = ({ debug, maasName, version }) => {
             </li>
             <li className="p-inline-list__item">
               <a
-                href={`https://docs.ubuntu.com/maas/${docVersion}/`}
+                href={`https://maas.io/docs/`}
                 className="p-footer__link"
               >
                 View documentation
