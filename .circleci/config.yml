@@ -1,7 +1,7 @@
 ---
 defaults: &defaults
   docker:
-    - image: canonicalwebteam/dev
+    - image: canonicalwebteam/dev:v1.6.5
 
 version: 2
 jobs:
@@ -189,7 +189,7 @@ jobs:
       - save_cache:
           key: yarn-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache  ## cache both yarn and Cypress!
+            - ~/.cache ## cache both yarn and Cypress!
       - run: yarn test-cypress
 
 workflows:
