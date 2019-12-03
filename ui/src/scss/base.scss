@@ -43,7 +43,7 @@ body {
 
 .p-form-validation__message [class*="p-icon--"] {
   @extend %icon;
-  @include vf-icon-size(0.875rem);
+  @include vf-icon-size(#{map-get($font-sizes, small)}rem);
 }
 
 .u-text--light {

@@ -56,7 +56,7 @@ describe("Header", () => {
       />
     );
     wrapper
-      .findWhere(n => n.name() === "a" && n.text() === "Logout")
+      .findWhere(n => n.name() === "a" && n.text() === "Log out")
       .last()
       .simulate("click", { preventDefault: jest.fn() });
     expect(logout).toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe("Header", () => {
       wrapper.findWhere(n => n.name() === "a" && n.text() === "Skip").exists()
     ).toBe(true);
     expect(
-      wrapper.find(".p-navigation__links .p-navigation__link").exists()
+      wrapper.find(".p-navigation__links").at(0).props().children
     ).toBe(false);
   });
 });
