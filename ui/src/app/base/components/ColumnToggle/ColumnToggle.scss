@@ -2,40 +2,24 @@
 @import "~vanilla-framework/scss/settings_colors";
 @import "~vanilla-framework/scss/patterns_icons";
 
-%heading-icon {
-  @include vf-icon-chevron;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  content: "";
-  display: block;
-  flex: 0 0 $sp-medium;
-  height: 0.4rem;
-  margin-top: $sp-small;
-  margin-left: $sp-x-small;
-  vertical-align: middle;
-}
-
 td:not(.p-table-expanding__panel) [class*="p-button"].column-toggle,
 .column-toggle {
+  align-items: center;
   align-self: flex-start;
   color: $color-dark;
+  justify-content: space-between;
   margin: 0;
   padding: 0;
   width: 100%;
-  display: flex;
-}
 
-.column-toggle__name {
-  flex: 1 1 auto;
-}
+  &::after {
+    @include vf-icon-chevron;
+    @include vf-icon-size($default-icon-size);
+    content: "";
+  }
 
-.column-toggle::after {
-  @extend %heading-icon;
-}
-
-.column-toggle.is-active::after {
-  @extend %heading-icon;
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
+  &.is-active::after {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
 }

@@ -14,4 +14,14 @@
       display: none;
     }
   }
+
+  // This is fixed in Vanilla > 2.4.0, but is hardcoded here because we aren't
+  // committing to a full upgrade.
+  @media (max-width: $breakpoint-navigation-threshold) {
+    .p-navigation.is-dark .p-navigation__link > a::before {
+      background: hsl(0, 0%, 27%);
+      left: map-get($grid-gutter-widths, small);
+      right: map-get($grid-gutter-widths, small);
+    }
+  }
 }

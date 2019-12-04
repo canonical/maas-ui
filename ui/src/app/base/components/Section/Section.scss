@@ -7,31 +7,10 @@
 .section {
   display: grid;
   grid-template-rows: auto 1fr;
-  min-height: calc(100% - 3rem);
+  height: auto;
 }
 
 .section__header {
   @extend %vf-has-box-shadow;
-  // Display the shadow above the content.
-  z-index: 1;
-}
-
-.section__header.p-strip {
   background-color: #fff;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.section__sidebar,
-.section__content {
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-.section__sidebar {
-  height: 100%;
-}
-
-.section__content-wrapper {
-  height: 100%;
 }

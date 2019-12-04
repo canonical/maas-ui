@@ -18,7 +18,7 @@ export const FormCard = ({ children, stacked, title }) => {
     </Row>
   );
   return (
-    <Card highlighted={true} className="card-form">
+    <Card highlighted={true} className="form-card">
       {content}
     </Card>
   );
