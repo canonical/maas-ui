@@ -91,7 +91,7 @@ const APIKeyList = () => {
     setExpandedId();
   };
 
-  useAddMessage(saved, tokenActions.cleanup, "API key removed successfully.");
+  useAddMessage(saved, tokenActions.cleanup, "API key deleted successfully.");
 
   useEffect(() => {
     dispatch(tokenActions.fetch());
