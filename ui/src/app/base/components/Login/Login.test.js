@@ -21,7 +21,7 @@ describe("Login", () => {
     };
   });
 
-  it("can render", () => {
+  it("can render api login", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -30,10 +30,36 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Login").exists()).toBe(true);
+    expect(wrapper.find("FormikForm").exists()).toBe(true);
   });
 
-  it("can login", () => {
+  it("can render external login", () => {
+    state.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <Login />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find(".login__external").exists()).toBe(true);
+  });
+
+  it("can render external login", () => {
+    state.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <Login />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find(".login__external").exists()).toBe(true);
+  });
+
+  it("can login via the api", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

@@ -20,7 +20,7 @@ export const history = createBrowserHistory({
 const composeEnhancers = composeWithDevTools({});
 const middleware = [sagaMiddleware, routerMiddleware(history)];
 const enhancers = composeEnhancers(applyMiddleware(...middleware));
-const store = createStore(createRootReducer(history), enhancers);
+export const store = createStore(createRootReducer(history), enhancers);
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(

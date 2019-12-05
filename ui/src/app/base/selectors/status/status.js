@@ -35,4 +35,18 @@ status.connecting = state => state.status.connecting;
  */
 status.error = state => state.status.error;
 
+/**
+ * Get the external auth url.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} The external auth url.
+ */
+status.externalAuthURL = state => state.status.externalAuthURL;
+
+/**
+ * Get the external login url.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} The external login url.
+ */
+status.externalLoginURL = state => state.status.externalLoginURL;
+
 export default status;

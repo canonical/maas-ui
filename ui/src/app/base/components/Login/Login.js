@@ -1,8 +1,16 @@
-import { Card, Col, Row, Strip } from "@canonical/react-components";
+import {
+  Button,
+  Card,
+  Col,
+  Notification,
+  Row,
+  Strip
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import React from "react";
+import React, { useEffect } from "react";
 
+import "./Login.scss";
 import { status as statusActions } from "app/base/actions";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
@@ -18,42 +26,69 @@ export const Login = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
   const authenticating = useSelector(statusSelectors.authenticating);
+  const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
+  const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const error = useSelector(statusSelectors.error);
 
   useWindowTitle("Login");
+
+  useEffect(() => {
+    if (externalAuthURL) {
+      dispatch(statusActions.externalLogin());
+    }
+  }, [dispatch, externalAuthURL]);
 
   return (
     <Strip>
       <Row>
         <Col size="6" emptyLarge="4">
+          {externalAuthURL && error && (
+            <Notification type="negative" status="Error:">
+              {error}
+            </Notification>
+          )}
           <Card title="Login">
-            <FormikForm
-              errors={error}
-              initialValues={{
-                password: "",
-                username: ""
-              }}
-              onSubmit={values => {
-                dispatch(statusActions.login(values));
-              }}
-              saving={authenticating}
-              saved={authenticated}
-              submitLabel="Login"
-              validationSchema={LoginSchema}
-            >
-              <FormikField
-                name="username"
-                label="Username"
-                required={true}
-                type="text"
-              />
-              <FormikField
-                name="password"
-                label="Password"
-                required={true}
-                type="password"
-              />
-            </FormikForm>
+            {externalAuthURL ? (
+              <Button
+                appearance="positive"
+                className="login__external"
+                element="a"
+                href={externalLoginURL}
+                rel="noopener noreferrer"
+                target="_blank"
+                title={`Login through ${externalAuthURL}`}
+              >
+                Go to login page
+              </Button>
+            ) : (
+              <FormikForm
+                errors={error}
+                initialValues={{
+                  password: "",
+                  username: ""
+                }}
+                onSubmit={values => {
+                  dispatch(statusActions.login(values));
+                }}
+                saving={authenticating}
+                saved={authenticated}
+                submitLabel="Login"
+                validationSchema={LoginSchema}
+              >
+                <FormikField
+                  name="username"
+                  label="Username"
+                  required={true}
+                  type="text"
+                />
+                <FormikField
+                  name="password"
+                  label="Password"
+                  required={true}
+                  type="password"
+                />
+              </FormikForm>
+            )}
           </Card>
         </Col>
       </Row>

@@ -45,4 +45,22 @@ describe("status", () => {
     };
     expect(status.connecting(state)).toBe(false);
   });
+
+  it("can get the external auth url", () => {
+    const state = {
+      status: {
+        externalAuthURL: "http://login.example.com"
+      }
+    };
+    expect(status.externalAuthURL(state)).toEqual("http://login.example.com");
+  });
+
+  it("can get the external login url", () => {
+    const state = {
+      status: {
+        externalLoginURL: "http://login.example.com"
+      }
+    };
+    expect(status.externalLoginURL(state)).toEqual("http://login.example.com");
+  });
 });
