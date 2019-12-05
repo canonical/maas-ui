@@ -27,13 +27,13 @@ export const APIKeyForm = ({ token }) => {
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
-  const title = editing ? "Edit MAAS API key" : "Create MAAS API key";
+  const title = editing ? "Edit MAAS API key" : "Generate MAAS API key";
 
   useWindowTitle(title);
   useAddMessage(
     saved,
     tokenActions.cleanup,
-    `API key successfully ${editing ? "updated" : "created"}.`
+    `API key successfully ${editing ? "updated" : "generated"}.`
   );
 
   return (
@@ -61,7 +61,7 @@ export const APIKeyForm = ({ token }) => {
         saving={saving}
         saved={saved}
         savedRedirect="/account/prefs/api-keys"
-        submitLabel="Save API key"
+        submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
         <Row>
