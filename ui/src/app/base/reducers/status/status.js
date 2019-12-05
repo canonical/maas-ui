@@ -9,10 +9,12 @@ const status = produce(
       case "CHECK_AUTHENTICATED_SUCCESS":
         draft.authenticating = false;
         draft.authenticated = action.payload.authenticated;
+        draft.externalAuthURL = action.payload.external_auth_url;
         break;
       case "LOGIN_START":
         draft.authenticating = true;
         break;
+      case "EXTERNAL_LOGIN_SUCCESS":
       case "LOGIN_SUCCESS":
         draft.authenticated = true;
         draft.authenticating = false;
@@ -39,12 +41,16 @@ const status = produce(
         draft.connecting = false;
         draft.error = null;
         break;
+      case "EXTERNAL_LOGIN_ERROR":
       case "LOGIN_ERROR":
         draft.error = action.error;
         draft.authenticating = false;
         break;
       case "WEBSOCKET_ERROR":
         draft.error = action.error;
+        break;
+      case "EXTERNAL_LOGIN_URL":
+        draft.externalLoginURL = action.payload.url;
         break;
       default:
         return draft;
@@ -54,6 +60,8 @@ const status = produce(
     // Default to authenticating so that the login screen doesn't flash.
     authenticating: true,
     authenticated: false,
+    externalAuthURL: null,
+    externalLoginURL: null,
     connected: false,
     error: null
   }

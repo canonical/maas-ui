@@ -1548,6 +1548,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@canonical/macaroon-bakery@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-0.3.0.tgz#59ec07ad31f392bea2364e81dd6b63ac78b32e6c"
+  integrity sha512-JtMXxasIMLMIVsqIfLMm6VObUcV5itq3WnEt02rV+39j7Z4wNDUM+HuiHQhcmUuogmMOgoyqfLuUHE0Wkk7F4A==
+  dependencies:
+    macaroon "^3.0.4"
+
 "@canonical/react-components@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.2.2.tgz#d19b451c4311cc3325976e560fa25cf56b5c6dce"
@@ -8288,7 +8295,7 @@ macaroon-bakery@0.2.1:
   dependencies:
     macaroon "^3.0.3"
 
-macaroon@^3.0.3:
+macaroon@^3.0.3, macaroon@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/macaroon/-/macaroon-3.0.4.tgz#dac1a4b17cd973c1000703f40b19bdbb1d6191ce"
   integrity sha512-Tja2jvupseKxltPZbu5RPSz2Pgh6peYA3O46YCTcYL8PI1VqtGwDqRhGfP8pows26xx9wTiygk+en62Bq+Y8JA==

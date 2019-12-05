@@ -360,6 +360,7 @@ const renderHeader = ($rootScope, $window, $http) => {
       enableAnalytics={!debug && window.CONFIG.enable_analytics}
       location={window.location}
       logout={() => {
+        localStorage.clear();
         $http.post(LOGOUT_API).then(() => {
           $window.location.href = process.env.BASENAME;
         });

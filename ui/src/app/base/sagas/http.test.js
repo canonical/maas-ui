@@ -9,6 +9,7 @@ import {
   checkAuthenticatedSaga,
   loginSaga,
   logoutSaga,
+  externalLoginSaga,
   fetchScriptsSaga,
   deleteScriptSaga,
   uploadScriptSaga,
@@ -16,6 +17,8 @@ import {
   updateLicenseKeySaga,
   deleteLicenseKeySaga
 } from "./http";
+
+jest.mock("../../../bakery", () => {});
 
 describe("http sagas", () => {
   describe("Auth API", () => {
@@ -82,6 +85,35 @@ describe("http sagas", () => {
           ])
           .put({ type: "LOGIN_START" })
           .put({ type: "LOGIN_ERROR", error })
+          .run();
+      });
+    });
+
+    describe("externalLogin", () => {
+      it("returns a SUCCESS action", () => {
+        const action = {
+          type: "EXTERNAL_LOGIN"
+        };
+        return expectSaga(externalLoginSaga, action)
+          .provide([[matchers.call.fn(api.auth.externalLogin)]])
+          .put({ type: "EXTERNAL_LOGIN_START" })
+          .put({ type: "EXTERNAL_LOGIN_SUCCESS" })
+          .run();
+      });
+
+      it("handles errors", () => {
+        const action = {
+          type: "EXTERNAL_LOGIN"
+        };
+        const error = {
+          message: "Unable to log in"
+        };
+        return expectSaga(externalLoginSaga, action)
+          .provide([
+            [matchers.call.fn(api.auth.externalLogin), throwError(error)]
+          ])
+          .put({ type: "EXTERNAL_LOGIN_START" })
+          .put({ type: "EXTERNAL_LOGIN_ERROR", error: error.message })
           .run();
       });
     });

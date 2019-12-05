@@ -6,7 +6,9 @@ describe("status", () => {
       authenticating: true,
       authenticated: false,
       connected: false,
-      error: null
+      error: null,
+      externalAuthURL: null,
+      externalLoginURL: null
     });
   });
 
@@ -101,12 +103,16 @@ describe("status", () => {
         },
         {
           type: "CHECK_AUTHENTICATED_SUCCESS",
-          payload: { authenticated: true }
+          payload: {
+            authenticated: true,
+            external_auth_url: "http://login.example.com"
+          }
         }
       )
     ).toStrictEqual({
       authenticating: false,
-      authenticated: true
+      authenticated: true,
+      externalAuthURL: "http://login.example.com"
     });
   });
 
@@ -143,6 +149,24 @@ describe("status", () => {
     });
   });
 
+  it("should correctly reduce EXTERNAL_LOGIN_SUCCESS", () => {
+    expect(
+      status(
+        {
+          authenticated: false,
+          authenticating: true
+        },
+        {
+          type: "EXTERNAL_LOGIN_SUCCESS"
+        }
+      )
+    ).toStrictEqual({
+      authenticated: true,
+      authenticating: false,
+      error: null
+    });
+  });
+
   it("should correctly reduce LOGIN_ERROR", () => {
     expect(
       status(
@@ -151,6 +175,23 @@ describe("status", () => {
         },
         {
           type: "LOGIN_ERROR",
+          error: "Username not provided"
+        }
+      )
+    ).toStrictEqual({
+      authenticating: false,
+      error: "Username not provided"
+    });
+  });
+
+  it("should correctly reduce EXTERNAL_LOGIN_ERROR", () => {
+    expect(
+      status(
+        {
+          error: null
+        },
+        {
+          type: "EXTERNAL_LOGIN_ERROR",
           error: "Username not provided"
         }
       )
@@ -189,6 +230,22 @@ describe("status", () => {
       )
     ).toStrictEqual({
       authenticated: false
+    });
+  });
+
+  it("should correctly reduce EXTERNAL_LOGIN_URL", () => {
+    expect(
+      status(
+        {
+          externalLoginURL: null
+        },
+        {
+          payload: { url: "http://login.example.com" },
+          type: "EXTERNAL_LOGIN_URL"
+        }
+      )
+    ).toStrictEqual({
+      externalLoginURL: "http://login.example.com"
     });
   });
 });

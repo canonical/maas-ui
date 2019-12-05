@@ -1,7 +1,9 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
+import bakery from "bakery";
 import getCookie from "./utils";
 
+const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
 const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
@@ -39,6 +41,18 @@ export const api = {
         .then(handleErrors)
         .then(response => response.json());
     },
+    externalLogin: () => {
+      return new Promise((resolve, reject) => {
+        bakery.get(BAKERY_LOGIN_API, DEFAULT_HEADERS, (error, response) => {
+          if (response.currentTarget.status !== 200) {
+            localStorage.clear();
+            reject(Error(response.currentTarget.responseText));
+          } else {
+            resolve({ response });
+          }
+        });
+      });
+    },
     login: credentials => {
       return fetch(LOGIN_API, {
         method: "POST",
@@ -61,6 +75,7 @@ export const api = {
         });
     },
     logout: csrftoken => {
+      localStorage.clear();
       return fetch(LOGOUT_API, {
         headers: { "X-CSRFToken": csrftoken },
         method: "POST"
@@ -188,6 +203,21 @@ export function* logoutSaga(action) {
     yield put({
       type: "LOGOUT_ERROR",
       errors: { error: error.message }
+    });
+  }
+}
+
+export function* externalLoginSaga(action) {
+  try {
+    yield put({ type: "EXTERNAL_LOGIN_START" });
+    yield call(api.auth.externalLogin);
+    yield put({
+      type: "EXTERNAL_LOGIN_SUCCESS"
+    });
+  } catch (error) {
+    yield put({
+      type: "EXTERNAL_LOGIN_ERROR",
+      error: error.message
     });
   }
 }
@@ -336,6 +366,10 @@ export function* deleteScriptSaga(action) {
       errors: { error: error.message }
     });
   }
+}
+
+export function* watchExternalLogin() {
+  yield takeLatest("EXTERNAL_LOGIN", externalLoginSaga);
 }
 
 export function* watchLogin() {

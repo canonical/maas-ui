@@ -20,4 +20,18 @@ describe("status actions", () => {
       type: "CHECK_AUTHENTICATED"
     });
   });
+
+  it("should handle external log in", () => {
+    expect(status.externalLogin()).toStrictEqual({ type: "EXTERNAL_LOGIN" });
+  });
+
+  it("should handle storing the external login URL", () => {
+    const payload = {
+      url: "http://login.example.com"
+    };
+    expect(status.externalLoginURL(payload)).toStrictEqual({
+      payload,
+      type: "EXTERNAL_LOGIN_URL"
+    });
+  });
 });
