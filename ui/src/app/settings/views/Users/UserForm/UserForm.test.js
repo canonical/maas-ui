@@ -17,6 +17,7 @@ describe("UserForm", () => {
       config: {
         items: []
       },
+      status: {},
       user: {
         auth: {},
         errors: {},

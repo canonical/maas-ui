@@ -17,6 +17,7 @@ describe("Details", () => {
       config: {
         items: []
       },
+      status: {},
       user: {
         auth: {
           saved: false,
@@ -196,5 +197,18 @@ describe("Details", () => {
     );
     const actions = store.getActions();
     expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+  });
+
+  it("shows a message when using external auth", () => {
+    state.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <Details />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
   });
 });

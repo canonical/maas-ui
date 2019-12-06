@@ -37,6 +37,7 @@ describe("UsersList", () => {
       config: {
         items: []
       },
+      status: {},
       user: {
         auth: {
           user: users[0]
@@ -226,5 +227,21 @@ describe("UsersList", () => {
         .at(0)
         .text()
     ).toEqual("Kangaroo");
+  });
+
+  it("shows a message when using external auth", () => {
+    defaultStore.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(defaultStore);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UsersList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(wrapper.find("MainTable").exists()).toBe(false);
   });
 });
