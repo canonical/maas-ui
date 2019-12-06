@@ -16,6 +16,7 @@ describe("UserEdit", () => {
       config: {
         items: []
       },
+      status: {},
       user: {
         auth: {},
         errors: {},

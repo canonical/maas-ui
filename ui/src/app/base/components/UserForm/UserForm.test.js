@@ -23,6 +23,7 @@ describe("UserForm", () => {
       username: "admin"
     };
     state = {
+      status: {},
       user: {
         auth: {},
         errors: {},
@@ -175,5 +176,22 @@ describe("UserForm", () => {
       username: ["Username already exists"],
       password: ["Password too short"]
     });
+  });
+
+  it("disables fields when using external auth", () => {
+    state.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm onSave={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField[disabled=true]").length).toEqual(
+      wrapper.find("FormikField").length
+    );
   });
 });

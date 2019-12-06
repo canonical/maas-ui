@@ -1,4 +1,4 @@
-import { Button } from "@canonical/react-components";
+import { Button, Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
   user as userSelectors,
   auth as authSelectors
 } from "app/base/selectors";
+import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
@@ -125,6 +126,7 @@ const Users = () => {
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
   const saved = useSelector(userSelectors.saved);
+  const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
   useWindowTitle("Users");
@@ -146,6 +148,14 @@ const Users = () => {
       dispatch(userActions.cleanup());
     };
   }, [dispatch]);
+
+  if (externalAuthURL) {
+    return (
+      <Notification type="information">
+        Users for this MAAS are managed using an external service
+      </Notification>
+    );
+  }
 
   return (
     <SettingsTable

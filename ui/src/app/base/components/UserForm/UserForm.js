@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 
 import { auth as authSelectors } from "app/base/selectors";
+import { status as statusSelectors } from "app/base/selectors";
 import { user as userSelectors } from "app/base/selectors";
 import { UserShape } from "app/base/proptypes";
 import FormikForm from "app/base/components/FormikForm";
@@ -60,6 +61,8 @@ export const UserForm = ({
   const saved = useSelector(userSelectors.saved);
   const userErrors = useSelector(userSelectors.errors);
   const authErrors = useSelector(authSelectors.errors);
+  const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
+  const formDisabled = !!externalAuthURL;
   let errors = userErrors;
   if (includeCurrentPassword) {
     errors = {
@@ -116,14 +119,21 @@ export const UserForm = ({
       }
     >
       <FormikField
+        disabled={formDisabled}
         name="username"
         help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         label="Username"
         required={true}
         type="text"
       />
-      <FormikField name="fullName" label="Full name (optional)" type="text" />
       <FormikField
+        disabled={formDisabled}
+        name="fullName"
+        label="Full name (optional)"
+        type="text"
+      />
+      <FormikField
+        disabled={formDisabled}
         name="email"
         label="Email address"
         required={true}
@@ -131,6 +141,7 @@ export const UserForm = ({
       />
       {includeUserType && (
         <FormikField
+          disabled={formDisabled}
           name="isSuperuser"
           label="MAAS administrator"
           type="checkbox"
@@ -152,6 +163,7 @@ export const UserForm = ({
         <>
           {includeCurrentPassword && (
             <FormikField
+              disabled={formDisabled}
               name="old_password"
               label="Current password"
               required={true}
@@ -159,12 +171,14 @@ export const UserForm = ({
             />
           )}
           <FormikField
+            disabled={formDisabled}
             name="password"
             label={includeCurrentPassword ? "New password" : "Password"}
             required={true}
             type="password"
           />
           <FormikField
+            disabled={formDisabled}
             name="passwordConfirm"
             help="Enter the same password as before, for verification"
             label={
