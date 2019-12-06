@@ -2,7 +2,7 @@
 
 exports[`FormCard  renders 1`] = `
 <Card
-  className="card-form"
+  className="form-card"
   highlighted={true}
 >
   <Row>

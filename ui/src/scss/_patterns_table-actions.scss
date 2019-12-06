@@ -1,7 +1,7 @@
 @media screen and (min-width: $breakpoint-x-small) {
   .p-table-actions {
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: $spv-inner--scaleable;
   }
 
   .p-table-actions__space-left,
@@ -14,7 +14,7 @@
     margin: 0;
 
     &:first-of-type {
-      margin-left: 1rem;
+      margin-left: $sph-inner;
     }
   }
 }

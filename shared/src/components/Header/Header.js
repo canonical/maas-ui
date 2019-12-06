@@ -23,8 +23,8 @@ export const Header = ({
   onSkip,
   showRSD
 }) => {
-  const [hardwareVisible, toggleHardware] = useVisible(false);
-  const [mobileMenuVisible, toggleMobileMenu] = useVisible(false);
+  const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
+  const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
 
   const links = [
     {
@@ -94,52 +94,120 @@ export const Header = ({
     .filter(({ hidden }) => !hidden);
 
   const generateLegacyURL = url => `${basename}/#${url}`;
-
-  const generateLink = (
-    url,
-    label,
-    isLegacy = false,
-    isDropdown = false,
-    hideMobile = false
-  ) => {
-    const linkClass = classNames({
-      "p-dropdown__item": isDropdown
-    });
+  const generateNewURL = url => `${basename}${newURLPrefix}${url}`;
+  const generateURL = (url, isLegacy) => {
     if (isLegacy) {
-      url = generateLegacyURL(url);
+      return generateLegacyURL(url);
     } else if (newURLPrefix) {
-      url = `${basename}${newURLPrefix}${url}`;
+      return generateNewURL(url);
     }
+    return url;
+  };
+
+  const generateLink = (link, linkClass = undefined) => {
+    const { isLegacy, label, url } = link;
+    const linkURL = generateURL(url, isLegacy);
+
+    return generateLocalLink && !isLegacy ? (
+      generateLocalLink(linkURL, label, linkClass)
+    ) : (
+      <a className={linkClass} href={linkURL}>
+        {label}
+      </a>
+    );
+  };
+
+  const generateHardwareMenu = hardwareLinks => {
+    const linkItems = hardwareLinks.map(link => (
+      <li key={link.url}>{generateLink(link, "p-subnav__item")}</li>
+    ));
     return (
       <li
-        className={classNames("p-navigation__link", {
-          "is-selected": location.pathname.startsWith(url),
-          "u-hide-nav-viewport--medium": hideMobile
-        })}
-        key={url}
+        className={classNames(
+          "p-navigation__link p-subnav is-dark hardware-menu",
+          { "is-active": hardwareMenuOpen }
+        )}
         role="menuitem"
       >
-        {generateLocalLink && !isLegacy ? (
-          generateLocalLink(url, label, linkClass)
-        ) : (
-          <a className={linkClass} href={url}>
-            {label}
-          </a>
-        )}
+        <a onClick={toggleHardwareMenu}>Hardware</a>
+        <ul className="p-subnav__items">{linkItems}</ul>
       </li>
     );
   };
 
-  const generateMenuItems = (items, isDropdown, hideMobile) =>
-    items.map(({ inHardwareMenu, isLegacy, label, url }) =>
-      generateLink(
-        url,
-        label,
-        isLegacy,
-        isDropdown,
-        inHardwareMenu && hideMobile
-      )
+  const generateNavItems = links => {
+    const hardwareLinks = links.filter(link => link.inHardwareMenu);
+    const hardwareMenu = generateHardwareMenu(hardwareLinks);
+    const linkItems = links.map(link => (
+      <li
+        className={classNames("p-navigation__link", {
+          "is-selected": location.pathname.startsWith(
+            generateURL(link.url, link.isLegacy)
+          ),
+          "u-hide--hardware-menu-threshold": link.inHardwareMenu
+        })}
+        key={link.url}
+        role="menuitem"
+      >
+        {generateLink(link)}
+      </li>
+    ));
+
+    return (
+      <nav
+        className={classNames("p-navigation__nav", {
+          "u-show": mobileMenuOpen
+        })}
+      >
+        <span className="u-off-screen">
+          <a href="#main-content">Jump to main content</a>
+        </span>
+        <ul className="p-navigation__links" role="menu">
+          {completedIntro && (
+            <>
+              {hardwareMenu}
+              {linkItems}
+            </>
+          )}
+        </ul>
+        <ul className="p-navigation__links" role="menu">
+          {!completedIntro && (
+            <li className="p-navigation__link" role="menuitem">
+              <a
+                onClick={evt => {
+                  evt.preventDefault();
+                  onSkip();
+                }}
+              >
+                Skip
+              </a>
+            </li>
+          )}
+          <li
+            className={classNames("p-navigation__link", {
+              "is-selected": location.pathname.startsWith(
+                generateURL("/account/prefs", false)
+              )
+            })}
+            role="menuitem"
+          >
+            {generateLink({ url: "/account/prefs", label: authUser.username })}
+          </li>
+          <li className="p-navigation__link" role="menuitem">
+            <a
+              onClick={evt => {
+                evt.preventDefault();
+                localStorage.removeItem("maas-config");
+                logout();
+              }}
+            >
+              Log out
+            </a>
+          </li>
+        </ul>
+      </nav>
     );
+  };
 
   return (
     <>
@@ -156,7 +224,7 @@ export const Header = ({
           }}
         ></script>
       )}
-      <header className="p-navigation is-dark">
+      <header id="navigation" className="p-navigation is-dark">
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">
             <div className="p-navigation__logo">
@@ -188,78 +256,13 @@ export const Header = ({
             </div>
             <a
               className="p-navigation__toggle--open"
-              href="#menu"
-              title="toggle menu"
+              title="Toggle menu"
               onClick={toggleMobileMenu}
             >
-              Menu
+              {mobileMenuOpen ? "Close menu" : "Menu"}
             </a>
           </div>
-          {authUser && (
-            <nav
-              className={classNames("p-navigation__nav", "p-dropdown__menu", {
-                "u-show": mobileMenuVisible
-              })}
-              role="menubar"
-            >
-              <span className="u-off-screen">
-                <a href="#main-content">Jump to main content</a>
-              </span>
-              <ul className="p-navigation__links" role="menu">
-                {completedIntro && (
-                  <>
-                    <li
-                      role="menuitem"
-                      className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
-                    >
-                      <a onClick={toggleHardware} href="#menu">
-                        Hardware <i className="p-icon--chevron"></i>
-                      </a>
-                      <ul
-                        className={classNames("p-dropdown__menu", {
-                          "u-hide": !hardwareVisible
-                        })}
-                      >
-                        {generateMenuItems(
-                          links.filter(item => item.inHardwareMenu)
-                        )}
-                      </ul>
-                    </li>
-                    {generateMenuItems(links, true, true)}
-                  </>
-                )}
-              </ul>
-              <ul className="p-navigation__links--right" role="menu">
-                {!completedIntro && (
-                  <li className="p-navigation__link" role="menuitem">
-                    <a
-                      href=""
-                      onClick={evt => {
-                        evt.preventDefault();
-                        onSkip();
-                      }}
-                    >
-                      Skip
-                    </a>
-                  </li>
-                )}
-                {generateLink("/account/prefs", authUser.username, false, true)}
-                <li className="p-navigation__link" role="menuitem">
-                  <a
-                    className="p-dropdown__item"
-                    href=""
-                    onClick={evt => {
-                      evt.preventDefault();
-                      localStorage.removeItem("maas-config");
-                      logout();
-                    }}
-                  >
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          )}
+          {authUser && generateNavItems(links)}
         </div>
       </header>
     </>

@@ -1,5 +1,10 @@
+@import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/base_forms-tick-elements";
+
+$grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spacing
+
 .machine-list--grouped .machine-list__machine td:first-child {
-  padding-left: 2rem;
+  padding-left: $grouped-machines-indentation;
 }
 
 .machine-list__group-toggle {

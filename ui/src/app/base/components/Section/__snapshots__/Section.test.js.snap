@@ -7,6 +7,7 @@ exports[`Section renders 1`] = `
   <Strip
     className="section__header"
     element="header"
+    shallow={true}
   >
     <h1
       className="p-heading--four u-no-margin--bottom"
@@ -15,10 +16,10 @@ exports[`Section renders 1`] = `
     </h1>
   </Strip>
   <Strip
-    className="u-no-padding"
     element="main"
     includeCol={false}
     rowClassName="u-equal-height section__content-wrapper"
+    shallow={true}
   >
     <Col
       className="section__sidebar"

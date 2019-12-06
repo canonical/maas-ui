@@ -4,6 +4,7 @@ exports[`Header renders 1`] = `
 <Fragment>
   <header
     className="p-navigation is-dark"
+    id="navigation"
   >
     <div
       className="p-navigation__row row"
@@ -52,16 +53,14 @@ exports[`Header renders 1`] = `
         </div>
         <a
           className="p-navigation__toggle--open"
-          href="#menu"
           onClick={[Function]}
-          title="toggle menu"
+          title="Toggle menu"
         >
           Menu
         </a>
       </div>
       <nav
-        className="p-navigation__nav p-dropdown__menu"
-        role="menubar"
+        className="p-navigation__nav"
       >
         <span
           className="u-off-screen"
@@ -77,64 +76,52 @@ exports[`Header renders 1`] = `
           role="menu"
         >
           <li
-            className="p-navigation__link p-dropdown u-hide-nav-viewport--large u-hide-nav-viewport--small p-dropdown__toggle"
+            className="p-navigation__link p-subnav is-dark hardware-menu"
             role="menuitem"
           >
             <a
-              href="#menu"
               onClick={[Function]}
             >
-              Hardware 
-              <i
-                className="p-icon--chevron"
-              />
+              Hardware
             </a>
             <ul
-              className="p-dropdown__menu u-hide"
+              className="p-subnav__items"
             >
               <li
-                className="p-navigation__link"
-                key="/MAAS/#/machines"
-                role="menuitem"
+                key="/machines"
               >
                 <a
-                  className=""
+                  className="p-subnav__item"
                   href="/MAAS/#/machines"
                 >
                   Machines
                 </a>
               </li>
               <li
-                className="p-navigation__link"
-                key="/MAAS/#/devices"
-                role="menuitem"
+                key="/devices"
               >
                 <a
-                  className=""
+                  className="p-subnav__item"
                   href="/MAAS/#/devices"
                 >
                   Devices
                 </a>
               </li>
               <li
-                className="p-navigation__link"
-                key="/MAAS/#/controllers"
-                role="menuitem"
+                key="/controllers"
               >
                 <a
-                  className=""
+                  className="p-subnav__item"
                   href="/MAAS/#/controllers"
                 >
                   Controllers
                 </a>
               </li>
               <li
-                className="p-navigation__link"
-                key="/MAAS/#/kvm"
-                role="menuitem"
+                key="/kvm"
               >
                 <a
-                  className=""
+                  className="p-subnav__item"
                   href="/MAAS/#/kvm"
                 >
                   KVM
@@ -143,48 +130,44 @@ exports[`Header renders 1`] = `
             </ul>
           </li>
           <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
-            key="/MAAS/#/machines"
+            className="p-navigation__link u-hide--hardware-menu-threshold"
+            key="/machines"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/machines"
             >
               Machines
             </a>
           </li>
           <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
-            key="/MAAS/#/devices"
+            className="p-navigation__link u-hide--hardware-menu-threshold"
+            key="/devices"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/devices"
             >
               Devices
             </a>
           </li>
           <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
-            key="/MAAS/#/controllers"
+            className="p-navigation__link u-hide--hardware-menu-threshold"
+            key="/controllers"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/controllers"
             >
               Controllers
             </a>
           </li>
           <li
-            className="p-navigation__link u-hide-nav-viewport--medium"
-            key="/MAAS/#/kvm"
+            className="p-navigation__link u-hide--hardware-menu-threshold"
+            key="/kvm"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/kvm"
             >
               KVM
@@ -192,11 +175,10 @@ exports[`Header renders 1`] = `
           </li>
           <li
             className="p-navigation__link"
-            key="/MAAS/#/images"
+            key="/images"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/images"
             >
               Images
@@ -204,11 +186,10 @@ exports[`Header renders 1`] = `
           </li>
           <li
             className="p-navigation__link"
-            key="/MAAS/#/domains"
+            key="/domains"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/domains"
             >
               DNS
@@ -216,11 +197,10 @@ exports[`Header renders 1`] = `
           </li>
           <li
             className="p-navigation__link"
-            key="/MAAS/#/zones"
+            key="/zones"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/zones"
             >
               AZs
@@ -228,11 +208,10 @@ exports[`Header renders 1`] = `
           </li>
           <li
             className="p-navigation__link"
-            key="/MAAS/#/networks?by=fabric"
+            key="/networks?by=fabric"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/MAAS/#/networks?by=fabric"
             >
               Subnets
@@ -244,7 +223,6 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/settings"
             >
               Settings
@@ -252,16 +230,14 @@ exports[`Header renders 1`] = `
           </li>
         </ul>
         <ul
-          className="p-navigation__links--right"
+          className="p-navigation__links"
           role="menu"
         >
           <li
             className="p-navigation__link"
-            key="/account/prefs"
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
               href="/account/prefs"
             >
               koala
@@ -272,11 +248,9 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              className="p-dropdown__item"
-              href=""
               onClick={[Function]}
             >
-              Logout
+              Log out
             </a>
           </li>
         </ul>

@@ -8,14 +8,14 @@ import NotificationList from "app/base/components/NotificationList";
 const Section = ({ children, sidebar, title }) => {
   return (
     <div className="section">
-      <Strip element="header" className="section__header">
+      <Strip className="section__header" element="header" shallow>
         <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
       </Strip>
       <Strip
         element="main"
-        className="u-no-padding"
-        rowClassName="u-equal-height section__content-wrapper"
         includeCol={false}
+        rowClassName="u-equal-height section__content-wrapper"
+        shallow
       >
         {sidebar && (
           <Col element="aside" size="2" className="section__sidebar">
