@@ -10,10 +10,10 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-** MAAS version **
+**MAAS version**
 Version of MAAS affected.
 
-** LP issue **
+**LP issue**
 Is this an [issue on launchpad](https://bugs.launchpad.net/maas)? If so, please provide a bug is in the form lp#number.
 
 **To Reproduce**
