@@ -14,7 +14,7 @@ exports[`FormCardButtons  renders 1`] = `
       type="button"
     >
       <button
-        className="u-no-margin--bottom p-button--base"
+        className="p-button--base u-no-margin--bottom"
         onClick={[Function]}
         type="button"
       >

@@ -1555,10 +1555,10 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.2.2.tgz#d19b451c4311cc3325976e560fa25cf56b5c6dce"
-  integrity sha512-J0YjaWfZ4a2YuYL3s5wCTNVFvho99C7YpelHMly96Aj6lnmQa3NM69ezwOACSX7qXo8VwMYuwMlW/j5f3sjh4A==
+"@canonical/react-components@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.3.0.tgz#9ed160c08884576d1efd6dd1ca4a9fa21bbfbd9a"
+  integrity sha512-t6rTxaH/BqCqKL8WDMnOhyhyTsmTBoyuiKaFxNjHYxO2veseJK+NSTCKytKC9y6WyzVrYd039Of+OsW24bQuKw==
   dependencies:
     classnames "2.2.6"
     prop-types "15.7.2"
@@ -13182,6 +13182,11 @@ value-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
+
+vanilla-framework@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.0.1.tgz#028e5cc4a156973f21cbd38ab3758c9532f3c36b"
+  integrity sha512-vE4e4ck40lrcFmREy06yoXy/dHKF+ewA/lsC6ZeooirXB69/XmZv+jgkCUlftbn6ya+N8F6b9yWGHKfg7AiEkg==
 
 vanilla-framework@2.4.1:
   version "2.4.1"

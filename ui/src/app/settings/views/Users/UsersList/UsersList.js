@@ -62,12 +62,13 @@ const generateUserRows = (
               <Button
                 appearance="base"
                 element={Link}
+                hasIcon
                 to={
                   isAuthUser
                     ? "/account/prefs/details"
                     : `/settings/users/${user.id}/edit`
                 }
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
@@ -77,7 +78,8 @@ const generateUserRows = (
               >
                 <Button
                   appearance="base"
-                  className="is-small u-justify-table-icon"
+                  className="is-dense u-table-cell-padding-overlap"
+                  hasIcon
                   onClick={() => setExpandedId(user.id)}
                   disabled={isAuthUser}
                 >
@@ -86,7 +88,7 @@ const generateUserRows = (
               </Tooltip>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,

@@ -43,7 +43,8 @@ const generateRepositoryRows = (
                 appearance="base"
                 element={Link}
                 to={`/settings/repositories/edit/${type}/${repo.id}`}
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
@@ -53,7 +54,8 @@ const generateRepositoryRows = (
               >
                 <Button
                   appearance="base"
-                  className="is-small u-justify-table-icon"
+                  className="is-dense u-table-cell-padding-overlap"
+                  hasIcon
                   onClick={() => setExpandedId(repo.id)}
                   disabled={repo.default}
                 >
@@ -62,7 +64,7 @@ const generateRepositoryRows = (
               </Tooltip>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,

@@ -31,7 +31,6 @@
 .p-table-multi-header[aria-sort="ascending"] {
   .p-table-multi-header__link.is-active::after {
     @extend %heading-icon;
-    height: map-get($line-heights, default-text);
   }
 }
 

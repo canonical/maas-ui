@@ -70,7 +70,16 @@ export const App = () => {
 
   let content;
   if (authLoading || connecting || authenticating) {
-    content = <Section title={<Loader text="Loading..." />} />;
+    content = (
+      <Section
+        title={
+          <Loader
+            className="u-align--left u-no-padding--left"
+            text="Loading..."
+          />
+        }
+      />
+    );
   } else if (!authenticated) {
     content = <Login />;
   } else if (connectionError) {

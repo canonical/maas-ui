@@ -39,15 +39,17 @@ const generateRows = (
               <CopyButton value={token} />
               <Button
                 appearance="base"
+                className="is-dense u-table-cell-padding-overlap"
                 element={Link}
+                hasIcon
                 to={`/account/prefs/api-keys/${id}/edit`}
-                className="is-small u-justify-table-icon"
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
               <Button
                 appearance="base"
-                className="is-small u-justify-table-icon"
+                hasIcon
+                className="is-dense u-table-cell-padding-overlap"
                 onClick={() => {
                   setExpandedId(id);
                 }}
@@ -56,7 +58,7 @@ const generateRows = (
               </Button>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,

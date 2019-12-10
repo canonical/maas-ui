@@ -114,13 +114,15 @@ const generateRows = (
                 appearance="base"
                 element={Link}
                 to={`/settings/dhcp/${dhcpsnippet.id}/edit`}
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
               <Button
                 appearance="base"
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
                 onClick={() => {
                   setExpandedId(dhcpsnippet.id);
                   setExpandedType("delete");
@@ -130,7 +132,7 @@ const generateRows = (
               </Button>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,
