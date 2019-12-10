@@ -23,7 +23,7 @@
     "react-router-dom": "5.1.2",
     "react-router-hash-link": "1.2.2",
     "react-router-prop-types": "1.0.4",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.2.0",
     "react-useportal": "1.0.13",
     "reconnecting-websocket": "4.2.0",
     "reduce-reducers": "1.0.4",
