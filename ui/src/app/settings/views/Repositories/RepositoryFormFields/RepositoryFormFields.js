@@ -58,13 +58,7 @@ const RepositoryFormFields = ({ type }) => {
           disabled={values.default}
           required
         />
-        <FormikField
-          label="URL"
-          type="text"
-          name="url"
-          disabled={values.default}
-          required
-        />
+        <FormikField label="URL" type="text" name="url" required />
         <List
           items={[
             <FormikField

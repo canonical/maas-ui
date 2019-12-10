@@ -135,6 +135,7 @@ export const RepositoryForm = ({ type, repository }) => {
               if (values.default) {
                 params.disabled_components = values.disabled_components;
                 params.disabled_pockets = values.disabled_pockets;
+                params.url = values.url;
               } else {
                 params.components = values.components
                   .split(" ,")
