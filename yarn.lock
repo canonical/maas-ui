@@ -1555,10 +1555,10 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.2.2.tgz#d19b451c4311cc3325976e560fa25cf56b5c6dce"
-  integrity sha512-J0YjaWfZ4a2YuYL3s5wCTNVFvho99C7YpelHMly96Aj6lnmQa3NM69ezwOACSX7qXo8VwMYuwMlW/j5f3sjh4A==
+"@canonical/react-components@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.3.0.tgz#9ed160c08884576d1efd6dd1ca4a9fa21bbfbd9a"
+  integrity sha512-t6rTxaH/BqCqKL8WDMnOhyhyTsmTBoyuiKaFxNjHYxO2veseJK+NSTCKytKC9y6WyzVrYd039Of+OsW24bQuKw==
   dependencies:
     classnames "2.2.6"
     prop-types "15.7.2"
