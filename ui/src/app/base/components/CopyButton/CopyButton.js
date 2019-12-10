@@ -21,7 +21,8 @@ const CopyButton = ({ value }) => {
     <>
       <Button
         appearance="base"
-        className="is-small u-justify-table-icon u-no-margin--right"
+        className="is-dense u-table-cell-padding-overlap u-no-margin--right"
+        hasIcon
         onClick={handleClick}
       >
         <i className="p-icon--copy">Copy</i>

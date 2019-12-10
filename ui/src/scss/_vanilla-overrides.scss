@@ -4,46 +4,10 @@
  * {Link to relevant GitHub issue}
  */
 
-// 19-08-2019 Caleb: Form submit button too close to input when $multi = 1
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/2497
-.p-form__group:last-child {
-  margin-bottom: $spv-outer--medium;
-}
-
-// 20-08-2019 Caleb: Dense tables aren't spaced properly
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/2504
-td:not(.p-table-expanding__panel) [class*="p-button"] {
-  margin-top: -0.25rem;
-  margin-bottom: -0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-.u-align-icons--top {
-  align-items: flex-start;
-  display: flex;
-  padding-top: 0.3125rem;
-}
-th > .p-tooltip,
-td > .p-tooltip {
-  margin-bottom: -1px;
-  margin-top: -1px;
-}
-
-// 26-08-2019 Huw: Notification close buttons are misaligned when $multi = 1.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/2512
-[class*="p-notification"] .p-icon--close {
-  margin-top: 0.75rem;
-}
-
-// 11-11-2019 Huw: The table sort icon uses old chevron.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/2634
-.p-table--sortable th[role="columnheader"][aria-sort="ascending"]::after,
-.p-table--sortable th[role="columnheader"][aria-sort="descending"]::after,
-.p-table-multi-header[aria-sort="descending"]
-  .p-table-multi-header__link.is-active::after,
-.p-table-multi-header[aria-sort="ascending"]
-  .p-table-multi-header__link.is-active::after {
-  @include vf-icon-chevron;
+// 09-12-2019 Huw: Truncate does not show ellipsis with expanding tables.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/2697
+.p-table-expanding td.u-truncate {
+  display: block;
 }
 
 // 27-11-2019 Caleb: Tooltips cannot be used with React Portals.

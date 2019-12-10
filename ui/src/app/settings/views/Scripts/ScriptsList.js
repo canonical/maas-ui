@@ -88,7 +88,8 @@ const generateRows = (
               <Button
                 appearance="base"
                 disabled={script.default}
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
                 onClick={() => {
                   setExpandedId(script.id);
                   setExpandedType("delete");
@@ -98,7 +99,7 @@ const generateRows = (
               </Button>
             </Tooltip>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,

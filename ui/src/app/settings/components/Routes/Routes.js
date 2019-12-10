@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-import { status as statusSelectors } from "app/base/selectors";
 import { useRouter } from "app/base/hooks";
 import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
@@ -35,7 +33,6 @@ import Windows from "app/settings/views/Images/Windows";
 
 const Routes = () => {
   const { match } = useRouter();
-  const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   return (
     <Switch>
       <Route
@@ -68,16 +65,8 @@ const Routes = () => {
         to={`${match.path}/configuration/general`}
       />
       <Route exact path={`${match.path}/users`} component={UsersList} />
-      {!externalAuthURL && (
-        <>
-          <Route exact path={`${match.path}/users/add`} component={UserAdd} />
-          <Route
-            exact
-            path={`${match.path}/users/:id/edit`}
-            component={UserEdit}
-          />
-        </>
-      )}
+      <Route exact path={`${match.path}/users/add`} component={UserAdd} />
+      <Route exact path={`${match.path}/users/:id/edit`} component={UserEdit} />
       <Route
         exact
         path={`${match.path}/license-keys`}

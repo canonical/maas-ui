@@ -42,6 +42,9 @@ app.use(
   })
 );
 
+// Proxy the HMR url to the React client.
+app.use(proxy("/main.*.hot-update.js", { target: "http://localhost:8401/" }));
+
 // Proxy the remaining URLs to the Angular client.
 app.use(
   proxy(`${process.env.BASENAME}/`, {

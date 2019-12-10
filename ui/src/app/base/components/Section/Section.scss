@@ -14,3 +14,8 @@
   @extend %vf-has-box-shadow;
   background-color: #fff;
 }
+
+.section__header .p-icon--spinner {
+  height: $spv-inner--large;
+  width: $spv-inner--large;
+}

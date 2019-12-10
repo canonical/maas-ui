@@ -43,9 +43,4 @@
       flex-grow: 0.7;
     }
   }
-
-  // Prevent the mobile styles from making the button 100% width.
-  .sshkey-list__delete {
-    width: auto;
-  }
 }

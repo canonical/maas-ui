@@ -87,12 +87,13 @@ const generateRows = (
         },
         { content: group.id },
         {
-          className: "p-table-sub-cols u-align-icons--top",
+          className: "p-table-sub-cols",
           content: generateKeyCols(
             group.keys,
             <Button
               appearance="base"
-              className="is-small u-justify-table-icon sshkey-list__delete"
+              className="is-dense u-table-cell-padding-overlap"
+              hasIcon
               onClick={() => {
                 setExpandedId(id);
               }}

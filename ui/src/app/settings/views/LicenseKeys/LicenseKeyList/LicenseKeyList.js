@@ -41,13 +41,15 @@ const generateRows = (
                 appearance="base"
                 element={Link}
                 to={`/settings/license-keys/${licenseKey.osystem}/${licenseKey.distro_series}/edit`}
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
               <Button
                 appearance="base"
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
                 onClick={() => {
                   setExpandedId(licenseKey.license_key);
                 }}
@@ -56,7 +58,7 @@ const generateRows = (
               </Button>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,

@@ -1,13 +1,5 @@
 .sslkey-list td,
 .sslkey-list th {
-  // Key:
-  &:nth-child(1) {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   // Actions:
   &:nth-child(2) {
     flex: 0.3 0 0;

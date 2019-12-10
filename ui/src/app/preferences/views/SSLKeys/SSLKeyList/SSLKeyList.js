@@ -24,6 +24,7 @@ const generateRows = (
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
+          className: "u-truncate",
           content: display,
           role: "rowheader"
         },
@@ -33,7 +34,8 @@ const generateRows = (
               <CopyButton value={key} />
               <Button
                 appearance="base"
-                className="is-small u-justify-table-icon"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
                 onClick={() => {
                   setExpandedId(id);
                 }}
@@ -42,7 +44,7 @@ const generateRows = (
               </Button>
             </>
           ),
-          className: "u-align--right u-align-icons--top"
+          className: "u-align--right"
         }
       ],
       expanded: expanded,
