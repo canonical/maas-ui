@@ -50,7 +50,7 @@ export const usePrevious = value => {
  * @param {Object} errors - The errors object in redux state.
  */
 export const useFormikErrors = errors => {
-  const { setFieldError, values } = useFormikContext();
+  const { setFieldError, setFieldTouched, values } = useFormikContext();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
     // Only run this effect if the errors have changed.
@@ -61,9 +61,10 @@ export const useFormikErrors = errors => {
     ) {
       Object.keys(errors).forEach(field => {
         setFieldError(field, errors[field].join(" "));
+        setFieldTouched(field, true, false);
       });
     }
-  }, [errors, previousErrors, setFieldError, values]);
+  }, [errors, previousErrors, setFieldError, setFieldTouched, values]);
 };
 
 /**
