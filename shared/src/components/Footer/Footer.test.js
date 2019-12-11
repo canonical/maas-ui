@@ -10,7 +10,7 @@ describe("Footer", () => {
 
   it("renders", () => {
     const wrapper = shallow(
-      <Footer debug={false} maasName="koala-maas" version="2.7.0" />
+      <Footer maasName="koala-maas" version="2.7.0" />
     );
     expect(wrapper).toMatchSnapshot();
   });
