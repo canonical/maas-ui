@@ -14,13 +14,14 @@ import { config as configSelectors } from "app/settings/selectors";
 import { Footer, Header } from "@maas-ui/shared";
 import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
-import { useLocation } from "app/base/hooks";
+import { useLocation, useRouter } from "app/base/hooks";
 import { websocket } from "./base/actions";
 import Login from "app/base/components/Login";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
 
 export const App = () => {
+  const { history } = useRouter();
   const { location } = useLocation();
   const authUser = useSelector(authSelectors.get);
   const authenticated = useSelector(status.authenticated);
@@ -33,6 +34,7 @@ export const App = () => {
   const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
   const version = useSelector(generalSelectors.version.get);
   const maasName = useSelector(configSelectors.maasName);
+  const uuid = useSelector(configSelectors.uuid);
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
   const basename = process.env.REACT_APP_BASENAME;
@@ -100,7 +102,8 @@ export const App = () => {
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
         completedIntro={completedIntro && authUser && authUser.completed_intro}
-        enableAnalytics={!debug && analyticsEnabled}
+        debug={debug}
+        enableAnalytics={analyticsEnabled}
         generateLocalLink={(url, label, linkClass) => (
           <Link className={linkClass} to={url}>
             {label}
@@ -111,6 +114,9 @@ export const App = () => {
           dispatch(statusActions.logout());
         }}
         showRSD={navigationOptions.rsd}
+        urlChange={history.listen}
+        uuid={uuid}
+        version={version}
       />
       {content}
       {maasName && version && <Footer maasName={maasName} version={version} />}

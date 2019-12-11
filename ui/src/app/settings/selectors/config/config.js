@@ -173,6 +173,15 @@ config.maasName = createSelector([config.all], configs =>
 );
 
 /**
+ * Returns the MAAS config for MAAS uuid.
+ * @param {Object} - The redux state.
+ * @returns {String} Then MAAS uuid.
+ */
+config.uuid = createSelector([config.all], configs =>
+  getValueFromName(configs, "uuid")
+);
+
+/**
  * Returns the MAAS config for enable analytics.
  * @param {Object} - The redux state.
  * @returns {Boolean} Enable analytics.
