@@ -313,28 +313,6 @@ function dashboardRedirect($rootScope, $location, $window) {
   });
 }
 
-// Send pageview to Google Analytics when the route has changed.
-/* @ngInject */
-function setupGA($rootScope, $window) {
-  if ($window.CONFIG && $window.CONFIG.enable_analytics) {
-    $window.ga =
-      $window.ga ||
-      function() {
-        ($window.ga.q = $window.ga.q || []).push(arguments);
-      };
-    $window.ga.l = +new Date();
-    $window.ga("create", "UA-1018242-63", "auto", {
-      userId: `${$window.CONFIG.uuid}-${$window.CONFIG.current_user.id}`
-    });
-    $window.ga("set", "dimension1", $window.CONFIG.version);
-    $window.ga("set", "dimension2", $window.CONFIG.uuid);
-    $rootScope.$on("$routeChangeSuccess", function() {
-      var path = $window.location.pathname + $window.location.hash;
-      $window.ga("send", "pageview", path);
-    });
-  }
-}
-
 /* @ngInject */
 // Removes hide class from RSD link which is hidden
 // so it doesn't flash up in the nav before angular is ready
@@ -348,7 +326,13 @@ const renderHeader = ($rootScope, $window, $http) => {
   if (!headerNode) {
     return;
   }
-  const { completed_intro, navigation_options, current_user } = $window.CONFIG;
+  const {
+    completed_intro,
+    navigation_options,
+    current_user,
+    uuid,
+    version
+  } = $window.CONFIG;
   const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
     <Header
@@ -357,7 +341,8 @@ const renderHeader = ($rootScope, $window, $http) => {
       completedIntro={
         completed_intro && current_user && current_user.completed_intro
       }
-      enableAnalytics={!debug && window.CONFIG.enable_analytics}
+      debug={debug}
+      enableAnalytics={window.CONFIG.enable_analytics}
       location={window.location}
       logout={() => {
         localStorage.clear();
@@ -371,7 +356,10 @@ const renderHeader = ($rootScope, $window, $http) => {
         // header is first rendered.
         $rootScope.skip();
       }}
+      rootScope={$rootScope}
       showRSD={navigation_options && navigation_options.rsd}
+      uuid={uuid}
+      version={version}
     />,
     headerNode
   );
@@ -404,7 +392,6 @@ angular
   .run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)
-  .run(setupGA)
   .run(unhideRSDLinks)
   // Registration
   // filters

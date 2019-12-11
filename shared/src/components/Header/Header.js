@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const useVisible = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -15,16 +15,61 @@ export const Header = ({
   authUser,
   basename,
   completedIntro,
+  debug,
   enableAnalytics,
   generateLocalLink,
   location,
   logout,
   newURLPrefix,
   onSkip,
-  showRSD
+  rootScope,
+  showRSD,
+  urlChange,
+  uuid,
+  version
 }) => {
   const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
   const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
+
+  useEffect(() => {
+    let unlisten;
+    if (!debug && enableAnalytics && uuid && version && authUser) {
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
+
+      window.ga =
+        window.ga ||
+        function() {
+          (window.ga.q = window.ga.q || []).push(arguments);
+        };
+      window.ga.l = +new Date();
+      window.ga("create", "UA-1018242-63", "auto", {
+        userId: `${uuid}-${authUser.id}`
+      });
+      window.ga("set", "dimension1", version);
+      window.ga("set", "dimension2", uuid);
+      const sendPageview = () => {
+        const path = window.location.pathname + window.location.hash;
+        window.ga("send", "pageview", path);
+      };
+      if (rootScope) {
+        rootScope.$on("$routeChangeSuccess", sendPageview);
+      } else if (urlChange) {
+        unlisten = urlChange(sendPageview);
+      }
+    }
+    return () => {
+      unlisten && unlisten();
+    };
+  }, [debug, enableAnalytics, uuid, version, authUser]);
 
   const links = [
     {
@@ -211,19 +256,6 @@ export const Header = ({
 
   return (
     <>
-      {enableAnalytics && (
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            // eslint-disable-next-line
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-P4TGJR9');`
-          }}
-        ></script>
-      )}
       <header id="navigation" className="p-navigation is-dark">
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">
@@ -271,11 +303,13 @@ export const Header = ({
 
 Header.propTypes = {
   authUser: PropTypes.shape({
+    id: PropTypes.id,
     is_superuser: PropTypes.bool,
     username: PropTypes.string
   }),
   basename: PropTypes.string.isRequired,
   completedIntro: PropTypes.bool,
+  debug: PropTypes.bool,
   enableAnalytics: PropTypes.bool,
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
@@ -284,7 +318,11 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   newURLPrefix: PropTypes.string,
   onSkip: PropTypes.func,
-  showRSD: PropTypes.bool
+  rootScope: PropTypes.object,
+  showRSD: PropTypes.bool,
+  urlChange: PropTypes.func,
+  uuid: PropTypes.string,
+  version: PropTypes.string
 };
 
 export default Header;
