@@ -113,9 +113,7 @@ export const App = () => {
         showRSD={navigationOptions.rsd}
       />
       {content}
-      {maasName && version && (
-        <Footer debug={debug} maasName={maasName} version={version} />
-      )}
+      {maasName && version && <Footer maasName={maasName} version={version} />}
     </>
   );
 };

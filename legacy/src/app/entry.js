@@ -384,7 +384,6 @@ const renderFooter = $window => {
   }
   ReactDOM.render(
     <Footer
-      debug={process.env.NODE_ENV === "development"}
       maasName={$window.CONFIG.maas_name}
       version={$window.CONFIG.version}
     />,

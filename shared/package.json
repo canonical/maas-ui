@@ -9,7 +9,7 @@
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
     "lint-package-json": "npmPkgJsonLint .",
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns=dist",
     "watch": "yarn build --watch"
   },
   "devDependencies": {
