@@ -17,10 +17,10 @@
     "watch": "NODE_ENV=development webpack --watch"
   },
   "devDependencies": {
-    "@babel/cli": "7.7.4",
-    "@babel/core": "7.7.4",
+    "@babel/cli": "7.7.5",
+    "@babel/core": "7.7.5",
     "@babel/plugin-proposal-class-properties": "7.7.4",
-    "@babel/preset-env": "7.7.4",
+    "@babel/preset-env": "7.7.6",
     "@babel/preset-react": "7.7.4",
     "@types/prop-types": "15.7.3",
     "angular-mocks": "1.7.9",
