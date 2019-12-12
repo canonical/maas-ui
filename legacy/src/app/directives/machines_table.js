@@ -109,6 +109,10 @@ function maasMachinesTable(
     $scope.getLimit = group => $scope.displayLimits[group.label];
 
     $scope.loadAll = selectedGroup => {
+      // persist display all for ungrouped machines
+      if (selectedGroup.label === "none") {
+        $scope.displayAll = true;
+      }
       $scope.displayLimits[selectedGroup.label] = undefined;
     };
 
@@ -530,7 +534,10 @@ function maasMachinesTable(
           machines: $scope.table.filteredMachines
         }
       ];
-      $scope.displayLimits["none"] = $scope.DISPLAY_LIMIT;
+
+      if (!$scope.displayAll) {
+        $scope.displayLimits["none"] = $scope.DISPLAY_LIMIT;
+      }
       return;
     };
 
@@ -539,7 +546,10 @@ function maasMachinesTable(
         $scope.table.machines,
         $scope.search
       );
-      $scope.displayLimits["none"] = $scope.DISPLAY_LIMIT;
+
+      if (!$scope.displayAll) {
+        $scope.displayLimits["none"] = $scope.DISPLAY_LIMIT;
+      }
     };
 
     // When the list of filtered machines change update the all checkbox.
