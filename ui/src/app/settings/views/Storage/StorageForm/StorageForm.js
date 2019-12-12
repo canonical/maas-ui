@@ -52,6 +52,11 @@ const StorageForm = () => {
               disk_erase_with_secure_erase: diskEraseWithSecure,
               enable_disk_erasing_on_release: enableDiskErasing
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Storage settings",
+              label: "Storage form"
+            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });

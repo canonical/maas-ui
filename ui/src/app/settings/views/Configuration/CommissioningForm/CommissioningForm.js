@@ -29,6 +29,11 @@ const CommissioningForm = () => {
         commissioning_distro_series: commissioningDistroSeries,
         default_min_hwe_kernel: defaultMinKernelVersion
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Configuration settings",
+        label: "Commissioning form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(configActions.update(values));
         resetForm({ values });

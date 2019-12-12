@@ -70,6 +70,11 @@ export const LicenseKeyForm = ({ licenseKey }) => {
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : ""
           }}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "License keys settings",
+            label: `${title} form`
+          }}
           onSubmit={values => {
             const params = {
               osystem: values.osystem,

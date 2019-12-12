@@ -4,11 +4,17 @@ import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { Provider } from "react-redux";
 
+import { useSendAnalytics } from "app/base/hooks";
 import FormikForm from "./FormikForm";
 
 const mockStore = configureStore();
+jest.mock("app/base/hooks");
 
 describe("FormikForm", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("can render", () => {
     const store = mockStore({});
     const wrapper = mount(
@@ -68,5 +74,37 @@ describe("FormikForm", () => {
     );
     wrapper.unmount();
     expect(store.getActions()).toEqual([{ type: "CLEANUP" }]);
+  });
+
+  it("can send analytics when saved", () => {
+    const eventData = {
+      action: "Saved",
+      category: "Settings",
+      label: "Form"
+    };
+    const store = mockStore({});
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <FormikForm
+            initialValues={{}}
+            onSaveAnalytics={eventData}
+            onSubmit={jest.fn()}
+            saved={true}
+            savedRedirect="/success"
+            validationSchema={{}}
+          >
+            Content
+          </FormikForm>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(useSendAnalytics).toHaveBeenCalled();
+    expect(useSendAnalytics.mock.calls[0]).toEqual([
+      true,
+      eventData.category,
+      eventData.action,
+      eventData.label
+    ]);
   });
 });

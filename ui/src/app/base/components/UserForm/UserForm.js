@@ -48,10 +48,13 @@ const NoPasswordUserSchema = Yup.object().shape(schemaFields);
 
 export const UserForm = ({
   buttons,
+  cleanup,
   includeCurrentPassword,
   includeUserType,
   onSave,
+  onSaveAnalytics,
   onUpdateFields,
+  savedRedirect,
   submitLabel,
   user
 }) => {
@@ -89,8 +92,10 @@ export const UserForm = ({
   return (
     <FormikForm
       buttons={buttons}
+      cleanup={cleanup}
       errors={errors}
       initialValues={initialValues}
+      onSaveAnalytics={onSaveAnalytics}
       onSubmit={(values, { resetForm }) => {
         const params = {
           email: values.email,
@@ -114,6 +119,7 @@ export const UserForm = ({
       onValuesChanged={values => {
         onUpdateFields && onUpdateFields(values);
       }}
+      savedRedirect={savedRedirect}
       validationSchema={
         editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
       }
@@ -197,10 +203,17 @@ export const UserForm = ({
 
 UserForm.propTypes = {
   buttons: PropTypes.func,
+  cleanup: PropTypes.func,
   includeCurrentPassword: PropTypes.bool,
   includeUserType: PropTypes.bool,
   onSave: PropTypes.func.isRequired,
+  onSaveAnalytics: PropTypes.shape({
+    category: PropTypes.string,
+    action: PropTypes.string,
+    label: PropTypes.string
+  }),
   onUpdateFields: PropTypes.func,
+  savedRedirect: PropTypes.string,
   submitLabel: PropTypes.string,
   user: UserShape
 };

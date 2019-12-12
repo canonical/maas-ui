@@ -34,6 +34,11 @@ export const AddSSLKey = () => {
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "SSL keys preferences",
+          label: "Add SSL key form"
+        }}
         onSubmit={values => {
           dispatch(sslkeyActions.create(values));
         }}

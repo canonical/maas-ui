@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
+import { useSendAnalytics } from "app/base/hooks";
 import FormikFormContent from "app/base/components/FormikFormContent";
 
 const FormikForm = ({
@@ -13,6 +14,7 @@ const FormikForm = ({
   children,
   errors,
   initialValues,
+  onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
   saving,
@@ -23,6 +25,13 @@ const FormikForm = ({
   ...props
 }) => {
   const dispatch = useDispatch();
+
+  useSendAnalytics(
+    saved,
+    onSaveAnalytics.category,
+    onSaveAnalytics.action,
+    onSaveAnalytics.label
+  );
 
   useEffect(() => {
     return () => {
@@ -63,6 +72,11 @@ FormikForm.propTypes = {
   children: PropTypes.node.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   initialValues: PropTypes.object.isRequired,
+  onSaveAnalytics: PropTypes.shape({
+    category: PropTypes.string,
+    action: PropTypes.string,
+    label: PropTypes.string
+  }),
   onSubmit: PropTypes.func.isRequired,
   onValuesChanged: PropTypes.func,
   saving: PropTypes.bool,

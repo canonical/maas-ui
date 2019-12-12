@@ -1,6 +1,6 @@
 import { Col, Notification, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { auth as authActions, user as userActions } from "app/base/actions";
 import {
@@ -32,14 +32,6 @@ export const Details = () => {
     "Your details were updated successfully"
   );
 
-  useEffect(() => {
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(authActions.cleanup());
-      dispatch(userActions.cleanup());
-    };
-  }, [dispatch]);
-
   return (
     <>
       {externalAuthURL && (
@@ -50,8 +42,14 @@ export const Details = () => {
       <Row>
         <Col size="4">
           <UserForm
+            cleanup={cleanup}
             includeCurrentPassword
             includeUserType={false}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Details preferences",
+              label: "Details form"
+            }}
             onSave={(params, values, editing) => {
               dispatch(userActions.update(params));
               let passwordChanged =

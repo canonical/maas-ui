@@ -49,6 +49,11 @@ const ProxyForm = () => {
               httpProxy: httpProxy || "",
               proxyType
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Network settings",
+              label: "Proxy form"
+            }}
             onSubmit={(values, { resetForm }) => {
               const { httpProxy, proxyType } = values;
 

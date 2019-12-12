@@ -40,6 +40,11 @@ export const AddSSHKey = () => {
         cleanup={sshkeyActions.cleanup}
         errors={errors}
         initialValues={{ auth_id: "", protocol: "", key: "" }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "SSH keys preferences",
+          label: "Import SSH key form"
+        }}
         onSubmit={values => {
           if (values.key && values.key !== "") {
             dispatch(sshkeyActions.create(values));
