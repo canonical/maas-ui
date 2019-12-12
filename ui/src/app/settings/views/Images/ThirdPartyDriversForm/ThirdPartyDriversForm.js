@@ -27,6 +27,11 @@ const ThirdPartyDriversForm = () => {
       initialValues={{
         enable_third_party_drivers: thirdPartyDriversEnabled
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Images settings",
+        label: "Ubuntu form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });

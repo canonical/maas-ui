@@ -25,6 +25,11 @@ const WindowsForm = () => {
       initialValues={{
         windows_kms_host: windowsKmsHost
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Images settings",
+        label: "Windows form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });

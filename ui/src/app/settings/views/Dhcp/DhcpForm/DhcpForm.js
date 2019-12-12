@@ -88,6 +88,11 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           type: dhcpSnippet ? type : "",
           value: dhcpSnippet ? dhcpSnippet.value : ""
         }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "DHCP snippet settings",
+          label: `${editing ? "Edit" : "Add"} form`
+        }}
         onSubmit={values => {
           const params = {
             description: values.description,

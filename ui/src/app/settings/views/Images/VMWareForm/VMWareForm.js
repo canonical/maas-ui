@@ -34,6 +34,11 @@ const VMWareForm = () => {
         vcenter_password: vCenterPassword,
         vcenter_datacenter: vCenterDatacenter
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Images settings",
+        label: "VMware form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });

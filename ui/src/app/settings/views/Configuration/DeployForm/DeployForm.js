@@ -28,6 +28,11 @@ const DeployForm = () => {
         default_osystem: defaultOSystem,
         default_distro_series: defaultDistroSeries
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Configuration settings",
+        label: "Deploy form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });

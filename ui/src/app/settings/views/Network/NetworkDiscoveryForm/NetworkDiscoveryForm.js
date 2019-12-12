@@ -52,6 +52,11 @@ const NetworkDiscoveryForm = () => {
               active_discovery_interval: activeDiscoveryInterval,
               network_discovery: networkDiscovery
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Network settings",
+              label: "Network discovery form"
+            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });

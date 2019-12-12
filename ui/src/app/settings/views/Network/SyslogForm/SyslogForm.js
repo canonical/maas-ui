@@ -41,6 +41,11 @@ const SyslogForm = () => {
             initialValues={{
               remote_syslog: remoteSyslog || ""
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Network settings",
+              label: "Syslog form"
+            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });

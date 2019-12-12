@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { useFormikContext } from "formik";
 
+import { sendAnalyticsEvent } from "analytics";
 import { config as configSelectors } from "app/settings/selectors";
 import { messages } from "app/base/actions";
 import { simpleObjectEquality } from "app/settings/utils";
@@ -134,4 +135,24 @@ export const useWindowTitle = title => {
   useEffect(() => {
     document.title = `${titlePart}${maasNamePart}MAAS`;
   }, [maasNamePart, titlePart]);
+};
+
+/**
+ * Send an analytics event.
+ * @param {String} sendCondition - Whether the analytics event should be sent.
+ * @param {String} eventCategory - The analytics category.
+ * @param {String} eventAction - The analytics action.
+ * @param {String} eventLabel - The analytics label.
+ */
+export const useSendAnalytics = (
+  sendCondition,
+  eventCategory,
+  eventAction,
+  eventLabel
+) => {
+  useEffect(() => {
+    if (sendCondition && eventCategory && eventAction && eventLabel) {
+      sendAnalyticsEvent(eventCategory, eventAction, eventLabel);
+    }
+  }, [sendCondition, eventCategory, eventAction, eventLabel]);
 };

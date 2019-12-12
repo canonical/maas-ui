@@ -46,6 +46,11 @@ export const APIKeyForm = ({ token }) => {
         initialValues={{
           name: token ? token.consumer.name : ""
         }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "API keys preferences",
+          label: "Generate API key form"
+        }}
         onSubmit={values => {
           if (editing) {
             dispatch(

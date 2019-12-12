@@ -124,6 +124,11 @@ export const RepositoryForm = ({ type, repository }) => {
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Package repos settings",
+              label: `${title} form`
+            }}
             onSubmit={values => {
               const params = {
                 arches: values.arches,

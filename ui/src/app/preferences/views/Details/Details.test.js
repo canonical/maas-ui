@@ -105,25 +105,25 @@ describe("Details", () => {
           {}
         )
     );
-    expect(store.getActions()).toEqual([
-      {
-        type: "UPDATE_USER",
-        payload: {
-          params: {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          }
-        },
-        meta: {
-          model: "user",
-          method: "update"
+    expect(
+      store.getActions().find(({ type }) => type === "UPDATE_USER")
+    ).toEqual({
+      type: "UPDATE_USER",
+      payload: {
+        params: {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin"
         }
+      },
+      meta: {
+        model: "user",
+        method: "update"
       }
-    ]);
+    });
   });
 
   it("can change the password", () => {

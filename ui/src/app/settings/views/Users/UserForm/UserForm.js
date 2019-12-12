@@ -1,6 +1,5 @@
-import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
@@ -28,23 +27,17 @@ export const UserForm = ({ user }) => {
     setSaving
   );
 
-  useEffect(() => {
-    return () => {
-      // Clean up saved and error states on unmount.
-      dispatch(userActions.cleanup());
-    };
-  }, [dispatch]);
-
-  if (saved) {
-    // The user was successfully created/updated so redirect to the user list.
-    return <Redirect to="/settings/users" />;
-  }
-
   return (
     <FormCard title={title}>
       <BaseUserForm
         buttons={FormCardButtons}
+        cleanup={userActions.cleanup}
         submitLabel="Save user"
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Users settings",
+          label: `${editing ? "Edit" : "Add"} user form`
+        }}
         onSave={(params, values, editing) => {
           if (editing) {
             dispatch(userActions.update(params));
@@ -56,6 +49,7 @@ export const UserForm = ({ user }) => {
         onUpdateFields={values => {
           setName(values.username);
         }}
+        savedRedirect="/settings/users"
         user={user}
       />
     </FormCard>

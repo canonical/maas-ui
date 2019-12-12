@@ -25,6 +25,11 @@ const KernelParametersForm = () => {
       initialValues={{
         kernel_opts: kernelParams
       }}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "Configuration settings",
+        label: "Kernel parameters form"
+      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });

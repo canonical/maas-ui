@@ -50,6 +50,11 @@ const DnsForm = () => {
               dns_trusted_acl: dnsTrustedAcl || "",
               upstream_dns: upstreamDns || ""
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Network settings",
+              label: "DNS form"
+            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });

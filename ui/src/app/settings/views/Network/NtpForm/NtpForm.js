@@ -44,6 +44,11 @@ const NtpForm = () => {
               ntp_external_only: ntpExternalOnly,
               ntp_servers: ntpServers
             }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Network settings",
+              label: "NTP form"
+            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });
