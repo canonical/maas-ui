@@ -2,7 +2,7 @@ import { Input } from "@canonical/react-components";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
-import uuidv4 from "uuid/v4";
+import nanoid from "nanoid";
 
 const FormikField = ({
   component: Component = Input,
@@ -11,7 +11,7 @@ const FormikField = ({
   value,
   ...props
 }) => {
-  const id = useRef(uuidv4());
+  const id = useRef(nanoid());
   const [field, meta] = useField({ name, type, value });
   return (
     <Component
