@@ -13,7 +13,7 @@
     "formik": "2.0.7",
     "http-proxy-middleware": "0.20.0",
     "immer": "5.0.1",
-    "nanoid": "2.1.7",
+    "nanoid": "2.1.8",
     "path-parse": "1.0.6",
     "pluralize": "8.0.0",
     "prop-types": "15.7.2",
