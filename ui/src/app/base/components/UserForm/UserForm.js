@@ -34,14 +34,16 @@ const schemaFields = {
 const UserSchema = Yup.object().shape({
   ...schemaFields,
   password: schemaFields.password.required("Password is required"),
-  passwordConfirm: schemaFields.password.required("Password is required")
+  passwordConfirm: schemaFields.passwordConfirm.required("Password is required")
 });
 
 const CurrentPasswordUserSchema = Yup.object().shape({
   ...schemaFields,
   old_password: Yup.string().required("Your current password is required"),
   password: schemaFields.password.required("A new password is required"),
-  passwordConfirm: schemaFields.password.required("Confirm your new password")
+  passwordConfirm: schemaFields.passwordConfirm.required(
+    "Confirm your new password"
+  )
 });
 
 const NoPasswordUserSchema = Yup.object().shape(schemaFields);
