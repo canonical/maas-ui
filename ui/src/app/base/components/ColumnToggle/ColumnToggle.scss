@@ -5,11 +5,9 @@
 td:not(.p-table-expanding__panel) [class*="p-button"].column-toggle,
 .column-toggle {
   align-items: center;
-  align-self: flex-start;
   color: $color-dark;
+  display: flex;
   justify-content: space-between;
-  margin: 0;
-  padding: 0;
   width: 100%;
 
   &::after {
