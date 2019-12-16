@@ -12,15 +12,23 @@ const TableDeleteConfirm = ({
   return (
     <Row>
       <Col size="7">
-        {message ||
-          `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
-        <span className="u-text--light">
-          This action is permanent and can not be undone.
-        </span>
+        <p className="u-no-margin--bottom u-no-max-width">
+          {message ||
+            `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
+          <span className="u-text--light">
+            This action is permanent and can not be undone.
+          </span>
+        </p>
       </Col>
       <Col size="3" className="u-align--right">
-        <Button onClick={onCancel}>Cancel</Button>
-        <Button appearance="negative" onClick={onConfirm}>
+        <Button className="u-no-margin--bottom" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button
+          appearance="negative"
+          className="u-no-margin--bottom"
+          onClick={onConfirm}
+        >
           Delete
         </Button>
       </Col>
