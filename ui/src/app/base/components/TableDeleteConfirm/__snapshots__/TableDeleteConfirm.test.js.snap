@@ -5,25 +5,31 @@ exports[`TableDeleteConfirm renders 1`] = `
   <Col
     size="7"
   >
-    Are you sure you want to delete user "Cobba"?
-     
-    <span
-      className="u-text--light"
+    <p
+      className="u-no-margin--bottom u-no-max-width"
     >
-      This action is permanent and can not be undone.
-    </span>
+      Are you sure you want to delete user "Cobba"?
+       
+      <span
+        className="u-text--light"
+      >
+        This action is permanent and can not be undone.
+      </span>
+    </p>
   </Col>
   <Col
     className="u-align--right"
     size="3"
   >
     <Button
+      className="u-no-margin--bottom"
       onClick={[MockFunction]}
     >
       Cancel
     </Button>
     <Button
       appearance="negative"
+      className="u-no-margin--bottom"
       onClick={[MockFunction]}
     >
       Delete
