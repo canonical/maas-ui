@@ -3,74 +3,62 @@
  *
  * Release options directive.
  */
-
-const releaseOptionsTmpl = [
-  '<ul class="p-inline-list--settings u-no-margin--top">',
-  '<li class="p-inline-list__item">',
-  '<input id="diskErase" ',
-  'type="checkbox" data-ng-model="maasReleaseOptions.erase" ',
-  'data-ng-disabled="globalOptions.erase" ',
-  'data-ng-change="onEraseChange()">',
-  '<label for="diskErase">',
-  "Erase disks before releasing",
-  "</label>",
-  "</li>",
-  '<li class="p-inline-list__item">',
-  '<input id="secureErase" ',
-  'type="checkbox" ',
-  'data-ng-model="maasReleaseOptions.secureErase" ',
-  'data-ng-disabled="!maasReleaseOptions.erase">',
-  '<label for="secureErase">',
-  "Use secure erase",
-  "</label>",
-  "</li>",
-  '<li class="p-inline-list__item">',
-  '<input id="quickErase" type="checkbox" ',
-  'data-ng-model="maasReleaseOptions.quickErase" ',
-  'data-ng-disabled="!maasReleaseOptions.erase">',
-  '<label for="quickErase">',
-  "Use quick erase (not secure)",
-  "</label>",
-  "</li>",
-  "</ul>"
-].join("");
+import releaseOptionsTmpl from "../partials/directives/release-options.html";
 
 /* @ngInject */
-export function maasReleaseOptions(GeneralManager) {
+export function maasReleaseOptions(ConfigsManager, ManagerHelperService) {
   return {
-    restrict: "A",
+    restrict: "E",
     scope: {
-      maasReleaseOptions: "="
+      localOptions: "="
     },
     template: releaseOptionsTmpl,
-    link: function(scope, element, attrs) {
-      // On click of enabling erasing set the others to the
-      // global default value.
-      scope.onEraseChange = function() {
-        if (scope.maasReleaseOptions.erase) {
-          scope.maasReleaseOptions.secureErase =
-            scope.globalOptions.secure_erase;
-          scope.maasReleaseOptions.quickErase = scope.globalOptions.quick_erase;
-        } else {
-          scope.maasReleaseOptions.secureErase = false;
-          scope.maasReleaseOptions.quickErase = false;
-        }
+    controller: releaseOptionsController
+  };
+
+  /* @ngInject */
+  function releaseOptionsController($scope) {
+    // Set initial values
+    $scope.loading = true;
+    $scope.localOptions = {
+      enableDiskErasing: false,
+      quickErase: false,
+      secureErase: false
+    };
+
+    // If disk erase is enabled, set other values to global defaults.
+    // Otherwise set everything to false.
+    $scope.onEraseChange = () => {
+      if ($scope.localOptions.enableDiskErasing) {
+        $scope.localOptions.secureErase = $scope.globalOptions.secureErase;
+        $scope.localOptions.quickErase = $scope.globalOptions.quickErase;
+      } else {
+        $scope.localOptions.secureErase = false;
+        $scope.localOptions.quickErase = false;
+      }
+    };
+
+    // Load relevant config parameters
+    ManagerHelperService.loadManagers($scope, [ConfigsManager]).then(() => {
+      $scope.loading = false;
+      $scope.globalOptions = {
+        enableDiskErasing: ConfigsManager.getItemFromList(
+          "enable_disk_erasing_on_release"
+        ).value,
+        quickErase: ConfigsManager.getItemFromList(
+          "disk_erase_with_quick_erase"
+        ).value,
+        secureErase: ConfigsManager.getItemFromList(
+          "disk_erase_with_secure_erase"
+        ).value
       };
 
-      // Watch the global options. Once set update the defaults
-      // of maasReleaseOptions.
-      scope.globalOptions = GeneralManager.getData("release_options");
-      scope.$watch(
-        "globalOptions",
-        function() {
-          if (angular.isDefined(scope.globalOptions.erase)) {
-            // Set the initial defaults for the release options.
-            scope.maasReleaseOptions.erase = scope.globalOptions.erase;
-            scope.onEraseChange();
-          }
-        },
-        true
-      );
-    }
-  };
+      // Set default values in release form
+      if ($scope.globalOptions.enableDiskErasing) {
+        $scope.localOptions.enableDiskErasing =
+          $scope.globalOptions.enableDiskErasing;
+      }
+      $scope.onEraseChange();
+    });
+  }
 }
