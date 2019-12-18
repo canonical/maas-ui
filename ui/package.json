@@ -12,7 +12,7 @@
     "date-fns": "2.8.1",
     "formik": "2.0.8",
     "http-proxy-middleware": "0.20.0",
-    "immer": "5.0.1",
+    "immer": "5.0.2",
     "nanoid": "2.1.8",
     "path-parse": "1.0.6",
     "pluralize": "8.0.0",
