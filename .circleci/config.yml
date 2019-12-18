@@ -1,7 +1,7 @@
 ---
 defaults: &defaults
   docker:
-    - image: canonicalwebteam/dev:v1.6.6
+    - image: canonicalwebteam/dev:v1.6.7
 
 version: 2
 jobs:
