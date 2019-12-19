@@ -124,7 +124,7 @@
                         <div class="row">
                             <div class="col-12 u-no-margin--left" data-ng-show="action.option.name === 'deploy' || action.option.name === 'release'">
                                 <div data-ng-if="action.option.name === 'release'" class="u-no-margin--top">
-                                    <div data-maas-release-options="releaseOptions"></div>
+                                    <maas-release-options local-options="release.options"></maas-release-options>
                                 </div>
                             </div>
                         </div>

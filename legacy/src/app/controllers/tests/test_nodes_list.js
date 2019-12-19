@@ -1762,7 +1762,7 @@ describe("NodesListController", function() {
         var quickErase = makeName("quickErase");
         $scope.tabs.machines.actionOption = { name: "release" };
         $scope.tabs.machines.selectedItems = [object];
-        $scope.tabs.machines.releaseOptions.erase = true;
+        $scope.tabs.machines.releaseOptions.enableDiskErasing = true;
         $scope.tabs.machines.releaseOptions.secureErase = secureErase;
         $scope.tabs.machines.releaseOptions.quickErase = quickErase;
         $scope.actionGo("machines");

@@ -77,7 +77,9 @@ function NodeDetailsController(
   };
   $scope.commissioningSelection = [];
   $scope.testSelection = [];
-  $scope.releaseOptions = {};
+  $scope.release = {
+    options: {}
+  };
   $scope.checkingPower = false;
   $scope.devices = [];
   $scope.fabrics = FabricsManager.getItems();
@@ -944,9 +946,9 @@ function NodeDetailsController(
       extra.script_input = scriptInput;
     } else if ($scope.action.option.name === "release") {
       // Set the release options.
-      extra.erase = $scope.releaseOptions.erase;
-      extra.secure_erase = $scope.releaseOptions.secureErase;
-      extra.quick_erase = $scope.releaseOptions.quickErase;
+      extra.erase = $scope.release.options.enableDiskErasing;
+      extra.secure_erase = $scope.release.options.secureErase;
+      extra.quick_erase = $scope.release.options.quickErase;
     } else if (
       $scope.action.option.name === "delete" &&
       $scope.type_name === "controller" &&

@@ -248,7 +248,7 @@ describe("NodeDetailsController", function() {
       updateFirmware: false,
       configureHBA: false
     });
-    expect($scope.releaseOptions).toEqual({});
+    expect($scope.release).toEqual({ options: {} });
     expect($scope.checkingPower).toBe(false);
     expect($scope.devices).toEqual([]);
     expect($scope.services).toEqual({});
@@ -1303,9 +1303,9 @@ describe("NodeDetailsController", function() {
       };
       var secureErase = makeName("secureErase");
       var quickErase = makeName("quickErase");
-      $scope.releaseOptions.erase = true;
-      $scope.releaseOptions.secureErase = secureErase;
-      $scope.releaseOptions.quickErase = quickErase;
+      $scope.release.options.enableDiskErasing = true;
+      $scope.release.options.secureErase = secureErase;
+      $scope.release.options.quickErase = quickErase;
       $scope.actionGo();
       expect(MachinesManager.performAction).toHaveBeenCalledWith(
         node,

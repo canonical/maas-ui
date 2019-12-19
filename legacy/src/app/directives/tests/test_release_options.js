@@ -4,14 +4,26 @@
  * Unit tests for release options directive.
  */
 
+import MockWebSocket from "testing/websocket";
+
 describe("maasReleaseOptions", function() {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
-  // Get the required managers.
-  var GeneralManager;
+  // Preload the $templateCache with empty contents. We only test the
+  // controller of the directive, not the template.
+  var $templateCache;
   beforeEach(inject(function($injector) {
-    GeneralManager = $injector.get("GeneralManager");
+    $templateCache = $injector.get("$templateCache");
+    $templateCache.put("static/partials/directives/release-options.html?v=undefined", "");
+  }));
+
+  // Load the required managers.
+  beforeEach(inject(function($injector) {
+    // Mock buildSocket so an actual connection is not made.
+    let RegionConnection = $injector.get("RegionConnection");
+    let webSocket = new MockWebSocket();
+    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
   }));
 
   // Create a new scope before each test.
@@ -20,11 +32,18 @@ describe("maasReleaseOptions", function() {
     $scope = $rootScope.$new();
   }));
 
-  // Return the compiled directive with the osinfo from the scope.
-  function compileDirective() {
+  // Return the compiled directive with the items from the scope.
+  function compileDirective(obj) {
+    if (angular.isUndefined(obj)) {
+      obj = "";
+    }
     var directive;
-    var html =
-      '<div><div data-maas-release-options="options">' + "</div></div>";
+    var html = [
+      "<div>",
+      '<maas-release-options local-options="localOptions">',
+      '</maas-release-options>',
+      "</div>"
+    ].join("");
 
     // Compile the directive.
     inject(function($compile) {
@@ -33,109 +52,63 @@ describe("maasReleaseOptions", function() {
 
     // Perform the digest cycle to finish the compile.
     $scope.$digest();
-    return directive.find("div");
+    return directive.find("maas-release-options");
   }
 
-  it("sets erase and options from GeneralManager", function() {
-    var options = {};
-    $scope.options = options;
-
-    var managerOptions = {
-      erase: true,
-      secure_erase: true,
-      quick_erase: true
-    };
-    spyOn(GeneralManager, "getData").and.returnValue(managerOptions);
-
-    compileDirective();
-    expect(options).toEqual({
-      erase: true,
-      secureErase: true,
-      quickErase: true
+  it("sets initial variables", () => {
+    const directive = compileDirective();
+    const scope = directive.isolateScope();
+    expect(scope.loading).toBe(true);
+    expect(scope.localOptions).toStrictEqual({
+      enableDiskErasing: false,
+      quickErase: false,
+      secureErase: false
     });
   });
 
-  it("sets erase and not options from GeneralManager", function() {
-    var options = {};
-    $scope.options = options;
+  describe("onEraseChange", () => {
+    it(`sets all options to false if localOptions.enableDiskErasing
+      is false`, () => {
+        const directive = compileDirective();
+        const scope = directive.isolateScope();
+        scope.globalOptions = {
+          enableDiskErasing: false,
+          quickErase: true,
+          secureErase: true
+        }
+        scope.localOptions = {
+          enableDiskErasing: false,
+          quickErase: true,
+          secureErase: true
+        };
+        scope.onEraseChange();
+        expect(scope.localOptions).toStrictEqual({
+          enableDiskErasing: false,
+          quickErase: false,
+          secureErase: false
+        });
+      });
 
-    var managerOptions = {
-      erase: false,
-      secure_erase: true,
-      quick_erase: true
-    };
-    spyOn(GeneralManager, "getData").and.returnValue(managerOptions);
-
-    // Since erase is false all other options should be false so the
-    // checkboxes are not selected.
-    compileDirective();
-    expect(options).toEqual({
-      erase: false,
-      secureErase: false,
-      quickErase: false
-    });
-  });
-
-  it("setting erase sets options from GeneralManager", function() {
-    var options = {};
-    $scope.options = options;
-
-    var managerOptions = {
-      erase: false,
-      secure_erase: true,
-      quick_erase: true
-    };
-    spyOn(GeneralManager, "getData").and.returnValue(managerOptions);
-
-    // When erase is set to true by the user the other global options
-    // should then be set to the global defaults.
-    var directive = compileDirective();
-    options.erase = true;
-    directive.isolateScope().onEraseChange();
-    expect(options).toEqual({
-      erase: true,
-      secureErase: true,
-      quickErase: true
-    });
-  });
-
-  it("deselecting erase clears options", function() {
-    var options = {};
-    $scope.options = options;
-
-    var managerOptions = {
-      erase: false,
-      secure_erase: true,
-      quick_erase: true
-    };
-    spyOn(GeneralManager, "getData").and.returnValue(managerOptions);
-
-    // When erase is deselected the other selected options should go
-    // back to false so there checkboxes are not selected.
-    var directive = compileDirective();
-    options.erase = true;
-    directive.isolateScope().onEraseChange();
-    options.erase = false;
-    directive.isolateScope().onEraseChange();
-    expect(options).toEqual({
-      erase: false,
-      secureErase: false,
-      quickErase: false
-    });
-  });
-
-  it("GeneralManager erase disables erase deselection", function() {
-    var options = {};
-    $scope.options = options;
-
-    var managerOptions = {
-      erase: true,
-      secure_erase: true,
-      quick_erase: true
-    };
-    spyOn(GeneralManager, "getData").and.returnValue(managerOptions);
-
-    var directive = compileDirective();
-    expect(directive.find("#diskErase").attr("disabled")).toBe("disabled");
+    it(`sets options to global defaults if localOptions.enableDiskErasing
+      is true`, () => {
+        const directive = compileDirective();
+        const scope = directive.isolateScope();
+        scope.globalOptions = {
+          enableDiskErasing: false,
+          quickErase: true,
+          secureErase: true
+        }
+        scope.localOptions = {
+          enableDiskErasing: true,
+          quickErase: false,
+          secureErase: false
+        };
+        scope.onEraseChange();
+        expect(scope.localOptions).toStrictEqual({
+          enableDiskErasing: true,
+          quickErase: true,
+          secureErase: true
+        });
+      });
   });
 });

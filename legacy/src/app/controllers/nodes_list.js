@@ -1011,7 +1011,7 @@ function NodesListController(
       extra.script_input = scriptInput;
     } else if (tab.actionOption.name === "release") {
       // Set the release options.
-      extra.erase = tab.releaseOptions.erase;
+      extra.erase = tab.releaseOptions.enableDiskErasing;
       extra.secure_erase = tab.releaseOptions.secureErase;
       extra.quick_erase = tab.releaseOptions.quickErase;
     } else if (
