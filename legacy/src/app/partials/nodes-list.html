@@ -208,7 +208,7 @@
                                         <input
                                             id="installKVM"
                                             ng-disabled="!nodesManager.canBeKvmHost(tabs[tab].osSelection)"
-                                            ng-model="deployOptions.installKVM"
+                                            ng-model="tabs[tab].deployOptions.installKVM"
                                             type="checkbox"
                                         >
                                         <label class="u-no-margin--bottom" for="installKVM">Register as MAAS KVM host</label>
