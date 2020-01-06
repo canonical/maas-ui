@@ -363,6 +363,10 @@ const renderHeader = ($rootScope, $window, $http) => {
     />,
     headerNode
   );
+  $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
+    // Update the header when the route changes.
+    renderHeader($rootScope, $window, $http);
+  });
 };
 
 const renderFooter = $window => {

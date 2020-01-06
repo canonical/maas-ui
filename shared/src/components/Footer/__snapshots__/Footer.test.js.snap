@@ -79,7 +79,7 @@ exports[`Footer renders 1`] = `
         className="u-remove-max-width"
       >
         © 
-        2019
+        2020
          Canonical Ltd. Ubuntu and Canonical are registered trademarks of Canonical Ltd.
       </p>
     </div>
