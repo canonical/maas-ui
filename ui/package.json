@@ -10,7 +10,7 @@
     "connected-react-router": "6.6.1",
     "cross-env": "6.0.3",
     "date-fns": "2.8.1",
-    "formik": "2.0.8",
+    "formik": "2.1.1",
     "http-proxy-middleware": "0.20.0",
     "immer": "5.1.0",
     "nanoid": "2.1.8",
