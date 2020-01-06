@@ -81,7 +81,51 @@ describe("Header", () => {
       wrapper.findWhere(n => n.name() === "a" && n.text() === "Skip").exists()
     ).toBe(true);
     expect(
-      wrapper.find(".p-navigation__links").at(0).props().children
+      wrapper
+        .find(".p-navigation__links")
+        .at(0)
+        .props().children
     ).toBe(false);
+  });
+
+  it("can highlight a new URL", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala"
+        }}
+        basename="/MAAS"
+        completedIntro={true}
+        location={{
+          pathname: "/settings"
+        }}
+        logout={jest.fn()}
+      />
+    );
+    const selected = wrapper.find(".p-navigation__link.is-selected");
+    expect(selected.exists()).toBe(true);
+    expect(selected.text()).toEqual("Settings");
+  });
+
+  it("can highlight a legacy URL", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala"
+        }}
+        basename="/MAAS"
+        completedIntro={true}
+        location={{
+          hash: "#/machines",
+          pathname: "/MAAS/"
+        }}
+        logout={jest.fn()}
+      />
+    );
+    const selected = wrapper.find(".p-navigation__link.is-selected");
+    expect(selected.exists()).toBe(true);
+    expect(selected.text()).toEqual("Machines");
   });
 });

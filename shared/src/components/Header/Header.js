@@ -56,6 +56,7 @@ export const Header = ({
       });
       window.ga("set", "dimension1", version);
       window.ga("set", "dimension2", uuid);
+
       const sendPageview = () => {
         const path = window.location.pathname + window.location.hash;
         window.ga("send", "pageview", path);
@@ -183,12 +184,12 @@ export const Header = ({
   const generateNavItems = links => {
     const hardwareLinks = links.filter(link => link.inHardwareMenu);
     const hardwareMenu = generateHardwareMenu(hardwareLinks);
+    const path = location.pathname + location.hash;
+
     const linkItems = links.map(link => (
       <li
         className={classNames("p-navigation__link", {
-          "is-selected": location.pathname.startsWith(
-            generateURL(link.url, link.isLegacy)
-          ),
+          "is-selected": path.startsWith(generateURL(link.url, link.isLegacy)),
           "u-hide--hardware-menu-threshold": link.inHardwareMenu
         })}
         key={link.url}
@@ -313,6 +314,7 @@ Header.propTypes = {
   enableAnalytics: PropTypes.bool,
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
+    hash: PropTypes.string,
     pathname: PropTypes.string.isRequired
   }).isRequired,
   logout: PropTypes.func.isRequired,
