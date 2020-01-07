@@ -15,3 +15,11 @@ $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spaci
 .machine-list__group-toggle-button {
   display: inline-block;
 }
+
+.machine-list td,
+.machine-list th {
+  // FQDN/MAC:
+  &:nth-child(1) {
+    width: 20%;
+  }
+}
