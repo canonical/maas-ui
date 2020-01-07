@@ -187,4 +187,46 @@ describe("NameColumn", () => {
         .text()
     ).toEqual("(+1)");
   });
+
+  it("can render a machine with minimal data", () => {
+    state.machine.items[0] = {
+      domain: {
+        name: "example"
+      },
+      hostname: "koala",
+      system_id: "abc123"
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("NameColumn").exists()).toBe(true);
+  });
+
+  it("can render a machine in the MAC state with minimal data", () => {
+    state.machine.items[0] = {
+      domain: {
+        name: "example"
+      },
+      hostname: "koala",
+      system_id: "abc123"
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn showMAC={true} systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("NameColumn").exists()).toBe(true);
+  });
 });
