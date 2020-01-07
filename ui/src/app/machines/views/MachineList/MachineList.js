@@ -25,6 +25,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
+import NameColumn from "./NameColumn";
 
 const getFabricColValue = vlan => {
   if (vlan && vlan.fabric_name) {
@@ -130,7 +131,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
       className: "machine-list__machine",
       columns: [
         {
-          content: row.fqdn
+          content: <NameColumn showMAC={false} systemId={row.system_id} />
         },
         {
           content: row.power_state,

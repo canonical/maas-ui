@@ -81,7 +81,7 @@ const Tooltip = ({ children, message, position = "top-left" }) => {
 
 Tooltip.propTypes = {
   children: PropTypes.node.isRequired,
-  message: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  message: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
   position: PropTypes.oneOf([
     "btm-center",
     "btm-left",

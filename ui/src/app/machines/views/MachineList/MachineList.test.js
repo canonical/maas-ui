@@ -21,9 +21,16 @@ describe("MachineList", () => {
         loaded: true,
         items: [
           {
-            domain: {},
+            domain: {
+              name: "example"
+            },
+            extra_macs: [],
+            hostname: "koala",
+            ip_addresses: [],
             pool: {},
+            pxe_mac: "00:11:22:33:44:55",
             status: "Releasing",
+            system_id: "abc123",
             zone: {}
           }
         ]
