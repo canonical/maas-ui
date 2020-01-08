@@ -6,23 +6,48 @@ defaults: &defaults
 version: 2
 jobs:
   test-cypress:
-    docker:
-      - image: cypress/base:12.16.1
-        environment:
-          ## this enables colors in the output
-          TERM: xterm
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - yarn-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
-      - save_cache:
-          key: yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache ## cache both yarn and Cypress!
-      - run: yarn test-cypress
+      - run:
+          name: Set environment variables
+          command: |
+            echo 'export IP_ADDRESS=$(hostname -I | cut -d" " -f1)' >> $BASH_ENV
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install -y curl
+            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            sudo apt-get update && sudo apt-get install --yes \
+            build-essential libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 \
+            libnss3 libxss1 libasound2 libxtst6 nodejs snapd \
+            software-properties-common xauth xvfb yarn
+      - run:
+          name: Install Node v12.14.1 LTS, node modules and verify cypress
+          command: |
+            nvm install v12.14.1
+            node -v
+            nvm alias default v12.14.1
+            yarn install
+            ./node_modules/.bin/cypress verify
+      - run:
+          name: Install and initialise edge MAAS snap
+          command: |
+            echo $IP_ADDRESS
+            sudo systemctl enable snapd
+            sudo snap install maas --channel=2.7/edge
+            sudo maas init --maas-url=http://$IP_ADDRESS:5240/MAAS --admin-username=admin --admin-password=test --admin-email=fake@email.com --mode all
+            sudo maas config
+      - run:
+          name: Set proxy url and start cypress tests
+          command: |
+            sed "1s/.*/MAAS_URL=\"http:\/\/$IP_ADDRESS:5240\/\"/" proxy/.env > proxy/.env.local
+            yarn test-cypress
 
 workflows:
   version: 2
