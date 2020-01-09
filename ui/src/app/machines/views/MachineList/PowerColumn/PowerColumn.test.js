@@ -45,23 +45,6 @@ describe("PowerColumn", () => {
     expect(wrapper.find("PowerColumn")).toMatchSnapshot();
   });
 
-  it("displays a Loader if machine in power transition", () => {
-    state.machine.items[0].powerTransition = true;
-
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("Loader").exists()).toBe(true);
-  });
-
   it("displays the correct power state", () => {
     state.machine.items[0].power_state = "off";
     const store = mockStore(state);

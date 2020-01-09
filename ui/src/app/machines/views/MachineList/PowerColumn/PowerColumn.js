@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { Loader } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { machine as machineSelectors } from "app/base/selectors";
@@ -16,10 +15,6 @@ const PowerColumn = ({ systemId }) => {
     "p-icon--power-error": machine.power_state === "error",
     "p-icon--power-unknown": machine.power_state === "unknown"
   });
-
-  if (machine.powerTransition) {
-    return <Loader />;
-  }
 
   return (
     <>
