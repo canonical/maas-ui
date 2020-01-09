@@ -32,6 +32,7 @@ export const UserForm = ({ user }) => {
       <BaseUserForm
         buttons={FormCardButtons}
         cleanup={userActions.cleanup}
+        includeUserType
         submitLabel="Save user"
         onSaveAnalytics={{
           action: "Saved",

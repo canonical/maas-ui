@@ -191,4 +191,18 @@ describe("UserForm", () => {
     expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
     expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
   });
+
+  it("displays a checkbox for making the user a MAAS admin", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("FormikField[label='MAAS administrator']").exists()
+    ).toBe(true);
+  });
 });
