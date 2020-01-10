@@ -17,27 +17,23 @@ const PowerColumn = ({ systemId }) => {
   });
 
   return (
-    <>
-      <div className="p-double-row__icon-container">
+    <div className="p-double-row--with-icon">
+      <div className="p-double-row__icon">
         <i title={machine.power_state} className={iconClass}></i>
       </div>
-      <div className="p-double-row__rows-container--icon">
-        <div className="p-double-row__main-row">
-          <span className="u-upper-case--first" data-test="power_state">
-            {machine.power_state}
-          </span>
-        </div>
-        <div className="p-double-row__muted-row">
-          <span
-            className="u-text-overflow u-upper-case--first"
-            title={machine.power_type}
-            data-test="power_type"
-          >
-            {machine.power_type}
-          </span>
-        </div>
+      <div className="p-double-row__primary-row u-upper-case--first">
+        <span data-test="power_state">{machine.power_state}</span>
       </div>
-    </>
+      <div className="p-double-row__secondary-row u-upper-case--first">
+        <span
+          className="u-text-overflow"
+          title={machine.power_type}
+          data-test="power_type"
+        >
+          {machine.power_type}
+        </span>
+      </div>
+    </div>
   );
 };
 

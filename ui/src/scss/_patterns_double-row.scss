@@ -1,53 +1,38 @@
 @mixin maas-double-row {
-  $checkbox-space: 1rem + $sph-inner;
   $icon-space: map-get($icon-sizes, default) + $sph-inner--small;
 
   .p-double-row {
-    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
 
-    %p-double-row__icon-container {
-      display: block;
-      float: left;
-      width: map-get($icon-sizes, default);
-    }
+  .p-double-row {
+    display: flex;
+    flex-direction: column;
+  }
 
-    %p-double-row__row {
-      align-items: center;
-      display: flex;
-      white-space: nowrap;
-      width: 100%;
-    }
+  .p-double-row--with-icon {
+    display: grid;
+    grid:
+      [row1-start] "icon primary-row" auto [row1-end]
+      [row2-start] "icon secondary-row" auto [row2-end] /
+      $icon-space auto;
+  }
 
-    .p-double-row__checkbox {
-      @extend %p-double-row__icon-container;
-      margin-right: $sph-inner;
-    }
+  .p-double-row__icon {
+    grid-area: icon;
+  }
 
-    .p-double-row__icon-container {
-      @extend %p-double-row__icon-container;
-      margin-right: $sph-inner--small;
-    }
+  .p-double-row__primary-row {
+    grid-area: primary-row;
+  }
 
-    .p-double-row__rows-container--icon {
-      float: left;
-      width: calc(100% - #{$icon-space});
-    }
+  .p-double-row__secondary-row {
+    @extend %small-text;
+    color: $color-mid-dark;
+  }
 
-    .p-double-row__rows-container--checkbox {
-      float: left;
-      width: calc(100% - #{$checkbox-space});
-    }
-
-    .p-double-row__main-row {
-      @extend %p-double-row__row;
-    }
-
-    .p-double-row__muted-row {
-      @extend %small-text;
-      @extend %p-double-row__row;
-      color: $color-mid-dark;
-      margin-bottom: map-get($line-heights, default-text) -
-        map-get($line-heights, small) - map-get($nudges, nudge--small);
-    }
+  .p-double-row__icon-space {
+    padding-left: $icon-space;
   }
 }
