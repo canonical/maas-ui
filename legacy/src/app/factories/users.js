@@ -91,15 +91,15 @@ function UsersManager(Manager, RegionConnection, ErrorService) {
     }
   };
 
-  UsersManager.prototype.loadItems = function() {
+  UsersManager.prototype.loadItems = async function() {
     // Load the auth user when all the items are loaded as well.
-    this._loadAuthUser();
+    await this._loadAuthUser();
     return Manager.prototype.loadItems.call(this);
   };
 
-  UsersManager.prototype.reloadItems = function() {
+  UsersManager.prototype.reloadItems = async function() {
     // Load the auth user when all the items are reloaded as well.
-    this._loadAuthUser();
+    await this._loadAuthUser();
     return Manager.prototype.reloadItems.call(this);
   };
 
