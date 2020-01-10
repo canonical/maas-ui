@@ -5,26 +5,22 @@ exports[`OwnerColumn renders 1`] = `
   systemId="abc123"
 >
   <div
-    className="p-double-row__rows-container--icon"
+    className="p-double-row__primary-row"
   >
-    <div
-      className="p-double-row__main-row"
+    <span
+      data-test="owner"
     >
-      <span
-        data-test="owner"
-      >
-        admin
-      </span>
-    </div>
-    <div
-      className="p-double-row__muted-row"
-    >
-      <span
-        className="u-text-overflow"
-        data-test="tags"
-        title=""
-      />
-    </div>
+      admin
+    </span>
+  </div>
+  <div
+    className="p-double-row__secondary-row"
+  >
+    <span
+      className="u-text-overflow"
+      data-test="tags"
+      title=""
+    />
   </div>
 </OwnerColumn>
 `;

@@ -14,15 +14,13 @@ const OwnerColumn = ({ systemId }) => {
 
   return (
     <>
-      <div className="p-double-row__rows-container--icon">
-        <div className="p-double-row__main-row">
-          <span data-test="owner">{owner}</span>
-        </div>
-        <div className="p-double-row__muted-row">
-          <span className="u-text-overflow" title={tags} data-test="tags">
-            {tags}
-          </span>
-        </div>
+      <div className="p-double-row__primary-row">
+        <span data-test="owner">{owner}</span>
+      </div>
+      <div className="p-double-row__secondary-row">
+        <span className="u-text-overflow" title={tags} data-test="tags">
+          {tags}
+        </span>
       </div>
     </>
   );
