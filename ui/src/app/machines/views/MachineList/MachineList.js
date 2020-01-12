@@ -135,8 +135,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <NameColumn showMAC={false} systemId={row.system_id} />
         },
         {
-          content: <PowerColumn systemId={row.system_id} />,
-          className: "p-table__col--power p-double-row"
+          content: <PowerColumn systemId={row.system_id} />
         },
         {
           content: row.status
