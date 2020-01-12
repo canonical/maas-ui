@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PowerColumn renders 1`] = `
+<PowerColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row--with-icon"
+  >
+    <div
+      className="p-double-row__icon"
+    >
+      <i
+        className="p-icon--power-on"
+        title="on"
+      />
+    </div>
+    <div
+      className="p-double-row__primary-row u-upper-case--first"
+    >
+      <span
+        data-test="power_state"
+      >
+        on
+      </span>
+    </div>
+    <div
+      className="p-double-row__secondary-row u-upper-case--first"
+    >
+      <span
+        className="u-text-overflow"
+        data-test="power_type"
+        title="virsh"
+      >
+        virsh
+      </span>
+    </div>
+  </div>
+</PowerColumn>
+`;

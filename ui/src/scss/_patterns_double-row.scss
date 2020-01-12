@@ -1,0 +1,33 @@
+@mixin maas-double-row {
+  $icon-space: map-get($icon-sizes, default) + $sph-inner--small;
+
+  .p-double-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .p-double-row--with-icon {
+    display: grid;
+    grid:
+      [row1-start] "icon primary-row" auto [row1-end]
+      [row2-start] "icon secondary-row" auto [row2-end] /
+      $icon-space auto;
+  }
+
+  .p-double-row__icon {
+    grid-area: icon;
+  }
+
+  .p-double-row__primary-row {
+    grid-area: primary-row;
+  }
+
+  .p-double-row__secondary-row {
+    @extend %small-text;
+    color: $color-mid-dark;
+  }
+
+  .p-double-row__icon-space {
+    padding-left: $icon-space;
+  }
+}

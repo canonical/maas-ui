@@ -26,6 +26,7 @@ import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
 import NameColumn from "./NameColumn";
+import PowerColumn from "./PowerColumn";
 
 const getFabricColValue = vlan => {
   if (vlan && vlan.fabric_name) {
@@ -134,8 +135,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <NameColumn showMAC={false} systemId={row.system_id} />
         },
         {
-          content: row.power_state,
-          className: "u-upper-case--first"
+          content: <PowerColumn systemId={row.system_id} />
         },
         {
           content: row.status
