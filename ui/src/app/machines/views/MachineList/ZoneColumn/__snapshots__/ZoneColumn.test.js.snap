@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ZoneColumn renders 1`] = `
+<ZoneColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row__primary-row"
+  >
+    <span
+      data-test="zone"
+    >
+      zone-north
+    </span>
+  </div>
+  <div
+    className="p-double-row__secondary-row u-truncate-text"
+  >
+    <span
+      data-test="spaces"
+    >
+      management
+    </span>
+  </div>
+</ZoneColumn>
+`;

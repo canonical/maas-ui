@@ -28,6 +28,7 @@ import { formatGigabytes, formatGigabits } from "app/utils";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PowerColumn from "./PowerColumn";
+import ZoneColumn from "./ZoneColumn";
 
 const getFabricColValue = vlan => {
   if (vlan && vlan.fabric_name) {
@@ -148,7 +149,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: row.pool.name
         },
         {
-          content: row.zone.name
+          content: <ZoneColumn systemId={row.system_id} />
         },
         {
           content: getFabricColValue(row.vlan)
