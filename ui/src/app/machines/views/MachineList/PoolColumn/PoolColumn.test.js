@@ -46,7 +46,7 @@ describe("PoolColumn", () => {
   });
 
   it("displays pool", () => {
-    state.machine.items[0].pool = {name: 'pool-1'};
+    state.machine.items[0].pool = { name: "pool-1" };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
