@@ -4,14 +4,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MachineList from "./MachineList";
+import { scriptStatus } from "app/base/enum";
+import DisksColumn from "./DisksColumn";
 
 const mockStore = configureStore();
 
-describe("MachineList", () => {
-  let initialState;
+describe("DisksColumn", () => {
+  let state;
   beforeEach(() => {
-    initialState = {
+    state = {
       config: {
         items: []
       },
@@ -21,83 +22,64 @@ describe("MachineList", () => {
         loaded: true,
         items: [
           {
-            domain: {
-              name: "example"
-            },
-            extra_macs: [],
-            hostname: "koala",
-            ip_addresses: [],
+            system_id: "abc123",
             physical_disk_count: 1,
-            pool: {},
-            pxe_mac: "00:11:22:33:44:55",
-            spaces: [],
-            status: "Releasing",
             storage_test_status: {
               status: 2
-            },
-            system_id: "abc123",
-            zone: {}
+            }
           }
         ]
       }
     };
   });
 
-  it("displays a loading component if machines are loading", () => {
-    const state = { ...initialState };
-    state.machine.loading = true;
+  it("renders", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <DisksColumn systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+
+    expect(wrapper.find("DisksColumn")).toMatchSnapshot();
   });
 
-  it("includes groups", () => {
-    const state = { ...initialState };
+  it("displays the physical disk count", () => {
+    state.machine.items[0].physical_disk_count = 2;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <DisksColumn systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find(".machine-list__group td")
-        .at(0)
-        .find("strong")
-        .text()
-    ).toBe("Releasing");
+
+    expect(wrapper.find('[data-test="disks"]').text()).toEqual("2");
   });
 
-  it("can filter groups", () => {
-    const state = { ...initialState };
+  it("correctly shows error icon and tooltip if storage tests failed", () => {
+    state.machine.items[0].storage_test_status = {
+      status: scriptStatus.FAILED
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <DisksColumn systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("tr.machine-list__machine").length).toBe(1);
-    // Click the button to toggle the group.
-    wrapper
-      .find(".machine-list__group button")
-      .at(0)
-      .simulate("click");
-    expect(wrapper.find("tr.machine-list__machine").length).toBe(0);
+
+    expect(wrapper.find(".p-icon--error").exists()).toEqual(true);
+    expect(wrapper.find("Tooltip").exists()).toBe(true);
   });
 });

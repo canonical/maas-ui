@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DisksColumn renders 1`] = `
+<DisksColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row"
+  >
+    <div
+      className="p-double-row__primary-row u-align--right"
+    >
+      <ScriptStatus
+        data-test="disks"
+        hidePassedIcon={true}
+        scriptType={
+          Object {
+            "status": 2,
+          }
+        }
+        tooltipPosition="top-right"
+      >
+        1
+      </ScriptStatus>
+    </div>
+  </div>
+</DisksColumn>
+`;

@@ -1,7 +1,28 @@
+
+@import "~vanilla-framework/scss/settings_spacing";
+
 @mixin maas-icon-edit($color) {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='22' height='22' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg'%3e%3ctitle%3eedit%3c/title%3e%3cg fill='"+vf-url-friendly-color(
       $color
     )+"' fill-rule='evenodd'%3e%3cpath d='M17 15h5v1h-5zm-3 3h8v1h-8zm-3 3h11v1H11zm5.75-21L3.47 13.517S.956 17.465 0 21.987v.004l.002.004V22c4.532-.955 8.48-3.472 8.48-3.472L22 5.25 16.75 0zM4.51 14.555L7.454 17.5c-.2.114-2.99 2.064-5.544 2.602V20.093l-.002-.003c.537-2.546 2.485-5.334 2.602-5.537v.002z'/%3e%3cpath d='M2.234 18l1.85 1.85L1 21'/%3e%3c/g%3e%3c/svg%3e");
+}
+
+@mixin maas-icon-locked($color) {
+  background-image: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath d='M8,3e-05 C5.7926,3e-05 4,1.79263 4,4.00003 L4,7.00003 L2,7.00003 L2,15.99953 L14,15.99953 L14,7.00003 L12,7.00003 L12,4.00003 C12,1.79263 10.207,3e-05 8,3e-05 L8,0 L8,3e-05 Z M8,1.00003 C9.6706,1.00003 11,2.32933 11,4.00003 L11,7.00003 L5,7.00003 L5,4.00003 C5,2.32933 6.3293,1.00003 8,1.00003 Z M9,9.50003 L9,13.99953 L7,13.99953 L7,9.99953 L9,9.50003 L9,9.50003 Z' id='padlock-icon'%3E%3C/path%3E%3C/defs%3E%3Cg id='padlock-16'%3E%3Cuse id='lock-icon' fill='"+vf-url-friendly-color(
+      $color
+    )+"' fill-rule='nonzero' xlink:href='%23padlock-icon'%3E%3C/use%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+@mixin maas-icon-power($color) {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2215%22%20width%3D%2214%22%3E%3Cpath%20d%3D%22M11.04%202.323l-.324%202.268a5.017%205.017%200%200%201%201.352%203.426c0%202.787-2.274%205.056-5.068%205.056s-5.067-2.269-5.067-5.056a5.02%205.02%200%200%201%201.351-3.426L2.96%202.323A6.935%206.935%200%200%200%200%208.017C0%2011.868%203.14%2015%207%2015s7-3.132%207-6.983a6.933%206.933%200%200%200-2.96-5.694zM6%200h2v7H6V0z%22%20fill%3D%22"+vf-url-friendly-color(
+      $color
+    )+"%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+}
+
+@mixin maas-icon-unknown($color) {
+  background-image: url("data:image/svg+xml,%0A%3Csvg width='7px' height='12px' viewBox='0 0 7 12' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 50.2 %2855047%29 - http://www.bohemiancoding.com/sketch --%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='prototype--tables' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='207-group-selection' transform='translate%28-333.000000, -143.000000%29'%3E%3Cg id='Group' transform='translate%28333.000000, 141.000000%29'%3E%3Crect id='Rectangle' x='0' y='0' width='16' height='16'%3E%3C/rect%3E%3Cpath d='M2.79224377,3.71191136 C2.40443019,3.71191136 2.03324277,3.7590023 1.67867036,3.8531856 C1.32409795,3.94736889 0.952910526,4.09972194 0.565096953,4.31024931 L0,2.76454294 C0.409974349,2.53185479 0.878113712,2.34626108 1.40443213,2.20775623 C1.93075055,2.06925139 2.47091136,2 3.02493075,2 C3.68975402,2 4.23822499,2.09141183 4.67036011,2.27423823 C5.10249524,2.45706463 5.44598211,2.68697922 5.70083102,2.96398892 C5.95567994,3.24099861 6.13296349,3.54570471 6.23268698,3.87811634 C6.33241047,4.21052798 6.38227147,4.5318544 6.38227147,4.84210526 C6.38227147,5.21883845 6.31302008,5.55678521 6.17451524,5.85595568 C6.03601039,6.15512615 5.8614969,6.43213169 5.65096953,6.68698061 C5.44044216,6.94182953 5.21329762,7.18282435 4.96952909,7.4099723 C4.72576055,7.63712025 4.49861601,7.8698049 4.28808864,8.10803324 C4.07756127,8.34626158 3.90304778,8.59833662 3.76454294,8.86426593 C3.62603809,9.13019524 3.5567867,9.42936122 3.5567867,9.76177285 L3.5567867,9.95290859 C3.5567867,10.0249311 3.56232681,10.0941825 3.5734072,10.1606648 L1.84487535,10.1606648 C1.82271457,10.0498609 1.80609424,9.93074856 1.79501385,9.8033241 C1.78393346,9.67589964 1.77839335,9.55678726 1.77839335,9.44598338 C1.77839335,9.08033058 1.83933457,8.75346404 1.96121884,8.46537396 C2.0831031,8.17728388 2.2382262,7.91135856 2.4265928,7.66759003 C2.61495939,7.4238215 2.81717343,7.19667695 3.033241,6.98614958 C3.24930856,6.77562222 3.4515226,6.56509801 3.6398892,6.35457064 C3.82825579,6.14404327 3.98337889,5.92797895 4.10526316,5.70637119 C4.22714742,5.48476343 4.28808864,5.24099856 4.28808864,4.97506925 C4.28808864,4.60941645 4.16343615,4.30748042 3.91412742,4.06925208 C3.6648187,3.83102374 3.29086122,3.71191136 2.79224377,3.71191136 Z M4.08864266,12.6869806 C4.08864266,13.0747942 3.96122011,13.3905805 3.70637119,13.634349 C3.45152227,13.8781176 3.13573596,14 2.75900277,14 C2.39334997,14 2.08033371,13.8781176 1.8199446,13.634349 C1.55955548,13.3905805 1.42936288,13.0747942 1.42936288,12.6869806 C1.42936288,12.299167 1.55955548,11.9806107 1.8199446,11.7313019 C2.08033371,11.4819932 2.39334997,11.3573407 2.75900277,11.3573407 C3.13573596,11.3573407 3.45152227,11.4819932 3.70637119,11.7313019 C3.96122011,11.9806107 4.08864266,12.299167 4.08864266,12.6869806 Z' id='%3F' fill='"+vf-url-friendly-color(
+      $color
+    )+"'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .p-icon--edit {
@@ -11,15 +32,12 @@
 
 .p-icon--locked {
   @extend %icon;
-  background-image: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath d='M8,3e-05 C5.7926,3e-05 4,1.79263 4,4.00003 L4,7.00003 L2,7.00003 L2,15.99953 L14,15.99953 L14,7.00003 L12,7.00003 L12,4.00003 C12,1.79263 10.207,3e-05 8,3e-05 L8,0 L8,3e-05 Z M8,1.00003 C9.6706,1.00003 11,2.32933 11,4.00003 L11,7.00003 L5,7.00003 L5,4.00003 C5,2.32933 6.3293,1.00003 8,1.00003 Z M9,9.50003 L9,13.99953 L7,13.99953 L7,9.99953 L9,9.50003 L9,9.50003 Z' id='padlock-icon'%3E%3C/path%3E%3C/defs%3E%3Cg id='padlock-16'%3E%3Cuse id='lock-icon' fill='"+vf-url-friendly-color(
-      $color-mid-dark
-    )+"' fill-rule='nonzero' xlink:href='%23padlock-icon'%3E%3C/use%3E%3C/g%3E%3C/svg%3E%0A");
+  @include maas-icon-power($color-mid-dark);
 }
 
-@mixin maas-icon-power($color) {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2215%22%20width%3D%2214%22%3E%3Cpath%20d%3D%22M11.04%202.323l-.324%202.268a5.017%205.017%200%200%201%201.352%203.426c0%202.787-2.274%205.056-5.068%205.056s-5.067-2.269-5.067-5.056a5.02%205.02%200%200%201%201.351-3.426L2.96%202.323A6.935%206.935%200%200%200%200%208.017C0%2011.868%203.14%2015%207%2015s7-3.132%207-6.983a6.933%206.933%200%200%200-2.96-5.694zM6%200h2v7H6V0z%22%20fill%3D%22"+vf-url-friendly-color(
-      $color
-    )+"%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+.p-icon--pending {
+  @extend %icon;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 42 %2836781%29 - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Epending%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='smoke-testing-status' transform='translate%28-62.000000, -112.000000%29'%3E%3Cg id='pending' transform='translate%2850.000000, 97.000000%29'%3E%3Cg transform='translate%2812.000000, 15.000000%29'%3E%3Crect id='rect4970' x='0' y='1.99999999e-05' width='16' height='16'%3E%3C/rect%3E%3Ccircle id='circle4972' stroke='%23F99B11' stroke-width='1.5' cx='8' cy='8.00002' r='7.2500086'%3E%3C/circle%3E%3Crect id='rect4980' fill='%23F99B11' fill-rule='nonzero' x='7' y='7.00002' width='2' height='2'%3E%3C/rect%3E%3Crect id='rect4982' fill='%23F99B11' fill-rule='nonzero' x='10' y='7.00002' width='2' height='2'%3E%3C/rect%3E%3Crect id='rect4984' fill='%23F99B11' fill-rule='nonzero' x='4' y='7.00002' width='2' height='2'%3E%3C/rect%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .p-icon--power-error {
@@ -39,6 +57,20 @@
 
 .p-icon--power-unknown {
   @extend %icon;
-  background-image: url("data:image/svg+xml,%0A%3Csvg width='7px' height='12px' viewBox='0 0 7 12' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 50.2 %2855047%29 - http://www.bohemiancoding.com/sketch --%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='prototype--tables' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='207-group-selection' transform='translate%28-333.000000, -143.000000%29'%3E%3Cg id='Group' transform='translate%28333.000000, 141.000000%29'%3E%3Crect id='Rectangle' x='0' y='0' width='16' height='16'%3E%3C/rect%3E%3Cpath d='M2.79224377,3.71191136 C2.40443019,3.71191136 2.03324277,3.7590023 1.67867036,3.8531856 C1.32409795,3.94736889 0.952910526,4.09972194 0.565096953,4.31024931 L0,2.76454294 C0.409974349,2.53185479 0.878113712,2.34626108 1.40443213,2.20775623 C1.93075055,2.06925139 2.47091136,2 3.02493075,2 C3.68975402,2 4.23822499,2.09141183 4.67036011,2.27423823 C5.10249524,2.45706463 5.44598211,2.68697922 5.70083102,2.96398892 C5.95567994,3.24099861 6.13296349,3.54570471 6.23268698,3.87811634 C6.33241047,4.21052798 6.38227147,4.5318544 6.38227147,4.84210526 C6.38227147,5.21883845 6.31302008,5.55678521 6.17451524,5.85595568 C6.03601039,6.15512615 5.8614969,6.43213169 5.65096953,6.68698061 C5.44044216,6.94182953 5.21329762,7.18282435 4.96952909,7.4099723 C4.72576055,7.63712025 4.49861601,7.8698049 4.28808864,8.10803324 C4.07756127,8.34626158 3.90304778,8.59833662 3.76454294,8.86426593 C3.62603809,9.13019524 3.5567867,9.42936122 3.5567867,9.76177285 L3.5567867,9.95290859 C3.5567867,10.0249311 3.56232681,10.0941825 3.5734072,10.1606648 L1.84487535,10.1606648 C1.82271457,10.0498609 1.80609424,9.93074856 1.79501385,9.8033241 C1.78393346,9.67589964 1.77839335,9.55678726 1.77839335,9.44598338 C1.77839335,9.08033058 1.83933457,8.75346404 1.96121884,8.46537396 C2.0831031,8.17728388 2.2382262,7.91135856 2.4265928,7.66759003 C2.61495939,7.4238215 2.81717343,7.19667695 3.033241,6.98614958 C3.24930856,6.77562222 3.4515226,6.56509801 3.6398892,6.35457064 C3.82825579,6.14404327 3.98337889,5.92797895 4.10526316,5.70637119 C4.22714742,5.48476343 4.28808864,5.24099856 4.28808864,4.97506925 C4.28808864,4.60941645 4.16343615,4.30748042 3.91412742,4.06925208 C3.6648187,3.83102374 3.29086122,3.71191136 2.79224377,3.71191136 Z M4.08864266,12.6869806 C4.08864266,13.0747942 3.96122011,13.3905805 3.70637119,13.634349 C3.45152227,13.8781176 3.13573596,14 2.75900277,14 C2.39334997,14 2.08033371,13.8781176 1.8199446,13.634349 C1.55955548,13.3905805 1.42936288,13.0747942 1.42936288,12.6869806 C1.42936288,12.299167 1.55955548,11.9806107 1.8199446,11.7313019 C2.08033371,11.4819932 2.39334997,11.3573407 2.75900277,11.3573407 C3.13573596,11.3573407 3.45152227,11.4819932 3.70637119,11.7313019 C3.96122011,11.9806107 4.08864266,12.299167 4.08864266,12.6869806 Z' id='%3F' fill='%23CDCDCD'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  @include maas-icon-unknown($color-mid-dark);
 }
 
+.p-icon--running {
+  @extend %icon;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 42 %2836781%29 - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Erunning%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='smoke-testing-status' transform='translate%28-62.000000, -159.000000%29'%3E%3Cg id='running' transform='translate%2850.000000, 144.000000%29'%3E%3Cg transform='translate%2812.000000, 15.000000%29'%3E%3Crect id='rect6425' x='9.99999997e-06' y='9.99999989e-06' width='16' height='16'%3E%3C/rect%3E%3Ccircle id='circle6427' stroke='%230E8420' stroke-width='1.5' fill='%230E8420' fill-rule='nonzero' cx='8.00001' cy='8.00001' r='7.2500086'%3E%3C/circle%3E%3Cpolygon id='path6429' fill='%23FFFFFF' fill-rule='nonzero' points='6.00002 12.00001 6.00002 4.00001 12.00002 8.00001'%3E%3C/polygon%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.p-icon--timed-out {
+  @extend %icon;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' height='16px' width='16px' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3E%3C!-- Generator: Sketch 42 %2836781%29 - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Etimed out%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='Page-1' fill-rule='evenodd' fill='none'%3E%3Cg id='smoke-testing-status' transform='translate%28-62 -206%29'%3E%3Cg id='timed-out' transform='translate%2850 191%29'%3E%3Cg transform='translate%2812 15%29'%3E%3Crect id='rect4970' y='0.00002' x='0' height='16' width='16'/%3E%3Ccircle id='circle4972' stroke-width='1.5' cy='8' stroke='%23E95420' cx='8' r='7.25'/%3E%3Cpolyline id='path839' stroke='%23E95420' stroke-width='2' points='11.8 11.8 7.9999 8 7.9999 3'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+[class*='p-icon--'].is-inline {
+  margin-right: $sph-inner--small;
+  top: 0;
+}
