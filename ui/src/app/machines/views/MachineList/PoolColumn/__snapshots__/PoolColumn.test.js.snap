@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PoolColumn renders 1`] = `
+<PoolColumn
+  systemId="abc123"
+>
+  <div
+    aria-label="Pool"
+    className="p-double-row__primary-row"
+  >
+    <span
+      data-test="pool"
+    >
+      <a
+        className="p-link--soft"
+        href="#/pools"
+        title="default"
+      >
+        default
+      </a>
+    </span>
+  </div>
+  <div
+    aria-label="Note"
+    className="p-double-row__secondary-row u-truncate-text"
+  >
+    <span
+      data-test="note"
+    >
+      Firmware old
+    </span>
+  </div>
+</PoolColumn>
+`;
