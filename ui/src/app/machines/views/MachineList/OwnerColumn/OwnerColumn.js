@@ -17,8 +17,8 @@ const OwnerColumn = ({ systemId }) => {
       <div className="p-double-row__primary-row">
         <span data-test="owner">{owner}</span>
       </div>
-      <div className="p-double-row__secondary-row">
-        <span className="u-text-overflow" title={tags} data-test="tags">
+      <div className="p-double-row__secondary-row u-truncate-text">
+        <span title={tags} data-test="tags">
           {tags}
         </span>
       </div>

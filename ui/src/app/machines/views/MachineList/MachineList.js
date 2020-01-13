@@ -26,10 +26,7 @@ import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
 import NameColumn from "./NameColumn";
-<<<<<<< HEAD
-=======
 import OwnerColumn from "./OwnerColumn";
->>>>>>> Add owner/tags column to machine listing.
 import PowerColumn from "./PowerColumn";
 
 const getFabricColValue = vlan => {
@@ -145,8 +142,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: row.status
         },
         {
-          content: <OwnerColumn systemId={row.system_id} />,
-          className: "p-table__col--owner p-double-row"
+          content: <OwnerColumn systemId={row.system_id} />
         },
         {
           content: row.pool.name

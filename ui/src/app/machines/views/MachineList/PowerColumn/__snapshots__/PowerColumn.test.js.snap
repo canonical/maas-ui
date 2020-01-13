@@ -25,10 +25,9 @@ exports[`PowerColumn renders 1`] = `
       </span>
     </div>
     <div
-      className="p-double-row__secondary-row u-upper-case--first"
+      className="p-double-row__secondary-row u-upper-case--first u-truncate-text"
     >
       <span
-        className="u-text-overflow"
         data-test="power_type"
         title="virsh"
       >

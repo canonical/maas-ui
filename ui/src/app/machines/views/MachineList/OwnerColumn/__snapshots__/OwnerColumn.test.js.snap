@@ -14,10 +14,9 @@ exports[`OwnerColumn renders 1`] = `
     </span>
   </div>
   <div
-    className="p-double-row__secondary-row"
+    className="p-double-row__secondary-row u-truncate-text"
   >
     <span
-      className="u-text-overflow"
       data-test="tags"
       title=""
     />
