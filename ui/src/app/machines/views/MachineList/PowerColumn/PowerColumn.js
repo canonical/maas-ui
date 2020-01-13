@@ -25,10 +25,7 @@ const PowerColumn = ({ systemId }) => {
         <span data-test="power_state">{machine.power_state}</span>
       </div>
       <div className="p-double-row__secondary-row u-upper-case--first u-truncate-text">
-        <span
-          title={machine.power_type}
-          data-test="power_type"
-        >
+        <span title={machine.power_type} data-test="power_type">
           {machine.power_type}
         </span>
       </div>
