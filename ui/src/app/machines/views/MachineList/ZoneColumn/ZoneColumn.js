@@ -9,7 +9,10 @@ const ZoneColumn = ({ systemId }) => {
     machineSelectors.getBySystemId(state, systemId)
   );
 
-  const spaces = machine.spaces.length > 1 ? `${machine.spaces.length} spaces` : machine.spaces[0];
+  const spaces =
+    machine.spaces.length > 1
+      ? `${machine.spaces.length} spaces`
+      : machine.spaces[0];
 
   return (
     <>
@@ -17,9 +20,7 @@ const ZoneColumn = ({ systemId }) => {
         <span data-test="zone">{machine.zone.name}</span>
       </div>
       <div className="p-double-row__secondary-row u-truncate-text">
-        <span data-test="spaces">
-          {spaces}
-        </span>
+        <span data-test="spaces">{spaces}</span>
       </div>
     </>
   );
