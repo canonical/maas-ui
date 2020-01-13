@@ -37,6 +37,12 @@ body {
   color: $color-mid-dark;
 }
 
+.u-truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .p-modal {
   // The modal needs to be above the header nav items.
   z-index: 10;

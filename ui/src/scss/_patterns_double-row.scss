@@ -25,6 +25,7 @@
   .p-double-row__secondary-row {
     @extend %small-text;
     color: $color-mid-dark;
+    grid-area: secondary-row;
   }
 
   .p-double-row__icon-space {

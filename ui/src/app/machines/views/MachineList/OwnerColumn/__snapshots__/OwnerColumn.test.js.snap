@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OwnerColumn renders 1`] = `
+<OwnerColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row__primary-row"
+  >
+    <span
+      data-test="owner"
+    >
+      admin
+    </span>
+  </div>
+  <div
+    className="p-double-row__secondary-row u-truncate-text"
+  >
+    <span
+      data-test="tags"
+      title=""
+    />
+  </div>
+</OwnerColumn>
+`;

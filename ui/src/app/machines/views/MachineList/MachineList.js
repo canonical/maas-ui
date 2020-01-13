@@ -26,6 +26,7 @@ import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
 import NameColumn from "./NameColumn";
+import OwnerColumn from "./OwnerColumn";
 import PowerColumn from "./PowerColumn";
 
 const getFabricColValue = vlan => {
@@ -141,7 +142,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: row.status
         },
         {
-          content: row.owner
+          content: <OwnerColumn systemId={row.system_id} />
         },
         {
           content: row.pool.name
