@@ -22,7 +22,7 @@ const PoolColumn = ({ systemId }) => {
         className="p-double-row__secondary-row u-truncate-text"
         aria-label="Note"
       >
-        <span title={machine.power_type} data-test="note">
+        <span title={machine.description} data-test="note">
           {machine.description}
         </span>
       </div>
