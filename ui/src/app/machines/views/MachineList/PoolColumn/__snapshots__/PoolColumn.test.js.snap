@@ -26,6 +26,7 @@ exports[`PoolColumn renders 1`] = `
   >
     <span
       data-test="note"
+      title="Firmware old"
     >
       Firmware old
     </span>
