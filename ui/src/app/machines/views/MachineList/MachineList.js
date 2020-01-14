@@ -27,6 +27,7 @@ import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
+import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import ZoneColumn from "./ZoneColumn";
 
@@ -146,7 +147,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <OwnerColumn systemId={row.system_id} />
         },
         {
-          content: row.pool.name
+          content: <PoolColumn systemId={row.system_id} />
         },
         {
           content: <ZoneColumn systemId={row.system_id} />

@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import { machine as machineSelectors } from "app/base/selectors";
@@ -31,6 +32,10 @@ const PowerColumn = ({ systemId }) => {
       </div>
     </div>
   );
+};
+
+PowerColumn.propTypes = {
+  systemId: PropTypes.string.isRequired
 };
 
 export default PowerColumn;
