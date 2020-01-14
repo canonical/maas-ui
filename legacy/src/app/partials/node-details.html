@@ -781,7 +781,7 @@
                         data-ng-hide="isAllNetworkingDisabled() || isShowingCreateBond() || isShowingCreatePhysical()">
                         <div class="col-8">
                             <button class="p-button--neutral" data-ng-disabled="selectedMode !== null"
-                                data-ng-click="showCreatePhysical(); sendAnalyticsEvent('Machine details, 'Add interface', 'Network tab')">Add interface</button>
+                                data-ng-click="showCreatePhysical(); sendAnalyticsEvent('Machine details', 'Add interface', 'Network tab')">Add interface</button>
                             <button class="p-button--neutral" data-ng-disabled="!canCreateBond(); sendAnalyticsEvent('Machine details', 'Create bond', 'Network tab')" data-ng-click="showCreateBond()">Create bond</button>
                             <button class="p-button--neutral" data-ng-disabled="!canCreateBridge()"
                                 data-ng-click="showCreateBridge(); sendAnalyticsEvent('Machine details', 'Create bridge', 'Network tab')">Create bridge</button>
