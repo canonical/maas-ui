@@ -6,7 +6,7 @@
 
 const powerParametersTmpl = `<div class="p-form__group row">
     <label for="power-type"
-        class="p-form__label col-2"
+        class="p-form__label col-2 is-required"
         data-ng-class="{'is-disabled': !ngModel.editing }">
         Power type
     </label>
