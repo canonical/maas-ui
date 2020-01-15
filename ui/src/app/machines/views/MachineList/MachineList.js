@@ -25,19 +25,12 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
+import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import ZoneColumn from "./ZoneColumn";
-
-const getFabricColValue = vlan => {
-  if (vlan && vlan.fabric_name) {
-    return vlan.fabric_name;
-  }
-
-  return "-";
-};
 
 const normaliseStatus = (statusCode, status) => {
   switch (statusCode) {
@@ -153,7 +146,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <ZoneColumn systemId={row.system_id} />
         },
         {
-          content: getFabricColValue(row.vlan)
+          content: <FabricColumn systemId={row.system_id} />
         },
         {
           content: row.cpu_count,

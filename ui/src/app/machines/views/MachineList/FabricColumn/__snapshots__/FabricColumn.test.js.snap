@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FabricColumn renders 1`] = `
+<FabricColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row"
+  >
+    <div
+      aria-label="Fabric"
+      className="p-double-row__primary-row"
+    >
+      <span
+        data-test="fabric"
+      >
+        fabric-0
+      </span>
+    </div>
+    <div
+      aria-label="VLAN"
+      className="p-double-row__secondary-row u-truncate-text"
+    >
+      <span
+        data-test="vlan"
+      >
+        Default VLAN
+      </span>
+    </div>
+  </div>
+</FabricColumn>
+`;
