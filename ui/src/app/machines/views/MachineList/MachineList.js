@@ -25,6 +25,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
+import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -157,8 +158,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           className: "u-align--right"
         },
         {
-          content: row.physical_disk_count,
-          className: "u-align--right"
+          content: <DisksColumn systemId={row.system_id} />
         },
         {
           content: formatGigabytes(row.storage),
@@ -268,7 +268,9 @@ const MachineList = () => {
                 sortKey: "name"
               },
               {
-                content: "Power",
+                content: (
+                  <span className="p-double-row__icon-space">Power</span>
+                ),
                 sortKey: "power_state"
               },
               {

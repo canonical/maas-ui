@@ -13,7 +13,7 @@ const OwnerColumn = ({ systemId }) => {
   const tags = machine.tags ? machine.tags.join(", ") : "";
 
   return (
-    <>
+    <div className="p-double-row">
       <div className="p-double-row__primary-row">
         <span data-test="owner">{owner}</span>
       </div>
@@ -22,7 +22,7 @@ const OwnerColumn = ({ systemId }) => {
           {tags}
         </span>
       </div>
-    </>
+    </div>
   );
 };
 

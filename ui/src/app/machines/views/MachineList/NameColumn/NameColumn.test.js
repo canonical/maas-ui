@@ -93,8 +93,8 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("div").text()).toBe("127.0.0.1");
-    // Doesn't show toolip.
+    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe("127.0.0.1");
+    // Doesn't show tooltip.
     expect(wrapper.find("Tooltip").exists()).toBe(false);
   });
 
@@ -113,7 +113,9 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("div").text()).toBe("127.0.0.1 (+1)");
+    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe(
+      "127.0.0.1 (+1)"
+    );
     // Shows a tooltip.
     expect(wrapper.find("Tooltip").exists()).toBe(true);
   });
@@ -130,7 +132,9 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("div").text()).toBe("127.0.0.1 (PXE)");
+    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe(
+      "127.0.0.1 (PXE)"
+    );
   });
 
   it("doesn't show duplicate ip addresses", () => {
@@ -148,7 +152,7 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("div").text()).toBe("127.0.0.1");
+    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe("127.0.0.1");
     // Doesn't show toolip.
     expect(wrapper.find("Tooltip").exists()).toBe(false);
   });

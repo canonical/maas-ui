@@ -15,14 +15,14 @@ const ZoneColumn = ({ systemId }) => {
       : machine.spaces[0];
 
   return (
-    <>
+    <div className="p-double-row">
       <div className="p-double-row__primary-row">
         <span data-test="zone">{machine.zone.name}</span>
       </div>
       <div className="p-double-row__secondary-row u-truncate-text">
         <span data-test="spaces">{spaces}</span>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -35,12 +35,10 @@ const generateFQDN = (machine, machineURL) => {
     return name;
   }
   let ipAddressesLine = (
-    <div>
-      <small className="u-text--light">
-        {bootIP || ipAddresses[0]}
-        {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
-      </small>
-    </div>
+    <span data-test="ip-addresses">
+      {bootIP || ipAddresses[0]}
+      {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
+    </span>
   );
 
   if (ipAddresses.length > 1) {
@@ -62,11 +60,12 @@ const generateFQDN = (machine, machineURL) => {
       </Tooltip>
     );
   }
+
   return (
-    <>
-      {name}
-      {ipAddressesLine}
-    </>
+    <div className="p-double-row">
+      <div className="p-double-row__primary-row">{name}</div>
+      <div className="p-double-row__secondary-row">{ipAddressesLine}</div>
+    </div>
   );
 };
 
