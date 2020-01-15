@@ -25,6 +25,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
+import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
@@ -153,7 +154,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <ZoneColumn systemId={row.system_id} />
         },
         {
-          content: getFabricColValue(row.vlan)
+          content: <FabricColumn systemId={row.system_id} />
         },
         {
           content: row.cpu_count,
