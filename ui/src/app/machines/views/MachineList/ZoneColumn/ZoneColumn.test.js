@@ -77,7 +77,7 @@ describe("ZoneColumn", () => {
     expect(wrapper.find('[data-test="spaces"]').text()).toEqual("space1");
   });
 
-  it("displays spaces count", () => {
+  it("displays spaces count for multiple spaces", () => {
     state.machine.items[0].spaces = ["space1", "space2"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -91,5 +91,23 @@ describe("ZoneColumn", () => {
     );
 
     expect(wrapper.find('[data-test="spaces"]').text()).toEqual("2 spaces");
+  });
+
+  it("displays a sorted Tooltip for multiple spaces", () => {
+    state.machine.items[0].spaces = ["space2", "space1", "space3"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ZoneColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Tooltip").prop("message")).toEqual(
+      "space1\nspace2\nspace3"
+    );
   });
 });
