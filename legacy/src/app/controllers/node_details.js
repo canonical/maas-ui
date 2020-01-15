@@ -1296,7 +1296,8 @@ function NodeDetailsController(
   $scope.getPowerEventError = function() {
     if (
       !angular.isObject($scope.node) ||
-      !angular.isArray($scope.node.events)
+      !angular.isArray($scope.node.events) ||
+      $scope.node.power_state !== "error"
     ) {
       return;
     }
