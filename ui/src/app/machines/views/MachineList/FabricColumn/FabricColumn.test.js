@@ -96,6 +96,4 @@ describe("FabricColumn", () => {
 
     expect(wrapper.find('[data-test="vlan"]').text()).toEqual("Wombat");
   });
-
-
 });

@@ -32,14 +32,6 @@ import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import ZoneColumn from "./ZoneColumn";
 
-const getFabricColValue = vlan => {
-  if (vlan && vlan.fabric_name) {
-    return vlan.fabric_name;
-  }
-
-  return "-";
-};
-
 const normaliseStatus = (statusCode, status) => {
   switch (statusCode) {
     case nodeStatus.FAILED_COMMISSIONING:
