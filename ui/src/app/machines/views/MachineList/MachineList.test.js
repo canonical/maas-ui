@@ -21,6 +21,7 @@ describe("MachineList", () => {
         loaded: true,
         items: [
           {
+            architecture: "amd64/generic",
             domain: {
               name: "example"
             },

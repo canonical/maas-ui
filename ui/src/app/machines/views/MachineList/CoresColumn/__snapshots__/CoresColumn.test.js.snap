@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoresColumn renders 1`] = `
+<CoresColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row u-align--right"
+  >
+    <div
+      aria-label="Cores"
+      className="p-double-row__primary-row"
+    >
+      <span
+        data-test="cores"
+      >
+        4
+      </span>
+    </div>
+    <div
+      aria-label="Architecture"
+      className="p-double-row__secondary-row u-truncate-text"
+    >
+      <Tooltip
+        message="amd64/generic"
+        position="btm-left"
+      >
+        <span
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+        >
+          <span
+            data-test="arch"
+          >
+            amd64
+          </span>
+        </span>
+      </Tooltip>
+    </div>
+  </div>
+</CoresColumn>
+`;
