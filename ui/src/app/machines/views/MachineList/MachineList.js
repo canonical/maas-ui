@@ -25,6 +25,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { formatGigabytes, formatGigabits } from "app/utils";
+import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
@@ -150,8 +151,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <FabricColumn systemId={row.system_id} />
         },
         {
-          content: row.cpu_count,
-          className: "u-align--right"
+          content: <CoresColumn systemId={row.system_id} />
         },
         {
           content: formatGigabits(row.memory),
