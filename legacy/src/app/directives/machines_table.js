@@ -36,7 +36,8 @@ function maasMachinesTable(
       pools: "=",
       zones: "=",
       hideFailedTests: "<",
-      metadata: "="
+      metadata: "=",
+      truncate: "<"
     },
     template: machinesTableTmpl,
     link: function(scope) {
@@ -89,7 +90,7 @@ function maasMachinesTable(
       machineActions: GeneralManager.getData("machine_actions")
     };
 
-    $scope.DISPLAY_LIMIT = 5;
+    $scope.DISPLAY_LIMIT = $scope.truncate ? 5 : 100;
     $scope.displayLimits = {};
     const groupLabels = [
       "Failed",
