@@ -458,10 +458,11 @@
             <div class="row">
                 <div class="col-12" data-ng-if="pod.composed_machines_count">
                     <maas-machines-table
-                        search="machinesSearch"
+                        default-sort="'status'"
+                        display-limit="100"
                         hide-actions="true"
                         pools="pools"
-                        truncate="false"
+                        search="machinesSearch"
                         zones="zones"
                     />
                 </div>
