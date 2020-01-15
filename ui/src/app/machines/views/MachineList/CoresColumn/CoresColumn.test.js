@@ -90,6 +90,6 @@ describe("CoresColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('Tooltip').prop('message')).toEqual("amd64/generic");
+    expect(wrapper.find("Tooltip").prop("message")).toEqual("amd64/generic");
   });
 });
