@@ -20,7 +20,6 @@ const CoresColumn = ({ systemId }) => {
         <ScriptStatus
           data-test="cores"
           hidePassedIcon
-          hideNotRunIcon
           scriptType={machine.cpu_test_status}
           tooltipPosition="top-right"
         >

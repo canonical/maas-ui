@@ -33,16 +33,6 @@ describe("ScriptStatus ", () => {
     expect(wrapper.find(".p-icon--success").exists()).toBe(false);
   });
 
-  it(`does not display an icon if no scripts have run and
-    and hideNotRunIcon is true`, () => {
-    const wrapper = shallow(
-      <ScriptStatus hideNotRunIcon scriptType={{ status: scriptStatus.NONE }}>
-        Tests have not run.
-      </ScriptStatus>
-    );
-    expect(wrapper.find(".p-icon--warning").exists()).toBe(false);
-  });
-
   it("displays an error icon and tooltip if scripts have failed", () => {
     const wrapper = shallow(
       <ScriptStatus scriptType={{ status: scriptStatus.FAILED }}>
@@ -79,15 +69,5 @@ describe("ScriptStatus ", () => {
       </ScriptStatus>
     );
     expect(wrapper.find(".p-icon--running").exists()).toBe(true);
-  });
-
-  it("displays a warning icon and tooltip if scripts have not been run", () => {
-    const wrapper = shallow(
-      <ScriptStatus scriptType={{ status: scriptStatus.NONE }}>
-        Some or all tests are running
-      </ScriptStatus>
-    );
-    expect(wrapper.find(".p-icon--warning").exists()).toBe(true);
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
   });
 });
