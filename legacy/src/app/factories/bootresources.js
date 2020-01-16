@@ -20,7 +20,7 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
     // Set true once been loaded the first time.
     this._loaded = false;
 
-    // Holds the data recieved from polling.
+    // Holds the data received from polling.
     this._data = {};
 
     // Set to true when polling has been enabled.
