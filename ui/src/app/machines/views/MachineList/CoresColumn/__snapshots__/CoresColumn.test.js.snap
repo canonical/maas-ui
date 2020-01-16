@@ -11,11 +11,22 @@ exports[`CoresColumn renders 1`] = `
       aria-label="Cores"
       className="p-double-row__primary-row"
     >
-      <span
+      <ScriptStatus
         data-test="cores"
+        hideNotRunIcon={true}
+        hidePassedIcon={true}
+        scriptType={
+          Object {
+            "status": 1,
+          }
+        }
+        tooltipPosition="top-right"
       >
+        <i
+          className="p-icon--running is-inline"
+        />
         4
-      </span>
+      </ScriptStatus>
     </div>
     <div
       aria-label="Architecture"

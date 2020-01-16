@@ -23,7 +23,10 @@ describe("CoresColumn", () => {
           {
             system_id: "abc123",
             architecture: "amd64/generic",
-            cpu_count: 4
+            cpu_count: 4,
+            cpu_test_status: {
+              status: 1
+            }
           }
         ]
       }
