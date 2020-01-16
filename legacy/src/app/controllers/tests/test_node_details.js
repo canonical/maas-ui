@@ -2251,8 +2251,21 @@ describe("NodeDetailsController", function() {
       evt.type.level = "warning";
       evt.type.description = "Failed to query node's BMC";
       $scope.node = node;
+      node.power_state = "error";
       $scope.node.events = [makeEvent(), evt];
       expect($scope.getPowerEventError()).toBe(evt);
+    });
+
+    it(`returns nothing if there is a power event error, but the node
+      is not currently in a power error state`, function() {
+      makeController();
+      var evt = makeEvent();
+      evt.type.level = "warning";
+      evt.type.description = "Failed to query node's BMC";
+      $scope.node = node;
+      node.power_state = "on";
+      $scope.node.events = [makeEvent(), evt];
+      expect($scope.getPowerEventError()).toBe();
     });
 
     it("returns nothing if there is no power event error", function() {
@@ -2264,6 +2277,7 @@ describe("NodeDetailsController", function() {
       evt_error.type.level = "warning";
       evt_error.type.description = "Failed to query node's BMC";
       $scope.node = node;
+      node.power_state = "error";
       $scope.node.events = [makeEvent(), evt_info, evt_error];
       expect($scope.getPowerEventError()).toBe();
     });
@@ -2276,6 +2290,7 @@ describe("NodeDetailsController", function() {
       evt.type.level = "warning";
       evt.type.description = "Failed to query node's BMC";
       $scope.node = node;
+      node.power_state = "error";
       $scope.node.events = [evt];
       expect($scope.hasPowerEventError()).toBe(true);
     });
@@ -2283,6 +2298,7 @@ describe("NodeDetailsController", function() {
     it("returns false if last event is not an error", function() {
       makeController();
       $scope.node = node;
+      node.power_state = "error";
       $scope.node.events = [makeEvent()];
       expect($scope.hasPowerEventError()).toBe(false);
     });
@@ -2302,6 +2318,7 @@ describe("NodeDetailsController", function() {
       evt.type.level = "warning";
       evt.type.description = "Failed to query node's BMC";
       $scope.node = node;
+      node.power_state = "error";
       $scope.node.events = [evt];
       expect($scope.getPowerEventErrorText()).toBe(evt.description);
     });
