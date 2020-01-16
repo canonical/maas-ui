@@ -650,6 +650,18 @@ function PodDetailsController(
         }
       }
     });
+    $scope.$watch("pod.composed_machines_count", () => {
+      // Explicitly refresh machine list by changing search to return identical
+      // results when the number of machines in the pod changes. Symptom of
+      // problems with two-way data binding of machines and search string in the
+      // machine table.
+      if ($scope.loaded) {
+        $scope.machinesSearch = "pod:=" + $scope.pod.name;
+        setTimeout(() => {
+          $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
+        }, 100);
+      }
+    });
     $scope.$watch("action.option", function(now, then) {
       // When the compose action is selected set the default
       // parameters.

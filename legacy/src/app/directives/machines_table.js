@@ -36,7 +36,9 @@ function maasMachinesTable(
       pools: "=",
       zones: "=",
       hideFailedTests: "<",
-      metadata: "="
+      metadata: "=",
+      displayLimit: "<",
+      defaultSort: "<"
     },
     template: machinesTableTmpl,
     link: function(scope) {
@@ -80,7 +82,7 @@ function maasMachinesTable(
     // Scope variables.
     $scope.table = {
       column: "fqdn",
-      predicate: "fqdn",
+      predicate: $scope.defaultSort || "fqdn",
       reverse: false,
       allViewableChecked: false,
       machines,
@@ -89,7 +91,7 @@ function maasMachinesTable(
       machineActions: GeneralManager.getData("machine_actions")
     };
 
-    $scope.DISPLAY_LIMIT = 5;
+    $scope.DISPLAY_LIMIT = $scope.displayLimit || 5;
     $scope.displayLimits = {};
     const groupLabels = [
       "Failed",
