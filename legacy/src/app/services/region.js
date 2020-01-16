@@ -367,7 +367,7 @@ class RegionConnection {
     }
   }
 
-  // Called when a response message is recieved.
+  // Called when a response message is received.
   onResponse(msg) {
     // Grab the registered defer from the callbacks list.
     let defer = this.callbacks[msg.request_id];
@@ -397,7 +397,7 @@ class RegionConnection {
     }
   }
 
-  // Called when a notify response is recieved.
+  // Called when a notify response is received.
   onNotify(msg) {
     let handlers = this.notifiers[msg.name];
     if (angular.isArray(handlers)) {
