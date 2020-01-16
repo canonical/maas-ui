@@ -7,6 +7,7 @@ import Tooltip from "app/base/components/Tooltip";
 const ScriptStatus = ({
   children,
   hidePassedIcon = false,
+  hideNotRunIcon = false,
   scriptType,
   tooltipPosition
 }) => {
@@ -67,7 +68,9 @@ const ScriptStatus = ({
     }
 
     case scriptStatus.NONE: {
-      return (
+      return hideNotRunIcon ? (
+        children
+      ) : (
         <Tooltip
           message="Machine has not run any tests of this type."
           position={tooltipPosition}
