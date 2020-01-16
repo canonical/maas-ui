@@ -70,7 +70,7 @@
     "eslint-plugin-no-only-tests": "2.4.0",
     "eslint-plugin-prettier": "3.1.2",
     "mock-socket": "9.0.3",
-    "node-sass": "4.13.0",
+    "node-sass": "4.13.1",
     "npm-package-json-lint": "4.5.0",
     "prettier": "1.19.1",
     "redux-mock-store": "1.5.4",
