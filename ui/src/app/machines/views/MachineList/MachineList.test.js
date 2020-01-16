@@ -29,6 +29,9 @@ describe("MachineList", () => {
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
+            network_test_status: {
+              status: 2
+            },
             physical_disk_count: 1,
             pool: {},
             pxe_mac: "00:11:22:33:44:55",

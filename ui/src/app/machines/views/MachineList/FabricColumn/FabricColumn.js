@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import ScriptStatus from "app/base/components/ScriptStatus";
 import { machine as machineSelectors } from "app/base/selectors";
 
 const FabricColumn = ({ systemId }) => {
@@ -16,7 +17,15 @@ const FabricColumn = ({ systemId }) => {
   return (
     <div className="p-double-row">
       <div className="p-double-row__primary-row" aria-label="Fabric">
-        <span data-test="fabric">{fabric}</span>
+        <ScriptStatus
+          data-test="fabric"
+          hidePassedIcon
+          hideNotRunIcon
+          scriptType={machine.network_test_status}
+          tooltipPosition="top-right"
+        >
+          {fabric}
+        </ScriptStatus>
       </div>
       <div
         className="p-double-row__secondary-row u-truncate-text"

@@ -22,6 +22,9 @@ describe("FabricColumn", () => {
         items: [
           {
             system_id: "abc123",
+            network_test_status: {
+              status: 1
+            },
             vlan: {
               id: 1,
               name: "Default VLAN",
