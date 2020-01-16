@@ -34,12 +34,8 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
   }
 
   .p-button--icon {
-    input + & {
-      margin-left: $sph-outer;
-    }
-
-    @extend %p-button--min-margin-bottom;
-    padding: $spv-inner--small $sph-inner--small;
+    margin: 0 !important;
+    padding: 0 #{$sph-inner--small / 2} !important;
   }
 
   .p-button--close {
