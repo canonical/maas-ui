@@ -484,6 +484,18 @@ function NodesListController(
 
   // Add error to action progress and group error messages by nodes.
   function addErrorToActionProgress(tab, error, node) {
+    const authUser = UsersManager.getAuthUser();
+    if (angular.isObject(authUser) && node) {
+      const name = node.hostname || "node";
+      NotificationsManager.createItem({
+        message: `Unable to perform action on ${name}: ${error}`,
+        category: "error",
+        user: authUser.id
+      });
+    } else {
+      $log.error(error);
+    }
+
     var progress = $scope.tabs[tab].actionProgress;
     progress.completed += 1;
     var nodes = progress.errors[error];
