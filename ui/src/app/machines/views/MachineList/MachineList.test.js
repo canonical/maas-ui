@@ -25,6 +25,7 @@ describe("MachineList", () => {
             domain: {
               name: "example"
             },
+            cpu_count: 4,
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
@@ -33,6 +34,9 @@ describe("MachineList", () => {
             pxe_mac: "00:11:22:33:44:55",
             spaces: [],
             status: "Releasing",
+            cpu_test_status: {
+              status: 1
+            },
             storage_test_status: {
               status: 2
             },

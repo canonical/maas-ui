@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Tooltip from "app/base/components/Tooltip";
 
+import ScriptStatus from "app/base/components/ScriptStatus";
 import { machine as machineSelectors } from "app/base/selectors";
 
 const CoresColumn = ({ systemId }) => {
@@ -16,7 +17,15 @@ const CoresColumn = ({ systemId }) => {
   return (
     <div className="p-double-row u-align--right">
       <div className="p-double-row__primary-row" aria-label="Cores">
-        <span data-test="cores">{machine.cpu_count}</span>
+        <ScriptStatus
+          data-test="cores"
+          hidePassedIcon
+          hideNotRunIcon
+          scriptType={machine.cpu_test_status}
+          tooltipPosition="top-right"
+        >
+          {machine.cpu_count}
+        </ScriptStatus>
       </div>
       <div
         className="p-double-row__secondary-row u-truncate-text"
