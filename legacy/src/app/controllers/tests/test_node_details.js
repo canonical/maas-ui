@@ -591,7 +591,8 @@ describe("NodeDetailsController", function() {
       "node.pool.id",
       "node.power_type",
       "node.power_parameters",
-      "node.service_ids"
+      "node.service_ids",
+      "node.interfaces"
     ]);
     expect(watchCollections).toEqual([
       $scope.summary.architecture.options,

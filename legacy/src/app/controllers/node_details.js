@@ -566,6 +566,9 @@ function NodeDetailsController(
 
       // Update the services when the services list is updated.
       $scope.$watch("node.service_ids", updateServices);
+
+      // Update the network card in summary when interfaces are updated.
+      $scope.$watch("node.interfaces", updateSummary);
     }
   }
 
