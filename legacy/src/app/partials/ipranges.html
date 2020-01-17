@@ -10,34 +10,32 @@
 </div>
 
 <div class="row">
-    <table class="p-table-expanding">
+    <table class="p-table--ipranges p-table-expanding">
         <thead>
             <tr>
-                <th class="col-2">Start IP Address</th>
-                <th class="col-2">End IP Address</th>
-                <th class="col-1">Owner</th>
-                <th class="col-1">Type</th>
-                <th class="col-3">Comment</th>
-                <th class="col-3">
-                    <span class="u-float--right">Actions</span>
-                </th>
+                <th>Start IP Address</th>
+                <th>End IP Address</th>
+                <th>Owner</th>
+                <th>Type</th>
+                <th>Comment</th>
+                <th class="u-align--right">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr data-ng-repeat="iprange in (subnetIPRanges = ipranges | filterBySubnetOrVlan:subnet:vlan) | orderBy:ipRangeSort"
                 data-ng-class="{ 'is-active': isIPRangeInEditMode(iprange) || isIPRangeInDeleteMode(iprange)}">
-                <td class="col-2" aria-label="Start IP Address">{$ iprange.start_ip $}</td>
-                <td class="col-2" aria-label="End IP Address">{$ iprange.end_ip $}</td>
-                <td class="col-1" aria-label="Owner">{$ iprange.type == "dynamic" ? "MAAS" : iprange.user $}</td>
-                <td class="col-1" aria-label="Type">{$ iprange.type == "dynamic" ? "Dynamic" : "Reserved" $}</td>
-                <td class="col-3" aria-label="Comment">{$ iprange.type == "dynamic" ? "Dynamic" : iprange.comment $}</td>
-                <td class="col-3">
+                <td aria-label="Start IP Address">{$ iprange.start_ip $}</td>
+                <td aria-label="End IP Address">{$ iprange.end_ip $}</td>
+                <td aria-label="Owner">{$ iprange.type == "dynamic" ? "MAAS" : iprange.user $}</td>
+                <td aria-label="Type">{$ iprange.type == "dynamic" ? "Dynamic" : "Reserved" $}</td>
+                <td aria-label="Comment">{$ iprange.type == "dynamic" ? "Dynamic" : iprange.comment $}</td>
+                <td>
                     <div class="u-align--right" data-ng-if="!isIPRangeInDeleteMode(iprange) && !isIPRangeInEditMode(iprange)">
-                        <button class="p-button--base is-small u-no-padding--top u-no-padding--bottom" aria-label="Edit reserved range"
+                        <button class="p-button--base p-button--icon" aria-label="Edit reserved range"
                             data-ng-click="toggleMenu(); ipRangeToggleEditMode(iprange)">
                             <i class="p-icon--edit">Edit</i>
                         </button>
-                        <button class="p-button--base is-small u-no-padding--top u-no-padding--bottom" aria-label="Remove range"
+                        <button class="p-button--base p-button--icon" aria-label="Remove range"
                             data-ng-click="toggleMenu(); ipRangeEnterDeleteMode(iprange)">
                             <i class="p-icon--delete">Remove</i>
                         </button>
@@ -77,11 +75,9 @@
                             </div>
                         </div>
                         <div class="row" data-ng-if="iprange.type === 'dynamic'">
-                            <div class="p-form__group">
-                                <label class="col-2 col-medium-2 p-form__group-label" for="purpose">Purpose</label>
-                                <div class="p-form__group-input col-4 col-medium-3">
-                                    <input type="text" id="purpose" value="Dynamic" disabled>
-                                </div>
+                            <label class="col-2 col-medium-2 p-form__group-label" for="purpose">Purpose</label>
+                            <div class="p-form__group-input col-4 col-medium-3">
+                                <input type="text" id="purpose" value="Dynamic" disabled>
                             </div>
                         </div>
                         <div class="row u-no-margin--top">
@@ -91,14 +87,12 @@
                             <div class="col-6">
                                 <maas-obj-errors></maas-obj-errors>
                             </div>
-                            <div class="col-6">
-                                <span class="u-float--right">
-                                    <button class="p-button--base" type="button" data-ng-click="ipRangeToggleEditMode(iprange)">Cancel</button>
-                                    <button class="p-button--positive u-no-margin--top" maas-obj-save>Save</button>
-                                </span>
+                            <div class="col-6 u-align--right">
+                                <button class="p-button--base" type="button" data-ng-click="ipRangeToggleEditMode(iprange)">Cancel</button>
+                                <button class="p-button--positive u-no-margin--top" maas-obj-save>Save</button>
                             </div>
-                        </maas-obj-form>
-                    </div>
+                        </div>
+                    </maas-obj-form>
                 </td>
             </tr>
             <tr data-ng-if="subnetIPRanges.length === 0 && !newRange">
@@ -136,11 +130,9 @@
                             <div class="col-6">
                                 <maas-obj-errors></maas-obj-errors>
                             </div>
-                            <div class="col-6">
-                                <div class="u-align--right">
-                                    <button class="p-button--base" type="button" data-ng-click="cancelAddRange()">Cancel</button>
-                                    <button class="p-button--positive u-no-margin--top" maas-obj-save>Reserve</button>
-                                </div>
+                            <div class="col-6 u-align--right">
+                                <button class="p-button--base" type="button" data-ng-click="cancelAddRange()">Cancel</button>
+                                <button class="p-button--positive u-no-margin--top" maas-obj-save>Reserve</button>
                             </div>
                         </div>
                     </maas-obj-form>

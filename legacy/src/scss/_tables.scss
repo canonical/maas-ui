@@ -7,6 +7,7 @@
 @import "tables/patterns_table-expanding";
 @import "tables/patters_table-fabrics";
 @import "tables/patterns_table-images";
+@import "tables/patterns_table-ipranges";
 @import "tables/patterns_table-machines";
 @import "tables/patterns_table-network-discovery";
 @import "tables/patterns_table-network-summary";
@@ -29,6 +30,7 @@
 @include maas-table-expanding;
 @include maas-table-fabrics;
 @include maas-table-images;
+@include maas-table-ipranges;
 @include maas-table-machines;
 @include maas-table-network-discovery;
 @include maas-table-network-summary;
