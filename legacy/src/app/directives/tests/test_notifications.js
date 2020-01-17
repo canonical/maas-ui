@@ -119,6 +119,19 @@ describe("maasNotifications", function() {
       expect(dismiss).toHaveBeenCalledWith(notification);
     });
 
+    it("dismisses all in category when dismiss all link is clicked", () => {
+      const notifications = [
+        ...exampleNotifications,
+        exampleAdditionalNotification
+      ];
+      theNotificationsManager._items = notifications;
+      const dismiss = spyOn(theNotificationsManager, "dismiss");
+      const directive = compileDirective();
+      directive.find('[data-test="dismiss-all"]').click();
+      expect(dismiss).toHaveBeenCalledWith(notifications[2]);
+      expect(dismiss).toHaveBeenCalledWith(notifications[3]);
+    });
+
     it("adjusts class according to category", function() {
       theNotificationsManager._items = exampleNotifications;
       var directive = compileDirective();
@@ -142,57 +155,18 @@ describe("maasNotifications", function() {
       ]);
     });
 
-    it("adjusts class according to number in category", function() {
-      // Get the message from a notification object.
-      var getMessage = function(ntfn) {
-        return ntfn.message;
-      };
-      // Is the notification object an "info" notification.
-      var isInfo = function(ntfn) {
-        return ntfn.category === "info";
-      };
-      // Find message texts rendered into the DOM.
-      var findRenderedMessages = function() {
-        return directive
-          .find("div > span > ul > li > p > span:nth-child(1)")
-          .map(function() {
-            return $(this).text();
-          })
-          .get();
-      };
-      // Find grouped message texts rendered into the DOM.
-      var findRenderedGroupedMessages = function() {
-        return directive
-          .find("div > div > ul > li > p > span:nth-child(1)")
-          .map(function() {
-            return $(this).text();
-          })
-          .get();
-      };
+    it("groups messages if there are two in the same category", () => {
+      theNotificationsManager._items = exampleNotifications;
+      const directive = compileDirective();
+      expect(
+        directive.find('[data-test="multiple-notifications"]').length
+      ).toBe(0);
 
-      theNotificationsManager._items = angular.copy(exampleNotifications);
-      var directive = compileDirective();
-
-      // At first there is only one message per category.
-      var messagesExpected1 = exampleNotifications.map(getMessage);
-      expect(findRenderedMessages()).toEqual(messagesExpected1);
-
-      // Now we add an additional "info" message.
       theNotificationsManager._items.push(exampleAdditionalNotification);
       $scope.$digest();
-
-      // A category title can now be found at the point where we
-      // previously found the "info" message.
-      var messagesExpected2 = angular.copy(messagesExpected1);
-      messagesExpected2.splice(messagesExpected2.length - 1, 1);
-      expect(findRenderedMessages()).toEqual(messagesExpected2);
-
-      // The "info" messages are now grouped.
-      var groupedMessagesExpected = exampleNotifications
-        .filter(isInfo)
-        .map(getMessage)
-        .concat([exampleAdditionalNotification.message]);
-      expect(findRenderedGroupedMessages()).toEqual(groupedMessagesExpected);
+      expect(
+        directive.find('[data-test="multiple-notifications"]').length
+      ).toBe(1);
     });
 
     it("sanitizes messages", function() {
