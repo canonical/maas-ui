@@ -13,7 +13,6 @@ exports[`CoresColumn renders 1`] = `
     >
       <ScriptStatus
         data-test="cores"
-        hideNotRunIcon={true}
         hidePassedIcon={true}
         scriptType={
           Object {

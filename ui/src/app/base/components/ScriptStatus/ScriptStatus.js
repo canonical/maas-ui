@@ -7,7 +7,6 @@ import Tooltip from "app/base/components/Tooltip";
 const ScriptStatus = ({
   children,
   hidePassedIcon = false,
-  hideNotRunIcon = false,
   scriptType,
   tooltipPosition
 }) => {
@@ -64,20 +63,6 @@ const ScriptStatus = ({
           <i className="p-icon--pending is-inline" />
           {children}
         </>
-      );
-    }
-
-    case scriptStatus.NONE: {
-      return hideNotRunIcon ? (
-        children
-      ) : (
-        <Tooltip
-          message="Machine has not run any tests of this type."
-          position={tooltipPosition}
-        >
-          <i className="p-icon--warning is-inline" />
-          {children}
-        </Tooltip>
       );
     }
 
