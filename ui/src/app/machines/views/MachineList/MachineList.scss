@@ -22,4 +22,9 @@ $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spaci
   &:nth-child(1) {
     width: 20%;
   }
+
+  // Status:
+  &:nth-child(3) {
+    width: 20%;
+  }
 }
