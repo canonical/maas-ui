@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StorageColumn renders 1`] = `
+<StorageColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row"
+  >
+    <div
+      className="p-double-row__primary-row u-align--right u-truncate"
+    >
+      <span
+        data-test="storage-value"
+      >
+        8
+      </span>
+       
+      <small
+        className="u-text--light"
+        data-test="storage-unit"
+      >
+        GB
+      </small>
+    </div>
+  </div>
+</StorageColumn>
+`;
