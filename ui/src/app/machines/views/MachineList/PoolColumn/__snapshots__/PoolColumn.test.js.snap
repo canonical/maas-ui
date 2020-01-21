@@ -5,31 +5,35 @@ exports[`PoolColumn renders 1`] = `
   systemId="abc123"
 >
   <div
-    aria-label="Pool"
-    className="p-double-row__primary-row"
+    className="p-double-row"
   >
-    <span
-      data-test="pool"
+    <div
+      aria-label="Pool"
+      className="p-double-row__primary-row u-truncate"
     >
-      <a
-        className="p-link--soft"
-        href="#/pools"
-        title="default"
+      <span
+        data-test="pool"
       >
-        default
-      </a>
-    </span>
-  </div>
-  <div
-    aria-label="Note"
-    className="p-double-row__secondary-row u-truncate-text"
-  >
-    <span
-      data-test="note"
-      title="Firmware old"
+        <a
+          className="p-link--soft"
+          href="#/pools"
+          title="default"
+        >
+          default
+        </a>
+      </span>
+    </div>
+    <div
+      aria-label="Note"
+      className="p-double-row__secondary-row u-truncate"
     >
-      Firmware old
-    </span>
+      <span
+        data-test="note"
+        title="Firmware old"
+      >
+        Firmware old
+      </span>
+    </div>
   </div>
 </PoolColumn>
 `;

@@ -16,7 +16,7 @@ const CoresColumn = ({ systemId }) => {
 
   return (
     <div className="p-double-row u-align--right">
-      <div className="p-double-row__primary-row" aria-label="Cores">
+      <div className="p-double-row__primary-row u-truncate" aria-label="Cores">
         <ScriptStatus
           data-test="cores"
           hidePassedIcon
@@ -27,7 +27,7 @@ const CoresColumn = ({ systemId }) => {
         </ScriptStatus>
       </div>
       <div
-        className="p-double-row__secondary-row u-truncate-text"
+        className="p-double-row__secondary-row u-truncate"
         aria-label="Architecture"
       >
         <Tooltip position="btm-left" message={machine.architecture}>

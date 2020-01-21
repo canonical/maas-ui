@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusColumn renders 1`] = `
+<StatusColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row--with-icon"
+  >
+    <div
+      className="p-double-row__icon"
+    />
+    <div
+      className="p-double-row__primary-row u-truncate"
+      data-test="status-text"
+      title="New"
+    >
+      New
+    </div>
+    <div
+      className="p-double-row__secondary-row u-truncate"
+      data-test="progress-text"
+      title=""
+    />
+  </div>
+</StatusColumn>
+`;

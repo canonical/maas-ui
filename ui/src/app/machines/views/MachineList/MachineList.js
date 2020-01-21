@@ -32,6 +32,7 @@ import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
+import StatusColumn from "./StatusColumn";
 import ZoneColumn from "./ZoneColumn";
 
 const normaliseStatus = (statusCode, status) => {
@@ -136,7 +137,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <PowerColumn systemId={row.system_id} />
         },
         {
-          content: row.status
+          content: <StatusColumn systemId={row.system_id} />
         },
         {
           content: <OwnerColumn systemId={row.system_id} />
@@ -274,7 +275,9 @@ const MachineList = () => {
                 sortKey: "power_state"
               },
               {
-                content: "Status",
+                content: (
+                  <span className="p-double-row__icon-space">Status</span>
+                ),
                 sortKey: "normalisedStatus"
               },
               {

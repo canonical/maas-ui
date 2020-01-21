@@ -8,7 +8,7 @@ exports[`OwnerColumn renders 1`] = `
     className="p-double-row"
   >
     <div
-      className="p-double-row__primary-row"
+      className="p-double-row__primary-row u-truncate"
     >
       <span
         data-test="owner"
@@ -17,7 +17,7 @@ exports[`OwnerColumn renders 1`] = `
       </span>
     </div>
     <div
-      className="p-double-row__secondary-row u-truncate-text"
+      className="p-double-row__secondary-row u-truncate"
     >
       <span
         data-test="tags"

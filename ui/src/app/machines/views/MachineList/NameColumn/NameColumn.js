@@ -63,22 +63,26 @@ const generateFQDN = (machine, machineURL) => {
 
   return (
     <div className="p-double-row">
-      <div className="p-double-row__primary-row">{name}</div>
-      <div className="p-double-row__secondary-row">{ipAddressesLine}</div>
+      <div className="p-double-row__primary-row u-truncate">{name}</div>
+      <div className="p-double-row__secondary-row u-truncate">
+        {ipAddressesLine}
+      </div>
     </div>
   );
 };
 
 const generateMAC = (machine, machineURL) => {
   return (
-    <>
-      <a href={machineURL} title={machine.pxe_mac_vendor}>
-        {machine.pxe_mac}
-      </a>{" "}
-      {machine.extra_macs && machine.extra_macs.length > 0 ? (
-        <a href={machineURL}>(+{machine.extra_macs.length})</a>
-      ) : null}
-    </>
+    <div className="p-double-row">
+      <div className="p-doouble-row__primary-row u-truncate">
+        <a href={machineURL} title={machine.pxe_mac_vendor}>
+          {machine.pxe_mac}
+        </a>{" "}
+        {machine.extra_macs && machine.extra_macs.length > 0 ? (
+          <a href={machineURL}>(+{machine.extra_macs.length})</a>
+        ) : null}
+      </div>
+    </div>
   );
 };
 

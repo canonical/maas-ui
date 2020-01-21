@@ -16,7 +16,7 @@ const FabricColumn = ({ systemId }) => {
 
   return (
     <div className="p-double-row">
-      <div className="p-double-row__primary-row" aria-label="Fabric">
+      <div className="p-double-row__primary-row u-truncate" aria-label="Fabric">
         <ScriptStatus
           data-test="fabric"
           hidePassedIcon
@@ -27,10 +27,7 @@ const FabricColumn = ({ systemId }) => {
           {fabric}
         </ScriptStatus>
       </div>
-      <div
-        className="p-double-row__secondary-row u-truncate-text"
-        aria-label="VLAN"
-      >
+      <div className="p-double-row__secondary-row u-truncate" aria-label="VLAN">
         <span data-test="vlan">{vlan}</span>
       </div>
     </div>

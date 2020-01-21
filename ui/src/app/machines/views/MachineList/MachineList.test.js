@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineList from "./MachineList";
+import { nodeStatus, scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();
 
@@ -15,6 +16,17 @@ describe("MachineList", () => {
       config: {
         items: []
       },
+      general: {
+        osInfo: {
+          data: {
+            osystems: [["ubuntu", "Ubuntu"]],
+            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']]
+          },
+          errors: {},
+          loaded: true,
+          loading: false
+        }
+      },
       machine: {
         errors: {},
         loading: false,
@@ -22,26 +34,33 @@ describe("MachineList", () => {
         items: [
           {
             architecture: "amd64/generic",
+            cpu_count: 4,
+            cpu_test_status: {
+              status: scriptStatus.RUNNING
+            },
+            distro_series: "bionic",
             domain: {
               name: "example"
             },
-            cpu_count: 4,
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
             network_test_status: {
-              status: 2
+              status: scriptStatus.PASSED
             },
+            osystem: "ubuntu",
             physical_disk_count: 1,
             pool: {},
             pxe_mac: "00:11:22:33:44:55",
             spaces: [],
             status: "Releasing",
-            cpu_test_status: {
-              status: 1
-            },
+            status_code: nodeStatus.RELEASING,
+            status_message: "",
             storage_test_status: {
-              status: 2
+              status: scriptStatus.PASSED
+            },
+            testing_status: {
+              status: scriptStatus.PASSED
             },
             system_id: "abc123",
             zone: {}
