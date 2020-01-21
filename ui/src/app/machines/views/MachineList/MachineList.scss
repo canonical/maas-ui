@@ -1,5 +1,6 @@
 @import "~vanilla-framework/scss/settings_spacing";
 @import "~vanilla-framework/scss/base_forms-tick-elements";
+@import "./machine-list-breakpoint-widths";
 
 $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spacing
 
@@ -18,13 +19,48 @@ $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spaci
 
 .machine-list td,
 .machine-list th {
-  // FQDN/MAC:
+  // FQDN/MAC
   &:nth-child(1) {
-    width: 20%;
+    @include breakpoint-widths(45%, 36%, 26%, 24%, 20%);
   }
-
-  // Status:
+  // Power
+  &:nth-child(2) {
+    @include breakpoint-widths(23%, 16%, 12%, 10%, 8%);
+  }
+  // Status
   &:nth-child(3) {
-    width: 20%;
+    @include breakpoint-widths(32%, 30%, 20%, 20%, 17%);
+  }
+  // Owner
+  &:nth-child(4) {
+    @include breakpoint-widths(0, 20%, 8%, 9%, 9%);
+  }
+  // Pool
+  &:nth-child(5) {
+    @include breakpoint-widths(0, 0, 0, 0, 7%);
+  }
+  // Zone
+  &:nth-child(6) {
+    @include breakpoint-widths(0, 0, 0, 9%, 9%);
+  }
+  // Fabric
+  &:nth-child(7) {
+    @include breakpoint-widths(0, 0, 0, 0, 8%);
+  }
+  // Cores
+  &:nth-child(8) {
+    @include breakpoint-widths(0, 0, 8%, 6%, 5%);
+  }
+  // RAM
+  &:nth-child(9) {
+    @include breakpoint-widths(0, 0, 9%, 7%, 7%);
+  }
+  // Disks
+  &:nth-child(10) {
+    @include breakpoint-widths(0, 0, 8%, 6%, 5%);
+  }
+  // Storage
+  &:nth-child(11) {
+    @include breakpoint-widths(0, 0, 10%, 8%, 6%);
   }
 }

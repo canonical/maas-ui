@@ -4,16 +4,24 @@ exports[`NameColumn renders 1`] = `
 <NameColumn
   systemId="abc123"
 >
-  <a
-    href="/#/undefined/abc123"
+  <div
+    className="p-double-row"
   >
-    <strong>
-      koala
-    </strong>
-    <small>
-      .
-      example
-    </small>
-  </a>
+    <div
+      className="p-double-row__primary-row u-truncate"
+    >
+      <a
+        href="/#/undefined/abc123"
+      >
+        <strong>
+          koala
+        </strong>
+        <small>
+          .
+          example
+        </small>
+      </a>
+    </div>
+  </div>
 </NameColumn>
 `;
