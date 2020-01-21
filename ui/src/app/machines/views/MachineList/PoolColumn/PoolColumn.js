@@ -10,23 +10,20 @@ const PoolColumn = ({ systemId }) => {
   );
 
   return (
-    <>
-      <div className="p-double-row__primary-row" aria-label="Pool">
+    <div className="p-double-row">
+      <div className="p-double-row__primary-row u-truncate" aria-label="Pool">
         <span data-test="pool">
           <a className="p-link--soft" href="#/pools" title={machine.pool.name}>
             {machine.pool.name}
           </a>
         </span>
       </div>
-      <div
-        className="p-double-row__secondary-row u-truncate-text"
-        aria-label="Note"
-      >
+      <div className="p-double-row__secondary-row u-truncate" aria-label="Note">
         <span title={machine.description} data-test="note">
           {machine.description}
         </span>
       </div>
-    </>
+    </div>
   );
 };
 

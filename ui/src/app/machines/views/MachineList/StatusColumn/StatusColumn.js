@@ -1,3 +1,4 @@
+import { Loader } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
@@ -74,9 +75,10 @@ const getProgressText = machine => {
 const getStatusIcon = machine => {
   if (transientStatuses.includes(machine.status_code)) {
     return (
-      <i
-        className="p-icon--spinner u-animation--spin"
+      <Loader
+        className="u-no-margin u-no-padding"
         data-test="status-icon"
+        inline
       />
     );
   } else if (
@@ -107,14 +109,14 @@ const StatusColumn = ({ systemId }) => {
     <div className="p-double-row--with-icon">
       <div className="p-double-row__icon">{getStatusIcon(machine)}</div>
       <div
-        className="p-double-row__primary-row u-truncate-text"
+        className="p-double-row__primary-row u-truncate"
         data-test="status-text"
         title={getStatusText(machine, osReleases)}
       >
         {getStatusText(machine, osReleases)}
       </div>
       <div
-        className="p-double-row__secondary-row u-truncate-text"
+        className="p-double-row__secondary-row u-truncate"
         data-test="progress-text"
         title={getProgressText(machine)}
       >

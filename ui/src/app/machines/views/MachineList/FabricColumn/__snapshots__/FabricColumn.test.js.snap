@@ -9,7 +9,7 @@ exports[`FabricColumn renders 1`] = `
   >
     <div
       aria-label="Fabric"
-      className="p-double-row__primary-row"
+      className="p-double-row__primary-row u-truncate"
     >
       <ScriptStatus
         data-test="fabric"
@@ -30,7 +30,7 @@ exports[`FabricColumn renders 1`] = `
     </div>
     <div
       aria-label="VLAN"
-      className="p-double-row__secondary-row u-truncate-text"
+      className="p-double-row__secondary-row u-truncate"
     >
       <span
         data-test="vlan"

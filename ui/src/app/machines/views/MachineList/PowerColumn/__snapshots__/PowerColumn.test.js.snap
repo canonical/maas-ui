@@ -16,7 +16,7 @@ exports[`PowerColumn renders 1`] = `
       />
     </div>
     <div
-      className="p-double-row__primary-row u-upper-case--first"
+      className="p-double-row__primary-row u-upper-case--first u-truncate"
     >
       <span
         data-test="power_state"
@@ -25,7 +25,7 @@ exports[`PowerColumn renders 1`] = `
       </span>
     </div>
     <div
-      className="p-double-row__secondary-row u-upper-case--first u-truncate-text"
+      className="p-double-row__secondary-row u-upper-case--first u-truncate"
     >
       <span
         data-test="power_type"

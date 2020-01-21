@@ -8,7 +8,7 @@ exports[`DisksColumn renders 1`] = `
     className="p-double-row"
   >
     <div
-      className="p-double-row__primary-row u-align--right"
+      className="p-double-row__primary-row u-align--right u-truncate"
     >
       <ScriptStatus
         data-test="disks"

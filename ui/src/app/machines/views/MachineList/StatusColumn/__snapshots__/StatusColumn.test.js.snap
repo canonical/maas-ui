@@ -11,14 +11,14 @@ exports[`StatusColumn renders 1`] = `
       className="p-double-row__icon"
     />
     <div
-      className="p-double-row__primary-row u-truncate-text"
+      className="p-double-row__primary-row u-truncate"
       data-test="status-text"
       title="New"
     >
       New
     </div>
     <div
-      className="p-double-row__secondary-row u-truncate-text"
+      className="p-double-row__secondary-row u-truncate"
       data-test="progress-text"
       title=""
     />

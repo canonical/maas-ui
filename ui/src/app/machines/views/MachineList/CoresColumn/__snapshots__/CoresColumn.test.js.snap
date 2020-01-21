@@ -9,7 +9,7 @@ exports[`CoresColumn renders 1`] = `
   >
     <div
       aria-label="Cores"
-      className="p-double-row__primary-row"
+      className="p-double-row__primary-row u-truncate"
     >
       <ScriptStatus
         data-test="cores"
@@ -29,7 +29,7 @@ exports[`CoresColumn renders 1`] = `
     </div>
     <div
       aria-label="Architecture"
-      className="p-double-row__secondary-row u-truncate-text"
+      className="p-double-row__secondary-row u-truncate"
     >
       <Tooltip
         message="amd64/generic"

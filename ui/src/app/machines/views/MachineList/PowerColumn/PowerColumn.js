@@ -22,10 +22,10 @@ const PowerColumn = ({ systemId }) => {
       <div className="p-double-row__icon">
         <i title={machine.power_state} className={iconClass}></i>
       </div>
-      <div className="p-double-row__primary-row u-upper-case--first">
+      <div className="p-double-row__primary-row u-upper-case--first u-truncate">
         <span data-test="power_state">{machine.power_state}</span>
       </div>
-      <div className="p-double-row__secondary-row u-upper-case--first u-truncate-text">
+      <div className="p-double-row__secondary-row u-upper-case--first u-truncate">
         <span title={machine.power_type} data-test="power_type">
           {machine.power_type}
         </span>

@@ -12,7 +12,7 @@ const DisksColumn = ({ systemId }) => {
 
   return (
     <div className="p-double-row">
-      <div className="p-double-row__primary-row u-align--right">
+      <div className="p-double-row__primary-row u-align--right u-truncate">
         <ScriptStatus
           data-test="disks"
           hidePassedIcon

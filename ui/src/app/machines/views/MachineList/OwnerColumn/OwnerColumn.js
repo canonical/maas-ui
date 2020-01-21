@@ -14,10 +14,10 @@ const OwnerColumn = ({ systemId }) => {
 
   return (
     <div className="p-double-row">
-      <div className="p-double-row__primary-row">
+      <div className="p-double-row__primary-row u-truncate">
         <span data-test="owner">{owner}</span>
       </div>
-      <div className="p-double-row__secondary-row u-truncate-text">
+      <div className="p-double-row__secondary-row u-truncate">
         <span title={tags} data-test="tags">
           {tags}
         </span>
