@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
-import Tooltip from "app/base/components/Tooltip";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
+import Tooltip from "app/base/components/Tooltip";
 import { machine as machineSelectors } from "app/base/selectors";
 
 const CoresColumn = ({ systemId }) => {
