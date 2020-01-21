@@ -37,6 +37,10 @@ body {
   color: $color-mid-dark;
 }
 
+.u-mirror--y {
+  transform: rotate(180deg);
+}
+
 .p-modal {
   // The modal needs to be above the header nav items.
   z-index: 10;

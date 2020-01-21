@@ -189,7 +189,7 @@ describe("NameColumn", () => {
         .find("a")
         .at(1)
         .text()
-    ).toEqual("(+1)");
+    ).toEqual(" (+1)");
   });
 
   it("can render a machine with minimal data", () => {
