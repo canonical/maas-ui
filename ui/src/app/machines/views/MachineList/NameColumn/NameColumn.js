@@ -32,7 +32,11 @@ const generateFQDN = (machine, machineURL) => {
     }
   });
   if (ipAddresses.length === 0) {
-    return name;
+    return (
+      <div className="p-double-row">
+        <div className="p-double-row__primary-row u-truncate">{name}</div>
+      </div>
+    );
   }
   let ipAddressesLine = (
     <span data-test="ip-addresses">
