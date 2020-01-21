@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RamColumn renders 1`] = `
+<RamColumn
+  systemId="abc123"
+>
+  <div
+    className="p-double-row"
+  >
+    <div
+      className="p-double-row__primary-row u-align--right u-truncate"
+    >
+      <ScriptStatus
+        hidePassedIcon={true}
+        scriptType={
+          Object {
+            "status": 2,
+          }
+        }
+        tooltipPosition="top-right"
+      >
+        <span
+          data-test="memory"
+        >
+          8
+        </span>
+         
+        <small
+          className="u-text--light"
+        >
+          GiB
+        </small>
+      </ScriptStatus>
+    </div>
+  </div>
+</RamColumn>
+`;

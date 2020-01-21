@@ -24,7 +24,7 @@ import {
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
-import { formatGigabytes, formatGigabits } from "app/utils";
+import { formatGigabytes } from "app/utils";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
@@ -32,6 +32,7 @@ import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
+import RamColumn from "./RamColumn";
 import StatusColumn from "./StatusColumn";
 import ZoneColumn from "./ZoneColumn";
 
@@ -155,8 +156,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <CoresColumn systemId={row.system_id} />
         },
         {
-          content: formatGigabits(row.memory),
-          className: "u-align--right"
+          content: <RamColumn systemId={row.system_id} />
         },
         {
           content: <DisksColumn systemId={row.system_id} />

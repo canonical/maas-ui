@@ -45,6 +45,10 @@ describe("MachineList", () => {
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
+            memory: 8,
+            memory_test_status: {
+              status: scriptStatus.PASSED
+            },
             network_test_status: {
               status: scriptStatus.PASSED
             },
