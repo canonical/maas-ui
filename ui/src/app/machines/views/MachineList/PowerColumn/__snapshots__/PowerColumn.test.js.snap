@@ -13,22 +13,22 @@ exports[`PowerColumn renders 1`] = `
     }
     iconSpace={true}
     primary={
-      <span
+      <div
+        className="u-upper-case--first"
         data-test="power_state"
       >
         on
-      </span>
+      </div>
     }
-    primaryClassName="u-upper-case--first"
     secondary={
-      <span
+      <div
+        className="u-upper-case--first"
         data-test="power_type"
         title="virsh"
       >
         virsh
-      </span>
+      </div>
     }
-    secondaryClassName="u-upper-case--first"
   >
     <div
       className="p-double-row--with-icon"
@@ -45,27 +45,29 @@ exports[`PowerColumn renders 1`] = `
         className="p-double-row__rows-container"
       >
         <div
-          className="p-double-row__primary-row u-upper-case--first"
+          className="p-double-row__primary-row"
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
           >
-            <span
+            <div
+              className="u-upper-case--first"
               data-test="power_state"
             >
               on
-            </span>
+            </div>
           </div>
         </div>
         <div
-          className="p-double-row__secondary-row u-truncate u-upper-case--first"
+          className="p-double-row__secondary-row u-truncate"
         >
-          <span
+          <div
+            className="u-upper-case--first"
             data-test="power_type"
             title="virsh"
           >
             virsh
-          </span>
+          </div>
         </div>
       </div>
     </div>

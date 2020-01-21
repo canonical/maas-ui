@@ -2,7 +2,6 @@ import { Button, Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 
 import "./UsersList.scss";
@@ -16,6 +15,7 @@ import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import TableHeader from "app/base/components/TableHeader";
 import Tooltip from "app/base/components/Tooltip";
 
 const generateUserRows = (
@@ -118,11 +118,32 @@ const generateUserRows = (
     };
   });
 
+const userSort = currentSort => {
+  const { key, direction } = currentSort;
+
+  return function(a, b) {
+    if (direction === "none") {
+      return 0;
+    }
+    if (a[key] < b[key]) {
+      return direction === "descending" ? -1 : 1;
+    }
+    if (a[key] > b[key]) {
+      return direction === "descending" ? 1 : -1;
+    }
+    return 0;
+  };
+};
+
 const Users = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const [deletingUser, setDeleting] = useState();
+  const [currentSort, setCurrentSort] = useState({
+    key: "username",
+    direction: "descending"
+  });
   const users = useSelector(state => userSelectors.search(state, searchText));
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
@@ -130,6 +151,8 @@ const Users = () => {
   const saved = useSelector(userSelectors.saved);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
+
+  const sortedUsers = users.sort(userSort(currentSort));
 
   useWindowTitle("Users");
 
@@ -159,60 +182,91 @@ const Users = () => {
     );
   }
 
+  // Update sort parameters depending on whether the same sort key was clicked.
+  const updateSort = newSortKey => {
+    const { key, direction } = currentSort;
+
+    if (newSortKey === key) {
+      if (direction === "ascending") {
+        setCurrentSort({ key: "", direction: "none" });
+      } else {
+        setCurrentSort({ key, direction: "ascending" });
+      }
+    } else {
+      setCurrentSort({ key: newSortKey, direction: "descending" });
+    }
+  };
+
   return (
     <SettingsTable
       buttons={[{ label: "Add user", url: "/settings/users/add" }]}
-      defaultSort="username"
       headers={[
         {
-          className: "p-table-multi-header",
           content: (
             <>
-              <Button
-                appearance="link"
-                className={classNames("p-table-multi-header__link", {
-                  "is-active": displayUsername
-                })}
-                onClick={() => setDisplayUsername(true)}
+              <TableHeader
+                currentSort={currentSort}
+                data-test="username-header"
+                onClick={() => {
+                  setDisplayUsername(true);
+                  updateSort("username");
+                }}
+                sortKey="username"
               >
                 Username
-              </Button>
-              <span className="p-table-multi-header__spacer">|</span>
-              <Button
-                appearance="link"
-                className={classNames("p-table-multi-header__link", {
-                  "is-active": !displayUsername
-                })}
-                onClick={() => setDisplayUsername(false)}
+              </TableHeader>
+              &nbsp;<strong>|</strong>&nbsp;
+              <TableHeader
+                currentSort={currentSort}
+                data-test="real-name-header"
+                onClick={() => {
+                  setDisplayUsername(false);
+                  updateSort("last_name");
+                }}
+                sortKey="last_name"
               >
                 Real name
-              </Button>
+              </TableHeader>
             </>
+          )
+        },
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-test="email-header"
+              onClick={() => updateSort("email")}
+              sortKey="email"
+            >
+              Email
+            </TableHeader>
+          )
+        },
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-test="machines-count-header"
+              onClick={() => updateSort("machines_count")}
+              sortKey="machines_count"
+            >
+              Machines
+            </TableHeader>
           ),
-          sortKey: displayUsername ? "username" : "fullName"
-        },
-        { content: "Email", sortKey: "email" },
-        {
-          content: "Machines",
-          className: "u-align--right",
-          sortKey: "machines"
+          className: "u-align--right"
         },
         {
-          content: "Type",
-          sortKey: "type"
+          content: "Type"
         },
         {
-          content: "Last seen",
-          sortKey: "last-seen"
+          content: "Last seen"
         },
         {
-          content: "Role",
-          sortKey: "role"
+          content: "Role"
         },
         {
           content: "MAAS keys",
-          className: "u-align--right",
-          sortKey: "maas-keys"
+          className: "u-align--right"
         },
         {
           content: "Actions",
@@ -222,7 +276,7 @@ const Users = () => {
       loaded={loaded}
       loading={loading}
       rows={generateUserRows(
-        users,
+        sortedUsers,
         authUser,
         expandedId,
         setExpandedId,

@@ -8,43 +8,6 @@
   background-color: $color-x-light;
 }
 
-.p-table--sortable th[role="columnheader"][aria-sort].p-table-multi-header {
-  &::after {
-    display: none;
-  }
-
-  &[aria-sort]:hover {
-    color: $color-mid-dark;
-    text-decoration: none;
-  }
-}
-
-.p-table-multi-header .p-table-multi-header__link {
-  color: $color-mid-dark;
-
-  &:hover {
-    color: $color-link;
-  }
-}
-
-.p-table-multi-header[aria-sort="descending"],
-.p-table-multi-header[aria-sort="ascending"] {
-  .p-table-multi-header__link.is-active::after {
-    @extend %heading-icon;
-  }
-}
-
-.p-table-multi-header[aria-sort="descending"]
-  .p-table-multi-header__link.is-active::after {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
-.p-table-multi-header__spacer {
-  margin-left: $sp-x-small;
-  margin-right: $sp-x-small;
-}
-
 .p-table-sub-cols {
   flex-direction: column;
 }

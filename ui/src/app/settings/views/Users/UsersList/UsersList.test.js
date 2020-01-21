@@ -209,20 +209,20 @@ describe("UsersList", () => {
     expect(
       wrapper
         .find("TableRow")
-        .at(2)
+        .at(1)
         .find("TableCell")
         .at(0)
         .text()
-    ).toEqual("user1");
+    ).toEqual("admin");
     // Click on the header toggle.
     wrapper
-      .find(".p-table-multi-header__link")
-      .at(2)
+      .find('[data-test="real-name-header"]')
+      .find("button")
       .simulate("click");
     expect(
       wrapper
         .find("TableRow")
-        .at(2)
+        .at(1)
         .find("TableCell")
         .at(0)
         .text()

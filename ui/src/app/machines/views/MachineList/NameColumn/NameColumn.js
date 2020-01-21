@@ -79,9 +79,9 @@ const generateMAC = (machine, machineURL, onToggleMenu) => {
         <>
           <a href={machineURL} title={machine.pxe_mac_vendor}>
             {machine.pxe_mac}
-          </a>{" "}
+          </a>
           {machine.extra_macs && machine.extra_macs.length > 0 ? (
-            <a href={machineURL}>(+{machine.extra_macs.length})</a>
+            <a href={machineURL}> (+{machine.extra_macs.length})</a>
           ) : null}
         </>
       }

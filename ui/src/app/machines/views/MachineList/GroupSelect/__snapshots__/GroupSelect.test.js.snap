@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupSelect  renders 1`] = `
+<Select
+  defaultValue="none"
+  name="machine-groupings"
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "No grouping",
+        "value": "none",
+      },
+      Object {
+        "label": "Group by owner",
+        "value": "owner",
+      },
+      Object {
+        "label": "Group by pool",
+        "value": "pool",
+      },
+      Object {
+        "label": "Group by power state",
+        "value": "power_state",
+      },
+      Object {
+        "label": "Group by status",
+        "value": "status",
+      },
+      Object {
+        "label": "Group by zone",
+        "value": "zone",
+      },
+    ]
+  }
+/>
+`;
