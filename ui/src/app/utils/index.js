@@ -1,3 +1,1 @@
-import formatGigabytes from "./formatGigabytes";
-
-export { formatGigabytes };
+export { formatBytes } from "./formatBytes";

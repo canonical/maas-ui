@@ -24,7 +24,6 @@ import {
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
-import { formatGigabytes } from "app/utils";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
@@ -34,6 +33,7 @@ import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import RamColumn from "./RamColumn";
 import StatusColumn from "./StatusColumn";
+import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 
 const normaliseStatus = (statusCode, status) => {
@@ -162,8 +162,7 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
           content: <DisksColumn systemId={row.system_id} />
         },
         {
-          content: formatGigabytes(row.storage),
-          className: "u-align--right"
+          content: <StorageColumn systemId={row.system_id} />
         }
       ],
       sortData: {

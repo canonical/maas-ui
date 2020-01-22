@@ -60,6 +60,7 @@ describe("MachineList", () => {
             status: "Releasing",
             status_code: nodeStatus.RELEASING,
             status_message: "",
+            storage: 8,
             storage_test_status: {
               status: scriptStatus.PASSED
             },
