@@ -1,17 +1,29 @@
 import React from "react";
+import * as Sentry from "@sentry/browser";
+import { connect } from "react-redux";
+
+import { config as configSelectors } from "app/settings/selectors";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, eventId: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // XXX: Add Sentry logging here
+    const { analyticsEnabled } = this.props;
+
+    if (analyticsEnabled) {
+      Sentry.withScope(scope => {
+        scope.setExtras(errorInfo);
+        const eventId = Sentry.captureException(error);
+        this.setState({ eventId });
+      });
+    }
   }
 
   render() {
@@ -25,9 +37,11 @@ class ErrorBoundary extends React.Component {
         </div>
       );
     }
-
     return this.props.children;
   }
 }
+const mapStateToProps = state => ({
+  analyticsEnabled: configSelectors.analyticsEnabled(state)
+});
 
-export default ErrorBoundary;
+export default connect(mapStateToProps)(ErrorBoundary);
