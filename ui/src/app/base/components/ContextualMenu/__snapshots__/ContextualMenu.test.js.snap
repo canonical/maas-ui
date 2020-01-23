@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContextualMenu  renders 1`] = `
+<ContextualMenu
+  links={Array []}
+>
+  <span
+    className="p-contextual-menu"
+  >
+    <Component>
+      <Portal
+        containerInfo={
+          <div>
+            <span
+              class="p-contextual-menu"
+            >
+              <span
+                aria-hidden="false"
+                aria-label="submenu"
+                class="p-contextual-menu__dropdown"
+                id="Uakgb_J5m9g-0JDMbcJqLJ"
+              />
+            </span>
+          </div>
+        }
+      >
+        <span
+          className="p-contextual-menu"
+        >
+          <span
+            aria-hidden="false"
+            aria-label="submenu"
+            className="p-contextual-menu__dropdown"
+            id="Uakgb_J5m9g-0JDMbcJqLJ"
+          />
+        </span>
+      </Portal>
+    </Component>
+  </span>
+</ContextualMenu>
+`;
