@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableMenu  renders 1`] = `
+<ContextualMenu
+  className="p-table-menu"
+  hasToggleIcon={true}
+  links={
+    Array [
+      "Actions:",
+      Array [
+        Object {
+          "children": "Item1",
+        },
+      ],
+    ]
+  }
+  position="center"
+  toggleAppearance="base"
+/>
+`;
