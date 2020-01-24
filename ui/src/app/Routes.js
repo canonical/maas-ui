@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
+import ErrorBoundary from "app/base/components/ErrorBoundary";
 import Machines from "app/machines/views/Machines";
 import NotFound from "app/base/views/NotFound";
 import Preferences from "app/preferences/views/Preferences";
@@ -16,9 +17,30 @@ const Routes = () => (
         return null;
       }}
     />
-    <Route path="/settings" component={Settings} />
-    <Route path="/machines" component={Machines} />
-    <Route path="/account/prefs" component={Preferences} />
+    <Route
+      path="/settings"
+      render={() => (
+        <ErrorBoundary>
+          <Settings />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path="/machines"
+      render={() => (
+        <ErrorBoundary>
+          <Machines />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path="/account/prefs"
+      render={() => (
+        <ErrorBoundary>
+          <Preferences />
+        </ErrorBoundary>
+      )}
+    />
     <Route path="*" component={() => <NotFound includeSection />} />
   </Switch>
 );
