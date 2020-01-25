@@ -9,7 +9,6 @@ import ErrorBoundary from "app/base/components/ErrorBoundary";
 const mockStore = configureStore();
 
 describe("ErrorBoundary", () => {
-
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -38,35 +37,35 @@ describe("ErrorBoundary", () => {
     expect(wrapper.find("ErrorBoundary").state("hasError")).toEqual(true);
   });
 
-it("should not capture exceptions with Sentry when enable_analytics is disabled", () => {
-  jest.spyOn(console, "error"); // suppress traceback in test
-  jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
+  it("should not capture exceptions with Sentry when enable_analytics is disabled", () => {
+    jest.spyOn(console, "error"); // suppress traceback in test
+    jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
 
-  const store = mockStore({
-    config: {
-      items: [
-        {
-          name: "enable_analytics",
-          value: false
-        }
-      ]
-    }
+    const store = mockStore({
+      config: {
+        items: [
+          {
+            name: "enable_analytics",
+            value: false
+          }
+        ]
+      }
+    });
+
+    const Component = () => null;
+    const wrapper = mount(
+      <Provider store={store}>
+        <ErrorBoundary>
+          <Component />
+        </ErrorBoundary>
+      </Provider>
+    );
+
+    const error = new Error("kerblam");
+    wrapper.find(Component).simulateError(error);
+
+    expect(Sentry.captureException).toHaveBeenCalledTimes(0);
   });
-
-  const Component = () => null;
-  const wrapper = mount(
-    <Provider store={store}>
-      <ErrorBoundary>
-        <Component />
-      </ErrorBoundary>
-    </Provider>
-  );
-
-  const error = new Error("kerblam");
-  wrapper.find(Component).simulateError(error);
-
-  expect(Sentry.captureException).toHaveBeenCalledTimes(0);
-});
 
   it("should capture exceptions with Sentry when enable_analytics is enabled", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
