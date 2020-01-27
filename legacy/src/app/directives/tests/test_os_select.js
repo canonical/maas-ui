@@ -218,7 +218,10 @@ describe("maasOsSelect", function() {
   it("selectedOSChanged works on non-ubuntu os", function() {
     var directive = compileDirective("osinfo", "selected");
     $scope.osinfo = {
-      osystems: [["centos", "CentOS"], ["ubuntu", "Ubuntu"]],
+      osystems: [
+        ["centos", "CentOS"],
+        ["ubuntu", "Ubuntu"]
+      ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
@@ -268,8 +271,14 @@ describe("maasOsSelect", function() {
   it("releases match os name", function() {
     var directive = compileDirective("osinfo", "selected");
     $scope.osinfo = {
-      osystems: [["ubuntu", "ubuntu"], ["ubuntu-core", "ubuntu-core"]],
-      releases: [["ubuntu/xenial", "xenial"], ["ubuntu-core/16-pc", "16-pc"]],
+      osystems: [
+        ["ubuntu", "ubuntu"],
+        ["ubuntu-core", "ubuntu-core"]
+      ],
+      releases: [
+        ["ubuntu/xenial", "xenial"],
+        ["ubuntu-core/16-pc", "16-pc"]
+      ],
       default_osystem: "ubuntu",
       default_release: "xenial"
     };
@@ -278,9 +287,9 @@ describe("maasOsSelect", function() {
       release: ""
     };
     $scope.$digest();
-    var release = directive.isolateScope().releases[0].map(function(txt) {
-      return new String(txt);
-    });
-    expect(release).toEqual(["ubuntu/xenial", "xenial"]);
+    var release = directive.isolateScope().releases[0];
+    expect(JSON.stringify(release)).toEqual(
+      JSON.stringify(["ubuntu/xenial", "xenial"])
+    );
   });
 });
