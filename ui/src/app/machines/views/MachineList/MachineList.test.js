@@ -54,6 +54,7 @@ describe("MachineList", () => {
               status: scriptStatus.PASSED
             },
             osystem: "ubuntu",
+            owner: "admin",
             physical_disk_count: 1,
             pool: {},
             pxe_mac: "00:11:22:33:44:55",
@@ -93,6 +94,7 @@ describe("MachineList", () => {
               status: scriptStatus.FAILED
             },
             osystem: "ubuntu",
+            owner: "user",
             physical_disk_count: 2,
             pool: {},
             pxe_mac: "66:77:88:99:00:11",
@@ -182,6 +184,40 @@ describe("MachineList", () => {
     expect(wrapper.find("tr.machine-list__machine").length).toBe(1);
   });
 
+  it("can change groups", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper
+        .find(".machine-list__group")
+        .at(0)
+        .find("strong")
+        .text()
+    ).toBe("Deployed");
+    // Change grouping to owner
+    wrapper
+      .find('Select[name="machine-groupings"]')
+      .find("select")
+      .simulate("change", { target: { value: "owner" } });
+    expect(
+      wrapper
+        .find(".machine-list__group")
+        .at(0)
+        .find("strong")
+        .text()
+    ).toBe("admin");
+  });
+
   it("can change machines to display PXE MAC instead of FQDN", () => {
     const state = { ...initialState };
     const store = mockStore(state);
@@ -219,33 +255,6 @@ describe("MachineList", () => {
     ).toEqual(firstMachine.pxe_mac);
   });
 
-  it("is sorted by status by default", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      wrapper
-        .find('[data-test="fqdn-header"]')
-        .find("i")
-        .exists()
-    ).toBe(false);
-    expect(
-      wrapper
-        .find('[data-test="status-header"]')
-        .find("i")
-        .exists()
-    ).toBe(true);
-  });
-
   it("updates sort on header click", () => {
     const state = { ...initialState };
     const store = mockStore(state);
@@ -264,6 +273,11 @@ describe("MachineList", () => {
       state.machine.items[1]
     ];
 
+    // Change grouping to none
+    wrapper
+      .find('Select[name="machine-groupings"]')
+      .find("select")
+      .simulate("change", { target: { value: "none" } });
     expect(
       wrapper
         .find('[data-test="cores-header"]')
@@ -278,7 +292,7 @@ describe("MachineList", () => {
         .at(0)
         .text()
     ).toEqual(firstMachine.fqdn);
-    // Click the FQDN table header
+    // Click the cores table header
     wrapper
       .find('[data-test="cores-header"]')
       .find("button")
@@ -316,20 +330,26 @@ describe("MachineList", () => {
       state.machine.items[1]
     ];
 
-    // Click the FQDN table header
+    // Change grouping to none
     wrapper
-      .find('[data-test="fqdn-header"]')
+      .find('Select[name="machine-groupings"]')
+      .find("select")
+      .simulate("change", { target: { value: "none" } });
+
+    // Click the status table header
+    wrapper
+      .find('[data-test="status-header"]')
       .find("button")
       .simulate("click");
     expect(
       wrapper
-        .find('[data-test="fqdn-header"]')
+        .find('[data-test="status-header"]')
         .find("i")
         .exists()
     ).toBe(true);
     expect(
       wrapper
-        .find('[data-test="fqdn-header"]')
+        .find('[data-test="status-header"]')
         .find("i")
         .props().className
     ).toBe("p-icon--contextual-menu");
@@ -342,14 +362,14 @@ describe("MachineList", () => {
         .text()
     ).toEqual(firstMachine.fqdn);
 
-    // Click the FQDN table header again to reverse sort order
+    // Click the status table header again to reverse sort order
     wrapper
-      .find('[data-test="fqdn-header"]')
+      .find('[data-test="status-header"]')
       .find("button")
       .simulate("click");
     expect(
       wrapper
-        .find('[data-test="fqdn-header"]')
+        .find('[data-test="status-header"]')
         .find("i")
         .props().className
     ).toBe("p-icon--contextual-menu u-mirror--y");
@@ -364,12 +384,12 @@ describe("MachineList", () => {
 
     // Click the FQDN table header again to return to no sort
     wrapper
-      .find('[data-test="fqdn-header"]')
+      .find('[data-test="status-header"]')
       .find("button")
       .simulate("click");
     expect(
       wrapper
-        .find('[data-test="fqdn-header"]')
+        .find('[data-test="status-header"]')
         .find("i")
         .exists()
     ).toBe(false);

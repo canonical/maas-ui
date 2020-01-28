@@ -51,3 +51,7 @@ body {
 .u-upper-case--first:first-letter {
   text-transform: capitalize;
 }
+
+a:visited {
+  color: $color-link;
+}
