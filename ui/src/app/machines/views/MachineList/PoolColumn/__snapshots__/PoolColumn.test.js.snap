@@ -4,13 +4,8 @@ exports[`PoolColumn renders 1`] = `
 <PoolColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      aria-label="Pool"
-      className="p-double-row__primary-row u-truncate"
-    >
+  <DoubleRow
+    primary={
       <span
         data-test="pool"
       >
@@ -22,18 +17,49 @@ exports[`PoolColumn renders 1`] = `
           default
         </a>
       </span>
-    </div>
-    <div
-      aria-label="Note"
-      className="p-double-row__secondary-row u-truncate"
-    >
+    }
+    primaryAriaLabel="Pool"
+    secondary={
       <span
         data-test="note"
         title="Firmware old"
       >
         Firmware old
       </span>
+    }
+    secondaryAriaLabel="Note"
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        aria-label="Pool"
+        className="p-double-row__primary-row u-truncate"
+      >
+        <span
+          data-test="pool"
+        >
+          <a
+            className="p-link--soft"
+            href="#/pools"
+            title="default"
+          >
+            default
+          </a>
+        </span>
+      </div>
+      <div
+        aria-label="Note"
+        className="p-double-row__secondary-row u-truncate"
+      >
+        <span
+          data-test="note"
+          title="Firmware old"
+        >
+          Firmware old
+        </span>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </PoolColumn>
 `;

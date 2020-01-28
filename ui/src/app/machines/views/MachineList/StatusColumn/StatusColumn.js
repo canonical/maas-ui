@@ -8,6 +8,7 @@ import {
   machine as machineSelectors
 } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 
 // Node statuses for which the failed test warning is not shown.
@@ -97,7 +98,7 @@ const getStatusIcon = machine => {
   return "";
 };
 
-const StatusColumn = ({ systemId }) => {
+const StatusColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -106,27 +107,28 @@ const StatusColumn = ({ systemId }) => {
   );
 
   return (
-    <div className="p-double-row--with-icon">
-      <div className="p-double-row__icon">{getStatusIcon(machine)}</div>
-      <div
-        className="p-double-row__primary-row u-truncate"
-        data-test="status-text"
-        title={getStatusText(machine, osReleases)}
-      >
-        {getStatusText(machine, osReleases)}
-      </div>
-      <div
-        className="p-double-row__secondary-row u-truncate"
-        data-test="progress-text"
-        title={getProgressText(machine)}
-      >
-        {getProgressText(machine)}
-      </div>
-    </div>
+    <DoubleRow
+      icon={getStatusIcon(machine)}
+      onToggleMenu={onToggleMenu}
+      primary={
+        <span
+          data-test="status-text"
+          title={getStatusText(machine, osReleases)}
+        >
+          {getStatusText(machine, osReleases)}
+        </span>
+      }
+      secondary={
+        <span data-test="progress-text" title={getProgressText(machine)}>
+          {getProgressText(machine)}
+        </span>
+      }
+    />
   );
 };
 
 StatusColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 

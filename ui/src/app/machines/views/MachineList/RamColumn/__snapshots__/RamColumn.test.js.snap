@@ -4,12 +4,8 @@ exports[`RamColumn renders 1`] = `
 <RamColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      className="p-double-row__primary-row u-align--right u-truncate"
-    >
+  <DoubleRow
+    primary={
       <ScriptStatus
         hidePassedIcon={true}
         scriptType={
@@ -31,7 +27,38 @@ exports[`RamColumn renders 1`] = `
           GiB
         </small>
       </ScriptStatus>
+    }
+    primaryClassName="u-align--right"
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__primary-row u-truncate u-align--right"
+      >
+        <ScriptStatus
+          hidePassedIcon={true}
+          scriptType={
+            Object {
+              "status": 2,
+            }
+          }
+          tooltipPosition="top-right"
+        >
+          <span
+            data-test="memory"
+          >
+            8
+          </span>
+           
+          <small
+            className="u-text--light"
+          >
+            GiB
+          </small>
+        </ScriptStatus>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </RamColumn>
 `;

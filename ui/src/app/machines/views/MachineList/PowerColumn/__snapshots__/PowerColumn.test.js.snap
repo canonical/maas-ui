@@ -4,36 +4,62 @@ exports[`PowerColumn renders 1`] = `
 <PowerColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row--with-icon"
-  >
-    <div
-      className="p-double-row__icon"
-    >
+  <DoubleRow
+    icon={
       <i
         className="p-icon--power-on"
         title="on"
       />
-    </div>
-    <div
-      className="p-double-row__primary-row u-upper-case--first u-truncate"
-    >
+    }
+    primary={
       <span
         data-test="power_state"
       >
         on
       </span>
-    </div>
-    <div
-      className="p-double-row__secondary-row u-upper-case--first u-truncate"
-    >
+    }
+    primaryClassName="u-upper-case--first"
+    secondary={
       <span
         data-test="power_type"
         title="virsh"
       >
         virsh
       </span>
+    }
+    secondaryClassName="u-upper-case--first"
+  >
+    <div
+      className="p-double-row--with-icon"
+    >
+      <div
+        className="p-double-row__icon"
+      >
+        <i
+          className="p-icon--power-on"
+          title="on"
+        />
+      </div>
+      <div
+        className="p-double-row__primary-row u-truncate u-upper-case--first"
+      >
+        <span
+          data-test="power_state"
+        >
+          on
+        </span>
+      </div>
+      <div
+        className="p-double-row__secondary-row u-truncate u-upper-case--first"
+      >
+        <span
+          data-test="power_type"
+          title="virsh"
+        >
+          virsh
+        </span>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </PowerColumn>
 `;

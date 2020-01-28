@@ -9,3 +9,9 @@
   padding: $spv-inner--x-small $sph-inner--small;
   text-transform: uppercase;
 }
+
+.p-table-menu__toggle {
+  $icon-size: map-get($icon-sizes, default);
+  line-height: $icon-size;
+  padding: 0 $icon-size / 2;
+}

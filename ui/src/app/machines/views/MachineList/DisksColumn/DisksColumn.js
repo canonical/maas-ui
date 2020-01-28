@@ -3,16 +3,18 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { machine as machineSelectors } from "app/base/selectors";
+import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
-const DisksColumn = ({ systemId }) => {
+const DisksColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
   return (
-    <div className="p-double-row">
-      <div className="p-double-row__primary-row u-align--right u-truncate">
+    <DoubleRow
+      onToggleMenu={onToggleMenu}
+      primary={
         <ScriptStatus
           data-test="disks"
           hidePassedIcon
@@ -21,12 +23,14 @@ const DisksColumn = ({ systemId }) => {
         >
           {machine.physical_disk_count}
         </ScriptStatus>
-      </div>
-    </div>
+      }
+      primaryClassName="u-align--right"
+    />
   );
 };
 
 DisksColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 

@@ -4,27 +4,44 @@ exports[`ZoneColumn renders 1`] = `
 <ZoneColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      className="p-double-row__primary-row u-truncate"
-    >
+  <DoubleRow
+    primary={
       <span
         data-test="zone"
       >
         zone-north
       </span>
-    </div>
-    <div
-      className="p-double-row__secondary-row u-truncate"
-    >
+    }
+    secondary={
       <span
         data-test="spaces"
       >
         management
       </span>
+    }
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__primary-row u-truncate"
+      >
+        <span
+          data-test="zone"
+        >
+          zone-north
+        </span>
+      </div>
+      <div
+        className="p-double-row__secondary-row u-truncate"
+      >
+        <span
+          data-test="spaces"
+        >
+          management
+        </span>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </ZoneColumn>
 `;

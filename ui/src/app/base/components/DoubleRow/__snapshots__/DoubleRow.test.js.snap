@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoubleRow  renders 1`] = `
+<div
+  className="p-double-row"
+>
+  <div
+    className="p-double-row__primary-row u-truncate"
+  >
+    Top row
+  </div>
+  <div
+    className="p-double-row__secondary-row u-truncate"
+  >
+    Bottom row
+  </div>
+</div>
+`;

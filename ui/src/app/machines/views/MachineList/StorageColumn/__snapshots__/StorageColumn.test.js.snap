@@ -4,25 +4,45 @@ exports[`StorageColumn renders 1`] = `
 <StorageColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
+  <DoubleRow
+    primary={
+      <React.Fragment>
+        <span
+          data-test="storage-value"
+        >
+          8
+        </span>
+         
+        <small
+          className="u-text--light"
+          data-test="storage-unit"
+        >
+          GB
+        </small>
+      </React.Fragment>
+    }
+    primaryClassName="u-align--right"
   >
     <div
-      className="p-double-row__primary-row u-align--right u-truncate"
+      className="p-double-row"
     >
-      <span
-        data-test="storage-value"
+      <div
+        className="p-double-row__primary-row u-truncate u-align--right"
       >
-        8
-      </span>
-       
-      <small
-        className="u-text--light"
-        data-test="storage-unit"
-      >
-        GB
-      </small>
+        <span
+          data-test="storage-value"
+        >
+          8
+        </span>
+         
+        <small
+          className="u-text--light"
+          data-test="storage-unit"
+        >
+          GB
+        </small>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </StorageColumn>
 `;

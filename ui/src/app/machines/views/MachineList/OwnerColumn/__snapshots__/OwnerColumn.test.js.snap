@@ -4,17 +4,46 @@ exports[`OwnerColumn renders 1`] = `
 <OwnerColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      className="p-double-row__primary-row u-truncate"
-    >
+  <DoubleRow
+    menuLinks={
+      Array [
+        Object {
+          "children": "Link1",
+        },
+        Object {
+          "children": "Link2",
+        },
+      ]
+    }
+    menuTitle="Take action:"
+    primary={
       <span
         data-test="owner"
       >
         admin
       </span>
+    }
+    secondary={
+      <span
+        data-test="tags"
+        title=""
+      >
+        
+      </span>
+    }
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__primary-row u-truncate"
+      >
+        <span
+          data-test="owner"
+        >
+          admin
+        </span>
+      </div>
       <TableMenu
         links={
           Array [
@@ -46,6 +75,7 @@ exports[`OwnerColumn renders 1`] = `
           }
           position="center"
           toggleAppearance="base"
+          toggleClassName="u-no-margin--bottom p-table-menu__toggle"
         >
           <span
             className="p-table-menu p-contextual-menu--center"
@@ -55,7 +85,7 @@ exports[`OwnerColumn renders 1`] = `
               aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
               aria-expanded="false"
               aria-haspopup="true"
-              className="p-contextual-menu__toggle"
+              className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
               hasIcon={true}
               onClick={[Function]}
             >
@@ -63,7 +93,7 @@ exports[`OwnerColumn renders 1`] = `
                 aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
                 aria-expanded="false"
                 aria-haspopup="true"
-                className="p-button--base has-icon p-contextual-menu__toggle"
+                className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                 onClick={[Function]}
               >
                 <i
@@ -74,15 +104,15 @@ exports[`OwnerColumn renders 1`] = `
           </span>
         </ContextualMenu>
       </TableMenu>
+      <div
+        className="p-double-row__secondary-row u-truncate"
+      >
+        <span
+          data-test="tags"
+          title=""
+        />
+      </div>
     </div>
-    <div
-      className="p-double-row__secondary-row u-truncate"
-    >
-      <span
-        data-test="tags"
-        title=""
-      />
-    </div>
-  </div>
+  </DoubleRow>
 </OwnerColumn>
 `;

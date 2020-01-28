@@ -3,16 +3,18 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import { machine as machineSelectors } from "app/base/selectors";
+import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
-const RamColumn = ({ systemId }) => {
+const RamColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
   return (
-    <div className="p-double-row">
-      <div className="p-double-row__primary-row u-align--right u-truncate">
+    <DoubleRow
+      onToggleMenu={onToggleMenu}
+      primary={
         <ScriptStatus
           hidePassedIcon
           scriptType={machine.memory_test_status}
@@ -21,12 +23,14 @@ const RamColumn = ({ systemId }) => {
           <span data-test="memory">{machine.memory}</span>&nbsp;
           <small className="u-text--light">GiB</small>
         </ScriptStatus>
-      </div>
-    </div>
+      }
+      primaryClassName="u-align--right"
+    />
   );
 };
 
 RamColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 

@@ -2,16 +2,18 @@
   $icon-space: map-get($icon-sizes, default) + $sph-inner--small;
 
   .p-double-row {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid:
+      [row1-start] "primary-row menu" auto [row1-end]
+      [row2-start] "secondary-row menu" auto [row2-end] / auto auto;
   }
 
   .p-double-row--with-icon {
     display: grid;
     grid:
-      [row1-start] "icon primary-row" auto [row1-end]
-      [row2-start] "icon secondary-row" auto [row2-end] /
-      $icon-space auto;
+      [row1-start] "icon primary-row menu" auto [row1-end]
+      [row2-start] "icon secondary-row menu" auto [row2-end] /
+      $icon-space auto auto;
   }
 
   .p-double-row__icon {
@@ -30,5 +32,9 @@
 
   .p-double-row__icon-space {
     padding-left: $icon-space;
+  }
+
+  .p-double-row .p-table-menu {
+    grid-area: menu;
   }
 }

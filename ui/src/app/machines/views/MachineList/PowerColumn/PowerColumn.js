@@ -4,8 +4,9 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import { machine as machineSelectors } from "app/base/selectors";
+import DoubleRow from "app/base/components/DoubleRow";
 
-const PowerColumn = ({ systemId }) => {
+const PowerColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -18,23 +19,23 @@ const PowerColumn = ({ systemId }) => {
   });
 
   return (
-    <div className="p-double-row--with-icon">
-      <div className="p-double-row__icon">
-        <i title={machine.power_state} className={iconClass}></i>
-      </div>
-      <div className="p-double-row__primary-row u-upper-case--first u-truncate">
-        <span data-test="power_state">{machine.power_state}</span>
-      </div>
-      <div className="p-double-row__secondary-row u-upper-case--first u-truncate">
+    <DoubleRow
+      icon={<i title={machine.power_state} className={iconClass}></i>}
+      onToggleMenu={onToggleMenu}
+      primary={<span data-test="power_state">{machine.power_state}</span>}
+      primaryClassName="u-upper-case--first"
+      secondary={
         <span title={machine.power_type} data-test="power_type">
           {machine.power_type}
         </span>
-      </div>
-    </div>
+      }
+      secondaryClassName="u-upper-case--first"
+    />
   );
 };
 
 PowerColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 
