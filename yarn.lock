@@ -14684,20 +14684,15 @@ value-equal@^1.0.1:
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
 
-vanilla-framework@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.0.1.tgz#028e5cc4a156973f21cbd38ab3758c9532f3c36b"
-  integrity sha512-vE4e4ck40lrcFmREy06yoXy/dHKF+ewA/lsC6ZeooirXB69/XmZv+jgkCUlftbn6ya+N8F6b9yWGHKfg7AiEkg==
-
 vanilla-framework@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.4.1.tgz#36ef374e90b8457a07e55cf33be1bcfd07092c84"
   integrity sha512-St8LdmoMpWSFWvFRDBNjFcdfWo/nOMwrkRPJN+dR0vOHP/Jb1UqOSxw+wDxkiGrpeRb0VPFwCuz/2u0RWb0xuQ==
 
-vanilla-framework@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.5.0.tgz#b7f689d7583f4a215cde39b726091ffc2ec4f62a"
-  integrity sha512-8dY70fTDo2v/Lw96nMRyhi5e74KUk1krcEHEd1qt/hzMzAfy2NYddENS1bZahEg7hoAY1TZc8mQJr+bVu4qW7w==
+vanilla-framework@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.6.0.tgz#67077333993824c2aec3578d44269b37ff862923"
+  integrity sha512-2vx8fe2hsEQYtEiUklqjBO+JL4cLDJVsE/t3b6fcfIRPJsmVq/kVrUSXDSq6LW/4wHhPfMAqeoMQFNdzCUwexA==
 
 vary@~1.1.2:
   version "1.1.2"
