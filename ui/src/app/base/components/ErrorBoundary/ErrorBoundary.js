@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
 import { config as configSelectors } from "app/settings/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -15,11 +16,11 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    const { analyticsEnabled } = this.props;
+    const { analyticsEnabled, maasVersion } = this.props;
 
     if (analyticsEnabled) {
       Sentry.withScope(scope => {
-        scope.setExtras(errorInfo);
+        scope.setExtras({...errorInfo, maasVersion });
         const eventId = Sentry.captureException(error);
         this.setState({ eventId });
       });
@@ -32,7 +33,7 @@ class ErrorBoundary extends React.Component {
         <div className="p-notification--negative">
           <p className="p-notification__response">
             <span className="p-notification__status">Error:</span> An unexpected
-            error hs occurred, please try refreshing your browser window.
+            error has occurred, please try refreshing your browser window.
           </p>
         </div>
       );
@@ -41,7 +42,8 @@ class ErrorBoundary extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  analyticsEnabled: configSelectors.analyticsEnabled(state)
+  analyticsEnabled: configSelectors.analyticsEnabled(state),
+  maasVersion: generalSelectors.version.get(state)
 });
 
 export default connect(mapStateToProps)(ErrorBoundary);
