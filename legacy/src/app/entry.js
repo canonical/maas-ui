@@ -19,6 +19,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
+import * as Sentry from "@sentry/browser";
+import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
 import bootstrap from "./bootstrap";
@@ -390,9 +392,27 @@ const displayTemplate = ($rootScope, $window, $http) => {
   renderFooter($window);
 };
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [new Integrations.Angular()]
+});
+
+/* @ngInject */
+const configureSentry = $window => {
+  Sentry.setExtra("maasVersion", $window.CONFIG.version);
+}
+
 angular
-  .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat"])
+  .module("MAAS", [
+    ngRoute,
+    ngCookies,
+    ngSanitize,
+    "ngTagsInput",
+    "vs-repeat",
+    "ngSentry"
+  ])
   .config(configureMaas)
+  .run(configureSentry)
   .run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)

@@ -27,8 +27,12 @@ beforeEach(function() {
       is_superuser: true,
       completed_intro: true
     },
-    enable_analytics: false
+    enable_analytics: false,
+    version: '2.7.0'
   };
 });
+
+// Mock the sentry client module
+beforeEach(() => angular.module('ngSentry', []));
 
 window.DEBUG = true;

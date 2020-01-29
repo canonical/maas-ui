@@ -21,6 +21,12 @@ describe("maasExternalLogin", function() {
           replace: function(url) {
             redirectUrl = url;
           }
+        },
+        CONFIG: {
+          current_user: {
+            is_superuser: true
+          },
+          version: "2.7.0"
         }
       });
 

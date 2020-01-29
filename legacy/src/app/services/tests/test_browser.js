@@ -16,7 +16,10 @@ describe("BrowserService", function() {
   beforeEach(function() {
     $window = {
       navigator: {
-        userAgent: ""
+        userAgent: "",
+      },
+      CONFIG: {
+        version: '2.7.0'
       }
     };
 
