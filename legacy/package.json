@@ -55,8 +55,8 @@
   },
   "dependencies": {
     "@maas-ui/shared": "0.1.0",
-    "@sentry/browser": "^5.11.1",
-    "@sentry/integrations": "^5.11.1",
+    "@sentry/browser": "5.11.1",
+    "@sentry/integrations": "5.11.1",
     "angular": "1.7.9",
     "angular-cookies": "1.7.9",
     "angular-route": "1.7.9",
