@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component {
 
     if (analyticsEnabled) {
       Sentry.withScope(scope => {
-        scope.setExtras({...errorInfo, maasVersion });
+        scope.setExtras({ ...errorInfo, maasVersion });
         const eventId = Sentry.captureException(error);
         this.setState({ eventId });
       });
