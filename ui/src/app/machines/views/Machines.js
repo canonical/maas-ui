@@ -18,6 +18,16 @@ const Machines = () => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const { location } = useRouter();
+  const { location } = useRouter();
+
+  const machineString = `${machines.length} ${pluralize(
+    "machine",
+    machines.length
+  )}`;
+  const poolString = `${resourcePools.length} ${pluralize(
+    "resource pool",
+    resourcePools.length
+  )}`;
 
   return (
     <Section
@@ -31,10 +41,7 @@ const Machines = () => {
                 className="p-inline-list__item u-text--light"
                 data-test="machine-count"
               >
-                {`${machines.length} ${pluralize(
-                  "machine",
-                  machines.length
-                )} available`}
+                {`${machineString} available`}
               </li>
             ) : (
               <Loader inline text="Loading..." />
@@ -46,16 +53,12 @@ const Machines = () => {
             links={[
               {
                 active: location.pathname === "/machines",
-                label: `${
-                  machinesLoaded ? `${machines.length} ` : ""
-                }${pluralize("Machine", machines.length)}`,
+                label: machineString,
                 path: "/machines"
               },
               {
                 active: location.pathname === "/pools",
-                label: `${
-                  resourcePoolsLoaded ? `${resourcePools.length} ` : ""
-                }${pluralize("Resource pool", resourcePools.length)}`,
+                label: poolString,
                 path: "/pools"
               }
             ]}
