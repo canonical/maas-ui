@@ -51,7 +51,7 @@ const GeneralForm = () => {
         required={true}
       />
       <FormikField
-        label="Enable Google Analytics in MAAS UI to shape improvements in user experience"
+        label="Send anonymous data to help us improve MAAS"
         type="checkbox"
         name="enable_analytics"
       />

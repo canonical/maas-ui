@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Loader, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import * as Sentry from "@sentry/browser";
 
 import {
   auth as authActions,
@@ -94,6 +95,12 @@ export const App = () => {
     );
   } else if (connected) {
     content = <Routes />;
+  }
+
+  if (analyticsEnabled && process.env.REACT_APP_SENTRY_DSN) {
+    Sentry.init({
+      dsn: process.env.REACT_APP_SENTRY_DSN
+    });
   }
 
   return (
