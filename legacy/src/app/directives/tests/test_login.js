@@ -24,10 +24,8 @@ describe("maasExternalLogin", function() {
         },
         CONFIG: {
           current_user: {
-            is_superuser: true,
-            completed_intro: true
+            is_superuser: true
           },
-          enable_analytics: false,
           version: "2.7.0"
         }
       });
