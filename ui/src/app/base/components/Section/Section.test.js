@@ -24,4 +24,13 @@ describe("Section", () => {
         .includes("col-10")
     ).toBe(false);
   });
+
+  it("can render a node as a title", () => {
+    const wrapper = shallow(
+      <Section title={<span data-test="test">Node title</span>}>
+        content
+      </Section>
+    );
+    expect(wrapper.find('[data-test="test"]').text()).toEqual("Node title");
+  });
 });
