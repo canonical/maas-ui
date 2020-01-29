@@ -19,10 +19,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
+import * as Sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 import configureRoutes from "./routes";
 import bootstrap from "./bootstrap";
 import { Footer, Header } from "@maas-ui/shared";
+
+// Configure Sentry
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Integrations.Angular(),
+  ],
+});
 
 // filters
 import {
@@ -391,7 +401,7 @@ const displayTemplate = ($rootScope, $window, $http) => {
 };
 
 angular
-  .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat"])
+  .module("MAAS", [ngRoute, ngCookies, ngSanitize, "ngTagsInput", "vs-repeat", "ngSentry"])
   .config(configureMaas)
   .run(displayTemplate)
   .run(dashboardRedirect)
