@@ -6,6 +6,7 @@ exports[`StatusColumn renders 1`] = `
 >
   <DoubleRow
     icon=""
+    iconSpace={true}
     primary={
       <span
         data-test="status-text"
@@ -24,25 +25,40 @@ exports[`StatusColumn renders 1`] = `
     }
   >
     <div
-      className="p-double-row"
+      className="p-double-row--with-icon"
     >
       <div
-        className="p-double-row__primary-row u-truncate"
+        className="p-double-row__icon"
       >
-        <span
-          data-test="status-text"
-          title="New"
-        >
-          New
-        </span>
+        <div
+          className="p-double-row__icon-space"
+        />
       </div>
       <div
-        className="p-double-row__secondary-row u-truncate"
+        className="p-double-row__rows-container"
       >
-        <span
-          data-test="progress-text"
-          title=""
-        />
+        <div
+          className="p-double-row__primary-row"
+        >
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="status-text"
+              title="New"
+            >
+              New
+            </span>
+          </div>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate"
+        >
+          <span
+            data-test="progress-text"
+            title=""
+          />
+        </div>
       </div>
     </div>
   </DoubleRow>

@@ -7,6 +7,7 @@ import TableMenu from "app/base/components/TableMenu";
 const DoubleRow = ({
   className,
   icon,
+  iconSpace,
   iconTitle,
   menuLinks,
   menuTitle,
@@ -18,45 +19,51 @@ const DoubleRow = ({
   secondaryAriaLabel,
   secondaryClassName
 }) => {
+  const hasIcon = icon || iconSpace;
   return (
     <div
       className={classNames(
         {
-          "p-double-row": !icon,
-          "p-double-row--with-icon": icon
+          "p-double-row": !hasIcon,
+          "p-double-row--with-icon": hasIcon
         },
         className
       )}
     >
-      {icon ? <div className="p-double-row__icon">{icon}</div> : null}
-      <div
-        className={classNames(
-          "p-double-row__primary-row u-truncate",
-          primaryClassName
-        )}
-        aria-label={primaryAriaLabel}
-      >
-        {primary}
-      </div>
-      {menuLinks ? (
-        <TableMenu
-          links={menuLinks}
-          title={menuTitle}
-          onToggleMenu={onToggleMenu}
-        />
-      ) : null}
-      {secondary ? (
-        <div
-          className={classNames(
-            "p-double-row__secondary-row",
-            "u-truncate",
-            secondaryClassName
-          )}
-          aria-label={secondaryAriaLabel}
-        >
-          {secondary}
+      {hasIcon ? (
+        <div className="p-double-row__icon">
+          {icon || <div className="p-double-row__icon-space"></div>}
         </div>
       ) : null}
+      <div className="p-double-row__rows-container">
+        <div
+          className={classNames("p-double-row__primary-row", primaryClassName)}
+          aria-label={primaryAriaLabel}
+        >
+          <div className="p-double-row__primary-row-text u-truncate">
+            {primary}
+          </div>
+          {menuLinks ? (
+            <TableMenu
+              links={menuLinks}
+              title={menuTitle}
+              onToggleMenu={onToggleMenu}
+            />
+          ) : null}
+        </div>
+        {secondary ? (
+          <div
+            className={classNames(
+              "p-double-row__secondary-row",
+              "u-truncate",
+              secondaryClassName
+            )}
+            aria-label={secondaryAriaLabel}
+          >
+            {secondary}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };
@@ -64,6 +71,7 @@ const DoubleRow = ({
 DoubleRow.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
+  iconSpace: PropTypes.bool,
   menuLinks: TableMenu.propTypes.links,
   menuTitle: PropTypes.string,
   onToggleMenu: PropTypes.func,

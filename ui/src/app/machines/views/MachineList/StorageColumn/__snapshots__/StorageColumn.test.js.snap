@@ -27,20 +27,28 @@ exports[`StorageColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate u-align--right"
+        className="p-double-row__rows-container"
       >
-        <span
-          data-test="storage-value"
+        <div
+          className="p-double-row__primary-row u-align--right"
         >
-          8
-        </span>
-         
-        <small
-          className="u-text--light"
-          data-test="storage-unit"
-        >
-          GB
-        </small>
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="storage-value"
+            >
+              8
+            </span>
+             
+            <small
+              className="u-text--light"
+              data-test="storage-unit"
+            >
+              GB
+            </small>
+          </div>
+        </div>
       </div>
     </div>
   </DoubleRow>

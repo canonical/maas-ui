@@ -24,22 +24,30 @@ exports[`ZoneColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate"
+        className="p-double-row__rows-container"
       >
-        <span
-          data-test="zone"
+        <div
+          className="p-double-row__primary-row"
         >
-          zone-north
-        </span>
-      </div>
-      <div
-        className="p-double-row__secondary-row u-truncate"
-      >
-        <span
-          data-test="spaces"
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="zone"
+            >
+              zone-north
+            </span>
+          </div>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate"
         >
-          management
-        </span>
+          <span
+            data-test="spaces"
+          >
+            management
+          </span>
+        </div>
       </div>
     </div>
   </DoubleRow>

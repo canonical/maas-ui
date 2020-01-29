@@ -23,19 +23,27 @@ exports[`NameColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate"
+        className="p-double-row__rows-container"
       >
-        <a
-          href="/#/undefined/abc123"
+        <div
+          className="p-double-row__primary-row"
         >
-          <strong>
-            koala
-          </strong>
-          <small>
-            .
-            example
-          </small>
-        </a>
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <a
+              href="/#/undefined/abc123"
+            >
+              <strong>
+                koala
+              </strong>
+              <small>
+                .
+                example
+              </small>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </DoubleRow>

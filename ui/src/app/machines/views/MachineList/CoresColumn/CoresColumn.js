@@ -30,6 +30,7 @@ const CoresColumn = ({ onToggleMenu, systemId }) => {
         </ScriptStatus>
       }
       primaryAriaLabel="Cores"
+      primaryClassName="u-align--right"
       secondary={
         <Tooltip position="btm-left" message={machine.architecture}>
           <span data-test="arch">{formatShortArch(machine.architecture)}</span>

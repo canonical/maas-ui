@@ -19,6 +19,16 @@ $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spaci
 
   .p-table-menu {
     display: block;
+
+    .p-table-menu__toggle {
+      opacity: 0.25;
+    }
+  }
+
+  .p-table-menu .p-table-menu__toggle:focus,
+  .p-table-menu .p-table-menu__toggle:active,
+  td:hover .p-table-menu .p-table-menu__toggle {
+    opacity: 1;
   }
 }
 

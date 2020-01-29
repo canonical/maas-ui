@@ -25,20 +25,28 @@ exports[`DisksColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate u-align--right"
+        className="p-double-row__rows-container"
       >
-        <ScriptStatus
-          data-test="disks"
-          hidePassedIcon={true}
-          scriptType={
-            Object {
-              "status": 2,
-            }
-          }
-          tooltipPosition="top-right"
+        <div
+          className="p-double-row__primary-row u-align--right"
         >
-          1
-        </ScriptStatus>
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <ScriptStatus
+              data-test="disks"
+              hidePassedIcon={true}
+              scriptType={
+                Object {
+                  "status": 2,
+                }
+              }
+              tooltipPosition="top-right"
+            >
+              1
+            </ScriptStatus>
+          </div>
+        </div>
       </div>
     </div>
   </DoubleRow>

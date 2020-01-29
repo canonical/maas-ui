@@ -109,6 +109,7 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
   return (
     <DoubleRow
       icon={getStatusIcon(machine)}
+      iconSpace={true}
       onToggleMenu={onToggleMenu}
       primary={
         <span

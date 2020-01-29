@@ -28,6 +28,14 @@ describe("DoubleRow ", () => {
     expect(wrapper.find(".p-double-row__icon").exists()).toBe(true);
   });
 
+  it("can display the space for an icon", () => {
+    const wrapper = shallow(
+      <DoubleRow iconSpace={true} primary="Top row" secondary="Bottom row" />
+    );
+    expect(wrapper.find(".p-double-row--with-icon").exists()).toBe(true);
+    expect(wrapper.find(".p-double-row__icon").exists()).toBe(true);
+  });
+
   it("can have a menu", () => {
     const wrapper = shallow(
       <DoubleRow

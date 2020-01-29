@@ -11,6 +11,7 @@ exports[`PowerColumn renders 1`] = `
         title="on"
       />
     }
+    iconSpace={true}
     primary={
       <span
         data-test="power_state"
@@ -41,23 +42,31 @@ exports[`PowerColumn renders 1`] = `
         />
       </div>
       <div
-        className="p-double-row__primary-row u-truncate u-upper-case--first"
+        className="p-double-row__rows-container"
       >
-        <span
-          data-test="power_state"
+        <div
+          className="p-double-row__primary-row u-upper-case--first"
         >
-          on
-        </span>
-      </div>
-      <div
-        className="p-double-row__secondary-row u-truncate u-upper-case--first"
-      >
-        <span
-          data-test="power_type"
-          title="virsh"
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="power_state"
+            >
+              on
+            </span>
+          </div>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate u-upper-case--first"
         >
-          virsh
-        </span>
+          <span
+            data-test="power_type"
+            title="virsh"
+          >
+            virsh
+          </span>
+        </div>
       </div>
     </div>
   </DoubleRow>

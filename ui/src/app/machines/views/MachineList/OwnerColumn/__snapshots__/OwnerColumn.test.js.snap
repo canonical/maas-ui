@@ -36,33 +36,22 @@ exports[`OwnerColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate"
+        className="p-double-row__rows-container"
       >
-        <span
-          data-test="owner"
+        <div
+          className="p-double-row__primary-row"
         >
-          admin
-        </span>
-      </div>
-      <TableMenu
-        links={
-          Array [
-            Object {
-              "children": "Link1",
-            },
-            Object {
-              "children": "Link2",
-            },
-          ]
-        }
-        title="Take action:"
-      >
-        <ContextualMenu
-          className="p-table-menu"
-          hasToggleIcon={true}
-          links={
-            Array [
-              "Take action:",
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="owner"
+            >
+              admin
+            </span>
+          </div>
+          <TableMenu
+            links={
               Array [
                 Object {
                   "children": "Link1",
@@ -70,47 +59,66 @@ exports[`OwnerColumn renders 1`] = `
                 Object {
                   "children": "Link2",
                 },
-              ],
-            ]
-          }
-          position="center"
-          toggleAppearance="base"
-          toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+              ]
+            }
+            title="Take action:"
+          >
+            <ContextualMenu
+              className="p-table-menu"
+              hasToggleIcon={true}
+              links={
+                Array [
+                  "Take action:",
+                  Array [
+                    Object {
+                      "children": "Link1",
+                    },
+                    Object {
+                      "children": "Link2",
+                    },
+                  ],
+                ]
+              }
+              position="center"
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+            >
+              <span
+                className="p-table-menu p-contextual-menu--center"
+              >
+                <Button
+                  appearance="base"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  hasIcon={true}
+                  onClick={[Function]}
+                >
+                  <button
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
+                    />
+                  </button>
+                </Button>
+              </span>
+            </ContextualMenu>
+          </TableMenu>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate"
         >
           <span
-            className="p-table-menu p-contextual-menu--center"
-          >
-            <Button
-              appearance="base"
-              aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-              aria-expanded="false"
-              aria-haspopup="true"
-              className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-              hasIcon={true}
-              onClick={[Function]}
-            >
-              <button
-                aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                aria-expanded="false"
-                aria-haspopup="true"
-                className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                onClick={[Function]}
-              >
-                <i
-                  className="p-icon--contextual-menu p-contextual-menu__indicator"
-                />
-              </button>
-            </Button>
-          </span>
-        </ContextualMenu>
-      </TableMenu>
-      <div
-        className="p-double-row__secondary-row u-truncate"
-      >
-        <span
-          data-test="tags"
-          title=""
-        />
+            data-test="tags"
+            title=""
+          />
+        </div>
       </div>
     </div>
   </DoubleRow>

@@ -5,14 +5,22 @@ exports[`DoubleRow  renders 1`] = `
   className="p-double-row"
 >
   <div
-    className="p-double-row__primary-row u-truncate"
+    className="p-double-row__rows-container"
   >
-    Top row
-  </div>
-  <div
-    className="p-double-row__secondary-row u-truncate"
-  >
-    Bottom row
+    <div
+      className="p-double-row__primary-row"
+    >
+      <div
+        className="p-double-row__primary-row-text u-truncate"
+      >
+        Top row
+      </div>
+    </div>
+    <div
+      className="p-double-row__secondary-row u-truncate"
+    >
+      Bottom row
+    </div>
   </div>
 </div>
 `;

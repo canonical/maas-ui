@@ -21,6 +21,7 @@ exports[`CoresColumn renders 1`] = `
       </ScriptStatus>
     }
     primaryAriaLabel="Cores"
+    primaryClassName="u-align--right"
     secondary={
       <Tooltip
         message="amd64/generic"
@@ -39,46 +40,54 @@ exports[`CoresColumn renders 1`] = `
       className="p-double-row u-align--right"
     >
       <div
-        aria-label="Cores"
-        className="p-double-row__primary-row u-truncate"
+        className="p-double-row__rows-container"
       >
-        <ScriptStatus
-          data-test="cores"
-          hidePassedIcon={true}
-          scriptType={
-            Object {
-              "status": 1,
-            }
-          }
-          tooltipPosition="top-right"
+        <div
+          aria-label="Cores"
+          className="p-double-row__primary-row u-align--right"
         >
-          <i
-            className="p-icon--running is-inline"
-          />
-          4
-        </ScriptStatus>
-      </div>
-      <div
-        aria-label="Architecture"
-        className="p-double-row__secondary-row u-truncate"
-      >
-        <Tooltip
-          message="amd64/generic"
-          position="btm-left"
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <ScriptStatus
+              data-test="cores"
+              hidePassedIcon={true}
+              scriptType={
+                Object {
+                  "status": 1,
+                }
+              }
+              tooltipPosition="top-right"
+            >
+              <i
+                className="p-icon--running is-inline"
+              />
+              4
+            </ScriptStatus>
+          </div>
+        </div>
+        <div
+          aria-label="Architecture"
+          className="p-double-row__secondary-row u-truncate"
         >
-          <span
-            onBlur={[Function]}
-            onFocus={[Function]}
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <Tooltip
+            message="amd64/generic"
+            position="btm-left"
           >
             <span
-              data-test="arch"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
-              amd64
+              <span
+                data-test="arch"
+              >
+                amd64
+              </span>
             </span>
-          </span>
-        </Tooltip>
+          </Tooltip>
+        </div>
       </div>
     </div>
   </DoubleRow>

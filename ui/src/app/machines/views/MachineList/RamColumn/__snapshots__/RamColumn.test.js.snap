@@ -34,29 +34,37 @@ exports[`RamColumn renders 1`] = `
       className="p-double-row"
     >
       <div
-        className="p-double-row__primary-row u-truncate u-align--right"
+        className="p-double-row__rows-container"
       >
-        <ScriptStatus
-          hidePassedIcon={true}
-          scriptType={
-            Object {
-              "status": 2,
-            }
-          }
-          tooltipPosition="top-right"
+        <div
+          className="p-double-row__primary-row u-align--right"
         >
-          <span
-            data-test="memory"
+          <div
+            className="p-double-row__primary-row-text u-truncate"
           >
-            8
-          </span>
-           
-          <small
-            className="u-text--light"
-          >
-            GiB
-          </small>
-        </ScriptStatus>
+            <ScriptStatus
+              hidePassedIcon={true}
+              scriptType={
+                Object {
+                  "status": 2,
+                }
+              }
+              tooltipPosition="top-right"
+            >
+              <span
+                data-test="memory"
+              >
+                8
+              </span>
+               
+              <small
+                className="u-text--light"
+              >
+                GiB
+              </small>
+            </ScriptStatus>
+          </div>
+        </div>
       </div>
     </div>
   </DoubleRow>
