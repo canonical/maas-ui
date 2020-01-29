@@ -3,9 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { machine as machineSelectors } from "app/base/selectors";
+import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 
-const generateFQDN = (machine, machineURL) => {
+const generateFQDN = (machine, machineURL, onToggleMenu) => {
   const name = (
     <a href={machineURL} title={machine.fqdn}>
       <strong>
@@ -32,11 +33,7 @@ const generateFQDN = (machine, machineURL) => {
     }
   });
   if (ipAddresses.length === 0) {
-    return (
-      <div className="p-double-row">
-        <div className="p-double-row__primary-row u-truncate">{name}</div>
-      </div>
-    );
+    return <DoubleRow onToggleMenu={onToggleMenu} primary={name} />;
   }
   let ipAddressesLine = (
     <span data-test="ip-addresses">
@@ -66,41 +63,44 @@ const generateFQDN = (machine, machineURL) => {
   }
 
   return (
-    <div className="p-double-row">
-      <div className="p-double-row__primary-row u-truncate">{name}</div>
-      <div className="p-double-row__secondary-row u-truncate">
-        {ipAddressesLine}
-      </div>
-    </div>
+    <DoubleRow
+      onToggleMenu={onToggleMenu}
+      primary={name}
+      secondary={ipAddressesLine}
+    />
   );
 };
 
-const generateMAC = (machine, machineURL) => {
+const generateMAC = (machine, machineURL, onToggleMenu) => {
   return (
-    <div className="p-double-row">
-      <div className="p-doouble-row__primary-row u-truncate">
-        <a href={machineURL} title={machine.pxe_mac_vendor}>
-          {machine.pxe_mac}
-        </a>{" "}
-        {machine.extra_macs && machine.extra_macs.length > 0 ? (
-          <a href={machineURL}>(+{machine.extra_macs.length})</a>
-        ) : null}
-      </div>
-    </div>
+    <DoubleRow
+      onToggleMenu={onToggleMenu}
+      primary={
+        <>
+          <a href={machineURL} title={machine.pxe_mac_vendor}>
+            {machine.pxe_mac}
+          </a>{" "}
+          {machine.extra_macs && machine.extra_macs.length > 0 ? (
+            <a href={machineURL}>(+{machine.extra_macs.length})</a>
+          ) : null}
+        </>
+      }
+    />
   );
 };
 
-const NameColumn = ({ showMAC, systemId }) => {
+const NameColumn = ({ onToggleMenu, showMAC, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const machineURL = `${process.env.REACT_APP_ANGULAR_BASENAME}/${machine.link_type}/${machine.system_id}`;
   return showMAC
-    ? generateMAC(machine, machineURL)
-    : generateFQDN(machine, machineURL);
+    ? generateMAC(machine, machineURL, onToggleMenu)
+    : generateFQDN(machine, machineURL, onToggleMenu);
 };
 
 NameColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   showMAC: PropTypes.bool,
   systemId: PropTypes.string.isRequired
 };

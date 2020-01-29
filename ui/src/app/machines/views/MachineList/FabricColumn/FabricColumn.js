@@ -2,10 +2,11 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import { machine as machineSelectors } from "app/base/selectors";
 
-const FabricColumn = ({ systemId }) => {
+const FabricColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -15,8 +16,9 @@ const FabricColumn = ({ systemId }) => {
   const vlan = machine.vlan && machine.vlan.name ? machine.vlan.name : "";
 
   return (
-    <div className="p-double-row">
-      <div className="p-double-row__primary-row u-truncate" aria-label="Fabric">
+    <DoubleRow
+      onToggleMenu={onToggleMenu}
+      primary={
         <ScriptStatus
           data-test="fabric"
           hidePassedIcon
@@ -26,15 +28,16 @@ const FabricColumn = ({ systemId }) => {
         >
           {fabric}
         </ScriptStatus>
-      </div>
-      <div className="p-double-row__secondary-row u-truncate" aria-label="VLAN">
-        <span data-test="vlan">{vlan}</span>
-      </div>
-    </div>
+      }
+      primaryAriaLabel="Fabric"
+      secondary={<span data-test="vlan">{vlan}</span>}
+      secondaryAriaLabel="VLAN"
+    />
   );
 };
 
 FabricColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 

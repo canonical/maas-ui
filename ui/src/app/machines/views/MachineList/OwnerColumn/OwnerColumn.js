@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { machine as machineSelectors } from "app/base/selectors";
-import TableMenu from "app/base/components/TableMenu";
+import DoubleRow from "app/base/components/DoubleRow";
 
-const OwnerColumn = ({ systemId }) => {
+const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -14,24 +14,22 @@ const OwnerColumn = ({ systemId }) => {
   const tags = machine.tags ? machine.tags.join(", ") : "";
 
   return (
-    <div className="p-double-row">
-      <div className="p-double-row__primary-row u-truncate">
-        <span data-test="owner">{owner}</span>
-        <TableMenu
-          links={[{ children: "Link1" }, { children: "Link2" }]}
-          title="Take action:"
-        />
-      </div>
-      <div className="p-double-row__secondary-row u-truncate">
+    <DoubleRow
+      menuLinks={[{ children: "Link1" }, { children: "Link2" }]}
+      menuTitle="Take action:"
+      onToggleMenu={onToggleMenu}
+      primary={<span data-test="owner">{owner}</span>}
+      secondary={
         <span title={tags} data-test="tags">
           {tags}
         </span>
-      </div>
-    </div>
+      }
+    />
   );
 };
 
 OwnerColumn.propTypes = {
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired
 };
 

@@ -4,12 +4,8 @@ exports[`DisksColumn renders 1`] = `
 <DisksColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      className="p-double-row__primary-row u-align--right u-truncate"
-    >
+  <DoubleRow
+    primary={
       <ScriptStatus
         data-test="disks"
         hidePassedIcon={true}
@@ -22,7 +18,37 @@ exports[`DisksColumn renders 1`] = `
       >
         1
       </ScriptStatus>
+    }
+    primaryClassName="u-align--right"
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__rows-container"
+      >
+        <div
+          className="p-double-row__primary-row u-align--right"
+        >
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <ScriptStatus
+              data-test="disks"
+              hidePassedIcon={true}
+              scriptType={
+                Object {
+                  "status": 2,
+                }
+              }
+              tooltipPosition="top-right"
+            >
+              1
+            </ScriptStatus>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </DisksColumn>
 `;

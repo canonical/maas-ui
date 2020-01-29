@@ -4,13 +4,8 @@ exports[`FabricColumn renders 1`] = `
 <FabricColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      aria-label="Fabric"
-      className="p-double-row__primary-row u-truncate"
-    >
+  <DoubleRow
+    primary={
       <ScriptStatus
         data-test="fabric"
         hideNotRunIcon={true}
@@ -22,22 +17,62 @@ exports[`FabricColumn renders 1`] = `
         }
         tooltipPosition="top-right"
       >
-        <i
-          className="p-icon--running is-inline"
-        />
         fabric-0
       </ScriptStatus>
-    </div>
-    <div
-      aria-label="VLAN"
-      className="p-double-row__secondary-row u-truncate"
-    >
+    }
+    primaryAriaLabel="Fabric"
+    secondary={
       <span
         data-test="vlan"
       >
         Default VLAN
       </span>
+    }
+    secondaryAriaLabel="VLAN"
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__rows-container"
+      >
+        <div
+          aria-label="Fabric"
+          className="p-double-row__primary-row"
+        >
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <ScriptStatus
+              data-test="fabric"
+              hideNotRunIcon={true}
+              hidePassedIcon={true}
+              scriptType={
+                Object {
+                  "status": 1,
+                }
+              }
+              tooltipPosition="top-right"
+            >
+              <i
+                className="p-icon--running is-inline"
+              />
+              fabric-0
+            </ScriptStatus>
+          </div>
+        </div>
+        <div
+          aria-label="VLAN"
+          className="p-double-row__secondary-row u-truncate"
+        >
+          <span
+            data-test="vlan"
+          >
+            Default VLAN
+          </span>
+        </div>
+      </div>
     </div>
-  </div>
+  </DoubleRow>
 </FabricColumn>
 `;

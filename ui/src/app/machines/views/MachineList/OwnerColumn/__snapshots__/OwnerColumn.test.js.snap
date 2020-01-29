@@ -4,36 +4,54 @@ exports[`OwnerColumn renders 1`] = `
 <OwnerColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row"
-  >
-    <div
-      className="p-double-row__primary-row u-truncate"
-    >
+  <DoubleRow
+    menuLinks={
+      Array [
+        Object {
+          "children": "Link1",
+        },
+        Object {
+          "children": "Link2",
+        },
+      ]
+    }
+    menuTitle="Take action:"
+    primary={
       <span
         data-test="owner"
       >
         admin
       </span>
-      <TableMenu
-        links={
-          Array [
-            Object {
-              "children": "Link1",
-            },
-            Object {
-              "children": "Link2",
-            },
-          ]
-        }
-        title="Take action:"
+    }
+    secondary={
+      <span
+        data-test="tags"
+        title=""
       >
-        <ContextualMenu
-          className="p-table-menu"
-          hasToggleIcon={true}
-          links={
-            Array [
-              "Take action:",
+        
+      </span>
+    }
+  >
+    <div
+      className="p-double-row"
+    >
+      <div
+        className="p-double-row__rows-container"
+      >
+        <div
+          className="p-double-row__primary-row"
+        >
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="owner"
+            >
+              admin
+            </span>
+          </div>
+          <TableMenu
+            links={
               Array [
                 Object {
                   "children": "Link1",
@@ -41,48 +59,68 @@ exports[`OwnerColumn renders 1`] = `
                 Object {
                   "children": "Link2",
                 },
-              ],
-            ]
-          }
-          position="center"
-          toggleAppearance="base"
+              ]
+            }
+            title="Take action:"
+          >
+            <ContextualMenu
+              className="p-table-menu"
+              hasToggleIcon={true}
+              links={
+                Array [
+                  "Take action:",
+                  Array [
+                    Object {
+                      "children": "Link1",
+                    },
+                    Object {
+                      "children": "Link2",
+                    },
+                  ],
+                ]
+              }
+              position="center"
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+            >
+              <span
+                className="p-table-menu p-contextual-menu--center"
+              >
+                <Button
+                  appearance="base"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  hasIcon={true}
+                  onClick={[Function]}
+                >
+                  <button
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
+                    />
+                  </button>
+                </Button>
+              </span>
+            </ContextualMenu>
+          </TableMenu>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate"
         >
           <span
-            className="p-table-menu p-contextual-menu--center"
-          >
-            <Button
-              appearance="base"
-              aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-              aria-expanded="false"
-              aria-haspopup="true"
-              className="p-contextual-menu__toggle"
-              hasIcon={true}
-              onClick={[Function]}
-            >
-              <button
-                aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                aria-expanded="false"
-                aria-haspopup="true"
-                className="p-button--base has-icon p-contextual-menu__toggle"
-                onClick={[Function]}
-              >
-                <i
-                  className="p-icon--contextual-menu p-contextual-menu__indicator"
-                />
-              </button>
-            </Button>
-          </span>
-        </ContextualMenu>
-      </TableMenu>
+            data-test="tags"
+            title=""
+          />
+        </div>
+      </div>
     </div>
-    <div
-      className="p-double-row__secondary-row u-truncate"
-    >
-      <span
-        data-test="tags"
-        title=""
-      />
-    </div>
-  </div>
+  </DoubleRow>
 </OwnerColumn>
 `;

@@ -2,7 +2,7 @@ import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import nanoid from "nanoid";
 import PropTypes from "prop-types";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import usePortal from "react-useportal";
 
 const getPositionStyle = (position, wrapper) => {
@@ -48,8 +48,10 @@ const ContextualMenu = ({
   className,
   hasToggleIcon,
   links,
+  onToggleMenu,
   position = "right",
   toggleAppearance,
+  toggleClassName,
   toggleLabel,
   toggleLabelFirst = true
 }) => {
@@ -67,6 +69,13 @@ const ContextualMenu = ({
       .filter(Boolean)
       .join("--")
   );
+
+  useEffect(() => {
+    onToggleMenu && onToggleMenu(isOpen);
+    // onToggleMenu is excluded from the useEffect deps as onToggleMenu gets
+    // redefined on a state update which causes an infinite loop here.
+  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <span className={wrapperClass} ref={wrapper}>
       {hasToggle ? (
@@ -75,7 +84,7 @@ const ContextualMenu = ({
           aria-controls={id.current}
           aria-expanded={isOpen ? "true" : "false"}
           aria-haspopup="true"
-          className="p-contextual-menu__toggle"
+          className={classNames("p-contextual-menu__toggle", toggleClassName)}
           hasIcon={hasToggleIcon}
           onClick={evt => {
             if (!isOpen) {
@@ -136,8 +145,10 @@ ContextualMenu.propTypes = {
       PropTypes.arrayOf(PropTypes.shape(Button.propTypes))
     ])
   ).isRequired,
+  onToggleMenu: PropTypes.func,
   position: PropTypes.oneOf(["left", "center", "right"]),
   toggleAppearance: PropTypes.string,
+  toggleClassName: PropTypes.string,
   toggleLabel: PropTypes.string,
   toggleLabelFirst: PropTypes.bool
 };

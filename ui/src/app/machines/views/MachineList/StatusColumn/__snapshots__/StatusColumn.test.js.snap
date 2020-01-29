@@ -4,24 +4,63 @@ exports[`StatusColumn renders 1`] = `
 <StatusColumn
   systemId="abc123"
 >
-  <div
-    className="p-double-row--with-icon"
+  <DoubleRow
+    icon=""
+    iconSpace={true}
+    primary={
+      <span
+        data-test="status-text"
+        title="New"
+      >
+        New
+      </span>
+    }
+    secondary={
+      <span
+        data-test="progress-text"
+        title=""
+      >
+        
+      </span>
+    }
   >
     <div
-      className="p-double-row__icon"
-    />
-    <div
-      className="p-double-row__primary-row u-truncate"
-      data-test="status-text"
-      title="New"
+      className="p-double-row--with-icon"
     >
-      New
+      <div
+        className="p-double-row__icon"
+      >
+        <div
+          className="p-double-row__icon-space"
+        />
+      </div>
+      <div
+        className="p-double-row__rows-container"
+      >
+        <div
+          className="p-double-row__primary-row"
+        >
+          <div
+            className="p-double-row__primary-row-text u-truncate"
+          >
+            <span
+              data-test="status-text"
+              title="New"
+            >
+              New
+            </span>
+          </div>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate"
+        >
+          <span
+            data-test="progress-text"
+            title=""
+          />
+        </div>
+      </div>
     </div>
-    <div
-      className="p-double-row__secondary-row u-truncate"
-      data-test="progress-text"
-      title=""
-    />
-  </div>
+  </DoubleRow>
 </StatusColumn>
 `;

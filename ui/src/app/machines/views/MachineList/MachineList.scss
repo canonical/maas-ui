@@ -1,4 +1,5 @@
 @import "~vanilla-framework/scss/settings_spacing";
+@import "~vanilla-framework/scss/settings_colors";
 @import "~vanilla-framework/scss/base_forms-tick-elements";
 @import "./machine-list-breakpoint-widths";
 
@@ -6,6 +7,29 @@ $grouped-machines-indentation: $box-size + $sph-inner; // Checkbox + label spaci
 
 .machine-list--grouped .machine-list__machine td:first-child {
   padding-left: $grouped-machines-indentation;
+}
+
+.machine-list__machine .p-table-menu {
+  display: none;
+}
+
+.machine-list__machine:hover,
+.machine-list__machine--active {
+  background-color: $color-x-light;
+
+  .p-table-menu {
+    display: block;
+
+    .p-table-menu__toggle {
+      opacity: 0.25;
+    }
+  }
+
+  .p-table-menu .p-table-menu__toggle:focus,
+  .p-table-menu .p-table-menu__toggle:active,
+  td:hover .p-table-menu .p-table-menu__toggle {
+    opacity: 1;
+  }
 }
 
 .machine-list__group-toggle {

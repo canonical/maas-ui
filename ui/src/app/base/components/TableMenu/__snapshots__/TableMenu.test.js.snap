@@ -16,5 +16,6 @@ exports[`TableMenu  renders 1`] = `
   }
   position="center"
   toggleAppearance="base"
+  toggleClassName="u-no-margin--bottom p-table-menu__toggle"
 />
 `;

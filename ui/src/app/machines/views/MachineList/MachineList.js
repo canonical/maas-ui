@@ -72,7 +72,13 @@ const getSortValue = (machine, currentSort) => {
   }
 };
 
-const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
+const generateRows = (
+  rows,
+  hiddenGroups,
+  setHiddenGroups,
+  activeRow,
+  setActiveRow
+) =>
   rows.map(row => {
     if (row.isGroup) {
       const sortData = {
@@ -128,41 +134,86 @@ const generateRows = (rows, hiddenGroups, setHiddenGroups) =>
         sortData
       };
     }
+    const isActive = activeRow === row.system_id;
+    const onToggleMenu = open => {
+      if (open && !activeRow) {
+        setActiveRow(row.system_id);
+      } else if (!open || (open && activeRow)) {
+        setActiveRow(null);
+      }
+    };
     return {
-      className: "machine-list__machine",
+      className: classNames("machine-list__machine", {
+        "machine-list__machine--active": isActive
+      }),
       columns: [
         {
-          content: <NameColumn showMAC={false} systemId={row.system_id} />
+          content: (
+            <NameColumn
+              onToggleMenu={onToggleMenu}
+              showMAC={false}
+              systemId={row.system_id}
+            />
+          )
         },
         {
-          content: <PowerColumn systemId={row.system_id} />
+          content: (
+            <PowerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <StatusColumn systemId={row.system_id} />
+          content: (
+            <StatusColumn
+              onToggleMenu={onToggleMenu}
+              systemId={row.system_id}
+            />
+          )
         },
         {
-          content: <OwnerColumn systemId={row.system_id} />
+          content: (
+            <OwnerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <PoolColumn systemId={row.system_id} />
+          content: (
+            <PoolColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <ZoneColumn systemId={row.system_id} />
+          content: (
+            <ZoneColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <FabricColumn systemId={row.system_id} />
+          content: (
+            <FabricColumn
+              onToggleMenu={onToggleMenu}
+              systemId={row.system_id}
+            />
+          )
         },
         {
-          content: <CoresColumn systemId={row.system_id} />
+          content: (
+            <CoresColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <RamColumn systemId={row.system_id} />
+          content: (
+            <RamColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <DisksColumn systemId={row.system_id} />
+          content: (
+            <DisksColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+          )
         },
         {
-          content: <StorageColumn systemId={row.system_id} />
+          content: (
+            <StorageColumn
+              onToggleMenu={onToggleMenu}
+              systemId={row.system_id}
+            />
+          )
         }
       ],
       sortData: {
@@ -186,6 +237,7 @@ const MachineList = () => {
   const dispatch = useDispatch();
   const [currentSort, setSort] = useState(defaultSort);
   const [hiddenGroups, setHiddenGroups] = useState([]);
+  const [activeRow, setActiveRow] = useState(null);
   const lastSort = useRef(defaultSort);
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -318,7 +370,13 @@ const MachineList = () => {
             ]}
             onUpdateSort={updateSort}
             paginate={150}
-            rows={generateRows(rows, hiddenGroups, setHiddenGroups)}
+            rows={generateRows(
+              rows,
+              hiddenGroups,
+              setHiddenGroups,
+              activeRow,
+              setActiveRow
+            )}
             sortable
           />
         )}
