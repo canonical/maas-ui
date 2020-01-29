@@ -9,18 +9,29 @@ import ErrorBoundary from "app/base/components/ErrorBoundary";
 const mockStore = configureStore();
 
 describe("ErrorBoundary", () => {
+  let state;
+
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+
+  beforeEach(() => {
+    state = {
+      config: {
+        items: []
+      },
+      general: {
+        version: {
+          data: "2.7.0"
+        }
+      }
+    };
   });
 
   it("should display an ErrorMessage if wrapped component throws", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
 
-    const store = mockStore({
-      config: {
-        items: []
-      }
-    });
+    const store = mockStore(state);
 
     const Component = () => null;
     const wrapper = mount(
@@ -41,16 +52,13 @@ describe("ErrorBoundary", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
     jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
 
-    const store = mockStore({
-      config: {
-        items: [
-          {
-            name: "enable_analytics",
-            value: false
-          }
-        ]
+    state.config.items = [
+      {
+        name: "enable_analytics",
+        value: false
       }
-    });
+    ];
+    const store = mockStore(state);
 
     const Component = () => null;
     const wrapper = mount(
@@ -71,16 +79,13 @@ describe("ErrorBoundary", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
     jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
 
-    const store = mockStore({
-      config: {
-        items: [
-          {
-            name: "enable_analytics",
-            value: true
-          }
-        ]
+    state.config.items = [
+      {
+        name: "enable_analytics",
+        value: true
       }
-    });
+    ];
+    const store = mockStore(state);
 
     const Component = () => null;
     const wrapper = mount(
