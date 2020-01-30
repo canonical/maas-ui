@@ -57,11 +57,11 @@ const ContextualMenu = ({
 }) => {
   const id = useRef(nanoid());
   const wrapper = useRef(null);
+  const positionStyle = useRef(null);
   const hasToggle = hasToggleIcon || toggleLabel;
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
     isOpen: !hasToggle
   });
-  const positionStyle = getPositionStyle(position, wrapper);
   const labelNode = toggleLabel ? <span>{toggleLabel}</span> : null;
   const wrapperClass = classNames(
     className,
@@ -75,6 +75,20 @@ const ContextualMenu = ({
     // onToggleMenu is excluded from the useEffect deps as onToggleMenu gets
     // redefined on a state update which causes an infinite loop here.
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Only update the styles when the toggle is visible otherwise subsequent
+  // rerenders can result in a race condition while the toggle is hidden.
+  useEffect(() => {
+    if (isOpen) {
+      let style;
+      if (wrapper && wrapper.current) {
+        style = window.getComputedStyle(wrapper.current);
+      }
+      if (style && style.display !== "none") {
+        positionStyle.current = getPositionStyle(position, wrapper);
+      }
+    }
+  }, [isOpen, position]);
 
   return (
     <span className={wrapperClass} ref={wrapper}>
@@ -103,7 +117,7 @@ const ContextualMenu = ({
       ) : null}
       {isOpen && (
         <Portal>
-          <span className={wrapperClass} style={positionStyle}>
+          <span className={wrapperClass} style={positionStyle.current}>
             <span
               className="p-contextual-menu__dropdown"
               id={id.current}
