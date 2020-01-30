@@ -76,10 +76,10 @@ export const App = () => {
     content = (
       <Section
         title={
-          <Loader
-            className="u-align--left u-no-padding--left"
-            text="Loading..."
-          />
+          <>
+            <span className="p-heading--four"></span>
+            <Loader inline text="Loading..." />
+          </>
         }
       />
     );

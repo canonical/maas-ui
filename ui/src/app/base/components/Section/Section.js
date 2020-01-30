@@ -9,7 +9,11 @@ const Section = ({ children, sidebar, title }) => {
   return (
     <div className="section">
       <Strip className="section__header" element="header" shallow>
-        <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
+        {typeof title === "string" ? (
+          <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
+        ) : (
+          title
+        )}
       </Strip>
       <Strip
         element="main"
@@ -34,7 +38,7 @@ const Section = ({ children, sidebar, title }) => {
 Section.propTypes = {
   children: PropTypes.node,
   sidebar: PropTypes.node,
-  title: PropTypes.node.isRequired
+  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired
 };
 
 export default Section;
