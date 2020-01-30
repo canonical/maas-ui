@@ -10,6 +10,10 @@
   text-transform: uppercase;
 }
 
+.p-table-menu .p-contextual-menu__dropdown {
+  margin-top: 0;
+}
+
 .p-table-menu__toggle {
   $icon-size: map-get($icon-sizes, default);
   line-height: $icon-size;
