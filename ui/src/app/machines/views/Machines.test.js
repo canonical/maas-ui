@@ -114,9 +114,10 @@ describe("Machines", () => {
     );
   });
 
-  it("displays tabs with machine and resource pool counts", () => {
+  it("displays tabs with machine and resource pool counts if loaded", () => {
     const state = { ...initialState };
     state.machine.loaded = true;
+    state.resourcepool.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
