@@ -16,6 +16,7 @@ const Machines = () => {
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
+  const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const { location } = useRouter();
 
   return (
@@ -45,18 +46,16 @@ const Machines = () => {
             links={[
               {
                 active: location.pathname === "/machines",
-                label: `${machines.length} ${pluralize(
-                  "Machine",
-                  machines.length
-                )}`,
+                label: `${
+                  machinesLoaded ? `${machines.length} ` : ""
+                }${pluralize("Machine", machines.length)}`,
                 path: "/machines"
               },
               {
                 active: location.pathname === "/pools",
-                label: `${resourcePools.length} ${pluralize(
-                  "Resource pool",
-                  resourcePools.length
-                )}`,
+                label: `${
+                  resourcePoolsLoaded ? `${resourcePools.length} ` : ""
+                }${pluralize("Resource pool", resourcePools.length)}`,
                 path: "/pools"
               }
             ]}
