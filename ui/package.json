@@ -27,7 +27,7 @@
     "react-router-prop-types": "1.0.4",
     "react-scripts": "3.2.0",
     "react-useportal": "1.0.13",
-    "reconnecting-websocket": "4.2.0",
+    "reconnecting-websocket": "4.3.0",
     "reduce-reducers": "1.0.4",
     "redux": "4.0.5",
     "redux-devtools-extension": "2.13.8",
