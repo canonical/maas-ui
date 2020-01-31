@@ -34,6 +34,14 @@ const Routes = () => (
       )}
     />
     <Route
+      path="/pools"
+      render={() => (
+        <ErrorBoundary>
+          <Machines />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
       path="/account/prefs"
       render={() => (
         <ErrorBoundary>
