@@ -1,6 +1,15 @@
+@import "~vanilla-framework/scss/base";
+
 @mixin maas-labelled-lists {
+  //XXX can be removed / replaced with whatever mixin will contain the placeholders %vf-list, %vf-list-item used below, once  this is fixed: https://github.com/canonical-web-and-design/vanilla-framework/issues/2808
+  %vf-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
   .p-list--labelled {
-    @include vf-list;
+    @extend %vf-list;
 
     .p-list__item {
       @extend %vf-list-item;
@@ -21,3 +30,4 @@
     }
   }
 }
+

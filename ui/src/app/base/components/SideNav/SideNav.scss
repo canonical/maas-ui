@@ -1,13 +1,12 @@
 @import "~vanilla-framework/scss/settings_spacing";
 @import "~vanilla-framework/scss/settings_colors";
 @import "~vanilla-framework/scss/settings_placeholders";
-@import "~vanilla-framework/scss/base_typography-max-widths";
-@import "~vanilla-framework/scss/base_placeholders";
+@import "~vanilla-framework/scss/base";
 @import "~vanilla-framework/scss/patterns_grid";
 @import "~vanilla-framework/scss/patterns_lists";
 @import "src/scss/settings";
 
-@include vf-b-placeholders;
+@include vf-base;
 @include vf-p-grid;
 @include vf-p-lists;
 

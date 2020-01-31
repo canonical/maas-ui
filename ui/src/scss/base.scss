@@ -47,3 +47,25 @@ body {
 .u-upper-case--first:first-letter {
   text-transform: capitalize;
 }
+
+  //XXX can be removed / replaced with whatever mixin will contain the placeholders %vf-list, %vf-list-item used below, once  this is fixed: https://github.com/canonical-web-and-design/vanilla-framework/issues/2808
+%vf-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+// Mixin for list items
+%vf-list-item {
+  padding-bottom: $spv-list-item--inner;
+  padding-top: $spv-list-item--inner;
+
+  form & {
+    padding-bottom: 0;
+    padding-top: 0;
+
+    label {
+      margin-bottom: $spv-nudge-compensation;
+    }
+  }
+}
