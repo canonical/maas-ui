@@ -11,6 +11,14 @@ const machine = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "UPDATE_MACHINE_NOTIFY":
+        for (let i in draft.items) {
+          if (draft.items[i].id === action.payload.id) {
+            draft.items[i] = action.payload;
+            break;
+          }
+        }
+        break;
       default:
         return draft;
     }

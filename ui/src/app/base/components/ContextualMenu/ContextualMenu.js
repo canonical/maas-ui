@@ -34,10 +34,22 @@ const getPositionStyle = (position, wrapper) => {
   return { position: "absolute", left, right, top };
 };
 
-const generateLink = ({ children, className, ...props }, key) => (
+const generateLink = (
+  { children, className, onClick, ...props },
+  key,
+  closePortal
+) => (
   <Button
     className={classNames("p-contextual-menu__link", className)}
     key={key}
+    onClick={
+      onClick
+        ? () => {
+            closePortal();
+            onClick();
+          }
+        : null
+    }
     {...props}
   >
     {children}
@@ -128,7 +140,9 @@ const ContextualMenu = ({
                 if (Array.isArray(item)) {
                   return (
                     <span className="p-contextual-menu__group" key={i}>
-                      {item.map(generateLink)}
+                      {item.map((link, j) =>
+                        generateLink(link, j, closePortal)
+                      )}
                     </span>
                   );
                 }
@@ -139,7 +153,7 @@ const ContextualMenu = ({
                     </div>
                   );
                 }
-                return generateLink(item, i);
+                return generateLink(item, i, closePortal);
               })}
             </span>
           </span>

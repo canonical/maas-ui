@@ -10,4 +10,23 @@ machine.fetch = () => {
   };
 };
 
+machine.setPool = (systemId, poolId) => {
+  return {
+    type: "SET_MACHINE_POOL",
+    meta: {
+      model: "machine",
+      method: "action"
+    },
+    payload: {
+      params: {
+        action: "set-pool",
+        extra: {
+          pool_id: poolId
+        },
+        system_id: systemId
+      }
+    }
+  };
+};
+
 export default machine;

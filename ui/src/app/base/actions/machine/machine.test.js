@@ -10,4 +10,23 @@ describe("machine actions", () => {
       }
     });
   });
+
+  it("can handle setting the pool", () => {
+    expect(machine.setPool("abc123", 909)).toEqual({
+      type: "SET_MACHINE_POOL",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "set-pool",
+          extra: {
+            pool_id: 909
+          },
+          system_id: "abc123"
+        }
+      }
+    });
+  });
 });

@@ -26,6 +26,19 @@ describe("PoolColumn", () => {
             description: "Firmware old"
           }
         ]
+      },
+      resourcepool: {
+        loaded: true,
+        items: [
+          {
+            id: 0,
+            name: "default"
+          },
+          {
+            id: 1,
+            name: "Backup"
+          }
+        ]
       }
     };
   });
@@ -75,5 +88,65 @@ describe("PoolColumn", () => {
     );
 
     expect(wrapper.find('[data-test="note"]').text()).toEqual("decomissioned");
+  });
+
+  it("displays a message if there are no additional pools", () => {
+    state.resourcepool.items = [
+      {
+        id: 0,
+        name: "default"
+      }
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PoolColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    const items = wrapper.find("DoubleRow").prop("menuLinks");
+    expect(items.length).toBe(1);
+    expect(items[0]).toStrictEqual({
+      children: "No other pools available",
+      disabled: true
+    });
+  });
+
+  it("can change pools", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PoolColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("DoubleRow")
+      .prop("menuLinks")[1]
+      .onClick();
+    expect(
+      store.getActions().find(action => action.type === "SET_MACHINE_POOL")
+    ).toEqual({
+      type: "SET_MACHINE_POOL",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "set-pool",
+          extra: {
+            pool_id: 1
+          },
+          system_id: "abc123"
+        }
+      }
+    });
   });
 });

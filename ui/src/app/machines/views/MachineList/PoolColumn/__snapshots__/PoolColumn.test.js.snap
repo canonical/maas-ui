@@ -5,6 +5,19 @@ exports[`PoolColumn renders 1`] = `
   systemId="abc123"
 >
   <DoubleRow
+    menuLinks={
+      Array [
+        Object {
+          "children": "default",
+          "onClick": [Function],
+        },
+        Object {
+          "children": "Backup",
+          "onClick": [Function],
+        },
+      ]
+    }
+    menuTitle="Change pool:"
     primary={
       <span
         data-test="pool"
@@ -54,6 +67,70 @@ exports[`PoolColumn renders 1`] = `
               </a>
             </span>
           </div>
+          <TableMenu
+            links={
+              Array [
+                Object {
+                  "children": "default",
+                  "onClick": [Function],
+                },
+                Object {
+                  "children": "Backup",
+                  "onClick": [Function],
+                },
+              ]
+            }
+            title="Change pool:"
+          >
+            <ContextualMenu
+              className="p-table-menu"
+              hasToggleIcon={true}
+              links={
+                Array [
+                  "Change pool:",
+                  Array [
+                    Object {
+                      "children": "default",
+                      "onClick": [Function],
+                    },
+                    Object {
+                      "children": "Backup",
+                      "onClick": [Function],
+                    },
+                  ],
+                ]
+              }
+              position="center"
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+            >
+              <span
+                className="p-table-menu p-contextual-menu--center"
+              >
+                <Button
+                  appearance="base"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  hasIcon={true}
+                  onClick={[Function]}
+                >
+                  <button
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
+                    />
+                  </button>
+                </Button>
+              </span>
+            </ContextualMenu>
+          </TableMenu>
         </div>
         <div
           aria-label="Note"
