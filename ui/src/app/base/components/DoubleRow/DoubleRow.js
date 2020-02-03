@@ -15,6 +15,7 @@ const DoubleRow = ({
   primary,
   primaryAriaLabel,
   primaryClassName,
+  primaryTextClassName,
   secondary,
   secondaryAriaLabel,
   secondaryClassName
@@ -40,7 +41,12 @@ const DoubleRow = ({
           className={classNames("p-double-row__primary-row", primaryClassName)}
           aria-label={primaryAriaLabel}
         >
-          <div className="p-double-row__primary-row-text u-truncate">
+          <div
+            className={classNames(
+              "p-double-row__primary-row-text u-truncate",
+              primaryTextClassName
+            )}
+          >
             {primary}
           </div>
           {menuLinks ? (
@@ -78,6 +84,7 @@ DoubleRow.propTypes = {
   primary: PropTypes.node,
   primaryAriaLabel: PropTypes.string,
   primaryClassName: PropTypes.string,
+  primaryTextClassName: PropTypes.string,
   secondary: PropTypes.node,
   secondaryAriaLabel: PropTypes.string,
   secondaryClassName: PropTypes.string

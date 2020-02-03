@@ -5,19 +5,33 @@ exports[`NameColumn renders 1`] = `
   systemId="abc123"
 >
   <DoubleRow
+    data-test="name-column"
     primary={
-      <a
-        href="/#/undefined/abc123"
-      >
-        <strong>
-          koala
-        </strong>
-        <small>
-          .
-          example
-        </small>
-      </a>
+      <Input
+        className="has-inline-label keep-label-opacity"
+        disabled={false}
+        id="abc123"
+        label={
+          <a
+            href="/#/undefined/abc123"
+          >
+            <strong>
+              koala
+            </strong>
+            <small>
+              .
+              example
+            </small>
+          </a>
+        }
+        name="abc123"
+        type="checkbox"
+        wrapperClassName="u-no-margin--bottom"
+      />
     }
+    primaryTextClassName="u-nudge--right"
+    secondary=""
+    secondaryClassName="u-nudge--right"
   >
     <div
       className="p-double-row"
@@ -29,19 +43,84 @@ exports[`NameColumn renders 1`] = `
           className="p-double-row__primary-row"
         >
           <div
-            className="p-double-row__primary-row-text u-truncate"
+            className="p-double-row__primary-row-text u-truncate u-nudge--right"
           >
-            <a
-              href="/#/undefined/abc123"
+            <Input
+              className="has-inline-label keep-label-opacity"
+              disabled={false}
+              id="abc123"
+              label={
+                <a
+                  href="/#/undefined/abc123"
+                >
+                  <strong>
+                    koala
+                  </strong>
+                  <small>
+                    .
+                    example
+                  </small>
+                </a>
+              }
+              name="abc123"
+              type="checkbox"
+              wrapperClassName="u-no-margin--bottom"
             >
-              <strong>
-                koala
-              </strong>
-              <small>
-                .
-                example
-              </small>
-            </a>
+              <Field
+                className="u-no-margin--bottom"
+                forId="abc123"
+                label={
+                  <a
+                    href="/#/undefined/abc123"
+                  >
+                    <strong>
+                      koala
+                    </strong>
+                    <small>
+                      .
+                      example
+                    </small>
+                  </a>
+                }
+                labelFirst={false}
+              >
+                <div
+                  className="p-form__group p-form-validation u-no-margin--bottom"
+                >
+                  <div
+                    className="p-form__control u-clearfix"
+                  >
+                    <input
+                      className="p-form-validation__input has-inline-label keep-label-opacity"
+                      disabled={false}
+                      id="abc123"
+                      name="abc123"
+                      type="checkbox"
+                    />
+                    <Label
+                      forId="abc123"
+                    >
+                      <label
+                        className="p-form__label"
+                        htmlFor="abc123"
+                      >
+                        <a
+                          href="/#/undefined/abc123"
+                        >
+                          <strong>
+                            koala
+                          </strong>
+                          <small>
+                            .
+                            example
+                          </small>
+                        </a>
+                      </label>
+                    </Label>
+                  </div>
+                </div>
+              </Field>
+            </Input>
           </div>
         </div>
       </div>

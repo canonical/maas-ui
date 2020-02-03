@@ -27,6 +27,7 @@ describe("NameColumn", () => {
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
+            permissions: ["edit", "delete"],
             pool: {},
             pxe_mac: "00:11:22:33:44:55",
             status: "Releasing",
@@ -198,6 +199,7 @@ describe("NameColumn", () => {
         name: "example"
       },
       hostname: "koala",
+      permissions: ["edit", "delete"],
       system_id: "abc123"
     };
     const store = mockStore(state);
@@ -219,6 +221,7 @@ describe("NameColumn", () => {
         name: "example"
       },
       hostname: "koala",
+      permissions: ["edit", "delete"],
       system_id: "abc123"
     };
     const store = mockStore(state);
@@ -232,5 +235,53 @@ describe("NameColumn", () => {
       </Provider>
     );
     expect(wrapper.find("NameColumn").exists()).toBe(true);
+  });
+
+  it("sets checkbox to checked if selected is true", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn
+            handleCheckbox={jest.fn()}
+            selected
+            showMAC={true}
+            systemId="abc123"
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Input").props().checked).toBe(true);
+  });
+
+  it(`disables checkbox and shows tooltip if machine does not
+    have edit permission`, () => {
+    state.machine.items[0] = {
+      domain: {
+        name: "example"
+      },
+      hostname: "koala",
+      permissions: [],
+      system_id: "abc123"
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn
+            handleCheckbox={jest.fn()}
+            selected
+            showMAC={true}
+            systemId="abc123"
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Input").props().disabled).toBe(true);
+    expect(wrapper.find("Tooltip").exists()).toBe(true);
   });
 });

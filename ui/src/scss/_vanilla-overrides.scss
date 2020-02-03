@@ -37,7 +37,7 @@
 }
 thead th {
   @extend %table-header-typography;
-  padding-bottom: .35rem;
+  padding-bottom: 0.35rem;
 
   .p-button--link {
     @extend %table-header-typography;
@@ -55,7 +55,41 @@ thead th {
   }
 
   .p-icon--contextual-menu {
-    @include vf-icon-size(.875rem);
+    @include vf-icon-size(0.875rem);
     margin-left: $sp-x-small;
+  }
+}
+
+// 03-02-2020 Caleb: Cannot give label a className when using Input component.
+// https://github.com/canonical-web-and-design/react-components/issues/67
+input[type="checkbox"],
+input[type="radio"] {
+  &.has-inline-label + label {
+    display: inline;
+    padding-top: 0;
+
+    &::before {
+      left: 0rem;
+      top: 0.125rem;
+    }
+
+    &::after {
+      left: 0.1875rem;
+      top: 0.375rem;
+    }
+  }
+}
+
+// 04-02-2020 Caleb: Allow option to only change input opacity when disabled.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/2813
+input[disabled],
+input[disabled="disabled"] {
+  &[type="checkbox"].keep-label-opacity + label {
+    opacity: 1;
+
+    &::before,
+    &::after {
+      opacity: 0.5;
+    }
   }
 }

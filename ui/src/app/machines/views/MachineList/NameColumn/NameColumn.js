@@ -1,3 +1,4 @@
+import { Input } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
@@ -5,9 +6,10 @@ import PropTypes from "prop-types";
 import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
+import "./NameColumn.scss";
 
-const generateFQDN = (machine, machineURL, onToggleMenu) => {
-  const name = (
+const generateFQDN = (machine, machineURL) => {
+  return (
     <a href={machineURL} title={machine.fqdn}>
       <strong>
         {machine.locked ? (
@@ -20,8 +22,12 @@ const generateFQDN = (machine, machineURL, onToggleMenu) => {
       <small>.{machine.domain.name}</small>
     </a>
   );
+};
+
+const generateIPAddresses = machine => {
   let ipAddresses = [];
   let bootIP;
+
   (machine.ip_addresses || []).forEach(address => {
     let ip = address.ip;
     if (address.is_boot) {
@@ -32,18 +38,19 @@ const generateFQDN = (machine, machineURL, onToggleMenu) => {
       ipAddresses.push(ip);
     }
   });
-  if (ipAddresses.length === 0) {
-    return <DoubleRow onToggleMenu={onToggleMenu} primary={name} />;
-  }
-  let ipAddressesLine = (
-    <span data-test="ip-addresses">
-      {bootIP || ipAddresses[0]}
-      {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
-    </span>
-  );
 
-  if (ipAddresses.length > 1) {
-    ipAddressesLine = (
+  if (ipAddresses.length) {
+    let ipAddressesLine = (
+      <span data-test="ip-addresses">
+        {bootIP || ipAddresses[0]}
+        {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
+      </span>
+    );
+
+    if (ipAddresses.length === 1) {
+      return ipAddressesLine;
+    }
+    return (
       <Tooltip
         position="btm-left"
         message={
@@ -61,45 +68,78 @@ const generateFQDN = (machine, machineURL, onToggleMenu) => {
       </Tooltip>
     );
   }
+  return "";
+};
 
+const generateMAC = (machine, machineURL) => {
   return (
-    <DoubleRow
-      onToggleMenu={onToggleMenu}
-      primary={name}
-      secondary={ipAddressesLine}
-    />
+    <>
+      <a href={machineURL} title={machine.pxe_mac_vendor}>
+        {machine.pxe_mac}
+      </a>
+      {machine.extra_macs && machine.extra_macs.length > 0 ? (
+        <a href={machineURL}> (+{machine.extra_macs.length})</a>
+      ) : null}
+    </>
   );
 };
 
-const generateMAC = (machine, machineURL, onToggleMenu) => {
-  return (
-    <DoubleRow
-      onToggleMenu={onToggleMenu}
-      primary={
-        <>
-          <a href={machineURL} title={machine.pxe_mac_vendor}>
-            {machine.pxe_mac}
-          </a>
-          {machine.extra_macs && machine.extra_macs.length > 0 ? (
-            <a href={machineURL}> (+{machine.extra_macs.length})</a>
-          ) : null}
-        </>
-      }
-    />
-  );
-};
-
-const NameColumn = ({ onToggleMenu, showMAC, systemId }) => {
+const NameColumn = ({
+  handleCheckbox,
+  onToggleMenu,
+  selected,
+  showMAC,
+  systemId
+}) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const machineURL = `${process.env.REACT_APP_ANGULAR_BASENAME}/${machine.link_type}/${machine.system_id}`;
-  return showMAC
-    ? generateMAC(machine, machineURL, onToggleMenu)
-    : generateFQDN(machine, machineURL, onToggleMenu);
+  const primaryRow = showMAC
+    ? generateMAC(machine, machineURL)
+    : generateFQDN(machine, machineURL);
+  const secondaryRow = !showMAC && generateIPAddresses(machine);
+  const canEdit = machine.permissions.includes("edit");
+  const checkbox = (
+    <Input
+      checked={selected}
+      className="has-inline-label keep-label-opacity"
+      disabled={!canEdit}
+      id={systemId}
+      label={primaryRow}
+      name={systemId}
+      onChange={handleCheckbox}
+      type="checkbox"
+      wrapperClassName="u-no-margin--bottom"
+    />
+  );
+
+  return (
+    <DoubleRow
+      data-test="name-column"
+      onToggleMenu={onToggleMenu}
+      primary={
+        canEdit ? (
+          checkbox
+        ) : (
+          <Tooltip
+            message="You do not have permission to edit this machine."
+            position="top-left"
+          >
+            {checkbox}
+          </Tooltip>
+        )
+      }
+      primaryTextClassName="u-nudge--right"
+      secondary={secondaryRow}
+      secondaryClassName="u-nudge--right"
+    />
+  );
 };
 
 NameColumn.propTypes = {
+  handleCheckbox: PropTypes.func,
+  selected: PropTypes.bool,
   onToggleMenu: PropTypes.func,
   showMAC: PropTypes.bool,
   systemId: PropTypes.string.isRequired
