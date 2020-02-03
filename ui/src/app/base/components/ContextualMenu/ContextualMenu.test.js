@@ -159,4 +159,20 @@ describe("ContextualMenu ", () => {
         .text()
     ).toBe("Link2");
   });
+
+  it("closes the menu when clicking on an item", () => {
+    const wrapper = mount(
+      <ContextualMenu links={[{ onClick: jest.fn() }]} toggleLabel="Toggle" />
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper.find("button.p-contextual-menu__toggle").prop("aria-expanded")
+    ).toBe("true");
+    // Click on an item:
+    wrapper.find("Button.p-contextual-menu__link").simulate("click");
+    expect(
+      wrapper.find("button.p-contextual-menu__toggle").prop("aria-expanded")
+    ).toBe("false");
+  });
 });

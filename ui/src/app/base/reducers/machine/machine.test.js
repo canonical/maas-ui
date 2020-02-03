@@ -46,4 +46,33 @@ describe("machine reducer", () => {
       ]
     });
   });
+
+  it("should correctly reduce UPDATE_MACHINE_NOTIFY", () => {
+    expect(
+      machine(
+        {
+          items: [
+            { id: 1, hostname: "node1" },
+            { id: 2, hostname: "node2" }
+          ],
+          loaded: false,
+          loading: false
+        },
+        {
+          payload: {
+            id: 1,
+            hostname: "node1v2"
+          },
+          type: "UPDATE_MACHINE_NOTIFY"
+        }
+      )
+    ).toEqual({
+      items: [
+        { id: 1, hostname: "node1v2" },
+        { id: 2, hostname: "node2" }
+      ],
+      loaded: false,
+      loading: false
+    });
+  });
 });
