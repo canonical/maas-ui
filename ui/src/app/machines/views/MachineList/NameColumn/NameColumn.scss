@@ -1,5 +1,9 @@
 @import "../settings";
 
-.u-nudge--right {
+.u-nudge--checkbox {
   padding-left: $checkbox-offset;
+}
+
+.u-nudge--secondary-row {
+  padding-left: $box-size + $sph-inner + $checkbox-offset;
 }

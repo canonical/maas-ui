@@ -130,9 +130,9 @@ const NameColumn = ({
           </Tooltip>
         )
       }
-      primaryTextClassName="u-nudge--right"
+      primaryTextClassName="u-nudge--checkbox"
       secondary={secondaryRow}
-      secondaryClassName="u-nudge--right"
+      secondaryClassName="u-nudge--secondary-row"
     />
   );
 };

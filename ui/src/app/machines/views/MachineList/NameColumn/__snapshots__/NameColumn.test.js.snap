@@ -29,9 +29,9 @@ exports[`NameColumn renders 1`] = `
         wrapperClassName="u-no-margin--bottom"
       />
     }
-    primaryTextClassName="u-nudge--right"
+    primaryTextClassName="u-nudge--checkbox"
     secondary=""
-    secondaryClassName="u-nudge--right"
+    secondaryClassName="u-nudge--secondary-row"
   >
     <div
       className="p-double-row"
@@ -43,7 +43,7 @@ exports[`NameColumn renders 1`] = `
           className="p-double-row__primary-row"
         >
           <div
-            className="p-double-row__primary-row-text u-truncate u-nudge--right"
+            className="p-double-row__primary-row-text u-truncate u-nudge--checkbox"
           >
             <Input
               className="has-inline-label keep-label-opacity"
