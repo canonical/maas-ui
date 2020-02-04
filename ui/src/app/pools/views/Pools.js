@@ -113,7 +113,7 @@ const Pools = () => {
                 },
                 {
                   content: "Machines",
-                  sortKey: "machine_total_count"
+                  sortKey: "machines"
                 },
                 {
                   content: "Description",
