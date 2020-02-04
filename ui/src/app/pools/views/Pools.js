@@ -52,7 +52,9 @@ const generateRows = rows =>
               </Button>
               <Tooltip
                 position="left"
-                message={row.is_default && "The default pool may not be deleted."}
+                message={
+                  row.is_default && "The default pool may not be deleted."
+                }
               >
                 <Button
                   appearance="base"
