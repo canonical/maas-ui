@@ -23,14 +23,20 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       icon={<i title={machine.power_state} className={iconClass}></i>}
       iconSpace={true}
       onToggleMenu={onToggleMenu}
-      primary={<span data-test="power_state">{machine.power_state}</span>}
-      primaryClassName="u-upper-case--first"
-      secondary={
-        <span title={machine.power_type} data-test="power_type">
-          {machine.power_type}
-        </span>
+      primary={
+        <div className="u-upper-case--first" data-test="power_state">
+          {machine.power_state}
+        </div>
       }
-      secondaryClassName="u-upper-case--first"
+      secondary={
+        <div
+          className="u-upper-case--first"
+          title={machine.power_type}
+          data-test="power_type"
+        >
+          {machine.power_type}
+        </div>
+      }
     />
   );
 };
