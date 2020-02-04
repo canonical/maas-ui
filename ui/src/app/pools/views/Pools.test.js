@@ -117,7 +117,7 @@ describe("Pools", () => {
     ).toBe(false);
   });
 
-  it("does not render a delete button for default pools", () => {
+  it("disables the delete button for default pools", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     state.resourcepool.items = [
@@ -138,30 +138,11 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Button").length).toBe(1);
-  });
-
-  it("renders a delete button for non default pools", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    state.resourcepool.items = [
-      {
-        id: 0,
-        name: "a pool",
-        description: "another pool",
-        is_default: false,
-        permissions: ["edit", "delete"]
-      }
-    ];
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Pools />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Button").length).toBe(2);
+    expect(
+      wrapper
+        .find("Button")
+        .at(1)
+        .props().disabled
+    ).toBe(true);
   });
 });

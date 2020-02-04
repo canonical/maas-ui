@@ -9,6 +9,7 @@ import {
   Row
 } from "@canonical/react-components";
 
+import Tooltip from "app/base/components/Tooltip";
 import {
   machine as machineActions,
   resourcepool as resourcePoolActions
@@ -49,16 +50,21 @@ const generateRows = rows =>
               >
                 <i className="p-icon--edit">Edit</i>
               </Button>
-              {!row.is_default && (
+              <Tooltip
+                position="left"
+                message={row.is_default && "The default pool may not be deleted."}
+              >
                 <Button
                   appearance="base"
                   className="is-dense u-table-cell-padding-overlap"
                   hasIcon
-                  disabled={!row.permissions.includes("delete")}
+                  disabled={
+                    !row.permissions.includes("delete") || row.is_default
+                  }
                 >
                   <i className="p-icon--delete">Delete</i>
                 </Button>
-              )}
+              </Tooltip>
             </>
           ),
           className: "u-align--right"
