@@ -114,9 +114,10 @@ describe("Machines", () => {
     );
   });
 
-  it("displays tabs with machine and resource pool counts", () => {
+  it("displays tabs with machine and resource pool counts if loaded", () => {
     const state = { ...initialState };
     state.machine.loaded = true;
+    state.resourcepool.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -133,12 +134,12 @@ describe("Machines", () => {
         .find("Link")
         .at(0)
         .text()
-    ).toBe("1 machine");
+    ).toBe("1 Machine");
     expect(
       tabs
         .find("Link")
         .at(1)
         .text()
-    ).toBe("2 resource pools");
+    ).toBe("2 Resource pools");
   });
 });
