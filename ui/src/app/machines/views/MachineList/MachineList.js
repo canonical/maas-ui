@@ -1,6 +1,7 @@
 import {
   Button,
   Col,
+  Input,
   Loader,
   MainTable,
   Row,
@@ -29,6 +30,7 @@ import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
+import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
 import GroupSelect from "./GroupSelect";
 import NameColumn from "./NameColumn";
@@ -56,6 +58,9 @@ const getSortValue = (machine, sortKey) => {
   }
 };
 
+const groupChecked = (group, selectedMachines) =>
+  group.machines.every(machine => selectedMachines.includes(machine));
+
 const machineSort = currentSort => {
   const { key, direction } = currentSort;
 
@@ -76,16 +81,15 @@ const machineSort = currentSort => {
   };
 };
 
-const generateRows = ({ machines, ...rowProps }) => {
-  const {
-    activeRow,
-    currentSort,
-    handleCheckbox,
-    selectedMachines,
-    setActiveRow,
-    showMAC
-  } = rowProps;
-
+const generateRows = ({
+  activeRow,
+  currentSort,
+  handleMachineCheckbox,
+  machines,
+  selectedMachines,
+  setActiveRow,
+  showMAC
+}) => {
   const sortedMachines = [...machines].sort(machineSort(currentSort));
   return sortedMachines.map(row => {
     const isActive = activeRow === row.system_id;
@@ -105,9 +109,9 @@ const generateRows = ({ machines, ...rowProps }) => {
         {
           content: (
             <NameColumn
-              handleCheckbox={handleCheckbox}
+              handleCheckbox={handleMachineCheckbox}
               onToggleMenu={onToggleMenu}
-              selected={selectedMachines.includes(row.system_id)}
+              selected={selectedMachines.includes(row)}
               showMAC={showMAC}
               systemId={row.system_id}
             />
@@ -177,33 +181,24 @@ const generateRows = ({ machines, ...rowProps }) => {
   });
 };
 
-const generateGroups = ({
-  grouping,
-  hiddenGroups,
-  machines,
-  setHiddenGroups,
-  ...rowProps
-}) => {
-  let groups = [];
-  let rows = [];
-
+const generateGroups = (grouping, machines) => {
   if (grouping === "owner") {
     const groupMap = groupAsMap(machines, machine => machine.owner);
-    groups = Array.from(groupMap)
+    return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No owner", machines }))
       .sort(simpleSortByKey("label"));
   }
 
   if (grouping === "pool") {
     const groupMap = groupAsMap(machines, machine => machine.pool.name);
-    groups = Array.from(groupMap)
+    return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No pool", machines }))
       .sort(simpleSortByKey("label"));
   }
 
   if (grouping === "power_state") {
     const groupMap = groupAsMap(machines, machine => machine.power_state);
-    groups = [
+    return [
       {
         label: "Error",
         machines: groupMap.get("error") || []
@@ -225,7 +220,7 @@ const generateGroups = ({
 
   if (grouping === "status") {
     const groupMap = groupAsMap(machines, machine => machine.status_code);
-    groups = [
+    return [
       {
         label: "Failed",
         machines: [
@@ -298,88 +293,125 @@ const generateGroups = ({
 
   if (grouping === "zone") {
     const groupMap = groupAsMap(machines, machine => machine.zone.name);
-    groups = Array.from(groupMap)
+    return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No zone", machines }))
       .sort(simpleSortByKey("label"));
   }
 
-  groups.forEach(group => {
-    const { label, machines } = group;
-    const collapsed = hiddenGroups.includes(label);
-    rows.push({
-      className: "machine-list__group",
-      columns: [
-        {
-          content: (
-            <>
-              <strong>{label}</strong>
-              <div className="u-text--light">{`
-              ${machines.length} ${pluralize(
-                "machine",
-                machines.length
-              )}`}</div>
-            </>
-          )
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-          className: "machine-list__group-toggle",
-          content: (
-            <Button
-              appearance="base"
-              className="machine-list__group-toggle-button"
-              onClick={() => {
-                if (collapsed) {
-                  setHiddenGroups(
-                    hiddenGroups.filter(group => group !== label)
-                  );
-                } else {
-                  setHiddenGroups(hiddenGroups.concat([label]));
+  return {
+    label: "No grouping",
+    machines
+  };
+};
+
+const generateGroupRows = ({
+  groups,
+  handleGroupCheckbox,
+  hiddenGroups,
+  selectedMachines,
+  setHiddenGroups,
+  ...rowProps
+}) => {
+  let rows = [];
+
+  groups.length &&
+    groups.forEach(group => {
+      const { label, machines } = group;
+      const collapsed = hiddenGroups.includes(label);
+      rows.push({
+        className: "machine-list__group",
+        columns: [
+          {
+            content: (
+              <DoubleRow
+                data-test="group-cell"
+                primary={
+                  <Input
+                    checked={groupChecked(group, selectedMachines)}
+                    className="has-inline-label"
+                    disabled={false}
+                    id={label}
+                    label={<strong>{label}</strong>}
+                    name={label}
+                    onChange={() => handleGroupCheckbox(group)}
+                    type="checkbox"
+                    wrapperClassName="u-no-margin--bottom"
+                  />
                 }
-              }}
-            >
-              {collapsed ? (
-                <i className="p-icon--plus">Show</i>
-              ) : (
-                <i className="p-icon--minus">Hide</i>
-              )}
-            </Button>
-          )
-        }
-      ]
+                primaryTextClassName="u-nudge--checkbox"
+                secondary={`${machines.length} ${pluralize(
+                  "machine",
+                  machines.length
+                )}`}
+                secondaryClassName="u-nudge--secondary-row"
+              />
+            )
+          },
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {
+            content: (
+              <div className="machine-list__group-toggle">
+                <Button
+                  appearance="base"
+                  dense
+                  hasIcon
+                  onClick={() => {
+                    if (collapsed) {
+                      setHiddenGroups(
+                        hiddenGroups.filter(group => group !== label)
+                      );
+                    } else {
+                      setHiddenGroups(hiddenGroups.concat([label]));
+                    }
+                  }}
+                >
+                  {collapsed ? (
+                    <i className="p-icon--plus">Show</i>
+                  ) : (
+                    <i className="p-icon--minus">Hide</i>
+                  )}
+                </Button>
+              </div>
+            )
+          }
+        ]
+      });
+      const visibleMachines = collapsed ? [] : machines;
+      rows = rows.concat(
+        generateRows({
+          machines: visibleMachines,
+          selectedMachines,
+          ...rowProps
+        })
+      );
     });
-    const visibleMachines = collapsed ? [] : machines;
-    rows = rows.concat(
-      generateRows({ machines: visibleMachines, ...rowProps })
-    );
-  });
   return rows;
 };
 
 const MachineList = () => {
   const dispatch = useDispatch();
+  const machines = useSelector(machineSelectors.all);
+  const machinesLoaded = useSelector(machineSelectors.loaded);
+  const machinesLoading = useSelector(machineSelectors.loading);
 
   const [currentSort, setCurrentSort] = useState({
     key: "fqdn",
     direction: "descending"
   });
   const [grouping, setGrouping] = useState("status");
+  const [groups, setGroups] = useState(generateGroups(grouping, machines));
   const [hiddenGroups, setHiddenGroups] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
   const [selectedMachines, setSelectedMachines] = useState([]);
-
-  const machines = useSelector(machineSelectors.all);
-  const machinesLoaded = useSelector(machineSelectors.loaded);
-  const machinesLoading = useSelector(machineSelectors.loading);
 
   useWindowTitle("Machines");
 
@@ -400,6 +432,10 @@ const MachineList = () => {
     dispatch(zoneActions.fetch());
   }, [dispatch, machinesLoaded]);
 
+  useEffect(() => {
+    setGroups(generateGroups(grouping, machines));
+  }, [grouping, machines]);
+
   // Update sort parameters depending on whether the same sort key was clicked.
   const updateSort = newSortKey => {
     const { key, direction } = currentSort;
@@ -415,20 +451,46 @@ const MachineList = () => {
     }
   };
 
-  const handleCheckbox = e => {
-    const machineId = e.target.name;
-    if (selectedMachines.includes(machineId)) {
-      setSelectedMachines(selectedMachines.filter(id => id !== machineId));
+  const handleMachineCheckbox = machine => {
+    if (selectedMachines.includes(machine)) {
+      setSelectedMachines(selectedMachines.filter(m => m !== machine));
     } else {
-      setSelectedMachines([...selectedMachines, machineId]);
+      setSelectedMachines([...selectedMachines, machine]);
     }
+  };
+
+  const handleGroupCheckbox = group => {
+    let newSelectedMachines;
+    if (groupChecked(group, selectedMachines)) {
+      // Unselect all machines in the group if all selected
+      newSelectedMachines = group.machines.reduce(
+        (acc, machine) => {
+          if (acc.includes(machine)) {
+            return acc.filter(m => m !== machine);
+          }
+          return acc;
+        },
+        [...selectedMachines]
+      );
+    } else {
+      // Select all machines if at least one not selected
+      newSelectedMachines = group.machines.reduce(
+        (acc, machine) => {
+          if (!acc.includes(machine)) {
+            return [...acc, machine];
+          }
+          return acc;
+        },
+        [...selectedMachines]
+      );
+    }
+    setSelectedMachines(newSelectedMachines);
   };
 
   const rowProps = {
     activeRow,
     currentSort,
-    handleCheckbox,
-    selectedMachines,
+    handleMachineCheckbox,
     setActiveRow,
     showMAC
   };
@@ -481,7 +543,7 @@ const MachineList = () => {
               headers={[
                 {
                   content: (
-                    <>
+                    <div className="u-nudge--checkbox">
                       <TableHeader
                         currentSort={currentSort}
                         data-test="fqdn-header"
@@ -506,7 +568,7 @@ const MachineList = () => {
                         MAC
                       </TableHeader>
                       <TableHeader>IP</TableHeader>
-                    </>
+                    </div>
                   )
                 },
                 {
@@ -654,11 +716,12 @@ const MachineList = () => {
               paginate={150}
               rows={
                 grouping === "none"
-                  ? generateRows({ machines, ...rowProps })
-                  : generateGroups({
-                      grouping,
+                  ? generateRows({ machines, selectedMachines, ...rowProps })
+                  : generateGroupRows({
+                      groups,
+                      handleGroupCheckbox,
                       hiddenGroups,
-                      machines,
+                      selectedMachines,
                       setHiddenGroups,
                       ...rowProps
                     })

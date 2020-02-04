@@ -107,8 +107,7 @@ const NameColumn = ({
       disabled={!canEdit}
       id={systemId}
       label={primaryRow}
-      name={systemId}
-      onChange={handleCheckbox}
+      onChange={() => handleCheckbox(machine)}
       type="checkbox"
       wrapperClassName="u-no-margin--bottom"
     />
