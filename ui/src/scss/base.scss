@@ -54,4 +54,8 @@ body {
 
 a:visited {
   color: $color-link;
+
+  &.p-contextual-menu__link {
+    color: $color-dark;
+  }
 }

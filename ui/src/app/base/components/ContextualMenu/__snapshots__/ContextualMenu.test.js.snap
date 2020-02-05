@@ -26,7 +26,6 @@ exports[`ContextualMenu  renders 1`] = `
       >
         <span
           className="p-contextual-menu"
-          style={null}
         >
           <span
             aria-hidden="false"

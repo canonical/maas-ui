@@ -66,7 +66,7 @@ describe("PoolForm", () => {
       </Provider>
     );
     wrapper.unmount();
-    expect(store.getActions()[2]).toEqual({
+    expect(store.getActions()[0]).toEqual({
       type: "CLEANUP_RESOURCEPOOL"
     });
   });
@@ -106,7 +106,7 @@ describe("PoolForm", () => {
           {}
         )
     );
-    expect(store.getActions()[2]).toEqual({
+    expect(store.getActions()[0]).toEqual({
       type: "CREATE_RESOURCEPOOL",
       payload: {
         params: {

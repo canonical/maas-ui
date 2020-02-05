@@ -4,7 +4,7 @@ import React from "react";
 
 import "./FormCard.scss";
 
-export const FormCard = ({ children, stacked, title }) => {
+export const FormCard = ({ children, sidebar = true, stacked, title }) => {
   const titleNode = <h4 className="form-card__title">{title}</h4>;
   const content = stacked ? (
     <>
@@ -14,7 +14,7 @@ export const FormCard = ({ children, stacked, title }) => {
   ) : (
     <Row>
       <Col size="2">{titleNode}</Col>
-      <Col size="8">{children}</Col>
+      <Col size={sidebar ? "8" : "10"}>{children}</Col>
     </Row>
   );
   return (

@@ -11,27 +11,25 @@ const getPositionStyle = (position, wrapper) => {
   }
 
   const dimensions = wrapper.current.getBoundingClientRect();
-  const { x, y, height, width } = dimensions;
-  let left = x + window.scrollX || 0;
-  let top = y + window.scrollY || 0;
-  let right = "auto";
-  top += height;
+  const { bottom, left, width } = dimensions;
+  const topPos = bottom + (window.scrollY || 0);
+  let leftPos = left;
 
   switch (position) {
-    case "center":
-      left += width / 2;
-      break;
     case "left":
+      leftPos = left;
+      break;
+    case "center":
+      leftPos = left + width / 2;
       break;
     case "right":
-      right = (window.innerWidth || 0) - left - width;
-      left = "auto";
+      leftPos = left + width;
       break;
     default:
       break;
   }
 
-  return { position: "absolute", left, right, top };
+  return { position: "absolute", left: leftPos, top: topPos };
 };
 
 const generateLink = (
@@ -58,6 +56,7 @@ const generateLink = (
 
 const ContextualMenu = ({
   className,
+  dropdownClassName,
   hasToggleIcon,
   links,
   onToggleMenu,
@@ -69,7 +68,6 @@ const ContextualMenu = ({
 }) => {
   const id = useRef(nanoid());
   const wrapper = useRef(null);
-  const positionStyle = useRef(null);
   const hasToggle = hasToggleIcon || toggleLabel;
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
     isOpen: !hasToggle
@@ -81,6 +79,7 @@ const ContextualMenu = ({
       .filter(Boolean)
       .join("--")
   );
+  const positionStyle = getPositionStyle(position, wrapper);
 
   useEffect(() => {
     onToggleMenu && onToggleMenu(isOpen);
@@ -88,23 +87,9 @@ const ContextualMenu = ({
     // redefined on a state update which causes an infinite loop here.
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Only update the styles when the toggle is visible otherwise subsequent
-  // rerenders can result in a race condition while the toggle is hidden.
-  useEffect(() => {
-    if (isOpen) {
-      let style;
-      if (wrapper && wrapper.current) {
-        style = window.getComputedStyle(wrapper.current);
-      }
-      if (style && style.display !== "none") {
-        positionStyle.current = getPositionStyle(position, wrapper);
-      }
-    }
-  }, [isOpen, position]);
-
   return (
     <span className={wrapperClass} ref={wrapper}>
-      {hasToggle ? (
+      {hasToggle && (
         <Button
           appearance={toggleAppearance}
           aria-controls={id.current}
@@ -126,12 +111,15 @@ const ContextualMenu = ({
           ) : null}
           {toggleLabelFirst ? null : labelNode}
         </Button>
-      ) : null}
+      )}
       {isOpen && (
         <Portal>
-          <span className={wrapperClass} style={positionStyle.current}>
+          <span className={wrapperClass} style={positionStyle}>
             <span
-              className="p-contextual-menu__dropdown"
+              className={classNames(
+                "p-contextual-menu__dropdown",
+                dropdownClassName
+              )}
               id={id.current}
               aria-hidden={isOpen ? "false" : "true"}
               aria-label="submenu"

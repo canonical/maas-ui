@@ -78,7 +78,11 @@ export const App = () => {
         title={
           <>
             <span className="p-heading--four"></span>
-            <Loader inline text="Loading..." />
+            <Loader
+              className="u-no-padding u-no-margin"
+              inline
+              text="Loading..."
+            />
           </>
         }
       />
