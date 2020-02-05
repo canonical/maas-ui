@@ -10,6 +10,19 @@ resourcepool.fetch = () => {
   };
 };
 
+resourcepool.create = params => {
+  return {
+    type: "CREATE_RESOURCEPOOL",
+    meta: {
+      model: "resourcepool",
+      method: "create"
+    },
+    payload: {
+      params
+    }
+  };
+};
+
 resourcepool.delete = id => {
   return {
     type: "DELETE_RESOURCEPOOL",

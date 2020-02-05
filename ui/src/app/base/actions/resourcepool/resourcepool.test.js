@@ -11,6 +11,24 @@ describe("resourcepool actions", () => {
     });
   });
 
+  it("can handle creating resource pools", () => {
+    expect(
+      resourcepool.create({ name: "pool1", description: "a pool" })
+    ).toEqual({
+      type: "CREATE_RESOURCEPOOL",
+      meta: {
+        model: "resourcepool",
+        method: "create"
+      },
+      payload: {
+        params: {
+          name: "pool1",
+          description: "a pool"
+        }
+      }
+    });
+  });
+
   it("can handle deleting resource pools", () => {
     expect(resourcepool.delete(808)).toEqual({
       type: "DELETE_RESOURCEPOOL",
