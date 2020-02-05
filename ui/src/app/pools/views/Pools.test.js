@@ -49,9 +49,7 @@ describe("Pools", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <Pools />
         </MemoryRouter>
       </Provider>
@@ -73,9 +71,7 @@ describe("Pools", () => {
     ];
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <Pools />
         </MemoryRouter>
       </Provider>
@@ -102,9 +98,7 @@ describe("Pools", () => {
     ];
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <Pools />
         </MemoryRouter>
       </Provider>
@@ -115,6 +109,88 @@ describe("Pools", () => {
         .first()
         .props().disabled
     ).toBe(false);
+  });
+
+  it("can show a delete confirmation", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    state.resourcepool.items = [
+      {
+        id: 0,
+        name: "squambo",
+        description: "a pool",
+        is_default: false,
+        permissions: ["delete"]
+      }
+    ];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    let row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(false);
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    row = wrapper.find("MainTable").prop("rows")[0];
+    expect(row.expanded).toBe(true);
+  });
+
+  it("can delete a pool", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    state.resourcepool.items = [
+      {
+        id: 2,
+        name: "squambo",
+        description: "a pool",
+        is_default: false,
+        permissions: ["delete"]
+      }
+    ];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click on the delete button:
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(1)
+      .simulate("click");
+    // Click on the delete confirm button
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button")
+      .at(3)
+      .simulate("click");
+
+    expect(store.getActions()[2]).toEqual({
+      type: "DELETE_RESOURCEPOOL",
+      payload: {
+        params: {
+          id: 2
+        }
+      },
+      meta: {
+        model: "resourcepool",
+        method: "delete"
+      }
+    });
   });
 
   it("disables the delete button for default pools", () => {
@@ -131,9 +207,7 @@ describe("Pools", () => {
     ];
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <Pools />
         </MemoryRouter>
       </Provider>

@@ -10,4 +10,25 @@ resourcepool.fetch = () => {
   };
 };
 
+resourcepool.delete = id => {
+  return {
+    type: "DELETE_RESOURCEPOOL",
+    meta: {
+      model: "resourcepool",
+      method: "delete"
+    },
+    payload: {
+      params: {
+        id
+      }
+    }
+  };
+};
+
+resourcepool.cleanup = () => {
+  return {
+    type: "CLEANUP_RESOURCEPOOL"
+  };
+};
+
 export default resourcepool;

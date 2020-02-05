@@ -6,7 +6,9 @@ describe("resourcepool reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -19,7 +21,9 @@ describe("resourcepool reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -43,7 +47,9 @@ describe("resourcepool reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_RESOURCEPOOL_SUCCESS",
@@ -54,7 +60,9 @@ describe("resourcepool reducer", () => {
       errors: {},
       items: payload,
       loading: false,
-      loaded: true
+      loaded: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -77,6 +85,57 @@ describe("resourcepool reducer", () => {
       items: [],
       loaded: false,
       loading: false
+    });
+  });
+
+  it("should correctly reduce DELETE_RESOURCEPOOL_START", () => {
+    expect(
+      resourcepool(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "DELETE_RESOURCEPOOL_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_RESOURCEPOOL_ERROR", () => {
+    expect(
+      resourcepool(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not delete",
+          type: "DELETE_RESOURCEPOOL_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not delete",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });
