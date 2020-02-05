@@ -8,10 +8,6 @@ exports[`PoolColumn renders 1`] = `
     menuLinks={
       Array [
         Object {
-          "children": "default",
-          "onClick": [Function],
-        },
-        Object {
           "children": "Backup",
           "onClick": [Function],
         },
@@ -71,10 +67,6 @@ exports[`PoolColumn renders 1`] = `
             links={
               Array [
                 Object {
-                  "children": "default",
-                  "onClick": [Function],
-                },
-                Object {
                   "children": "Backup",
                   "onClick": [Function],
                 },
@@ -89,10 +81,6 @@ exports[`PoolColumn renders 1`] = `
                 Array [
                   "Change pool:",
                   Array [
-                    Object {
-                      "children": "default",
-                      "onClick": [Function],
-                    },
                     Object {
                       "children": "Backup",
                       "onClick": [Function],

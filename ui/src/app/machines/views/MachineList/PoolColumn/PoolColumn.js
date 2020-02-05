@@ -1,6 +1,7 @@
+import { Loader } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import {
@@ -11,19 +12,30 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
+  const [updating, setUpdating] = useState(null);
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  let pools = resourcePools.map(pool => ({
-    children: pool.name,
-    onClick: () => {
-      dispatch(machineActions.setPool(systemId, pool.id));
-    }
-  }));
-  if (pools.length === 1) {
+  let pools = resourcePools
+    .filter(pool => pool.id !== machine.pool.id)
+    .map(pool => ({
+      children: pool.name,
+      onClick: () => {
+        dispatch(machineActions.setPool(systemId, pool.id));
+        setUpdating(pool.id);
+      }
+    }));
+  if (pools.length === 0) {
     pools = [{ children: "No other pools available", disabled: true }];
   }
+
+  useEffect(() => {
+    if (updating !== null && machine.pool.id === updating) {
+      setUpdating(null);
+    }
+  }, [updating, machine.pool.id]);
+
   return (
     <DoubleRow
       menuLinks={pools}
@@ -31,6 +43,9 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
       onToggleMenu={onToggleMenu}
       primary={
         <span data-test="pool">
+          {updating !== null ? (
+            <Loader className="u-no-margin u-no-padding--left" inline />
+          ) : null}
           <a className="p-link--soft" href="#/pools" title={machine.pool.name}>
             {machine.pool.name}
           </a>

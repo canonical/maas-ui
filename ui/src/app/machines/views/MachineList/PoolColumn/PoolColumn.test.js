@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -22,7 +23,7 @@ describe("PoolColumn", () => {
         items: [
           {
             system_id: "abc123",
-            pool: { name: "default" },
+            pool: { id: 0, name: "default" },
             description: "Firmware old"
           }
         ]
@@ -126,10 +127,12 @@ describe("PoolColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("DoubleRow")
-      .prop("menuLinks")[1]
-      .onClick();
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
     expect(
       store.getActions().find(action => action.type === "SET_MACHINE_POOL")
     ).toEqual({
@@ -148,5 +151,27 @@ describe("PoolColumn", () => {
         }
       }
     });
+  });
+
+  it("shows a spinner when changing pools", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PoolColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(false);
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    wrapper.update();
+    expect(wrapper.find("Loader").exists()).toBe(true);
   });
 });
