@@ -15,6 +15,28 @@ const resourcepool = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "DELETE_RESOURCEPOOL_START":
+        draft.saved = false;
+        draft.saving = true;
+        break;
+      case "DELETE_RESOURCEPOOL_ERROR":
+        draft.errors = action.error;
+        draft.saving = false;
+        break;
+      case "DELETE_RESOURCEPOOL_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
+        draft.saving = false;
+        break;
+      case "DELETE_RESOURCEPOOL_NOTIFY":
+        const index = draft.items.findIndex(item => item.id === action.payload);
+        draft.items.splice(index, 1);
+        break;
+      case "CLEANUP_RESOURCEPOOL":
+        draft.errors = {};
+        draft.saved = false;
+        draft.saving = false;
+        break;
       default:
         return draft;
     }
@@ -23,7 +45,9 @@ const resourcepool = produce(
     errors: {},
     items: [],
     loaded: false,
-    loading: false
+    loading: false,
+    saved: false,
+    saving: false
   }
 );
 

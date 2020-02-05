@@ -43,6 +43,26 @@ describe("resourcepool selectors", () => {
     expect(resourcepool.loaded(state)).toEqual(true);
   });
 
+  it("can get the saving state", () => {
+    const state = {
+      resourcepool: {
+        saving: true,
+        items: []
+      }
+    };
+    expect(resourcepool.saving(state)).toEqual(true);
+  });
+
+  it("can get the saved state", () => {
+    const state = {
+      resourcepool: {
+        saved: true,
+        items: []
+      }
+    };
+    expect(resourcepool.saved(state)).toEqual(true);
+  });
+
   it("can get the errors state", () => {
     const state = {
       resourcepool: {

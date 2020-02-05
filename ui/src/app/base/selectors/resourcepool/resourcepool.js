@@ -28,4 +28,18 @@ resourcepool.loaded = state => state.resourcepool.loaded;
  */
 resourcepool.errors = state => state.resourcepool.errors;
 
+/**
+ * Get the saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether resource pools are being saved.
+ */
+resourcepool.saving = state => state.resourcepool.saving;
+
+/**
+ * Get the saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether resource pools have been saved.
+ */
+resourcepool.saved = state => state.resourcepool.saved;
+
 export default resourcepool;
