@@ -1,7 +1,4 @@
-$breakpoint-first: 600px;
-$breakpoint-second: 900px;
-$breakpoint-third: 1030px;
-$breakpoint-fourth: 1360px;
+@import "./settings";
 
 @mixin breakpoint-widths(
   $width-one,

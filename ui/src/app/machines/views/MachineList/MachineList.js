@@ -76,13 +76,16 @@ const machineSort = currentSort => {
   };
 };
 
-const generateRows = ({
-  activeRow,
-  currentSort,
-  machines,
-  setActiveRow,
-  showMAC
-}) => {
+const generateRows = ({ machines, ...rowProps }) => {
+  const {
+    activeRow,
+    currentSort,
+    handleCheckbox,
+    selectedMachines,
+    setActiveRow,
+    showMAC
+  } = rowProps;
+
   const sortedMachines = [...machines].sort(machineSort(currentSort));
   return sortedMachines.map(row => {
     const isActive = activeRow === row.system_id;
@@ -102,7 +105,9 @@ const generateRows = ({
         {
           content: (
             <NameColumn
+              handleCheckbox={handleCheckbox}
               onToggleMenu={onToggleMenu}
+              selected={selectedMachines.includes(row.system_id)}
               showMAC={showMAC}
               systemId={row.system_id}
             />
@@ -173,14 +178,11 @@ const generateRows = ({
 };
 
 const generateGroups = ({
-  activeRow,
-  currentSort,
   grouping,
   hiddenGroups,
   machines,
-  setActiveRow,
   setHiddenGroups,
-  showMAC
+  ...rowProps
 }) => {
   let groups = [];
   let rows = [];
@@ -356,13 +358,7 @@ const generateGroups = ({
     });
     const visibleMachines = collapsed ? [] : machines;
     rows = rows.concat(
-      generateRows({
-        activeRow,
-        currentSort,
-        machines: visibleMachines,
-        setActiveRow,
-        showMAC
-      })
+      generateRows({ machines: visibleMachines, ...rowProps })
     );
   });
   return rows;
@@ -379,6 +375,7 @@ const MachineList = () => {
   const [hiddenGroups, setHiddenGroups] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
+  const [selectedMachines, setSelectedMachines] = useState([]);
 
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -416,6 +413,24 @@ const MachineList = () => {
     } else {
       setCurrentSort({ key: newSortKey, direction: "descending" });
     }
+  };
+
+  const handleCheckbox = e => {
+    const machineId = e.target.name;
+    if (selectedMachines.includes(machineId)) {
+      setSelectedMachines(selectedMachines.filter(id => id !== machineId));
+    } else {
+      setSelectedMachines([...selectedMachines, machineId]);
+    }
+  };
+
+  const rowProps = {
+    activeRow,
+    currentSort,
+    handleCheckbox,
+    selectedMachines,
+    setActiveRow,
+    showMAC
   };
 
   return (
@@ -639,22 +654,13 @@ const MachineList = () => {
               paginate={150}
               rows={
                 grouping === "none"
-                  ? generateRows({
-                      activeRow,
-                      currentSort,
-                      machines,
-                      setActiveRow,
-                      showMAC
-                    })
+                  ? generateRows({ machines, ...rowProps })
                   : generateGroups({
-                      activeRow,
-                      currentSort,
                       grouping,
                       hiddenGroups,
                       machines,
-                      setActiveRow,
                       setHiddenGroups,
-                      showMAC
+                      ...rowProps
                     })
               }
             />

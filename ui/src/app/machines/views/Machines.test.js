@@ -54,6 +54,7 @@ describe("Machines", () => {
               status: scriptStatus.PASSED
             },
             osystem: "ubuntu",
+            permissions: ["edit", "delete"],
             physical_disk_count: 1,
             pool: {},
             pxe_mac: "00:11:22:33:44:55",

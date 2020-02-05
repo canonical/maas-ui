@@ -55,6 +55,7 @@ describe("MachineList", () => {
             },
             osystem: "ubuntu",
             owner: "admin",
+            permissions: ["edit", "delete"],
             physical_disk_count: 1,
             pool: {},
             pxe_mac: "00:11:22:33:44:55",
@@ -95,6 +96,7 @@ describe("MachineList", () => {
             },
             osystem: "ubuntu",
             owner: "user",
+            permissions: ["edit", "delete"],
             physical_disk_count: 2,
             pool: {},
             pxe_mac: "66:77:88:99:00:11",
@@ -414,5 +416,37 @@ describe("MachineList", () => {
         .at(0)
         .text()
     ).toEqual(firstMachine.fqdn);
+  });
+
+  it("can select machines", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("[data-test='name-column'] input")
+        .at(0)
+        .props().checked
+    ).toBe(false);
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id }
+      });
+    expect(
+      wrapper
+        .find("[data-test='name-column'] input")
+        .at(0)
+        .props().checked
+    ).toBe(true);
   });
 });
