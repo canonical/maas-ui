@@ -1,9 +1,14 @@
-import { useSelector } from "react-redux";
-import React from "react";
+import { Loader } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Tooltip from "app/base/components/Tooltip";
-import { machine as machineSelectors } from "app/base/selectors";
+import { machine as machineActions } from "app/base/actions";
+import {
+  machine as machineSelectors,
+  zone as zoneSelectors
+} from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const getSpaces = machine => {
@@ -19,13 +24,44 @@ const getSpaces = machine => {
 };
 
 const ZoneColumn = ({ onToggleMenu, systemId }) => {
+  const dispatch = useDispatch();
+  const [updating, setUpdating] = useState(null);
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
+  const zones = useSelector(zoneSelectors.all);
+  let zoneLinks = zones
+    .filter(zone => zone.id !== machine.zone.id)
+    .map(zone => ({
+      children: zone.name,
+      onClick: () => {
+        dispatch(machineActions.setZone(systemId, zone.id));
+        setUpdating(zone.id);
+      }
+    }));
+  if (zoneLinks.length === 0) {
+    zoneLinks = [{ children: "No other zones available", disabled: true }];
+  }
+
+  useEffect(() => {
+    if (updating !== null && machine.zone.id === updating) {
+      setUpdating(null);
+    }
+  }, [updating, machine.zone.id]);
+
   return (
     <DoubleRow
+      menuLinks={zoneLinks}
+      menuTitle="Change AZ:"
       onToggleMenu={onToggleMenu}
-      primary={<span data-test="zone">{machine.zone.name}</span>}
+      primary={
+        <span data-test="zone">
+          {updating !== null ? (
+            <Loader className="u-no-margin u-no-padding--left" inline />
+          ) : null}
+          {machine.zone.name}
+        </span>
+      }
       secondary={getSpaces(machine)}
     />
   );

@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -22,8 +23,21 @@ describe("ZoneColumn", () => {
         items: [
           {
             system_id: "abc123",
-            zone: { name: "zone-north" },
+            zone: { name: "zone-north", id: 0 },
             spaces: ["management"]
+          }
+        ]
+      },
+      zone: {
+        loaded: true,
+        items: [
+          {
+            id: 0,
+            name: "default"
+          },
+          {
+            id: 1,
+            name: "Backup"
           }
         ]
       }
@@ -109,5 +123,64 @@ describe("ZoneColumn", () => {
     expect(wrapper.find("Tooltip").prop("message")).toEqual(
       "space1\nspace2\nspace3"
     );
+  });
+
+  it("can change zones", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ZoneColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    expect(
+      store.getActions().find(action => action.type === "SET_MACHINE_ZONE")
+    ).toEqual({
+      type: "SET_MACHINE_ZONE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "set-zone",
+          extra: {
+            zone_id: 1
+          },
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("shows a spinner when changing zones", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ZoneColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(false);
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    wrapper.update();
+    expect(wrapper.find("Loader").exists()).toBe(true);
   });
 });

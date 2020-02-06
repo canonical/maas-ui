@@ -29,4 +29,23 @@ machine.setPool = (systemId, poolId) => {
   };
 };
 
+machine.setZone = (systemId, zoneId) => {
+  return {
+    type: "SET_MACHINE_ZONE",
+    meta: {
+      model: "machine",
+      method: "action"
+    },
+    payload: {
+      params: {
+        action: "set-zone",
+        extra: {
+          zone_id: zoneId
+        },
+        system_id: systemId
+      }
+    }
+  };
+};
+
 export default machine;

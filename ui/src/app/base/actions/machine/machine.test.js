@@ -29,4 +29,23 @@ describe("machine actions", () => {
       }
     });
   });
+
+  it("can handle setting the zone", () => {
+    expect(machine.setZone("abc123", 909)).toEqual({
+      type: "SET_MACHINE_ZONE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "set-zone",
+          extra: {
+            zone_id: 909
+          },
+          system_id: "abc123"
+        }
+      }
+    });
+  });
 });

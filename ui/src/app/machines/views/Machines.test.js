@@ -77,6 +77,19 @@ describe("Machines", () => {
       resourcepool: {
         loaded: false,
         items: [1, 2]
+      },
+      zone: {
+        loaded: true,
+        items: [
+          {
+            id: 0,
+            name: "default"
+          },
+          {
+            id: 1,
+            name: "Backup"
+          }
+        ]
       }
     };
   });
