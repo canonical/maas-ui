@@ -54,6 +54,11 @@ export const api = {
       });
     },
     login: credentials => {
+      const params = {
+        username: credentials.username,
+        password: credentials.password
+      };
+
       return fetch(LOGIN_API, {
         method: "POST",
         mode: "no-cors",
@@ -63,9 +68,7 @@ export const api = {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest"
         }),
-        body: Object.keys(credentials)
-          .map(key => key + "=" + credentials[key])
-          .join("&")
+        body: new URLSearchParams(Object.entries(params))
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
