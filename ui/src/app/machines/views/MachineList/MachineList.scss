@@ -29,12 +29,10 @@
 }
 
 .machine-list__group-toggle {
-  text-align: right;
-  vertical-align: middle;
-}
-
-.machine-list__group-toggle-button {
-  display: inline-block;
+  align-items: center;
+  display: flex;
+  height: 3rem;
+  justify-content: flex-end;
 }
 
 .machine-list td,

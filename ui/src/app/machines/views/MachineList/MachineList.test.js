@@ -449,4 +449,122 @@ describe("MachineList", () => {
         .props().checked
     ).toBe(true);
   });
+
+  it("can select all machines in a group if at least one is unselected", () => {
+    const state = { ...initialState };
+    state.machine.items[1].status_code = nodeStatus.DEPLOYED;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Select a single machine
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id }
+      });
+    expect(
+      wrapper.find("[data-test='name-column'] input[checked=true]").length
+    ).toBe(1);
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(0);
+    // Check the group checkbox
+    wrapper
+      .find("[data-test='group-cell'] input")
+      .at(0)
+      .simulate("change");
+    expect(
+      wrapper.find("[data-test='name-column'] input[checked=true]").length
+    ).toBe(2);
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(1);
+  });
+
+  it("unselects all machines in a group if all are selected", () => {
+    const state = { ...initialState };
+    state.machine.items[1].status_code = nodeStatus.DEPLOYED;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Select both machines
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id }
+      });
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(1)
+      .simulate("change", {
+        target: { name: state.machine.items[1].system_id }
+      });
+    expect(
+      wrapper.find("[data-test='name-column'] input[checked=true]").length
+    ).toBe(2);
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(1);
+    // Check the group checkbox
+    wrapper
+      .find("[data-test='group-cell'] input")
+      .at(0)
+      .simulate("change");
+    expect(
+      wrapper.find("[data-test='name-column'] input[checked=true]").length
+    ).toBe(0);
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(0);
+  });
+
+  it(`unchecks the group checkbox if at least one machine in group is not
+    selected`, () => {
+    const state = { ...initialState };
+    state.machine.items[1].status_code = nodeStatus.DEPLOYED;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Select all machines in group
+    wrapper
+      .find("[data-test='group-cell'] input")
+      .at(0)
+      .simulate("change");
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(1);
+    // Unselect one machine
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id }
+      });
+    expect(
+      wrapper.find("[data-test='group-cell'] input[checked=true]").length
+    ).toBe(0);
+  });
 });
