@@ -128,6 +128,19 @@ describe("MachineList", () => {
             name: "Backup"
           }
         ]
+      },
+      zone: {
+        loaded: true,
+        items: [
+          {
+            id: 0,
+            name: "default"
+          },
+          {
+            id: 1,
+            name: "Backup"
+          }
+        ]
       }
     };
   });
