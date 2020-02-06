@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rootReducer should reset app to initial state on LOGOUT_SUCCESS, except status which
+    resets to authenticating = false 1`] = `
+Object {
+  "config": Object {
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "controller": Object {
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "device": Object {
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "dhcpsnippet": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "general": Object {
+    "architectures": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "componentsToDisable": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "defaultMinHweKernel": Object {
+      "data": "",
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "hweKernels": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "knownArchitectures": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "machineActions": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "navigationOptions": Object {
+      "data": Object {},
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "osInfo": Object {
+      "data": Object {},
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "pocketsToDisable": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "powerTypes": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+    "version": Object {
+      "data": "",
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
+  },
+  "licensekeys": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "machine": Object {
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "messages": Object {
+    "items": Array [],
+  },
+  "packagerepository": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "resourcepool": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "router": Object {
+    "action": undefined,
+    "location": Object {
+      "query": Object {},
+    },
+  },
+  "scripts": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "service": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "sshkey": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "sslkey": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "status": Object {
+    "authenticated": false,
+    "authenticating": false,
+  },
+  "subnet": Object {
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "tag": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+  "token": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "user": Object {
+    "auth": Object {},
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "zone": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
+}
+`;
