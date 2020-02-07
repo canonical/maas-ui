@@ -24,7 +24,7 @@ import {
 import { config } from "./app/settings/reducers";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
-export default history =>
+const createAppReducer = history =>
   combineReducers({
     config,
     controller,
@@ -48,3 +48,17 @@ export default history =>
     user: reduceReducers(user, auth),
     zone
   });
+
+const createRootReducer = history => (state, action) => {
+  if (action.type === "LOGOUT_SUCCESS") {
+    return createAppReducer(history)(
+      // Status reducer defaults to authenticating = true to stop login screen
+      // flashing. It's overwritten here otherwise app is stuck loading.
+      { status: { authenticating: false } },
+      action
+    );
+  }
+  return createAppReducer(history)(state, action);
+};
+
+export default createRootReducer;
