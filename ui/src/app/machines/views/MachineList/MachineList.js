@@ -58,8 +58,25 @@ const getSortValue = (machine, sortKey) => {
   }
 };
 
-const groupChecked = (group, selectedMachines) =>
-  group.machines.every(machine => selectedMachines.includes(machine));
+const getGroupSecondaryString = (machines, selectedMachines) => {
+  let string = `${machines.length} ${pluralize("machine", machines.length)}`;
+  const selectedCount = machines.reduce(
+    (sum, machine) => (selectedMachines.includes(machine) ? sum + 1 : sum),
+    0
+  );
+
+  if (selectedCount) {
+    if (selectedCount === machines.length) {
+      string = `${string} selected`;
+    } else {
+      string = `${string}, ${selectedCount} selected`;
+    }
+  }
+  return string;
+};
+
+const checkboxChecked = (machines, selectedMachines) =>
+  machines.every(machine => selectedMachines.includes(machine));
 
 const machineSort = currentSort => {
   const { key, direction } = currentSort;
@@ -327,22 +344,18 @@ const generateGroupRows = ({
                 data-test="group-cell"
                 primary={
                   <Input
-                    checked={groupChecked(group, selectedMachines)}
+                    checked={checkboxChecked(machines, selectedMachines)}
                     className="has-inline-label"
                     disabled={false}
                     id={label}
                     label={<strong>{label}</strong>}
-                    name={label}
                     onChange={() => handleGroupCheckbox(group)}
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom"
                   />
                 }
                 primaryTextClassName="u-nudge--checkbox"
-                secondary={`${machines.length} ${pluralize(
-                  "machine",
-                  machines.length
-                )}`}
+                secondary={getGroupSecondaryString(machines, selectedMachines)}
                 secondaryClassName="u-nudge--secondary-row"
               />
             )
@@ -461,7 +474,7 @@ const MachineList = () => {
 
   const handleGroupCheckbox = group => {
     let newSelectedMachines;
-    if (groupChecked(group, selectedMachines)) {
+    if (checkboxChecked(group.machines, selectedMachines)) {
       // Unselect all machines in the group if all selected
       newSelectedMachines = group.machines.reduce(
         (acc, machine) => {
@@ -485,6 +498,14 @@ const MachineList = () => {
       );
     }
     setSelectedMachines(newSelectedMachines);
+  };
+
+  const handleAllCheckbox = () => {
+    if (checkboxChecked(machines, selectedMachines)) {
+      setSelectedMachines([]);
+    } else {
+      setSelectedMachines(machines);
+    }
   };
 
   const rowProps = {
@@ -543,31 +564,44 @@ const MachineList = () => {
               headers={[
                 {
                   content: (
-                    <div className="u-nudge--checkbox">
-                      <TableHeader
-                        currentSort={currentSort}
-                        data-test="fqdn-header"
-                        onClick={() => {
-                          setShowMAC(false);
-                          updateSort("fqdn");
-                        }}
-                        sortKey="fqdn"
-                      >
-                        FQDN
-                      </TableHeader>
-                      &nbsp;<strong>|</strong>&nbsp;
-                      <TableHeader
-                        currentSort={currentSort}
-                        data-test="mac-header"
-                        onClick={() => {
-                          setShowMAC(true);
-                          updateSort("pxe_mac");
-                        }}
-                        sortKey="pxe_mac"
-                      >
-                        MAC
-                      </TableHeader>
-                      <TableHeader>IP</TableHeader>
+                    <div className="u-equal-height u-nudge--checkbox">
+                      <Input
+                        checked={checkboxChecked(machines, selectedMachines)}
+                        className="has-inline-label"
+                        data-test="all-machines-checkbox"
+                        disabled={false}
+                        id="all-machines-checkbox"
+                        label={" "}
+                        onChange={() => handleAllCheckbox()}
+                        type="checkbox"
+                        wrapperClassName="u-no-margin--bottom"
+                      />
+                      <div>
+                        <TableHeader
+                          currentSort={currentSort}
+                          data-test="fqdn-header"
+                          onClick={() => {
+                            setShowMAC(false);
+                            updateSort("fqdn");
+                          }}
+                          sortKey="fqdn"
+                        >
+                          FQDN
+                        </TableHeader>
+                        &nbsp;<strong>|</strong>&nbsp;
+                        <TableHeader
+                          currentSort={currentSort}
+                          data-test="mac-header"
+                          onClick={() => {
+                            setShowMAC(true);
+                            updateSort("pxe_mac");
+                          }}
+                          sortKey="pxe_mac"
+                        >
+                          MAC
+                        </TableHeader>
+                        <TableHeader>IP</TableHeader>
+                      </div>
                     </div>
                   )
                 },
