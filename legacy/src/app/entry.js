@@ -347,7 +347,7 @@ const renderHeader = ($rootScope, $window, $http) => {
       logout={() => {
         localStorage.clear();
         $http.post(LOGOUT_API).then(() => {
-          $window.location.href = process.env.BASENAME;
+          $window.location.href = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
         });
       }}
       newURLPrefix={process.env.REACT_BASENAME}
