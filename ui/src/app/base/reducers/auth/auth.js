@@ -31,7 +31,7 @@ const auth = produce(
       case "UPDATE_USER_NOTIFY":
         // Check to see whether the auth user has been updated and if so
         // update the stored auth user.
-        if (draft.auth.user.id === action.payload.id) {
+        if (draft.auth.user && draft.auth.user.id === action.payload.id) {
           draft.auth.user = action.payload;
         }
         break;
