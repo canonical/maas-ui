@@ -11,7 +11,7 @@ const mockStore = configureStore();
 describe("PoolAdd", () => {
   let state;
   beforeEach(() => {
-   state = {
+    state = {
       config: {
         items: []
       },
@@ -26,7 +26,7 @@ describe("PoolAdd", () => {
         saved: false,
         items: []
       }
-    }
+    };
   });
 
   it("can render", () => {

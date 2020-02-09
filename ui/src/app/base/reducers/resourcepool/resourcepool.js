@@ -17,7 +17,7 @@ const resourcepool = produce(
         break;
       case "CREATE_RESOURCEPOOL_NOTIFY":
         draft.items.push(action.payload);
-        break
+        break;
       case "CREATE_RESOURCEPOOL_START":
       case "DELETE_RESOURCEPOOL_START":
         draft.saved = false;
