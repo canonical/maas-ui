@@ -1,6 +1,5 @@
-import { Button, Code, Col, Row } from "@canonical/react-components";
+import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useWindowTitle } from "app/base/hooks";
 import React, { useEffect, useState } from "react";
@@ -24,6 +23,7 @@ import { useAddMessage } from "app/base/hooks";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
 import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const getTargetName = (
@@ -109,28 +109,13 @@ const generateRows = (
         { content: updated },
         {
           content: (
-            <>
-              <Button
-                appearance="base"
-                element={Link}
-                to={`/settings/dhcp/${dhcpsnippet.id}/edit`}
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Button
-                appearance="base"
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-                onClick={() => {
-                  setExpandedId(dhcpsnippet.id);
-                  setExpandedType("delete");
-                }}
-              >
-                <i className="p-icon--delete">Delete</i>
-              </Button>
-            </>
+            <TableActions
+              editPath={`/settings/dhcp/${dhcpsnippet.id}/edit`}
+              onDelete={() => {
+                setExpandedId(dhcpsnippet.id);
+                setExpandedType("delete");
+              }}
+            />
           ),
           className: "u-align--right"
         }

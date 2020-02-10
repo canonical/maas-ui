@@ -1,5 +1,4 @@
-import { Button, Notification } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -8,8 +7,8 @@ import { token as tokenActions } from "app/preferences/actions";
 import { token as tokenSelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import CopyButton from "app/base/components/CopyButton";
 import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
@@ -35,28 +34,11 @@ const generateRows = (
         },
         {
           content: (
-            <>
-              <CopyButton value={token} />
-              <Button
-                appearance="base"
-                className="is-dense u-table-cell-padding-overlap"
-                element={Link}
-                hasIcon
-                to={`/account/prefs/api-keys/${id}/edit`}
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Button
-                appearance="base"
-                hasIcon
-                className="is-dense u-table-cell-padding-overlap"
-                onClick={() => {
-                  setExpandedId(id);
-                }}
-              >
-                <i className="p-icon--delete">Delete</i>
-              </Button>
-            </>
+            <TableActions
+              copyValue={token}
+              editPath={`/account/prefs/api-keys/${id}/edit`}
+              onDelete={() => setExpandedId(id)}
+            />
           ),
           className: "u-align--right"
         }

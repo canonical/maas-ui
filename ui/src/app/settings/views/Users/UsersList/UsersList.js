@@ -1,5 +1,4 @@
-import { Button, Notification } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Notification } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
@@ -14,9 +13,9 @@ import {
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
-import Tooltip from "app/base/components/Tooltip";
 
 const generateUserRows = (
   users,
@@ -58,35 +57,16 @@ const generateUserRows = (
         },
         {
           content: (
-            <>
-              <Button
-                appearance="base"
-                element={Link}
-                hasIcon
-                to={
-                  isAuthUser
-                    ? "/account/prefs/details"
-                    : `/settings/users/${user.id}/edit`
-                }
-                className="is-dense u-table-cell-padding-overlap"
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Tooltip
-                position="left"
-                message={isAuthUser && "You cannot delete your own user."}
-              >
-                <Button
-                  appearance="base"
-                  className="is-dense u-table-cell-padding-overlap"
-                  hasIcon
-                  onClick={() => setExpandedId(user.id)}
-                  disabled={isAuthUser}
-                >
-                  <i className="p-icon--delete">Delete</i>
-                </Button>
-              </Tooltip>
-            </>
+            <TableActions
+              deleteDisabled={isAuthUser}
+              deleteTooltip={isAuthUser && "You cannot delete your own user."}
+              editPath={
+                isAuthUser
+                  ? "/account/prefs/details"
+                  : `/settings/users/${user.id}/edit`
+              }
+              onDelete={() => setExpandedId(user.id)}
+            />
           ),
           className: "u-align--right"
         }

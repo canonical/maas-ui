@@ -1,4 +1,4 @@
-import { Button, Code, Col, Row } from "@canonical/react-components";
+import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
@@ -7,12 +7,12 @@ import React, { useEffect, useState } from "react";
 import "./ScriptsList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
-import ColumnToggle from "app/base/components/ColumnToggle";
-import SettingsTable from "app/settings/components/SettingsTable";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { scripts as scriptActions } from "app/base/actions";
 import { scripts as scriptSelectors } from "app/base/selectors";
-import Tooltip from "app/base/components/Tooltip";
+import ColumnToggle from "app/base/components/ColumnToggle";
+import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 const generateRows = (
   scripts,
@@ -81,23 +81,16 @@ const generateRows = (
         { content: uploadedOn },
         {
           content: (
-            <Tooltip
-              position="left"
-              message={script.default && "Default scripts cannot be deleted."}
-            >
-              <Button
-                appearance="base"
-                disabled={script.default}
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-                onClick={() => {
-                  setExpandedId(script.id);
-                  setExpandedType("delete");
-                }}
-              >
-                <i className="p-icon--delete">Delete</i>
-              </Button>
-            </Tooltip>
+            <TableActions
+              deleteDisabled={script.default}
+              deleteTooltip={
+                script.default && "Default scripts cannot be deleted."
+              }
+              onDelete={() => {
+                setExpandedId(script.id);
+                setExpandedType("delete");
+              }}
+            />
           ),
           className: "u-align--right"
         }

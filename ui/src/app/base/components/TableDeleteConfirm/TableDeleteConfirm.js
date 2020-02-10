@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const TableDeleteConfirm = ({
+  sidebar = true,
   message,
   modelName,
   modelType,
@@ -11,7 +12,7 @@ const TableDeleteConfirm = ({
 }) => {
   return (
     <Row>
-      <Col size="7">
+      <Col size={sidebar ? "7" : "9"}>
         <p className="u-no-margin--bottom u-no-max-width">
           {message ||
             `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
