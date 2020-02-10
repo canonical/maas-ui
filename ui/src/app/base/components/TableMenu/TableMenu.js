@@ -9,6 +9,7 @@ const TableMenu = ({ links, title, onToggleMenu }) => {
   return (
     <ContextualMenu
       className="p-table-menu"
+      dropdownClassName="u-no-margin--top"
       hasToggleIcon
       links={[title, links]}
       onToggleMenu={onToggleMenu}

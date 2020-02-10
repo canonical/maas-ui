@@ -13,4 +13,23 @@ describe("FormCard ", () => {
     const wrapper = shallow(<FormCard stacked title="Add user" />);
     expect(wrapper.find("Col").exists()).toBe(false);
   });
+
+  it("decreases col size if sidebar is present", () => {
+    const withoutSidebar = shallow(
+      <FormCard sidebar={false} title="Add user" />
+    );
+    const withSidebar = shallow(<FormCard sidebar title="Add user" />);
+    expect(
+      withoutSidebar
+        .find("Col")
+        .at(1)
+        .props().size
+    ).toBe("10");
+    expect(
+      withSidebar
+        .find("Col")
+        .at(1)
+        .props().size
+    ).toBe("8");
+  });
 });

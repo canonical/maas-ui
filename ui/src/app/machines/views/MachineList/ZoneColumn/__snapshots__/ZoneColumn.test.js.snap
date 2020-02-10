@@ -60,6 +60,7 @@ exports[`ZoneColumn renders 1`] = `
           >
             <ContextualMenu
               className="p-table-menu"
+              dropdownClassName="u-no-margin--top"
               hasToggleIcon={true}
               links={
                 Array [

@@ -1,11 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import {
-  machine as machineActions,
-  resourcepool as poolActions
-} from "app/base/actions";
+import { resourcepool as poolActions } from "app/base/actions";
 import { resourcepool as poolSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
@@ -37,13 +34,8 @@ export const PoolForm = () => {
     setSaving
   );
 
-  useEffect(() => {
-    dispatch(poolActions.fetch());
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
-
   return (
-    <FormCard title={title}>
+    <FormCard sidebar={false} title={title}>
       <FormikForm
         buttons={FormCardButtons}
         errors={errors}
