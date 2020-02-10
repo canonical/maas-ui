@@ -29,5 +29,9 @@
       "prefer-alphabetical-dependencies": "error",
       "prefer-alphabetical-devDependencies": "error"
     }
+  },
+  "dependencies": {
+    "react-scripts": "3.3.1",
+    "webpack-dev-server": "3.10.3"
   }
 }
