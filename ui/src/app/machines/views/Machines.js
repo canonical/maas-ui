@@ -1,7 +1,8 @@
-import { Loader } from "@canonical/react-components";
+import { Button, Row, Col, Loader } from "@canonical/react-components";
 import pluralize from "pluralize";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { useRouter } from "app/base/hooks";
 import {
@@ -24,22 +25,37 @@ const Machines = () => {
       headerClassName="u-no-padding--bottom"
       title={
         <>
-          <ul className="p-inline-list">
-            <li className="p-inline-list__item p-heading--four">Machines</li>
-            {machinesLoaded ? (
-              <li
-                className="p-inline-list__item u-text--light"
-                data-test="machine-count"
-              >
-                {`${machines.length} ${pluralize(
-                  "machine",
-                  machines.length
-                )} available`}
-              </li>
-            ) : (
-              <Loader inline text="Loading..." />
-            )}
-          </ul>
+          <Row>
+            <Col size={10}>
+              <ul className="p-inline-list">
+                <li className="p-inline-list__item p-heading--four">
+                  Machines
+                </li>
+                {machinesLoaded ? (
+                  <li
+                    className="p-inline-list__item u-text--light"
+                    data-test="machine-count"
+                  >
+                    {`${machines.length} ${pluralize(
+                      "machine",
+                      machines.length
+                    )} available`}
+                  </li>
+                ) : (
+                  <Loader inline text="Loading..." />
+                )}
+              </ul>
+            </Col>
+            <Col size={2} className="u-align--right">
+              {location.pathname === "/pools" && (
+                <div>
+                  <Button element={Link} to="/pools/add" key="/pools/add">
+                    Add Pool
+                  </Button>
+                </div>
+              )}
+            </Col>
+          </Row>
           <hr className="u-no-margin--bottom" />
           <Tabs
             data-test="machine-list-tabs"

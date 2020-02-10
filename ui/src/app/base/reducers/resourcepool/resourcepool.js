@@ -15,14 +15,20 @@ const resourcepool = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "CREATE_RESOURCEPOOL_NOTIFY":
+        draft.items.push(action.payload);
+        break;
+      case "CREATE_RESOURCEPOOL_START":
       case "DELETE_RESOURCEPOOL_START":
         draft.saved = false;
         draft.saving = true;
         break;
+      case "CREATE_RESOURCEPOOL_ERROR":
       case "DELETE_RESOURCEPOOL_ERROR":
         draft.errors = action.error;
         draft.saving = false;
         break;
+      case "CREATE_RESOURCEPOOL_SUCCESS":
       case "DELETE_RESOURCEPOOL_SUCCESS":
         draft.errors = {};
         draft.saved = true;
