@@ -30,6 +30,35 @@ describe("machine selectors", () => {
     expect(machine.loaded(state)).toEqual(true);
   });
 
+  it("can get the saving state", () => {
+    const state = {
+      machine: {
+        saving: true,
+        items: []
+      }
+    };
+    expect(machine.saving(state)).toEqual(true);
+  });
+
+  it("can get the saved state", () => {
+    const state = {
+      machine: {
+        saved: true,
+        items: []
+      }
+    };
+    expect(machine.saved(state)).toEqual(true);
+  });
+
+  it("can get the errors state", () => {
+    const state = {
+      machine: {
+        errors: "Data is incorrect"
+      }
+    };
+    expect(machine.errors(state)).toStrictEqual("Data is incorrect");
+  });
+
   it("can get a machine by id", () => {
     const state = {
       machine: {

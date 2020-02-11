@@ -11,6 +11,23 @@ const machine = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "CREATE_MACHINE_START":
+        draft.saved = false;
+        draft.saving = true;
+        break;
+      case "CREATE_MACHINE_SUCCESS":
+        draft.errors = {};
+        draft.saved = true;
+        draft.saving = false;
+        break;
+      case "FETCH_MACHINE_ERROR":
+      case "CREATE_MACHINE_ERROR":
+        draft.errors = action.error;
+        draft.saving = false;
+        break;
+      case "CREATE_MACHINE_NOTIFY":
+        draft.items.push(action.payload);
+        break;
       case "UPDATE_MACHINE_NOTIFY":
         for (let i in draft.items) {
           if (draft.items[i].id === action.payload.id) {
@@ -19,14 +36,22 @@ const machine = produce(
           }
         }
         break;
+      case "CLEANUP_MACHINE":
+        draft.errors = {};
+        draft.saved = false;
+        draft.saving = false;
+        break;
       default:
         return draft;
     }
   },
   {
+    errors: {},
     items: [],
     loaded: false,
-    loading: false
+    loading: false,
+    saved: false,
+    saving: false
   }
 );
 
