@@ -170,6 +170,117 @@ describe("resourcepool reducer", () => {
     });
   });
 
+  // Update
+  it("should correctly reduce UPDATE_RESOURCEPOOL_START", () => {
+    expect(
+      resourcepool(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "UPDATE_RESOURCEPOOL_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce UPDATE_RESOURCEPOOL_SUCCESS", () => {
+    expect(
+      resourcepool(
+        {
+          errors: { name: "Name already exists" },
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          type: "UPDATE_RESOURCEPOOL_SUCCESS"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_RESOURCEPOOL_ERROR", () => {
+    expect(
+      resourcepool(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not update resource pool",
+          type: "UPDATE_RESOURCEPOOL_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not update resource pool",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce UPDATE_RESOURCEPOOL_NOTIFY", () => {
+    expect(
+      resourcepool(
+        {
+          auth: {},
+          errors: {},
+          items: [
+            { id: 1, name: "pool1", description: "" },
+            { id: 2, name: "pool2", description: "" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 1, name: "newName", description: "new description" },
+          type: "UPDATE_RESOURCEPOOL_NOTIFY"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [
+        { id: 1, name: "newName", description: "new description" },
+        { id: 2, name: "pool2", description: "" }
+      ],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
   // Delete
   it("should correctly reduce DELETE_RESOURCEPOOL_START", () => {
     expect(

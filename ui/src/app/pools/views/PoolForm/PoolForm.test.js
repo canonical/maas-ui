@@ -106,7 +106,7 @@ describe("PoolForm", () => {
           {}
         )
     );
-    expect(store.getActions()[0]).toEqual({
+    expect(store.getActions()[1]).toEqual({
       type: "CREATE_RESOURCEPOOL",
       payload: {
         params: {
@@ -117,6 +117,50 @@ describe("PoolForm", () => {
       meta: {
         model: "resourcepool",
         method: "create"
+      }
+    });
+  });
+
+  it("can update a resource pool", () => {
+    const store = mockStore(state);
+    const pool = {
+      id: 2,
+      name: "pool1",
+      description: "a pool"
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/pools/", key: "testKey" }]}
+        >
+          <PoolForm pool={pool} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          name: "newName",
+          description: "new description"
+        });
+    });
+    const action = store
+      .getActions()
+      .find(action => action.type === "UPDATE_RESOURCEPOOL");
+    expect(action).toEqual({
+      type: "UPDATE_RESOURCEPOOL",
+      payload: {
+        params: {
+          id: 2,
+          name: "newName",
+          description: "new description"
+        }
+      },
+      meta: {
+        model: "resourcepool",
+        method: "update"
       }
     });
   });

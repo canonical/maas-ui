@@ -23,6 +23,19 @@ resourcepool.create = params => {
   };
 };
 
+resourcepool.update = params => {
+  return {
+    type: "UPDATE_RESOURCEPOOL",
+    meta: {
+      model: "resourcepool",
+      method: "update"
+    },
+    payload: {
+      params
+    }
+  };
+};
+
 resourcepool.delete = id => {
   return {
     type: "DELETE_RESOURCEPOOL",

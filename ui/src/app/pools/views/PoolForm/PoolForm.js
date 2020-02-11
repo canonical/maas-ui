@@ -16,23 +16,37 @@ const PoolSchema = Yup.object().shape({
   description: Yup.string()
 });
 
-export const PoolForm = () => {
+export const PoolForm = ({ pool }) => {
   const dispatch = useDispatch();
   const saved = useSelector(poolSelectors.saved);
   const saving = useSelector(poolSelectors.saving);
   const errors = useSelector(poolSelectors.errors);
   const [savingPool, setSaving] = useState();
 
-  const title = "Add pool";
-
-  useWindowTitle(title);
-
   useAddMessage(
     saved,
     poolActions.cleanup,
-    `${savingPool} added successfully.`,
+    `${savingPool} ${pool ? "updated" : "added"} successfully.`,
     setSaving
   );
+
+  let initialValues;
+  let title;
+  if (pool) {
+    title = "Edit pool";
+    initialValues = {
+      name: pool.name,
+      description: pool.description
+    };
+  } else {
+    title = "Add pool";
+    initialValues = {
+      name: "",
+      description: ""
+    };
+  }
+
+  useWindowTitle(title);
 
   return (
     <FormCard sidebar={false} title={title}>
@@ -40,7 +54,7 @@ export const PoolForm = () => {
         buttons={FormCardButtons}
         errors={errors}
         cleanup={poolActions.cleanup}
-        initialValues={{ name: "", description: "" }}
+        initialValues={initialValues}
         submitLabel="Save pool"
         onSaveAnalytics={{
           action: "Saved",
@@ -48,7 +62,13 @@ export const PoolForm = () => {
           label: "Add pool form"
         }}
         onSubmit={values => {
-          dispatch(poolActions.create(values));
+          dispatch(poolActions.cleanup());
+          if (pool) {
+            values.id = pool.id;
+            dispatch(poolActions.update(values));
+          } else {
+            dispatch(poolActions.create(values));
+          }
           setSaving(values.name);
         }}
         saving={saving}
