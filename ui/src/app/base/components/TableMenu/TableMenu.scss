@@ -10,8 +10,21 @@
   text-transform: uppercase;
 }
 
+.p-table-menu .p-contextual-menu__dropdown {
+  .p-table-menu__icon-space,
+  [class*="p-icon"] {
+    margin-right: $sph-inner--small;
+  }
+}
+
 .p-table-menu__toggle {
   $icon-size: map-get($icon-sizes, default);
   line-height: $icon-size;
   padding: 0 $icon-size / 2;
+}
+
+.p-table-menu__icon-space {
+  $icon-space: map-get($icon-sizes, default);
+  display: inline-block;
+  width: $icon-space;
 }

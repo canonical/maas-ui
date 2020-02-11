@@ -1,12 +1,16 @@
-import React from "react";
+import { Loader } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 
+import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const PowerColumn = ({ onToggleMenu, systemId }) => {
+  const dispatch = useDispatch();
+  const [updating, setUpdating] = useState(null);
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -18,14 +22,83 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
     "p-icon--power-unknown": machine.power_state === "unknown"
   });
 
+  const menuLinks = [];
+
+  const hasOnAction = machine.actions.includes("on");
+  const hasOffAction = machine.actions.includes("off");
+  const powerState = machine.power_state;
+  let hasIcon = false;
+  if (hasOnAction && powerState !== "on") {
+    hasIcon = true;
+    menuLinks.push({
+      children: (
+        <>
+          <i className="p-icon--power-on"></i>Turn on
+        </>
+      ),
+      onClick: () => {
+        dispatch(machineActions.turnOn(systemId));
+        setUpdating(machine.power_state);
+      }
+    });
+  }
+  if (hasOffAction && powerState !== "off") {
+    hasIcon = true;
+    menuLinks.push({
+      children: (
+        <>
+          <i className="p-icon--power-off"></i>Turn off
+        </>
+      ),
+      onClick: () => {
+        dispatch(machineActions.turnOff(systemId));
+        setUpdating(machine.power_state);
+      }
+    });
+  }
+  if (powerState !== "unknown") {
+    menuLinks.push({
+      children: (
+        <>
+          {hasIcon ? <span className="p-table-menu__icon-space"></span> : null}
+          Check power
+        </>
+      ),
+      onClick: () => {
+        dispatch(machineActions.checkPower(systemId));
+        setUpdating(machine.power_state);
+      }
+    });
+  }
+  if (!hasOnAction && !hasOffAction && powerState === "unknown") {
+    menuLinks.push({
+      children: "No power actions available",
+      disabled: true
+    });
+  }
+
+  useEffect(() => {
+    if (
+      updating !== null &&
+      (machine.power_state === "error" || machine.power_state !== updating)
+    ) {
+      setUpdating(null);
+    }
+  }, [updating, machine.power_state]);
+
   return (
     <DoubleRow
-      icon={<i title={machine.power_state} className={iconClass}></i>}
+      icon={<i title={powerState} className={iconClass}></i>}
       iconSpace={true}
+      menuLinks={menuLinks}
+      menuTitle="Take action:"
       onToggleMenu={onToggleMenu}
       primary={
         <div className="u-upper-case--first" data-test="power_state">
-          {machine.power_state}
+          {updating !== null ? (
+            <Loader className="u-no-margin u-no-padding--left" inline />
+          ) : null}
+          {powerState}
         </div>
       }
       secondary={

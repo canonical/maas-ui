@@ -28,11 +28,12 @@ describe("MachineList", () => {
         }
       },
       machine: {
-        errors: {},
+        errors: null,
         loading: false,
         loaded: true,
         items: [
           {
+            actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
@@ -74,6 +75,7 @@ describe("MachineList", () => {
             zone: {}
           },
           {
+            actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {

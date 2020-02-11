@@ -36,6 +36,13 @@ const machine = produce(
           }
         }
         break;
+      case "SET_MACHINE_POOL_ERROR":
+      case "SET_MACHINE_ZONE_ERROR":
+      case "TURN_MACHINE_OFF_ERROR":
+      case "TURN_MACHINE_ON_ERROR":
+      case "CHECK_MACHINE_POWER_ERROR":
+        draft.errors = action.error;
+        break;
       case "CLEANUP_MACHINE":
         draft.errors = {};
         draft.saved = false;
