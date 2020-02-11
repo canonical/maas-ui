@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Button,
-  Col,
-  Link,
-  Loader,
-  MainTable,
-  Row
-} from "@canonical/react-components";
+import { Col, Loader, MainTable, Row } from "@canonical/react-components";
 
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import Tooltip from "app/base/components/Tooltip";
 import {
   machine as machineActions,
   resourcepool as resourcePoolActions
@@ -42,36 +35,17 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
         },
         {
           content: (
-            <>
-              <Button
-                appearance="base"
-                element={Link}
-                hasIcon
-                to={`/pools/${row.id}/edit`}
-                className="is-dense u-table-cell-padding-overlap"
-                disabled={!row.permissions.includes("edit")}
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Tooltip
-                position="left"
-                message={
-                  row.is_default && "The default pool may not be deleted."
-                }
-              >
-                <Button
-                  appearance="base"
-                  className="is-dense u-table-cell-padding-overlap"
-                  hasIcon
-                  disabled={
-                    !row.permissions.includes("delete") || row.is_default
-                  }
-                  onClick={() => setExpandedId(row.id)}
-                >
-                  <i className="p-icon--delete">Delete</i>
-                </Button>
-              </Tooltip>
-            </>
+            <TableActions
+              deleteDisabled={
+                !row.permissions.includes("delete") || row.is_default
+              }
+              deleteTooltip={
+                row.is_default && "The default pool may not be deleted."
+              }
+              editDisabled={!row.permissions.includes("edit")}
+              editPath={`/pools/${row.id}/edit`}
+              onDelete={() => setExpandedId(row.id)}
+            />
           ),
           className: "u-align--right"
         }
@@ -87,6 +61,7 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
             setDeleting(row.name);
             setExpandedId();
           }}
+          sidebar={false}
         />
       ),
       key: row.name,

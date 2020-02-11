@@ -1,5 +1,3 @@
-import { Button } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -7,6 +5,7 @@ import "./LicenseKeyList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
@@ -36,27 +35,10 @@ const generateRows = (
         },
         {
           content: (
-            <>
-              <Button
-                appearance="base"
-                element={Link}
-                to={`/settings/license-keys/${licenseKey.osystem}/${licenseKey.distro_series}/edit`}
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Button
-                appearance="base"
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-                onClick={() => {
-                  setExpandedId(licenseKey.license_key);
-                }}
-              >
-                <i className="p-icon--delete">Delete</i>
-              </Button>
-            </>
+            <TableActions
+              editPath={`/settings/license-keys/${licenseKey.osystem}/${licenseKey.distro_series}/edit`}
+              onDelete={() => setExpandedId(licenseKey.license_key)}
+            />
           ),
           className: "u-align--right"
         }

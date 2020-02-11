@@ -1,5 +1,3 @@
-import { Button } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
@@ -10,8 +8,8 @@ import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
+import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import Tooltip from "app/base/components/Tooltip";
 
 const generateRepositoryRows = (
   dispatch,
@@ -38,31 +36,12 @@ const generateRepositoryRows = (
         },
         {
           content: (
-            <>
-              <Button
-                appearance="base"
-                element={Link}
-                to={`/settings/repositories/edit/${type}/${repo.id}`}
-                className="is-dense u-table-cell-padding-overlap"
-                hasIcon
-              >
-                <i className="p-icon--edit">Edit</i>
-              </Button>
-              <Tooltip
-                position="left"
-                message={repo.default && "Default repos cannot be deleted."}
-              >
-                <Button
-                  appearance="base"
-                  className="is-dense u-table-cell-padding-overlap"
-                  hasIcon
-                  onClick={() => setExpandedId(repo.id)}
-                  disabled={repo.default}
-                >
-                  <i className="p-icon--delete">Delete</i>
-                </Button>
-              </Tooltip>
-            </>
+            <TableActions
+              deleteDisabled={repo.default}
+              deleteTooltip={repo.default && "Default repos cannot be deleted."}
+              editPath={`/settings/repositories/edit/${type}/${repo.id}`}
+              onDelete={() => setExpandedId(repo.id)}
+            />
           ),
           className: "u-align--right"
         }
