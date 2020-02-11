@@ -145,9 +145,9 @@ describe("MachineList", () => {
     };
   });
 
-  it("displays a loading component if machines are loading", () => {
+  it("displays a loading component if machines have not loaded", () => {
     const state = { ...initialState };
-    state.machine.loading = true;
+    state.machine.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

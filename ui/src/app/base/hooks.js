@@ -2,7 +2,7 @@ import { __RouterContext as RouterContext } from "react-router";
 import { notificationTypes } from "@canonical/react-components";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormikContext } from "formik";
 
 import { sendAnalyticsEvent } from "analytics";
@@ -155,4 +155,16 @@ export const useSendAnalytics = (
       sendAnalyticsEvent(eventCategory, eventAction, eventLabel);
     }
   }, [sendCondition, eventCategory, eventAction, eventLabel]);
+};
+
+/**
+ * Returns whether the component has undergone initial render,
+ * @returns {Boolean} rendered - Component has rendered.
+ */
+export const useHasRendered = () => {
+  const [rendered, setRendered] = useState(false);
+  useEffect(() => {
+    setRendered(true);
+  }, []);
+  return rendered;
 };
