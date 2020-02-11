@@ -199,4 +199,26 @@ describe("machine reducer", () => {
       saving: false
     });
   });
+
+  it("should correctly reduce CHECK_MACHINE_POWER_ERROR", () => {
+    expect(
+      machine(
+        {
+          errors: null,
+          items: [],
+          loaded: false,
+          loading: true
+        },
+        {
+          type: "CHECK_MACHINE_POWER_ERROR",
+          error: "Uh oh!"
+        }
+      )
+    ).toEqual({
+      errors: "Uh oh!",
+      loading: true,
+      loaded: false,
+      items: []
+    });
+  });
 });

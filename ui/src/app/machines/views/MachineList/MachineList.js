@@ -4,6 +4,7 @@ import {
   Input,
   Loader,
   MainTable,
+  Notification,
   Row,
   SearchBox,
   Select
@@ -414,6 +415,7 @@ const MachineList = () => {
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
+  const errors = useSelector(machineSelectors.errors);
 
   const [currentSort, setCurrentSort] = useState({
     key: "fqdn",
@@ -550,6 +552,7 @@ const MachineList = () => {
           </Col>
         </Row>
       )}
+      {errors ? <Notification type="negative">{errors}</Notification> : null}
       {machinesLoaded && (
         <Row>
           <Col size={12}>

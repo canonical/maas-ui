@@ -50,4 +50,11 @@ machine.errors = state => state.machine.errors;
 machine.getBySystemId = (state, id) =>
   state.machine.items.find(machine => machine.system_id === id);
 
+/**
+ * Returns machine errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Errors for machines.
+ */
+machine.errors = state => state.machine.errors;
+
 export default machine;

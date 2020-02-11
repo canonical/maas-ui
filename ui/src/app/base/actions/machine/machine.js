@@ -53,6 +53,53 @@ machine.setZone = (systemId, zoneId) => {
   };
 };
 
+machine.turnOff = systemId => {
+  return {
+    type: "TURN_MACHINE_OFF",
+    meta: {
+      model: "machine",
+      method: "action"
+    },
+    payload: {
+      params: {
+        action: "off",
+        system_id: systemId
+      }
+    }
+  };
+};
+
+machine.turnOn = systemId => {
+  return {
+    type: "TURN_MACHINE_ON",
+    meta: {
+      model: "machine",
+      method: "action"
+    },
+    payload: {
+      params: {
+        action: "on",
+        system_id: systemId
+      }
+    }
+  };
+};
+
+machine.checkPower = systemId => {
+  return {
+    type: "CHECK_MACHINE_POWER",
+    meta: {
+      model: "machine",
+      method: "check_power"
+    },
+    payload: {
+      params: {
+        system_id: systemId
+      }
+    }
+  };
+};
+
 machine.cleanup = () => {
   return {
     type: "CLEANUP_MACHINE"

@@ -73,4 +73,15 @@ describe("machine selectors", () => {
       system_id: 909
     });
   });
+
+  it("can get the error state", () => {
+    const state = {
+      machine: {
+        errors: "Uh oh!",
+        items: [],
+        loaded: true
+      }
+    };
+    expect(machine.errors(state)).toEqual("Uh oh!");
+  });
 });

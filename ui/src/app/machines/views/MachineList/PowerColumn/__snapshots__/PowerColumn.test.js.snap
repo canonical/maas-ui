@@ -12,6 +12,17 @@ exports[`PowerColumn renders 1`] = `
       />
     }
     iconSpace={true}
+    menuLinks={
+      Array [
+        Object {
+          "children": <React.Fragment>
+            Check power
+          </React.Fragment>,
+          "onClick": [Function],
+        },
+      ]
+    }
+    menuTitle="Take action:"
     primary={
       <div
         className="u-upper-case--first"
@@ -57,6 +68,67 @@ exports[`PowerColumn renders 1`] = `
               on
             </div>
           </div>
+          <TableMenu
+            links={
+              Array [
+                Object {
+                  "children": <React.Fragment>
+                    Check power
+                  </React.Fragment>,
+                  "onClick": [Function],
+                },
+              ]
+            }
+            title="Take action:"
+          >
+            <ContextualMenu
+              className="p-table-menu"
+              dropdownClassName="u-no-margin--top"
+              hasToggleIcon={true}
+              links={
+                Array [
+                  "Take action:",
+                  Array [
+                    Object {
+                      "children": <React.Fragment>
+                        Check power
+                      </React.Fragment>,
+                      "onClick": [Function],
+                    },
+                  ],
+                ]
+              }
+              position="center"
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+            >
+              <span
+                className="p-table-menu p-contextual-menu--center"
+              >
+                <Button
+                  appearance="base"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  hasIcon={true}
+                  onClick={[Function]}
+                >
+                  <button
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
+                    />
+                  </button>
+                </Button>
+              </span>
+            </ContextualMenu>
+          </TableMenu>
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"

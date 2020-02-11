@@ -67,6 +67,53 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle turning on the machine", () => {
+    expect(machine.turnOn("abc123", 909)).toEqual({
+      type: "TURN_MACHINE_ON",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "on",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle turning off the machine", () => {
+    expect(machine.turnOff("abc123", 909)).toEqual({
+      type: "TURN_MACHINE_OFF",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "off",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle checking the machine power", () => {
+    expect(machine.checkPower("abc123", 909)).toEqual({
+      type: "CHECK_MACHINE_POWER",
+      meta: {
+        model: "machine",
+        method: "check_power"
+      },
+      payload: {
+        params: {
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(machine.cleanup()).toEqual({
       type: "CLEANUP_MACHINE"
