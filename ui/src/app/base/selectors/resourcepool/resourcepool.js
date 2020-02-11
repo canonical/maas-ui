@@ -42,4 +42,13 @@ resourcepool.saving = state => state.resourcepool.saving;
  */
 resourcepool.saved = state => state.resourcepool.saved;
 
+/**
+ * Returns resource pools that matches given id
+ * @param {Object} state - The redux state.
+ * @param {Number} id - id of resource pool to return.
+ * @returns {Object} Resource pool that matches id.
+ */
+resourcepool.getById = (state, id) =>
+  state.resourcepool.items.find(pool => pool.id === id);
+
 export default resourcepool;

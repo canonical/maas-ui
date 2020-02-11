@@ -71,4 +71,20 @@ describe("resourcepool selectors", () => {
     };
     expect(resourcepool.errors(state)).toStrictEqual("Data is incorrect");
   });
+
+  it("can get a pool by id", () => {
+    const state = {
+      resourcepool: {
+        loading: true,
+        items: [
+          { name: "foo", id: 101 },
+          { name: "bar", id: 123 }
+        ]
+      }
+    };
+    expect(resourcepool.getById(state, 101)).toStrictEqual({
+      name: "foo",
+      id: 101
+    });
+  });
 });
