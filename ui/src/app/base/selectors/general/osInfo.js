@@ -1,7 +1,8 @@
 /**
  * Selector for os info.
  */
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
+
 import { generateGeneralSelector } from "./utils";
 
 const osInfo = generateGeneralSelector("osInfo");
