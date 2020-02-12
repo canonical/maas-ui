@@ -4,7 +4,7 @@
 When MAAS core releases an initial release candidate (e.g. `2.8.0-rc1`), the following should occur:
 
 1. A new branch is created on the `maas-ui` repo to track the new MAAS release (e.g. `2.8`).
-2. The major version of `maas-ui` should be incremented on master (e.g. `0.1.2` -> `1.0.0`).
+2. The major version of `maas-ui` should be incremented on master (e.g. `1.1.2` -> `2.0.0`).
 3. Any features in progress not intended for the release, should be removed or disabled on the release branch.
 4. Bugfixes should be made on master and backported to release branches where needed.
 
