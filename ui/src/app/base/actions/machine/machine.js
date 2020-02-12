@@ -1,14 +1,6 @@
-const machine = {};
+import { createStandardActions } from "app/utils/redux";
 
-machine.fetch = () => {
-  return {
-    type: "FETCH_MACHINE",
-    meta: {
-      model: "machine",
-      method: "list"
-    }
-  };
-};
+const machine = createStandardActions("machine");
 
 machine.create = params => {
   return {

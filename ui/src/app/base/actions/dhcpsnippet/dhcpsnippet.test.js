@@ -57,7 +57,7 @@ describe("dhcpsnippet actions", () => {
   });
 
   it("can handle cleaning dhcp snippets", () => {
-    expect(dhcpsnippet.cleanup({ name: "kookaburra" })).toEqual({
+    expect(dhcpsnippet.cleanup()).toEqual({
       type: "CLEANUP_DHCPSNIPPET"
     });
   });

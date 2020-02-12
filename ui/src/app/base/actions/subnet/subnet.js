@@ -1,13 +1,5 @@
-const subnet = {};
+import { createStandardActions } from "app/utils/redux";
 
-subnet.fetch = () => {
-  return {
-    type: "FETCH_SUBNET",
-    meta: {
-      model: "subnet",
-      method: "list"
-    }
-  };
-};
+const subnet = createStandardActions("subnet");
 
 export default subnet;

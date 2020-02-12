@@ -1,13 +1,5 @@
-const service = {};
+import { createStandardActions } from "app/utils/redux";
 
-service.fetch = () => {
-  return {
-    type: "FETCH_SERVICE",
-    meta: {
-      model: "service",
-      method: "list"
-    }
-  };
-};
+const service = createStandardActions("service");
 
 export default service;

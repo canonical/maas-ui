@@ -1,13 +1,5 @@
-const controller = {};
+import { createStandardActions } from "app/utils/redux";
 
-controller.fetch = () => {
-  return {
-    type: "FETCH_CONTROLLER",
-    meta: {
-      model: "controller",
-      method: "list"
-    }
-  };
-};
+const controller = createStandardActions("controller");
 
 export default controller;
