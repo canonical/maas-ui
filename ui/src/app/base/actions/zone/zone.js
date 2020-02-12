@@ -1,13 +1,5 @@
-const zone = {};
+import { createStandardActions } from "app/utils/redux";
 
-zone.fetch = () => {
-  return {
-    type: "FETCH_ZONE",
-    meta: {
-      model: "zone",
-      method: "list"
-    }
-  };
-};
+const zone = createStandardActions("zone");
 
 export default zone;

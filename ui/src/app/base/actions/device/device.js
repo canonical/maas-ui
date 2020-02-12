@@ -1,13 +1,5 @@
-const device = {};
+import { createStandardActions } from "app/utils/redux";
 
-device.fetch = () => {
-  return {
-    type: "FETCH_DEVICE",
-    meta: {
-      model: "device",
-      method: "list"
-    }
-  };
-};
+const device = createStandardActions("device");
 
 export default device;
