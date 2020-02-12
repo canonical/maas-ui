@@ -12,6 +12,7 @@
     "copy-build": "mkdir -p build/legacy build/ui && cp -R legacy/build/* build/legacy/ && cp -R ui/build/* build/ui/",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
+    "start": "yarn serve",
     "clean": "yarn clean-all",
     "clean-all": "rm -rf build && yarn clean-monorepo && yarn clean-proxy && yarn clean-shared && yarn clean-legacy && yarn clean-ui",
     "clean-monorepo": "rm -rf node_modules",
