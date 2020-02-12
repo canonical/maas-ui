@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import AddMachine from "app/machines/views/AddMachine";
+import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
 import AddChassis from "app/machines/views/AddChassis";
 import MachineList from "app/machines/views/MachineList";
 import NotFound from "app/base/views/NotFound";
@@ -27,7 +27,7 @@ const Machines = () => {
           />
         </Route>
         <Route exact path="/machines/add">
-          <AddMachine />
+          <AddMachineForm />
         </Route>
         <Route exact path="/machines/chassis/add">
           <AddChassis />
