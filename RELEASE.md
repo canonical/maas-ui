@@ -8,6 +8,14 @@ When MAAS core releases an initial release candidate (e.g. `2.8.0-rc1`), the fol
 3. Any features in progress not intended for the release, should be removed or disabled on the release branch.
 4. Bugfixes should be made on master and backported to release branches where needed.
 
+### `maas-ui` to `maas-core` version mapping
+Currently `maas-ui` map to `maas-core` versions in the following way:
+
+| maas-ui | maas-core |
+|:-------:|:---------:|
+| 0.x.x   | 2.7       |
+| 1.x.x   | 2.8       |
+
 ## Creating a release
 
 ### Semver
