@@ -744,4 +744,57 @@ describe("MachineList", () => {
         .text()
     ).toEqual("2 machines selected");
   });
+
+  it("can display an error", () => {
+    const state = { ...initialState };
+    state.machine.errors = "Uh oh!";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(wrapper.find("Notification").text()).toBe("Uh oh!");
+  });
+
+  it("can display a list of errors", () => {
+    const state = { ...initialState };
+    state.machine.errors = ["Uh oh!", "It broke"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(wrapper.find("Notification").text()).toBe("Uh oh! It broke");
+  });
+
+  it("can display a collection of errors", () => {
+    const state = { ...initialState };
+    state.machine.errors = { machine: "Uh oh!", network: "It broke" };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(wrapper.find("Notification").text()).toBe(
+      "machine: Uh oh! network: It broke"
+    );
+  });
 });

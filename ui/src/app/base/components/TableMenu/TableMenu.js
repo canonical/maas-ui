@@ -1,14 +1,15 @@
 import { Button } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
+import classNames from "classnames";
 
 import "./TableMenu.scss";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-const TableMenu = ({ links, title, onToggleMenu }) => {
+const TableMenu = ({ className, links, title, onToggleMenu }) => {
   return (
     <ContextualMenu
-      className="p-table-menu"
+      className={classNames("p-table-menu", className)}
       dropdownClassName="u-no-margin--top"
       hasToggleIcon
       links={[title, links]}
@@ -21,6 +22,7 @@ const TableMenu = ({ links, title, onToggleMenu }) => {
 };
 
 TableMenu.propTypes = {
+  className: PropTypes.string,
   links: PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
   onToggleMenu: PropTypes.func,
   title: PropTypes.string

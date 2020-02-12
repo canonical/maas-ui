@@ -9,6 +9,7 @@ const DoubleRow = ({
   icon,
   iconSpace,
   iconTitle,
+  menuClassName,
   menuLinks,
   menuTitle,
   onToggleMenu,
@@ -51,6 +52,7 @@ const DoubleRow = ({
           </div>
           {menuLinks ? (
             <TableMenu
+              className={menuClassName}
               links={menuLinks}
               title={menuTitle}
               onToggleMenu={onToggleMenu}
@@ -78,6 +80,7 @@ DoubleRow.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
   iconSpace: PropTypes.bool,
+  menuClassName: PropTypes.string,
   menuLinks: TableMenu.propTypes.links,
   menuTitle: PropTypes.string,
   onToggleMenu: PropTypes.func,

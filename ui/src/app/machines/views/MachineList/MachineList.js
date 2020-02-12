@@ -416,6 +416,18 @@ const MachineList = () => {
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
   const errors = useSelector(machineSelectors.errors);
+  let errorMessage;
+  if (errors) {
+    if (Array.isArray(errors)) {
+      errorMessage = errors.join(" ");
+    } else if (typeof errors === "object") {
+      errorMessage = Object.entries(errors)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(" ");
+    } else {
+      errorMessage = errors;
+    }
+  }
 
   const [currentSort, setCurrentSort] = useState({
     key: "fqdn",
@@ -552,7 +564,9 @@ const MachineList = () => {
           </Col>
         </Row>
       )}
-      {errors ? <Notification type="negative">{errors}</Notification> : null}
+      {errorMessage ? (
+        <Notification type="negative">{errorMessage}</Notification>
+      ) : null}
       {machinesLoaded && (
         <Row>
           <Col size={12}>
