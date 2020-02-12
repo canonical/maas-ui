@@ -18,13 +18,17 @@ export const history = createBrowserHistory({
 const reducer = createRootReducer(history);
 
 const sagaMiddleware = createSagaMiddleware();
-const middleware = [...getDefaultMiddleware(), sagaMiddleware, routerMiddleware(history)];
+const middleware = [
+  ...getDefaultMiddleware(),
+  sagaMiddleware,
+  routerMiddleware(history)
+];
 
 export const store = configureStore({
   reducer,
   middleware,
-  devTools: process.env.NODE_ENV !== 'production',
-})
+  devTools: process.env.NODE_ENV !== "production"
+});
 
 sagaMiddleware.run(rootSaga);
 
