@@ -28,6 +28,12 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "domain": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+  },
   "general": Object {
     "architectures": Object {
       "data": Array [],
@@ -103,9 +109,12 @@ Object {
     "loading": false,
   },
   "machine": Object {
+    "errors": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "messages": Object {
     "items": Array [],

@@ -15,9 +15,34 @@ describe("Machines", () => {
       config: {
         items: []
       },
+      domain: {
+        items: []
+      },
       general: {
+        architectures: {
+          data: [],
+          loaded: false,
+          loading: false
+        },
+        defaultMinHweKernel: {
+          data: "",
+          loaded: false,
+          loading: false
+        },
+        hweKernels: {
+          data: [],
+          loaded: false,
+          loading: false
+        },
         navigationOptions: {
-          data: {}
+          data: {},
+          loaded: false,
+          loading: false
+        },
+        powerTypes: {
+          data: [],
+          loaded: false,
+          loading: false
         }
       },
       messages: {
@@ -27,6 +52,9 @@ describe("Machines", () => {
         items: []
       },
       resourcepool: {
+        items: []
+      },
+      zone: {
         items: []
       }
     };

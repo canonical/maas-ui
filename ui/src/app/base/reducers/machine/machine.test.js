@@ -3,9 +3,12 @@ import machine from "./machine";
 describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(machine(undefined, {})).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -15,9 +18,12 @@ describe("machine reducer", () => {
         type: "FETCH_MACHINE_START"
       })
     ).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -25,9 +31,12 @@ describe("machine reducer", () => {
     expect(
       machine(
         {
+          errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_MACHINE_SUCCESS",
@@ -38,12 +47,121 @@ describe("machine reducer", () => {
         }
       )
     ).toEqual({
-      loading: false,
-      loaded: true,
+      errors: {},
       items: [
         { id: 1, hostname: "node1" },
         { id: 2, hostname: "node2" }
-      ]
+      ],
+      loading: false,
+      loaded: true,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce FETCH_MACHINE_ERROR", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          error: "Could not fetch machines",
+          type: "FETCH_MACHINE_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not fetch machines",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_MACHINE_START", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: false
+        },
+        {
+          type: "CREATE_MACHINE_START"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce CREATE_MACHINE_ERROR", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: { name: "name already exists" },
+          type: "CREATE_MACHINE_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: { name: "name already exists" },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce CREATE_MACHINE_NOTIFY", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [{ id: 1, name: "machine1" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 2, name: "machine2" },
+          type: "CREATE_MACHINE_NOTIFY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [
+        { id: 1, name: "machine1" },
+        { id: 2, name: "machine2" }
+      ],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -51,12 +169,15 @@ describe("machine reducer", () => {
     expect(
       machine(
         {
+          errors: {},
           items: [
             { id: 1, hostname: "node1" },
             { id: 2, hostname: "node2" }
           ],
           loaded: false,
-          loading: false
+          loading: false,
+          saved: false,
+          saving: false
         },
         {
           payload: {
@@ -67,12 +188,15 @@ describe("machine reducer", () => {
         }
       )
     ).toEqual({
+      errors: {},
       items: [
         { id: 1, hostname: "node1v2" },
         { id: 2, hostname: "node2" }
       ],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });

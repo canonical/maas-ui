@@ -10,6 +10,19 @@ machine.fetch = () => {
   };
 };
 
+machine.create = params => {
+  return {
+    type: "CREATE_MACHINE",
+    meta: {
+      model: "machine",
+      method: "create"
+    },
+    payload: {
+      params
+    }
+  };
+};
+
 machine.setPool = (systemId, poolId) => {
   return {
     type: "SET_MACHINE_POOL",
@@ -45,6 +58,12 @@ machine.setZone = (systemId, zoneId) => {
         system_id: systemId
       }
     }
+  };
+};
+
+machine.cleanup = () => {
+  return {
+    type: "CLEANUP_MACHINE"
   };
 };
 

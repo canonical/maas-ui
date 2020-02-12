@@ -22,6 +22,27 @@ machine.loading = state => state.machine.loading;
 machine.loaded = state => state.machine.loaded;
 
 /**
+ * Get the machine saving state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether machines are being saved.
+ */
+machine.saving = state => state.machine.saving;
+
+/**
+ * Get the machine saved state.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Whether machines have been saved.
+ */
+machine.saved = state => state.machine.saved;
+
+/**
+ * Returns machine errors.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Machine errors state.
+ */
+machine.errors = state => state.machine.errors;
+
+/**
  * Returns a machine for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A machine.

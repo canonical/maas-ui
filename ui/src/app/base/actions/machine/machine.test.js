@@ -11,6 +11,24 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle creating machines", () => {
+    expect(
+      machine.create({ name: "machine1", description: "a machine" })
+    ).toEqual({
+      type: "CREATE_MACHINE",
+      meta: {
+        model: "machine",
+        method: "create"
+      },
+      payload: {
+        params: {
+          name: "machine1",
+          description: "a machine"
+        }
+      }
+    });
+  });
+
   it("can handle setting the pool", () => {
     expect(machine.setPool("abc123", 909)).toEqual({
       type: "SET_MACHINE_POOL",
@@ -46,6 +64,12 @@ describe("machine actions", () => {
           system_id: "abc123"
         }
       }
+    });
+  });
+
+  it("can handle cleaning machines", () => {
+    expect(machine.cleanup()).toEqual({
+      type: "CLEANUP_MACHINE"
     });
   });
 });
