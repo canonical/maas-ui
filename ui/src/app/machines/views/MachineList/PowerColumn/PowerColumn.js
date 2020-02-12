@@ -66,7 +66,8 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       ),
       onClick: () => {
         dispatch(machineActions.checkPower(systemId));
-        setUpdating(machine.power_state);
+        // Don't display the spinner when checking power as we can't reliably
+        // determine that the event has finished.
       }
     });
   }
@@ -88,16 +89,23 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      icon={<i title={powerState} className={iconClass}></i>}
+      icon={
+        updating === null ? (
+          <i title={powerState} className={iconClass}></i>
+        ) : (
+          <Loader
+            className="u-no-margin u-no-padding--left u-no-padding--right"
+            inline
+          />
+        )
+      }
       iconSpace={true}
+      menuClassName={hasIcon ? "p-table-menu--hasIcon" : null}
       menuLinks={menuLinks}
       menuTitle="Take action:"
       onToggleMenu={onToggleMenu}
       primary={
         <div className="u-upper-case--first" data-test="power_state">
-          {updating !== null ? (
-            <Loader className="u-no-margin u-no-padding--left" inline />
-          ) : null}
           {powerState}
         </div>
       }
