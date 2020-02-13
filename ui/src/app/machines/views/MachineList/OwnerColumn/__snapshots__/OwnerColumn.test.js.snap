@@ -8,20 +8,20 @@ exports[`OwnerColumn renders 1`] = `
     menuLinks={
       Array [
         Object {
-          "children": "Link1",
-        },
-        Object {
-          "children": "Link2",
+          "children": "No owner actions available",
+          "disabled": true,
         },
       ]
     }
     menuTitle="Take action:"
     primary={
-      <span
-        data-test="owner"
-      >
-        admin
-      </span>
+      <React.Fragment>
+        <span
+          data-test="owner"
+        >
+          admin
+        </span>
+      </React.Fragment>
     }
     secondary={
       <span
@@ -54,10 +54,8 @@ exports[`OwnerColumn renders 1`] = `
             links={
               Array [
                 Object {
-                  "children": "Link1",
-                },
-                Object {
-                  "children": "Link2",
+                  "children": "No owner actions available",
+                  "disabled": true,
                 },
               ]
             }
@@ -72,10 +70,8 @@ exports[`OwnerColumn renders 1`] = `
                   "Take action:",
                   Array [
                     Object {
-                      "children": "Link1",
-                    },
-                    Object {
-                      "children": "Link2",
+                      "children": "No owner actions available",
+                      "disabled": true,
                     },
                   ],
                 ]

@@ -21,6 +21,7 @@ describe("OwnerColumn", () => {
         loaded: true,
         items: [
           {
+            actions: [],
             system_id: "abc123",
             owner: "admin",
             tags: []
@@ -75,5 +76,70 @@ describe("OwnerColumn", () => {
     );
 
     expect(wrapper.find('[data-test="tags"]').text()).toEqual("minty, aloof");
+  });
+
+  it("can show a menu item to acquire a machine", () => {
+    state.machine.items[0].actions = ["acquire"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OwnerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu so the elements get rendered.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper
+        .find(".p-contextual-menu__link")
+        .at(0)
+        .text()
+    ).toEqual("Acquire...");
+  });
+
+  it("can show a menu item to release a machine", () => {
+    state.machine.items[0].actions = ["release"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OwnerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu so the elements get rendered.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper
+        .find(".p-contextual-menu__link")
+        .at(0)
+        .text()
+    ).toEqual("Release...");
+  });
+
+  it("can show a message when there are no menu items", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OwnerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu so the elements get rendered.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper
+        .find(".p-contextual-menu__link")
+        .at(1)
+        .text()
+    ).toEqual("No owner actions available");
   });
 });

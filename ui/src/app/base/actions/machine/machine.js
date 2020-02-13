@@ -15,75 +15,36 @@ machine.create = params => {
   };
 };
 
-machine.setPool = (systemId, poolId) => {
-  return {
-    type: "SET_MACHINE_POOL",
-    meta: {
-      model: "machine",
-      method: "action"
-    },
-    payload: {
-      params: {
-        action: "set-pool",
-        extra: {
-          pool_id: poolId
-        },
-        system_id: systemId
-      }
+const generateMachineAction = (type, action, systemId, extra) => ({
+  type,
+  meta: {
+    model: "machine",
+    method: "action"
+  },
+  payload: {
+    params: {
+      action,
+      extra,
+      system_id: systemId
     }
-  };
-};
+  }
+});
 
-machine.setZone = (systemId, zoneId) => {
-  return {
-    type: "SET_MACHINE_ZONE",
-    meta: {
-      model: "machine",
-      method: "action"
-    },
-    payload: {
-      params: {
-        action: "set-zone",
-        extra: {
-          zone_id: zoneId
-        },
-        system_id: systemId
-      }
-    }
-  };
-};
+machine.setPool = (systemId, poolId) =>
+  generateMachineAction("SET_MACHINE_POOL", "set-pool", systemId, {
+    pool_id: poolId
+  });
 
-machine.turnOff = systemId => {
-  return {
-    type: "TURN_MACHINE_OFF",
-    meta: {
-      model: "machine",
-      method: "action"
-    },
-    payload: {
-      params: {
-        action: "off",
-        system_id: systemId
-      }
-    }
-  };
-};
+machine.setZone = (systemId, zoneId) =>
+  generateMachineAction("SET_MACHINE_ZONE", "set-zone", systemId, {
+    zone_id: zoneId
+  });
 
-machine.turnOn = systemId => {
-  return {
-    type: "TURN_MACHINE_ON",
-    meta: {
-      model: "machine",
-      method: "action"
-    },
-    payload: {
-      params: {
-        action: "on",
-        system_id: systemId
-      }
-    }
-  };
-};
+machine.turnOff = systemId =>
+  generateMachineAction("TURN_MACHINE_OFF", "off", systemId);
+
+machine.turnOn = systemId =>
+  generateMachineAction("TURN_MACHINE_ON", "on", systemId);
 
 machine.checkPower = systemId => {
   return {
@@ -99,6 +60,12 @@ machine.checkPower = systemId => {
     }
   };
 };
+
+machine.acquire = systemId =>
+  generateMachineAction("ACQUIRE_MACHINE", "acquire", systemId);
+
+machine.release = systemId =>
+  generateMachineAction("RELEASE_MACHINE", "release", systemId);
 
 machine.cleanup = () => {
   return {
