@@ -1,3 +1,5 @@
+import { createAction } from "@reduxjs/toolkit";
+
 let messageId = 0;
 
 const getMessageId = () => {
@@ -7,9 +9,9 @@ const getMessageId = () => {
 
 const messages = {};
 
-messages.add = (message, type, status, temporary = true) => {
-  return {
-    type: "ADD_MESSAGE",
+messages.add = createAction(
+  "ADD_MESSAGE",
+  (message, type, status, temporary = true) => ({
     payload: {
       id: getMessageId(),
       message,
@@ -17,14 +19,9 @@ messages.add = (message, type, status, temporary = true) => {
       temporary,
       type
     }
-  };
-};
+  })
+);
 
-messages.remove = id => {
-  return {
-    type: "REMOVE_MESSAGE",
-    payload: id
-  };
-};
+messages.remove = createAction("REMOVE_MESSAGE");
 
 export default messages;

@@ -1,70 +1,72 @@
-import produce from "immer";
+import { createReducer } from "@reduxjs/toolkit";
 
-const status = produce(
-  (draft, action) => {
-    switch (action.type) {
-      case "CHECK_AUTHENTICATED_START":
-        draft.authenticating = true;
-        break;
-      case "CHECK_AUTHENTICATED_SUCCESS":
-        draft.authenticating = false;
-        draft.authenticated = action.payload.authenticated;
-        draft.externalAuthURL = action.payload.external_auth_url;
-        break;
-      case "LOGIN_START":
-        draft.authenticating = true;
-        break;
-      case "EXTERNAL_LOGIN_SUCCESS":
-      case "LOGIN_SUCCESS":
-        draft.authenticated = true;
-        draft.authenticating = false;
-        draft.error = null;
-        break;
-      case "LOGOUT_SUCCESS":
-        draft.authenticated = false;
-        break;
-      case "CHECK_AUTHENTICATED_ERROR":
-        // Don't set the errors object here, this action is to check if a user
-        // is authenticated, an error means they are not.
-        draft.authenticating = false;
-        draft.authenticated = false;
-        break;
-      case "WEBSOCKET_DISCONNECTED":
-        draft.connected = false;
-        break;
-      case "WEBSOCKET_CONNECT":
-        draft.connected = false;
-        draft.connecting = true;
-        break;
-      case "WEBSOCKET_CONNECTED":
-        draft.connected = true;
-        draft.connecting = false;
-        draft.error = null;
-        break;
-      case "EXTERNAL_LOGIN_ERROR":
-      case "LOGIN_ERROR":
-        draft.error = action.error;
-        draft.authenticating = false;
-        break;
-      case "WEBSOCKET_ERROR":
-        draft.error = action.error;
-        break;
-      case "EXTERNAL_LOGIN_URL":
-        draft.externalLoginURL = action.payload.url;
-        break;
-      default:
-        return draft;
-    }
+import { status as statusActions } from "app/base/actions";
+
+const loginSuccess = state => {
+  state.authenticated = true;
+  state.authenticating = false;
+  state.error = null;
+};
+
+const loginError = (state, action) => {
+  state.error = action.error;
+  state.authenticating = false;
+};
+
+const initialState = {
+  // Default to authenticating so that the login screen doesn't flash.
+  authenticating: true,
+  authenticated: false,
+  externalAuthURL: null,
+  externalLoginURL: null,
+  connected: false,
+  error: null
+};
+
+const status = createReducer(initialState, {
+  [statusActions.checkAuthenticated.start]: state => {
+    state.authenticating = true;
   },
-  {
-    // Default to authenticating so that the login screen doesn't flash.
-    authenticating: true,
-    authenticated: false,
-    externalAuthURL: null,
-    externalLoginURL: null,
-    connected: false,
-    error: null
+  [statusActions.checkAuthenticated.success]: (state, action) => {
+    state.authenticating = false;
+    state.authenticated = action.payload.authenticated;
+    state.externalAuthURL = action.payload.external_auth_url;
+  },
+  [statusActions.login.start]: state => {
+    state.authenticating = true;
+  },
+  [statusActions.login.error]: (state, action) => loginError(state, action),
+  [statusActions.login.success]: state => loginSuccess(state),
+  [statusActions.externalLogin.success]: state => loginSuccess(state),
+  [statusActions.externalLogin.error]: (state, action) =>
+    loginError(state, action),
+  [statusActions.logout.success]: state => {
+    state.authenticated = false;
+  },
+  [statusActions.checkAuthenticated.error]: state => {
+    // Don't set the errors object here, this action is to check if a user
+    // is authenticated, an error means they are not.
+    state.authenticating = false;
+    state.authenticated = false;
+  },
+  [statusActions.websocketConnect]: state => {
+    state.connected = false;
+    state.connecting = true;
+  },
+  [statusActions.websocketConnected]: state => {
+    state.connected = true;
+    state.connecting = false;
+    state.error = null;
+  },
+  [statusActions.websocketDisconnected]: state => {
+    state.connected = false;
+  },
+  [statusActions.websocketError]: (state, action) => {
+    state.error = action.error;
+  },
+  [statusActions.externalLoginURL]: (state, action) => {
+    state.externalLoginURL = action.payload.url;
   }
-);
+});
 
 export default status;

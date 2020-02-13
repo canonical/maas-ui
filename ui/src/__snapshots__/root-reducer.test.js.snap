@@ -11,14 +11,20 @@ Object {
     "saving": false,
   },
   "controller": Object {
+    "errors": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "device": Object {
+    "errors": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "dhcpsnippet": Object {
     "errors": Object {},
@@ -33,6 +39,8 @@ Object {
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "general": Object {
     "architectures": Object {
@@ -152,6 +160,8 @@ Object {
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "sshkey": Object {
     "errors": null,
@@ -174,15 +184,20 @@ Object {
     "authenticating": false,
   },
   "subnet": Object {
+    "errors": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "tag": Object {
     "errors": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "token": Object {
     "errors": null,
@@ -206,6 +221,8 @@ Object {
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
 }
 `;

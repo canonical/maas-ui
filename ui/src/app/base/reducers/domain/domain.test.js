@@ -6,7 +6,9 @@ describe("domain reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -19,7 +21,9 @@ describe("domain reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -30,7 +34,9 @@ describe("domain reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_DOMAIN_SUCCESS",
@@ -44,6 +50,9 @@ describe("domain reducer", () => {
       errors: {},
       loading: false,
       loaded: true,
+      saved: false,
+      saving: false,
+
       items: [
         { id: 1, name: "rack" },
         { id: 2, name: "maas" }
@@ -58,7 +67,9 @@ describe("domain reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: false
+          loading: false,
+          saved: false,
+          saving: false
         },
         {
           error: "Could not fetch domains",
@@ -69,7 +80,9 @@ describe("domain reducer", () => {
       errors: "Could not fetch domains",
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });

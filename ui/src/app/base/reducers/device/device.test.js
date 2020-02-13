@@ -3,9 +3,12 @@ import device from "./device";
 describe("device reducer", () => {
   it("should return the initial state", () => {
     expect(device(undefined, {})).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -15,9 +18,12 @@ describe("device reducer", () => {
         type: "FETCH_DEVICE_START"
       })
     ).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -25,9 +31,12 @@ describe("device reducer", () => {
     expect(
       device(
         {
+          errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_DEVICE_SUCCESS",
@@ -38,12 +47,15 @@ describe("device reducer", () => {
         }
       )
     ).toEqual({
+      errors: {},
       loading: false,
       loaded: true,
       items: [
         { id: 1, hostname: "test1" },
         { id: 2, hostname: "test2" }
-      ]
+      ],
+      saved: false,
+      saving: false
     });
   });
 });

@@ -6,7 +6,9 @@ describe("tag reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -19,7 +21,9 @@ describe("tag reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -42,7 +46,9 @@ describe("tag reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_TAG_SUCCESS",
@@ -53,7 +59,9 @@ describe("tag reducer", () => {
       errors: {},
       items: payload,
       loading: false,
-      loaded: true
+      loaded: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -64,7 +72,9 @@ describe("tag reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: false
+          loading: false,
+          saved: false,
+          saving: false
         },
         {
           error: "Could not fetch tags",
@@ -75,7 +85,9 @@ describe("tag reducer", () => {
       errors: "Could not fetch tags",
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });

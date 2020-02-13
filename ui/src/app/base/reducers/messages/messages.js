@@ -1,22 +1,19 @@
-import produce from "immer";
+import { createReducer } from "@reduxjs/toolkit";
 
-const messages = produce(
-  (draft, action) => {
-    switch (action.type) {
-      case "ADD_MESSAGE":
-        draft.items.push(action.payload);
-        break;
-      case "REMOVE_MESSAGE":
-        const index = draft.items.findIndex(item => item.id === action.payload);
-        draft.items.splice(index, 1);
-        break;
-      default:
-        return draft;
-    }
+import { messages as messageActions } from "app/base/actions";
+
+const initialState = {
+  items: []
+};
+
+const messages = createReducer(initialState, {
+  [messageActions.add]: (state, action) => {
+    state.items.push(action.payload);
   },
-  {
-    items: []
+  [messageActions.remove]: (state, action) => {
+    const index = state.items.findIndex(item => item.id === action.payload);
+    state.items.splice(index, 1);
   }
-);
+});
 
 export default messages;

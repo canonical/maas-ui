@@ -6,7 +6,9 @@ describe("service reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -19,7 +21,9 @@ describe("service reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -44,7 +48,9 @@ describe("service reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_SERVICE_SUCCESS",
@@ -55,7 +61,9 @@ describe("service reducer", () => {
       errors: {},
       items: payload,
       loading: false,
-      loaded: true
+      loaded: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -66,7 +74,9 @@ describe("service reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: false
+          loading: false,
+          saved: false,
+          saving: false
         },
         {
           error: "Could not fetch services",
@@ -77,7 +87,9 @@ describe("service reducer", () => {
       errors: "Could not fetch services",
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 });
