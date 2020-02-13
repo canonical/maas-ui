@@ -36,6 +36,8 @@ const machine = produce(
           }
         }
         break;
+      case "ACQUIRE_MACHINE_ERROR":
+      case "RELEASE_MACHINE_ERROR":
       case "SET_MACHINE_POOL_ERROR":
       case "SET_MACHINE_ZONE_ERROR":
       case "TURN_MACHINE_OFF_ERROR":
