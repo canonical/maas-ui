@@ -34,6 +34,7 @@ describe("StatusColumn", () => {
       machine: {
         items: [
           {
+            actions: [],
             distro_series: "bionic",
             osystem: "ubuntu",
             status: "New",
@@ -224,5 +225,36 @@ describe("StatusColumn", () => {
       expect(wrapper.find(".p-icon--warning").exists()).toBe(true);
       expect(wrapper.find("Tooltip").exists()).toBe(true);
     });
+  });
+
+  it("can show a menu with all possible options", () => {
+    state.machine.items[0].actions = [
+      "abort",
+      "acquire",
+      "commission",
+      "deploy",
+      "exit-rescue-mode",
+      "lock",
+      "mark-broken",
+      "mark-fixed",
+      "override-failed-testing",
+      "release",
+      "rescue-mode",
+      "test",
+      "unlock"
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu so the elements get rendered.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find(".p-contextual-menu__dropdown")).toMatchSnapshot();
   });
 });

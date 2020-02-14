@@ -65,12 +65,10 @@ exports[`ZoneColumn renders 1`] = `
               links={
                 Array [
                   "Change AZ:",
-                  Array [
-                    Object {
-                      "children": "Backup",
-                      "onClick": [Function],
-                    },
-                  ],
+                  Object {
+                    "children": "Backup",
+                    "onClick": [Function],
+                  },
                 ]
               }
               position="center"

@@ -68,12 +68,10 @@ exports[`OwnerColumn renders 1`] = `
               links={
                 Array [
                   "Take action:",
-                  Array [
-                    Object {
-                      "children": "No owner actions available",
-                      "disabled": true,
-                    },
-                  ],
+                  Object {
+                    "children": "No owner actions available",
+                    "disabled": true,
+                  },
                 ]
               }
               position="center"

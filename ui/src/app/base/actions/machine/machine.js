@@ -67,6 +67,47 @@ machine.acquire = systemId =>
 machine.release = systemId =>
   generateMachineAction("RELEASE_MACHINE", "release", systemId);
 
+machine.commission = systemId =>
+  generateMachineAction("COMMISSION_MACHINE", "commission", systemId);
+
+machine.deploy = systemId =>
+  generateMachineAction("DEPLOY_MACHINE", "deploy", systemId);
+
+machine.abort = systemId =>
+  generateMachineAction("ABORT_MACHINE", "abort", systemId);
+
+machine.test = systemId =>
+  generateMachineAction("TEST_MACHINE", "test", systemId);
+
+machine.rescueMode = systemId =>
+  generateMachineAction("MACHINE_RESCUE_MODE", "rescue-mode", systemId);
+
+machine.exitRescueMode = systemId =>
+  generateMachineAction(
+    "MACHINE_EXIT_RESCUE_MODE",
+    "exit-rescue-mode",
+    systemId
+  );
+
+machine.markBroken = systemId =>
+  generateMachineAction("MARK_MACHINE_BROKEN", "mark-broken", systemId);
+
+machine.markFixed = systemId =>
+  generateMachineAction("MARK_MACHINE_FIXED", "mark-fixed", systemId);
+
+machine.overrideFailedTesting = systemId =>
+  generateMachineAction(
+    "MACHINE_OVERRIDE_FAILED_TESTING",
+    "override-failed-testing",
+    systemId
+  );
+
+machine.lock = systemId =>
+  generateMachineAction("LOCK_MACHINE", "lock", systemId);
+
+machine.unlock = systemId =>
+  generateMachineAction("UNLOCK_MACHINE", "unlock", systemId);
+
 machine.cleanup = () => {
   return {
     type: "CLEANUP_MACHINE"

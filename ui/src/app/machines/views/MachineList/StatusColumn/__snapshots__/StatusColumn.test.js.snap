@@ -1,5 +1,217 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StatusColumn can show a menu with all possible options 1`] = `
+<span
+  aria-hidden="false"
+  aria-label="submenu"
+  className="p-contextual-menu__dropdown u-no-margin--top"
+  id="Uakgb_J5m9g-0JDMbcJqLJ"
+>
+  <div
+    className="p-contextual-menu__non-interactive"
+    key="0"
+  >
+    Take action:
+  </div>
+  <span
+    className="p-contextual-menu__group"
+    key="1"
+  >
+    <Button
+      className="p-contextual-menu__link"
+      key="0"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        abort...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="1"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        acquire...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="2"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        commission...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="3"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        deploy...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="4"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        exit-rescue-mode...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="5"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        lock...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="6"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        mark-broken...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="7"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        mark-fixed...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="8"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        override-failed-testing...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="9"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        release...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="10"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        rescue-mode...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="11"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        test...
+      </button>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      key="12"
+      onClick={[Function]}
+    >
+      <button
+        className="p-button--neutral p-contextual-menu__link"
+        onClick={[Function]}
+      >
+        unlock...
+      </button>
+    </Button>
+  </span>
+  <span
+    className="p-contextual-menu__group"
+    key="2"
+  >
+    <Button
+      className="p-contextual-menu__link"
+      element="a"
+      href="/MAAS/#/machine/abc123?area=logs"
+      key="0"
+      onClick={null}
+    >
+      <a
+        className="p-button--neutral p-contextual-menu__link"
+        href="/MAAS/#/machine/abc123?area=logs"
+        onClick={null}
+      >
+        See logs
+      </a>
+    </Button>
+    <Button
+      className="p-contextual-menu__link"
+      element="a"
+      href="/MAAS/#/machine/abc123?area=events"
+      key="1"
+      onClick={null}
+    >
+      <a
+        className="p-button--neutral p-contextual-menu__link"
+        href="/MAAS/#/machine/abc123?area=events"
+        onClick={null}
+      >
+        See events
+      </a>
+    </Button>
+  </span>
+</span>
+`;
+
 exports[`StatusColumn renders 1`] = `
 <StatusColumn
   systemId="abc123"
@@ -7,6 +219,24 @@ exports[`StatusColumn renders 1`] = `
   <DoubleRow
     icon=""
     iconSpace={true}
+    menuLinks={
+      Array [
+        Array [],
+        Array [
+          Object {
+            "children": "See logs",
+            "element": "a",
+            "href": "/MAAS/#/machine/abc123?area=logs",
+          },
+          Object {
+            "children": "See events",
+            "element": "a",
+            "href": "/MAAS/#/machine/abc123?area=events",
+          },
+        ],
+      ]
+    }
+    menuTitle="Take action:"
     primary={
       <span
         data-test="status-text"
@@ -50,6 +280,79 @@ exports[`StatusColumn renders 1`] = `
               New
             </span>
           </div>
+          <TableMenu
+            links={
+              Array [
+                Array [],
+                Array [
+                  Object {
+                    "children": "See logs",
+                    "element": "a",
+                    "href": "/MAAS/#/machine/abc123?area=logs",
+                  },
+                  Object {
+                    "children": "See events",
+                    "element": "a",
+                    "href": "/MAAS/#/machine/abc123?area=events",
+                  },
+                ],
+              ]
+            }
+            title="Take action:"
+          >
+            <ContextualMenu
+              className="p-table-menu"
+              dropdownClassName="u-no-margin--top"
+              hasToggleIcon={true}
+              links={
+                Array [
+                  "Take action:",
+                  Array [],
+                  Array [
+                    Object {
+                      "children": "See logs",
+                      "element": "a",
+                      "href": "/MAAS/#/machine/abc123?area=logs",
+                    },
+                    Object {
+                      "children": "See events",
+                      "element": "a",
+                      "href": "/MAAS/#/machine/abc123?area=events",
+                    },
+                  ],
+                ]
+              }
+              position="center"
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+            >
+              <span
+                className="p-table-menu p-contextual-menu--center"
+              >
+                <Button
+                  appearance="base"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  hasIcon={true}
+                  onClick={[Function]}
+                >
+                  <button
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
+                    />
+                  </button>
+                </Button>
+              </span>
+            </ContextualMenu>
+          </TableMenu>
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"

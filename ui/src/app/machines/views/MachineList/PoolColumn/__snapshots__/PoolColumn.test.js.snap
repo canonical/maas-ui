@@ -81,12 +81,10 @@ exports[`PoolColumn renders 1`] = `
               links={
                 Array [
                   "Change pool:",
-                  Array [
-                    Object {
-                      "children": "Backup",
-                      "onClick": [Function],
-                    },
-                  ],
+                  Object {
+                    "children": "Backup",
+                    "onClick": [Function],
+                  },
                 ]
               }
               position="center"

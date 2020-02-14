@@ -12,7 +12,7 @@ const TableMenu = ({ className, links, title, onToggleMenu }) => {
       className={classNames("p-table-menu", className)}
       dropdownClassName="u-no-margin--top"
       hasToggleIcon
-      links={[title, links]}
+      links={[title, ...links]}
       onToggleMenu={onToggleMenu}
       position="center"
       toggleAppearance="base"
@@ -23,7 +23,13 @@ const TableMenu = ({ className, links, title, onToggleMenu }) => {
 
 TableMenu.propTypes = {
   className: PropTypes.string,
-  links: PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
+  links: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape(Button.propTypes),
+      PropTypes.arrayOf(PropTypes.shape(Button.propTypes))
+    ])
+  ),
   onToggleMenu: PropTypes.func,
   title: PropTypes.string
 };

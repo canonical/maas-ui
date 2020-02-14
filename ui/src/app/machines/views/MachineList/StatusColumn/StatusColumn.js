@@ -1,8 +1,9 @@
 import { Loader } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import { machine as machineActions } from "app/base/actions";
 import {
   general as generalSelectors,
   machine as machineSelectors
@@ -99,17 +100,63 @@ const getStatusIcon = machine => {
 };
 
 const StatusColumn = ({ onToggleMenu, systemId }) => {
+  const dispatch = useDispatch();
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const osReleases = useSelector(state =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)
   );
+  let actionLinks = [];
+  const actionTypes = new Map([
+    ["abort", null],
+    ["acquire", null],
+    ["commission", null],
+    ["deploy", null],
+    ["exit-rescue-mode", "exitRescueMode"],
+    ["lock", null],
+    ["mark-broken", "markBroken"],
+    ["mark-fixed", "markFixed"],
+    ["override-failed-testing", "overrideFailedTesting"],
+    ["release", null],
+    ["rescue-mode", "rescueMode"],
+    ["test", null],
+    ["unlock", null]
+  ]);
+  Array.from(actionTypes.keys()).forEach(action => {
+    if (machine.actions.includes(action)) {
+      actionLinks.push({
+        children: `${action}...`,
+        onClick: () => {
+          const actionMethod = actionTypes.get(action) || action;
+          dispatch(machineActions[actionMethod](systemId));
+        }
+      });
+    }
+  });
+
+  const menuLinks = [
+    actionLinks,
+    [
+      {
+        children: "See logs",
+        element: "a",
+        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=logs`
+      },
+      {
+        children: "See events",
+        element: "a",
+        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=events`
+      }
+    ]
+  ];
 
   return (
     <DoubleRow
       icon={getStatusIcon(machine)}
       iconSpace={true}
+      menuLinks={menuLinks}
+      menuTitle="Take action:"
       onToggleMenu={onToggleMenu}
       primary={
         <span
