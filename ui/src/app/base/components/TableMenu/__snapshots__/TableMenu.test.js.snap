@@ -8,11 +8,9 @@ exports[`TableMenu  renders 1`] = `
   links={
     Array [
       "Actions:",
-      Array [
-        Object {
-          "children": "Item1",
-        },
-      ],
+      Object {
+        "children": "Item1",
+      },
     ]
   }
   position="center"

@@ -90,14 +90,12 @@ exports[`PowerColumn renders 1`] = `
               links={
                 Array [
                   "Take action:",
-                  Array [
-                    Object {
-                      "children": <React.Fragment>
-                        Check power
-                      </React.Fragment>,
-                      "onClick": [Function],
-                    },
-                  ],
+                  Object {
+                    "children": <React.Fragment>
+                      Check power
+                    </React.Fragment>,
+                    "onClick": [Function],
+                  },
                 ]
               }
               position="center"

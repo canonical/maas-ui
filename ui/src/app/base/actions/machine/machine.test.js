@@ -146,6 +146,182 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle commissioning a machine", () => {
+    expect(machine.commission("abc123")).toEqual({
+      type: "COMMISSION_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "commission",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle deploying a machine", () => {
+    expect(machine.deploy("abc123")).toEqual({
+      type: "DEPLOY_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "deploy",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle aborting a machine", () => {
+    expect(machine.abort("abc123")).toEqual({
+      type: "ABORT_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "abort",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle testing a machine", () => {
+    expect(machine.test("abc123")).toEqual({
+      type: "TEST_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "test",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can putting a machine into rescue mode", () => {
+    expect(machine.rescueMode("abc123")).toEqual({
+      type: "MACHINE_RESCUE_MODE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "rescue-mode",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle making a machine exit rescue mode", () => {
+    expect(machine.exitRescueMode("abc123")).toEqual({
+      type: "MACHINE_EXIT_RESCUE_MODE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "exit-rescue-mode",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle marking a machine as broken", () => {
+    expect(machine.markBroken("abc123")).toEqual({
+      type: "MARK_MACHINE_BROKEN",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "mark-broken",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle marking a machine as fixed", () => {
+    expect(machine.markFixed("abc123")).toEqual({
+      type: "MARK_MACHINE_FIXED",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "mark-fixed",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle overriding failed testing on a machine", () => {
+    expect(machine.overrideFailedTesting("abc123")).toEqual({
+      type: "MACHINE_OVERRIDE_FAILED_TESTING",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "override-failed-testing",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle locking a machine", () => {
+    expect(machine.lock("abc123")).toEqual({
+      type: "LOCK_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "lock",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle unlocking a machine", () => {
+    expect(machine.unlock("abc123")).toEqual({
+      type: "UNLOCK_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "unlock",
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(machine.cleanup()).toEqual({
       type: "CLEANUP_MACHINE"

@@ -38,6 +38,17 @@ const machine = produce(
         break;
       case "ACQUIRE_MACHINE_ERROR":
       case "RELEASE_MACHINE_ERROR":
+      case "COMMISSION_MACHINE_ERROR":
+      case "DEPLOY_MACHINE_ERROR":
+      case "ABORT_MACHINE_ERROR":
+      case "TEST_MACHINE_ERROR":
+      case "MACHINE_RESCUE_MODE_ERROR":
+      case "MACHINE_EXIT_RESCUE_MODE_ERROR":
+      case "MARK_MACHINE_BROKEN_ERROR":
+      case "MARK_MACHINE_FIXED_ERROR":
+      case "MACHINE_OVERRIDE_FAILED_TESTING_ERROR":
+      case "LOCK_MACHINE_ERROR":
+      case "UNLOCK_MACHINE_ERROR":
       case "SET_MACHINE_POOL_ERROR":
       case "SET_MACHINE_ZONE_ERROR":
       case "TURN_MACHINE_OFF_ERROR":
