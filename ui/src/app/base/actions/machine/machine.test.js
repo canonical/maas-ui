@@ -77,6 +77,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "on",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -93,6 +94,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "off",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -124,6 +126,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "acquire",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -140,6 +143,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "release",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -156,6 +160,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "commission",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -172,6 +177,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "deploy",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -188,6 +194,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "abort",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -204,6 +211,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "test",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -220,6 +228,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "rescue-mode",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -236,6 +245,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "exit-rescue-mode",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -252,6 +262,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "mark-broken",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -268,6 +279,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "mark-fixed",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -284,6 +296,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "override-failed-testing",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -300,6 +313,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "lock",
+          extra: {},
           system_id: "abc123"
         }
       }
@@ -316,6 +330,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "unlock",
+          extra: {},
           system_id: "abc123"
         }
       }
