@@ -15,7 +15,7 @@ machine.create = params => {
   };
 };
 
-const generateMachineAction = (type, action, systemId, extra) => ({
+const generateMachineAction = (type, action, systemId, extra = {}) => ({
   type,
   meta: {
     model: "machine",
