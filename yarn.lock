@@ -3031,10 +3031,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@reduxjs/toolkit@1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.4.tgz#4076605eafd9670a53a1c2344c2a9cee63c5acf2"
-  integrity sha512-M/UNvLWqz4Zh0mxCC6dEobvZKdBTuAwABbh2pGxrTRAwgF0nsnkp1WUZWDch+cYXYO9+SM2mRSCoUpoJYxIyrA==
+"@reduxjs/toolkit@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.5.tgz#149aa62da12a18a67a30495cb63fd897003f2272"
+  integrity sha512-/OWoW5mniUXAomw4+3ZhhWodcs1/SRvK2HKyxLXdW6vKgmJhiBiSHe/huHARlKWujEmGaJrkafx548GE494bCQ==
   dependencies:
     immer "^4.0.1"
     redux "^4.0.0"
