@@ -1,9 +1,7 @@
+import { createAction } from "@reduxjs/toolkit";
+
 const websocket = {};
 
-websocket.connect = () => {
-  return {
-    type: "WEBSOCKET_CONNECT"
-  };
-};
+websocket.connect = createAction("WEBSOCKET_CONNECT");
 
 export default websocket;

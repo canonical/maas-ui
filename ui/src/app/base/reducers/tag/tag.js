@@ -1,30 +1,7 @@
-import produce from "immer";
+import { createStandardReducer } from "app/utils/redux";
 
-const tag = produce(
-  (draft, action) => {
-    switch (action.type) {
-      case "FETCH_TAG_START":
-        draft.loading = true;
-        break;
-      case "FETCH_TAG_ERROR":
-        draft.errors = action.error;
-        draft.loading = false;
-        break;
-      case "FETCH_TAG_SUCCESS":
-        draft.loading = false;
-        draft.loaded = true;
-        draft.items = action.payload;
-        break;
-      default:
-        return draft;
-    }
-  },
-  {
-    errors: {},
-    items: [],
-    loaded: false,
-    loading: false
-  }
-);
+import { tag as tagActions } from "app/base/actions";
+
+const tag = createStandardReducer(tagActions);
 
 export default tag;

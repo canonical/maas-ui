@@ -1,11 +1,22 @@
 import messages from "./messages";
 
 describe("base actions", () => {
-  it("should handle adding a message", () => {
+  it("should handle adding a message and increment ids", () => {
     expect(messages.add("User added", "negative", "Error", true)).toEqual({
       type: "ADD_MESSAGE",
       payload: {
         id: 1,
+        message: "User added",
+        status: "Error",
+        temporary: true,
+        type: "negative"
+      }
+    });
+
+    expect(messages.add("User added", "negative", "Error", true)).toEqual({
+      type: "ADD_MESSAGE",
+      payload: {
+        id: 2,
         message: "User added",
         status: "Error",
         temporary: true,

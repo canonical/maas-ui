@@ -13,6 +13,7 @@ describe("users reducer", () => {
     });
   });
 
+  // Fetch
   it("should correctly reduce FETCH_USER_START", () => {
     expect(
       user(undefined, {
@@ -63,33 +64,7 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce UPDATE_USER_START", () => {
-    expect(
-      user(
-        {
-          auth: {},
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: true,
-          saving: false
-        },
-        {
-          type: "UPDATE_USER_START"
-        }
-      )
-    ).toEqual({
-      auth: {},
-      errors: {},
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: true
-    });
-  });
-
+  // Create
   it("should correctly reduce CREATE_USER_START", () => {
     expect(
       user(
@@ -117,7 +92,66 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_USER_START", () => {
+  it("should correctly reduce CREATE_USER_ERROR", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: { username: "Username already exists" },
+          type: "CREATE_USER_ERROR"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: { username: "Username already exists" },
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+  it("should correctly reduce CREATE_USER_NOTIFY", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [{ id: 1, username: "admin" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          payload: { id: 2, username: "user1" },
+          type: "CREATE_USER_NOTIFY"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: {},
+      items: [
+        { id: 1, username: "admin" },
+        { id: 2, username: "user1" }
+      ],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
+    });
+  });
+
+  // Update
+  it("should correctly reduce UPDATE_USER_START", () => {
     expect(
       user(
         {
@@ -130,7 +164,7 @@ describe("users reducer", () => {
           saving: false
         },
         {
-          type: "DELETE_USER_START"
+          type: "UPDATE_USER_START"
         }
       )
     ).toEqual({
@@ -164,62 +198,6 @@ describe("users reducer", () => {
     ).toEqual({
       auth: {},
       errors: { username: "Username already exists" },
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false
-    });
-  });
-
-  it("should correctly reduce CREATE_USER_ERROR", () => {
-    expect(
-      user(
-        {
-          auth: {},
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true
-        },
-        {
-          error: { username: "Username already exists" },
-          type: "CREATE_USER_ERROR"
-        }
-      )
-    ).toEqual({
-      auth: {},
-      errors: { username: "Username already exists" },
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false
-    });
-  });
-
-  it("should correctly reduce DELETE_USER_ERROR", () => {
-    expect(
-      user(
-        {
-          auth: {},
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true
-        },
-        {
-          error: "Could not delete",
-          type: "DELETE_USER_ERROR"
-        }
-      )
-    ).toEqual({
-      auth: {},
-      errors: "Could not delete",
       items: [],
       loaded: false,
       loading: false,
@@ -265,30 +243,55 @@ describe("users reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_USER_NOTIFY", () => {
+  // Delete
+  it("should correctly reduce DELETE_USER_START", () => {
     expect(
       user(
         {
           auth: {},
           errors: {},
-          items: [{ id: 1, username: "admin" }],
+          items: [],
           loaded: false,
           loading: false,
-          saved: false,
+          saved: true,
           saving: false
         },
         {
-          payload: { id: 2, username: "user1" },
-          type: "CREATE_USER_NOTIFY"
+          type: "DELETE_USER_START"
         }
       )
     ).toEqual({
       auth: {},
       errors: {},
-      items: [
-        { id: 1, username: "admin" },
-        { id: 2, username: "user1" }
-      ],
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: true
+    });
+  });
+
+  it("should correctly reduce DELETE_USER_ERROR", () => {
+    expect(
+      user(
+        {
+          auth: {},
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: true
+        },
+        {
+          error: "Could not delete",
+          type: "DELETE_USER_ERROR"
+        }
+      )
+    ).toEqual({
+      auth: {},
+      errors: "Could not delete",
+      items: [],
       loaded: false,
       loading: false,
       saved: false,
@@ -327,6 +330,7 @@ describe("users reducer", () => {
     });
   });
 
+  // Cleanup
   it("should correctly reduce CLEANUP_USER", () => {
     expect(
       user(

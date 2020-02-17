@@ -1,30 +1,7 @@
-import produce from "immer";
+import { createStandardReducer } from "app/utils/redux";
 
-const service = produce(
-  (draft, action) => {
-    switch (action.type) {
-      case "FETCH_SERVICE_START":
-        draft.loading = true;
-        break;
-      case "FETCH_SERVICE_ERROR":
-        draft.errors = action.error;
-        draft.loading = false;
-        break;
-      case "FETCH_SERVICE_SUCCESS":
-        draft.loading = false;
-        draft.loaded = true;
-        draft.items = action.payload;
-        break;
-      default:
-        return draft;
-    }
-  },
-  {
-    errors: {},
-    items: [],
-    loaded: false,
-    loading: false
-  }
-);
+import { service as serviceActions } from "app/base/actions";
+
+const service = createStandardReducer(serviceActions);
 
 export default service;

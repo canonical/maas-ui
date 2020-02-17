@@ -1,13 +1,5 @@
-const domain = {};
+import { createStandardActions } from "app/utils/redux";
 
-domain.fetch = () => {
-  return {
-    type: "FETCH_DOMAIN",
-    meta: {
-      model: "domain",
-      method: "list"
-    }
-  };
-};
+const domain = createStandardActions("domain");
 
 export default domain;

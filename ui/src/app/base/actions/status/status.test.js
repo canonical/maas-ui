@@ -6,23 +6,31 @@ describe("status actions", () => {
       username: "koala",
       password: "gumtree"
     };
-    expect(status.login(payload)).toStrictEqual({ payload, type: "LOGIN" });
+    expect(status.login(payload)).toStrictEqual({
+      type: "LOGIN",
+      payload
+    });
   });
 
   it("should handle logging out", () => {
     expect(status.logout()).toStrictEqual({
-      type: "LOGOUT"
+      type: "LOGOUT",
+      payload: undefined
     });
   });
 
   it("should handle checking if the user is authenticated", () => {
     expect(status.checkAuthenticated()).toStrictEqual({
-      type: "CHECK_AUTHENTICATED"
+      type: "CHECK_AUTHENTICATED",
+      payload: undefined
     });
   });
 
   it("should handle external log in", () => {
-    expect(status.externalLogin()).toStrictEqual({ type: "EXTERNAL_LOGIN" });
+    expect(status.externalLogin()).toStrictEqual({
+      type: "EXTERNAL_LOGIN",
+      payload: undefined
+    });
   });
 
   it("should handle storing the external login URL", () => {
@@ -30,8 +38,8 @@ describe("status actions", () => {
       url: "http://login.example.com"
     };
     expect(status.externalLoginURL(payload)).toStrictEqual({
-      payload,
-      type: "EXTERNAL_LOGIN_URL"
+      type: "EXTERNAL_LOGIN_URL",
+      payload
     });
   });
 });

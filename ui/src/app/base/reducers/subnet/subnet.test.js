@@ -3,9 +3,12 @@ import subnet from "./subnet";
 describe("subnet reducer", () => {
   it("should return the initial state", () => {
     expect(subnet(undefined, {})).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -15,9 +18,38 @@ describe("subnet reducer", () => {
         type: "FETCH_SUBNET_START"
       })
     ).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
+    });
+  });
+
+  it("should correctly reduce FETCH_SUBNET_ERROR", () => {
+    expect(
+      subnet(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false
+        },
+        {
+          error: "Could not fetch subnets",
+          type: "FETCH_SUBNET_ERROR"
+        }
+      )
+    ).toEqual({
+      errors: "Could not fetch subnets",
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -25,9 +57,12 @@ describe("subnet reducer", () => {
     expect(
       subnet(
         {
+          errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_SUBNET_SUCCESS",
@@ -38,8 +73,11 @@ describe("subnet reducer", () => {
         }
       )
     ).toEqual({
+      errors: {},
       loading: false,
       loaded: true,
+      saved: false,
+      saving: false,
       items: [
         { id: 1, name: "10.0.0.99" },
         { id: 2, name: "test.maas" }

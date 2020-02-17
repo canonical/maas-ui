@@ -3,9 +3,12 @@ import controller from "./controller";
 describe("controller reducer", () => {
   it("should return the initial state", () => {
     expect(controller(undefined, {})).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
+      saved: false,
+      saving: false
     });
   });
 
@@ -15,9 +18,12 @@ describe("controller reducer", () => {
         type: "FETCH_CONTROLLER_START"
       })
     ).toEqual({
+      errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
+      saved: false,
+      saving: false
     });
   });
 
@@ -25,9 +31,12 @@ describe("controller reducer", () => {
     expect(
       controller(
         {
+          errors: {},
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          saved: false,
+          saving: false
         },
         {
           type: "FETCH_CONTROLLER_SUCCESS",
@@ -38,12 +47,15 @@ describe("controller reducer", () => {
         }
       )
     ).toEqual({
+      errors: {},
       loading: false,
       loaded: true,
       items: [
         { id: 1, hostname: "rack" },
         { id: 2, hostname: "maas" }
-      ]
+      ],
+      saved: false,
+      saving: false
     });
   });
 });
