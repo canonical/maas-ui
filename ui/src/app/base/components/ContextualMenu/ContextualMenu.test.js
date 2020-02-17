@@ -31,12 +31,32 @@ describe("ContextualMenu ", () => {
     );
   });
 
+  it("can be disabled", () => {
+    const wrapper = mount(
+      <ContextualMenu links={[]} toggleDisabled toggleLabel="Toggle" />
+    );
+    expect(
+      wrapper.find("button.p-contextual-menu__toggle").props().disabled
+    ).toBe(true);
+  });
+
   it("can have a toggle button with an icon", () => {
     const wrapper = mount(<ContextualMenu hasToggleIcon links={[]} />);
     expect(
       wrapper
         .find("button.p-contextual-menu__toggle .p-contextual-menu__indicator")
         .exists()
+    ).toBe(true);
+  });
+
+  it("makes the icon light if the toggle is positive or negative", () => {
+    const positive = mount(
+      <ContextualMenu hasToggleIcon links={[]} toggleAppearance="positive" />
+    );
+    expect(
+      positive
+        .find("button.p-contextual-menu__toggle .p-contextual-menu__indicator")
+        .hasClass("is-light")
     ).toBe(true);
   });
 
