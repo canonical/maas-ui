@@ -13,7 +13,7 @@
     "cross-env": "7.0.0",
     "date-fns": "2.9.0",
     "formik": "2.1.4",
-    "http-proxy-middleware": "0.21.0",
+    "http-proxy-middleware": "1.0.0",
     "immer": "5.3.6",
     "nanoid": "2.1.11",
     "path-parse": "1.0.6",
