@@ -410,7 +410,7 @@ const generateGroupRows = ({
   return rows;
 };
 
-const MachineList = () => {
+const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
   const dispatch = useDispatch();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -438,7 +438,6 @@ const MachineList = () => {
   const [hiddenGroups, setHiddenGroups] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
-  const [selectedMachines, setSelectedMachines] = useState([]);
 
   useWindowTitle("Machines");
 

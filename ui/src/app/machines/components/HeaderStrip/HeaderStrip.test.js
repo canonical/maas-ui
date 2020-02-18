@@ -26,6 +26,12 @@ describe("HeaderStrip", () => {
           loaded: true,
           loading: false
         },
+        machineActions: {
+          data: [],
+          errors: {},
+          loaded: true,
+          loading: false
+        },
         navigationOptions: {
           data: {
             rsd: false
@@ -36,9 +42,10 @@ describe("HeaderStrip", () => {
         items: []
       },
       machine: {
-        loaded: false,
+        loaded: true,
         items: [
           {
+            actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
@@ -108,7 +115,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -124,7 +131,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -143,7 +150,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -172,7 +179,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -193,7 +200,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -210,7 +217,7 @@ describe("HeaderStrip", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <HeaderStrip />
+          <HeaderStrip selectedMachines={[]} />
         </MemoryRouter>
       </Provider>
     );
@@ -218,5 +225,227 @@ describe("HeaderStrip", () => {
     expect(
       wrapper.find('Button[data-test="add-hardware-dropdown"]').length
     ).toBe(0);
+  });
+
+  it("disables take action menu if no are machines selected", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={[]} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+    ).toBe(true);
+  });
+
+  it(`enables take action menu and displays number of selected machines if
+    at least one selected`, () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={[state.machine.items[0]]} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="selected-count"]').text()).toBe(
+      "1 selected"
+    );
+    expect(
+      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+    ).toBe(false);
+  });
+
+  it(`displays all lifecycle actions in action menu, but disables buttons for
+    those in which selected machines cannot perform`, () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      { name: "lifecycle1", title: "Lifecycle 1", type: "lifecycle" },
+      { name: "lifecycle2", title: "Lifecycle 2", type: "lifecycle" },
+      { name: "lifecycle3", title: "Lifecycle 3", type: "lifecycle" }
+    ];
+    // No machine can perform "lifecycle3" action
+    state.machine.items = [
+      { actions: ["lifecycle1", "lifecycle2"] },
+      { actions: ["lifecycle1"] },
+      { actions: ["other"] }
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={state.machine.items} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("button.p-contextual-menu__link").length).toBe(3);
+    expect(wrapper.find("[data-test='action-title-lifecycle1']").text()).toBe(
+      "Lifecycle 1"
+    );
+    expect(wrapper.find("[data-test='action-title-lifecycle2']").text()).toBe(
+      "Lifecycle 2"
+    );
+    expect(wrapper.find("[data-test='action-title-lifecycle3']").text()).toBe(
+      "Lifecycle 3"
+    );
+    // Lifecycle 3 action displays, but is disabled
+    expect(
+      wrapper
+        .find("button.p-contextual-menu__link")
+        .at(2)
+        .props().disabled
+    ).toBe(true);
+  });
+
+  it(`filters non-lifecycle actions from action menu if no selected machine
+    can perform the action`, () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      { name: "on", title: "Power on...", type: "power" },
+      { name: "off", title: "Power off...", type: "power" },
+      { name: "house", title: "Power house...", type: "power" }
+    ];
+    // No machine can perform "house" action
+    state.machine.items = [
+      { actions: ["on", "off"] },
+      { actions: ["on"] },
+      { actions: ["off"] }
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={state.machine.items} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("button.p-contextual-menu__link").length).toBe(2);
+    expect(wrapper.find("[data-test='action-title-on']").text()).toBe(
+      "Power on..."
+    );
+    expect(wrapper.find("[data-test='action-title-off']").text()).toBe(
+      "Power off..."
+    );
+  });
+
+  it(`correctly calculates number of machines that can perform each action
+    in action menu`, () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      { name: "commission", title: "Commission...", type: "lifecycle" },
+      { name: "release", title: "Release...", type: "lifecycle" },
+      { name: "deploy", title: "Deploy...", type: "lifecycle" }
+    ];
+    // 3 commission, 2 release, 1 deploy
+    state.machine.items = [
+      { actions: ["commission", "release", "deploy"] },
+      { actions: ["commission", "release"] },
+      { actions: ["commission"] }
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={state.machine.items} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("button.p-contextual-menu__link").length).toBe(3);
+    expect(wrapper.find("[data-test='action-count-commission']").text()).toBe(
+      "3"
+    );
+    expect(wrapper.find("[data-test='action-count-release']").text()).toBe("2");
+    expect(wrapper.find("[data-test='action-count-deploy']").text()).toBe("1");
+  });
+
+  it(`displays all actions a machine can take, without count, if only one
+  machine is selected`, () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      { name: "action1", title: "Action 1", type: "power" },
+      { name: "action2", title: "Action 2", type: "power" }
+    ];
+    // No machine can perform "lifecycle3" action
+    state.machine.items = [{ actions: ["action1"] }];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={[state.machine.items[0]]} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("[data-test='action-title-action1']").text()).toBe(
+      "Action 1"
+    );
+    expect(wrapper.find("[data-test='action-count-action1']").exists()).toBe(
+      false
+    );
+  });
+
+  it("groups actions in action menu by type", () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      { name: "commission", title: "Commission...", type: "lifecycle" },
+      { name: "on", title: "Power on...", type: "power" },
+      { name: "off", title: "Power on...", type: "power" },
+      { name: "test", title: "Test...", type: "testing" },
+      { name: "lock", title: "Lock...", type: "lock" },
+      { name: "set-pool", title: "Set pool...", type: "misc" },
+      { name: "set-zone", title: "Set zone...", type: "misc" },
+      { name: "delete", title: "Delete...", type: "misc" }
+    ];
+    state.machine.items = [
+      {
+        actions: [
+          "commission",
+          "on",
+          "off",
+          "test",
+          "lock",
+          "set-pool",
+          "set-zone",
+          "delete"
+        ]
+      }
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={state.machine.items} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const links = wrapper.find('[data-test="take-action-dropdown"]').props()
+      .links;
+    expect(links[0].length).toBe(1);
+    expect(links[1].length).toBe(2);
+    expect(links[2].length).toBe(1);
+    expect(links[3].length).toBe(1);
+    expect(links[4].length).toBe(3);
   });
 });

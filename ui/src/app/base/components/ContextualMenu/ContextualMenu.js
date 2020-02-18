@@ -63,6 +63,7 @@ const ContextualMenu = ({
   position = "right",
   toggleAppearance,
   toggleClassName,
+  toggleDisabled,
   toggleLabel,
   toggleLabelFirst = true
 }) => {
@@ -96,6 +97,7 @@ const ContextualMenu = ({
           aria-expanded={isOpen ? "true" : "false"}
           aria-haspopup="true"
           className={classNames("p-contextual-menu__toggle", toggleClassName)}
+          disabled={toggleDisabled}
           hasIcon={hasToggleIcon}
           onClick={evt => {
             if (!isOpen) {
@@ -107,7 +109,16 @@ const ContextualMenu = ({
         >
           {toggleLabelFirst ? labelNode : null}
           {hasToggleIcon ? (
-            <i className="p-icon--contextual-menu p-contextual-menu__indicator"></i>
+            <i
+              className={classNames(
+                "p-icon--contextual-menu p-contextual-menu__indicator",
+                {
+                  "is-light": ["negative", "positive"].includes(
+                    toggleAppearance
+                  )
+                }
+              )}
+            ></i>
           ) : null}
           {toggleLabelFirst ? null : labelNode}
         </Button>

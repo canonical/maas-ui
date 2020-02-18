@@ -41,6 +41,11 @@ body {
   transform: rotate(180deg);
 }
 
+.u-flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 .p-modal {
   // The modal needs to be above the header nav items.
   z-index: 10;
