@@ -10,6 +10,7 @@ const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/accounts/login/";
 const LOGOUT_API = "/MAAS/accounts/logout/";
+const MACHINES_API = `${ROOT_API}machines/`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -127,6 +128,25 @@ export const api = {
       })
         .then(handleErrors)
         .then(response => response.json());
+    }
+  },
+  machines: {
+    addChassis: (params, csrftoken) => {
+      return fetch(`${MACHINES_API}?op=add_chassis`, {
+        headers: new Headers({
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "X-CSRFToken": csrftoken,
+          "X-Requested-With": "XMLHttpRequest"
+        }),
+        method: "POST",
+        body: new URLSearchParams(Object.entries(params))
+      })
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+        });
     }
   },
   scripts: {
@@ -371,6 +391,31 @@ export function* deleteScriptSaga(action) {
   }
 }
 
+export function* addMachineChassisSaga(action) {
+  const csrftoken = yield call(getCookie, "csrftoken");
+  const params = action.payload.params;
+  let response;
+  try {
+    yield put({ type: "ADD_MACHINE_CHASSIS_START" });
+    response = yield call(api.machines.addChassis, params, csrftoken);
+    yield put({
+      type: "ADD_MACHINE_CHASSIS_SUCCESS",
+      payload: response
+    });
+  } catch (err) {
+    let error = err;
+    if (typeof error === "string") {
+      error = { "Add chassis error": error };
+    } else if (typeof error === "object") {
+      error = error.message;
+    }
+    yield put({
+      type: "ADD_MACHINE_CHASSIS_ERROR",
+      error
+    });
+  }
+}
+
 export function* watchExternalLogin() {
   yield takeLatest("EXTERNAL_LOGIN", externalLoginSaga);
 }
@@ -413,4 +458,8 @@ export function* watchUploadScript() {
 
 export function* watchDeleteScript() {
   yield takeEvery("DELETE_SCRIPT", deleteScriptSaga);
+}
+
+export function* watchAddMachineChassis() {
+  yield takeEvery("ADD_MACHINE_CHASSIS", addMachineChassisSaga);
 }

@@ -1,5 +1,5 @@
 import { Loader } from "@canonical/react-components";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -17,32 +17,17 @@ import {
   resourcepool as resourcePoolSelectors,
   zone as zoneSelectors
 } from "app/base/selectors";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { trimPowerParameters } from "app/utils";
+import {
+  useAddMessage,
+  useAllPowerParameters,
+  usePowerParametersSchema,
+  useWindowTitle
+} from "app/base/hooks";
 import AddMachineFormFields from "../AddMachineFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
-
-/**
- * React expects controlled inputs to have some associated state. Because the
- * power parameters are dynamic and dependent on what power type is selected,
- * the form is initialised with all possible power parameters from all power
- * types. Before the create machine action is dispatched, the power parameters
- * are trimmed to only those relevant to the selected power type.
- *
- * @param {Object} powerType - selected power type
- * @param {Object} powerParameters - all power parameters entered in Formik form
- * @returns {Object} power parameters relevant to selected power type
- */
-const trimPowerParameters = (powerType, powerParameters) => {
-  const trimmedParameters = {};
-  if (powerType && powerType.fields) {
-    powerType.fields.forEach(field => {
-      trimmedParameters[field.name] = powerParameters[field.name];
-    });
-  }
-  return trimmedParameters;
-};
 
 const generateMachineSchema = parametersSchema =>
   Yup.object().shape({
@@ -93,7 +78,6 @@ export const AddMachineForm = () => {
 
   const [savingMachine, setSavingMachine] = useState(false);
   const [powerType, setPowerType] = useState("");
-  const [MachineSchema, setMachineSchema] = useState(generateMachineSchema({}));
 
   // Fetch all data required for the form.
   useEffect(() => {
@@ -106,23 +90,6 @@ export const AddMachineForm = () => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  // When selected power type changes, update the validation schema with new
-  // power_parameters shape.
-  useEffect(() => {
-    if (powerType) {
-      const parametersSchema = powerType.fields.reduce((schema, field) => {
-        if (field.required) {
-          schema[field.name] = Yup.string().required(`${field.label} required`);
-        } else {
-          schema[field.name] = Yup.string();
-        }
-        return schema;
-      }, {});
-      const newMachineSchema = generateMachineSchema(parametersSchema);
-      setMachineSchema(newMachineSchema);
-    }
-  }, [powerType]);
-
   useWindowTitle("Add machine");
 
   useAddMessage(
@@ -132,21 +99,12 @@ export const AddMachineForm = () => {
     setSavingMachine
   );
 
-  // Calculate all possible power parameters from every power type and memoize.
-  // Used to initialise form so React doesn't complain about unexpected values.
-  // Parameters are trimmed to only relevant parameters on form submit.
-  const allPowerParameters = useMemo(
-    () =>
-      powerTypes.reduce((parameters, powerType) => {
-        powerType.fields.forEach(field => {
-          if (!(field.name in parameters)) {
-            parameters[field.name] = field.default;
-          }
-        });
-        return parameters;
-      }, {}),
-    [powerTypes]
+  const MachineSchema = usePowerParametersSchema(
+    powerType,
+    generateMachineSchema
   );
+
+  const allPowerParameters = useAllPowerParameters(powerTypes);
 
   const allLoaded =
     architecturesLoaded &&

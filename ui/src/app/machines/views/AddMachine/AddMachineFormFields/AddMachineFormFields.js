@@ -1,4 +1,4 @@
-import { Col, Input, Row, Select } from "@canonical/react-components";
+import { Col, Row, Select } from "@canonical/react-components";
 import React from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -10,30 +10,7 @@ import {
   zone as zoneSelectors
 } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
-
-const generatePowerTypeFields = powerType => {
-  if (powerType) {
-    return powerType.fields.map(field => (
-      <FormikField
-        component={field.field_type === "choice" ? Select : Input}
-        key={field.name}
-        label={field.label}
-        name={`power_parameters.${field.name}`}
-        options={
-          field.field_type === "choice"
-            ? field.choices.map(choice => ({
-                key: `${field.name}-${choice[0]}`,
-                label: choice[1],
-                value: choice[0]
-              }))
-            : undefined
-        }
-        required={field.required}
-        type={field.field_type === "password" ? "password" : "text"}
-      />
-    ));
-  }
-};
+import PowerTypeFields from "app/machines/components/PowerTypeFields";
 
 export const AddMachineFormFields = () => {
   const architectures = useSelector(generalSelectors.architectures.get);
@@ -43,7 +20,8 @@ export const AddMachineFormFields = () => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
 
-  const { setFieldTouched, setFieldValue, values } = useFormikContext();
+  const formikProps = useFormikContext();
+  const { values } = formikProps;
 
   const architectureOptions = [
     {
@@ -76,14 +54,6 @@ export const AddMachineFormFields = () => {
       key: `kernel-${kernel[1]}`,
       label: kernel[1],
       value: kernel[0]
-    }))
-  ];
-  const powerTypeOptions = [
-    { label: "Select your power type", value: "", disabled: true },
-    ...powerTypes.map(powerType => ({
-      key: `power-type-${powerType.name}`,
-      label: powerType.description,
-      value: powerType.name
     }))
   ];
   const resourcePoolOptions = [
@@ -156,20 +126,11 @@ export const AddMachineFormFields = () => {
         />
       </Col>
       <Col size="5">
-        <FormikField
-          component={Select}
-          label="Power type"
-          name="power_type"
-          options={powerTypeOptions}
-          onChange={e => {
-            setFieldValue("power_type", e.target.value);
-            setFieldTouched("power_type", false);
-          }}
-          required
+        <PowerTypeFields
+          formikProps={formikProps}
+          powerTypes={powerTypes}
+          selectedPowerType={values.power_type}
         />
-        {generatePowerTypeFields(
-          powerTypes.find(type => type.name === values.power_type)
-        )}
       </Col>
     </Row>
   );

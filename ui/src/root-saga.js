@@ -12,7 +12,8 @@ import {
   watchFetchLicenseKeys,
   watchDeleteScript,
   watchFetchScripts,
-  watchUploadScript
+  watchUploadScript,
+  watchAddMachineChassis
 } from "./app/base/sagas";
 
 export default function* rootSaga() {
@@ -28,6 +29,7 @@ export default function* rootSaga() {
     watchFetchLicenseKeys(),
     watchDeleteScript(),
     watchFetchScripts(),
-    watchUploadScript()
+    watchUploadScript(),
+    watchAddMachineChassis()
   ]);
 }

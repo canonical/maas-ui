@@ -15,7 +15,8 @@ import {
   uploadScriptSaga,
   fetchLicenseKeysSaga,
   updateLicenseKeySaga,
-  deleteLicenseKeySaga
+  deleteLicenseKeySaga,
+  addMachineChassisSaga
 } from "./http";
 
 jest.mock("../../../bakery", () => {});
@@ -337,6 +338,76 @@ describe("http sagas", () => {
           ])
           .put({ type: "DELETE_LICENSE_KEY_START" })
           .put({ type: "DELETE_LICENSE_KEY_SUCCESS", payload })
+          .run();
+      });
+    });
+  });
+
+  describe("Machines API", () => {
+    describe("add machine chassis", () => {
+      it("returns a SUCCESS action", () => {
+        const payload = {
+          params: {
+            chassis_type: "powerkvm",
+            hostname: "qemu+ssh://virsh@127.0.0.1/system"
+          }
+        };
+        const action = {
+          type: "ADD_MACHINE_CHASSIS",
+          payload
+        };
+        return expectSaga(addMachineChassisSaga, action)
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [matchers.call.fn(api.machines.addChassis, "csrf-token"), payload]
+          ])
+          .put({ type: "ADD_MACHINE_CHASSIS_START" })
+          .put({ type: "ADD_MACHINE_CHASSIS_SUCCESS", payload })
+          .run();
+      });
+
+      it("handles errors as strings", () => {
+        const payload = {
+          params: {
+            hostname: "qemu+ssh://virsh@127.0.0.1/system"
+          }
+        };
+        const action = { type: "ADD_MACHINE_CHASSIS", payload };
+        const error = "Chassis type not provided";
+        return expectSaga(addMachineChassisSaga, action)
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [
+              matchers.call.fn(api.machines.addChassis, "csrf-token", payload),
+              throwError(error)
+            ]
+          ])
+          .put({ type: "ADD_MACHINE_CHASSIS_START" })
+          .put({
+            type: "ADD_MACHINE_CHASSIS_ERROR",
+            error: { "Add chassis error": error }
+          })
+          .run();
+      });
+
+      it("handles errors as objects", () => {
+        const payload = {
+          params: {
+            hostname: "qemu+ssh://virsh@127.0.0.1/system"
+          }
+        };
+        const action = { type: "ADD_MACHINE_CHASSIS", payload };
+        const error = new Error("Chassis type not provided");
+        return expectSaga(addMachineChassisSaga, action)
+          .provide([
+            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
+            [
+              matchers.call.fn(api.machines.addChassis, "csrf-token", payload),
+              throwError(error)
+            ]
+          ])
+          .put({ type: "ADD_MACHINE_CHASSIS_START" })
+          .put({ type: "ADD_MACHINE_CHASSIS_ERROR", error: error.message })
           .run();
       });
     });

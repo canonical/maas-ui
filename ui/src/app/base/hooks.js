@@ -2,8 +2,9 @@ import { __RouterContext as RouterContext } from "react-router";
 import { notificationTypes } from "@canonical/react-components";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
+import * as Yup from "yup";
 
 import { sendAnalyticsEvent } from "analytics";
 import { config as configSelectors } from "app/settings/selectors";
@@ -226,3 +227,53 @@ export const useVisible = initialValue => {
   };
   return [value, toggleValue];
 };
+
+/**
+ * Returns a Yup validation schema with dynamically generated power parameters
+ * schema, depending on the selected power type in the form.
+ * @param {Object} powerType - Power type selected in the form.
+ * @param {Function} generateSchemaFunc - Schema generation function.
+ * @returns {Object} Yup validation schema with power parameters.
+ */
+export const usePowerParametersSchema = (powerType, generateSchemaFunc) => {
+  const [Schema, setSchema] = useState(generateSchemaFunc({}));
+
+  useEffect(() => {
+    if (powerType) {
+      const parametersSchema = powerType.fields.reduce((schema, field) => {
+        if (field.required) {
+          schema[field.name] = Yup.string().required(`${field.label} required`);
+        } else {
+          schema[field.name] = Yup.string();
+        }
+        return schema;
+      }, {});
+      const newSchema = generateSchemaFunc(parametersSchema);
+      setSchema(newSchema);
+    }
+  }, [generateSchemaFunc, powerType]);
+
+  return Schema;
+};
+
+/**
+ * Returns a memoized object of all possible power parameters from all given
+ * power types. Used to initialise Formik forms so React doesn't complain about
+ * unexpected values. Parameters should be trimmed to only relevant parameters
+ * on form submit.
+ * @param {Array} powerTypes - Power types to collate parameters from.
+ * @returns {Object} All possible power parameters from given power types.
+ */
+export const useAllPowerParameters = powerTypes =>
+  useMemo(
+    () =>
+      powerTypes.reduce((parameters, powerType) => {
+        powerType.fields.forEach(field => {
+          if (!(field.name in parameters)) {
+            parameters[field.name] = field.default;
+          }
+        });
+        return parameters;
+      }, {}),
+    [powerTypes]
+  );
