@@ -1,14 +1,13 @@
 import { Loader } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useMachineActions } from "app/base/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const OwnerColumn = ({ onToggleMenu, systemId }) => {
-  const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
@@ -16,33 +15,15 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
 
   const owner = machine.owner ? machine.owner : "-";
   const tags = machine.tags ? machine.tags.join(", ") : "";
-  const hasAcquireAction = machine.actions.includes("acquire");
-  const hasReleaseAction = machine.actions.includes("release");
-  let menuLinks = [];
-  if (hasAcquireAction) {
-    menuLinks.push({
-      children: "Acquire...",
-      onClick: () => {
-        dispatch(machineActions.acquire(systemId));
-        setUpdating(machine.status);
-      }
-    });
-  }
-  if (hasReleaseAction) {
-    menuLinks.push({
-      children: "Release...",
-      onClick: () => {
-        dispatch(machineActions.release(systemId));
-        setUpdating(machine.status);
-      }
-    });
-  }
-  if (!hasAcquireAction && !hasReleaseAction) {
-    menuLinks.push({
-      children: "No owner actions available",
-      disabled: true
-    });
-  }
+
+  const menuLinks = useMachineActions(
+    systemId,
+    ["acquire", "release"],
+    "No owner actions available",
+    () => {
+      setUpdating(machine.status);
+    }
+  );
 
   useEffect(() => {
     if (updating !== null && machine.status !== updating) {

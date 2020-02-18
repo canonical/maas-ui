@@ -7,6 +7,8 @@ import { useFormikContext } from "formik";
 
 import { sendAnalyticsEvent } from "analytics";
 import { config as configSelectors } from "app/settings/selectors";
+import { general as generalSelectors } from "app/base/selectors";
+import { machine as machineSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
 import { simpleObjectEquality } from "app/settings/utils";
 
@@ -155,4 +157,57 @@ export const useSendAnalytics = (
       sendAnalyticsEvent(eventCategory, eventAction, eventLabel);
     }
   }, [sendCondition, eventCategory, eventAction, eventLabel]);
+};
+
+//
+const actionMethodOverrides = new Map([
+  ["exit-rescue-mode", "exitRescueMode"],
+  ["mark-broken", "markBroken"],
+  ["mark-fixed", "markFixed"],
+  ["override-failed-testing", "overrideFailedTesting"],
+  ["rescue-mode", "rescueMode"]
+]);
+
+/**
+ * Generate menu items for the available actins on a machine.
+ * @param {String} systemId - The system id for a machine.
+ * @param {Array} actions - The actions to generate menu items for.
+ * @param {String} noneMessage - The message to display if there are no items.
+ * @param {Function} onClick - A function to call when the item is clicked.
+ */
+export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
+  const dispatch = useDispatch();
+  const machineActions = useSelector(generalSelectors.machineActions.get);
+  const machine = useSelector(state =>
+    machineSelectors.getBySystemId(state, systemId)
+  );
+  let actionLinks = [];
+  actions.forEach(action => {
+    if (machine.actions.includes(action)) {
+      let actionLabel = action;
+      machineActions.forEach(machineAction => {
+        if (machineAction.name === action) {
+          actionLabel = machineAction.title;
+        }
+      });
+
+      actionLinks.push({
+        children: actionLabel,
+        onClick: () => {
+          const actionMethod = actionMethodOverrides.get(action) || action;
+          dispatch(actionMethod(systemId));
+          onClick && onClick();
+        }
+      });
+    }
+  });
+  if (actionLinks.length === 0 && noneMessage) {
+    return [
+      {
+        children: noneMessage,
+        disabled: true
+      }
+    ];
+  }
+  return actionLinks;
 };

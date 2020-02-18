@@ -14,6 +14,9 @@ describe("StatusColumn", () => {
   beforeEach(() => {
     state = {
       general: {
+        machineActions: {
+          data: []
+        },
         osInfo: {
           data: {
             osystems: [
