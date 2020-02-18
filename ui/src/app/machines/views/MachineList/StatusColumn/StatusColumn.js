@@ -1,14 +1,14 @@
 import { Loader } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineActions } from "app/base/actions";
 import {
   general as generalSelectors,
   machine as machineSelectors
 } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import { useMachineActions } from "app/base/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 
@@ -100,40 +100,28 @@ const getStatusIcon = machine => {
 };
 
 const StatusColumn = ({ onToggleMenu, systemId }) => {
-  const dispatch = useDispatch();
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const osReleases = useSelector(state =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)
   );
-  let actionLinks = [];
-  const actionTypes = new Map([
-    ["abort", null],
-    ["acquire", null],
-    ["commission", null],
-    ["deploy", null],
-    ["exit-rescue-mode", "exitRescueMode"],
-    ["lock", null],
-    ["mark-broken", "markBroken"],
-    ["mark-fixed", "markFixed"],
-    ["override-failed-testing", "overrideFailedTesting"],
-    ["release", null],
-    ["rescue-mode", "rescueMode"],
-    ["test", null],
-    ["unlock", null]
+
+  const actionLinks = useMachineActions(systemId, [
+    "abort",
+    "acquire",
+    "commission",
+    "deploy",
+    "exit-rescue-mode",
+    "lock",
+    "mark-broken",
+    "mark-fixed",
+    "override-failed-testing",
+    "release",
+    "rescue-mode",
+    "test",
+    "unlock"
   ]);
-  Array.from(actionTypes.keys()).forEach(action => {
-    if (machine.actions.includes(action)) {
-      actionLinks.push({
-        children: `${action}...`,
-        onClick: () => {
-          const actionMethod = actionTypes.get(action) || action;
-          dispatch(machineActions[actionMethod](systemId));
-        }
-      });
-    }
-  });
 
   const menuLinks = [
     actionLinks,

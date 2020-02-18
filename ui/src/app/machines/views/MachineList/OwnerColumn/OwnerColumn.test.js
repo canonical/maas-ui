@@ -15,6 +15,14 @@ describe("OwnerColumn", () => {
       config: {
         items: []
       },
+      general: {
+        machineActions: {
+          data: [
+            { name: "acquire", title: "Acquire..." },
+            { name: "release", title: "Release..." }
+          ]
+        }
+      },
       machine: {
         errors: {},
         loading: false,
