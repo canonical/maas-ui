@@ -127,6 +127,14 @@ Object {
   "messages": Object {
     "items": Array [],
   },
+  "notification": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "packagerepository": Object {
     "errors": Object {},
     "items": Array [],

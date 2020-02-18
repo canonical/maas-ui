@@ -26,6 +26,19 @@ describe("NotificationList", () => {
     expect(wrapper.find("NotificationList")).toMatchSnapshot();
   });
 
+  it("fetches notifications", () => {
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <NotificationList title="Settings">content</NotificationList>
+      </Provider>
+    );
+
+    expect(
+      store.getActions().some(action => action.type === "FETCH_NOTIFICATION")
+    ).toBe(true);
+  });
+
   it("can hide a notification", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -37,11 +50,10 @@ describe("NotificationList", () => {
       .find("Notification")
       .props()
       .close();
-    expect(store.getActions()).toEqual([
-      {
-        type: "REMOVE_MESSAGE",
-        payload: 1
-      }
-    ]);
+
+    expect(store.getActions()[1]).toEqual({
+      type: "REMOVE_MESSAGE",
+      payload: 1
+    });
   });
 });
