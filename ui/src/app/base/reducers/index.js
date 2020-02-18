@@ -7,6 +7,7 @@ export { default as general } from "./general";
 export { default as licensekeys } from "./licensekeys";
 export { default as machine } from "./machine";
 export { default as messages } from "./messages";
+export { default as notification } from "./notification";
 export { default as packagerepository } from "./packagerepository";
 export { default as resourcepool } from "./resourcepool";
 export { default as service } from "./service";

@@ -1,8 +1,11 @@
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { messages as messageActions } from "app/base/actions";
+import {
+  messages as messageActions,
+  notification as notificationActions
+} from "app/base/actions";
 import { messages as messageSelectors } from "app/base/selectors";
 
 const generateMessages = (messages, dispatch) =>
@@ -21,6 +24,11 @@ const generateMessages = (messages, dispatch) =>
 const NotificationList = ({ children, sidebar, title }) => {
   const messages = useSelector(messageSelectors.all);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(notificationActions.fetch());
+  }, [dispatch]);
+
   return <>{generateMessages(messages, dispatch)}</>;
 };
 

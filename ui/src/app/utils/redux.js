@@ -147,7 +147,6 @@ export const createStandardReducer = (
       state.saved = true;
       state.saving = false;
     },
-
     [actions.delete.notify]: (state, action) => {
       const index = state.items.findIndex(item => item.id === action.payload);
       state.items.splice(index, 1);
