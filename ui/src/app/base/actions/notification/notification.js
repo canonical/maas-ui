@@ -16,4 +16,6 @@ notification.delete = createAction(`DELETE_NOTIFICATION`, id => ({
   }
 }));
 
+notification.delete.notify = createAction(`DELETE_NOTIFICATION_NOTIFY`);
+
 export default notification;

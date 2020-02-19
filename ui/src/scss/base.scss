@@ -6,12 +6,14 @@
 @import "./patterns_footer";
 @import "./patterns_icons";
 @import "./patterns_navigation";
+@import "./patterns_notifications";
 @import "./patterns_table";
 @import "./patterns_table-actions";
 
 @include maas-navigation;
 @include maas-p-sticky-footer;
 @include maas-double-row;
+@include maas-p-notifications;
 
 html {
   height: 100%;

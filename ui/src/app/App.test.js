@@ -93,6 +93,9 @@ describe("App", () => {
       messages: {
         items: []
       },
+      notification: {
+        items: []
+      },
       status: {},
       user: {
         auth: {

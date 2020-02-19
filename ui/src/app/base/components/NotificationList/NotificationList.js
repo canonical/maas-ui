@@ -1,4 +1,5 @@
 import { Notification } from "@canonical/react-components";
+
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -6,7 +7,11 @@ import {
   messages as messageActions,
   notification as notificationActions
 } from "app/base/actions";
-import { messages as messageSelectors } from "app/base/selectors";
+import {
+  messages as messageSelectors,
+  notification as notificationSelectors
+} from "app/base/selectors";
+import NotificationGroup from "app/base/components/NotificationGroup";
 
 const generateMessages = (messages, dispatch) =>
   messages.map(({ id, message, status, temporary, type }) => (
@@ -23,13 +28,51 @@ const generateMessages = (messages, dispatch) =>
 
 const NotificationList = ({ children, sidebar, title }) => {
   const messages = useSelector(messageSelectors.all);
+
+  const notifications = {
+    warnings: {
+      items: useSelector(notificationSelectors.warnings),
+      type: "caution"
+    },
+    errors: {
+      items: useSelector(notificationSelectors.errors),
+      type: "negative"
+    },
+    success: {
+      items: useSelector(notificationSelectors.success),
+      type: "positive"
+    },
+    info: {
+      items: useSelector(notificationSelectors.info),
+      type: "information"
+    }
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(notificationActions.fetch());
   }, [dispatch]);
 
-  return <>{generateMessages(messages, dispatch)}</>;
+  return (
+    <>
+      {Object.keys(notifications).map(group => {
+        const type = notifications[group].type;
+        if (notifications[group].items.length > 0) {
+          return (
+            <NotificationGroup
+              key={type}
+              type={type}
+              notifications={notifications[group].items}
+            />
+          );
+        }
+        return null;
+      })}
+
+      {generateMessages(messages, dispatch)}
+    </>
+  );
 };
 
 export default NotificationList;

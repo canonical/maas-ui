@@ -2,6 +2,66 @@
 
 exports[`NotificationList renders a list of messages 1`] = `
 <NotificationList>
+  <NotificationGroup
+    key="negative"
+    notifications={
+      Array [
+        Object {
+          "category": "error",
+          "id": 1,
+          "message": "an error",
+        },
+      ]
+    }
+    type="negative"
+  >
+    <div
+      className="row p-notification--group"
+    >
+      <div
+        className="p-notification--negative"
+      >
+        <div
+          className="p-notification__toggle"
+        >
+          <NotificationGroupMessage
+            action="Dismiss"
+            actionHandler={[Function]}
+            id={1}
+            message="an error"
+          >
+            <p
+              className="p-notification__response"
+            >
+              <span
+                className="p-notification__status"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "an error",
+                  }
+                }
+                data-test="notification-message"
+              />
+              <Button
+                appearance="link"
+                className="p-notification__action"
+                data-test="action-link"
+                onClick={[Function]}
+              >
+                <button
+                  className="p-button--link p-notification__action"
+                  data-test="action-link"
+                  onClick={[Function]}
+                >
+                  Dismiss
+                </button>
+              </Button>
+            </p>
+          </NotificationGroupMessage>
+        </div>
+      </div>
+    </div>
+  </NotificationGroup>
   <Notification
     close={[Function]}
     key="1"

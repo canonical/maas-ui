@@ -18,6 +18,9 @@ describe("NotFound ", () => {
       },
       messages: {
         items: []
+      },
+      notification: {
+        items: []
       }
     };
   });
