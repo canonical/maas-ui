@@ -190,7 +190,7 @@ describe("Machines", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("AddMachine").length).toBe(1);
+    expect(wrapper.find("AddMachineForm").length).toBe(1);
   });
 
   it("correctly routes to add chassis form", () => {
