@@ -8,6 +8,7 @@ import { useFormikContext } from "formik";
 import { sendAnalyticsEvent } from "analytics";
 import { config as configSelectors } from "app/settings/selectors";
 import { general as generalSelectors } from "app/base/selectors";
+import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
 import { simpleObjectEquality } from "app/settings/utils";
@@ -177,7 +178,9 @@ const actionMethodOverrides = new Map([
  */
 export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
   const dispatch = useDispatch();
-  const machineActions = useSelector(generalSelectors.machineActions.get);
+  const generalMachineActions = useSelector(
+    generalSelectors.machineActions.get
+  );
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -185,7 +188,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
   actions.forEach(action => {
     if (machine.actions.includes(action)) {
       let actionLabel = action;
-      machineActions.forEach(machineAction => {
+      generalMachineActions.forEach(machineAction => {
         if (machineAction.name === action) {
           actionLabel = machineAction.title;
         }
@@ -195,7 +198,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
         children: actionLabel,
         onClick: () => {
           const actionMethod = actionMethodOverrides.get(action) || action;
-          dispatch(actionMethod(systemId));
+          dispatch(machineActions[actionMethod](systemId));
           onClick && onClick();
         }
       });
