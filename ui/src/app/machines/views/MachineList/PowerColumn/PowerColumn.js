@@ -105,7 +105,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       menuTitle="Take action:"
       onToggleMenu={onToggleMenu}
       primary={
-        <div className="u-upper-case--first" data-test="power_state">
+        <div className="u-upper-case--first u-truncate" data-test="power_state">
           {powerState}
         </div>
       }

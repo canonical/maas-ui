@@ -26,7 +26,7 @@ exports[`PowerColumn renders 1`] = `
     menuTitle="Take action:"
     primary={
       <div
-        className="u-upper-case--first"
+        className="u-upper-case--first u-truncate"
         data-test="power_state"
       >
         on
@@ -63,7 +63,7 @@ exports[`PowerColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
           >
             <div
-              className="u-upper-case--first"
+              className="u-upper-case--first u-truncate"
               data-test="power_state"
             >
               on
