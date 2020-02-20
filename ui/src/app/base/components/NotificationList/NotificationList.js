@@ -1,5 +1,4 @@
 import { Notification } from "@canonical/react-components";
-
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -7,11 +6,11 @@ import {
   messages as messageActions,
   notification as notificationActions
 } from "app/base/actions";
+import NotificationGroup from "app/base/components/NotificationGroup";
 import {
   messages as messageSelectors,
   notification as notificationSelectors
 } from "app/base/selectors";
-import NotificationGroup from "app/base/components/NotificationGroup";
 
 const generateMessages = (messages, dispatch) =>
   messages.map(({ id, message, status, temporary, type }) => (

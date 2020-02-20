@@ -212,7 +212,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     ];
   }
   return actionLinks;
-}
+};
 
 /**
  * Simple hook for visibility toggles.
