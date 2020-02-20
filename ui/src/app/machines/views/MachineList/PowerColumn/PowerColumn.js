@@ -27,9 +27,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
   const hasOnAction = machine.actions.includes("on");
   const hasOffAction = machine.actions.includes("off");
   const powerState = machine.power_state;
-  let hasIcon = false;
   if (hasOnAction && powerState !== "on") {
-    hasIcon = true;
     menuLinks.push({
       children: (
         <>
@@ -43,7 +41,6 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
     });
   }
   if (hasOffAction && powerState !== "off") {
-    hasIcon = true;
     menuLinks.push({
       children: (
         <>
@@ -60,7 +57,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
     menuLinks.push({
       children: (
         <>
-          {hasIcon ? <span className="p-table-menu__icon-space"></span> : null}
+          <span className="p-table-menu__icon-space"></span>
           Check power
         </>
       ),
@@ -100,7 +97,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
         )
       }
       iconSpace={true}
-      menuClassName={hasIcon ? "p-table-menu--hasIcon" : null}
+      menuClassName="p-table-menu--hasIcon"
       menuLinks={menuLinks}
       menuTitle="Take action:"
       onToggleMenu={onToggleMenu}

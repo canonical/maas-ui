@@ -59,11 +59,41 @@ exports[`OwnerColumn renders 1`] = `
                 },
               ]
             }
+            positionNode={
+              Object {
+                "current": <div
+                  class="p-double-row__primary-row"
+                >
+                  <div
+                    class="p-double-row__primary-row-text u-truncate"
+                  >
+                    <span
+                      data-test="owner"
+                    >
+                      admin
+                    </span>
+                  </div>
+                  <span
+                    class="p-table-menu p-contextual-menu--left"
+                  >
+                    <button
+                      aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    >
+                      <i
+                        class="p-icon--contextual-menu p-contextual-menu__indicator"
+                      />
+                    </button>
+                  </span>
+                </div>,
+              }
+            }
             title="Take action:"
           >
             <ContextualMenu
               className="p-table-menu"
-              dropdownClassName="u-no-margin--top"
               hasToggleIcon={true}
               links={
                 Array [
@@ -74,12 +104,43 @@ exports[`OwnerColumn renders 1`] = `
                   },
                 ]
               }
-              position="center"
+              position="left"
+              positionNode={
+                Object {
+                  "current": <div
+                    class="p-double-row__primary-row"
+                  >
+                    <div
+                      class="p-double-row__primary-row-text u-truncate"
+                    >
+                      <span
+                        data-test="owner"
+                      >
+                        admin
+                      </span>
+                    </div>
+                    <span
+                      class="p-table-menu p-contextual-menu--left"
+                    >
+                      <button
+                        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                      >
+                        <i
+                          class="p-icon--contextual-menu p-contextual-menu__indicator"
+                        />
+                      </button>
+                    </span>
+                  </div>,
+                }
+              }
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
             >
               <span
-                className="p-table-menu p-contextual-menu--center"
+                className="p-table-menu p-contextual-menu--left"
               >
                 <Button
                   appearance="base"

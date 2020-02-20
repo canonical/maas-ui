@@ -61,6 +61,7 @@ const ContextualMenu = ({
   links,
   onToggleMenu,
   position = "right",
+  positionNode,
   toggleAppearance,
   toggleClassName,
   toggleDisabled,
@@ -80,7 +81,7 @@ const ContextualMenu = ({
       .filter(Boolean)
       .join("--")
   );
-  const positionStyle = getPositionStyle(position, wrapper);
+  const positionStyle = getPositionStyle(position, positionNode || wrapper);
 
   useEffect(() => {
     onToggleMenu && onToggleMenu(isOpen);
@@ -173,6 +174,7 @@ ContextualMenu.propTypes = {
     ])
   ).isRequired,
   onToggleMenu: PropTypes.func,
+  positionNode: PropTypes.object,
   position: PropTypes.oneOf(["left", "center", "right"]),
   toggleAppearance: PropTypes.string,
   toggleClassName: PropTypes.string,

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef } from "react";
 import classNames from "classnames";
 
 import TableMenu from "app/base/components/TableMenu";
@@ -21,7 +21,9 @@ const DoubleRow = ({
   secondaryAriaLabel,
   secondaryClassName
 }) => {
+  const parent = useRef(null);
   const hasIcon = icon || iconSpace;
+
   return (
     <div
       className={classNames(
@@ -41,6 +43,7 @@ const DoubleRow = ({
         <div
           className={classNames("p-double-row__primary-row", primaryClassName)}
           aria-label={primaryAriaLabel}
+          ref={parent}
         >
           <div
             className={classNames(
@@ -56,6 +59,7 @@ const DoubleRow = ({
               links={menuLinks}
               title={menuTitle}
               onToggleMenu={onToggleMenu}
+              positionNode={parent}
             />
           ) : null}
         </div>
