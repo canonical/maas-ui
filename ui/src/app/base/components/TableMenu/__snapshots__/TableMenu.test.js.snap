@@ -3,7 +3,6 @@
 exports[`TableMenu  renders 1`] = `
 <ContextualMenu
   className="p-table-menu"
-  dropdownClassName="u-no-margin--top"
   hasToggleIcon={true}
   links={
     Array [
@@ -13,7 +12,7 @@ exports[`TableMenu  renders 1`] = `
       },
     ]
   }
-  position="center"
+  position="left"
   toggleAppearance="base"
   toggleClassName="u-no-margin--bottom p-table-menu__toggle"
 />

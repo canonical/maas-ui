@@ -2,6 +2,7 @@
 @import "~vanilla-framework/scss/settings_spacing";
 
 $icon-size: map-get($icon-sizes, default);
+$icon-space: $icon-size + ($sph-inner--small * 2);
 
 .p-table-menu .p-contextual-menu__non-interactive {
   border-bottom: 1px solid $color-mid-light;
@@ -13,14 +14,23 @@ $icon-size: map-get($icon-sizes, default);
 }
 
 .p-table-menu--hasIcon .p-contextual-menu__non-interactive {
-  padding-left: $icon-size + ($sph-inner--small * 2);
+  padding-left: $icon-space;
 }
 
 .p-table-menu .p-contextual-menu__dropdown {
+  right: auto;
+  margin-left: -$sph-inner--small;
+  margin-top: $sph-inner--small;
+  min-width: 13rem;
+
   .p-table-menu__icon-space,
   [class*="p-icon"] {
     margin-right: $sph-inner--small;
   }
+}
+
+.p-table-menu--hasIcon .p-contextual-menu__dropdown {
+  margin-left: -$icon-space;
 }
 
 .p-table-menu__toggle {

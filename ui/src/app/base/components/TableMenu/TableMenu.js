@@ -6,15 +6,15 @@ import classNames from "classnames";
 import "./TableMenu.scss";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-const TableMenu = ({ className, links, title, onToggleMenu }) => {
+const TableMenu = ({ className, links, title, onToggleMenu, positionNode }) => {
   return (
     <ContextualMenu
       className={classNames("p-table-menu", className)}
-      dropdownClassName="u-no-margin--top"
       hasToggleIcon
       links={[title, ...links]}
       onToggleMenu={onToggleMenu}
-      position="center"
+      position="left"
+      positionNode={positionNode}
       toggleAppearance="base"
       toggleClassName="u-no-margin--bottom p-table-menu__toggle"
     />
@@ -31,6 +31,7 @@ TableMenu.propTypes = {
     ])
   ),
   onToggleMenu: PropTypes.func,
+  positionNode: PropTypes.object,
   title: PropTypes.string
 };
 
