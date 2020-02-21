@@ -35,6 +35,14 @@ const machine = produce(
             break;
           }
         }
+        draft.awaitingUpdate = false;
+        break;
+      case "CHECK_MACHINE_POWER_START":
+        draft.awaitingUpdate = true;
+        break;
+      case "CHECK_MACHINE_POWER_ERROR":
+        draft.awaitingUpdate = false;
+        draft.errors = action.error;
         break;
       case "ACQUIRE_MACHINE_ERROR":
       case "RELEASE_MACHINE_ERROR":
@@ -53,7 +61,6 @@ const machine = produce(
       case "SET_MACHINE_ZONE_ERROR":
       case "TURN_MACHINE_OFF_ERROR":
       case "TURN_MACHINE_ON_ERROR":
-      case "CHECK_MACHINE_POWER_ERROR":
         draft.errors = action.error;
         break;
       case "CLEANUP_MACHINE":
@@ -66,6 +73,7 @@ const machine = produce(
     }
   },
   {
+    awaitingUpdate: false,
     errors: {},
     items: [],
     loaded: false,

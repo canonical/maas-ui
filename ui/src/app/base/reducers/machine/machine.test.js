@@ -3,6 +3,7 @@ import machine from "./machine";
 describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(machine(undefined, {})).toEqual({
+      awaitingUpdate: false,
       errors: {},
       items: [],
       loaded: false,
@@ -18,6 +19,7 @@ describe("machine reducer", () => {
         type: "FETCH_MACHINE_START"
       })
     ).toEqual({
+      awaitingUpdate: false,
       errors: {},
       items: [],
       loaded: false,
@@ -169,6 +171,7 @@ describe("machine reducer", () => {
     expect(
       machine(
         {
+          awaitingUpdate: true,
           errors: {},
           items: [
             { id: 1, hostname: "node1" },
@@ -188,6 +191,7 @@ describe("machine reducer", () => {
         }
       )
     ).toEqual({
+      awaitingUpdate: false,
       errors: {},
       items: [
         { id: 1, hostname: "node1v2" },
@@ -215,6 +219,7 @@ describe("machine reducer", () => {
         }
       )
     ).toEqual({
+      awaitingUpdate: false,
       errors: "Uh oh!",
       loading: true,
       loaded: false,

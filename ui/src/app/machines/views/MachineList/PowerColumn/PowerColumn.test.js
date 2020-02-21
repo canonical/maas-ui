@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -164,5 +165,74 @@ describe("PowerColumn", () => {
         .at(1)
         .text()
     ).toEqual("No power actions available");
+  });
+
+  it("shows a spinner when turning a machine on", () => {
+    state.machine.items[0].actions = ["on"];
+    state.machine.items[0].power_state = "off";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PowerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(false);
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    wrapper.update();
+    expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("shows a spinner when turning a machine off", () => {
+    state.machine.items[0].actions = ["off"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PowerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(false);
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    wrapper.update();
+    expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("shows a spinner when checking power", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PowerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Loader").exists()).toBe(false);
+    act(() => {
+      wrapper
+        .find("DoubleRow")
+        .prop("menuLinks")[0]
+        .onClick();
+    });
+    wrapper.update();
+    expect(wrapper.find("Loader").exists()).toBe(true);
   });
 });

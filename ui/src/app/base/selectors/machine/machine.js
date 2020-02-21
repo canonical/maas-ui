@@ -57,4 +57,11 @@ machine.getBySystemId = (state, id) =>
  */
 machine.errors = state => state.machine.errors;
 
+/**
+ * Whether machines are awaiting update.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} Machines awaiting update state.
+ */
+machine.awaitingUpdate = state => state.machine.awaitingUpdate;
+
 export default machine;

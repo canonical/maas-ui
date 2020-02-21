@@ -2,7 +2,7 @@ import { Loader } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
@@ -14,6 +14,8 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector(state =>
     machineSelectors.getBySystemId(state, systemId)
   );
+  const awaitingUpdate = useSelector(machineSelectors.awaitingUpdate);
+  const prevAwaitingUpdate = useRef(null);
 
   const iconClass = classNames({
     "p-icon--power-on": machine.power_state === "on",
@@ -63,8 +65,8 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       ),
       onClick: () => {
         dispatch(machineActions.checkPower(systemId));
-        // Don't display the spinner when checking power as we can't reliably
-        // determine that the event has finished.
+        prevAwaitingUpdate.current = awaitingUpdate;
+        setUpdating("power");
       }
     });
   }
@@ -77,12 +79,17 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
 
   useEffect(() => {
     if (
-      updating !== null &&
-      (machine.power_state === "error" || machine.power_state !== updating)
+      (updating === "power" &&
+        awaitingUpdate === false &&
+        prevAwaitingUpdate.current === true) ||
+      (updating !== null &&
+        updating !== "power" &&
+        (machine.power_state === "error" || machine.power_state !== updating))
     ) {
       setUpdating(null);
     }
-  }, [updating, machine.power_state]);
+    prevAwaitingUpdate.current = awaitingUpdate;
+  }, [updating, machine.power_state, awaitingUpdate]);
 
   return (
     <DoubleRow

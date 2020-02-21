@@ -117,6 +117,7 @@ Object {
     "loading": false,
   },
   "machine": Object {
+    "awaitingUpdate": false,
     "errors": Object {},
     "items": Array [],
     "loaded": false,
