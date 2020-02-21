@@ -95,6 +95,8 @@ To run the MAAS UI project through a Docker container, from the root of the MAAS
 dotrun
 ```
 
+If you get babel errors then you should run `yarn clean-all` and retry.
+
 Otherwise you can run the project on your host machine directly if you have node and yarn installed, using:
 
 ```
