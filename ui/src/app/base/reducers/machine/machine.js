@@ -11,15 +11,18 @@ const machine = produce(
         draft.loaded = true;
         draft.items = action.payload;
         break;
+      case "ADD_MACHINE_CHASSIS_START":
       case "CREATE_MACHINE_START":
         draft.saved = false;
         draft.saving = true;
         break;
+      case "ADD_MACHINE_CHASSIS_SUCCESS":
       case "CREATE_MACHINE_SUCCESS":
         draft.errors = {};
         draft.saved = true;
         draft.saving = false;
         break;
+      case "ADD_MACHINE_CHASSIS_ERROR":
       case "FETCH_MACHINE_ERROR":
       case "CREATE_MACHINE_ERROR":
         draft.errors = action.error;

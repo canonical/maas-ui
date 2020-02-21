@@ -15,6 +15,15 @@ machine.create = params => {
   };
 };
 
+machine.addChassis = params => {
+  return {
+    type: "ADD_MACHINE_CHASSIS",
+    payload: {
+      params
+    }
+  };
+};
+
 const generateMachineAction = (type, action, systemId, extra = {}) => ({
   type,
   meta: {

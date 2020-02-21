@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 
+import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
-import AddChassis from "app/machines/views/AddChassis";
 import MachineList from "app/machines/views/MachineList";
 import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
@@ -35,7 +35,7 @@ const Machines = () => {
           <AddMachineForm />
         </Route>
         <Route exact path="/machines/chassis/add">
-          <AddChassis />
+          <AddChassisForm />
         </Route>
         <Route exact path="/pools">
           <Pools />

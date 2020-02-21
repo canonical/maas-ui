@@ -210,7 +210,7 @@ describe("Machines", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("AddChassis").length).toBe(1);
+    expect(wrapper.find("AddChassisForm").length).toBe(1);
   });
 
   it("correctly routes to pools tab", () => {

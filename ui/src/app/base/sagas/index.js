@@ -10,7 +10,8 @@ import {
   watchFetchLicenseKeys,
   watchDeleteScript,
   watchFetchScripts,
-  watchUploadScript
+  watchUploadScript,
+  watchAddMachineChassis
 } from "./http";
 
 export {
@@ -25,5 +26,6 @@ export {
   watchFetchLicenseKeys,
   watchDeleteScript,
   watchFetchScripts,
-  watchUploadScript
+  watchUploadScript,
+  watchAddMachineChassis
 };
