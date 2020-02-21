@@ -17,7 +17,12 @@ const Machines = () => {
   return (
     <Section
       headerClassName="u-no-padding--bottom"
-      title={<HeaderStrip selectedMachines={selectedMachines} />}
+      title={
+        <HeaderStrip
+          selectedMachines={selectedMachines}
+          setSelectedMachines={setSelectedMachines}
+        />
+      }
     >
       <Switch>
         <Route exact path="/machines">
