@@ -12,7 +12,16 @@ describe("NotificationList", () => {
 
   beforeEach(() => {
     state = {
-      messages: { items: [{ id: 1, message: "User deleted" }] }
+      messages: { items: [{ id: 1, message: "User deleted" }] },
+      notification: {
+        items: [
+          {
+            id: 1,
+            category: "error",
+            message: "an error"
+          }
+        ]
+      }
     };
   });
 
@@ -24,6 +33,24 @@ describe("NotificationList", () => {
       </Provider>
     );
     expect(wrapper.find("NotificationList")).toMatchSnapshot();
+  });
+
+  it("can hide a message", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NotificationList title="Settings">content</NotificationList>
+      </Provider>
+    );
+    wrapper
+      .find("Notification")
+      .props()
+      .close();
+
+    expect(store.getActions()[1]).toEqual({
+      type: "REMOVE_MESSAGE",
+      payload: 1
+    });
   });
 
   it("fetches notifications", () => {
@@ -39,21 +66,20 @@ describe("NotificationList", () => {
     ).toBe(true);
   });
 
-  it("can hide a notification", () => {
+  it("displays a NotificationGroup for notifications", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationList title="Settings">content</NotificationList>
       </Provider>
     );
-    wrapper
-      .find("Notification")
-      .props()
-      .close();
 
-    expect(store.getActions()[1]).toEqual({
-      type: "REMOVE_MESSAGE",
-      payload: 1
+    const notificationGroup = wrapper.find("NotificationGroup");
+
+    expect(notificationGroup.exists()).toBe(true);
+    expect(notificationGroup.props()).toEqual({
+      type: "negative",
+      notifications: [{ id: 1, category: "error", message: "an error" }]
     });
   });
 });

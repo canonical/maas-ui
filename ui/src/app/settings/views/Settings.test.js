@@ -21,6 +21,9 @@ describe("Settings", () => {
       messages: {
         items: []
       },
+      notification: {
+        items: []
+      },
       status: {},
       user: {
         auth: {

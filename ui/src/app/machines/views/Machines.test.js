@@ -154,6 +154,9 @@ describe("Machines", () => {
           }
         ]
       },
+      notification: {
+        items: []
+      },
       resourcepool: {
         items: []
       },

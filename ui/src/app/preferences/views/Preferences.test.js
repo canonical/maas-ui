@@ -16,6 +16,9 @@ describe("Preferences", () => {
       },
       messages: {
         items: []
+      },
+      notification: {
+        items: []
       }
     });
     const wrapper = mount(

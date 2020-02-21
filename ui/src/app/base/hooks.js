@@ -2,7 +2,7 @@ import { __RouterContext as RouterContext } from "react-router";
 import { notificationTypes } from "@canonical/react-components";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useFormikContext } from "formik";
 
 import { sendAnalyticsEvent } from "analytics";
@@ -160,7 +160,6 @@ export const useSendAnalytics = (
   }, [sendCondition, eventCategory, eventAction, eventLabel]);
 };
 
-//
 const actionMethodOverrides = new Map([
   ["exit-rescue-mode", "exitRescueMode"],
   ["mark-broken", "markBroken"],
@@ -213,4 +212,17 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     ];
   }
   return actionLinks;
+};
+
+/**
+ * Simple hook for visibility toggles.
+ * @param {Bool} initialValue - initial toggle value.
+ */
+export const useVisible = initialValue => {
+  const [value, setValue] = useState(initialValue);
+  const toggleValue = evt => {
+    evt.preventDefault();
+    setValue(!value);
+  };
+  return [value, toggleValue];
 };
