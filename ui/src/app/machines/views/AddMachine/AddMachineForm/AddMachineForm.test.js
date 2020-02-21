@@ -259,4 +259,62 @@ describe("AddMachine", () => {
       }
     });
   });
+
+  it("correctly filters empty extra mac fields", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <AddMachineForm />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Submit the form with two extra macs, where one is an empty string
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          architecture: "amd64/generic",
+          domain: "maas",
+          extra_macs: ["12:12:12:12:12:12", ""],
+          hostname: "machine",
+          min_hwe_kernel: "ga-16.04",
+          pool: "default",
+          power_parameters: {},
+          power_type: "dummy",
+          pxe_mac: "11:11:11:11:11:11",
+          zone: "default"
+        })
+    );
+
+    // Expect the empty extra mac to be filtered out
+    expect(
+      store.getActions().find(action => action.type === "CREATE_MACHINE")
+    ).toStrictEqual({
+      type: "CREATE_MACHINE",
+      meta: {
+        method: "create",
+        model: "machine"
+      },
+      payload: {
+        params: {
+          architecture: "amd64/generic",
+          domain: state.domain.items[0],
+          extra_macs: ["12:12:12:12:12:12"],
+          hostname: "machine",
+          min_hwe_kernel: "ga-16.04",
+          pool: state.resourcepool.items[0],
+          power_parameters: {},
+          power_type: "dummy",
+          pxe_mac: "11:11:11:11:11:11",
+          zone: state.zone.items[0]
+        }
+      }
+    });
+  });
 });

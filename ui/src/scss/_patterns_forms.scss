@@ -1,0 +1,10 @@
+.p-input--closeable {
+  position: relative;
+
+  .p-close-input {
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

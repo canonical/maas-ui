@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
@@ -92,5 +93,57 @@ describe("AddMachineFormFields", () => {
     expect(wrapper.find("Select[name='min_hwe_kernel']").props().value).toBe(
       "ga-18.04"
     );
+  });
+
+  it("can add extra mac address fields", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <AddMachineForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(false);
+    await act(async () => {
+      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+    });
+    wrapper.update();
+    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(false);
+    await act(async () => {
+      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+    });
+    wrapper.update();
+    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(true);
+  });
+
+  it("can remove extra mac address fields", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <AddMachineForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+    });
+    wrapper.update();
+    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
+    await act(async () => {
+      wrapper.find("[data-test='extra-macs-0'] button").simulate("click");
+    });
+    wrapper.update();
+    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(false);
   });
 });

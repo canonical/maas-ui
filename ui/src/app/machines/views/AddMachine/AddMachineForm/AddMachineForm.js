@@ -155,7 +155,7 @@ export const AddMachineForm = () => {
               const params = {
                 architecture: values.architecture,
                 domain: domains.find(domain => domain.name === values.domain),
-                extra_macs: values.extra_macs,
+                extra_macs: values.extra_macs.filter(Boolean),
                 hostname: values.hostname,
                 min_hwe_kernel: values.min_hwe_kernel,
                 pool: resourcePools.find(pool => pool.name === values.pool),
