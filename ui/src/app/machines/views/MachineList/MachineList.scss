@@ -43,11 +43,11 @@
   }
   // Power
   &:nth-child(2) {
-    @include breakpoint-widths(23%, 15%, 12%, 10%, 8%);
+    @include breakpoint-widths(25%, 17%, 14%, 12%, 10%);
   }
   // Status
   &:nth-child(3) {
-    @include breakpoint-widths(32%, 30%, 20%, 20%, 17%);
+    @include breakpoint-widths(30%, 28%, 18%, 18%, 15%);
   }
   // Owner
   &:nth-child(4) {
