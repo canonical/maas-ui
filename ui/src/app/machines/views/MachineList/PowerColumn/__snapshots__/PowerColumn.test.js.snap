@@ -96,7 +96,7 @@ exports[`PowerColumn renders 1`] = `
                     class="p-double-row__primary-row-text u-truncate"
                   >
                     <div
-                      class="u-upper-case--first"
+                      class="u-upper-case--first u-truncate"
                       data-test="power_state"
                     >
                       on
@@ -148,7 +148,7 @@ exports[`PowerColumn renders 1`] = `
                       class="p-double-row__primary-row-text u-truncate"
                     >
                       <div
-                        class="u-upper-case--first"
+                        class="u-upper-case--first u-truncate"
                         data-test="power_state"
                       >
                         on
