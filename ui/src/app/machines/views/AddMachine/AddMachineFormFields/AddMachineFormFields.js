@@ -1,5 +1,5 @@
-import { Col, Row, Select } from "@canonical/react-components";
-import React from "react";
+import { Button, Col, Input, Row, Select } from "@canonical/react-components";
+import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -20,8 +20,10 @@ export const AddMachineFormFields = () => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
 
+  const [extraMACs, setExtraMACs] = useState([]);
+
   const formikProps = useFormikContext();
-  const { values } = formikProps;
+  const { setFieldValue, values } = formikProps;
 
   const architectureOptions = [
     {
@@ -124,6 +126,49 @@ export const AddMachineFormFields = () => {
           required
           type="text"
         />
+        {extraMACs.map((mac, i) => (
+          <div
+            className="p-input--closeable"
+            data-test={`extra-macs-${i}`}
+            key={`extra-macs-${i}`}
+          >
+            <Input
+              maxLength="17"
+              onChange={e => {
+                const newExtraMACs = [...extraMACs];
+                newExtraMACs[i] = e.target.value;
+                setExtraMACs(newExtraMACs);
+                setFieldValue("extra_macs", newExtraMACs);
+              }}
+              placeholder="00:00:00:00:00:00"
+              type="text"
+              value={mac}
+            />
+            <Button
+              className="p-close-input"
+              hasIcon
+              onClick={() => {
+                const newExtraMACs = extraMACs.filter((_, j) => j !== i);
+                setExtraMACs(newExtraMACs);
+                setFieldValue("extra_macs", newExtraMACs);
+              }}
+              type="button"
+            >
+              <i className="p-icon--close" />
+            </Button>
+          </div>
+        ))}
+        <div className="u-align--right">
+          <Button
+            data-test="add-extra-mac"
+            hasIcon
+            onClick={() => setExtraMACs([...extraMACs, ""])}
+            type="button"
+          >
+            <i className="p-icon--plus" />
+            <span>Add MAC address</span>
+          </Button>
+        </div>
       </Col>
       <Col size="5">
         <PowerTypeFields
