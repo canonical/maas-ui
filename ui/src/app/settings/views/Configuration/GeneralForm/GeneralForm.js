@@ -51,9 +51,10 @@ const GeneralForm = () => {
         required={true}
       />
       <FormikField
-        label="Send anonymous data to help us improve MAAS"
+        label="Enable analytics to shape improvements to user experience"
         type="checkbox"
         name="enable_analytics"
+        help="The analytics used in MAAS are Google Analytics and Sentry Error Tracking."
       />
     </FormikForm>
   );
