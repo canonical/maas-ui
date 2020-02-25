@@ -5,7 +5,7 @@ import FormikFormButtons from "./FormikFormButtons";
 
 describe("FormikFormButtons ", () => {
   it("renders", () => {
-    const wrapper = shallow(<FormikFormButtons actionLabel="Save user" />);
+    const wrapper = shallow(<FormikFormButtons submitLabel="Save user" />);
     expect(wrapper).toMatchSnapshot();
   });
 });

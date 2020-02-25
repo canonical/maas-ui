@@ -1,15 +1,19 @@
 import { ActionButton, Button } from "@canonical/react-components";
-import { useRouter } from "app/base/hooks";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { useRouter } from "app/base/hooks";
+
 export const FormCardButtons = ({
-  actionDisabled,
-  actionLabel,
-  actionLoading,
-  actionSuccess
+  loading,
+  secondarySubmit,
+  secondarySubmitLabel,
+  submitDisabled,
+  submitLabel,
+  success
 }) => {
   const { history } = useRouter();
+
   return (
     <div className="form-card__buttons">
       <Button
@@ -20,25 +24,39 @@ export const FormCardButtons = ({
       >
         Cancel
       </Button>
+      {secondarySubmit && secondarySubmitLabel && (
+        <Button
+          appearance="neutral"
+          className="u-no-margin--bottom"
+          data-test="secondary-submit"
+          disabled={submitDisabled}
+          onClick={secondarySubmit}
+          type="button"
+        >
+          {secondarySubmitLabel}
+        </Button>
+      )}
       <ActionButton
         appearance="positive"
         className="u-no-margin--bottom"
-        disabled={actionDisabled}
-        loading={actionLoading}
-        success={actionSuccess}
+        disabled={submitDisabled}
+        loading={loading}
+        success={success}
         type="submit"
       >
-        {actionLabel}
+        {submitLabel}
       </ActionButton>
     </div>
   );
 };
 
 FormCardButtons.propTypes = {
-  actionDisabled: PropTypes.bool,
-  actionLabel: PropTypes.string.isRequired,
-  actionLoading: PropTypes.bool,
-  actionSuccess: PropTypes.bool
+  loading: PropTypes.bool,
+  secondarySubmit: PropTypes.func,
+  secondarySubmitLabel: PropTypes.string,
+  submitDisabled: PropTypes.bool,
+  submitLabel: PropTypes.string.isRequired,
+  success: PropTypes.bool
 };
 
 export default FormCardButtons;
