@@ -11,7 +11,7 @@
       "excludePackagePatterns": [
         "vanilla-framework"
       ],
-      "extends": ["schedule:weekly"]
+      "extends": ["schedule:weekly"],
       "minor": {
         "groupName": "all non-major dependencies",
         "groupSlug": "all-minor-patch"
