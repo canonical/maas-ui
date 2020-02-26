@@ -4,6 +4,10 @@ var { createProxyMiddleware } = require("http-proxy-middleware");
 
 var app = express();
 
+const PROXY_PORT = 8400;
+const UI_PORT = 8401;
+const LEGACY_PORT = 8402;
+
 // Proxy API endpoints to the MAAS.
 app.use(
   createProxyMiddleware(
@@ -24,16 +28,16 @@ app.use(
 
 // Proxy the HMR endpoint to the React client.
 app.use(
-  createProxyMiddleware("/sockjs-node/", {
-    target: "http://localhost:8401/",
+  createProxyMiddleware("/sockjs-node", {
+    target: `http://localhost:${UI_PORT}/`,
     ws: true
   })
 );
 
 // Proxy the HMR endpoint to the Angular client.
 app.use(
-  createProxyMiddleware("/sockjs-legacy/", {
-    target: "http://localhost:8402/",
+  createProxyMiddleware("/sockjs-legacy", {
+    target: `http://localhost:${LEGACY_PORT}/`,
     ws: true
   })
 );
@@ -47,7 +51,7 @@ app.use(
       "/maas-favicon-32px.png"
     ],
     {
-      target: "http://localhost:8401/"
+      target: `http://localhost:${UI_PORT}/`
     }
   )
 );
@@ -55,14 +59,14 @@ app.use(
 // Proxy the HMR url to the React client.
 app.use(
   createProxyMiddleware("/main.*.hot-update.js", {
-    target: "http://localhost:8401/"
+    target: `http://localhost:${UI_PORT}/`
   })
 );
 
 // Proxy the remaining URLs to the Angular client.
 app.use(
   createProxyMiddleware(`${process.env.BASENAME}/`, {
-    target: "http://localhost:8402/"
+    target: `http://localhost:${LEGACY_PORT}/`
   })
 );
 
@@ -71,6 +75,6 @@ app.get(process.env.BASENAME, (req, res) =>
 );
 app.get("/", (req, res) => res.redirect(`${process.env.BASENAME}/`));
 
-app.listen(8400);
+app.listen(PROXY_PORT);
 
-console.log("Serving on port 8400");
+console.log(`Serving on port ${PROXY_PORT}`);

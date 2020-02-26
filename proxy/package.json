@@ -8,7 +8,7 @@
     "cypress-open": "yarn cypress open",
     "cypress-run": "yarn cypress run",
     "lint": "npmPkgJsonLint .",
-    "serve-ui": "cd ../ui && PORT=8401 yarn run start",
+    "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
     "serve-legacy": "cd ../legacy && yarn run start",
     "serve-proxy": "node ./index.js",
     "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\" \"yarn watch-shared\"",
@@ -29,9 +29,5 @@
       "prefer-alphabetical-dependencies": "error",
       "prefer-alphabetical-devDependencies": "error"
     }
-  },
-  "dependencies": {
-    "react-scripts": "3.3.1",
-    "webpack-dev-server": "3.10.3"
   }
 }
