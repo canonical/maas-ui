@@ -19,10 +19,6 @@ To add a new workspace, edit `package.json` and add the project's directory name
 
 To import modules from existing projects in your new project, add the dependant projects to your projects dependencies in `package.json`.
 
-## Component documentation
-
-To view react component documentation run `./run exec --expose-port 6060 yarn docs`.
-
 ## maas-ui development setup
 
 **Note: You will need access to an instance of MAAS running in order to run maas-ui.**
@@ -69,14 +65,7 @@ MAAS_URL="http://<your-maas-ip>:5240/"
 
 ### Install Docker inside your container (LXD and multipass)
 
-The simplest way is to use [the convenience script](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script). Once the script has run you will need to add your user to the docker group:
-
-```
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-[Install Docker inside your container](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+The simplest way is to use [dotrun snap](https://snapcraft.io/dotrun). Once installed you can run `dotrun` in the root of this project.
 
 ### macOS
 
@@ -98,15 +87,17 @@ Be aware that this may prevent reaching hosts on your internal network. You can 
 
 #### Docker
 
-If running `./run` from your macOS ost, you'll need to [download the Docker client](https://docs.docker.com/v17.12/docker-for-mac/install/#download-docker-for-mac) for macOS.
+If running `dotrun` from your macOS, you'll need to [Use multipass to creeate an Ubuntu VM](https://multipass.run).
 
 ### Running
 
 To run the MAAS UI project through a Docker container, from the root of the MAAS UI project run:
 
 ```
-./run
+dotrun
 ```
+
+If you get babel errors then you should run `yarn clean-all` and retry.
 
 Otherwise you can run the project on your host machine directly if you have node and yarn installed, using:
 
