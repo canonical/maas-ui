@@ -4,6 +4,8 @@ This is repository contains sourcecode for the [MAAS](http://maas.io) web  front
 
 [![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master)
 
+![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
+
 It is comprised of the following [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/):
 
   - *legacy*: the angularjs maas client.
