@@ -634,12 +634,14 @@ function AddHardwareController(
     if (params.chassis_type === "powerkvm" || params.chassis_type === "virsh") {
       delete params.username;
     }
+
+    const urlParams = new URLSearchParams(Object.entries(params));
     // Add the chassis. For now we use the API as the websocket doesn't
     // support probe and enlist.
     $http({
       method: "POST",
       url: "api/2.0/machines/?op=add_chassis",
-      data: $.param(params),
+      data: urlParams.toString(),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }

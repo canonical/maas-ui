@@ -714,10 +714,12 @@ describe("AddHardwareController", function() {
       var parameters = $scope.chassis.power.parameters;
       parameters.chassis_type = $scope.chassis.power.type.name;
       parameters.domain = $scope.chassis.domain.name;
+
+      const urlParams = new URLSearchParams(Object.entries(parameters));
       expect($http).toHaveBeenCalledWith({
         method: "POST",
         url: "api/2.0/machines/?op=add_chassis",
-        data: $.param(parameters),
+        data: urlParams.toString(),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
