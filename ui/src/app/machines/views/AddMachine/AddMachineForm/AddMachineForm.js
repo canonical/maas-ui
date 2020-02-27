@@ -76,8 +76,9 @@ export const AddMachineForm = () => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  const [savingMachine, setSavingMachine] = useState(false);
   const [powerType, setPowerType] = useState("");
+  const [redirectOnSave, setRedirectOnSave] = useState(true);
+  const [savingMachine, setSavingMachine] = useState(false);
 
   // Fetch all data required for the form.
   useEffect(() => {
@@ -89,6 +90,12 @@ export const AddMachineForm = () => {
     dispatch(resourcePoolActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (machineSaved && !redirectOnSave) {
+      setRedirectOnSave(true);
+    }
+  }, [machineSaved, redirectOnSave]);
 
   useWindowTitle("Add machine");
 
@@ -147,7 +154,7 @@ export const AddMachineForm = () => {
               zone: (zones.length && zones[0].name) || ""
             }}
             onSaveAnalytics={{
-              action: "Save",
+              action: redirectOnSave ? "Save" : "Save and add another",
               category: "Machine",
               label: "Add machine form"
             }}
@@ -178,7 +185,9 @@ export const AddMachineForm = () => {
             }}
             saving={machineSaving}
             saved={machineSaved}
-            savedRedirect="/machines"
+            savedRedirect={redirectOnSave ? "/machines" : undefined}
+            secondarySubmit={() => setRedirectOnSave(false)}
+            secondarySubmitLabel="Save and add another"
             submitLabel="Save machine"
             validationSchema={MachineSchema}
           >

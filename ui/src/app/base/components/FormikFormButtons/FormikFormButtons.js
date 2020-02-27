@@ -3,32 +3,32 @@ import PropTypes from "prop-types";
 import React from "react";
 
 export const FormikFormButtons = ({
-  actionDisabled,
-  actionLabel,
-  actionLoading,
-  actionSuccess
+  loading,
+  submitDisabled,
+  submitLabel,
+  success
 }) => {
   return (
     <div>
       <ActionButton
         appearance="positive"
         className="u-no-margin--bottom"
-        disabled={actionDisabled}
-        loading={actionLoading}
-        success={actionSuccess}
+        disabled={submitDisabled}
+        loading={loading}
+        success={success}
         type="submit"
       >
-        {actionLabel}
+        {submitLabel}
       </ActionButton>
     </div>
   );
 };
 
 FormikFormButtons.propTypes = {
-  actionDisabled: PropTypes.bool,
-  actionLabel: PropTypes.string.isRequired,
-  actionLoading: PropTypes.bool,
-  actionSuccess: PropTypes.bool
+  loading: PropTypes.bool,
+  submitDisabled: PropTypes.bool,
+  submitLabel: PropTypes.string.isRequired,
+  success: PropTypes.bool
 };
 
 export default FormikFormButtons;

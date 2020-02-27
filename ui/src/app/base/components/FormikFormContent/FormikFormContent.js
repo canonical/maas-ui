@@ -14,9 +14,11 @@ const FormikFormContent = ({
   onValuesChanged,
   saving,
   saved,
+  secondarySubmit,
+  secondarySubmitLabel,
   submitLabel = "Save"
 }) => {
-  const { handleSubmit, values } = useFormikContext();
+  const { handleSubmit, submitForm, values } = useFormikContext();
   const formDisabled = useFormikFormDisabled(allowAllEmpty);
 
   useFormikErrors(errors);
@@ -43,10 +45,19 @@ const FormikFormContent = ({
       )}
       <div>{children}</div>
       <Buttons
-        actionDisabled={saving || formDisabled}
-        actionLabel={submitLabel}
-        actionLoading={saving}
-        actionSuccess={saved}
+        loading={saving}
+        secondarySubmit={
+          secondarySubmit
+            ? () => {
+                secondarySubmit();
+                submitForm();
+              }
+            : undefined
+        }
+        secondarySubmitLabel={secondarySubmitLabel}
+        submitDisabled={saving || formDisabled}
+        submitLabel={submitLabel}
+        success={saved}
       />
     </Form>
   );
@@ -60,6 +71,8 @@ FormikFormContent.propTypes = {
   onValuesChanged: PropTypes.func,
   saving: PropTypes.bool,
   saved: PropTypes.bool,
+  secondarySubmit: PropTypes.func,
+  secondarySubmitLabel: PropTypes.string,
   submitLabel: PropTypes.string
 };
 

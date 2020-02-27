@@ -20,6 +20,8 @@ const FormikForm = ({
   saving,
   saved,
   savedRedirect,
+  secondarySubmit,
+  secondarySubmitLabel,
   submitLabel,
   validationSchema,
   ...props
@@ -57,6 +59,8 @@ const FormikForm = ({
         onValuesChanged={onValuesChanged}
         saving={saving}
         saved={saved}
+        secondarySubmit={secondarySubmit}
+        secondarySubmitLabel={secondarySubmitLabel}
         submitLabel={submitLabel}
       >
         {children}
@@ -82,6 +86,8 @@ FormikForm.propTypes = {
   saving: PropTypes.bool,
   saved: PropTypes.bool,
   savedRedirect: PropTypes.string,
+  secondarySubmit: PropTypes.func,
+  secondarySubmitLabel: PropTypes.string,
   submitLabel: PropTypes.string,
   validationSchema: PropTypes.object.isRequired
 };

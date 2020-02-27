@@ -2,7 +2,7 @@
 
 exports[`FormCardButtons  renders 1`] = `
 <FormCardButtons
-  actionLabel="Save user"
+  submitLabel="Save user"
 >
   <div
     className="form-card__buttons"
