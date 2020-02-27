@@ -41,7 +41,7 @@ export const AddChassisForm = () => {
   const machineSaving = useSelector(machineSelectors.saving);
 
   const [powerType, setPowerType] = useState("");
-  const [redirectOnSave, setRedirectOnSave] = useState(true);
+  const [resetOnSave, setResetOnSave] = useState(false);
   const [savingChassis, setSavingChassis] = useState(false);
 
   useEffect(() => {
@@ -49,10 +49,10 @@ export const AddChassisForm = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (machineSaved && !redirectOnSave) {
-      setRedirectOnSave(true);
+    if (machineSaved && resetOnSave) {
+      setResetOnSave(false);
     }
-  }, [machineSaved, redirectOnSave]);
+  }, [machineSaved, resetOnSave]);
 
   useWindowTitle("Add chassis");
 
@@ -95,7 +95,7 @@ export const AddChassisForm = () => {
               power_type: ""
             }}
             onSaveAnalytics={{
-              action: redirectOnSave ? "Save" : "Save and add another",
+              action: resetOnSave ? "Save and add another" : "Save",
               category: "Chassis",
               label: "Add chassis form"
             }}
@@ -114,10 +114,11 @@ export const AddChassisForm = () => {
               );
               setPowerType(powerType);
             }}
+            resetOnSave={resetOnSave}
             saving={machineSaving}
             saved={machineSaved}
-            savedRedirect={redirectOnSave ? "/machines" : undefined}
-            secondarySubmit={() => setRedirectOnSave(false)}
+            savedRedirect={resetOnSave ? undefined : "/machines"}
+            secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save chassis"
             validationSchema={ChassisSchema}

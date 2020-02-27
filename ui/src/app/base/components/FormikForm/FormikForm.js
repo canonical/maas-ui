@@ -17,6 +17,7 @@ const FormikForm = ({
   onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
+  resetOnSave,
   saving,
   saved,
   savedRedirect,
@@ -56,7 +57,9 @@ const FormikForm = ({
         allowAllEmpty={allowAllEmpty}
         buttons={buttons}
         errors={errors}
+        initialValues={initialValues}
         onValuesChanged={onValuesChanged}
+        resetOnSave={resetOnSave}
         saving={saving}
         saved={saved}
         secondarySubmit={secondarySubmit}
@@ -83,6 +86,7 @@ FormikForm.propTypes = {
   }),
   onSubmit: PropTypes.func.isRequired,
   onValuesChanged: PropTypes.func,
+  resetOnSave: PropTypes.bool,
   saving: PropTypes.bool,
   saved: PropTypes.bool,
   savedRedirect: PropTypes.string,
