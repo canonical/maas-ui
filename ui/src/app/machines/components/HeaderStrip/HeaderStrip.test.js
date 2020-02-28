@@ -84,7 +84,8 @@ describe("HeaderStrip", () => {
             system_id: "abc123",
             zone: {}
           }
-        ]
+        ],
+        selected: []
       },
       resourcepool: {
         loaded: false,

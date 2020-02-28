@@ -8,7 +8,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -23,7 +24,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -36,7 +38,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
+          selected: []
         },
         {
           type: "FETCH_MACHINE_SUCCESS",
@@ -55,7 +58,8 @@ describe("machine reducer", () => {
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -68,7 +72,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
+          selected: []
         },
         {
           error: "Could not fetch machines",
@@ -81,7 +86,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -94,7 +100,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
+          selected: []
         },
         {
           type: "CREATE_MACHINE_START"
@@ -106,7 +113,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
+      selected: []
     });
   });
 
@@ -119,7 +127,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
+          selected: []
         },
         {
           error: { name: "name already exists" },
@@ -132,7 +141,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -145,7 +155,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
+          selected: []
         },
         {
           payload: { id: 2, name: "machine2" },
@@ -161,7 +172,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -177,7 +189,8 @@ describe("machine reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
+          selected: []
         },
         {
           payload: {
@@ -196,7 +209,8 @@ describe("machine reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
+      selected: []
     });
   });
 
@@ -207,7 +221,8 @@ describe("machine reducer", () => {
           errors: null,
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
+          selected: []
         },
         {
           type: "CHECK_MACHINE_POWER_ERROR",
@@ -218,7 +233,42 @@ describe("machine reducer", () => {
       errors: "Uh oh!",
       loading: true,
       loaded: false,
-      items: []
+      items: [],
+      selected: []
+    });
+  });
+
+  it("should correctly reduce SET_SELECTED_MACHINES", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [
+            { system_id: "abcde", hostname: "node1" },
+            { system_id: "fghij", hostname: "node2" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: []
+        },
+        {
+          payload: ["abcde", "fghij"],
+          type: "SET_SELECTED_MACHINES"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [
+        { system_id: "abcde", hostname: "node1" },
+        { system_id: "fghij", hostname: "node2" }
+      ],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: ["abcde", "fghij"]
     });
   });
 });

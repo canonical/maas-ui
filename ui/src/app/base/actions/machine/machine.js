@@ -24,6 +24,13 @@ machine.addChassis = params => {
   };
 };
 
+machine.setSelected = machines => {
+  return {
+    type: "SET_SELECTED_MACHINES",
+    payload: machines.map(machine => machine.system_id)
+  };
+};
+
 const generateMachineAction = (type, action, systemId, extra = {}) => ({
   type,
   meta: {

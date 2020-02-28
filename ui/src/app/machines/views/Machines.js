@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
@@ -11,47 +11,32 @@ import Pools from "app/pools/views/Pools";
 import HeaderStrip from "app/machines/components/HeaderStrip";
 import Section from "app/base/components/Section";
 
-const Machines = () => {
-  const [selectedMachines, setSelectedMachines] = useState([]);
-
-  return (
-    <Section
-      headerClassName="u-no-padding--bottom"
-      title={
-        <HeaderStrip
-          selectedMachines={selectedMachines}
-          setSelectedMachines={setSelectedMachines}
-        />
-      }
-    >
-      <Switch>
-        <Route exact path="/machines">
-          <MachineList
-            selectedMachines={selectedMachines}
-            setSelectedMachines={setSelectedMachines}
-          />
-        </Route>
-        <Route exact path="/machines/add">
-          <AddMachineForm />
-        </Route>
-        <Route exact path="/machines/chassis/add">
-          <AddChassisForm />
-        </Route>
-        <Route exact path="/pools">
-          <Pools />
-        </Route>
-        <Route exact path="/pools/add">
-          <PoolAdd />
-        </Route>
-        <Route exact path="/pools/:id/edit">
-          <PoolEdit />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
-    </Section>
-  );
-};
+const Machines = () => (
+  <Section headerClassName="u-no-padding--bottom" title={<HeaderStrip />}>
+    <Switch>
+      <Route exact path="/machines">
+        <MachineList />
+      </Route>
+      <Route exact path="/machines/add">
+        <AddMachineForm />
+      </Route>
+      <Route exact path="/machines/chassis/add">
+        <AddChassisForm />
+      </Route>
+      <Route exact path="/pools">
+        <Pools />
+      </Route>
+      <Route exact path="/pools/add">
+        <PoolAdd />
+      </Route>
+      <Route exact path="/pools/:id/edit">
+        <PoolEdit />
+      </Route>
+      <Route path="*">
+        <NotFound />
+      </Route>
+    </Switch>
+  </Section>
+);
 
 export default Machines;

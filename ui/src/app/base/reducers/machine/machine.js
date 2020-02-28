@@ -59,6 +59,9 @@ const machine = produce(
       case "CHECK_MACHINE_POWER_ERROR":
         draft.errors = action.error;
         break;
+      case "SET_SELECTED_MACHINES":
+        draft.selected = action.payload;
+        break;
       case "CLEANUP_MACHINE":
         draft.errors = {};
         draft.saved = false;
@@ -74,7 +77,8 @@ const machine = produce(
     loaded: false,
     loading: false,
     saved: false,
-    saving: false
+    saving: false,
+    selected: []
   }
 );
 
