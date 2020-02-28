@@ -1,5 +1,5 @@
 import { Button, Col, Input, Row, Select } from "@canonical/react-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -12,7 +12,7 @@ import {
 import FormikField from "app/base/components/FormikField";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
 
-export const AddMachineFormFields = () => {
+export const AddMachineFormFields = ({ saved }) => {
   const architectures = useSelector(generalSelectors.architectures.get);
   const domains = useSelector(domainSelectors.all);
   const hweKernels = useSelector(generalSelectors.hweKernels.get);
@@ -24,6 +24,12 @@ export const AddMachineFormFields = () => {
 
   const formikProps = useFormikContext();
   const { setFieldValue, values } = formikProps;
+
+  useEffect(() => {
+    if (saved) {
+      setExtraMACs([]);
+    }
+  }, [saved]);
 
   const architectureOptions = [
     {

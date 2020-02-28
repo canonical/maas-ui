@@ -192,7 +192,7 @@ export const AddMachineForm = () => {
             submitLabel="Save machine"
             validationSchema={MachineSchema}
           >
-            <AddMachineFormFields />
+            <AddMachineFormFields saved={machineSaved} />
           </FormikForm>
         </FormCard>
       )}
