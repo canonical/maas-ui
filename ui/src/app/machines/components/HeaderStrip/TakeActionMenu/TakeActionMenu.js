@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
-import { general as generalSelectors } from "app/base/selectors";
+import {
+  general as generalSelectors,
+  machine as machineSelectors
+} from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import Tooltip from "app/base/components/Tooltip";
 
@@ -52,9 +55,10 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
   return groupedLinks.map(group => group.items);
 };
 
-export const TakeActionMenu = ({ selectedMachines, setSelectedAction }) => {
+export const TakeActionMenu = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const actionOptions = useSelector(generalSelectors.machineActions.get);
+  const selectedMachines = useSelector(machineSelectors.selected);
 
   useEffect(() => {
     dispatch(generalActions.fetchMachineActions());
@@ -86,7 +90,6 @@ export const TakeActionMenu = ({ selectedMachines, setSelectedAction }) => {
 };
 
 TakeActionMenu.propTypes = {
-  selectedMachines: PropTypes.arrayOf(PropTypes.object).isRequired,
   setSelectedAction: PropTypes.func.isRequired
 };
 

@@ -123,6 +123,7 @@ Object {
     "loading": false,
     "saved": false,
     "saving": false,
+    "selected": Array [],
   },
   "messages": Object {
     "items": Array [],

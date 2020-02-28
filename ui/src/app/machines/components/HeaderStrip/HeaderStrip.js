@@ -1,6 +1,5 @@
 import { Button, Col, Loader, Row } from "@canonical/react-components";
 import pluralize from "pluralize";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
@@ -12,10 +11,11 @@ import AddHardwareMenu from "./AddHardwareMenu";
 import HeaderStripTabs from "./HeaderStripTabs";
 import TakeActionMenu from "./TakeActionMenu";
 
-export const HeaderStrip = ({ selectedMachines, setSelectedMachines }) => {
+export const HeaderStrip = () => {
   const dispatch = useDispatch();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
+  const selectedMachines = useSelector(machineSelectors.selected);
 
   const [selectedAction, setSelectedAction] = useState();
 
@@ -67,10 +67,7 @@ export const HeaderStrip = ({ selectedMachines, setSelectedMachines }) => {
                       <AddHardwareMenu />
                     </li>
                     <li className="p-inline-list__item last-item">
-                      <TakeActionMenu
-                        selectedMachines={selectedMachines}
-                        setSelectedAction={setSelectedAction}
-                      />
+                      <TakeActionMenu setSelectedAction={setSelectedAction} />
                     </li>
                   </>
                 )}
@@ -87,19 +84,12 @@ export const HeaderStrip = ({ selectedMachines, setSelectedMachines }) => {
       {selectedAction && (
         <ActionFormWrapper
           selectedAction={selectedAction}
-          selectedMachines={selectedMachines}
           setSelectedAction={setSelectedAction}
-          setSelectedMachines={setSelectedMachines}
         />
       )}
       <HeaderStripTabs />
     </>
   );
-};
-
-HeaderStrip.propTypes = {
-  selectedMachines: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setSelectedMachines: PropTypes.func.isRequired
 };
 
 export default HeaderStrip;

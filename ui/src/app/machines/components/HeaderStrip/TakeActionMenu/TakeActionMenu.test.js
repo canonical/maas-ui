@@ -19,19 +19,24 @@ describe("TakeActionMenu", () => {
           loaded: true,
           loading: false
         }
+      },
+      machine: {
+        items: [],
+        selected: []
       }
     };
   });
 
   it("is disabled if no are machines selected", () => {
     const state = { ...initialState };
+    state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu selectedMachines={[]} setSelectedAction={jest.fn()} />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -42,17 +47,17 @@ describe("TakeActionMenu", () => {
 
   it("is enabled if at least one machine selected", () => {
     const state = { ...initialState };
+    state.machine.items = [
+      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] }
+    ];
+    state.machine.selected = ["a"];
     const store = mockStore(state);
-    const machines = [{ actions: ["lifecycle1", "lifecycle2"] }];
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -70,21 +75,19 @@ describe("TakeActionMenu", () => {
       { name: "lifecycle3", title: "Lifecycle 3", type: "lifecycle" }
     ];
     // No machine can perform "lifecycle3" action
-    const machines = [
-      { actions: ["lifecycle1", "lifecycle2"] },
-      { actions: ["lifecycle1"] },
-      { actions: ["other"] }
+    state.machine.items = [
+      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] },
+      { system_id: "b", actions: ["lifecycle1"] },
+      { system_id: "c", actions: ["other"] }
     ];
+    state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -117,21 +120,19 @@ describe("TakeActionMenu", () => {
       { name: "house", title: "Power house...", type: "power" }
     ];
     // No machine can perform "house" action
-    const machines = [
-      { actions: ["on", "off"] },
-      { actions: ["on"] },
-      { actions: ["off"] }
+    state.machine.items = [
+      { system_id: "a", actions: ["on", "off"] },
+      { system_id: "b", actions: ["on"] },
+      { system_id: "c", actions: ["off"] }
     ];
+    state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -153,21 +154,19 @@ describe("TakeActionMenu", () => {
       { name: "deploy", title: "Deploy...", type: "lifecycle" }
     ];
     // 3 commission, 2 release, 1 deploy
-    const machines = [
-      { actions: ["commission", "release", "deploy"] },
-      { actions: ["commission", "release"] },
-      { actions: ["commission"] }
+    state.machine.items = [
+      { system_id: "a", actions: ["commission", "release", "deploy"] },
+      { system_id: "b", actions: ["commission", "release"] },
+      { system_id: "c", actions: ["commission"] }
     ];
+    state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -188,17 +187,15 @@ describe("TakeActionMenu", () => {
       { name: "action2", title: "Action 2", type: "power" }
     ];
     // No machine can perform "lifecycle3" action
-    const machines = [{ actions: ["action1"] }];
+    state.machine.items = [{ system_id: "a", actions: ["action1"] }];
+    state.machine.selected = ["a"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -223,8 +220,9 @@ describe("TakeActionMenu", () => {
       { name: "set-zone", title: "Set zone...", type: "misc" },
       { name: "delete", title: "Delete...", type: "misc" }
     ];
-    const machines = [
+    state.machine.items = [
       {
+        system_id: "a",
         actions: [
           "commission",
           "on",
@@ -237,16 +235,14 @@ describe("TakeActionMenu", () => {
         ]
       }
     ];
+    state.machine.selected = ["a"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={jest.fn()}
-          />
+          <TakeActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -264,7 +260,8 @@ describe("TakeActionMenu", () => {
     state.general.machineActions.data = [
       { name: "commission", title: "Commission...", type: "lifecycle" }
     ];
-    const machines = [{ actions: ["commission"] }];
+    state.machine.items = [{ system_id: "a", actions: ["commission"] }];
+    state.machine.selected = ["a"];
     const setSelectedAction = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
@@ -272,10 +269,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu
-            selectedMachines={machines}
-            setSelectedAction={setSelectedAction}
-          />
+          <TakeActionMenu setSelectedAction={setSelectedAction} />
         </MemoryRouter>
       </Provider>
     );

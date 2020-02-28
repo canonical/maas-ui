@@ -411,7 +411,7 @@ const generateGroupRows = ({
   return rows;
 };
 
-const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
+const MachineList = () => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const machines = useSelector(state =>
@@ -419,6 +419,7 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
   );
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
+  const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
   let errorMessage;
   if (errors) {
@@ -481,11 +482,13 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
   };
 
   const handleMachineCheckbox = machine => {
+    let newSelectedMachines;
     if (selectedMachines.includes(machine)) {
-      setSelectedMachines(selectedMachines.filter(m => m !== machine));
+      newSelectedMachines = selectedMachines.filter(m => m !== machine);
     } else {
-      setSelectedMachines([...selectedMachines, machine]);
+      newSelectedMachines = [...selectedMachines, machine];
     }
+    dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
   const handleGroupCheckbox = group => {
@@ -513,15 +516,17 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
         [...selectedMachines]
       );
     }
-    setSelectedMachines(newSelectedMachines);
+    dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
   const handleAllCheckbox = () => {
+    let newSelectedMachines;
     if (checkboxChecked(machines, selectedMachines)) {
-      setSelectedMachines([]);
+      newSelectedMachines = [];
     } else {
-      setSelectedMachines(machines);
+      newSelectedMachines = machines;
     }
+    dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
   const rowProps = {

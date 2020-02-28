@@ -2,6 +2,10 @@ import { Button, Col, Row } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useLayoutEffect, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { machine as machineActions } from "app/base/actions";
+import { machine as machineSelectors } from "app/base/selectors";
 
 const getSubmitText = (action, count) => {
   const machineString = `${count} ${pluralize("machine", count)}`;
@@ -57,12 +61,11 @@ const getErrorSentence = (action, count) => {
   }
 };
 
-export const ActionFormWrapper = ({
-  selectedAction,
-  selectedMachines,
-  setSelectedAction,
-  setSelectedMachines
-}) => {
+export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
+  const dispatch = useDispatch();
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+
   const [actionableMachines, setActionableMachines] = useState([]);
   const actionDisabled = actionableMachines.length !== selectedMachines.length;
 
@@ -98,7 +101,9 @@ export const ActionFormWrapper = ({
                 appearance="link"
                 data-test="select-actionable-machines"
                 inline
-                onClick={() => setSelectedMachines(actionableMachines)}
+                onClick={() =>
+                  dispatch(machineActions.setSelected(actionableMachines))
+                }
               >
                 update your selection
               </Button>
@@ -134,12 +139,8 @@ export const ActionFormWrapper = ({
 };
 
 ActionFormWrapper.propTypes = {
-  // TODO: PropType shapes for common props.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/826
   selectedAction: PropTypes.object,
-  selectedMachines: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setSelectedAction: PropTypes.func.isRequired,
-  setSelectedMachines: PropTypes.func.isRequired
+  setSelectedAction: PropTypes.func.isRequired
 };
 
 export default ActionFormWrapper;

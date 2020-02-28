@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
 
 import filterNodes from "app/machines/filter-nodes";
 
@@ -47,6 +47,13 @@ machine.saved = state => state.machine.saved;
 machine.errors = state => state.machine.errors;
 
 /**
+ * Returns selected machine system_ids.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Selected machine system_ids.
+ */
+machine.selectedIDs = state => state.machine.selected;
+
+/**
  * Returns a machine for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A machine.
@@ -83,6 +90,17 @@ machine.search = createSelector(
     }
     return filterNodes(items, terms);
   }
+);
+
+/**
+ * Returns selected machines.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Selected machines.
+ */
+machine.selected = createSelector(
+  [machine.all, machine.selectedIDs],
+  (machines, selectedIDs) =>
+    selectedIDs.map(id => machines.find(machine => id === machine.system_id))
 );
 
 export default machine;
