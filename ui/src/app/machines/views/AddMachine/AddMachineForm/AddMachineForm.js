@@ -77,7 +77,7 @@ export const AddMachineForm = () => {
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
   const [powerType, setPowerType] = useState("");
-  const [redirectOnSave, setRedirectOnSave] = useState(true);
+  const [resetOnSave, setResetOnSave] = useState(false);
   const [savingMachine, setSavingMachine] = useState(false);
 
   // Fetch all data required for the form.
@@ -92,10 +92,10 @@ export const AddMachineForm = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (machineSaved && !redirectOnSave) {
-      setRedirectOnSave(true);
+    if (machineSaved && resetOnSave) {
+      setResetOnSave(false);
     }
-  }, [machineSaved, redirectOnSave]);
+  }, [machineSaved, resetOnSave]);
 
   useWindowTitle("Add machine");
 
@@ -154,7 +154,7 @@ export const AddMachineForm = () => {
               zone: (zones.length && zones[0].name) || ""
             }}
             onSaveAnalytics={{
-              action: redirectOnSave ? "Save" : "Save and add another",
+              action: resetOnSave ? "Save and add another" : "Save",
               category: "Machine",
               label: "Add machine form"
             }}
@@ -183,15 +183,16 @@ export const AddMachineForm = () => {
               );
               setPowerType(powerType);
             }}
+            resetOnSave={resetOnSave}
             saving={machineSaving}
             saved={machineSaved}
-            savedRedirect={redirectOnSave ? "/machines" : undefined}
-            secondarySubmit={() => setRedirectOnSave(false)}
+            savedRedirect={resetOnSave ? undefined : "/machines"}
+            secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save machine"
             validationSchema={MachineSchema}
           >
-            <AddMachineFormFields />
+            <AddMachineFormFields saved={machineSaved} />
           </FormikForm>
         </FormCard>
       )}

@@ -11,14 +11,16 @@ const FormikFormContent = ({
   buttons: Buttons = FormikFormButtons,
   children,
   errors,
+  initialValues,
   onValuesChanged,
+  resetOnSave,
   saving,
   saved,
   secondarySubmit,
   secondarySubmitLabel,
   submitLabel = "Save"
 }) => {
-  const { handleSubmit, submitForm, values } = useFormikContext();
+  const { handleSubmit, resetForm, submitForm, values } = useFormikContext();
   const formDisabled = useFormikFormDisabled(allowAllEmpty);
 
   useFormikErrors(errors);
@@ -26,6 +28,12 @@ const FormikFormContent = ({
   useEffect(() => {
     onValuesChanged && onValuesChanged(values);
   }, [values, onValuesChanged]);
+
+  useEffect(() => {
+    if (resetOnSave && saved) {
+      resetForm({ values: initialValues });
+    }
+  }, [initialValues, resetForm, resetOnSave, saved]);
 
   let nonFieldError;
   if (errors) {
