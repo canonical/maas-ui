@@ -514,4 +514,24 @@ describe("MachineList", () => {
       "machine: Uh oh! network: It broke"
     );
   });
+
+  it("displays a message if there are no search results", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("input[type='search']")
+      .simulate("change", { target: { value: "test" } });
+    expect(wrapper.find("Strip span").text()).toBe(
+      "No machines match the search criteria."
+    );
+  });
 });

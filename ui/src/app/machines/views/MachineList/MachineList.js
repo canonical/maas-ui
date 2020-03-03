@@ -7,11 +7,12 @@ import {
   Notification,
   Row,
   SearchBox,
-  Select
+  Select,
+  Strip
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
 import "./MachineList.scss";
@@ -412,7 +413,10 @@ const generateGroupRows = ({
 
 const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
   const dispatch = useDispatch();
-  const machines = useSelector(machineSelectors.all);
+  const [searchText, setSearchText] = useState("");
+  const machines = useSelector(state =>
+    machineSelectors.search(state, searchText)
+  );
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
   const errors = useSelector(machineSelectors.errors);
@@ -434,10 +438,13 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
     direction: "descending"
   });
   const [grouping, setGrouping] = useState("status");
-  const [groups, setGroups] = useState(generateGroups(grouping, machines));
   const [hiddenGroups, setHiddenGroups] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
+  const groups = useMemo(() => generateGroups(grouping, machines), [
+    grouping,
+    machines
+  ]);
 
   useWindowTitle("Machines");
 
@@ -457,10 +464,6 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch, machinesLoaded]);
-
-  useEffect(() => {
-    setGroups(generateGroups(grouping, machines));
-  }, [grouping, machines]);
 
   // Update sort parameters depending on whether the same sort key was clicked.
   const updateSort = newSortKey => {
@@ -546,7 +549,7 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
           />
         </Col>
         <Col size={6}>
-          <SearchBox onChange={() => null} />
+          <SearchBox onChange={setSearchText} />
         </Col>
         <Col size={3}>
           <GroupSelect
@@ -777,6 +780,11 @@ const MachineList = ({ selectedMachines = [], setSelectedMachines }) => {
                     })
               }
             />
+            {searchText && machines.length === 0 ? (
+              <Strip rowClassName="u-align--center">
+                <span>No machines match the search criteria.</span>
+              </Strip>
+            ) : null}
           </Col>
         </Row>
       )}

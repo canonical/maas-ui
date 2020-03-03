@@ -1,3 +1,7 @@
+import { createSelector } from "reselect";
+
+import filterNodes from "app/machines/filter-nodes";
+
 const machine = {};
 
 /**
@@ -56,5 +60,29 @@ machine.getBySystemId = (state, id) =>
  * @returns {Object} Errors for machines.
  */
 machine.errors = state => state.machine.errors;
+
+/**
+ * Gets the search terms.
+ * @param {Object} state - The redux state.
+ * @param {Array} terms - The search terms.
+ * @returns {Array} The search terms.
+ */
+machine._getTerms = (state, terms) => terms;
+
+/**
+ * Get machines that match terms.
+ * @param {Object} state - The redux state.
+ * @param {String} terms - The terms to match against.
+ * @returns {Array} A filtered list of machines.
+ */
+machine.search = createSelector(
+  [machine.all, machine._getTerms],
+  (items, terms) => {
+    if (!terms) {
+      return items;
+    }
+    return filterNodes(items, terms);
+  }
+);
 
 export default machine;
