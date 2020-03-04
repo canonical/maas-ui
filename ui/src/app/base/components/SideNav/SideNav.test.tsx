@@ -3,12 +3,13 @@ import { mount } from "enzyme";
 import React from "react";
 
 import { SideNav } from "./SideNav";
+import { SideNavSection } from "./types";
 
 describe("SideNav", () => {
-  let items;
+  let sectionList: Array<SideNavSection>;
 
   beforeEach(() => {
-    items = [
+    sectionList = [
       {
         label: "Configuration",
         subNav: [
@@ -30,16 +31,16 @@ describe("SideNav", () => {
       }
     ];
   });
+
   it("renders", () => {
     const wrapper = mount(
       <MemoryRouter
         initialEntries={[{ pathname: "/settings", key: "testKey" }]}
         initialIndex={0}
       >
-        <Route
-          component={props => <SideNav {...props} items={items} />}
-          path="/settings"
-        />
+        <Route path="/settings">
+          <SideNav sectionList={sectionList} />
+        </Route>
       </MemoryRouter>
     );
     expect(wrapper.find("SideNav")).toMatchSnapshot();
@@ -51,10 +52,9 @@ describe("SideNav", () => {
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         initialIndex={0}
       >
-        <Route
-          component={props => <SideNav {...props} items={items} />}
-          path="/settings"
-        />
+        <Route path="/settings">
+          <SideNav sectionList={sectionList} />
+        </Route>
       </MemoryRouter>
     );
     expect(wrapper.find(".is-active Link").prop("children")).toEqual("Users");

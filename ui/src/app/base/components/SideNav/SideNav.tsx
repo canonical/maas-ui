@@ -1,26 +1,16 @@
-import { Link, match as Match} from "react-router-dom";
+import { Link, match as Match } from "react-router-dom";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 import React from "react";
 
 import "./SideNav.scss";
 import { useLocation, useRouter } from "app/base/hooks";
+import { Location, SideNavSection, SideNavProps } from "./types";
 
-interface Location {
-  pathname: string
-}
-interface SubNav {
-  label: string,
-  path: string
-}
-
-interface Section {
-  label: string,
-  path?: string,
-  subNav?: Array<SubNav>
-}
-
-const _generateSection = (section: Section, location: Location, match: Match) => {
+const _generateSection = (
+  section: SideNavSection,
+  location: Location,
+  match: Match
+) => {
   let subNav = null;
 
   if (section.subNav && section.subNav.length) {
@@ -69,33 +59,17 @@ const _generateSection = (section: Section, location: Location, match: Match) =>
   );
 };
 
-type SideNavProps = { sectionList: Array<Section> };
-
 export const SideNav = ({ sectionList }: SideNavProps) => {
   const { match } = useRouter();
-  console.log(match);
   const { location } = useLocation();
-  const sections = sectionList.map(section => _generateSection(section, location, match));
+  const sections = sectionList.map(section =>
+    _generateSection(section, location, match)
+  );
   return (
     <nav className="side-nav">
       <ul className="side-nav__list">{sections}</ul>
     </nav>
   );
-};
-
-SideNav.propTypes = {
-  sectionList: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      path: PropTypes.string,
-      subNav: PropTypes.arrayOf(
-        PropTypes.shape({
-          label: PropTypes.string.isRequired,
-          path: PropTypes.string.isRequired
-        })
-      )
-    })
-  ).isRequired
 };
 
 export default SideNav;

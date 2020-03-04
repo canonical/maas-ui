@@ -2,37 +2,7 @@
 
 exports[`SideNav renders 1`] = `
 <SideNav
-  history={
-    Object {
-      "action": "POP",
-      "block": [Function],
-      "canGo": [Function],
-      "createHref": [Function],
-      "entries": Array [
-        Object {
-          "hash": "",
-          "key": "testKey",
-          "pathname": "/settings",
-          "search": "",
-        },
-      ],
-      "go": [Function],
-      "goBack": [Function],
-      "goForward": [Function],
-      "index": 0,
-      "length": 1,
-      "listen": [Function],
-      "location": Object {
-        "hash": "",
-        "key": "testKey",
-        "pathname": "/settings",
-        "search": "",
-      },
-      "push": [Function],
-      "replace": [Function],
-    }
-  }
-  items={
+  sectionList={
     Array [
       Object {
         "label": "Configuration",
@@ -60,22 +30,6 @@ exports[`SideNav renders 1`] = `
         "path": "users",
       },
     ]
-  }
-  location={
-    Object {
-      "hash": "",
-      "key": "testKey",
-      "pathname": "/settings",
-      "search": "",
-    }
-  }
-  match={
-    Object {
-      "isExact": true,
-      "params": Object {},
-      "path": "/settings",
-      "url": "/settings",
-    }
   }
 >
   <nav
