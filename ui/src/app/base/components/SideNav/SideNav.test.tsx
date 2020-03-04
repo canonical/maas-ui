@@ -6,7 +6,7 @@ import { SideNav } from "./SideNav";
 import { SideNavSection } from "./types";
 
 describe("SideNav", () => {
-  let sectionList: Array<SideNavSection>;
+  let sectionList: SideNavSection[];
 
   beforeEach(() => {
     sectionList = [
