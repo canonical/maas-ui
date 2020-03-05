@@ -19,4 +19,10 @@ describe("sendAnalyticsEvent", () => {
     sendAnalyticsEvent("eventCategory", "eventAction", "eventLabel");
     expect(window.ga).toHaveBeenCalled();
   });
+
+  it("does not send an event if argument missing", () => {
+    spyOn(window, "ga");
+    sendAnalyticsEvent("eventCategory", "eventAction");
+    expect(window.ga).not.toHaveBeenCalled();
+  });
 });
