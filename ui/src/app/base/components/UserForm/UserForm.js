@@ -17,7 +17,7 @@ const schemaFields = {
     .required("Email is required"),
   fullName: Yup.string(),
   is_superuser: Yup.boolean(),
-  password: Yup.string().min(8, "Passwords must be 8 characters or more"),
+  password: Yup.string(),
   passwordConfirm: Yup.string().oneOf(
     [Yup.ref("password")],
     "Passwords must be the same"
