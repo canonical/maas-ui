@@ -180,6 +180,16 @@ describe("ContextualMenu ", () => {
     ).toBe("Link2");
   });
 
+  it("can supply content instead of links", () => {
+    const wrapper = mount(
+      <ContextualMenu
+        dropdownContent={<span className="content">content</span>}
+      />
+    );
+    expect(wrapper.find(".content").exists()).toBe(true);
+    expect(wrapper.find("button.p-contextual-menu__link").exists()).toBe(false);
+  });
+
   it("closes the menu when clicking on an item", () => {
     const wrapper = mount(
       <ContextualMenu links={[{ onClick: jest.fn() }]} toggleLabel="Toggle" />
