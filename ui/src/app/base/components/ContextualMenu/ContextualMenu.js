@@ -5,13 +5,11 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import usePortal from "react-useportal";
 
-const getPositionStyle = (position, wrapper) => {
+const getPositionStyle = (position, wrapper, constrainPanelWidth) => {
   if (!wrapper || !wrapper.current) {
     return undefined;
   }
-
-  const dimensions = wrapper.current.getBoundingClientRect();
-  const { bottom, left, width } = dimensions;
+  const { bottom, left, width } = wrapper.current.getBoundingClientRect();
   const topPos = bottom + (window.scrollY || 0);
   let leftPos = left;
 
@@ -29,7 +27,13 @@ const getPositionStyle = (position, wrapper) => {
       break;
   }
 
-  return { position: "absolute", left: leftPos, top: topPos };
+  let styles = { position: "absolute", left: leftPos, top: topPos };
+
+  if (constrainPanelWidth) {
+    styles.width = width;
+  }
+
+  return styles;
 };
 
 const generateLink = (
@@ -56,6 +60,8 @@ const generateLink = (
 
 const ContextualMenu = ({
   className,
+  constrainPanelWidth,
+  dropdownContent,
   dropdownClassName,
   hasToggleIcon,
   links,
@@ -81,7 +87,11 @@ const ContextualMenu = ({
       .filter(Boolean)
       .join("--")
   );
-  const positionStyle = getPositionStyle(position, positionNode || wrapper);
+  const positionStyle = getPositionStyle(
+    position,
+    positionNode || wrapper,
+    constrainPanelWidth
+  );
 
   useEffect(() => {
     onToggleMenu && onToggleMenu(isOpen);
@@ -136,25 +146,30 @@ const ContextualMenu = ({
               aria-hidden={isOpen ? "false" : "true"}
               aria-label="submenu"
             >
-              {links.map((item, i) => {
-                if (Array.isArray(item)) {
-                  return (
-                    <span className="p-contextual-menu__group" key={i}>
-                      {item.map((link, j) =>
-                        generateLink(link, j, closePortal)
-                      )}
-                    </span>
-                  );
-                }
-                if (typeof item === "string") {
-                  return (
-                    <div className="p-contextual-menu__non-interactive" key={i}>
-                      {item}
-                    </div>
-                  );
-                }
-                return generateLink(item, i, closePortal);
-              })}
+              {dropdownContent
+                ? dropdownContent
+                : links.map((item, i) => {
+                    if (Array.isArray(item)) {
+                      return (
+                        <span className="p-contextual-menu__group" key={i}>
+                          {item.map((link, j) =>
+                            generateLink(link, j, closePortal)
+                          )}
+                        </span>
+                      );
+                    }
+                    if (typeof item === "string") {
+                      return (
+                        <div
+                          className="p-contextual-menu__non-interactive"
+                          key={i}
+                        >
+                          {item}
+                        </div>
+                      );
+                    }
+                    return generateLink(item, i, closePortal);
+                  })}
             </span>
           </span>
         </Portal>
@@ -165,6 +180,8 @@ const ContextualMenu = ({
 
 ContextualMenu.propTypes = {
   className: PropTypes.string,
+  constrainPanelWidth: PropTypes.bool,
+  dropdownContent: PropTypes.node,
   hasToggleIcon: PropTypes.bool,
   links: PropTypes.arrayOf(
     PropTypes.oneOfType([
@@ -172,7 +189,7 @@ ContextualMenu.propTypes = {
       PropTypes.shape(Button.propTypes),
       PropTypes.arrayOf(PropTypes.shape(Button.propTypes))
     ])
-  ).isRequired,
+  ),
   onToggleMenu: PropTypes.func,
   positionNode: PropTypes.object,
   position: PropTypes.oneOf(["left", "center", "right"]),
