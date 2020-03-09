@@ -10,10 +10,12 @@ import FormikFormContent from "app/base/components/FormikFormContent";
 const FormikForm = ({
   allowAllEmpty,
   buttons,
+  buttonsBordered = true,
   cleanup,
   children,
   errors,
   initialValues,
+  onCancel,
   onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
@@ -55,9 +57,11 @@ const FormikForm = ({
     >
       <FormikFormContent
         allowAllEmpty={allowAllEmpty}
+        buttonsBordered={buttonsBordered}
         buttons={buttons}
         errors={errors}
         initialValues={initialValues}
+        onCancel={onCancel}
         onValuesChanged={onValuesChanged}
         resetOnSave={resetOnSave}
         saving={saving}
@@ -75,10 +79,12 @@ const FormikForm = ({
 FormikForm.propTypes = {
   allowAllEmpty: PropTypes.bool,
   buttons: PropTypes.func,
+  buttonsBordered: PropTypes.bool,
   cleanup: PropTypes.func,
   children: PropTypes.node.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   initialValues: PropTypes.object.isRequired,
+  onCancel: PropTypes.func,
   onSaveAnalytics: PropTypes.shape({
     category: PropTypes.string,
     action: PropTypes.string,

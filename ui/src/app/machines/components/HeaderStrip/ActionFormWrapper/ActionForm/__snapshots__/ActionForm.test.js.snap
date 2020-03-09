@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionForm renders 1`] = `
+<ActionForm
+  selectedAction={
+    Object {
+      "name": "commission",
+    }
+  }
+  setSelectedAction={[MockFunction]}
+>
+  <FormCardButtons
+    bordered={false}
+    onCancel={[Function]}
+    submitLabel="Commission 0 machines"
+  >
+    <div
+      className="form-card__buttons"
+    >
+      <Button
+        appearance="base"
+        className="u-no-margin--bottom"
+        data-test="cancel-action"
+        onClick={[Function]}
+        type="button"
+      >
+        <button
+          className="p-button--base u-no-margin--bottom"
+          data-test="cancel-action"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+      </Button>
+      <ActionButton
+        appearance="positive"
+        className="u-no-margin--bottom"
+        type="submit"
+      >
+        <button
+          className="u-no-margin--bottom p-action-button p-button--positive"
+          type="submit"
+        >
+          Commission 0 machines
+        </button>
+      </ActionButton>
+    </div>
+  </FormCardButtons>
+</ActionForm>
+`;

@@ -4,17 +4,20 @@ exports[`FormCardButtons  renders 1`] = `
 <FormCardButtons
   submitLabel="Save user"
 >
+  <hr />
   <div
-    className="form-card__buttons"
+    className="form-card__buttons is-bordered"
   >
     <Button
       appearance="base"
       className="u-no-margin--bottom"
+      data-test="cancel-action"
       onClick={[Function]}
       type="button"
     >
       <button
         className="p-button--base u-no-margin--bottom"
+        data-test="cancel-action"
         onClick={[Function]}
         type="button"
       >
