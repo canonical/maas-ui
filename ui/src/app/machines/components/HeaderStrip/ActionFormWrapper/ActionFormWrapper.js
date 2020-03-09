@@ -8,6 +8,7 @@ import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import ActionForm from "./ActionForm";
 import DeployForm from "./DeployForm";
+import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
 
 const getErrorSentence = (action, count) => {
@@ -61,6 +62,8 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
       switch (selectedAction.name) {
         case "deploy":
           return <DeployForm setSelectedAction={setSelectedAction} />;
+        case "set-pool":
+          return <SetPoolForm setSelectedAction={setSelectedAction} />;
         case "set-zone":
           return <SetZoneForm setSelectedAction={setSelectedAction} />;
         default:
