@@ -1,0 +1,48 @@
+@mixin SSHKeyList {
+  .sshkey-list__header-action {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+
+  .sshkey-list__keys {
+    display: flex;
+  }
+
+  .sshkey-list__keys-delete {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+
+  .sshkey-list td,
+  .sshkey-list th {
+    // Source
+    &:nth-child(1) {
+      flex: 0.3 0 0;
+    }
+
+    // ID
+    &:nth-child(2) {
+      flex: 0.3 0 0;
+    }
+
+    // Key + actions
+    &:nth-child(3) {
+      flex: 0.4 0 0;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .sshkey-list td,
+    .sshkey-list th {
+      // Source
+      &:nth-child(1) {
+        display: none;
+      }
+
+      // Key + actions
+      &:nth-child(3) {
+        flex-grow: 0.7;
+      }
+    }
+  }
+}

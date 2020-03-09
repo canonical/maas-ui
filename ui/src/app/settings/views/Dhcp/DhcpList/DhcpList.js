@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useWindowTitle } from "app/base/hooks";
 import React, { useEffect, useState } from "react";
 
-import "./DhcpList.scss";
 import {
   controller as controllerActions,
   device as deviceActions,

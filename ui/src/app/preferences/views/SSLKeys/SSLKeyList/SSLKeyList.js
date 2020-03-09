@@ -2,7 +2,6 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import "./SSLKeyList.scss";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";

@@ -31,7 +31,7 @@ exports[`NotificationList renders a list of messages 1`] = `
             message="an error"
           >
             <p
-              className="p-notification__response"
+              className="p-notification__response u-no-max-width"
             >
               <span
                 className="p-notification__status"

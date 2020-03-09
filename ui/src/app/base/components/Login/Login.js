@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React, { useEffect } from "react";
 
-import "./Login.scss";
 import { status as statusActions } from "app/base/actions";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
