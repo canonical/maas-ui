@@ -11,7 +11,7 @@ import {
   filtersToString,
   toggleFilter
 } from "app/machines/search";
-import { getMachineValue } from "app/utils";
+import { getMachineValue, formatSpeedUnits } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
@@ -53,26 +53,6 @@ const filterNames = new Map([
   ["zone", "Zone"],
   ["link_speeds", "Link speed"]
 ]);
-
-const formatSpeedUnits = speedInMbytes => {
-  const megabytesInGigabyte = 1000;
-  const gigabytesInTerabyte = 1000;
-
-  if (
-    speedInMbytes >= megabytesInGigabyte &&
-    speedInMbytes < megabytesInGigabyte * gigabytesInTerabyte
-  ) {
-    return `${Math.round(speedInMbytes / megabytesInGigabyte)} Gbps`;
-  }
-
-  if (speedInMbytes >= megabytesInGigabyte * gigabytesInTerabyte) {
-    return `${Math.round(
-      speedInMbytes / megabytesInGigabyte / gigabytesInTerabyte
-    )} Tbps`;
-  }
-
-  return `${speedInMbytes} Mbps`;
-};
 
 const getFilters = machines => {
   const filters = new Map();
@@ -126,7 +106,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
   if (machinesLoaded) {
     sections = filterOrder.reduce((options, filter) => {
       const filterValues = filterOptions.get(filter);
-      if (filterValues) {
+      if (filterValues && filterValues.size > 0) {
         options.push({
           title: filterNames.get(filter),
           content: (
@@ -138,7 +118,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                   <Button
                     appearance="base"
                     className={classNames(
-                      "u-align-text--left u-no-margin--bottom filter-accordion__item",
+                      "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
                       {
                         "is-active": isFilterActive(
                           currentFilters,
