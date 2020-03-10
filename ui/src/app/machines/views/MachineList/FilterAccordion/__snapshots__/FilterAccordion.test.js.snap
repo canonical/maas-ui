@@ -19,7 +19,7 @@ exports[`FilterAccordion renders 1`] = `
                   Array [
                     <Button
                       appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item"
+                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
                       onClick={[Function]}
                     >
                       pool1
@@ -40,7 +40,7 @@ exports[`FilterAccordion renders 1`] = `
                   Array [
                     <Button
                       appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item"
+                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
                       onClick={[Function]}
                     >
                       zone1
@@ -61,7 +61,7 @@ exports[`FilterAccordion renders 1`] = `
                   Array [
                     <Button
                       appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item"
+                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
                       onClick={[Function]}
                     >
                       undefined nodes
@@ -82,7 +82,7 @@ exports[`FilterAccordion renders 1`] = `
                   Array [
                     <Button
                       appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item"
+                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
                       onClick={[Function]}
                     >
                       Not supported
@@ -103,7 +103,7 @@ exports[`FilterAccordion renders 1`] = `
                   Array [
                     <Button
                       appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item"
+                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
                       onClick={[Function]}
                     >
                       100 Mbps

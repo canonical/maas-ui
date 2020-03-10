@@ -129,4 +129,48 @@ describe("FilterAccordion", () => {
       .simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("pool:(=pool1)");
   });
+
+  it("hides filters if there are no values", () => {
+    delete state.machine.items[0].link_speeds;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FilterAccordion setSearchText={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper
+        .find(".p-accordion__tab")
+        .findWhere(button => button.text() === "Link speed")
+        .exists()
+    ).toBe(false);
+  });
+
+  it("hides filters if the value is an empty array", () => {
+    state.machine.items[0].link_speeds = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FilterAccordion setSearchText={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper
+        .find(".p-accordion__tab")
+        .findWhere(button => button.text() === "Link speed")
+        .exists()
+    ).toBe(false);
+  });
 });

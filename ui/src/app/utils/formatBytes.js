@@ -22,7 +22,7 @@ export const formatBytes = (value, unit, precision = 3) => {
   // Convert to appropriate unit.
   const j = Math.floor(Math.log(valueInBytes) / Math.log(k));
   const valueInUnit = parseFloat(
-    (valueInBytes / Math.pow(k, j)).toPrecision(precision)
+    (valueInBytes / Math.pow(k, j)).toFixed(precision - 1)
   );
 
   return {
