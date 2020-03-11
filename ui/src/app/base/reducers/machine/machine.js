@@ -31,6 +31,14 @@ const machine = produce(
       case "CREATE_MACHINE_NOTIFY":
         draft.items.push(action.payload);
         break;
+      case "DELETE_MACHINE_NOTIFY":
+        draft.items = draft.items.filter(
+          machine => machine.system_id !== action.payload
+        );
+        draft.selected = draft.selected.filter(
+          machineId => machineId !== action.payload
+        );
+        break;
       case "UPDATE_MACHINE_NOTIFY":
         for (let i in draft.items) {
           if (draft.items[i].id === action.payload.id) {

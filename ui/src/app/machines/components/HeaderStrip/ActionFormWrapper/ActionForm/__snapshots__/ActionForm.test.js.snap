@@ -9,43 +9,91 @@ exports[`ActionForm renders 1`] = `
   }
   setSelectedAction={[MockFunction]}
 >
-  <FormCardButtons
-    bordered={false}
+  <FormikForm
+    buttons={[Function]}
+    buttonsBordered={false}
+    cleanup={[Function]}
+    errors={Object {}}
+    initialValues={Object {}}
     onCancel={[Function]}
+    onSaveAnalytics={
+      Object {
+        "action": "commission",
+        "category": "Take action menu",
+        "label": undefined,
+      }
+    }
+    onSubmit={[Function]}
+    submitAppearance="positive"
     submitLabel="Commission 0 machines"
   >
-    <div
-      className="form-card__buttons"
+    <Formik
+      initialValues={Object {}}
+      onSubmit={[Function]}
     >
-      <Button
-        appearance="base"
-        className="u-no-margin--bottom"
-        data-test="cancel-action"
-        onClick={[Function]}
-        type="button"
+      <FormikFormContent
+        buttons={[Function]}
+        buttonsBordered={false}
+        errors={Object {}}
+        initialValues={Object {}}
+        onCancel={[Function]}
+        submitAppearance="positive"
+        submitLabel="Commission 0 machines"
       >
-        <button
-          className="p-button--base u-no-margin--bottom"
-          data-test="cancel-action"
-          onClick={[Function]}
-          type="button"
+        <Form
+          onSubmit={[Function]}
         >
-          Cancel
-        </button>
-      </Button>
-      <ActionButton
-        appearance="positive"
-        className="u-no-margin--bottom"
-        type="submit"
-      >
-        <button
-          className="u-no-margin--bottom p-action-button p-button--positive"
-          type="submit"
-        >
-          Commission 0 machines
-        </button>
-      </ActionButton>
-    </div>
-  </FormCardButtons>
+          <form
+            className=""
+            onSubmit={[Function]}
+          >
+            <div />
+            <FormCardButtons
+              bordered={false}
+              onCancel={[Function]}
+              submitAppearance="positive"
+              submitDisabled={false}
+              submitLabel="Commission 0 machines"
+            >
+              <div
+                className="form-card__buttons"
+              >
+                <Button
+                  appearance="base"
+                  className="u-no-margin--bottom"
+                  data-test="cancel-action"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <button
+                    className="p-button--base u-no-margin--bottom"
+                    data-test="cancel-action"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                </Button>
+                <ActionButton
+                  appearance="positive"
+                  className="u-no-margin--bottom"
+                  disabled={false}
+                  type="submit"
+                >
+                  <button
+                    className="u-no-margin--bottom p-action-button p-button--positive"
+                    disabled={false}
+                    type="submit"
+                  >
+                    Commission 0 machines
+                  </button>
+                </ActionButton>
+              </div>
+            </FormCardButtons>
+          </form>
+        </Form>
+      </FormikFormContent>
+    </Formik>
+  </FormikForm>
 </ActionForm>
 `;

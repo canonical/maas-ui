@@ -25,6 +25,7 @@ const FormikForm = ({
   savedRedirect,
   secondarySubmit,
   secondarySubmitLabel,
+  submitAppearance,
   submitLabel,
   validationSchema,
   ...props
@@ -68,6 +69,7 @@ const FormikForm = ({
         saved={saved}
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel={secondarySubmitLabel}
+        submitAppearance={submitAppearance}
         submitLabel={submitLabel}
       >
         {children}
@@ -81,7 +83,7 @@ FormikForm.propTypes = {
   buttons: PropTypes.func,
   buttonsBordered: PropTypes.bool,
   cleanup: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   initialValues: PropTypes.object.isRequired,
   onCancel: PropTypes.func,
@@ -98,8 +100,9 @@ FormikForm.propTypes = {
   savedRedirect: PropTypes.string,
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,
+  submitAppearance: PropTypes.string,
   submitLabel: PropTypes.string,
-  validationSchema: PropTypes.object.isRequired
+  validationSchema: PropTypes.object
 };
 
 export default FormikForm;
