@@ -68,7 +68,7 @@ describe("machine actions", () => {
   });
 
   it("can handle turning on the machine", () => {
-    expect(machine.turnOn("abc123")).toEqual({
+    expect(machine.on("abc123")).toEqual({
       type: "TURN_MACHINE_ON",
       meta: {
         model: "machine",
@@ -85,7 +85,7 @@ describe("machine actions", () => {
   });
 
   it("can handle turning off the machine", () => {
-    expect(machine.turnOff("abc123")).toEqual({
+    expect(machine.off("abc123")).toEqual({
       type: "TURN_MACHINE_OFF",
       meta: {
         model: "machine",
@@ -330,6 +330,23 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "unlock",
+          extra: {},
+          system_id: "abc123"
+        }
+      }
+    });
+  });
+
+  it("can handle deleting a machine", () => {
+    expect(machine.delete("abc123")).toEqual({
+      type: "DELETE_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action"
+      },
+      payload: {
+        params: {
+          action: "delete",
           extra: {},
           system_id: "abc123"
         }

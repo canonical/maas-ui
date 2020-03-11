@@ -35,7 +35,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
         </>
       ),
       onClick: () => {
-        dispatch(machineActions.turnOn(systemId));
+        dispatch(machineActions.on(systemId));
         setUpdating(machine.power_state);
       }
     });
@@ -48,7 +48,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
         </>
       ),
       onClick: () => {
-        dispatch(machineActions.turnOff(systemId));
+        dispatch(machineActions.off(systemId));
         setUpdating(machine.power_state);
       }
     });
