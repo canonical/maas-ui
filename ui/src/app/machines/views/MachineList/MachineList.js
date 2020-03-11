@@ -7,7 +7,6 @@ import {
   Notification,
   Row,
   SearchBox,
-  Select,
   Strip
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +33,7 @@ import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
+import FilterAccordion from "./FilterAccordion";
 import GroupSelect from "./GroupSelect";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -541,20 +541,17 @@ const MachineList = () => {
     <>
       <Row>
         <Col size={3}>
-          <Select
-            name="machineFilters"
-            defaultValue=""
-            options={[
-              {
-                value: "",
-                disabled: "disabled",
-                label: "Filters"
-              }
-            ]}
+          <FilterAccordion
+            searchText={searchText}
+            setSearchText={setSearchText}
           />
         </Col>
         <Col size={6}>
-          <SearchBox onChange={setSearchText} />
+          <SearchBox
+            externallyControlled
+            onChange={setSearchText}
+            value={searchText}
+          />
         </Col>
         <Col size={3}>
           <GroupSelect
