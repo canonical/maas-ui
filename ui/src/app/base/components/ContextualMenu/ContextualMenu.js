@@ -9,11 +9,12 @@ const getPositionStyle = (position, wrapper, constrainPanelWidth) => {
   if (!wrapper || !wrapper.current) {
     return undefined;
   }
-  const {
-    bottom,
-    left,
-    width
-  } = wrapper.current.children[0].getBoundingClientRect();
+  // We want the dimensions of the first child of the contextual menu span, not
+  // the span itself. Guard present just in case a child is not defined.
+  const element = wrapper.current.children.length
+    ? wrapper.current.children[0]
+    : wrapper.current;
+  const { bottom, left, width } = element.getBoundingClientRect();
   const topPos = bottom + (window.scrollY || 0);
   let leftPos = left;
 

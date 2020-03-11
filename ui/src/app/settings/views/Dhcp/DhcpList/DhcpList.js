@@ -136,7 +136,7 @@ const generateRows = (
         ) : (
           <Row>
             <Col size="10">
-              <Code>{dhcpsnippet.value}</Code>
+              <Code className="u-no-margin--bottom">{dhcpsnippet.value}</Code>
             </Col>
           </Row>
         )),
