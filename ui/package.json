@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@canonical/macaroon-bakery": "0.3.0",
-    "@canonical/react-components": "0.3.1",
+    "@canonical/react-components": "0.4.0",
     "@maas-ui/shared": "0.1.0",
     "@reduxjs/toolkit": "1.2.5",
     "@sentry/browser": "5.13.2",
