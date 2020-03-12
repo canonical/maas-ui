@@ -2,8 +2,6 @@ import { Card, Col, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./FormCard.scss";
-
 export const FormCard = ({ children, sidebar = true, stacked, title }) => {
   const titleNode = <h4 className="form-card__title">{title}</h4>;
   const content = stacked ? (

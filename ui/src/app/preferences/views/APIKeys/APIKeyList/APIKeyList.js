@@ -2,7 +2,6 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import "./APIKeyList.scss";
 import { token as tokenActions } from "app/preferences/actions";
 import { token as tokenSelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";

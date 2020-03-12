@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React from "react";
 
-import "./AddSSLKey.scss";
 import { sslkey as sslkeyActions } from "app/preferences/actions";
 import { sslkey as sslkeySelectors } from "app/preferences/selectors";
 import { useAddMessage } from "app/base/hooks";

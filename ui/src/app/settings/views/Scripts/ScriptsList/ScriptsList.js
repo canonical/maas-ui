@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import "./ScriptsList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import { scripts as scriptActions } from "app/base/actions";

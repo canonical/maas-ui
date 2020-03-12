@@ -3,7 +3,6 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import React from "react";
 
-import "./RepositoryFormFields.scss";
 import { general as generalSelectors } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 

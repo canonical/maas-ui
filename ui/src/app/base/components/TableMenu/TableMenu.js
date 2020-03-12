@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import classNames from "classnames";
 
-import "./TableMenu.scss";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
 const TableMenu = ({ className, links, title, onToggleMenu, positionNode }) => {

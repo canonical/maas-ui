@@ -1,0 +1,55 @@
+@mixin maas-buttons {
+  // Button styles that make it look like a link
+  .p-button--link {
+    @extend %p-button--base;
+    border: 0 !important;
+    color: $color-link;
+    font-size: inherit;
+    line-height: 1rem;
+    margin-bottom: 0;
+    padding: 0;
+    pointer-events: all;
+    text-align: left;
+    text-transform: inherit;
+
+    &:visited {
+      color: $color-link;
+    }
+
+    &:hover {
+      background-color: inherit;
+      text-decoration: underline;
+    }
+
+    &:active {
+      background-color: inherit !important;
+    }
+
+    &:focus {
+      color: $color-link;
+      outline: 0;
+      text-decoration: underline;
+    }
+
+    // Table header sort buttons
+    th & {
+      color: $color-mid-dark;
+      font-weight: 400;
+
+      .p-icon--contextual-menu {
+        @include vf-icon-size(0.875rem);
+        margin-left: $sp-x-small;
+      }
+    }
+  }
+
+  table .p-button--link {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  .p-button--link:not(:last-of-type):not(:only-of-type) {
+    margin-right: 0;
+  }
+}

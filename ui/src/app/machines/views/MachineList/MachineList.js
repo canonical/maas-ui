@@ -14,7 +14,6 @@ import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
-import "./MachineList.scss";
 import {
   general as generalActions,
   machine as machineActions,

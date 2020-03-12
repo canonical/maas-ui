@@ -6,7 +6,7 @@ import { Button } from "@canonical/react-components";
 const NotificationGroupMessage = ({ message, id, action, actionHandler }) => {
   const dispatch = useDispatch();
   return (
-    <p className="p-notification__response">
+    <p className="p-notification__response u-no-max-width">
       <span
         className="p-notification__status"
         data-test="notification-message"

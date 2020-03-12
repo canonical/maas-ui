@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import "./Tabs.scss";
-
 const Tabs = ({ links, listClassName, navClassName, noBorder }) => {
   return (
     <nav className={classNames("p-tabs", navClassName)}>

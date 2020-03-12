@@ -9,7 +9,12 @@ const getPositionStyle = (position, wrapper, constrainPanelWidth) => {
   if (!wrapper || !wrapper.current) {
     return undefined;
   }
-  const { bottom, left, width } = wrapper.current.getBoundingClientRect();
+  // We want the dimensions of the first child of the contextual menu span, not
+  // the span itself. Guard present just in case a child is not defined.
+  const element = wrapper.current.children.length
+    ? wrapper.current.children[0]
+    : wrapper.current;
+  const { bottom, left, width } = element.getBoundingClientRect();
   const topPos = bottom + (window.scrollY || 0);
   let leftPos = left;
 
@@ -87,11 +92,6 @@ const ContextualMenu = ({
       .filter(Boolean)
       .join("--")
   );
-  const positionStyle = getPositionStyle(
-    position,
-    positionNode || wrapper,
-    constrainPanelWidth
-  );
 
   useEffect(() => {
     onToggleMenu && onToggleMenu(isOpen);
@@ -136,7 +136,14 @@ const ContextualMenu = ({
       )}
       {isOpen && (
         <Portal>
-          <span className={wrapperClass} style={positionStyle}>
+          <span
+            className={wrapperClass}
+            style={getPositionStyle(
+              position,
+              positionNode || wrapper,
+              constrainPanelWidth
+            )}
+          >
             <span
               className={classNames(
                 "p-contextual-menu__dropdown",
