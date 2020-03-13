@@ -627,29 +627,13 @@ function maasMachinesTable(
       }
     };
 
-    $scope.getCheckboxClass = function(node) {
-      if ($scope.actionOption) {
-        if (
-          node.$selected &&
-          node.actions.indexOf($scope.actionOption.name) > -1
-        ) {
-          return "actionable";
-        }
-        return "not-actionable";
-      }
-      return "";
-    };
-
-    $scope.getAllCheckboxClass = function(nodes) {
+    $scope.nodeSelectionNotActionable = nodes => {
       if (nodes && $scope.actionOption) {
-        for (var i = 0; i < nodes.length; i++) {
-          if (nodes[i].actions.indexOf($scope.actionOption.name) === -1) {
-            return "not-actionable";
-          }
-        }
-        return "actionable";
+        return nodes.some(
+          node => !node.actions.includes($scope.actionOption.name)
+        );
       }
-      return "";
+      return false;
     };
 
     $scope.getBootIp = function(ipArray) {

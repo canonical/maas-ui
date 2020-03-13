@@ -185,17 +185,8 @@
   }
 
   .p-checkbox--action {
-    &.actionable::before {
-      background-color: $color-positive;
-    }
-
     &.not-actionable::before {
-      background-color: $color-caution;
-    }
-
-    &.actionable::after,
-    &.not-actionable::after {
-      color: $color-x-light;
+      background-color: $color-caution !important;
     }
   }
 

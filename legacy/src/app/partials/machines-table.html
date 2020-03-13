@@ -4,7 +4,7 @@
             <th class="p-table__col--name p-double-row u-align--left">
                 <div class="p-double-row__checkbox" data-ng-if="!hideActions">
                     <input class="checkbox" type="checkbox" data-ng-click="toggleCheckAll()" data-ng-checked="table.allViewableChecked" id="check-all" data-ng-disabled="ngDisabled()" />
-                    <label class="p-checkbox--action" for="check-all" ng-class="getAllCheckboxClass(table.filteredMachines)"></label>
+                    <label class="p-checkbox--action" for="check-all" ng-class="{'not-actionable': nodeSelectionNotActionable(table.filteredMachines)}"></label>
                 </div>
                 <div class="p-double-row__rows-container--checkbox">
                     <div>
@@ -79,8 +79,8 @@
                     <input type="checkbox" id="{$ group.label $}" data-ng-click="toggleCheckGroup(group.label)" data-ng-checked="getGroupSelectedState(group.label)" />
                     <label
                         for="{$ group.label $}"
-                        class="p-checkbox--group"
-                        data-ng-class="{'u-no-margin--bottom' : group.label === 'none'}"
+                        class="p-checkbox--group p-checkbox--action"
+                        data-ng-class="{'u-no-margin--bottom' : group.label === 'none', 'not-actionable': nodeSelectionNotActionable(group.machines)}"
                     >
                         {$ group.label $}
                     </label>
@@ -121,7 +121,7 @@
             <td class="p-table__col--name p-double-row" aria-label="FQDN" data-ng-if="table.column === 'fqdn' || table.column === 'ip_address'">
                 <div class="p-double-row__checkbox" data-ng-if="!hideActions">
                     <input type="checkbox" data-ng-click="toggleChecked(node)" data-ng-checked="node.$selected" id="{$ node.fqdn $}" data-ng-disabled="ngDisable()" />
-                    <label class="p-checkbox--action" for="{$ node.fqdn $}" ng-class="getCheckboxClass(node)"></label>
+                    <label class="p-checkbox--action" for="{$ node.fqdn $}" ng-class="{'not-actionable': nodeSelectionNotActionable([node])}"></label>
                 </div>
                 <div class="p-double-row__rows-container--checkbox">
                     <div class="p-double-row__main-row">
