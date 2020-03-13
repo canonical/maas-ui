@@ -1,0 +1,18 @@
+@mixin maas-utilities {
+  .u-flex-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .u-mirror--y {
+    transform: rotate(180deg);
+  }
+
+  .u-text--light {
+    color: $color-mid-dark;
+  }
+
+  .u-upper-case--first:first-letter {
+    text-transform: capitalize;
+  }
+}

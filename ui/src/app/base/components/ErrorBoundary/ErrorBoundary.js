@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="p-notification--negative">
-          <p className="p-notification__response">
+          <p className="p-notification__response u-no-max-width">
             <span className="p-notification__status">Error:</span> An unexpected
             error has occurred, please try refreshing your browser window.
           </p>

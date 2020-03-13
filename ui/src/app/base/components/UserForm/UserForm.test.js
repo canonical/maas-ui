@@ -100,7 +100,7 @@ describe("UserForm", () => {
     );
     expect(
       wrapper
-        .find("Link")
+        .find("Button")
         .first()
         .children()
         .text()
@@ -128,7 +128,7 @@ describe("UserForm", () => {
         n => n.name() === "FormikField" && n.prop("type") === "password"
       ).length
     ).toEqual(0);
-    wrapper.find("Link").simulate("click", { preventDefault: jest.fn() });
+    wrapper.find("Button").simulate("click");
     expect(
       wrapper.findWhere(
         n => n.name() === "FormikField" && n.prop("type") === "password"
@@ -147,7 +147,7 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Link").simulate("click", { preventDefault: jest.fn() });
+    wrapper.find("Button").simulate("click");
     expect(
       wrapper.findWhere(
         n => n.name() === "FormikField" && n.prop("name") === "old_password"

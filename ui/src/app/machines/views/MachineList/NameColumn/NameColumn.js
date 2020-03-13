@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
-import "./NameColumn.scss";
 
 const generateFQDN = (machine, machineURL) => {
   return (

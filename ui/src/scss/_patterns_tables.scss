@@ -1,0 +1,35 @@
+@mixin maas-tables {
+  .p-table-expanding--light .p-table-expanding__panel {
+    border-top: 1px solid $color-mid-light;
+    margin: 0 $sp-small $sp-small $sp-small;
+    padding: $sp-small 0 0 0;
+  }
+
+  .p-table-expanding--light .p-table__row.is-active {
+    background-color: $color-x-light;
+  }
+
+  .p-table-sub-cols {
+    flex-direction: column;
+  }
+
+  .p-table-sub-cols__list {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .p-table-sub-cols__item {
+    @extend %single-border-text-vpadding--scaling;
+    border-bottom: 1px solid $color-mid-light;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+}

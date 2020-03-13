@@ -43,7 +43,7 @@ const NotificationGroup = ({ notifications, type }) => {
       <div className={`p-notification--${type}`}>
         <div className="p-notification__toggle">
           {notifications.length > 1 ? (
-            <p className="p-notification__response">
+            <p className="p-notification__response u-no-max-width">
               <Button
                 appearance="link"
                 onClick={toggleGroup}

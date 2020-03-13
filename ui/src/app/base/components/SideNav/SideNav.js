@@ -3,7 +3,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./SideNav.scss";
 import { useLocation, useRouter } from "app/base/hooks";
 
 const _generateSection = (section, location, match) => {

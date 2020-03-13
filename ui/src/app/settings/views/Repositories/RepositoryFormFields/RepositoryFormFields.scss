@@ -1,8 +1,0 @@
-@import "~vanilla-framework/scss/settings";
-
-.is-split--small .p-list__item {
-  @media only screen and (max-width: $breakpoint-navigation-threshold) {
-    display: inline-block;
-    width: 50%;
-  }
-}

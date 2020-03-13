@@ -3,7 +3,6 @@ import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import "./UsersList.scss";
 import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import {

@@ -28,7 +28,7 @@ exports[`NotificationGroup renders 1`] = `
         className="p-notification__toggle"
       >
         <p
-          className="p-notification__response"
+          className="p-notification__response u-no-max-width"
         >
           <Button
             appearance="link"

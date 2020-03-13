@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import "./RepositoriesList.scss";
 import { packagerepository as repositoryActions } from "app/base/actions";
 import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
