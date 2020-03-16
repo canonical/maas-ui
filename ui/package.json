@@ -7,7 +7,7 @@
     "@canonical/react-components": "0.3.0",
     "@maas-ui/shared": "0.1.0",
     "classnames": "2.2.6",
-    "connected-react-router": "6.6.1",
+    "connected-react-router": "6.8.0",
     "cross-env": "6.0.3",
     "date-fns": "2.9.0",
     "formik": "2.1.2",
