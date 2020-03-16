@@ -31,4 +31,25 @@ describe("FormCardButtons ", () => {
     wrapper.find("[data-test='secondary-submit'] button").simulate("click");
     expect(secondarySubmit).toHaveBeenCalled();
   });
+
+  it("displays a border if bordered is true", () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+        <FormCardButtons bordered submitLabel="Save" />
+      </MemoryRouter>
+    );
+    expect(wrapper.find("hr").exists()).toBe(true);
+    expect(wrapper.find(".form-card__buttons.is-bordered").exists()).toBe(true);
+  });
+
+  it("can fire custom onCancel function", () => {
+    const onCancel = jest.fn();
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+        <FormCardButtons onCancel={onCancel} submitLabel="Save" />
+      </MemoryRouter>
+    );
+    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    expect(onCancel).toHaveBeenCalled();
+  });
 });

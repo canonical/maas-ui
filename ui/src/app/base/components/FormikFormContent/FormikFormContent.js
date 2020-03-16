@@ -9,9 +9,11 @@ import FormikFormButtons from "app/base/components/FormikFormButtons";
 const FormikFormContent = ({
   allowAllEmpty,
   buttons: Buttons = FormikFormButtons,
+  buttonsBordered,
   children,
   errors,
   initialValues,
+  onCancel,
   onValuesChanged,
   resetOnSave,
   saving,
@@ -53,7 +55,9 @@ const FormikFormContent = ({
       )}
       <div>{children}</div>
       <Buttons
+        bordered={buttonsBordered}
         loading={saving}
+        onCancel={onCancel}
         secondarySubmit={
           secondarySubmit
             ? () => {
@@ -74,8 +78,10 @@ const FormikFormContent = ({
 FormikFormContent.propTypes = {
   allowAllEmpty: PropTypes.bool,
   buttons: PropTypes.func,
+  buttonsBordered: PropTypes.bool,
   children: PropTypes.node.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  onCancel: PropTypes.func,
   onValuesChanged: PropTypes.func,
   saving: PropTypes.bool,
   saved: PropTypes.bool,

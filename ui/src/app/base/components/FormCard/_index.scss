@@ -4,6 +4,10 @@
     display: flex;
     justify-content: flex-end;
     padding-top: $spv-inner--large;
+
+    &:not(.is-bordered) {
+      margin-bottom: calc(#{$spv-inner--x-small--scaleable} - 2px);
+    }
   }
 
   .form-card__help {

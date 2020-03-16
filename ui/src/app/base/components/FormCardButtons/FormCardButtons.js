@@ -1,11 +1,14 @@
 import { ActionButton, Button } from "@canonical/react-components";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
 import { useRouter } from "app/base/hooks";
 
 export const FormCardButtons = ({
+  bordered = true,
   loading,
+  onCancel,
   secondarySubmit,
   secondarySubmitLabel,
   submitDisabled,
@@ -15,43 +18,59 @@ export const FormCardButtons = ({
   const { history } = useRouter();
 
   return (
-    <div className="form-card__buttons">
-      <Button
-        appearance="base"
-        className="u-no-margin--bottom"
-        onClick={() => history.goBack()}
-        type="button"
+    <>
+      {bordered && <hr />}
+      <div
+        className={classNames("form-card__buttons", {
+          "is-bordered": bordered
+        })}
       >
-        Cancel
-      </Button>
-      {secondarySubmit && secondarySubmitLabel && (
         <Button
-          appearance="neutral"
+          appearance="base"
           className="u-no-margin--bottom"
-          data-test="secondary-submit"
-          disabled={submitDisabled}
-          onClick={secondarySubmit}
+          data-test="cancel-action"
+          onClick={() => {
+            if (onCancel) {
+              onCancel();
+            } else {
+              history.goBack();
+            }
+          }}
           type="button"
         >
-          {secondarySubmitLabel}
+          Cancel
         </Button>
-      )}
-      <ActionButton
-        appearance="positive"
-        className="u-no-margin--bottom"
-        disabled={submitDisabled}
-        loading={loading}
-        success={success}
-        type="submit"
-      >
-        {submitLabel}
-      </ActionButton>
-    </div>
+        {secondarySubmit && secondarySubmitLabel && (
+          <Button
+            appearance="neutral"
+            className="u-no-margin--bottom"
+            data-test="secondary-submit"
+            disabled={submitDisabled}
+            onClick={secondarySubmit}
+            type="button"
+          >
+            {secondarySubmitLabel}
+          </Button>
+        )}
+        <ActionButton
+          appearance="positive"
+          className="u-no-margin--bottom"
+          disabled={submitDisabled}
+          loading={loading}
+          success={success}
+          type="submit"
+        >
+          {submitLabel}
+        </ActionButton>
+      </div>
+    </>
   );
 };
 
 FormCardButtons.propTypes = {
+  bordered: PropTypes.bool,
   loading: PropTypes.bool,
+  onCancel: PropTypes.func,
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,
   submitDisabled: PropTypes.bool,
