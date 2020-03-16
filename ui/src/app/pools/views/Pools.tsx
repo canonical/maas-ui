@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
+import { Dispatch } from "redux";
+// @ts-ignore
 import { Col, Loader, MainTable, Row } from "@canonical/react-components";
 
 import TableActions from "app/base/components/TableActions";
@@ -11,14 +13,32 @@ import {
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
 
-const getMachinesLabel = row => {
+type ResourcePool = {
+  id: number;
+  created: Date;
+  updated: Date;
+  name: string;
+  description: string;
+  permissions: string[];
+  machine_total_count: number;
+  machine_ready_count: number;
+  is_default: boolean;
+};
+
+const getMachinesLabel = (row: ResourcePool) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
   return `${row.machine_ready_count} of ${row.machine_total_count} ready`;
 };
 
-const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
+const generateRows = (
+  rows: ResourcePool[],
+  expandedId: number | null,
+  setExpandedId: any, // What should this be?
+  dispatch: Dispatch,
+  setDeleting: any // What should this be?
+) =>
   rows.map(row => {
     const expanded = expandedId === row.id;
     return {
