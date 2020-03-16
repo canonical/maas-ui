@@ -1,10 +1,31 @@
-.p-input--closeable {
-  position: relative;
+@mixin maas-forms {
+  .p-input--closeable {
+    position: relative;
 
-  .p-close-input {
-    margin: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+    .p-close-input {
+      margin: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  // Align icon size with form validation font size
+  .p-form-validation__message [class*="p-icon--"] {
+    @extend %icon;
+    @include vf-icon-size(#{map-get($font-sizes, small)}rem);
+  }
+
+  // Add class to checkbox so that label does not change opacity when disabled
+  input[disabled],
+  input[disabled="disabled"] {
+    &[type="checkbox"].keep-label-opacity + label {
+      opacity: 1;
+
+      &::before,
+      &::after {
+        opacity: 0.5;
+      }
+    }
   }
 }

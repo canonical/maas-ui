@@ -1,10 +1,4 @@
-@mixin maas-p-notifications {
-  @include maas-notification;
-  @include maas-notification-group;
-  @include maas-notification-subtle;
-}
-
-@mixin maas-notification-group {
+@mixin maas-notifications {
   .p-notification--group {
     > [class^="p-notification"] {
       flex-direction: column;
@@ -13,25 +7,6 @@
     .p-list--divided {
       margin-top: $sp-small;
       border-top: 1px dotted $color-mid-light;
-    }
-  }
-}
-
-@mixin maas-notification {
-  .p-notification {
-    &__response {
-      max-width: none;
-    }
-  }
-}
-
-@mixin maas-notification-subtle {
-  [class*="p-notification"].is-subtle {
-    background: transparent;
-    box-shadow: none;
-
-    &::before {
-      height: 0;
     }
   }
 }

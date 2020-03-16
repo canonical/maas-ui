@@ -3,7 +3,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Section.scss";
 import NotificationList from "app/base/components/NotificationList";
 
 const Section = ({ children, headerClassName, sidebar, title }) => {

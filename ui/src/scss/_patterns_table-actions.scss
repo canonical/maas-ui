@@ -1,20 +1,22 @@
-@media screen and (min-width: $breakpoint-x-small) {
-  .p-table-actions {
-    display: flex;
-    margin-bottom: $spv-inner--scaleable;
-  }
+@mixin maas-table-actions {
+  @media screen and (min-width: $breakpoint-x-small) {
+    .p-table-actions {
+      display: flex;
+      margin-bottom: $spv-inner--scaleable;
+    }
 
-  .p-table-actions__space-left,
-  .p-table-actions .p-search-box {
-    flex: 1 1 auto;
-    margin: 0;
-  }
+    .p-table-actions__space-left,
+    .p-table-actions .p-search-box {
+      flex: 1 1 auto;
+      margin: 0;
+    }
 
-  .p-table-actions [class*="p-button"] {
-    margin: 0;
+    .p-table-actions [class*="p-button"] {
+      margin: 0;
 
-    &:first-of-type {
-      margin-left: $sph-inner;
+      &:first-of-type {
+        margin-left: $sph-inner;
+      }
     }
   }
 }

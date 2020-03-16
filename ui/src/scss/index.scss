@@ -1,0 +1,98 @@
+// Import settings
+@import "./settings";
+
+// Import and include base Vanilla
+@import "~vanilla-framework/scss/build";
+
+// Import MAAS overrides of Vanilla patterns
+@import "./vanilla-overrides";
+
+// Import and include MAAS global styles
+@import "./patterns_buttons";
+@import "./patterns_double-row";
+@import "./patterns_footer";
+@import "./patterns_forms";
+@import "./patterns_icons";
+@import "./patterns_links";
+@import "./patterns_navigation";
+@import "./patterns_notifications";
+@import "./patterns_table-actions";
+@import "./patterns_tables";
+@import "./patterns_tabs";
+@import "./utilities";
+@include maas-buttons;
+@include maas-double-row;
+@include maas-footer;
+@include maas-forms;
+@include maas-icons;
+@include maas-links;
+@include maas-navigation;
+@include maas-notifications;
+@include maas-table-actions;
+@include maas-tables;
+@include maas-tabs;
+@include maas-utilities;
+
+// Import and include MAAS component styles
+// base
+@import "~app/base/components/ColumnToggle";
+@import "~app/base/components/FormCard";
+@import "~app/base/components/Login";
+@import "~app/base/components/Section";
+@import "~app/base/components/SideNav";
+@import "~app/base/components/TableMenu";
+@include ColumnToggle;
+@include FormCard;
+@include Login;
+@include Section;
+@include SideNav;
+@include TableMenu;
+
+// machines
+@import "~app/machines/views/MachineList";
+@import "~app/machines/views/MachineList/FilterAccordion";
+@include MachineList;
+@include FilterAccordion;
+
+// preferences
+@import "~app/preferences/views/APIKeys/APIKeyList";
+@import "~app/preferences/views/SSHKeys/SSHKeyList";
+@import "~app/preferences/views/SSLKeys/AddSSLKey";
+@import "~app/preferences/views/SSLKeys/SSLKeyList";
+@include APIKeyList;
+@include SSHKeyList;
+@include AddSSLKey;
+@include SSLKeyList;
+
+// settings
+@import "~app/settings/components/SettingsTable";
+@import "~app/settings/views/Dhcp/DhcpList";
+@import "~app/settings/views/LicenseKeys/LicenseKeyList";
+@import "~app/settings/views/Repositories/RepositoriesList";
+@import "~app/settings/views/Repositories/RepositoryFormFields";
+@import "~app/settings/views/Scripts/ScriptsList";
+@import "~app/settings/views/Scripts/ScriptsUpload";
+@import "~app/settings/views/Users/UsersList";
+@include SettingsTable;
+@include DhcpList;
+@include LicenseKeyList;
+@include RepositoriesList;
+@include RepositoryFormFields;
+@include ScriptsList;
+@include ScriptsUpload;
+@include UsersList;
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: $color-light;
+  min-height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}

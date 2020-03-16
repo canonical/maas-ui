@@ -7,7 +7,7 @@ import { createBrowserHistory } from "history";
 import createSagaMiddleware from "redux-saga";
 
 import rootSaga from "./root-saga";
-import "./scss/base.scss";
+import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
 import createRootReducer from "./root-reducer";

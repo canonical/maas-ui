@@ -1,4 +1,4 @@
-import { Link } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
@@ -156,15 +156,13 @@ export const UserForm = ({
         />
       )}
       {editing && !passwordVisible && (
-        <div className="p-form__group">
-          <Link
-            onClick={event => {
-              event.preventDefault();
-              showPassword(!passwordVisible);
-            }}
+        <div className="u-sv2">
+          <Button
+            appearance="link"
+            onClick={() => showPassword(!passwordVisible)}
           >
             Change password&hellip;
-          </Link>
+          </Button>
         </div>
       )}
       {passwordVisible && (

@@ -6,7 +6,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 
-import "./ScriptsUpload.scss";
 import readScript from "./readScript";
 import { messages } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";

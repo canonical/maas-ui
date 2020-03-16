@@ -38,12 +38,12 @@ describe("maasMachinesTable", function() {
   // Makes a machine.
   function makeMachine() {
     var machine = {
-      architecture: 'amd64',
+      architecture: "amd64",
       system_id: makeName("system_id"),
       hostname: makeName("name"),
       $selected: false,
-      testing_status: { status: -1},
-      other_test_status: {status: -1}
+      testing_status: { status: -1 },
+      other_test_status: { status: -1 }
     };
     MachinesManager._items.push(machine);
     return machine;
@@ -704,9 +704,7 @@ describe("maasMachinesTable", function() {
       defer.reject(errorMsg);
       scope.$digest();
       expect(NotificationsManager.createItem).toHaveBeenCalledWith({
-        message: `Unable to check power state of ${
-          machine.hostname
-        }: ${errorMsg}`,
+        message: `Unable to check power state of ${machine.hostname}: ${errorMsg}`,
         category: "error",
         user: user.id
       });
@@ -1024,7 +1022,7 @@ describe("maasMachinesTable", function() {
             and the selected machines in that group`, () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      const machines = Array.from(Array(6)).map(makeMachine);
+      const machines = Array(6).fill().map(makeMachine);
       machines[0].$selected = true;
       machines[1].$selected = true;
       machines[2].$selected = true;
@@ -1044,7 +1042,7 @@ describe("maasMachinesTable", function() {
     it("correctly returns a list of spaces or empty string", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      const machines = Array.from(Array(3)).map(makeMachine);
+      const machines = Array(3).fill().map(makeMachine);
       machines[0].spaces = [];
       machines[1].spaces = ["foobar"];
       machines[2].spaces = ["foobar", "barbaz"];
@@ -1060,7 +1058,7 @@ barbaz`); // Has to be formatted this way for tooltip
     it("sets table filtered machines according to search filter", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      const machines = Array.from(Array(4)).map(makeMachine);
+      const machines = Array(4).fill().map(makeMachine);
       machines[0].$selected = true;
       machines[2].$selected = true;
       scope.table = {
@@ -1115,6 +1113,44 @@ barbaz`); // Has to be formatted this way for tooltip
       scope.loadAll(group);
 
       expect(scope.getLimit(group)).toEqual(undefined);
+    });
+  });
+
+  describe("nodeSelectionNotActionable", () => {
+    it("returns true if at least one node in selection cannot perform action", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      const machines = Array(3).fill().map(makeMachine);
+      machines[0].actions = ["action1", "action2"];
+      machines[1].actions = ["action1", "action2"];
+      machines[2].actions = ["action1"];
+      scope.actionOption = { name: "action2" };
+
+      expect(scope.nodeSelectionNotActionable(machines)).toEqual(true);
+    });
+
+    it("returns false if all nodes in selection can perform action", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      const machines = Array(3).fill().map(makeMachine);
+      machines[0].actions = ["action1", "action2"];
+      machines[1].actions = ["action1", "action2"];
+      machines[2].actions = ["action1", "action2"];
+      scope.actionOption = { name: "action2" };
+
+      expect(scope.nodeSelectionNotActionable(machines)).toEqual(false);
+    });
+
+    it("returns false if actionOption not set", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      const machines = Array(3).fill().map(makeMachine);
+      machines[0].actions = ["action1", "action2"];
+      machines[1].actions = ["action1", "action2"];
+      machines[2].actions = ["action1", "action2"];
+      scope.actionOption = undefined;
+
+      expect(scope.nodeSelectionNotActionable(machines)).toEqual(false);
     });
   });
 });

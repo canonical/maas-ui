@@ -1,0 +1,21 @@
+@mixin ColumnToggle {
+  td:not(.p-table-expanding__panel) [class*="p-button"].column-toggle,
+  .column-toggle {
+    align-items: center;
+    color: $color-dark;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &::after {
+      @include vf-icon-chevron;
+      @include vf-icon-size($default-icon-size);
+      content: "";
+    }
+
+    &.is-active::after {
+      -webkit-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
+  }
+}

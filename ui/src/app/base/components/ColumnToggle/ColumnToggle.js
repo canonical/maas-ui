@@ -3,8 +3,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
 
-import "./ColumnToggle.scss";
-
 const ColumnToggle = ({ isExpanded, label, onClose, onOpen }) => {
   const buttonNode = useRef(null);
   return (
