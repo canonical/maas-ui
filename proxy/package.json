@@ -18,9 +18,9 @@
     "concurrently": "5.1.0",
     "cypress": "4.1.0",
     "dotenv-flow": "3.1.0",
-    "http-proxy-middleware": "1.0.1",
+    "http-proxy-middleware": "1.0.2",
     "npm-package-json-lint": "4.6.0",
-    "start-server-and-test": "1.10.8"
+    "start-server-and-test": "1.10.10"
   },
   "npmpackagejsonlint": {
     "rules": {
