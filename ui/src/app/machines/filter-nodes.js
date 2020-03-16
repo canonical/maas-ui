@@ -36,7 +36,7 @@ const matches = (value, lowerTerm, exact, negate) => {
   return negate ? !match : match;
 };
 
-const filterNodes = (nodes, search) => {
+const filterNodes = (nodes, search, selectedIDs) => {
   if (
     typeof nodes === "undefined" ||
     typeof search === "undefined" ||
@@ -45,6 +45,10 @@ const filterNodes = (nodes, search) => {
     return nodes;
   }
   const filters = getCurrentFilters(search);
+  if (!filters) {
+    // No matching filters were found.
+    return [];
+  }
   Object.entries(filters).forEach(([attr, terms]) => {
     if (terms.length === 0) {
       // If this attribute has no associated terms then skip it.
@@ -54,15 +58,15 @@ const filterNodes = (nodes, search) => {
       // "in:" is used to filter the nodes by those that are
       // currently selected.
       terms.forEach(term => {
-        const matched = [];
-        nodes.forEach(node => {
-          if (node.$selected && term.toLowerCase() === "selected") {
-            matched.push(node);
-          } else if (!node.$selected && term.toLowerCase() === "!selected") {
-            matched.push(node);
-          }
-        });
-        nodes = matched;
+        if (term.toLowerCase() === "selected") {
+          nodes = nodes.filter(({ system_id }) =>
+            selectedIDs.includes(system_id)
+          );
+        } else if (term.toLowerCase() === "!selected") {
+          nodes = nodes.filter(
+            ({ system_id }) => !selectedIDs.includes(system_id)
+          );
+        }
       });
     } else {
       // Loop through each item and only select the matching.

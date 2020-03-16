@@ -1,6 +1,17 @@
 import filterNodes from "./filter-nodes";
 
 describe("filterNodes", () => {
+  it("handles no filters", () => {
+    const matchingNode = {
+      hostname: "name"
+    };
+    const otherNode = {
+      hostname: "other"
+    };
+    const nodes = [matchingNode, otherNode];
+    expect(filterNodes(nodes, "status:(=")).toEqual(nodes);
+  });
+
   it("matches using standard filter", () => {
     const matchingNode = {
       hostname: "name"
@@ -28,68 +39,68 @@ describe("filterNodes", () => {
 
   it("matches selected", () => {
     const matchingNode = {
-      $selected: true
+      system_id: "1"
     };
     const otherNode = {
-      $selected: false
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:selected")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:selected", ["1"])).toEqual([matchingNode]);
   });
 
   it("matches selected uppercase", () => {
     const matchingNode = {
-      $selected: true
+      system_id: "1"
     };
     const otherNode = {
-      $selected: false
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:Selected")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:Selected", ["1"])).toEqual([matchingNode]);
   });
 
   it("matches selected uppercase in brackets", () => {
     const matchingNode = {
-      $selected: true
+      system_id: "1"
     };
     const otherNode = {
-      $selected: false
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:(Selected)")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:(Selected)", ["1"])).toEqual([matchingNode]);
   });
 
   it("matches non-selected", () => {
     const matchingNode = {
-      $selected: false
+      system_id: "1"
     };
     const otherNode = {
-      $selected: true
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:!selected")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:!selected", ["2"])).toEqual([matchingNode]);
   });
 
   it("matches non-selected uppercase", () => {
     const matchingNode = {
-      $selected: false
+      system_id: "1"
     };
     const otherNode = {
-      $selected: true
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:!Selected")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:!Selected", ["2"])).toEqual([matchingNode]);
   });
 
   it("matches non-selected uppercase in brackets", () => {
     const matchingNode = {
-      $selected: false
+      system_id: "1"
     };
     const otherNode = {
-      $selected: true
+      system_id: "2"
     };
     const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:(!Selected)")).toEqual([matchingNode]);
+    expect(filterNodes(nodes, "in:(!Selected)", ["2"])).toEqual([matchingNode]);
   });
 
   it("matches on attribute", () => {
@@ -373,6 +384,58 @@ describe("filterNodes", () => {
     };
     const nodes = [matchingNode, otherNode];
     expect(filterNodes(nodes, "tags:(!second,!third)")).toEqual([matchingNode]);
+  });
+
+  it("matches any values", () => {
+    const nodes = [
+      {
+        status: "New"
+      },
+      {
+        status: "Failed commissioning"
+      },
+      {
+        status: "Deploying"
+      }
+    ];
+    expect(filterNodes(nodes, "status:Ne,Dep")).toEqual([nodes[0], nodes[2]]);
+  });
+
+  it("matches any exact values", () => {
+    const nodes = [
+      {
+        status: "New"
+      },
+      {
+        status: "Failed commissioning"
+      },
+      {
+        status: "Deploying"
+      }
+    ];
+    expect(
+      filterNodes(nodes, "status:(=Ne,=Failed commissioning,=Deploying)")
+    ).toEqual([nodes[1], nodes[2]]);
+  });
+
+  it("matches any values but only those that match other filters", () => {
+    const nodes = [
+      {
+        owner: "user",
+        status: "New"
+      },
+      {
+        owner: "admin",
+        status: "Failed commissioning"
+      },
+      {
+        owner: "admin",
+        status: "Deploying"
+      }
+    ];
+    expect(filterNodes(nodes, "status:New,Deploying owner:admin")).toEqual([
+      nodes[2]
+    ]);
   });
 
   it("matches using release mapping function", () => {
