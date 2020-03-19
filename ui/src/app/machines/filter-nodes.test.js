@@ -1,473 +1,275 @@
 import filterNodes from "./filter-nodes";
 
 describe("filterNodes", () => {
-  it("handles no filters", () => {
-    const matchingNode = {
-      hostname: "name"
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "status:(=")).toEqual(nodes);
-  });
+  // If a scenario is not provided `result`, `nodes` or `selected` then the
+  // following defaults are used.
+  const DEFAULT_RESULT = [0];
+  const DEFAULT_NODES = [{ hostname: "name" }, { hostname: "other" }];
+  const DEFAULT_SELECTED = null;
+  // These are common nodes to prevent duplication:
+  const tagNodes = [
+    { tags: ["first", "second"] },
+    { tags: ["second", "third"] }
+  ];
 
-  it("matches using standard filter", () => {
-    const matchingNode = {
-      hostname: "name"
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "nam")).toEqual([matchingNode]);
-  });
+  const scenarios = [
+    {
+      description: "handles no filters",
+      filter: "hostname:(=",
+      result: [0, 1]
+    },
+    {
+      description: "matches using standard filter",
+      filter: "nam"
+    },
+    {
+      description: "doesn't return duplicates using standard filter",
+      filter: "nam am",
+      nodes: [
+        { hostname: "name", pod: { name: "name" } },
+        { hostname: "other" }
+      ]
+    },
+    {
+      description: "matches selected uppercase",
+      filter: "in:Selected",
+      nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["1"]
+    },
+    {
+      description: "matches selected uppercase",
+      filter: "in:(Selected)",
+      nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["1"]
+    },
+    {
+      description: "matches non-selected",
+      filter: "in:!selected",
+      nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["2"]
+    },
+    {
+      description: "matches non-selected uppercase",
+      filter: "in:!Selected",
+      nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["2"]
+    },
+    {
+      description: "matches non-selected uppercase in brackets",
+      filter: "in:(!Selected)",
+      nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["2"]
+    },
+    {
+      description: "matches on attribute",
+      filter: "hostname:name"
+    },
+    {
+      description: "matches with contains on attribute",
+      filter: "hostname:na"
+    },
+    {
+      description: "matches on negating attribute",
+      filter: "hostname:!other"
+    },
+    {
+      description: "matches on exact attribute",
+      filter: "hostname:=other",
+      nodes: [{ hostname: "other" }, { hostname: "other2" }]
+    },
+    {
+      description: "matches on array",
+      filter: "hostnames:first",
+      nodes: [
+        { hostnames: ["name", "first"] },
+        { hostnames: ["other", "second"] }
+      ]
+    },
+    {
+      description: "matches integer values",
+      filter: "count:3",
+      nodes: [{ count: 4 }, { count: 2 }]
+    },
+    {
+      description: "matches float values",
+      filter: "count:1.5",
+      nodes: [{ count: 2.2 }, { count: 1.1 }]
+    },
+    {
+      description: "matches using cpu mapping function",
+      filter: "cpu:3",
+      nodes: [{ cpu_count: 4 }, { cpu_count: 2 }]
+    },
+    {
+      description: "matches using cores mapping function",
+      filter: "cores:3",
+      nodes: [{ cpu_count: 4 }, { cpu_count: 2 }]
+    },
+    {
+      description: "matches using ram mapping function",
+      filter: "ram:2000",
+      nodes: [{ memory: 2048 }, { memory: 1024 }]
+    },
+    {
+      description: "matches using mac mapping function",
+      filter: "mac:aa:bb:cc:dd:ee:ff",
+      nodes: [
+        { pxe_mac: "00:11:22:33:44:55", extra_macs: ["aa:bb:cc:dd:ee:ff"] },
+        { pxe_mac: "66:11:22:33:44:55", extra_macs: ["00:bb:cc:dd:ee:ff"] }
+      ]
+    },
+    {
+      description: "matches using mac mapping function",
+      filter: "zone:first",
+      nodes: [{ zone: { name: "first" } }, { zone: { name: "second" } }]
+    },
+    {
+      description: "matches using pool mapping function",
+      filter: "pool:pool1",
+      nodes: [{ pool: { name: "pool1" } }, { pool: { name: "pool2" } }]
+    },
+    {
+      description: "matches using pod mapping function",
+      filter: "pod:pod1",
+      nodes: [{ pod: { name: "pod1" } }, { pod: { name: "pod2" } }]
+    },
+    {
+      description: "matches using pod-id mapping function",
+      filter: "pod-id:=1",
+      nodes: [
+        { pod: { name: "pod1", id: 1 } },
+        { pod: { name: "pod2", id: 2 } }
+      ]
+    },
+    {
+      description: "matches using power mapping function",
+      filter: "power:on",
+      nodes: [{ power_state: "on" }, { power_state: "off" }]
+    },
+    {
+      description: "matches accumulate",
+      filter: "power:on zone:first",
+      nodes: [
+        {
+          power_state: "on",
+          zone: {
+            name: "first"
+          }
+        },
+        {
+          power_state: "on",
+          zone: {
+            name: "second"
+          }
+        }
+      ]
+    },
+    {
+      description: "matches a tag",
+      filter: "tags:first",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a negated tag",
+      filter: "tags:!third",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a negated tag with parens",
+      filter: "tags:(!third)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a negated tag with the parens negated",
+      filter: "tags:!(third)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a double negated tag",
+      filter: "tags:!!first",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a double negated tag with parens",
+      filter: "tags:(!!first)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a double negated tag with in and outside negated",
+      filter: "tags:!(!first)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a direct and a negated tag",
+      filter: "tags:(first,!third)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches an exact direct and a negated tag",
+      filter: "tags:(=first,!third)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches two negated tags",
+      filter: "tags:(!second,!third)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches any values",
+      filter: "status:Ne,Dep",
+      nodes: [
+        { status: "New" },
+        { status: "Failed commissioning" },
+        { status: "Deploying" }
+      ],
+      result: [0, 2]
+    },
+    {
+      description: "matches any exact values",
+      filter: "status:(=Ne,=Failed commissioning,=Deploying)",
+      nodes: [
+        { status: "New" },
+        { status: "Failed commissioning" },
+        { status: "Deploying" }
+      ],
+      result: [1, 2]
+    },
+    {
+      description: "matches any values but only those that match other filters",
+      filter: "status:New,Deploying owner:admin",
+      nodes: [
+        { owner: "user", status: "New" },
+        { owner: "admin", status: "Failed commissioning" },
+        { owner: "admin", status: "Deploying" }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches using release mapping function",
+      filter: "release:ubuntu/xenial",
+      nodes: [
+        { status_code: 9, osystem: "ubuntu", distro_series: "xenial" },
+        { status_code: 6, osystem: "ubuntu", distro_series: "xenial" },
+        { status_code: 5, osystem: "ubuntu", distro_series: "xenial" },
+        { status_code: 6, osystem: "ubuntu", distro_series: "trusty" }
+      ],
+      result: [0, 1]
+    }
+  ];
 
-  it("doesn't return duplicates using standard filter", () => {
-    const matchingNode = {
-      hostname: "name",
-      pod: {
-        name: "name"
-      }
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "nam am")).toEqual([matchingNode]);
-  });
-
-  it("matches selected", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:selected", ["1"])).toEqual([matchingNode]);
-  });
-
-  it("matches selected uppercase", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:Selected", ["1"])).toEqual([matchingNode]);
-  });
-
-  it("matches selected uppercase in brackets", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:(Selected)", ["1"])).toEqual([matchingNode]);
-  });
-
-  it("matches non-selected", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:!selected", ["2"])).toEqual([matchingNode]);
-  });
-
-  it("matches non-selected uppercase", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:!Selected", ["2"])).toEqual([matchingNode]);
-  });
-
-  it("matches non-selected uppercase in brackets", () => {
-    const matchingNode = {
-      system_id: "1"
-    };
-    const otherNode = {
-      system_id: "2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "in:(!Selected)", ["2"])).toEqual([matchingNode]);
-  });
-
-  it("matches on attribute", () => {
-    const matchingNode = {
-      hostname: "name"
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "hostname:name")).toEqual([matchingNode]);
-  });
-
-  it("matches with contains on attribute", () => {
-    const matchingNode = {
-      hostname: "name"
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "hostname:na")).toEqual([matchingNode]);
-  });
-
-  it("matches on negating attribute", () => {
-    const matchingNode = {
-      hostname: "name"
-    };
-    const otherNode = {
-      hostname: "other"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "hostname:!other")).toEqual([matchingNode]);
-  });
-
-  it("matches on exact attribute", () => {
-    const matchingNode = {
-      hostname: "other"
-    };
-    const otherNode = {
-      hostname: "other2"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "hostname:=other")).toEqual([matchingNode]);
-  });
-
-  it("matches on array", () => {
-    const matchingNode = {
-      hostnames: ["name", "first"]
-    };
-    const otherNode = {
-      hostnames: ["other", "second"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "hostnames:first")).toEqual([matchingNode]);
-  });
-
-  it("matches integer values", () => {
-    const matchingNode = {
-      count: 4
-    };
-    const otherNode = {
-      count: 2
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "count:3")).toEqual([matchingNode]);
-  });
-
-  it("matches float values", () => {
-    const matchingNode = {
-      count: 2.2
-    };
-    const otherNode = {
-      count: 1.1
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "count:1.5")).toEqual([matchingNode]);
-  });
-
-  it("matches using cpu mapping function", () => {
-    const matchingNode = {
-      cpu_count: 4
-    };
-    const otherNode = {
-      cpu_count: 2
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "cpu:3")).toEqual([matchingNode]);
-  });
-
-  it("matches using cores mapping function", () => {
-    const matchingNode = {
-      cpu_count: 4
-    };
-    const otherNode = {
-      cpu_count: 2
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "cores:3")).toEqual([matchingNode]);
-  });
-
-  it("matches using ram mapping function", () => {
-    const matchingNode = {
-      memory: 2048
-    };
-    const otherNode = {
-      memory: 1024
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "ram:2000")).toEqual([matchingNode]);
-  });
-
-  it("matches using mac mapping function", () => {
-    const matchingNode = {
-      pxe_mac: "00:11:22:33:44:55",
-      extra_macs: ["aa:bb:cc:dd:ee:ff"]
-    };
-    const otherNode = {
-      pxe_mac: "66:11:22:33:44:55",
-      extra_macs: ["00:bb:cc:dd:ee:ff"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "mac:aa:bb:cc:dd:ee:ff")).toEqual([matchingNode]);
-  });
-
-  it("matches using zone mapping function", () => {
-    const matchingNode = {
-      zone: {
-        name: "first"
-      }
-    };
-    const otherNode = {
-      zone: {
-        name: "second"
-      }
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "zone:first")).toEqual([matchingNode]);
-  });
-
-  it("matches using pool mapping function", () => {
-    const matchingNode = {
-      pool: {
-        name: "pool1"
-      }
-    };
-    const otherNode = {
-      pool: {
-        name: "pool2"
-      }
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "pool:pool1")).toEqual([matchingNode]);
-  });
-
-  it("matches using pod mapping function", () => {
-    const matchingNode = {
-      pod: {
-        name: "pod1"
-      }
-    };
-    const otherNode = {
-      pod: {
-        name: "pod2"
-      }
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "pod:pod1")).toEqual([matchingNode]);
-  });
-
-  it("matches using pod-id mapping function", () => {
-    const matchingNode = {
-      pod: {
-        name: "pod1",
-        id: 1
-      }
-    };
-    const otherNode = {
-      pod: {
-        name: "pod2",
-        id: 2
-      }
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "pod-id:=1")).toEqual([matchingNode]);
-  });
-
-  it("matches using power mapping function", () => {
-    const matchingNode = {
-      power_state: "on"
-    };
-    const otherNode = {
-      power_state: "off"
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "power:on")).toEqual([matchingNode]);
-  });
-
-  it("matches accumulate", () => {
-    const matchingNode = {
-      power_state: "on",
-      zone: {
-        name: "first"
-      }
-    };
-    const otherNode = {
-      power_state: "on",
-      zone: {
-        name: "second"
-      }
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "power:on zone:first")).toEqual([matchingNode]);
-  });
-
-  it("matches a tag", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["second", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:first")).toEqual([matchingNode]);
-  });
-
-  it("matches a negated tag", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["second", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:!third")).toEqual([matchingNode]);
-    expect(filterNodes(nodes, "tags:!(third)")).toEqual([matchingNode]);
-    expect(filterNodes(nodes, "tags:(!third)")).toEqual([matchingNode]);
-  });
-
-  it("matches a double negated tag", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["second", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:!!first")).toEqual([matchingNode]);
-    expect(filterNodes(nodes, "tags:!(!first)")).toEqual([matchingNode]);
-    expect(filterNodes(nodes, "tags:(!!first)")).toEqual([matchingNode]);
-  });
-
-  it("matches a direct and a negated tag", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["second", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:(first,!third)")).toEqual([matchingNode]);
-  });
-
-  it("matches an exact direct and a negated tag", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["first1", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:(=first,!third)")).toEqual([matchingNode]);
-  });
-
-  it("matches two negated tags", () => {
-    const matchingNode = {
-      tags: ["first", "second"]
-    };
-    const otherNode = {
-      tags: ["second", "third"]
-    };
-    const nodes = [matchingNode, otherNode];
-    expect(filterNodes(nodes, "tags:(!second,!third)")).toEqual([matchingNode]);
-  });
-
-  it("matches any values", () => {
-    const nodes = [
-      {
-        status: "New"
-      },
-      {
-        status: "Failed commissioning"
-      },
-      {
-        status: "Deploying"
-      }
-    ];
-    expect(filterNodes(nodes, "status:Ne,Dep")).toEqual([nodes[0], nodes[2]]);
-  });
-
-  it("matches any exact values", () => {
-    const nodes = [
-      {
-        status: "New"
-      },
-      {
-        status: "Failed commissioning"
-      },
-      {
-        status: "Deploying"
-      }
-    ];
-    expect(
-      filterNodes(nodes, "status:(=Ne,=Failed commissioning,=Deploying)")
-    ).toEqual([nodes[1], nodes[2]]);
-  });
-
-  it("matches any values but only those that match other filters", () => {
-    const nodes = [
-      {
-        owner: "user",
-        status: "New"
-      },
-      {
-        owner: "admin",
-        status: "Failed commissioning"
-      },
-      {
-        owner: "admin",
-        status: "Deploying"
-      }
-    ];
-    expect(filterNodes(nodes, "status:New,Deploying owner:admin")).toEqual([
-      nodes[2]
-    ]);
-  });
-
-  it("matches using release mapping function", () => {
-    const deployingNode = {
-      status_code: 9,
-      osystem: "ubuntu",
-      distro_series: "xenial"
-    };
-    const deployedNode = {
-      status_code: 6,
-      osystem: "ubuntu",
-      distro_series: "xenial"
-    };
-    const allocatedNode = {
-      status_code: 5,
-      osystem: "ubuntu",
-      distro_series: "xenial"
-    };
-    const deployedOtherNode = {
-      status_code: 6,
-      osystem: "ubuntu",
-      distro_series: "trusty"
-    };
-    const nodes = [
-      deployingNode,
-      deployedNode,
-      allocatedNode,
-      deployedOtherNode
-    ];
-    expect(filterNodes(nodes, "release:ubuntu/xenial")).toEqual([
-      deployingNode,
-      deployedNode
-    ]);
-  });
+  scenarios.forEach(
+    ({
+      result = DEFAULT_RESULT,
+      filter,
+      description,
+      nodes = DEFAULT_NODES,
+      selected = DEFAULT_SELECTED
+    }) => {
+      it(`${description}: ${filter}`, () => {
+        expect(filterNodes(nodes, filter, selected)).toEqual(
+          result.map(index => nodes[index])
+        );
+      });
+    }
+  );
 });
