@@ -8,7 +8,7 @@ import {
   toggleFilter
 } from "./search";
 
-describe("SearchService", () => {
+describe("Search", () => {
   const scenarios = [
     {
       input: "",
@@ -20,6 +20,18 @@ describe("SearchService", () => {
       input: "moon",
       filters: {
         _: ["moon"]
+      }
+    },
+    {
+      input: "moon !sun",
+      filters: {
+        _: ["moon", "!sun"]
+      }
+    },
+    {
+      input: "moon !!sun",
+      filters: {
+        _: ["moon", "!!sun"]
       }
     },
     {
@@ -57,6 +69,30 @@ describe("SearchService", () => {
       filters: {
         _: ["moon"],
         status: ["!!new", "!failed disk erasing"]
+      }
+    },
+    {
+      input: "moon status:!!(new,failed commissioning)",
+      output: "moon status:(new,failed commissioning)",
+      filters: {
+        _: ["moon"],
+        status: ["new", "failed commissioning"]
+      }
+    },
+    {
+      input: "moon status:!!(!new)",
+      output: "moon status:(!new)",
+      filters: {
+        _: ["moon"],
+        status: ["!new"]
+      }
+    },
+    {
+      input: "moon status:!!(!!new)",
+      output: "moon status:(!!new)",
+      filters: {
+        _: ["moon"],
+        status: ["!!new"]
       }
     },
     {

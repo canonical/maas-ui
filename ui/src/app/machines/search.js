@@ -12,8 +12,10 @@ export const getCurrentFilters = search => {
   }
   // Match filters with parens e.g. 'status:(new,deployed)'.
   // Then: match filters without parens e.g. 'status:new,deployed' or 'status'
-  const filterMatchingRegex = search.matchAll(/(\b\w+:!?\([^)]+\))|(\w+\S+)/g);
-  Array.from(filterMatchingRegex).forEach(([group]) => {
+  const filterMatchingRegex = search.matchAll(
+    /(\b\w+:!*\([^)]+\))|(!*\w+\S+)/g
+  );
+  [...filterMatchingRegex].forEach(([group]) => {
     // Get the filter name and values (if supplied).
     let [groupName, groupValues] = group.split(/:(.+)/);
     if (groupValues) {
@@ -21,6 +23,9 @@ export const getCurrentFilters = search => {
       if (allNegated) {
         // Remove the "!"
         groupValues = groupValues.substr(1);
+      } else if (groupValues.startsWith("!!(")) {
+        // Remove the "!!"
+        groupValues = groupValues.substr(2);
       }
       if (groupValues.startsWith("(") !== groupValues.endsWith(")")) {
         // The filter must contain opening and closing parens or neither.

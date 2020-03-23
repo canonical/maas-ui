@@ -12,6 +12,8 @@ describe("filterNodes", () => {
     { tags: ["second", "third"] }
   ];
 
+  // The `result` parameter should be an array of indexes that get mapped to
+  // the `nodes` array.
   const scenarios = [
     {
       description: "handles no filters",
@@ -19,16 +21,27 @@ describe("filterNodes", () => {
       result: [0, 1]
     },
     {
-      description: "matches using standard filter",
+      description: "matches using free search",
       filter: "nam"
     },
     {
-      description: "doesn't return duplicates using standard filter",
+      description: "doesn't return duplicates using free search",
       filter: "nam am",
       nodes: [
         { hostname: "name", pod: { name: "name" } },
         { hostname: "other" }
       ]
+    },
+    {
+      description: "accumulates matches using free search",
+      filter: "failed commissioning",
+      nodes: [{ status: "Failed commissioning" }, { status: "Failed" }]
+    },
+    {
+      description: "accumulates matches using free search including negatives",
+      filter: "failed !commissioning",
+      nodes: [{ status: "Failed commissioning" }, { status: "Failed" }],
+      result: [1]
     },
     {
       description: "matches selected uppercase",
@@ -37,7 +50,7 @@ describe("filterNodes", () => {
       selected: ["1"]
     },
     {
-      description: "matches selected uppercase",
+      description: "matches selected uppercase in brackets",
       filter: "in:(Selected)",
       nodes: [{ system_id: "1" }, { system_id: "2" }],
       selected: ["1"]
@@ -58,6 +71,24 @@ describe("filterNodes", () => {
       description: "matches non-selected uppercase in brackets",
       filter: "in:(!Selected)",
       nodes: [{ system_id: "1" }, { system_id: "2" }],
+      selected: ["2"]
+    },
+    {
+      description: "accumulates selected matches",
+      filter: "new in:selected",
+      nodes: [
+        { status: "New", system_id: "1" },
+        { status: "New", system_id: "2" }
+      ],
+      selected: ["1"]
+    },
+    {
+      description: "accumulates non-selected matches",
+      filter: "new in:!selected",
+      nodes: [
+        { status: "New", system_id: "1" },
+        { status: "New", system_id: "2" }
+      ],
       selected: ["2"]
     },
     {
@@ -83,6 +114,22 @@ describe("filterNodes", () => {
       nodes: [
         { hostnames: ["name", "first"] },
         { hostnames: ["other", "second"] }
+      ]
+    },
+    {
+      description: "accumulates matches on attribute",
+      filter: "hostname:name status:New",
+      nodes: [
+        { hostname: "name", status: "New" },
+        { hostname: "name2", status: "Failed" }
+      ]
+    },
+    {
+      description: "accumulates matches on negated attribute",
+      filter: "hostname:name status:!New",
+      nodes: [
+        { hostname: "name", status: "Failed" },
+        { hostname: "name2", status: "New" }
       ]
     },
     {
@@ -195,6 +242,23 @@ describe("filterNodes", () => {
       nodes: tagNodes
     },
     {
+      description: "matches a tag with the parens double negated",
+      filter: "tags:!!(first)",
+      nodes: tagNodes
+    },
+    {
+      description: "matches a negated tag with the parens double negated",
+      filter: "tags:!!(!first)",
+      nodes: tagNodes,
+      result: [1]
+    },
+    {
+      description:
+        "matches a double negated tag with the parens double negated",
+      filter: "tags:!!(!!first)",
+      nodes: tagNodes
+    },
+    {
       description: "matches a double negated tag with in and outside negated",
       filter: "tags:!(!first)",
       nodes: tagNodes
@@ -212,7 +276,66 @@ describe("filterNodes", () => {
     {
       description: "matches two negated tags",
       filter: "tags:(!second,!third)",
-      nodes: tagNodes
+      nodes: [
+        { tags: ["first", "second"] },
+        { tags: ["second", "third"] },
+        { tags: ["fourth", "fifth"] }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches tags and free search",
+      filter: "fourth tags:(!second,!first)",
+      nodes: [
+        { tags: ["first", "second"] },
+        { tags: ["second", "third"] },
+        { tags: ["fourth", "fifth"] }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches tags and attribute",
+      filter: "status:New tags:(!second,!first)",
+      nodes: [
+        { status: "New", tags: ["first", "second"] },
+        { status: "Failed", tags: ["second", "third"] },
+        { status: "New", tags: ["fourth", "fifth"] }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches tags and negated attribute",
+      filter: "status:!New tags:(!fourth,!first)",
+      nodes: [
+        { status: "New", tags: ["first", "second"] },
+        { status: "New", tags: ["sixth", "second"] },
+        { status: "Failed", tags: ["second", "third"] },
+        { status: "New", tags: ["fourth", "fifth"] }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches tags, negated attribute and free search",
+      filter: "status:!New tags:(!fourth,!first) name",
+      nodes: [
+        { hostname: "name1", status: "New", tags: ["first", "second"] },
+        { hostname: "name2", status: "New", tags: ["sixth", "second"] },
+        { hostname: "name3", status: "Failed", tags: ["second", "third"] },
+        { hostname: "name4", status: "New", tags: ["fourth", "fifth"] }
+      ],
+      result: [2]
+    },
+    {
+      description: "matches tags, negated attribute and negated free search",
+      filter: "status:!New tags:(!fourth,!first) !name5",
+      nodes: [
+        { hostname: "name1", status: "New", tags: ["first", "second"] },
+        { hostname: "name2", status: "New", tags: ["sixth", "second"] },
+        { hostname: "name3", status: "Failed", tags: ["second", "third"] },
+        { hostname: "name4", status: "New", tags: ["fourth", "fifth"] },
+        { hostname: "name5", status: "New", tags: ["seventh", "eighth"] }
+      ],
+      result: [2]
     },
     {
       description: "matches any values",
