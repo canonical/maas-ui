@@ -1,8 +1,10 @@
 import {
+  filtersToQueryString,
   filtersToString,
   getCurrentFilters,
   getEmptyFilter,
   isFilterActive,
+  queryStringToFilters,
   retrieveFilters,
   storeFilters,
   toggleFilter
@@ -346,6 +348,50 @@ describe("Search", () => {
       names.forEach((name, idx) => {
         expect(retrieveFilters(name)).toBe(objects[idx]);
       });
+    });
+  });
+
+  describe("queryStringToFilters", () => {
+    it("can convert a query string to a filter object", () => {
+      expect(
+        queryStringToFilters(
+          "?q=moon+sun&status=new,failed+comissioning&zone=!south&hostname="
+        )
+      ).toEqual({
+        _: ["moon", "sun"],
+        status: ["new", "failed comissioning"],
+        zone: ["!south"]
+      });
+    });
+
+    it("can convert a query string to a filter object and back", () => {
+      const queryString =
+        "?status=new%2Cfailed+comissioning&zone=%21south&q=moon+sun";
+      const queryObject = queryStringToFilters(queryString);
+      expect(filtersToQueryString(queryObject)).toEqual(queryString);
+    });
+  });
+
+  describe("filtersToQueryString", () => {
+    it("can convert a filter object to a query string", () => {
+      expect(
+        filtersToQueryString({
+          _: ["moon", "sun"],
+          hostname: [],
+          status: ["new", "failed comissioning"],
+          zone: ["!south"]
+        })
+      ).toEqual("?status=new%2Cfailed+comissioning&zone=%21south&q=moon+sun");
+    });
+
+    it("can convert a filter object to a query string and back", () => {
+      const queryObject = {
+        _: ["moon", "sun"],
+        status: ["new", "failed comissioning"],
+        zone: ["!south"]
+      };
+      const queryString = filtersToQueryString(queryObject);
+      expect(queryStringToFilters(queryString)).toEqual(queryObject);
     });
   });
 });

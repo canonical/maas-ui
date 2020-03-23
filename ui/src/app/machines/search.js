@@ -114,3 +114,39 @@ export const storeFilters = (name, filters) => {
 
 // Retrieve a stored filter.
 export const retrieveFilters = name => storedFilters[name];
+
+// Convert a URL query string into a filter object.
+export const queryStringToFilters = queryString => {
+  let filters = getEmptyFilter();
+  [...new URLSearchParams(queryString)].forEach(([name, values]) => {
+    if (!values.length) {
+      // There are no values for this filter so ignore it.
+      return;
+    }
+    if (name === "q") {
+      filters._ = values.split(" ");
+    } else {
+      filters[name] = values.split(",");
+    }
+  });
+  return filters;
+};
+
+// Convert a filter object into a URL query string.
+export const filtersToQueryString = filters => {
+  // Shallow copy the object, this should be good enough for the manipulation
+  // we do below.
+  let copiedFilters = { ...filters };
+  // Remove empty filters.
+  Object.keys(copiedFilters).forEach(filter => {
+    if (copiedFilters[filter].length === 0) {
+      delete copiedFilters[filter];
+    }
+  });
+  // Replace _ with q.
+  if (copiedFilters._) {
+    copiedFilters.q = copiedFilters._.join(" ");
+    delete copiedFilters._;
+  }
+  return `?${new URLSearchParams(copiedFilters).toString()}`;
+};
