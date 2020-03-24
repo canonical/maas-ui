@@ -1,4 +1,5 @@
-import { MemoryRouter } from "react-router-dom";
+import { act } from "react-dom/test-utils";
+import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -209,6 +210,52 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("can set the search from the URL", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+          ]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("SearchBox").prop("value")).toBe("test search");
+  });
+
+  it("change the URL when the search text changes", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+          ]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <Route
+            path="*"
+            render={props => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper
+        .find("SearchBox")
+        .props()
+        .onChange("status:new");
+    });
+    expect(location.search).toBe("?status=new");
   });
 
   it("includes groups", () => {
