@@ -27,7 +27,13 @@ import {
 import { groupAsMap, simpleSortByKey } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
-import { useWindowTitle } from "app/base/hooks";
+import { useLocation, useRouter, useWindowTitle } from "app/base/hooks";
+import {
+  filtersToString,
+  filtersToQueryString,
+  getCurrentFilters,
+  queryStringToFilters
+} from "app/machines/search";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -412,7 +418,11 @@ const generateGroupRows = ({
 
 const MachineList = () => {
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState("");
+  const { history } = useRouter();
+  const { location } = useLocation();
+  const currentFilters = queryStringToFilters(location.search);
+  // The search text state is initialised from the URL.
+  const [searchText, setSearchText] = useState(filtersToString(currentFilters));
   const selectedMachines = useSelector(machineSelectors.selected);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const machines = useSelector(state =>
@@ -537,19 +547,28 @@ const MachineList = () => {
     showMAC
   };
 
+  // Handle updating the search text state and URL.
+  const changeFilters = searchText => {
+    // Update the search text state.
+    setSearchText(searchText);
+    // Convert the search string into a query string and update the URL.
+    const filters = getCurrentFilters(searchText);
+    history.push({ search: filtersToQueryString(filters) });
+  };
+
   return (
     <>
       <Row>
         <Col size={3}>
           <FilterAccordion
             searchText={searchText}
-            setSearchText={setSearchText}
+            setSearchText={changeFilters}
           />
         </Col>
         <Col size={6}>
           <SearchBox
             externallyControlled
-            onChange={setSearchText}
+            onChange={changeFilters}
             value={searchText}
           />
         </Col>

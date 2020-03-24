@@ -19,6 +19,7 @@ yarn-error.log*
 
 # local configuratinon
 .env.*.local
+.env.local
 
 # junk
 *.DS_Store
