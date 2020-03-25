@@ -413,12 +413,13 @@ const generateGroupRows = ({
 const MachineList = () => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const machines = useSelector(state =>
-    machineSelectors.search(state, searchText)
+    machineSelectors.search(state, searchText, selectedIDs)
   );
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
-  const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
   let errorMessage;
   if (errors) {

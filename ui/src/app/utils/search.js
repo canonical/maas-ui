@@ -15,6 +15,7 @@ const searchMappings = {
       ? node.osystem + "/" + node.distro_series
       : "",
   hostname: node => node.hostname,
+  ip_addresses: node => node.ip_addresses.map(({ ip }) => ip),
   vlan: node => node.vlan,
   rack: node => node.observer_hostname,
   subnet: node => node.subnet_cidr,

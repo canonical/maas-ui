@@ -8,7 +8,7 @@ import {
   toggleFilter
 } from "./search";
 
-describe("SearchService", () => {
+describe("Search", () => {
   const scenarios = [
     {
       input: "",
@@ -23,9 +23,29 @@ describe("SearchService", () => {
       }
     },
     {
+      input: "moon !sun",
+      filters: {
+        _: ["moon", "!sun"]
+      }
+    },
+    {
+      input: "moon !!sun",
+      filters: {
+        _: ["moon", "!!sun"]
+      }
+    },
+    {
       input: "moon status:(new)",
       filters: {
         _: ["moon"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon status:(new) star",
+      output: "moon star status:(new)",
+      filters: {
+        _: ["moon", "star"],
         status: ["new"]
       }
     },
@@ -41,6 +61,38 @@ describe("SearchService", () => {
       filters: {
         _: ["moon"],
         status: ["new", "failed disk erasing"]
+      }
+    },
+    {
+      input: "moon status:!(!new,failed disk erasing)",
+      output: "moon status:(!!new,!failed disk erasing)",
+      filters: {
+        _: ["moon"],
+        status: ["!!new", "!failed disk erasing"]
+      }
+    },
+    {
+      input: "moon status:!!(new,failed commissioning)",
+      output: "moon status:(new,failed commissioning)",
+      filters: {
+        _: ["moon"],
+        status: ["new", "failed commissioning"]
+      }
+    },
+    {
+      input: "moon status:!!(!new)",
+      output: "moon status:(!new)",
+      filters: {
+        _: ["moon"],
+        status: ["!new"]
+      }
+    },
+    {
+      input: "moon status:!!(!!new)",
+      output: "moon status:(!!new)",
+      filters: {
+        _: ["moon"],
+        status: ["!!new"]
       }
     },
     {
@@ -68,7 +120,10 @@ describe("SearchService", () => {
     },
     {
       input: "moon status:(new,failed disk erasing",
-      filters: null
+      output: "moon disk erasing",
+      filters: {
+        _: ["moon", "disk", "erasing"]
+      }
     },
     {
       input: "moon status:(",
@@ -82,6 +137,39 @@ describe("SearchService", () => {
       output: "moon",
       filters: {
         _: ["moon"]
+      }
+    },
+    {
+      input: "moon mac:28:76:03:77:5a:b5 status:new",
+      output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
+      filters: {
+        _: ["moon"],
+        mac: ["28:76:03:77:5a:b5"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon mac:(28:76:03:77:5a:b5) status:new",
+      output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
+      filters: {
+        _: ["moon"],
+        mac: ["28:76:03:77:5a:b5"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
+      output: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
+      filters: {
+        _: ["moon"],
+        mac: ["28:76:03:77:5a:b5", "d6:4d:bc:0e:26:bc"]
+      }
+    },
+    {
+      input: "moon status:(=new,!failed disk erasing,=!pending,!=deploying)",
+      filters: {
+        _: ["moon"],
+        status: ["=new", "!failed disk erasing", "=!pending", "!=deploying"]
       }
     }
   ];
@@ -108,6 +196,10 @@ describe("SearchService", () => {
   describe("isFilterActive", () => {
     it("returns false if type not in filter", () => {
       expect(isFilterActive({}, "type", "invalid")).toBe(false);
+    });
+
+    it("returns false if there are no filters", () => {
+      expect(isFilterActive(null, "type", "invalid")).toBe(false);
     });
 
     it("returns false if value not in type", () => {

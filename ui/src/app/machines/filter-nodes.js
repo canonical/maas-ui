@@ -36,7 +36,66 @@ const matches = (value, lowerTerm, exact, negate) => {
   return negate ? !match : match;
 };
 
-const filterNodes = (nodes, search) => {
+const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
+  filteredNodes.filter(node => {
+    let matched = false;
+    let exclude = false;
+    // Loop through the attributes to check. If this is for the
+    // generic "_" filter then check against all node attributes.
+    (attr === "_" ? Object.keys(node) : [attr]).some(filterAttribute => {
+      if (filterAttribute === "in") {
+        // "in:" is used to filter the nodes by those that are
+        // currently selected.
+        const selected = selectedIDs.includes(node.system_id);
+        // The terms will be an array, but it is invalid to have more than
+        // one of 'selected' or '!selected'.
+        const term = terms[0].toLowerCase();
+        const onlySelected = term === "selected";
+        const onlyNotSelected = term === "!selected";
+        if ((selected && onlySelected) || (!selected && onlyNotSelected)) {
+          matched = true;
+        } else {
+          exclude = true;
+        }
+        return false;
+      }
+      let machineAttribute = getMachineValue(node, filterAttribute);
+      if (typeof machineAttribute === "undefined") {
+        // Unable to get value for this node. So skip it.
+        return false;
+      }
+      return terms.some(term => {
+        let cleanTerm = term.toLowerCase();
+        // Get the first two characters, to check for ! or =.
+        const special = cleanTerm.substring(0, 2);
+        const exact = special.includes("=");
+        const negate = special.includes("!") && special !== "!!";
+        // Remove the special characters to get the term.
+        cleanTerm = cleanTerm.replace(/^[!|=]+/, "");
+        return (Array.isArray(machineAttribute)
+          ? machineAttribute
+          : [machineAttribute]
+        ).some(attribute => {
+          const match = matches(attribute, cleanTerm, exact, false);
+          if (match) {
+            if (negate) {
+              exclude = true;
+            } else {
+              matched = true;
+            }
+          } else if (negate) {
+            matched = true;
+          }
+          // If an exclude was found then exit the loop.
+          return exclude;
+        });
+      });
+    });
+    return matched && !exclude;
+  });
+
+const filterNodes = (nodes, search, selectedIDs) => {
+  let filteredNodes = nodes;
   if (
     typeof nodes === "undefined" ||
     typeof search === "undefined" ||
@@ -45,97 +104,27 @@ const filterNodes = (nodes, search) => {
     return nodes;
   }
   const filters = getCurrentFilters(search);
+  if (!filters) {
+    // No matching filters were found.
+    return [];
+  }
+  // Progressively filter the list of machines for each search term.
   Object.entries(filters).forEach(([attr, terms]) => {
     if (terms.length === 0) {
       // If this attribute has no associated terms then skip it.
       return;
     }
-    if (attr === "in") {
-      // "in:" is used to filter the nodes by those that are
-      // currently selected.
+    if (attr === "_") {
+      // When filtering free search we need all terms to match so subsequent
+      // terms will reduce the list to those that match all.
       terms.forEach(term => {
-        const matched = [];
-        nodes.forEach(node => {
-          if (node.$selected && term.toLowerCase() === "selected") {
-            matched.push(node);
-          } else if (!node.$selected && term.toLowerCase() === "!selected") {
-            matched.push(node);
-          }
-        });
-        nodes = matched;
+        filteredNodes = filterByTerms(filteredNodes, attr, [term], selectedIDs);
       });
     } else {
-      // Loop through each item and only select the matching.
-      const matched = [];
-      nodes.forEach(node => {
-        // Loop through the attributes to check. If this is for the
-        // generic "_" filter then check against all node attributes.
-        (attr === "_" ? Object.keys(node) : [attr]).some(key => {
-          let value = getMachineValue(node, key);
-          // Unable to get value for this node. So skip it.
-          if (typeof value === "undefined") {
-            return false;
-          }
-
-          return terms.some(term => {
-            term = term.toLowerCase();
-            let exact = false;
-            let negate = false;
-
-            // '!' at the beginning means the term is negated.
-            while (term.indexOf("!") === 0) {
-              negate = !negate;
-              term = term.substring(1);
-            }
-
-            // '=' at the beginning means to match exactly.
-            if (term.indexOf("=") === 0) {
-              exact = true;
-              term = term.substring(1);
-            }
-
-            // Allow '!' after the '=' as well.
-            while (term.indexOf("!") === 0) {
-              negate = !negate;
-              term = term.substring(1);
-            }
-
-            if (Array.isArray(value)) {
-              // If value is an array check if the
-              // term matches any value in the
-              // array. If negated, check whether no
-              // value in the array matches.
-              const match = value.some(v => {
-                if (matches(v, term, exact, false)) {
-                  return true;
-                }
-                return false;
-              });
-              if (negate) {
-                // Push to matched only if no value in the array matches term.
-                if (!match) {
-                  matched.push(node);
-                  return true;
-                }
-              } else if (match) {
-                matched.push(node);
-                return true;
-              }
-            } else {
-              // Standard value check that it matches the term.
-              if (matches(value, term, exact, negate)) {
-                matched.push(node);
-                return true;
-              }
-            }
-            return false;
-          });
-        });
-      });
-      nodes = matched;
+      filteredNodes = filterByTerms(filteredNodes, attr, terms, selectedIDs);
     }
   });
-  return nodes;
+  return filteredNodes;
 };
 
 export default filterNodes;
