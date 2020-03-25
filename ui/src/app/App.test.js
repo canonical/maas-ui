@@ -215,6 +215,7 @@ describe("App", () => {
 
   it("shows a login screen when logged out", () => {
     state.status.authenticated = false;
+    state.status.connected = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

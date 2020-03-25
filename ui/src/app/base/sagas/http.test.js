@@ -45,7 +45,7 @@ describe("http sagas", () => {
           .put({ type: "CHECK_AUTHENTICATED_START" })
           .put({
             type: "CHECK_AUTHENTICATED_ERROR",
-            errors: { error: error.message }
+            error: error.message
           })
           .run();
       });
