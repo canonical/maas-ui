@@ -50,6 +50,7 @@ describe("status", () => {
     expect(
       status(
         {
+          authenticationError: null,
           connected: false,
           connecting: true,
           error: "Timeout"
@@ -59,6 +60,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual({
+      authenticationError: null,
       connected: true,
       connecting: false,
       error: null
@@ -135,6 +137,7 @@ describe("status", () => {
     expect(
       status(
         {
+          authenticationError: null,
           authenticated: false,
           authenticating: true
         },
@@ -143,6 +146,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual({
+      authenticationError: null,
       authenticated: true,
       authenticating: false,
       error: null
@@ -153,6 +157,7 @@ describe("status", () => {
     expect(
       status(
         {
+          authenticationError: null,
           authenticated: false,
           authenticating: true
         },
@@ -161,6 +166,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual({
+      authenticationError: null,
       authenticated: true,
       authenticating: false,
       error: null
@@ -171,6 +177,7 @@ describe("status", () => {
     expect(
       status(
         {
+          authenticationError: null,
           error: null
         },
         {
@@ -180,7 +187,8 @@ describe("status", () => {
       )
     ).toStrictEqual({
       authenticating: false,
-      error: "Username not provided"
+      authenticationError: "Username not provided",
+      error: null
     });
   });
 
@@ -197,7 +205,8 @@ describe("status", () => {
       )
     ).toStrictEqual({
       authenticating: false,
-      error: "Username not provided"
+      authenticationError: "Username not provided",
+      error: null
     });
   });
 
@@ -209,12 +218,14 @@ describe("status", () => {
           authenticated: true
         },
         {
-          type: "CHECK_AUTHENTICATED_ERROR"
+          type: "CHECK_AUTHENTICATED_ERROR",
+          error: "Gateway Timeout"
         }
       )
     ).toStrictEqual({
       authenticating: false,
-      authenticated: false
+      authenticated: false,
+      error: "Gateway Timeout"
     });
   });
 

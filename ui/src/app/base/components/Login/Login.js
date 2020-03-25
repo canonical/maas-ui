@@ -27,7 +27,7 @@ export const Login = () => {
   const authenticating = useSelector(statusSelectors.authenticating);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
-  const error = useSelector(statusSelectors.error);
+  const error = useSelector(statusSelectors.authenticationError);
 
   useWindowTitle("Login");
 

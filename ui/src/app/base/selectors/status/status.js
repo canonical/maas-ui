@@ -36,6 +36,13 @@ status.connecting = state => state.status.connecting;
 status.error = state => state.status.error;
 
 /**
+ * Whether there is an authentication error.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} The authentication error status.
+ */
+status.authenticationError = state => state.status.authenticationError;
+
+/**
  * Get the external auth url.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The external auth url.

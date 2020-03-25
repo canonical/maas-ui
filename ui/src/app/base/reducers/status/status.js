@@ -5,11 +5,13 @@ import { status as statusActions } from "app/base/actions";
 const loginSuccess = state => {
   state.authenticated = true;
   state.authenticating = false;
+  state.authenticationError = null;
+  state.authenticationError = null;
   state.error = null;
 };
 
 const loginError = (state, action) => {
-  state.error = action.error;
+  state.authenticationError = action.error;
   state.authenticating = false;
 };
 
@@ -43,11 +45,10 @@ const status = createReducer(initialState, {
   [statusActions.logout.success]: state => {
     state.authenticated = false;
   },
-  [statusActions.checkAuthenticated.error]: state => {
-    // Don't set the errors object here, this action is to check if a user
-    // is authenticated, an error means they are not.
+  [statusActions.checkAuthenticated.error]: (state, action) => {
     state.authenticating = false;
     state.authenticated = false;
+    state.error = action.error;
   },
   [statusActions.websocketConnect]: state => {
     state.connected = false;
@@ -56,6 +57,7 @@ const status = createReducer(initialState, {
   [statusActions.websocketConnected]: state => {
     state.connected = true;
     state.connecting = false;
+    state.authenticationError = null;
     state.error = null;
   },
   [statusActions.websocketDisconnected]: state => {

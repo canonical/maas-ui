@@ -38,9 +38,19 @@ const handlePromise = response => {
 export const api = {
   auth: {
     checkAuthenticated: () => {
-      return fetch(LOGIN_API)
-        .then(handleErrors)
-        .then(response => response.json());
+      return fetch(LOGIN_API).then(response => {
+        const status = response.status.toString();
+        if (status.startsWith("5")) {
+          // If a 5xx error is returned then the API server is down for
+          // some reason.
+          throw Error(response.statusText);
+        }
+        if (status.startsWith("4")) {
+          // We take a 4xx error to mean that the user is not authenticated.
+          return { authenticated: false };
+        }
+        return response.json();
+      });
     },
     externalLogin: () => {
       return new Promise((resolve, reject) => {
@@ -191,7 +201,7 @@ export function* checkAuthenticatedSaga(action) {
   } catch (error) {
     yield put({
       type: "CHECK_AUTHENTICATED_ERROR",
-      errors: { error: error.message }
+      error: error.message
     });
   }
 }
