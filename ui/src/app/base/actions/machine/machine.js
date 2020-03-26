@@ -56,10 +56,10 @@ machine.setZone = (systemId, zoneId) =>
     zone_id: zoneId
   });
 
-machine.turnOff = systemId =>
+machine.off = systemId =>
   generateMachineAction("TURN_MACHINE_OFF", "off", systemId);
 
-machine.turnOn = systemId =>
+machine.on = systemId =>
   generateMachineAction("TURN_MACHINE_ON", "on", systemId);
 
 machine.checkPower = systemId => {
@@ -123,6 +123,9 @@ machine.lock = systemId =>
 
 machine.unlock = systemId =>
   generateMachineAction("UNLOCK_MACHINE", "unlock", systemId);
+
+machine.delete = systemId =>
+  generateMachineAction("DELETE_MACHINE", "delete", systemId);
 
 machine.cleanup = () => {
   return {
