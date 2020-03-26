@@ -2,7 +2,12 @@
 const storedFilters = {};
 
 // Return a new empty filter;
-export const getEmptyFilter = () => ({ _: [] });
+export const getEmptyFilter = () => ({
+  // "q" is for free search, i.e. not a specific machine attribute. "q" has
+  // been chosen because it shouldn't conflict with any machine attributes and
+  // also is the key name in the search URL query params.
+  q: []
+});
 
 // Return all of the currently active filters for the given search.
 export const getCurrentFilters = search => {
@@ -45,7 +50,7 @@ export const getCurrentFilters = search => {
       filters[groupName] = valueList;
     } else if (!group.includes(":")) {
       // This is a free search value.
-      filters._.push(groupName);
+      filters.q.push(groupName);
     }
   });
   return filters;
@@ -53,11 +58,11 @@ export const getCurrentFilters = search => {
 
 // Convert "filters" into a search string.
 export const filtersToString = filters => {
-  let search = filters._.length > 0 ? `${filters._.join(" ")}` : "";
+  let search = filters.q.length > 0 ? `${filters.q.join(" ")}` : "";
   Object.entries(filters).forEach(([type, terms]) => {
-    // Skip empty and skip "_" as it gets appended at the
+    // Skip empty and skip "q" as it gets appended at the
     // beginning of the search.
-    if (terms.length === 0 || type === "_") {
+    if (terms.length === 0 || type === "q") {
       return;
     }
     search += ` ${type}:(${terms.join(",")})`;
@@ -123,11 +128,7 @@ export const queryStringToFilters = queryString => {
       // There are no values for this filter so ignore it.
       return;
     }
-    if (name === "q") {
-      filters._ = values.split(" ");
-    } else {
-      filters[name] = values.split(",");
-    }
+    filters[name] = values.split(",");
   });
   return filters;
 };
@@ -143,10 +144,5 @@ export const filtersToQueryString = filters => {
       delete copiedFilters[filter];
     }
   });
-  // Replace _ with q.
-  if (copiedFilters._) {
-    copiedFilters.q = copiedFilters._.join(" ");
-    delete copiedFilters._;
-  }
   return `?${new URLSearchParams(copiedFilters).toString()}`;
 };

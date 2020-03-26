@@ -41,8 +41,8 @@ const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
     let matched = false;
     let exclude = false;
     // Loop through the attributes to check. If this is for the
-    // generic "_" filter then check against all node attributes.
-    (attr === "_" ? Object.keys(node) : [attr]).some(filterAttribute => {
+    // generic "q" filter then check against all node attributes.
+    (attr === "q" ? Object.keys(node) : [attr]).some(filterAttribute => {
       if (filterAttribute === "in") {
         // "in:" is used to filter the nodes by those that are
         // currently selected.
@@ -114,7 +114,7 @@ const filterNodes = (nodes, search, selectedIDs) => {
       // If this attribute has no associated terms then skip it.
       return;
     }
-    if (attr === "_") {
+    if (attr === "q") {
       // When filtering free search we need all terms to match so subsequent
       // terms will reduce the list to those that match all.
       terms.forEach(term => {
