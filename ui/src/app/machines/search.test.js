@@ -15,31 +15,31 @@ describe("Search", () => {
     {
       input: "",
       filters: {
-        _: []
+        q: []
       }
     },
     {
       input: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
       }
     },
     {
       input: "moon !sun",
       filters: {
-        _: ["moon", "!sun"]
+        q: ["moon", "!sun"]
       }
     },
     {
       input: "moon !!sun",
       filters: {
-        _: ["moon", "!!sun"]
+        q: ["moon", "!!sun"]
       }
     },
     {
       input: "moon status:(new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new"]
       }
     },
@@ -47,21 +47,21 @@ describe("Search", () => {
       input: "moon status:(new) star",
       output: "moon star status:(new)",
       filters: {
-        _: ["moon", "star"],
+        q: ["moon", "star"],
         status: ["new"]
       }
     },
     {
       input: "moon status:(new,deployed)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "deployed"]
       }
     },
     {
       input: "moon status:(new,failed disk erasing)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "failed disk erasing"]
       }
     },
@@ -69,7 +69,7 @@ describe("Search", () => {
       input: "moon status:!(!new,failed disk erasing)",
       output: "moon status:(!!new,!failed disk erasing)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["!!new", "!failed disk erasing"]
       }
     },
@@ -77,7 +77,7 @@ describe("Search", () => {
       input: "moon status:!!(new,failed commissioning)",
       output: "moon status:(new,failed commissioning)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "failed commissioning"]
       }
     },
@@ -85,7 +85,7 @@ describe("Search", () => {
       input: "moon status:!!(!new)",
       output: "moon status:(!new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["!new"]
       }
     },
@@ -93,14 +93,14 @@ describe("Search", () => {
       input: "moon status:!!(!!new)",
       output: "moon status:(!!new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["!!new"]
       }
     },
     {
       input: "moon status:(new,failed disk erasing,pending)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "failed disk erasing", "pending"]
       }
     },
@@ -108,7 +108,7 @@ describe("Search", () => {
       input: "moon status:new,deployed",
       output: "moon status:(new,deployed)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "deployed"]
       }
     },
@@ -116,7 +116,7 @@ describe("Search", () => {
       input: "moon status:new,failed disk erasing",
       output: "moon disk erasing status:(new,failed)",
       filters: {
-        _: ["moon", "disk", "erasing"],
+        q: ["moon", "disk", "erasing"],
         status: ["new", "failed"]
       }
     },
@@ -124,28 +124,28 @@ describe("Search", () => {
       input: "moon status:(new,failed disk erasing",
       output: "moon disk erasing",
       filters: {
-        _: ["moon", "disk", "erasing"]
+        q: ["moon", "disk", "erasing"]
       }
     },
     {
       input: "moon status:(",
       output: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
       }
     },
     {
       input: "moon status:",
       output: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
       }
     },
     {
       input: "moon mac:28:76:03:77:5a:b5 status:new",
       output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         mac: ["28:76:03:77:5a:b5"],
         status: ["new"]
       }
@@ -154,7 +154,7 @@ describe("Search", () => {
       input: "moon mac:(28:76:03:77:5a:b5) status:new",
       output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         mac: ["28:76:03:77:5a:b5"],
         status: ["new"]
       }
@@ -163,14 +163,14 @@ describe("Search", () => {
       input: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
       output: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         mac: ["28:76:03:77:5a:b5", "d6:4d:bc:0e:26:bc"]
       }
     },
     {
       input: "moon status:(=new,!failed disk erasing,=!pending,!=deploying)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["=new", "!failed disk erasing", "=!pending", "!=deploying"]
       }
     }
@@ -322,8 +322,8 @@ describe("Search", () => {
   });
 
   describe("getEmptyFilter", () => {
-    it("includes _ empty list", () => {
-      expect(getEmptyFilter()).toEqual({ _: [] });
+    it("includes q empty list", () => {
+      expect(getEmptyFilter()).toEqual({ q: [] });
     });
 
     it("returns different object on each call", () => {
@@ -355,10 +355,10 @@ describe("Search", () => {
     it("can convert a query string to a filter object", () => {
       expect(
         queryStringToFilters(
-          "?q=moon+sun&status=new,failed+comissioning&zone=!south&hostname="
+          "?q=moon%2Csun&status=new,failed+comissioning&zone=!south&hostname="
         )
       ).toEqual({
-        _: ["moon", "sun"],
+        q: ["moon", "sun"],
         status: ["new", "failed comissioning"],
         zone: ["!south"]
       });
@@ -366,7 +366,7 @@ describe("Search", () => {
 
     it("can convert a query string to a filter object and back", () => {
       const queryString =
-        "?status=new%2Cfailed+comissioning&zone=%21south&q=moon+sun";
+        "?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south";
       const queryObject = queryStringToFilters(queryString);
       expect(filtersToQueryString(queryObject)).toEqual(queryString);
     });
@@ -376,17 +376,17 @@ describe("Search", () => {
     it("can convert a filter object to a query string", () => {
       expect(
         filtersToQueryString({
-          _: ["moon", "sun"],
+          q: ["moon", "sun"],
           hostname: [],
           status: ["new", "failed comissioning"],
           zone: ["!south"]
         })
-      ).toEqual("?status=new%2Cfailed+comissioning&zone=%21south&q=moon+sun");
+      ).toEqual("?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south");
     });
 
     it("can convert a filter object to a query string and back", () => {
       const queryObject = {
-        _: ["moon", "sun"],
+        q: ["moon", "sun"],
         status: ["new", "failed comissioning"],
         zone: ["!south"]
       };
