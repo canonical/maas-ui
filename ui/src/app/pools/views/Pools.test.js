@@ -219,4 +219,46 @@ describe("Pools", () => {
         .props().disabled
     ).toBe(true);
   });
+
+  it("does not show a machine link for empty pools", () => {
+    const state = { ...initialState };
+    state.resourcepool.items[0].machine_total_count = 0;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    const name = wrapper
+      .find("TableRow")
+      .at(1)
+      .find("TableCell")
+      .at(1);
+    expect(name.text()).toBe("Empty pool");
+  });
+
+  it("can show a machine link for non-empty pools", () => {
+    const state = { ...initialState };
+    state.resourcepool.items[0].machine_total_count = 5;
+    state.resourcepool.items[0].machine_ready_count = 1;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    const link = wrapper
+      .find("TableRow")
+      .at(1)
+      .find("TableCell")
+      .at(1)
+      .find("Link");
+    expect(link.exists()).toBe(true);
+    expect(link.prop("to")).toBe("/machines?pool=default");
+    expect(link.text()).toBe("1 of 5 ready");
+  });
 });
