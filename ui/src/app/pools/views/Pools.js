@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Loader, MainTable, Row } from "@canonical/react-components";
+import { Link } from "react-router-dom";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
@@ -10,12 +11,17 @@ import {
 } from "app/base/actions";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
+import { filtersToQueryString } from "app/machines/search";
 
 const getMachinesLabel = row => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
-  return `${row.machine_ready_count} of ${row.machine_total_count} ready`;
+  return (
+    <Link to={`/machines${filtersToQueryString({ pool: row.name })}`}>
+      {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
+    </Link>
+  );
 };
 
 const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
