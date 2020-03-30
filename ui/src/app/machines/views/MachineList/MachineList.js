@@ -10,6 +10,7 @@ import {
   Strip
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useStorageState } from "react-storage-hooks";
 import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
@@ -448,8 +449,16 @@ const MachineList = () => {
     key: "fqdn",
     direction: "descending"
   });
-  const [grouping, setGrouping] = useState("status");
-  const [hiddenGroups, setHiddenGroups] = useState([]);
+  const [grouping, setGrouping] = useStorageState(
+    localStorage,
+    "grouping",
+    "status"
+  );
+  const [hiddenGroups, setHiddenGroups] = useStorageState(
+    localStorage,
+    "hiddenGroups",
+    []
+  );
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
   const groups = useMemo(() => generateGroups(grouping, machines), [
