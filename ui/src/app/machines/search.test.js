@@ -25,6 +25,12 @@ describe("Search", () => {
       }
     },
     {
+      input: "m",
+      filters: {
+        q: ["m"]
+      }
+    },
+    {
       input: "moon !sun",
       filters: {
         q: ["moon", "!sun"]
