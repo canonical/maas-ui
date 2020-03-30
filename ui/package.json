@@ -1,6 +1,6 @@
 {
   "name": "@maas-ui/ui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@canonical/macaroon-bakery": "0.3.0",
