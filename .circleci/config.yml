@@ -41,7 +41,16 @@ jobs:
             echo $IP_ADDRESS
             sudo systemctl enable snapd
             sudo snap install maas --channel=latest/edge
-            sudo maas init --maas-url=http://$IP_ADDRESS:5240/MAAS --admin-username=admin --admin-password=test --admin-email=fake@email.com --mode all
+            sudo maas init \
+              --maas-url=http://$IP_ADDRESS:5240/MAAS \
+              --admin-username=admin \
+              --admin-password=test \
+              --admin-email=fake@email.com \
+              --mode region+rack \
+              --database-host=localhost \
+              --database-name=maasdb \
+              --database-user=maas \
+              --database-pass=test
             sudo maas config
       - run:
           name: Set proxy url and start cypress tests
