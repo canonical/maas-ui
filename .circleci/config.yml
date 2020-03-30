@@ -40,7 +40,7 @@ jobs:
           command: |
             echo $IP_ADDRESS
             sudo systemctl enable snapd
-            sudo snap install maas --channel=2.7/edge
+            sudo snap install maas --channel=latest/edge
             sudo maas init --maas-url=http://$IP_ADDRESS:5240/MAAS --admin-username=admin --admin-password=test --admin-email=fake@email.com --mode all
             sudo maas config
       - run:
