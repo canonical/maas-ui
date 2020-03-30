@@ -9,6 +9,7 @@ import FormikFormContent from "app/base/components/FormikFormContent";
 
 const FormikForm = ({
   allowAllEmpty,
+  allowUnchanged,
   buttons,
   buttonsBordered = true,
   cleanup,
@@ -58,6 +59,7 @@ const FormikForm = ({
     >
       <FormikFormContent
         allowAllEmpty={allowAllEmpty}
+        allowUnchanged={allowUnchanged}
         buttonsBordered={buttonsBordered}
         buttons={buttons}
         errors={errors}
@@ -80,6 +82,7 @@ const FormikForm = ({
 
 FormikForm.propTypes = {
   allowAllEmpty: PropTypes.bool,
+  allowUnchanged: PropTypes.bool,
   buttons: PropTypes.func,
   buttonsBordered: PropTypes.bool,
   cleanup: PropTypes.func,

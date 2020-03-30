@@ -168,7 +168,12 @@ describe("machine actions", () => {
   });
 
   it("can handle deploying a machine", () => {
-    expect(machine.deploy("abc123")).toEqual({
+    const extra = {
+      osystem: "ubuntu",
+      distro_series: "bionic",
+      install_kvm: false
+    };
+    expect(machine.deploy("abc123", extra)).toEqual({
       type: "DEPLOY_MACHINE",
       meta: {
         model: "machine",
@@ -177,7 +182,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "deploy",
-          extra: {},
+          extra,
           system_id: "abc123"
         }
       }
