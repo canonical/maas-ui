@@ -127,6 +127,9 @@ machine.unlock = (systemId) =>
 machine.delete = (systemId) =>
   generateMachineAction("DELETE_MACHINE", "delete", systemId);
 
+machine.tag = (systemId, tags) =>
+  generateMachineAction("TAG_MACHINE", "tag", systemId, { tags });
+
 machine.cleanup = () => {
   return {
     type: "CLEANUP_MACHINE",

@@ -10,6 +10,7 @@ import ActionForm from "./ActionForm";
 import DeployForm from "./DeployForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
+import TagForm from "./TagForm";
 
 const getErrorSentence = (action, count) => {
   const machineString = `${count} ${pluralize("machine", count)}`;
@@ -66,6 +67,8 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
           return <SetPoolForm setSelectedAction={setSelectedAction} />;
         case "set-zone":
           return <SetZoneForm setSelectedAction={setSelectedAction} />;
+        case "tag":
+          return <TagForm setSelectedAction={setSelectedAction} />;
         default:
           return (
             <ActionForm

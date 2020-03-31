@@ -1,0 +1,68 @@
+@mixin TagSelector {
+  $dropdown-max-height: 20rem;
+
+  .tag-selector {
+    position: relative;
+  }
+
+  .tag-selector__input {
+    margin-bottom: 0;
+    position: relative;
+
+    &.tags-selected {
+      border-top: 0;
+      box-shadow: none;
+      top: -#{$border-radius};
+    }
+  }
+
+  .tag-selector__dropdown {
+    @extend %vf-bg--x-light;
+    @extend %vf-has-box-shadow;
+    left: 0;
+    max-height: $dropdown-max-height;
+    overflow: auto;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 10;
+  }
+
+  .tag-selector__dropdown-list {
+    @extend %vf-list;
+    margin-bottom: 0;
+  }
+
+  .tag-selector__dropdown-item {
+    @extend %vf-list-item;
+    @include vf-list-item-divided;
+  }
+
+  .tag-selector__dropdown-button {
+    border: 0;
+    margin-bottom: 0;
+    padding-left: $sph-inner--small;
+    padding-right: $sph-inner--small;
+    text-align: left;
+    width: 100%;
+  }
+
+  .tag-selector__selected-list {
+    @extend %vf-has-round-corners;
+    border: 1px solid $color-mid;
+    margin: 0;
+    padding: $spv-inner--x-small $sph-inner--small;
+  }
+
+  .tag-selector__selected-item {
+    @include vf-inline-list-item;
+  }
+
+  .tag-selector__selected-button {
+    padding: 0 $sph-inner--small 0 0 !important;
+
+    .p-icon--close {
+      @include vf-icon-size(0.875rem);
+    }
+  }
+}
