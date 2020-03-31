@@ -57,6 +57,6 @@ describe("SideNav", () => {
         />
       </MemoryRouter>
     );
-    expect(wrapper.find(".is-active Link").prop("children")).toEqual("Users");
+    expect(wrapper.find("a.is-active").text()).toEqual("Users");
   });
 });
