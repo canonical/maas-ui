@@ -39,13 +39,11 @@
 @import "~app/base/components/FormCard";
 @import "~app/base/components/Login";
 @import "~app/base/components/Section";
-@import "~app/base/components/SideNav";
 @import "~app/base/components/TableMenu";
 @include ColumnToggle;
 @include FormCard;
 @include Login;
 @include Section;
-@include SideNav;
 @include TableMenu;
 
 // machines

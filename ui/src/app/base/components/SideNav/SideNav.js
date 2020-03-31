@@ -13,17 +13,19 @@ const _generateSection = (section, location, match) => {
       const subPath = `${match.url}/${subsection.path}`;
       const isActive = location.pathname === subPath;
       return (
-        <li className="side-nav__item" key={subPath}>
+        <li className="p-side-navigation__item" key={subPath}>
           <Link
             to={subPath}
-            className={classNames("p-link--soft", { "is-active": isActive })}
+            className={classNames("p-side-navigation__link", {
+              "is-active": isActive
+            })}
           >
             {subsection.label}
           </Link>
         </li>
       );
     });
-    subNav = <ul className="side-nav__list">{subsections}</ul>;
+    subNav = <ul className="p-side-navigation__list">{subsections}</ul>;
   }
 
   if (section.path) {
@@ -35,20 +37,25 @@ const _generateSection = (section, location, match) => {
       isActive = location.pathname === path;
     }
     return (
-      <li className="side-nav__item" key={path}>
-        <strong className={classNames({ "is-active": isActive })}>
-          <Link to={path} className="p-link--soft">
-            {section.label}
-          </Link>
-        </strong>
+      <li className="p-side-navigation__item--title" key={path}>
+        <Link
+          to={path}
+          className={classNames("p-side-navigation__link", {
+            "is-active": isActive
+          })}
+        >
+          {section.label}
+        </Link>
         {subNav}
       </li>
     );
   }
 
   return (
-    <li className="side-nav__item" key={section.label}>
-      <strong>{section.label}</strong>
+    <li className="p-side-navigation__item" key={section.label}>
+      <span className="p-side-navigation__text p-side-navigation__item--title">
+        {section.label}
+      </span>
       {subNav}
     </li>
   );
@@ -59,8 +66,8 @@ export const SideNav = ({ items }) => {
   const { location } = useLocation();
   const sections = items.map(item => _generateSection(item, location, match));
   return (
-    <nav className="side-nav">
-      <ul className="side-nav__list">{sections}</ul>
+    <nav className="p-side-navigation">
+      <ul className="p-side-navigation__list">{sections}</ul>
     </nav>
   );
 };
