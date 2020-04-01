@@ -11,6 +11,7 @@ export const FormCardButtons = ({
   onCancel,
   secondarySubmit,
   secondarySubmitLabel,
+  submitAppearance = "positive",
   submitDisabled,
   submitLabel,
   success
@@ -53,7 +54,7 @@ export const FormCardButtons = ({
           </Button>
         )}
         <ActionButton
-          appearance="positive"
+          appearance={submitAppearance}
           className="u-no-margin--bottom"
           disabled={submitDisabled}
           loading={loading}
@@ -73,6 +74,7 @@ FormCardButtons.propTypes = {
   onCancel: PropTypes.func,
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,
+  submitAppearance: PropTypes.string,
   submitDisabled: PropTypes.bool,
   submitLabel: PropTypes.string.isRequired,
   success: PropTypes.bool

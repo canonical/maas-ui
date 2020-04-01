@@ -1,52 +1,112 @@
 import {
+  filtersToQueryString,
   filtersToString,
   getCurrentFilters,
   getEmptyFilter,
   isFilterActive,
+  queryStringToFilters,
   retrieveFilters,
   storeFilters,
   toggleFilter
 } from "./search";
 
-describe("SearchService", () => {
+describe("Search", () => {
   const scenarios = [
     {
       input: "",
       filters: {
-        _: []
+        q: []
       }
     },
     {
       input: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
+      }
+    },
+    {
+      input: "m",
+      filters: {
+        q: ["m"]
+      }
+    },
+    {
+      input: "moon !sun",
+      filters: {
+        q: ["moon", "!sun"]
+      }
+    },
+    {
+      input: "moon !!sun",
+      filters: {
+        q: ["moon", "!!sun"]
       }
     },
     {
       input: "moon status:(new)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon status:(new) star",
+      output: "moon star status:(new)",
+      filters: {
+        q: ["moon", "star"],
         status: ["new"]
       }
     },
     {
       input: "moon status:(new,deployed)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "deployed"]
       }
     },
     {
       input: "moon status:(new,failed disk erasing)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "failed disk erasing"]
+      }
+    },
+    {
+      input: "moon status:!(!new,failed disk erasing)",
+      output: "moon status:(!!new,!failed disk erasing)",
+      filters: {
+        q: ["moon"],
+        status: ["!!new", "!failed disk erasing"]
+      }
+    },
+    {
+      input: "moon status:!!(new,failed commissioning)",
+      output: "moon status:(new,failed commissioning)",
+      filters: {
+        q: ["moon"],
+        status: ["new", "failed commissioning"]
+      }
+    },
+    {
+      input: "moon status:!!(!new)",
+      output: "moon status:(!new)",
+      filters: {
+        q: ["moon"],
+        status: ["!new"]
+      }
+    },
+    {
+      input: "moon status:!!(!!new)",
+      output: "moon status:(!!new)",
+      filters: {
+        q: ["moon"],
+        status: ["!!new"]
       }
     },
     {
       input: "moon status:(new,failed disk erasing,pending)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "failed disk erasing", "pending"]
       }
     },
@@ -54,7 +114,7 @@ describe("SearchService", () => {
       input: "moon status:new,deployed",
       output: "moon status:(new,deployed)",
       filters: {
-        _: ["moon"],
+        q: ["moon"],
         status: ["new", "deployed"]
       }
     },
@@ -62,26 +122,62 @@ describe("SearchService", () => {
       input: "moon status:new,failed disk erasing",
       output: "moon disk erasing status:(new,failed)",
       filters: {
-        _: ["moon", "disk", "erasing"],
+        q: ["moon", "disk", "erasing"],
         status: ["new", "failed"]
       }
     },
     {
       input: "moon status:(new,failed disk erasing",
-      filters: null
+      output: "moon disk erasing",
+      filters: {
+        q: ["moon", "disk", "erasing"]
+      }
     },
     {
       input: "moon status:(",
       output: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
       }
     },
     {
       input: "moon status:",
       output: "moon",
       filters: {
-        _: ["moon"]
+        q: ["moon"]
+      }
+    },
+    {
+      input: "moon mac:28:76:03:77:5a:b5 status:new",
+      output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
+      filters: {
+        q: ["moon"],
+        mac: ["28:76:03:77:5a:b5"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon mac:(28:76:03:77:5a:b5) status:new",
+      output: "moon mac:(28:76:03:77:5a:b5) status:(new)",
+      filters: {
+        q: ["moon"],
+        mac: ["28:76:03:77:5a:b5"],
+        status: ["new"]
+      }
+    },
+    {
+      input: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
+      output: "moon mac:(28:76:03:77:5a:b5,d6:4d:bc:0e:26:bc)",
+      filters: {
+        q: ["moon"],
+        mac: ["28:76:03:77:5a:b5", "d6:4d:bc:0e:26:bc"]
+      }
+    },
+    {
+      input: "moon status:(=new,!failed disk erasing,=!pending,!=deploying)",
+      filters: {
+        q: ["moon"],
+        status: ["=new", "!failed disk erasing", "=!pending", "!=deploying"]
       }
     }
   ];
@@ -108,6 +204,10 @@ describe("SearchService", () => {
   describe("isFilterActive", () => {
     it("returns false if type not in filter", () => {
       expect(isFilterActive({}, "type", "invalid")).toBe(false);
+    });
+
+    it("returns false if there are no filters", () => {
+      expect(isFilterActive(null, "type", "invalid")).toBe(false);
     });
 
     it("returns false if value not in type", () => {
@@ -228,8 +328,8 @@ describe("SearchService", () => {
   });
 
   describe("getEmptyFilter", () => {
-    it("includes _ empty list", () => {
-      expect(getEmptyFilter()).toEqual({ _: [] });
+    it("includes q empty list", () => {
+      expect(getEmptyFilter()).toEqual({ q: [] });
     });
 
     it("returns different object on each call", () => {
@@ -254,6 +354,50 @@ describe("SearchService", () => {
       names.forEach((name, idx) => {
         expect(retrieveFilters(name)).toBe(objects[idx]);
       });
+    });
+  });
+
+  describe("queryStringToFilters", () => {
+    it("can convert a query string to a filter object", () => {
+      expect(
+        queryStringToFilters(
+          "?q=moon%2Csun&status=new,failed+comissioning&zone=!south&hostname="
+        )
+      ).toEqual({
+        q: ["moon", "sun"],
+        status: ["new", "failed comissioning"],
+        zone: ["!south"]
+      });
+    });
+
+    it("can convert a query string to a filter object and back", () => {
+      const queryString =
+        "?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south";
+      const queryObject = queryStringToFilters(queryString);
+      expect(filtersToQueryString(queryObject)).toEqual(queryString);
+    });
+  });
+
+  describe("filtersToQueryString", () => {
+    it("can convert a filter object to a query string", () => {
+      expect(
+        filtersToQueryString({
+          q: ["moon", "sun"],
+          hostname: [],
+          status: ["new", "failed comissioning"],
+          zone: ["!south"]
+        })
+      ).toEqual("?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south");
+    });
+
+    it("can convert a filter object to a query string and back", () => {
+      const queryObject = {
+        q: ["moon", "sun"],
+        status: ["new", "failed comissioning"],
+        zone: ["!south"]
+      };
+      const queryString = filtersToQueryString(queryObject);
+      expect(queryStringToFilters(queryString)).toEqual(queryObject);
     });
   });
 });

@@ -3,14 +3,6 @@ context("Login page", () => {
     cy.visit(`${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}`);
   });
 
-  it("gets redirected correctly", () => {
-    cy.visit("/");
-    cy.location("pathname").should(
-      "eq",
-      `${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}`
-    );
-  });
-
   it("is disabled by default", () => {
     cy.get("button").should("have.attr", "disabled", "disabled");
   });
@@ -32,5 +24,12 @@ context("Login page", () => {
     cy.get("input[name='username']").type("username");
     cy.get("input[name='password']").type("password");
     cy.get("button").should("not.have.attr", "disabled", "disabled");
+  });
+
+  it("displays an error notification if wrong credentials provided", () => {
+    cy.server();
+    cy.get("input[name='username']").type("username");
+    cy.get("input[name='password']").type("password{enter}");
+    cy.get(".p-notification--negative").should("exist");
   });
 });

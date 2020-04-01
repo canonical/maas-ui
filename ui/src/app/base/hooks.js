@@ -12,6 +12,7 @@ import { general as generalSelectors } from "app/base/selectors";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
+import { kebabToCamelCase } from "app/utils";
 import { simpleObjectEquality } from "app/settings/utils";
 
 // Router hooks inspired by: https://github.com/ReactTraining/react-router/issues/6430#issuecomment-510266079
@@ -161,14 +162,6 @@ export const useSendAnalytics = (
   }, [sendCondition, eventCategory, eventAction, eventLabel]);
 };
 
-const actionMethodOverrides = new Map([
-  ["exit-rescue-mode", "exitRescueMode"],
-  ["mark-broken", "markBroken"],
-  ["mark-fixed", "markFixed"],
-  ["override-failed-testing", "overrideFailedTesting"],
-  ["rescue-mode", "rescueMode"]
-]);
-
 /**
  * Generate menu items for the available actins on a machine.
  * @param {String} systemId - The system id for a machine.
@@ -197,7 +190,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
       actionLinks.push({
         children: actionLabel,
         onClick: () => {
-          const actionMethod = actionMethodOverrides.get(action) || action;
+          const actionMethod = kebabToCamelCase(action);
           dispatch(machineActions[actionMethod](systemId));
           onClick && onClick();
         }

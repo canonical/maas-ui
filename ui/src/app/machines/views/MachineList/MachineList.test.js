@@ -1,4 +1,5 @@
-import { MemoryRouter } from "react-router-dom";
+import { act } from "react-dom/test-utils";
+import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -195,6 +196,10 @@ describe("MachineList", () => {
     };
   });
 
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   it("displays a loading component if machines are loading", () => {
     const state = { ...initialState };
     state.machine.loading = true;
@@ -209,6 +214,52 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
+  });
+
+  it("can set the search from the URL", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+          ]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("SearchBox").prop("value")).toBe("test search");
+  });
+
+  it("change the URL when the search text changes", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+          ]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <Route
+            path="*"
+            render={props => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper
+        .find("SearchBox")
+        .props()
+        .onChange("status:new");
+    });
+    expect(location.search).toBe("?status=new");
   });
 
   it("includes groups", () => {
@@ -294,6 +345,77 @@ describe("MachineList", () => {
         .find("strong")
         .text()
     ).toBe("admin");
+  });
+
+  it("can store the group in local storage", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find('Select[name="machine-groupings"]')
+        .find("select")
+        .prop("defaultValue")
+    ).toBe("status");
+    wrapper
+      .find('Select[name="machine-groupings"] select')
+      .simulate("change", { target: { value: "owner" } });
+    // Render another machine list, this time it should restore the value
+    // set by the select.
+    const store2 = mockStore(initialState);
+    const wrapper2 = mount(
+      <Provider store={store2}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper2
+        .find('Select[name="machine-groupings"] select')
+        .prop("defaultValue")
+    ).toBe("owner");
+  });
+
+  it("can store hidden groups in local storage", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("tr.machine-list__machine").length).toBe(3);
+    // Click the button to toggle the group.
+    wrapper
+      .find(".machine-list__group button")
+      .at(0)
+      .simulate("click");
+    // Render another machine list, this time it should restore the
+    // hidden group state.
+    const store2 = mockStore(initialState);
+    const wrapper2 = mount(
+      <Provider store={store2}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper2.find("tr.machine-list__machine").length).toBe(1);
   });
 
   it("can change machines to display PXE MAC instead of FQDN", () => {

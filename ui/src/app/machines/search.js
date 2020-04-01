@@ -2,7 +2,12 @@
 const storedFilters = {};
 
 // Return a new empty filter;
-export const getEmptyFilter = () => ({ _: [] });
+export const getEmptyFilter = () => ({
+  // "q" is for free search, i.e. not a specific machine attribute. "q" has
+  // been chosen because it shouldn't conflict with any machine attributes and
+  // also is the key name in the search URL query params.
+  q: []
+});
 
 // Return all of the currently active filters for the given search.
 export const getCurrentFilters = search => {
@@ -10,65 +15,54 @@ export const getCurrentFilters = search => {
   if (!search) {
     return filters;
   }
-  const terms = search.split(" ");
-  let processingFilter;
-  terms.forEach(term => {
-    if (processingFilter) {
-      const filter = filters[processingFilter];
-      // A previous term had a space in it. This may contain multiple comma
-      // separated terms, the first of which will be part of the last term to
-      // be added to the filter.
-      term.split(",").forEach((termItem, i) => {
-        termItem = termItem.replace(")", "");
-        if (i === 0) {
-          // If this is the first term it is part of the last term to be added.
-          filter[filter.length - 1] += ` ${termItem}`;
-        } else {
-          // This is a new term.
-          filter.push(termItem);
-        }
-      });
-      // If the term contains the ending ')' then it's the last in the group.
-      if (term.includes(")")) {
-        processingFilter = null;
+  // Match filters with parens e.g. 'status:(new,deployed)'.
+  // Then: match filters without parens e.g. 'status:new,deployed' or 'status'
+  const filterMatchingRegex = search.matchAll(
+    /(\b\w+:!*\([^)]+\))|(!*\w+\S*)/g
+  );
+  [...filterMatchingRegex].forEach(([group]) => {
+    // Get the filter name and values (if supplied).
+    let [groupName, groupValues] = group.split(/:(.+)/);
+    if (groupValues) {
+      const allNegated = groupValues.startsWith("!(");
+      if (allNegated) {
+        // Remove the "!"
+        groupValues = groupValues.substr(1);
+      } else if (groupValues.startsWith("!!(")) {
+        // Remove the "!!"
+        groupValues = groupValues.substr(2);
       }
-    } else if (term.includes(":")) {
-      // This is a filter for a specific property.
-      let [filter, values: ""] = term.split(":");
-      // Remove the starting '(' and ending ')'.
-      values = values.replace("(", "").replace(")", "");
-      if (!values) {
-        // This filter has no values so skip it.
+      if (groupValues.startsWith("(") !== groupValues.endsWith(")")) {
+        // The filter must contain opening and closing parens or neither.
         return;
       }
-      // Add the values to the filter.
-      filters[filter] = values.split(",");
-      if (term.includes("(") && !term.includes(")")) {
-        // Contains a starting '(' but not an ending ')' so the next term in the
-        // array is part of the current filter.
-        processingFilter = filter;
+      // Remove the surrounding parens.
+      const cleanValues = groupValues.match(/[^(|^)]+/g);
+      if (!cleanValues) {
+        // There are no values inside the parens;
+        return;
       }
-    } else {
-      // Term is not part of a previous '(..)' span so add it to the generic
-      // filters.
-      filters._.push(term);
+      // Split the comma separated values and add the filter.
+      let valueList = cleanValues[0].split(",");
+      if (allNegated) {
+        valueList = valueList.map(value => `!${value}`);
+      }
+      filters[groupName] = valueList;
+    } else if (!group.includes(":")) {
+      // This is a free search value.
+      filters.q.push(groupName);
     }
   });
-  // If the filter has finished looping over the terms without
-  // closing the current filter then it is malformed.
-  if (processingFilter) {
-    return null;
-  }
   return filters;
 };
 
 // Convert "filters" into a search string.
 export const filtersToString = filters => {
-  let search = filters._.length > 0 ? `${filters._.join(" ")}` : "";
+  let search = filters.q.length > 0 ? `${filters.q.join(" ")}` : "";
   Object.entries(filters).forEach(([type, terms]) => {
-    // Skip empty and skip "_" as it gets appended at the
+    // Skip empty and skip "q" as it gets appended at the
     // beginning of the search.
-    if (terms.length === 0 || type === "_") {
+    if (terms.length === 0 || type === "q") {
       return;
     }
     search += ` ${type}:(${terms.join(",")})`;
@@ -88,6 +82,9 @@ const _getFilterValueIndex = (filters, type, value) => {
 
 // Whether the type and value are in the filters.
 export const isFilterActive = (filters, type, value, exact = false) => {
+  if (!filters) {
+    return false;
+  }
   const values = filters[type];
   if (!values) {
     return false;
@@ -122,3 +119,30 @@ export const storeFilters = (name, filters) => {
 
 // Retrieve a stored filter.
 export const retrieveFilters = name => storedFilters[name];
+
+// Convert a URL query string into a filter object.
+export const queryStringToFilters = queryString => {
+  let filters = getEmptyFilter();
+  [...new URLSearchParams(queryString)].forEach(([name, values]) => {
+    if (!values.length) {
+      // There are no values for this filter so ignore it.
+      return;
+    }
+    filters[name] = values.split(",");
+  });
+  return filters;
+};
+
+// Convert a filter object into a URL query string.
+export const filtersToQueryString = filters => {
+  // Shallow copy the object, this should be good enough for the manipulation
+  // we do below.
+  let copiedFilters = { ...filters };
+  // Remove empty filters.
+  Object.keys(copiedFilters).forEach(filter => {
+    if (copiedFilters[filter].length === 0) {
+      delete copiedFilters[filter];
+    }
+  });
+  return `?${new URLSearchParams(copiedFilters).toString()}`;
+};

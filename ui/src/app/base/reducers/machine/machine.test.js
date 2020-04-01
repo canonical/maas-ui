@@ -177,6 +177,37 @@ describe("machine reducer", () => {
     });
   });
 
+  it("should correctly reduce DELETE_MACHINE_NOTIFY", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [
+            { id: 1, system_id: "abc" },
+            { id: 2, system_id: "def" }
+          ],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: ["abc"]
+        },
+        {
+          payload: "abc",
+          type: "DELETE_MACHINE_NOTIFY"
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 2, system_id: "def" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: []
+    });
+  });
+
   it("should correctly reduce UPDATE_MACHINE_NOTIFY", () => {
     expect(
       machine(
