@@ -6,6 +6,7 @@ import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import createSagaMiddleware from "redux-saga";
 
+import { name as appName, version as appVersion } from "../package.json";
 import rootSaga from "./root-saga";
 import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
@@ -44,3 +45,5 @@ ReactDOM.render(
 );
 
 serviceWorker.unregister();
+
+console.info(`${appName} ${appVersion}.`);
