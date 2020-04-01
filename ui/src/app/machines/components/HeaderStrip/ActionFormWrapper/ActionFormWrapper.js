@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import ActionForm from "./ActionForm";
+import DeployForm from "./DeployForm";
 import SetZoneForm from "./SetZoneForm";
 
 const getErrorSentence = (action, count) => {
@@ -58,6 +59,8 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
+        case "deploy":
+          return <DeployForm setSelectedAction={setSelectedAction} />;
         case "set-zone":
           return <SetZoneForm setSelectedAction={setSelectedAction} />;
         default:

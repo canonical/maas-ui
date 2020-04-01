@@ -8,6 +8,7 @@ import FormikFormButtons from "app/base/components/FormikFormButtons";
 
 const FormikFormContent = ({
   allowAllEmpty,
+  allowUnchanged,
   buttons: Buttons = FormikFormButtons,
   buttonsBordered,
   children,
@@ -24,7 +25,7 @@ const FormikFormContent = ({
   submitLabel = "Save"
 }) => {
   const { handleSubmit, resetForm, submitForm, values } = useFormikContext();
-  const formDisabled = useFormikFormDisabled(allowAllEmpty);
+  const formDisabled = useFormikFormDisabled({ allowAllEmpty, allowUnchanged });
 
   useFormikErrors(errors);
 
