@@ -30,7 +30,7 @@ const isLoaded = (state, model) => {
  * @param {string} csrftoken - A csrf token string.
  * @return {string} The built websocket url.
  */
-const buildWsUrl = (csrftoken) => {
+const buildWsUrl = csrftoken => {
   const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   const host = window.location.hostname;
   const port = window.location.port;
@@ -56,18 +56,18 @@ export function createConnection(csrftoken) {
  * Create a channel to handle WebSocket messages.
  */
 export function watchMessages(socketClient) {
-  return eventChannel((emit) => {
-    socketClient.socket.onmessage = (event) => {
+  return eventChannel(emit => {
+    socketClient.socket.onmessage = event => {
       const response = JSON.parse(event.data);
       emit(response);
     };
-    socketClient.socket.onopen = (event) => {
+    socketClient.socket.onopen = event => {
       emit(event);
     };
-    socketClient.socket.onerror = (event) => {
+    socketClient.socket.onerror = event => {
       emit(event);
     };
-    socketClient.socket.onclose = (event) => {
+    socketClient.socket.onclose = event => {
       emit(event);
     };
     return () => {
@@ -144,12 +144,13 @@ export function* handleMessage(socketChannel, socketClient) {
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
-const isWebsocketRequestAction = (action) => action.meta && action.meta.method;
+const isWebsocketRequestAction = action => action.meta && action.meta.method;
 
 /**
  * Build a message for websocket requests.
  * @param {Object} meta - action meta object.
  * @param {Object} params - param object (optional).
+ * @param Number limit- number of items to request (optional).
  * @returns {Object} message - serialisable websocket message.
  */
 const buildMessage = (meta, params) => {
@@ -177,13 +178,17 @@ export function* sendMessage(socketClient, { meta, payload, type }) {
       return;
     }
   }
-
+  console.log(meta);
+  console.log(payload);
   yield put({ type: `${type}_START` });
   try {
     if (params && Array.isArray(params)) {
       // We deliberately do not yield in parallel here with 'all'
       // to avoid races for dependant config.
       for (let param of params) {
+        if (params.limit) {
+          console.log("limit specified", params.limit);
+        }
         yield call(
           [socketClient, socketClient.send],
           type,
@@ -230,7 +235,7 @@ export function* setupWebSocket() {
           // Using takeEvery() instead of call() here to get around this issue:
           // https://github.com/canonical-web-and-design/maas-ui/issues/172
           takeEvery(
-            (action) => isWebsocketRequestAction(action),
+            action => isWebsocketRequestAction(action),
             sendMessage,
             socketClient
           ),

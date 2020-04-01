@@ -63,6 +63,40 @@ describe("machine reducer", () => {
     });
   });
 
+  it("should update existing items on FETCH_MACHINE_SUCCESS", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [{ id: 1, hostname: "node1" }],
+          loaded: false,
+          loading: true,
+          saved: false,
+          saving: false,
+          selected: [],
+        },
+        {
+          type: "FETCH_MACHINE_SUCCESS",
+          payload: [
+            { id: 1, hostname: "node1" },
+            { id: 2, hostname: "node2" },
+          ],
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [
+        { id: 1, hostname: "node1" },
+        { id: 2, hostname: "node2" },
+      ],
+      loading: false,
+      loaded: true,
+      saved: false,
+      saving: false,
+      selected: [],
+    });
+  });
+
   it("should correctly reduce FETCH_MACHINE_ERROR", () => {
     expect(
       machine(

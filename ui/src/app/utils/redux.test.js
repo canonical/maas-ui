@@ -39,7 +39,9 @@ describe("createStandardActions", () => {
 
     expect(action.fetch()).toEqual({
       meta: { method: "list", model: "foo" },
-      payload: undefined,
+      payload: {
+        params: {},
+      },
       type: "FETCH_FOO",
     });
   });

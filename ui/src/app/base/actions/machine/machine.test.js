@@ -8,6 +8,9 @@ describe("machine actions", () => {
         model: "machine",
         method: "list",
       },
+      payload: {
+        params: {},
+      },
     });
   });
 
