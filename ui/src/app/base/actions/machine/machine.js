@@ -86,8 +86,8 @@ machine.release = systemId =>
 machine.commission = systemId =>
   generateMachineAction("COMMISSION_MACHINE", "commission", systemId);
 
-machine.deploy = systemId =>
-  generateMachineAction("DEPLOY_MACHINE", "deploy", systemId);
+machine.deploy = (systemId, extra = {}) =>
+  generateMachineAction("DEPLOY_MACHINE", "deploy", systemId, extra);
 
 machine.abort = systemId =>
   generateMachineAction("ABORT_MACHINE", "abort", systemId);

@@ -87,13 +87,14 @@ export const App = () => {
         }
       />
     );
-  } else if (!authenticated) {
+  } else if (!authenticated && !connectionError) {
     content = <Login />;
-  } else if (connectionError) {
+  } else if (connectionError || !connected) {
     content = (
       <Section title="Failed to connect.">
         <Notification type="negative" status="Error:">
-          The websocket failed to connect with the error "{connectionError}".
+          The server connection failed
+          {connectionError ? ` with the error "${connectionError}"` : ""}.
         </Notification>
       </Section>
     );
