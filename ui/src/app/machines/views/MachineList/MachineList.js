@@ -127,6 +127,7 @@ const generateRows = ({
     };
 
     return {
+      key: row.system_id,
       className: classNames("machine-list__machine", {
         "machine-list__machine--active": isActive,
       }),
