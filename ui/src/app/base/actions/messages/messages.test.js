@@ -9,8 +9,8 @@ describe("base actions", () => {
         message: "User added",
         status: "Error",
         temporary: true,
-        type: "negative"
-      }
+        type: "negative",
+      },
     });
 
     expect(messages.add("User added", "negative", "Error", true)).toEqual({
@@ -20,15 +20,15 @@ describe("base actions", () => {
         message: "User added",
         status: "Error",
         temporary: true,
-        type: "negative"
-      }
+        type: "negative",
+      },
     });
   });
 
   it("should handle removing a message", () => {
     expect(messages.remove(1)).toEqual({
       type: "REMOVE_MESSAGE",
-      payload: 1
+      payload: 1,
     });
   });
 });

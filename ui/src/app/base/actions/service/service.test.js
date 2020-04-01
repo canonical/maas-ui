@@ -6,8 +6,8 @@ describe("service actions", () => {
       type: "FETCH_SERVICE",
       meta: {
         model: "service",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

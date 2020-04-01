@@ -50,7 +50,7 @@ const auth = produce(
     loading: false,
     saved: false,
     saving: false,
-    user: null
+    user: null,
   }
 );
 

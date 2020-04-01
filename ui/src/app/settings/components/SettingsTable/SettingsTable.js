@@ -7,7 +7,7 @@ import {
   Button,
   Loader,
   MainTable,
-  SearchBox
+  SearchBox,
 } from "@canonical/react-components";
 import Tooltip from "app/base/components/Tooltip";
 
@@ -21,7 +21,7 @@ export const SettingsTable = ({
   searchOnChange,
   searchPlaceholder,
   searchText,
-  tableClassName
+  tableClassName,
 }) => {
   return (
     <div className="settings-table">
@@ -56,7 +56,7 @@ export const SettingsTable = ({
       )}
       <MainTable
         className={classNames("p-table-expanding--light", tableClassName, {
-          "u-no-padding--bottom": loading && !loaded
+          "u-no-padding--bottom": loading && !loaded,
         })}
         defaultSort={defaultSort}
         defaultSortDirection="ascending"
@@ -77,7 +77,7 @@ SettingsTable.propTypes = {
       label: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
       disabled: PropTypes.bool,
-      tooltip: PropTypes.string
+      tooltip: PropTypes.string,
     })
   ).isRequired,
   defaultSort: PropTypes.string,
@@ -88,7 +88,7 @@ SettingsTable.propTypes = {
   searchOnChange: PropTypes.func,
   searchPlaceholder: PropTypes.string,
   searchText: PropTypes.string,
-  tableClassName: PropTypes.string
+  tableClassName: PropTypes.string,
 };
 
 export default SettingsTable;

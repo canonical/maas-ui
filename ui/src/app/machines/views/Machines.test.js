@@ -14,54 +14,54 @@ describe("Machines", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       domain: {
-        items: []
+        items: [],
       },
       general: {
         architectures: {
           data: [],
           loaded: false,
-          loading: false
+          loading: false,
         },
         defaultMinHweKernel: {
           data: "",
           loaded: false,
-          loading: false
+          loading: false,
         },
         hweKernels: {
           data: [],
           loaded: false,
-          loading: false
+          loading: false,
         },
         machineActions: {
           data: [],
           loaded: false,
-          loading: false
+          loading: false,
         },
         navigationOptions: {
           data: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         osInfo: {
           data: {
             osystems: [["ubuntu", "Ubuntu"]],
-            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']]
+            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           },
           errors: {},
           loaded: true,
-          loading: false
+          loading: false,
         },
         powerTypes: {
           data: [],
           loaded: false,
-          loading: false
-        }
+          loading: false,
+        },
       },
       messages: {
-        items: []
+        items: [],
       },
       machine: {
         errors: null,
@@ -73,11 +73,11 @@ describe("Machines", () => {
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
-              status: scriptStatus.RUNNING
+              status: scriptStatus.RUNNING,
             },
             distro_series: "bionic",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             fqdn: "koala.example",
@@ -85,10 +85,10 @@ describe("Machines", () => {
             ip_addresses: [],
             memory: 8,
             memory_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             network_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             osystem: "ubuntu",
             owner: "admin",
@@ -102,24 +102,24 @@ describe("Machines", () => {
             status_message: "",
             storage: 8,
             storage_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             testing_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             system_id: "abc123",
-            zone: {}
+            zone: {},
           },
           {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             distro_series: "xenial",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             fqdn: "other.example",
@@ -127,10 +127,10 @@ describe("Machines", () => {
             ip_addresses: [],
             memory: 6,
             memory_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             network_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             osystem: "ubuntu",
             owner: "user",
@@ -144,26 +144,26 @@ describe("Machines", () => {
             status_message: "",
             storage: 16,
             storage_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             testing_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             system_id: "def456",
-            zone: {}
-          }
+            zone: {},
+          },
         ],
-        selected: []
+        selected: [],
       },
       notification: {
-        items: []
+        items: [],
       },
       resourcepool: {
-        items: []
+        items: [],
       },
       zone: {
-        items: []
-      }
+        items: [],
+      },
     };
   });
 
@@ -204,7 +204,7 @@ describe("Machines", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" }
+            { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
           <Machines />

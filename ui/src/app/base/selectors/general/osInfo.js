@@ -23,9 +23,9 @@ osInfo.getUbuntuKernelOptions = (state, release) => {
 
   kernelOptions = [["", "No minimum kernel"]].concat(kernelOptions);
 
-  return kernelOptions.map(option => ({
+  return kernelOptions.map((option) => ({
     value: option[0],
-    label: option[1]
+    label: option[1],
   }));
 };
 
@@ -34,12 +34,12 @@ osInfo.getUbuntuKernelOptions = (state, release) => {
  * @param {Object} state - the redux state
  * @returns {Object} - all ubuntu kernel options
  */
-osInfo.getAllUbuntuKernelOptions = state => {
+osInfo.getAllUbuntuKernelOptions = (state) => {
   const { data } = state.general.osInfo;
   let allUbuntuKernelOptions = {};
 
   if (data.kernels && data.kernels.ubuntu) {
-    Object.keys(data.kernels.ubuntu).forEach(key => {
+    Object.keys(data.kernels.ubuntu).forEach((key) => {
       allUbuntuKernelOptions[key] = osInfo.getUbuntuKernelOptions(state, key);
     });
   }
@@ -59,10 +59,10 @@ osInfo.getOsReleases = (state, os) => {
 
   if (data.releases) {
     osReleases = data.releases
-      .filter(release => release[0].includes(os))
-      .map(release => ({
+      .filter((release) => release[0].includes(os))
+      .map((release) => ({
         value: release[0].split("/")[1],
-        label: release[1]
+        label: release[1],
       }));
   }
 
@@ -74,12 +74,12 @@ osInfo.getOsReleases = (state, os) => {
  * @param {Object} state - the redux state
  * @returns {Object} - all OS releases
  */
-osInfo.getAllOsReleases = state => {
+osInfo.getAllOsReleases = (state) => {
   const { data } = state.general.osInfo;
   const allOsReleases = {};
 
   if (data.osystems && data.releases) {
-    data.osystems.forEach(osystem => {
+    data.osystems.forEach((osystem) => {
       const os = osystem[0];
       allOsReleases[os] = osInfo.getOsReleases(state, os);
     });
@@ -96,15 +96,15 @@ osInfo.getAllOsReleases = state => {
  */
 osInfo.getLicensedOsReleases = createSelector(
   [osInfo.getAllOsReleases],
-  releases => {
+  (releases) => {
     let results = {};
     for (let [key, value] of Object.entries(releases)) {
-      const licensedReleases = value.filter(release => {
+      const licensedReleases = value.filter((release) => {
         return release.value.endsWith("*");
       });
 
       if (licensedReleases.length > 0) {
-        const releases = licensedReleases.map(r => {
+        const releases = licensedReleases.map((r) => {
           r.value = r.value.slice(0, -1);
           return r;
         });
@@ -117,12 +117,12 @@ osInfo.getLicensedOsReleases = createSelector(
 
 osInfo.getLicensedOsystems = createSelector(
   [osInfo.getLicensedOsReleases],
-  releases => {
+  (releases) => {
     const osystems = Object.keys(releases);
     if (osystems) {
-      return osystems.map(osystem => [
+      return osystems.map((osystem) => [
         osystem,
-        `${osystem.charAt(0).toUpperCase()}${osystem.slice(1)}`
+        `${osystem.charAt(0).toUpperCase()}${osystem.slice(1)}`,
       ]);
     }
     return [];

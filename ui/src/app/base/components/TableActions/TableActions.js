@@ -13,7 +13,7 @@ const TableActions = ({
   editDisabled,
   editPath,
   editTooltip,
-  onDelete
+  onDelete,
 }) => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
@@ -54,7 +54,7 @@ TableActions.propTypes = {
   editDisabled: PropTypes.bool,
   editPath: PropTypes.string,
   editTooltip: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
 };
 
 export default TableActions;

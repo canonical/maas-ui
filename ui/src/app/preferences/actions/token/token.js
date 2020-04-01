@@ -1,50 +1,50 @@
 const token = {};
 
-token.fetch = params => ({
+token.fetch = (params) => ({
   type: "FETCH_TOKEN",
   meta: {
     model: "token",
-    method: "list"
-  }
+    method: "list",
+  },
 });
 
-token.create = params => ({
+token.create = (params) => ({
   type: "CREATE_TOKEN",
   meta: {
     model: "token",
-    method: "create"
+    method: "create",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
-token.update = params => ({
+token.update = (params) => ({
   type: "UPDATE_TOKEN",
   meta: {
     model: "token",
-    method: "update"
+    method: "update",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
-token.delete = id => ({
+token.delete = (id) => ({
   type: "DELETE_TOKEN",
   meta: {
     model: "token",
-    method: "delete"
+    method: "delete",
   },
   payload: {
     params: {
-      id
-    }
-  }
+      id,
+    },
+  },
 });
 
-token.cleanup = params => ({
-  type: "CLEANUP_TOKEN"
+token.cleanup = (params) => ({
+  type: "CLEANUP_TOKEN",
 });
 
 export default token;

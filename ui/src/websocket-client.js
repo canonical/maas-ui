@@ -46,7 +46,7 @@ class WebSocketClient {
     const id = this._addRequest(action);
     const payload = {
       ...message,
-      request_id: id
+      request_id: id,
     };
     this.socket.send(JSON.stringify(payload));
   }

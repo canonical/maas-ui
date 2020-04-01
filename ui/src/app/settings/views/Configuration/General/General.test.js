@@ -17,14 +17,14 @@ describe("General", () => {
         items: [
           {
             name: "maas_name",
-            value: "bionic"
+            value: "bionic",
           },
           {
             name: "enable_analytics",
-            value: true
-          }
-        ]
-      }
+            value: true,
+          },
+        ],
+      },
     };
   });
 
@@ -69,16 +69,16 @@ describe("General", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

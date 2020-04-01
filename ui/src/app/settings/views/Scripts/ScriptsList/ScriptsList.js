@@ -23,7 +23,7 @@ const generateRows = (
   dispatch,
   setDeleting
 ) =>
-  scripts.map(script => {
+  scripts.map((script) => {
     const expanded = expandedId === script.id;
     const showDelete = expandedType === "delete";
 
@@ -72,10 +72,10 @@ const generateRows = (
               }}
             />
           ),
-          role: "rowheader"
+          role: "rowheader",
         },
         {
-          content: script.description
+          content: script.description,
         },
         { content: uploadedOn },
         {
@@ -91,8 +91,8 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent:
@@ -119,8 +119,8 @@ const generateRows = (
       sortData: {
         name: script.name,
         description: script.description,
-        uploaded_on: uploadedOn
-      }
+        uploaded_on: uploadedOn,
+      },
     };
   });
 
@@ -137,7 +137,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
 
-  const userScripts = useSelector(state =>
+  const userScripts = useSelector((state) =>
     scriptSelectors.search(state, searchText, type)
   );
 
@@ -170,25 +170,25 @@ const ScriptsList = ({ type = "commissioning" }) => {
   return (
     <SettingsTable
       buttons={[
-        { label: "Upload script", url: `/settings/scripts/${type}/upload` }
+        { label: "Upload script", url: `/settings/scripts/${type}/upload` },
       ]}
       headers={[
         {
           content: "Script name",
-          sortKey: "name"
+          sortKey: "name",
         },
         {
           content: "Description",
-          sortKey: "description"
+          sortKey: "description",
         },
         {
           content: "Uploaded on",
-          sortKey: "uploaded_on"
+          sortKey: "uploaded_on",
         },
         {
           content: "Actions",
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ]}
       loaded={scriptsLoaded}
       loading={scriptsLoading}
@@ -211,7 +211,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
 };
 
 ScriptsList.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default ScriptsList;

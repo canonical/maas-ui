@@ -9,7 +9,7 @@ const ColumnToggle = ({ isExpanded, label, onClose, onOpen }) => {
     <Button
       appearance="link"
       className={classNames("column-toggle", {
-        "is-active": isExpanded
+        "is-active": isExpanded,
       })}
       inline
       onClick={() => {
@@ -40,7 +40,7 @@ ColumnToggle.propTypes = {
   isExpanded: PropTypes.bool,
   label: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  onOpen: PropTypes.func.isRequired
+  onOpen: PropTypes.func.isRequired,
 };
 
 export default ColumnToggle;

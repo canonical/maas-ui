@@ -6,8 +6,8 @@ describe("base actions", () => {
       type: "FETCH_ZONE",
       meta: {
         model: "zone",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

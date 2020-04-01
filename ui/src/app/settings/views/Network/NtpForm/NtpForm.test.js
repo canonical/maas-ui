@@ -17,11 +17,11 @@ describe("NtpForm", () => {
         items: [
           {
             name: "ntp_external_only",
-            value: false
+            value: false,
           },
-          { name: "ntp_servers", value: "" }
-        ]
-      }
+          { name: "ntp_servers", value: "" },
+        ],
+      },
     };
   });
 
@@ -47,16 +47,13 @@ describe("NtpForm", () => {
         <NtpForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          ntp_external_only: false,
-          ntp_servers: ""
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        ntp_external_only: false,
+        ntp_servers: "",
+      },
+      { resetForm: jest.fn() }
+    );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_CONFIG",
@@ -64,16 +61,16 @@ describe("NtpForm", () => {
           params: [
             {
               name: "ntp_external_only",
-              value: false
+              value: false,
             },
-            { name: "ntp_servers", value: "" }
-          ]
+            { name: "ntp_servers", value: "" },
+          ],
         },
         meta: {
           model: "config",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -90,16 +87,16 @@ describe("NtpForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

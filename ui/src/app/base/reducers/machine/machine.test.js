@@ -9,14 +9,14 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
   it("should correctly reduce FETCH_MACHINE_START", () => {
     expect(
       machine(undefined, {
-        type: "FETCH_MACHINE_START"
+        type: "FETCH_MACHINE_START",
       })
     ).toEqual({
       errors: {},
@@ -25,7 +25,7 @@ describe("machine reducer", () => {
       loading: true,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -39,27 +39,27 @@ describe("machine reducer", () => {
           loading: true,
           saved: false,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
           type: "FETCH_MACHINE_SUCCESS",
           payload: [
             { id: 1, hostname: "node1" },
-            { id: 2, hostname: "node2" }
-          ]
+            { id: 2, hostname: "node2" },
+          ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, hostname: "node1" },
-        { id: 2, hostname: "node2" }
+        { id: 2, hostname: "node2" },
       ],
       loading: false,
       loaded: true,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -73,11 +73,11 @@ describe("machine reducer", () => {
           loading: false,
           saved: false,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
           error: "Could not fetch machines",
-          type: "FETCH_MACHINE_ERROR"
+          type: "FETCH_MACHINE_ERROR",
         }
       )
     ).toEqual({
@@ -87,7 +87,7 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -101,10 +101,10 @@ describe("machine reducer", () => {
           loading: false,
           saved: true,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
-          type: "CREATE_MACHINE_START"
+          type: "CREATE_MACHINE_START",
         }
       )
     ).toEqual({
@@ -114,7 +114,7 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: true,
-      selected: []
+      selected: [],
     });
   });
 
@@ -128,11 +128,11 @@ describe("machine reducer", () => {
           loading: false,
           saved: false,
           saving: true,
-          selected: []
+          selected: [],
         },
         {
           error: { name: "name already exists" },
-          type: "CREATE_MACHINE_ERROR"
+          type: "CREATE_MACHINE_ERROR",
         }
       )
     ).toEqual({
@@ -142,7 +142,7 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -156,24 +156,24 @@ describe("machine reducer", () => {
           loading: false,
           saved: false,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
           payload: { id: 2, name: "machine2" },
-          type: "CREATE_MACHINE_NOTIFY"
+          type: "CREATE_MACHINE_NOTIFY",
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "machine1" },
-        { id: 2, name: "machine2" }
+        { id: 2, name: "machine2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -184,17 +184,17 @@ describe("machine reducer", () => {
           errors: {},
           items: [
             { id: 1, system_id: "abc" },
-            { id: 2, system_id: "def" }
+            { id: 2, system_id: "def" },
           ],
           loaded: false,
           loading: false,
           saved: false,
           saving: false,
-          selected: ["abc"]
+          selected: ["abc"],
         },
         {
           payload: "abc",
-          type: "DELETE_MACHINE_NOTIFY"
+          type: "DELETE_MACHINE_NOTIFY",
         }
       )
     ).toEqual({
@@ -204,7 +204,7 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -215,33 +215,33 @@ describe("machine reducer", () => {
           errors: {},
           items: [
             { id: 1, hostname: "node1" },
-            { id: 2, hostname: "node2" }
+            { id: 2, hostname: "node2" },
           ],
           loaded: false,
           loading: false,
           saved: false,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
           payload: {
             id: 1,
-            hostname: "node1v2"
+            hostname: "node1v2",
           },
-          type: "UPDATE_MACHINE_NOTIFY"
+          type: "UPDATE_MACHINE_NOTIFY",
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, hostname: "node1v2" },
-        { id: 2, hostname: "node2" }
+        { id: 2, hostname: "node2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
-      selected: []
+      selected: [],
     });
   });
 
@@ -253,11 +253,11 @@ describe("machine reducer", () => {
           items: [],
           loaded: false,
           loading: true,
-          selected: []
+          selected: [],
         },
         {
           type: "CHECK_MACHINE_POWER_ERROR",
-          error: "Uh oh!"
+          error: "Uh oh!",
         }
       )
     ).toEqual({
@@ -265,7 +265,7 @@ describe("machine reducer", () => {
       loading: true,
       loaded: false,
       items: [],
-      selected: []
+      selected: [],
     });
   });
 
@@ -276,30 +276,30 @@ describe("machine reducer", () => {
           errors: {},
           items: [
             { system_id: "abcde", hostname: "node1" },
-            { system_id: "fghij", hostname: "node2" }
+            { system_id: "fghij", hostname: "node2" },
           ],
           loaded: false,
           loading: false,
           saved: false,
           saving: false,
-          selected: []
+          selected: [],
         },
         {
           payload: ["abcde", "fghij"],
-          type: "SET_SELECTED_MACHINES"
+          type: "SET_SELECTED_MACHINES",
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { system_id: "abcde", hostname: "node1" },
-        { system_id: "fghij", hostname: "node2" }
+        { system_id: "fghij", hostname: "node2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
-      selected: ["abcde", "fghij"]
+      selected: ["abcde", "fghij"],
     });
   });
 });

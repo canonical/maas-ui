@@ -13,7 +13,7 @@ const DeployFormFields = () => {
     configSelectors.defaultOSystemOptions
   );
 
-  const distroSeriesOptions = useSelector(state =>
+  const distroSeriesOptions = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(
       state,
       formikProps.values.default_osystem
@@ -29,7 +29,7 @@ const DeployFormFields = () => {
         component={Select}
         options={defaultOSystemOptions}
         name="default_osystem"
-        onChange={e => {
+        onChange={(e) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("default_osystem", true, true);
           formikProps.setFieldValue(

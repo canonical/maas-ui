@@ -14,7 +14,7 @@ const DnsSchema = Yup.object().shape({
   // https://github.com/canonical-web-and-design/maas-ui/issues/39
   upstream_dns: Yup.string(),
   dnssec_validation: Yup.string().required(),
-  dns_trusted_acl: Yup.string()
+  dns_trusted_acl: Yup.string(),
 });
 
 const DnsForm = () => {
@@ -48,12 +48,12 @@ const DnsForm = () => {
             initialValues={{
               dnssec_validation: dnssecValidation || "",
               dns_trusted_acl: dnsTrustedAcl || "",
-              upstream_dns: upstreamDns || ""
+              upstream_dns: upstreamDns || "",
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Network settings",
-              label: "DNS form"
+              label: "DNS form",
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

@@ -6,8 +6,8 @@ describe("dhcpsnippet actions", () => {
       type: "FETCH_DHCPSNIPPET",
       meta: {
         model: "dhcpsnippet",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -16,13 +16,13 @@ describe("dhcpsnippet actions", () => {
       type: "CREATE_DHCPSNIPPET",
       meta: {
         model: "dhcpsnippet",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          name: "kangaroo"
-        }
-      }
+          name: "kangaroo",
+        },
+      },
     });
   });
 
@@ -31,13 +31,13 @@ describe("dhcpsnippet actions", () => {
       type: "UPDATE_DHCPSNIPPET",
       meta: {
         model: "dhcpsnippet",
-        method: "update"
+        method: "update",
       },
       payload: {
         params: {
-          name: "kookaburra"
-        }
-      }
+          name: "kookaburra",
+        },
+      },
     });
   });
 
@@ -46,19 +46,19 @@ describe("dhcpsnippet actions", () => {
       type: "DELETE_DHCPSNIPPET",
       meta: {
         model: "dhcpsnippet",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can handle cleaning dhcp snippets", () => {
     expect(dhcpsnippet.cleanup()).toEqual({
-      type: "CLEANUP_DHCPSNIPPET"
+      type: "CLEANUP_DHCPSNIPPET",
     });
   });
 });

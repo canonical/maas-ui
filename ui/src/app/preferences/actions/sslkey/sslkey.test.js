@@ -6,8 +6,8 @@ describe("sslkey actions", () => {
       type: "FETCH_SSLKEY",
       meta: {
         model: "sslkey",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -16,13 +16,13 @@ describe("sslkey actions", () => {
       type: "CREATE_SSLKEY",
       meta: {
         model: "sslkey",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          key: "---begin cert---..."
-        }
-      }
+          key: "---begin cert---...",
+        },
+      },
     });
   });
 
@@ -31,19 +31,19 @@ describe("sslkey actions", () => {
       type: "DELETE_SSLKEY",
       meta: {
         model: "sslkey",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can clean up", () => {
     expect(sslkey.cleanup()).toEqual({
-      type: "CLEANUP_SSLKEY"
+      type: "CLEANUP_SSLKEY",
     });
   });
 });

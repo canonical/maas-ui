@@ -12,14 +12,14 @@ describe("Preferences", () => {
   it("renders", () => {
     const store = mockStore({
       config: {
-        items: []
+        items: [],
       },
       messages: {
-        items: []
+        items: [],
       },
       notification: {
-        items: []
-      }
+        items: [],
+      },
     });
     const wrapper = mount(
       <Provider store={store}>

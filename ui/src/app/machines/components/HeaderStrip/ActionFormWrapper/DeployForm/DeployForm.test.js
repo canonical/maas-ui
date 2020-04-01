@@ -20,32 +20,32 @@ describe("DeployForm", () => {
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
-              ["ubuntu", "Ubuntu"]
-            ]
-          }
+              ["ubuntu", "Ubuntu"],
+            ],
+          },
         ],
         errors: {},
         loaded: true,
-        loading: false
+        loading: false,
       },
       general: {
         defaultMinHweKernel: {
           data: "",
           errors: {},
           loaded: true,
-          loading: false
+          loading: false,
         },
         osInfo: {
           data: {
             osystems: [
               ["centos", "CentOS"],
-              ["ubuntu", "Ubuntu"]
+              ["ubuntu", "Ubuntu"],
             ],
             releases: [
               ["centos/centos66", "CentOS 6"],
               ["centos/centos70", "CentOS 7"],
               ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
-              ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']
+              ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"'],
             ],
             kernels: {
               ubuntu: {
@@ -57,22 +57,22 @@ describe("DeployForm", () => {
                   ["hwe-18.04-lowlatency", "bionic (hwe-18.04-lowlatency)"],
                   [
                     "hwe-18.04-lowlatency-edge",
-                    "bionic (hwe-18.04-lowlatency-edge)"
-                  ]
+                    "bionic (hwe-18.04-lowlatency-edge)",
+                  ],
                 ],
                 focal: [
                   ["ga-20.04", "focal (ga-20.04)"],
-                  ["ga-20.04-lowlatency", "focal (ga-20.04-lowlatency)"]
-                ]
-              }
+                  ["ga-20.04-lowlatency", "focal (ga-20.04-lowlatency)"],
+                ],
+              },
             },
             default_osystem: "ubuntu",
-            default_release: "bionic"
+            default_release: "bionic",
           },
           errors: {},
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       machine: {
         errors: {},
@@ -80,13 +80,13 @@ describe("DeployForm", () => {
         loaded: true,
         items: [
           {
-            system_id: "abc123"
+            system_id: "abc123",
           },
           {
-            system_id: "def456"
-          }
+            system_id: "def456",
+          },
         ],
-        selected: []
+        selected: [],
       },
       user: {
         auth: {
@@ -98,16 +98,16 @@ describe("DeployForm", () => {
             is_superuser: true,
             last_name: "",
             sshkeys_count: 1,
-            username: "admin"
-          }
+            username: "admin",
+          },
         },
         errors: {},
         items: [],
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -126,24 +126,21 @@ describe("DeployForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          oSystem: "ubuntu",
-          release: "bionic",
-          kernel: "",
-          installKVM: false
-        })
+      wrapper.find("Formik").props().onSubmit({
+        oSystem: "ubuntu",
+        release: "bionic",
+        kernel: "",
+        installKVM: false,
+      })
     );
     expect(
-      store.getActions().filter(action => action.type === "DEPLOY_MACHINE")
+      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
     ).toStrictEqual([
       {
         type: "DEPLOY_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
@@ -152,17 +149,17 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false
+              install_kvm: false,
             },
-            system_id: "abc123"
-          }
-        }
+            system_id: "abc123",
+          },
+        },
       },
       {
         type: "DEPLOY_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
@@ -171,12 +168,12 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false
+              install_kvm: false,
             },
-            system_id: "def456"
-          }
-        }
-      }
+            system_id: "def456",
+          },
+        },
+      },
     ]);
   });
 });

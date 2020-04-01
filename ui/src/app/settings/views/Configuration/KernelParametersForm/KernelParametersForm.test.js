@@ -17,10 +17,10 @@ describe("KernelParametersForm", () => {
         items: [
           {
             name: "kernel_opts",
-            value: "foo"
-          }
-        ]
-      }
+            value: "foo",
+          },
+        ],
+      },
     };
   });
 
@@ -34,10 +34,7 @@ describe("KernelParametersForm", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("input[name='kernel_opts']")
-        .first()
-        .props().value
+      wrapper.find("input[name='kernel_opts']").first().props().value
     ).toBe("foo");
   });
 });

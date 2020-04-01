@@ -14,24 +14,24 @@ describe("RepositoryForm", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         componentsToDisable: {
           data: [],
           loaded: true,
-          loading: false
+          loading: false,
         },
         knownArchitectures: {
           data: [],
           loaded: true,
-          loading: false
+          loading: false,
         },
         pocketsToDisable: {
           data: [],
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       packagerepository: {
         errors: {},
@@ -54,10 +54,10 @@ describe("RepositoryForm", () => {
             arches: ["amd64", "i386"],
             key: "",
             default: true,
-            enabled: true
-          }
-        ]
-      }
+            enabled: true,
+          },
+        ],
+      },
     };
   });
 
@@ -82,35 +82,35 @@ describe("RepositoryForm", () => {
         type: "FETCH_GENERAL_COMPONENTS_TO_DISABLE",
         meta: {
           model: "general",
-          method: "components_to_disable"
-        }
+          method: "components_to_disable",
+        },
       },
       {
         type: "FETCH_GENERAL_KNOWN_ARCHITECTURES",
         meta: {
           model: "general",
-          method: "known_architectures"
-        }
+          method: "known_architectures",
+        },
       },
       {
         type: "FETCH_GENERAL_POCKETS_TO_DISABLE",
         meta: {
           model: "general",
-          method: "pockets_to_disable"
-        }
+          method: "pockets_to_disable",
+        },
       },
       {
         type: "FETCH_PACKAGEREPOSITORY",
         meta: {
           model: "packagerepository",
-          method: "list"
+          method: "list",
         },
         payload: {
           params: {
-            limit: 50
-          }
-        }
-      }
+            limit: 50,
+          },
+        },
+      },
     ]);
   });
 
@@ -183,8 +183,8 @@ describe("RepositoryForm", () => {
     wrapper.unmount();
     expect(store.getActions()).toEqual([
       {
-        type: "CLEANUP_PACKAGEREPOSITORY"
-      }
+        type: "CLEANUP_PACKAGEREPOSITORY",
+      },
     ]);
   });
 
@@ -219,7 +219,7 @@ describe("RepositoryForm", () => {
       arches: ["i386", "amd64"],
       key: "",
       default: false,
-      enabled: true
+      enabled: true,
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -245,12 +245,12 @@ describe("RepositoryForm", () => {
           arches: ["i386", "amd64"],
           key: "",
           default: false,
-          enabled: true
+          enabled: true,
         });
     });
     const action = store
       .getActions()
-      .find(action => action.type === "UPDATE_PACKAGEREPOSITORY");
+      .find((action) => action.type === "UPDATE_PACKAGEREPOSITORY");
     expect(action).toEqual({
       type: "UPDATE_PACKAGEREPOSITORY",
       payload: {
@@ -264,13 +264,13 @@ describe("RepositoryForm", () => {
           arches: ["i386", "amd64"],
           key: "",
           default: false,
-          enabled: true
-        }
+          enabled: true,
+        },
       },
       meta: {
         model: "packagerepository",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 
@@ -301,12 +301,12 @@ describe("RepositoryForm", () => {
           arches: ["i386", "amd64"],
           key: "",
           default: false,
-          enabled: true
+          enabled: true,
         });
     });
     const action = store
       .getActions()
-      .find(action => action.type === "CREATE_PACKAGEREPOSITORY");
+      .find((action) => action.type === "CREATE_PACKAGEREPOSITORY");
     expect(action).toEqual({
       type: "CREATE_PACKAGEREPOSITORY",
       payload: {
@@ -319,13 +319,13 @@ describe("RepositoryForm", () => {
           arches: ["i386", "amd64"],
           key: "",
           default: false,
-          enabled: true
-        }
+          enabled: true,
+        },
       },
       meta: {
         model: "packagerepository",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -344,8 +344,8 @@ describe("RepositoryForm", () => {
     );
     const actions = store.getActions();
     expect(
-      actions.some(action => action.type === "CLEANUP_PACKAGEREPOSITORY")
+      actions.some((action) => action.type === "CLEANUP_PACKAGEREPOSITORY")
     ).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

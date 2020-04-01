@@ -7,13 +7,13 @@ import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import {
   machine as machineActions,
-  resourcepool as resourcePoolActions
+  resourcepool as resourcePoolActions,
 } from "app/base/actions";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
 import { filtersToQueryString } from "app/machines/search";
 
-const getMachinesLabel = row => {
+const getMachinesLabel = (row) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
@@ -25,19 +25,19 @@ const getMachinesLabel = row => {
 };
 
 const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
-  rows.map(row => {
+  rows.map((row) => {
     const expanded = expandedId === row.id;
     return {
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
-          content: row.name
+          content: row.name,
         },
         {
-          content: getMachinesLabel(row)
+          content: getMachinesLabel(row),
         },
         {
-          content: row.description
+          content: row.description,
         },
         {
           content: (
@@ -53,8 +53,8 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
               onDelete={() => setExpandedId(row.id)}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -74,8 +74,8 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
       sortData: {
         name: row.name,
         machines: row.machine_total_count,
-        description: row.description
-      }
+        description: row.description,
+      },
     };
   });
 
@@ -120,20 +120,20 @@ const Pools = () => {
               headers={[
                 {
                   content: "Name",
-                  sortKey: "name"
+                  sortKey: "name",
                 },
                 {
                   content: "Machines",
-                  sortKey: "machines"
+                  sortKey: "machines",
                 },
                 {
                   content: "Description",
-                  sortKey: "description"
+                  sortKey: "description",
                 },
                 {
                   content: "Actions",
-                  className: "u-align--right"
-                }
+                  className: "u-align--right",
+                },
               ]}
               expanding={true}
               paginate={150}

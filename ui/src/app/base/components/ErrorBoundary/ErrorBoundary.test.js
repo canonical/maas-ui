@@ -18,13 +18,13 @@ describe("ErrorBoundary", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         version: {
-          data: "2.7.0"
-        }
-      }
+          data: "2.7.0",
+        },
+      },
     };
   });
 
@@ -55,8 +55,8 @@ describe("ErrorBoundary", () => {
     state.config.items = [
       {
         name: "enable_analytics",
-        value: false
-      }
+        value: false,
+      },
     ];
     const store = mockStore(state);
 
@@ -82,8 +82,8 @@ describe("ErrorBoundary", () => {
     state.config.items = [
       {
         name: "enable_analytics",
-        value: true
-      }
+        value: true,
+      },
     ];
     const store = mockStore(state);
 

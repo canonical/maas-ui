@@ -4,8 +4,8 @@ describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {
     const state = {
       dhcpsnippet: {
-        items: [{ name: "lease" }]
-      }
+        items: [{ name: "lease" }],
+      },
     };
     expect(dhcpsnippet.all(state)).toEqual([{ name: "lease" }]);
   });
@@ -14,8 +14,8 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(dhcpsnippet.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(dhcpsnippet.loaded(state)).toEqual(true);
   });
@@ -36,28 +36,28 @@ describe("dhcpsnippet selectors", () => {
         items: [
           {
             name: "class",
-            description: "adds"
+            description: "adds",
           },
           {
             name: "lease",
-            description: "changes"
+            description: "changes",
           },
           {
             name: "boot",
-            description: "boots class"
-          }
-        ]
-      }
+            description: "boots class",
+          },
+        ],
+      },
     };
     expect(dhcpsnippet.search(state, "class")).toEqual([
       {
         name: "class",
-        description: "adds"
+        description: "adds",
       },
       {
         name: "boot",
-        description: "boots class"
-      }
+        description: "boots class",
+      },
     ]);
   });
 
@@ -65,8 +65,8 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         loading: true,
-        items: [{ name: "class" }, { name: "lease" }]
-      }
+        items: [{ name: "class" }, { name: "lease" }],
+      },
     };
     expect(dhcpsnippet.count(state)).toEqual(2);
   });
@@ -75,8 +75,8 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         saving: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(dhcpsnippet.saving(state)).toEqual(true);
   });
@@ -85,8 +85,8 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         saved: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(dhcpsnippet.saved(state)).toEqual(true);
   });
@@ -95,11 +95,11 @@ describe("dhcpsnippet selectors", () => {
     const state = {
       dhcpsnippet: {
         errors: { name: "Name not provided" },
-        items: []
-      }
+        items: [],
+      },
     };
     expect(dhcpsnippet.errors(state)).toStrictEqual({
-      name: "Name not provided"
+      name: "Name not provided",
     });
   });
 
@@ -109,13 +109,13 @@ describe("dhcpsnippet selectors", () => {
         loading: true,
         items: [
           { name: "class", id: 808 },
-          { name: "lease", id: 909 }
-        ]
-      }
+          { name: "lease", id: 909 },
+        ],
+      },
     };
     expect(dhcpsnippet.getById(state, 909)).toStrictEqual({
       name: "lease",
-      id: 909
+      id: 909,
     });
   });
 });

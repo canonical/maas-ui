@@ -8,10 +8,10 @@ const Tabs = ({ links, listClassName, navClassName, noBorder }) => {
     <nav className={classNames("p-tabs", navClassName)}>
       <ul
         className={classNames("p-tabs__list", listClassName, {
-          "no-border": noBorder
+          "no-border": noBorder,
         })}
       >
-        {links.map(link => (
+        {links.map((link) => (
           <li
             className={classNames("p-tabs__item", link.listItemClassName)}
             key={link.path}
@@ -37,12 +37,12 @@ Tabs.propTypes = {
       className: PropTypes.string,
       label: PropTypes.node.isRequired,
       listItemClassName: PropTypes.string,
-      path: PropTypes.string.isRequired
+      path: PropTypes.string.isRequired,
     }).isRequired
   ),
   listClassName: PropTypes.string,
   navClassName: PropTypes.string,
-  noBorder: PropTypes.bool
+  noBorder: PropTypes.bool,
 };
 
 export default Tabs;

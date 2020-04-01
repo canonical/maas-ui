@@ -7,7 +7,7 @@ import {
   Notification,
   Row,
   SearchBox,
-  Strip
+  Strip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
@@ -23,7 +23,7 @@ import {
   service as serviceActions,
   tag as tagActions,
   user as userActions,
-  zone as zoneActions
+  zone as zoneActions,
 } from "app/base/actions";
 import { groupAsMap, simpleSortByKey } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
@@ -33,7 +33,7 @@ import {
   filtersToString,
   filtersToQueryString,
   getCurrentFilters,
-  queryStringToFilters
+  queryStringToFilters,
 } from "app/machines/search";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
@@ -84,12 +84,12 @@ const getGroupSecondaryString = (machines, selectedMachines) => {
 };
 
 const checkboxChecked = (machines, selectedMachines) =>
-  machines.every(machine => selectedMachines.includes(machine));
+  machines.every((machine) => selectedMachines.includes(machine));
 
-const machineSort = currentSort => {
+const machineSort = (currentSort) => {
   const { key, direction } = currentSort;
 
-  return function(a, b) {
+  return function (a, b) {
     const sortA = getSortValue(a, key);
     const sortB = getSortValue(b, key);
 
@@ -113,12 +113,12 @@ const generateRows = ({
   machines,
   selectedMachines,
   setActiveRow,
-  showMAC
+  showMAC,
 }) => {
   const sortedMachines = [...machines].sort(machineSort(currentSort));
-  return sortedMachines.map(row => {
+  return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
-    const onToggleMenu = open => {
+    const onToggleMenu = (open) => {
       if (open && !activeRow) {
         setActiveRow(row.system_id);
       } else if (!open || (open && activeRow)) {
@@ -128,7 +128,7 @@ const generateRows = ({
 
     return {
       className: classNames("machine-list__machine", {
-        "machine-list__machine--active": isActive
+        "machine-list__machine--active": isActive,
       }),
       columns: [
         {
@@ -140,12 +140,12 @@ const generateRows = ({
               showMAC={showMAC}
               systemId={row.system_id}
             />
-          )
+          ),
         },
         {
           content: (
             <PowerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
@@ -153,22 +153,22 @@ const generateRows = ({
               onToggleMenu={onToggleMenu}
               systemId={row.system_id}
             />
-          )
+          ),
         },
         {
           content: (
             <OwnerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
             <PoolColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
             <ZoneColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
@@ -176,22 +176,22 @@ const generateRows = ({
               onToggleMenu={onToggleMenu}
               systemId={row.system_id}
             />
-          )
+          ),
         },
         {
           content: (
             <CoresColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
             <RamColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
             <DisksColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          )
+          ),
         },
         {
           content: (
@@ -199,52 +199,52 @@ const generateRows = ({
               onToggleMenu={onToggleMenu}
               systemId={row.system_id}
             />
-          )
-        }
-      ]
+          ),
+        },
+      ],
     };
   });
 };
 
 const generateGroups = (grouping, machines) => {
   if (grouping === "owner") {
-    const groupMap = groupAsMap(machines, machine => machine.owner);
+    const groupMap = groupAsMap(machines, (machine) => machine.owner);
     return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No owner", machines }))
       .sort(simpleSortByKey("label"));
   }
 
   if (grouping === "pool") {
-    const groupMap = groupAsMap(machines, machine => machine.pool.name);
+    const groupMap = groupAsMap(machines, (machine) => machine.pool.name);
     return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No pool", machines }))
       .sort(simpleSortByKey("label"));
   }
 
   if (grouping === "power_state") {
-    const groupMap = groupAsMap(machines, machine => machine.power_state);
+    const groupMap = groupAsMap(machines, (machine) => machine.power_state);
     return [
       {
         label: "Error",
-        machines: groupMap.get("error") || []
+        machines: groupMap.get("error") || [],
       },
       {
         label: "Off",
-        machines: groupMap.get("off") || []
+        machines: groupMap.get("off") || [],
       },
       {
         label: "On",
-        machines: groupMap.get("on") || []
+        machines: groupMap.get("on") || [],
       },
       {
         label: "Unknown",
-        machines: groupMap.get("unknown") || []
-      }
-    ].filter(group => group.machines.length);
+        machines: groupMap.get("unknown") || [],
+      },
+    ].filter((group) => group.machines.length);
   }
 
   if (grouping === "status") {
-    const groupMap = groupAsMap(machines, machine => machine.status_code);
+    const groupMap = groupAsMap(machines, (machine) => machine.status_code);
     return [
       {
         label: "Failed",
@@ -255,69 +255,69 @@ const generateGroups = (grouping, machines) => {
           ...(groupMap.get(nodeStatus.FAILED_ENTERING_RESCUE_MODE) || []),
           ...(groupMap.get(nodeStatus.FAILED_EXITING_RESCUE_MODE) || []),
           ...(groupMap.get(nodeStatus.FAILED_RELEASING) || []),
-          ...(groupMap.get(nodeStatus.FAILED_TESTING) || [])
-        ]
+          ...(groupMap.get(nodeStatus.FAILED_TESTING) || []),
+        ],
       },
       {
         label: "New",
-        machines: groupMap.get(nodeStatus.NEW) || []
+        machines: groupMap.get(nodeStatus.NEW) || [],
       },
       {
         label: "Commissioning",
-        machines: groupMap.get(nodeStatus.COMMISSIONING) || []
+        machines: groupMap.get(nodeStatus.COMMISSIONING) || [],
       },
       {
         label: "Testing",
-        machines: groupMap.get(nodeStatus.TESTING) || []
+        machines: groupMap.get(nodeStatus.TESTING) || [],
       },
       {
         label: "Ready",
-        machines: groupMap.get(nodeStatus.READY) || []
+        machines: groupMap.get(nodeStatus.READY) || [],
       },
       {
         label: "Allocated",
-        machines: groupMap.get(nodeStatus.ALLOCATED) || []
+        machines: groupMap.get(nodeStatus.ALLOCATED) || [],
       },
       {
         label: "Deploying",
-        machines: groupMap.get(nodeStatus.DEPLOYING) || []
+        machines: groupMap.get(nodeStatus.DEPLOYING) || [],
       },
       {
         label: "Deployed",
-        machines: groupMap.get(nodeStatus.DEPLOYED) || []
+        machines: groupMap.get(nodeStatus.DEPLOYED) || [],
       },
       {
         label: "Rescue mode",
         machines: [
           ...(groupMap.get(nodeStatus.ENTERING_RESCUE_MODE) || []),
           ...(groupMap.get(nodeStatus.EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(nodeStatus.RESCUE_MODE) || [])
-        ]
+          ...(groupMap.get(nodeStatus.RESCUE_MODE) || []),
+        ],
       },
       {
         label: "Releasing",
         machines: [
           ...(groupMap.get(nodeStatus.DISK_ERASING) || []),
-          ...(groupMap.get(nodeStatus.RELEASING) || [])
-        ]
+          ...(groupMap.get(nodeStatus.RELEASING) || []),
+        ],
       },
       {
         label: "Broken",
-        machines: groupMap.get(nodeStatus.BROKEN) || []
+        machines: groupMap.get(nodeStatus.BROKEN) || [],
       },
       {
         label: "Other",
         machines: [
           ...(groupMap.get(nodeStatus.MISSING) || []),
           ...(groupMap.get(nodeStatus.RESERVED) || []),
-          ...(groupMap.get(nodeStatus.RETIRED) || [])
-        ]
-      }
-    ].filter(group => group.machines.length);
+          ...(groupMap.get(nodeStatus.RETIRED) || []),
+        ],
+      },
+    ].filter((group) => group.machines.length);
   }
 
   if (grouping === "zone") {
-    const groupMap = groupAsMap(machines, machine => machine.zone.name);
+    const groupMap = groupAsMap(machines, (machine) => machine.zone.name);
     return Array.from(groupMap)
       .map(([label, machines]) => ({ label: label || "No zone", machines }))
       .sort(simpleSortByKey("label"));
@@ -325,7 +325,7 @@ const generateGroups = (grouping, machines) => {
 
   return {
     label: "No grouping",
-    machines
+    machines,
   };
 };
 
@@ -340,7 +340,7 @@ const generateGroupRows = ({
   let rows = [];
 
   groups.length &&
-    groups.forEach(group => {
+    groups.forEach((group) => {
       const { label, machines } = group;
       const collapsed = hiddenGroups.includes(label);
       rows.push({
@@ -366,7 +366,7 @@ const generateGroupRows = ({
                 secondary={getGroupSecondaryString(machines, selectedMachines)}
                 secondaryClassName="u-nudge--secondary-row"
               />
-            )
+            ),
           },
           {},
           {},
@@ -387,7 +387,7 @@ const generateGroupRows = ({
                   onClick={() => {
                     if (collapsed) {
                       setHiddenGroups(
-                        hiddenGroups.filter(group => group !== label)
+                        hiddenGroups.filter((group) => group !== label)
                       );
                     } else {
                       setHiddenGroups(hiddenGroups.concat([label]));
@@ -401,16 +401,16 @@ const generateGroupRows = ({
                   )}
                 </Button>
               </div>
-            )
-          }
-        ]
+            ),
+          },
+        ],
       });
       const visibleMachines = collapsed ? [] : machines;
       rows = rows.concat(
         generateRows({
           machines: visibleMachines,
           selectedMachines,
-          ...rowProps
+          ...rowProps,
         })
       );
     });
@@ -426,7 +426,7 @@ const MachineList = () => {
   const [searchText, setSearchText] = useState(filtersToString(currentFilters));
   const selectedMachines = useSelector(machineSelectors.selected);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const machines = useSelector(state =>
+  const machines = useSelector((state) =>
     machineSelectors.search(state, searchText, selectedIDs)
   );
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -447,7 +447,7 @@ const MachineList = () => {
 
   const [currentSort, setCurrentSort] = useState({
     key: "fqdn",
-    direction: "descending"
+    direction: "descending",
   });
   const [grouping, setGrouping] = useStorageState(
     localStorage,
@@ -463,7 +463,7 @@ const MachineList = () => {
   const [showMAC, setShowMAC] = useState(false);
   const groups = useMemo(() => generateGroups(grouping, machines), [
     grouping,
-    machines
+    machines,
   ]);
 
   useWindowTitle("Machines");
@@ -486,7 +486,7 @@ const MachineList = () => {
   }, [dispatch, machinesLoaded]);
 
   // Update sort parameters depending on whether the same sort key was clicked.
-  const updateSort = newSortKey => {
+  const updateSort = (newSortKey) => {
     const { key, direction } = currentSort;
 
     if (newSortKey === key) {
@@ -500,24 +500,24 @@ const MachineList = () => {
     }
   };
 
-  const handleMachineCheckbox = machine => {
+  const handleMachineCheckbox = (machine) => {
     let newSelectedMachines;
     if (selectedMachines.includes(machine)) {
-      newSelectedMachines = selectedMachines.filter(m => m !== machine);
+      newSelectedMachines = selectedMachines.filter((m) => m !== machine);
     } else {
       newSelectedMachines = [...selectedMachines, machine];
     }
     dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
-  const handleGroupCheckbox = group => {
+  const handleGroupCheckbox = (group) => {
     let newSelectedMachines;
     if (checkboxChecked(group.machines, selectedMachines)) {
       // Unselect all machines in the group if all selected
       newSelectedMachines = group.machines.reduce(
         (acc, machine) => {
           if (acc.includes(machine)) {
-            return acc.filter(m => m !== machine);
+            return acc.filter((m) => m !== machine);
           }
           return acc;
         },
@@ -553,11 +553,11 @@ const MachineList = () => {
     currentSort,
     handleMachineCheckbox,
     setActiveRow,
-    showMAC
+    showMAC,
   };
 
   // Handle updating the search text state and URL.
-  const changeFilters = searchText => {
+  const changeFilters = (searchText) => {
     // Update the search text state.
     setSearchText(searchText);
     // Convert the search string into a query string and update the URL.
@@ -607,7 +607,7 @@ const MachineList = () => {
                 "p-table-expanding--light",
                 "machine-list",
                 {
-                  "machine-list--grouped": grouping !== "none"
+                  "machine-list--grouped": grouping !== "none",
                 }
               )}
               headers={[
@@ -652,7 +652,7 @@ const MachineList = () => {
                         <TableHeader>IP</TableHeader>
                       </div>
                     </div>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -665,7 +665,7 @@ const MachineList = () => {
                     >
                       Power
                     </TableHeader>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -678,7 +678,7 @@ const MachineList = () => {
                     >
                       Status
                     </TableHeader>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -693,7 +693,7 @@ const MachineList = () => {
                       </TableHeader>
                       <TableHeader>Tags</TableHeader>
                     </>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -708,7 +708,7 @@ const MachineList = () => {
                       </TableHeader>
                       <TableHeader>Note</TableHeader>
                     </>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -723,7 +723,7 @@ const MachineList = () => {
                       </TableHeader>
                       <TableHeader>Spaces</TableHeader>
                     </>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -738,7 +738,7 @@ const MachineList = () => {
                       </TableHeader>
                       <TableHeader>VLAN</TableHeader>
                     </>
-                  )
+                  ),
                 },
                 {
                   content: (
@@ -754,7 +754,7 @@ const MachineList = () => {
                       <TableHeader>Arch</TableHeader>
                     </>
                   ),
-                  className: "u-align--right"
+                  className: "u-align--right",
                 },
                 {
                   content: (
@@ -767,7 +767,7 @@ const MachineList = () => {
                       RAM
                     </TableHeader>
                   ),
-                  className: "u-align--right"
+                  className: "u-align--right",
                 },
                 {
                   content: (
@@ -780,7 +780,7 @@ const MachineList = () => {
                       Disks
                     </TableHeader>
                   ),
-                  className: "u-align--right"
+                  className: "u-align--right",
                 },
                 {
                   content: (
@@ -793,8 +793,8 @@ const MachineList = () => {
                       Storage
                     </TableHeader>
                   ),
-                  className: "u-align--right"
-                }
+                  className: "u-align--right",
+                },
               ]}
               paginate={150}
               rows={
@@ -806,7 +806,7 @@ const MachineList = () => {
                       hiddenGroups,
                       selectedMachines,
                       setHiddenGroups,
-                      ...rowProps
+                      ...rowProps,
                     })
               }
             />

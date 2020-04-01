@@ -8,14 +8,14 @@ describe("domain reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_DOMAIN_START", () => {
     expect(
       domain(undefined, {
-        type: "FETCH_DOMAIN_START"
+        type: "FETCH_DOMAIN_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("domain reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,14 +36,14 @@ describe("domain reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DOMAIN_SUCCESS",
           payload: [
             { id: 1, name: "rack" },
-            { id: 2, name: "maas" }
-          ]
+            { id: 2, name: "maas" },
+          ],
         }
       )
     ).toEqual({
@@ -55,8 +55,8 @@ describe("domain reducer", () => {
 
       items: [
         { id: 1, name: "rack" },
-        { id: 2, name: "maas" }
-      ]
+        { id: 2, name: "maas" },
+      ],
     });
   });
 
@@ -69,11 +69,11 @@ describe("domain reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           error: "Could not fetch domains",
-          type: "FETCH_DOMAIN_ERROR"
+          type: "FETCH_DOMAIN_ERROR",
         }
       )
     ).toEqual({
@@ -82,7 +82,7 @@ describe("domain reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

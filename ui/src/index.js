@@ -13,7 +13,7 @@ import App from "./app/App";
 import createRootReducer from "./root-reducer";
 
 export const history = createBrowserHistory({
-  basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`
+  basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`,
 });
 const reducer = createRootReducer(history);
 
@@ -21,13 +21,13 @@ const sagaMiddleware = createSagaMiddleware();
 const middleware = [
   ...getDefaultMiddleware(),
   sagaMiddleware,
-  routerMiddleware(history)
+  routerMiddleware(history),
 ];
 
 export const store = configureStore({
   reducer,
   middleware,
-  devTools: process.env.NODE_ENV !== "production"
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 sagaMiddleware.run(rootSaga);

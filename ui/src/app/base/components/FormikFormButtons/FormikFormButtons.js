@@ -6,7 +6,7 @@ export const FormikFormButtons = ({
   loading,
   submitDisabled,
   submitLabel,
-  success
+  success,
 }) => {
   return (
     <div>
@@ -28,7 +28,7 @@ FormikFormButtons.propTypes = {
   loading: PropTypes.bool,
   submitDisabled: PropTypes.bool,
   submitLabel: PropTypes.string.isRequired,
-  success: PropTypes.bool
+  success: PropTypes.bool,
 };
 
 export default FormikFormButtons;

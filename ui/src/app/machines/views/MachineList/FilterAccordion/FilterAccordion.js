@@ -8,7 +8,7 @@ import {
   getCurrentFilters,
   isFilterActive,
   filtersToString,
-  toggleFilter
+  toggleFilter,
 } from "app/machines/search";
 import { getMachineValue, formatSpeedUnits } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
@@ -28,7 +28,7 @@ const filterOrder = [
   "zone",
   "numa_nodes_count",
   "sriov_support",
-  "link_speeds"
+  "link_speeds",
 ];
 
 const filterNames = new Map([
@@ -50,13 +50,13 @@ const filterNames = new Map([
   ["tags", "Tags"],
   ["vlan", "VLAN"],
   ["zone", "Zone"],
-  ["link_speeds", "Link speed"]
+  ["link_speeds", "Link speed"],
 ]);
 
-const getFilters = machines => {
+const getFilters = (machines) => {
   const filters = new Map();
-  machines.forEach(machine => {
-    filterOrder.forEach(filter => {
+  machines.forEach((machine) => {
+    filterOrder.forEach((filter) => {
       let value = getMachineValue(machine, filter);
       // This is not a useful value so skip it.
       if (!value) {
@@ -71,7 +71,7 @@ const getFilters = machines => {
         filters.set(filter, new Map());
         storedFilter = filters.get(filter);
       }
-      value.forEach(filterValue => {
+      value.forEach((filterValue) => {
         let storedValue = storedFilter.get(filterValue);
         if (!storedValue) {
           storedFilter.set(filterValue, 0);
@@ -124,7 +124,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                           filter,
                           filterValue,
                           true
-                        )
+                        ),
                       }
                     )}
                     onClick={() => {
@@ -144,7 +144,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                   </Button>
                 ))}
             />
-          )
+          ),
         });
       }
       return options;
@@ -175,7 +175,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
 
 FilterAccordion.propTypes = {
   searchText: PropTypes.string,
-  setSearchText: PropTypes.func.isRequired
+  setSearchText: PropTypes.func.isRequired,
 };
 
 export default FilterAccordion;

@@ -5,12 +5,12 @@ const general = {};
  * @param {String} method - Name of the general websocket method
  * @returns {Function} Redux action creator for fetching general data
  */
-const generateGeneralAction = method => () => ({
+const generateGeneralAction = (method) => () => ({
   type: `FETCH_GENERAL_${method.toUpperCase()}`,
   meta: {
     model: "general",
-    method
-  }
+    method,
+  },
 });
 
 general.fetchArchitectures = generateGeneralAction("architectures");

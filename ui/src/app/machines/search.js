@@ -6,11 +6,11 @@ export const getEmptyFilter = () => ({
   // "q" is for free search, i.e. not a specific machine attribute. "q" has
   // been chosen because it shouldn't conflict with any machine attributes and
   // also is the key name in the search URL query params.
-  q: []
+  q: [],
 });
 
 // Return all of the currently active filters for the given search.
-export const getCurrentFilters = search => {
+export const getCurrentFilters = (search) => {
   const filters = getEmptyFilter();
   if (!search) {
     return filters;
@@ -45,7 +45,7 @@ export const getCurrentFilters = search => {
       // Split the comma separated values and add the filter.
       let valueList = cleanValues[0].split(",");
       if (allNegated) {
-        valueList = valueList.map(value => `!${value}`);
+        valueList = valueList.map((value) => `!${value}`);
       }
       filters[groupName] = valueList;
     } else if (!group.includes(":")) {
@@ -57,7 +57,7 @@ export const getCurrentFilters = search => {
 };
 
 // Convert "filters" into a search string.
-export const filtersToString = filters => {
+export const filtersToString = (filters) => {
   let search = filters.q.length > 0 ? `${filters.q.join(" ")}` : "";
   Object.entries(filters).forEach(([type, terms]) => {
     // Skip empty and skip "q" as it gets appended at the
@@ -76,7 +76,7 @@ const _getFilterValueIndex = (filters, type, value) => {
   if (!values) {
     return -1;
   }
-  const lowerValues = values.map(value => value.toLowerCase());
+  const lowerValues = values.map((value) => value.toLowerCase());
   return lowerValues.indexOf(value.toLowerCase());
 };
 
@@ -118,10 +118,10 @@ export const storeFilters = (name, filters) => {
 };
 
 // Retrieve a stored filter.
-export const retrieveFilters = name => storedFilters[name];
+export const retrieveFilters = (name) => storedFilters[name];
 
 // Convert a URL query string into a filter object.
-export const queryStringToFilters = queryString => {
+export const queryStringToFilters = (queryString) => {
   let filters = getEmptyFilter();
   [...new URLSearchParams(queryString)].forEach(([name, values]) => {
     if (!values.length) {
@@ -134,12 +134,12 @@ export const queryStringToFilters = queryString => {
 };
 
 // Convert a filter object into a URL query string.
-export const filtersToQueryString = filters => {
+export const filtersToQueryString = (filters) => {
   // Shallow copy the object, this should be good enough for the manipulation
   // we do below.
   let copiedFilters = { ...filters };
   // Remove empty filters.
-  Object.keys(copiedFilters).forEach(filter => {
+  Object.keys(copiedFilters).forEach((filter) => {
     if (copiedFilters[filter].length === 0) {
       delete copiedFilters[filter];
     }

@@ -9,7 +9,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),
-  commissioning_distro_series: Yup.string()
+  commissioning_distro_series: Yup.string(),
 });
 
 const DeployForm = () => {
@@ -26,12 +26,12 @@ const DeployForm = () => {
     <FormikForm
       initialValues={{
         default_osystem: defaultOSystem,
-        default_distro_series: defaultDistroSeries
+        default_distro_series: defaultDistroSeries,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Configuration settings",
-        label: "Deploy form"
+        label: "Deploy form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));

@@ -13,18 +13,18 @@ describe("RepositoryAdd", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       packagerepository: {
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       general: {
         componentsToDisable: {},
         knownArchitectures: {},
-        pocketsToDisable: {}
-      }
+        pocketsToDisable: {},
+      },
     };
   });
 
@@ -35,13 +35,13 @@ describe("RepositoryAdd", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories/add/ppa", key: "testKey" }
+            { pathname: "/settings/repositories/add/ppa", key: "testKey" },
           ]}
         >
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={props => <RepositoryAdd {...props} />}
+            component={(props) => <RepositoryAdd {...props} />}
           />
         </MemoryRouter>
       </Provider>
@@ -60,14 +60,14 @@ describe("RepositoryAdd", () => {
           initialEntries={[
             {
               pathname: "/settings/repositories/add/repository",
-              key: "testKey"
-            }
+              key: "testKey",
+            },
           ]}
         >
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={props => <RepositoryAdd {...props} />}
+            component={(props) => <RepositoryAdd {...props} />}
           />
         </MemoryRouter>
       </Provider>

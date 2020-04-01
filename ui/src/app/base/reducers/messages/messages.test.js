@@ -3,7 +3,7 @@ import messages from "./messages";
 describe("messages", () => {
   it("should return the initial state", () => {
     expect(messages(undefined, {})).toStrictEqual({
-      items: []
+      items: [],
     });
   });
 
@@ -12,15 +12,15 @@ describe("messages", () => {
       messages(undefined, {
         type: "ADD_MESSAGE",
         payload: {
-          message: "User added"
-        }
+          message: "User added",
+        },
       })
     ).toStrictEqual({
       items: [
         {
-          message: "User added"
-        }
-      ]
+          message: "User added",
+        },
+      ],
     });
   });
 
@@ -31,26 +31,26 @@ describe("messages", () => {
           items: [
             {
               id: 99,
-              message: "User added"
+              message: "User added",
             },
             {
               id: 100,
-              message: "User updated"
-            }
-          ]
+              message: "User updated",
+            },
+          ],
         },
         {
           type: "REMOVE_MESSAGE",
-          payload: 99
+          payload: 99,
         }
       )
     ).toStrictEqual({
       items: [
         {
           id: 100,
-          message: "User updated"
-        }
-      ]
+          message: "User updated",
+        },
+      ],
     });
   });
 });

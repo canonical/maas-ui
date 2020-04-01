@@ -8,11 +8,11 @@ import Tooltip from "app/base/components/Tooltip";
 import { machine as machineSelectors } from "app/base/selectors";
 
 const CoresColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
-  const formatShortArch = arch =>
+  const formatShortArch = (arch) =>
     arch.includes("/generic") ? arch.split("/")[0] : arch;
 
   return (
@@ -43,7 +43,7 @@ const CoresColumn = ({ onToggleMenu, systemId }) => {
 
 CoresColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default CoresColumn;

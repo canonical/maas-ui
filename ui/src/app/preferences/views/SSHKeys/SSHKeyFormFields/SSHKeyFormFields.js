@@ -22,7 +22,7 @@ export const SSHKeyFormFields = () => {
               { value: "", label: "Select source" },
               { value: "lp", label: "Launchpad" },
               { value: "gh", label: "GitHub" },
-              { value: "upload", label: "Upload" }
+              { value: "upload", label: "Upload" },
             ]}
           />
           {protocol && !uploadSelected && (

@@ -13,7 +13,7 @@ const StorageSchema = Yup.object().shape({
   default_storage_layout: Yup.string().required(),
   disk_erase_with_quick_erase: Yup.boolean().required(),
   disk_erase_with_secure_erase: Yup.boolean().required(),
-  enable_disk_erasing_on_release: Yup.boolean().required()
+  enable_disk_erasing_on_release: Yup.boolean().required(),
 });
 
 const StorageForm = () => {
@@ -50,12 +50,12 @@ const StorageForm = () => {
               default_storage_layout: defaultStorageLayout,
               disk_erase_with_quick_erase: diskEraseWithQuick,
               disk_erase_with_secure_erase: diskEraseWithSecure,
-              enable_disk_erasing_on_release: enableDiskErasing
+              enable_disk_erasing_on_release: enableDiskErasing,
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Storage settings",
-              label: "Storage form"
+              label: "Storage form",
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

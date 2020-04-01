@@ -8,7 +8,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -16,7 +16,7 @@ describe("resourcepool reducer", () => {
   it("should correctly reduce FETCH_RESOURCEPOOL_START", () => {
     expect(
       resourcepool(undefined, {
-        type: "FETCH_RESOURCEPOOL_START"
+        type: "FETCH_RESOURCEPOOL_START",
       })
     ).toEqual({
       errors: {},
@@ -24,7 +24,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -39,8 +39,8 @@ describe("resourcepool reducer", () => {
         permissions: ["edit", "delete"],
         machine_total_count: 24,
         machine_ready_count: 1,
-        is_default: true
-      }
+        is_default: true,
+      },
     ];
     expect(
       resourcepool(
@@ -50,11 +50,11 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_RESOURCEPOOL_SUCCESS",
-          payload
+          payload,
         }
       )
     ).toEqual({
@@ -63,7 +63,7 @@ describe("resourcepool reducer", () => {
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -74,18 +74,18 @@ describe("resourcepool reducer", () => {
           errors: {},
           items: [],
           loaded: false,
-          loading: false
+          loading: false,
         },
         {
           error: "Could not fetch resource pools",
-          type: "FETCH_RESOURCEPOOL_ERROR"
+          type: "FETCH_RESOURCEPOOL_ERROR",
         }
       )
     ).toEqual({
       errors: "Could not fetch resource pools",
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
     });
   });
 
@@ -99,10 +99,10 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_RESOURCEPOOL_START"
+          type: "CREATE_RESOURCEPOOL_START",
         }
       )
     ).toEqual({
@@ -111,7 +111,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -124,11 +124,11 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { name: "name already exists" },
-          type: "CREATE_RESOURCEPOOL_ERROR"
+          type: "CREATE_RESOURCEPOOL_ERROR",
         }
       )
     ).toEqual({
@@ -137,7 +137,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -150,23 +150,23 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 2, name: "pool2" },
-          type: "CREATE_RESOURCEPOOL_NOTIFY"
+          type: "CREATE_RESOURCEPOOL_NOTIFY",
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "pool1" },
-        { id: 2, name: "pool2" }
+        { id: 2, name: "pool2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -180,10 +180,10 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "UPDATE_RESOURCEPOOL_START"
+          type: "UPDATE_RESOURCEPOOL_START",
         }
       )
     ).toEqual({
@@ -192,7 +192,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -205,10 +205,10 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "UPDATE_RESOURCEPOOL_SUCCESS"
+          type: "UPDATE_RESOURCEPOOL_SUCCESS",
         }
       )
     ).toEqual({
@@ -217,7 +217,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -230,11 +230,11 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not update resource pool",
-          type: "UPDATE_RESOURCEPOOL_ERROR"
+          type: "UPDATE_RESOURCEPOOL_ERROR",
         }
       )
     ).toEqual({
@@ -243,7 +243,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -255,16 +255,16 @@ describe("resourcepool reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "pool1", description: "" },
-            { id: 2, name: "pool2", description: "" }
+            { id: 2, name: "pool2", description: "" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 1, name: "newName", description: "new description" },
-          type: "UPDATE_RESOURCEPOOL_NOTIFY"
+          type: "UPDATE_RESOURCEPOOL_NOTIFY",
         }
       )
     ).toEqual({
@@ -272,12 +272,12 @@ describe("resourcepool reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "newName", description: "new description" },
-        { id: 2, name: "pool2", description: "" }
+        { id: 2, name: "pool2", description: "" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -291,10 +291,10 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_RESOURCEPOOL_START"
+          type: "DELETE_RESOURCEPOOL_START",
         }
       )
     ).toEqual({
@@ -303,7 +303,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -316,11 +316,11 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not delete",
-          type: "DELETE_RESOURCEPOOL_ERROR"
+          type: "DELETE_RESOURCEPOOL_ERROR",
         }
       )
     ).toEqual({
@@ -329,7 +329,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -343,10 +343,10 @@ describe("resourcepool reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: true
+          saving: true,
         },
         {
-          type: "CLEANUP_RESOURCEPOOL"
+          type: "CLEANUP_RESOURCEPOOL",
         }
       )
     ).toEqual({
@@ -355,7 +355,7 @@ describe("resourcepool reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

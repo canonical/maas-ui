@@ -6,8 +6,8 @@ describe("subnet actions", () => {
       type: "FETCH_SUBNET",
       meta: {
         model: "subnet",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

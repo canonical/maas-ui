@@ -9,7 +9,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const [updating, setUpdating] = useState(null);
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
@@ -55,7 +55,7 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
 
 OwnerColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default OwnerColumn;

@@ -13,7 +13,7 @@ describe("StorageColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -22,10 +22,10 @@ describe("StorageColumn", () => {
         items: [
           {
             system_id: "abc123",
-            storage: 8
-          }
-        ]
-      }
+            storage: 8,
+          },
+        ],
+      },
     };
   });
 

@@ -9,9 +9,9 @@ describe("knownArchitectures selectors", () => {
           knownArchitectures: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(knownArchitectures.get(state)).toStrictEqual(data);
     });
@@ -25,9 +25,9 @@ describe("knownArchitectures selectors", () => {
           knownArchitectures: {
             loading: true,
             loaded: false,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(knownArchitectures.loading(state)).toStrictEqual(true);
     });
@@ -41,9 +41,9 @@ describe("knownArchitectures selectors", () => {
           knownArchitectures: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(knownArchitectures.loaded(state)).toStrictEqual(true);
     });
@@ -58,9 +58,9 @@ describe("knownArchitectures selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(knownArchitectures.errors(state)).toStrictEqual(errors);
     });

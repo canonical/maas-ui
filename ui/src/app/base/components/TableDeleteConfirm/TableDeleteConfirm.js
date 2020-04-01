@@ -8,7 +8,7 @@ const TableDeleteConfirm = ({
   modelName,
   modelType,
   onCancel,
-  onConfirm
+  onConfirm,
 }) => {
   return (
     <Row>
@@ -42,7 +42,7 @@ TableDeleteConfirm.propTypes = {
   modelName: PropTypes.string,
   modelType: PropTypes.string,
   onCancel: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
 };
 
 export default TableDeleteConfirm;

@@ -14,7 +14,7 @@ export const FormCardButtons = ({
   submitAppearance = "positive",
   submitDisabled,
   submitLabel,
-  success
+  success,
 }) => {
   const { history } = useRouter();
 
@@ -23,7 +23,7 @@ export const FormCardButtons = ({
       {bordered && <hr />}
       <div
         className={classNames("form-card__buttons", {
-          "is-bordered": bordered
+          "is-bordered": bordered,
         })}
       >
         <Button
@@ -77,7 +77,7 @@ FormCardButtons.propTypes = {
   submitAppearance: PropTypes.string,
   submitDisabled: PropTypes.bool,
   submitLabel: PropTypes.string.isRequired,
-  success: PropTypes.bool
+  success: PropTypes.bool,
 };
 
 export default FormCardButtons;

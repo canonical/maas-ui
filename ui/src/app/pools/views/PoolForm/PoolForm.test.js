@@ -14,13 +14,13 @@ describe("PoolForm", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       resourcepool: {
         loaded: true,
@@ -30,17 +30,17 @@ describe("PoolForm", () => {
             name: "default",
             description: "default",
             is_default: true,
-            permissions: []
+            permissions: [],
           },
           {
             id: 1,
             name: "Backup",
             description: "A backup pool",
             is_default: false,
-            permissions: []
-          }
-        ]
-      }
+            permissions: [],
+          },
+        ],
+      },
     };
   });
 
@@ -67,7 +67,7 @@ describe("PoolForm", () => {
     );
     wrapper.unmount();
     expect(store.getActions()[0]).toEqual({
-      type: "CLEANUP_RESOURCEPOOL"
+      type: "CLEANUP_RESOURCEPOOL",
     });
   });
 
@@ -94,30 +94,26 @@ describe("PoolForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("FormikForm")
-        .at(0)
-        .props()
-        .onSubmit(
-          {
-            name: "pool-1",
-            description: "a pool"
-          },
-          {}
-        )
+      wrapper.find("FormikForm").at(0).props().onSubmit(
+        {
+          name: "pool-1",
+          description: "a pool",
+        },
+        {}
+      )
     );
     expect(store.getActions()[1]).toEqual({
       type: "CREATE_RESOURCEPOOL",
       payload: {
         params: {
           name: "pool-1",
-          description: "a pool"
-        }
+          description: "a pool",
+        },
       },
       meta: {
         model: "resourcepool",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -126,7 +122,7 @@ describe("PoolForm", () => {
     const pool = {
       id: 2,
       name: "pool1",
-      description: "a pool"
+      description: "a pool",
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -138,30 +134,27 @@ describe("PoolForm", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "newName",
-          description: "new description"
-        });
+      wrapper.find("Formik").props().onSubmit({
+        name: "newName",
+        description: "new description",
+      });
     });
     const action = store
       .getActions()
-      .find(action => action.type === "UPDATE_RESOURCEPOOL");
+      .find((action) => action.type === "UPDATE_RESOURCEPOOL");
     expect(action).toEqual({
       type: "UPDATE_RESOURCEPOOL",
       payload: {
         params: {
           id: 2,
           name: "newName",
-          description: "new description"
-        }
+          description: "new description",
+        },
       },
       meta: {
         model: "resourcepool",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 
@@ -176,9 +169,9 @@ describe("PoolForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_RESOURCEPOOL")).toBe(
-      true
-    );
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(
+      actions.some((action) => action.type === "CLEANUP_RESOURCEPOOL")
+    ).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

@@ -10,7 +10,9 @@ export const PoolEdit = () => {
   const { id } = useParams();
   const loaded = useSelector(poolSelectors.loaded);
   const loading = useSelector(poolSelectors.loading);
-  const pool = useSelector(state => poolSelectors.getById(state, parseInt(id)));
+  const pool = useSelector((state) =>
+    poolSelectors.getById(state, parseInt(id))
+  );
 
   if (loading) {
     return <Loader text="Loading..." />;

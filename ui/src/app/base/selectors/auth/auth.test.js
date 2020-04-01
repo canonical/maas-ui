@@ -6,12 +6,12 @@ describe("auth", () => {
       user: {
         auth: {
           user: { username: "admin" },
-          loading: true
-        }
-      }
+          loading: true,
+        },
+      },
     };
     expect(auth.get(state)).toStrictEqual({
-      username: "admin"
+      username: "admin",
     });
   });
 
@@ -20,9 +20,9 @@ describe("auth", () => {
       user: {
         auth: {
           user: { username: "admin" },
-          loading: true
-        }
-      }
+          loading: true,
+        },
+      },
     };
     expect(auth.loading(state)).toStrictEqual(true);
   });
@@ -31,9 +31,9 @@ describe("auth", () => {
     const state = {
       user: {
         auth: {
-          loaded: true
-        }
-      }
+          loaded: true,
+        },
+      },
     };
     expect(auth.loaded(state)).toEqual(true);
   });
@@ -42,9 +42,9 @@ describe("auth", () => {
     const state = {
       user: {
         auth: {
-          saving: true
-        }
-      }
+          saving: true,
+        },
+      },
     };
     expect(auth.saving(state)).toEqual(true);
   });
@@ -53,9 +53,9 @@ describe("auth", () => {
     const state = {
       user: {
         auth: {
-          saved: true
-        }
-      }
+          saved: true,
+        },
+      },
     };
     expect(auth.saved(state)).toEqual(true);
   });
@@ -64,12 +64,12 @@ describe("auth", () => {
     const state = {
       user: {
         auth: {
-          errors: { username: "Username already exists" }
-        }
-      }
+          errors: { username: "Username already exists" },
+        },
+      },
     };
     expect(auth.errors(state)).toStrictEqual({
-      username: "Username already exists"
+      username: "Username already exists",
     });
   });
 });

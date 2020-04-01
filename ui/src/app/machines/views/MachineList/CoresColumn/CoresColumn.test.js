@@ -13,7 +13,7 @@ describe("CoresColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -25,11 +25,11 @@ describe("CoresColumn", () => {
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
-              status: 1
-            }
-          }
-        ]
-      }
+              status: 1,
+            },
+          },
+        ],
+      },
     };
   });
 

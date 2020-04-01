@@ -23,14 +23,14 @@ describe("CommissioningFormFields", () => {
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
               ["trusty", 'Ubuntu 14.04 LTS "Trusty Tahr"'],
               ["xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
-              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']
-            ]
+              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+            ],
           },
           {
             name: "default_min_hwe_kernel",
-            value: "ga-16.04-lowlatency"
-          }
-        ]
+            value: "ga-16.04-lowlatency",
+          },
+        ],
       },
       general: {
         osInfo: {
@@ -41,21 +41,21 @@ describe("CommissioningFormFields", () => {
               ubuntu: {
                 trusty: [
                   ["hwe-14.04-edge", "xenial (hwe-14.04-edge)"],
-                  ["hwe-14.04", "trusty (hwe-14.04)"]
+                  ["hwe-14.04", "trusty (hwe-14.04)"],
                 ],
                 xenial: [
                   ["hwe-16.04-edge", "xenial (hwe-16.04-edge)"],
-                  ["hwe-16.04", "xenial (hwe-16.04)"]
+                  ["hwe-16.04", "xenial (hwe-16.04)"],
                 ],
                 bionic: [
                   ["hwe-18.04-edge", "xenial (hwe-18.04-edge)"],
-                  ["hwe-18.04", "xenial (hwe-18.04)"]
-                ]
-              }
-            }
-          }
-        }
-      }
+                  ["hwe-18.04", "xenial (hwe-18.04)"],
+                ],
+              },
+            },
+          },
+        },
+      },
     };
   });
 

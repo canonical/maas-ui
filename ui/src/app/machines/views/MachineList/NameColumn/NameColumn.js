@@ -23,11 +23,11 @@ const generateFQDN = (machine, machineURL) => {
   );
 };
 
-const generateIPAddresses = machine => {
+const generateIPAddresses = (machine) => {
   let ipAddresses = [];
   let bootIP;
 
-  (machine.ip_addresses || []).forEach(address => {
+  (machine.ip_addresses || []).forEach((address) => {
     let ip = address.ip;
     if (address.is_boot) {
       ip = `${ip} (PXE)`;
@@ -56,7 +56,7 @@ const generateIPAddresses = machine => {
           <>
             <strong>{ipAddresses.length} interfaces:</strong>
             <ul className="p-list u-no-margin--bottom">
-              {ipAddresses.map(address => (
+              {ipAddresses.map((address) => (
                 <li key={address}>{address}</li>
               ))}
             </ul>
@@ -88,9 +88,9 @@ const NameColumn = ({
   onToggleMenu,
   selected,
   showMAC,
-  systemId
+  systemId,
 }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const machineURL = `${process.env.REACT_APP_ANGULAR_BASENAME}/${machine.link_type}/${machine.system_id}`;
@@ -140,7 +140,7 @@ NameColumn.propTypes = {
   selected: PropTypes.bool,
   onToggleMenu: PropTypes.func,
   showMAC: PropTypes.bool,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default NameColumn;

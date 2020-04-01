@@ -4,7 +4,7 @@ import {
   Col,
   Notification,
   Row,
-  Strip
+  Strip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required")
+  password: Yup.string().required("Password is required"),
 });
 
 export const Login = () => {
@@ -64,9 +64,9 @@ export const Login = () => {
                 errors={error}
                 initialValues={{
                   password: "",
-                  username: ""
+                  username: "",
                 }}
-                onSubmit={values => {
+                onSubmit={(values) => {
                   dispatch(statusActions.login(values));
                 }}
                 saving={authenticating}

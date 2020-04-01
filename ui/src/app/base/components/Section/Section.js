@@ -43,7 +43,7 @@ Section.propTypes = {
   children: PropTypes.node,
   headerClassName: PropTypes.string,
   sidebar: PropTypes.node,
-  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired
+  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
 };
 
 export default Section;

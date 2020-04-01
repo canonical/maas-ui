@@ -70,11 +70,7 @@ describe("ContextualMenu ", () => {
       />
     );
     expect(
-      wrapper
-        .find("button.p-contextual-menu__toggle")
-        .children()
-        .at(0)
-        .text()
+      wrapper.find("button.p-contextual-menu__toggle").children().at(0).text()
     ).toBe("Toggle");
   });
 
@@ -88,11 +84,7 @@ describe("ContextualMenu ", () => {
       />
     );
     expect(
-      wrapper
-        .find("button.p-contextual-menu__toggle")
-        .children()
-        .at(1)
-        .text()
+      wrapper.find("button.p-contextual-menu__toggle").children().at(1).text()
     ).toBe("Toggle");
   });
 
@@ -104,10 +96,7 @@ describe("ContextualMenu ", () => {
         .exists()
     ).toBe(false);
     expect(
-      wrapper
-        .find("button.p-contextual-menu__toggle")
-        .children()
-        .text()
+      wrapper.find("button.p-contextual-menu__toggle").children().text()
     ).toBe("Toggle");
   });
 
@@ -142,10 +131,7 @@ describe("ContextualMenu ", () => {
   it("can display links", () => {
     const wrapper = mount(<ContextualMenu links={[{ children: "Link1" }]} />);
     expect(
-      wrapper
-        .find("button.p-contextual-menu__link")
-        .children()
-        .text()
+      wrapper.find("button.p-contextual-menu__link").children().text()
     ).toBe("Link1");
   });
 
@@ -172,11 +158,7 @@ describe("ContextualMenu ", () => {
         .text()
     ).toBe("Link1");
     expect(
-      wrapper
-        .find("button.p-contextual-menu__link")
-        .at(1)
-        .children()
-        .text()
+      wrapper.find("button.p-contextual-menu__link").at(1).children().text()
     ).toBe("Link2");
   });
 

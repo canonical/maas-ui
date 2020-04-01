@@ -4,16 +4,16 @@ import { createStandardActions } from "app/utils/redux";
 
 const notification = createStandardActions("notification");
 
-notification.delete = createAction(`DELETE_NOTIFICATION`, id => ({
+notification.delete = createAction(`DELETE_NOTIFICATION`, (id) => ({
   meta: {
     model: "notification",
-    method: "dismiss"
+    method: "dismiss",
   },
   payload: {
     params: {
-      id
-    }
-  }
+      id,
+    },
+  },
 }));
 
 notification.delete.notify = createAction(`DELETE_NOTIFICATION_NOTIFY`);

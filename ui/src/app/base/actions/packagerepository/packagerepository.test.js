@@ -5,12 +5,12 @@ describe("packagerepository actions", () => {
     expect(packagerepository.fetch()).toEqual({
       type: "FETCH_PACKAGEREPOSITORY",
       payload: {
-        params: { limit: 50 }
+        params: { limit: 50 },
       },
       meta: {
         model: "packagerepository",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -19,13 +19,13 @@ describe("packagerepository actions", () => {
       type: "CREATE_PACKAGEREPOSITORY",
       meta: {
         model: "packagerepository",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          name: "foo"
-        }
-      }
+          name: "foo",
+        },
+      },
     });
   });
 
@@ -34,13 +34,13 @@ describe("packagerepository actions", () => {
       type: "UPDATE_PACKAGEREPOSITORY",
       meta: {
         model: "packagerepository",
-        method: "update"
+        method: "update",
       },
       payload: {
         params: {
-          name: "bar"
-        }
-      }
+          name: "bar",
+        },
+      },
     });
   });
 
@@ -49,19 +49,19 @@ describe("packagerepository actions", () => {
       type: "DELETE_PACKAGEREPOSITORY",
       meta: {
         model: "packagerepository",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 911
-        }
-      }
+          id: 911,
+        },
+      },
     });
   });
 
   it("can handle cleaning repositories", () => {
     expect(packagerepository.cleanup()).toEqual({
-      type: "CLEANUP_PACKAGEREPOSITORY"
+      type: "CLEANUP_PACKAGEREPOSITORY",
     });
   });
 });

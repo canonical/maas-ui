@@ -4,8 +4,8 @@ describe("packagerepository selectors", () => {
   it("can get repository items", () => {
     const state = {
       packagerepository: {
-        items: [{ name: "default" }]
-      }
+        items: [{ name: "default" }],
+      },
     };
     expect(packagerepository.all(state)).toEqual([{ name: "default" }]);
   });
@@ -14,8 +14,8 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(packagerepository.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(packagerepository.loaded(state)).toEqual(true);
   });
@@ -34,8 +34,8 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         saving: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(packagerepository.saving(state)).toEqual(true);
   });
@@ -44,8 +44,8 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         saved: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(packagerepository.saved(state)).toEqual(true);
   });
@@ -54,11 +54,11 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         errors: { name: "Name already exists" },
-        items: []
-      }
+        items: [],
+      },
     };
     expect(packagerepository.errors(state)).toStrictEqual({
-      name: "Name already exists"
+      name: "Name already exists",
     });
   });
 
@@ -66,8 +66,8 @@ describe("packagerepository selectors", () => {
     const state = {
       packagerepository: {
         loading: true,
-        items: [{ name: "foo" }, { name: "bar" }]
-      }
+        items: [{ name: "foo" }, { name: "bar" }],
+      },
     };
     expect(packagerepository.count(state)).toEqual(2);
   });
@@ -78,13 +78,13 @@ describe("packagerepository selectors", () => {
         loading: true,
         items: [
           { name: "foo", id: 101 },
-          { name: "bar", id: 123 }
-        ]
-      }
+          { name: "bar", id: 123 },
+        ],
+      },
     };
     expect(packagerepository.getById(state, 101)).toStrictEqual({
       name: "foo",
-      id: 101
+      id: 101,
     });
   });
 
@@ -94,13 +94,13 @@ describe("packagerepository selectors", () => {
         items: [
           { name: "main_archive", url: "www.website.com" },
           { name: "extra_archive", url: "www.main.com" },
-          { name: "other_archive", url: "www.other.com" }
-        ]
-      }
+          { name: "other_archive", url: "www.other.com" },
+        ],
+      },
     };
     expect(packagerepository.search(state, "main")).toEqual([
       { name: "main_archive", url: "www.website.com" },
-      { name: "extra_archive", url: "www.main.com" }
+      { name: "extra_archive", url: "www.main.com" },
     ]);
   });
 });

@@ -9,7 +9,7 @@ describe("PowerTypeFields", () => {
   it("correctly generates power options from power type", async () => {
     const formikProps = {
       setFieldValue: jest.fn(),
-      setFieldTouched: jest.fn()
+      setFieldTouched: jest.fn(),
     };
     const powerTypes = [
       {
@@ -19,12 +19,12 @@ describe("PowerTypeFields", () => {
           {
             name: "field1",
             label: "Required text",
-            required: true
+            required: true,
           },
           {
             name: "field2",
             label: "Non-required text",
-            required: false
+            required: false,
           },
           {
             name: "field3",
@@ -32,11 +32,11 @@ describe("PowerTypeFields", () => {
             field_type: "choice",
             choices: [
               ["choice1", "Choice 1"],
-              ["choice2", "Choice 2"]
-            ]
-          }
-        ]
-      }
+              ["choice2", "Choice 2"],
+            ],
+          },
+        ],
+      },
     ];
     const wrapper = mount(
       <Formik>

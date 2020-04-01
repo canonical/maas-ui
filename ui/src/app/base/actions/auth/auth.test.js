@@ -6,8 +6,8 @@ describe("base actions", () => {
       type: "FETCH_AUTH_USER",
       meta: {
         model: "user",
-        method: "auth_user"
-      }
+        method: "auth_user",
+      },
     });
   });
 
@@ -16,17 +16,17 @@ describe("base actions", () => {
       type: "CHANGE_AUTH_USER_PASSWORD",
       meta: {
         model: "user",
-        method: "change_password"
+        method: "change_password",
       },
       payload: {
-        params: { password: "pass1" }
-      }
+        params: { password: "pass1" },
+      },
     });
   });
 
   it("should handle cleaning up", () => {
     expect(auth.cleanup()).toEqual({
-      type: "CLEANUP_AUTH_USER"
+      type: "CLEANUP_AUTH_USER",
     });
   });
 });

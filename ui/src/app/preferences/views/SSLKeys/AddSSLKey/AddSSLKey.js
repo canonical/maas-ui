@@ -13,7 +13,7 @@ import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
 
 const SSLKeySchema = Yup.object().shape({
-  key: Yup.string().required("SSL key is required")
+  key: Yup.string().required("SSL key is required"),
 });
 
 export const AddSSLKey = () => {
@@ -36,9 +36,9 @@ export const AddSSLKey = () => {
         onSaveAnalytics={{
           action: "Saved",
           category: "SSL keys preferences",
-          label: "Add SSL key form"
+          label: "Add SSL key form",
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           dispatch(sslkeyActions.create(values));
         }}
         saving={saving}

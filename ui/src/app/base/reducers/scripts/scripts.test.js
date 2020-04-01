@@ -6,20 +6,20 @@ describe("scripts reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
     });
   });
 
   it("should correctly reduce FETCH_SCRIPTS_START", () => {
     expect(
       scripts(undefined, {
-        type: "FETCH_SCRIPTS_START"
+        type: "FETCH_SCRIPTS_START",
       })
     ).toEqual({
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
     });
   });
 
@@ -27,13 +27,13 @@ describe("scripts reducer", () => {
     expect(
       scripts(undefined, {
         type: "FETCH_SCRIPTS_ERROR",
-        errors: { error: "Unable to fetch scripts" }
+        errors: { error: "Unable to fetch scripts" },
       })
     ).toEqual({
       items: [],
       errors: { error: "Unable to fetch scripts" },
       loaded: false,
-      loading: false
+      loading: false,
     });
   });
 
@@ -43,17 +43,17 @@ describe("scripts reducer", () => {
         {
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
         },
         {
           type: "FETCH_SCRIPTS_SUCCESS",
-          payload: [{ name: "script 1" }, { name: "script2" }]
+          payload: [{ name: "script 1" }, { name: "script2" }],
         }
       )
     ).toEqual({
       items: [{ name: "script 1" }, { name: "script2" }],
       loaded: true,
-      loading: false
+      loading: false,
     });
   });
 
@@ -66,10 +66,10 @@ describe("scripts reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_SCRIPT_START"
+          type: "DELETE_SCRIPT_START",
         }
       )
     ).toEqual({
@@ -78,7 +78,7 @@ describe("scripts reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -89,16 +89,16 @@ describe("scripts reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "script-1" },
-            { id: 2, name: "script-2" }
+            { id: 2, name: "script-2" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "DELETE_SCRIPT_SUCCESS",
-          payload: 2
+          payload: 2,
         }
       )
     ).toEqual({
@@ -107,7 +107,7 @@ describe("scripts reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -120,11 +120,11 @@ describe("scripts reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           errors: { error: "Not found" },
-          type: "DELETE_SCRIPT_ERROR"
+          type: "DELETE_SCRIPT_ERROR",
         }
       )
     ).toEqual({
@@ -133,7 +133,7 @@ describe("scripts reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

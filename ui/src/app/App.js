@@ -6,7 +6,7 @@ import * as Sentry from "@sentry/browser";
 
 import {
   auth as authActions,
-  general as generalActions
+  general as generalActions,
 } from "app/base/actions";
 import { general as generalSelectors } from "app/base/selectors";
 import { auth as authSelectors } from "app/base/selectors";
@@ -104,7 +104,7 @@ export const App = () => {
 
   if (analyticsEnabled && process.env.REACT_APP_SENTRY_DSN) {
     Sentry.init({
-      dsn: process.env.REACT_APP_SENTRY_DSN
+      dsn: process.env.REACT_APP_SENTRY_DSN,
     });
   }
 

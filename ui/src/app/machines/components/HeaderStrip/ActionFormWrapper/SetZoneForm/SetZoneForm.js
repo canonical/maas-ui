@@ -7,14 +7,14 @@ import React from "react";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
-  zone as zoneSelectors
+  zone as zoneSelectors,
 } from "app/base/selectors";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
 
 const SetZoneSchema = Yup.object().shape({
-  zone: Yup.string().required("Zone is required")
+  zone: Yup.string().required("Zone is required"),
 });
 
 export const SetZoneForm = ({ setSelectedAction }) => {
@@ -28,11 +28,11 @@ export const SetZoneForm = ({ setSelectedAction }) => {
 
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
-    ...zones.map(zone => ({
+    ...zones.map((zone) => ({
       key: `zone-${zone.id}`,
       label: zone.name,
-      value: zone.name
-    }))
+      value: zone.name,
+    })),
   ];
 
   return (
@@ -50,11 +50,11 @@ export const SetZoneForm = ({ setSelectedAction }) => {
       onSaveAnalytics={{
         action: "Set zone",
         category: "Take action menu",
-        label: "Set zone of selected machines"
+        label: "Set zone of selected machines",
       }}
-      onSubmit={values => {
-        const zone = zones.find(zone => zone.name === values.zone);
-        selectedMachines.forEach(machine => {
+      onSubmit={(values) => {
+        const zone = zones.find((zone) => zone.name === values.zone);
+        selectedMachines.forEach((machine) => {
           dispatch(machineActions.setZone(machine.system_id, zone.id));
         });
         setSelectedAction(null);

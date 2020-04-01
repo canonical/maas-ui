@@ -15,13 +15,13 @@ describe("APIKeyForm", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       token: {
         loading: false,
         loaded: true,
-        items: [{ id: 1, key: "ssh-rsa aabb", consumer: { name: "Name" } }]
-      }
+        items: [{ id: 1, key: "ssh-rsa aabb", consumer: { name: "Name" } }],
+      },
     };
   });
 
@@ -47,26 +47,23 @@ describe("APIKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "Token name"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        name: "Token name",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "CREATE_TOKEN")
+      store.getActions().find((action) => action.type === "CREATE_TOKEN")
     ).toStrictEqual({
       type: "CREATE_TOKEN",
       payload: {
         params: {
-          name: "Token name"
-        }
+          name: "Token name",
+        },
       },
       meta: {
         model: "token",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -80,27 +77,24 @@ describe("APIKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "New token name"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        name: "New token name",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "UPDATE_TOKEN")
+      store.getActions().find((action) => action.type === "UPDATE_TOKEN")
     ).toStrictEqual({
       type: "UPDATE_TOKEN",
       payload: {
         params: {
           id: 1,
-          name: "New token name"
-        }
+          name: "New token name",
+        },
       },
       meta: {
         model: "token",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 });

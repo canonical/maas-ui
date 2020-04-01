@@ -7,7 +7,7 @@ import {
   domain as domainSelectors,
   general as generalSelectors,
   resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors
+  zone as zoneSelectors,
 } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
@@ -35,50 +35,50 @@ export const AddMachineFormFields = ({ saved }) => {
     {
       label: "Select your architecture",
       value: "",
-      disabled: true
+      disabled: true,
     },
-    ...architectures.map(arch => ({
+    ...architectures.map((arch) => ({
       key: arch,
       label: arch,
-      value: arch
-    }))
+      value: arch,
+    })),
   ];
   const domainOptions = [
     { label: "Select your domain", value: "", disabled: true },
-    ...domains.map(domain => ({
+    ...domains.map((domain) => ({
       key: `domain-${domain.id}`,
       label: domain.name,
-      value: domain.name
-    }))
+      value: domain.name,
+    })),
   ];
   const hweKernelOptions = [
     {
       label: "Select your minimum kernel",
       value: null,
-      disabled: true
+      disabled: true,
     },
     { label: "No minimum kernel", value: "" },
-    ...hweKernels.map(kernel => ({
+    ...hweKernels.map((kernel) => ({
       key: `kernel-${kernel[1]}`,
       label: kernel[1],
-      value: kernel[0]
-    }))
+      value: kernel[0],
+    })),
   ];
   const resourcePoolOptions = [
     { label: "Select your resource pool", value: "", disabled: true },
-    ...resourcePools.map(pool => ({
+    ...resourcePools.map((pool) => ({
       key: `pool-${pool.id}`,
       label: pool.name,
-      value: pool.name
-    }))
+      value: pool.name,
+    })),
   ];
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
-    ...zones.map(zone => ({
+    ...zones.map((zone) => ({
       key: `zone-${zone.id}`,
       label: zone.name,
-      value: zone.name
-    }))
+      value: zone.name,
+    })),
   ];
 
   return (
@@ -140,7 +140,7 @@ export const AddMachineFormFields = ({ saved }) => {
           >
             <Input
               maxLength="17"
-              onChange={e => {
+              onChange={(e) => {
                 const newExtraMACs = [...extraMACs];
                 newExtraMACs[i] = e.target.value;
                 setExtraMACs(newExtraMACs);

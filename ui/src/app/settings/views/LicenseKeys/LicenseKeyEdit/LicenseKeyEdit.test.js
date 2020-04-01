@@ -14,7 +14,7 @@ describe("LicenseKeyEdit", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         osInfo: {
@@ -23,15 +23,15 @@ describe("LicenseKeyEdit", () => {
           data: {
             osystems: [
               ["ubuntu", "Ubuntu"],
-              ["windows", "Windows"]
+              ["windows", "Windows"],
             ],
             releases: [
               ["ubuntu/bionic", "Ubuntu 18.04 LTS 'Bionic Beaver'"],
               ["windows/win2012*", "Windows Server 2012"],
-              ["windows/win2019*", "Windows Server 2019"]
-            ]
-          }
-        }
+              ["windows/win2019*", "Windows Server 2019"],
+            ],
+          },
+        },
       },
       licensekeys: {
         errors: {},
@@ -40,20 +40,20 @@ describe("LicenseKeyEdit", () => {
             osystem: "windows",
             distro_series: "win2012",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXA",
-            resource_uri: "/MAAS/api/2.0/license-key/windows/win2012"
+            resource_uri: "/MAAS/api/2.0/license-key/windows/win2012",
           },
           {
             osystem: "windows",
             distro_series: "win2019",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXX7",
-            resource_uri: "/MAAS/api/2.0/license-key/windows/win2019"
-          }
+            resource_uri: "/MAAS/api/2.0/license-key/windows/win2019",
+          },
         ],
         loaded: true,
         loading: false,
         saving: false,
-        saved: false
-      }
+        saved: false,
+      },
     };
   });
 
@@ -67,8 +67,8 @@ describe("LicenseKeyEdit", () => {
           initialEntries={[
             {
               pathname: "/settings/license-keys/window/windows2012/edit",
-              key: "testKey"
-            }
+              key: "testKey",
+            },
           ]}
         >
           <LicenseKeyEdit />
@@ -84,7 +84,7 @@ describe("LicenseKeyEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" }
+            { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" },
           ]}
         >
           <LicenseKeyEdit />
@@ -102,14 +102,14 @@ describe("LicenseKeyEdit", () => {
           initialEntries={[
             {
               pathname: "/settings/license-keys/windows/win2012/edit",
-              key: "testKey"
-            }
+              key: "testKey",
+            },
           ]}
         >
           <Route
             exact
             path="/settings/license-keys/:osystem/:distro_series/edit"
-            component={props => <LicenseKeyEdit {...props} />}
+            component={(props) => <LicenseKeyEdit {...props} />}
           />
         </MemoryRouter>
       </Provider>

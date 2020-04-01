@@ -15,7 +15,7 @@ export const APIKeyEdit = () => {
 
   const { id } = useParams();
   const loading = useSelector(tokenSelectors.loading);
-  const token = useSelector(state =>
+  const token = useSelector((state) =>
     tokenSelectors.getById(state, parseInt(id))
   );
   if (loading) {

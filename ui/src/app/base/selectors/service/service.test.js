@@ -7,19 +7,19 @@ describe("service selectors", () => {
         id: 1,
         name: "ntp_rack",
         status: "dead",
-        status_info: ""
+        status_info: "",
       },
       {
         id: 2,
         name: "http",
         status: "unknown",
-        status_info: ""
-      }
+        status_info: "",
+      },
     ];
     const state = {
       service: {
-        items
-      }
+        items,
+      },
     };
     expect(service.all(state)).toEqual(items);
   });
@@ -28,8 +28,8 @@ describe("service selectors", () => {
     const state = {
       service: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(service.loading(state)).toEqual(true);
   });
@@ -38,8 +38,8 @@ describe("service selectors", () => {
     const state = {
       service: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(service.loaded(state)).toEqual(true);
   });
@@ -47,8 +47,8 @@ describe("service selectors", () => {
   it("can get the errors state", () => {
     const state = {
       service: {
-        errors: "Data is incorrect"
-      }
+        errors: "Data is incorrect",
+      },
     };
     expect(service.errors(state)).toStrictEqual("Data is incorrect");
   });

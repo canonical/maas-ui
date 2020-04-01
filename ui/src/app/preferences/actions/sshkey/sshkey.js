@@ -4,47 +4,47 @@ sshkey.fetch = () => ({
   type: "FETCH_SSHKEY",
   meta: {
     model: "sshkey",
-    method: "list"
-  }
+    method: "list",
+  },
 });
 
-sshkey.create = params => ({
+sshkey.create = (params) => ({
   type: "CREATE_SSHKEY",
   meta: {
     model: "sshkey",
-    method: "create"
+    method: "create",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
-sshkey.import = params => ({
+sshkey.import = (params) => ({
   type: "IMPORT_SSHKEY",
   meta: {
     model: "sshkey",
-    method: "import_keys"
+    method: "import_keys",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
-sshkey.delete = id => ({
+sshkey.delete = (id) => ({
   type: "DELETE_SSHKEY",
   meta: {
     model: "sshkey",
-    method: "delete"
+    method: "delete",
   },
   payload: {
     params: {
-      id
-    }
-  }
+      id,
+    },
+  },
 });
 
 sshkey.cleanup = () => ({
-  type: "CLEANUP_SSHKEY"
+  type: "CLEANUP_SSHKEY",
 });
 
 export default sshkey;

@@ -54,7 +54,7 @@ const fieldlessActions = [
   "on",
   "release",
   "rescue-mode",
-  "unlock"
+  "unlock",
 ];
 
 export const ActionForm = ({ selectedAction, setSelectedAction }) => {
@@ -80,12 +80,12 @@ export const ActionForm = ({ selectedAction, setSelectedAction }) => {
       onSaveAnalytics={{
         action: selectedAction.name,
         category: "Take action menu",
-        label: selectedAction.title
+        label: selectedAction.title,
       }}
       onSubmit={() => {
         if (fieldlessActions.includes(selectedAction.name)) {
           const actionMethod = kebabToCamelCase(selectedAction.name);
-          selectedMachines.forEach(machine => {
+          selectedMachines.forEach((machine) => {
             if (machine.actions.includes(selectedAction.name)) {
               dispatch(machineActions[actionMethod](machine.system_id));
             }

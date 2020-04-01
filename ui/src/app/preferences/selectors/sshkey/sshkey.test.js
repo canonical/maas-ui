@@ -9,13 +9,13 @@ describe("sshkey selectors", () => {
           loaded: true,
           items: [
             { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" }
-          ]
-        }
+            { id: 2, key: "ssh-rsa ccdd" },
+          ],
+        },
       };
       expect(sshkey.all(state)).toStrictEqual([
         { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" }
+        { id: 2, key: "ssh-rsa ccdd" },
       ]);
     });
   });
@@ -26,8 +26,8 @@ describe("sshkey selectors", () => {
         sshkey: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sshkey.loading(state)).toStrictEqual(false);
     });
@@ -39,8 +39,8 @@ describe("sshkey selectors", () => {
         sshkey: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sshkey.loaded(state)).toStrictEqual(true);
     });
@@ -53,8 +53,8 @@ describe("sshkey selectors", () => {
           errors: "Unable to list SSH keys.",
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sshkey.errors(state)).toEqual("Unable to list SSH keys.");
     });
@@ -65,8 +65,8 @@ describe("sshkey selectors", () => {
       const state = {
         sshkey: {
           saving: false,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sshkey.saving(state)).toStrictEqual(false);
     });
@@ -77,8 +77,8 @@ describe("sshkey selectors", () => {
       const state = {
         sshkey: {
           saved: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sshkey.saved(state)).toStrictEqual(true);
     });

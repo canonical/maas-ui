@@ -1,7 +1,7 @@
 import {
   Button,
   Link as VanillaLink,
-  Notification
+  Notification,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
-const formatKey = key => {
+const formatKey = (key) => {
   const parts = key.split(" ");
   if (parts.length === 3) {
     return parts[2];
@@ -21,9 +21,9 @@ const formatKey = key => {
   return `${key.slice(0, 20)}...`;
 };
 
-const groupBySource = sshkeys => {
+const groupBySource = (sshkeys) => {
   const groups = new Map();
-  sshkeys.forEach(sshkey => {
+  sshkeys.forEach((sshkey) => {
     const { keysource } = sshkey;
     let source, id, groupId;
     if (keysource) {
@@ -46,7 +46,7 @@ const groupBySource = sshkeys => {
       groups.set(groupId, {
         id,
         keys: [sshkey],
-        source
+        source,
       });
     }
   });
@@ -82,7 +82,7 @@ const generateRows = (
       columns: [
         {
           content: group.source,
-          role: "rowheader"
+          role: "rowheader",
         },
         { content: group.id },
         {
@@ -99,8 +99,8 @@ const generateRows = (
             >
               <i className="p-icon--delete">Delete</i>
             </Button>
-          )
-        }
+          ),
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -110,7 +110,7 @@ const generateRows = (
           }?`}
           onCancel={hideExpanded}
           onConfirm={() => {
-            group.keys.forEach(key => {
+            group.keys.forEach((key) => {
               dispatch(sshkeyActions.delete(key.id));
             });
             hideExpanded();
@@ -120,8 +120,8 @@ const generateRows = (
       key: id,
       sortData: {
         source: group.source,
-        id: group.id
-      }
+        id: group.id,
+      },
     };
   });
 
@@ -155,16 +155,16 @@ const SSHKeyList = () => {
       )}
       <SettingsTable
         buttons={[
-          { label: "Import SSH key", url: "/account/prefs/ssh-keys/add" }
+          { label: "Import SSH key", url: "/account/prefs/ssh-keys/add" },
         ]}
         headers={[
           {
             content: "Source",
-            sortKey: "source"
+            sortKey: "source",
           },
           {
             content: "ID",
-            sortKey: "id"
+            sortKey: "id",
           },
           {
             content: (
@@ -172,8 +172,8 @@ const SSHKeyList = () => {
                 Key
                 <span className="sshkey-list__header-action">Actions</span>
               </>
-            )
-          }
+            ),
+          },
         ]}
         loaded={sshkeyLoaded}
         loading={sshkeyLoading}

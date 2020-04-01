@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { config as configSelectors } from "app/settings/selectors";
 import {
   auth as authSelectors,
-  general as generalSelectors
+  general as generalSelectors,
 } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 
@@ -16,10 +16,10 @@ export const DeployFormFields = () => {
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
-  const releaseOptions = useSelector(state =>
+  const releaseOptions = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(state, values.oSystem)
   );
-  const kernelOptions = useSelector(state =>
+  const kernelOptions = useSelector((state) =>
     generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =
@@ -33,7 +33,7 @@ export const DeployFormFields = () => {
           label="OS"
           name="oSystem"
           options={osOptions}
-          onChange={e => {
+          onChange={(e) => {
             handleChange(e);
             if (e.target.value !== "ubuntu") {
               setFieldValue("installKVM", false);
@@ -45,7 +45,7 @@ export const DeployFormFields = () => {
           label="Release"
           name="release"
           options={releaseOptions}
-          onChange={e => {
+          onChange={(e) => {
             handleChange(e);
             if (e.target.value !== "bionic") {
               setFieldValue("installKVM", false);

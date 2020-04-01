@@ -25,7 +25,7 @@ export const generateGeneralReducer = (name, initialData) =>
       data: initialData,
       errors: {},
       loaded: false,
-      loading: false
+      loading: false,
     }
   );
 
@@ -55,7 +55,7 @@ export const general = combineReducers({
   osInfo,
   pocketsToDisable,
   powerTypes,
-  version
+  version,
 });
 
 export default general;

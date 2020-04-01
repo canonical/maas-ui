@@ -9,13 +9,13 @@ describe("token selectors", () => {
           loaded: true,
           items: [
             { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" }
-          ]
-        }
+            { id: 2, key: "ssh-rsa ccdd" },
+          ],
+        },
       };
       expect(token.all(state)).toStrictEqual([
         { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" }
+        { id: 2, key: "ssh-rsa ccdd" },
       ]);
     });
   });
@@ -26,8 +26,8 @@ describe("token selectors", () => {
         token: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(token.loading(state)).toStrictEqual(false);
     });
@@ -39,8 +39,8 @@ describe("token selectors", () => {
         token: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(token.loaded(state)).toStrictEqual(true);
     });
@@ -53,8 +53,8 @@ describe("token selectors", () => {
           errors: "Unable to list SSH keys.",
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(token.errors(state)).toEqual("Unable to list SSH keys.");
     });
@@ -65,8 +65,8 @@ describe("token selectors", () => {
       const state = {
         token: {
           saving: false,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(token.saving(state)).toStrictEqual(false);
     });
@@ -77,8 +77,8 @@ describe("token selectors", () => {
       const state = {
         token: {
           saved: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(token.saved(state)).toStrictEqual(true);
     });

@@ -13,7 +13,7 @@ describe("ScriptsList", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       scripts: {
         loading: false,
@@ -30,9 +30,9 @@ describe("ScriptsList", () => {
                 id: 1,
                 comment: "a history item",
                 created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: ""
-              }
-            ]
+                data: "",
+              },
+            ],
           },
           {
             id: 2,
@@ -44,9 +44,9 @@ describe("ScriptsList", () => {
                 id: 2,
                 comment: "a history item",
                 created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: ""
-              }
-            ]
+                data: "",
+              },
+            ],
           },
           {
             id: 3,
@@ -58,12 +58,12 @@ describe("ScriptsList", () => {
                 id: 1,
                 comment: "a history item",
                 created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: ""
-              }
-            ]
-          }
-        ]
-      }
+                data: "",
+              },
+            ],
+          },
+        ],
+      },
     };
   });
 
@@ -81,8 +81,8 @@ describe("ScriptsList", () => {
 
     expect(store.getActions()).toEqual([
       {
-        type: "FETCH_SCRIPTS"
-      }
+        type: "FETCH_SCRIPTS",
+      },
     ]);
   });
 
@@ -140,12 +140,7 @@ describe("ScriptsList", () => {
     let row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(false);
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(true);
   });
@@ -153,7 +148,7 @@ describe("ScriptsList", () => {
   it("disables the delete button if a default script", () => {
     const state = {
       config: {
-        items: []
+        items: [],
       },
       scripts: {
         loading: false,
@@ -171,9 +166,9 @@ describe("ScriptsList", () => {
                 id: 1,
                 comment: "a history item",
                 created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: ""
-              }
-            ]
+                data: "",
+              },
+            ],
           },
           {
             id: 2,
@@ -186,12 +181,12 @@ describe("ScriptsList", () => {
                 id: 1,
                 comment: "a history item",
                 created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: ""
-              }
-            ]
-          }
-        ]
-      }
+                data: "",
+              },
+            ],
+          },
+        ],
+      },
     };
     const store = mockStore(state);
 
@@ -203,21 +198,11 @@ describe("ScriptsList", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("TableRow")
-        .at(1)
-        .find("Button")
-        .at(1)
-        .props()["disabled"]
+      wrapper.find("TableRow").at(1).find("Button").at(1).props()["disabled"]
     ).toBe(true);
 
     expect(
-      wrapper
-        .find("TableRow")
-        .at(2)
-        .find("Button")
-        .at(1)
-        .props()["disabled"]
+      wrapper.find("TableRow").at(2).find("Button").at(1).props()["disabled"]
     ).toBe(false);
   });
 
@@ -232,25 +217,15 @@ describe("ScriptsList", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(3)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
     expect(store.getActions()[1]).toEqual({
       type: "DELETE_SCRIPT",
       payload: {
         id: 1,
-        name: "commissioning-script"
-      }
+        name: "commissioning-script",
+      },
     });
   });
 
@@ -267,10 +242,10 @@ describe("ScriptsList", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_SCRIPTS")).toBe(
+    expect(actions.some((action) => action.type === "CLEANUP_SCRIPTS")).toBe(
       true
     );
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("can show script source", () => {
@@ -289,20 +264,10 @@ describe("ScriptsList", () => {
     let row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(false);
     // Click on the expand button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(0)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(0).simulate("click");
     row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(true);
     // expect script source to be decoded base64
-    expect(
-      wrapper
-        .find("TableRow")
-        .find("Code")
-        .text()
-    ).toEqual(scriptSource);
+    expect(wrapper.find("TableRow").find("Code").text()).toEqual(scriptSource);
   });
 });

@@ -11,13 +11,13 @@ describe("Tabs", () => {
           {
             active: true,
             label: "label1",
-            path: "path1"
+            path: "path1",
           },
           {
             active: false,
             label: "label2",
-            path: "path2"
-          }
+            path: "path2",
+          },
         ]}
       />
     );
@@ -31,13 +31,13 @@ describe("Tabs", () => {
           {
             active: true,
             label: "label1",
-            path: "path1"
+            path: "path1",
           },
           {
             active: false,
             label: "label2",
-            path: "path2"
-          }
+            path: "path2",
+          },
         ]}
       />
     );

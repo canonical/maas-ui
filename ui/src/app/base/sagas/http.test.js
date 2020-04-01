@@ -16,7 +16,7 @@ import {
   fetchLicenseKeysSaga,
   updateLicenseKeySaga,
   deleteLicenseKeySaga,
-  addMachineChassisSaga
+  addMachineChassisSaga,
 } from "./http";
 
 jest.mock("../../../bakery", () => {});
@@ -31,7 +31,7 @@ describe("http sagas", () => {
           .put({ type: "CHECK_AUTHENTICATED_START" })
           .put({
             type: "CHECK_AUTHENTICATED_SUCCESS",
-            payload
+            payload,
           })
           .run();
       });
@@ -40,12 +40,12 @@ describe("http sagas", () => {
         const error = new Error("kerblam!");
         return expectSaga(checkAuthenticatedSaga)
           .provide([
-            [matchers.call.fn(api.auth.checkAuthenticated), throwError(error)]
+            [matchers.call.fn(api.auth.checkAuthenticated), throwError(error)],
           ])
           .put({ type: "CHECK_AUTHENTICATED_START" })
           .put({
             type: "CHECK_AUTHENTICATED_ERROR",
-            error: error.message
+            error: error.message,
           })
           .run();
       });
@@ -55,11 +55,11 @@ describe("http sagas", () => {
       it("returns a SUCCESS action", () => {
         const payload = {
           username: "koala",
-          password: "gumtree"
+          password: "gumtree",
         };
         const action = {
           type: "LOGIN",
-          payload
+          payload,
         };
         return expectSaga(loginSaga, action)
           .provide([[matchers.call.fn(api.auth.login, payload)]])
@@ -71,18 +71,18 @@ describe("http sagas", () => {
       it("handles errors", () => {
         const payload = {
           username: "koala",
-          password: "gumtree"
+          password: "gumtree",
         };
         const action = {
           type: "LOGIN",
-          payload
+          payload,
         };
         const error = {
-          message: "Username not provided"
+          message: "Username not provided",
         };
         return expectSaga(loginSaga, action)
           .provide([
-            [matchers.call.fn(api.auth.login, payload), throwError(error)]
+            [matchers.call.fn(api.auth.login, payload), throwError(error)],
           ])
           .put({ type: "LOGIN_START" })
           .put({ type: "LOGIN_ERROR", error })
@@ -93,7 +93,7 @@ describe("http sagas", () => {
     describe("externalLogin", () => {
       it("returns a SUCCESS action", () => {
         const action = {
-          type: "EXTERNAL_LOGIN"
+          type: "EXTERNAL_LOGIN",
         };
         return expectSaga(externalLoginSaga, action)
           .provide([[matchers.call.fn(api.auth.externalLogin)]])
@@ -104,14 +104,14 @@ describe("http sagas", () => {
 
       it("handles errors", () => {
         const action = {
-          type: "EXTERNAL_LOGIN"
+          type: "EXTERNAL_LOGIN",
         };
         const error = {
-          message: "Unable to log in"
+          message: "Unable to log in",
         };
         return expectSaga(externalLoginSaga, action)
           .provide([
-            [matchers.call.fn(api.auth.externalLogin), throwError(error)]
+            [matchers.call.fn(api.auth.externalLogin), throwError(error)],
           ])
           .put({ type: "EXTERNAL_LOGIN_START" })
           .put({ type: "EXTERNAL_LOGIN_ERROR", error: error.message })
@@ -122,11 +122,11 @@ describe("http sagas", () => {
     describe("logout", () => {
       it("returns a SUCCESS action", () => {
         return expectSaga(logoutSaga, {
-          type: "LOGOUT"
+          type: "LOGOUT",
         })
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.auth.logout, "csrf-token")]
+            [matchers.call.fn(api.auth.logout, "csrf-token")],
           ])
           .put({ type: "LOGOUT_START" })
           .put({ type: "LOGOUT_SUCCESS" })
@@ -136,14 +136,17 @@ describe("http sagas", () => {
 
       it("handles errors", () => {
         const error = {
-          message: "Username not provided"
+          message: "Username not provided",
         };
         return expectSaga(logoutSaga, {
-          type: "LOGOUT"
+          type: "LOGOUT",
         })
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.auth.logout, "csrf-token"), throwError(error)]
+            [
+              matchers.call.fn(api.auth.logout, "csrf-token"),
+              throwError(error),
+            ],
           ])
           .put({ type: "LOGOUT_START" })
           .put({ type: "LOGOUT_ERROR", errors: { error: error.message } })
@@ -158,7 +161,7 @@ describe("http sagas", () => {
         return expectSaga(fetchScriptsSaga)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.scripts.fetch, "csrf-token"), payload]
+            [matchers.call.fn(api.scripts.fetch, "csrf-token"), payload],
           ])
           .put({ type: "FETCH_SCRIPTS_START" })
           .put({ type: "FETCH_SCRIPTS_SUCCESS", payload })
@@ -172,13 +175,13 @@ describe("http sagas", () => {
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.scripts.fetch, "csrf-token"),
-              throwError(error)
-            ]
+              throwError(error),
+            ],
           ])
           .put({ type: "FETCH_SCRIPTS_START" })
           .put({
             type: "FETCH_SCRIPTS_ERROR",
-            errors: { error: error.message }
+            errors: { error: error.message },
           })
           .run();
       });
@@ -188,15 +191,15 @@ describe("http sagas", () => {
       it("returns a SUCCESS action", () => {
         const action = {
           type: "DELETE_SCRIPT",
-          payload: { id: 1, name: "script-1" }
+          payload: { id: 1, name: "script-1" },
         };
         return expectSaga(deleteScriptSaga, action)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.scripts.delete, "csrf-token", "script-1"),
-              true
-            ]
+              true,
+            ],
           ])
           .put({ type: "DELETE_SCRIPT_START" })
           .put({ type: "DELETE_SCRIPT_SUCCESS", payload: 1 })
@@ -211,13 +214,13 @@ describe("http sagas", () => {
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.scripts.delete, "csrf-token", "script-1"),
-              throwError(error)
-            ]
+              throwError(error),
+            ],
           ])
           .put({ type: "DELETE_SCRIPT_START" })
           .put({
             type: "DELETE_SCRIPT_ERROR",
-            errors: { error: error.message }
+            errors: { error: error.message },
           })
           .run();
       });
@@ -228,19 +231,19 @@ describe("http sagas", () => {
         const script = {
           name: "script-1",
           type: "commissioning",
-          script: "#!/bin/sh/necho 'hi'"
+          script: "#!/bin/sh/necho 'hi'",
         };
         const action = {
           type: "UPLOAD_SCRIPT",
-          payload: script
+          payload: script,
         };
         return expectSaga(uploadScriptSaga, action)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"),
-              script
-            ]
+              script,
+            ],
           ])
           .put({ type: "UPLOAD_SCRIPT_START" })
           .put({ type: "UPLOAD_SCRIPT_SUCCESS", payload: script })
@@ -251,19 +254,19 @@ describe("http sagas", () => {
         const script = {
           name: "script-1",
           type: "commissioning",
-          script: "#!/bin/sh/necho 'hi'"
+          script: "#!/bin/sh/necho 'hi'",
         };
         const action = { type: "UPLOAD_SCRIPT", payload: script };
         const error = {
-          name: "Script with that name already exists"
+          name: "Script with that name already exists",
         };
         return expectSaga(uploadScriptSaga, action)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"),
-              throwError(error)
-            ]
+              throwError(error),
+            ],
           ])
           .put({ type: "UPLOAD_SCRIPT_START" })
           .put({ type: "UPLOAD_SCRIPT_ERROR", errors: { name: error.name } })
@@ -279,7 +282,7 @@ describe("http sagas", () => {
         return expectSaga(fetchLicenseKeysSaga)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.licenseKeys.fetch, "csrf-token"), payload]
+            [matchers.call.fn(api.licenseKeys.fetch, "csrf-token"), payload],
           ])
           .put({ type: "FETCH_LICENSE_KEYS_START" })
           .put({ type: "FETCH_LICENSE_KEYS_SUCCESS", payload })
@@ -292,11 +295,11 @@ describe("http sagas", () => {
         const payload = {
           osystem: "windows",
           distro_series: "2012",
-          license_key: "foo"
+          license_key: "foo",
         };
         const action = {
           type: "UPDATE_LICENSE_KEY",
-          payload
+          payload,
         };
         return expectSaga(updateLicenseKeySaga, action)
           .provide([
@@ -307,8 +310,8 @@ describe("http sagas", () => {
                 payload.license_key,
                 "csrf-token"
               ),
-              payload
-            ]
+              payload,
+            ],
           ])
           .put({ type: "UPDATE_LICENSE_KEY_START" })
           .put({ type: "UPDATE_LICENSE_KEY_SUCCESS", payload })
@@ -321,7 +324,7 @@ describe("http sagas", () => {
         const payload = { osystem: "windows", distro_series: "2012" };
         const action = {
           type: "DELETE_LICENSE_KEY",
-          payload
+          payload,
         };
         return expectSaga(deleteLicenseKeySaga, action)
           .provide([
@@ -333,8 +336,8 @@ describe("http sagas", () => {
                 payload.distro_series,
                 "csrf-token"
               ),
-              true
-            ]
+              true,
+            ],
           ])
           .put({ type: "DELETE_LICENSE_KEY_START" })
           .put({ type: "DELETE_LICENSE_KEY_SUCCESS", payload })
@@ -349,17 +352,17 @@ describe("http sagas", () => {
         const payload = {
           params: {
             chassis_type: "powerkvm",
-            hostname: "qemu+ssh://virsh@127.0.0.1/system"
-          }
+            hostname: "qemu+ssh://virsh@127.0.0.1/system",
+          },
         };
         const action = {
           type: "ADD_MACHINE_CHASSIS",
-          payload
+          payload,
         };
         return expectSaga(addMachineChassisSaga, action)
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.machines.addChassis, "csrf-token"), payload]
+            [matchers.call.fn(api.machines.addChassis, "csrf-token"), payload],
           ])
           .put({ type: "ADD_MACHINE_CHASSIS_START" })
           .put({ type: "ADD_MACHINE_CHASSIS_SUCCESS", payload })
@@ -369,8 +372,8 @@ describe("http sagas", () => {
       it("handles errors as strings", () => {
         const payload = {
           params: {
-            hostname: "qemu+ssh://virsh@127.0.0.1/system"
-          }
+            hostname: "qemu+ssh://virsh@127.0.0.1/system",
+          },
         };
         const action = { type: "ADD_MACHINE_CHASSIS", payload };
         const error = "Chassis type not provided";
@@ -379,13 +382,13 @@ describe("http sagas", () => {
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.machines.addChassis, "csrf-token", payload),
-              throwError(error)
-            ]
+              throwError(error),
+            ],
           ])
           .put({ type: "ADD_MACHINE_CHASSIS_START" })
           .put({
             type: "ADD_MACHINE_CHASSIS_ERROR",
-            error: { "Add chassis error": error }
+            error: { "Add chassis error": error },
           })
           .run();
       });
@@ -393,8 +396,8 @@ describe("http sagas", () => {
       it("handles errors as objects", () => {
         const payload = {
           params: {
-            hostname: "qemu+ssh://virsh@127.0.0.1/system"
-          }
+            hostname: "qemu+ssh://virsh@127.0.0.1/system",
+          },
         };
         const action = { type: "ADD_MACHINE_CHASSIS", payload };
         const error = new Error("Chassis type not provided");
@@ -403,8 +406,8 @@ describe("http sagas", () => {
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [
               matchers.call.fn(api.machines.addChassis, "csrf-token", payload),
-              throwError(error)
-            ]
+              throwError(error),
+            ],
           ])
           .put({ type: "ADD_MACHINE_CHASSIS_START" })
           .put({ type: "ADD_MACHINE_CHASSIS_ERROR", error: error.message })

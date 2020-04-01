@@ -31,18 +31,10 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(
-      wrapper
-        .find("Tooltip")
-        .at(0)
-        .props().message
-    ).toBe("edit tooltip");
-    expect(
-      wrapper
-        .find("Tooltip")
-        .at(1)
-        .props().message
-    ).toBe("delete tooltip");
+    expect(wrapper.find("Tooltip").at(0).props().message).toBe("edit tooltip");
+    expect(wrapper.find("Tooltip").at(1).props().message).toBe(
+      "delete tooltip"
+    );
   });
 
   it("correctly disables buttons", () => {
@@ -54,17 +46,7 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(
-      wrapper
-        .find("Button")
-        .at(0)
-        .props().disabled
-    ).toBe(true);
-    expect(
-      wrapper
-        .find("Button")
-        .at(1)
-        .props().disabled
-    ).toBe(true);
+    expect(wrapper.find("Button").at(0).props().disabled).toBe(true);
+    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
   });
 });

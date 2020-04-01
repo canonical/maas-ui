@@ -9,9 +9,9 @@ describe("pocketsToDisable selectors", () => {
           pocketsToDisable: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(pocketsToDisable.get(state)).toStrictEqual(data);
     });
@@ -25,9 +25,9 @@ describe("pocketsToDisable selectors", () => {
           pocketsToDisable: {
             loading: true,
             loaded: false,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(pocketsToDisable.loading(state)).toStrictEqual(true);
     });
@@ -41,9 +41,9 @@ describe("pocketsToDisable selectors", () => {
           pocketsToDisable: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(pocketsToDisable.loaded(state)).toStrictEqual(true);
     });
@@ -58,9 +58,9 @@ describe("pocketsToDisable selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(pocketsToDisable.errors(state)).toStrictEqual(errors);
     });

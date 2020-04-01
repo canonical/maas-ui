@@ -4,8 +4,8 @@ describe("subnet selectors", () => {
   it("can get all items", () => {
     const state = {
       subnet: {
-        items: [{ name: "maas.test" }]
-      }
+        items: [{ name: "maas.test" }],
+      },
     };
     expect(subnet.all(state)).toEqual([{ name: "maas.test" }]);
   });
@@ -14,8 +14,8 @@ describe("subnet selectors", () => {
     const state = {
       subnet: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(subnet.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("subnet selectors", () => {
     const state = {
       subnet: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(subnet.loaded(state)).toEqual(true);
   });
@@ -35,13 +35,13 @@ describe("subnet selectors", () => {
       subnet: {
         items: [
           { name: "maas.test", id: 808 },
-          { name: "10.0.0.99", id: 909 }
-        ]
-      }
+          { name: "10.0.0.99", id: 909 },
+        ],
+      },
     };
     expect(subnet.getById(state, 909)).toStrictEqual({
       name: "10.0.0.99",
-      id: 909
+      id: 909,
     });
   });
 });

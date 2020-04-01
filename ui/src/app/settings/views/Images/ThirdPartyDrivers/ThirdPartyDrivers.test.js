@@ -14,9 +14,9 @@ describe("ThirdPartyDrivers", () => {
       config: {
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
-      general: {}
+      general: {},
     };
   });
 

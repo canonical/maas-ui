@@ -14,9 +14,9 @@ describe("Windows", () => {
       config: {
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
-      general: {}
+      general: {},
     };
   });
 
@@ -61,16 +61,16 @@ describe("Windows", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

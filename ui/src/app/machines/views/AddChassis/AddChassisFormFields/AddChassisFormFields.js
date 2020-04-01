@@ -15,11 +15,11 @@ export const AddChassisFormFields = ({ chassisPowerTypes }) => {
 
   const domainOptions = [
     { label: "Select your domain", value: "", disabled: true },
-    ...domains.map(domain => ({
+    ...domains.map((domain) => ({
       key: `domain-${domain.id}`,
       label: domain.name,
-      value: domain.name
-    }))
+      value: domain.name,
+    })),
   ];
 
   return (

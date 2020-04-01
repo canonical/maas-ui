@@ -6,19 +6,19 @@ describe("licensekeys selectors", () => {
       const items = [
         {
           osystem: "windows",
-          license_key: "foo"
+          license_key: "foo",
         },
         {
           osystem: "redhat",
-          license_key: "bar"
-        }
+          license_key: "bar",
+        },
       ];
       const state = {
         licensekeys: {
           loading: false,
           loaded: true,
-          items
-        }
+          items,
+        },
       };
 
       expect(licensekeys.all(state)).toStrictEqual(items);
@@ -31,8 +31,8 @@ describe("licensekeys selectors", () => {
         licensekeys: {
           loading: true,
           loaded: false,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(licensekeys.loading(state)).toStrictEqual(true);
     });
@@ -44,8 +44,8 @@ describe("licensekeys selectors", () => {
         licensekeys: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(licensekeys.loaded(state)).toStrictEqual(true);
     });
@@ -58,8 +58,8 @@ describe("licensekeys selectors", () => {
           loading: false,
           loaded: true,
           saved: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(licensekeys.saved(state)).toStrictEqual(true);
     });
@@ -71,28 +71,28 @@ describe("licensekeys selectors", () => {
         {
           osystem: "windows",
           distro_series: "2012",
-          license_key: "foo"
+          license_key: "foo",
         },
         {
           osystem: "windows",
           distro_series: "2019",
-          license_key: "bar"
-        }
+          license_key: "bar",
+        },
       ];
       const state = {
         licensekeys: {
           loading: false,
           loaded: true,
-          items
-        }
+          items,
+        },
       };
 
       expect(licensekeys.search(state, "2019")).toStrictEqual([
         {
           osystem: "windows",
           distro_series: "2019",
-          license_key: "bar"
-        }
+          license_key: "bar",
+        },
       ]);
     });
   });

@@ -9,7 +9,7 @@ const status = {
   websocketConnect: createAction("WEBSOCKET_CONNECT"),
   websocketConnected: createAction("WEBSOCKET_CONNECTED"),
   websocketDisconnected: createAction("WEBSOCKET_DISCONNECTED"),
-  websocketError: createAction("WEBSOCKET_ERROR")
+  websocketError: createAction("WEBSOCKET_ERROR"),
 };
 
 // TODO: This should be generalised and moved to app/utils/redux once all actions types
@@ -21,9 +21,9 @@ const status = {
   status.login,
   status.logout,
   status.externalLogin,
-  status.checkAuthenticated
-].forEach(method => {
-  ["start", "error", "success"].forEach(event => {
+  status.checkAuthenticated,
+].forEach((method) => {
+  ["start", "error", "success"].forEach((event) => {
     method[event] = createAction(
       `${method.type.toUpperCase()}_${event.toUpperCase()}`
     );

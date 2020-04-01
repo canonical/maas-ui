@@ -11,7 +11,7 @@ export const DhcpEdit = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const loading = useSelector(dhcpsnippetSelectors.loading);
-  const dhcpsnippet = useSelector(state =>
+  const dhcpsnippet = useSelector((state) =>
     dhcpsnippetSelectors.getById(state, parseInt(id))
   );
 

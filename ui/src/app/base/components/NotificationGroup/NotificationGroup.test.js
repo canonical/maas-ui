@@ -17,7 +17,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const notifications = [
       { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" }
+      { id: 2, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -32,7 +32,7 @@ describe("NotificationGroup", () => {
   it("displays a single notification by default", () => {
     const store = mockStore(state);
     const notifications = [
-      { id: 1, category: "error", message: "an error occurred" }
+      { id: 1, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -50,7 +50,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const notifications = [
       { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" }
+      { id: 2, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -68,7 +68,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const notifications = [
       { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" }
+      { id: 2, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -86,7 +86,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const notifications = [
       { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" }
+      { id: 2, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -95,10 +95,7 @@ describe("NotificationGroup", () => {
       </Provider>
     );
 
-    wrapper
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("Button").at(1).simulate("click");
 
     expect(store.getActions().length).toEqual(2);
     expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
@@ -108,7 +105,7 @@ describe("NotificationGroup", () => {
   it("can dismiss a single notification", () => {
     const store = mockStore(state);
     const notifications = [
-      { id: 1, category: "error", message: "an error occurred" }
+      { id: 1, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -128,7 +125,7 @@ describe("NotificationGroup", () => {
     const notifications = [
       { id: 1, category: "error", message: "an error occurred" },
       { id: 2, category: "error", message: "an error occurred" },
-      { id: 3, category: "error", message: "an error occurred" }
+      { id: 3, category: "error", message: "an error occurred" },
     ];
 
     const wrapper = mount(
@@ -139,10 +136,7 @@ describe("NotificationGroup", () => {
 
     expect(wrapper.find("NotificationGroupMessage").length).toEqual(0);
 
-    wrapper
-      .find("Button")
-      .at(0)
-      .simulate("click");
+    wrapper.find("Button").at(0).simulate("click");
 
     expect(wrapper.find("NotificationGroupMessage").length).toEqual(3);
   });

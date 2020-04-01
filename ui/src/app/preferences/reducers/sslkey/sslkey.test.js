@@ -8,14 +8,14 @@ describe("sslkey reducer", () => {
       loaded: false,
       items: [],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_SSLKEY_START", () => {
     expect(
       sslkey(undefined, {
-        type: "FETCH_SSLKEY_START"
+        type: "FETCH_SSLKEY_START",
       })
     ).toEqual({
       errors: null,
@@ -23,7 +23,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       items: [],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,14 +36,14 @@ describe("sslkey reducer", () => {
           loaded: false,
           items: [],
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_SSLKEY_SUCCESS",
           payload: [
             { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" }
-          ]
+            { id: 2, key: "ssh-rsa ccdd" },
+          ],
         }
       )
     ).toEqual({
@@ -52,10 +52,10 @@ describe("sslkey reducer", () => {
       loaded: true,
       items: [
         { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" }
+        { id: 2, key: "ssh-rsa ccdd" },
       ],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -63,7 +63,7 @@ describe("sslkey reducer", () => {
     expect(
       sslkey(undefined, {
         type: "FETCH_SSLKEY_ERROR",
-        error: "Unable to list SSL keys"
+        error: "Unable to list SSL keys",
       })
     ).toEqual({
       errors: "Unable to list SSL keys",
@@ -71,7 +71,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       items: [],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -84,10 +84,10 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_SSLKEY_START"
+          type: "CREATE_SSLKEY_START",
         }
       )
     ).toEqual({
@@ -96,7 +96,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -109,11 +109,11 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { key: "Key already exists" },
-          type: "CREATE_SSLKEY_ERROR"
+          type: "CREATE_SSLKEY_ERROR",
         }
       )
     ).toEqual({
@@ -122,7 +122,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -135,10 +135,10 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "CREATE_SSLKEY_SUCCESS"
+          type: "CREATE_SSLKEY_SUCCESS",
         }
       )
     ).toEqual({
@@ -147,7 +147,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -160,10 +160,10 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_SSLKEY_START"
+          type: "DELETE_SSLKEY_START",
         }
       )
     ).toEqual({
@@ -172,7 +172,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -185,11 +185,11 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not delete",
-          type: "DELETE_SSLKEY_ERROR"
+          type: "DELETE_SSLKEY_ERROR",
         }
       )
     ).toEqual({
@@ -198,7 +198,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -211,10 +211,10 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_SSLKEY_SUCCESS"
+          type: "DELETE_SSLKEY_SUCCESS",
         }
       )
     ).toEqual({
@@ -223,7 +223,7 @@ describe("sslkey reducer", () => {
       loading: true,
       loaded: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -237,11 +237,11 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 2, key: "ssh-rsa ccdd" },
-          type: "CREATE_SSLKEY_NOTIFY"
+          type: "CREATE_SSLKEY_NOTIFY",
         }
       )
     ).toEqual({
@@ -249,12 +249,12 @@ describe("sslkey reducer", () => {
       errors: {},
       items: [
         { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" }
+        { id: 2, key: "ssh-rsa ccdd" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -265,16 +265,16 @@ describe("sslkey reducer", () => {
           errors: {},
           items: [
             { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" }
+            { id: 2, key: "ssh-rsa ccdd" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: 2,
-          type: "DELETE_SSLKEY_NOTIFY"
+          type: "DELETE_SSLKEY_NOTIFY",
         }
       )
     ).toEqual({
@@ -283,7 +283,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -296,10 +296,10 @@ describe("sslkey reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: true
+          saving: true,
         },
         {
-          type: "CLEANUP_SSLKEY"
+          type: "CLEANUP_SSLKEY",
         }
       )
     ).toEqual({
@@ -308,7 +308,7 @@ describe("sslkey reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

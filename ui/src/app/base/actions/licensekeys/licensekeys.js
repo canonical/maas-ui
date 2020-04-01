@@ -1,28 +1,28 @@
 const licenseKeys = {};
 
-licenseKeys.create = params => {
+licenseKeys.create = (params) => {
   return {
     type: "CREATE_LICENSE_KEY",
-    payload: params
+    payload: params,
   };
 };
 
-licenseKeys.delete = licenseKey => ({
+licenseKeys.delete = (licenseKey) => ({
   type: "DELETE_LICENSE_KEY",
-  payload: licenseKey
+  payload: licenseKey,
 });
 
-licenseKeys.update = licenseKey => ({
+licenseKeys.update = (licenseKey) => ({
   type: "UPDATE_LICENSE_KEY",
-  payload: licenseKey
+  payload: licenseKey,
 });
 
 licenseKeys.fetch = () => ({
-  type: "FETCH_LICENSE_KEYS"
+  type: "FETCH_LICENSE_KEYS",
 });
 
 licenseKeys.cleanup = () => ({
-  type: "CLEANUP_LICENSE_KEYS"
+  type: "CLEANUP_LICENSE_KEYS",
 });
 
 export default licenseKeys;

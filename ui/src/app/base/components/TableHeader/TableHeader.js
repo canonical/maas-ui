@@ -8,7 +8,7 @@ const TableHeader = ({
   className,
   currentSort,
   onClick,
-  sortKey
+  sortKey,
 }) => {
   if (!onClick) {
     return <div className={className}>{children}</div>;
@@ -20,7 +20,7 @@ const TableHeader = ({
       {currentSort && currentSort.key === sortKey && (
         <i
           className={classNames("p-icon--contextual-menu", {
-            "u-mirror--y": currentSort.direction === "ascending"
+            "u-mirror--y": currentSort.direction === "ascending",
           })}
         />
       )}
@@ -33,10 +33,10 @@ TableHeader.propTypes = {
   className: PropTypes.string,
   currentSort: PropTypes.shape({
     key: PropTypes.string,
-    direction: PropTypes.oneOf(["ascending", "descending", "none"])
+    direction: PropTypes.oneOf(["ascending", "descending", "none"]),
   }),
   onClick: PropTypes.func,
-  sortKey: PropTypes.string
+  sortKey: PropTypes.string,
 };
 
 export default TableHeader;

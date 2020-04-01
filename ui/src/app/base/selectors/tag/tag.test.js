@@ -10,13 +10,13 @@ describe("tag selectors", () => {
         name: "virtual",
         definition: "",
         comment: "",
-        kernel_opts: null
-      }
+        kernel_opts: null,
+      },
     ];
     const state = {
       tag: {
-        items
-      }
+        items,
+      },
     };
     expect(tag.all(state)).toEqual(items);
   });
@@ -25,8 +25,8 @@ describe("tag selectors", () => {
     const state = {
       tag: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(tag.loading(state)).toEqual(true);
   });
@@ -35,8 +35,8 @@ describe("tag selectors", () => {
     const state = {
       tag: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(tag.loaded(state)).toEqual(true);
   });
@@ -44,8 +44,8 @@ describe("tag selectors", () => {
   it("can get the errors state", () => {
     const state = {
       tag: {
-        errors: "Data is incorrect"
-      }
+        errors: "Data is incorrect",
+      },
     };
     expect(tag.errors(state)).toStrictEqual("Data is incorrect");
   });

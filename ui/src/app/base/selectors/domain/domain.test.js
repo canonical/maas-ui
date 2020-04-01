@@ -4,8 +4,8 @@ describe("domain selectors", () => {
   it("can get all items", () => {
     const state = {
       domain: {
-        items: [{ name: "maas.test" }]
-      }
+        items: [{ name: "maas.test" }],
+      },
     };
     expect(domain.all(state)).toEqual([{ name: "maas.test" }]);
   });
@@ -14,8 +14,8 @@ describe("domain selectors", () => {
     const state = {
       domain: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(domain.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("domain selectors", () => {
     const state = {
       domain: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(domain.loaded(state)).toEqual(true);
   });

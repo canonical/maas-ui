@@ -16,22 +16,22 @@ describe("Settings", () => {
       config: {
         loading: false,
         loaded: false,
-        items: []
+        items: [],
       },
       messages: {
-        items: []
+        items: [],
       },
       notification: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
         auth: {
           user: {
-            is_superuser: true
-          }
-        }
-      }
+            is_superuser: true,
+          },
+        },
+      },
     };
   });
 
@@ -49,14 +49,14 @@ describe("Settings", () => {
 
     const fetchConfigAction = store
       .getActions()
-      .find(action => action.type === "FETCH_CONFIG");
+      .find((action) => action.type === "FETCH_CONFIG");
 
     expect(fetchConfigAction).toEqual({
       type: "FETCH_CONFIG",
       meta: {
         model: "config",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 

@@ -15,7 +15,7 @@ describe("Details", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
@@ -28,16 +28,16 @@ describe("Details", () => {
             is_superuser: true,
             last_name: "",
             sshkeys_count: 0,
-            username: "admin"
-          }
+            username: "admin",
+          },
         },
         errors: {},
         items: [],
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -64,8 +64,8 @@ describe("Details", () => {
     );
     wrapper.unmount();
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
-    expect(actions.some(action => action.type === "CLEANUP_AUTH_USER")).toBe(
+    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_AUTH_USER")).toBe(
       true
     );
   });
@@ -83,27 +83,24 @@ describe("Details", () => {
               last_name: "Miss Wallaby",
               password1: "test1234",
               password2: "test1234",
-              username: "admin"
+              username: "admin",
             }}
           />
         </MemoryRouter>
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("UserForm")
-        .props()
-        .onSave(
-          {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          },
-          {}
-        )
+      wrapper.find("UserForm").props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        {}
+      )
     );
     expect(
       store.getActions().find(({ type }) => type === "UPDATE_USER")
@@ -116,13 +113,13 @@ describe("Details", () => {
           fullName: "Miss Wallaby",
           password: "test1234",
           passwordConfirm: "test1234",
-          username: "admin"
-        }
+          username: "admin",
+        },
       },
       meta: {
         model: "user",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 
@@ -139,48 +136,45 @@ describe("Details", () => {
               last_name: "Miss Wallaby",
               password1: "test1234",
               password2: "test1234",
-              username: "admin"
+              username: "admin",
             }}
           />
         </MemoryRouter>
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("UserForm")
-        .props()
-        .onSave(
-          {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          },
-          {
-            old_password: "test1",
-            password: "test2",
-            passwordConfirm: "test2"
-          }
-        )
+      wrapper.find("UserForm").props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        {
+          old_password: "test1",
+          password: "test2",
+          passwordConfirm: "test2",
+        }
+      )
     );
     const changePassword = store
       .getActions()
-      .find(action => action.type === "CHANGE_AUTH_USER_PASSWORD");
+      .find((action) => action.type === "CHANGE_AUTH_USER_PASSWORD");
     expect(changePassword).toEqual({
       type: "CHANGE_AUTH_USER_PASSWORD",
       payload: {
         params: {
           old_password: "test1",
           new_password1: "test2",
-          new_password2: "test2"
-        }
+          new_password2: "test2",
+        },
       },
       meta: {
         model: "user",
-        method: "change_password"
-      }
+        method: "change_password",
+      },
     });
   });
 
@@ -196,7 +190,7 @@ describe("Details", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("shows a message when using external auth", () => {

@@ -40,7 +40,9 @@ const sshkey = produce(
         draft.items.push(action.payload);
         break;
       case "DELETE_SSHKEY_NOTIFY":
-        const index = draft.items.findIndex(item => item.id === action.payload);
+        const index = draft.items.findIndex(
+          (item) => item.id === action.payload
+        );
         draft.items.splice(index, 1);
         break;
       case "CLEANUP_SSHKEY":
@@ -58,7 +60,7 @@ const sshkey = produce(
     loaded: false,
     loading: false,
     saved: false,
-    saving: false
+    saving: false,
   }
 );
 

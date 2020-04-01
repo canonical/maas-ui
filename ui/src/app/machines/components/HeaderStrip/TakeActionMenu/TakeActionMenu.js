@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { general as generalActions } from "app/base/actions";
 import {
   general as generalSelectors,
-  machine as machineSelectors
+  machine as machineSelectors,
 } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import Tooltip from "app/base/components/Tooltip";
@@ -16,7 +16,7 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
     { type: "power", items: [] },
     { type: "testing", items: [] },
     { type: "lock", items: [] },
-    { type: "misc", items: [] }
+    { type: "misc", items: [] },
   ];
 
   const groupedLinks = actionOptions.reduce((groups, option) => {
@@ -28,7 +28,7 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
     }, 0);
 
     if (count > 0 || option.type === "lifecycle") {
-      const group = groups.find(group => group.type === option.type);
+      const group = groups.find((group) => group.type === option.type);
       group.items.push({
         children: (
           <div className="u-flex-between">
@@ -46,13 +46,13 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
           </div>
         ),
         disabled: count === 0,
-        onClick: () => setSelectedAction(option)
+        onClick: () => setSelectedAction(option),
       });
     }
     return groups;
   }, initGroups);
 
-  return groupedLinks.map(group => group.items);
+  return groupedLinks.map((group) => group.items);
 };
 
 export const TakeActionMenu = ({ setSelectedAction }) => {
@@ -90,7 +90,7 @@ export const TakeActionMenu = ({ setSelectedAction }) => {
 };
 
 TakeActionMenu.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default TakeActionMenu;

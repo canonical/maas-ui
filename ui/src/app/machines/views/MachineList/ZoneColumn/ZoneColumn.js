@@ -7,11 +7,11 @@ import Tooltip from "app/base/components/Tooltip";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
-  zone as zoneSelectors
+  zone as zoneSelectors,
 } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const getSpaces = machine => {
+const getSpaces = (machine) => {
   if (machine.spaces.length > 1) {
     const sorted = [...machine.spaces].sort();
     return (
@@ -26,18 +26,18 @@ const getSpaces = machine => {
 const ZoneColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
   let zoneLinks = zones
-    .filter(zone => zone.id !== machine.zone.id)
-    .map(zone => ({
+    .filter((zone) => zone.id !== machine.zone.id)
+    .map((zone) => ({
       children: zone.name,
       onClick: () => {
         dispatch(machineActions.setZone(systemId, zone.id));
         setUpdating(zone.id);
-      }
+      },
     }));
   if (zoneLinks.length === 0) {
     zoneLinks = [{ children: "No other zones available", disabled: true }];
@@ -69,7 +69,7 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
 
 ZoneColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default ZoneColumn;

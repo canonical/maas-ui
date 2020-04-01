@@ -19,7 +19,7 @@ const DoubleRow = ({
   primaryTextClassName,
   secondary,
   secondaryAriaLabel,
-  secondaryClassName
+  secondaryClassName,
 }) => {
   const parent = useRef(null);
   const hasIcon = icon || iconSpace;
@@ -29,7 +29,7 @@ const DoubleRow = ({
       className={classNames(
         {
           "p-double-row": !hasIcon,
-          "p-double-row--with-icon": hasIcon
+          "p-double-row--with-icon": hasIcon,
         },
         className
       )}
@@ -94,7 +94,7 @@ DoubleRow.propTypes = {
   primaryTextClassName: PropTypes.string,
   secondary: PropTypes.node,
   secondaryAriaLabel: PropTypes.string,
-  secondaryClassName: PropTypes.string
+  secondaryClassName: PropTypes.string,
 };
 
 export default DoubleRow;

@@ -8,14 +8,14 @@ describe("controller reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_CONTROLLER_START", () => {
     expect(
       controller(undefined, {
-        type: "FETCH_CONTROLLER_START"
+        type: "FETCH_CONTROLLER_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("controller reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,14 +36,14 @@ describe("controller reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_CONTROLLER_SUCCESS",
           payload: [
             { id: 1, hostname: "rack" },
-            { id: 2, hostname: "maas" }
-          ]
+            { id: 2, hostname: "maas" },
+          ],
         }
       )
     ).toEqual({
@@ -52,10 +52,10 @@ describe("controller reducer", () => {
       loaded: true,
       items: [
         { id: 1, hostname: "rack" },
-        { id: 2, hostname: "maas" }
+        { id: 2, hostname: "maas" },
       ],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

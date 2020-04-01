@@ -22,8 +22,8 @@ describe("CommissioningForm", () => {
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
               ["trusty", 'Ubuntu 14.04 LTS "Trusty Tahr"'],
               ["xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
-              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']
-            ]
+              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+            ],
           },
           {
             name: "default_min_hwe_kernel",
@@ -37,19 +37,19 @@ describe("CommissioningForm", () => {
               ["hwe-16.04-edge", "xenial (hwe-16.04-edge)"],
               [
                 "hwe-16.04-lowlatency-edge",
-                "xenial (hwe-16.04-lowlatency-edge)"
-              ]
-            ]
-          }
-        ]
+                "xenial (hwe-16.04-lowlatency-edge)",
+              ],
+            ],
+          },
+        ],
       },
       general: {
         osInfo: {
           loading: false,
           loaded: true,
-          data: {}
-        }
-      }
+          data: {},
+        },
+      },
     };
   });
 
@@ -61,32 +61,29 @@ describe("CommissioningForm", () => {
         <CommissioningForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          commissioning_distro_series: "bionic",
-          default_min_hwe_kernel: "ga-16.04-lowlatency"
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        commissioning_distro_series: "bionic",
+        default_min_hwe_kernel: "ga-16.04-lowlatency",
+      },
+      { resetForm: jest.fn() }
+    );
 
     const updateConfigAction = store
       .getActions()
-      .find(action => action.type === "UPDATE_CONFIG");
+      .find((action) => action.type === "UPDATE_CONFIG");
     expect(updateConfigAction).toEqual({
       type: "UPDATE_CONFIG",
       payload: {
         params: [
           { name: "commissioning_distro_series", value: "bionic" },
-          { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" }
-        ]
+          { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" },
+        ],
       },
       meta: {
         model: "config",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 });

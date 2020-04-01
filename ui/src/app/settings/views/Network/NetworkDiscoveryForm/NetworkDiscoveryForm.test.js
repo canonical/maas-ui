@@ -27,19 +27,19 @@ describe("NetworkDiscoveryForm", () => {
               [10800, "Every 3 hours"],
               [3600, "Every hour"],
               [1800, "Every 30 minutes"],
-              [600, "Every 10 minutes"]
-            ]
+              [600, "Every 10 minutes"],
+            ],
           },
           {
             name: "network_discovery",
             value: "enabled",
             choices: [
               ["enabled", "Enabled"],
-              ["disabled", "Disabled"]
-            ]
-          }
-        ]
-      }
+              ["disabled", "Disabled"],
+            ],
+          },
+        ],
+      },
     };
   });
 
@@ -65,16 +65,13 @@ describe("NetworkDiscoveryForm", () => {
         <NetworkDiscoveryForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          active_discovery_interval: "0",
-          network_discovery: "enabled"
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        active_discovery_interval: "0",
+        network_discovery: "enabled",
+      },
+      { resetForm: jest.fn() }
+    );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_CONFIG",
@@ -82,19 +79,19 @@ describe("NetworkDiscoveryForm", () => {
           params: [
             {
               name: "active_discovery_interval",
-              value: "0"
+              value: "0",
             },
             {
               name: "network_discovery",
-              value: "enabled"
-            }
-          ]
+              value: "enabled",
+            },
+          ],
         },
         meta: {
           model: "config",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -111,16 +108,16 @@ describe("NetworkDiscoveryForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

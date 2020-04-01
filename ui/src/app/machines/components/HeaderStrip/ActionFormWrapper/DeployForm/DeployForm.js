@@ -5,11 +5,11 @@ import React, { useEffect } from "react";
 
 import {
   general as generalActions,
-  machine as machineActions
+  machine as machineActions,
 } from "app/base/actions";
 import {
   general as generalSelectors,
-  machine as machineSelectors
+  machine as machineSelectors,
 } from "app/base/selectors";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -19,7 +19,7 @@ const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),
   release: Yup.string().required("Release is required"),
   kernel: Yup.string(),
-  installKVM: Yup.boolean()
+  installKVM: Yup.boolean(),
 });
 
 export const DeployForm = ({ setSelectedAction }) => {
@@ -52,7 +52,7 @@ export const DeployForm = ({ setSelectedAction }) => {
         oSystem: osInfo.default_osystem,
         release: osInfo.default_release,
         kernel: defaultMinHweKernel || "",
-        installKVM: false
+        installKVM: false,
       }}
       submitLabel={`Deploy ${selectedMachines.length} ${pluralize(
         "machine",
@@ -62,16 +62,16 @@ export const DeployForm = ({ setSelectedAction }) => {
       onSaveAnalytics={{
         action: "Deploy",
         category: "Take action menu",
-        label: "Deploy selected machines"
+        label: "Deploy selected machines",
       }}
-      onSubmit={values => {
+      onSubmit={(values) => {
         const extra = {
           osystem: values.oSystem,
           distro_series: values.release,
           install_kvm: values.installKVM,
-          hwe_kernel: values.kernel
+          hwe_kernel: values.kernel,
         };
-        selectedMachines.forEach(machine => {
+        selectedMachines.forEach((machine) => {
           dispatch(machineActions.deploy(machine.system_id, extra));
         });
         setSelectedAction(null);

@@ -15,10 +15,10 @@ describe("AddHardwareMenu", () => {
       general: {
         navigationOptions: {
           data: {
-            rsd: false
-          }
-        }
-      }
+            rsd: false,
+          },
+        },
+      },
     };
   });
 

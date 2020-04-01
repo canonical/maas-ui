@@ -6,8 +6,8 @@ describe("domain actions", () => {
       type: "FETCH_DOMAIN",
       meta: {
         model: "domain",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

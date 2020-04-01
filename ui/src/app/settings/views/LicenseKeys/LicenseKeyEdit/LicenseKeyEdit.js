@@ -13,7 +13,7 @@ export const LicenseKeyEdit = () => {
   const { osystem, distro_series } = useParams();
   const loading = useSelector(licenseKeysSelectors.loading);
 
-  const licenseKey = useSelector(state =>
+  const licenseKey = useSelector((state) =>
     licenseKeysSelectors.getByOsystemAndDistroSeries(
       state,
       osystem,

@@ -25,11 +25,11 @@ describe("StorageFormFields", () => {
               ["blank", "No storage (blank) layout"],
               ["flat", "Flat layout"],
               ["lvm", "LVM layout"],
-              ["vmfs6", "VMFS6 layout"]
-            ]
-          }
-        ]
-      }
+              ["vmfs6", "VMFS6 layout"],
+            ],
+          },
+        ],
+      },
     };
   });
 
@@ -45,7 +45,7 @@ describe("StorageFormFields", () => {
     const select = wrapper.find("select[name='default_storage_layout']");
     await act(async () => {
       select.props().onChange({
-        target: { name: "default_storage_layout", value: "blank" }
+        target: { name: "default_storage_layout", value: "blank" },
       });
     });
     wrapper.update();
@@ -66,7 +66,7 @@ describe("StorageFormFields", () => {
     const select = wrapper.find("select[name='default_storage_layout']");
     await act(async () => {
       select.props().onChange({
-        target: { name: "default_storage_layout", value: "vmfs6" }
+        target: { name: "default_storage_layout", value: "vmfs6" },
       });
     });
     wrapper.update();

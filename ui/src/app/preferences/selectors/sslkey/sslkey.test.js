@@ -9,13 +9,13 @@ describe("sslkey selectors", () => {
           loaded: true,
           items: [
             { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" }
-          ]
-        }
+            { id: 2, key: "ssh-rsa ccdd" },
+          ],
+        },
       };
       expect(sslkey.all(state)).toStrictEqual([
         { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" }
+        { id: 2, key: "ssh-rsa ccdd" },
       ]);
     });
   });
@@ -26,8 +26,8 @@ describe("sslkey selectors", () => {
         sslkey: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sslkey.loading(state)).toStrictEqual(false);
     });
@@ -39,8 +39,8 @@ describe("sslkey selectors", () => {
         sslkey: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sslkey.loaded(state)).toStrictEqual(true);
     });
@@ -53,8 +53,8 @@ describe("sslkey selectors", () => {
           errors: "Unable to list SSL keys.",
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sslkey.errors(state)).toEqual("Unable to list SSL keys.");
     });
@@ -65,8 +65,8 @@ describe("sslkey selectors", () => {
       const state = {
         sslkey: {
           saving: false,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sslkey.saving(state)).toStrictEqual(false);
     });
@@ -77,8 +77,8 @@ describe("sslkey selectors", () => {
       const state = {
         sslkey: {
           saved: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(sslkey.saved(state)).toStrictEqual(true);
     });

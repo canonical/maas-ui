@@ -14,32 +14,32 @@ describe("HeaderStrip", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         osInfo: {
           data: {
             osystems: [["ubuntu", "Ubuntu"]],
-            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']]
+            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           },
           errors: {},
           loaded: true,
-          loading: false
+          loading: false,
         },
         machineActions: {
           data: [],
           errors: {},
           loaded: true,
-          loading: false
+          loading: false,
         },
         navigationOptions: {
           data: {
-            rsd: false
-          }
-        }
+            rsd: false,
+          },
+        },
       },
       messages: {
-        items: []
+        items: [],
       },
       machine: {
         loaded: true,
@@ -49,21 +49,21 @@ describe("HeaderStrip", () => {
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
-              status: scriptStatus.RUNNING
+              status: scriptStatus.RUNNING,
             },
             distro_series: "bionic",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
             memory: 8,
             memory_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             network_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             osystem: "ubuntu",
             permissions: ["edit", "delete"],
@@ -76,34 +76,34 @@ describe("HeaderStrip", () => {
             status_message: "",
             storage: 8,
             storage_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             testing_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             system_id: "abc123",
-            zone: {}
-          }
+            zone: {},
+          },
         ],
-        selected: []
+        selected: [],
       },
       resourcepool: {
         loaded: false,
-        items: [1, 2]
+        items: [1, 2],
       },
       zone: {
         loaded: true,
         items: [
           {
             id: 0,
-            name: "default"
+            name: "default",
           },
           {
             id: 1,
-            name: "Backup"
-          }
-        ]
-      }
+            name: "Backup",
+          },
+        ],
+      },
     };
   });
 

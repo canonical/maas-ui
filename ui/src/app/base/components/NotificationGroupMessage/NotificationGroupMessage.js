@@ -30,7 +30,7 @@ NotificationGroupMessage.propTypes = {
   message: PropTypes.string.isRequired,
   id: PropTypes.number,
   action: PropTypes.string,
-  actionHandler: PropTypes.func
+  actionHandler: PropTypes.func,
 };
 
 export default NotificationGroupMessage;

@@ -10,9 +10,9 @@ describe("navigationOptions selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(navigationOptions.get(state)).toStrictEqual(data);
     });
@@ -27,9 +27,9 @@ describe("navigationOptions selectors", () => {
             data: {},
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(navigationOptions.loading(state)).toStrictEqual(loading);
     });
@@ -44,9 +44,9 @@ describe("navigationOptions selectors", () => {
             data: {},
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(navigationOptions.loaded(state)).toStrictEqual(loaded);
     });
@@ -61,9 +61,9 @@ describe("navigationOptions selectors", () => {
             data: {},
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(navigationOptions.errors(state)).toStrictEqual(errors);
     });

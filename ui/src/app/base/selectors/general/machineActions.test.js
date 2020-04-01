@@ -8,20 +8,20 @@ describe("machineActions selectors", () => {
           name: "commission",
           title: "Commission...",
           sentence: "commissioned",
-          type: "lifecycle"
+          type: "lifecycle",
         },
         {
           name: "acquire",
           title: "Acquire...",
           sentence: "acquired",
-          type: "lifecycle"
+          type: "lifecycle",
         },
         {
           name: "deploy",
           title: "Deploy...",
           sentence: "deployed",
-          type: "lifecycle"
-        }
+          type: "lifecycle",
+        },
       ];
       const state = {
         general: {
@@ -29,9 +29,9 @@ describe("machineActions selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(machineActions.get(state)).toStrictEqual(data);
     });
@@ -46,9 +46,9 @@ describe("machineActions selectors", () => {
             data: [],
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(machineActions.loading(state)).toStrictEqual(loading);
     });
@@ -63,9 +63,9 @@ describe("machineActions selectors", () => {
             data: [],
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(machineActions.loaded(state)).toStrictEqual(loaded);
     });
@@ -80,9 +80,9 @@ describe("machineActions selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(machineActions.errors(state)).toStrictEqual(errors);
     });

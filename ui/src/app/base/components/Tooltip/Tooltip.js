@@ -90,8 +90,8 @@ Tooltip.propTypes = {
     "right",
     "top-center",
     "top-left",
-    "top-right"
-  ])
+    "top-right",
+  ]),
 };
 
 export default Tooltip;

@@ -8,16 +8,16 @@ describe("osInfo selectors", () => {
         releases: [],
         kernels: {},
         default_osystem: "",
-        default_release: ""
+        default_release: "",
       };
       const state = {
         general: {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(osInfo.get(state)).toStrictEqual(data);
     });
@@ -30,16 +30,16 @@ describe("osInfo selectors", () => {
         releases: [],
         kernels: {},
         default_osystem: "",
-        default_release: ""
+        default_release: "",
       };
       const state = {
         general: {
           osInfo: {
             loading: true,
             loaded: false,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(osInfo.loading(state)).toStrictEqual(true);
     });
@@ -52,16 +52,16 @@ describe("osInfo selectors", () => {
         releases: [],
         kernels: {},
         default_osystem: "",
-        default_release: ""
+        default_release: "",
       };
       const state = {
         general: {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(osInfo.loaded(state)).toStrictEqual(true);
     });
@@ -76,9 +76,9 @@ describe("osInfo selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(osInfo.errors(state)).toStrictEqual(errors);
     });
@@ -91,28 +91,28 @@ describe("osInfo selectors", () => {
           ubuntu: {
             precise: [
               ["hwe-p", "precise (hwe-p)"],
-              ["hwe-q", "precise (hwe-q)"]
+              ["hwe-q", "precise (hwe-q)"],
             ],
             trusty: [
               ["hwe-t", "trusty (hwe-t)"],
-              ["hwe-u", "trusty (hwe-u)"]
-            ]
-          }
-        }
+              ["hwe-u", "trusty (hwe-u)"],
+            ],
+          },
+        },
       };
       const state = {
         general: {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(osInfo.getUbuntuKernelOptions(state, "precise")).toEqual([
         { value: "", label: "No minimum kernel" },
         { value: "hwe-p", label: "precise (hwe-p)" },
-        { value: "hwe-q", label: "precise (hwe-q)" }
+        { value: "hwe-q", label: "precise (hwe-q)" },
       ]);
     });
   });
@@ -124,35 +124,35 @@ describe("osInfo selectors", () => {
           ubuntu: {
             precise: [
               ["hwe-p", "precise (hwe-p)"],
-              ["hwe-q", "precise (hwe-q)"]
+              ["hwe-q", "precise (hwe-q)"],
             ],
             trusty: [
               ["hwe-t", "trusty (hwe-t)"],
-              ["hwe-u", "trusty (hwe-u)"]
-            ]
-          }
-        }
+              ["hwe-u", "trusty (hwe-u)"],
+            ],
+          },
+        },
       };
       const state = {
         general: {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(osInfo.getAllUbuntuKernelOptions(state)).toEqual({
         precise: [
           { value: "", label: "No minimum kernel" },
           { value: "hwe-p", label: "precise (hwe-p)" },
-          { value: "hwe-q", label: "precise (hwe-q)" }
+          { value: "hwe-q", label: "precise (hwe-q)" },
         ],
         trusty: [
           { value: "", label: "No minimum kernel" },
           { value: "hwe-t", label: "trusty (hwe-t)" },
-          { value: "hwe-u", label: "trusty (hwe-u)" }
-        ]
+          { value: "hwe-u", label: "trusty (hwe-u)" },
+        ],
       });
     });
   });
@@ -163,8 +163,8 @@ describe("osInfo selectors", () => {
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
         ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
-        ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"]
-      ]
+        ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
+      ],
     };
     let state;
 
@@ -174,16 +174,16 @@ describe("osInfo selectors", () => {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
     });
 
     it("returns and formats OS releases with centos argument", () => {
       expect(osInfo.getOsReleases(state, "centos")).toEqual([
         { value: "centos66", label: "CentOS 6" },
-        { value: "centos70", label: "CentOS 7" }
+        { value: "centos70", label: "CentOS 7" },
       ]);
     });
 
@@ -191,9 +191,9 @@ describe("osInfo selectors", () => {
       expect(osInfo.getOsReleases(state, "ubuntu")).toEqual([
         {
           value: "precise",
-          label: "Ubuntu 12.04 LTS 'Precise Pangolin'"
+          label: "Ubuntu 12.04 LTS 'Precise Pangolin'",
         },
-        { value: "trusty", label: "Ubuntu 14.04 LTS 'Trusty Tahr'" }
+        { value: "trusty", label: "Ubuntu 14.04 LTS 'Trusty Tahr'" },
       ]);
     });
   });
@@ -202,14 +202,14 @@ describe("osInfo selectors", () => {
     const data = {
       osystems: [
         ["ubuntu", "Ubuntu"],
-        ["centos", "CentOS"]
+        ["centos", "CentOS"],
       ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
         ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
-        ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"]
-      ]
+        ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
+      ],
     };
     let state;
 
@@ -219,9 +219,9 @@ describe("osInfo selectors", () => {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
     });
 
@@ -229,12 +229,12 @@ describe("osInfo selectors", () => {
       expect(osInfo.getAllOsReleases(state)).toEqual({
         centos: [
           { value: "centos66", label: "CentOS 6" },
-          { value: "centos70", label: "CentOS 7" }
+          { value: "centos70", label: "CentOS 7" },
         ],
         ubuntu: [
           { value: "precise", label: "Ubuntu 12.04 LTS 'Precise Pangolin'" },
-          { value: "trusty", label: "Ubuntu 14.04 LTS 'Trusty Tahr'" }
-        ]
+          { value: "trusty", label: "Ubuntu 14.04 LTS 'Trusty Tahr'" },
+        ],
       });
     });
   });
@@ -243,13 +243,13 @@ describe("osInfo selectors", () => {
     const data = {
       osystems: [
         ["ubuntu", "Ubuntu"],
-        ["windows", "Windows"]
+        ["windows", "Windows"],
       ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
-        ["windows/win2012*", "Windows 2012 Server"]
-      ]
+        ["windows/win2012*", "Windows 2012 Server"],
+      ],
     };
     let state;
 
@@ -259,15 +259,15 @@ describe("osInfo selectors", () => {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
     });
 
     it("returns only licensed releases", () => {
       expect(osInfo.getLicensedOsReleases(state)).toEqual({
-        windows: [{ value: "win2012", label: "Windows 2012 Server" }]
+        windows: [{ value: "win2012", label: "Windows 2012 Server" }],
       });
     });
   });
@@ -276,13 +276,13 @@ describe("osInfo selectors", () => {
     const data = {
       osystems: [
         ["ubuntu", "Ubuntu"],
-        ["windows", "Windows"]
+        ["windows", "Windows"],
       ],
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
-        ["windows/win2012*", "Windows 2012 Server"]
-      ]
+        ["windows/win2012*", "Windows 2012 Server"],
+      ],
     };
     let state;
 
@@ -292,15 +292,15 @@ describe("osInfo selectors", () => {
           osInfo: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
     });
 
     it("returns only licensed operating systems", () => {
       expect(osInfo.getLicensedOsystems(state)).toEqual([
-        ["windows", "Windows"]
+        ["windows", "Windows"],
       ]);
     });
   });

@@ -6,15 +6,15 @@ describe("config actions", () => {
       type: "FETCH_CONFIG",
       meta: {
         model: "config",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
   it("should handle saving config", () => {
     const values = {
       maas_name: "bionic-maas",
-      enable_analytics: true
+      enable_analytics: true,
     };
 
     expect(config.update(values)).toEqual({
@@ -22,13 +22,13 @@ describe("config actions", () => {
       payload: {
         params: [
           { name: "maas_name", value: "bionic-maas" },
-          { name: "enable_analytics", value: true }
-        ]
+          { name: "enable_analytics", value: true },
+        ],
       },
       meta: {
         model: "config",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 });

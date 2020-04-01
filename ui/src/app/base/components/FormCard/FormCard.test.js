@@ -19,17 +19,7 @@ describe("FormCard ", () => {
       <FormCard sidebar={false} title="Add user" />
     );
     const withSidebar = shallow(<FormCard sidebar title="Add user" />);
-    expect(
-      withoutSidebar
-        .find("Col")
-        .at(1)
-        .props().size
-    ).toBe("10");
-    expect(
-      withSidebar
-        .find("Col")
-        .at(1)
-        .props().size
-    ).toBe("8");
+    expect(withoutSidebar.find("Col").at(1).props().size).toBe("10");
+    expect(withSidebar.find("Col").at(1).props().size).toBe("8");
   });
 });

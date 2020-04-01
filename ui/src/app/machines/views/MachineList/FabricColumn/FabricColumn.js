@@ -7,7 +7,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import { machine as machineSelectors } from "app/base/selectors";
 
 const FabricColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
@@ -38,7 +38,7 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
 
 FabricColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default FabricColumn;

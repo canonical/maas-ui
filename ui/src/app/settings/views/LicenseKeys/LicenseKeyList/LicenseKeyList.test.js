@@ -13,7 +13,7 @@ describe("LicenseKeyList", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         osInfo: {
@@ -22,14 +22,14 @@ describe("LicenseKeyList", () => {
           data: {
             osystems: [
               ["ubuntu", "Ubuntu"],
-              ["windows", "Windows"]
+              ["windows", "Windows"],
             ],
             releases: [
               ["ubuntu/bionic", "Ubuntu 18.04 LTS 'Bionic Beaver'"],
-              ["windows/win2012*", "Windows Server 2012"]
-            ]
-          }
-        }
+              ["windows/win2012*", "Windows Server 2012"],
+            ],
+          },
+        },
       },
       licensekeys: {
         loading: false,
@@ -39,15 +39,15 @@ describe("LicenseKeyList", () => {
           {
             osystem: "windows",
             distro_series: "win2012",
-            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
           },
           {
             osystem: "windows",
             distro_series: "win2019",
-            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-AAABBB"
-          }
-        ]
-      }
+            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-AAABBB",
+          },
+        ],
+      },
     };
   });
 
@@ -65,8 +65,8 @@ describe("LicenseKeyList", () => {
 
     expect(store.getActions()).toEqual([
       {
-        type: "FETCH_LICENSE_KEYS"
-      }
+        type: "FETCH_LICENSE_KEYS",
+      },
     ]);
   });
 });

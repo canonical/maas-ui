@@ -37,7 +37,7 @@ export const UserForm = ({ user }) => {
         onSaveAnalytics={{
           action: "Saved",
           category: "Users settings",
-          label: `${editing ? "Edit" : "Add"} user form`
+          label: `${editing ? "Edit" : "Add"} user form`,
         }}
         onSave={(params, values, editing) => {
           if (editing) {
@@ -47,7 +47,7 @@ export const UserForm = ({ user }) => {
           }
           setSaving(values.username);
         }}
-        onUpdateFields={values => {
+        onUpdateFields={(values) => {
           setName(values.username);
         }}
         savedRedirect="/settings/users"
@@ -58,7 +58,7 @@ export const UserForm = ({ user }) => {
 };
 
 UserForm.propTypes = {
-  user: UserShape
+  user: UserShape,
 };
 
 export default UserForm;

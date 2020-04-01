@@ -11,7 +11,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const NetworkDiscoverySchema = Yup.object().shape({
   active_discovery_interval: Yup.number().required(),
-  network_discovery: Yup.string().required()
+  network_discovery: Yup.string().required(),
 });
 
 const NetworkDiscoveryForm = () => {
@@ -50,12 +50,12 @@ const NetworkDiscoveryForm = () => {
           <FormikForm
             initialValues={{
               active_discovery_interval: activeDiscoveryInterval,
-              network_discovery: networkDiscovery
+              network_discovery: networkDiscovery,
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Network settings",
-              label: "Network discovery form"
+              label: "Network discovery form",
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

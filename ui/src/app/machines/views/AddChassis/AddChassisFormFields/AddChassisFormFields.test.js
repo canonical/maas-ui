@@ -13,16 +13,16 @@ describe("AddChassisFormFields", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: [{ name: "maas_name", value: "MAAS" }]
+        items: [{ name: "maas_name", value: "MAAS" }],
       },
       domain: {
         items: [
           {
             id: 0,
-            name: "maas"
-          }
+            name: "maas",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       general: {
         powerTypes: {
@@ -30,17 +30,17 @@ describe("AddChassisFormFields", () => {
             {
               name: "manual",
               description: "Manual",
-              fields: []
-            }
+              fields: [],
+            },
           ],
-          loaded: true
-        }
+          loaded: true,
+        },
       },
       machine: {
         errors: {},
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -51,7 +51,7 @@ describe("AddChassisFormFields", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" }
+            { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
           <AddChassisForm />

@@ -22,8 +22,8 @@ describe("DeployFormFields", () => {
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
-              ["ubuntu", "Ubuntu"]
-            ]
+              ["ubuntu", "Ubuntu"],
+            ],
           },
           {
             name: "default_distro_series",
@@ -32,10 +32,10 @@ describe("DeployFormFields", () => {
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
               ["trusty", 'Ubuntu 14.04 LTS "Trusty Tahr"'],
               ["xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
-              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']
-            ]
-          }
-        ]
+              ["bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+            ],
+          },
+        ],
       },
       general: {
         osInfo: {
@@ -46,11 +46,11 @@ describe("DeployFormFields", () => {
               ["centos/centos66", "CentOS 6"],
               ["centos/centos70", "CentOS 7"],
               ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
-              ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"]
-            ]
-          }
-        }
-      }
+              ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
+            ],
+          },
+        },
+      },
     };
   });
 

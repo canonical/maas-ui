@@ -47,7 +47,7 @@ export const nodeStatus = {
   // Running tests on Node
   TESTING: 21,
   // Testing has failed
-  FAILED_TESTING: 22
+  FAILED_TESTING: 22,
 };
 
 export const scriptStatus = {
@@ -63,5 +63,5 @@ export const scriptStatus = {
   FAILED_INSTALLING: 8,
   SKIPPED: 9,
   APPLYING_NETCONF: 10,
-  FAILED_APPLYING_NETCONF: 11
+  FAILED_APPLYING_NETCONF: 11,
 };

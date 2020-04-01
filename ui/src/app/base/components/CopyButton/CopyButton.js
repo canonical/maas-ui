@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 
 const CopyButton = ({ value }) => {
   const input = useRef(null);
-  const handleClick = evt => {
+  const handleClick = (evt) => {
     // To copy the value the input must be visible, so temporarily display the input as text.
     input.current.type = "text";
     input.current.focus();
@@ -33,7 +33,7 @@ const CopyButton = ({ value }) => {
 };
 
 CopyButton.propTypes = {
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 
 export default CopyButton;

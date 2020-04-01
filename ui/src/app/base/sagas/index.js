@@ -11,7 +11,7 @@ import {
   watchDeleteScript,
   watchFetchScripts,
   watchUploadScript,
-  watchAddMachineChassis
+  watchAddMachineChassis,
 } from "./http";
 
 export {
@@ -27,5 +27,5 @@ export {
   watchDeleteScript,
   watchFetchScripts,
   watchUploadScript,
-  watchAddMachineChassis
+  watchAddMachineChassis,
 };

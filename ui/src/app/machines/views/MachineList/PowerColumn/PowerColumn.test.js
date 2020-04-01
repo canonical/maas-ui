@@ -13,7 +13,7 @@ describe("PowerColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -24,10 +24,10 @@ describe("PowerColumn", () => {
             actions: [],
             system_id: "abc123",
             power_state: "on",
-            power_type: "virsh"
-          }
-        ]
-      }
+            power_type: "virsh",
+          },
+        ],
+      },
     };
   });
 
@@ -93,12 +93,9 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(0)
-        .text()
-    ).toEqual("Turn on");
+    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
+      "Turn on"
+    );
   });
 
   it("can show a menu item to turn a machine off", () => {
@@ -115,12 +112,9 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(0)
-        .text()
-    ).toEqual("Turn off");
+    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
+      "Turn off"
+    );
   });
 
   it("can show a menu item to check power", () => {
@@ -136,12 +130,9 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(0)
-        .text()
-    ).toEqual("Check power");
+    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
+      "Check power"
+    );
   });
 
   it("can show a message when there are no menu items", () => {
@@ -158,11 +149,8 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(1)
-        .text()
-    ).toEqual("No power actions available");
+    expect(wrapper.find(".p-contextual-menu__link").at(1).text()).toEqual(
+      "No power actions available"
+    );
   });
 });

@@ -10,9 +10,9 @@ describe("architectures selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(architectures.get(state)).toStrictEqual(data);
     });
@@ -27,9 +27,9 @@ describe("architectures selectors", () => {
             data: [],
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(architectures.loading(state)).toStrictEqual(loading);
     });
@@ -44,9 +44,9 @@ describe("architectures selectors", () => {
             data: [],
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(architectures.loaded(state)).toStrictEqual(loaded);
     });
@@ -61,9 +61,9 @@ describe("architectures selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(architectures.errors(state)).toStrictEqual(errors);
     });

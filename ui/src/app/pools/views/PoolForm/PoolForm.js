@@ -13,7 +13,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
-  description: Yup.string()
+  description: Yup.string(),
 });
 
 export const PoolForm = ({ pool }) => {
@@ -36,13 +36,13 @@ export const PoolForm = ({ pool }) => {
     title = "Edit pool";
     initialValues = {
       name: pool.name,
-      description: pool.description
+      description: pool.description,
     };
   } else {
     title = "Add pool";
     initialValues = {
       name: "",
-      description: ""
+      description: "",
     };
   }
 
@@ -59,9 +59,9 @@ export const PoolForm = ({ pool }) => {
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",
-          label: "Add pool form"
+          label: "Add pool form",
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           dispatch(poolActions.cleanup());
           if (pool) {
             values.id = pool.id;

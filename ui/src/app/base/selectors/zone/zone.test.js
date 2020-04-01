@@ -11,13 +11,13 @@ describe("zone selectors", () => {
         description: "",
         devices_count: 15,
         machines_count: 0,
-        controllers_count: 0
-      }
+        controllers_count: 0,
+      },
     ];
     const state = {
       zone: {
-        items
-      }
+        items,
+      },
     };
     expect(zone.all(state)).toEqual(items);
   });
@@ -26,8 +26,8 @@ describe("zone selectors", () => {
     const state = {
       zone: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(zone.loading(state)).toEqual(true);
   });
@@ -36,8 +36,8 @@ describe("zone selectors", () => {
     const state = {
       zone: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(zone.loaded(state)).toEqual(true);
   });
@@ -45,8 +45,8 @@ describe("zone selectors", () => {
   it("can get the errors state", () => {
     const state = {
       zone: {
-        errors: "Data is incorrect"
-      }
+        errors: "Data is incorrect",
+      },
     };
     expect(zone.errors(state)).toStrictEqual("Data is incorrect");
   });

@@ -9,7 +9,7 @@ import FormikField from "app/base/components/FormikField";
 const generateCheckboxGroup = (key, fields, formikProps) => {
   const { setFieldTouched, setFieldValue, values } = formikProps;
 
-  const checkboxes = fields.map(field => (
+  const checkboxes = fields.map((field) => (
     <FormikField
       wrapperClassName="u-no-margin--bottom"
       key={field}
@@ -21,11 +21,11 @@ const generateCheckboxGroup = (key, fields, formikProps) => {
       onChange={() => {
         let newFields = [];
         if (values[key].includes(field)) {
-          newFields = values[key].filter(oldField => oldField !== field);
+          newFields = values[key].filter((oldField) => oldField !== field);
         } else {
           // Conserve original order of fields
           const temp = [...values[key], field];
-          newFields = fields.filter(oldField => temp.includes(oldField));
+          newFields = fields.filter((oldField) => temp.includes(oldField));
         }
         setFieldValue(key, newFields);
         setFieldTouched(key, true);
@@ -77,7 +77,7 @@ const RepositoryFormFields = ({ type }) => {
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}
-            />
+            />,
           ]}
           className="is-split--small u-hide--medium u-hide--large"
         />
@@ -118,7 +118,7 @@ const RepositoryFormFields = ({ type }) => {
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}
-            />
+            />,
           ]}
           className="is-split--small u-hide--small"
         />

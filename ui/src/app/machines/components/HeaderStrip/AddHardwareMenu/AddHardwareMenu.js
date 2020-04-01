@@ -6,25 +6,25 @@ import { general as generalActions } from "app/base/actions";
 import { general as generalSelectors } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-const getAddHardwareLinks = navigationOptions => {
+const getAddHardwareLinks = (navigationOptions) => {
   const links = [
     {
       children: "Machine",
       element: Link,
-      to: "/machines/add"
+      to: "/machines/add",
     },
     {
       children: "Chassis",
       element: Link,
-      to: "/machines/chassis/add"
-    }
+      to: "/machines/chassis/add",
+    },
   ];
 
   return navigationOptions.rsd
     ? links.concat({
         children: "RSD",
         element: "a",
-        href: `${process.env.REACT_APP_ANGULAR_BASENAME}/rsd`
+        href: `${process.env.REACT_APP_ANGULAR_BASENAME}/rsd`,
       })
     : links;
 };

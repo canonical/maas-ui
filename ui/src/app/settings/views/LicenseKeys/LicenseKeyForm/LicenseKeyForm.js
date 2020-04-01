@@ -17,7 +17,7 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 const LicenseKeySchema = Yup.object().shape({
   osystem: Yup.string().required("Operating system is required"),
   distro_series: Yup.string().required("Release is required"),
-  license_key: Yup.string().required("A license key is required")
+  license_key: Yup.string().required("A license key is required"),
 });
 
 export const LicenseKeyForm = ({ licenseKey }) => {
@@ -68,18 +68,18 @@ export const LicenseKeyForm = ({ licenseKey }) => {
             distro_series: licenseKey
               ? licenseKey.distro_series
               : releases[osystems[0][0]][0].value,
-            license_key: licenseKey ? licenseKey.license_key : ""
+            license_key: licenseKey ? licenseKey.license_key : "",
           }}
           onSaveAnalytics={{
             action: "Saved",
             category: "License keys settings",
-            label: `${title} form`
+            label: `${title} form`,
           }}
-          onSubmit={values => {
+          onSubmit={(values) => {
             const params = {
               osystem: values.osystem,
               distro_series: values.distro_series,
-              license_key: values.license_key
+              license_key: values.license_key,
             };
             if (editing) {
               dispatch(licenseKeysActions.update(params));

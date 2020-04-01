@@ -8,7 +8,7 @@ describe("auth", () => {
       loading: false,
       saved: false,
       saving: false,
-      user: null
+      user: null,
     });
   });
 
@@ -18,18 +18,18 @@ describe("auth", () => {
         {
           auth: {
             loading: false,
-            user: null
-          }
+            user: null,
+          },
         },
         {
-          type: "FETCH_AUTH_USER_START"
+          type: "FETCH_AUTH_USER_START",
         }
       )
     ).toStrictEqual({
       auth: {
         loading: true,
-        user: null
-      }
+        user: null,
+      },
     });
   });
 
@@ -40,20 +40,20 @@ describe("auth", () => {
           auth: {
             loaded: false,
             loading: true,
-            user: null
-          }
+            user: null,
+          },
         },
         {
           payload: { username: "admin" },
-          type: "FETCH_AUTH_USER_SUCCESS"
+          type: "FETCH_AUTH_USER_SUCCESS",
         }
       )
     ).toStrictEqual({
       auth: {
         loaded: true,
         loading: false,
-        user: { username: "admin" }
-      }
+        user: { username: "admin" },
+      },
     });
   });
 
@@ -63,19 +63,19 @@ describe("auth", () => {
         {
           auth: {
             saved: true,
-            saving: false
-          }
+            saving: false,
+          },
         },
         {
           payload: { password: "pass1" },
-          type: "CHANGE_AUTH_USER_PASSWORD_START"
+          type: "CHANGE_AUTH_USER_PASSWORD_START",
         }
       )
     ).toStrictEqual({
       auth: {
         saved: false,
-        saving: true
-      }
+        saving: true,
+      },
     });
   });
 
@@ -85,20 +85,20 @@ describe("auth", () => {
         {
           auth: {
             saved: true,
-            saving: true
-          }
+            saving: true,
+          },
         },
         {
           error: { password: "Passwords don't match" },
-          type: "CHANGE_AUTH_USER_PASSWORD_ERROR"
+          type: "CHANGE_AUTH_USER_PASSWORD_ERROR",
         }
       )
     ).toStrictEqual({
       auth: {
         errors: { password: "Passwords don't match" },
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     });
   });
 
@@ -109,19 +109,19 @@ describe("auth", () => {
           auth: {
             errors: { password: "Passwords don't match" },
             saved: false,
-            saving: true
-          }
+            saving: true,
+          },
         },
         {
-          type: "CHANGE_AUTH_USER_PASSWORD_SUCCESS"
+          type: "CHANGE_AUTH_USER_PASSWORD_SUCCESS",
         }
       )
     ).toStrictEqual({
       auth: {
         errors: {},
         saved: true,
-        saving: false
-      }
+        saving: false,
+      },
     });
   });
 
@@ -130,21 +130,21 @@ describe("auth", () => {
       auth(
         {
           auth: {
-            user: { id: "808", username: "admin" }
-          }
+            user: { id: "808", username: "admin" },
+          },
         },
         {
           payload: {
             id: "808",
-            username: "admin2"
+            username: "admin2",
           },
-          type: "CREATE_USER_NOTIFY"
+          type: "CREATE_USER_NOTIFY",
         }
       )
     ).toStrictEqual({
       auth: {
-        user: { id: "808", username: "admin2" }
-      }
+        user: { id: "808", username: "admin2" },
+      },
     });
   });
 
@@ -153,21 +153,21 @@ describe("auth", () => {
       auth(
         {
           auth: {
-            user: { id: "808", username: "admin" }
-          }
+            user: { id: "808", username: "admin" },
+          },
         },
         {
           payload: {
             id: "808",
-            username: "admin2"
+            username: "admin2",
           },
-          type: "CREATE_USER_NOTIFY"
+          type: "CREATE_USER_NOTIFY",
         }
       )
     ).toStrictEqual({
       auth: {
-        user: { id: "808", username: "admin2" }
-      }
+        user: { id: "808", username: "admin2" },
+      },
     });
   });
 
@@ -176,21 +176,21 @@ describe("auth", () => {
       auth(
         {
           auth: {
-            user: { id: "808", username: "admin" }
-          }
+            user: { id: "808", username: "admin" },
+          },
         },
         {
           payload: {
             id: "909",
-            username: "admin2"
+            username: "admin2",
           },
-          type: "CREATE_USER_NOTIFY"
+          type: "CREATE_USER_NOTIFY",
         }
       )
     ).toStrictEqual({
       auth: {
-        user: { id: "808", username: "admin" }
-      }
+        user: { id: "808", username: "admin" },
+      },
     });
   });
 
@@ -201,19 +201,19 @@ describe("auth", () => {
           auth: {
             errors: { password: "Passwords don't match" },
             saved: true,
-            saving: true
-          }
+            saving: true,
+          },
         },
         {
-          type: "CLEANUP_AUTH_USER"
+          type: "CLEANUP_AUTH_USER",
         }
       )
     ).toStrictEqual({
       auth: {
         errors: {},
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     });
   });
 });

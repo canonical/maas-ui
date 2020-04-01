@@ -6,8 +6,8 @@ describe("machine actions", () => {
       type: "FETCH_MACHINE",
       meta: {
         model: "machine",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -18,14 +18,14 @@ describe("machine actions", () => {
       type: "CREATE_MACHINE",
       meta: {
         model: "machine",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
           name: "machine1",
-          description: "a machine"
-        }
-      }
+          description: "a machine",
+        },
+      },
     });
   });
 
@@ -34,17 +34,17 @@ describe("machine actions", () => {
       type: "SET_MACHINE_POOL",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "set-pool",
           extra: {
-            pool_id: 909
+            pool_id: 909,
           },
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -53,17 +53,17 @@ describe("machine actions", () => {
       type: "SET_MACHINE_ZONE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "set-zone",
           extra: {
-            zone_id: 909
+            zone_id: 909,
           },
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -72,15 +72,15 @@ describe("machine actions", () => {
       type: "TURN_MACHINE_ON",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "on",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -89,15 +89,15 @@ describe("machine actions", () => {
       type: "TURN_MACHINE_OFF",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "off",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -106,13 +106,13 @@ describe("machine actions", () => {
       type: "CHECK_MACHINE_POWER",
       meta: {
         model: "machine",
-        method: "check_power"
+        method: "check_power",
       },
       payload: {
         params: {
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -121,15 +121,15 @@ describe("machine actions", () => {
       type: "ACQUIRE_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "acquire",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -138,15 +138,15 @@ describe("machine actions", () => {
       type: "RELEASE_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "release",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -155,15 +155,15 @@ describe("machine actions", () => {
       type: "COMMISSION_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "commission",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -171,21 +171,21 @@ describe("machine actions", () => {
     const extra = {
       osystem: "ubuntu",
       distro_series: "bionic",
-      install_kvm: false
+      install_kvm: false,
     };
     expect(machine.deploy("abc123", extra)).toEqual({
       type: "DEPLOY_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "deploy",
           extra,
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -194,15 +194,15 @@ describe("machine actions", () => {
       type: "ABORT_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "abort",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -211,15 +211,15 @@ describe("machine actions", () => {
       type: "TEST_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "test",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -228,15 +228,15 @@ describe("machine actions", () => {
       type: "MACHINE_RESCUE_MODE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "rescue-mode",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -245,15 +245,15 @@ describe("machine actions", () => {
       type: "MACHINE_EXIT_RESCUE_MODE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "exit-rescue-mode",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -262,15 +262,15 @@ describe("machine actions", () => {
       type: "MARK_MACHINE_BROKEN",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "mark-broken",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -279,15 +279,15 @@ describe("machine actions", () => {
       type: "MARK_MACHINE_FIXED",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "mark-fixed",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -296,15 +296,15 @@ describe("machine actions", () => {
       type: "MACHINE_OVERRIDE_FAILED_TESTING",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "override-failed-testing",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -313,15 +313,15 @@ describe("machine actions", () => {
       type: "LOCK_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "lock",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -330,15 +330,15 @@ describe("machine actions", () => {
       type: "UNLOCK_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "unlock",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -347,21 +347,21 @@ describe("machine actions", () => {
       type: "DELETE_MACHINE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "delete",
           extra: {},
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
   it("can handle cleaning machines", () => {
     expect(machine.cleanup()).toEqual({
-      type: "CLEANUP_MACHINE"
+      type: "CLEANUP_MACHINE",
     });
   });
 });

@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 
 import {
   status as statusSelectors,
-  user as userSelectors
+  user as userSelectors,
 } from "app/base/selectors";
 import { useParams } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
@@ -20,7 +20,9 @@ export const UserEdit = () => {
 
   const { id } = useParams();
   const loading = useSelector(userSelectors.loading);
-  const user = useSelector(state => userSelectors.getById(state, parseInt(id)));
+  const user = useSelector((state) =>
+    userSelectors.getById(state, parseInt(id))
+  );
 
   if (externalAuthURL) {
     return (

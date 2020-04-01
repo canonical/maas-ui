@@ -9,7 +9,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
-  default_min_hwe_kernel: Yup.string()
+  default_min_hwe_kernel: Yup.string(),
 });
 
 const CommissioningForm = () => {
@@ -27,12 +27,12 @@ const CommissioningForm = () => {
     <FormikForm
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries,
-        default_min_hwe_kernel: defaultMinKernelVersion
+        default_min_hwe_kernel: defaultMinKernelVersion,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Configuration settings",
-        label: "Commissioning form"
+        label: "Commissioning form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(configActions.update(values));

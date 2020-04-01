@@ -6,8 +6,8 @@ describe("controller actions", () => {
       type: "FETCH_CONTROLLER",
       meta: {
         model: "controller",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

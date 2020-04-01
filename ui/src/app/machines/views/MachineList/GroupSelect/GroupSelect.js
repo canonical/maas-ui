@@ -5,28 +5,28 @@ import PropTypes from "prop-types";
 const groupOptions = [
   {
     value: "none",
-    label: "No grouping"
+    label: "No grouping",
   },
   {
     value: "owner",
-    label: "Group by owner"
+    label: "Group by owner",
   },
   {
     value: "pool",
-    label: "Group by pool"
+    label: "Group by pool",
   },
   {
     value: "power_state",
-    label: "Group by power state"
+    label: "Group by power state",
   },
   {
     value: "status",
-    label: "Group by status"
+    label: "Group by status",
   },
   {
     value: "zone",
-    label: "Group by zone"
-  }
+    label: "Group by zone",
+  },
 ];
 
 const GroupSelect = ({ grouping, setGrouping, setHiddenGroups }) => {
@@ -34,7 +34,7 @@ const GroupSelect = ({ grouping, setGrouping, setHiddenGroups }) => {
     <Select
       defaultValue={grouping}
       name="machine-groupings"
-      onChange={e => {
+      onChange={(e) => {
         setGrouping(e.target.value);
         setHiddenGroups([]);
       }}
@@ -46,7 +46,7 @@ const GroupSelect = ({ grouping, setGrouping, setHiddenGroups }) => {
 GroupSelect.propTypes = {
   grouping: PropTypes.string.isRequired,
   setGrouping: PropTypes.func.isRequired,
-  setHiddenGroups: PropTypes.func.isRequired
+  setHiddenGroups: PropTypes.func.isRequired,
 };
 
 export default GroupSelect;

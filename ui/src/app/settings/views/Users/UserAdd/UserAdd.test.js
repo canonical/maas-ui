@@ -15,7 +15,7 @@ describe("UserAdd", () => {
     state = {
       config: { items: [] },
       status: {},
-      user: { auth: {} }
+      user: { auth: {} },
     };
   });
 

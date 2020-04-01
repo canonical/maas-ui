@@ -17,14 +17,14 @@ describe("GeneralForm", () => {
         items: [
           {
             name: "maas_name",
-            value: "bionic-maas"
+            value: "bionic-maas",
           },
           {
             name: "enable_analytics",
-            value: true
-          }
-        ]
-      }
+            value: true,
+          },
+        ],
+      },
     };
   });
 

@@ -32,7 +32,7 @@ export const reduceInitialState = (array, key, match, newValues) => {
     if (item[key] === match) {
       acc.push({
         ...item,
-        ...newValues
+        ...newValues,
       });
     } else {
       acc.push(item);

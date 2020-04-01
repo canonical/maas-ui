@@ -6,7 +6,7 @@ describe("licenseKeys reducer", () => {
       errors: {},
       items: [],
       loaded: false,
-      loading: false
+      loading: false,
     });
   });
 
@@ -19,10 +19,10 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_LICENSE_KEY_START"
+          type: "CREATE_LICENSE_KEY_START",
         }
       )
     ).toEqual({
@@ -31,7 +31,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -44,10 +44,10 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "CREATE_LICENSE_KEY_SUCCESS"
+          type: "CREATE_LICENSE_KEY_SUCCESS",
         }
       )
     ).toEqual({
@@ -56,7 +56,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -69,11 +69,11 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           errors: { error: "Invalid license key." },
-          type: "CREATE_LICENSE_KEY_ERROR"
+          type: "CREATE_LICENSE_KEY_ERROR",
         }
       )
     ).toEqual({
@@ -82,20 +82,20 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_LICENSE_KEYS_START", () => {
     expect(
       licenseKeys(undefined, {
-        type: "FETCH_LICENSE_KEYS_START"
+        type: "FETCH_LICENSE_KEYS_START",
       })
     ).toEqual({
       errors: {},
       items: [],
       loaded: false,
-      loading: true
+      loading: true,
     });
   });
 
@@ -103,13 +103,13 @@ describe("licenseKeys reducer", () => {
     expect(
       licenseKeys(undefined, {
         type: "FETCH_LICENSE_KEYS_ERROR",
-        errors: { error: "Unable to fetch license keys" }
+        errors: { error: "Unable to fetch license keys" },
       })
     ).toEqual({
       items: [],
       errors: { error: "Unable to fetch license keys" },
       loaded: false,
-      loading: false
+      loading: false,
     });
   });
 
@@ -119,23 +119,23 @@ describe("licenseKeys reducer", () => {
         {
           items: [],
           loaded: false,
-          loading: true
+          loading: true,
         },
         {
           type: "FETCH_LICENSE_KEYS_SUCCESS",
           payload: [
             { osystem: "windows", license_key: "foo" },
-            { osystem: "redhat", license_key: "bar" }
-          ]
+            { osystem: "redhat", license_key: "bar" },
+          ],
         }
       )
     ).toEqual({
       items: [
         { osystem: "windows", license_key: "foo" },
-        { osystem: "redhat", license_key: "bar" }
+        { osystem: "redhat", license_key: "bar" },
       ],
       loaded: true,
-      loading: false
+      loading: false,
     });
   });
 
@@ -148,10 +148,10 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "UPDATE_LICENSE_KEY_START"
+          type: "UPDATE_LICENSE_KEY_START",
         }
       )
     ).toEqual({
@@ -160,7 +160,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -171,32 +171,32 @@ describe("licenseKeys reducer", () => {
           errors: {},
           items: [
             { osystem: "windows", distro_series: "2012", license_key: "foo" },
-            { osystem: "windows", distro_series: "2019", license_key: "bar" }
+            { osystem: "windows", distro_series: "2019", license_key: "bar" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "UPDATE_LICENSE_KEY_SUCCESS",
           payload: {
             osystem: "windows",
             distro_series: "2019",
-            license_key: "baz"
-          }
+            license_key: "baz",
+          },
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { osystem: "windows", distro_series: "2012", license_key: "foo" },
-        { osystem: "windows", distro_series: "2019", license_key: "baz" }
+        { osystem: "windows", distro_series: "2019", license_key: "baz" },
       ],
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -209,11 +209,11 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           errors: { error: "Not found" },
-          type: "UPDATE_LICENSE_KEY_ERROR"
+          type: "UPDATE_LICENSE_KEY_ERROR",
         }
       )
     ).toEqual({
@@ -222,7 +222,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -235,10 +235,10 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_LICENSE_KEY_START"
+          type: "DELETE_LICENSE_KEY_START",
         }
       )
     ).toEqual({
@@ -247,7 +247,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -258,31 +258,31 @@ describe("licenseKeys reducer", () => {
           errors: {},
           items: [
             { osystem: "windows", distro_series: "2012", license_key: "foo" },
-            { osystem: "windows", distro_series: "2019", license_key: "bar" }
+            { osystem: "windows", distro_series: "2019", license_key: "bar" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "DELETE_LICENSE_KEY_SUCCESS",
           payload: {
             osystem: "windows",
             distro_series: "2019",
-            license_key: "bar"
-          }
+            license_key: "bar",
+          },
         }
       )
     ).toEqual({
       errors: {},
       items: [
-        { osystem: "windows", distro_series: "2012", license_key: "foo" }
+        { osystem: "windows", distro_series: "2012", license_key: "foo" },
       ],
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -295,11 +295,11 @@ describe("licenseKeys reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           errors: { error: "Not found" },
-          type: "DELETE_LICENSE_KEY_ERROR"
+          type: "DELETE_LICENSE_KEY_ERROR",
         }
       )
     ).toEqual({
@@ -308,7 +308,7 @@ describe("licenseKeys reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

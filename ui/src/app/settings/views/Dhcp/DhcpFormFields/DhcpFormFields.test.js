@@ -15,7 +15,7 @@ describe("DhcpFormFields", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       controller: { items: [], loaded: true },
       device: { items: [], loaded: true },
@@ -27,39 +27,39 @@ describe("DhcpFormFields", () => {
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
-            value: "lease 10"
+            value: "lease 10",
           },
           {
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39"
-          }
+            updated: "Thu, 15 Aug. 2019 06:21:39",
+          },
         ],
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       },
       machine: {
         items: [
           {
             system_id: 2,
-            fqdn: "node2.maas"
-          }
+            fqdn: "node2.maas",
+          },
         ],
         loaded: true,
-        loading: false
+        loading: false,
       },
       subnet: {
         items: [
           {
             id: 1,
-            name: "test.local"
-          }
+            name: "test.local",
+          },
         ],
-        loaded: true
-      }
+        loaded: true,
+      },
     };
   });
 
@@ -113,7 +113,7 @@ describe("DhcpFormFields", () => {
     expect(
       wrapper
         .findWhere(
-          n => n.name() === "FormikField" && n.prop("name") === "entity"
+          (n) => n.name() === "FormikField" && n.prop("name") === "entity"
         )
         .exists()
     ).toBe(false);
@@ -137,7 +137,7 @@ describe("DhcpFormFields", () => {
     expect(
       wrapper
         .findWhere(
-          n => n.name() === "FormikField" && n.prop("name") === "entity"
+          (n) => n.name() === "FormikField" && n.prop("name") === "entity"
         )
         .exists()
     ).toBe(true);

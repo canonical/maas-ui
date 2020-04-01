@@ -8,7 +8,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
 const WindowsSchema = Yup.object().shape({
-  windows_kms_host: Yup.string()
+  windows_kms_host: Yup.string(),
 });
 
 const WindowsForm = () => {
@@ -23,12 +23,12 @@ const WindowsForm = () => {
   return (
     <FormikForm
       initialValues={{
-        windows_kms_host: windowsKmsHost
+        windows_kms_host: windowsKmsHost,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Images settings",
-        label: "Windows form"
+        label: "Windows form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));

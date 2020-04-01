@@ -3,7 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { messages as messageActions } from "app/base/actions";
 
 const initialState = {
-  items: []
+  items: [],
 };
 
 const messages = createReducer(initialState, {
@@ -11,9 +11,9 @@ const messages = createReducer(initialState, {
     state.items.push(action.payload);
   },
   [messageActions.remove]: (state, action) => {
-    const index = state.items.findIndex(item => item.id === action.payload);
+    const index = state.items.findIndex((item) => item.id === action.payload);
     state.items.splice(index, 1);
-  }
+  },
 });
 
 export default messages;

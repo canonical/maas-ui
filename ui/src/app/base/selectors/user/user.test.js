@@ -4,8 +4,8 @@ describe("users selectors", () => {
   it("can get items", () => {
     const state = {
       user: {
-        items: [{ username: "default" }]
-      }
+        items: [{ username: "default" }],
+      },
     };
     expect(user.get(state)).toEqual([{ username: "default" }]);
   });
@@ -14,8 +14,8 @@ describe("users selectors", () => {
     const state = {
       user: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(user.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("users selectors", () => {
     const state = {
       user: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(user.loaded(state)).toEqual(true);
   });
@@ -34,8 +34,8 @@ describe("users selectors", () => {
     const state = {
       user: {
         saving: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(user.saving(state)).toEqual(true);
   });
@@ -44,8 +44,8 @@ describe("users selectors", () => {
     const state = {
       user: {
         saved: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(user.saved(state)).toEqual(true);
   });
@@ -54,8 +54,8 @@ describe("users selectors", () => {
     const state = {
       user: {
         loading: true,
-        items: [{ username: "foo" }, { username: "bar" }]
-      }
+        items: [{ username: "foo" }, { username: "bar" }],
+      },
     };
     expect(user.count(state)).toEqual(2);
   });
@@ -66,13 +66,13 @@ describe("users selectors", () => {
         loading: true,
         items: [
           { username: "foo", id: 808 },
-          { username: "bar", id: 909 }
-        ]
-      }
+          { username: "bar", id: 909 },
+        ],
+      },
     };
     expect(user.getById(state, 909)).toStrictEqual({
       username: "bar",
-      id: 909
+      id: 909,
     });
   });
 
@@ -83,45 +83,45 @@ describe("users selectors", () => {
           {
             username: "admin",
             email: "test@example.com",
-            last_name: ""
+            last_name: "",
           },
           {
             username: "me",
             email: "minnie@example.com",
-            last_name: ""
+            last_name: "",
           },
           {
             username: "richie",
             email: "richie@example.com",
-            last_name: ""
+            last_name: "",
           },
           {
             username: "adam",
             email: "adam@example.com",
-            last_name: "minichiello"
-          }
-        ]
-      }
+            last_name: "minichiello",
+          },
+        ],
+      },
     };
     expect(user.search(state, "min")).toEqual([
       // Matches username:
       {
         username: "admin",
         email: "test@example.com",
-        last_name: ""
+        last_name: "",
       },
       // Matches email:
       {
         username: "me",
         email: "minnie@example.com",
-        last_name: ""
+        last_name: "",
       },
       // Matches last name:
       {
         username: "adam",
         email: "adam@example.com",
-        last_name: "minichiello"
-      }
+        last_name: "minichiello",
+      },
     ]);
   });
 
@@ -129,11 +129,11 @@ describe("users selectors", () => {
     const state = {
       user: {
         errors: { username: "Username already exists" },
-        items: []
-      }
+        items: [],
+      },
     };
     expect(user.errors(state)).toStrictEqual({
-      username: "Username already exists"
+      username: "Username already exists",
     });
   });
 });

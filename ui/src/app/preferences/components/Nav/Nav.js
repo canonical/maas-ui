@@ -7,20 +7,20 @@ export const Nav = () => (
     items={[
       {
         path: "details",
-        label: "Details"
+        label: "Details",
       },
       {
         path: "api-keys",
-        label: "API keys"
+        label: "API keys",
       },
       {
         path: "ssh-keys",
-        label: "SSH keys"
+        label: "SSH keys",
       },
       {
         path: "ssl-keys",
-        label: "SSL keys"
-      }
+        label: "SSL keys",
+      },
     ]}
   />
 );

@@ -43,7 +43,9 @@ const packagerepository = produce(
         draft.items.push(action.payload);
         break;
       case "DELETE_PACKAGEREPOSITORY_NOTIFY":
-        const index = draft.items.findIndex(item => item.id === action.payload);
+        const index = draft.items.findIndex(
+          (item) => item.id === action.payload
+        );
         draft.items.splice(index, 1);
         break;
       case "CLEANUP_PACKAGEREPOSITORY":
@@ -61,7 +63,7 @@ const packagerepository = produce(
     loaded: false,
     loading: false,
     saved: false,
-    saving: false
+    saving: false,
   }
 );
 

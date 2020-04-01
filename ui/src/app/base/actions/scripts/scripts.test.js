@@ -3,7 +3,7 @@ import scripts from "./scripts";
 describe("scripts actions", () => {
   it("should handle fetching scripts", () => {
     expect(scripts.fetch()).toEqual({
-      type: "FETCH_SCRIPTS"
+      type: "FETCH_SCRIPTS",
     });
   });
 
@@ -13,8 +13,8 @@ describe("scripts actions", () => {
       payload: {
         name: "script-1",
         type: "testing",
-        contents: "contents"
-      }
+        contents: "contents",
+      },
     });
   });
 
@@ -23,8 +23,8 @@ describe("scripts actions", () => {
       type: "UPLOAD_SCRIPT",
       payload: {
         type: "testing",
-        contents: "contents"
-      }
+        contents: "contents",
+      },
     });
   });
 
@@ -33,14 +33,14 @@ describe("scripts actions", () => {
       type: "DELETE_SCRIPT",
       payload: {
         id: 1,
-        name: "script-1"
-      }
+        name: "script-1",
+      },
     });
   });
 
   it("can handle cleaning scripts", () => {
     expect(scripts.cleanup()).toEqual({
-      type: "CLEANUP_SCRIPTS"
+      type: "CLEANUP_SCRIPTS",
     });
   });
 });

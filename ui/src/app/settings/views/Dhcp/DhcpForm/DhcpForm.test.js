@@ -15,7 +15,7 @@ describe("DhcpForm", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       controller: { items: [] },
       device: { items: [] },
@@ -27,22 +27,22 @@ describe("DhcpForm", () => {
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
-            value: "lease 10"
+            value: "lease 10",
           },
           {
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39"
-          }
+            updated: "Thu, 15 Aug. 2019 06:21:39",
+          },
         ],
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       },
       machine: { items: [] },
-      subnet: { items: [] }
+      subnet: { items: [] },
     };
   });
 
@@ -69,7 +69,7 @@ describe("DhcpForm", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some(action => action.type === "CLEANUP_DHCPSNIPPET")
+      store.getActions().some((action) => action.type === "CLEANUP_DHCPSNIPPET")
     ).toBe(true);
   });
 
@@ -96,16 +96,13 @@ describe("DhcpForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "new-lease",
-          id: 1
-        })
+      wrapper.find("Formik").props().onSubmit({
+        name: "new-lease",
+        id: 1,
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "UPDATE_DHCPSNIPPET")
+      store.getActions().find((action) => action.type === "UPDATE_DHCPSNIPPET")
     ).toStrictEqual({
       type: "UPDATE_DHCPSNIPPET",
       payload: {
@@ -114,13 +111,13 @@ describe("DhcpForm", () => {
           enabled: undefined,
           id: 1,
           name: "new-lease",
-          value: undefined
-        }
+          value: undefined,
+        },
       },
       meta: {
         model: "dhcpsnippet",
-        method: "update"
-      }
+        method: "update",
+      },
     });
   });
 
@@ -134,15 +131,12 @@ describe("DhcpForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "new-lease"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        name: "new-lease",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "CREATE_DHCPSNIPPET")
+      store.getActions().find((action) => action.type === "CREATE_DHCPSNIPPET")
     ).toStrictEqual({
       type: "CREATE_DHCPSNIPPET",
       payload: {
@@ -150,13 +144,13 @@ describe("DhcpForm", () => {
           description: undefined,
           enabled: undefined,
           value: undefined,
-          name: "new-lease"
-        }
+          name: "new-lease",
+        },
       },
       meta: {
         model: "dhcpsnippet",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -171,10 +165,10 @@ describe("DhcpForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_DHCPSNIPPET")).toBe(
-      true
-    );
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(
+      actions.some((action) => action.type === "CLEANUP_DHCPSNIPPET")
+    ).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("fetches models when editing", () => {
@@ -187,10 +181,12 @@ describe("DhcpForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "FETCH_MACHINE")).toBe(true);
-    expect(actions.some(action => action.type === "FETCH_DEVICE")).toBe(true);
-    expect(actions.some(action => action.type === "FETCH_SUBNET")).toBe(true);
-    expect(actions.some(action => action.type === "FETCH_CONTROLLER")).toBe(
+    expect(actions.some((action) => action.type === "FETCH_MACHINE")).toBe(
+      true
+    );
+    expect(actions.some((action) => action.type === "FETCH_DEVICE")).toBe(true);
+    expect(actions.some((action) => action.type === "FETCH_SUBNET")).toBe(true);
+    expect(actions.some((action) => action.type === "FETCH_CONTROLLER")).toBe(
       true
     );
   });
@@ -210,7 +206,7 @@ describe("DhcpForm", () => {
               id: 1,
               name: "lease",
               updated: "Thu, 15 Aug. 2019 06:21:39",
-              node: "xyz"
+              node: "xyz",
             }}
           />
         </MemoryRouter>

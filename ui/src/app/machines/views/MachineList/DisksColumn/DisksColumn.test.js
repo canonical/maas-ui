@@ -14,7 +14,7 @@ describe("DisksColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -25,11 +25,11 @@ describe("DisksColumn", () => {
             system_id: "abc123",
             physical_disk_count: 1,
             storage_test_status: {
-              status: 2
-            }
-          }
-        ]
-      }
+              status: 2,
+            },
+          },
+        ],
+      },
     };
   });
 
@@ -66,7 +66,7 @@ describe("DisksColumn", () => {
 
   it("correctly shows error icon and tooltip if storage tests failed", () => {
     state.machine.items[0].storage_test_status = {
-      status: scriptStatus.FAILED
+      status: scriptStatus.FAILED,
     };
     const store = mockStore(state);
     const wrapper = mount(

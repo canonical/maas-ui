@@ -2,11 +2,11 @@ import pathParse from "path-parse";
 
 import { messages } from "app/base/actions";
 
-export const hasMetadata = binaryStr => {
+export const hasMetadata = (binaryStr) => {
   let hasMeta = false;
   try {
     const scriptArray = binaryStr.split("\n");
-    scriptArray.forEach(line => {
+    scriptArray.forEach((line) => {
       if (line.includes("--- Start MAAS 1.0 script metadata ---")) {
         hasMeta = true;
       }
@@ -37,7 +37,7 @@ const readScript = (file, dispatch, callback) => {
     callback({
       name: scriptName,
       script: binaryStr,
-      hasMetadata: meta
+      hasMetadata: meta,
     });
   };
 

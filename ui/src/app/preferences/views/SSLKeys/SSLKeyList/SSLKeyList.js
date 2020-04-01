@@ -25,14 +25,14 @@ const generateRows = (
         {
           className: "u-truncate",
           content: display,
-          role: "rowheader"
+          role: "rowheader",
         },
         {
           content: (
             <TableActions copyValue={key} onDelete={() => setExpandedId(id)} />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -48,8 +48,8 @@ const generateRows = (
       ),
       key: id,
       sortData: {
-        key: display
-      }
+        key: display,
+      },
     };
   });
 
@@ -86,12 +86,12 @@ const SSLKeyList = () => {
         headers={[
           {
             content: "Key",
-            sortKey: "key"
+            sortKey: "key",
           },
           {
             content: "Actions",
-            className: "u-align--right"
-          }
+            className: "u-align--right",
+          },
         ]}
         loaded={sslkeyLoaded}
         loading={sslkeyLoading}

@@ -6,13 +6,13 @@ describe("notification actions", () => {
       type: "DELETE_NOTIFICATION",
       payload: {
         params: {
-          id: 2
-        }
+          id: 2,
+        },
       },
       meta: {
         method: "dismiss",
-        model: "notification"
-      }
+        model: "notification",
+      },
     });
   });
 });

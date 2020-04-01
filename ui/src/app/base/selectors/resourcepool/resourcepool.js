@@ -5,42 +5,42 @@ const resourcepool = {};
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all resource pools.
  */
-resourcepool.all = state => state.resourcepool.items;
+resourcepool.all = (state) => state.resourcepool.items;
 
 /**
  * Whether resource pools are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Resource pool loading state.
  */
-resourcepool.loading = state => state.resourcepool.loading;
+resourcepool.loading = (state) => state.resourcepool.loading;
 
 /**
  * Whether resource pools have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Resource pools loaded state.
  */
-resourcepool.loaded = state => state.resourcepool.loaded;
+resourcepool.loaded = (state) => state.resourcepool.loaded;
 
 /**
  * Returns resource pool errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Resource pool errors state.
  */
-resourcepool.errors = state => state.resourcepool.errors;
+resourcepool.errors = (state) => state.resourcepool.errors;
 
 /**
  * Get the saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether resource pools are being saved.
  */
-resourcepool.saving = state => state.resourcepool.saving;
+resourcepool.saving = (state) => state.resourcepool.saving;
 
 /**
  * Get the saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether resource pools have been saved.
  */
-resourcepool.saved = state => state.resourcepool.saved;
+resourcepool.saved = (state) => state.resourcepool.saved;
 
 /**
  * Returns resource pools that matches given id
@@ -49,6 +49,6 @@ resourcepool.saved = state => state.resourcepool.saved;
  * @returns {Object} Resource pool that matches id.
  */
 resourcepool.getById = (state, id) =>
-  state.resourcepool.items.find(pool => pool.id === id);
+  state.resourcepool.items.find((pool) => pool.id === id);
 
 export default resourcepool;

@@ -13,7 +13,7 @@ describe("FabricColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -23,17 +23,17 @@ describe("FabricColumn", () => {
           {
             system_id: "abc123",
             network_test_status: {
-              status: 1
+              status: 1,
             },
             vlan: {
               id: 1,
               name: "Default VLAN",
               fabric_id: 0,
-              fabric_name: "fabric-0"
-            }
-          }
-        ]
-      }
+              fabric_name: "fabric-0",
+            },
+          },
+        ],
+      },
     };
   });
 

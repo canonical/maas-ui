@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { auth as authActions, user as userActions } from "app/base/actions";
 import {
   auth as authSelectors,
-  user as userSelectors
+  user as userSelectors,
 } from "app/base/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { status as statusSelectors } from "app/base/selectors";
@@ -48,7 +48,7 @@ export const Details = () => {
             onSaveAnalytics={{
               action: "Saved",
               category: "Details preferences",
-              label: "Details form"
+              label: "Details form",
             }}
             onSave={(params, values, editing) => {
               dispatch(userActions.update(params));
@@ -62,7 +62,7 @@ export const Details = () => {
                   authActions.changePassword({
                     old_password: values.old_password,
                     new_password1: values.password,
-                    new_password2: values.passwordConfirm
+                    new_password2: values.passwordConfirm,
                   })
                 );
               }

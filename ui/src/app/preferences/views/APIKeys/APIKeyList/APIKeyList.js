@@ -26,10 +26,10 @@ const generateRows = (
       columns: [
         {
           content: name,
-          role: "rowheader"
+          role: "rowheader",
         },
         {
-          content: token
+          content: token,
         },
         {
           content: (
@@ -39,8 +39,8 @@ const generateRows = (
               onDelete={() => setExpandedId(id)}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -56,8 +56,8 @@ const generateRows = (
       ),
       key: id,
       sortData: {
-        name: name
-      }
+        name: name,
+      },
     };
   });
 
@@ -91,20 +91,23 @@ const APIKeyList = () => {
       )}
       <SettingsTable
         buttons={[
-          { label: "Generate MAAS API key", url: "/account/prefs/api-keys/add" }
+          {
+            label: "Generate MAAS API key",
+            url: "/account/prefs/api-keys/add",
+          },
         ]}
         headers={[
           {
             content: "Name",
-            sortKey: "name"
+            sortKey: "name",
           },
           {
-            content: "Key"
+            content: "Key",
           },
           {
             content: "Actions",
-            className: "u-align--right"
-          }
+            className: "u-align--right",
+          },
         ]}
         loaded={loaded}
         loading={loading}

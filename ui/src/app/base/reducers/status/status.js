@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 
 import { status as statusActions } from "app/base/actions";
 
-const loginSuccess = state => {
+const loginSuccess = (state) => {
   state.authenticated = true;
   state.authenticating = false;
   state.authenticationError = null;
@@ -22,11 +22,11 @@ const initialState = {
   externalAuthURL: null,
   externalLoginURL: null,
   connected: false,
-  error: null
+  error: null,
 };
 
 const status = createReducer(initialState, {
-  [statusActions.checkAuthenticated.start]: state => {
+  [statusActions.checkAuthenticated.start]: (state) => {
     state.authenticating = true;
   },
   [statusActions.checkAuthenticated.success]: (state, action) => {
@@ -34,15 +34,15 @@ const status = createReducer(initialState, {
     state.authenticated = action.payload.authenticated;
     state.externalAuthURL = action.payload.external_auth_url;
   },
-  [statusActions.login.start]: state => {
+  [statusActions.login.start]: (state) => {
     state.authenticating = true;
   },
   [statusActions.login.error]: (state, action) => loginError(state, action),
-  [statusActions.login.success]: state => loginSuccess(state),
-  [statusActions.externalLogin.success]: state => loginSuccess(state),
+  [statusActions.login.success]: (state) => loginSuccess(state),
+  [statusActions.externalLogin.success]: (state) => loginSuccess(state),
   [statusActions.externalLogin.error]: (state, action) =>
     loginError(state, action),
-  [statusActions.logout.success]: state => {
+  [statusActions.logout.success]: (state) => {
     state.authenticated = false;
   },
   [statusActions.checkAuthenticated.error]: (state, action) => {
@@ -50,17 +50,17 @@ const status = createReducer(initialState, {
     state.authenticated = false;
     state.error = action.error;
   },
-  [statusActions.websocketConnect]: state => {
+  [statusActions.websocketConnect]: (state) => {
     state.connected = false;
     state.connecting = true;
   },
-  [statusActions.websocketConnected]: state => {
+  [statusActions.websocketConnected]: (state) => {
     state.connected = true;
     state.connecting = false;
     state.authenticationError = null;
     state.error = null;
   },
-  [statusActions.websocketDisconnected]: state => {
+  [statusActions.websocketDisconnected]: (state) => {
     state.connected = false;
   },
   [statusActions.websocketError]: (state, action) => {
@@ -68,7 +68,7 @@ const status = createReducer(initialState, {
   },
   [statusActions.externalLoginURL]: (state, action) => {
     state.externalLoginURL = action.payload.url;
-  }
+  },
 });
 
 export default status;

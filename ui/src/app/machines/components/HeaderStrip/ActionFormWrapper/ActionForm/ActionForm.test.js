@@ -19,11 +19,11 @@ describe("ActionForm", () => {
         loaded: true,
         items: [
           {
-            system_id: "abc123"
-          }
+            system_id: "abc123",
+          },
         ],
-        selected: []
-      }
+        selected: [],
+      },
     };
   });
 
@@ -107,27 +107,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "ABORT_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "abort",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -149,27 +144,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "ACQUIRE_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "acquire",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -191,34 +181,29 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "DELETE_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "delete",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
   it("can dispatch exit rescue mode action", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: ["exit-rescue-mode"] }
+      { system_id: "abc123", actions: ["exit-rescue-mode"] },
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -235,27 +220,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "MACHINE_EXIT_RESCUE_MODE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "exit-rescue-mode",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -277,27 +257,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "LOCK_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "lock",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -319,27 +294,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "MARK_MACHINE_BROKEN",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "mark-broken",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -361,27 +331,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "MARK_MACHINE_FIXED",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "mark-fixed",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -403,27 +368,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "TURN_MACHINE_OFF",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "off",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -445,27 +405,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "TURN_MACHINE_ON",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "on",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -487,27 +442,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "RELEASE_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "release",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 
@@ -529,27 +479,22 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit()
-    );
+    act(() => wrapper.find("Formik").props().onSubmit());
     expect(store.getActions()).toStrictEqual([
       {
         type: "UNLOCK_MACHINE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "unlock",
             extra: {},
-            system_id: "abc123"
-          }
-        }
-      }
+            system_id: "abc123",
+          },
+        },
+      },
     ]);
   });
 });

@@ -8,7 +8,7 @@ import {
   device as deviceActions,
   dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
-  subnet as subnetActions
+  subnet as subnetActions,
 } from "app/base/actions";
 import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
 import { DhcpSnippetShape } from "app/settings/proptypes";
@@ -24,14 +24,14 @@ const DhcpSchema = Yup.object().shape({
   description: Yup.string(),
   enabled: Yup.boolean(),
   entity: Yup.string().when("type", {
-    is: val => val && val.length > 0,
+    is: (val) => val && val.length > 0,
     then: Yup.string().required(
       "You must choose an entity for this snippet type"
-    )
+    ),
   }),
   name: Yup.string().required("Snippet name is required"),
   value: Yup.string().required("DHCP snippet is required"),
-  type: Yup.string()
+  type: Yup.string(),
 });
 
 export const DhcpForm = ({ dhcpSnippet }) => {
@@ -86,19 +86,19 @@ export const DhcpForm = ({ dhcpSnippet }) => {
             : "",
           name: dhcpSnippet ? dhcpSnippet.name : "",
           type: dhcpSnippet ? type : "",
-          value: dhcpSnippet ? dhcpSnippet.value : ""
+          value: dhcpSnippet ? dhcpSnippet.value : "",
         }}
         onSaveAnalytics={{
           action: "Saved",
           category: "DHCP snippet settings",
-          label: `${editing ? "Edit" : "Add"} form`
+          label: `${editing ? "Edit" : "Add"} form`,
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           const params = {
             description: values.description,
             enabled: values.enabled,
             name: values.name,
-            value: values.value
+            value: values.value,
           };
           if (values.type === "subnet") {
             params.subnet = values.entity;
@@ -113,7 +113,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           }
           setSaving(params.name);
         }}
-        onValuesChanged={values => {
+        onValuesChanged={(values) => {
           setName(values.name);
         }}
         saving={saving}
@@ -129,7 +129,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
 };
 
 DhcpForm.propTypes = {
-  dhcpSnippet: DhcpSnippetShape
+  dhcpSnippet: DhcpSnippetShape,
 };
 
 export default DhcpForm;

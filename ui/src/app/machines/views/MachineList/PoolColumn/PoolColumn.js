@@ -6,25 +6,25 @@ import React, { useEffect, useState } from "react";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
-  resourcepool as resourcePoolSelectors
+  resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
   let pools = resourcePools
-    .filter(pool => pool.id !== machine.pool.id)
-    .map(pool => ({
+    .filter((pool) => pool.id !== machine.pool.id)
+    .map((pool) => ({
       children: pool.name,
       onClick: () => {
         dispatch(machineActions.setPool(systemId, pool.id));
         setUpdating(pool.id);
-      }
+      },
     }));
   if (pools.length === 0) {
     pools = [{ children: "No other pools available", disabled: true }];
@@ -64,7 +64,7 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
 
 PoolColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default PoolColumn;

@@ -12,11 +12,11 @@ describe("Deploy", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
-        osInfo: {}
-      }
+        osInfo: {},
+      },
     };
   });
 
@@ -46,7 +46,7 @@ describe("Deploy", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       { type: "FETCH_CONFIG", meta: { model: "config", method: "list" } },
@@ -54,9 +54,9 @@ describe("Deploy", () => {
         type: "FETCH_GENERAL_OSINFO",
         meta: {
           model: "general",
-          method: "osinfo"
-        }
-      }
+          method: "osinfo",
+        },
+      },
     ]);
   });
 });

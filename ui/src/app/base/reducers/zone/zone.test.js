@@ -8,14 +8,14 @@ describe("zone reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_ZONE_START", () => {
     expect(
       zone(undefined, {
-        type: "FETCH_ZONE_START"
+        type: "FETCH_ZONE_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("zone reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -37,8 +37,8 @@ describe("zone reducer", () => {
         description: "",
         devices_count: 15,
         machines_count: 0,
-        controllers_count: 0
-      }
+        controllers_count: 0,
+      },
     ];
     expect(
       zone(
@@ -48,11 +48,11 @@ describe("zone reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_ZONE_SUCCESS",
-          payload
+          payload,
         }
       )
     ).toEqual({
@@ -61,7 +61,7 @@ describe("zone reducer", () => {
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -74,11 +74,11 @@ describe("zone reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           error: "Could not fetch zones",
-          type: "FETCH_ZONE_ERROR"
+          type: "FETCH_ZONE_ERROR",
         }
       )
     ).toEqual({
@@ -87,7 +87,7 @@ describe("zone reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

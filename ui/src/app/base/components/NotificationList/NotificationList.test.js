@@ -18,10 +18,10 @@ describe("NotificationList", () => {
           {
             id: 1,
             category: "error",
-            message: "an error"
-          }
-        ]
-      }
+            message: "an error",
+          },
+        ],
+      },
     };
   });
 
@@ -42,14 +42,11 @@ describe("NotificationList", () => {
         <NotificationList title="Settings">content</NotificationList>
       </Provider>
     );
-    wrapper
-      .find("Notification")
-      .props()
-      .close();
+    wrapper.find("Notification").props().close();
 
     expect(store.getActions()[1]).toEqual({
       type: "REMOVE_MESSAGE",
-      payload: 1
+      payload: 1,
     });
   });
 
@@ -62,7 +59,7 @@ describe("NotificationList", () => {
     );
 
     expect(
-      store.getActions().some(action => action.type === "FETCH_NOTIFICATION")
+      store.getActions().some((action) => action.type === "FETCH_NOTIFICATION")
     ).toBe(true);
   });
 
@@ -79,7 +76,7 @@ describe("NotificationList", () => {
     expect(notificationGroup.exists()).toBe(true);
     expect(notificationGroup.props()).toEqual({
       type: "negative",
-      notifications: [{ id: 1, category: "error", message: "an error" }]
+      notifications: [{ id: 1, category: "error", message: "an error" }],
     });
   });
 });

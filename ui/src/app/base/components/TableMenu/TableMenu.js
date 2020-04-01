@@ -26,12 +26,12 @@ TableMenu.propTypes = {
     PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.shape(Button.propTypes),
-      PropTypes.arrayOf(PropTypes.shape(Button.propTypes))
+      PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
     ])
   ),
   onToggleMenu: PropTypes.func,
   positionNode: PropTypes.object,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default TableMenu;

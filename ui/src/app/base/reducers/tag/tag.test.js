@@ -8,14 +8,14 @@ describe("tag reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_TAG_START", () => {
     expect(
       tag(undefined, {
-        type: "FETCH_TAG_START"
+        type: "FETCH_TAG_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("tag reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,8 +36,8 @@ describe("tag reducer", () => {
         name: "virtual",
         definition: "",
         comment: "",
-        kernel_opts: null
-      }
+        kernel_opts: null,
+      },
     ];
 
     expect(
@@ -48,11 +48,11 @@ describe("tag reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_TAG_SUCCESS",
-          payload
+          payload,
         }
       )
     ).toEqual({
@@ -61,7 +61,7 @@ describe("tag reducer", () => {
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -74,11 +74,11 @@ describe("tag reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           error: "Could not fetch tags",
-          type: "FETCH_TAG_ERROR"
+          type: "FETCH_TAG_ERROR",
         }
       )
     ).toEqual({
@@ -87,7 +87,7 @@ describe("tag reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

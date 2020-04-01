@@ -5,55 +5,55 @@ const status = {};
  * @param {Object} state - The redux state.
  * @returns {Boolean} The user authentication status.
  */
-status.authenticated = state => state.status.authenticated;
+status.authenticated = (state) => state.status.authenticated;
 
 /**
  * Whether the user is authenticating.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The user authentication status.
  */
-status.authenticating = state => state.status.authenticating;
+status.authenticating = (state) => state.status.authenticating;
 
 /**
  * Whether the websocket is connected.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The websocket connected status.
  */
-status.connected = state => state.status.connected;
+status.connected = (state) => state.status.connected;
 
 /**
  * Whether the websocket is connecting.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The websocket connecting status.
  */
-status.connecting = state => state.status.connecting;
+status.connecting = (state) => state.status.connecting;
 
 /**
  * Whether there is a websocket error.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The websocket error status.
  */
-status.error = state => state.status.error;
+status.error = (state) => state.status.error;
 
 /**
  * Whether there is an authentication error.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The authentication error status.
  */
-status.authenticationError = state => state.status.authenticationError;
+status.authenticationError = (state) => state.status.authenticationError;
 
 /**
  * Get the external auth url.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The external auth url.
  */
-status.externalAuthURL = state => state.status.externalAuthURL;
+status.externalAuthURL = (state) => state.status.externalAuthURL;
 
 /**
  * Get the external login url.
  * @param {Object} state - The redux state.
  * @returns {Boolean} The external login url.
  */
-status.externalLoginURL = state => state.status.externalLoginURL;
+status.externalLoginURL = (state) => state.status.externalLoginURL;
 
 export default status;

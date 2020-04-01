@@ -10,5 +10,5 @@ export const UserShape = PropTypes.shape({
   last_login: PropTypes.string,
   machines_count: PropTypes.number,
   sshkeys_count: PropTypes.number,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
 });
