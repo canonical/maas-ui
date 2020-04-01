@@ -6,11 +6,11 @@ import * as Yup from "yup";
 
 import {
   general as generalActions,
-  packagerepository as repositoryActions
+  packagerepository as repositoryActions,
 } from "app/base/actions";
 import {
   general as generalSelectors,
-  packagerepository as repositorySelectors
+  packagerepository as repositorySelectors,
 } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
 import { RepositoryShape } from "app/settings/proptypes";
@@ -32,7 +32,7 @@ const RepositorySchema = Yup.object().shape({
   enabled: Yup.boolean().required(),
   key: Yup.string(),
   name: Yup.string().required("Name field required."),
-  url: Yup.string().required("URL field required.")
+  url: Yup.string().required("URL field required."),
 });
 
 export const RepositoryForm = ({ type, repository }) => {
@@ -92,7 +92,7 @@ export const RepositoryForm = ({ type, repository }) => {
       enabled: repository.enabled,
       key: repository.key,
       name: getRepoDisplayName(repository),
-      url: repository.url
+      url: repository.url,
     };
   } else {
     title = `Add ${typeString}`;
@@ -107,7 +107,7 @@ export const RepositoryForm = ({ type, repository }) => {
       enabled: true,
       key: "",
       name: "",
-      url: type === "ppa" ? "ppa:" : ""
+      url: type === "ppa" ? "ppa:" : "",
     };
   }
 
@@ -127,14 +127,14 @@ export const RepositoryForm = ({ type, repository }) => {
             onSaveAnalytics={{
               action: "Saved",
               category: "Package repos settings",
-              label: `${title} form`
+              label: `${title} form`,
             }}
-            onSubmit={values => {
+            onSubmit={(values) => {
               const params = {
                 arches: values.arches,
                 default: values.default,
                 disable_sources: values.disable_sources,
-                key: values.key
+                key: values.key,
               };
 
               if (values.default) {
@@ -178,7 +178,7 @@ export const RepositoryForm = ({ type, repository }) => {
 
 RepositoryForm.propTypes = {
   type: PropTypes.oneOf(["ppa", "repository"]).isRequired,
-  repository: RepositoryShape
+  repository: RepositoryShape,
 };
 
 export default RepositoryForm;

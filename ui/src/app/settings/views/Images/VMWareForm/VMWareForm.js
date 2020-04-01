@@ -11,7 +11,7 @@ const VMWareSchema = Yup.object().shape({
   vcenter_server: Yup.string(),
   vcenter_username: Yup.string(),
   vcenter_password: Yup.string(),
-  vcenter_datacenter: Yup.string()
+  vcenter_datacenter: Yup.string(),
 });
 
 const VMWareForm = () => {
@@ -32,12 +32,12 @@ const VMWareForm = () => {
         vcenter_server: vCenterServer,
         vcenter_username: vCenterUsername,
         vcenter_password: vCenterPassword,
-        vcenter_datacenter: vCenterDatacenter
+        vcenter_datacenter: vCenterDatacenter,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Images settings",
-        label: "VMware form"
+        label: "VMware form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));

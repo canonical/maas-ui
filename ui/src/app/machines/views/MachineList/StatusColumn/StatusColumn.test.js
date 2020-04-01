@@ -15,24 +15,24 @@ describe("StatusColumn", () => {
     state = {
       general: {
         machineActions: {
-          data: []
+          data: [],
         },
         osInfo: {
           data: {
             osystems: [
               ["centos", "CentOS"],
-              ["ubuntu", "Ubuntu"]
+              ["ubuntu", "Ubuntu"],
             ],
             releases: [
               ["centos/centos70", "CentOS 7"],
               ["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
-              ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']
-            ]
+              ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+            ],
           },
           errors: {},
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       machine: {
         items: [
@@ -44,15 +44,15 @@ describe("StatusColumn", () => {
             status_code: 0,
             status_message: "",
             testing_status: {
-              status: scriptStatus.NONE
+              status: scriptStatus.NONE,
             },
-            system_id: "abc123"
-          }
+            system_id: "abc123",
+          },
         ],
         errors: {},
         loaded: true,
-        loading: false
-      }
+        loading: false,
+      },
     };
   });
 
@@ -244,7 +244,7 @@ describe("StatusColumn", () => {
       "release",
       "rescue-mode",
       "test",
-      "unlock"
+      "unlock",
     ];
     const store = mockStore(state);
     const wrapper = mount(

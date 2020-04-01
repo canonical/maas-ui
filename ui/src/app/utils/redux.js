@@ -7,9 +7,9 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
  * @param {Object} action - action creator object
  */
 export const createStandardAsyncActions = (name, action) => {
-  ["fetch", "create", "update", "delete"].forEach(method => {
+  ["fetch", "create", "update", "delete"].forEach((method) => {
     if (action.hasOwnProperty(method)) {
-      ["start", "error", "success"].forEach(event => {
+      ["start", "error", "success"].forEach((event) => {
         action[method][event] = createAction(
           `${method.toUpperCase()}_${name.toUpperCase()}_${event.toUpperCase()}`
         );
@@ -23,47 +23,47 @@ export const createStandardAsyncActions = (name, action) => {
  * Create standard CRUD actions for models.
  * @param {String} model name (e.g. "user")
  */
-export const createStandardActions = name => {
+export const createStandardActions = (name) => {
   const action = {};
   action.fetch = createAction(`FETCH_${name.toUpperCase()}`, () => ({
     meta: {
       model: name,
-      method: "list"
-    }
+      method: "list",
+    },
   }));
 
-  action.create = createAction(`CREATE_${name.toUpperCase()}`, params => ({
+  action.create = createAction(`CREATE_${name.toUpperCase()}`, (params) => ({
     meta: {
       model: name,
-      method: "create"
+      method: "create",
     },
     payload: {
-      params
-    }
+      params,
+    },
   }));
   action.create.notify = createAction(`CREATE_${name.toUpperCase()}_NOTIFY`);
 
-  action.update = createAction(`UPDATE_${name.toUpperCase()}`, params => ({
+  action.update = createAction(`UPDATE_${name.toUpperCase()}`, (params) => ({
     meta: {
       model: name,
-      method: "update"
+      method: "update",
     },
     payload: {
-      params
-    }
+      params,
+    },
   }));
   action.update.notify = createAction(`UPDATE_${name.toUpperCase()}_NOTIFY`);
 
-  action.delete = createAction(`DELETE_${name.toUpperCase()}`, id => ({
+  action.delete = createAction(`DELETE_${name.toUpperCase()}`, (id) => ({
     meta: {
       model: name,
-      method: "delete"
+      method: "delete",
     },
     payload: {
       params: {
-        id
-      }
-    }
+        id,
+      },
+    },
   }));
   action.delete.notify = createAction(`DELETE_${name.toUpperCase()}_NOTIFY`);
 
@@ -82,11 +82,11 @@ export const createStandardReducer = (
     loaded: false,
     loading: false,
     saved: false,
-    saving: false
+    saving: false,
   }
 ) => {
   return createReducer(initialState, {
-    [actions.fetch.start]: state => {
+    [actions.fetch.start]: (state) => {
       state.loading = true;
     },
     [actions.fetch.error]: (state, action) => {
@@ -98,7 +98,7 @@ export const createStandardReducer = (
       state.loaded = true;
       state.items = action.payload;
     },
-    [actions.create.start]: state => {
+    [actions.create.start]: (state) => {
       state.saved = false;
       state.saving = true;
     },
@@ -106,7 +106,7 @@ export const createStandardReducer = (
       state.errors = action.error;
       state.saving = false;
     },
-    [actions.create.success]: state => {
+    [actions.create.success]: (state) => {
       state.errors = {};
       state.saved = true;
       state.saving = false;
@@ -114,7 +114,7 @@ export const createStandardReducer = (
     [actions.create.notify]: (state, action) => {
       state.items.push(action.payload);
     },
-    [actions.update.start]: state => {
+    [actions.update.start]: (state) => {
       state.saved = false;
       state.saving = true;
     },
@@ -122,7 +122,7 @@ export const createStandardReducer = (
       state.errors = action.error;
       state.saving = false;
     },
-    [actions.update.success]: state => {
+    [actions.update.success]: (state) => {
       state.errors = {};
       state.saved = true;
       state.saving = false;
@@ -134,7 +134,7 @@ export const createStandardReducer = (
         }
       }
     },
-    [actions.delete.start]: state => {
+    [actions.delete.start]: (state) => {
       state.saved = false;
       state.saving = true;
     },
@@ -142,19 +142,19 @@ export const createStandardReducer = (
       state.errors = action.error;
       state.saving = false;
     },
-    [actions.delete.success]: state => {
+    [actions.delete.success]: (state) => {
       state.errors = {};
       state.saved = true;
       state.saving = false;
     },
     [actions.delete.notify]: (state, action) => {
-      const index = state.items.findIndex(item => item.id === action.payload);
+      const index = state.items.findIndex((item) => item.id === action.payload);
       state.items.splice(index, 1);
     },
-    [actions.cleanup]: state => {
+    [actions.cleanup]: (state) => {
       state.errors = {};
       state.saved = false;
       state.saving = false;
-    }
+    },
   });
 };

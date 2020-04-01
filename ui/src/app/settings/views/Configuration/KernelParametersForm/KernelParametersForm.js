@@ -8,7 +8,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
 const KernelParametersSchema = Yup.object().shape({
-  kernel_opts: Yup.string()
+  kernel_opts: Yup.string(),
 });
 
 const KernelParametersForm = () => {
@@ -23,12 +23,12 @@ const KernelParametersForm = () => {
   return (
     <FormikForm
       initialValues={{
-        kernel_opts: kernelParams
+        kernel_opts: kernelParams,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Configuration settings",
-        label: "Kernel parameters form"
+        label: "Kernel parameters form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));

@@ -7,20 +7,20 @@ describe("scripts selectors", () => {
         {
           name: "commissioning script",
           description: "a commissioning script",
-          type: 0
+          type: 0,
         },
         {
           name: "testing script",
           description: "a testing script",
-          type: 2
-        }
+          type: 2,
+        },
       ];
       const state = {
         scripts: {
           loading: false,
           loaded: true,
-          items
-        }
+          items,
+        },
       };
 
       expect(scripts.all(state)).toStrictEqual(items);
@@ -33,8 +33,8 @@ describe("scripts selectors", () => {
         scripts: {
           loading: true,
           loaded: false,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(scripts.loading(state)).toStrictEqual(true);
     });
@@ -46,8 +46,8 @@ describe("scripts selectors", () => {
         scripts: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(scripts.loaded(state)).toStrictEqual(true);
     });
@@ -59,38 +59,38 @@ describe("scripts selectors", () => {
         {
           name: "commissioning script",
           description: "a commissioning script",
-          type: 0
+          type: 0,
         },
         {
           name: "testing script",
           description: "a testing script",
-          type: 2
+          type: 2,
         },
         {
           name: "commissioning script two",
           description: "another commissioning script",
-          type: 0
-        }
+          type: 0,
+        },
       ];
       const state = {
         scripts: {
           loading: false,
           loaded: true,
-          items
-        }
+          items,
+        },
       };
 
       expect(scripts.commissioning(state)).toEqual([
         {
           name: "commissioning script",
           description: "a commissioning script",
-          type: 0
+          type: 0,
         },
         {
           name: "commissioning script two",
           description: "another commissioning script",
-          type: 0
-        }
+          type: 0,
+        },
       ]);
     });
   });
@@ -101,38 +101,38 @@ describe("scripts selectors", () => {
         {
           name: "commissioning script",
           description: "a commissioning script",
-          type: 0
+          type: 0,
         },
         {
           name: "testing script",
           description: "a testing script",
-          type: 2
+          type: 2,
         },
         {
           name: "testing script two",
           description: "another testing script",
-          type: 2
-        }
+          type: 2,
+        },
       ];
       const state = {
         scripts: {
           loading: false,
           loaded: true,
-          items
-        }
+          items,
+        },
       };
 
       expect(scripts.testing(state)).toEqual([
         {
           name: "testing script",
           description: "a testing script",
-          type: 2
+          type: 2,
         },
         {
           name: "testing script two",
           description: "another testing script",
-          type: 2
-        }
+          type: 2,
+        },
       ]);
     });
   });

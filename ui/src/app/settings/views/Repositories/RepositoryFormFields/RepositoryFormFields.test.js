@@ -14,24 +14,24 @@ describe("RepositoryFormFields", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         componentsToDisable: {
           data: [],
           loaded: true,
-          loading: false
+          loading: false,
         },
         knownArchitectures: {
           data: [],
           loaded: true,
-          loading: false
+          loading: false,
         },
         pocketsToDisable: {
           data: [],
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       packagerepository: {
         errors: {},
@@ -54,7 +54,7 @@ describe("RepositoryFormFields", () => {
             arches: ["amd64", "i386"],
             key: "",
             default: true,
-            enabled: true
+            enabled: true,
           },
           {
             id: 2,
@@ -70,10 +70,10 @@ describe("RepositoryFormFields", () => {
             arches: ["armhf", "arm64", "ppc64el", "s390x"],
             key: "",
             default: false,
-            enabled: true
-          }
-        ]
-      }
+            enabled: true,
+          },
+        ],
+      },
     };
   });
 
@@ -155,7 +155,7 @@ describe("RepositoryFormFields", () => {
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
-      "multiverse"
+      "multiverse",
     ];
     state.packagerepository.items[0].default = false;
     state.packagerepository.items[0].disabled_components = ["universe"];
@@ -272,12 +272,9 @@ describe("RepositoryFormFields", () => {
       </Provider>
     );
 
-    expect(
-      wrapper
-        .find("Input[name='enabled']")
-        .at(0)
-        .props().checked
-    ).toBe(false);
+    expect(wrapper.find("Input[name='enabled']").at(0).props().checked).toBe(
+      false
+    );
   });
 
   it("correctly reflects repository disable_sources state by displaying the inverse", () => {
@@ -299,10 +296,7 @@ describe("RepositoryFormFields", () => {
     );
 
     expect(
-      wrapper
-        .find("Input[name='disable_sources']")
-        .at(0)
-        .props().checked
+      wrapper.find("Input[name='disable_sources']").at(0).props().checked
     ).toBe(true);
   });
 
@@ -363,7 +357,7 @@ describe("RepositoryFormFields", () => {
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
-      "multiverse"
+      "multiverse",
     ];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_components = ["universe"];

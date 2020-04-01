@@ -17,10 +17,10 @@ describe("SyslogForm", () => {
         items: [
           {
             name: "remote_syslog",
-            value: ""
-          }
-        ]
-      }
+            value: "",
+          },
+        ],
+      },
     };
   });
 
@@ -46,15 +46,12 @@ describe("SyslogForm", () => {
         <SyslogForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          remote_syslog: ""
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        remote_syslog: "",
+      },
+      { resetForm: jest.fn() }
+    );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_CONFIG",
@@ -62,15 +59,15 @@ describe("SyslogForm", () => {
           params: [
             {
               name: "remote_syslog",
-              value: ""
-            }
-          ]
+              value: "",
+            },
+          ],
         },
         meta: {
           model: "config",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -87,16 +84,16 @@ describe("SyslogForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

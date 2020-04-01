@@ -10,7 +10,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
-  enable_analytics: Yup.boolean()
+  enable_analytics: Yup.boolean(),
 });
 
 const GeneralForm = () => {
@@ -24,12 +24,12 @@ const GeneralForm = () => {
     <FormikForm
       initialValues={{
         maas_name: maasName,
-        enable_analytics: analyticsEnabled
+        enable_analytics: analyticsEnabled,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Configuration settings",
-        label: "General form"
+        label: "General form",
       }}
       onSubmit={(values, { resetForm }) => {
         sendAnalyticsEvent(

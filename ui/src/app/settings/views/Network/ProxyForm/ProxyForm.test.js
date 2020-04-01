@@ -19,18 +19,18 @@ describe("ProxyForm", () => {
         items: [
           {
             name: "http_proxy",
-            value: "http://www.url.com"
+            value: "http://www.url.com",
           },
           {
             name: "enable_http_proxy",
-            value: false
+            value: false,
           },
           {
             name: "use_peer_proxy",
-            value: false
-          }
-        ]
-      }
+            value: false,
+          },
+        ],
+      },
     };
   });
 
@@ -82,16 +82,16 @@ describe("ProxyForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

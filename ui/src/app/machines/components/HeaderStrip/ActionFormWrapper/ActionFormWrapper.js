@@ -43,7 +43,7 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
 
   useLayoutEffect(() => {
     if (selectedAction) {
-      const actionable = selectedMachines.filter(machine =>
+      const actionable = selectedMachines.filter((machine) =>
         machine.actions.includes(selectedAction.name)
       );
       setActionableMachines(actionable);
@@ -110,7 +110,7 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
 
 ActionFormWrapper.propTypes = {
   selectedAction: PropTypes.object,
-  setSelectedAction: PropTypes.func.isRequired
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default ActionFormWrapper;

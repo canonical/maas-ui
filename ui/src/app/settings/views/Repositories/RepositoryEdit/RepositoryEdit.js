@@ -16,7 +16,7 @@ export const RepositoryEdit = () => {
   const { id, type } = useParams();
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
-  const repository = useSelector(state =>
+  const repository = useSelector((state) =>
     repositorySelectors.getById(state, parseInt(id))
   );
 

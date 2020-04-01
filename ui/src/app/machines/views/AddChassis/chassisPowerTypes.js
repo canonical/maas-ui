@@ -16,7 +16,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "username",
@@ -24,7 +24,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -32,9 +32,9 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   {
     name: "powerkvm",
@@ -46,7 +46,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -54,7 +54,7 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: false
+        required: false,
       },
       {
         name: "prefix_filter",
@@ -62,9 +62,9 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: false
-      }
-    ]
+        required: false,
+      },
+    ],
   },
   {
     name: "recs_box",
@@ -76,7 +76,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "port",
@@ -84,7 +84,7 @@ export default [
         field_type: "string",
         default: "80",
         choices: [],
-        required: false
+        required: false,
       },
       {
         name: "username",
@@ -92,7 +92,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -100,9 +100,9 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   {
     name: "seamicro15k",
@@ -114,7 +114,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "username",
@@ -122,7 +122,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -130,7 +130,7 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "power_control",
@@ -140,11 +140,11 @@ export default [
         choices: [
           ["restapi2", "REST API V2.0"],
           ["restapi", "REST API V0.9"],
-          ["ipmi", "IPMI"]
+          ["ipmi", "IPMI"],
         ],
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   {
     name: "ucsm",
@@ -156,7 +156,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "username",
@@ -164,7 +164,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -172,9 +172,9 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   {
     name: "virsh",
@@ -186,7 +186,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -194,7 +194,7 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: false
+        required: false,
       },
       {
         name: "prefix_filter",
@@ -202,9 +202,9 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: false
-      }
-    ]
+        required: false,
+      },
+    ],
   },
   {
     name: "vmware",
@@ -216,7 +216,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "username",
@@ -224,7 +224,7 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "password",
@@ -232,7 +232,7 @@ export default [
         field_type: "password",
         default: "",
         choices: [],
-        required: true
+        required: true,
       },
       {
         name: "prefix_filter",
@@ -240,8 +240,8 @@ export default [
         field_type: "string",
         default: "",
         choices: [],
-        required: false
-      }
-    ]
-  }
+        required: false,
+      },
+    ],
+  },
 ];

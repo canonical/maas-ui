@@ -12,11 +12,11 @@ import ProxyFormFields from "../ProxyFormFields";
 const ProxySchema = Yup.object().shape({
   proxyType: Yup.string().required(),
   httpProxy: Yup.string().when("proxyType", {
-    is: val => val === "externalProxy" || val === "peerProxy",
+    is: (val) => val === "externalProxy" || val === "peerProxy",
     then: Yup.string()
       .url("Must be a valid URL.")
-      .required("Please enter the proxy URL.")
-  })
+      .required("Please enter the proxy URL."),
+  }),
 });
 
 const ProxyForm = () => {
@@ -47,12 +47,12 @@ const ProxyForm = () => {
           <FormikForm
             initialValues={{
               httpProxy: httpProxy || "",
-              proxyType
+              proxyType,
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Network settings",
-              label: "Proxy form"
+              label: "Proxy form",
             }}
             onSubmit={(values, { resetForm }) => {
               const { httpProxy, proxyType } = values;
@@ -63,21 +63,21 @@ const ProxyForm = () => {
                   formattedValues = {
                     http_proxy: "",
                     enable_http_proxy: true,
-                    use_peer_proxy: false
+                    use_peer_proxy: false,
                   };
                   break;
                 case "externalProxy":
                   formattedValues = {
                     http_proxy: httpProxy,
                     enable_http_proxy: true,
-                    use_peer_proxy: false
+                    use_peer_proxy: false,
                   };
                   break;
                 case "peerProxy":
                   formattedValues = {
                     http_proxy: httpProxy,
                     enable_http_proxy: true,
-                    use_peer_proxy: true
+                    use_peer_proxy: true,
                   };
                   break;
                 case "noProxy":
@@ -85,7 +85,7 @@ const ProxyForm = () => {
                   formattedValues = {
                     http_proxy: "",
                     enable_http_proxy: false,
-                    use_peer_proxy: false
+                    use_peer_proxy: false,
                   };
                   break;
               }

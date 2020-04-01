@@ -23,14 +23,14 @@ describe("DnsForm", () => {
               ["yes", "Yes (manually configured root key)"],
               [
                 "no",
-                "No (Disable DNSSEC; useful when upstream DNS is misconfigured)"
-              ]
-            ]
+                "No (Disable DNSSEC; useful when upstream DNS is misconfigured)",
+              ],
+            ],
           },
           { name: "dns_trusted_acl", value: "" },
-          { name: "upstream_dns", value: "" }
-        ]
-      }
+          { name: "upstream_dns", value: "" },
+        ],
+      },
     };
   });
 
@@ -56,17 +56,14 @@ describe("DnsForm", () => {
         <DnsForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          dnssec_validation: "auto",
-          dns_trusted_acl: "",
-          upstream_dns: ""
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        dnssec_validation: "auto",
+        dns_trusted_acl: "",
+        upstream_dns: "",
+      },
+      { resetForm: jest.fn() }
+    );
     expect(store.getActions()).toEqual([
       {
         type: "UPDATE_CONFIG",
@@ -74,14 +71,14 @@ describe("DnsForm", () => {
           params: [
             { name: "dnssec_validation", value: "auto" },
             { name: "dns_trusted_acl", value: "" },
-            { name: "upstream_dns", value: "" }
-          ]
+            { name: "upstream_dns", value: "" },
+          ],
         },
         meta: {
           model: "config",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -98,16 +95,16 @@ describe("DnsForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

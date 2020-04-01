@@ -25,7 +25,7 @@ export const FormCard = ({ children, sidebar = true, stacked, title }) => {
 FormCard.propTypes = {
   children: PropTypes.node,
   stacked: PropTypes.bool,
-  title: PropTypes.node.isRequired
+  title: PropTypes.node.isRequired,
 };
 
 export default FormCard;

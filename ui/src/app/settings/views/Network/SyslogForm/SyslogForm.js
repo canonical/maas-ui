@@ -10,7 +10,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
 const SyslogSchema = Yup.object().shape({
-  remote_syslog: Yup.string()
+  remote_syslog: Yup.string(),
 });
 
 const SyslogForm = () => {
@@ -39,12 +39,12 @@ const SyslogForm = () => {
         {loaded && (
           <FormikForm
             initialValues={{
-              remote_syslog: remoteSyslog || ""
+              remote_syslog: remoteSyslog || "",
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Network settings",
-              label: "Syslog form"
+              label: "Syslog form",
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

@@ -9,7 +9,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -17,7 +17,7 @@ describe("users reducer", () => {
   it("should correctly reduce FETCH_USER_START", () => {
     expect(
       user(undefined, {
-        type: "FETCH_USER_START"
+        type: "FETCH_USER_START",
       })
     ).toEqual({
       auth: {},
@@ -26,7 +26,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -40,14 +40,14 @@ describe("users reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_USER_SUCCESS",
           payload: [
             { id: 1, username: "admin" },
-            { id: 2, username: "user1" }
-          ]
+            { id: 2, username: "user1" },
+          ],
         }
       )
     ).toEqual({
@@ -57,10 +57,10 @@ describe("users reducer", () => {
       loaded: true,
       items: [
         { id: 1, username: "admin" },
-        { id: 2, username: "user1" }
+        { id: 2, username: "user1" },
       ],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -75,10 +75,10 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_USER_START"
+          type: "CREATE_USER_START",
         }
       )
     ).toEqual({
@@ -88,7 +88,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -102,11 +102,11 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { username: "Username already exists" },
-          type: "CREATE_USER_ERROR"
+          type: "CREATE_USER_ERROR",
         }
       )
     ).toEqual({
@@ -116,7 +116,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
   it("should correctly reduce CREATE_USER_NOTIFY", () => {
@@ -129,11 +129,11 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 2, username: "user1" },
-          type: "CREATE_USER_NOTIFY"
+          type: "CREATE_USER_NOTIFY",
         }
       )
     ).toEqual({
@@ -141,12 +141,12 @@ describe("users reducer", () => {
       errors: {},
       items: [
         { id: 1, username: "admin" },
-        { id: 2, username: "user1" }
+        { id: 2, username: "user1" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -161,10 +161,10 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "UPDATE_USER_START"
+          type: "UPDATE_USER_START",
         }
       )
     ).toEqual({
@@ -174,7 +174,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -188,11 +188,11 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { username: "Username already exists" },
-          type: "UPDATE_USER_ERROR"
+          type: "UPDATE_USER_ERROR",
         }
       )
     ).toEqual({
@@ -202,7 +202,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -214,19 +214,19 @@ describe("users reducer", () => {
           errors: {},
           items: [
             { id: 1, username: "admin" },
-            { id: 2, username: "user1" }
+            { id: 2, username: "user1" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: {
             id: 1,
-            username: "kangaroo"
+            username: "kangaroo",
           },
-          type: "UPDATE_USER_NOTIFY"
+          type: "UPDATE_USER_NOTIFY",
         }
       )
     ).toEqual({
@@ -234,12 +234,12 @@ describe("users reducer", () => {
       errors: {},
       items: [
         { id: 1, username: "kangaroo" },
-        { id: 2, username: "user1" }
+        { id: 2, username: "user1" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -254,10 +254,10 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_USER_START"
+          type: "DELETE_USER_START",
         }
       )
     ).toEqual({
@@ -267,7 +267,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -281,11 +281,11 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not delete",
-          type: "DELETE_USER_ERROR"
+          type: "DELETE_USER_ERROR",
         }
       )
     ).toEqual({
@@ -295,7 +295,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -307,16 +307,16 @@ describe("users reducer", () => {
           errors: {},
           items: [
             { id: 1, username: "admin" },
-            { id: 2, username: "user1" }
+            { id: 2, username: "user1" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: 2,
-          type: "DELETE_USER_NOTIFY"
+          type: "DELETE_USER_NOTIFY",
         }
       )
     ).toEqual({
@@ -326,7 +326,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -341,10 +341,10 @@ describe("users reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: true
+          saving: true,
         },
         {
-          type: "CLEANUP_USER"
+          type: "CLEANUP_USER",
         }
       )
     ).toEqual({
@@ -354,7 +354,7 @@ describe("users reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

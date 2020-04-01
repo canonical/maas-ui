@@ -77,13 +77,13 @@ const ContextualMenu = ({
   toggleClassName,
   toggleDisabled,
   toggleLabel,
-  toggleLabelFirst = true
+  toggleLabelFirst = true,
 }) => {
   const id = useRef(nanoid());
   const wrapper = useRef(null);
   const hasToggle = hasToggleIcon || toggleLabel;
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
-    isOpen: !hasToggle
+    isOpen: !hasToggle,
   });
   const labelNode = toggleLabel ? <span>{toggleLabel}</span> : null;
   const wrapperClass = classNames(
@@ -110,7 +110,7 @@ const ContextualMenu = ({
           className={classNames("p-contextual-menu__toggle", toggleClassName)}
           disabled={toggleDisabled}
           hasIcon={hasToggleIcon}
-          onClick={evt => {
+          onClick={(evt) => {
             if (!isOpen) {
               openPortal(evt);
             } else {
@@ -126,7 +126,7 @@ const ContextualMenu = ({
                 {
                   "is-light": ["negative", "positive"].includes(
                     toggleAppearance
-                  )
+                  ),
                 }
               )}
             ></i>
@@ -194,7 +194,7 @@ ContextualMenu.propTypes = {
     PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.shape(Button.propTypes),
-      PropTypes.arrayOf(PropTypes.shape(Button.propTypes))
+      PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
     ])
   ),
   onToggleMenu: PropTypes.func,
@@ -203,7 +203,7 @@ ContextualMenu.propTypes = {
   toggleAppearance: PropTypes.string,
   toggleClassName: PropTypes.string,
   toggleLabel: PropTypes.string,
-  toggleLabelFirst: PropTypes.bool
+  toggleLabelFirst: PropTypes.bool,
 };
 
 export default ContextualMenu;

@@ -11,7 +11,7 @@ const CommissioningFormFields = () => {
   const formikProps = useFormikContext();
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 
-  const ubuntuKernelOptions = useSelector(state =>
+  const ubuntuKernelOptions = useSelector((state) =>
     generalSelectors.osInfo.getUbuntuKernelOptions(
       state,
       formikProps.values.commissioning_distro_series
@@ -29,7 +29,7 @@ const CommissioningFormFields = () => {
         component={Select}
         options={distroSeriesOptions}
         name="commissioning_distro_series"
-        onChange={e => {
+        onChange={(e) => {
           const kernelValue =
             allUbuntuKernelOptions[e.target.value] &&
             allUbuntuKernelOptions[e.target.value][0].value;

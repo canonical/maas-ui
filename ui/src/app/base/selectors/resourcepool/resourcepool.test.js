@@ -12,13 +12,13 @@ describe("resourcepool selectors", () => {
         permissions: ["edit", "delete"],
         machine_total_count: 24,
         machine_ready_count: 1,
-        is_default: true
-      }
+        is_default: true,
+      },
     ];
     const state = {
       resourcepool: {
-        items
-      }
+        items,
+      },
     };
     expect(resourcepool.all(state)).toEqual(items);
   });
@@ -27,8 +27,8 @@ describe("resourcepool selectors", () => {
     const state = {
       resourcepool: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(resourcepool.loading(state)).toEqual(true);
   });
@@ -37,8 +37,8 @@ describe("resourcepool selectors", () => {
     const state = {
       resourcepool: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(resourcepool.loaded(state)).toEqual(true);
   });
@@ -47,8 +47,8 @@ describe("resourcepool selectors", () => {
     const state = {
       resourcepool: {
         saving: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(resourcepool.saving(state)).toEqual(true);
   });
@@ -57,8 +57,8 @@ describe("resourcepool selectors", () => {
     const state = {
       resourcepool: {
         saved: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(resourcepool.saved(state)).toEqual(true);
   });
@@ -66,8 +66,8 @@ describe("resourcepool selectors", () => {
   it("can get the errors state", () => {
     const state = {
       resourcepool: {
-        errors: "Data is incorrect"
-      }
+        errors: "Data is incorrect",
+      },
     };
     expect(resourcepool.errors(state)).toStrictEqual("Data is incorrect");
   });
@@ -78,13 +78,13 @@ describe("resourcepool selectors", () => {
         loading: true,
         items: [
           { name: "foo", id: 101 },
-          { name: "bar", id: 123 }
-        ]
-      }
+          { name: "bar", id: 123 },
+        ],
+      },
     };
     expect(resourcepool.getById(state, 101)).toStrictEqual({
       name: "foo",
-      id: 101
+      id: 101,
     });
   });
 });

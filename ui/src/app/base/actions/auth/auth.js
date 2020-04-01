@@ -5,24 +5,24 @@ auth.fetch = () => {
     type: "FETCH_AUTH_USER",
     meta: {
       model: "user",
-      method: "auth_user"
-    }
+      method: "auth_user",
+    },
   };
 };
 
-auth.changePassword = params => ({
+auth.changePassword = (params) => ({
   type: "CHANGE_AUTH_USER_PASSWORD",
   meta: {
     model: "user",
-    method: "change_password"
+    method: "change_password",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
 auth.cleanup = () => ({
-  type: "CLEANUP_AUTH_USER"
+  type: "CLEANUP_AUTH_USER",
 });
 
 export default auth;

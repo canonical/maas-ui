@@ -9,7 +9,7 @@ const _generateSection = (section, location, match) => {
   let subNav = null;
 
   if (section.subNav && section.subNav.length) {
-    const subsections = section.subNav.map(subsection => {
+    const subsections = section.subNav.map((subsection) => {
       const subPath = `${match.url}/${subsection.path}`;
       const isActive = location.pathname === subPath;
       return (
@@ -17,7 +17,7 @@ const _generateSection = (section, location, match) => {
           <Link
             to={subPath}
             className={classNames("p-side-navigation__link", {
-              "is-active": isActive
+              "is-active": isActive,
             })}
           >
             {subsection.label}
@@ -41,7 +41,7 @@ const _generateSection = (section, location, match) => {
         <Link
           to={path}
           className={classNames("p-side-navigation__link", {
-            "is-active": isActive
+            "is-active": isActive,
           })}
         >
           {section.label}
@@ -64,7 +64,7 @@ const _generateSection = (section, location, match) => {
 export const SideNav = ({ items }) => {
   const { match } = useRouter();
   const { location } = useLocation();
-  const sections = items.map(item => _generateSection(item, location, match));
+  const sections = items.map((item) => _generateSection(item, location, match));
   return (
     <nav className="p-side-navigation">
       <ul className="p-side-navigation__list">{sections}</ul>
@@ -80,11 +80,11 @@ SideNav.propTypes = {
       subNav: PropTypes.arrayOf(
         PropTypes.shape({
           label: PropTypes.string.isRequired,
-          path: PropTypes.string.isRequired
+          path: PropTypes.string.isRequired,
         })
-      )
+      ),
     })
-  ).isRequired
+  ).isRequired,
 };
 
 export default SideNav;

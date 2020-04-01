@@ -8,7 +8,7 @@
 
 export const groupAsMap = (arr, keyGetter) => {
   const map = new Map();
-  arr.forEach(item => {
+  arr.forEach((item) => {
     const key = keyGetter(item);
     const collection = map.get(key);
     if (!collection) {

@@ -7,7 +7,7 @@ import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import {
   user as userSelectors,
-  auth as authSelectors
+  auth as authSelectors,
 } from "app/base/selectors";
 import { status as statusSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
@@ -25,7 +25,7 @@ const generateUserRows = (
   displayUsername,
   setDeleting
 ) =>
-  users.map(user => {
+  users.map((user) => {
     const expanded = expandedId === user.id;
     const isAuthUser = user.id === authUser.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
@@ -41,18 +41,18 @@ const generateUserRows = (
       columns: [
         {
           content: displayUsername ? user.username : fullName || <>&mdash;</>,
-          role: "rowheader"
+          role: "rowheader",
         },
         { content: user.email },
         { content: user.machines_count, className: "u-align--right" },
         { content: user.is_local && "Local" },
         { content: last_login || "Never" },
         {
-          content: user.is_superuser ? "Admin" : "User"
+          content: user.is_superuser ? "Admin" : "User",
         },
         {
           content: user.sshkeys_count,
-          className: "u-align--right"
+          className: "u-align--right",
         },
         {
           content: (
@@ -67,8 +67,8 @@ const generateUserRows = (
               onDelete={() => setExpandedId(user.id)}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -92,15 +92,15 @@ const generateUserRows = (
         type: user.is_local && "local",
         "last-seen": last_login,
         role: user.is_superuser ? "admin" : "user",
-        "maas-keys": user.sshkeys_count
-      }
+        "maas-keys": user.sshkeys_count,
+      },
     };
   });
 
-const userSort = currentSort => {
+const userSort = (currentSort) => {
   const { key, direction } = currentSort;
 
-  return function(a, b) {
+  return function (a, b) {
     if (direction === "none") {
       return 0;
     }
@@ -121,9 +121,9 @@ const Users = () => {
   const [deletingUser, setDeleting] = useState();
   const [currentSort, setCurrentSort] = useState({
     key: "username",
-    direction: "descending"
+    direction: "descending",
   });
-  const users = useSelector(state => userSelectors.search(state, searchText));
+  const users = useSelector((state) => userSelectors.search(state, searchText));
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
@@ -162,7 +162,7 @@ const Users = () => {
   }
 
   // Update sort parameters depending on whether the same sort key was clicked.
-  const updateSort = newSortKey => {
+  const updateSort = (newSortKey) => {
     const { key, direction } = currentSort;
 
     if (newSortKey === key) {
@@ -207,7 +207,7 @@ const Users = () => {
                 Real name
               </TableHeader>
             </>
-          )
+          ),
         },
         {
           content: (
@@ -219,7 +219,7 @@ const Users = () => {
             >
               Email
             </TableHeader>
-          )
+          ),
         },
         {
           content: (
@@ -232,25 +232,25 @@ const Users = () => {
               Machines
             </TableHeader>
           ),
-          className: "u-align--right"
+          className: "u-align--right",
         },
         {
-          content: "Type"
+          content: "Type",
         },
         {
-          content: "Last seen"
+          content: "Last seen",
         },
         {
-          content: "Role"
+          content: "Role",
         },
         {
           content: "MAAS keys",
-          className: "u-align--right"
+          className: "u-align--right",
         },
         {
           content: "Actions",
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ]}
       loaded={loaded}
       loading={loading}

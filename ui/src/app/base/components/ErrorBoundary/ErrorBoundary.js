@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component {
     const { analyticsEnabled, maasVersion } = this.props;
 
     if (analyticsEnabled) {
-      Sentry.withScope(scope => {
+      Sentry.withScope((scope) => {
         scope.setExtras({ ...errorInfo, maasVersion });
         const eventId = Sentry.captureException(error);
         this.setState({ eventId });
@@ -41,9 +41,9 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   analyticsEnabled: configSelectors.analyticsEnabled(state),
-  maasVersion: generalSelectors.version.get(state)
+  maasVersion: generalSelectors.version.get(state),
 });
 
 export default connect(mapStateToProps)(ErrorBoundary);

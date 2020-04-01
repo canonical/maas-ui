@@ -4,8 +4,8 @@ describe("machine selectors", () => {
   it("can get all items", () => {
     const state = {
       machine: {
-        items: [{ name: "maas.test" }]
-      }
+        items: [{ name: "maas.test" }],
+      },
     };
     expect(machine.all(state)).toEqual([{ name: "maas.test" }]);
   });
@@ -14,8 +14,8 @@ describe("machine selectors", () => {
     const state = {
       machine: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(machine.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("machine selectors", () => {
     const state = {
       machine: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(machine.loaded(state)).toEqual(true);
   });
@@ -34,8 +34,8 @@ describe("machine selectors", () => {
     const state = {
       machine: {
         saving: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(machine.saving(state)).toEqual(true);
   });
@@ -44,8 +44,8 @@ describe("machine selectors", () => {
     const state = {
       machine: {
         saved: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(machine.saved(state)).toEqual(true);
   });
@@ -53,8 +53,8 @@ describe("machine selectors", () => {
   it("can get the errors state", () => {
     const state = {
       machine: {
-        errors: "Data is incorrect"
-      }
+        errors: "Data is incorrect",
+      },
     };
     expect(machine.errors(state)).toStrictEqual("Data is incorrect");
   });
@@ -64,13 +64,13 @@ describe("machine selectors", () => {
       machine: {
         items: [
           { name: "maas.test", system_id: 808 },
-          { name: "10.0.0.99", system_id: 909 }
-        ]
-      }
+          { name: "10.0.0.99", system_id: 909 },
+        ],
+      },
     };
     expect(machine.getBySystemId(state, 909)).toStrictEqual({
       name: "10.0.0.99",
-      system_id: 909
+      system_id: 909,
     });
   });
 
@@ -79,8 +79,8 @@ describe("machine selectors", () => {
       machine: {
         errors: "Uh oh!",
         items: [],
-        loaded: true
-      }
+        loaded: true,
+      },
     };
     expect(machine.errors(state)).toEqual("Uh oh!");
   });

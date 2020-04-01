@@ -6,8 +6,8 @@ describe("user actions", () => {
       type: "FETCH_USER",
       meta: {
         model: "user",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -16,13 +16,13 @@ describe("user actions", () => {
       type: "CREATE_USER",
       meta: {
         model: "user",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          name: "kangaroo"
-        }
-      }
+          name: "kangaroo",
+        },
+      },
     });
   });
 
@@ -31,13 +31,13 @@ describe("user actions", () => {
       type: "UPDATE_USER",
       meta: {
         model: "user",
-        method: "update"
+        method: "update",
       },
       payload: {
         params: {
-          name: "kookaburra"
-        }
-      }
+          name: "kookaburra",
+        },
+      },
     });
   });
 
@@ -46,19 +46,19 @@ describe("user actions", () => {
       type: "DELETE_USER",
       meta: {
         model: "user",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can handle cleaning users", () => {
     expect(user.cleanup()).toEqual({
-      type: "CLEANUP_USER"
+      type: "CLEANUP_USER",
     });
   });
 });

@@ -7,16 +7,16 @@ describe("messages", () => {
         items: [
           {
             id: 1,
-            message: "User added"
-          }
-        ]
-      }
+            message: "User added",
+          },
+        ],
+      },
     };
     expect(messages.all(state)).toStrictEqual([
       {
         id: 1,
-        message: "User added"
-      }
+        message: "User added",
+      },
     ]);
   });
 });

@@ -13,7 +13,7 @@ describe("FilterAccordion", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -24,15 +24,15 @@ describe("FilterAccordion", () => {
             link_speeds: [100],
             pool: {
               id: 1,
-              name: "pool1"
+              name: "pool1",
             },
             zone: {
               id: 1,
-              name: "zone1"
-            }
-          }
-        ]
-      }
+              name: "zone1",
+            },
+          },
+        ],
+      },
     };
   });
 
@@ -83,7 +83,7 @@ describe("FilterAccordion", () => {
     expect(
       wrapper
         .find(".filter-accordion__item")
-        .findWhere(button => button.text().includes("100 Mbps"))
+        .findWhere((button) => button.text().includes("100 Mbps"))
         .exists()
     ).toBe(true);
   });
@@ -123,10 +123,7 @@ describe("FilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper
-      .find(".filter-accordion__item")
-      .at(0)
-      .simulate("click");
+    wrapper.find(".filter-accordion__item").at(0).simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("pool:(=pool1)");
   });
 
@@ -147,7 +144,7 @@ describe("FilterAccordion", () => {
     expect(
       wrapper
         .find(".p-accordion__tab")
-        .findWhere(button => button.text() === "Link speed")
+        .findWhere((button) => button.text() === "Link speed")
         .exists()
     ).toBe(false);
   });
@@ -169,7 +166,7 @@ describe("FilterAccordion", () => {
     expect(
       wrapper
         .find(".p-accordion__tab")
-        .findWhere(button => button.text() === "Link speed")
+        .findWhere((button) => button.text() === "Link speed")
         .exists()
     ).toBe(false);
   });

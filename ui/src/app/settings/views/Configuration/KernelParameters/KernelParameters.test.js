@@ -17,10 +17,10 @@ describe("KernelParameters", () => {
         items: [
           {
             name: "kernel_opts",
-            value: "foo"
-          }
-        ]
-      }
+            value: "foo",
+          },
+        ],
+      },
     };
   });
 
@@ -65,16 +65,16 @@ describe("KernelParameters", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

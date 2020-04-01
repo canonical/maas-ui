@@ -22,7 +22,7 @@ describe("TableHeader ", () => {
   it("renders a contextual icon if currentSort.key matches sortKey", () => {
     const currentSort = {
       key: "key",
-      direction: "descending"
+      direction: "descending",
     };
     const wrapper = shallow(
       <TableHeader
@@ -40,7 +40,7 @@ describe("TableHeader ", () => {
     and direction is ascending`, () => {
     const currentSort = {
       key: "key",
-      direction: "ascending"
+      direction: "ascending",
     };
     const wrapper = shallow(
       <TableHeader

@@ -9,7 +9,7 @@ describe("saga utils", () => {
     Object.defineProperty(document, "cookie", {
       get: jest.fn().mockImplementation(() => {
         return "a=foo; b=bar; c=baz";
-      })
+      }),
     });
 
     expect(getCookie("b")).toEqual("bar");

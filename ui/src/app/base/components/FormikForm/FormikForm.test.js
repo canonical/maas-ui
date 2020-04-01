@@ -58,7 +58,7 @@ describe("FormikForm", () => {
 
   it("can clean up when unmounted", () => {
     const cleanup = jest.fn(() => ({
-      type: "CLEANUP"
+      type: "CLEANUP",
     }));
     const store = mockStore({});
     const wrapper = mount(
@@ -83,7 +83,7 @@ describe("FormikForm", () => {
     const eventData = {
       action: "Saved",
       category: "Settings",
-      label: "Form"
+      label: "Form",
     };
     const store = mockStore({});
     mount(
@@ -107,14 +107,14 @@ describe("FormikForm", () => {
       true,
       eventData.category,
       eventData.action,
-      eventData.label
+      eventData.label,
     ]);
   });
 
   it("can reset form on save if resetOnSave is true", async () => {
     const store = mockStore({});
     const initialValues = {
-      val1: "initial"
+      val1: "initial",
     };
     const Schema = Yup.object().shape({ val1: Yup.string() });
 

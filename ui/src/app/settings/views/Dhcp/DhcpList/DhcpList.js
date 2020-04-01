@@ -9,14 +9,14 @@ import {
   device as deviceActions,
   dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
-  subnet as subnetActions
+  subnet as subnetActions,
 } from "app/base/actions";
 import {
   controller as controllerSelectors,
   device as deviceSelectors,
   dhcpsnippet as dhcpsnippetSelectors,
   machine as machineSelectors,
-  subnet as subnetSelectors
+  subnet as subnetSelectors,
 } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
 import ColumnToggle from "app/base/components/ColumnToggle";
@@ -34,13 +34,13 @@ const getTargetName = (
 ) => {
   let target;
   if (subnetId) {
-    target = subnets.find(subnet => subnet.id === subnetId);
+    target = subnets.find((subnet) => subnet.id === subnetId);
   } else if (node) {
     const controllerItem = controllers.find(
-      controller => controller.system_id === node
+      (controller) => controller.system_id === node
     );
-    const deviceItem = devices.find(device => device.system_id === node);
-    const machineItem = machines.find(machine => machine.system_id === node);
+    const deviceItem = devices.find((device) => device.system_id === node);
+    const machineItem = machines.find((machine) => machine.system_id === node);
     target = controllerItem || deviceItem || machineItem;
   }
   return target && (target.name || target.hostname);
@@ -60,7 +60,7 @@ const generateRows = (
   dispatch,
   setDeleting
 ) =>
-  dhcpsnippets.map(dhcpsnippet => {
+  dhcpsnippets.map((dhcpsnippet) => {
     const expanded = expandedId === dhcpsnippet.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const updated = dhcpsnippet.updated
@@ -90,10 +90,10 @@ const generateRows = (
               }}
             />
           ),
-          role: "rowheader"
+          role: "rowheader",
         },
         {
-          content: type
+          content: type,
         },
         {
           content: (dhcpsnippet.node || dhcpsnippet.subnet) && (
@@ -101,7 +101,7 @@ const generateRows = (
               nodeId={dhcpsnippet.node}
               subnetId={dhcpsnippet.subnet}
             />
-          )
+          ),
         },
         { content: dhcpsnippet.description },
         { content: enabled },
@@ -116,8 +116,8 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent:
@@ -153,8 +153,8 @@ const generateRows = (
           dhcpsnippet
         ),
         type,
-        updated
-      }
+        updated,
+      },
     };
   });
 
@@ -165,7 +165,7 @@ const DhcpList = () => {
   const [deletingName, setDeleting] = useState();
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippetLoaded = useSelector(dhcpsnippetSelectors.loaded);
-  const dhcpsnippets = useSelector(state =>
+  const dhcpsnippets = useSelector((state) =>
     dhcpsnippetSelectors.search(state, searchText)
   );
   const saved = useSelector(dhcpsnippetSelectors.saved);
@@ -205,32 +205,32 @@ const DhcpList = () => {
       headers={[
         {
           content: "Snippet name",
-          sortKey: "name"
+          sortKey: "name",
         },
         {
           content: "Type",
-          sortKey: "type"
+          sortKey: "type",
         },
         {
           content: "Applies to",
-          sortKey: "target"
+          sortKey: "target",
         },
         {
           content: "Description",
-          sortKey: "description"
+          sortKey: "description",
         },
         {
           content: "Enabled",
-          sortKey: "enabled"
+          sortKey: "enabled",
         },
         {
           content: "Last edited",
-          sortKey: "updated"
+          sortKey: "updated",
         },
         {
           content: "Actions",
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ]}
       loaded={dhcpsnippetLoaded}
       loading={dhcpsnippetLoading}

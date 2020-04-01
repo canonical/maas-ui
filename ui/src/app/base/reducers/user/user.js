@@ -9,7 +9,7 @@ const initialState = {
   loaded: false,
   loading: false,
   saved: false,
-  saving: false
+  saving: false,
 };
 
 const user = createStandardReducer(userActions, initialState);

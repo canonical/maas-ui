@@ -17,22 +17,22 @@ describe("VMWareForm", () => {
         items: [
           {
             name: "vcenter_server",
-            value: "my server"
+            value: "my server",
           },
           {
             name: "vcenter_username",
-            value: "admin"
+            value: "admin",
           },
           {
             name: "vcenter_password",
-            value: "passwd"
+            value: "passwd",
           },
           {
             name: "vcenter_datacenter",
-            value: "my datacenter"
-          }
-        ]
-      }
+            value: "my datacenter",
+          },
+        ],
+      },
     };
   });
 

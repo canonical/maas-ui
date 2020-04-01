@@ -14,7 +14,7 @@ describe("ZoneColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -24,23 +24,23 @@ describe("ZoneColumn", () => {
           {
             system_id: "abc123",
             zone: { name: "zone-north", id: 0 },
-            spaces: ["management"]
-          }
-        ]
+            spaces: ["management"],
+          },
+        ],
       },
       zone: {
         loaded: true,
         items: [
           {
             id: 0,
-            name: "default"
+            name: "default",
           },
           {
             id: 1,
-            name: "Backup"
-          }
-        ]
-      }
+            name: "Backup",
+          },
+        ],
+      },
     };
   });
 
@@ -137,28 +137,25 @@ describe("ZoneColumn", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("DoubleRow")
-        .prop("menuLinks")[0]
-        .onClick();
+      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     expect(
-      store.getActions().find(action => action.type === "SET_MACHINE_ZONE")
+      store.getActions().find((action) => action.type === "SET_MACHINE_ZONE")
     ).toEqual({
       type: "SET_MACHINE_ZONE",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "set-zone",
           extra: {
-            zone_id: 1
+            zone_id: 1,
           },
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -175,10 +172,7 @@ describe("ZoneColumn", () => {
     );
     expect(wrapper.find("Loader").exists()).toBe(false);
     act(() => {
-      wrapper
-        .find("DoubleRow")
-        .prop("menuLinks")[0]
-        .onClick();
+      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     wrapper.update();
     expect(wrapper.find("Loader").exists()).toBe(true);

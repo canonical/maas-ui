@@ -10,9 +10,9 @@ describe("defaultMinHweKernel selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(defaultMinHweKernel.get(state)).toStrictEqual(data);
     });
@@ -27,9 +27,9 @@ describe("defaultMinHweKernel selectors", () => {
             data: "",
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(defaultMinHweKernel.loading(state)).toStrictEqual(loading);
     });
@@ -44,9 +44,9 @@ describe("defaultMinHweKernel selectors", () => {
             data: "",
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(defaultMinHweKernel.loaded(state)).toStrictEqual(loaded);
     });
@@ -61,9 +61,9 @@ describe("defaultMinHweKernel selectors", () => {
             data: "",
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(defaultMinHweKernel.errors(state)).toStrictEqual(errors);
     });

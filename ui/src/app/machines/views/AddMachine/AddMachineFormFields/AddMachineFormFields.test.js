@@ -14,66 +14,66 @@ describe("AddMachineFormFields", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: [{ name: "maas_name", value: "MAAS" }]
+        items: [{ name: "maas_name", value: "MAAS" }],
       },
       domain: {
         items: [
           {
             id: 0,
-            name: "maas"
-          }
+            name: "maas",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       general: {
         architectures: {
           data: ["amd64/generic"],
-          loaded: true
+          loaded: true,
         },
         defaultMinHweKernel: {
           data: "ga-16.04",
-          loaded: true
+          loaded: true,
         },
         hweKernels: {
           data: [
             ["ga-16.04", "xenial (ga-16.04)"],
-            ["ga-18.04", "bionic (ga-18.04)"]
+            ["ga-18.04", "bionic (ga-18.04)"],
           ],
-          loaded: true
+          loaded: true,
         },
         powerTypes: {
           data: [
             {
               name: "manual",
               description: "Manual",
-              fields: []
-            }
+              fields: [],
+            },
           ],
-          loaded: true
-        }
+          loaded: true,
+        },
       },
       machine: {
         saved: false,
-        saving: false
+        saving: false,
       },
       resourcepool: {
         items: [
           {
             id: 0,
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       zone: {
         items: [
           {
             id: 0,
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        loaded: true
-      }
+        loaded: true,
+      },
     };
   });
 

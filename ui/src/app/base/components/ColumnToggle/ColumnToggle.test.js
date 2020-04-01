@@ -48,7 +48,7 @@ describe("ColumnToggle ", () => {
     beforeEach(() => {
       jest
         .spyOn(window, "requestAnimationFrame")
-        .mockImplementation(cb => cb());
+        .mockImplementation((cb) => cb());
       window.scrollTo = jest.fn();
       window.scrollY = 100;
     });

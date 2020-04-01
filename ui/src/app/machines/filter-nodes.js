@@ -37,12 +37,12 @@ const matches = (value, lowerTerm, exact, negate) => {
 };
 
 const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
-  filteredNodes.filter(node => {
+  filteredNodes.filter((node) => {
     let matched = false;
     let exclude = false;
     // Loop through the attributes to check. If this is for the
     // generic "q" filter then check against all node attributes.
-    (attr === "q" ? Object.keys(node) : [attr]).some(filterAttribute => {
+    (attr === "q" ? Object.keys(node) : [attr]).some((filterAttribute) => {
       if (filterAttribute === "in") {
         // "in:" is used to filter the nodes by those that are
         // currently selected.
@@ -64,7 +64,7 @@ const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
         // Unable to get value for this node. So skip it.
         return false;
       }
-      return terms.some(term => {
+      return terms.some((term) => {
         let cleanTerm = term.toLowerCase();
         // Get the first two characters, to check for ! or =.
         const special = cleanTerm.substring(0, 2);
@@ -75,7 +75,7 @@ const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
         return (Array.isArray(machineAttribute)
           ? machineAttribute
           : [machineAttribute]
-        ).some(attribute => {
+        ).some((attribute) => {
           const match = matches(attribute, cleanTerm, exact, false);
           if (match) {
             if (negate) {
@@ -117,7 +117,7 @@ const filterNodes = (nodes, search, selectedIDs) => {
     if (attr === "q") {
       // When filtering free search we need all terms to match so subsequent
       // terms will reduce the list to those that match all.
-      terms.forEach(term => {
+      terms.forEach((term) => {
         filteredNodes = filterByTerms(filteredNodes, attr, [term], selectedIDs);
       });
     } else {

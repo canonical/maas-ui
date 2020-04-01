@@ -20,7 +20,7 @@ describe("UserForm", () => {
       last_name: "Miss Wallaby",
       password1: "test1234",
       password2: "test1234",
-      username: "admin"
+      username: "admin",
     };
     state = {
       status: {},
@@ -31,8 +31,8 @@ describe("UserForm", () => {
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -60,20 +60,17 @@ describe("UserForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit(
-          {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          },
-          { resetForm }
-        )
+      wrapper.find("Formik").props().onSubmit(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        { resetForm }
+      )
     );
     expect(onSave.mock.calls[0][0]).toEqual({
       email: "test@example.com",
@@ -82,7 +79,7 @@ describe("UserForm", () => {
       last_name: "Miss Wallaby",
       password1: "test1234",
       password2: "test1234",
-      username: "admin"
+      username: "admin",
     });
     expect(resetForm).toHaveBeenCalled();
   });
@@ -98,16 +95,12 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("Button")
-        .first()
-        .children()
-        .text()
-    ).toEqual("Change password…");
+    expect(wrapper.find("Button").first().children().text()).toEqual(
+      "Change password…"
+    );
     expect(
       wrapper.findWhere(
-        n => n.name() === "FormikField" && n.prop("type") === "password"
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
       ).length
     ).toEqual(0);
   });
@@ -125,13 +118,13 @@ describe("UserForm", () => {
     );
     expect(
       wrapper.findWhere(
-        n => n.name() === "FormikField" && n.prop("type") === "password"
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
       ).length
     ).toEqual(0);
     wrapper.find("Button").simulate("click");
     expect(
       wrapper.findWhere(
-        n => n.name() === "FormikField" && n.prop("type") === "password"
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
       ).length
     ).toEqual(2);
   });
@@ -150,17 +143,17 @@ describe("UserForm", () => {
     wrapper.find("Button").simulate("click");
     expect(
       wrapper.findWhere(
-        n => n.name() === "FormikField" && n.prop("name") === "old_password"
+        (n) => n.name() === "FormikField" && n.prop("name") === "old_password"
       ).length
     ).toEqual(1);
   });
 
   it("can include auth errors in the error status", () => {
     state.user.errors = {
-      username: ["Username already exists"]
+      username: ["Username already exists"],
     };
     state.user.auth.errors = {
-      password: ["Password too short"]
+      password: ["Password too short"],
     };
     const store = mockStore(state);
     const wrapper = mount(
@@ -174,7 +167,7 @@ describe("UserForm", () => {
     );
     expect(wrapper.find("FormikForm").prop("errors")).toEqual({
       username: ["Username already exists"],
-      password: ["Password too short"]
+      password: ["Password too short"],
     });
   });
 

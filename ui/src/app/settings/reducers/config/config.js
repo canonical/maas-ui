@@ -36,7 +36,7 @@ const config = produce(
     loaded: false,
     saving: false,
     saved: false,
-    items: []
+    items: [],
   }
 );
 

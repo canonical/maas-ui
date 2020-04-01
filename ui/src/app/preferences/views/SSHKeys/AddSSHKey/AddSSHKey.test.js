@@ -15,13 +15,13 @@ describe("AddSSHKey", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       sshkey: {
         loading: false,
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
   });
 
@@ -48,7 +48,7 @@ describe("AddSSHKey", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some(action => action.type === "CLEANUP_SSHKEY")
+      store.getActions().some((action) => action.type === "CLEANUP_SSHKEY")
     ).toBe(true);
   });
 
@@ -75,26 +75,23 @@ describe("AddSSHKey", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          key: "ssh-rsa..."
-        })
+      wrapper.find("Formik").props().onSubmit({
+        key: "ssh-rsa...",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "CREATE_SSHKEY")
+      store.getActions().find((action) => action.type === "CREATE_SSHKEY")
     ).toStrictEqual({
       type: "CREATE_SSHKEY",
       payload: {
         params: {
-          key: "ssh-rsa..."
-        }
+          key: "ssh-rsa...",
+        },
       },
       meta: {
         model: "sshkey",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -108,28 +105,25 @@ describe("AddSSHKey", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          auth_id: "wallaroo",
-          protocol: "lp"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        auth_id: "wallaroo",
+        protocol: "lp",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "IMPORT_SSHKEY")
+      store.getActions().find((action) => action.type === "IMPORT_SSHKEY")
     ).toStrictEqual({
       type: "IMPORT_SSHKEY",
       payload: {
         params: {
           auth_id: "wallaroo",
-          protocol: "lp"
-        }
+          protocol: "lp",
+        },
       },
       meta: {
         model: "sshkey",
-        method: "import_keys"
-      }
+        method: "import_keys",
+      },
     });
   });
 
@@ -144,7 +138,9 @@ describe("AddSSHKey", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_SSHKEY")).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_SSHKEY")).toBe(
+      true
+    );
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

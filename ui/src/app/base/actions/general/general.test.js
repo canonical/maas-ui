@@ -6,8 +6,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_ARCHITECTURES",
       meta: {
         model: "general",
-        method: "architectures"
-      }
+        method: "architectures",
+      },
     });
   });
 
@@ -16,8 +16,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_COMPONENTS_TO_DISABLE",
       meta: {
         model: "general",
-        method: "components_to_disable"
-      }
+        method: "components_to_disable",
+      },
     });
   });
 
@@ -26,8 +26,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_DEFAULT_MIN_HWE_KERNEL",
       meta: {
         model: "general",
-        method: "default_min_hwe_kernel"
-      }
+        method: "default_min_hwe_kernel",
+      },
     });
   });
 
@@ -36,8 +36,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_HWE_KERNELS",
       meta: {
         model: "general",
-        method: "hwe_kernels"
-      }
+        method: "hwe_kernels",
+      },
     });
   });
 
@@ -46,8 +46,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_KNOWN_ARCHITECTURES",
       meta: {
         model: "general",
-        method: "known_architectures"
-      }
+        method: "known_architectures",
+      },
     });
   });
 
@@ -56,8 +56,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_MACHINE_ACTIONS",
       meta: {
         model: "general",
-        method: "machine_actions"
-      }
+        method: "machine_actions",
+      },
     });
   });
 
@@ -66,8 +66,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_NAVIGATION_OPTIONS",
       meta: {
         model: "general",
-        method: "navigation_options"
-      }
+        method: "navigation_options",
+      },
     });
   });
 
@@ -76,8 +76,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_OSINFO",
       meta: {
         model: "general",
-        method: "osinfo"
-      }
+        method: "osinfo",
+      },
     });
   });
 
@@ -86,8 +86,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_POCKETS_TO_DISABLE",
       meta: {
         model: "general",
-        method: "pockets_to_disable"
-      }
+        method: "pockets_to_disable",
+      },
     });
   });
 
@@ -96,8 +96,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_POWER_TYPES",
       meta: {
         model: "general",
-        method: "power_types"
-      }
+        method: "power_types",
+      },
     });
   });
 
@@ -106,8 +106,8 @@ describe("general actions", () => {
       type: "FETCH_GENERAL_VERSION",
       meta: {
         model: "general",
-        method: "version"
-      }
+        method: "version",
+      },
     });
   });
 });

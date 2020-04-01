@@ -6,8 +6,8 @@ describe("device actions", () => {
       type: "FETCH_DEVICE",
       meta: {
         model: "device",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

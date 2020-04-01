@@ -14,87 +14,87 @@ describe("App", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: [{ name: "completed_intro", value: true }]
+        items: [{ name: "completed_intro", value: true }],
       },
       general: {
         architectures: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         componentsToDisable: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         defaultMinHweKernel: {
           data: "",
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         hweKernels: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         knownArchitectures: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         machineActions: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         navigationOptions: {
           data: {},
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         osInfo: {
           data: {},
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         pocketsToDisable: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         powerTypes: {
           data: [],
           errors: {},
           loaded: false,
-          loading: false
+          loading: false,
         },
         version: {
           data: "",
           errors: {},
           loaded: false,
-          loading: false
-        }
+          loading: false,
+        },
       },
       machine: {
         errors: {},
         items: [],
         loaded: false,
-        loading: false
+        loading: false,
       },
       messages: {
-        items: []
+        items: [],
       },
       notification: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
@@ -108,10 +108,10 @@ describe("App", () => {
             is_superuser: true,
             last_name: "",
             sshkeys_count: 0,
-            username: "admin"
-          }
-        }
-      }
+            username: "admin",
+          },
+        },
+      },
     };
   });
 
@@ -193,7 +193,7 @@ describe("App", () => {
       </Provider>
     );
     expect(
-      store.getActions().some(action => action.type === "WEBSOCKET_CONNECT")
+      store.getActions().some((action) => action.type === "WEBSOCKET_CONNECT")
     ).toBe(true);
   });
 
@@ -209,7 +209,7 @@ describe("App", () => {
       </Provider>
     );
     expect(
-      store.getActions().some(action => action.type === "FETCH_AUTH_USER")
+      store.getActions().some((action) => action.type === "FETCH_AUTH_USER")
     ).toBe(true);
   });
 

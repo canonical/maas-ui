@@ -14,7 +14,7 @@ describe("RepositoriesList", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       packagerepository: {
         loading: false,
@@ -25,31 +25,31 @@ describe("RepositoriesList", () => {
             name: "main_archive",
             url: "http://archive.ubuntu.com/ubuntu",
             default: true,
-            enabled: true
+            enabled: true,
           },
           {
             id: 2,
             name: "ports_archive",
             url: "http://ports.ubuntu.com/ubuntu-ports",
             default: true,
-            enabled: true
+            enabled: true,
           },
           {
             id: 3,
             name: "extra_archive",
             url: "http://maas.io",
             default: false,
-            enabled: true
+            enabled: true,
           },
           {
             id: 4,
             name: "secret_archive",
             url: "http://www.website.com",
             default: false,
-            enabled: false
-          }
-        ]
-      }
+            enabled: false,
+          },
+        ],
+      },
     };
   });
 
@@ -61,7 +61,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -79,7 +79,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -96,7 +96,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -106,12 +106,7 @@ describe("RepositoriesList", () => {
     let row = wrapper.find("MainTable").prop("rows")[2];
     expect(row.expanded).toBe(false);
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(3)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
     row = wrapper.find("MainTable").prop("rows")[2];
     expect(row.expanded).toBe(true);
   });
@@ -123,7 +118,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -131,32 +126,22 @@ describe("RepositoriesList", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(3)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(3)
-      .find("Button")
-      .at(3)
-      .simulate("click");
+    wrapper.find("TableRow").at(3).find("Button").at(3).simulate("click");
 
     // 1. Fetch, 2. Cleanup, 3. Delete
     expect(store.getActions()[2]).toEqual({
       type: "DELETE_PACKAGEREPOSITORY",
       payload: {
         params: {
-          id: 3
-        }
+          id: 3,
+        },
       },
       meta: {
         model: "packagerepository",
-        method: "delete"
-      }
+        method: "delete",
+      },
     });
   });
 
@@ -167,7 +152,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -176,12 +161,7 @@ describe("RepositoriesList", () => {
     );
     let rows = wrapper.find("MainTable").prop("rows");
     expect(rows.length).toBe(state.packagerepository.items.length);
-    act(() =>
-      wrapper
-        .find("SearchBox")
-        .props()
-        .onChange("secret")
-    );
+    act(() => wrapper.find("SearchBox").props().onChange("secret"));
     wrapper.update();
     rows = wrapper.find("MainTable").prop("rows");
     expect(rows.length).toBe(1);
@@ -194,7 +174,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -215,7 +195,7 @@ describe("RepositoriesList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" }
+            { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
           <RepositoriesList />
@@ -224,8 +204,8 @@ describe("RepositoriesList", () => {
     );
     const actions = store.getActions();
     expect(
-      actions.some(action => action.type === "CLEANUP_PACKAGEREPOSITORY")
+      actions.some((action) => action.type === "CLEANUP_PACKAGEREPOSITORY")
     ).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

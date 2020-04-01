@@ -21,12 +21,12 @@ import {
   subnet,
   tag,
   user,
-  zone
+  zone,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
-const createAppReducer = history =>
+const createAppReducer = (history) =>
   combineReducers({
     config,
     controller,
@@ -50,10 +50,10 @@ const createAppReducer = history =>
     tag,
     token,
     user: reduceReducers(user, auth),
-    zone
+    zone,
   });
 
-const createRootReducer = history => (state, action) => {
+const createRootReducer = (history) => (state, action) => {
   if (action.type === "LOGOUT_SUCCESS") {
     return createAppReducer(history)(
       // Status reducer defaults to authenticating = true to stop login screen

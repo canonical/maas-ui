@@ -9,49 +9,49 @@ const machine = {};
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all machines.
  */
-machine.all = state => state.machine.items;
+machine.all = (state) => state.machine.items;
 
 /**
  * Whether machines are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loading state.
  */
-machine.loading = state => state.machine.loading;
+machine.loading = (state) => state.machine.loading;
 
 /**
  * Whether machines have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loaded state.
  */
-machine.loaded = state => state.machine.loaded;
+machine.loaded = (state) => state.machine.loaded;
 
 /**
  * Get the machine saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether machines are being saved.
  */
-machine.saving = state => state.machine.saving;
+machine.saving = (state) => state.machine.saving;
 
 /**
  * Get the machine saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether machines have been saved.
  */
-machine.saved = state => state.machine.saved;
+machine.saved = (state) => state.machine.saved;
 
 /**
  * Returns machine errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Machine errors state.
  */
-machine.errors = state => state.machine.errors;
+machine.errors = (state) => state.machine.errors;
 
 /**
  * Returns selected machine system_ids.
  * @param {Object} state - The redux state.
  * @returns {Array} Selected machine system_ids.
  */
-machine.selectedIDs = state => state.machine.selected;
+machine.selectedIDs = (state) => state.machine.selected;
 
 /**
  * Returns a machine for the given id.
@@ -59,14 +59,14 @@ machine.selectedIDs = state => state.machine.selected;
  * @returns {Array} A machine.
  */
 machine.getBySystemId = (state, id) =>
-  state.machine.items.find(machine => machine.system_id === id);
+  state.machine.items.find((machine) => machine.system_id === id);
 
 /**
  * Returns machine errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Errors for machines.
  */
-machine.errors = state => state.machine.errors;
+machine.errors = (state) => state.machine.errors;
 
 /**
  * Gets the search terms and selected machines.
@@ -77,7 +77,7 @@ machine.errors = state => state.machine.errors;
  */
 machine._getSearchParams = (state, terms, selectedIDs) => ({
   terms,
-  selectedIDs
+  selectedIDs,
 });
 
 /**
@@ -104,7 +104,9 @@ machine.search = createSelector(
 machine.selected = createSelector(
   [machine.all, machine.selectedIDs],
   (machines, selectedIDs) =>
-    selectedIDs.map(id => machines.find(machine => id === machine.system_id))
+    selectedIDs.map((id) =>
+      machines.find((machine) => id === machine.system_id)
+    )
 );
 
 export default machine;

@@ -14,11 +14,11 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
 const APIKeyAddSchema = Yup.object().shape({
-  name: Yup.string().notRequired()
+  name: Yup.string().notRequired(),
 });
 
 const APIKeyEditSchema = Yup.object().shape({
-  name: Yup.string().required("API key name is required")
+  name: Yup.string().required("API key name is required"),
 });
 
 export const APIKeyForm = ({ token }) => {
@@ -44,19 +44,19 @@ export const APIKeyForm = ({ token }) => {
         cleanup={tokenActions.cleanup}
         errors={errors}
         initialValues={{
-          name: token ? token.consumer.name : ""
+          name: token ? token.consumer.name : "",
         }}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",
-          label: "Generate API key form"
+          label: "Generate API key form",
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           if (editing) {
             dispatch(
               tokenActions.update({
                 id: token.id,
-                name: values.name
+                name: values.name,
               })
             );
           } else {
@@ -94,12 +94,12 @@ APIKeyForm.propTypes = {
   token: PropTypes.shape({
     consumer: PropTypes.shape({
       key: PropTypes.string,
-      name: PropTypes.string
+      name: PropTypes.string,
     }),
     id: PropTypes.number,
     key: PropTypes.string,
-    secret: PropTypes.string
-  })
+    secret: PropTypes.string,
+  }),
 };
 
 export default APIKeyForm;

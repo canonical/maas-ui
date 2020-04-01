@@ -11,7 +11,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 const NtpSchema = Yup.object().shape({
   ntp_external_only: Yup.boolean().required(),
-  ntp_servers: Yup.string()
+  ntp_servers: Yup.string(),
 });
 
 const NtpForm = () => {
@@ -42,12 +42,12 @@ const NtpForm = () => {
           <FormikForm
             initialValues={{
               ntp_external_only: ntpExternalOnly,
-              ntp_servers: ntpServers
+              ntp_servers: ntpServers,
             }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Network settings",
-              label: "NTP form"
+              label: "NTP form",
             }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));

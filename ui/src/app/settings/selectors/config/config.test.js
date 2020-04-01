@@ -5,14 +5,14 @@ describe("config selectors", () => {
     it("returns list of all MAAS configs", () => {
       const allConfigs = [
         { name: "default_storage_layout", value: "bcache" },
-        { name: "enable_disk_erasing_on_release", value: "foo" }
+        { name: "enable_disk_erasing_on_release", value: "foo" },
       ];
       const state = {
         config: {
           loading: false,
           loaded: true,
-          items: allConfigs
-        }
+          items: allConfigs,
+        },
       };
       expect(config.all(state)).toStrictEqual(allConfigs);
     });
@@ -24,8 +24,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(config.loading(state)).toStrictEqual(false);
     });
@@ -37,8 +37,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(config.loaded(state)).toStrictEqual(true);
     });
@@ -50,8 +50,8 @@ describe("config selectors", () => {
         config: {
           saving: false,
           saved: true,
-          items: []
-        }
+          items: [],
+        },
       };
       expect(config.saved(state)).toStrictEqual(true);
     });
@@ -63,8 +63,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "default_storage_layout", value: "bcache" }]
-        }
+          items: [{ name: "default_storage_layout", value: "bcache" }],
+        },
       };
       expect(config.defaultStorageLayout(state)).toBe("bcache");
     });
@@ -82,21 +82,21 @@ describe("config selectors", () => {
               value: "bcache",
               choices: [
                 ["bcache", "Bcache layout"],
-                ["blank", "No storage (blank) layout"]
-              ]
-            }
-          ]
-        }
+                ["blank", "No storage (blank) layout"],
+              ],
+            },
+          ],
+        },
       };
       expect(config.storageLayoutOptions(state)).toStrictEqual([
         {
           value: "bcache",
-          label: "Bcache layout"
+          label: "Bcache layout",
         },
         {
           value: "blank",
-          label: "No storage (blank) layout"
-        }
+          label: "No storage (blank) layout",
+        },
       ]);
     });
   });
@@ -107,8 +107,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "enable_disk_erasing_on_release", value: "foo" }]
-        }
+          items: [{ name: "enable_disk_erasing_on_release", value: "foo" }],
+        },
       };
       expect(config.enableDiskErasing(state)).toBe("foo");
     });
@@ -120,8 +120,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "disk_erase_with_secure_erase", value: "bar" }]
-        }
+          items: [{ name: "disk_erase_with_secure_erase", value: "bar" }],
+        },
       };
       expect(config.diskEraseWithSecure(state)).toBe("bar");
     });
@@ -133,8 +133,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "disk_erase_with_quick_erase", value: "baz" }]
-        }
+          items: [{ name: "disk_erase_with_quick_erase", value: "baz" }],
+        },
       };
       expect(config.diskEraseWithQuick(state)).toBe("baz");
     });
@@ -144,8 +144,8 @@ describe("config selectors", () => {
     it("returns MAAS config for http proxy", () => {
       const state = {
         config: {
-          items: [{ name: "http_proxy", value: "foo" }]
-        }
+          items: [{ name: "http_proxy", value: "foo" }],
+        },
       };
       expect(config.httpProxy(state)).toBe("foo");
     });
@@ -155,8 +155,8 @@ describe("config selectors", () => {
     it("returns MAAS config for enabling httpProxy", () => {
       const state = {
         config: {
-          items: [{ name: "enable_http_proxy", value: "bar" }]
-        }
+          items: [{ name: "enable_http_proxy", value: "bar" }],
+        },
       };
       expect(config.enableHttpProxy(state)).toBe("bar");
     });
@@ -166,8 +166,8 @@ describe("config selectors", () => {
     it("returns MAAS config for enabling peer proxy", () => {
       const state = {
         config: {
-          items: [{ name: "use_peer_proxy", value: "baz" }]
-        }
+          items: [{ name: "use_peer_proxy", value: "baz" }],
+        },
       };
       expect(config.usePeerProxy(state)).toBe("baz");
     });
@@ -177,8 +177,8 @@ describe("config selectors", () => {
     it("returns 'noProxy' if enable_http_proxy is false", () => {
       const state = {
         config: {
-          items: [{ name: "enable_http_proxy", value: false }]
-        }
+          items: [{ name: "enable_http_proxy", value: false }],
+        },
       };
       expect(config.proxyType(state)).toBe("noProxy");
     });
@@ -188,9 +188,9 @@ describe("config selectors", () => {
         config: {
           items: [
             { name: "enable_http_proxy", value: true },
-            { name: "http_proxy", value: "" }
-          ]
-        }
+            { name: "http_proxy", value: "" },
+          ],
+        },
       };
       expect(config.proxyType(state)).toBe("builtInProxy");
     });
@@ -200,9 +200,9 @@ describe("config selectors", () => {
         config: {
           items: [
             { name: "enable_http_proxy", value: true },
-            { name: "http_proxy", value: "http://www.url.com" }
-          ]
-        }
+            { name: "http_proxy", value: "http://www.url.com" },
+          ],
+        },
       };
       expect(config.proxyType(state)).toBe("externalProxy");
     });
@@ -213,9 +213,9 @@ describe("config selectors", () => {
           items: [
             { name: "enable_http_proxy", value: true },
             { name: "http_proxy", value: "http://www.url.com" },
-            { name: "use_peer_proxy", value: true }
-          ]
-        }
+            { name: "use_peer_proxy", value: true },
+          ],
+        },
       };
       expect(config.proxyType(state)).toBe("peerProxy");
     });
@@ -227,8 +227,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "maas_name", value: "bionic-maas" }]
-        }
+          items: [{ name: "maas_name", value: "bionic-maas" }],
+        },
       };
       expect(config.maasName(state)).toBe("bionic-maas");
     });
@@ -240,8 +240,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "enable_analytics", value: true }]
-        }
+          items: [{ name: "enable_analytics", value: true }],
+        },
       };
       expect(config.analyticsEnabled(state)).toBe(true);
     });
@@ -253,8 +253,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "commissioning_distro_series", value: "bionic" }]
-        }
+          items: [{ name: "commissioning_distro_series", value: "bionic" }],
+        },
       };
       expect(config.commissioningDistroSeries(state)).toBe("bionic");
     });
@@ -270,16 +270,16 @@ describe("config selectors", () => {
             {
               name: "commissioning_distro_series",
               value: "bionic",
-              choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]]
-            }
-          ]
-        }
+              choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]],
+            },
+          ],
+        },
       };
       expect(config.distroSeriesOptions(state)).toStrictEqual([
         {
           value: "bionic",
-          label: "Ubuntu 18.04 LTS 'Bionic-Beaver'"
-        }
+          label: "Ubuntu 18.04 LTS 'Bionic-Beaver'",
+        },
       ]);
     });
   });
@@ -290,8 +290,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "default_min_hwe_kernel", value: "" }]
-        }
+          items: [{ name: "default_min_hwe_kernel", value: "" }],
+        },
       };
       expect(config.defaultMinKernelVersion(state)).toBe("");
     });
@@ -303,8 +303,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "kernel_opts", value: "foo" }]
-        }
+          items: [{ name: "kernel_opts", value: "foo" }],
+        },
       };
       expect(config.kernelParams(state)).toBe("foo");
     });
@@ -316,8 +316,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "windows_kms_host", value: "127.0.0.1" }]
-        }
+          items: [{ name: "windows_kms_host", value: "127.0.0.1" }],
+        },
       };
       expect(config.windowsKmsHost(state)).toBe("127.0.0.1");
     });
@@ -329,8 +329,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "vcenter_server", value: "my server" }]
-        }
+          items: [{ name: "vcenter_server", value: "my server" }],
+        },
       };
       expect(config.vCenterServer(state)).toBe("my server");
     });
@@ -342,8 +342,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "vcenter_username", value: "admin" }]
-        }
+          items: [{ name: "vcenter_username", value: "admin" }],
+        },
       };
       expect(config.vCenterUsername(state)).toBe("admin");
     });
@@ -355,8 +355,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "vcenter_password", value: "passwd" }]
-        }
+          items: [{ name: "vcenter_password", value: "passwd" }],
+        },
       };
       expect(config.vCenterPassword(state)).toBe("passwd");
     });
@@ -368,8 +368,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "vcenter_datacenter", value: "my datacenter" }]
-        }
+          items: [{ name: "vcenter_datacenter", value: "my datacenter" }],
+        },
       };
       expect(config.vCenterDatacenter(state)).toBe("my datacenter");
     });
@@ -381,8 +381,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "enable_third_party_drivers", value: true }]
-        }
+          items: [{ name: "enable_third_party_drivers", value: true }],
+        },
       };
       expect(config.thirdPartyDriversEnabled(state)).toBe(true);
     });
@@ -394,8 +394,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "default_osystem", value: "bionic" }]
-        }
+          items: [{ name: "default_osystem", value: "bionic" }],
+        },
       };
       expect(config.defaultOSystem(state)).toBe("bionic");
     });
@@ -413,21 +413,21 @@ describe("config selectors", () => {
               value: "ubuntu",
               choices: [
                 ["centos", "CentOS"],
-                ["ubuntu", "Ubuntu"]
-              ]
-            }
-          ]
-        }
+                ["ubuntu", "Ubuntu"],
+              ],
+            },
+          ],
+        },
       };
       expect(config.defaultOSystemOptions(state)).toStrictEqual([
         {
           value: "centos",
-          label: "CentOS"
+          label: "CentOS",
         },
         {
           value: "ubuntu",
-          label: "Ubuntu"
-        }
+          label: "Ubuntu",
+        },
       ]);
     });
   });
@@ -438,8 +438,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "default_distro_series", value: "bionic" }]
-        }
+          items: [{ name: "default_distro_series", value: "bionic" }],
+        },
       };
       expect(config.defaultDistroSeries(state)).toBe("bionic");
     });
@@ -451,8 +451,8 @@ describe("config selectors", () => {
         config: {
           loading: false,
           loaded: true,
-          items: [{ name: "completed_intro", value: true }]
-        }
+          items: [{ name: "completed_intro", value: true }],
+        },
       };
       expect(config.completedIntro(state)).toBe(true);
     });

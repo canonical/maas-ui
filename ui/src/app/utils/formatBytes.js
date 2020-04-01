@@ -16,7 +16,7 @@ export const formatBytes = (value, unit, precision = 3) => {
   const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
   // Convert to bytes.
-  const i = sizes.findIndex(size => size === unit) || 0;
+  const i = sizes.findIndex((size) => size === unit) || 0;
   const valueInBytes = parsedValue * Math.pow(k, i);
 
   // Convert to appropriate unit.
@@ -27,6 +27,6 @@ export const formatBytes = (value, unit, precision = 3) => {
 
   return {
     value: valueInUnit,
-    unit: sizes[j]
+    unit: sizes[j],
   };
 };

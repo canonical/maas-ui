@@ -15,13 +15,13 @@ describe("SSHKeyFormFields", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       sshkey: {
         loading: false,
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
   });
 
@@ -58,7 +58,7 @@ describe("SSHKeyFormFields", () => {
     expect(
       wrapper
         .findWhere(
-          n => n.name() === "FormikField" && n.prop("name") === "auth_id"
+          (n) => n.name() === "FormikField" && n.prop("name") === "auth_id"
         )
         .exists()
     ).toBe(true);
@@ -84,7 +84,9 @@ describe("SSHKeyFormFields", () => {
     wrapper.update();
     expect(
       wrapper
-        .findWhere(n => n.name() === "FormikField" && n.prop("name") === "key")
+        .findWhere(
+          (n) => n.name() === "FormikField" && n.prop("name") === "key"
+        )
         .exists()
     ).toBe(true);
   });

@@ -21,7 +21,7 @@ export const general = {
   osInfo,
   pocketsToDisable,
   powerTypes,
-  version
+  version,
 };
 
 export default general;

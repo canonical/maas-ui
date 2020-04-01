@@ -14,7 +14,7 @@ describe("PoolColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -24,23 +24,23 @@ describe("PoolColumn", () => {
           {
             system_id: "abc123",
             pool: { id: 0, name: "default" },
-            description: "Firmware old"
-          }
-        ]
+            description: "Firmware old",
+          },
+        ],
       },
       resourcepool: {
         loaded: true,
         items: [
           {
             id: 0,
-            name: "default"
+            name: "default",
           },
           {
             id: 1,
-            name: "Backup"
-          }
-        ]
-      }
+            name: "Backup",
+          },
+        ],
+      },
     };
   });
 
@@ -95,8 +95,8 @@ describe("PoolColumn", () => {
     state.resourcepool.items = [
       {
         id: 0,
-        name: "default"
-      }
+        name: "default",
+      },
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -112,7 +112,7 @@ describe("PoolColumn", () => {
     expect(items.length).toBe(1);
     expect(items[0]).toStrictEqual({
       children: "No other pools available",
-      disabled: true
+      disabled: true,
     });
   });
 
@@ -128,28 +128,25 @@ describe("PoolColumn", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("DoubleRow")
-        .prop("menuLinks")[0]
-        .onClick();
+      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     expect(
-      store.getActions().find(action => action.type === "SET_MACHINE_POOL")
+      store.getActions().find((action) => action.type === "SET_MACHINE_POOL")
     ).toEqual({
       type: "SET_MACHINE_POOL",
       meta: {
         model: "machine",
-        method: "action"
+        method: "action",
       },
       payload: {
         params: {
           action: "set-pool",
           extra: {
-            pool_id: 1
+            pool_id: 1,
           },
-          system_id: "abc123"
-        }
-      }
+          system_id: "abc123",
+        },
+      },
     });
   });
 
@@ -166,10 +163,7 @@ describe("PoolColumn", () => {
     );
     expect(wrapper.find("Loader").exists()).toBe(false);
     act(() => {
-      wrapper
-        .find("DoubleRow")
-        .prop("menuLinks")[0]
-        .onClick();
+      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     wrapper.update();
     expect(wrapper.find("Loader").exists()).toBe(true);

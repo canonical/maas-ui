@@ -17,10 +17,10 @@ describe("WindowsForm", () => {
         items: [
           {
             name: "windows_kms_host",
-            value: "127.0.0.1"
-          }
-        ]
-      }
+            value: "127.0.0.1",
+          },
+        ],
+      },
     };
   });
 
@@ -46,10 +46,7 @@ describe("WindowsForm", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("input[name='windows_kms_host']")
-        .first()
-        .props().value
+      wrapper.find("input[name='windows_kms_host']").first().props().value
     ).toBe("127.0.0.1");
   });
 });

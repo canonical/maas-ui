@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import {
   general as generalSelectors,
-  machine as machineSelectors
+  machine as machineSelectors,
 } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
@@ -18,7 +18,7 @@ const hideFailedTestWarningStatuses = [
   nodeStatus.FAILED_COMMISSIONING,
   nodeStatus.FAILED_TESTING,
   nodeStatus.NEW,
-  nodeStatus.TESTING
+  nodeStatus.TESTING,
 ];
 
 // Node statuses for which the OS + release is made human-readable.
@@ -32,7 +32,7 @@ const transientStatuses = [
   nodeStatus.ENTERING_RESCUE_MODE,
   nodeStatus.EXITING_RESCUE_MODE,
   nodeStatus.RELEASING,
-  nodeStatus.TESTING
+  nodeStatus.TESTING,
 ];
 
 // Script statuses associated with failure.
@@ -41,13 +41,13 @@ const failedScriptStatuses = [
   scriptStatus.FAILED,
   scriptStatus.FAILED_APPLYING_NETCONF,
   scriptStatus.FAILED_INSTALLING,
-  scriptStatus.TIMEDOUT
+  scriptStatus.TIMEDOUT,
 ];
 
 const getStatusText = (machine, osReleases) => {
   if (formattedReleaseStatuses.includes(machine.status_code)) {
     const machineRelease = osReleases.find(
-      release => release.value === machine.distro_series
+      (release) => release.value === machine.distro_series
     );
 
     if (machineRelease) {
@@ -67,14 +67,14 @@ const getStatusText = (machine, osReleases) => {
   return machine.status;
 };
 
-const getProgressText = machine => {
+const getProgressText = (machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return machine.status_message;
   }
   return "";
 };
 
-const getStatusIcon = machine => {
+const getStatusIcon = (machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return (
       <Loader
@@ -100,10 +100,10 @@ const getStatusIcon = machine => {
 };
 
 const StatusColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
-  const osReleases = useSelector(state =>
+  const osReleases = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)
   );
 
@@ -120,7 +120,7 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
     "release",
     "rescue-mode",
     "test",
-    "unlock"
+    "unlock",
   ]);
 
   const menuLinks = [
@@ -129,14 +129,14 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
       {
         children: "See logs",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=logs`
+        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=logs`,
       },
       {
         children: "See events",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=events`
-      }
-    ]
+        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=events`,
+      },
+    ],
   ];
 
   return (
@@ -165,7 +165,7 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
 
 StatusColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default StatusColumn;

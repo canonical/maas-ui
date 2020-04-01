@@ -7,7 +7,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
 const DisksColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
@@ -31,7 +31,7 @@ const DisksColumn = ({ onToggleMenu, systemId }) => {
 
 DisksColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default DisksColumn;

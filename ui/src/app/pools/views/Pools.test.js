@@ -13,13 +13,13 @@ describe("Pools", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       resourcepool: {
         loaded: true,
@@ -29,17 +29,17 @@ describe("Pools", () => {
             name: "default",
             description: "default",
             is_default: true,
-            permissions: []
+            permissions: [],
           },
           {
             id: 1,
             name: "Backup",
             description: "A backup pool",
             is_default: false,
-            permissions: []
-          }
-        ]
-      }
+            permissions: [],
+          },
+        ],
+      },
     };
   });
 
@@ -66,8 +66,8 @@ describe("Pools", () => {
         name: "default",
         description: "default",
         is_default: true,
-        permissions: []
-      }
+        permissions: [],
+      },
     ];
     const wrapper = mount(
       <Provider store={store}>
@@ -76,12 +76,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("Button")
-        .first()
-        .props().disabled
-    ).toBe(true);
+    expect(wrapper.find("Button").first().props().disabled).toBe(true);
   });
 
   it("enables the edit button with correct permissions", () => {
@@ -93,8 +88,8 @@ describe("Pools", () => {
         name: "default",
         description: "default",
         is_default: true,
-        permissions: ["edit"]
-      }
+        permissions: ["edit"],
+      },
     ];
     const wrapper = mount(
       <Provider store={store}>
@@ -103,12 +98,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("Button")
-        .first()
-        .props().disabled
-    ).toBe(false);
+    expect(wrapper.find("Button").first().props().disabled).toBe(false);
   });
 
   it("can show a delete confirmation", () => {
@@ -120,8 +110,8 @@ describe("Pools", () => {
         name: "squambo",
         description: "a pool",
         is_default: false,
-        permissions: ["delete"]
-      }
+        permissions: ["delete"],
+      },
     ];
 
     const wrapper = mount(
@@ -134,12 +124,7 @@ describe("Pools", () => {
     let row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(false);
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(true);
   });
@@ -153,8 +138,8 @@ describe("Pools", () => {
         name: "squambo",
         description: "a pool",
         is_default: false,
-        permissions: ["delete"]
-      }
+        permissions: ["delete"],
+      },
     ];
 
     const wrapper = mount(
@@ -165,31 +150,21 @@ describe("Pools", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button")
-      .at(3)
-      .simulate("click");
+    wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
 
     expect(store.getActions()[2]).toEqual({
       type: "DELETE_RESOURCEPOOL",
       payload: {
         params: {
-          id: 2
-        }
+          id: 2,
+        },
       },
       meta: {
         model: "resourcepool",
-        method: "delete"
-      }
+        method: "delete",
+      },
     });
   });
 
@@ -202,8 +177,8 @@ describe("Pools", () => {
         name: "default",
         description: "default",
         is_default: true,
-        permissions: ["edit", "delete"]
-      }
+        permissions: ["edit", "delete"],
+      },
     ];
     const wrapper = mount(
       <Provider store={store}>
@@ -212,12 +187,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("Button")
-        .at(1)
-        .props().disabled
-    ).toBe(true);
+    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
   });
 
   it("does not show a machine link for empty pools", () => {
@@ -231,11 +201,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
-    const name = wrapper
-      .find("TableRow")
-      .at(1)
-      .find("TableCell")
-      .at(1);
+    const name = wrapper.find("TableRow").at(1).find("TableCell").at(1);
     expect(name.text()).toBe("Empty pool");
   });
 

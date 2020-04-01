@@ -8,7 +8,7 @@ import FormikField from "app/base/components/FormikField";
 export const LicenseKeyFormFields = ({
   editing = false,
   osystems,
-  releases
+  releases,
 }) => {
   const formikProps = useFormikContext();
   const distroSeriesOptions = releases[formikProps.values.osystem];
@@ -20,11 +20,11 @@ export const LicenseKeyFormFields = ({
         name="osystem"
         label="Operating System"
         required={true}
-        options={osystems.map(osystem => {
+        options={osystems.map((osystem) => {
           const [os, label] = osystem;
           return { value: os, label };
         })}
-        onChange={e => {
+        onChange={(e) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("distro_series", true, true);
           formikProps.setFieldValue(
@@ -39,7 +39,7 @@ export const LicenseKeyFormFields = ({
         label="Release"
         required={true}
         options={distroSeriesOptions}
-        onChange={e => {
+        onChange={(e) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("osystem", true, true);
         }}
@@ -57,6 +57,6 @@ export const LicenseKeyFormFields = ({
 LicenseKeyFormFields.propTypes = {
   editing: PropTypes.bool,
   osystems: PropTypes.array.isRequired,
-  releases: PropTypes.object.isRequired
+  releases: PropTypes.object.isRequired,
 };
 export default LicenseKeyFormFields;

@@ -14,39 +14,39 @@ describe("AddMachine", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: [{ name: "maas_name", value: "MAAS" }]
+        items: [{ name: "maas_name", value: "MAAS" }],
       },
       domain: {
         items: [
           {
             id: 0,
-            name: "maas"
-          }
+            name: "maas",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       general: {
         architectures: {
           data: ["amd64/generic"],
-          loaded: true
+          loaded: true,
         },
         defaultMinHweKernel: {
           data: "ga-16.04",
-          loaded: true
+          loaded: true,
         },
         hweKernels: {
           data: [
             ["ga-16.04", "xenial (ga-16.04)"],
-            ["ga-18.04", "bionic (ga-18.04)"]
+            ["ga-18.04", "bionic (ga-18.04)"],
           ],
-          loaded: true
+          loaded: true,
         },
         powerTypes: {
           data: [
             {
               name: "manual",
               description: "Manual",
-              fields: []
+              fields: [],
             },
             {
               name: "dummy",
@@ -59,37 +59,37 @@ describe("AddMachine", () => {
                   field_type: "string",
                   choices: [],
                   default: "",
-                  scope: "bmc"
-                }
-              ]
-            }
+                  scope: "bmc",
+                },
+              ],
+            },
           ],
-          loaded: true
-        }
+          loaded: true,
+        },
       },
       machine: {
         errors: {},
         saved: false,
-        saving: false
+        saving: false,
       },
       resourcepool: {
         items: [
           {
             id: 0,
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       zone: {
         items: [
           {
             id: 0,
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        loaded: true
-      }
+        loaded: true,
+      },
     };
   });
 
@@ -113,11 +113,11 @@ describe("AddMachine", () => {
       "FETCH_GENERAL_HWE_KERNELS",
       "FETCH_GENERAL_POWER_TYPES",
       "FETCH_RESOURCEPOOL",
-      "FETCH_ZONE"
+      "FETCH_ZONE",
     ];
     const actions = store.getActions();
-    expectedActions.forEach(expectedAction => {
-      expect(actions.some(action => action.type === expectedAction));
+    expectedActions.forEach((expectedAction) => {
+      expect(actions.some((action) => action.type === expectedAction));
     });
   });
 
@@ -151,29 +151,26 @@ describe("AddMachine", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          architecture: "amd64/generic",
-          domain: "maas",
-          extra_macs: [],
-          hostname: "machine",
-          min_hwe_kernel: "ga-16.04",
-          pool: "default",
-          power_parameters: {},
-          power_type: "manual",
-          pxe_mac: "11:11:11:11:11:11",
-          zone: "default"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        architecture: "amd64/generic",
+        domain: "maas",
+        extra_macs: [],
+        hostname: "machine",
+        min_hwe_kernel: "ga-16.04",
+        pool: "default",
+        power_parameters: {},
+        power_type: "manual",
+        pxe_mac: "11:11:11:11:11:11",
+        zone: "default",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "CREATE_MACHINE")
     ).toStrictEqual({
       type: "CREATE_MACHINE",
       meta: {
         method: "create",
-        model: "machine"
+        model: "machine",
       },
       payload: {
         params: {
@@ -186,9 +183,9 @@ describe("AddMachine", () => {
           power_parameters: {},
           power_type: "manual",
           pxe_mac: "11:11:11:11:11:11",
-          zone: state.zone.items[0]
-        }
-      }
+          zone: state.zone.items[0],
+        },
+      },
     });
   });
 
@@ -230,18 +227,18 @@ describe("AddMachine", () => {
           power_parameters: { power_address: "192.168.1.1", power_id: "1" },
           power_type: "dummy",
           pxe_mac: "11:11:11:11:11:11",
-          zone: "default"
+          zone: "default",
         })
     );
 
     // Expect the power_id param to be removed when action is dispatched.
     expect(
-      store.getActions().find(action => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "CREATE_MACHINE")
     ).toStrictEqual({
       type: "CREATE_MACHINE",
       meta: {
         method: "create",
-        model: "machine"
+        model: "machine",
       },
       payload: {
         params: {
@@ -254,9 +251,9 @@ describe("AddMachine", () => {
           power_parameters: { power_address: "192.168.1.1" },
           power_type: "dummy",
           pxe_mac: "11:11:11:11:11:11",
-          zone: state.zone.items[0]
-        }
-      }
+          zone: state.zone.items[0],
+        },
+      },
     });
   });
 
@@ -288,18 +285,18 @@ describe("AddMachine", () => {
           power_parameters: {},
           power_type: "dummy",
           pxe_mac: "11:11:11:11:11:11",
-          zone: "default"
+          zone: "default",
         })
     );
 
     // Expect the empty extra mac to be filtered out
     expect(
-      store.getActions().find(action => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "CREATE_MACHINE")
     ).toStrictEqual({
       type: "CREATE_MACHINE",
       meta: {
         method: "create",
-        model: "machine"
+        model: "machine",
       },
       payload: {
         params: {
@@ -312,9 +309,9 @@ describe("AddMachine", () => {
           power_parameters: {},
           power_type: "dummy",
           pxe_mac: "11:11:11:11:11:11",
-          zone: state.zone.items[0]
-        }
-      }
+          zone: state.zone.items[0],
+        },
+      },
     });
   });
 });

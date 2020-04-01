@@ -8,7 +8,7 @@ describe("status", () => {
       connected: false,
       error: null,
       externalAuthURL: null,
-      externalLoginURL: null
+      externalLoginURL: null,
     });
   });
 
@@ -18,16 +18,16 @@ describe("status", () => {
         {
           connected: true,
           connecting: false,
-          error: null
+          error: null,
         },
         {
-          type: "WEBSOCKET_CONNECT"
+          type: "WEBSOCKET_CONNECT",
         }
       )
     ).toStrictEqual({
       connected: false,
       connecting: true,
-      error: null
+      error: null,
     });
   });
 
@@ -35,14 +35,14 @@ describe("status", () => {
     expect(
       status(
         {
-          connected: true
+          connected: true,
         },
         {
-          type: "WEBSOCKET_DISCONNECTED"
+          type: "WEBSOCKET_DISCONNECTED",
         }
       )
     ).toStrictEqual({
-      connected: false
+      connected: false,
     });
   });
 
@@ -53,17 +53,17 @@ describe("status", () => {
           authenticationError: null,
           connected: false,
           connecting: true,
-          error: "Timeout"
+          error: "Timeout",
         },
         {
-          type: "WEBSOCKET_CONNECTED"
+          type: "WEBSOCKET_CONNECTED",
         }
       )
     ).toStrictEqual({
       authenticationError: null,
       connected: true,
       connecting: false,
-      error: null
+      error: null,
     });
   });
 
@@ -73,11 +73,11 @@ describe("status", () => {
         { error: null },
         {
           type: "WEBSOCKET_ERROR",
-          error: "Error!"
+          error: "Error!",
         }
       )
     ).toStrictEqual({
-      error: "Error!"
+      error: "Error!",
     });
   });
 
@@ -85,14 +85,14 @@ describe("status", () => {
     expect(
       status(
         {
-          authenticating: false
+          authenticating: false,
         },
         {
-          type: "CHECK_AUTHENTICATED_START"
+          type: "CHECK_AUTHENTICATED_START",
         }
       )
     ).toStrictEqual({
-      authenticating: true
+      authenticating: true,
     });
   });
 
@@ -101,20 +101,20 @@ describe("status", () => {
       status(
         {
           authenticating: true,
-          authenticated: false
+          authenticated: false,
         },
         {
           type: "CHECK_AUTHENTICATED_SUCCESS",
           payload: {
             authenticated: true,
-            external_auth_url: "http://login.example.com"
-          }
+            external_auth_url: "http://login.example.com",
+          },
         }
       )
     ).toStrictEqual({
       authenticating: false,
       authenticated: true,
-      externalAuthURL: "http://login.example.com"
+      externalAuthURL: "http://login.example.com",
     });
   });
 
@@ -122,14 +122,14 @@ describe("status", () => {
     expect(
       status(
         {
-          authenticating: false
+          authenticating: false,
         },
         {
-          type: "LOGIN_START"
+          type: "LOGIN_START",
         }
       )
     ).toStrictEqual({
-      authenticating: true
+      authenticating: true,
     });
   });
 
@@ -139,17 +139,17 @@ describe("status", () => {
         {
           authenticationError: null,
           authenticated: false,
-          authenticating: true
+          authenticating: true,
         },
         {
-          type: "LOGIN_SUCCESS"
+          type: "LOGIN_SUCCESS",
         }
       )
     ).toStrictEqual({
       authenticationError: null,
       authenticated: true,
       authenticating: false,
-      error: null
+      error: null,
     });
   });
 
@@ -159,17 +159,17 @@ describe("status", () => {
         {
           authenticationError: null,
           authenticated: false,
-          authenticating: true
+          authenticating: true,
         },
         {
-          type: "EXTERNAL_LOGIN_SUCCESS"
+          type: "EXTERNAL_LOGIN_SUCCESS",
         }
       )
     ).toStrictEqual({
       authenticationError: null,
       authenticated: true,
       authenticating: false,
-      error: null
+      error: null,
     });
   });
 
@@ -178,17 +178,17 @@ describe("status", () => {
       status(
         {
           authenticationError: null,
-          error: null
+          error: null,
         },
         {
           type: "LOGIN_ERROR",
-          error: "Username not provided"
+          error: "Username not provided",
         }
       )
     ).toStrictEqual({
       authenticating: false,
       authenticationError: "Username not provided",
-      error: null
+      error: null,
     });
   });
 
@@ -196,17 +196,17 @@ describe("status", () => {
     expect(
       status(
         {
-          error: null
+          error: null,
         },
         {
           type: "EXTERNAL_LOGIN_ERROR",
-          error: "Username not provided"
+          error: "Username not provided",
         }
       )
     ).toStrictEqual({
       authenticating: false,
       authenticationError: "Username not provided",
-      error: null
+      error: null,
     });
   });
 
@@ -215,17 +215,17 @@ describe("status", () => {
       status(
         {
           authenticating: true,
-          authenticated: true
+          authenticated: true,
         },
         {
           type: "CHECK_AUTHENTICATED_ERROR",
-          error: "Gateway Timeout"
+          error: "Gateway Timeout",
         }
       )
     ).toStrictEqual({
       authenticating: false,
       authenticated: false,
-      error: "Gateway Timeout"
+      error: "Gateway Timeout",
     });
   });
 
@@ -233,14 +233,14 @@ describe("status", () => {
     expect(
       status(
         {
-          authenticated: true
+          authenticated: true,
         },
         {
-          type: "LOGOUT_SUCCESS"
+          type: "LOGOUT_SUCCESS",
         }
       )
     ).toStrictEqual({
-      authenticated: false
+      authenticated: false,
     });
   });
 
@@ -248,15 +248,15 @@ describe("status", () => {
     expect(
       status(
         {
-          externalLoginURL: null
+          externalLoginURL: null,
         },
         {
           payload: { url: "http://login.example.com" },
-          type: "EXTERNAL_LOGIN_URL"
+          type: "EXTERNAL_LOGIN_URL",
         }
       )
     ).toStrictEqual({
-      externalLoginURL: "http://login.example.com"
+      externalLoginURL: "http://login.example.com",
     });
   });
 });

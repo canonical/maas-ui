@@ -17,8 +17,8 @@ messages.add = createAction(
       message,
       status,
       temporary,
-      type
-    }
+      type,
+    },
   })
 );
 

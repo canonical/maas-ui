@@ -1,7 +1,7 @@
 import {
   createStandardAsyncActions,
   createStandardActions,
-  createStandardReducer
+  createStandardReducer,
 } from "./redux";
 import { createAction } from "@reduxjs/toolkit";
 
@@ -11,24 +11,24 @@ describe("createStandardAsyncAction", () => {
       fetch: createAction("FETCH_FOO"),
       create: createAction("CREATE_FOO"),
       update: createAction("UPDATE_FOO"),
-      delete: createAction("DELETE_FOO")
+      delete: createAction("DELETE_FOO"),
     };
 
     const actionsWithAsync = createStandardAsyncActions("foo", actions);
 
     expect(actionsWithAsync.fetch.start()).toEqual({
       payload: undefined,
-      type: "FETCH_FOO_START"
+      type: "FETCH_FOO_START",
     });
 
     expect(actionsWithAsync.fetch.error()).toEqual({
       payload: undefined,
-      type: "FETCH_FOO_ERROR"
+      type: "FETCH_FOO_ERROR",
     });
 
     expect(actionsWithAsync.fetch.success()).toEqual({
       payload: undefined,
-      type: "FETCH_FOO_SUCCESS"
+      type: "FETCH_FOO_SUCCESS",
     });
   });
 });
@@ -40,7 +40,7 @@ describe("createStandardActions", () => {
     expect(action.fetch()).toEqual({
       meta: { method: "list", model: "foo" },
       payload: undefined,
-      type: "FETCH_FOO"
+      type: "FETCH_FOO",
     });
   });
 
@@ -51,10 +51,10 @@ describe("createStandardActions", () => {
       meta: { method: "create", model: "foo" },
       payload: {
         params: {
-          name: "foo"
-        }
+          name: "foo",
+        },
       },
-      type: "CREATE_FOO"
+      type: "CREATE_FOO",
     });
   });
 
@@ -65,10 +65,10 @@ describe("createStandardActions", () => {
       meta: { method: "update", model: "foo" },
       payload: {
         params: {
-          name: "bar"
-        }
+          name: "bar",
+        },
       },
-      type: "UPDATE_FOO"
+      type: "UPDATE_FOO",
     });
   });
 
@@ -79,10 +79,10 @@ describe("createStandardActions", () => {
       meta: { method: "delete", model: "foo" },
       payload: {
         params: {
-          id: 10
-        }
+          id: 10,
+        },
       },
-      type: "DELETE_FOO"
+      type: "DELETE_FOO",
     });
   });
 
@@ -90,15 +90,15 @@ describe("createStandardActions", () => {
     const action = createStandardActions("foo");
 
     expect(action.fetch.start()).toEqual({
-      type: "FETCH_FOO_START"
+      type: "FETCH_FOO_START",
     });
 
     expect(action.update.error()).toEqual({
-      type: "UPDATE_FOO_ERROR"
+      type: "UPDATE_FOO_ERROR",
     });
 
     expect(action.delete.success()).toEqual({
-      type: "DELETE_FOO_SUCCESS"
+      type: "DELETE_FOO_SUCCESS",
     });
   });
 });
@@ -119,7 +119,7 @@ describe("createStandardReducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -128,7 +128,7 @@ describe("createStandardReducer", () => {
     it("should set loading on fetch.start", () => {
       expect(
         reducer(undefined, {
-          type: "FETCH_FOO_START"
+          type: "FETCH_FOO_START",
         })
       ).toEqual({
         errors: {},
@@ -136,7 +136,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: true,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
 
@@ -144,7 +144,7 @@ describe("createStandardReducer", () => {
       expect(
         reducer(undefined, {
           error: { message: "Could not fetch foo" },
-          type: "FETCH_FOO_ERROR"
+          type: "FETCH_FOO_ERROR",
         })
       ).toEqual({
         errors: { message: "Could not fetch foo" },
@@ -152,7 +152,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
 
@@ -162,8 +162,8 @@ describe("createStandardReducer", () => {
           type: "FETCH_FOO_SUCCESS",
           payload: [
             { id: 1, name: "foo" },
-            { id: 2, name: "bar" }
-          ]
+            { id: 2, name: "bar" },
+          ],
         })
       ).toEqual({
         errors: {},
@@ -171,10 +171,10 @@ describe("createStandardReducer", () => {
         loaded: true,
         items: [
           { id: 1, name: "foo" },
-          { id: 2, name: "bar" }
+          { id: 2, name: "bar" },
         ],
         saved: false,
-        saving: false
+        saving: false,
       });
     });
   });
@@ -189,10 +189,10 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: true,
-            saving: false
+            saving: false,
           },
           {
-            type: "CREATE_FOO_START"
+            type: "CREATE_FOO_START",
           }
         )
       ).toEqual({
@@ -201,7 +201,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: true
+        saving: true,
       });
     });
 
@@ -214,11 +214,11 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: false,
-            saving: true
+            saving: true,
           },
           {
             error: { name: "name already exists" },
-            type: "CREATE_FOO_ERROR"
+            type: "CREATE_FOO_ERROR",
           }
         )
       ).toEqual({
@@ -227,7 +227,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
 
@@ -240,10 +240,10 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: true,
-            saving: false
+            saving: false,
           },
           {
-            type: "CREATE_FOO_SUCCESS"
+            type: "CREATE_FOO_SUCCESS",
           }
         )
       ).toEqual({
@@ -252,7 +252,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: true,
-        saving: false
+        saving: false,
       });
     });
 
@@ -265,23 +265,23 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: false,
-            saving: false
+            saving: false,
           },
           {
             payload: { id: 2, name: "bar" },
-            type: "CREATE_FOO_NOTIFY"
+            type: "CREATE_FOO_NOTIFY",
           }
         )
       ).toEqual({
         errors: {},
         items: [
           { id: 1, name: "foo" },
-          { id: 2, name: "bar" }
+          { id: 2, name: "bar" },
         ],
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
   });
@@ -296,10 +296,10 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: true,
-            saving: false
+            saving: false,
           },
           {
-            type: "UPDATE_FOO_START"
+            type: "UPDATE_FOO_START",
           }
         )
       ).toEqual({
@@ -308,7 +308,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: true
+        saving: true,
       });
     });
 
@@ -321,11 +321,11 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: false,
-            saving: true
+            saving: true,
           },
           {
             error: { name: "name already exists" },
-            type: "UPDATE_FOO_ERROR"
+            type: "UPDATE_FOO_ERROR",
           }
         )
       ).toEqual({
@@ -334,7 +334,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
 
@@ -345,31 +345,31 @@ describe("createStandardReducer", () => {
             errors: {},
             items: [
               { id: 1, name: "admin" },
-              { id: 2, name: "user1" }
+              { id: 2, name: "user1" },
             ],
             loaded: false,
             loading: false,
             saved: false,
-            saving: false
+            saving: false,
           },
           {
             payload: {
               id: 1,
-              name: "kangaroo"
+              name: "kangaroo",
             },
-            type: "UPDATE_FOO_NOTIFY"
+            type: "UPDATE_FOO_NOTIFY",
           }
         )
       ).toEqual({
         errors: {},
         items: [
           { id: 1, name: "kangaroo" },
-          { id: 2, name: "user1" }
+          { id: 2, name: "user1" },
         ],
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
   });
@@ -384,10 +384,10 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: true,
-            saving: false
+            saving: false,
           },
           {
-            type: "DELETE_FOO_START"
+            type: "DELETE_FOO_START",
           }
         )
       ).toEqual({
@@ -396,7 +396,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: true
+        saving: true,
       });
     });
 
@@ -409,11 +409,11 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: false,
-            saving: true
+            saving: true,
           },
           {
             error: "Could not delete",
-            type: "DELETE_FOO_ERROR"
+            type: "DELETE_FOO_ERROR",
           }
         )
       ).toEqual({
@@ -422,7 +422,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
 
@@ -433,16 +433,16 @@ describe("createStandardReducer", () => {
             errors: {},
             items: [
               { id: 1, name: "admin" },
-              { id: 2, name: "user1" }
+              { id: 2, name: "user1" },
             ],
             loaded: false,
             loading: false,
             saved: false,
-            saving: false
+            saving: false,
           },
           {
             payload: 2,
-            type: "DELETE_FOO_NOTIFY"
+            type: "DELETE_FOO_NOTIFY",
           }
         )
       ).toEqual({
@@ -451,7 +451,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
   });
@@ -466,10 +466,10 @@ describe("createStandardReducer", () => {
             loaded: false,
             loading: false,
             saved: true,
-            saving: true
+            saving: true,
           },
           {
-            type: "CLEANUP_FOO"
+            type: "CLEANUP_FOO",
           }
         )
       ).toEqual({
@@ -478,7 +478,7 @@ describe("createStandardReducer", () => {
         loaded: false,
         loading: false,
         saved: false,
-        saving: false
+        saving: false,
       });
     });
   });

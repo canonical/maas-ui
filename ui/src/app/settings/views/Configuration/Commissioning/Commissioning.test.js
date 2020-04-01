@@ -18,22 +18,22 @@ describe("Commissioning", () => {
           {
             name: "commissioning_distro_series",
             value: "bionic",
-            choices: []
+            choices: [],
           },
           {
             name: "default_min_hwe_kernel",
             value: "ga-16.04-lowlatency",
-            choices: []
-          }
-        ]
+            choices: [],
+          },
+        ],
       },
       general: {
         osInfo: {
           loading: false,
           loaded: true,
-          data: {}
-        }
-      }
+          data: {},
+        },
+      },
     };
   });
 
@@ -79,7 +79,7 @@ describe("Commissioning", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       { type: "FETCH_CONFIG", meta: { model: "config", method: "list" } },
@@ -87,9 +87,9 @@ describe("Commissioning", () => {
         type: "FETCH_GENERAL_OSINFO",
         meta: {
           model: "general",
-          method: "osinfo"
-        }
-      }
+          method: "osinfo",
+        },
+      },
     ]);
   });
 });

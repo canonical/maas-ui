@@ -12,7 +12,7 @@
 export const trimPowerParameters = (powerType, powerParameters) => {
   const trimmedParameters = {};
   if (powerType && powerType.fields) {
-    powerType.fields.forEach(field => {
+    powerType.fields.forEach((field) => {
       trimmedParameters[field.name] = powerParameters[field.name];
     });
   }

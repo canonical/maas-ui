@@ -23,7 +23,7 @@ describe("websocket client", () => {
     expect(client.socket.send.mock.calls.length).toBe(1);
     expect(JSON.parse(client.socket.send.mock.calls[0][0])).toEqual({
       method: "packagerepository.list",
-      request_id: 0
+      request_id: 0,
     });
   });
 

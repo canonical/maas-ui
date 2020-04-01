@@ -23,23 +23,23 @@ describe("StorageForm", () => {
               ["blank", "No storage (blank) layout"],
               ["flat", "Flat layout"],
               ["lvm", "LVM layout"],
-              ["vmfs6", "VMFS6 layout"]
-            ]
+              ["vmfs6", "VMFS6 layout"],
+            ],
           },
           {
             name: "enable_disk_erasing_on_release",
-            value: false
+            value: false,
           },
           {
             name: "disk_erase_with_secure_erase",
-            value: false
+            value: false,
           },
           {
             name: "disk_erase_with_quick_erase",
-            value: false
-          }
-        ]
-      }
+            value: false,
+          },
+        ],
+      },
     };
   });
 
@@ -51,18 +51,15 @@ describe("StorageForm", () => {
         <StorageForm />
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit(
-        {
-          default_storage_layout: "bcache",
-          disk_erase_with_quick_erase: false,
-          disk_erase_with_secure_erase: false,
-          enable_disk_erasing_on_release: false
-        },
-        { resetForm: jest.fn() }
-      );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        default_storage_layout: "bcache",
+        disk_erase_with_quick_erase: false,
+        disk_erase_with_secure_erase: false,
+        enable_disk_erasing_on_release: false,
+      },
+      { resetForm: jest.fn() }
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -72,14 +69,14 @@ describe("StorageForm", () => {
             { name: "default_storage_layout", value: "bcache" },
             { name: "disk_erase_with_quick_erase", value: false },
             { name: "disk_erase_with_secure_erase", value: false },
-            { name: "enable_disk_erasing_on_release", value: false }
-          ]
+            { name: "enable_disk_erasing_on_release", value: false },
+          ],
         },
         meta: {
           model: "config",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -96,16 +93,16 @@ describe("StorageForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter(action => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.startsWith("FETCH"));
 
     expect(fetchActions).toEqual([
       {
         type: "FETCH_CONFIG",
         meta: {
           model: "config",
-          method: "list"
-        }
-      }
+          method: "list",
+        },
+      },
     ]);
   });
 });

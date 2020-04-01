@@ -13,7 +13,7 @@ describe("NameColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -22,7 +22,7 @@ describe("NameColumn", () => {
         items: [
           {
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             hostname: "koala",
@@ -32,10 +32,10 @@ describe("NameColumn", () => {
             pxe_mac: "00:11:22:33:44:55",
             status: "Releasing",
             system_id: "abc123",
-            zone: {}
-          }
-        ]
-      }
+            zone: {},
+          },
+        ],
+      },
     };
   });
 
@@ -102,7 +102,7 @@ describe("NameColumn", () => {
   it("can show multiple ip addresses", () => {
     state.machine.items[0].ip_addresses = [
       { ip: "127.0.0.1" },
-      { ip: "127.0.0.2" }
+      { ip: "127.0.0.2" },
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -141,7 +141,7 @@ describe("NameColumn", () => {
   it("doesn't show duplicate ip addresses", () => {
     state.machine.items[0].ip_addresses = [
       { ip: "127.0.0.1" },
-      { ip: "127.0.0.1" }
+      { ip: "127.0.0.1" },
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -185,22 +185,17 @@ describe("NameColumn", () => {
       </Provider>
     );
     expect(wrapper.find("a").length).toEqual(2);
-    expect(
-      wrapper
-        .find("a")
-        .at(1)
-        .text()
-    ).toEqual(" (+1)");
+    expect(wrapper.find("a").at(1).text()).toEqual(" (+1)");
   });
 
   it("can render a machine with minimal data", () => {
     state.machine.items[0] = {
       domain: {
-        name: "example"
+        name: "example",
       },
       hostname: "koala",
       permissions: ["edit", "delete"],
-      system_id: "abc123"
+      system_id: "abc123",
     };
     const store = mockStore(state);
     const wrapper = mount(
@@ -218,11 +213,11 @@ describe("NameColumn", () => {
   it("can render a machine in the MAC state with minimal data", () => {
     state.machine.items[0] = {
       domain: {
-        name: "example"
+        name: "example",
       },
       hostname: "koala",
       permissions: ["edit", "delete"],
-      system_id: "abc123"
+      system_id: "abc123",
     };
     const store = mockStore(state);
     const wrapper = mount(
@@ -260,11 +255,11 @@ describe("NameColumn", () => {
     have edit permission`, () => {
     state.machine.items[0] = {
       domain: {
-        name: "example"
+        name: "example",
       },
       hostname: "koala",
       permissions: [],
-      system_id: "abc123"
+      system_id: "abc123",
     };
     const store = mockStore(state);
     const wrapper = mount(

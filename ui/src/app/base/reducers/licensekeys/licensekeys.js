@@ -27,7 +27,7 @@ const licensekeys = produce(
         draft.saved = true;
         draft.saving = false;
         const deleteIndex = draft.items.findIndex(
-          item =>
+          (item) =>
             item.osystem === action.payload.osystem &&
             item.distro_series === action.payload.distro_series
         );
@@ -38,7 +38,7 @@ const licensekeys = produce(
         draft.saved = true;
         draft.saving = false;
         const updateIndex = draft.items.findIndex(
-          item =>
+          (item) =>
             item.osystem === action.payload.osystem &&
             item.distro_series === action.payload.distro_series
         );
@@ -69,7 +69,7 @@ const licensekeys = produce(
     loading: false,
     loaded: false,
     items: [],
-    errors: {}
+    errors: {},
   }
 );
 

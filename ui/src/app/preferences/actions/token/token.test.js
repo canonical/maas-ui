@@ -6,8 +6,8 @@ describe("token actions", () => {
       type: "FETCH_TOKEN",
       meta: {
         model: "token",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -16,13 +16,13 @@ describe("token actions", () => {
       type: "CREATE_TOKEN",
       meta: {
         model: "token",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          key: "---begin cert---..."
-        }
-      }
+          key: "---begin cert---...",
+        },
+      },
     });
   });
 
@@ -31,19 +31,19 @@ describe("token actions", () => {
       type: "DELETE_TOKEN",
       meta: {
         model: "token",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can clean up", () => {
     expect(token.cleanup()).toEqual({
-      type: "CLEANUP_TOKEN"
+      type: "CLEANUP_TOKEN",
     });
   });
 });

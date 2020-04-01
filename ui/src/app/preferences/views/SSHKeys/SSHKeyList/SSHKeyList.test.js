@@ -14,7 +14,7 @@ describe("SSHKeyList", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       sshkey: {
         loading: false,
@@ -23,26 +23,26 @@ describe("SSHKeyList", () => {
           {
             id: 1,
             key: "ssh-rsa aabb",
-            keysource: { protocol: "lp", auth_id: "koalaparty" }
+            keysource: { protocol: "lp", auth_id: "koalaparty" },
           },
           {
             id: 2,
             key: "ssh-rsa ccdd",
-            keysource: { protocol: "gh", auth_id: "koalaparty" }
+            keysource: { protocol: "gh", auth_id: "koalaparty" },
           },
           {
             id: 3,
             key: "ssh-rsa eeff",
-            keysource: { protocol: "lp", auth_id: "maaate" }
+            keysource: { protocol: "lp", auth_id: "maaate" },
           },
           {
             id: 4,
             key: "ssh-rsa gghh",
-            keysource: { protocol: "gh", auth_id: "koalaparty" }
+            keysource: { protocol: "gh", auth_id: "koalaparty" },
           },
-          { id: 5, key: "ssh-rsa gghh" }
-        ]
-      }
+          { id: 5, key: "ssh-rsa gghh" },
+        ],
+      },
     };
   });
 
@@ -53,7 +53,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -70,7 +70,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -88,7 +88,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -101,10 +101,8 @@ describe("SSHKeyList", () => {
     );
     // The grouped keys should be displayed in sub cols.
     expect(
-      wrapper
-        .find("MainTable tbody tr")
-        .at(1)
-        .find(".p-table-sub-cols__item").length
+      wrapper.find("MainTable tbody tr").at(1).find(".p-table-sub-cols__item")
+        .length
     ).toBe(2);
   });
 
@@ -114,25 +112,17 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
         </MemoryRouter>
       </Provider>
     );
-    const cols = wrapper
-      .find("MainTable tbody tr")
-      .at(3)
-      .find("td");
+    const cols = wrapper.find("MainTable tbody tr").at(3).find("td");
     expect(cols.at(0).text()).toEqual("Upload");
     expect(cols.at(1).text()).toEqual("");
-    expect(
-      cols
-        .at(2)
-        .text()
-        .includes("ssh-rsa gghh...")
-    ).toBe(true);
+    expect(cols.at(2).text().includes("ssh-rsa gghh...")).toBe(true);
   });
 
   it("can display imported keys", () => {
@@ -141,25 +131,17 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
         </MemoryRouter>
       </Provider>
     );
-    const cols = wrapper
-      .find("MainTable tbody tr")
-      .at(0)
-      .find("td");
+    const cols = wrapper.find("MainTable tbody tr").at(0).find("td");
     expect(cols.at(0).text()).toEqual("Launchpad");
     expect(cols.at(1).text()).toEqual("koalaparty");
-    expect(
-      cols
-        .at(2)
-        .text()
-        .includes("ssh-rsa aabb...")
-    ).toBe(true);
+    expect(cols.at(2).text().includes("ssh-rsa aabb...")).toBe(true);
   });
 
   it("can show a delete confirmation", () => {
@@ -168,7 +150,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -181,7 +163,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
     row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(true);
@@ -193,7 +175,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -204,28 +186,28 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
     // Click on the delete confirm button
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .last()
       .simulate("click");
     expect(
-      store.getActions().find(action => action.type === "DELETE_SSHKEY")
+      store.getActions().find((action) => action.type === "DELETE_SSHKEY")
     ).toEqual({
       type: "DELETE_SSHKEY",
       payload: {
         params: {
-          id: 1
-        }
+          id: 1,
+        },
       },
       meta: {
         model: "sshkey",
-        method: "delete"
-      }
+        method: "delete",
+      },
     });
   });
 
@@ -235,7 +217,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -246,17 +228,17 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(1)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
     // Click on the delete confirm button
     wrapper
       .find("tbody TableRow")
       .at(1)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .last()
       .simulate("click");
     expect(
-      store.getActions().filter(action => action.type === "DELETE_SSHKEY")
+      store.getActions().filter((action) => action.type === "DELETE_SSHKEY")
         .length
     ).toEqual(2);
   });
@@ -268,7 +250,7 @@ describe("SSHKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" }
+            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
           ]}
         >
           <SSHKeyList />
@@ -279,17 +261,19 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
     // Click on the delete confirm button
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere(n => n.name() === "Button" && n.text() === "Delete")
+      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .last()
       .simulate("click");
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_SSHKEY")).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_SSHKEY")).toBe(
+      true
+    );
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

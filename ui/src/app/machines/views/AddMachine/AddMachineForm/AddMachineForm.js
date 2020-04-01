@@ -8,28 +8,28 @@ import {
   general as generalActions,
   machine as machineActions,
   resourcepool as resourcePoolActions,
-  zone as zoneActions
+  zone as zoneActions,
 } from "app/base/actions";
 import {
   domain as domainSelectors,
   general as generalSelectors,
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors
+  zone as zoneSelectors,
 } from "app/base/selectors";
 import { trimPowerParameters } from "app/utils";
 import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
-  useWindowTitle
+  useWindowTitle,
 } from "app/base/hooks";
 import AddMachineFormFields from "../AddMachineFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 
-const generateMachineSchema = parametersSchema =>
+const generateMachineSchema = (parametersSchema) =>
   Yup.object().shape({
     architecture: Yup.string().required("Architecture required"),
     domain: Yup.string().required("Domain required"),
@@ -47,7 +47,7 @@ const generateMachineSchema = parametersSchema =>
     pxe_mac: Yup.string()
       .matches(/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address")
       .required("At least one MAC address required"),
-    zone: Yup.string().required("Zone required")
+    zone: Yup.string().required("Zone required"),
   });
 
 export const AddMachineForm = () => {
@@ -126,7 +126,7 @@ export const AddMachineForm = () => {
   if (machineErrors && typeof machineErrors === "string") {
     errors = machineErrors;
   } else if (machineErrors && typeof machineErrors === "object") {
-    Object.keys(machineErrors).forEach(key => {
+    Object.keys(machineErrors).forEach((key) => {
       errors = errors + `${machineErrors[key]} `;
     });
   }
@@ -151,35 +151,35 @@ export const AddMachineForm = () => {
               power_parameters: allPowerParameters,
               power_type: "",
               pxe_mac: "",
-              zone: (zones.length && zones[0].name) || ""
+              zone: (zones.length && zones[0].name) || "",
             }}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Machine",
-              label: "Add machine form"
+              label: "Add machine form",
             }}
-            onSubmit={values => {
+            onSubmit={(values) => {
               const params = {
                 architecture: values.architecture,
-                domain: domains.find(domain => domain.name === values.domain),
+                domain: domains.find((domain) => domain.name === values.domain),
                 extra_macs: values.extra_macs.filter(Boolean),
                 hostname: values.hostname,
                 min_hwe_kernel: values.min_hwe_kernel,
-                pool: resourcePools.find(pool => pool.name === values.pool),
+                pool: resourcePools.find((pool) => pool.name === values.pool),
                 power_parameters: trimPowerParameters(
                   powerType,
                   values.power_parameters
                 ),
                 power_type: values.power_type,
                 pxe_mac: values.pxe_mac,
-                zone: zones.find(zone => zone.name === values.zone)
+                zone: zones.find((zone) => zone.name === values.zone),
               };
               dispatch(machineActions.create(params));
               setSavingMachine(values.hostname || "Machine");
             }}
-            onValuesChanged={values => {
+            onValuesChanged={(values) => {
               const powerType = powerTypes.find(
-                type => type.name === values.power_type
+                (type) => type.name === values.power_type
               );
               setPowerType(powerType);
             }}

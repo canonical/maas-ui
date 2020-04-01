@@ -5,26 +5,26 @@ config.fetch = () => {
     type: "FETCH_CONFIG",
     meta: {
       model: "config",
-      method: "list"
-    }
+      method: "list",
+    },
   };
 };
 
-config.update = values => {
-  const params = Object.keys(values).map(key => ({
+config.update = (values) => {
+  const params = Object.keys(values).map((key) => ({
     name: key,
-    value: values[key]
+    value: values[key],
   }));
 
   return {
     type: "UPDATE_CONFIG",
     payload: {
-      params
+      params,
     },
     meta: {
       model: "config",
-      method: "update"
-    }
+      method: "update",
+    },
   };
 };
 

@@ -14,7 +14,7 @@ describe("RamColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
@@ -25,11 +25,11 @@ describe("RamColumn", () => {
             system_id: "abc123",
             memory: 8,
             memory_test_status: {
-              status: 2
-            }
-          }
-        ]
-      }
+              status: 2,
+            },
+          },
+        ],
+      },
     };
   });
 

@@ -13,19 +13,19 @@ describe("PoolAdd", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       machine: {
         errors: {},
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       resourcepool: {
         loaded: true,
         saved: false,
-        items: []
-      }
+        items: [],
+      },
     };
   });
 

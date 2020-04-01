@@ -14,8 +14,8 @@ describe("ActionFormWrapper", () => {
     initialState = {
       machine: {
         items: [],
-        selected: []
-      }
+        selected: [],
+      },
     };
   });
 
@@ -24,7 +24,7 @@ describe("ActionFormWrapper", () => {
     const state = { ...initialState };
     state.machine.items = [
       { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] }
+      { system_id: "b", actions: [] },
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);
@@ -49,7 +49,7 @@ describe("ActionFormWrapper", () => {
     const state = { ...initialState };
     state.machine.items = [
       { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] }
+      { system_id: "b", actions: [] },
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);
@@ -70,10 +70,12 @@ describe("ActionFormWrapper", () => {
       .simulate("click");
 
     expect(
-      store.getActions().find(action => action.type === "SET_SELECTED_MACHINES")
+      store
+        .getActions()
+        .find((action) => action.type === "SET_SELECTED_MACHINES")
     ).toStrictEqual({
       type: "SET_SELECTED_MACHINES",
-      payload: ["a"]
+      payload: ["a"],
     });
   });
 });

@@ -4,8 +4,8 @@ describe("device selectors", () => {
   it("can get all items", () => {
     const state = {
       device: {
-        items: [{ name: "maas.test" }]
-      }
+        items: [{ name: "maas.test" }],
+      },
     };
     expect(device.all(state)).toEqual([{ name: "maas.test" }]);
   });
@@ -14,8 +14,8 @@ describe("device selectors", () => {
     const state = {
       device: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(device.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("device selectors", () => {
     const state = {
       device: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(device.loaded(state)).toEqual(true);
   });
@@ -35,13 +35,13 @@ describe("device selectors", () => {
       device: {
         items: [
           { name: "maas.test", system_id: 808 },
-          { name: "10.0.0.99", system_id: 909 }
-        ]
-      }
+          { name: "10.0.0.99", system_id: 909 },
+        ],
+      },
     };
     expect(device.getBySystemId(state, 909)).toStrictEqual({
       name: "10.0.0.99",
-      system_id: 909
+      system_id: 909,
     });
   });
 });

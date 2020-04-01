@@ -16,12 +16,12 @@ describe("DhcpTarget", () => {
       controller: {
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       device: {
         loading: false,
         loaded: true,
-        items: []
+        items: [],
       },
       dhcpsnippet: {
         loading: false,
@@ -29,24 +29,24 @@ describe("DhcpTarget", () => {
         items: [
           { id: 1, name: "class", description: "" },
           { id: 2, name: "lease", subnet: 2, description: "" },
-          { id: 3, name: "boot", node: "xyz", description: "" }
-        ]
+          { id: 3, name: "boot", node: "xyz", description: "" },
+        ],
       },
       machine: {
         loading: false,
         loaded: true,
         items: [
-          { system_id: "xyz", hostname: "machine1", domain: { name: "test" } }
-        ]
+          { system_id: "xyz", hostname: "machine1", domain: { name: "test" } },
+        ],
       },
       subnet: {
         loading: false,
         loaded: true,
         items: [
           { id: 1, name: "10.0.0.99" },
-          { id: 2, name: "test.maas" }
-        ]
-      }
+          { id: 2, name: "test.maas" },
+        ],
+      },
     };
   });
 

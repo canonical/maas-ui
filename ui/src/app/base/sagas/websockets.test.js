@@ -8,7 +8,7 @@ import {
   handleNotifyMessage,
   sendMessage,
   watchMessages,
-  watchWebSockets
+  watchWebSockets,
 } from "./websockets";
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
@@ -23,8 +23,8 @@ describe("websocket sagas", () => {
       getRequest: jest.fn(),
       send: jest.fn(),
       socket: {
-        onerror: jest.fn()
-      }
+        onerror: jest.fn(),
+      },
     };
     socketChannel = jest.fn();
 
@@ -41,14 +41,14 @@ describe("websocket sagas", () => {
     return expectSaga(watchWebSockets)
       .provide([
         [call(getCookie, "csrftoken"), "foo"],
-        [call(createConnection, "foo"), {}]
+        [call(createConnection, "foo"), {}],
       ])
       .take("WEBSOCKET_CONNECT")
       .put({
-        type: "WEBSOCKET_CONNECTED"
+        type: "WEBSOCKET_CONNECTED",
       })
       .dispatch({
-        type: "WEBSOCKET_CONNECT"
+        type: "WEBSOCKET_CONNECT",
       })
       .run();
   });
@@ -60,12 +60,12 @@ describe("websocket sagas", () => {
     return expectSaga(watchWebSockets)
       .provide([
         [call(getCookie, "csrftoken"), undefined],
-        [call(createConnection, "foo"), {}]
+        [call(createConnection, "foo"), {}],
       ])
       .take("WEBSOCKET_CONNECT")
       .put({ type: "WEBSOCKET_ERROR", error: error.message })
       .dispatch({
-        type: "WEBSOCKET_CONNECT"
+        type: "WEBSOCKET_CONNECT",
       })
       .run();
   });
@@ -80,7 +80,7 @@ describe("websocket sagas", () => {
   it("can watch for WebSocket messages", () => {
     const channel = watchMessages(socketClient);
     let response;
-    channel.take(val => (response = val));
+    channel.take((val) => (response = val));
     socketClient.socket.onmessage({ data: '{"message": "secret"}' });
     expect(response).toEqual({ message: "secret" });
   });
@@ -91,18 +91,18 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST
+        type: MESSAGE_TYPES.REQUEST,
       },
       payload: {
-        params: { foo: "bar" }
-      }
+        params: { foo: "bar" },
+      },
     });
     expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
-        params: { foo: "bar" }
+        params: { foo: "bar" },
       })
     );
   });
@@ -113,8 +113,8 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: MESSAGE_TYPES.REQUEST
-      }
+        type: MESSAGE_TYPES.REQUEST,
+      },
     };
     const saga = sendMessage(socketClient, action);
     saga.next();
@@ -128,8 +128,8 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: MESSAGE_TYPES.REQUEST
-      }
+        type: MESSAGE_TYPES.REQUEST,
+      },
     };
     const saga = sendMessage(socketClient, action);
     saga.next();
@@ -143,14 +143,14 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST
+        type: MESSAGE_TYPES.REQUEST,
       },
       payload: {
         params: [
           { name: "foo", value: "bar" },
-          { name: "baz", value: "qux" }
-        ]
-      }
+          { name: "baz", value: "qux" },
+        ],
+      },
     });
     expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
 
@@ -158,7 +158,7 @@ describe("websocket sagas", () => {
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
-        params: { name: "foo", value: "bar" }
+        params: { name: "foo", value: "bar" },
       })
     );
     expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
@@ -167,7 +167,7 @@ describe("websocket sagas", () => {
       call([socketClient, socketClient.send], "TEST_ACTION", {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
-        params: { name: "baz", value: "qux" }
+        params: { name: "baz", value: "qux" },
       })
     );
     expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
@@ -179,11 +179,11 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST
+        type: MESSAGE_TYPES.REQUEST,
       },
       payload: {
-        params: { foo: "bar" }
-      }
+        params: { foo: "bar" },
+      },
     });
     saga.next();
     saga.next();
@@ -209,13 +209,13 @@ describe("websocket sagas", () => {
     expect(
       saga.next({
         request_id: 99,
-        error: '{"Message": "catastrophic failure"}'
+        error: '{"Message": "catastrophic failure"}',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({
         type: "TEST_ACTION_ERROR",
-        error: { Message: "catastrophic failure" }
+        error: { Message: "catastrophic failure" },
       })
     );
   });
@@ -226,13 +226,13 @@ describe("websocket sagas", () => {
     expect(
       saga.next({
         request_id: 99,
-        error: '("catastrophic failure")'
+        error: '("catastrophic failure")',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({
         type: "TEST_ACTION_ERROR",
-        error: '("catastrophic failure")'
+        error: '("catastrophic failure")',
       })
     );
   });
@@ -243,7 +243,7 @@ describe("websocket sagas", () => {
       type: MESSAGE_TYPES.NOTIFY,
       name: "config",
       action: "update",
-      data: { name: "foo", value: "bar" }
+      data: { name: "foo", value: "bar" },
     };
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next(response).value).toEqual(

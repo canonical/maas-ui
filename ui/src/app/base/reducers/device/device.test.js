@@ -8,14 +8,14 @@ describe("device reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_DEVICE_START", () => {
     expect(
       device(undefined, {
-        type: "FETCH_DEVICE_START"
+        type: "FETCH_DEVICE_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("device reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,14 +36,14 @@ describe("device reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DEVICE_SUCCESS",
           payload: [
             { id: 1, hostname: "test1" },
-            { id: 2, hostname: "test2" }
-          ]
+            { id: 2, hostname: "test2" },
+          ],
         }
       )
     ).toEqual({
@@ -52,10 +52,10 @@ describe("device reducer", () => {
       loaded: true,
       items: [
         { id: 1, hostname: "test1" },
-        { id: 2, hostname: "test2" }
+        { id: 2, hostname: "test2" },
       ],
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

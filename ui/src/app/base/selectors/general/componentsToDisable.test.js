@@ -9,9 +9,9 @@ describe("componentsToDisable selectors", () => {
           componentsToDisable: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(componentsToDisable.get(state)).toStrictEqual(data);
     });
@@ -25,9 +25,9 @@ describe("componentsToDisable selectors", () => {
           componentsToDisable: {
             loading: true,
             loaded: false,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(componentsToDisable.loading(state)).toStrictEqual(true);
     });
@@ -41,9 +41,9 @@ describe("componentsToDisable selectors", () => {
           componentsToDisable: {
             loading: false,
             loaded: true,
-            data
-          }
-        }
+            data,
+          },
+        },
       };
       expect(componentsToDisable.loaded(state)).toStrictEqual(true);
     });
@@ -58,9 +58,9 @@ describe("componentsToDisable selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(componentsToDisable.errors(state)).toStrictEqual(errors);
     });

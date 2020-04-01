@@ -4,36 +4,36 @@ sslkey.fetch = () => ({
   type: "FETCH_SSLKEY",
   meta: {
     model: "sslkey",
-    method: "list"
-  }
+    method: "list",
+  },
 });
 
-sslkey.create = params => ({
+sslkey.create = (params) => ({
   type: "CREATE_SSLKEY",
   meta: {
     model: "sslkey",
-    method: "create"
+    method: "create",
   },
   payload: {
-    params
-  }
+    params,
+  },
 });
 
-sslkey.delete = id => ({
+sslkey.delete = (id) => ({
   type: "DELETE_SSLKEY",
   meta: {
     model: "sslkey",
-    method: "delete"
+    method: "delete",
   },
   payload: {
     params: {
-      id
-    }
-  }
+      id,
+    },
+  },
 });
 
-sslkey.cleanup = params => ({
-  type: "CLEANUP_SSLKEY"
+sslkey.cleanup = (params) => ({
+  type: "CLEANUP_SSLKEY",
 });
 
 export default sslkey;

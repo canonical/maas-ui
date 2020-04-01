@@ -7,68 +7,68 @@ describe("general reducer", () => {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       componentsToDisable: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       defaultMinHweKernel: {
         data: "",
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       hweKernels: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       knownArchitectures: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       machineActions: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       navigationOptions: {
         data: {},
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       osInfo: {
         data: {},
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       pocketsToDisable: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       powerTypes: {
         data: [],
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       },
       version: {
         data: "",
         errors: {},
         loaded: false,
-        loading: false
-      }
+        loading: false,
+      },
     });
   });
 
@@ -80,7 +80,7 @@ describe("general reducer", () => {
         data: initialData,
         errors: {},
         loaded: false,
-        loading: false
+        loading: false,
       });
     });
 
@@ -91,7 +91,7 @@ describe("general reducer", () => {
           data: [],
           errors: {},
           loaded: false,
-          loading: true
+          loading: true,
         }
       );
     });
@@ -107,7 +107,7 @@ describe("general reducer", () => {
         data: "payload",
         errors: {},
         loaded: true,
-        loading: false
+        loading: false,
       });
     });
 
@@ -122,7 +122,7 @@ describe("general reducer", () => {
         data: "",
         errors: "error",
         loaded: false,
-        loading: false
+        loading: false,
       });
     });
   });

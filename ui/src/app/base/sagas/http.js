@@ -14,17 +14,17 @@ const MACHINES_API = `${ROOT_API}machines/`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
-  Accept: "application/json"
+  Accept: "application/json",
 };
 
-const handleErrors = response => {
+const handleErrors = (response) => {
   if (!response.ok) {
     throw Error(response.statusText);
   }
   return response;
 };
 
-const handlePromise = response => {
+const handlePromise = (response) => {
   if (response.headers) {
     const contentType = response.headers.get("Content-Type");
     if (contentType.includes("application/json")) {
@@ -38,7 +38,7 @@ const handlePromise = response => {
 export const api = {
   auth: {
     checkAuthenticated: () => {
-      return fetch(LOGIN_API).then(response => {
+      return fetch(LOGIN_API).then((response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
           // If a 5xx error is returned then the API server is down for
@@ -64,10 +64,10 @@ export const api = {
         });
       });
     },
-    login: credentials => {
+    login: (credentials) => {
       const params = {
         username: credentials.username,
-        password: credentials.password
+        password: credentials.password,
       };
 
       return fetch(LOGIN_API, {
@@ -77,9 +77,9 @@ export const api = {
         headers: new Headers({
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
         }),
-        body: new URLSearchParams(Object.entries(params))
+        body: new URLSearchParams(Object.entries(params)),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -88,13 +88,13 @@ export const api = {
           }
         });
     },
-    logout: csrftoken => {
+    logout: (csrftoken) => {
       localStorage.clear();
       return fetch(LOGOUT_API, {
         headers: { "X-CSRFToken": csrftoken },
-        method: "POST"
+        method: "POST",
       }).then(handleErrors);
-    }
+    },
   },
   licenseKeys: {
     create: (key, csrftoken) => {
@@ -102,7 +102,7 @@ export const api = {
       return fetch(`${LICENSE_KEYS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
-        body: JSON.stringify({ osystem, distro_series, license_key })
+        body: JSON.stringify({ osystem, distro_series, license_key }),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -116,7 +116,7 @@ export const api = {
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "PUT",
-        body: JSON.stringify({ license_key })
+        body: JSON.stringify({ license_key }),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -129,16 +129,16 @@ export const api = {
     delete: (osystem, distro_series, csrftoken) => {
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
-        method: "DELETE"
+        method: "DELETE",
       }).then(handleErrors);
     },
-    fetch: csrftoken => {
+    fetch: (csrftoken) => {
       return fetch(`${LICENSE_KEYS_API}`, {
-        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
-        .then(response => response.json());
-    }
+        .then((response) => response.json());
+    },
   },
   machines: {
     addChassis: (params, csrftoken) => {
@@ -146,10 +146,10 @@ export const api = {
         headers: new Headers({
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-CSRFToken": csrftoken,
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
         }),
         method: "POST",
-        body: new URLSearchParams(Object.entries(params))
+        body: new URLSearchParams(Object.entries(params)),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -157,20 +157,20 @@ export const api = {
             throw body;
           }
         });
-    }
+    },
   },
   scripts: {
-    fetch: csrftoken => {
+    fetch: (csrftoken) => {
       return fetch(`${SCRIPTS_API}?include_script=true`, {
-        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken }
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
-        .then(response => response.json());
+        .then((response) => response.json());
     },
     delete: (name, csrftoken) => {
       return fetch(`${SCRIPTS_API}${name}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
-        method: "DELETE"
+        method: "DELETE",
       }).then(handleErrors);
     },
     upload: (script, csrftoken) => {
@@ -178,7 +178,7 @@ export const api = {
       return fetch(`${SCRIPTS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
-        body: JSON.stringify({ name, type, script: contents })
+        body: JSON.stringify({ name, type, script: contents }),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -186,8 +186,8 @@ export const api = {
             throw body;
           }
         });
-    }
-  }
+    },
+  },
 };
 
 export function* checkAuthenticatedSaga(action) {
@@ -196,12 +196,12 @@ export function* checkAuthenticatedSaga(action) {
     const response = yield call(api.auth.checkAuthenticated);
     yield put({
       payload: response,
-      type: "CHECK_AUTHENTICATED_SUCCESS"
+      type: "CHECK_AUTHENTICATED_SUCCESS",
     });
   } catch (error) {
     yield put({
       type: "CHECK_AUTHENTICATED_ERROR",
-      error: error.message
+      error: error.message,
     });
   }
 }
@@ -211,12 +211,12 @@ export function* loginSaga(action) {
     yield put({ type: "LOGIN_START" });
     yield call(api.auth.login, action.payload);
     yield put({
-      type: "LOGIN_SUCCESS"
+      type: "LOGIN_SUCCESS",
     });
   } catch (error) {
     yield put({
       type: "LOGIN_ERROR",
-      error
+      error,
     });
   }
 }
@@ -227,15 +227,15 @@ export function* logoutSaga(action) {
     yield put({ type: "LOGOUT_START" });
     yield call(api.auth.logout, csrftoken);
     yield put({
-      type: "LOGOUT_SUCCESS"
+      type: "LOGOUT_SUCCESS",
     });
     yield put({
-      type: "WEBSOCKET_DISCONNECT"
+      type: "WEBSOCKET_DISCONNECT",
     });
   } catch (error) {
     yield put({
       type: "LOGOUT_ERROR",
-      errors: { error: error.message }
+      errors: { error: error.message },
     });
   }
 }
@@ -245,12 +245,12 @@ export function* externalLoginSaga(action) {
     yield put({ type: "EXTERNAL_LOGIN_START" });
     yield call(api.auth.externalLogin);
     yield put({
-      type: "EXTERNAL_LOGIN_SUCCESS"
+      type: "EXTERNAL_LOGIN_SUCCESS",
     });
   } catch (error) {
     yield put({
       type: "EXTERNAL_LOGIN_ERROR",
-      error: error.message
+      error: error.message,
     });
   }
 }
@@ -263,12 +263,12 @@ export function* fetchLicenseKeysSaga() {
     response = yield call(api.licenseKeys.fetch, csrftoken);
     yield put({
       type: "FETCH_LICENSE_KEYS_SUCCESS",
-      payload: response
+      payload: response,
     });
   } catch (error) {
     yield put({
       type: "FETCH_LICENSE_KEYS_ERROR",
-      errors: { error: error.message }
+      errors: { error: error.message },
     });
   }
 }
@@ -285,12 +285,12 @@ export function* deleteLicenseKeySaga(action) {
     );
     yield put({
       type: "DELETE_LICENSE_KEY_SUCCESS",
-      payload: action.payload
+      payload: action.payload,
     });
   } catch (error) {
     yield put({
       type: "DELETE_LICENSE_KEY_ERROR",
-      errors: { error: error.message }
+      errors: { error: error.message },
     });
   }
 }
@@ -304,7 +304,7 @@ export function* createLicenseKeySaga(action) {
     response = yield call(api.licenseKeys.create, key, csrftoken);
     yield put({
       type: "CREATE_LICENSE_KEY_SUCCESS",
-      payload: response.payload
+      payload: response.payload,
     });
   } catch (errors) {
     let error = errors;
@@ -313,7 +313,7 @@ export function* createLicenseKeySaga(action) {
     }
     yield put({
       type: "CREATE_LICENSE_KEY_ERROR",
-      errors: error
+      errors: error,
     });
   }
 }
@@ -327,7 +327,7 @@ export function* updateLicenseKeySaga(action) {
     response = yield call(api.licenseKeys.update, key, csrftoken);
     yield put({
       type: "UPDATE_LICENSE_KEY_SUCCESS",
-      payload: response
+      payload: response,
     });
   } catch (errors) {
     let error = errors;
@@ -336,7 +336,7 @@ export function* updateLicenseKeySaga(action) {
     }
     yield put({
       type: "UPDATE_LICENSE_KEY_ERROR",
-      errors: error
+      errors: error,
     });
   }
 }
@@ -349,13 +349,13 @@ export function* fetchScriptsSaga() {
     response = yield call(api.scripts.fetch, csrftoken);
     yield put({
       type: "FETCH_SCRIPTS_SUCCESS",
-      payload: response
+      payload: response,
     });
   } catch (error) {
     // fetch doesn't return a complex error object, so we coerce the status text.
     yield put({
       type: "FETCH_SCRIPTS_ERROR",
-      errors: { error: error.message }
+      errors: { error: error.message },
     });
   }
 }
@@ -369,7 +369,7 @@ export function* uploadScriptSaga(action) {
     response = yield call(api.scripts.upload, script, csrftoken);
     yield put({
       type: "UPLOAD_SCRIPT_SUCCESS",
-      payload: response
+      payload: response,
     });
   } catch (errors) {
     let error = errors;
@@ -378,7 +378,7 @@ export function* uploadScriptSaga(action) {
     }
     yield put({
       type: "UPLOAD_SCRIPT_ERROR",
-      errors: error
+      errors: error,
     });
   }
 }
@@ -390,13 +390,13 @@ export function* deleteScriptSaga(action) {
     yield call(api.scripts.delete, action.payload.name, csrftoken);
     yield put({
       type: "DELETE_SCRIPT_SUCCESS",
-      payload: action.payload.id
+      payload: action.payload.id,
     });
   } catch (error) {
     // delete doesn't return a complex error object, so we coerce the status text.
     yield put({
       type: "DELETE_SCRIPT_ERROR",
-      errors: { error: error.message }
+      errors: { error: error.message },
     });
   }
 }
@@ -410,7 +410,7 @@ export function* addMachineChassisSaga(action) {
     response = yield call(api.machines.addChassis, params, csrftoken);
     yield put({
       type: "ADD_MACHINE_CHASSIS_SUCCESS",
-      payload: response
+      payload: response,
     });
   } catch (err) {
     let error = err;
@@ -421,7 +421,7 @@ export function* addMachineChassisSaga(action) {
     }
     yield put({
       type: "ADD_MACHINE_CHASSIS_ERROR",
-      error
+      error,
     });
   }
 }

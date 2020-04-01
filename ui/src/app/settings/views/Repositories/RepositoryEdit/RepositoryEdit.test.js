@@ -13,7 +13,7 @@ describe("RepositoryEdit", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       packagerepository: {
         loading: false,
@@ -33,7 +33,7 @@ describe("RepositoryEdit", () => {
             arches: ["amd64", "i386"],
             key: "",
             default: true,
-            enabled: true
+            enabled: true,
           },
           {
             id: 2,
@@ -49,15 +49,15 @@ describe("RepositoryEdit", () => {
             arches: ["armhf", "arm64", "ppc64el", "s390x"],
             key: "",
             default: true,
-            enabled: true
-          }
-        ]
+            enabled: true,
+          },
+        ],
       },
       general: {
         componentsToDisable: {},
         knownArchitectures: {},
-        pocketsToDisable: {}
-      }
+        pocketsToDisable: {},
+      },
     };
   });
 
@@ -69,7 +69,7 @@ describe("RepositoryEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories/1/edit", key: "testKey" }
+            { pathname: "/settings/repositories/1/edit", key: "testKey" },
           ]}
         >
           <RepositoryEdit />
@@ -86,7 +86,7 @@ describe("RepositoryEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories/100/edit", key: "testKey" }
+            { pathname: "/settings/repositories/100/edit", key: "testKey" },
           ]}
         >
           <RepositoryEdit />
@@ -105,14 +105,14 @@ describe("RepositoryEdit", () => {
           initialEntries={[
             {
               pathname: "/settings/repositories/edit/repository/1",
-              key: "testKey"
-            }
+              key: "testKey",
+            },
           ]}
         >
           <Route
             exact
             path="/settings/repositories/edit/:type/:id"
-            component={props => <RepositoryEdit {...props} />}
+            component={(props) => <RepositoryEdit {...props} />}
           />
         </MemoryRouter>
       </Provider>

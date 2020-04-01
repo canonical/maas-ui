@@ -7,7 +7,7 @@ import { formatBytes } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const StorageColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const formattedStorage = formatBytes(machine.storage, "GB");
@@ -30,7 +30,7 @@ const StorageColumn = ({ onToggleMenu, systemId }) => {
 
 StorageColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default StorageColumn;

@@ -4,7 +4,7 @@ import {
   Notification,
   Row,
   Select,
-  Textarea
+  Textarea,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ import {
   controller as controllerSelectors,
   device as deviceSelectors,
   machine as machineSelectors,
-  subnet as subnetSelectors
+  subnet as subnetSelectors,
 } from "app/base/selectors";
 import FormikField from "app/base/components/FormikField";
 
@@ -23,12 +23,12 @@ const generateOptions = (type, models) =>
   [
     {
       value: "",
-      label: `Choose ${type}`
-    }
+      label: `Choose ${type}`,
+    },
   ].concat(
-    models.map(model => ({
+    models.map((model) => ({
       value: type === "subnet" ? model.id : model.system_id,
-      label: type === "subnet" ? model.name : model.fqdn
+      label: type === "subnet" ? model.name : model.fqdn,
     }))
   );
 
@@ -96,7 +96,7 @@ export const DhcpFormFields = ({ editing }) => {
             component={Select}
             name="type"
             label="Type"
-            onChange={e => {
+            onChange={(e) => {
               formikProps.handleChange(e);
               formikProps.setFieldValue("entity", "");
               formikProps.setFieldTouched("entity", false, false);
@@ -106,7 +106,7 @@ export const DhcpFormFields = ({ editing }) => {
               { value: "subnet", label: "Subnet" },
               { value: "controller", label: "Controller" },
               { value: "machine", label: "Machine" },
-              { value: "device", label: "Device" }
+              { value: "device", label: "Device" },
             ]}
           />
           {type &&
@@ -135,7 +135,7 @@ export const DhcpFormFields = ({ editing }) => {
 };
 
 DhcpFormFields.propTypes = {
-  editing: PropTypes.bool
+  editing: PropTypes.bool,
 };
 
 export default DhcpFormFields;

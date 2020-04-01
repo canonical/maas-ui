@@ -14,14 +14,14 @@ describe("NotFound ", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       messages: {
-        items: []
+        items: [],
       },
       notification: {
-        items: []
-      }
+        items: [],
+      },
     };
   });
 

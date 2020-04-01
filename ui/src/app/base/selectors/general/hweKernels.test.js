@@ -9,7 +9,7 @@ describe("hweKernels selectors", () => {
         ["hwe-18.04-lowlatency", "bionic (hwe-18.04-lowlatency)"],
         ["hwe-18.04", "bionic (hwe-18.04)"],
         ["hwe-18.04-lowlatency-edge", "bionic (hwe-18.04-lowlatency-edge)"],
-        ["hwe-18.04-edge", "bionic (hwe-18.04-edge)"]
+        ["hwe-18.04-edge", "bionic (hwe-18.04-edge)"],
       ];
       const state = {
         general: {
@@ -17,9 +17,9 @@ describe("hweKernels selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(hweKernels.get(state)).toStrictEqual(data);
     });
@@ -34,9 +34,9 @@ describe("hweKernels selectors", () => {
             data: [],
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(hweKernels.loading(state)).toStrictEqual(loading);
     });
@@ -51,9 +51,9 @@ describe("hweKernels selectors", () => {
             data: [],
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(hweKernels.loaded(state)).toStrictEqual(loaded);
     });
@@ -68,9 +68,9 @@ describe("hweKernels selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(hweKernels.errors(state)).toStrictEqual(errors);
     });

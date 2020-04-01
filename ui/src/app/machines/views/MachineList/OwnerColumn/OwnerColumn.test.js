@@ -13,15 +13,15 @@ describe("OwnerColumn", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         machineActions: {
           data: [
             { name: "acquire", title: "Acquire..." },
-            { name: "release", title: "Release..." }
-          ]
-        }
+            { name: "release", title: "Release..." },
+          ],
+        },
       },
       machine: {
         errors: {},
@@ -32,10 +32,10 @@ describe("OwnerColumn", () => {
             actions: [],
             system_id: "abc123",
             owner: "admin",
-            tags: []
-          }
-        ]
-      }
+            tags: [],
+          },
+        ],
+      },
     };
   });
 
@@ -100,12 +100,9 @@ describe("OwnerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(0)
-        .text()
-    ).toEqual("Acquire...");
+    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
+      "Acquire..."
+    );
   });
 
   it("can show a menu item to release a machine", () => {
@@ -122,12 +119,9 @@ describe("OwnerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(0)
-        .text()
-    ).toEqual("Release...");
+    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
+      "Release..."
+    );
   });
 
   it("can show a message when there are no menu items", () => {
@@ -143,11 +137,8 @@ describe("OwnerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(
-      wrapper
-        .find(".p-contextual-menu__link")
-        .at(1)
-        .text()
-    ).toEqual("No owner actions available");
+    expect(wrapper.find(".p-contextual-menu__link").at(1).text()).toEqual(
+      "No owner actions available"
+    );
   });
 });

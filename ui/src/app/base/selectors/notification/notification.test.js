@@ -4,8 +4,8 @@ describe("notification selectors", () => {
   it("can get all items", () => {
     const state = {
       notification: {
-        items: [{ name: "maas.test" }]
-      }
+        items: [{ name: "maas.test" }],
+      },
     };
     expect(notification.all(state)).toEqual([{ name: "maas.test" }]);
   });
@@ -14,8 +14,8 @@ describe("notification selectors", () => {
     const state = {
       notification: {
         loading: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(notification.loading(state)).toEqual(true);
   });
@@ -24,8 +24,8 @@ describe("notification selectors", () => {
     const state = {
       notification: {
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
     expect(notification.loaded(state)).toEqual(true);
   });
@@ -37,20 +37,20 @@ describe("notification selectors", () => {
           {
             message: "Something terrible occurred",
             category: "error",
-            id: 808
+            id: 808,
           },
           {
             message: "Something rather good happened",
             category: "info",
-            id: 909
-          }
-        ]
-      }
+            id: 909,
+          },
+        ],
+      },
     };
     expect(notification.getById(state, 909)).toStrictEqual({
       message: "Something rather good happened",
       category: "info",
-      id: 909
+      id: 909,
     });
   });
 });

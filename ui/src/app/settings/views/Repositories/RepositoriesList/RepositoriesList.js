@@ -17,7 +17,7 @@ const generateRepositoryRows = (
   setDeletedRepo,
   setExpandedId
 ) =>
-  repositories.map(repo => {
+  repositories.map((repo) => {
     const name = getRepoDisplayName(repo);
     const type = repo.url.startsWith("ppa:") ? "ppa" : "repository";
 
@@ -27,11 +27,11 @@ const generateRepositoryRows = (
       columns: [
         {
           content: name,
-          role: "rowheader"
+          role: "rowheader",
         },
         { content: repo.url },
         {
-          content: repo.enabled ? "Yes" : "No"
+          content: repo.enabled ? "Yes" : "No",
         },
         {
           content: (
@@ -42,8 +42,8 @@ const generateRepositoryRows = (
               onDelete={() => setExpandedId(repo.id)}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -62,8 +62,8 @@ const generateRepositoryRows = (
       sortData: {
         name: repo.name,
         url: repo.url,
-        enabled: repo.enabled
-      }
+        enabled: repo.enabled,
+      },
     };
   });
 
@@ -74,7 +74,7 @@ export const Repositories = () => {
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
   const saved = useSelector(repositorySelectors.saved);
-  const repositories = useSelector(state =>
+  const repositories = useSelector((state) =>
     repositorySelectors.search(state, searchText)
   );
   const dispatch = useDispatch();
@@ -104,15 +104,15 @@ export const Repositories = () => {
         { label: "Add PPA", url: "/settings/repositories/add/ppa" },
         {
           label: "Add repository",
-          url: "/settings/repositories/add/repository"
-        }
+          url: "/settings/repositories/add/repository",
+        },
       ]}
       defaultSort="id"
       headers={[
         { content: "Name", sortKey: "name" },
         { content: "URL", sortKey: "url" },
         { content: "Enabled", sortKey: "enabled" },
-        { content: "Actions", className: "u-align--right" }
+        { content: "Actions", className: "u-align--right" },
       ]}
       loaded={loaded}
       loading={loading}

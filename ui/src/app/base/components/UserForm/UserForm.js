@@ -28,13 +28,15 @@ const schemaFields = {
       /^[a-zA-Z 0-9@.+-_]*$/,
       "Usernames must contain letters, digits and @/./+/-/_ only"
     )
-    .required("Username is required")
+    .required("Username is required"),
 };
 
 const UserSchema = Yup.object().shape({
   ...schemaFields,
   password: schemaFields.password.required("Password is required"),
-  passwordConfirm: schemaFields.passwordConfirm.required("Password is required")
+  passwordConfirm: schemaFields.passwordConfirm.required(
+    "Password is required"
+  ),
 });
 
 const CurrentPasswordUserSchema = Yup.object().shape({
@@ -43,7 +45,7 @@ const CurrentPasswordUserSchema = Yup.object().shape({
   password: schemaFields.password.required("A new password is required"),
   passwordConfirm: schemaFields.passwordConfirm.required(
     "Confirm your new password"
-  )
+  ),
 });
 
 const NoPasswordUserSchema = Yup.object().shape(schemaFields);
@@ -58,7 +60,7 @@ export const UserForm = ({
   onUpdateFields,
   savedRedirect,
   submitLabel,
-  user
+  user,
 }) => {
   const editing = !!user;
   const [passwordVisible, showPassword] = useState(!editing);
@@ -72,7 +74,7 @@ export const UserForm = ({
   if (includeCurrentPassword) {
     errors = {
       ...authErrors,
-      ...userErrors
+      ...userErrors,
     };
   }
   let initialValues = {
@@ -83,7 +85,7 @@ export const UserForm = ({
     fullName: user ? user.last_name : "",
     password: "",
     passwordConfirm: "",
-    username: user ? user.username : ""
+    username: user ? user.username : "",
   };
   if (includeCurrentPassword) {
     initialValues.old_password = "";
@@ -103,7 +105,7 @@ export const UserForm = ({
           email: values.email,
           is_superuser: values.isSuperuser,
           last_name: values.fullName,
-          username: values.username
+          username: values.username,
         };
         if (values.password) {
           params.password1 = values.password;
@@ -118,7 +120,7 @@ export const UserForm = ({
       saving={saving}
       saved={saved}
       submitLabel={submitLabel}
-      onValuesChanged={values => {
+      onValuesChanged={(values) => {
         onUpdateFields && onUpdateFields(values);
       }}
       savedRedirect={savedRedirect}
@@ -210,12 +212,12 @@ UserForm.propTypes = {
   onSaveAnalytics: PropTypes.shape({
     category: PropTypes.string,
     action: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
   }),
   onUpdateFields: PropTypes.func,
   savedRedirect: PropTypes.string,
   submitLabel: PropTypes.string,
-  user: UserShape
+  user: UserShape,
 };
 
 export default UserForm;

@@ -33,10 +33,10 @@ const machine = produce(
         break;
       case "DELETE_MACHINE_NOTIFY":
         draft.items = draft.items.filter(
-          machine => machine.system_id !== action.payload
+          (machine) => machine.system_id !== action.payload
         );
         draft.selected = draft.selected.filter(
-          machineId => machineId !== action.payload
+          (machineId) => machineId !== action.payload
         );
         break;
       case "UPDATE_MACHINE_NOTIFY":
@@ -86,7 +86,7 @@ const machine = produce(
     loading: false,
     saved: false,
     saving: false,
-    selected: []
+    selected: [],
   }
 );
 

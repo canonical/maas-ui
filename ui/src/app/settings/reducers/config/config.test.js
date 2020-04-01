@@ -7,21 +7,21 @@ describe("config reducer", () => {
       loaded: false,
       saving: false,
       saved: false,
-      items: []
+      items: [],
     });
   });
 
   it("should correctly reduce FETCH_CONFIG_START", () => {
     expect(
       config(undefined, {
-        type: "FETCH_CONFIG_START"
+        type: "FETCH_CONFIG_START",
       })
     ).toEqual({
       loading: true,
       loaded: false,
       saving: false,
       saved: false,
-      items: []
+      items: [],
     });
   });
 
@@ -32,14 +32,14 @@ describe("config reducer", () => {
           loading: true,
           loaded: false,
           saving: false,
-          items: []
+          items: [],
         },
         {
           type: "FETCH_CONFIG_SUCCESS",
           payload: [
             { name: "default_storage_layout", value: "bcache" },
-            { name: "enable_disk_erasing_on_release", value: "foo" }
-          ]
+            { name: "enable_disk_erasing_on_release", value: "foo" },
+          ],
         }
       )
     ).toEqual({
@@ -48,8 +48,8 @@ describe("config reducer", () => {
       saving: false,
       items: [
         { name: "default_storage_layout", value: "bcache" },
-        { name: "enable_disk_erasing_on_release", value: "foo" }
-      ]
+        { name: "enable_disk_erasing_on_release", value: "foo" },
+      ],
     });
   });
 
@@ -61,10 +61,10 @@ describe("config reducer", () => {
           loaded: false,
           saving: false,
           saved: false,
-          items: []
+          items: [],
         },
         {
-          type: "UPDATE_CONFIG_START"
+          type: "UPDATE_CONFIG_START",
         }
       )
     ).toEqual({
@@ -72,7 +72,7 @@ describe("config reducer", () => {
       loaded: false,
       saving: true,
       saved: false,
-      items: []
+      items: [],
     });
   });
 
@@ -84,11 +84,11 @@ describe("config reducer", () => {
           loaded: false,
           saving: true,
           saved: false,
-          items: [{ name: "default_storage_layout", value: "bcache" }]
+          items: [{ name: "default_storage_layout", value: "bcache" }],
         },
         {
           type: "UPDATE_CONFIG_SUCCESS",
-          payload: { name: "default_storage_layout", value: "flat" }
+          payload: { name: "default_storage_layout", value: "flat" },
         }
       )
     ).toEqual({
@@ -96,7 +96,7 @@ describe("config reducer", () => {
       loaded: false,
       saving: false,
       saved: true,
-      items: [{ name: "default_storage_layout", value: "bcache" }]
+      items: [{ name: "default_storage_layout", value: "bcache" }],
     });
   });
 
@@ -110,12 +110,12 @@ describe("config reducer", () => {
           saved: true,
           items: [
             { name: "maas_name", value: "my-maas" },
-            { name: "default_storage_layout", value: "bcache" }
-          ]
+            { name: "default_storage_layout", value: "bcache" },
+          ],
         },
         {
           type: "UPDATE_CONFIG_NOTIFY",
-          payload: { name: "default_storage_layout", value: "flat" }
+          payload: { name: "default_storage_layout", value: "flat" },
         }
       )
     ).toEqual({
@@ -125,8 +125,8 @@ describe("config reducer", () => {
       saved: true,
       items: [
         { name: "maas_name", value: "my-maas" },
-        { name: "default_storage_layout", value: "flat" }
-      ]
+        { name: "default_storage_layout", value: "flat" },
+      ],
     });
   });
 });

@@ -11,8 +11,8 @@ describe("SettingsTable", () => {
           { label: "Add PPA", url: "/settings/repositories/add/ppa" },
           {
             label: "Add repository",
-            url: "/settings/repositories/add/repository"
-          }
+            url: "/settings/repositories/add/repository",
+          },
         ]}
         loaded={true}
         loading={false}
@@ -33,8 +33,8 @@ describe("SettingsTable", () => {
           { label: "Add PPA", url: "/settings/repositories/add/ppa" },
           {
             label: "Add repository",
-            url: "/settings/repositories/add/repository"
-          }
+            url: "/settings/repositories/add/repository",
+          },
         ]}
         loaded={false}
         loading={true}
@@ -54,8 +54,8 @@ describe("SettingsTable", () => {
           { label: "Add PPA", url: "/settings/repositories/add/ppa" },
           {
             label: "Add repository",
-            url: "/settings/repositories/add/repository"
-          }
+            url: "/settings/repositories/add/repository",
+          },
         ]}
         loaded={false}
         loading={true}

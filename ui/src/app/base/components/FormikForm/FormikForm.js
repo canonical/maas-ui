@@ -93,7 +93,7 @@ FormikForm.propTypes = {
   onSaveAnalytics: PropTypes.shape({
     category: PropTypes.string,
     action: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
   }),
   onSubmit: PropTypes.func.isRequired,
   onValuesChanged: PropTypes.func,
@@ -105,7 +105,7 @@ FormikForm.propTypes = {
   secondarySubmitLabel: PropTypes.string,
   submitAppearance: PropTypes.string,
   submitLabel: PropTypes.string,
-  validationSchema: PropTypes.object
+  validationSchema: PropTypes.object,
 };
 
 export default FormikForm;

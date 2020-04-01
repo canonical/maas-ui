@@ -11,7 +11,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 const PowerColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
@@ -19,7 +19,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
     "p-icon--power-on": machine.power_state === "on",
     "p-icon--power-off": machine.power_state === "off",
     "p-icon--power-error": machine.power_state === "error",
-    "p-icon--power-unknown": machine.power_state === "unknown"
+    "p-icon--power-unknown": machine.power_state === "unknown",
   });
 
   const menuLinks = [];
@@ -37,7 +37,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       onClick: () => {
         dispatch(machineActions.on(systemId));
         setUpdating(machine.power_state);
-      }
+      },
     });
   }
   if (hasOffAction && powerState !== "off") {
@@ -50,7 +50,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       onClick: () => {
         dispatch(machineActions.off(systemId));
         setUpdating(machine.power_state);
-      }
+      },
     });
   }
   if (powerState !== "unknown") {
@@ -65,13 +65,13 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
         dispatch(machineActions.checkPower(systemId));
         // Don't display the spinner when checking power as we can't reliably
         // determine that the event has finished.
-      }
+      },
     });
   }
   if (!hasOnAction && !hasOffAction && powerState === "unknown") {
     menuLinks.push({
       children: "No power actions available",
-      disabled: true
+      disabled: true,
     });
   }
 
@@ -121,7 +121,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
 
 PowerColumn.propTypes = {
   onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired
+  systemId: PropTypes.string.isRequired,
 };
 
 export default PowerColumn;

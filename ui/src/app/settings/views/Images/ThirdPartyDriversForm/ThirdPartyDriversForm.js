@@ -8,7 +8,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
 const ThirdPartyDriversSchema = Yup.object().shape({
-  enable_third_party_drivers: Yup.boolean()
+  enable_third_party_drivers: Yup.boolean(),
 });
 
 const ThirdPartyDriversForm = () => {
@@ -25,12 +25,12 @@ const ThirdPartyDriversForm = () => {
   return (
     <FormikForm
       initialValues={{
-        enable_third_party_drivers: thirdPartyDriversEnabled
+        enable_third_party_drivers: thirdPartyDriversEnabled,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Images settings",
-        label: "Ubuntu form"
+        label: "Ubuntu form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));

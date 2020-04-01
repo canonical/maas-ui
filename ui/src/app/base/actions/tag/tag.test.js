@@ -6,8 +6,8 @@ describe("tag actions", () => {
       type: "FETCH_TAG",
       meta: {
         model: "tag",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 });

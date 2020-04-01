@@ -15,13 +15,13 @@ describe("AddSSLKey", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       sslkey: {
         loading: false,
         loaded: true,
-        items: []
-      }
+        items: [],
+      },
     };
   });
 
@@ -48,7 +48,7 @@ describe("AddSSLKey", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some(action => action.type === "CLEANUP_SSLKEY")
+      store.getActions().some((action) => action.type === "CLEANUP_SSLKEY")
     ).toBe(true);
   });
 
@@ -75,26 +75,23 @@ describe("AddSSLKey", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          key: "--- begin cert ---..."
-        })
+      wrapper.find("Formik").props().onSubmit({
+        key: "--- begin cert ---...",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "CREATE_SSLKEY")
+      store.getActions().find((action) => action.type === "CREATE_SSLKEY")
     ).toStrictEqual({
       type: "CREATE_SSLKEY",
       payload: {
         params: {
-          key: "--- begin cert ---..."
-        }
+          key: "--- begin cert ---...",
+        },
       },
       meta: {
         model: "sslkey",
-        method: "create"
-      }
+        method: "create",
+      },
     });
   });
 
@@ -109,7 +106,9 @@ describe("AddSSLKey", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_SSLKEY")).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_SSLKEY")).toBe(
+      true
+    );
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 });

@@ -22,7 +22,7 @@ const FormikFormContent = ({
   secondarySubmit,
   secondarySubmitLabel,
   submitAppearance,
-  submitLabel = "Save"
+  submitLabel = "Save",
 }) => {
   const { handleSubmit, resetForm, submitForm, values } = useFormikContext();
   const formDisabled = useFormikFormDisabled({ allowAllEmpty, allowUnchanged });
@@ -91,7 +91,7 @@ FormikFormContent.propTypes = {
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,
   submitAppearance: PropTypes.string,
-  submitLabel: PropTypes.string
+  submitLabel: PropTypes.string,
 };
 
 export default FormikFormContent;

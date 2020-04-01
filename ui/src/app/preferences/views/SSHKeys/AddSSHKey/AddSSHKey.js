@@ -14,13 +14,13 @@ import FormikForm from "app/base/components/FormikForm";
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
   auth_id: Yup.string().when("protocol", {
-    is: val => val && val !== "upload",
-    then: Yup.string().required("ID is required")
+    is: (val) => val && val !== "upload",
+    then: Yup.string().required("ID is required"),
   }),
   key: Yup.string().when("protocol", {
-    is: val => val === "upload",
-    then: Yup.string().required("Key is required")
-  })
+    is: (val) => val === "upload",
+    then: Yup.string().required("Key is required"),
+  }),
 });
 
 export const AddSSHKey = () => {
@@ -43,9 +43,9 @@ export const AddSSHKey = () => {
         onSaveAnalytics={{
           action: "Saved",
           category: "SSH keys preferences",
-          label: "Import SSH key form"
+          label: "Import SSH key form",
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           if (values.key && values.key !== "") {
             dispatch(sshkeyActions.create(values));
           } else {

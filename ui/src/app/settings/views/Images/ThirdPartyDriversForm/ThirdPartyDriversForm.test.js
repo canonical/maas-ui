@@ -17,10 +17,10 @@ describe("ThirdPartyDriversForm", () => {
         items: [
           {
             name: "enable_third_party_drivers",
-            value: true
-          }
-        ]
-      }
+            value: true,
+          },
+        ],
+      },
     };
   });
 

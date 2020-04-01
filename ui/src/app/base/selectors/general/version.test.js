@@ -11,9 +11,9 @@ describe("version selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(version.get(state)).toStrictEqual(data);
     });
@@ -28,9 +28,9 @@ describe("version selectors", () => {
             data: "",
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(version.loading(state)).toStrictEqual(loading);
     });
@@ -45,9 +45,9 @@ describe("version selectors", () => {
             data: "",
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(version.loaded(state)).toStrictEqual(loaded);
     });
@@ -62,9 +62,9 @@ describe("version selectors", () => {
             data: "",
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(version.errors(state)).toStrictEqual(errors);
     });

@@ -14,11 +14,11 @@ export const notificationTypes = {
   CAUTION: "caution",
   INFORMATION: "information",
   NEGATIVE: "negative",
-  POSITIVE: "positive"
+  POSITIVE: "positive",
 };
 
 const dismissAll = (notifications, dispatch) => {
-  notifications.forEach(notification => {
+  notifications.forEach((notification) => {
     dismiss(notification.id, dispatch);
   });
 };
@@ -60,7 +60,7 @@ const NotificationGroup = ({ notifications, type }) => {
                   <i
                     className={classNames({
                       "p-icon--collapse": groupOpen,
-                      "p-icon--expand": !groupOpen
+                      "p-icon--expand": !groupOpen,
                     })}
                   ></i>
                 </small>
@@ -84,7 +84,7 @@ const NotificationGroup = ({ notifications, type }) => {
         </div>
         {groupOpen && notifications.length > 1 && (
           <ul className="p-list--divided u-no-margin--bottom">
-            {notifications.map(notification => (
+            {notifications.map((notification) => (
               <li key={notification.id} className="p-list__item">
                 <NotificationGroupMessage
                   message={notification.message}
@@ -104,7 +104,7 @@ const NotificationGroup = ({ notifications, type }) => {
 NotificationGroup.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   type: PropTypes.oneOf(["caution", "negative", "positive", "information"])
-    .isRequired
+    .isRequired,
 };
 
 export default NotificationGroup;

@@ -18,18 +18,18 @@ describe("ProxyFormFields", () => {
         items: [
           {
             name: "http_proxy",
-            value: "http://www.url.com"
+            value: "http://www.url.com",
           },
           {
             name: "enable_http_proxy",
-            value: false
+            value: false,
           },
           {
             name: "use_peer_proxy",
-            value: false
-          }
-        ]
-      }
+            value: false,
+          },
+        ],
+      },
     };
   });
 

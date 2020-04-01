@@ -37,7 +37,9 @@ const sslkey = produce(
         draft.items.push(action.payload);
         break;
       case "DELETE_SSLKEY_NOTIFY":
-        const index = draft.items.findIndex(item => item.id === action.payload);
+        const index = draft.items.findIndex(
+          (item) => item.id === action.payload
+        );
         draft.items.splice(index, 1);
         break;
       case "CLEANUP_SSLKEY":
@@ -55,7 +57,7 @@ const sslkey = produce(
     loaded: false,
     loading: false,
     saved: false,
-    saving: false
+    saving: false,
   }
 );
 

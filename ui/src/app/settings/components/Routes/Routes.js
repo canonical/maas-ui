@@ -104,22 +104,22 @@ const Routes = () => {
       <Route
         exact
         path={`${match.path}/scripts/commissioning`}
-        render={props => <ScriptsList {...props} type="commissioning" />}
+        render={(props) => <ScriptsList {...props} type="commissioning" />}
       />
       <Route
         exact
         path={`${match.path}/scripts/commissioning/upload`}
-        render={props => <ScriptsUpload {...props} type="commissioning" />}
+        render={(props) => <ScriptsUpload {...props} type="commissioning" />}
       />
       <Route
         exact
         path={`${match.path}/scripts/testing`}
-        render={props => <ScriptsList {...props} type="testing" />}
+        render={(props) => <ScriptsList {...props} type="testing" />}
       />
       <Route
         exact
         path={`${match.path}/scripts/testing/upload`}
-        render={props => <ScriptsUpload {...props} type="testing" />}
+        render={(props) => <ScriptsUpload {...props} type="testing" />}
       />
       <Route exact path={`${match.path}/dhcp`} component={DhcpList} />
       <Route exact path={`${match.path}/dhcp/add`} component={DhcpAdd} />

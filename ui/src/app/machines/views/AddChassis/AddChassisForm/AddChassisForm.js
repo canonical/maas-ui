@@ -5,17 +5,17 @@ import * as Yup from "yup";
 
 import {
   domain as domainActions,
-  machine as machineActions
+  machine as machineActions,
 } from "app/base/actions";
 import {
   domain as domainSelectors,
-  machine as machineSelectors
+  machine as machineSelectors,
 } from "app/base/selectors";
 import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
-  useWindowTitle
+  useWindowTitle,
 } from "app/base/hooks";
 import { trimPowerParameters } from "app/utils";
 import chassisPowerTypes from "../chassisPowerTypes";
@@ -24,11 +24,11 @@ import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 
-const generateChassisSchema = parametersSchema =>
+const generateChassisSchema = (parametersSchema) =>
   Yup.object().shape({
     domain: Yup.string().required("Domain required"),
     power_parameters: Yup.object().shape(parametersSchema),
-    power_type: Yup.string().required("Power type required")
+    power_type: Yup.string().required("Power type required"),
   });
 
 export const AddChassisForm = () => {
@@ -74,7 +74,7 @@ export const AddChassisForm = () => {
   if (machineErrors && typeof machineErrors === "string") {
     errors = machineErrors;
   } else if (machineErrors && typeof machineErrors === "object") {
-    Object.keys(machineErrors).forEach(key => {
+    Object.keys(machineErrors).forEach((key) => {
       errors = errors + `${machineErrors[key]} `;
     });
   }
@@ -92,25 +92,25 @@ export const AddChassisForm = () => {
             initialValues={{
               domain: (domains.length && domains[0].name) || "",
               power_parameters: allPowerParameters,
-              power_type: ""
+              power_type: "",
             }}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Chassis",
-              label: "Add chassis form"
+              label: "Add chassis form",
             }}
-            onSubmit={values => {
+            onSubmit={(values) => {
               const params = {
                 chassis_type: values.power_type,
                 domain: values.domain,
-                ...trimPowerParameters(powerType, values.power_parameters)
+                ...trimPowerParameters(powerType, values.power_parameters),
               };
               dispatch(machineActions.addChassis(params));
               setSavingChassis(params.hostname || "chassis");
             }}
-            onValuesChanged={values => {
+            onValuesChanged={(values) => {
               const powerType = chassisPowerTypes.find(
-                type => type.name === values.power_type
+                (type) => type.name === values.power_type
               );
               setPowerType(powerType);
             }}

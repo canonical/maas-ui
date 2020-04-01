@@ -21,7 +21,7 @@ describe("UsersList", () => {
         is_superuser: true,
         last_name: "Kangaroo",
         sshkeys_count: 0,
-        username: "admin"
+        username: "admin",
       },
       {
         email: "user@example.com",
@@ -30,22 +30,22 @@ describe("UsersList", () => {
         is_superuser: false,
         last_name: "Koala",
         sshkeys_count: 0,
-        username: "user1"
-      }
+        username: "user1",
+      },
     ];
     defaultStore = {
       config: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
         auth: {
-          user: users[0]
+          user: users[0],
         },
         loading: false,
         loaded: true,
-        items: users
-      }
+        items: users,
+      },
     };
   });
 
@@ -63,12 +63,7 @@ describe("UsersList", () => {
     let row = wrapper.find("MainTable").prop("rows")[1];
     expect(row.expanded).toBe(false);
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(2).find("Button").at(1).simulate("click");
     row = wrapper.find("MainTable").prop("rows")[1];
     expect(row.expanded).toBe(true);
   });
@@ -85,30 +80,20 @@ describe("UsersList", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("Button")
-      .at(1)
-      .simulate("click");
+    wrapper.find("TableRow").at(2).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("Button")
-      .at(3)
-      .simulate("click");
+    wrapper.find("TableRow").at(2).find("Button").at(3).simulate("click");
     expect(store.getActions()[1]).toEqual({
       type: "DELETE_USER",
       payload: {
         params: {
-          id: 2
-        }
+          id: 2,
+        },
       },
       meta: {
         model: "user",
-        method: "delete"
-      }
+        method: "delete",
+      },
     });
   });
 
@@ -124,12 +109,7 @@ describe("UsersList", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("tbody TableRow")
-        .at(0)
-        .find("Button")
-        .at(1)
-        .prop("disabled")
+      wrapper.find("tbody TableRow").at(0).find("Button").at(1).prop("disabled")
     ).toBe(true);
   });
 
@@ -145,12 +125,7 @@ describe("UsersList", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("tbody TableRow")
-        .at(0)
-        .find("Button")
-        .at(0)
-        .prop("to")
+      wrapper.find("tbody TableRow").at(0).find("Button").at(0).prop("to")
     ).toBe("/account/prefs/details");
   });
 
@@ -167,8 +142,8 @@ describe("UsersList", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("can filter users", () => {
@@ -184,12 +159,7 @@ describe("UsersList", () => {
     );
     let rows = wrapper.find("MainTable").prop("rows");
     expect(rows.length).toBe(2);
-    act(() =>
-      wrapper
-        .find("SearchBox")
-        .props()
-        .onChange("admin")
-    );
+    act(() => wrapper.find("SearchBox").props().onChange("admin"));
     wrapper.update();
     rows = wrapper.find("MainTable").prop("rows");
     expect(rows.length).toBe(1);
@@ -207,12 +177,7 @@ describe("UsersList", () => {
       </Provider>
     );
     expect(
-      wrapper
-        .find("TableRow")
-        .at(1)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find("TableRow").at(1).find("TableCell").at(0).text()
     ).toEqual("admin");
     // Click on the header toggle.
     wrapper
@@ -220,12 +185,7 @@ describe("UsersList", () => {
       .find("button")
       .simulate("click");
     expect(
-      wrapper
-        .find("TableRow")
-        .at(1)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find("TableRow").at(1).find("TableCell").at(0).text()
     ).toEqual("Kangaroo");
   });
 

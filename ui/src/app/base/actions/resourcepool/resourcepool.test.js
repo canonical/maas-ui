@@ -6,8 +6,8 @@ describe("resourcepool actions", () => {
       type: "FETCH_RESOURCEPOOL",
       meta: {
         model: "resourcepool",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -18,14 +18,14 @@ describe("resourcepool actions", () => {
       type: "CREATE_RESOURCEPOOL",
       meta: {
         model: "resourcepool",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
           name: "pool1",
-          description: "a pool"
-        }
-      }
+          description: "a pool",
+        },
+      },
     });
   });
 
@@ -36,14 +36,14 @@ describe("resourcepool actions", () => {
       type: "UPDATE_RESOURCEPOOL",
       meta: {
         model: "resourcepool",
-        method: "update"
+        method: "update",
       },
       payload: {
         params: {
           name: "newName",
-          description: "new description"
-        }
-      }
+          description: "new description",
+        },
+      },
     });
   });
 
@@ -52,19 +52,19 @@ describe("resourcepool actions", () => {
       type: "DELETE_RESOURCEPOOL",
       meta: {
         model: "resourcepool",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can handle cleaning resource pools", () => {
     expect(resourcepool.cleanup()).toEqual({
-      type: "CLEANUP_RESOURCEPOOL"
+      type: "CLEANUP_RESOURCEPOOL",
     });
   });
 });

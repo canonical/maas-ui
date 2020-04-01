@@ -8,14 +8,14 @@ describe("subnet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_SUBNET_START", () => {
     expect(
       subnet(undefined, {
-        type: "FETCH_SUBNET_START"
+        type: "FETCH_SUBNET_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("subnet reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,11 +36,11 @@ describe("subnet reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           error: "Could not fetch subnets",
-          type: "FETCH_SUBNET_ERROR"
+          type: "FETCH_SUBNET_ERROR",
         }
       )
     ).toEqual({
@@ -49,7 +49,7 @@ describe("subnet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -62,14 +62,14 @@ describe("subnet reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_SUBNET_SUCCESS",
           payload: [
             { id: 1, name: "10.0.0.99" },
-            { id: 2, name: "test.maas" }
-          ]
+            { id: 2, name: "test.maas" },
+          ],
         }
       )
     ).toEqual({
@@ -80,8 +80,8 @@ describe("subnet reducer", () => {
       saving: false,
       items: [
         { id: 1, name: "10.0.0.99" },
-        { id: 2, name: "test.maas" }
-      ]
+        { id: 2, name: "test.maas" },
+      ],
     });
   });
 });

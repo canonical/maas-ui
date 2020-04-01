@@ -8,7 +8,7 @@ const ScriptStatus = ({
   children,
   hidePassedIcon = false,
   scriptType,
-  tooltipPosition
+  tooltipPosition,
 }) => {
   switch (scriptType.status) {
     case scriptStatus.PASSED: {
@@ -79,7 +79,7 @@ ScriptStatus.propTypes = {
     pending: PropTypes.number,
     running: PropTypes.number,
     passed: PropTypes.number,
-    failed: PropTypes.number
+    failed: PropTypes.number,
   }).isRequired,
   tooltipPosition: PropTypes.oneOf([
     "btm-center",
@@ -89,8 +89,8 @@ ScriptStatus.propTypes = {
     "right",
     "top-center",
     "top-left",
-    "top-right"
-  ])
+    "top-right",
+  ]),
 };
 
 export default ScriptStatus;

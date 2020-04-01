@@ -14,7 +14,7 @@ export const RepositoryShape = PropTypes.shape({
   key: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   updated: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
+  url: PropTypes.string.isRequired,
 });
 
 export const DhcpSnippetShape = PropTypes.shape({
@@ -27,5 +27,5 @@ export const DhcpSnippetShape = PropTypes.shape({
   node: PropTypes.string,
   subnet: PropTypes.number,
   updated: PropTypes.string.isRequired,
-  value: PropTypes.string
+  value: PropTypes.string,
 });

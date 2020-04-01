@@ -4,12 +4,12 @@ import React, { useEffect } from "react";
 
 import {
   messages as messageActions,
-  notification as notificationActions
+  notification as notificationActions,
 } from "app/base/actions";
 import NotificationGroup from "app/base/components/NotificationGroup";
 import {
   messages as messageSelectors,
-  notification as notificationSelectors
+  notification as notificationSelectors,
 } from "app/base/selectors";
 
 const generateMessages = (messages, dispatch) =>
@@ -31,20 +31,20 @@ const NotificationList = ({ children, sidebar, title }) => {
   const notifications = {
     warnings: {
       items: useSelector(notificationSelectors.warnings),
-      type: "caution"
+      type: "caution",
     },
     errors: {
       items: useSelector(notificationSelectors.errors),
-      type: "negative"
+      type: "negative",
     },
     success: {
       items: useSelector(notificationSelectors.success),
-      type: "positive"
+      type: "positive",
     },
     info: {
       items: useSelector(notificationSelectors.info),
-      type: "information"
-    }
+      type: "information",
+    },
   };
 
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const NotificationList = ({ children, sidebar, title }) => {
 
   return (
     <>
-      {Object.keys(notifications).map(group => {
+      {Object.keys(notifications).map((group) => {
         const type = notifications[group].type;
         if (notifications[group].items.length > 0) {
           return (

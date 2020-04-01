@@ -13,16 +13,16 @@ describe("AddChassisForm", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: [{ name: "maas_name", value: "MAAS" }]
+        items: [{ name: "maas_name", value: "MAAS" }],
       },
       domain: {
         items: [
           {
             id: 0,
-            name: "maas"
-          }
+            name: "maas",
+          },
         ],
-        loaded: true
+        loaded: true,
       },
       general: {
         powerTypes: {
@@ -30,7 +30,7 @@ describe("AddChassisForm", () => {
             {
               name: "manual",
               description: "Manual",
-              fields: []
+              fields: [],
             },
             {
               name: "dummy",
@@ -43,19 +43,19 @@ describe("AddChassisForm", () => {
                   field_type: "string",
                   choices: [],
                   default: "",
-                  scope: "bmc"
-                }
-              ]
-            }
+                  scope: "bmc",
+                },
+              ],
+            },
           ],
-          loaded: true
-        }
+          loaded: true,
+        },
       },
       machine: {
         errors: {},
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -67,7 +67,7 @@ describe("AddChassisForm", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" }
+            { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
           <AddChassisForm />
@@ -76,8 +76,8 @@ describe("AddChassisForm", () => {
     );
     const expectedActions = ["FETCH_DOMAIN"];
     const actions = store.getActions();
-    expectedActions.forEach(expectedAction => {
-      expect(actions.some(action => action.type === expectedAction));
+    expectedActions.forEach((expectedAction) => {
+      expect(actions.some((action) => action.type === expectedAction));
     });
   });
 
@@ -89,7 +89,7 @@ describe("AddChassisForm", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" }
+            { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
           <AddChassisForm />

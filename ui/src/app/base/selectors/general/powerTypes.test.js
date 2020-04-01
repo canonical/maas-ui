@@ -16,7 +16,7 @@ describe("powerTypes selectors", () => {
               field_type: "string",
               choices: [],
               default: "",
-              scope: "bmc"
+              scope: "bmc",
             },
             {
               name: "node_outlet",
@@ -25,7 +25,7 @@ describe("powerTypes selectors", () => {
               field_type: "string",
               choices: [],
               default: "",
-              scope: "node"
+              scope: "node",
             },
             {
               name: "power_on_delay",
@@ -34,12 +34,12 @@ describe("powerTypes selectors", () => {
               field_type: "string",
               choices: [],
               default: "5",
-              scope: "bmc"
-            }
+              scope: "bmc",
+            },
           ],
           missing_packages: [],
-          queryable: false
-        }
+          queryable: false,
+        },
       ];
       const state = {
         general: {
@@ -47,9 +47,9 @@ describe("powerTypes selectors", () => {
             data,
             errors: {},
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(powerTypes.get(state)).toStrictEqual(data);
     });
@@ -64,9 +64,9 @@ describe("powerTypes selectors", () => {
             data: [],
             errors: {},
             loaded: false,
-            loading
-          }
-        }
+            loading,
+          },
+        },
       };
       expect(powerTypes.loading(state)).toStrictEqual(loading);
     });
@@ -81,9 +81,9 @@ describe("powerTypes selectors", () => {
             data: [],
             errors: {},
             loaded,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(powerTypes.loaded(state)).toStrictEqual(loaded);
     });
@@ -98,9 +98,9 @@ describe("powerTypes selectors", () => {
             data: [],
             errors,
             loaded: true,
-            loading: false
-          }
-        }
+            loading: false,
+          },
+        },
       };
       expect(powerTypes.errors(state)).toStrictEqual(errors);
     });

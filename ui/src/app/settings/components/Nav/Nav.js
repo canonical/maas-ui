@@ -11,34 +11,34 @@ export const Nav = () => (
           { path: "configuration/general", label: "General" },
           {
             path: "configuration/commissioning",
-            label: "Commissioning"
+            label: "Commissioning",
           },
           { path: "configuration/deploy", label: "Deploy" },
           {
             path: "configuration/kernel-parameters",
-            label: "Kernel parameters"
-          }
-        ]
+            label: "Kernel parameters",
+          },
+        ],
       },
       {
         path: "users",
-        label: "Users"
+        label: "Users",
       },
       {
         label: "Images",
         subNav: [
           { path: "images/ubuntu", label: "Ubuntu" },
           { path: "images/windows", label: "Windows" },
-          { path: "images/vmware", label: "VMware" }
-        ]
+          { path: "images/vmware", label: "VMware" },
+        ],
       },
       {
         path: "license-keys",
-        label: "License keys"
+        label: "License keys",
       },
       {
         path: "storage",
-        label: "Storage"
+        label: "Storage",
       },
       {
         label: "Network",
@@ -49,28 +49,28 @@ export const Nav = () => (
           { path: "network/syslog", label: "Syslog" },
           {
             path: "network/network-discovery",
-            label: "Network discovery"
-          }
-        ]
+            label: "Network discovery",
+          },
+        ],
       },
       {
         label: "Scripts",
         subNav: [
           {
             path: "scripts/commissioning",
-            label: "Commissioning scripts"
+            label: "Commissioning scripts",
           },
-          { path: "scripts/testing", label: "Testing scripts" }
-        ]
+          { path: "scripts/testing", label: "Testing scripts" },
+        ],
       },
       {
         path: "dhcp",
-        label: "DHCP snippets"
+        label: "DHCP snippets",
       },
       {
         path: "repositories",
-        label: "Package repos"
-      }
+        label: "Package repos",
+      },
     ]}
   />
 );

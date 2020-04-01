@@ -13,7 +13,7 @@ import {
   watchDeleteScript,
   watchFetchScripts,
   watchUploadScript,
-  watchAddMachineChassis
+  watchAddMachineChassis,
 } from "./app/base/sagas";
 
 export default function* rootSaga() {
@@ -30,6 +30,6 @@ export default function* rootSaga() {
     watchDeleteScript(),
     watchFetchScripts(),
     watchUploadScript(),
-    watchAddMachineChassis()
+    watchAddMachineChassis(),
   ]);
 }

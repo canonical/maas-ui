@@ -19,7 +19,7 @@ const generateRows = (
   dispatch,
   setDeleting
 ) =>
-  licenseKeys.map(licenseKey => {
+  licenseKeys.map((licenseKey) => {
     const expanded = expandedId === licenseKey.license_key;
 
     return {
@@ -27,10 +27,10 @@ const generateRows = (
       columns: [
         {
           content: licenseKey.osystem,
-          role: "rowheader"
+          role: "rowheader",
         },
         {
-          content: licenseKey.distro_series
+          content: licenseKey.distro_series,
         },
         {
           content: (
@@ -39,8 +39,8 @@ const generateRows = (
               onDelete={() => setExpandedId(licenseKey.license_key)}
             />
           ),
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ],
       expanded: expanded,
       expandedContent: expanded && (
@@ -58,8 +58,8 @@ const generateRows = (
       key: licenseKey.license_key,
       sortData: {
         osystem: licenseKey.osystem,
-        title: licenseKey.title
-      }
+        title: licenseKey.title,
+      },
     };
   });
 
@@ -76,7 +76,7 @@ const LicenseKeyList = () => {
   const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);
 
-  const licenseKeys = useSelector(state =>
+  const licenseKeys = useSelector((state) =>
     licenseKeysSelectors.search(state, searchText)
   );
 
@@ -121,22 +121,22 @@ const LicenseKeyList = () => {
           label: "Add license key",
           url: "/settings/license-keys/add",
           disabled: addBtnDisabled,
-          tooltip
-        }
+          tooltip,
+        },
       ]}
       headers={[
         {
           content: "Operating System",
-          sortKey: "osystem"
+          sortKey: "osystem",
         },
         {
           content: "Distro Series",
-          sortKey: "distro_series"
+          sortKey: "distro_series",
         },
         {
           content: "Actions",
-          className: "u-align--right"
-        }
+          className: "u-align--right",
+        },
       ]}
       loaded={licenseKeysLoaded}
       loading={licenseKeysLoading}

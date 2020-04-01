@@ -14,16 +14,16 @@ describe("APIKeyList", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       token: {
         loading: false,
         loaded: true,
         items: [
           { id: 1, key: "ssh-rsa aabb", consumer: {} },
-          { id: 2, key: "ssh-rsa ccdd", consumer: {} }
-        ]
-      }
+          { id: 2, key: "ssh-rsa ccdd", consumer: {} },
+        ],
+      },
     };
   });
 
@@ -33,7 +33,7 @@ describe("APIKeyList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/api-keys", key: "testKey" }
+            { pathname: "/account/prefs/api-keys", key: "testKey" },
           ]}
         >
           <APIKeyList />

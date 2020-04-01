@@ -25,7 +25,7 @@ const FormikField = ({
 FormikField.propTypes = {
   component: PropTypes.func,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 
 export default FormikField;

@@ -8,14 +8,14 @@ describe("service reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_SERVICE_START", () => {
     expect(
       service(undefined, {
-        type: "FETCH_SERVICE_START"
+        type: "FETCH_SERVICE_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("service reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -33,14 +33,14 @@ describe("service reducer", () => {
         id: 1,
         name: "ntp_rack",
         status: "dead",
-        status_info: ""
+        status_info: "",
       },
       {
         id: 2,
         name: "http",
         status: "unknown",
-        status_info: ""
-      }
+        status_info: "",
+      },
     ];
     expect(
       service(
@@ -50,11 +50,11 @@ describe("service reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_SERVICE_SUCCESS",
-          payload
+          payload,
         }
       )
     ).toEqual({
@@ -63,7 +63,7 @@ describe("service reducer", () => {
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -76,11 +76,11 @@ describe("service reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           error: "Could not fetch services",
-          type: "FETCH_SERVICE_ERROR"
+          type: "FETCH_SERVICE_ERROR",
         }
       )
     ).toEqual({
@@ -89,7 +89,7 @@ describe("service reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

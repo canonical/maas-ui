@@ -14,13 +14,13 @@ describe("APIKeyEdit", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       token: {
         loading: false,
         loaded: true,
-        items: [{ id: 1, key: "ssh-rsa aabb", consumer: {} }]
-      }
+        items: [{ id: 1, key: "ssh-rsa aabb", consumer: {} }],
+      },
     };
   });
 
@@ -32,7 +32,7 @@ describe("APIKeyEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/api-keys/1", key: "testKey" }
+            { pathname: "/account/prefs/api-keys/1", key: "testKey" },
           ]}
         >
           <APIKeyEdit />
@@ -49,7 +49,7 @@ describe("APIKeyEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/api-keys/1", key: "testKey" }
+            { pathname: "/account/prefs/api-keys/1", key: "testKey" },
           ]}
         >
           <APIKeyEdit />
@@ -65,13 +65,13 @@ describe("APIKeyEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/account/prefs/api-keys/1/edit", key: "testKey" }
+            { pathname: "/account/prefs/api-keys/1/edit", key: "testKey" },
           ]}
         >
           <Route
             exact
             path="/account/prefs/api-keys/:id/edit"
-            component={props => <APIKeyEdit {...props} />}
+            component={(props) => <APIKeyEdit {...props} />}
           />
         </MemoryRouter>
       </Provider>

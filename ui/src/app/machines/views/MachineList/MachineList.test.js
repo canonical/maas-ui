@@ -15,23 +15,23 @@ describe("MachineList", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       general: {
         machineActions: {
           data: [],
           loaded: false,
-          loading: false
+          loading: false,
         },
         osInfo: {
           data: {
             osystems: [["ubuntu", "Ubuntu"]],
-            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']]
+            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           },
           errors: {},
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       machine: {
         errors: null,
@@ -43,11 +43,11 @@ describe("MachineList", () => {
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
-              status: scriptStatus.RUNNING
+              status: scriptStatus.RUNNING,
             },
             distro_series: "bionic",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             fqdn: "koala.example",
@@ -55,10 +55,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 8,
             memory_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             network_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             osystem: "ubuntu",
             owner: "admin",
@@ -72,24 +72,24 @@ describe("MachineList", () => {
             status_message: "",
             storage: 8,
             storage_test_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             testing_status: {
-              status: scriptStatus.PASSED
+              status: scriptStatus.PASSED,
             },
             system_id: "abc123",
-            zone: {}
+            zone: {},
           },
           {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             distro_series: "xenial",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             fqdn: "other.example",
@@ -97,10 +97,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 6,
             memory_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             network_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             osystem: "ubuntu",
             owner: "user",
@@ -114,24 +114,24 @@ describe("MachineList", () => {
             status_message: "",
             storage: 16,
             storage_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             testing_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             system_id: "def456",
-            zone: {}
+            zone: {},
           },
           {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             distro_series: "xenial",
             domain: {
-              name: "example"
+              name: "example",
             },
             extra_macs: [],
             fqdn: "other.example",
@@ -139,10 +139,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 6,
             memory_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             network_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             osystem: "ubuntu",
             owner: "user",
@@ -156,43 +156,43 @@ describe("MachineList", () => {
             status_message: "",
             storage: 16,
             storage_test_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             testing_status: {
-              status: scriptStatus.FAILED
+              status: scriptStatus.FAILED,
             },
             system_id: "ghi789",
-            zone: {}
-          }
+            zone: {},
+          },
         ],
-        selected: []
+        selected: [],
       },
       resourcepool: {
         loaded: true,
         items: [
           {
             id: 0,
-            name: "default"
+            name: "default",
           },
           {
             id: 1,
-            name: "Backup"
-          }
-        ]
+            name: "Backup",
+          },
+        ],
       },
       zone: {
         loaded: true,
         items: [
           {
             id: 0,
-            name: "default"
+            name: "default",
           },
           {
             id: 1,
-            name: "Backup"
-          }
-        ]
-      }
+            name: "Backup",
+          },
+        ],
+      },
     };
   });
 
@@ -222,7 +222,7 @@ describe("MachineList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
           <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
@@ -239,13 +239,13 @@ describe("MachineList", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" }
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
           <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
           <Route
             path="*"
-            render={props => {
+            render={(props) => {
               location = props.location;
               return null;
             }}
@@ -254,10 +254,7 @@ describe("MachineList", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("SearchBox")
-        .props()
-        .onChange("status:new");
+      wrapper.find("SearchBox").props().onChange("status:new");
     });
     expect(location.search).toBe("?status=new");
   });
@@ -276,18 +273,10 @@ describe("MachineList", () => {
     );
 
     expect(
-      wrapper
-        .find(".machine-list__group")
-        .at(0)
-        .find("strong")
-        .text()
+      wrapper.find(".machine-list__group").at(0).find("strong").text()
     ).toBe("Deployed");
     expect(
-      wrapper
-        .find(".machine-list__group")
-        .at(2)
-        .find("strong")
-        .text()
+      wrapper.find(".machine-list__group").at(2).find("strong").text()
     ).toBe("Releasing");
   });
 
@@ -306,10 +295,7 @@ describe("MachineList", () => {
 
     expect(wrapper.find("tr.machine-list__machine").length).toBe(3);
     // Click the button to toggle the group.
-    wrapper
-      .find(".machine-list__group button")
-      .at(0)
-      .simulate("click");
+    wrapper.find(".machine-list__group button").at(0).simulate("click");
     expect(wrapper.find("tr.machine-list__machine").length).toBe(1);
   });
 
@@ -327,11 +313,7 @@ describe("MachineList", () => {
     );
 
     expect(
-      wrapper
-        .find(".machine-list__group")
-        .at(0)
-        .find("strong")
-        .text()
+      wrapper.find(".machine-list__group").at(0).find("strong").text()
     ).toBe("Deployed");
     // Change grouping to owner
     wrapper
@@ -339,11 +321,7 @@ describe("MachineList", () => {
       .find("select")
       .simulate("change", { target: { value: "owner" } });
     expect(
-      wrapper
-        .find(".machine-list__group")
-        .at(0)
-        .find("strong")
-        .text()
+      wrapper.find(".machine-list__group").at(0).find("strong").text()
     ).toBe("admin");
   });
 
@@ -399,10 +377,7 @@ describe("MachineList", () => {
     );
     expect(wrapper.find("tr.machine-list__machine").length).toBe(3);
     // Click the button to toggle the group.
-    wrapper
-      .find(".machine-list__group button")
-      .at(0)
-      .simulate("click");
+    wrapper.find(".machine-list__group button").at(0).simulate("click");
     // Render another machine list, this time it should restore the
     // hidden group state.
     const store2 = mockStore(initialState);
@@ -441,10 +416,7 @@ describe("MachineList", () => {
         .text()
     ).toEqual(firstMachine.fqdn);
     // Click the MAC table header
-    wrapper
-      .find('[data-test="mac-header"]')
-      .find("button")
-      .simulate("click");
+    wrapper.find('[data-test="mac-header"]').find("button").simulate("click");
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -470,7 +442,7 @@ describe("MachineList", () => {
     // First machine has more cores than second machine
     const [firstMachine, secondMachine] = [
       state.machine.items[0],
-      state.machine.items[1]
+      state.machine.items[1],
     ];
 
     // Change grouping to none
@@ -478,12 +450,9 @@ describe("MachineList", () => {
       .find('Select[name="machine-groupings"]')
       .find("select")
       .simulate("change", { target: { value: "none" } });
-    expect(
-      wrapper
-        .find('[data-test="cores-header"]')
-        .find("i")
-        .exists()
-    ).toBe(false);
+    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
+      false
+    );
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -493,16 +462,10 @@ describe("MachineList", () => {
         .text()
     ).toEqual(firstMachine.fqdn);
     // Click the cores table header
-    wrapper
-      .find('[data-test="cores-header"]')
-      .find("button")
-      .simulate("click");
-    expect(
-      wrapper
-        .find('[data-test="cores-header"]')
-        .find("i")
-        .exists()
-    ).toBe(true);
+    wrapper.find('[data-test="cores-header"]').find("button").simulate("click");
+    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
+      true
+    );
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -527,7 +490,7 @@ describe("MachineList", () => {
     );
     const [firstMachine, secondMachine] = [
       state.machine.items[0],
-      state.machine.items[1]
+      state.machine.items[1],
     ];
 
     // Change grouping to none
@@ -541,17 +504,11 @@ describe("MachineList", () => {
       .find('[data-test="status-header"]')
       .find("button")
       .simulate("click");
+    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
+      true
+    );
     expect(
-      wrapper
-        .find('[data-test="status-header"]')
-        .find("i")
-        .exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .find('[data-test="status-header"]')
-        .find("i")
-        .props().className
+      wrapper.find('[data-test="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu");
     expect(
       wrapper
@@ -568,10 +525,7 @@ describe("MachineList", () => {
       .find("button")
       .simulate("click");
     expect(
-      wrapper
-        .find('[data-test="status-header"]')
-        .find("i")
-        .props().className
+      wrapper.find('[data-test="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu u-mirror--y");
     expect(
       wrapper
@@ -587,12 +541,9 @@ describe("MachineList", () => {
       .find('[data-test="status-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper
-        .find('[data-test="status-header"]')
-        .find("i")
-        .exists()
-    ).toBe(false);
+    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
+      false
+    );
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -716,10 +667,7 @@ describe("MachineList", () => {
         </Provider>
       );
       expect(
-        wrapper
-          .find("[data-test='name-column'] input")
-          .at(0)
-          .props().checked
+        wrapper.find("[data-test='name-column'] input").at(0).props().checked
       ).toBe(true);
     });
 
@@ -778,16 +726,16 @@ describe("MachineList", () => {
         .find("[data-test='name-column'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // Machine not selected => select machine
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: ["abc123"]
+        payload: ["abc123"],
       });
     });
 
@@ -808,16 +756,16 @@ describe("MachineList", () => {
         .find("[data-test='name-column'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // Machine selected => unselect machine
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: []
+        payload: [],
       });
     });
 
@@ -838,16 +786,16 @@ describe("MachineList", () => {
         .find("[data-test='group-cell'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // Not all machines in group selected => select machines in group
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: ["abc123", "ghi789"]
+        payload: ["abc123", "ghi789"],
       });
     });
 
@@ -868,16 +816,16 @@ describe("MachineList", () => {
         .find("[data-test='group-cell'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // All machines in group selected => unselect machines in group
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: ["def456"]
+        payload: ["def456"],
       });
     });
 
@@ -898,16 +846,16 @@ describe("MachineList", () => {
         .find("[data-test='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // Not all machines selected => select all machines
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: ["abc123", "def456", "ghi789"]
+        payload: ["abc123", "def456", "ghi789"],
       });
     });
 
@@ -928,16 +876,16 @@ describe("MachineList", () => {
         .find("[data-test='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id }
+          target: { name: state.machine.items[0].system_id },
         });
       // All machines already selected => unselect all machines
       expect(
         store
           .getActions()
-          .find(action => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "SET_SELECTED_MACHINES")
       ).toStrictEqual({
         type: "SET_SELECTED_MACHINES",
-        payload: []
+        payload: [],
       });
     });
   });

@@ -15,19 +15,19 @@ describe("SideNav", () => {
           { path: "configuration/general", label: "General" },
           {
             path: "configuration/commissioning",
-            label: "Commissioning"
+            label: "Commissioning",
           },
           { path: "configuration/deploy", label: "Deploy" },
           {
             path: "configuration/kernel-parameters",
-            label: "Kernel parameters"
-          }
-        ]
+            label: "Kernel parameters",
+          },
+        ],
       },
       {
         path: "users",
-        label: "Users"
-      }
+        label: "Users",
+      },
     ];
   });
   it("renders", () => {
@@ -37,7 +37,7 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={props => <SideNav {...props} items={items} />}
+          component={(props) => <SideNav {...props} items={items} />}
           path="/settings"
         />
       </MemoryRouter>
@@ -52,7 +52,7 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={props => <SideNav {...props} items={items} />}
+          component={(props) => <SideNav {...props} items={items} />}
           path="/settings"
         />
       </MemoryRouter>

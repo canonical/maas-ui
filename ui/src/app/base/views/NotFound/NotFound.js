@@ -24,7 +24,7 @@ const NotFound = ({ includeSection = false }) => {
 };
 
 NotFound.propTypes = {
-  includeSection: PropTypes.bool
+  includeSection: PropTypes.bool,
 };
 
 export default NotFound;

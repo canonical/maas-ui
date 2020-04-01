@@ -4,7 +4,7 @@ import React from "react";
 
 import { useDhcpTarget } from "app/settings/hooks";
 
-const generateURL = url => `${process.env.REACT_APP_BASENAME}/${url}`;
+const generateURL = (url) => `${process.env.REACT_APP_BASENAME}/${url}`;
 
 const DhcpTarget = ({ nodeId, subnetId }) => {
   const { loading, loaded, target, type } = useDhcpTarget(nodeId, subnetId);
@@ -27,7 +27,7 @@ const DhcpTarget = ({ nodeId, subnetId }) => {
 
 DhcpTarget.propTypes = {
   nodeId: PropTypes.string,
-  subnetId: PropTypes.number
+  subnetId: PropTypes.number,
 };
 
 export default DhcpTarget;

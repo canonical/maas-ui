@@ -8,14 +8,14 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_PACKAGEREPOSITORY_START", () => {
     expect(
       packagerepository(undefined, {
-        type: "FETCH_PACKAGEREPOSITORY_START"
+        type: "FETCH_PACKAGEREPOSITORY_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,11 +36,11 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_PACKAGEREPOSITORY_SUCCESS",
-          payload: [1, 2, 3]
+          payload: [1, 2, 3],
         }
       )
     ).toEqual({
@@ -49,7 +49,7 @@ describe("packagerepository reducer", () => {
       loaded: true,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -62,10 +62,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_PACKAGEREPOSITORY_START"
+          type: "CREATE_PACKAGEREPOSITORY_START",
         }
       )
     ).toEqual({
@@ -74,7 +74,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -87,10 +87,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "CREATE_PACKAGEREPOSITORY_SUCCESS"
+          type: "CREATE_PACKAGEREPOSITORY_SUCCESS",
         }
       )
     ).toEqual({
@@ -99,7 +99,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -112,11 +112,11 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not create repository",
-          type: "CREATE_PACKAGEREPOSITORY_ERROR"
+          type: "CREATE_PACKAGEREPOSITORY_ERROR",
         }
       )
     ).toEqual({
@@ -125,7 +125,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -139,11 +139,11 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 2, name: "repo2" },
-          type: "CREATE_PACKAGEREPOSITORY_NOTIFY"
+          type: "CREATE_PACKAGEREPOSITORY_NOTIFY",
         }
       )
     ).toEqual({
@@ -151,12 +151,12 @@ describe("packagerepository reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "repo1" },
-        { id: 2, name: "repo2" }
+        { id: 2, name: "repo2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -169,10 +169,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "UPDATE_PACKAGEREPOSITORY_START"
+          type: "UPDATE_PACKAGEREPOSITORY_START",
         }
       )
     ).toEqual({
@@ -181,7 +181,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -194,10 +194,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "UPDATE_PACKAGEREPOSITORY_SUCCESS"
+          type: "UPDATE_PACKAGEREPOSITORY_SUCCESS",
         }
       )
     ).toEqual({
@@ -206,7 +206,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -219,11 +219,11 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not update repository",
-          type: "UPDATE_PACKAGEREPOSITORY_ERROR"
+          type: "UPDATE_PACKAGEREPOSITORY_ERROR",
         }
       )
     ).toEqual({
@@ -232,7 +232,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -244,16 +244,16 @@ describe("packagerepository reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "repo1" },
-            { id: 2, name: "repo2" }
+            { id: 2, name: "repo2" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 1, name: "newName" },
-          type: "UPDATE_PACKAGEREPOSITORY_NOTIFY"
+          type: "UPDATE_PACKAGEREPOSITORY_NOTIFY",
         }
       )
     ).toEqual({
@@ -261,12 +261,12 @@ describe("packagerepository reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "newName" },
-        { id: 2, name: "repo2" }
+        { id: 2, name: "repo2" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -279,10 +279,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_PACKAGEREPOSITORY_START"
+          type: "DELETE_PACKAGEREPOSITORY_START",
         }
       )
     ).toEqual({
@@ -291,7 +291,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -304,10 +304,10 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
-          type: "DELETE_PACKAGEREPOSITORY_SUCCESS"
+          type: "DELETE_PACKAGEREPOSITORY_SUCCESS",
         }
       )
     ).toEqual({
@@ -316,7 +316,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: true,
-      saving: false
+      saving: false,
     });
   });
 
@@ -329,11 +329,11 @@ describe("packagerepository reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not delete repository",
-          type: "DELETE_PACKAGEREPOSITORY_ERROR"
+          type: "DELETE_PACKAGEREPOSITORY_ERROR",
         }
       )
     ).toEqual({
@@ -342,7 +342,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -354,16 +354,16 @@ describe("packagerepository reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "repo1" },
-            { id: 2, name: "repo2" }
+            { id: 2, name: "repo2" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: 2,
-          type: "DELETE_PACKAGEREPOSITORY_NOTIFY"
+          type: "DELETE_PACKAGEREPOSITORY_NOTIFY",
         }
       )
     ).toEqual({
@@ -373,7 +373,7 @@ describe("packagerepository reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

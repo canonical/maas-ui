@@ -17,13 +17,13 @@ describe("TakeActionMenu", () => {
           data: [],
           errors: {},
           loaded: true,
-          loading: false
-        }
+          loading: false,
+        },
       },
       machine: {
         items: [],
-        selected: []
-      }
+        selected: [],
+      },
     };
   });
 
@@ -48,7 +48,7 @@ describe("TakeActionMenu", () => {
   it("is enabled if at least one machine selected", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] }
+      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] },
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -72,13 +72,13 @@ describe("TakeActionMenu", () => {
     state.general.machineActions.data = [
       { name: "lifecycle1", title: "Lifecycle 1", type: "lifecycle" },
       { name: "lifecycle2", title: "Lifecycle 2", type: "lifecycle" },
-      { name: "lifecycle3", title: "Lifecycle 3", type: "lifecycle" }
+      { name: "lifecycle3", title: "Lifecycle 3", type: "lifecycle" },
     ];
     // No machine can perform "lifecycle3" action
     state.machine.items = [
       { system_id: "a", actions: ["lifecycle1", "lifecycle2"] },
       { system_id: "b", actions: ["lifecycle1"] },
-      { system_id: "c", actions: ["other"] }
+      { system_id: "c", actions: ["other"] },
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -104,10 +104,7 @@ describe("TakeActionMenu", () => {
     );
     // Lifecycle 3 action displays, but is disabled
     expect(
-      wrapper
-        .find("button.p-contextual-menu__link")
-        .at(2)
-        .props().disabled
+      wrapper.find("button.p-contextual-menu__link").at(2).props().disabled
     ).toBe(true);
   });
 
@@ -117,13 +114,13 @@ describe("TakeActionMenu", () => {
     state.general.machineActions.data = [
       { name: "on", title: "Power on...", type: "power" },
       { name: "off", title: "Power off...", type: "power" },
-      { name: "house", title: "Power house...", type: "power" }
+      { name: "house", title: "Power house...", type: "power" },
     ];
     // No machine can perform "house" action
     state.machine.items = [
       { system_id: "a", actions: ["on", "off"] },
       { system_id: "b", actions: ["on"] },
-      { system_id: "c", actions: ["off"] }
+      { system_id: "c", actions: ["off"] },
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -151,13 +148,13 @@ describe("TakeActionMenu", () => {
     state.general.machineActions.data = [
       { name: "commission", title: "Commission...", type: "lifecycle" },
       { name: "release", title: "Release...", type: "lifecycle" },
-      { name: "deploy", title: "Deploy...", type: "lifecycle" }
+      { name: "deploy", title: "Deploy...", type: "lifecycle" },
     ];
     // 3 commission, 2 release, 1 deploy
     state.machine.items = [
       { system_id: "a", actions: ["commission", "release", "deploy"] },
       { system_id: "b", actions: ["commission", "release"] },
-      { system_id: "c", actions: ["commission"] }
+      { system_id: "c", actions: ["commission"] },
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -184,7 +181,7 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       { name: "action1", title: "Action 1", type: "power" },
-      { name: "action2", title: "Action 2", type: "power" }
+      { name: "action2", title: "Action 2", type: "power" },
     ];
     // No machine can perform "lifecycle3" action
     state.machine.items = [{ system_id: "a", actions: ["action1"] }];
@@ -218,7 +215,7 @@ describe("TakeActionMenu", () => {
       { name: "lock", title: "Lock...", type: "lock" },
       { name: "set-pool", title: "Set pool...", type: "misc" },
       { name: "set-zone", title: "Set zone...", type: "misc" },
-      { name: "delete", title: "Delete...", type: "misc" }
+      { name: "delete", title: "Delete...", type: "misc" },
     ];
     state.machine.items = [
       {
@@ -231,9 +228,9 @@ describe("TakeActionMenu", () => {
           "lock",
           "set-pool",
           "set-zone",
-          "delete"
-        ]
-      }
+          "delete",
+        ],
+      },
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -258,7 +255,7 @@ describe("TakeActionMenu", () => {
   it("fires setSelectedAction function on action button click", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "commission", title: "Commission...", type: "lifecycle" }
+      { name: "commission", title: "Commission...", type: "lifecycle" },
     ];
     state.machine.items = [{ system_id: "a", actions: ["commission"] }];
     state.machine.selected = ["a"];

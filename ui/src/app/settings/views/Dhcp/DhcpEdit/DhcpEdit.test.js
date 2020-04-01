@@ -14,7 +14,7 @@ describe("DhcpEdit", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       controller: { items: [] },
       device: { items: [] },
@@ -26,22 +26,22 @@ describe("DhcpEdit", () => {
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
-            value: "lease 10"
+            value: "lease 10",
           },
           {
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39"
-          }
+            updated: "Thu, 15 Aug. 2019 06:21:39",
+          },
         ],
         loaded: true,
         loading: false,
         saving: false,
-        saved: false
+        saved: false,
       },
       machine: { items: [] },
-      subnet: { items: [] }
+      subnet: { items: [] },
     };
   });
 
@@ -53,7 +53,7 @@ describe("DhcpEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/dhcp/1/edit", key: "testKey" }
+            { pathname: "/settings/dhcp/1/edit", key: "testKey" },
           ]}
         >
           <DhcpEdit />
@@ -69,7 +69,7 @@ describe("DhcpEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/dhcp/99999/edit", key: "testKey" }
+            { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
           ]}
         >
           <DhcpEdit />
@@ -85,13 +85,13 @@ describe("DhcpEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/dhcp/1/edit", key: "testKey" }
+            { pathname: "/settings/dhcp/1/edit", key: "testKey" },
           ]}
         >
           <Route
             exact
             path="/settings/dhcp/:id/edit"
-            component={props => <DhcpEdit {...props} />}
+            component={(props) => <DhcpEdit {...props} />}
           />
         </MemoryRouter>
       </Provider>

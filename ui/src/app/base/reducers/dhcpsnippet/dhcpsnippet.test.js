@@ -8,14 +8,14 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
   it("should correctly reduce FETCH_DHCPSNIPPET_START", () => {
     expect(
       dhcpsnippet(undefined, {
-        type: "FETCH_DHCPSNIPPET_START"
+        type: "FETCH_DHCPSNIPPET_START",
       })
     ).toEqual({
       errors: {},
@@ -23,7 +23,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -36,26 +36,26 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
           payload: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
-          ]
+            { id: 2, name: "lease" },
+          ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "class" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -69,10 +69,10 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "UPDATE_DHCPSNIPPET_START"
+          type: "UPDATE_DHCPSNIPPET_START",
         }
       )
     ).toEqual({
@@ -82,7 +82,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -96,10 +96,10 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "CREATE_DHCPSNIPPET_START"
+          type: "CREATE_DHCPSNIPPET_START",
         }
       )
     ).toEqual({
@@ -109,7 +109,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -122,10 +122,10 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: false
+          saving: false,
         },
         {
-          type: "DELETE_DHCPSNIPPET_START"
+          type: "DELETE_DHCPSNIPPET_START",
         }
       )
     ).toEqual({
@@ -134,7 +134,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: true
+      saving: true,
     });
   });
 
@@ -148,11 +148,11 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { name: "Name not provided" },
-          type: "UPDATE_DHCPSNIPPET_ERROR"
+          type: "UPDATE_DHCPSNIPPET_ERROR",
         }
       )
     ).toEqual({
@@ -162,7 +162,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -176,11 +176,11 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: { name: "Name not provided" },
-          type: "CREATE_DHCPSNIPPET_ERROR"
+          type: "CREATE_DHCPSNIPPET_ERROR",
         }
       )
     ).toEqual({
@@ -190,7 +190,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -203,11 +203,11 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: true
+          saving: true,
         },
         {
           error: "Could not delete",
-          type: "DELETE_DHCPSNIPPET_ERROR"
+          type: "DELETE_DHCPSNIPPET_ERROR",
         }
       )
     ).toEqual({
@@ -216,7 +216,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -229,26 +229,26 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
           payload: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
-          ]
+            { id: 2, name: "lease" },
+          ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "class" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -261,26 +261,26 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
           payload: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
-          ]
+            { id: 2, name: "lease" },
+          ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "class" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -293,26 +293,26 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: true,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           type: "FETCH_DHCPSNIPPET_SUCCESS",
           payload: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
-          ]
+            { id: 2, name: "lease" },
+          ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
         { id: 1, name: "class" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loading: false,
       loaded: true,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -324,19 +324,19 @@ describe("dhcpsnippet reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
+            { id: 2, name: "lease" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: {
             id: 1,
-            name: "class2"
+            name: "class2",
           },
-          type: "UPDATE_DHCPSNIPPET_NOTIFY"
+          type: "UPDATE_DHCPSNIPPET_NOTIFY",
         }
       )
     ).toEqual({
@@ -344,12 +344,12 @@ describe("dhcpsnippet reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "class2" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -363,11 +363,11 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: { id: 2, name: "lease" },
-          type: "CREATE_DHCPSNIPPET_NOTIFY"
+          type: "CREATE_DHCPSNIPPET_NOTIFY",
         }
       )
     ).toEqual({
@@ -375,12 +375,12 @@ describe("dhcpsnippet reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "class" },
-        { id: 2, name: "lease" }
+        { id: 2, name: "lease" },
       ],
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -391,16 +391,16 @@ describe("dhcpsnippet reducer", () => {
           errors: {},
           items: [
             { id: 1, name: "class" },
-            { id: 2, name: "lease" }
+            { id: 2, name: "lease" },
           ],
           loaded: false,
           loading: false,
           saved: false,
-          saving: false
+          saving: false,
         },
         {
           payload: 2,
-          type: "DELETE_DHCPSNIPPET_NOTIFY"
+          type: "DELETE_DHCPSNIPPET_NOTIFY",
         }
       )
     ).toEqual({
@@ -409,7 +409,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 
@@ -422,10 +422,10 @@ describe("dhcpsnippet reducer", () => {
           loaded: false,
           loading: false,
           saved: true,
-          saving: true
+          saving: true,
         },
         {
-          type: "CLEANUP_DHCPSNIPPET"
+          type: "CLEANUP_DHCPSNIPPET",
         }
       )
     ).toEqual({
@@ -434,7 +434,7 @@ describe("dhcpsnippet reducer", () => {
       loaded: false,
       loading: false,
       saved: false,
-      saving: false
+      saving: false,
     });
   });
 });

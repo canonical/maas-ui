@@ -33,7 +33,7 @@ export const useLocation = () => {
   }
   return {
     location,
-    navigate
+    navigate,
   };
 };
 
@@ -42,7 +42,7 @@ export const useLocation = () => {
  * @param {*} value - Current value.
  * @returns {*} Previous value.
  */
-export const usePrevious = value => {
+export const usePrevious = (value) => {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -55,7 +55,7 @@ export const usePrevious = value => {
  * for use in formik forms.
  * @param {Object} errors - The errors object in redux state.
  */
-export const useFormikErrors = errors => {
+export const useFormikErrors = (errors) => {
   const { setFieldError, setFieldTouched, values } = useFormikContext();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
@@ -65,7 +65,7 @@ export const useFormikErrors = errors => {
       typeof errors === "object" &&
       !simpleObjectEquality(errors, previousErrors)
     ) {
-      Object.keys(errors).forEach(field => {
+      Object.keys(errors).forEach((field) => {
         setFieldError(field, errors[field].join(" "));
         setFieldTouched(field, true, false);
       });
@@ -82,7 +82,7 @@ export const useFormikErrors = errors => {
  */
 export const useFormikFormDisabled = ({
   allowAllEmpty = false,
-  allowUnchanged = false
+  allowUnchanged = false,
 }) => {
   const { initialValues, errors, values } = useFormikContext();
   let hasErrors = false;
@@ -91,7 +91,7 @@ export const useFormikFormDisabled = ({
   }
   if (allowAllEmpty) {
     // If all fields are allowed to be empty then remove the from the values.
-    Object.keys(values).forEach(key => {
+    Object.keys(values).forEach((key) => {
       if (!values[key]) {
         delete values[key];
       }
@@ -140,7 +140,7 @@ export const useAddMessage = (
  * Set the browser window title.
  * @param {String} title - The title to set.
  */
-export const useWindowTitle = title => {
+export const useWindowTitle = (title) => {
   const maasName = useSelector(configSelectors.maasName);
   const maasNamePart = maasName ? `${maasName} ` : "";
   const titlePart = title ? `${title} | ` : "";
@@ -181,14 +181,14 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
   const generalMachineActions = useSelector(
     generalSelectors.machineActions.get
   );
-  const machine = useSelector(state =>
+  const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   let actionLinks = [];
-  actions.forEach(action => {
+  actions.forEach((action) => {
     if (machine.actions.includes(action)) {
       let actionLabel = action;
-      generalMachineActions.forEach(machineAction => {
+      generalMachineActions.forEach((machineAction) => {
         if (machineAction.name === action) {
           actionLabel = machineAction.title;
         }
@@ -200,7 +200,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
           const actionMethod = kebabToCamelCase(action);
           dispatch(machineActions[actionMethod](systemId));
           onClick && onClick();
-        }
+        },
       });
     }
   });
@@ -208,8 +208,8 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     return [
       {
         children: noneMessage,
-        disabled: true
-      }
+        disabled: true,
+      },
     ];
   }
   return actionLinks;
@@ -219,9 +219,9 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
  * Simple hook for visibility toggles.
  * @param {Bool} initialValue - initial toggle value.
  */
-export const useVisible = initialValue => {
+export const useVisible = (initialValue) => {
   const [value, setValue] = useState(initialValue);
-  const toggleValue = evt => {
+  const toggleValue = (evt) => {
     evt.preventDefault();
     setValue(!value);
   };
@@ -264,11 +264,11 @@ export const usePowerParametersSchema = (powerType, generateSchemaFunc) => {
  * @param {Array} powerTypes - Power types to collate parameters from.
  * @returns {Object} All possible power parameters from given power types.
  */
-export const useAllPowerParameters = powerTypes =>
+export const useAllPowerParameters = (powerTypes) =>
   useMemo(
     () =>
       powerTypes.reduce((parameters, powerType) => {
-        powerType.fields.forEach(field => {
+        powerType.fields.forEach((field) => {
           if (!(field.name in parameters)) {
             parameters[field.name] = field.default;
           }

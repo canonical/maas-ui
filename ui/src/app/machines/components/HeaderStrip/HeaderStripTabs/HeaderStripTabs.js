@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   machine as machineActions,
-  resourcepool as poolActions
+  resourcepool as poolActions,
 } from "app/base/actions";
 import {
   machine as machineSelectors,
-  resourcepool as resourcePoolSelectors
+  resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
 import { useRouter } from "app/base/hooks";
 import Tabs from "app/base/components/Tabs";
@@ -40,15 +40,15 @@ export const HeaderStripTabs = () => {
                 "Machine",
                 machines.length
               )}`,
-              path: "/machines"
+              path: "/machines",
             },
             {
               active: location.pathname.startsWith("/pool"),
               label: `${
                 resourcePoolsLoaded ? `${resourcePools.length} ` : ""
               }${pluralize("Resource pool", resourcePools.length)}`,
-              path: "/pools"
-            }
+              path: "/pools",
+            },
           ]}
           listClassName="u-no-margin--bottom"
           noBorder

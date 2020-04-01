@@ -14,12 +14,12 @@ describe("HeaderStripTabs", () => {
     initialState = {
       machine: {
         loaded: true,
-        items: [1]
+        items: [1],
       },
       resourcepool: {
         loaded: true,
-        items: [1, 2]
-      }
+        items: [1, 2],
+      },
     };
   });
 
@@ -38,17 +38,7 @@ describe("HeaderStripTabs", () => {
       </Provider>
     );
     const tabs = wrapper.find('[data-test="machine-list-tabs"]');
-    expect(
-      tabs
-        .find("Link")
-        .at(0)
-        .text()
-    ).toBe("1 Machine");
-    expect(
-      tabs
-        .find("Link")
-        .at(1)
-        .text()
-    ).toBe("2 Resource pools");
+    expect(tabs.find("Link").at(0).text()).toBe("1 Machine");
+    expect(tabs.find("Link").at(1).text()).toBe("2 Resource pools");
   });
 });

@@ -15,7 +15,7 @@ describe("UserForm", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
@@ -25,8 +25,8 @@ describe("UserForm", () => {
         loaded: true,
         loading: false,
         saved: false,
-        saving: false
-      }
+        saving: false,
+      },
     };
   });
 
@@ -54,8 +54,8 @@ describe("UserForm", () => {
     wrapper.unmount();
     expect(store.getActions()).toEqual([
       {
-        type: "CLEANUP_USER"
-      }
+        type: "CLEANUP_USER",
+      },
     ]);
   });
 
@@ -85,29 +85,25 @@ describe("UserForm", () => {
               last_name: "Miss Wallaby",
               password1: "test1234",
               password2: "test1234",
-              username: "admin"
+              username: "admin",
             }}
           />
         </MemoryRouter>
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("UserForm")
-        .at(1)
-        .props()
-        .onSave(
-          {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          },
-          {},
-          true
-        )
+      wrapper.find("UserForm").at(1).props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        {},
+        true
+      )
     );
     expect(store.getActions()).toEqual([
       {
@@ -119,14 +115,14 @@ describe("UserForm", () => {
             fullName: "Miss Wallaby",
             password: "test1234",
             passwordConfirm: "test1234",
-            username: "admin"
-          }
+            username: "admin",
+          },
         },
         meta: {
           model: "user",
-          method: "update"
-        }
-      }
+          method: "update",
+        },
+      },
     ]);
   });
 
@@ -140,21 +136,17 @@ describe("UserForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("UserForm")
-        .at(1)
-        .props()
-        .onSave(
-          {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin"
-          },
-          {}
-        )
+      wrapper.find("UserForm").at(1).props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        {}
+      )
     );
     expect(store.getActions()).toEqual([
       {
@@ -166,14 +158,14 @@ describe("UserForm", () => {
             fullName: "Miss Wallaby",
             password: "test1234",
             passwordConfirm: "test1234",
-            username: "admin"
-          }
+            username: "admin",
+          },
         },
         meta: {
           model: "user",
-          method: "create"
-        }
-      }
+          method: "create",
+        },
+      },
     ]);
   });
 
@@ -188,8 +180,8 @@ describe("UserForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some(action => action.type === "CLEANUP_USER")).toBe(true);
-    expect(actions.some(action => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 
   it("displays a checkbox for making the user a MAAS admin", () => {

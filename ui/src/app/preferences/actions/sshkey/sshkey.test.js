@@ -6,8 +6,8 @@ describe("sshkey actions", () => {
       type: "FETCH_SSHKEY",
       meta: {
         model: "sshkey",
-        method: "list"
-      }
+        method: "list",
+      },
     });
   });
 
@@ -16,13 +16,13 @@ describe("sshkey actions", () => {
       type: "CREATE_SSHKEY",
       meta: {
         model: "sshkey",
-        method: "create"
+        method: "create",
       },
       payload: {
         params: {
-          key: "id-rsa..."
-        }
-      }
+          key: "id-rsa...",
+        },
+      },
     });
   });
 
@@ -31,14 +31,14 @@ describe("sshkey actions", () => {
       type: "IMPORT_SSHKEY",
       meta: {
         model: "sshkey",
-        method: "import_keys"
+        method: "import_keys",
       },
       payload: {
         params: {
           auth_id: "wallaroo",
-          protocol: "lp"
-        }
-      }
+          protocol: "lp",
+        },
+      },
     });
   });
 
@@ -47,19 +47,19 @@ describe("sshkey actions", () => {
       type: "DELETE_SSHKEY",
       meta: {
         model: "sshkey",
-        method: "delete"
+        method: "delete",
       },
       payload: {
         params: {
-          id: 808
-        }
-      }
+          id: 808,
+        },
+      },
     });
   });
 
   it("can clean up", () => {
     expect(sshkey.cleanup()).toEqual({
-      type: "CLEANUP_SSHKEY"
+      type: "CLEANUP_SSHKEY",
     });
   });
 });

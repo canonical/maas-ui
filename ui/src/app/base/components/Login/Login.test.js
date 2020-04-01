@@ -15,9 +15,9 @@ describe("Login", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
-      status: {}
+      status: {},
     };
   });
 
@@ -69,22 +69,19 @@ describe("Login", () => {
       </Provider>
     );
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          username: "koala",
-          password: "gumtree"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        username: "koala",
+        password: "gumtree",
+      })
     );
     expect(
-      store.getActions().find(action => action.type === "LOGIN")
+      store.getActions().find((action) => action.type === "LOGIN")
     ).toStrictEqual({
       type: "LOGIN",
       payload: {
         username: "koala",
-        password: "gumtree"
-      }
+        password: "gumtree",
+      },
     });
   });
 });

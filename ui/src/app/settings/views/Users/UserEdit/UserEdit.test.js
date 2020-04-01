@@ -14,7 +14,7 @@ describe("UserEdit", () => {
   beforeEach(() => {
     state = {
       config: {
-        items: []
+        items: [],
       },
       status: {},
       user: {
@@ -30,7 +30,7 @@ describe("UserEdit", () => {
             is_superuser: true,
             last_name: "",
             sshkeys_count: 0,
-            username: "admin"
+            username: "admin",
           },
           {
             email: "user@example.com",
@@ -39,10 +39,10 @@ describe("UserEdit", () => {
             is_superuser: false,
             last_name: "",
             sshkeys_count: 0,
-            username: "user1"
-          }
-        ]
-      }
+            username: "user1",
+          },
+        ],
+      },
     };
   });
 
@@ -83,13 +83,13 @@ describe("UserEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/users/1/edit", key: "testKey" }
+            { pathname: "/settings/users/1/edit", key: "testKey" },
           ]}
         >
           <Route
             exact
             path="/settings/users/:id/edit"
-            component={props => <UserEdit {...props} />}
+            component={(props) => <UserEdit {...props} />}
           />
         </MemoryRouter>
       </Provider>

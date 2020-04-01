@@ -19,20 +19,20 @@ describe("SetZoneForm", () => {
         loaded: true,
         items: [
           {
-            system_id: "abc123"
+            system_id: "abc123",
           },
           {
-            system_id: "def456"
-          }
+            system_id: "def456",
+          },
         ],
-        selected: []
+        selected: [],
       },
       zone: {
         items: [
           { id: 0, name: "default" },
-          { id: 1, name: "zone-1" }
-        ]
-      }
+          { id: 1, name: "zone-1" },
+        ],
+      },
     };
   });
 
@@ -50,48 +50,45 @@ describe("SetZoneForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          zone: "zone-1"
-        })
+      wrapper.find("Formik").props().onSubmit({
+        zone: "zone-1",
+      })
     );
     expect(
-      store.getActions().filter(action => action.type === "SET_MACHINE_ZONE")
+      store.getActions().filter((action) => action.type === "SET_MACHINE_ZONE")
     ).toStrictEqual([
       {
         type: "SET_MACHINE_ZONE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "set-zone",
             extra: {
-              zone_id: 1
+              zone_id: 1,
             },
-            system_id: "abc123"
-          }
-        }
+            system_id: "abc123",
+          },
+        },
       },
       {
         type: "SET_MACHINE_ZONE",
         meta: {
           model: "machine",
-          method: "action"
+          method: "action",
         },
         payload: {
           params: {
             action: "set-zone",
             extra: {
-              zone_id: 1
+              zone_id: 1,
             },
-            system_id: "def456"
-          }
-        }
-      }
+            system_id: "def456",
+          },
+        },
+      },
     ]);
   });
 });

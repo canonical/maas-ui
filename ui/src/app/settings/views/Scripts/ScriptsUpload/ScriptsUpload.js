@@ -28,7 +28,7 @@ const ScriptsUpload = ({ type }) => {
 
   useEffect(() => {
     if (hasErrors) {
-      Object.keys(errors).forEach(key => {
+      Object.keys(errors).forEach((key) => {
         dispatch(
           messages.add(
             `Error uploading ${savedScript}: ${errors[key]}`,
@@ -78,12 +78,12 @@ const ScriptsUpload = ({ type }) => {
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject
+    isDragReject,
   } = useDropzone({
     onDrop,
     accept: "text/*, application/x-csh, application/x-sh",
     maxSize: MAX_SIZE_BYTES,
-    multiple: false
+    multiple: false,
   });
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const ScriptsUpload = ({ type }) => {
           className={classNames("scripts-upload", {
             "scripts-upload--active": isDragActive,
             "scripts-upload--accept": isDragAccept,
-            "scripts-upload--reject": isDragReject
+            "scripts-upload--reject": isDragReject,
           })}
         >
           <input {...getInputProps()} />
@@ -125,7 +125,7 @@ const ScriptsUpload = ({ type }) => {
       </Row>
       <Row>
         <Form
-          onSubmit={e => {
+          onSubmit={(e) => {
             e.preventDefault();
             dispatch(scriptActions.cleanup());
             if (script) {
@@ -158,7 +158,7 @@ const ScriptsUpload = ({ type }) => {
 };
 
 ScriptsUpload.propTypes = {
-  type: PropTypes.oneOf(["commissioning", "testing"]).isRequired
+  type: PropTypes.oneOf(["commissioning", "testing"]).isRequired,
 };
 
 export default ScriptsUpload;
