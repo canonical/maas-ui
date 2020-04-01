@@ -74,7 +74,7 @@
     "mock-socket": "9.0.3",
     "node-sass": "4.13.1",
     "npm-package-json-lint": "4.6.0",
-    "prettier": "1.19.1",
+    "prettier": "2.0.2",
     "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.0-rc.3"
   },
