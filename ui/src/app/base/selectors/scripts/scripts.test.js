@@ -136,4 +136,55 @@ describe("scripts selectors", () => {
       ]);
     });
   });
+
+  describe("testingWithUrl", () => {
+    it("returns testing scripts that contain a url parameter", () => {
+      const items = [
+        {
+          name: "commissioning script",
+          description: "a commissioning script",
+          parameters: {},
+          type: 0,
+        },
+        {
+          name: "testing script",
+          description: "a testing script",
+          parameters: {},
+          type: 2,
+        },
+        {
+          name: "testing script with url",
+          description: "this is the right testing script",
+          parameters: {
+            url: {
+              default: "www.website.come",
+              description: "url description",
+            },
+          },
+          type: 2,
+        },
+      ];
+      const state = {
+        scripts: {
+          loading: false,
+          loaded: true,
+          items,
+        },
+      };
+
+      expect(scripts.testingWithUrl(state)).toEqual([
+        {
+          name: "testing script with url",
+          description: "this is the right testing script",
+          parameters: {
+            url: {
+              default: "www.website.come",
+              description: "url description",
+            },
+          },
+          type: 2,
+        },
+      ]);
+    });
+  });
 });

@@ -38,6 +38,11 @@
     @include vf-list-item-divided;
   }
 
+  .tag-selector__dropdown-item-description {
+    @extend %small-text;
+    color: $color-mid-dark;
+  }
+
   .tag-selector__dropdown-button {
     border: 0;
     margin-bottom: 0;
