@@ -359,6 +359,23 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle tagging a machine", () => {
+    expect(machine.tag("abc123", ["tag1", "tag2"])).toEqual({
+      type: "TAG_MACHINE",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: "tag",
+          extra: { tags: ["tag1", "tag2"] },
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(machine.cleanup()).toEqual({
       type: "CLEANUP_MACHINE",
