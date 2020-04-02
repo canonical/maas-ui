@@ -2,7 +2,7 @@ import { Accordion, Button, List, Loader } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
   getCurrentFilters,
@@ -101,6 +101,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const filterOptions = useMemo(() => getFilters(machines), [machines]);
   const currentFilters = getCurrentFilters(searchText);
+  const [expandedSection, setExpandedSection] = useState();
   let sections;
   if (machinesLoaded) {
     sections = filterOrder.reduce((options, filter) => {
@@ -145,6 +146,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                 ))}
             />
           ),
+          key: filter,
         });
       }
       return options;
@@ -159,6 +161,9 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
         machinesLoaded ? (
           <Accordion
             className="filter-accordion__dropdown"
+            expanded={expandedSection}
+            externallyControlled
+            onExpandedChange={setExpandedSection}
             sections={sections}
           />
         ) : (
