@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 jobs:
   build:
     name: Test, build and lint
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install
+      - run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn lint
       - run: yarn build-all
       - run: yarn test
