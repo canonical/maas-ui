@@ -20,7 +20,7 @@ const reducer = createRootReducer(history);
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [
-  ...getDefaultMiddleware(),
+  ...getDefaultMiddleware({ thunk: false }),
   sagaMiddleware,
   routerMiddleware(history),
 ];
