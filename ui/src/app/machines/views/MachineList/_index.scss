@@ -13,6 +13,12 @@
     display: none;
   }
 
+  .machine-list__machine:last-child td {
+    // Force the cells in the last row to calculate their height.
+    // See: https://github.com/canonical-web-and-design/maas-ui/issues/935
+    min-height: 1px;
+  }
+
   .machine-list__machine:hover,
   .machine-list__machine--active {
     background-color: $color-x-light;
