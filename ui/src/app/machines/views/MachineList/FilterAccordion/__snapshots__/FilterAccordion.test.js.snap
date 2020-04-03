@@ -10,6 +10,8 @@ exports[`FilterAccordion renders 1`] = `
     dropdownContent={
       <Accordion
         className="filter-accordion__dropdown"
+        externallyControlled={true}
+        onExpandedChange={[Function]}
         sections={
           Array [
             Object {
@@ -31,6 +33,7 @@ exports[`FilterAccordion renders 1`] = `
                   ]
                 }
               />,
+              "key": "pool",
               "title": "Resource pool",
             },
             Object {
@@ -52,6 +55,7 @@ exports[`FilterAccordion renders 1`] = `
                   ]
                 }
               />,
+              "key": "zone",
               "title": "Zone",
             },
             Object {
@@ -73,6 +77,7 @@ exports[`FilterAccordion renders 1`] = `
                   ]
                 }
               />,
+              "key": "numa_nodes_count",
               "title": "NUMA nodes",
             },
             Object {
@@ -94,6 +99,7 @@ exports[`FilterAccordion renders 1`] = `
                   ]
                 }
               />,
+              "key": "sriov_support",
               "title": "SR-IOV support",
             },
             Object {
@@ -115,6 +121,7 @@ exports[`FilterAccordion renders 1`] = `
                   ]
                 }
               />,
+              "key": "link_speeds",
               "title": "Link speed",
             },
           ]

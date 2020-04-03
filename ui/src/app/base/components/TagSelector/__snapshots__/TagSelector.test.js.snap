@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagSelector renders and matches the snapshot when closed 1`] = `
+<div
+  className="tag-selector"
+>
+  <Label
+    onClick={[Function]}
+  >
+    Tags
+  </Label>
+  <Input
+    className="tag-selector__input"
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    placeholder="Select or create tags"
+    type="text"
+    value=""
+  />
+</div>
+`;
+
+exports[`TagSelector renders and matches the snapshot when opened 1`] = `
+<div
+  className="tag-selector"
+>
+  <Label
+    onClick={[Function]}
+  >
+    Tags
+  </Label>
+  <Input
+    className="tag-selector__input"
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    placeholder="Select or create tags"
+    type="text"
+    value=""
+  />
+  <div
+    className="tag-selector__dropdown"
+  >
+    <ul
+      className="tag-selector__dropdown-list"
+    >
+      <li
+        className="tag-selector__dropdown-item"
+        key="tag1"
+      >
+        <Button
+          appearance="base"
+          className="tag-selector__dropdown-button"
+          data-test="existing-tag"
+          onClick={[Function]}
+          type="button"
+        >
+          tag1
+        </Button>
+      </li>
+      <li
+        className="tag-selector__dropdown-item"
+        key="tag2"
+      >
+        <Button
+          appearance="base"
+          className="tag-selector__dropdown-button"
+          data-test="existing-tag"
+          onClick={[Function]}
+          type="button"
+        >
+          tag2
+        </Button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

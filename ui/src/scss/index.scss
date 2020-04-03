@@ -40,11 +40,13 @@
 @import "~app/base/components/Login";
 @import "~app/base/components/Section";
 @import "~app/base/components/TableMenu";
+@import "~app/base/components/TagSelector";
 @include ColumnToggle;
 @include FormCard;
 @include Login;
 @include Section;
 @include TableMenu;
+@include TagSelector;
 
 // machines
 @import "~app/machines/views/MachineList";

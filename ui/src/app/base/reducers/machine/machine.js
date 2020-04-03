@@ -61,6 +61,7 @@ const machine = produce(
       case "LOCK_MACHINE_ERROR":
       case "UNLOCK_MACHINE_ERROR":
       case "SET_MACHINE_POOL_ERROR":
+      case "TAG_MACHINE_ERROR":
       case "SET_MACHINE_ZONE_ERROR":
       case "TURN_MACHINE_OFF_ERROR":
       case "TURN_MACHINE_ON_ERROR":

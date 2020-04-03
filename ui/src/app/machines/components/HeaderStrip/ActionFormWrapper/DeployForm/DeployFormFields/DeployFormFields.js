@@ -86,7 +86,9 @@ export const DeployFormFields = () => {
           <p data-test="sshkeys-warning">
             <i className="p-icon--warning is-inline"></i>
             Login will not be possible because no SSH keys have been added to
-            your account. To add an SSH key, visit your{" "}
+            your account.
+            <br />
+            To add an SSH key, visit your{" "}
             <Link to="/account/prefs/ssh-keys">account page</Link>.
           </p>
         )}

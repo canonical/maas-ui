@@ -201,7 +201,7 @@
                                     </div>
                                 </div>
                                 <div class="row" ng-if="isSuperUser()">
-                                    <div class="u-sv1">
+                                    <div>
                                         <p class="u-no-margin--bottom">
                                             Additional installs
                                         </p>
@@ -212,18 +212,20 @@
                                             type="checkbox"
                                         >
                                         <label class="u-no-margin--bottom" for="installKVM">Register as MAAS KVM host</label>
-                                        <p class="u-sv-1 u-no-max-width" ng-if="!nodesManager.canBeKvmHost(tabs[tab].osSelection)">
+                                        <p class="u-sv-1" ng-if="!nodesManager.canBeKvmHost(tabs[tab].osSelection)">
                                             <i class="p-icon--warning"></i>&nbsp;Ubuntu 18.04 is required to create a KVM host.
                                         </p>
-                                        <p class="u-no-max-width u-no-margin--bottom">
+                                        <p class="u-sv-1">
                                             <a class="p-link--external" href="https://maas.io/docs/kvm-introduction" target="_blank">
                                                 About MAAS KVM hosts
                                             </a>
                                         </p>
+                                        <p ng-if="isSSHKeyWarning(tab)">
+                                            <i class="p-icon--warning">Warning:</i>
+                                            <span>Login will not be possible because no SSH keys have been added to your account.</span><br />
+                                            <span>To add an SSH key, visit <a href="{$ BASENAME $}{$ REACT_BASENAME $}/account/prefs/ssh-keys">your account page</a>.</span>
+                                        </p>
                                     </div>
-                                </div>
-                                <div class="row" ng-if="isSSHKeyWarning(tab)">
-                                    <i class="p-icon--warning">Warning:</i> Login will not be possible because no SSH keys have been added to your account. To add an SSH key, visit <a href="account/prefs/">your account page</a>.
                                 </div>
                             </div>
                             <div ng-if="tabs[tab].actionOption.name === 'release'">
