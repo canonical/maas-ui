@@ -34,7 +34,7 @@ import {
   filterLinkModes,
   filterEditInterface,
   filterSelectedInterfaces,
-  filterVLANNotOnFabric
+  filterVLANNotOnFabric,
 } from "./controllers/node_details_networking"; // TODO: fix export/namespace
 // prettier-ignore
 import {
@@ -134,7 +134,7 @@ import {
 import { NodeStorageController } from "./controllers/node_details_storage";
 import {
   NodeFilesystemsController,
-  NodeAddSpecialFilesystemController
+  NodeAddSpecialFilesystemController,
 } from "./controllers/node_details_storage_filesystems";
 import NodeDetailsController from "./controllers/node_details";
 import NodeEventsController from "./controllers/node_events";
@@ -193,7 +193,7 @@ import {
   maasObjErrors,
   maasObjSaving,
   maasObjShowSaving,
-  maasObjHideSaving
+  maasObjHideSaving,
 } from "./directives/maas_obj_form";
 import macAddress from "./directives/mac_address";
 import maasNavigationDropdown from "./directives/navigation_dropdown";
@@ -205,7 +205,7 @@ import { maasPodParameters } from "./directives/pod_parameters";
 import { maasCoresChart } from "./directives/cores_chart";
 import {
   maasPowerInput,
-  maasPowerParameters
+  maasPowerParameters,
 } from "./directives/power_parameters";
 import {
   maasPrefKeys,
@@ -213,7 +213,7 @@ import {
   maasPrefKeysAdd,
   maasPrefKey,
   maasPrefKeyDelete,
-  maasPrefKeyCopy
+  maasPrefKeyCopy,
 } from "./directives/pref_keys";
 import maasProxySettings from "./directives/proxy_settings";
 import maasReleaseName from "./directives/release_name";
@@ -267,13 +267,13 @@ function configureMaas(
   tagsInputConfigProvider.setDefaults("autoComplete", {
     minLength: 0,
     loadOnFocus: true,
-    loadOnEmpty: true
+    loadOnEmpty: true,
   });
 
   $locationProvider.hashPrefix("");
   $locationProvider.html5Mode({
     enabled: false,
-    requireBase: true
+    requireBase: true,
   });
 
   // Set the $httpProvider to send the csrftoken in the header of any
@@ -290,7 +290,7 @@ function configureMaas(
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
 function introRedirect($rootScope, $location, $window) {
-  $rootScope.$on("$routeChangeStart", function(event, next, current) {
+  $rootScope.$on("$routeChangeStart", function (event, next, current) {
     if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
         $location.path("/intro");
@@ -305,7 +305,7 @@ function introRedirect($rootScope, $location, $window) {
 
 /* @ngInject */
 function dashboardRedirect($rootScope, $location, $window) {
-  $rootScope.$on("$routeChangeStart", function(event, next, current) {
+  $rootScope.$on("$routeChangeStart", function (event, next, current) {
     // Only superusers currently have access to the dashboard
     if ($window.CONFIG && !$window.CONFIG.current_user.is_superuser) {
       if (next.controller == "DashboardController") {
@@ -333,7 +333,7 @@ const renderHeader = ($rootScope, $window, $http) => {
     navigation_options,
     current_user,
     uuid,
-    version
+    version,
   } = $window.CONFIG;
   const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
@@ -365,10 +365,6 @@ const renderHeader = ($rootScope, $window, $http) => {
     />,
     headerNode
   );
-  $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
-    // Update the header when the route changes.
-    renderHeader($rootScope, $window, $http);
-  });
 };
 
 const renderFooter = $window => {
@@ -390,11 +386,16 @@ const displayTemplate = ($rootScope, $window, $http) => {
   $rootScope.site = window.CONFIG.maas_name;
   renderHeader($rootScope, $window, $http);
   renderFooter($window);
+
+  $rootScope.$on("$routeChangeSuccess", function (event, next, current) {
+    // Update the header when the route changes.
+    renderHeader($rootScope, $window, $http);
+  });
 };
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
-  integrations: [new Integrations.Angular()]
+  integrations: [new Integrations.Angular()],
 });
 
 /* @ngInject */
@@ -409,7 +410,7 @@ angular
     ngSanitize,
     "ngTagsInput",
     "vs-repeat",
-    "ngSentry"
+    "ngSentry",
   ])
   .config(configureMaas)
   .run(configureSentry)
