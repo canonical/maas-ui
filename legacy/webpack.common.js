@@ -1,8 +1,6 @@
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const DotenvFlow = require("dotenv-flow-webpack");
@@ -11,24 +9,12 @@ module.exports = {
   entry: {
     maas: ["babel-polyfill", "macaroon-bakery", "./src/app/entry.js"]
   },
-  optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
-  },
   output: {
     path: path.resolve(__dirname, "./build"),
     filename: "assets/js/[name].[hash].bundle.js",
     publicPath: "/MAAS/"
   },
-  mode: "development",
-  devServer: {
-    contentBase: path.resolve(__dirname, "./src"),
-    host: "0.0.0.0",
-    compress: true,
-    public: "0.0.0.0:8400",
-    sockPath: "/sockjs-legacy"
-  },
   // This creates a .map file for debugging each bundle.
-  devtool: "source-map",
   module: {
     rules: [
       {
