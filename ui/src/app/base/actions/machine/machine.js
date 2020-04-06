@@ -92,8 +92,12 @@ machine.deploy = (systemId, extra = {}) =>
 machine.abort = (systemId) =>
   generateMachineAction("ABORT_MACHINE", "abort", systemId);
 
-machine.test = (systemId) =>
-  generateMachineAction("TEST_MACHINE", "test", systemId);
+machine.test = (systemId, scripts, enableSSH, scriptInputs) =>
+  generateMachineAction("TEST_MACHINE", "test", systemId, {
+    enable_ssh: enableSSH,
+    script_input: scriptInputs,
+    testing_scripts: scripts && scripts.map((script) => script.id),
+  });
 
 machine.rescueMode = (systemId) =>
   generateMachineAction("MACHINE_RESCUE_MODE", "rescue-mode", systemId);
@@ -128,7 +132,9 @@ machine.delete = (systemId) =>
   generateMachineAction("DELETE_MACHINE", "delete", systemId);
 
 machine.tag = (systemId, tags) =>
-  generateMachineAction("TAG_MACHINE", "tag", systemId, { tags });
+  generateMachineAction("TAG_MACHINE", "tag", systemId, {
+    tags: tags.map((tag) => tag.name),
+  });
 
 machine.cleanup = () => {
   return {
