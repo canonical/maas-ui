@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
 export const generateGeneralReducer = (name, initialData) =>
-  produce(
+  createNextState(
     (draft, action) => {
       switch (action.type) {
         case `FETCH_GENERAL_${name}_START`:
