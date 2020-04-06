@@ -13,8 +13,8 @@ export const TagFormFields = () => {
   const { setFieldValue } = useFormikContext();
   const tags = useSelector(tagSelectors.all);
   const sortedTags = tags
-    .map((tag) => tag.name)
-    .sort((a, b) => a.localeCompare(b));
+    .map((tag) => ({ displayName: tag.name, name: tag.name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   useEffect(() => {
     dispatch(tagActions.fetch());
@@ -24,6 +24,7 @@ export const TagFormFields = () => {
     <Row>
       <Col size="6">
         <FormikField
+          allowNewTags
           component={TagSelector}
           label="Tags"
           name="tags"

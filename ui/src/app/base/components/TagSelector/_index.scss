@@ -14,6 +14,11 @@
       box-shadow: none;
       top: -#{$border-radius};
     }
+
+    &[disabled],
+    &[disabled="disabled"] {
+      opacity: 1;
+    }
   }
 
   .tag-selector__dropdown {
@@ -38,6 +43,11 @@
     @include vf-list-item-divided;
   }
 
+  .tag-selector__dropdown-item-description {
+    @extend %small-text;
+    color: $color-mid-dark;
+  }
+
   .tag-selector__dropdown-button {
     border: 0;
     margin-bottom: 0;
@@ -50,6 +60,7 @@
   .tag-selector__selected-list {
     @extend %vf-has-round-corners;
     border: 1px solid $color-mid;
+    border-bottom: 0;
     margin: 0;
     padding: $spv-inner--x-small $sph-inner--small;
   }

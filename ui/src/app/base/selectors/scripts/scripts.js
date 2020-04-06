@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const SCRIPT_TYPES = {
   COMMISSIONING: 0,
   TESTING: 2,
@@ -73,6 +75,17 @@ scripts.commissioning = (state) =>
  */
 scripts.testing = (state) =>
   state.scripts.items.filter((item) => item.type === SCRIPT_TYPES.TESTING);
+
+/**
+ * Returns testing scripts that contain a URL parameter
+ * @param {Object} state - Redux state
+ * @returns {Array} Testing scripts
+ */
+scripts.testingWithUrl = createSelector([scripts.testing], (testScripts) =>
+  testScripts.filter((script) =>
+    Object.keys(script.parameters).some((key) => key === "url")
+  )
+);
 
 /**
  * Get scripts that match a term.
