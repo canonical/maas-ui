@@ -48,7 +48,7 @@ describe("TagForm", () => {
         .find("Formik")
         .props()
         .onSubmit({
-          tags: ["tag1", "tag2"],
+          tags: [{ name: "tag1" }, { name: "tag2" }],
         })
     );
     expect(

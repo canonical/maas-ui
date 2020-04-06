@@ -22,17 +22,25 @@ const highlightMatch = (text, match) => {
   );
 };
 
-const sanitiseFilter = (filterText) => filterText.replace(/ /g, "-");
+const sanitiseFilter = (filterText) => ({
+  name: filterText.replace(/ /g, "-"),
+});
 
-const generateDropdownItems = ({ filter, selectedTags, tags, updateTags }) => {
+const generateDropdownItems = ({
+  allowNewTags,
+  filter,
+  selectedTags,
+  tags,
+  updateTags,
+}) => {
   const dropdownItems = [];
   if (
+    allowNewTags &&
     filter &&
-    !tags.some((tag) => tag === filter) &&
-    !selectedTags.includes(filter)
+    !tags.some((tag) => (tag.displayName || tag.name) === filter)
   ) {
-    // Insert an extra item for creating a new tag if filter is present and it
-    // is neither an existing tag nor already in the list of selected tags.
+    // Insert an extra item for creating a new tag if allowed, filter is present
+    // is not an already existing tag
     const newTagItem = (
       <li className="tag-selector__dropdown-item" key={filter}>
         <Button
@@ -52,9 +60,13 @@ const generateDropdownItems = ({ filter, selectedTags, tags, updateTags }) => {
   }
 
   const existingTagItems = tags
-    .filter((tag) => !selectedTags.includes(tag) && tag.includes(filter))
+    .filter(
+      (tag) =>
+        (tag.displayName || tag.name).includes(filter) &&
+        !selectedTags.some((selectedTag) => selectedTag.name === tag.name)
+    )
     .map((tag) => (
-      <li className="tag-selector__dropdown-item" key={tag}>
+      <li className="tag-selector__dropdown-item" key={tag.name}>
         <Button
           appearance="base"
           className="tag-selector__dropdown-button"
@@ -64,7 +76,14 @@ const generateDropdownItems = ({ filter, selectedTags, tags, updateTags }) => {
           }}
           type="button"
         >
-          {filter ? highlightMatch(tag, filter) : tag}
+          {filter
+            ? highlightMatch(tag.displayName || tag.name, filter)
+            : tag.displayName || tag.name}
+          {tag.description && (
+            <div className="tag-selector__dropdown-item-description">
+              {tag.description}
+            </div>
+          )}
         </Button>
       </li>
     ));
@@ -74,7 +93,7 @@ const generateDropdownItems = ({ filter, selectedTags, tags, updateTags }) => {
 
 const generateSelectedItems = ({ selectedTags, updateTags }) =>
   selectedTags.map((tag) => (
-    <li className="tag-selector__selected-item" key={tag}>
+    <li className="tag-selector__selected-item" key={tag.name}>
       <Button
         appearance="base"
         className="tag-selector__selected-button"
@@ -88,13 +107,15 @@ const generateSelectedItems = ({ selectedTags, updateTags }) =>
           )
         }
       >
-        <span>{tag}</span>
+        <span>{tag.name}</span>
         <i className="p-icon--close" />
       </Button>
     </li>
   ));
 
 export const TagSelector = ({
+  allowNewTags = false,
+  disabled,
   initialSelected = [],
   label,
   onTagsUpdate,
@@ -109,7 +130,9 @@ export const TagSelector = ({
   const [filter, setFilter] = useState("");
 
   const updateTags = (newSelectedTags, clearFilter = true) => {
-    const sortedTags = newSelectedTags.sort((a, b) => a.localeCompare(b));
+    const sortedTags = newSelectedTags.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
     setSelectedTags(sortedTags);
     onTagsUpdate && onTagsUpdate(sortedTags);
     clearFilter && setFilter("");
@@ -144,12 +167,15 @@ export const TagSelector = ({
         className={classNames("tag-selector__input", {
           "tags-selected": selectedTags.length > 0,
         })}
+        disabled={disabled}
         onChange={(e) => setFilter(e.target.value)}
         onFocus={() => setDropdownOpen(true)}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            updateTags([...selectedTags, sanitiseFilter(filter)]);
+            if (allowNewTags) {
+              updateTags([...selectedTags, sanitiseFilter(filter)]);
+            }
           }
         }}
         placeholder={placeholder}
@@ -161,6 +187,7 @@ export const TagSelector = ({
         <div className="tag-selector__dropdown">
           <ul className="tag-selector__dropdown-list">
             {generateDropdownItems({
+              allowNewTags,
               filter,
               selectedTags,
               tags,

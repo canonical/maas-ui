@@ -10,7 +10,15 @@ import FormikForm from "app/base/components/FormikForm";
 import TagFormFields from "./TagFormFields";
 
 const TagFormSchema = Yup.object().shape({
-  tags: Yup.array().of(Yup.string()),
+  tags: Yup.array()
+    .of(
+      Yup.object().shape({
+        name: Yup.string().required(),
+        displayName: Yup.string(),
+      })
+    )
+    .min(1)
+    .required("You must select at least one tag."),
 });
 
 export const TagForm = ({ setSelectedAction }) => {
