@@ -115,6 +115,7 @@ const generateSelectedItems = ({ selectedTags, updateTags }) =>
 
 export const TagSelector = ({
   allowNewTags = false,
+  disabled,
   initialSelected = [],
   label,
   onTagsUpdate,
@@ -166,12 +167,15 @@ export const TagSelector = ({
         className={classNames("tag-selector__input", {
           "tags-selected": selectedTags.length > 0,
         })}
+        disabled={disabled}
         onChange={(e) => setFilter(e.target.value)}
         onFocus={() => setDropdownOpen(true)}
         onKeyPress={(e) => {
-          if (allowNewTags && e.key === "Enter") {
+          if (e.key === "Enter") {
             e.preventDefault();
-            updateTags([...selectedTags, sanitiseFilter(filter)]);
+            if (allowNewTags) {
+              updateTags([...selectedTags, sanitiseFilter(filter)]);
+            }
           }
         }}
         placeholder={placeholder}

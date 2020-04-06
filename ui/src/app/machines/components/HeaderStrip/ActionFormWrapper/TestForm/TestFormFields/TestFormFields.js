@@ -21,6 +21,7 @@ export const TestFormFields = ({ preselected, scripts }) => {
         />
         <FormikField
           component={TagSelector}
+          disabled={values.scripts.length === scripts.length}
           initialSelected={preselected}
           label="Tests"
           name="tests"
