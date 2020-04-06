@@ -3,7 +3,6 @@ import {
   all,
   call,
   put,
-  select,
   take,
   takeEvery,
   takeLatest,
@@ -14,15 +13,34 @@ import MESSAGE_TYPES from "app/base/constants";
 import getCookie from "./utils";
 import WebSocketClient from "../../../websocket-client";
 
+let loadedModels = [];
+
 /**
  * Whether the data is fetching or has been fetched into state.
  *
- * @param {Object} state - redux state object.
  * @param {String} model - root redux state model (e.g. 'config', 'users')
  * @returns {Boolean} - has data been fetched?
  */
-const isLoaded = (state, model) => {
-  return state[model].loaded || state[model].loading;
+const isLoaded = (model) => {
+  return loadedModels.includes(model);
+};
+
+/**
+ * Mark a model as having been fetched into state.
+ *
+ * @param {String} model - root redux state model (e.g. 'config', 'users')
+ */
+const setLoaded = (model) => {
+  if (!isLoaded(model)) {
+    loadedModels.push(model);
+  }
+};
+/**
+ * Reset the list of loaded models.
+ *
+ */
+const resetLoaded = () => {
+  loadedModels = [];
 };
 
 /**
@@ -172,10 +190,10 @@ export function* sendMessage(socketClient, { meta, payload, type }) {
   const { method, model } = meta;
   // If method is 'list' and data has loaded, do not fetch again.
   if (method.endsWith("list")) {
-    const loaded = yield select(isLoaded, model);
-    if (loaded) {
+    if (isLoaded(model)) {
       return;
     }
+    setLoaded(model);
   }
 
   yield put({ type: `${type}_START` });
@@ -222,6 +240,8 @@ export function* setupWebSocket() {
     }
     const socketClient = yield call(createConnection, csrftoken);
     yield put({ type: "WEBSOCKET_CONNECTED" });
+    // Set up the list of models that have been loaded.
+    resetLoaded();
     const socketChannel = yield call(watchMessages, socketClient);
     while (true) {
       let { cancel } = yield race({

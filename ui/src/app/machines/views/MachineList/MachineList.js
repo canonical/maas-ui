@@ -484,7 +484,7 @@ const MachineList = () => {
     dispatch(tagActions.fetch());
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
-  }, [dispatch, machinesLoaded]);
+  }, [dispatch]);
 
   // Update sort parameters depending on whether the same sort key was clicked.
   const updateSort = (newSortKey) => {

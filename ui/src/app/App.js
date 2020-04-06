@@ -123,6 +123,7 @@ export const App = () => {
         )}
         location={location}
         logout={() => {
+          dispatch(statusActions.websocketDisconnect());
           dispatch(statusActions.logout());
         }}
         showRSD={navigationOptions.rsd}

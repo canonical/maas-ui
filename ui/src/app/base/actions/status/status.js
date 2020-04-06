@@ -8,6 +8,7 @@ const status = {
   checkAuthenticated: createAction("CHECK_AUTHENTICATED"),
   websocketConnect: createAction("WEBSOCKET_CONNECT"),
   websocketConnected: createAction("WEBSOCKET_CONNECTED"),
+  websocketDisconnect: createAction("WEBSOCKET_DISCONNECT"),
   websocketDisconnected: createAction("WEBSOCKET_DISCONNECTED"),
   websocketError: createAction("WEBSOCKET_ERROR"),
 };
