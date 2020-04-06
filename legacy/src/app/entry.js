@@ -394,6 +394,12 @@ const displayTemplate = ($rootScope, $window, $http) => {
 };
 
 Sentry.init({
+  beforeSend(event) {
+    if (process.env.NODE_ENV === "production") {
+      return event;
+    }
+    return null;
+  },
   dsn: process.env.SENTRY_DSN,
   integrations: [new Integrations.Angular()],
 });
