@@ -14,7 +14,6 @@ module.exports = {
     filename: "assets/js/[name].[hash].bundle.js",
     publicPath: "/MAAS/"
   },
-  // This creates a .map file for debugging each bundle.
   module: {
     rules: [
       {
