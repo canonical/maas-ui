@@ -14,7 +14,8 @@ export function maasCta() {
     scope: {
       maasCta: "=",
       ngModel: "=",
-      selectedItems: "="
+      selectedItems: "=",
+      disabled: "<"
     },
     template: ctaTmpl,
     link: link,
