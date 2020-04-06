@@ -1,6 +1,6 @@
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
-const machine = produce(
+const machine = createNextState(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_MACHINE_START":
