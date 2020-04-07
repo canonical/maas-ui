@@ -4,9 +4,6 @@ const packagerepository = createStandardActions("packagerepository");
 
 packagerepository.fetch = () => ({
   type: "FETCH_PACKAGEREPOSITORY",
-  payload: {
-    params: { limit: 50 },
-  },
   meta: {
     model: "packagerepository",
     method: "list",

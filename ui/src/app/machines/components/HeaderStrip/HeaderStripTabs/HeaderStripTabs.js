@@ -18,6 +18,7 @@ export const HeaderStripTabs = () => {
   const dispatch = useDispatch();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
+  const machinesLoading = useSelector(machineSelectors.loading);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const { location } = useRouter();
@@ -36,10 +37,9 @@ export const HeaderStripTabs = () => {
           links={[
             {
               active: location.pathname.startsWith("/machines"),
-              label: `${machinesLoaded ? `${machines.length} ` : ""}${pluralize(
-                "Machine",
-                machines.length
-              )}`,
+              label: `${
+                machinesLoading || machinesLoaded ? `${machines.length} ` : ""
+              }${pluralize("Machine", machines.length)}`,
               path: "/machines",
             },
             {

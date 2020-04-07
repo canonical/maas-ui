@@ -49,6 +49,7 @@ class WebSocketClient {
       request_id: id,
     };
     this.socket.send(JSON.stringify(payload));
+    return id;
   }
 }
 

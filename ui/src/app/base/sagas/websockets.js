@@ -15,6 +15,15 @@ import WebSocketClient from "../../../websocket-client";
 
 let loadedModels = [];
 
+// A store of websocket requests that need to be called to fetch the next batch
+// of data. The map is between request id and redux action object.
+const batchRequests = new Map();
+export const getBatchRequest = (id) => batchRequests.get(id);
+export const setBatchRequest = (id, action) => batchRequests.set(id, action);
+export const deleteBatchRequest = (id) => {
+  batchRequests.delete(id);
+};
+
 /**
  * Whether the data is fetching or has been fetched into state.
  *
@@ -116,6 +125,51 @@ export function* handleNotifyMessage(response) {
 }
 
 /**
+ * Store batch requests, if this is a batch action.
+ *
+ * @param {Object} action - A Redux action.
+ * @param {Array} requestIDs - A list of ids for the requests associated with
+ * this action.
+ */
+function queueBatch(action, requestIDs) {
+  const { payload = {} } = action;
+  let { params = {} } = payload;
+  // If the action has a limit then it is a batch request. An action can send
+  // multiple requests so each one needs to be mapped to the action.
+  if (params.limit) {
+    requestIDs.forEach((id) => {
+      setBatchRequest(id, action);
+    });
+  }
+}
+
+/**
+ * Handle sending the next batch request, if required.
+ *
+ * @param {Object} response - A websocket response.
+ */
+export function* handleBatch({ request_id, result }) {
+  const batchRequest = yield call(getBatchRequest, request_id);
+  if (batchRequest) {
+    // This is a batch request so check if we received a full batch, if so
+    // then send another request.
+    if (batchRequest.payload.params.limit === result.length) {
+      // Clean up the previous request.
+      deleteBatchRequest(request_id);
+      // Set the next batch to start at the last id we received.
+      let nextBatch = { ...batchRequest };
+      nextBatch.payload.params.start = result[result.length - 1].id;
+      // Send the new request.
+      yield put(nextBatch);
+    } else {
+      // If we didn't receive a full batch then we don't need to request
+      // any more data so dispatch the complete action.
+      yield put({ type: `${batchRequest.type}_COMPLETE` });
+    }
+  }
+}
+
+/**
  * Handle messages received over the WebSocket.
  */
 export function* handleMessage(socketChannel, socketClient) {
@@ -152,6 +206,8 @@ export function* handleMessage(socketChannel, socketClient) {
         });
       } else {
         yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
+        // Handle batching, if required.
+        yield call(handleBatch, response);
       }
     }
   }
@@ -184,12 +240,13 @@ const buildMessage = (meta, params) => {
 /**
  * Send WebSocket messages via the client.
  */
-export function* sendMessage(socketClient, { meta, payload, type }) {
-  const params = payload ? payload.params : null;
-
+export function* sendMessage(socketClient, action) {
+  const { meta, payload, type } = action;
+  let params = payload ? payload.params : null;
   const { method, model } = meta;
-  // If method is 'list' and data has loaded, do not fetch again.
-  if (method.endsWith("list")) {
+  // If method is 'list' and data has loaded/is loading, do not fetch again
+  // unless this is fetching a new batch.
+  if (method.endsWith("list") && (!params || !params.start)) {
     if (isLoaded(model)) {
       return;
     }
@@ -197,16 +254,18 @@ export function* sendMessage(socketClient, { meta, payload, type }) {
   }
 
   yield put({ type: `${type}_START` });
+  let requestIDs = [];
   try {
     if (params && Array.isArray(params)) {
       // We deliberately do not yield in parallel here with 'all'
       // to avoid races for dependant config.
       for (let param of params) {
-        yield call(
+        let id = yield call(
           [socketClient, socketClient.send],
           type,
           buildMessage(meta, param)
         );
+        requestIDs.push(id);
         // Ensure server has synced before sending next message,
         // important for dependant config like commissioning_distro_series
         // and default_min_hwe_kernel.
@@ -216,12 +275,15 @@ export function* sendMessage(socketClient, { meta, payload, type }) {
         yield take(`${type}_NOTIFY`);
       }
     } else {
-      yield call(
+      let id = yield call(
         [socketClient, socketClient.send],
         type,
         buildMessage(meta, params)
       );
+      requestIDs.push(id);
     }
+    // Queue batching, if required.
+    queueBatch(action, requestIDs);
   } catch (error) {
     yield put({ type: `${type}_ERROR`, error });
   }
