@@ -1,6 +1,6 @@
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
-const config = produce(
+const config = createNextState(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_CONFIG_START":

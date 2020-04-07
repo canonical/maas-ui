@@ -1,6 +1,6 @@
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
-const sslkey = produce(
+const sslkey = createNextState(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_SSLKEY_START":
