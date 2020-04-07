@@ -1,6 +1,6 @@
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
-const token = produce(
+const token = createNextState(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_TOKEN_START":

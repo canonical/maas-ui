@@ -1,6 +1,6 @@
-import produce from "immer";
+import { createNextState } from "@reduxjs/toolkit";
 
-const auth = produce(
+const auth = createNextState(
   (draft, action) => {
     switch (action.type) {
       case "FETCH_AUTH_USER_START":

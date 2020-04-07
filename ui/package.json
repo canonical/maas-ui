@@ -14,7 +14,6 @@
     "date-fns": "2.11.1",
     "formik": "2.1.4",
     "http-proxy-middleware": "1.0.3",
-    "immer": "6.0.2",
     "nanoid": "3.0.2",
     "path-parse": "1.0.6",
     "pluralize": "8.0.0",

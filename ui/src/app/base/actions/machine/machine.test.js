@@ -207,7 +207,17 @@ describe("machine actions", () => {
   });
 
   it("can handle testing a machine", () => {
-    expect(machine.test("abc123")).toEqual({
+    expect(
+      machine.test(
+        "abc123",
+        [
+          { id: 0, name: "test0" },
+          { id: 2, name: "test2" },
+        ],
+        true,
+        { "test-0": { url: "www.url.com" } }
+      )
+    ).toEqual({
       type: "TEST_MACHINE",
       meta: {
         model: "machine",
@@ -216,7 +226,11 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "test",
-          extra: {},
+          extra: {
+            enable_ssh: true,
+            script_input: { "test-0": { url: "www.url.com" } },
+            testing_scripts: [0, 2],
+          },
           system_id: "abc123",
         },
       },
@@ -360,20 +374,22 @@ describe("machine actions", () => {
   });
 
   it("can handle tagging a machine", () => {
-    expect(machine.tag("abc123", ["tag1", "tag2"])).toEqual({
-      type: "TAG_MACHINE",
-      meta: {
-        model: "machine",
-        method: "action",
-      },
-      payload: {
-        params: {
-          action: "tag",
-          extra: { tags: ["tag1", "tag2"] },
-          system_id: "abc123",
+    expect(machine.tag("abc123", [{ name: "tag1" }, { name: "tag2" }])).toEqual(
+      {
+        type: "TAG_MACHINE",
+        meta: {
+          model: "machine",
+          method: "action",
         },
-      },
-    });
+        payload: {
+          params: {
+            action: "tag",
+            extra: { tags: ["tag1", "tag2"] },
+            system_id: "abc123",
+          },
+        },
+      }
+    );
   });
 
   it("can handle cleaning machines", () => {

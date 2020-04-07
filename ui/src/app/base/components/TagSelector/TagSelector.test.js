@@ -4,6 +4,14 @@ import React from "react";
 import TagSelector from "./TagSelector";
 
 describe("TagSelector", () => {
+  let tags;
+  beforeEach(() => {
+    tags = [
+      { displayName: "tag one", name: "tag1" },
+      { displayName: "tag two", name: "tag2" },
+    ];
+  });
+
   // snapshot tests
   it("renders and matches the snapshot when closed", () => {
     const component = shallow(
@@ -11,7 +19,7 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     expect(component).toMatchSnapshot();
@@ -23,7 +31,23 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
+      />
+    );
+    component.find("Label").simulate("click");
+    expect(component).toMatchSnapshot();
+  });
+
+  it("renders and matches the snapshot with tag descriptions", () => {
+    const component = shallow(
+      <TagSelector
+        label="Tags"
+        placeholder="Select or create tags"
+        onTagsUpdate={jest.fn()}
+        tags={[
+          { ...tags[0], description: "description one" },
+          { ...tags[1], description: "description two" },
+        ]}
       />
     );
     component.find("Label").simulate("click");
@@ -34,11 +58,11 @@ describe("TagSelector", () => {
   it("can have some tags preselected", () => {
     const component = shallow(
       <TagSelector
-        initialSelected={["tag1"]}
+        initialSelected={[tags[0]]}
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
@@ -52,7 +76,7 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     expect(component.find(".tag-selector__dropdown").exists()).toBe(false);
@@ -66,7 +90,7 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     component.find(".tag-selector__input").simulate("focus");
@@ -79,11 +103,11 @@ describe("TagSelector", () => {
   it("can remove tags that have been selected", () => {
     const component = shallow(
       <TagSelector
-        initialSelected={["tag1", "tag2"]}
+        initialSelected={tags}
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     expect(component.find('[data-test="selected-tag"]').length).toBe(2);
@@ -98,10 +122,11 @@ describe("TagSelector", () => {
   it("can create and select a new tag", () => {
     const component = shallow(
       <TagSelector
+        allowNewTags
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     component.find(".tag-selector__input").simulate("focus");
@@ -117,10 +142,11 @@ describe("TagSelector", () => {
   it("sanitises text when creating new tag", () => {
     const component = shallow(
       <TagSelector
+        allowNewTags
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2"]}
+        tags={tags}
       />
     );
     component.find(".tag-selector__input").simulate("focus");
@@ -139,7 +165,7 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["tag1", "tag2", "other"]}
+        tags={[...tags, { displayName: "other", name: "other" }]}
       />
     );
     component.find(".tag-selector__input").simulate("focus");
@@ -156,7 +182,10 @@ describe("TagSelector", () => {
         label="Tags"
         placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
-        tags={["there", "other"]}
+        tags={[
+          { displayName: "there", name: "there" },
+          { displayName: "other", name: "other" },
+        ]}
       />
     );
     component.find(".tag-selector__input").simulate("focus");
