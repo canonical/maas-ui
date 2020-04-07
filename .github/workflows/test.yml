@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn lint
-      - run: yarn build-all
       - run: yarn test
+      - run: yarn build-all
         env:
           CI: true
