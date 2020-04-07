@@ -2,6 +2,19 @@ import { createStandardActions } from "app/utils/redux";
 
 const machine = createStandardActions("machine");
 
+machine.fetch = () => {
+  return {
+    type: "FETCH_MACHINE",
+    meta: {
+      model: "machine",
+      method: "list",
+    },
+    payload: {
+      params: { limit: 25 },
+    },
+  };
+};
+
 machine.create = (params) => {
   return {
     type: "CREATE_MACHINE",

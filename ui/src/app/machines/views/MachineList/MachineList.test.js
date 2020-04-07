@@ -214,6 +214,9 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
+    // The machine list should also be visible as the machines are
+    // loaded in batches.
+    expect(wrapper.find("MainTable").exists()).toBe(true);
   });
 
   it("can set the search from the URL", () => {

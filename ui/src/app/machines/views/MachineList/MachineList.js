@@ -600,7 +600,7 @@ const MachineList = () => {
       {errorMessage ? (
         <Notification type="negative">{errorMessage}</Notification>
       ) : null}
-      {machinesLoaded && (
+      {(machinesLoading || machinesLoaded) && (
         <Row>
           <Col size={12}>
             <MainTable

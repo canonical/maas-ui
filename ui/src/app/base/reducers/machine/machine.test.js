@@ -34,7 +34,7 @@ describe("machine reducer", () => {
       machine(
         {
           errors: {},
-          items: [],
+          items: [{ id: 1, hostname: "node1" }],
           loaded: false,
           loading: true,
           saved: false,
@@ -44,7 +44,7 @@ describe("machine reducer", () => {
         {
           type: "FETCH_MACHINE_SUCCESS",
           payload: [
-            { id: 1, hostname: "node1" },
+            { id: 1, hostname: "node1-newname" },
             { id: 2, hostname: "node2" },
           ],
         }
@@ -52,9 +52,36 @@ describe("machine reducer", () => {
     ).toEqual({
       errors: {},
       items: [
-        { id: 1, hostname: "node1" },
+        { id: 1, hostname: "node1-newname" },
         { id: 2, hostname: "node2" },
       ],
+      loading: true,
+      loaded: false,
+      saved: false,
+      saving: false,
+      selected: [],
+    });
+  });
+
+  it("should correctly reduce FETCH_MACHINE_COMPLETE", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: true,
+          saved: false,
+          saving: false,
+          selected: [],
+        },
+        {
+          type: "FETCH_MACHINE_COMPLETE",
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
       loading: false,
       loaded: true,
       saved: false,

@@ -6,10 +6,23 @@ const machine = createNextState(
       case "FETCH_MACHINE_START":
         draft.loading = true;
         break;
-      case "FETCH_MACHINE_SUCCESS":
+      case "FETCH_MACHINE_COMPLETE":
         draft.loading = false;
         draft.loaded = true;
-        draft.items = action.payload;
+        break;
+      case "FETCH_MACHINE_SUCCESS":
+        action.payload.forEach((newItem) => {
+          // If the item already exists, update it, otherwise
+          // add it to the store.
+          const existingIdx = draft.items.findIndex(
+            (draftItem) => draftItem.id === newItem.id
+          );
+          if (existingIdx !== -1) {
+            draft.items[existingIdx] = newItem;
+          } else {
+            draft.items.push(newItem);
+          }
+        });
         break;
       case "ADD_MACHINE_CHASSIS_START":
       case "CREATE_MACHINE_START":

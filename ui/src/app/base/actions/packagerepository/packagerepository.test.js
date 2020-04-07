@@ -4,9 +4,6 @@ describe("packagerepository actions", () => {
   it("should handle fetching repositories", () => {
     expect(packagerepository.fetch()).toEqual({
       type: "FETCH_PACKAGEREPOSITORY",
-      payload: {
-        params: { limit: 50 },
-      },
       meta: {
         model: "packagerepository",
         method: "list",
