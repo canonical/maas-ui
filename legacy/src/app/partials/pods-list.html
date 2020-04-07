@@ -165,45 +165,43 @@
                 <thead>
                     <tr class="p-table__row">
                         <th class="p-table__cell p-double-row">
-                            <input
-                                class="p-table--pods-checkbox"
+                            <div class="p-double-row__checkbox" data-ng-if="!hideActions">
+                                <input
                                 id="check-all-pods"
                                 ng-checked="allViewableChecked"
                                 ng-click="toggleCheckAll()"
                                 ng-disabled="add.open || hasActionsInProgress()"
                                 ng-if="showActions()"
                                 type="checkbox"
-                            />
-                            <label
-                                class="p-table--pods-checkbox-label"
-                                for="check-all-pods"
-                                ng-if="showActions()"
-                            ></label>
-                            <span role="columnheader" data-ng-click="sortTable('name')" data-ng-class="{'is-sorted': predicate === 'name', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">
-                                FQDN
-                            </span>
+                                />
+                                <label
+                                    for="check-all-pods"
+                                    ng-if="showActions()"
+                                ></label>
+                            </div>
+                            <div class="p-double-row__rows-container--checkbox">
+                                <div role="columnheader" data-ng-click="sortTable('name')" data-ng-class="{'is-sorted': predicate === 'name', 'sort-asc': reverse === false, 'sort-desc': reverse === true}">
+                                    FQDN
+                                </div>
+                            </div>
                         </th>
                         <th class="p-table__cell" title="Power">
-                            Power
+                            <i class="p-icon--placeholder"></i>Power
                         </th>
-                        <th class="p-table__cell p-double-row">
+                        <th class="p-table__cell">
                             <div role="columnheader" data-ng-click="sortTable('type')" data-ng-class="{'is-sorted': predicate === 'type', 'sort-asc': reverse === false, 'sort-desc': reverse === true}" title="KVM host type">
                                 KVM host type
                             </div>
-                            <div class="p-double-row__muted-row">Virsh</div>
                         </th>
-                        <th class="p-table__cell p-double-row u-align--right">
-                            <div role="columnheader" data-ng-click="sortTable('composed_machines')" data-ng-class="{'is-sorted': predicate === 'composed_machines', 'sort-asc': reverse === false, 'sort-desc': reverse === true}" title="VMs">
+                        <th class="p-table__cell">
+                            <div class="u-align--right" role="columnheader" data-ng-click="sortTable('composed_machines')" data-ng-class="{'is-sorted': predicate === 'composed_machines', 'sort-asc': reverse === false, 'sort-desc': reverse === true}" title="VMs">
                                 VM<span style="text-transform: lowercase;">s</span>
                             </div>
-                            <div class="p-double-row__muted-row">Owners</div>
+                            <div class="u-align--right">Owners</div>
                         </th>
-                        <th class="p-table__cell" title="Status">
-                            Status
-                        </th>
-                        <th class="p-table__cell p-double-row" title="Resource pool">
+                        <th class="p-table__cell" title="Resource pool">
                             <div>Resource pool</div>
-                            <div class="p-double-row__muted-row">AZ</div>
+                            <div>AZ</div>
                         </th>
                         <th class="p-table__cell">
                             <div role="columnheader" data-ng-click="sortTable('available.cores')" data-ng-class="{'is-sorted': predicate === 'available.cores', 'sort-asc': reverse === false, 'sort-desc': reverse === true}" title="CPU">
@@ -220,14 +218,11 @@
                                 Storage
                             </div>
                         </th>
-                        <th class="p-table__cell">
-                            <div class="u-align--right">Actions</div>
-                        </th>
                     </tr>
                 </thead>
                 <tbody vs-repeat vs-scroll-parent="window">
                     <tr class="p-table__row" data-ng-repeat="pod in filteredItems = (filterPods(pods) | nodesFilter:search | orderBy:predicate:reverse) track by pod.id" data-ng-class="{ selected: pod.$selected, 'is-active': pod.$selected && pod.action_failed }">
-                        <td class="p-table__cell" aria-label="Name" title="{$ pod.name $}">
+                        <td class="p-table__cell p-double-row" aria-label="Name" title="{$ pod.name $}">
                             <div class="p-double-row__checkbox" data-ng-if="showActions()">
                                 <input
                                     class="p-table--pods-checkbox"
@@ -241,10 +236,24 @@
                                     class="p-table--pods-checkbox-label"
                                     for="{$ pod.id $}"
                                 ></label>
-                                <a href="#/{$ getDetailsRoute() $}/{$ pod.id $}"><strong>{$ pod.name $}</strong></a>
+                            </div>
+                            <div class="p-double-row__rows-container--checkbox">
+                                <div class="p-double-row__main-row">
+                                    <a href="#/{$ getDetailsRoute() $}/{$ pod.id $}"><strong>{$ pod.name $}</strong></a>
+                                </div>
                             </div>
                         </td>
-                        <td class="p-table__cell" aria-label="Power" title="Power">&ndash;</td>
+                        <td class="p-table__cell p-double-row" aria-label="Power" title="Power">
+                            <div class="p-double-row__icon-container">
+                                <i class="{$ getPowerIconClass(pod) $}"></i>
+                            </div>
+                            <div class="p-double-row__rows-container--icon">
+                                <div class="p-double-row__main-row u-upper-case--first">
+                                    <span ng-if="pod.host && hostMap.get(pod.id)">{$ hostMap.get(pod.id).power_state || "Unknown" $}</span>
+                                    <span ng-if="!pod.host">Unknown</span>
+                                </div>
+                            </div>
+                        </td>
                         <td
                             aria-label="KVM host type"
                             class="p-table__cell p-double-row"
@@ -254,9 +263,6 @@
                                 <div class="p-double-row__main-row">
                                     <span class="u-text-overflow">{$ getPowerTypeTitle(pod.type) $}</span>
                                 </div>
-                                <div class="p-double-row__muted-row">
-                                    <span class="u-text-overflow">{$ pod.power_address $}</span>
-                                </div>
                             </div>
                         </td>
                         <td class="p-table__cell p-double-row" aria-label="VMs" title="{$ pod.composed_machines_count $}">
@@ -265,11 +271,11 @@
                                     {$ pod.composed_machines_count $}
                                 </div>
                                 <div class="p-double-row__muted-row u-align--right">
-                                    &ndash;
+                                    <span ng-if="ownersMap.get(pod.id)">{$ ownersMap.get(pod.id).length $}</span>
+                                    <i class="p-icon--spinner u-animation--spin u-no-margin" ng-if="!ownersMap.get(pod.id)"></i>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-table__cell" aria-label="Status" title="Status">&ndash;</td>
                         <td class="p-table__cell p-double-row" aria-label="Resource pool" title="Resource pool">
                             <div class="p-double-row">
                                 <div class="p-double-row__main-row">
@@ -341,13 +347,17 @@
                                     </div>
                                     <div class="p-popover__content">
                                         <div class="row">
-                                            <table class="p-meter__table">
+                                            <div ng-if="!defaultPoolMap.get(pod.id)">
+                                                <i class="p-icon--spinner u-animation--spin">Loading</i>
+                                                Loading...
+                                            </div>
+                                            <table class="p-meter__table" ng-if="defaultPoolMap.get(pod.id)">
                                                 <thead>
                                                     <tr>
                                                         <th class="u-no-padding--left u-no-padding--bottom">Local</th>
                                                         <th class="u-no-padding--bottom u-align--right">
                                                             <span class="text-base">
-                                                                {$ pod.default_pool_data.total | formatBytes $}
+                                                                {$ defaultPoolMap.get(pod.id).total | formatBytes $}
                                                             </span>
                                                         </th>
                                                         <th>
@@ -371,20 +381,20 @@
                                                         <td class="p-double-row u-no-padding--left">
                                                             <div class="p-double-row">
                                                                 <div class="p-double-row__main-row">
-                                                                    {$ pod.default_pool_data.name $}
+                                                                    {$ defaultPoolMap.get(pod.id).name $}
                                                                 </div>
-                                                                <div class="p-double-row__muted-row">
-                                                                    {$ pod.default_pool_data.path $}
+                                                                <div class="p-double-row__muted-row" style="white-space:initial;">
+                                                                    {$ defaultPoolMap.get(pod.id).path $}
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="p-double-row">
                                                             <div class="p-double-row">
                                                                 <div class="p-double-row__main-row u-align--right">
-                                                                    {$ pod.default_pool_data.type $}
+                                                                    {$ defaultPoolMap.get(pod.id).type $}
                                                                 </div>
                                                                 <div class="u-align--right">
-                                                                    {$ pod.default_pool_data.total | formatBytes $}
+                                                                    {$ defaultPoolMap.get(pod.id).total | formatBytes $}
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -399,12 +409,12 @@
                                                                 <ul class="p-legend--table-row">
                                                                     <li class="p-legend__item p-legend__item--used">
                                                                         <div class="p-legend__text">
-                                                                            {$ pod.default_pool_data.used | formatBytes $}
+                                                                            {$ defaultPoolMap.get(pod.id).used | formatBytes $}
                                                                         </div>
                                                                     </li>
                                                                     <li class="p-legend__item p-legend__item--free">
                                                                         <div class="p-legend__text">
-                                                                            {$ pod.default_pool_data.available | formatBytes $}
+                                                                            {$ defaultPoolMap.get(pod.id).available | formatBytes $}
                                                                         </div>
                                                                     </li>
                                                                 </ul>
@@ -413,7 +423,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table class="p-meter__table">
+                                            <table class="p-meter__table" ng-if="getTotalNetworkDiskSize(pod) > 0">
                                                 <thead>
                                                     <tr>
                                                         <th class="u-no-padding--left">Network</th>
@@ -477,23 +487,6 @@
                         <td class="p-table-expanding__panel col-12" data-ng-if="pod.$selected && pod.action_failed">
                             <div aria-label="label" class="table__data">
                                 <p><i class="p-icon--error">Error:</i> {$ pod.action_error $}</p>
-                            </div>
-                        </td>
-                        <td class="p-table__cell p-table--action-cell">
-                            <div class="u-align--right">
-                                <div class="p-contextual-menu" toggle-ctrl>
-                                    <button
-                                        class="p-button--base is-small p-contextual-menu__toggle u-no-margin--right"
-                                        ng-class="{ 'u-mirror--y': isToggled }"
-                                        ng-click="toggleMenu()"
-                                    >
-                                        <i class="p-icon--contextual-menu u-no-margin--right">Actions</i>
-                                    </button>
-                                    <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled" style="width: auto">
-                                        <button class="p-contextual-menu__link" aria-label="Refresh" data-ng-click="handleMachineAction(pod, 'refresh')">Refresh</button>
-                                        <button class="p-contextual-menu__link" aria-label="Delete" data-ng-click="handleMachineAction(pod, 'delete')">Delete</button>
-                                    </div>
-                                </div>
                             </div>
                         </td>
                     </tr>

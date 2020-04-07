@@ -14,7 +14,9 @@ function PodsListController(
   GeneralManager,
   ZonesManager,
   ManagerHelperService,
-  ResourcePoolsManager
+  ResourcePoolsManager,
+  MachinesManager,
+  ControllersManager,
 ) {
   // Checks if on RSD page
   $scope.onRSDSection = PodsManager.onRSDSection;
@@ -68,6 +70,11 @@ function PodsListController(
   $scope.powerTypes = GeneralManager.getData("power_types");
   $scope.zones = ZonesManager.getItems();
   $scope.pools = ResourcePoolsManager.getItems();
+  $scope.machines = MachinesManager.getItems();
+  $scope.controllers = ControllersManager.getItems();
+  $scope.hostMap = new Map();
+  $scope.ownersMap = new Map();
+  $scope.defaultPoolMap = new Map();
 
   // Called to update `allViewableChecked`.
   function updateAllViewableChecked() {
@@ -285,15 +292,19 @@ function PodsListController(
   };
 
   // Return the title of the power type.
-  $scope.getPowerTypeTitle = function(power_type) {
-    var i;
-    for (i = 0; i < $scope.powerTypes.length; i++) {
-      var powerType = $scope.powerTypes[i];
-      if (powerType.name === power_type) {
-        return powerType.description;
+  $scope.getPowerTypeTitle = (type) => {
+    switch (type) {
+      case "lxd":
+        return "LXD";
+      case "virsh":
+        return "Virsh";
+      default: {
+        const powerType = $scope.powerTypes.find(
+          (powerType) => powerType.name === type
+        );
+        return powerType ? powerType.description : type;
       }
     }
-    return power_type;
   };
 
   // Filter pods depending on if page is rsd
@@ -413,13 +424,73 @@ function PodsListController(
     return items.find(item => item.id === itemId).name;
   };
 
+  $scope.getPowerIconClass = (pod) => {
+    if (pod.host) {
+      const hostNode = $scope.hostMap.get(pod.id);
+      if (hostNode) {
+        switch (hostNode.power_state) {
+          case "on":
+            return "p-icon--power-on";
+          case "off":
+            return "p-icon--power-off";
+          case "error":
+            return "p-icon--power-error";
+          default:
+            return "p-icon--power-unknown";
+        }
+      }
+      return "p-icon--spinner u-animation--spin";
+    }
+    return "p-icon--power-unknown";
+  };
+
+  // XXX Caleb 08.04.2020: Replace with owners_count in the markup once
+  // available on the pod object.
+  // https://bugs.launchpad.net/maas/+bug/1871742
+  $scope.getPodOwners = (pod) =>
+    $scope.machines.reduce((owners, machine) => {
+      if (
+        machine.pod &&
+        machine.pod.id === pod.id &&
+        machine.owner &&
+        !owners.includes(machine.owner)
+      ) {
+        owners.push(machine.owner);
+      }
+      return owners;
+    }, []);
+
+  $scope.getPodHost = (pod) => {
+    if (pod.host) {
+      const hostMachine = $scope.machines.find(
+        (machine) => machine.system_id === pod.host
+      );
+      if (hostMachine) {
+        MachinesManager.getItem(pod.host);
+        return hostMachine;
+      }
+
+      // If the pod host system_id is not found in the list of machines, assume
+      // that it refers to a controller.
+      const hostController = $scope.controllers.find(
+        (controller) => controller.system_id === pod.host
+      );
+      if (hostController) {
+        ControllersManager.getItem(pod.host);
+        return hostController;
+      }
+    }
+  };
+
   // Load the required managers for this controller.
   ManagerHelperService.loadManagers($scope, [
     PodsManager,
+    MachinesManager,
+    ControllersManager,
     UsersManager,
     GeneralManager,
     ZonesManager,
-    ResourcePoolsManager
+    ResourcePoolsManager,
   ]).then(function() {
     // Deselct all pods/rsd on route change
     // otherwise you can perform actions on pods from rsd page
@@ -432,9 +503,13 @@ function PodsListController(
     if ($location.search().addItem) {
       $scope.addPod();
     }
-    $scope.pods.forEach(function(pod) {
-      pod.default_pool_data = $scope.getDefaultPoolData(pod);
+
+    $scope.pods.forEach((pod) => {
+      $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
+      $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
+      $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
     });
+
     $scope.loading = false;
 
     // Set flag for RSD navigation item.

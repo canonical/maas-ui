@@ -131,13 +131,6 @@
       }
     }
 
-    .p-icon--placeholder {
-      @extend %icon;
-      height: 1em;
-      margin-right: 1em;
-      width: 1em;
-    }
-
     .p-tooltip__message {
       line-height: 1.5;
     }

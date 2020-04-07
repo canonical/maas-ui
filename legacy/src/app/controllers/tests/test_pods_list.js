@@ -22,15 +22,24 @@ describe("PodsListController", function() {
   }));
 
   // Load the required managers.
-  var PodsManager, UsersManager, GeneralManager;
-  var ZonesManager, ManagerHelperService, ResourcePoolsManager;
+  let ControllersManager;
+  let GeneralManager;
+  let MachinesManager;
+  let ManagerHelperService;
+  let PodsManager;
+  let ResourcePoolsManager;
+  let UsersManager;
+  let ZonesManager;
+
   beforeEach(inject(function($injector) {
-    PodsManager = $injector.get("PodsManager");
-    UsersManager = $injector.get("UsersManager");
+    ControllersManager = $injector.get("ControllersManager");
     GeneralManager = $injector.get("GeneralManager");
-    ZonesManager = $injector.get("ZonesManager");
+    MachinesManager = $injector.get("MachinesManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
+    PodsManager = $injector.get("PodsManager");
     ResourcePoolsManager = $injector.get("ResourcePoolsManager");
+    UsersManager = $injector.get("UsersManager");
+    ZonesManager = $injector.get("ZonesManager");
   }));
 
   // Mock the websocket connection to the region
@@ -64,6 +73,7 @@ describe("PodsListController", function() {
       PodsManager: PodsManager,
       UsersManager: UsersManager,
       ZonesManager: ZonesManager,
+      MachinesManager: MachinesManager,
       ManagerHelperService: ManagerHelperService
     });
 
@@ -113,15 +123,17 @@ describe("PodsListController", function() {
     expect($scope.pools).toBe(ResourcePoolsManager.getItems());
   });
 
-  it("calls loadManagers with PodsManager, UsersManager, \
-        GeneralManager, ZonesManager", function() {
+  it(`calls loadManagers with PodsManager, MachinesManager, ControllersManager,
+    UsersManager, GeneralManager, ZonesManager`, () => {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       PodsManager,
+      MachinesManager,
+      ControllersManager,
       UsersManager,
       GeneralManager,
       ZonesManager,
-      ResourcePoolsManager
+      ResourcePoolsManager,
     ]);
   });
 
@@ -737,6 +749,70 @@ describe("PodsListController", function() {
         { id: 2, name: "baz" }
       ];
       expect($scope.getItemName(2, items)).toBe("baz");
+    });
+  });
+
+  describe("getPowerIconClass", () => {
+    it("returns unknown if pod does not have a host", () => {
+      makeController();
+      const pod = { id: 1, host: undefined };
+      expect($scope.getPowerIconClass(pod)).toEqual("p-icon--power-unknown");
+    });
+
+    it(`returns spinner if pod has a host but host details are not yet stored
+        in hostMap`, () => {
+      makeController();
+      const pod = { id: 1, host: "abc" };
+      expect($scope.getPowerIconClass(pod)).toEqual(
+        "p-icon--spinner u-animation--spin"
+      );
+    });
+
+    it("returns power state of pod host if details are stored in hostMap", () => {
+      makeController();
+      const host = { system_id: "abc", power_state: "on" };
+      const pod = { id: 1, host: host.system_id };
+      $scope.hostMap.set(pod.id, host);
+      expect($scope.getPowerIconClass(pod)).toEqual("p-icon--power-on");
+    });
+  });
+
+  describe("getPodOwners", () => {
+    it("returns a list of unique owners of pod VMs", () => {
+      makeController();
+      const pod = { id: 1 };
+      $scope.machines = [
+        { owner: "user1", pod: { id: 1 } },
+        { owner: "user1", pod: { id: 1 } },
+        { owner: "user2", pod: { id: 1 } },
+        { owner: "user3", pod: { id: 1 } },
+        { owner: "user4", pod: { id: 2 } },
+      ];
+      expect($scope.getPodOwners(pod)).toEqual(["user1", "user2", "user3"]);
+    });
+  });
+
+  describe("getPodHost", () => {
+    it("can get the machine that is associated with a pod", () => {
+      makeController();
+      const pod = { id: 1, host: "abc", name: "pod-1" };
+      const [hostMachine, otherMachine] = [
+        { system_id: "abc" },
+        { system_id: "def" },
+      ];
+      $scope.machines = [hostMachine, otherMachine];
+      expect($scope.getPodHost(pod)).toEqual(hostMachine);
+    });
+
+    it("can get the controller that is associated with a pod", () => {
+      makeController();
+      const pod = { id: 1, host: "abc", name: "pod-1" };
+      const [hostController, otherController] = [
+        { system_id: "abc" },
+        { system_id: "def" },
+      ];
+      $scope.controllers = [hostController, otherController];
+      expect($scope.getPodHost(pod)).toEqual(hostController);
     });
   });
 });
