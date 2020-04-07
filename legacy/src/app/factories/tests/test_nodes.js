@@ -889,4 +889,39 @@ describe("NodesManager", function() {
       expect(MachinesManager.urlValuesValid(values)).toBe(false);
     });
   });
+
+  describe("isVM", () => {
+    it("returns true for machines with the 'virtual' tag", () => {
+      const virtualMachine = makemachine();
+      const nonVirtualMachine = makemachine();
+      virtualMachine.tags = ["virtual"];
+
+      expect(MachinesManager.isVM(virtualMachine)).toBe(true);
+      expect(MachinesManager.isVM(nonVirtualMachine)).toBe(false);
+    });
+
+    it("returns true for machines with lxd, virsh or vmware power type", () => {
+      const virtualMachine1 = makemachine();
+      const virtualMachine2 = makemachine();
+      const virtualMachine3 = makemachine();
+      const nonVirtualMachine = makemachine();
+      virtualMachine1.power_type = "lxd";
+      virtualMachine2.power_type = "virsh";
+      virtualMachine3.power_type = "vmware";
+
+      expect(MachinesManager.isVM(virtualMachine1)).toBe(true);
+      expect(MachinesManager.isVM(virtualMachine2)).toBe(true);
+      expect(MachinesManager.isVM(virtualMachine3)).toBe(true);
+      expect(MachinesManager.isVM(nonVirtualMachine)).toBe(false);
+    });
+
+    it("returns true for machines that have a pod", () => {
+      const virtualMachine = makemachine();
+      const nonVirtualMachine = makemachine();
+      const pod = { type: "virsh" };
+
+      expect(MachinesManager.isVM(virtualMachine, pod)).toBe(true);
+      expect(MachinesManager.isVM(nonVirtualMachine)).toBe(false);
+    });
+  });
 });

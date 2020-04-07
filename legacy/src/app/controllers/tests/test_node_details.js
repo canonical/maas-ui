@@ -50,7 +50,7 @@ describe("NodeDetailsController", function () {
   var DevicesManager, GeneralManager, UsersManager, DomainsManager;
   var TagsManager, RegionConnection, ManagerHelperService, ErrorService;
   var ScriptsManager, ResourcePoolsManager, VLANsManager, ZonesManager;
-  var webSocket;
+  var PodsManager, webSocket;
   beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
     DevicesManager = $injector.get("DevicesManager");
@@ -68,6 +68,7 @@ describe("NodeDetailsController", function () {
     ScriptsManager = $injector.get("ScriptsManager");
     VLANsManager = $injector.get("VLANsManager");
     FabricsManager = $injector.get("FabricsManager");
+    PodsManager = $injector.get("PodsManager");
 
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
@@ -201,6 +202,7 @@ describe("NodeDetailsController", function () {
       ErrorService: ErrorService,
       ScriptsManager: ScriptsManager,
       ResourcePoolsManager: ResourcePoolsManager,
+      PodsManager: PodsManager,
     });
 
     // Since the osSelection directive is not used in this test the
@@ -262,6 +264,7 @@ describe("NodeDetailsController", function () {
     expect($scope.services).toEqual({});
     expect($scope.numaDetails).toEqual([]);
     expect($scope.expandedNumas).toEqual([]);
+    expect($scope.isVM).toEqual(false);
   });
 
   it("sets initial values for summary section", function () {
@@ -334,6 +337,7 @@ describe("NodeDetailsController", function () {
       FabricsManager,
       VLANsManager,
       MachinesManager,
+      PodsManager,
       ScriptsManager,
     ]);
   });
@@ -419,7 +423,19 @@ describe("NodeDetailsController", function () {
     expect($scope.type_name_title).toBe("Machine");
   });
 
-  it("sets controller values on load", function () {
+  it("fetches pod details if node has a pod", function() {
+    node.pod = { id: 1 };
+    MachinesManager._activeItem = node;
+    spyOn(PodsManager, "getItem").and.returnValue($q.defer().promise);
+    var defer = $q.defer();
+    makeController(defer);
+
+    defer.resolve();
+    $rootScope.$digest();
+    expect(PodsManager.getItem).toHaveBeenCalledWith(node.pod.id);
+  });
+
+  it("sets controller values on load", function() {
     $location.path("/controller");
     spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ControllersManager, "setActiveItem").and.returnValue(

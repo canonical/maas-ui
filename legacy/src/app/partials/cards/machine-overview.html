@@ -1,7 +1,7 @@
 <span class="l-grid__machine-overview p-card u-no-padding">
 
   <div class="overview">
-    <strong class="p-muted-heading u-sv1">Overview</strong>
+    <strong class="p-muted-heading u-sv1">{$ isVM ? "Virtual Machine Status" : "Machine Status" $}</strong>
     <h4 class="u-no-margin--bottom">
       <i class="p-icon--locked" ng-if="node.locked">Locked: </i>
       {$ node.status $}
@@ -171,6 +171,10 @@
     <div>
       <div class="p-text--muted">Domain</div>
       <span title="{$ header.domain.selected.name $}">{$ header.domain.selected.name $}</span>
+    </div>
+    <div ng-if="node.pod">
+      <div class="p-text--muted">Host</div>
+      <a href="{$ legacyUrlBase $}/kvm/{$ node.pod.id $}">{$ node.pod.name $}&nbsp;&rsaquo;</a>
     </div>
     <div>
       <div>

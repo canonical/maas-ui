@@ -29,6 +29,7 @@ function NodeDetailsController(
   ResourcePoolsManager,
   VLANsManager,
   FabricsManager,
+  PodsManager,
   $log,
   $window
 ) {
@@ -43,6 +44,8 @@ function NodeDetailsController(
   $rootScope.title = "Loading...";
 
   // Initial values.
+  $scope.legacyUrlBase =
+    `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
   $scope.loaded = false;
   $scope.node = null;
   $scope.action = {
@@ -91,6 +94,7 @@ function NodeDetailsController(
   $scope.numaDetails = [];
   $scope.expandedNumas = [];
   $scope.groupedInterfaces = [];
+  $scope.isVM = false;
 
   // Node header section.
   $scope.header = {
@@ -575,7 +579,15 @@ function NodeDetailsController(
   // Called when the node has been loaded.
   function nodeLoaded(node) {
     $scope.node = node;
-    $scope.loaded = true;
+    if (node.pod) {
+      PodsManager.getItem(node.pod.id).then((pod) => {
+        $scope.isVM = MachinesManager.isVM(node, pod);
+        $scope.loaded = true;
+      });
+    } else {
+      $scope.isVM = MachinesManager.isVM(node);
+      $scope.loaded = true;
+    }
 
     updateTitle();
     updateSummary();
@@ -1581,7 +1593,7 @@ function NodeDetailsController(
     $rootScope.page = "devices";
   } else {
     $scope.nodesManager = MachinesManager;
-    page_managers = [MachinesManager, ScriptsManager];
+    page_managers = [MachinesManager, PodsManager, ScriptsManager];
     $scope.isController = false;
     $scope.isDevice = false;
     $scope.type_name = "machine";

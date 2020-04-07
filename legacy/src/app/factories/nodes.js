@@ -410,6 +410,21 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
     return validUrls.length === values.length;
   };
 
+  NodesManager.prototype.isVM = (node, pod) => {
+    // 08-04-2020 Caleb - Nodes are automatically tagged "virtual" in the
+    // commissioning process by using the 00-maas-02-virtuality script. Since
+    // tags can be removed, we also have a fallback to check that the node has
+    // a pod, or that the node's power_type is in a list of known VM types.
+    if (node.tags && node.tags.includes("virtual")) {
+      return true;
+    }
+
+    const vmPowerTypes = ["lxd", "virsh", "vmware"];
+    return pod
+      ? vmPowerTypes.includes(pod.type)
+      : vmPowerTypes.includes(node.power_type);
+  };
+
   return NodesManager;
 }
 
