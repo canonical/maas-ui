@@ -11,12 +11,14 @@
         </div>
         <div class="col-medium-2 col-4">
             <div class="page-header__controls" data-ng-show="isSuperUser()">
-                <button class="p-button--neutral"
+                <button
+                    class="p-button--neutral u-no-margin--bottom"
                     data-ng-click="addDomain()"
-                    data-ng-if="!addDomainScope.viewable">Add domain</button>
-                <button class="p-button--neutral"
-                    data-ng-click="cancelAddDomain()"
-                    data-ng-if="addDomainScope.viewable" disabled>Add domain</button>
+                    data-ng-disabled="addDomainScope.viewable"
+                    data-ng-if="!addDomainScope.viewable"
+                >
+                    Add domain
+                </button>
             </div>
         </div>
     </div>

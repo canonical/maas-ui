@@ -44,7 +44,7 @@
                     </li>
                     <li class="p-inline-list__item u-no-wrap">
                         <i class="p-icon--power-{$ getPowerStateClass() $}"></i> {$ getPowerStateText() $}
-                        <button class="p-button--base" data-ng-show="canCheckPowerState()"
+                        <button class="p-button--base u-no-margin--bottom" data-ng-show="canCheckPowerState()"
                             data-ng-click="checkPowerState(); sendAnalyticsEvent('Machine details', 'Check power state', 'Machine summary tab')">check
                             now</button>
                     </li>

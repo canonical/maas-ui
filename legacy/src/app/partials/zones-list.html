@@ -14,28 +14,41 @@
         </div>
         <div class="col-medium-2 col-4">
             <div class="page-header__controls" data-ng-show="isSuperUser()">
-                <button class="button--secondary button--inline"
+                <button
+                    class="p-button--neutral u-no-margin--bottom"
                     data-ng-click="addZone()"
-                    data-ng-hide="action.open">Add AZ</button>
-                <button class="button--secondary button--inline"
-                    data-ng-click="closeZone()"
-                    data-ng-show="action.open">Cancel add AZ</button>
+                    data-ng-hide="action.open"
+                >
+                    Add AZ
+                </button>
             </div>
         </div>
     </div>
     <div class="row u-no-margin--top" data-ng-if="action.open">
         <hr />
-        <maas-obj-form obj="action.obj" manager="zoneManager" manager-method="createItem"
-            inline="true" save-on-blur="false" after-save="closeZone">
-            <div class="col-6">
-                <maas-obj-field
-                    type="text" key="name" label="Name (required)" subtle="false"
-                    placeholder="Name (required)" label-width="2" input-width="3" ></maas-obj-field>
-            </div>
-            <div class="col-6">
-                <div class="u-align--right">
-                    <button class="p-button--base" type="button"data-ng-click="closeZone()">Cancel</button>
-                    <button class="p-button--positive u-no-margin--top" maas-obj-save>Add AZ</button>
+        <maas-obj-form
+            after-save="closeZone"
+            inline="true"
+            manager="zoneManager"
+            manager-method="createItem"
+            obj="action.obj"
+            save-on-blur="false"
+        >
+            <div class="row">
+                <div class="col-6">
+                    <maas-obj-field
+                        input-width="3"
+                        key="name"
+                        label="Name (required)"
+                        label-width="2"
+                        placeholder="Name (required)"
+                        subtle="false"
+                        type="text"
+                    ></maas-obj-field>
+                </div>
+                <div class="col-6 u-align--right">
+                    <button class="p-button--base" type="button" data-ng-click="closeZone()">Cancel</button>
+                    <button class="p-button--positive" maas-obj-save>Add AZ</button>
                 </div>
             </div>
         </maas-obj-form>

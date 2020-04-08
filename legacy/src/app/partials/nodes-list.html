@@ -43,7 +43,7 @@
         <div data-ng-show="currentpage === 'pools'">
             <div class="page-header__controls"
                  data-ng-show="canCreateResourcePool()">
-              <button class="p-button--neutral"
+              <button class="p-button--neutral u-no-margin--bottom"
                       data-ng-click="tabs.pools.addPool()"
                       data-ng-if="!tabs.pools.actionOption">Add pool</button>
               <button class="p-button--neutral ng-hide"
@@ -80,12 +80,9 @@
 
             <div class="page-header__controls page-header__controls--controllers u-no-margin--top" data-ng-show="currentpage === 'controllers'">
                 <div data-ng-if="!tabs.controllers.selectedItems.length">
-                    <button class="p-button--neutral"
+                    <button class="p-button--neutral u-no-margin--bottom"
                         data-ng-click="tabs.controllers.addController = true"
                         data-ng-if="!tabs.controllers.addController">Add rack controller</button>
-                    <button class="p-button--neutral"
-                        data-ng-click="tabs.controllers.addController = false"
-                        data-ng-if="tabs.controllers.addController">Close add rack controller</button>
                 </div>
                 <ul class="p-inline-list u-no-margin--top u-no-margin--bottom" data-ng-show="tabs.controllers.selectedItems.length">
                     <li class="p-inline-list__item">

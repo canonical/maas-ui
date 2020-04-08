@@ -366,12 +366,12 @@
                         <hr>
                         <div maas-obj-hide-saving><maas-obj-errors></maas-obj-errors></div>
                         <div class="u-align--right" maas-obj-hide-saving>
-                            <button class="p-button--base u-no-margin--bottom" type="button" data-ng-click="cancelCompose()">Cancel</button>
-                            <button class="p-button--positive u-no-margin--bottom" maas-obj-save ng-disabled="!validateMachineCompose()" data-ng-click="sendAnalyticsEvent('KVM details', 'Submit form', 'KVM compose')">Compose machine</button>
+                            <button class="p-button--base" type="button" data-ng-click="cancelCompose()">Cancel</button>
+                            <button class="p-button--positive" maas-obj-save ng-disabled="!validateMachineCompose()" data-ng-click="sendAnalyticsEvent('KVM details', 'Submit form', 'KVM compose')">Compose machine</button>
                         </div>
                         <div class="u-align--right" maas-obj-show-saving>
-                            <button class="p-button--base u-no-margin--bottom" type="button" data-ng-disabled="true">Cancel</button>
-                            <button class="p-button--positive p-action-button is-indeterminate u-no-margin--bottom" ng-disabled="true">Composing machine...</button>
+                            <button class="p-button--base" type="button" data-ng-disabled="true">Cancel</button>
+                            <button class="p-button--positive p-action-button is-indeterminate" ng-disabled="true">Composing machine...</button>
                         </div>
                     </div>
                 </div>
@@ -379,6 +379,7 @@
         </div>
 
         <div class="page-header__dropdown u-hide" data-ng-class="{ 'u-show': action.option && action.option.name !== 'compose' }">
+            <hr />
             <div class="row" data-ng-if="action.inProgress">
                 <div class="col-12">
                     <p>
@@ -387,48 +388,46 @@
                     </p>
                 </div>
             </div>
-            <div class="row u-equal-height" data-ng-if="action.option && !action.inProgress">
-                <form class="p-form p-form--inline u-align--right">
-                    <div class="col-8 u-vertically-center">
+            <form class="p-form">
+                <div class="row" data-ng-if="action.option && !action.inProgress">
+                    <div class="col-8">
                         <div data-ng-if="action.error">
-                            <p class="u-remove-max-width">
+                            <p class="u-no-max-width">
                                 <i class="p-icon--error">Error:</i> Performing {$ action.option.sentence $} failed: {$ action.error $}
                             </p>
                         </div>
                         <div data-ng-if="action.option.name === 'refresh'">
-                            <p class="u-remove-max-width u-align--left">
+                            <p class="u-no-max-width">
                                 Refreshing this {$ pageType $} will cause MAAS to recalculate usage metrics, update information about storage pools,
                                 and commission any machines present in the {$ pageType $} that are not yet known to MAAS.
                             </p>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="u-align--right">
-                            <button class="p-button--base" type="button" data-ng-click="actionCancel()">Cancel</button>
-                            <button class="u-no-margin--top u-no-margin--top" data-ng-class="action.option.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo()" data-ng-if="!action.error">
-                                <span data-ng-if="action.option.name === 'refresh'">Refresh {$ pageType $}</span>
-                                <span data-ng-if="action.option.name === 'delete'">Delete {$ pageType $}</span>
-                            </button>
-                            <button class="p-button--neutral u-no-margin--top" data-ng-click="actionGo()" data-ng-if="action.error">Retry</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="p-strip is-shallow u-no-padding--bottom" media-query="min-width: 769px" offset="89">
-            <nav class="p-tabs u-hr--fixed-width">
-                <div class="row">
-                    <ul class="p-tabs__list" role="tablist" data-ng-class="{ 'u-hide': action.option }">
-                        <li class="p-tabs__item" role="presentation">
-                            <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
-                        </li>
-                        <li class="p-tabs__item" role="presentation">
-                            <a href="" role="tab" class="p-tabs__link" data-ng-if="canEdit()" data-ng-class="{ 'is-active': section.area === 'configuration'}" data-ng-click="section.area= 'configuration'">Configuration</a>
-                        </li>
-                    </ul>
                 </div>
-            </nav>
+                <div class="row">
+                    <div class="col-12 u-align--right">
+                        <button class="p-button--base" type="button" data-ng-click="actionCancel()">Cancel</button>
+                        <button class="u-no-margin--top u-no-margin--top" data-ng-class="action.option.name === 'delete' ? 'p-button--negative' : 'p-button--positive'" data-ng-click="actionGo()" data-ng-if="!action.error">
+                            <span data-ng-if="action.option.name === 'refresh'">Refresh {$ pageType $}</span>
+                            <span data-ng-if="action.option.name === 'delete'">Delete {$ pageType $}</span>
+                        </button>
+                        <button class="p-button--neutral u-no-margin--top" data-ng-click="actionGo()" data-ng-if="action.error">Retry</button>
+                    </div>
+                </div>
+            </form>
         </div>
+        <nav class="p-tabs u-hr--fixed-width">
+            <div class="row">
+                <ul class="p-tabs__list" role="tablist" data-ng-class="{ 'u-hide': action.option }">
+                    <li class="p-tabs__item" role="presentation">
+                        <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
+                    </li>
+                    <li class="p-tabs__item" role="presentation">
+                        <a href="" role="tab" class="p-tabs__link" data-ng-if="canEdit()" data-ng-class="{ 'is-active': section.area === 'configuration'}" data-ng-click="section.area= 'configuration'">Configuration</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <section data-ng-if="section.area === 'summary'">
