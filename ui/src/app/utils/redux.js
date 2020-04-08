@@ -25,11 +25,12 @@ export const createStandardAsyncActions = (name, action) => {
  */
 export const createStandardActions = (name) => {
   const action = {};
-  action.fetch = createAction(`FETCH_${name.toUpperCase()}`, () => ({
+  action.fetch = createAction(`FETCH_${name.toUpperCase()}`, (params) => ({
     meta: {
       model: name,
       method: "list",
     },
+    ...(params && { payload: { params } }),
   }));
 
   action.create = createAction(`CREATE_${name.toUpperCase()}`, (params) => ({
