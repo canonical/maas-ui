@@ -44,6 +44,16 @@ describe("createStandardActions", () => {
     });
   });
 
+  it("can pass params to FETCH actions", () => {
+    const action = createStandardActions("foo");
+
+    expect(action.fetch({ limit: 5 })).toEqual({
+      meta: { method: "list", model: "foo" },
+      payload: { params: { limit: 5 } },
+      type: "FETCH_FOO",
+    });
+  });
+
   it("defines a CREATE action", () => {
     const action = createStandardActions("foo");
 
