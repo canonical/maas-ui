@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { general as generalActions } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import { general as generalSelectors } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
 const getAddHardwareLinks = (navigationOptions) => {
@@ -32,11 +29,9 @@ const getAddHardwareLinks = (navigationOptions) => {
     : links;
 };
 
-export const AddHardwareMenu = () => {
+export const AddHardwareMenu = ({ disabled = false }) => {
   const dispatch = useDispatch();
   const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
-  const selectedIds = useSelector(machineSelectors.selectedIDs);
-  const hasSelectedMachines = selectedIds.length > 0;
 
   useEffect(() => {
     dispatch(generalActions.fetchNavigationOptions());
@@ -49,7 +44,7 @@ export const AddHardwareMenu = () => {
       links={getAddHardwareLinks(navigationOptions)}
       position="right"
       toggleAppearance="neutral"
-      toggleDisabled={hasSelectedMachines}
+      toggleDisabled={disabled}
       toggleLabel="Add hardware"
     />
   );

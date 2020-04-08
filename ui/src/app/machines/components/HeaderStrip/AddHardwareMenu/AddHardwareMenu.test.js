@@ -19,9 +19,6 @@ describe("AddHardwareMenu", () => {
           },
         },
       },
-      machine: {
-        selected: [],
-      },
     };
   });
 
@@ -47,13 +44,8 @@ describe("AddHardwareMenu", () => {
     ).toBe("RSD");
   });
 
-  it("disables the Add hardware toggle menu when machines are selected", () => {
-    const state = {
-      ...initialState,
-      machine: {
-        selected: ["foo"],
-      },
-    };
+  it("can be disabled", () => {
+    const state = { ...initialState };
 
     const store = mockStore(state);
     const wrapper = mount(
@@ -61,7 +53,7 @@ describe("AddHardwareMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddHardwareMenu />
+          <AddHardwareMenu disabled />
         </MemoryRouter>
       </Provider>
     );

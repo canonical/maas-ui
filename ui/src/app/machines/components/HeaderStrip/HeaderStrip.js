@@ -16,6 +16,7 @@ export const HeaderStrip = () => {
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
+  const hasSelectedMachines = selectedMachines.length > 0;
 
   const [selectedAction, setSelectedAction] = useState();
 
@@ -64,7 +65,7 @@ export const HeaderStrip = () => {
                 {!selectedAction && (
                   <>
                     <li className="p-inline-list__item">
-                      <AddHardwareMenu />
+                      <AddHardwareMenu disabled={hasSelectedMachines} />
                     </li>
                     <li className="p-inline-list__item last-item">
                       <TakeActionMenu setSelectedAction={setSelectedAction} />
