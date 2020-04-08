@@ -159,6 +159,25 @@ describe("HeaderStrip", () => {
     expect(wrapper.find('Button[data-test="add-pool"]').length).toBe(0);
   });
 
+  it("disables the add hardware menu when machines are selected", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["foo"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find('ContextualMenu[data-test="add-hardware-dropdown"]').props()
+        .toggleDisabled
+    ).toBe(true);
+  });
+
   it(`displays add pool button and not hardware dropdown when
     at pools route`, () => {
     const state = { ...initialState };

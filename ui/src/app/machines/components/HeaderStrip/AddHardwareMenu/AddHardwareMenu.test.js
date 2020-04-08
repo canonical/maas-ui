@@ -43,4 +43,21 @@ describe("AddHardwareMenu", () => {
         .children
     ).toBe("RSD");
   });
+
+  it("can be disabled", () => {
+    const state = { ...initialState };
+
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <AddHardwareMenu disabled />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("ContextualMenu").props().toggleDisabled).toBe(true);
+  });
 });

@@ -29,7 +29,7 @@ const getAddHardwareLinks = (navigationOptions) => {
     : links;
 };
 
-export const AddHardwareMenu = () => {
+export const AddHardwareMenu = ({ disabled = false }) => {
   const dispatch = useDispatch();
   const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
 
@@ -44,6 +44,7 @@ export const AddHardwareMenu = () => {
       links={getAddHardwareLinks(navigationOptions)}
       position="right"
       toggleAppearance="neutral"
+      toggleDisabled={disabled}
       toggleLabel="Add hardware"
     />
   );

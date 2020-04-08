@@ -1,4 +1,5 @@
 import { Button, Col, Loader, Row } from "@canonical/react-components";
+import PropTypes from "prop-types";
 import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ export const HeaderStrip = () => {
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
+  const hasSelectedMachines = selectedMachines.length > 0;
 
   const [selectedAction, setSelectedAction] = useState();
 
@@ -64,7 +66,7 @@ export const HeaderStrip = () => {
                 {!selectedAction && (
                   <>
                     <li className="p-inline-list__item">
-                      <AddHardwareMenu />
+                      <AddHardwareMenu disabled={hasSelectedMachines} />
                     </li>
                     <li className="p-inline-list__item last-item">
                       <TakeActionMenu setSelectedAction={setSelectedAction} />
@@ -90,6 +92,10 @@ export const HeaderStrip = () => {
       <HeaderStripTabs />
     </>
   );
+};
+
+HeaderStrip.propTypes = {
+  disabled: PropTypes.bool,
 };
 
 export default HeaderStrip;
