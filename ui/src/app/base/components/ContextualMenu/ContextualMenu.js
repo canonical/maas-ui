@@ -1,6 +1,6 @@
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
-import { nanoid } from "nanoid";
+import { nanoid } from "@reduxjs/toolkit";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import usePortal from "react-useportal";
