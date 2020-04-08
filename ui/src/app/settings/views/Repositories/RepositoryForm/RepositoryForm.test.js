@@ -105,11 +105,6 @@ describe("RepositoryForm", () => {
           model: "packagerepository",
           method: "list",
         },
-        payload: {
-          params: {
-            limit: 50,
-          },
-        },
       },
     ]);
   });

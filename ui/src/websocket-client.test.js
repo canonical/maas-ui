@@ -28,11 +28,8 @@ describe("websocket client", () => {
   });
 
   it("increments the id", () => {
-    expect(client._nextId).toBe(0);
-    client.send("TEST_ACTION", {});
-    expect(client._nextId).toBe(1);
-    client.send("TEST_ACTION", {});
-    expect(client._nextId).toBe(2);
+    expect(client.send("TEST_ACTION", {})).toBe(0);
+    expect(client.send("TEST_ACTION", {})).toBe(1);
   });
 
   it("can get a stored request", () => {

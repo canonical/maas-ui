@@ -4,6 +4,8 @@ import { expectSaga } from "redux-saga-test-plan";
 import MESSAGE_TYPES from "app/base/constants";
 import {
   createConnection,
+  getBatchRequest,
+  handleBatch,
   handleMessage,
   handleNotifyMessage,
   sendMessage,
@@ -123,6 +125,27 @@ describe("websocket sagas", () => {
     expect(saga.next().done).toBe(true);
   });
 
+  it("allows batch messages even if data has already been fetched", () => {
+    const action = {
+      type: "FETCH_TEST",
+      meta: {
+        model: "test",
+        method: "test.list",
+        type: MESSAGE_TYPES.REQUEST,
+      },
+      payload: {
+        params: {
+          limit: 25,
+          start: 808,
+        },
+      },
+    };
+    const previous = sendMessage(socketClient, action);
+    previous.next();
+    const saga = sendMessage(socketClient, action);
+    expect(saga.next().value).toEqual(put({ type: "FETCH_TEST_START" }));
+  });
+
   it("can handle params as an array", () => {
     const saga = sendMessage(socketClient, {
       type: "TEST_ACTION",
@@ -187,6 +210,78 @@ describe("websocket sagas", () => {
     expect(saga.next("TEST_ACTION").value).toEqual(
       put({ type: "TEST_ACTION_SUCCESS", payload: { response: "here" } })
     );
+  });
+
+  it("can handle a batch response", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    saga.next();
+    const response = {
+      request_id: 99,
+      result: {
+        response: "here",
+      },
+    };
+    saga.next(response);
+    saga.next("TEST_ACTION");
+    expect(saga.next().value).toEqual(call(handleBatch, response));
+  });
+
+  it("can send the next batch message", () => {
+    const response = {
+      request_id: 99,
+      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
+    };
+    return expectSaga(handleBatch, response)
+      .provide([
+        [
+          call(getBatchRequest, 99),
+          {
+            type: "FETCH_TEST",
+            meta: {
+              model: "test",
+              method: "test.list",
+              type: MESSAGE_TYPES.REQUEST,
+            },
+            payload: { params: { limit: 5 } },
+          },
+        ],
+      ])
+      .put({
+        type: "FETCH_TEST",
+        meta: {
+          model: "test",
+          method: "test.list",
+          type: MESSAGE_TYPES.REQUEST,
+        },
+        payload: { params: { limit: 5, start: 15 } },
+      })
+      .run();
+  });
+
+  it("can dispatch the complete action when receiving the last batch", () => {
+    const response = {
+      request_id: 99,
+      result: [{ id: 11 }],
+    };
+    return expectSaga(handleBatch, response)
+      .provide([
+        [
+          call(getBatchRequest, 99),
+          {
+            type: "FETCH_TEST",
+            meta: {
+              model: "test",
+              method: "test.list",
+              type: MESSAGE_TYPES.REQUEST,
+            },
+            payload: { params: { limit: 5 } },
+          },
+        ],
+      ])
+      .put({
+        type: "FETCH_TEST_COMPLETE",
+      })
+      .run();
   });
 
   it("can handle a WebSocket error message", () => {
