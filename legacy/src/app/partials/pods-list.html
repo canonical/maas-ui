@@ -6,18 +6,29 @@
         </div>
         <div class="col-small-2 col-medium-2 col-4 u-align--right">
             <div class="page-header__controls">
-                <div data-ng-if="pods.length > 0 && !selectedItems.length && !action.option.isSingle">
-                    <button class="p-button--neutral" data-ng-click="addPod()" data-ng-if="!add.open && canAddPod()">Add {$ getPageHeading() $}</button>
-                </div>
-                <ul class="p-inline-list u-no-margin--top" data-ng-if="showActions() && selectedItems.length">
-                    <li class="p-inline-list__item">{$ selectedItems.length $} Selected</li>
-                    <li class="p-inline-list__item">
-                        <div
-                            data-selected-items="selectedItems.length"
-                            data-ng-click="updateAvailableActions('pods')"
-                            data-maas-cta="action.options"
-                            data-ng-model="action.option">
-                        </div>
+                <ul class="p-inline-list u-no-margin--bottom">
+                    <li class="p-inline-list__item" ng-if="selectedItems.length">{$ selectedItems.length $} selected</li>
+                    <li class="p-inline-list__item" ng-if="canAddPod()">
+                        <button
+                            class="p-button--neutral u-no-margin--bottom"
+                            ng-click="addPod()"
+                            ng-disabled="add.open || selectedItems.length"
+                            ng-if="canAddPod()"
+                        >
+                            Add {$ getPageHeading() $}
+                        </button>
+                    </li>
+                    <li class="p-inline-list__item" ng-if="showActions()">
+                        <span class="p-tooltip--left">
+                            <div
+                                disabled="!selectedItems.length"
+                                maas-cta="action.options"
+                                ng-click="updateAvailableActions('pods')"
+                                ng-model="action.option"
+                                selected-items="selectedItems.length"
+                            ></div>
+                            <span class="p-tooltip__message" ng-if="!selectedItems.length">Select a KVM host to take action</span>
+                        </span>
                     </li>
                 </div>
             </div>
@@ -107,8 +118,8 @@
                         <p maas-obj-hide-saving class="u-no-margin--bottom"><maas-obj-errors></maas-obj-errors></p>
                         <p maas-obj-show-saving class="u-no-margin--bottom"><maas-obj-saving>Trying to connect and discover {$ getPageHeading() $}</maas-obj-saving></p>
                         <div class="page-header__controls u-no-margin--top" maas-obj-hide-saving>
-                            <button class="p-button--base is-inline" type="button" data-ng-click="cancelAddPod()">Cancel</button>
-                            <button class="p-button--positive is-inline u-no-margin--top" maas-obj-save>Save {$ getPageHeading() $}</button>
+                            <button class="p-button--base is-inline u-no-margin--bottom" type="button" data-ng-click="cancelAddPod()">Cancel</button>
+                            <button class="p-button--positive is-inline u-no-margin--bottom" maas-obj-save>Save {$ getPageHeading() $}</button>
                         </div>
                     </div>
                 </div>
