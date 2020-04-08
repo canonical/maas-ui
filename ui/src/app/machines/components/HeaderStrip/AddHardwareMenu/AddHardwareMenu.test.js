@@ -19,6 +19,9 @@ describe("AddHardwareMenu", () => {
           },
         },
       },
+      machine: {
+        selected: [],
+      },
     };
   });
 
@@ -42,5 +45,27 @@ describe("AddHardwareMenu", () => {
       wrapper.find('[data-test="add-hardware-dropdown"]').props().links[2]
         .children
     ).toBe("RSD");
+  });
+
+  it("disables the Add hardware toggle menu when machines are selected", () => {
+    const state = {
+      ...initialState,
+      machine: {
+        selected: ["foo"],
+      },
+    };
+
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <AddHardwareMenu />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("ContextualMenu").props().toggleDisabled).toBe(true);
   });
 });
