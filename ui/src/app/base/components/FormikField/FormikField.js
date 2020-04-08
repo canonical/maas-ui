@@ -2,7 +2,7 @@ import { Input } from "@canonical/react-components";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
-import { nanoid } from "nanoid";
+import { nanoid } from "@reduxjs/toolkit";
 
 const FormikField = ({
   component: Component = Input,
