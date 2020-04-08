@@ -46,4 +46,4 @@ ReactDOM.render(
 
 serviceWorker.unregister();
 
-console.info(`${appName} ${appVersion}.`);
+console.info(`${appName} ${appVersion} (${process.env.REACT_APP_GIT_SHA}).`);

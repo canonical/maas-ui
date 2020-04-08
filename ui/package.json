@@ -36,9 +36,9 @@
     "yup": "0.28.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts start",
     "serve": "yarn run start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "postbuild": "mkdir -p dist && tar -C build -czvf dist/maas-ui-v$npm_package_version.tar.gz .",
     "test": "react-scripts test",
