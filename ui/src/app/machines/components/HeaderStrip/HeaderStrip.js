@@ -1,4 +1,5 @@
 import { Button, Col, Loader, Row } from "@canonical/react-components";
+import PropTypes from "prop-types";
 import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,6 +92,10 @@ export const HeaderStrip = () => {
       <HeaderStripTabs />
     </>
   );
+};
+
+HeaderStrip.propTypes = {
+  disabled: PropTypes.bool,
 };
 
 export default HeaderStrip;
