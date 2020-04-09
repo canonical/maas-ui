@@ -90,28 +90,32 @@
             </div>
           </div>
           <div class="p-form__group row" data-ng-repeat="mac in machine.macs">
-            <label for="mac-address" class="p-form__label col-2" ng-class="{ 'is-required': mac === machine.macs[0] }">
-              <span data-ng-if="mac === machine.macs[0]">MAC Address</span>&nbsp;
+            <label
+              class="p-form__label col-2"
+              for="mac-address-{$ $index $}"
+              ng-class="{ 'is-required': $first }"
+            >
+              <span ng-if="$first">MAC Address</span>
+              <span class="u-hide" ng-if="!$first">Extra MAC {$ index $}</span>
             </label>
             <div class="col-4 p-form__control p-search-box u-no-margin--bottom">
               <input
-                type="text"
-                id="mac-address"
-                placeholder="00:00:00:00:00:00"
-                maxlength="17"
-                data-ng-class="{ 'has-error': mac.error }"
-                data-ng-model="mac.mac"
-                data-ng-pattern="macAddressRegex"
-                data-ng-change="validateMac(mac)"
                 class="u-no-margin--bottom"
+                id="mac-address-{$ $index $}"
                 mac-address
+                maxlength="17"
+                ng-class="{ 'has-error': mac.error }"
+                ng-change="validateMac(mac)"
+                ng-model="mac.mac"
+                placeholder="00:00:00:00:00:00"
+                type="text"
               />
               <button
-                type="reset"
-                title="Delete MAC"
                 class="p-search-box__button"
-                data-ng-hide="mac === machine.macs[0]"
                 data-ng-click="removeMac(mac)"
+                data-ng-if="!$first"
+                title="Delete MAC"
+                type="reset"
               >
                 <i class="p-icon--close"></i>
               </button>
