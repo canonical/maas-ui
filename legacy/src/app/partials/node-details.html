@@ -462,7 +462,7 @@
                                 data-ng-class="{'is-disabled': !summary.editing }">Tags</label>
                             <div class="p-form__control col-4 tags--inline">
                                 <span data-ng-repeat="tag in node.tags" data-ng-hide="summary.editing">
-                                    <a href="#/machines/?query=tags:({$ tag $})">{$ tag $}</a>
+                                    <a href="r/machines/?q=tags:({$ tag $})">{$ tag $}</a>
                                 </span>
                                 <tags-input data-ng-model="summary.tags"
                                     data-ng-hide="!summary.editing" allowed-tags-pattern="[\w-]+">

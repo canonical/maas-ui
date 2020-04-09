@@ -277,7 +277,7 @@
                                     <label class="p-form__label col-2 col-small-2 col-medium-2">Tag machines</label>
                                     <div class="p-form__control col-3 col-small-2 col-medium-3 tags--inline">
                                         <span data-ng-repeat="tag in node.tags" data-ng-hide="summary.editing">
-                                            <a href="#/machines/?query=tags:({$ tag $})">{$ tag $}</a>
+                                            <a href="r/machines/?q=tags:({$ tag $})">{$ tag $}</a>
                                         </span>
                                         <tags-input data-ng-model="tags" allowed-tags-pattern="[\w-]+" placeholder="Enter a tag">
                                             <auto-complete source="tagsAutocomplete($query)"></auto-complete>
@@ -752,7 +752,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
         <div class="row">
             <ul class="p-tabs__list" role="tablist">
                 <li class="p-tabs__item" role="presentation">
-                    <a href="#/machines" class="p-tabs__link" role="tab"
+                    <a href="r/machines" class="p-tabs__link" role="tab"
                         data-ng-class="{ 'is-active': currentpage === 'machines'}">
                         <ng-pluralize count="machines.length" when="{'one': '{$ machines.length $} Machine', 'other': '{$ machines.length $} Machines'}"></ng-pluralize>
                     </a>

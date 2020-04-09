@@ -13,7 +13,7 @@ const Routes = () => (
       exact
       path="/"
       component={() => {
-        window.location.href = `${process.env.REACT_APP_BASENAME}/#/machines`;
+        window.location.href = `${process.env.REACT_APP_BASENAME}/r/machines`;
         return null;
       }}
     />

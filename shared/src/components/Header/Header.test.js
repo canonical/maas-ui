@@ -118,7 +118,7 @@ describe("Header", () => {
         basename="/MAAS"
         completedIntro={true}
         location={{
-          hash: "#/machines",
+          hash: "#/devices",
           pathname: "/MAAS/"
         }}
         logout={jest.fn()}
@@ -126,6 +126,6 @@ describe("Header", () => {
     );
     const selected = wrapper.find(".p-navigation__link.is-selected");
     expect(selected.exists()).toBe(true);
-    expect(selected.text()).toEqual("Machines");
+    expect(selected.text()).toEqual("Devices");
   });
 });
