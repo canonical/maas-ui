@@ -4,6 +4,18 @@ import ReactDOM from "react-dom";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 
 import { name as appName, version as appVersion } from "../package.json";
@@ -18,18 +30,33 @@ export const history = createBrowserHistory({
 });
 const reducer = createRootReducer(history);
 
+const persistConfig = {
+  key: "root",
+  whitelist: ["machine"],
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [
-  ...getDefaultMiddleware({ thunk: false }),
+  ...getDefaultMiddleware({
+    thunk: false,
+    immutableCheck: false,
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
   sagaMiddleware,
   routerMiddleware(history),
 ];
 
 export const store = configureStore({
-  reducer,
+  reducer: persistedReducer,
   middleware,
   devTools: process.env.NODE_ENV !== "production",
 });
+const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
@@ -37,7 +64,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <React.StrictMode>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </React.StrictMode>
     </ConnectedRouter>
   </Provider>,
