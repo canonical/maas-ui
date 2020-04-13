@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "concurrently": "5.1.0",
-    "cypress": "4.3.0",
+    "cypress": "4.4.0",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.3",
     "npm-package-json-lint": "5.0.0",
