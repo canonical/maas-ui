@@ -18,178 +18,177 @@ import vlanDetailsTmpl from "./partials/vlan-details.html";
 import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
-const configureRoutes = $routeProvider => {
+/* @ngInject */
+const configureRoutes = ($routeProvider) => {
   let routes;
   routes = $routeProvider
     .when("/intro", {
       template: introTmpl,
-      controller: "IntroController"
+      controller: "IntroController",
     })
     .when("/intro/user", {
       template: introUserTmpl,
-      controller: "IntroUserController"
-    })
-    .when("/machines", {
-      template: nodesListTmpl,
-      controller: "NodesListController"
+      controller: "IntroUserController",
     })
     .when("/machine/:system_id/:result_type/:id", {
       template: nodeResultTmpl,
-      controller: "NodeResultController"
+      controller: "NodeResultController",
     })
     .when("/machine/:system_id/events", {
       template: nodeEventsTmpl,
-      controller: "NodeEventsController"
+      controller: "NodeEventsController",
     })
     .when("/machine/:system_id", {
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
-      reloadOnSearch: false
+      reloadOnSearch: false,
     })
     .when("/devices", {
       template: nodesListTmpl,
-      controller: "NodesListController"
+      controller: "NodesListController",
     })
     .when("/device/:system_id/:result_type/:id", {
       template: nodeResultTmpl,
-      controller: "NodeResultController"
+      controller: "NodeResultController",
     })
     .when("/device/:system_id/events", {
       template: nodeEventsTmpl,
-      controller: "NodeEventsController"
+      controller: "NodeEventsController",
     })
     .when("/device/:system_id", {
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
-      reloadOnSearch: false
+      reloadOnSearch: false,
     })
     .when("/controllers", {
       template: nodesListTmpl,
-      controller: "NodesListController"
+      controller: "NodesListController",
     })
     .when("/controller/:system_id/:result_type/:id", {
       template: nodeResultTmpl,
-      controller: "NodeResultController"
+      controller: "NodeResultController",
     })
     .when("/controller/:system_id/events", {
       template: nodeEventsTmpl,
-      controller: "NodeEventsController"
+      controller: "NodeEventsController",
     })
     .when("/controller/:system_id", {
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
-      reloadOnSearch: false
+      reloadOnSearch: false,
     })
     .when("/nodes", {
-      redirectTo: "/machines"
+      redirectTo: "/machines",
     })
     .when("/node/machine/:system_id", {
-      redirectTo: "/machine/:system_id"
+      redirectTo: "/machine/:system_id",
     })
     .when("/node/machine/:system_id/:result_type/:id", {
-      redirectTo: "/machine/:system_id/:result_type/:id"
+      redirectTo: "/machine/:system_id/:result_type/:id",
     })
     .when("/node/machine/:system_id/events", {
-      redirectTo: "/machine/:system_id/events"
+      redirectTo: "/machine/:system_id/events",
     })
     .when("/node/device/:system_id", {
-      redirectTo: "/device/:system_id"
+      redirectTo: "/device/:system_id",
     })
     .when("/node/device/:system_id/:result_type/:id", {
-      redirectTo: "/device/:system_id/:result_type/:id"
+      redirectTo: "/device/:system_id/:result_type/:id",
     })
     .when("/node/device/:system_id/events", {
-      redirectTo: "/device/:system_id/events"
+      redirectTo: "/device/:system_id/events",
     })
     .when("/node/controller/:system_id", {
-      redirectTo: "/controller/:system_id"
+      redirectTo: "/controller/:system_id",
     })
     .when("/node/controller/:system_id/:result_type/:id", {
-      redirectTo: "/controller/:system_id/:result_type/:id"
+      redirectTo: "/controller/:system_id/:result_type/:id",
     })
     .when("/node/controller/:system_id/events", {
-      redirectTo: "/controller/:system_id/events"
+      redirectTo: "/controller/:system_id/events",
     })
     .when("/kvm", {
       template: podsListTmpl,
-      controller: "PodsListController"
+      controller: "PodsListController",
     })
     .when("/kvm/:id", {
       template: podDetailsTmpl,
-      controller: "PodDetailsController"
+      controller: "PodDetailsController",
     })
     .when("/pods", {
-      redirectTo: "/kvm"
+      redirectTo: "/kvm",
     })
     .when("/pod/:id", {
-      redirectTo: "/kvm/:id"
+      redirectTo: "/kvm/:id",
     })
     .when("/rsd", {
       template: podsListTmpl,
-      controller: "PodsListController"
+      controller: "PodsListController",
     })
     .when("/rsd/:id", {
       template: podDetailsTmpl,
-      controller: "PodDetailsController"
+      controller: "PodDetailsController",
     })
     .when("/images", {
       template: imagesTmpl,
-      controller: "ImagesController"
+      controller: "ImagesController",
     })
     .when("/domains", {
       template: domainsListTmpl,
-      controller: "DomainsListController"
+      controller: "DomainsListController",
     })
     .when("/domain/:domain_id", {
       template: domainDetailsTmpl,
-      controller: "DomainDetailsController"
+      controller: "DomainDetailsController",
     })
     .when("/space/:space_id", {
       template: spaceDetailsTmpl,
-      controller: "SpaceDetailsController"
+      controller: "SpaceDetailsController",
     })
     .when("/fabric/:fabric_id", {
       template: fabricDetailsTmpl,
-      controller: "FabricDetailsController"
+      controller: "FabricDetailsController",
     })
     .when("/subnets", {
-      redirectTo: "/networks?by=fabric"
+      redirectTo: "/networks?by=fabric",
     })
     .when("/networks", {
       template: networksListTmpl,
       controller: "NetworksListController",
-      reloadOnSearch: false
+      reloadOnSearch: false,
     })
     .when("/subnet/:subnet_id", {
       template: subnetDetailsTmpl,
-      controller: "SubnetDetailsController"
+      controller: "SubnetDetailsController",
     })
     .when("/vlan/:vlan_id", {
       template: vlanDetailsTmpl,
       controller: "VLANDetailsController",
-      controllerAs: "vlanDetails"
+      controllerAs: "vlanDetails",
     })
     .when("/zone/:zone_id", {
       template: zoneDetailsTmpl,
-      controller: "ZoneDetailsController"
+      controller: "ZoneDetailsController",
     })
     .when("/zones", {
       template: zonesListTmpl,
       controller: "ZonesListController",
-      reloadOnSearch: false
+      reloadOnSearch: false,
     })
     .when("/pools", {
       template: nodesListTmpl,
-      controller: "NodesListController"
+      controller: "NodesListController",
     })
     .when("/dashboard", {
       template: dashboardTmpl,
-      controller: "DashboardController"
+      controller: "DashboardController",
     });
 
   routes.otherwise({
-    redirectTo: "/machines"
+    redirectTo: () => {
+      window.location.replace(`${process.env.BASENAME}/r/machines`);
+    },
   });
-}
+};
 
 export default configureRoutes;
