@@ -1,5 +1,6 @@
 import { Loader } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
@@ -46,9 +47,9 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
           {updating !== null ? (
             <Loader className="u-no-margin u-no-padding--left" inline />
           ) : null}
-          <a className="p-link--soft" href="#/pools" title={machine.pool.name}>
+          <Link className="p-link--soft" to="/pools">
             {machine.pool.name}
-          </a>
+          </Link>
         </span>
       }
       primaryAriaLabel="Pool"

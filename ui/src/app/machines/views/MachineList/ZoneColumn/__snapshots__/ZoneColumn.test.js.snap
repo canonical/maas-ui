@@ -18,7 +18,12 @@ exports[`ZoneColumn renders 1`] = `
       <span
         data-test="zone"
       >
-        zone-north
+        <a
+          className="p-link--soft"
+          href="/MAAS/#/zone/0"
+        >
+          zone-north
+        </a>
       </span>
     }
     secondary={
@@ -44,7 +49,12 @@ exports[`ZoneColumn renders 1`] = `
             <span
               data-test="zone"
             >
-              zone-north
+              <a
+                className="p-link--soft"
+                href="/MAAS/#/zone/0"
+              >
+                zone-north
+              </a>
             </span>
           </div>
           <TableMenu
@@ -67,7 +77,12 @@ exports[`ZoneColumn renders 1`] = `
                     <span
                       data-test="zone"
                     >
-                      zone-north
+                      <a
+                        class="p-link--soft"
+                        href="/MAAS/#/zone/0"
+                      >
+                        zone-north
+                      </a>
                     </span>
                   </div>
                   <span
@@ -113,7 +128,12 @@ exports[`ZoneColumn renders 1`] = `
                       <span
                         data-test="zone"
                       >
-                        zone-north
+                        <a
+                          class="p-link--soft"
+                          href="/MAAS/#/zone/0"
+                        >
+                          zone-north
+                        </a>
                       </span>
                     </div>
                     <span

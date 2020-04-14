@@ -2,17 +2,18 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import { machine as machineSelectors } from "app/base/selectors";
+import { generateLegacyURL } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
-import { machine as machineSelectors } from "app/base/selectors";
 
 const FabricColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
-  const fabric =
-    machine.vlan && machine.vlan.fabric_name ? machine.vlan.fabric_name : "-";
+  const fabricID = machine.vlan && machine.vlan.fabric_id;
+  const fabricName = machine.vlan && machine.vlan.fabric_name;
   const vlan = machine.vlan && machine.vlan.name ? machine.vlan.name : "";
 
   return (
@@ -26,7 +27,16 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
           scriptType={machine.network_test_status}
           tooltipPosition="top-right"
         >
-          {fabric}
+          {fabricName ? (
+            <a
+              className="p-link--soft"
+              href={generateLegacyURL(`/fabric/${fabricID}`)}
+            >
+              {fabricName}
+            </a>
+          ) : (
+            "-"
+          )}
         </ScriptStatus>
       }
       primaryAriaLabel="Fabric"

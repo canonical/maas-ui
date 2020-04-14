@@ -17,7 +17,12 @@ exports[`FabricColumn renders 1`] = `
         }
         tooltipPosition="top-right"
       >
-        fabric-0
+        <a
+          className="p-link--soft"
+          href="/MAAS/#/fabric/0"
+        >
+          fabric-0
+        </a>
       </ScriptStatus>
     }
     primaryAriaLabel="Fabric"
@@ -57,7 +62,12 @@ exports[`FabricColumn renders 1`] = `
               <i
                 className="p-icon--running is-inline"
               />
-              fabric-0
+              <a
+                className="p-link--soft"
+                href="/MAAS/#/fabric/0"
+              >
+                fabric-0
+              </a>
             </ScriptStatus>
           </div>
         </div>
