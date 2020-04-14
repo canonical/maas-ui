@@ -92,7 +92,7 @@ exports[`Header renders 1`] = `
               >
                 <a
                   className="p-subnav__item"
-                  href="/MAAS/#/machines"
+                  href="/machines"
                 >
                   Machines
                 </a>
@@ -135,7 +135,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/machines"
+              href="/machines"
             >
               Machines
             </a>

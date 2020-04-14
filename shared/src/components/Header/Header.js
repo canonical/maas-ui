@@ -75,7 +75,7 @@ export const Header = ({
   const links = [
     {
       inHardwareMenu: true,
-      isLegacy: true,
+      isLegacy: false,
       label: "Machines",
       url: "/machines"
     },
