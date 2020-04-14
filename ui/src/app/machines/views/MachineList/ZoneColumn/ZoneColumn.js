@@ -9,6 +9,7 @@ import {
   machine as machineSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import { generateLegacyURL } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const getSpaces = (machine) => {
@@ -59,7 +60,12 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
           {updating !== null ? (
             <Loader className="u-no-margin u-no-padding--left" inline />
           ) : null}
-          {machine.zone.name}
+          <a
+            className="p-link--soft"
+            href={generateLegacyURL(`/zone/${machine.zone.id}`)}
+          >
+            {machine.zone.name}
+          </a>
         </span>
       }
       secondary={getSpaces(machine)}
