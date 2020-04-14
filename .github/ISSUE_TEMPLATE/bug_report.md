@@ -10,6 +10,9 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**maas-ui version**
+Version of maas-ui affected (or git sha).
+
 **MAAS version**
 Version of MAAS affected.
 
