@@ -22,6 +22,7 @@ describe("Pools", () => {
         items: [],
       },
       resourcepool: {
+        errors: {},
         loaded: true,
         items: [
           {
@@ -190,6 +191,29 @@ describe("Pools", () => {
     expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
   });
 
+  it("disables the delete button for pools that contain machines", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    state.resourcepool.items = [
+      {
+        id: 0,
+        name: "machines",
+        description: "has machines",
+        is_default: false,
+        permissions: ["edit", "delete"],
+        machine_total_count: 1,
+      },
+    ];
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
+  });
+
   it("does not show a machine link for empty pools", () => {
     const state = { ...initialState };
     state.resourcepool.items[0].machine_total_count = 0;
@@ -226,5 +250,21 @@ describe("Pools", () => {
     expect(link.exists()).toBe(true);
     expect(link.prop("to")).toBe("/machines?pool=default");
     expect(link.text()).toBe("1 of 5 ready");
+  });
+
+  it("displays state errors in a notification", () => {
+    const state = { ...initialState };
+    state.resourcepool.errors = "Pools are not for swimming.";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+          <Pools />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification p").text()).toEqual(
+      "Pools are not for swimming."
+    );
   });
 });
