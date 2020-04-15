@@ -102,18 +102,34 @@ machine.commission = (
   skipBMCConfig,
   skipNetworking,
   skipStorage,
+  updateFirmware,
+  configureHBA,
   commissioningScripts,
   testingScripts
-) =>
-  generateMachineAction("COMMISSION_MACHINE", "commission", systemId, {
+) => {
+  let formattedCommissioningScripts = [];
+  if (commissioningScripts && commissioningScripts.length > 0) {
+    formattedCommissioningScripts = commissioningScripts.map(
+      (script) => script.id
+    );
+    if (updateFirmware) {
+      formattedCommissioningScripts.push("update_firmware");
+    }
+    if (configureHBA) {
+      formattedCommissioningScripts.push("configure_hba");
+    }
+  }
+
+  return generateMachineAction("COMMISSION_MACHINE", "commission", systemId, {
     enable_ssh: enableSSH,
     skip_bmc_config: skipBMCConfig,
     skip_networking: skipNetworking,
     skip_storage: skipStorage,
-    commissioning_scripts:
-      commissioningScripts && commissioningScripts.map((script) => script.id),
-    testingScripts: testingScripts && testingScripts.map((script) => script.id),
+    commissioning_scripts: formattedCommissioningScripts,
+    testing_scripts:
+      testingScripts && testingScripts.map((script) => script.id),
   });
+};
 
 machine.deploy = (systemId, extra = {}) =>
   generateMachineAction("DEPLOY_MACHINE", "deploy", systemId, extra);
