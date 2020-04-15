@@ -1,6 +1,12 @@
+import {
+  Col,
+  Loader,
+  MainTable,
+  Notification,
+  Row,
+} from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Loader, MainTable, Row } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 import TableActions from "app/base/components/TableActions";
@@ -12,6 +18,7 @@ import {
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
 import { filtersToQueryString } from "app/machines/search";
+import { formatErrors } from "app/utils";
 
 const getMachinesLabel = (row) => {
   if (row.machine_total_count === 0) {
@@ -43,10 +50,14 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
           content: (
             <TableActions
               deleteDisabled={
-                !row.permissions.includes("delete") || row.is_default
+                !row.permissions.includes("delete") ||
+                row.is_default ||
+                row.machine_total_count > 0
               }
               deleteTooltip={
-                row.is_default && "The default pool may not be deleted."
+                (row.is_default && "The default pool may not be deleted.") ||
+                (row.machine_total_count > 0 &&
+                  "Cannot delete a pool that contains machines.")
               }
               editDisabled={!row.permissions.includes("edit")}
               editPath={`/pools/${row.id}/edit`}
@@ -89,6 +100,8 @@ const Pools = () => {
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const poolsLoading = useSelector(resourcePoolSelectors.loading);
   const saved = useSelector(resourcePoolSelectors.saved);
+  const errors = useSelector(resourcePoolSelectors.errors);
+  const errorMessage = formatErrors(errors);
 
   useAddMessage(
     saved,
@@ -105,51 +118,65 @@ const Pools = () => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
 
   return (
-    <Row>
-      <Col size={12}>
-        <div>
-          {poolsLoading && (
-            <div className="u-align--center">
-              <Loader text="Loading..." />
-            </div>
-          )}
-          {poolsLoaded && (
-            <MainTable
-              className="p-table-expanding--light"
-              defaultSortDirection="ascending"
-              headers={[
-                {
-                  content: "Name",
-                  sortKey: "name",
-                },
-                {
-                  content: "Machines",
-                  sortKey: "machines",
-                },
-                {
-                  content: "Description",
-                  sortKey: "description",
-                },
-                {
-                  content: "Actions",
-                  className: "u-align--right",
-                },
-              ]}
-              expanding={true}
-              paginate={150}
-              rows={generateRows(
-                resourcePools,
-                expandedId,
-                setExpandedId,
-                dispatch,
-                setDeleting
-              )}
-              sortable
-            />
-          )}
-        </div>
-      </Col>
-    </Row>
+    <>
+      {errorMessage ? (
+        <Row>
+          <Col size={12}>
+            <Notification
+              close={() => dispatch(resourcePoolActions.cleanup())}
+              type="negative"
+            >
+              {errorMessage}
+            </Notification>
+          </Col>
+        </Row>
+      ) : null}
+      <Row>
+        <Col size={12}>
+          <div>
+            {poolsLoading && (
+              <div className="u-align--center">
+                <Loader text="Loading..." />
+              </div>
+            )}
+            {poolsLoaded && (
+              <MainTable
+                className="p-table-expanding--light"
+                defaultSortDirection="ascending"
+                headers={[
+                  {
+                    content: "Name",
+                    sortKey: "name",
+                  },
+                  {
+                    content: "Machines",
+                    sortKey: "machines",
+                  },
+                  {
+                    content: "Description",
+                    sortKey: "description",
+                  },
+                  {
+                    content: "Actions",
+                    className: "u-align--right",
+                  },
+                ]}
+                expanding={true}
+                paginate={150}
+                rows={generateRows(
+                  resourcePools,
+                  expandedId,
+                  setExpandedId,
+                  dispatch,
+                  setDeleting
+                )}
+                sortable
+              />
+            )}
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 };
 

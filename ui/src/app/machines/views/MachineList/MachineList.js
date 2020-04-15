@@ -25,7 +25,7 @@ import {
   user as userActions,
   zone as zoneActions,
 } from "app/base/actions";
-import { groupAsMap, simpleSortByKey } from "app/utils";
+import { formatErrors, groupAsMap, simpleSortByKey } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useLocation, useRouter, useWindowTitle } from "app/base/hooks";
@@ -433,18 +433,7 @@ const MachineList = () => {
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machinesLoading = useSelector(machineSelectors.loading);
   const errors = useSelector(machineSelectors.errors);
-  let errorMessage;
-  if (errors) {
-    if (Array.isArray(errors)) {
-      errorMessage = errors.join(" ");
-    } else if (typeof errors === "object") {
-      errorMessage = Object.entries(errors)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(" ");
-    } else {
-      errorMessage = errors;
-    }
-  }
+  const errorMessage = formatErrors(errors);
 
   const [currentSort, setCurrentSort] = useState({
     key: "fqdn",

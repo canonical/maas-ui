@@ -1,5 +1,6 @@
 export { capitaliseFirst } from "./capitaliseFirst";
 export { formatBytes } from "./formatBytes";
+export { formatErrors } from "./formatErrors";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { getMachineValue } from "./search";
 export { generateLegacyURL } from "./generateLegacyURL";
