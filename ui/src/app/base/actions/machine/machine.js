@@ -96,8 +96,40 @@ machine.acquire = (systemId) =>
 machine.release = (systemId) =>
   generateMachineAction("RELEASE_MACHINE", "release", systemId);
 
-machine.commission = (systemId) =>
-  generateMachineAction("COMMISSION_MACHINE", "commission", systemId);
+machine.commission = (
+  systemId,
+  enableSSH,
+  skipBMCConfig,
+  skipNetworking,
+  skipStorage,
+  updateFirmware,
+  configureHBA,
+  commissioningScripts,
+  testingScripts
+) => {
+  let formattedCommissioningScripts = [];
+  if (commissioningScripts && commissioningScripts.length > 0) {
+    formattedCommissioningScripts = commissioningScripts.map(
+      (script) => script.id
+    );
+    if (updateFirmware) {
+      formattedCommissioningScripts.push("update_firmware");
+    }
+    if (configureHBA) {
+      formattedCommissioningScripts.push("configure_hba");
+    }
+  }
+
+  return generateMachineAction("COMMISSION_MACHINE", "commission", systemId, {
+    enable_ssh: enableSSH,
+    skip_bmc_config: skipBMCConfig,
+    skip_networking: skipNetworking,
+    skip_storage: skipStorage,
+    commissioning_scripts: formattedCommissioningScripts,
+    testing_scripts:
+      testingScripts && testingScripts.map((script) => script.id),
+  });
+};
 
 machine.deploy = (systemId, extra = {}) =>
   generateMachineAction("DEPLOY_MACHINE", "deploy", systemId, extra);

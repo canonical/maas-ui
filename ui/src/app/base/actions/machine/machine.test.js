@@ -153,23 +153,6 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle commissioning a machine", () => {
-    expect(machine.commission("abc123")).toEqual({
-      type: "COMMISSION_MACHINE",
-      meta: {
-        model: "machine",
-        method: "action",
-      },
-      payload: {
-        params: {
-          action: "commission",
-          extra: {},
-          system_id: "abc123",
-        },
-      },
-    });
-  });
-
   it("can handle deploying a machine", () => {
     const extra = {
       osystem: "ubuntu",
@@ -206,6 +189,48 @@ describe("machine actions", () => {
           system_id: "abc123",
         },
       },
+    });
+  });
+
+  it("can handle commissioning a machine", () => {
+    expect(
+      machine.commission(
+        "abc123",
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        [
+          { id: 0, name: "commissioningScript0" },
+          { id: 2, name: "commissioningScript2" },
+        ],
+        [
+          { id: 0, name: "testingScript0" },
+          { id: 2, name: "testScript2" },
+        ]
+      )
+    ).toEqual({
+      meta: {
+        method: "action",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          action: "commission",
+          extra: {
+            enable_ssh: true,
+            skip_bmc_config: false,
+            skip_networking: false,
+            skip_storage: false,
+            commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
+            testing_scripts: [0, 2],
+          },
+          system_id: "abc123",
+        },
+      },
+      type: "COMMISSION_MACHINE",
     });
   });
 

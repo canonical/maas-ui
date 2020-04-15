@@ -1,0 +1,139 @@
+import pluralize from "pluralize";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+
+import {
+  machine as machineActions,
+  scripts as scriptActions,
+} from "app/base/actions";
+import {
+  machine as machineSelectors,
+  scripts as scriptSelectors,
+} from "app/base/selectors";
+import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import CommissionFormFields from "./CommissionFormFields";
+
+const CommissionFormSchema = Yup.object().shape({
+  enableSSH: Yup.boolean(),
+  commissioningScripts: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required(),
+      displayName: Yup.string(),
+      description: Yup.string(),
+    })
+  ),
+  testingScripts: Yup.array()
+    .of(
+      Yup.object().shape({
+        name: Yup.string().required(),
+        displayName: Yup.string(),
+        description: Yup.string(),
+      })
+    )
+    .min(1, "You must select at least one script.")
+    .required(),
+});
+
+export const CommissionForm = ({ setSelectedAction }) => {
+  const dispatch = useDispatch();
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const saved = useSelector(machineSelectors.saved);
+  const saving = useSelector(machineSelectors.saving);
+  const errors = useSelector(machineSelectors.errors);
+
+  const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const testingScripts = useSelector(scriptSelectors.testing);
+
+  const formatScripts = (scripts) =>
+    scripts.map((script) => ({
+      ...script,
+      displayName: `${script.name} (${script.tags.join(", ")})`,
+    }));
+
+  const formattedCommissioningScripts = formatScripts(commissioningScripts);
+  const formattedTestingScripts = formatScripts(testingScripts);
+
+  const preselectedTestingScripts = [
+    formattedTestingScripts.find(
+      (script) => script.name === "smartctl-validate"
+    ),
+  ].filter(Boolean);
+
+  useEffect(() => {
+    dispatch(scriptActions.fetch());
+  }, [dispatch]);
+
+  return (
+    <FormikForm
+      allowUnchanged
+      buttons={FormCardButtons}
+      buttonsBordered={false}
+      errors={errors}
+      cleanup={machineActions.cleanup}
+      initialValues={{
+        enableSSH: false,
+        skipBMCConfig: false,
+        skipNetworking: false,
+        skipStorage: false,
+        updateFirmware: false,
+        configureHBA: false,
+        commissioningScripts:
+          commissioningScripts.length > 0 ? formattedCommissioningScripts : [],
+        testingScripts: preselectedTestingScripts,
+      }}
+      submitLabel={`Commission ${selectedMachines.length} ${pluralize(
+        "machine",
+        selectedMachines.length
+      )}`}
+      onCancel={() => setSelectedAction(null)}
+      onSaveAnalytics={{
+        action: "Commission",
+        category: "Take action menu",
+        label: "Commission selected machines",
+      }}
+      onSubmit={(values) => {
+        const {
+          enableSSH,
+          skipBMCConfig,
+          skipNetworking,
+          skipStorage,
+          updateFirmware,
+          configureHBA,
+          commissioningScripts,
+          testingScripts,
+        } = values;
+        selectedMachines.forEach((machine) => {
+          dispatch(
+            machineActions.commission(
+              machine.system_id,
+              enableSSH,
+              skipBMCConfig,
+              skipNetworking,
+              skipStorage,
+              updateFirmware,
+              configureHBA,
+              commissioningScripts,
+              testingScripts
+            )
+          );
+        });
+        setSelectedAction(null);
+      }}
+      saving={saving}
+      saved={saved}
+      validationSchema={CommissionFormSchema}
+    >
+      <CommissionFormFields
+        preselectedTesting={preselectedTestingScripts}
+        preselectedCommissioning={commissioningScripts}
+        commissioningScripts={formattedCommissioningScripts}
+        testingScripts={formattedTestingScripts}
+      />
+    </FormikForm>
+  );
+};
+
+export default CommissionForm;

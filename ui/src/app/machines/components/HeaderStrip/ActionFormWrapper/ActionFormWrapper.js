@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import ActionForm from "./ActionForm";
+import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
@@ -62,6 +63,8 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
+        case "commission":
+          return <CommissionForm setSelectedAction={setSelectedAction} />;
         case "deploy":
           return <DeployForm setSelectedAction={setSelectedAction} />;
         case "set-pool":
