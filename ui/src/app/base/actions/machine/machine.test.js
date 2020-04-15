@@ -209,6 +209,46 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle commissioning a machine", () => {
+    expect(
+      machine.commission(
+        "abc123",
+        true,
+        false,
+        false,
+        false,
+        [
+          { id: 0, name: "commissioningScript0" },
+          { id: 2, name: "commissioningScript2" },
+        ],
+        [
+          { id: 0, name: "testingScript0" },
+          { id: 2, name: "testScript2" },
+        ]
+      )
+    ).toEqual({
+      meta: {
+        method: "action",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          action: "commission",
+          extra: {
+            commissioning_scripts: [0, 2],
+            enable_ssh: true,
+            skip_bmc_config: false,
+            skip_networking: false,
+            skip_storage: false,
+            testingScripts: [0, 2],
+          },
+          system_id: "abc123",
+        },
+      },
+      type: "COMMISSION_MACHINE",
+    });
+  });
+
   it("can handle testing a machine", () => {
     expect(
       machine.test(

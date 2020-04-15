@@ -96,8 +96,24 @@ machine.acquire = (systemId) =>
 machine.release = (systemId) =>
   generateMachineAction("RELEASE_MACHINE", "release", systemId);
 
-machine.commission = (systemId) =>
-  generateMachineAction("COMMISSION_MACHINE", "commission", systemId);
+machine.commission = (
+  systemId,
+  enableSSH,
+  skipBMCConfig,
+  skipNetworking,
+  skipStorage,
+  commissioningScripts,
+  testingScripts
+) =>
+  generateMachineAction("COMMISSION_MACHINE", "commission", systemId, {
+    enable_ssh: enableSSH,
+    skip_bmc_config: skipBMCConfig,
+    skip_networking: skipNetworking,
+    skip_storage: skipStorage,
+    commissioning_scripts:
+      commissioningScripts && commissioningScripts.map((script) => script.id),
+    testingScripts: testingScripts && testingScripts.map((script) => script.id),
+  });
 
 machine.deploy = (systemId, extra = {}) =>
   generateMachineAction("DEPLOY_MACHINE", "deploy", systemId, extra);
