@@ -18,13 +18,12 @@ exports[`PoolColumn renders 1`] = `
       <span
         data-test="pool"
       >
-        <a
+        <ForwardRef
           className="p-link--soft"
-          href="#/pools"
-          title="default"
+          to="/pools"
         >
           default
-        </a>
+        </ForwardRef>
       </span>
     }
     primaryAriaLabel="Pool"
@@ -54,13 +53,24 @@ exports[`PoolColumn renders 1`] = `
             <span
               data-test="pool"
             >
-              <a
+              <Link
                 className="p-link--soft"
-                href="#/pools"
-                title="default"
+                to="/pools"
               >
-                default
-              </a>
+                <LinkAnchor
+                  className="p-link--soft"
+                  href="/pools"
+                  navigate={[Function]}
+                >
+                  <a
+                    className="p-link--soft"
+                    href="/pools"
+                    onClick={[Function]}
+                  >
+                    default
+                  </a>
+                </LinkAnchor>
+              </Link>
             </span>
           </div>
           <TableMenu
@@ -86,8 +96,7 @@ exports[`PoolColumn renders 1`] = `
                     >
                       <a
                         class="p-link--soft"
-                        href="#/pools"
-                        title="default"
+                        href="/pools"
                       >
                         default
                       </a>
@@ -139,8 +148,7 @@ exports[`PoolColumn renders 1`] = `
                       >
                         <a
                           class="p-link--soft"
-                          href="#/pools"
-                          title="default"
+                          href="/pools"
                         >
                           default
                         </a>

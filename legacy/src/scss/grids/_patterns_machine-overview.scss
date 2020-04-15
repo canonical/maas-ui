@@ -100,11 +100,18 @@
 
     .details {
       @include pseudo-border(top);
-      display: grid;
+      display: flex;
       grid-area: details;
-      grid-column-gap: map-get($grid-gutter-widths, large);
-      grid-template-columns: repeat(6, 1fr);
       padding: $spv-inner--large $sph-inner;
+
+      > * {
+        flex: 1 auto;
+        padding-right: $sph-inner;
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
     }
 
     @media only screen and (max-width: $breakpoint-x-large) {
@@ -122,13 +129,6 @@
       .cpu-tests {
         &::after {
           content: none;
-        }
-      }
-
-      .details {
-        padding: $spv-inner--large 0;
-        > *:last-child {
-          padding-right: $sph-inner;
         }
       }
 
@@ -199,13 +199,6 @@
       .storage {
         @include pseudo-border(top);
       }
-
-      .details {
-        padding: $spv-inner--large $sph-inner;
-        > *:last-child {
-          padding-right: 0;
-        }
-      }
     }
 
     @media only screen and (max-width: $breakpoint-medium) {
@@ -245,15 +238,17 @@
       }
 
       .details {
-        grid-column-gap: map-get($grid-gutter-widths, medium);
-        grid-row-gap: $spv-inner--large;
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+        flex-wrap: wrap;
 
-    @media only screen and (max-width: $breakpoint-small) {
-      .details {
-        grid-column-gap: map-get($grid-gutter-widths, small);
+        > * {
+          flex: 1 50%;
+          padding-bottom: $spv-inner--small;
+
+          &:last-child,
+          &:nth-last-child(2) {
+            padding-bottom: 0;
+          }
+        }
       }
     }
   }
