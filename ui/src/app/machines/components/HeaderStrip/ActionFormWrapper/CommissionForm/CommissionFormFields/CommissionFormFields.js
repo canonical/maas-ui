@@ -11,7 +11,7 @@ export const CommissionFormFields = ({
   commissioningScripts,
   testingScripts,
 }) => {
-  const { handleChange, setFieldValue, values } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext();
 
   return (
     <Row>
