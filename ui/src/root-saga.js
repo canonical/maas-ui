@@ -1,6 +1,7 @@
 import { all } from "redux-saga/effects";
 
 import {
+  actionHandlers,
   watchCheckAuthenticated,
   watchLogin,
   watchLogout,
@@ -22,7 +23,7 @@ export default function* rootSaga() {
     watchLogin(),
     watchLogout(),
     watchExternalLogin(),
-    watchWebSockets(),
+    watchWebSockets(actionHandlers),
     watchCreateLicenseKey(),
     watchUpdateLicenseKey(),
     watchDeleteLicenseKey(),

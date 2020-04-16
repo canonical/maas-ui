@@ -1,14 +1,18 @@
 import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
+import * as matchers from "redux-saga-test-plan/matchers";
 
 import MESSAGE_TYPES from "app/base/constants";
 import {
   createConnection,
   getBatchRequest,
+  getNextActions,
   handleBatch,
   handleMessage,
+  handleNextActions,
   handleNotifyMessage,
   sendMessage,
+  setNextActions,
   watchMessages,
   watchWebSockets,
 } from "./websockets";
@@ -107,6 +111,25 @@ describe("websocket sagas", () => {
         params: { foo: "bar" },
       })
     );
+  });
+
+  it("can store a next action when sending a WebSocket message", () => {
+    const action = {
+      type: "TEST_ACTION",
+      meta: {
+        model: "test",
+        method: "method",
+        type: MESSAGE_TYPES.REQUEST,
+      },
+      payload: {
+        params: { foo: "bar" },
+      },
+    };
+    const nextActionCreators = [jest.fn()];
+    return expectSaga(sendMessage, socketClient, action, nextActionCreators)
+      .provide([[matchers.call.fn(socketClient.send), 808]])
+      .call(setNextActions, 808, nextActionCreators)
+      .run();
   });
 
   it("continues if data has already been fetched for list methods", () => {
@@ -281,6 +304,20 @@ describe("websocket sagas", () => {
       .put({
         type: "FETCH_TEST_COMPLETE",
       })
+      .run();
+  });
+
+  it("can dispatch a next action", () => {
+    const response = {
+      request_id: 99,
+      result: { id: 808 },
+    };
+    const action = { type: "NEXT_ACTION" };
+    const actionCreator = jest.fn(() => action);
+    return expectSaga(handleNextActions, response)
+      .provide([[call(getNextActions, 99), [actionCreator]]])
+      .call(actionCreator, response.result)
+      .put(action)
       .run();
   });
 
