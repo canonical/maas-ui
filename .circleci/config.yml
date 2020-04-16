@@ -56,14 +56,15 @@ jobs:
           command: |
             sudo maas init \
               --maas-url=http://$IP_ADDRESS:5240/MAAS \
-              --admin-username=admin \
-              --admin-password=test \
-              --admin-email=fake@email.com \
               --mode region+rack \
               --database-host=localhost \
               --database-name=$MAAS_DBNAME \
               --database-user=$MAAS_DBUSER \
               --database-pass=$MAAS_DBPASS
+            sudo maas createadmin \
+              --username=admin \
+              --password=test \
+              --email=fake@email.com
             sudo maas config
       - run:
           name: Set proxy url and start cypress tests
