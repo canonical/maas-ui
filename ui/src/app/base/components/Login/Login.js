@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Code,
   Col,
   Notification,
   Row,
@@ -27,6 +28,7 @@ export const Login = () => {
   const authenticating = useSelector(statusSelectors.authenticating);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
+  const noUsers = useSelector(statusSelectors.noUsers);
   const error = useSelector(statusSelectors.authenticationError);
 
   useWindowTitle("Login");
@@ -46,49 +48,65 @@ export const Login = () => {
               {error}
             </Notification>
           )}
-          <Card title="Login">
-            {externalAuthURL ? (
+          {noUsers && !externalAuthURL ? (
+            <Card
+              data-test="no-users-warning"
+              title="No admin user has been created yet"
+            >
+              <p>Use the following command to create one:</p>
+              <Code copyable>sudo maas createadmin</Code>
               <Button
-                appearance="positive"
-                className="login__external"
-                element="a"
-                href={externalLoginURL}
-                rel="noopener noreferrer"
-                target="_blank"
-                title={`Login through ${externalAuthURL}`}
+                className="u-no-margin--bottom"
+                onClick={() => dispatch(statusActions.checkAuthenticated())}
               >
-                Go to login page
+                Retry
               </Button>
-            ) : (
-              <FormikForm
-                errors={error}
-                initialValues={{
-                  password: "",
-                  username: "",
-                }}
-                onSubmit={(values) => {
-                  dispatch(statusActions.login(values));
-                }}
-                saving={authenticating}
-                saved={authenticated}
-                submitLabel="Login"
-                validationSchema={LoginSchema}
-              >
-                <FormikField
-                  name="username"
-                  label="Username"
-                  required={true}
-                  type="text"
-                />
-                <FormikField
-                  name="password"
-                  label="Password"
-                  required={true}
-                  type="password"
-                />
-              </FormikForm>
-            )}
-          </Card>
+            </Card>
+          ) : (
+            <Card title="Login">
+              {externalAuthURL ? (
+                <Button
+                  appearance="positive"
+                  className="login__external"
+                  element="a"
+                  href={externalLoginURL}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  title={`Login through ${externalAuthURL}`}
+                >
+                  Go to login page
+                </Button>
+              ) : (
+                <FormikForm
+                  errors={error}
+                  initialValues={{
+                    password: "",
+                    username: "",
+                  }}
+                  onSubmit={(values) => {
+                    dispatch(statusActions.login(values));
+                  }}
+                  saving={authenticating}
+                  saved={authenticated}
+                  submitLabel="Login"
+                  validationSchema={LoginSchema}
+                >
+                  <FormikField
+                    name="username"
+                    label="Username"
+                    required={true}
+                    type="text"
+                  />
+                  <FormikField
+                    name="password"
+                    label="Password"
+                    required={true}
+                    type="password"
+                  />
+                </FormikForm>
+              )}
+            </Card>
+          )}
         </Col>
       </Row>
     </Strip>
