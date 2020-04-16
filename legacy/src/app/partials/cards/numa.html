@@ -16,34 +16,34 @@
       <span ng-if="numaDetails.length <= 2">Node {$ numa.index $}</span>
       <span class="p-numa__collapsed-details" ng-if="!expandedNumas.includes(numa.index)">
         {$ numa.cores.length $}&nbsp;core{$ numa.cores.length === 1 ? "" : "s" $},
-        {$ numa.memory $},<br>
-        {$ numa.storage | formatBytes $},
-        {$ numa.network $}&nbsp;interface{$ numa.network === 1 ? "" : "s" $}
+        {$ numa.formattedMemory $},<br>
+        {$ numa.totalStorage | formatBytes $},
+        {$ numa.interfaces.length $}&nbsp;interface{$ numa.interfaces.length === 1 ? "" : "s" $}
       </span>
       <ul class="p-list--labelled" ng-if="expandedNumas.includes(numa.index)">
         <li class="p-list__item">
           <div class="p-list__item-label">CPU cores</div>
           <div class="p-list__item-value">
             <span>{$ numa.cores.length $}</span>
-            <span class="p-text--muted">({$ numa.cores.join(", ") $})</span>
+            <span class="p-text--muted" ng-if="numa.cores.length">({$ numa.coresRanges $})</span>
           </div>
         </li>
         <li class="p-list__item">
           <div class="p-list__item-label">Memory</div>
           <div class="p-list__item-value">
-            {$ numa.memory $}
+            {$ numa.formattedMemory $}
           </div>
         </li>
         <li class="p-list__item">
           <div class="p-list__item-label">Storage</div>
           <div class="p-list__item-value">
-            {$ numa.storage | formatBytes $} over {$ numa.disks $} disk{$ numa.disks === 1 ? "" : "s" $}
+            {$ numa.totalStorage | formatBytes $} over {$ numa.disks.length $} disk{$ numa.disks.length === 1 ? "" : "s" $}
           </div>
         </li>
         <li class="p-list__item">
           <div class="p-list__item-label">Network</div>
           <div class="p-list__item-value">
-            {$ numa.network $} interface{$ numa.network === 1 ? "" : "s" $}
+            {$ numa.interfaces.length $} interface{$ numa.interfaces.length === 1 ? "" : "s" $}
           </div>
         </li>
       </ul>

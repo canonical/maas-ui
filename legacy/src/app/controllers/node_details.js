@@ -14,6 +14,30 @@ const formatNumaMemory = (mib) => {
   return `${Number(mib.toPrecision(4)).toString()} MiB`;
 };
 
+// Convert array of numbers into range strings,
+// e.g [0, 1, 2, 4, 6, 7] => ["0-2", "4", "6-7"]
+const getRanges = (array) => {
+  const ranges = [];
+  let rangeStart;
+  let rangeEnd;
+
+  for (let i = 0; i < array.length; i++) {
+    rangeStart = array[i];
+    rangeEnd = rangeStart;
+    // Keep incrementing rangeEnd while its a consecutive number.
+    while (parseInt(array[i + 1]) - parseInt(array[i]) === 1) {
+      rangeEnd = parseInt(array[i + 1]);
+      i++;
+    }
+    ranges.push(
+      rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`
+    );
+  }
+
+  return ranges;
+};
+
+
 /* @ngInject */
 function NodeDetailsController(
   $scope,
@@ -453,14 +477,15 @@ function NodeDetailsController(
         const numaInterfaces = node.interfaces
           ? node.interfaces.filter((iface) => iface.numa_node === numa.index)
           : [];
-        const storage = numaDisks.reduce((acc, disk) => acc + disk.size, 0);
         return {
           index: numa.index,
           cores: numa.cores,
-          memory: formatNumaMemory(numa.memory),
-          storage,
-          disks: numaDisks.length,
-          network: numaInterfaces.length,
+          memory: numa.memory,
+          disks: numaDisks,
+          interfaces: numaInterfaces,
+          coresRanges: getRanges(numa.cores).join(", "),
+          formattedMemory: formatNumaMemory(numa.memory),
+          totalStorage: numaDisks.reduce((acc, disk) => acc + disk.size, 0),
         };
       });
     }
