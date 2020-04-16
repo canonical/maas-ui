@@ -342,9 +342,9 @@ export function NodeNetworkingController(
     }
   ];
 
-  $scope.isBond = item => item.type === "bond";
-  $scope.isBridge = item => item.type === "bridge";
-  $scope.isInterface = item => item.type === "physical";
+  $scope.isBond = item => item && item.type === "bond";
+  $scope.isBridge = item => item && item.type === "bridge";
+  $scope.isInterface = item => item && item.type === "physical";
 
   // Sets loaded to true if both the node has been loaded at the
   // other required managers for this scope have been loaded.
@@ -2029,18 +2029,16 @@ export function NodeNetworkingController(
   // Return true when a bridge can be created based on the current
   // selection. Only can be done if no aliases are selected and only
   // one interface is selected.
-  $scope.canCreateBridge = function() {
-    if ($scope.selectedMode !== SELECTION_MODE.SINGLE) {
+  $scope.canCreateBridge = () => {
+    const selectedInterfaces = getSelectedInterfaces();
+    const nic = selectedInterfaces.length && selectedInterfaces[0];
+
+    if ($scope.selectedMode !== SELECTION_MODE.SINGLE || !nic) {
       return false;
     }
-    var nic = getSelectedInterfaces()[0];
-    if (
-      nic.type === INTERFACE_TYPE.ALIAS ||
-      nic.type === INTERFACE_TYPE.BRIDGE
-    ) {
-      return false;
-    }
-    return true;
+    return !(
+      nic.type === INTERFACE_TYPE.ALIAS || nic.type === INTERFACE_TYPE.BRIDGE
+    );
   };
 
   // Return true when the create bridge view is being shown.
