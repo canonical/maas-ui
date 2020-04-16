@@ -10,6 +10,7 @@ const status = produce(
         draft.authenticating = false;
         draft.authenticated = action.payload.authenticated;
         draft.externalAuthURL = action.payload.external_auth_url;
+        draft.noUsers = action.payload.no_users;
         break;
       case "LOGIN_START":
         draft.authenticating = true;
@@ -62,6 +63,7 @@ const status = produce(
     authenticated: false,
     externalAuthURL: null,
     externalLoginURL: null,
+    noUsers: false,
     connected: false,
     error: null
   }

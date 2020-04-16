@@ -49,4 +49,11 @@ status.externalAuthURL = state => state.status.externalAuthURL;
  */
 status.externalLoginURL = state => state.status.externalLoginURL;
 
+/**
+ * Whether there are currently no MAAS users.
+ * @param {Object} state - The redux state.
+ * @returns {Boolean} No users in MAAS.
+ */
+status.noUsers = state => state.status.noUsers;
+
 export default status;

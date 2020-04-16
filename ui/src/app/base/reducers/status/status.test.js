@@ -8,7 +8,8 @@ describe("status", () => {
       connected: false,
       error: null,
       externalAuthURL: null,
-      externalLoginURL: null
+      externalLoginURL: null,
+      noUsers: false
     });
   });
 
@@ -99,20 +100,23 @@ describe("status", () => {
       status(
         {
           authenticating: true,
-          authenticated: false
+          authenticated: false,
+          noUsers: false
         },
         {
           type: "CHECK_AUTHENTICATED_SUCCESS",
           payload: {
             authenticated: true,
-            external_auth_url: "http://login.example.com"
+            external_auth_url: "http://login.example.com",
+            no_users: true
           }
         }
       )
     ).toStrictEqual({
       authenticating: false,
       authenticated: true,
-      externalAuthURL: "http://login.example.com"
+      externalAuthURL: "http://login.example.com",
+      noUsers: true
     });
   });
 

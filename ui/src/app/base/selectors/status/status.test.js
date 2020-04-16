@@ -63,4 +63,13 @@ describe("status", () => {
     };
     expect(status.externalLoginURL(state)).toEqual("http://login.example.com");
   });
+
+  it("can get the noUsers status", () => {
+    const state = {
+      status: {
+        noUsers: true
+      }
+    };
+    expect(status.noUsers(state)).toEqual(true);
+  });
 });
