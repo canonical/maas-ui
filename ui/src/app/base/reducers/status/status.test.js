@@ -9,6 +9,7 @@ describe("status", () => {
       error: null,
       externalAuthURL: null,
       externalLoginURL: null,
+      noUsers: false,
     });
   });
 
@@ -102,12 +103,14 @@ describe("status", () => {
         {
           authenticating: true,
           authenticated: false,
+          noUsers: false,
         },
         {
           type: "CHECK_AUTHENTICATED_SUCCESS",
           payload: {
             authenticated: true,
             external_auth_url: "http://login.example.com",
+            no_users: true,
           },
         }
       )
@@ -115,6 +118,7 @@ describe("status", () => {
       authenticating: false,
       authenticated: true,
       externalAuthURL: "http://login.example.com",
+      noUsers: true,
     });
   });
 

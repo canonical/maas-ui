@@ -84,4 +84,17 @@ describe("Login", () => {
       },
     });
   });
+
+  it("shows a warning if no users have been added yet", () => {
+    state.status.noUsers = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <Login />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='no-users-warning']").exists()).toBe(true);
+  });
 });

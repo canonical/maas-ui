@@ -22,6 +22,7 @@ const initialState = {
   externalAuthURL: null,
   externalLoginURL: null,
   connected: false,
+  noUsers: false,
   error: null,
 };
 
@@ -33,6 +34,7 @@ const status = createReducer(initialState, {
     state.authenticating = false;
     state.authenticated = action.payload.authenticated;
     state.externalAuthURL = action.payload.external_auth_url;
+    state.noUsers = action.payload.no_users;
   },
   [statusActions.login.start]: (state) => {
     state.authenticating = true;
