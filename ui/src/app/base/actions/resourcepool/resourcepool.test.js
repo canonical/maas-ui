@@ -67,4 +67,23 @@ describe("resourcepool actions", () => {
       type: "CLEANUP_RESOURCEPOOL",
     });
   });
+
+  it("can handle creating resource pools with machines", () => {
+    expect(
+      resourcepool.createWithMachines({ name: "pool1" }, [
+        "machine1",
+        "machine2",
+      ])
+    ).toEqual({
+      type: "CREATE_RESOURCEPOOL_WITH_MACHINES",
+      payload: {
+        params: {
+          pool: {
+            name: "pool1",
+          },
+          machines: ["machine1", "machine2"],
+        },
+      },
+    });
+  });
 });

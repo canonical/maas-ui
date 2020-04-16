@@ -15,6 +15,16 @@ import WebSocketClient from "../../../websocket-client";
 
 let loadedModels = [];
 
+// A map of request ids to action creators. This is used to dispatch actions
+// when a response is received.
+const nextActions = new Map();
+export const getNextActions = (id) => nextActions.get(id);
+export const setNextActions = (id, actionCreator) =>
+  nextActions.set(id, actionCreator);
+export const deleteNextActions = (id) => {
+  nextActions.delete(id);
+};
+
 // A store of websocket requests that need to be called to fetch the next batch
 // of data. The map is between request id and redux action object.
 const batchRequests = new Map();
@@ -170,6 +180,40 @@ export function* handleBatch({ request_id, result }) {
 }
 
 /**
+ * Store the actions to dispatch when the response is received.
+ *
+ * @param {Object} action - A Redux action.
+ * @param {Array} requestIDs - A list of ids for the requests associated with
+ * this action.
+ */
+function* storeNextActions(nextActionCreators, requestIDs) {
+  if (nextActionCreators) {
+    for (let id of requestIDs) {
+      yield call(setNextActions, id, nextActionCreators);
+    }
+  }
+}
+
+/**
+ * Handle dispatching the next actions, if required.
+ *
+ * @param {Object} response - A websocket response.
+ */
+export function* handleNextActions({ request_id, result }) {
+  const actionCreators = yield call(getNextActions, request_id);
+  if (actionCreators && actionCreators.length) {
+    for (let actionCreator of actionCreators) {
+      // Generate the action object using the result from the response.
+      const action = yield call(actionCreator, result);
+      // Dispatch the action.
+      yield put(action);
+    }
+    // Clean up the stored action creators.
+    yield call(deleteNextActions, request_id);
+  }
+}
+
+/**
  * Handle messages received over the WebSocket.
  */
 export function* handleMessage(socketChannel, socketClient) {
@@ -208,6 +252,8 @@ export function* handleMessage(socketChannel, socketClient) {
         yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
         // Handle batching, if required.
         yield call(handleBatch, response);
+        // Handle dispatching next actions, if required.
+        yield call(handleNextActions, response);
       }
     }
   }
@@ -240,7 +286,7 @@ const buildMessage = (meta, params) => {
 /**
  * Send WebSocket messages via the client.
  */
-export function* sendMessage(socketClient, action) {
+export function* sendMessage(socketClient, action, nextActionCreators) {
   const { meta, payload, type } = action;
   let params = payload ? payload.params : null;
   const { method, model } = meta;
@@ -282,8 +328,10 @@ export function* sendMessage(socketClient, action) {
       );
       requestIDs.push(id);
     }
+    // Store the actions to dispatch when the response is received.
+    yield call(storeNextActions, nextActionCreators, requestIDs);
     // Queue batching, if required.
-    queueBatch(action, requestIDs);
+    yield call(queueBatch, action, requestIDs);
   } catch (error) {
     yield put({ type: `${type}_ERROR`, error });
   }
@@ -292,7 +340,7 @@ export function* sendMessage(socketClient, action) {
 /**
  * Connect to the WebSocket and watch for message.
  */
-export function* setupWebSocket() {
+export function* setupWebSocket(messageHandlers = []) {
   try {
     const csrftoken = yield call(getCookie, "csrftoken");
     if (!csrftoken) {
@@ -307,16 +355,24 @@ export function* setupWebSocket() {
     const socketChannel = yield call(watchMessages, socketClient);
     while (true) {
       let { cancel } = yield race({
-        task: all([
-          call(handleMessage, socketChannel, socketClient),
-          // Using takeEvery() instead of call() here to get around this issue:
-          // https://github.com/canonical-web-and-design/maas-ui/issues/172
-          takeEvery(
-            (action) => isWebsocketRequestAction(action),
-            sendMessage,
-            socketClient
-          ),
-        ]),
+        task: all(
+          [
+            call(handleMessage, socketChannel, socketClient),
+            // Using takeEvery() instead of call() here to get around this issue:
+            // https://github.com/canonical-web-and-design/maas-ui/issues/172
+            takeEvery(
+              (action) => isWebsocketRequestAction(action),
+              sendMessage,
+              socketClient
+            ),
+          ].concat(
+            // Attach the additional actions that should be taken by the
+            // websocket channel.
+            messageHandlers.map(({ action, method }) =>
+              takeEvery(action, method, socketClient, sendMessage)
+            )
+          )
+        ),
         cancel: take("WEBSOCKET_DISCONNECT"),
       });
       if (cancel) {
@@ -331,7 +387,9 @@ export function* setupWebSocket() {
 
 /**
  * Set up websocket connections when requested.
+ * @param {Array} messageHandlers - Additional sagas to be handled by the
+ * websocket channel.
  */
-export function* watchWebSockets() {
-  yield takeLatest("WEBSOCKET_CONNECT", setupWebSocket);
+export function* watchWebSockets(messageHandlers) {
+  yield takeLatest("WEBSOCKET_CONNECT", setupWebSocket, messageHandlers);
 }

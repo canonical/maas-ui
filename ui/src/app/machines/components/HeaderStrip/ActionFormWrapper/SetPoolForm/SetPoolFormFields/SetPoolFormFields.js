@@ -34,11 +34,8 @@ export const SetPoolFormFields = () => {
             />
           </li>
           <li className="p-inline-list__item">
-            {/* Disabled until we have a method for handling sequenced websocket requests.
-                https://github.com/canonical-web-and-design/maas-ui/issues/928 */}
             <FormikField
               data-test="create-pool"
-              disabled
               label="Create pool"
               name="poolSelection"
               type="radio"

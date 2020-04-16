@@ -49,15 +49,15 @@ export const SetPoolForm = ({ setSelectedAction }) => {
       }}
       onSubmit={(values) => {
         if (values.poolSelection === "create") {
-          // TODO: Add method for creating a pool then setting selected machines to it
-          // https://github.com/canonical-web-and-design/maas-ui/issues/928
-          dispatch(resourcePoolActions.create(values));
-        }
-        const pool = resourcePools.find((pool) => pool.name === values.name);
-        if (pool) {
-          selectedMachines.forEach((machine) => {
-            dispatch(machineActions.setPool(machine.system_id, pool.id));
-          });
+          const machineIDs = selectedMachines.map(({ system_id }) => system_id);
+          dispatch(resourcePoolActions.createWithMachines(values, machineIDs));
+        } else {
+          const pool = resourcePools.find((pool) => pool.name === values.name);
+          if (pool) {
+            selectedMachines.forEach((machine) => {
+              dispatch(machineActions.setPool(machine.system_id, pool.id));
+            });
+          }
         }
         setSelectedAction(null);
       }}
