@@ -199,7 +199,8 @@ function* storeNextActions(nextActionCreators, requestIDs) {
  *
  * @param {Object} response - A websocket response.
  */
-export function* handleNextActions({ request_id, result }) {
+export function* handleNextActions(response) {
+  const { request_id, result } = response;
   const actionCreators = yield call(getNextActions, request_id);
   if (actionCreators && actionCreators.length) {
     for (let actionCreator of actionCreators) {
@@ -339,6 +340,8 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
 
 /**
  * Connect to the WebSocket and watch for message.
+ * @param {Array} messageHandlers - Sagas that should handle specific messages
+ * via the websocket channel.
  */
 export function* setupWebSocket(messageHandlers = []) {
   try {
