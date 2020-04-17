@@ -43,7 +43,7 @@ export function formatBytes() {
     } else if (bytes > 0) {
       return bytes + " B";
     } else {
-      return 0;
+      return "0 B";
     }
   };
 }

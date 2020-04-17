@@ -6,6 +6,7 @@
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
+import { formatNumaMemory, getRanges } from "../node_details";
 
 // Make a fake user.
 var userId = 0;
@@ -2937,6 +2938,40 @@ describe("NodeDetailsController", function() {
       makeController();
       const nic = { link_speed: 1000, interface_speed: 1000 };
       expect($scope.linkSpeedValid(nic)).toBe(true);
+    });
+  });
+
+  describe("formatMemory", () => {
+    it("correctly formats memory values less than 1 GiB", () => {
+      expect(formatNumaMemory(0)).toEqual("0 MiB");
+      expect(formatNumaMemory(1.1111111)).toEqual("1.111 MiB");
+      expect(formatNumaMemory(1023)).toEqual("1023 MiB");
+    });
+
+    it("correctly formats memory values above 1 GiB", () => {
+      expect(formatNumaMemory(1024)).toEqual("1 GiB");
+      expect(formatNumaMemory(2048)).toEqual("2 GiB");
+      expect(formatNumaMemory(5555.5555)).toEqual("5.425 GiB");
+    });
+  });
+
+  describe("getRanges", () => {
+    it("correctly groups ranges together", () => {
+      expect(getRanges([0, 1, 2, 3])).toEqual(["0-3"]);
+      expect(getRanges([0, 1, 3, 4])).toEqual(["0-1", "3-4"]);
+      expect(getRanges([0, 2, 3, 4])).toEqual(["0", "2-4"]);
+      expect(getRanges([0, 2, 4, 6])).toEqual(["0", "2", "4", "6"]);
+    });
+
+    it("can handle arrays that are out of order", () => {
+      expect(getRanges([3, 1, 2, 0])).toEqual(["0-3"]);
+      expect(getRanges([4, 0, 1, 3])).toEqual(["0-1", "3-4"]);
+      expect(getRanges([3, 4, 0, 2])).toEqual(["0", "2-4"]);
+      expect(getRanges([6, 4, 2, 0])).toEqual(["0", "2", "4", "6"]);
+    });
+
+    it("can handle different types", () => {
+      expect(getRanges([3, "1", 2, "0"])).toEqual(["0-3"]);
     });
   });
 });
