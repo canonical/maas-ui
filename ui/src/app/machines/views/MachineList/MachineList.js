@@ -2,7 +2,6 @@ import {
   Button,
   Col,
   Input,
-  Loader,
   MainTable,
   Notification,
   Row,
