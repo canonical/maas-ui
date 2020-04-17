@@ -579,13 +579,6 @@ const MachineList = () => {
           />
         </Col>
       </Row>
-      {machinesLoading && (
-        <Row>
-          <Col className="u-align--center" size={12}>
-            <Loader text="Loading..." />
-          </Col>
-        </Row>
-      )}
       {errorMessage ? (
         <Notification type="negative">{errorMessage}</Notification>
       ) : null}
