@@ -926,9 +926,9 @@
                                     <td class="p-double-row" aria-label="Fabric">
                                         <div class="p-double-row__rows-container">
                                             <div class="p-double-row__main-row">
-                                                <div title="{$ interface.fabric.name || 'Disconnected' $}">
-                                                    {$ interface.fabric.name $}
-                                                    <span data-ng-if="!interface.fabric.name">Disconnected</span>
+                                                <div title="{$ interface.fabric && interface.fabric.name || 'Disconnected' $}">
+                                                    {$ interface.fabric && interface.fabric.name $}
+                                                    <span data-ng-if="!(interface.fabric && interface.fabric.name)">Disconnected</span>
                                                 </div>
                                             </div>
                                             <div class="p-double-row__muted-row">
@@ -2277,7 +2277,7 @@
 
                         <button class="p-button--neutral" data-ng-click="toggleInterfaces()" data-ng-if="showCreateEditButton()">
                             <span data-ng-if="isShowingInterfaces">Hide interfaces</span>
-                            <span data-ng-if="!isShowingInterfaces" data-ng-click="Network table', Edit bond')">Edit bond members</span>
+                            <span data-ng-if="!isShowingInterfaces" data-ng-click="sendAnalyticsEvent('Machine details', 'Edit bond', 'Network tab')">Edit bond members</span>
                         </button>
 
                         <div class="p-strip is-shallow">
