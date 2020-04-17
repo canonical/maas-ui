@@ -64,7 +64,7 @@
     "angular-vs-repeat": "1.1.11",
     "babel-polyfill": "6.26.0",
     "cross-env": "7.0.2",
-    "jquery": "3.5.0",
+    "jquery": "3.4.1",
     "js-cookie": "2.2.1",
     "macaroon-bakery": "0.2.1",
     "ng-tags-input": "3.2.0",
