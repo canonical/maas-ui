@@ -14,8 +14,9 @@ describe("formatBytes", function() {
     formatBytes = $filter("formatBytes");
   }));
 
-  it("returns zero if undefined bytes", function() {
-    expect(formatBytes()).toEqual(0);
+  it("returns zero if undefined or zero bytes", function() {
+    expect(formatBytes()).toEqual("0 B");
+    expect(formatBytes(0)).toEqual("0 B");
   });
 
   it("returns value in bytes if less than a kilobyte", function() {

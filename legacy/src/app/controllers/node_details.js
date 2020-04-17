@@ -6,6 +6,38 @@
 
 import { HardwareType, NodeTypes } from "../enum";
 
+// Convert MiB to GiB value if over 1024 and round to 4 significant figures.
+export const formatNumaMemory = (mib) => {
+  if (mib >= 1024) {
+    return `${Number((mib / 1024).toPrecision(4)).toString()} GiB`;
+  }
+  return `${Number(mib.toPrecision(4)).toString()} MiB`;
+};
+
+// Convert array of numbers into range strings,
+// e.g [0, 1, 2, 4, 6, 7] => ["0-2", "4", "6-7"]
+export const getRanges = (array) => {
+  const sortedArray = [...array].sort((a, b) => parseInt(a) - parseInt(b));
+  const ranges = [];
+  let rangeStart;
+  let rangeEnd;
+
+  for (let i = 0; i < sortedArray.length; i++) {
+    rangeStart = sortedArray[i];
+    rangeEnd = rangeStart;
+    // Keep incrementing rangeEnd while it's a consecutive number.
+    while (parseInt(sortedArray[i + 1]) - parseInt(sortedArray[i]) === 1) {
+      rangeEnd = parseInt(sortedArray[i + 1]);
+      i++;
+    }
+    ranges.push(
+      rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`
+    );
+  }
+
+  return ranges;
+};
+
 /* @ngInject */
 function NodeDetailsController(
   $scope,
@@ -438,24 +470,24 @@ function NodeDetailsController(
     }
 
     if (node.numa_nodes) {
-      const numaDetails = node.numa_nodes.map(numa => {
+      $scope.numaDetails = node.numa_nodes.map((numa) => {
         const numaDisks = node.disks
-          ? node.disks.filter(disk => disk.numa_node === numa.index)
+          ? node.disks.filter((disk) => disk.numa_node === numa.index)
           : [];
         const numaInterfaces = node.interfaces
-          ? node.interfaces.filter(iface => iface.numa_node === numa.index)
+          ? node.interfaces.filter((iface) => iface.numa_node === numa.index)
           : [];
-        const storage = numaDisks.reduce((acc, disk) => acc + disk.size, 0);
         return {
           index: numa.index,
           cores: numa.cores,
           memory: numa.memory,
-          storage,
-          disks: numaDisks.length,
-          network: numaInterfaces.length
+          disks: numaDisks,
+          interfaces: numaInterfaces,
+          coresRanges: getRanges(numa.cores).join(", "),
+          formattedMemory: formatNumaMemory(numa.memory),
+          totalStorage: numaDisks.reduce((acc, disk) => acc + disk.size, 0),
         };
       });
-      $scope.numaDetails = numaDetails;
     }
 
     if (node.interfaces) {
@@ -607,9 +639,9 @@ function NodeDetailsController(
       $scope.vlan = VLANsManager.getItemFromList($scope.node.vlan.id);
     }
 
-    // If node has less than 4 NUMA nodes, have them expanded them by default.
-    if (node.numa_nodes && node.numa_nodes.length < 4) {
-      $scope.expandedNumas = [...Array(node.numa_nodes.length).keys()];
+    // If node has less than 4 NUMA nodes, have them expanded by default.
+    if ($scope.numaDetails.length < 4) {
+      $scope.expandedNumas = [...Array($scope.numaDetails.length).keys()];
     }
   }
 
