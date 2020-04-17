@@ -1,7 +1,10 @@
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 
-import { createPoolWithMachines, generateActionCreators } from "./actions";
+import {
+  createPoolWithMachines,
+  generateMachinePoolActionCreators,
+} from "./actions";
 
 jest.mock("../../../websocket-client");
 
@@ -13,7 +16,9 @@ describe("websocket sagas", () => {
     const pool = { name: "pool1", description: "a pool" };
     const action = { payload: { params: { machines: ["machine1"], pool } } };
     return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
-      .provide([[matchers.call.fn(generateActionCreators), actionCreators]])
+      .provide([
+        [matchers.call.fn(generateMachinePoolActionCreators), actionCreators],
+      ])
       .call(
         sendMessage,
         socketClient,

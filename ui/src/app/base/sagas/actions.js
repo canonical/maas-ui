@@ -11,7 +11,7 @@ import {
  * @param {Array} machines - A list of machine ids.
  * @returns {Array} The list of action creator functions.
  */
-export const generateActionCreators = (machines) =>
+export const generateMachinePoolActionCreators = (machines) =>
   machines.map((machineID) => (result) =>
     machineActions.setPool(machineID, result.id)
   );
@@ -28,7 +28,10 @@ export function* createPoolWithMachines(
   { payload }
 ) {
   const { machines, pool } = payload.params;
-  const actionCreators = yield call(generateActionCreators, machines);
+  const actionCreators = yield call(
+    generateMachinePoolActionCreators,
+    machines
+  );
   // Send the initial action via the websocket.
   yield call(
     sendMessage,
