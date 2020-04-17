@@ -7,7 +7,7 @@
 import { HardwareType, NodeTypes } from "../enum";
 
 // Convert MiB to GiB value if over 1024 and round to 4 significant figures.
-const formatNumaMemory = (mib) => {
+export const formatNumaMemory = (mib) => {
   if (mib >= 1024) {
     return `${Number((mib / 1024).toPrecision(4)).toString()} GiB`;
   }
@@ -16,17 +16,18 @@ const formatNumaMemory = (mib) => {
 
 // Convert array of numbers into range strings,
 // e.g [0, 1, 2, 4, 6, 7] => ["0-2", "4", "6-7"]
-const getRanges = (array) => {
+export const getRanges = (array) => {
+  const sortedArray = [...array].sort((a, b) => parseInt(a) - parseInt(b));
   const ranges = [];
   let rangeStart;
   let rangeEnd;
 
-  for (let i = 0; i < array.length; i++) {
-    rangeStart = array[i];
+  for (let i = 0; i < sortedArray.length; i++) {
+    rangeStart = sortedArray[i];
     rangeEnd = rangeStart;
-    // Keep incrementing rangeEnd while its a consecutive number.
-    while (parseInt(array[i + 1]) - parseInt(array[i]) === 1) {
-      rangeEnd = parseInt(array[i + 1]);
+    // Keep incrementing rangeEnd while it's a consecutive number.
+    while (parseInt(sortedArray[i + 1]) - parseInt(sortedArray[i]) === 1) {
+      rangeEnd = parseInt(sortedArray[i + 1]);
       i++;
     }
     ranges.push(
@@ -36,7 +37,6 @@ const getRanges = (array) => {
 
   return ranges;
 };
-
 
 /* @ngInject */
 function NodeDetailsController(
