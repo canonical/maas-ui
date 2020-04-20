@@ -9,7 +9,7 @@ export const Footer = ({ maasName, version }) => {
     window.usabilla_live("hide");
     // Add MAAS version to the custom data
     window.usabilla_live("data", {"custom":
-        {"MAAS version": "${version}" }
+        {"MAAS version": version}
     });
   }, [])
 
