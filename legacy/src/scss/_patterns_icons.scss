@@ -338,4 +338,11 @@
   .p-icon--inline-right {
     margin-left: $sph-inner--small;
   }
+
+  .p-icon--placeholder {
+    @extend %icon;
+    height: 1em;
+    margin-right: 1em;
+    width: 1em;
+  }
 }
