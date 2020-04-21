@@ -127,6 +127,47 @@ describe("machine selectors", () => {
     };
     expect(machine.settingPoolSelected(state)).toStrictEqual([
       { system_id: 909 },
+  it("returns failed script results for selected machines", () => {
+    const state = {
+      machine: {
+        items: [
+          { name: "selectedMachine", system_id: "foo" },
+          { name: "unselectedMachine", system_id: "bar" },
+        ],
+        selected: ["foo"],
+      },
+      scriptresults: {
+        errors: {},
+        loading: false,
+        loaded: true,
+        items: {
+          foo: [
+            {
+              id: 1,
+              name: "script1",
+            },
+            {
+              id: 2,
+              name: "script2",
+            },
+          ],
+          bar: [
+            {
+              id: 2,
+              name: "script2",
+            },
+            {
+              id: 3,
+              name: "script3",
+            },
+          ],
+        },
+      },
+    };
+
+    expect(machine.failedScriptResults(state)).toEqual([
+      { id: 1, name: "script1" },
+      { id: 2, name: "script2" },
     ]);
   });
 });

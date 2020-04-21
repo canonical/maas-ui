@@ -159,6 +159,12 @@ Object {
       "query": Object {},
     },
   },
+  "scriptresults": Object {
+    "errors": Object {},
+    "items": Object {},
+    "loaded": false,
+    "loading": false,
+  },
   "scripts": Object {
     "errors": Object {},
     "items": Array [],
