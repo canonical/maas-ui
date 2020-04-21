@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "concurrently": "5.1.0",
-    "cypress": "4.4.0",
+    "cypress": "4.4.1",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.3",
     "npm-package-json-lint": "5.0.0",
-    "start-server-and-test": "1.10.11"
+    "start-server-and-test": "1.11.0"
   },
   "npmpackagejsonlint": {
     "rules": {
