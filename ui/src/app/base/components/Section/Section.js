@@ -3,9 +3,16 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
+import DeprecationNotices from "app/base/components/DeprecationNotices";
 import NotificationList from "app/base/components/NotificationList";
 
-const Section = ({ children, headerClassName, sidebar, title }) => {
+const Section = ({
+  children,
+  headerClassName,
+  showDeprecations = false,
+  sidebar,
+  title,
+}) => {
   return (
     <div className="section">
       <Strip
@@ -31,6 +38,7 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
           </Col>
         )}
         <Col size={sidebar ? 10 : 12} className="section__content">
+          {showDeprecations && <DeprecationNotices />}
           <NotificationList />
           {children}
         </Col>
@@ -42,6 +50,7 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
 Section.propTypes = {
   children: PropTypes.node,
   headerClassName: PropTypes.string,
+  showDeprecations: PropTypes.bool,
   sidebar: PropTypes.node,
   title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
 };

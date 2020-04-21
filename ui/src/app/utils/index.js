@@ -5,6 +5,7 @@ export { formatSpeedUnits } from "./formatSpeedUnits";
 export { getMachineValue } from "./search";
 export { generateLegacyURL } from "./generateLegacyURL";
 export { groupAsMap } from "./groupAsMap";
+export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
 export { simpleSortByKey } from "./simpleSortByKey";
 export { trimPowerParameters } from "./trimPowerParameters";

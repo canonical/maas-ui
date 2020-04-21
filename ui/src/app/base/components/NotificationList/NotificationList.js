@@ -25,7 +25,7 @@ const generateMessages = (messages, dispatch) =>
     </Notification>
   ));
 
-const NotificationList = ({ children, sidebar, title }) => {
+const NotificationList = () => {
   const messages = useSelector(messageSelectors.all);
 
   const notifications = {
@@ -68,7 +68,6 @@ const NotificationList = ({ children, sidebar, title }) => {
         }
         return null;
       })}
-
       {generateMessages(messages, dispatch)}
     </>
   );
