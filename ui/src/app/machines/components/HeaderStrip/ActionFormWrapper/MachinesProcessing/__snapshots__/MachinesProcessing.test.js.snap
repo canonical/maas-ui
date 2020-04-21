@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachinesProcessing can render 1`] = `
+<MachinesProcessing
+  action="set-pool"
+  machinesProcessing={
+    Array [
+      Object {
+        "id": 1,
+      },
+      Object {
+        "id": 2,
+      },
+    ]
+  }
+  setProcessing={[MockFunction]}
+  setSelectedAction={[MockFunction]}
+>
+  <p>
+    <Loader
+      className="u-no-margin"
+      inline={true}
+    >
+      <div
+        className="u-no-margin p-loader p-text--default p-loader--inline"
+      >
+        <i
+          className="p-icon--spinner u-animation--spin"
+        />
+      </div>
+    </Loader>
+    0
+     of 
+    2
+     nodes are transitioning to
+     
+    change those pools
+    .
+  </p>
+</MachinesProcessing>
+`;

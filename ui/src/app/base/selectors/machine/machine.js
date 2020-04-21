@@ -54,6 +54,24 @@ machine.errors = (state) => state.machine.errors;
 machine.selectedIDs = (state) => state.machine.selected;
 
 /**
+ * Returns all machine statuses.
+ * @param {Object} state - The redux state.
+ * @returns {Array} A list of all statuses.
+ */
+machine.statuses = (state) => state.machine.statuses;
+
+/**
+ * Get machines that are saving pools.
+ * @param {Object} state - The redux state.
+ * @returns {Array} The machines that are saving pools.
+ */
+machine.savingPools = createSelector(
+  [machine.all, machine.statuses],
+  (machines, statuses) =>
+    machines.filter(({ system_id }) => statuses[system_id].savingPool)
+);
+
+/**
  * Returns a machine for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A machine.
@@ -107,6 +125,17 @@ machine.selected = createSelector(
     selectedIDs.map((id) =>
       machines.find((machine) => id === machine.system_id)
     )
+);
+
+/**
+ * Returns selected machines that are saving pools.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Machines that are selected and saving pools.
+ */
+machine.selectedSavingPools = createSelector(
+  [machine.savingPools, machine.selectedIDs],
+  (savingPools, selectedIDs) =>
+    savingPools.filter(({ system_id }) => selectedIDs.includes(system_id))
 );
 
 export default machine;

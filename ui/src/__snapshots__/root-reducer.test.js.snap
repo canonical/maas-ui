@@ -124,6 +124,7 @@ Object {
     "saved": false,
     "saving": false,
     "selected": Array [],
+    "statuses": Object {},
   },
   "messages": Object {
     "items": Array [],

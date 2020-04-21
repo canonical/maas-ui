@@ -87,4 +87,43 @@ describe("machineActions selectors", () => {
       expect(machineActions.errors(state)).toStrictEqual(errors);
     });
   });
+
+  it("can return actions by name", () => {
+    const data = [
+      {
+        name: "commission",
+        title: "Commission...",
+        sentence: "commissioned",
+        type: "lifecycle",
+      },
+      {
+        name: "acquire",
+        title: "Acquire...",
+        sentence: "acquired",
+        type: "lifecycle",
+      },
+      {
+        name: "deploy",
+        title: "Deploy...",
+        sentence: "deployed",
+        type: "lifecycle",
+      },
+    ];
+    const state = {
+      general: {
+        machineActions: {
+          data,
+          errors: {},
+          loaded: true,
+          loading: false,
+        },
+      },
+    };
+    expect(machineActions.getByName(state, "acquire")).toStrictEqual({
+      name: "acquire",
+      title: "Acquire...",
+      sentence: "acquired",
+      type: "lifecycle",
+    });
+  });
 });

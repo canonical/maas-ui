@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   machine as machineActions,
@@ -14,6 +14,7 @@ import {
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import SetPoolFormFields from "./SetPoolFormFields";
+import MachinesProcessing from "../MachinesProcessing";
 
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
@@ -23,12 +24,24 @@ const SetPoolSchema = Yup.object().shape({
 
 export const SetPoolForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
+  const selectedSavingPools = useSelector(machineSelectors.selectedSavingPools);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        machinesProcessing={selectedSavingPools}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="set-pool"
+      />
+    );
+  }
 
   return (
     <FormikForm
@@ -59,7 +72,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
             });
           }
         }
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

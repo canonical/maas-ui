@@ -13,6 +13,11 @@ describe("SetPoolForm", () => {
   let state;
   beforeEach(() => {
     state = {
+      general: {
+        machineActions: {
+          data: [{ name: "set-pool", sentence: "change those pools" }],
+        },
+      },
       machine: {
         errors: {},
         loading: false,
@@ -26,6 +31,10 @@ describe("SetPoolForm", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: { savingPool: false },
+          def456: { savingPool: false },
+        },
       },
       resourcepool: {
         items: [
@@ -89,6 +98,31 @@ describe("SetPoolForm", () => {
           },
         },
       },
+      { type: "CLEANUP_MACHINE" },
     ]);
+  });
+
+  it("can render when processing machines", () => {
+    const store = mockStore(state);
+    state.machine.selected = ["abc123", "def456"];
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SetPoolForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        poolSelection: "select",
+        name: "pool-1",
+        description: "",
+      })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });
