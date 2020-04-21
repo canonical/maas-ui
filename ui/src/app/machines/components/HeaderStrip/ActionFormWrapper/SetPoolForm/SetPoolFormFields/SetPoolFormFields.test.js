@@ -26,6 +26,10 @@ describe("SetPoolFormFields", () => {
           },
         ],
         selected: ["abc123", "def456"],
+        statuses: {
+          abc123: { savingPool: false },
+          def456: { savingPool: false },
+        },
       },
       resourcepool: {
         items: [
@@ -56,7 +60,7 @@ describe("SetPoolFormFields", () => {
     expect(wrapper.find("Select").exists()).toBe(true);
   });
 
-  it.skip("shows inputs for creating a pool if create pool radio chosen", async () => {
+  it("shows inputs for creating a pool if create pool radio chosen", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

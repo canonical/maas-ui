@@ -19,7 +19,7 @@ class WebSocketClient {
 
   /**
    * Store a mapping of id to action type.
-   * @param {String} action - A base Redux action type.
+   * @param {Object} action - A Redux action.
    * @returns {Integer} The id that was created.
    */
   _addRequest(action) {
@@ -31,7 +31,7 @@ class WebSocketClient {
   /**
    * Get a base action type from a given id.
    * @param {Integer} id - A request id.
-   * @returns {String} A base Redux action type.
+   * @returns {Object} A Redux action.
    */
   getRequest(id) {
     return this._requests.get(id);

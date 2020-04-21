@@ -92,7 +92,7 @@ describe("websocket sagas", () => {
   });
 
   it("can send a WebSocket message", () => {
-    const saga = sendMessage(socketClient, {
+    const action = {
       type: "TEST_ACTION",
       meta: {
         model: "test",
@@ -102,10 +102,13 @@ describe("websocket sagas", () => {
       payload: {
         params: { foo: "bar" },
       },
-    });
-    expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
+    };
+    const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
-      call([socketClient, socketClient.send], "TEST_ACTION", {
+      put({ meta: { item: { foo: "bar" } }, type: "TEST_ACTION_START" })
+    );
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], action, {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
         params: { foo: "bar" },
@@ -166,11 +169,21 @@ describe("websocket sagas", () => {
     const previous = sendMessage(socketClient, action);
     previous.next();
     const saga = sendMessage(socketClient, action);
-    expect(saga.next().value).toEqual(put({ type: "FETCH_TEST_START" }));
+    expect(saga.next().value).toEqual(
+      put({
+        meta: {
+          item: {
+            limit: 25,
+            start: 808,
+          },
+        },
+        type: "FETCH_TEST_START",
+      })
+    );
   });
 
   it("can handle params as an array", () => {
-    const saga = sendMessage(socketClient, {
+    const action = {
       type: "TEST_ACTION",
       meta: {
         model: "test",
@@ -183,11 +196,22 @@ describe("websocket sagas", () => {
           { name: "baz", value: "qux" },
         ],
       },
-    });
-    expect(saga.next().value).toEqual(put({ type: "TEST_ACTION_START" }));
+    };
+    const saga = sendMessage(socketClient, action);
+    expect(saga.next().value).toEqual(
+      put({
+        meta: {
+          item: [
+            { name: "foo", value: "bar" },
+            { name: "baz", value: "qux" },
+          ],
+        },
+        type: "TEST_ACTION_START",
+      })
+    );
 
     expect(saga.next().value).toEqual(
-      call([socketClient, socketClient.send], "TEST_ACTION", {
+      call([socketClient, socketClient.send], action, {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
         params: { name: "foo", value: "bar" },
@@ -196,7 +220,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
 
     expect(saga.next().value).toEqual(
-      call([socketClient, socketClient.send], "TEST_ACTION", {
+      call([socketClient, socketClient.send], action, {
         method: "test.method",
         type: MESSAGE_TYPES.REQUEST,
         params: { name: "baz", value: "qux" },
@@ -220,7 +244,11 @@ describe("websocket sagas", () => {
     saga.next();
     saga.next();
     expect(saga.throw("error!").value).toEqual(
-      put({ type: "TEST_ACTION_ERROR", error: "error!" })
+      put({
+        meta: { item: { foo: "bar" } },
+        type: "TEST_ACTION_ERROR",
+        error: "error!",
+      })
     );
   });
 
@@ -230,8 +258,14 @@ describe("websocket sagas", () => {
     expect(
       saga.next({ request_id: 99, result: { response: "here" } }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(saga.next("TEST_ACTION").value).toEqual(
-      put({ type: "TEST_ACTION_SUCCESS", payload: { response: "here" } })
+    expect(
+      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
+    ).toEqual(
+      put({
+        meta: { item: { id: 808 } },
+        type: "TEST_ACTION_SUCCESS",
+        payload: { response: "here" },
+      })
     );
   });
 
@@ -321,7 +355,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can handle a WebSocket error message", () => {
+  it("can handle a WebSocket error response message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
@@ -330,8 +364,13 @@ describe("websocket sagas", () => {
         error: '{"Message": "catastrophic failure"}',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(saga.next("TEST_ACTION").value).toEqual(
+    expect(
+      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
+    ).toEqual(
       put({
+        meta: {
+          item: { id: 808 },
+        },
         type: "TEST_ACTION_ERROR",
         error: { Message: "catastrophic failure" },
       })
@@ -347,8 +386,13 @@ describe("websocket sagas", () => {
         error: '("catastrophic failure")',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(saga.next("TEST_ACTION").value).toEqual(
+    expect(
+      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
+    ).toEqual(
       put({
+        meta: {
+          item: { id: 808 },
+        },
         type: "TEST_ACTION_ERROR",
         error: '("catastrophic failure")',
       })

@@ -229,11 +229,15 @@ export function* handleMessage(socketChannel, socketClient) {
     } else if (response.type === "open") {
       yield put({ type: "WEBSOCKET_CONNECTED" });
     } else {
-      // this is a response message
-      const action_type = yield call(
+      // This is a response message, fetch the corresponding action for the
+      // message that was sent.
+      const action = yield call(
         [socketClient, socketClient.getRequest],
         response.request_id
       );
+      // Depending on the action the parameters might be contained in the
+      // `params` parameter.
+      const item = action.payload?.params || action.payload;
       if (response.error) {
         let error;
         try {
@@ -246,11 +250,16 @@ export function* handleMessage(socketChannel, socketClient) {
           error = response.error;
         }
         yield put({
-          type: `${action_type}_ERROR`,
+          meta: { item },
+          type: `${action.type}_ERROR`,
           error,
         });
       } else {
-        yield put({ type: `${action_type}_SUCCESS`, payload: response.result });
+        yield put({
+          meta: { item },
+          type: `${action.type}_SUCCESS`,
+          payload: response.result,
+        });
         // Handle batching, if required.
         yield call(handleBatch, response);
         // Handle dispatching next actions, if required.
@@ -300,7 +309,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     setLoaded(model);
   }
 
-  yield put({ type: `${type}_START` });
+  yield put({ meta: { item: params || payload }, type: `${type}_START` });
   let requestIDs = [];
   try {
     if (params && Array.isArray(params)) {
@@ -309,7 +318,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
       for (let param of params) {
         let id = yield call(
           [socketClient, socketClient.send],
-          type,
+          action,
           buildMessage(meta, param)
         );
         requestIDs.push(id);
@@ -324,7 +333,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     } else {
       let id = yield call(
         [socketClient, socketClient.send],
-        type,
+        action,
         buildMessage(meta, params)
       );
       requestIDs.push(id);
@@ -334,7 +343,11 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     // Queue batching, if required.
     yield call(queueBatch, action, requestIDs);
   } catch (error) {
-    yield put({ type: `${type}_ERROR`, error });
+    yield put({
+      meta: { item: params || payload },
+      type: `${type}_ERROR`,
+      error,
+    });
   }
 }
 

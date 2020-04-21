@@ -21,6 +21,10 @@ const machine = createNextState(
             draft.items[existingIdx] = newItem;
           } else {
             draft.items.push(newItem);
+            // Set up the statuses for this machine.
+            draft.statuses[newItem.system_id] = {
+              savingPool: false,
+            };
           }
         });
         break;
@@ -51,6 +55,8 @@ const machine = createNextState(
         draft.selected = draft.selected.filter(
           (machineId) => machineId !== action.payload
         );
+        // Clean up the statuses for this machine.
+        delete draft.statuses[action.payload];
         break;
       case "UPDATE_MACHINE_NOTIFY":
         for (let i in draft.items) {
@@ -59,6 +65,16 @@ const machine = createNextState(
             break;
           }
         }
+        break;
+      case "SET_MACHINE_POOL_START":
+        draft.statuses[action.meta.item.system_id].savingPool = true;
+        break;
+      case "SET_MACHINE_POOL_SUCCESS":
+        draft.statuses[action.meta.item.system_id].savingPool = false;
+        break;
+      case "SET_MACHINE_POOL_ERROR":
+        draft.statuses[action.meta.item.system_id].savingPool = false;
+        draft.errors = action.error;
         break;
       case "ACQUIRE_MACHINE_ERROR":
       case "RELEASE_MACHINE_ERROR":
@@ -73,7 +89,6 @@ const machine = createNextState(
       case "MACHINE_OVERRIDE_FAILED_TESTING_ERROR":
       case "LOCK_MACHINE_ERROR":
       case "UNLOCK_MACHINE_ERROR":
-      case "SET_MACHINE_POOL_ERROR":
       case "TAG_MACHINE_ERROR":
       case "SET_MACHINE_ZONE_ERROR":
       case "TURN_MACHINE_OFF_ERROR":
@@ -101,6 +116,7 @@ const machine = createNextState(
     saved: false,
     saving: false,
     selected: [],
+    statuses: {},
   }
 );
 

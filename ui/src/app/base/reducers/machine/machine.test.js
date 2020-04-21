@@ -10,6 +10,7 @@ describe("machine reducer", () => {
       saved: false,
       saving: false,
       selected: [],
+      statuses: {},
     });
   });
 
@@ -26,6 +27,7 @@ describe("machine reducer", () => {
       saved: false,
       saving: false,
       selected: [],
+      statuses: {},
     });
   });
 
@@ -40,26 +42,39 @@ describe("machine reducer", () => {
           saved: false,
           saving: false,
           selected: [],
+          statuses: {
+            abc: {
+              savingPool: false,
+            },
+          },
         },
         {
           type: "FETCH_MACHINE_SUCCESS",
           payload: [
-            { id: 1, hostname: "node1-newname" },
-            { id: 2, hostname: "node2" },
+            { id: 1, hostname: "node1-newname", system_id: "abc" },
+            { id: 2, hostname: "node2", system_id: "def" },
           ],
         }
       )
     ).toEqual({
       errors: {},
       items: [
-        { id: 1, hostname: "node1-newname" },
-        { id: 2, hostname: "node2" },
+        { id: 1, hostname: "node1-newname", system_id: "abc" },
+        { id: 2, hostname: "node2", system_id: "def" },
       ],
       loading: true,
       loaded: false,
       saved: false,
       saving: false,
       selected: [],
+      statuses: {
+        abc: {
+          savingPool: false,
+        },
+        def: {
+          savingPool: false,
+        },
+      },
     });
   });
 
@@ -218,6 +233,7 @@ describe("machine reducer", () => {
           saved: false,
           saving: false,
           selected: ["abc"],
+          statuses: { abc: {} },
         },
         {
           payload: "abc",
@@ -232,6 +248,7 @@ describe("machine reducer", () => {
       saved: false,
       saving: false,
       selected: [],
+      statuses: {},
     });
   });
 
@@ -327,6 +344,95 @@ describe("machine reducer", () => {
       saved: false,
       saving: false,
       selected: ["abcde", "fghij"],
+    });
+  });
+
+  describe("SET_MACHINE_POOL", () => {
+    it("should correctly reduce SET_MACHINE_POOL_START", () => {
+      expect(
+        machine(
+          {
+            statuses: {
+              abc: {
+                savingPool: false,
+              },
+            },
+          },
+          {
+            meta: {
+              item: {
+                system_id: "abc",
+              },
+            },
+            type: "SET_MACHINE_POOL_START",
+          }
+        )
+      ).toEqual({
+        statuses: {
+          abc: {
+            savingPool: true,
+          },
+        },
+      });
+    });
+
+    it("should correctly reduce SET_MACHINE_POOL_SUCCESS", () => {
+      expect(
+        machine(
+          {
+            statuses: {
+              abc: {
+                savingPool: true,
+              },
+            },
+          },
+          {
+            meta: {
+              item: {
+                system_id: "abc",
+              },
+            },
+            type: "SET_MACHINE_POOL_SUCCESS",
+          }
+        )
+      ).toEqual({
+        statuses: {
+          abc: {
+            savingPool: false,
+          },
+        },
+      });
+    });
+
+    it("should correctly reduce SET_MACHINE_POOL_ERROR", () => {
+      expect(
+        machine(
+          {
+            errors: null,
+            statuses: {
+              abc: {
+                savingPool: false,
+              },
+            },
+          },
+          {
+            meta: {
+              item: {
+                system_id: "abc",
+              },
+            },
+            error: "Uh oh",
+            type: "SET_MACHINE_POOL_ERROR",
+          }
+        )
+      ).toEqual({
+        errors: "Uh oh",
+        statuses: {
+          abc: {
+            savingPool: false,
+          },
+        },
+      });
     });
   });
 });

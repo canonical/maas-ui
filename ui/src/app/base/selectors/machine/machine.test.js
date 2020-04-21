@@ -84,4 +84,49 @@ describe("machine selectors", () => {
     };
     expect(machine.errors(state)).toEqual("Uh oh!");
   });
+
+  it("can get the machine statuses", () => {
+    const state = {
+      machine: {
+        statuses: {
+          808: {},
+          909: {},
+        },
+      },
+    };
+    expect(machine.statuses(state)).toStrictEqual({
+      808: {},
+      909: {},
+    });
+  });
+
+  it("can get machines that are saving pools", () => {
+    const state = {
+      machine: {
+        items: [{ system_id: 808 }, { system_id: 909 }],
+        statuses: {
+          808: { savingPool: false },
+          909: { savingPool: true },
+        },
+      },
+    };
+    expect(machine.savingPools(state)).toStrictEqual([{ system_id: 909 }]);
+  });
+
+  it("can get machines that are both selected and saving pools", () => {
+    const state = {
+      machine: {
+        items: [{ system_id: 808 }, { system_id: 808 }, { system_id: 909 }],
+        selected: [909],
+        statuses: {
+          707: { savingPool: true },
+          808: { savingPool: false },
+          909: { savingPool: true },
+        },
+      },
+    };
+    expect(machine.selectedSavingPools(state)).toStrictEqual([
+      { system_id: 909 },
+    ]);
+  });
 });
