@@ -87,6 +87,10 @@ describe("DeployFormFields", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       user: {
         auth: {

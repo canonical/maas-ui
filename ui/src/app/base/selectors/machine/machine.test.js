@@ -105,12 +105,12 @@ describe("machine selectors", () => {
       machine: {
         items: [{ system_id: 808 }, { system_id: 909 }],
         statuses: {
-          808: { savingPool: false },
-          909: { savingPool: true },
+          808: { settingPool: false },
+          909: { settingPool: true },
         },
       },
     };
-    expect(machine.savingPools(state)).toStrictEqual([{ system_id: 909 }]);
+    expect(machine.settingPool(state)).toStrictEqual([{ system_id: 909 }]);
   });
 
   it("can get machines that are both selected and saving pools", () => {
@@ -119,13 +119,13 @@ describe("machine selectors", () => {
         items: [{ system_id: 808 }, { system_id: 808 }, { system_id: 909 }],
         selected: [909],
         statuses: {
-          707: { savingPool: true },
-          808: { savingPool: false },
-          909: { savingPool: true },
+          707: { settingPool: true },
+          808: { settingPool: false },
+          909: { settingPool: true },
         },
       },
     };
-    expect(machine.selectedSavingPools(state)).toStrictEqual([
+    expect(machine.settingPoolSelected(state)).toStrictEqual([
       { system_id: 909 },
     ]);
   });

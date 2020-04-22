@@ -30,12 +30,12 @@ export const SetPoolForm = ({ setSelectedAction }) => {
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  const selectedSavingPools = useSelector(machineSelectors.selectedSavingPools);
+  const settingPoolSelected = useSelector(machineSelectors.settingPoolSelected);
 
   if (processing) {
     return (
       <MachinesProcessing
-        machinesProcessing={selectedSavingPools}
+        machinesProcessing={settingPoolSelected}
         setProcessing={setProcessing}
         setSelectedAction={setSelectedAction}
         action="set-pool"

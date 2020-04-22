@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   general as generalActions,
@@ -13,6 +13,7 @@ import {
 } from "app/base/selectors";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import MachinesProcessing from "../MachinesProcessing";
 import DeployFormFields from "./DeployFormFields";
 
 const DeploySchema = Yup.object().shape({
@@ -24,22 +25,33 @@ const DeploySchema = Yup.object().shape({
 
 export const DeployForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
-
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
   const osInfo = useSelector(generalSelectors.osInfo.get);
+  const deployingSelected = useSelector(machineSelectors.deployingSelected);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
     dispatch(generalActions.fetchOsInfo());
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        machinesProcessing={deployingSelected}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="deploy"
+      />
+    );
+  }
 
   return (
     <FormikForm
@@ -74,7 +86,7 @@ export const DeployForm = ({ setSelectedAction }) => {
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.deploy(machine.system_id, extra));
         });
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

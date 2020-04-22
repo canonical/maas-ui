@@ -13,6 +13,11 @@ describe("SetZoneForm", () => {
   let state;
   beforeEach(() => {
     state = {
+      general: {
+        machineActions: {
+          data: [{ name: "set-zone", sentence: "set-zone" }],
+        },
+      },
       machine: {
         errors: {},
         loading: false,
@@ -26,6 +31,10 @@ describe("SetZoneForm", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       zone: {
         items: [
@@ -90,5 +99,26 @@ describe("SetZoneForm", () => {
         },
       },
     ]);
+  });
+
+  it("can show the status when processing machines", () => {
+    const store = mockStore(state);
+    state.machine.selected = ["abc123", "def456"];
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SetZoneForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        zone: "zone-1",
+      })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });

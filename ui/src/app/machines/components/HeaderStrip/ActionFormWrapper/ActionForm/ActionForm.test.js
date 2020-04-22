@@ -23,6 +23,27 @@ describe("ActionForm", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+        },
+      },
+      general: {
+        machineActions: {
+          data: [
+            { name: "abort", sentence: "abort" },
+            { name: "acquire", sentence: "acquire" },
+            { name: "delete", sentence: "delete" },
+            { name: "exit-rescue-mode", sentence: "exit-rescue-mode" },
+            { name: "lock", sentence: "lock" },
+            { name: "mark-broken", sentence: "mark-broken" },
+            { name: "mark-fixed", sentence: "mark-fixed" },
+            { name: "off", sentence: "off" },
+            { name: "on", sentence: "on" },
+            { name: "release", sentence: "release" },
+            { name: "rescue-mode", sentence: "rescue-mode" },
+            { name: "unlock", sentence: "unlock" },
+          ],
+        },
       },
     };
   });
@@ -36,7 +57,7 @@ describe("ActionForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionForm
-            selectedAction={{ name: "commission" }}
+            selectedAction={{ name: "release" }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -47,8 +68,9 @@ describe("ActionForm", () => {
 
   it("can unset the selected action", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "a", actions: ["commission"] }];
+    state.machine.items = [{ system_id: "a", actions: ["release"] }];
     state.machine.selected = ["a"];
+    state.machine.statuses = { a: {} };
     const store = mockStore(state);
     const setSelectedAction = jest.fn();
     const wrapper = mount(
@@ -57,7 +79,7 @@ describe("ActionForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionForm
-            selectedAction={{ name: "commission" }}
+            selectedAction={{ name: "release" }}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -108,7 +130,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "ABORT_MACHINE")
+    ).toStrictEqual([
       {
         type: "ABORT_MACHINE",
         meta: {
@@ -145,7 +169,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "ACQUIRE_MACHINE")
+    ).toStrictEqual([
       {
         type: "ACQUIRE_MACHINE",
         meta: {
@@ -182,7 +208,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "DELETE_MACHINE")
+    ).toStrictEqual([
       {
         type: "DELETE_MACHINE",
         meta: {
@@ -221,7 +249,11 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store
+        .getActions()
+        .filter(({ type }) => type === "MACHINE_EXIT_RESCUE_MODE")
+    ).toStrictEqual([
       {
         type: "MACHINE_EXIT_RESCUE_MODE",
         meta: {
@@ -258,7 +290,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "LOCK_MACHINE")
+    ).toStrictEqual([
       {
         type: "LOCK_MACHINE",
         meta: {
@@ -295,7 +329,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "MARK_MACHINE_BROKEN")
+    ).toStrictEqual([
       {
         type: "MARK_MACHINE_BROKEN",
         meta: {
@@ -332,7 +368,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "MARK_MACHINE_FIXED")
+    ).toStrictEqual([
       {
         type: "MARK_MACHINE_FIXED",
         meta: {
@@ -369,7 +407,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "TURN_MACHINE_OFF")
+    ).toStrictEqual([
       {
         type: "TURN_MACHINE_OFF",
         meta: {
@@ -406,7 +446,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "TURN_MACHINE_ON")
+    ).toStrictEqual([
       {
         type: "TURN_MACHINE_ON",
         meta: {
@@ -443,7 +485,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "RELEASE_MACHINE")
+    ).toStrictEqual([
       {
         type: "RELEASE_MACHINE",
         meta: {
@@ -480,7 +524,9 @@ describe("ActionForm", () => {
     );
 
     act(() => wrapper.find("Formik").props().onSubmit());
-    expect(store.getActions()).toStrictEqual([
+    expect(
+      store.getActions().filter(({ type }) => type === "UNLOCK_MACHINE")
+    ).toStrictEqual([
       {
         type: "UNLOCK_MACHINE",
         meta: {
@@ -496,5 +542,27 @@ describe("ActionForm", () => {
         },
       },
     ]);
+  });
+
+  it("can show the status when processing machines", () => {
+    const state = { ...initialState };
+    state.machine.items = [{ system_id: "abc123", actions: ["unlock"] }];
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ActionForm
+            selectedAction={{ name: "unlock" }}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => wrapper.find("Formik").props().onSubmit());
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });
