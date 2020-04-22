@@ -27,24 +27,42 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
 
+  const generateFailedTestsMessage = (
+    selectedMachines,
+    failedScriptResults
+  ) => {
+    if (selectedMachines.length === 1) {
+      const hostname = selectedMachines[0].hostname;
+      const id = selectedMachines[0].system_id;
+      const numFailedTests = failedScriptResults[id]?.length || 0;
+
+      return (
+        <span data-test-id="failed-results-message">
+          Machine <strong>{hostname}</strong> has
+          <a href={`${process.env.REACT_APP_BASENAME}/#/machine/${id}`}>
+            {` failed ${numFailedTests} ${pluralize("test", numFailedTests)}.`}
+          </a>
+        </span>
+      );
+    } else {
+      const numFailedTests =
+        Object.values(failedScriptResults)?.flat().length || 0;
+      return (
+        <span data-test-id="failed-results-message">
+          <strong>{selectedMachines.length} machines</strong>
+          {` have failed ${numFailedTests} ${pluralize(
+            "test",
+            numFailedTests
+          )}.`}
+        </span>
+      );
+    }
+  };
+
   return (
     <>
       <i className="p-icon--warning is-inline"></i>
-      {selectedMachines.length === 1 ? (
-        <span>
-          Machine <strong>{selectedMachines[0].hostname}</strong> has
-          <a
-            href={`${process.env.REACT_APP_BASENAME}/#/machine/${selectedMachines[0].system_id}`}
-          >
-            {` failed ${failedScriptResults.length} tests`}.
-          </a>
-        </span>
-      ) : (
-        <span>
-          <strong>{selectedMachines.length} machines</strong>
-          {` have failed ${failedScriptResults.length} tests.`}
-        </span>
-      )}
+      {generateFailedTestsMessage(selectedMachines, failedScriptResults)}
       <p>
         Overriding will allow the machines to be deployed, marked with a
         warning.

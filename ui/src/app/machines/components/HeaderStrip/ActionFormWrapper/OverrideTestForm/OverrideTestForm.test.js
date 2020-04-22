@@ -17,7 +17,10 @@ describe("OverrideTestForm", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
+        items: [
+          { hostname: "host1", system_id: "abc123" },
+          { hostname: "host2", system_id: "def456" },
+        ],
         selected: [],
       },
       scriptresults: {
@@ -38,6 +41,44 @@ describe("OverrideTestForm", () => {
         },
       },
     };
+  });
+
+  it("displays number of failed tests for a single machine", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('[data-test-id="failed-results-message"]').html()).toBe(
+      '<span data-test-id="failed-results-message">Machine <strong>host1</strong> has<a href="/MAAS/#/machine/abc123"> failed 2 tests.</a></span>'
+    );
+  });
+
+  it("displays number of failed tests for a multiple machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+      "2 machines have failed 2 tests."
+    );
   });
 
   it("dispatches actions to override tests for selected machines", () => {
@@ -131,7 +172,7 @@ describe("OverrideTestForm", () => {
           },
         },
         type: "SET_SCRIPT_RESULT_SUPPRESSED",
-      }
+      },
     ]);
   });
 });
