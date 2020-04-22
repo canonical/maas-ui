@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -13,6 +13,7 @@ import {
 } from "app/base/selectors";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import MachinesProcessing from "../MachinesProcessing";
 import CommissionFormFields from "./CommissionFormFields";
 
 const CommissionFormSchema = Yup.object().shape({
@@ -38,14 +39,16 @@ const CommissionFormSchema = Yup.object().shape({
 
 export const CommissionForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
-
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const testingScripts = useSelector(scriptSelectors.testing);
+  const commissioningSelected = useSelector(
+    machineSelectors.commissioningSelected
+  );
 
   const formatScripts = (scripts) =>
     scripts.map((script) => ({
@@ -65,6 +68,17 @@ export const CommissionForm = ({ setSelectedAction }) => {
   useEffect(() => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        machinesProcessing={commissioningSelected}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="commission"
+      />
+    );
+  }
 
   return (
     <FormikForm
@@ -120,7 +134,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
             )
           );
         });
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

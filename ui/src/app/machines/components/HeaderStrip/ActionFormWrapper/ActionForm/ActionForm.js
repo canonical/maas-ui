@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import pluralize from "pluralize";
-import React from "react";
+import React, { useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import MachinesProcessing from "../MachinesProcessing";
 import { kebabToCamelCase } from "app/utils";
 
 const getSubmitText = (action, count) => {
@@ -57,13 +58,70 @@ const fieldlessActions = [
   "unlock",
 ];
 
+const useSelectedProcessing = (actionName) => {
+  let selector;
+  switch (actionName) {
+    case "abort":
+      selector = machineSelectors.abortingSelected;
+      break;
+    case "acquire":
+      selector = machineSelectors.acquiringSelected;
+      break;
+    case "delete":
+      selector = machineSelectors.deletingSelected;
+      break;
+    case "exit-rescue-mode":
+      selector = machineSelectors.exitingRescueModeSelected;
+      break;
+    case "lock":
+      selector = machineSelectors.lockingSelected;
+      break;
+    case "mark-broken":
+      selector = machineSelectors.markingBrokenSelected;
+      break;
+    case "mark-fixed":
+      selector = machineSelectors.markingFixedSelected;
+      break;
+    case "off":
+      selector = machineSelectors.turningOffSelected;
+      break;
+    case "on":
+      selector = machineSelectors.turningOnSelected;
+      break;
+    case "release":
+      selector = machineSelectors.releasingSelected;
+      break;
+    case "rescue-mode":
+      selector = machineSelectors.enteringRescueModeSelected;
+      break;
+    case "unlock":
+      selector = machineSelectors.unlockingSelected;
+      break;
+    default:
+      break;
+  }
+  return useSelector(selector);
+};
+
 export const ActionForm = ({ selectedAction, setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
+  const selectedProcessing = useSelectedProcessing(selectedAction.name);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        action={selectedAction.name}
+        machinesProcessing={selectedProcessing}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+      />
+    );
+  }
 
   return (
     <FormikForm
@@ -91,7 +149,7 @@ export const ActionForm = ({ selectedAction, setSelectedAction }) => {
             }
           });
         }
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

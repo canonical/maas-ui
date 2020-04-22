@@ -1,7 +1,112 @@
 import { createNextState } from "@reduxjs/toolkit";
 
+export const ACTIONS = [
+  {
+    status: "aborting",
+    type: "ABORT_MACHINE",
+  },
+  {
+    status: "acquiring",
+    type: "ACQUIRE_MACHINE",
+  },
+  {
+    status: "checkingPower",
+    type: "CHECK_MACHINE_POWER",
+  },
+  {
+    status: "commissioning",
+    type: "COMMISSION_MACHINE",
+  },
+  {
+    status: "deleting",
+    type: "DELETE_MACHINE",
+  },
+  {
+    status: "deploying",
+    type: "DEPLOY_MACHINE",
+  },
+  {
+    status: "enteringRescueMode",
+    type: "MACHINE_RESCUE_MODE",
+  },
+  {
+    status: "exitingRescueMode",
+    type: "MACHINE_EXIT_RESCUE_MODE",
+  },
+  {
+    status: "locking",
+    type: "LOCK_MACHINE",
+  },
+  {
+    status: "markingBroken",
+    type: "MARK_MACHINE_BROKEN",
+  },
+  {
+    status: "markingFixed",
+    type: "MARK_MACHINE_FIXED",
+  },
+  {
+    status: "overridingFailedTesting",
+    type: "MACHINE_OVERRIDE_FAILED_TESTING",
+  },
+  {
+    status: "releasing",
+    type: "RELEASE_MACHINE",
+  },
+  {
+    status: "settingPool",
+    type: "SET_MACHINE_POOL",
+  },
+  {
+    status: "settingZone",
+    type: "SET_MACHINE_ZONE",
+  },
+  {
+    status: "tagging",
+    type: "TAG_MACHINE",
+  },
+  {
+    status: "testing",
+    type: "TEST_MACHINE",
+  },
+  {
+    status: "turningOff",
+    type: "TURN_MACHINE_OFF",
+  },
+  {
+    status: "turningOn",
+    type: "TURN_MACHINE_ON_ERROR",
+  },
+  {
+    status: "unlocking",
+    type: "UNLOCK_MACHINE",
+  },
+];
+
+let DEFAULT_STATUSES = {};
+ACTIONS.forEach(({ status }) => {
+  DEFAULT_STATUSES[status] = false;
+});
+
 const machine = createNextState(
   (draft, action) => {
+    // Handle actions that have the same shape.
+    ACTIONS.forEach(({ status, type }) => {
+      switch (action.type) {
+        case `${type}_START`:
+          draft.statuses[action.meta.item.system_id][status] = true;
+          break;
+        case `${type}_SUCCESS`:
+          draft.statuses[action.meta.item.system_id][status] = false;
+          break;
+        case `${type}_ERROR`:
+          draft.statuses[action.meta.item.system_id][status] = false;
+          draft.errors = action.error;
+          break;
+        default:
+          break;
+      }
+    });
     switch (action.type) {
       case "FETCH_MACHINE_START":
         draft.loading = true;
@@ -22,9 +127,7 @@ const machine = createNextState(
           } else {
             draft.items.push(newItem);
             // Set up the statuses for this machine.
-            draft.statuses[newItem.system_id] = {
-              savingPool: false,
-            };
+            draft.statuses[newItem.system_id] = DEFAULT_STATUSES;
           }
         });
         break;
@@ -65,36 +168,6 @@ const machine = createNextState(
             break;
           }
         }
-        break;
-      case "SET_MACHINE_POOL_START":
-        draft.statuses[action.meta.item.system_id].savingPool = true;
-        break;
-      case "SET_MACHINE_POOL_SUCCESS":
-        draft.statuses[action.meta.item.system_id].savingPool = false;
-        break;
-      case "SET_MACHINE_POOL_ERROR":
-        draft.statuses[action.meta.item.system_id].savingPool = false;
-        draft.errors = action.error;
-        break;
-      case "ACQUIRE_MACHINE_ERROR":
-      case "RELEASE_MACHINE_ERROR":
-      case "COMMISSION_MACHINE_ERROR":
-      case "DEPLOY_MACHINE_ERROR":
-      case "ABORT_MACHINE_ERROR":
-      case "TEST_MACHINE_ERROR":
-      case "MACHINE_RESCUE_MODE_ERROR":
-      case "MACHINE_EXIT_RESCUE_MODE_ERROR":
-      case "MARK_MACHINE_BROKEN_ERROR":
-      case "MARK_MACHINE_FIXED_ERROR":
-      case "MACHINE_OVERRIDE_FAILED_TESTING_ERROR":
-      case "LOCK_MACHINE_ERROR":
-      case "UNLOCK_MACHINE_ERROR":
-      case "TAG_MACHINE_ERROR":
-      case "SET_MACHINE_ZONE_ERROR":
-      case "TURN_MACHINE_OFF_ERROR":
-      case "TURN_MACHINE_ON_ERROR":
-      case "CHECK_MACHINE_POWER_ERROR":
-        draft.errors = action.error;
         break;
       case "SET_SELECTED_MACHINES":
         draft.selected = action.payload;

@@ -13,12 +13,21 @@ describe("TagForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      general: {
+        machineActions: {
+          data: [{ name: "tag", sentence: "tag" }],
+        },
+      },
       machine: {
         errors: {},
         loading: false,
         loaded: true,
         items: [{ system_id: "abc123" }, { system_id: "def456" }],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       tag: {
         errors: {},
@@ -87,5 +96,30 @@ describe("TagForm", () => {
         },
       },
     ]);
+  });
+
+  it("can show the status when processing machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TagForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          tags: [{ name: "tag1" }, { name: "tag2" }],
+        })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });

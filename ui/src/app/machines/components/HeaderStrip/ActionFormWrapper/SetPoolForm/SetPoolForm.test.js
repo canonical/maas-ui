@@ -32,8 +32,8 @@ describe("SetPoolForm", () => {
         ],
         selected: [],
         statuses: {
-          abc123: { savingPool: false },
-          def456: { savingPool: false },
+          abc123: { settingPool: false },
+          def456: { settingPool: false },
         },
       },
       resourcepool: {
@@ -114,7 +114,6 @@ describe("SetPoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         poolSelection: "select",

@@ -18,6 +18,10 @@ describe("TagFormFields", () => {
         loaded: true,
         items: [{ system_id: "abc123" }, { system_id: "def456" }],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       tag: {
         errors: {},

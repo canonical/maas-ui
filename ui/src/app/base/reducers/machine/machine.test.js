@@ -32,6 +32,28 @@ describe("machine reducer", () => {
   });
 
   it("should correctly reduce FETCH_MACHINE_SUCCESS", () => {
+    const statuses = {
+      aborting: false,
+      acquiring: false,
+      checkingPower: false,
+      commissioning: false,
+      deleting: false,
+      deploying: false,
+      enteringRescueMode: false,
+      exitingRescueMode: false,
+      locking: false,
+      markingBroken: false,
+      markingFixed: false,
+      overridingFailedTesting: false,
+      releasing: false,
+      settingPool: false,
+      settingZone: false,
+      tagging: false,
+      testing: false,
+      turningOff: false,
+      turningOn: false,
+      unlocking: false,
+    };
     expect(
       machine(
         {
@@ -43,9 +65,7 @@ describe("machine reducer", () => {
           saving: false,
           selected: [],
           statuses: {
-            abc: {
-              savingPool: false,
-            },
+            abc: statuses,
           },
         },
         {
@@ -68,12 +88,8 @@ describe("machine reducer", () => {
       saving: false,
       selected: [],
       statuses: {
-        abc: {
-          savingPool: false,
-        },
-        def: {
-          savingPool: false,
-        },
+        abc: statuses,
+        def: statuses,
       },
     });
   });
@@ -298,8 +314,14 @@ describe("machine reducer", () => {
           loaded: false,
           loading: true,
           selected: [],
+          statuses: { abc: { checkingPower: true } },
         },
         {
+          meta: {
+            item: {
+              system_id: "abc",
+            },
+          },
           type: "CHECK_MACHINE_POWER_ERROR",
           error: "Uh oh!",
         }
@@ -310,6 +332,7 @@ describe("machine reducer", () => {
       loaded: false,
       items: [],
       selected: [],
+      statuses: { abc: { checkingPower: false } },
     });
   });
 
@@ -354,7 +377,7 @@ describe("machine reducer", () => {
           {
             statuses: {
               abc: {
-                savingPool: false,
+                settingPool: false,
               },
             },
           },
@@ -370,7 +393,7 @@ describe("machine reducer", () => {
       ).toEqual({
         statuses: {
           abc: {
-            savingPool: true,
+            settingPool: true,
           },
         },
       });
@@ -382,7 +405,7 @@ describe("machine reducer", () => {
           {
             statuses: {
               abc: {
-                savingPool: true,
+                settingPool: true,
               },
             },
           },
@@ -398,7 +421,7 @@ describe("machine reducer", () => {
       ).toEqual({
         statuses: {
           abc: {
-            savingPool: false,
+            settingPool: false,
           },
         },
       });
@@ -411,7 +434,7 @@ describe("machine reducer", () => {
             errors: null,
             statuses: {
               abc: {
-                savingPool: false,
+                settingPool: false,
               },
             },
           },
@@ -429,7 +452,7 @@ describe("machine reducer", () => {
         errors: "Uh oh",
         statuses: {
           abc: {
-            savingPool: false,
+            settingPool: false,
           },
         },
       });

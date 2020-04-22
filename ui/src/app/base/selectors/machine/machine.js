@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import filterNodes from "app/machines/filter-nodes";
+import { ACTIONS } from "app/base/reducers/machine/machine";
 
 const machine = {};
 
@@ -60,16 +61,23 @@ machine.selectedIDs = (state) => state.machine.selected;
  */
 machine.statuses = (state) => state.machine.statuses;
 
-/**
- * Get machines that are saving pools.
- * @param {Object} state - The redux state.
- * @returns {Array} The machines that are saving pools.
- */
-machine.savingPools = createSelector(
-  [machine.all, machine.statuses],
-  (machines, statuses) =>
-    machines.filter(({ system_id }) => statuses[system_id].savingPool)
-);
+// Create a selector for each machine status.
+ACTIONS.forEach(({ status }) => {
+  machine[status] = createSelector(
+    [machine.all, machine.statuses],
+    (machines, statuses) =>
+      machines.filter(({ system_id }) => statuses[system_id][status])
+  );
+});
+
+// Create a selector for selected machines in each machine status.
+ACTIONS.forEach(({ status }) => {
+  machine[`${status}Selected`] = createSelector(
+    [machine[status], machine.selectedIDs],
+    (machines, selectedIDs) =>
+      machines.filter(({ system_id }) => selectedIDs.includes(system_id))
+  );
+});
 
 /**
  * Returns a machine for the given id.
@@ -125,17 +133,6 @@ machine.selected = createSelector(
     selectedIDs.map((id) =>
       machines.find((machine) => id === machine.system_id)
     )
-);
-
-/**
- * Returns selected machines that are saving pools.
- * @param {Object} state - The redux state.
- * @returns {Array} Machines that are selected and saving pools.
- */
-machine.selectedSavingPools = createSelector(
-  [machine.savingPools, machine.selectedIDs],
-  (savingPools, selectedIDs) =>
-    savingPools.filter(({ system_id }) => selectedIDs.includes(system_id))
 );
 
 export default machine;

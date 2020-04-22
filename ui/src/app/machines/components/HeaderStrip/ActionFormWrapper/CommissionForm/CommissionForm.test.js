@@ -13,12 +13,21 @@ describe("CommissionForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      general: {
+        machineActions: {
+          data: [{ name: "commission", sentence: "commission" }],
+        },
+      },
       machine: {
         errors: {},
         loading: false,
         loaded: true,
         items: [{ system_id: "abc123" }, { system_id: "def456" }],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       scripts: {
         errors: {},
@@ -131,5 +140,37 @@ describe("CommissionForm", () => {
         },
       },
     ]);
+  });
+
+  it("can show the status when processing machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CommissionForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          enableSSH: true,
+          skipBMCConfig: true,
+          skipNetworking: true,
+          skipStorage: true,
+          updateFirmware: true,
+          configureHBA: true,
+          testingScripts: [state.scripts.items[0]],
+          commissioningScripts: [state.scripts.items[1]],
+        })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });

@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -13,6 +13,7 @@ import {
 } from "app/base/selectors";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import MachinesProcessing from "../MachinesProcessing";
 import TestFormFields from "./TestFormFields";
 
 const TestFormSchema = Yup.object().shape({
@@ -32,12 +33,12 @@ const TestFormSchema = Yup.object().shape({
 
 export const TestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
-
+  const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const formattedScripts = scripts.map((script) => ({
@@ -61,6 +62,17 @@ export const TestForm = ({ setSelectedAction }) => {
   useEffect(() => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        machinesProcessing={testingSelected}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="test"
+      />
+    );
+  }
 
   return (
     <FormikForm
@@ -96,7 +108,7 @@ export const TestForm = ({ setSelectedAction }) => {
             )
           );
         });
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

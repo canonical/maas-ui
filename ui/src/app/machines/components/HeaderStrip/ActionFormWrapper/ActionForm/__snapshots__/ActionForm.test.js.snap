@@ -4,7 +4,7 @@ exports[`ActionForm renders 1`] = `
 <ActionForm
   selectedAction={
     Object {
-      "name": "commission",
+      "name": "release",
     }
   }
   setSelectedAction={[MockFunction]}
@@ -18,14 +18,14 @@ exports[`ActionForm renders 1`] = `
     onCancel={[Function]}
     onSaveAnalytics={
       Object {
-        "action": "commission",
+        "action": "release",
         "category": "Take action menu",
         "label": undefined,
       }
     }
     onSubmit={[Function]}
     submitAppearance="positive"
-    submitLabel="Commission 0 machines"
+    submitLabel="Release 0 machines"
   >
     <Formik
       initialValues={Object {}}
@@ -38,7 +38,7 @@ exports[`ActionForm renders 1`] = `
         initialValues={Object {}}
         onCancel={[Function]}
         submitAppearance="positive"
-        submitLabel="Commission 0 machines"
+        submitLabel="Release 0 machines"
       >
         <Form
           onSubmit={[Function]}
@@ -53,7 +53,7 @@ exports[`ActionForm renders 1`] = `
               onCancel={[Function]}
               submitAppearance="positive"
               submitDisabled={false}
-              submitLabel="Commission 0 machines"
+              submitLabel="Release 0 machines"
             >
               <div
                 className="form-card__buttons"
@@ -85,7 +85,7 @@ exports[`ActionForm renders 1`] = `
                     disabled={false}
                     type="submit"
                   >
-                    Commission 0 machines
+                    Release 0 machines
                   </button>
                 </ActionButton>
               </div>

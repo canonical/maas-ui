@@ -27,8 +27,8 @@ describe("SetPoolFormFields", () => {
         ],
         selected: ["abc123", "def456"],
         statuses: {
-          abc123: { savingPool: false },
-          def456: { savingPool: false },
+          abc123: { settingPool: false },
+          def456: { settingPool: false },
         },
       },
       resourcepool: {

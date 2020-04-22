@@ -2,7 +2,7 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React from "react";
+import React, { useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import {
@@ -12,6 +12,7 @@ import {
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import MachinesProcessing from "../MachinesProcessing";
 
 const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
@@ -19,12 +20,24 @@ const SetZoneSchema = Yup.object().shape({
 
 export const SetZoneForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const zones = useSelector(zoneSelectors.all);
+  const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        machinesProcessing={settingZoneSelected}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="set-zone"
+      />
+    );
+  }
 
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
@@ -57,7 +70,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.setZone(machine.system_id, zone.id));
         });
-        setSelectedAction(null);
+        setProcessing(true);
       }}
       saving={saving}
       saved={saved}

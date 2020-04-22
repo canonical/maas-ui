@@ -35,6 +35,10 @@ describe("DeployForm", () => {
           loaded: true,
           loading: false,
         },
+
+        machineActions: {
+          data: [{ name: "deploy", sentence: "deploy" }],
+        },
         osInfo: {
           data: {
             osystems: [
@@ -87,6 +91,10 @@ describe("DeployForm", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       user: {
         auth: {
@@ -175,5 +183,30 @@ describe("DeployForm", () => {
         },
       },
     ]);
+  });
+
+  it("can show the status when processing machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        oSystem: "ubuntu",
+        release: "bionic",
+        kernel: "",
+        installKVM: false,
+      })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });
