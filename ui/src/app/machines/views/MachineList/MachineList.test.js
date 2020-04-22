@@ -663,7 +663,7 @@ describe("MachineList", () => {
     );
   });
 
-  it("displays a loading message while debouncing filter function", () => {
+  it("displays a spinner while debouncing filter function", () => {
     const store = mockStore(initialState);
     const wrapper = mount(
       <Provider store={store}>
@@ -678,12 +678,12 @@ describe("MachineList", () => {
       wrapper.find("SearchBox").props().onChange("filtering");
     });
     wrapper.update();
-    expect(wrapper.find("Strip Loader").exists()).toBe(true);
+    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(true);
     act(() => {
       jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
     });
     wrapper.update();
-    expect(wrapper.find("Strip Loader").exists()).toBe(false);
+    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(false);
   });
 
   describe("Machine selection", () => {
