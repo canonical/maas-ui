@@ -29,7 +29,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
 
   return (
     <>
-      <i className="p-icon--warning"></i>
+      <i className="p-icon--warning is-inline"></i>
       {selectedMachines.length === 1 ? (
         <span>
           Machine <strong>{selectedMachines[0].hostname}</strong> has
@@ -72,14 +72,16 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
           selectedMachines.forEach((machine) => {
             dispatch(machineActions.overrideFailedTesting(machine.system_id));
           });
-          if (suppressResults && failedScriptResults) {
+          if (suppressResults) {
             selectedMachines.forEach((machine) => {
-              dispatch(
-                machineActions.suppressScriptResults(
-                  machine,
-                  failedScriptResults
-                )
-              );
+              if (machine.system_id in failedScriptResults) {
+                dispatch(
+                  machineActions.suppressScriptResults(
+                    machine,
+                    failedScriptResults[machine.system_id]
+                  )
+                );
+              }
             });
           }
           setSelectedAction(null);

@@ -131,20 +131,7 @@ describe("OverrideTestForm", () => {
           },
         },
         type: "SET_SCRIPT_RESULT_SUPPRESSED",
-      },
-      {
-        meta: {
-          method: "set_script_result_suppressed",
-          model: "machine",
-        },
-        payload: {
-          params: {
-            script_result_ids: [1, 2],
-            system_id: "def456",
-          },
-        },
-        type: "SET_SCRIPT_RESULT_SUPPRESSED",
-      },
+      }
     ]);
   });
 });

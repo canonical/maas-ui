@@ -132,9 +132,10 @@ describe("machine selectors", () => {
       machine: {
         items: [
           { name: "selectedMachine", system_id: "foo" },
-          { name: "unselectedMachine", system_id: "bar" },
+          { name: "selectedMachine2", system_id: "bar" },
+          { name: "unselectedMachine", system_id: "baz" },
         ],
-        selected: ["foo"],
+        selected: ["foo", "bar"],
       },
       scriptresults: {
         errors: {},
@@ -161,13 +162,31 @@ describe("machine selectors", () => {
               name: "script3",
             },
           ],
+          baz: [
+            {
+              id: 2,
+              name: "script2",
+            },
+          ],
         },
       },
     };
 
-    expect(machine.failedScriptResults(state)).toEqual([
-      { id: 1, name: "script1" },
-      { id: 2, name: "script2" },
-    ]);
+    expect(machine.failedScriptResults(state)).toEqual({
+      foo: [
+        { id: 1, name: "script1" },
+        { id: 2, name: "script2" },
+      ],
+      bar: [
+        {
+          id: 2,
+          name: "script2",
+        },
+        {
+          id: 3,
+          name: "script3",
+        },
+      ],
+    });
   });
 });

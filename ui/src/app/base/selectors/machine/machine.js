@@ -137,17 +137,20 @@ machine.selected = createSelector(
     )
 );
 
+/**
+ * Returns failed script results for selected machines.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Script results by selected machine key.
+ */
 machine.failedScriptResults = createSelector(
   [scriptresults.all, machine.selectedIDs],
-  (scriptresults, selectedIDs) => {
-    const filteredResults = Object.keys(scriptresults)
+  (scriptresults, selectedIDs) =>
+    Object.keys(scriptresults)
       .filter((key) => selectedIDs.includes(key))
       .reduce((obj, key) => {
         obj[key] = scriptresults[key];
         return obj;
-      }, {});
-    return Object.values(filteredResults).flat();
-  }
+      }, {})
 );
 
 export default machine;
