@@ -127,6 +127,9 @@ describe("machine selectors", () => {
     };
     expect(machine.settingPoolSelected(state)).toStrictEqual([
       { system_id: 909 },
+    ]);
+  });
+
   it("returns failed script results for selected machines", () => {
     const state = {
       machine: {

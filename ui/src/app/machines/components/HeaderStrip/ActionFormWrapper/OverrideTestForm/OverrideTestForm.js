@@ -1,11 +1,14 @@
 import pluralize from "pluralize";
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, Loader } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import {
+  machine as machineSelectors,
+  scriptresults as scriptresultsSelectors,
+} from "app/base/selectors";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
@@ -21,6 +24,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
+  const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const failedScriptResults = useSelector(machineSelectors.failedScriptResults);
 
   useEffect(() => {
@@ -61,7 +65,15 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   return (
     <>
       <i className="p-icon--warning is-inline"></i>
-      {generateFailedTestsMessage(selectedMachines, failedScriptResults)}
+      {scriptResultsLoaded ? (
+        generateFailedTestsMessage(selectedMachines, failedScriptResults)
+      ) : (
+        <Loader
+          className="u-no-padding u-no-margin"
+          inline
+          text="Loading script results..."
+        />
+      )}
       <p>
         Overriding will allow the machines to be deployed, marked with a
         warning.
@@ -70,6 +82,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         allowUnchanged
         buttons={FormCardButtons}
         buttonsBordered={false}
+        disabled={!scriptResultsLoaded}
         errors={errors}
         cleanup={machineActions.cleanup}
         initialValues={{
@@ -103,6 +116,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
           }
           setSelectedAction(null);
         }}
+        loading={!scriptResultsLoaded}
         saving={saving}
         saved={saved}
         validationSchema={OverrideTestFormSchema}
