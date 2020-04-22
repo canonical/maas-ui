@@ -43,7 +43,27 @@ describe("OverrideTestForm", () => {
     };
   });
 
-  it("displays number of failed tests for a single machine", () => {
+  it("displays message for a single machine with no failed tests", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    state.scriptresults.items = {};
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('[data-test-id="failed-results-message"]').html()).toBe(
+      '<span data-test-id="failed-results-message">Machine <strong>host1</strong> has<a href="/MAAS/#/machine/abc123"> failed 0 tests.</a></span>'
+    );
+  });
+
+  it("displays message for a single machine with failed tests", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -62,7 +82,27 @@ describe("OverrideTestForm", () => {
     );
   });
 
-  it("displays number of failed tests for a multiple machines", () => {
+  it("displays message for multiple machines with no failed tests", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    state.scriptresults.items = {};
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+      "2 machines have failed 0 tests."
+    );
+  });
+
+  it("displays message for multiple machines with failed tests", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
