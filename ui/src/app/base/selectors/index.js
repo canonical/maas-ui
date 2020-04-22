@@ -11,6 +11,7 @@ export { default as notification } from "./notification";
 export { default as packagerepository } from "./packagerepository";
 export { default as resourcepool } from "./resourcepool";
 export { default as scripts } from "./scripts";
+export { default as scriptresults } from "./scriptresults";
 export { default as service } from "./service";
 export { default as status } from "./status";
 export { default as subnet } from "./subnet";

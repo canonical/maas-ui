@@ -44,6 +44,33 @@ machine.setSelected = (machines) => {
   };
 };
 
+machine.fetchFailedScriptResults = (machines) => ({
+  type: "FETCH_FAILED_SCRIPT_RESULTS",
+  meta: {
+    model: "machine",
+    method: "get_latest_failed_testing_script_results",
+  },
+  payload: {
+    params: {
+      system_ids: machines.map((machine) => machine.system_id),
+    },
+  },
+});
+
+machine.suppressScriptResults = (machine, scripts) => ({
+  type: "SET_SCRIPT_RESULT_SUPPRESSED",
+  meta: {
+    model: "machine",
+    method: "set_script_result_suppressed",
+  },
+  payload: {
+    params: {
+      system_id: machine.system_id,
+      script_result_ids: scripts.map((script) => script.id),
+    },
+  },
+});
+
 const generateMachineAction = (type, action, systemId, extra = {}) => ({
   type,
   meta: {

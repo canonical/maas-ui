@@ -265,6 +265,47 @@ describe("machine actions", () => {
     });
   });
 
+  it("can create a failed script results action", () => {
+    expect(
+      machine.fetchFailedScriptResults([
+        { system_id: 0, name: "machine0" },
+        { system_id: 1, name: "machine1" },
+      ])
+    ).toEqual({
+      meta: {
+        method: "get_latest_failed_testing_script_results",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          system_ids: [0, 1],
+        },
+      },
+      type: "FETCH_FAILED_SCRIPT_RESULTS",
+    });
+  });
+
+  it("can create a suppress script results action", () => {
+    expect(
+      machine.suppressScriptResults({ system_id: 0, name: "machine0" }, [
+        { id: 0, name: "script0" },
+        { id: 2, name: "script2" },
+      ])
+    ).toEqual({
+      meta: {
+        method: "set_script_result_suppressed",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          script_result_ids: [0, 2],
+          system_id: 0,
+        },
+      },
+      type: "SET_SCRIPT_RESULT_SUPPRESSED",
+    });
+  });
+
   it("can putting a machine into rescue mode", () => {
     expect(machine.rescueMode("abc123")).toEqual({
       type: "MACHINE_RESCUE_MODE",

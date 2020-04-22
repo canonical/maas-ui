@@ -3,6 +3,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/base/reducers/machine/machine";
 
+import scriptresults from "../scriptresults";
+
 const machine = {};
 
 /**
@@ -133,6 +135,22 @@ machine.selected = createSelector(
     selectedIDs.map((id) =>
       machines.find((machine) => id === machine.system_id)
     )
+);
+
+/**
+ * Returns failed script results for selected machines.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Script results by selected machine key.
+ */
+machine.failedScriptResults = createSelector(
+  [scriptresults.all, machine.selectedIDs],
+  (scriptresults, selectedIDs) =>
+    Object.keys(scriptresults)
+      .filter((key) => selectedIDs.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = scriptresults[key];
+        return obj;
+      }, {})
 );
 
 export default machine;

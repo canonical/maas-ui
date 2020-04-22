@@ -129,4 +129,67 @@ describe("machine selectors", () => {
       { system_id: 909 },
     ]);
   });
+
+  it("returns failed script results for selected machines", () => {
+    const state = {
+      machine: {
+        items: [
+          { name: "selectedMachine", system_id: "foo" },
+          { name: "selectedMachine2", system_id: "bar" },
+          { name: "unselectedMachine", system_id: "baz" },
+        ],
+        selected: ["foo", "bar"],
+      },
+      scriptresults: {
+        errors: {},
+        loading: false,
+        loaded: true,
+        items: {
+          foo: [
+            {
+              id: 1,
+              name: "script1",
+            },
+            {
+              id: 2,
+              name: "script2",
+            },
+          ],
+          bar: [
+            {
+              id: 2,
+              name: "script2",
+            },
+            {
+              id: 3,
+              name: "script3",
+            },
+          ],
+          baz: [
+            {
+              id: 2,
+              name: "script2",
+            },
+          ],
+        },
+      },
+    };
+
+    expect(machine.failedScriptResults(state)).toEqual({
+      foo: [
+        { id: 1, name: "script1" },
+        { id: 2, name: "script2" },
+      ],
+      bar: [
+        {
+          id: 2,
+          name: "script2",
+        },
+        {
+          id: 3,
+          name: "script3",
+        },
+      ],
+    });
+  });
 });

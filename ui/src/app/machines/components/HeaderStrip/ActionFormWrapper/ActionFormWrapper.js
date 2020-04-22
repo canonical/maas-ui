@@ -9,6 +9,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import ActionForm from "./ActionForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
+import OverrideTestForm from "./OverrideTestForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
@@ -67,6 +68,8 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
           return <CommissionForm setSelectedAction={setSelectedAction} />;
         case "deploy":
           return <DeployForm setSelectedAction={setSelectedAction} />;
+        case "override-failed-testing":
+          return <OverrideTestForm setSelectedAction={setSelectedAction} />;
         case "set-pool":
           return <SetPoolForm setSelectedAction={setSelectedAction} />;
         case "set-zone":
