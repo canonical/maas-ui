@@ -395,7 +395,7 @@ function PodDetailsController(
       });
       if ($scope.pod.type === "rsd") {
         tags.splice(0, 0, disk.type);
-      } else if ($scope.pod.type === "virsh") {
+      } else {
         tags.splice(0, 0, disk.pool.name);
       }
       constraint += "(" + tags.join(",") + ")";
