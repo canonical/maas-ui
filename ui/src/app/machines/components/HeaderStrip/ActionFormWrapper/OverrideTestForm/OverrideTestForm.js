@@ -31,11 +31,12 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
     selectedMachines,
     failedScriptResults
   ) => {
+    const numFailedTests =
+      Object.values(failedScriptResults)?.flat().length || 0;
+
     if (selectedMachines.length === 1) {
       const hostname = selectedMachines[0].hostname;
       const id = selectedMachines[0].system_id;
-      const numFailedTests = failedScriptResults[id]?.length || 0;
-
       return (
         <span data-test-id="failed-results-message">
           Machine <strong>{hostname}</strong> has
@@ -45,8 +46,6 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         </span>
       );
     } else {
-      const numFailedTests =
-        Object.values(failedScriptResults)?.flat().length || 0;
       return (
         <span data-test-id="failed-results-message">
           <strong>{selectedMachines.length} machines</strong>
