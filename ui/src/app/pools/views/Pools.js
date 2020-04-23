@@ -162,7 +162,7 @@ const Pools = () => {
                   },
                 ]}
                 expanding={true}
-                paginate={150}
+                paginate={50}
                 rows={generateRows(
                   resourcePools,
                   expandedId,
