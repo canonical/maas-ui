@@ -1,6 +1,7 @@
 import architectures from "./architectures";
 import componentsToDisable from "./componentsToDisable";
 import defaultMinHweKernel from "./defaultMinHweKernel";
+import deprecationNotices from "./deprecationNotices";
 import hweKernels from "./hweKernels";
 import knownArchitectures from "./knownArchitectures";
 import machineActions from "./machineActions";
@@ -14,6 +15,7 @@ export const general = {
   architectures,
   componentsToDisable,
   defaultMinHweKernel,
+  deprecationNotices,
   hweKernels,
   knownArchitectures,
   machineActions,

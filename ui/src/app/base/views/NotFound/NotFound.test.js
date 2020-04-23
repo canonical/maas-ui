@@ -16,6 +16,18 @@ describe("NotFound ", () => {
       config: {
         items: [],
       },
+      general: {
+        deprecationNotices: {
+          data: [],
+          loaded: true,
+          loading: false,
+        },
+        version: {
+          data: "2.8.0",
+          loaded: true,
+          loading: false,
+        },
+      },
       messages: {
         items: [],
       },

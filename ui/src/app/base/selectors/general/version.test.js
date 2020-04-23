@@ -69,4 +69,20 @@ describe("version selectors", () => {
       expect(version.errors(state)).toStrictEqual(errors);
     });
   });
+
+  describe("minor", () => {
+    it("returns the minor version", () => {
+      const state = {
+        general: {
+          version: {
+            data: "2.8.0~alpha1",
+            errors: {},
+            loaded: true,
+            loading: false,
+          },
+        },
+      };
+      expect(version.minor(state)).toStrictEqual("2.8");
+    });
+  });
 });

@@ -44,7 +44,9 @@ describe("NotificationList", () => {
     );
     wrapper.find("Notification").props().close();
 
-    expect(store.getActions()[1]).toEqual({
+    expect(
+      store.getActions().find((action) => action.type === "REMOVE_MESSAGE")
+    ).toEqual({
       type: "REMOVE_MESSAGE",
       payload: 1,
     });

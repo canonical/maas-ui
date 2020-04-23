@@ -61,6 +61,12 @@ Object {
       "loaded": false,
       "loading": false,
     },
+    "deprecationNotices": Object {
+      "data": Array [],
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
     "hweKernels": Object {
       "data": Array [],
       "errors": Object {},

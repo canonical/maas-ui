@@ -35,6 +35,7 @@ const defaultMinHweKernel = generateGeneralReducer(
   "DEFAULT_MIN_HWE_KERNEL",
   ""
 );
+const deprecationNotices = generateGeneralReducer("DEPRECATION_NOTICES", []);
 const hweKernels = generateGeneralReducer("HWE_KERNELS", []);
 const knownArchitectures = generateGeneralReducer("KNOWN_ARCHITECTURES", []);
 const machineActions = generateGeneralReducer("MACHINE_ACTIONS", []);
@@ -48,6 +49,7 @@ export const general = combineReducers({
   architectures,
   componentsToDisable,
   defaultMinHweKernel,
+  deprecationNotices,
   hweKernels,
   knownArchitectures,
   machineActions,
