@@ -50,7 +50,7 @@
 
 // machines
 @import "~app/machines/views/MachineList";
-@import "~app/machines/views/MachineList/FilterAccordion";
+@import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @include MachineList;
 @include FilterAccordion;
 
