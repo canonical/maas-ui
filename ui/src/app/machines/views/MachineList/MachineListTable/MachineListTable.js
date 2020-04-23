@@ -6,6 +6,7 @@ import {
   Row,
   Strip,
 } from "@canonical/react-components";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
@@ -406,13 +407,12 @@ const generateGroupRows = ({
 };
 
 const MachineListTable = ({
+  filter,
   grouping,
   hiddenGroups,
-  filter,
   setHiddenGroups,
 }) => {
   const dispatch = useDispatch();
-  // The search text state is initialised from the URL.
   const selectedMachines = useSelector(machineSelectors.selected);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const machines = useSelector((state) =>
@@ -733,6 +733,13 @@ const MachineListTable = ({
       </Col>
     </Row>
   );
+};
+
+MachineListTable.propTypes = {
+  grouping: PropTypes.string,
+  hiddenGroups: PropTypes.arrayOf(PropTypes.string),
+  filter: PropTypes.string,
+  setHiddenGroups: PropTypes.func,
 };
 
 export default MachineListTable;

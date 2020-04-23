@@ -1,4 +1,5 @@
 import { Col, Row, SearchBox } from "@canonical/react-components";
+import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "app/base/hooks";
@@ -54,7 +55,8 @@ const MachineListControls = ({
           }}
           value={searchText}
         />
-        {/* TODO Caleb 23/04/2020 - Update SearchBox to allow spinner */}
+        {/* TODO Caleb 23/04/2020 - Update SearchBox to allow spinner
+            https://github.com/canonical-web-and-design/react-components/issues/112 */}
         {debouncing && (
           <i
             className="p-icon--spinner u-animation--spin"
@@ -75,6 +77,14 @@ const MachineListControls = ({
       </Col>
     </Row>
   );
+};
+
+MachineListControls.propTypes = {
+  filter: PropTypes.string,
+  grouping: PropTypes.string,
+  setFilter: PropTypes.func,
+  setGrouping: PropTypes.func,
+  setHiddenGroups: PropTypes.func,
 };
 
 export default MachineListControls;

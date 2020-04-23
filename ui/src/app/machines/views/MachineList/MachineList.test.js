@@ -1,11 +1,12 @@
 import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MachineList, { DEBOUNCE_INTERVAL } from "./MachineList";
+import MachineList from "./MachineList";
+import { DEBOUNCE_INTERVAL } from "./MachineListControls";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();
@@ -211,14 +212,14 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Loader").exists()).toBe(true);
     // The machine list should also be visible as the machines are
     // loaded in batches.
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+    expect(wrapper.find("MachineListTable").exists()).toBe(true);
   });
 
   it("can set the search from the URL", () => {
@@ -230,63 +231,11 @@ describe("MachineList", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SearchBox").prop("value")).toBe("test search");
-  });
-
-  it("changes the URL when the search text changes, after the debounce interval", () => {
-    let location;
-    const store = mockStore(initialState);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-          <Route
-            path="*"
-            render={(props) => {
-              location = props.location;
-              return null;
-            }}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() => {
-      wrapper.find("SearchBox").props().onChange("status:new");
-    });
-    act(() => {
-      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
-    });
-    wrapper.update();
-    expect(location.search).toBe("?status=new");
-  });
-
-  it("includes groups", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      wrapper.find(".machine-list__group").at(0).find("strong").text()
-    ).toBe("Deployed");
-    expect(
-      wrapper.find(".machine-list__group").at(2).find("strong").text()
-    ).toBe("Releasing");
   });
 
   it("can filter groups", () => {
@@ -297,7 +246,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -316,7 +265,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -341,7 +290,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -362,7 +311,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -380,7 +329,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -395,197 +344,11 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper2.find("tr.machine-list__machine").length).toBe(1);
-  });
-
-  it("can change machines to display PXE MAC instead of FQDN", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const firstMachine = state.machine.items[0];
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(firstMachine.fqdn);
-    // Click the MAC table header
-    wrapper.find('[data-test="mac-header"]').find("button").simulate("click");
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(firstMachine.pxe_mac);
-  });
-
-  it("updates sort on header click", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    // First machine has more cores than second machine
-    const [firstMachine, secondMachine] = [
-      state.machine.items[0],
-      state.machine.items[1],
-    ];
-
-    // Change grouping to none
-    wrapper
-      .find('Select[name="machine-groupings"]')
-      .find("select")
-      .simulate("change", { target: { value: "none" } });
-    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
-      false
-    );
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(firstMachine.fqdn);
-    // Click the cores table header
-    wrapper.find('[data-test="cores-header"]').find("button").simulate("click");
-    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
-      true
-    );
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(secondMachine.fqdn);
-  });
-
-  it("updates sort direction on multiple header clicks", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    const [firstMachine, secondMachine] = [
-      state.machine.items[0],
-      state.machine.items[1],
-    ];
-
-    // Change grouping to none
-    wrapper
-      .find('Select[name="machine-groupings"]')
-      .find("select")
-      .simulate("change", { target: { value: "none" } });
-
-    // Click the status table header
-    wrapper
-      .find('[data-test="status-header"]')
-      .find("button")
-      .simulate("click");
-    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
-      true
-    );
-    expect(
-      wrapper.find('[data-test="status-header"]').find("i").props().className
-    ).toBe("p-icon--contextual-menu");
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(firstMachine.fqdn);
-
-    // Click the status table header again to reverse sort order
-    wrapper
-      .find('[data-test="status-header"]')
-      .find("button")
-      .simulate("click");
-    expect(
-      wrapper.find('[data-test="status-header"]').find("i").props().className
-    ).toBe("p-icon--contextual-menu u-mirror--y");
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(secondMachine.fqdn);
-
-    // Click the FQDN table header again to return to no sort
-    wrapper
-      .find('[data-test="status-header"]')
-      .find("button")
-      .simulate("click");
-    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
-      false
-    );
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
-    ).toEqual(firstMachine.fqdn);
-  });
-
-  it("displays correct selected string in group header", () => {
-    const state = { ...initialState };
-    state.machine.items[1].status_code = nodeStatus.DEPLOYED;
-    state.machine.selected = [state.machine.items[0].system_id];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList
-            selectedMachines={[state.machine.items[0]]}
-            setSelectedMachines={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("[data-test='group-cell'] .p-double-row__secondary-row")
-        .at(0)
-        .text()
-    ).toEqual("3 machines, 1 selected");
   });
 
   it("can display an error", () => {
@@ -597,7 +360,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -614,7 +377,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -631,7 +394,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -649,7 +412,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <MachineList />
         </MemoryRouter>
       </Provider>
     );
@@ -661,266 +424,5 @@ describe("MachineList", () => {
     expect(wrapper.find("Strip span").text()).toBe(
       "No machines match the search criteria."
     );
-  });
-
-  it("displays a spinner while debouncing filter function", () => {
-    const store = mockStore(initialState);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() => {
-      wrapper.find("SearchBox").props().onChange("filtering");
-    });
-    wrapper.update();
-    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(true);
-    act(() => {
-      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
-    });
-    wrapper.update();
-    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(false);
-  });
-
-  describe("Machine selection", () => {
-    it("shows a checked checkbox in machine row if it is selected", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("[data-test='name-column'] input").at(0).props().checked
-      ).toBe(true);
-    });
-
-    it(`shows a checked checkbox in group row if all machines in the group
-      are selected`, () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123", "ghi789"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("[data-test='group-cell'] input[checked=true]").length
-      ).toBe(1);
-    });
-
-    it("shows a checked checkbox in header row if all machines are selected", () => {
-      const state = { ...initialState };
-      state.machine.items[1].status_code = nodeStatus.DEPLOYED;
-      state.machine.selected = ["abc123", "def456", "ghi789"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("[data-test='all-machines-checkbox'] input[checked=true]")
-          .length
-      ).toBe(1);
-    });
-
-    it("correctly dispatches action when unchecked machine checkbox clicked", () => {
-      const state = { ...initialState };
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='name-column'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // Machine not selected => select machine
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: ["abc123"],
-      });
-    });
-
-    it("correctly dispatches action when checked machine checkbox clicked", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='name-column'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // Machine selected => unselect machine
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: [],
-      });
-    });
-
-    it("correctly dispatches action when unchecked group checkbox clicked", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='group-cell'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // Not all machines in group selected => select machines in group
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: ["abc123", "ghi789"],
-      });
-    });
-
-    it("correctly dispatches action when checked group checkbox clicked", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123", "def456", "ghi789"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='group-cell'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // All machines in group selected => unselect machines in group
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: ["def456"],
-      });
-    });
-
-    it("correctly dispatches action when unchecked header checkbox clicked", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='all-machines-checkbox'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // Not all machines selected => select all machines
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: ["abc123", "def456", "ghi789"],
-      });
-    });
-
-    it("correctly dispatches action when checked header checkbox clicked", () => {
-      const state = { ...initialState };
-      state.machine.selected = ["abc123", "def456", "ghi789"];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <MachineList />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-test='all-machines-checkbox'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
-        });
-      // All machines already selected => unselect all machines
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
-      ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
-        payload: [],
-      });
-    });
   });
 });
