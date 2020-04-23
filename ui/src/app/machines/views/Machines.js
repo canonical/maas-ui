@@ -12,7 +12,11 @@ import HeaderStrip from "app/machines/components/HeaderStrip";
 import Section from "app/base/components/Section";
 
 const Machines = () => (
-  <Section headerClassName="u-no-padding--bottom" title={<HeaderStrip />}>
+  <Section
+    headerClassName="u-no-padding--bottom"
+    showDeprecations
+    title={<HeaderStrip />}
+  >
     <Switch>
       <Route exact path="/machines">
         <MachineList />

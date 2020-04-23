@@ -35,6 +35,11 @@ describe("App", () => {
           loaded: false,
           loading: false,
         },
+        deprecationNotices: {
+          data: [],
+          loaded: true,
+          loading: false,
+        },
         hweKernels: {
           data: [],
           errors: {},

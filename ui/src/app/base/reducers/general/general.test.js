@@ -21,6 +21,12 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
+      deprecationNotices: {
+        data: [],
+        errors: {},
+        loaded: false,
+        loading: false,
+      },
       hweKernels: {
         data: [],
         errors: {},

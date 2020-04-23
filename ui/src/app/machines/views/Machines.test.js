@@ -30,6 +30,11 @@ describe("Machines", () => {
           loaded: false,
           loading: false,
         },
+        deprecationNotices: {
+          data: [],
+          loaded: true,
+          loading: false,
+        },
         hweKernels: {
           data: [],
           loaded: false,
@@ -57,6 +62,11 @@ describe("Machines", () => {
         powerTypes: {
           data: [],
           loaded: false,
+          loading: false,
+        },
+        version: {
+          data: "2.8.0",
+          loaded: true,
           loading: false,
         },
       },
