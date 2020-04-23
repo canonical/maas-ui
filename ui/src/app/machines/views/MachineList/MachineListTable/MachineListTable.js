@@ -408,7 +408,7 @@ const generateGroupRows = ({
 const MachineListTable = ({
   grouping,
   hiddenGroups,
-  searchText,
+  filter,
   setHiddenGroups,
 }) => {
   const dispatch = useDispatch();
@@ -416,7 +416,7 @@ const MachineListTable = ({
   const selectedMachines = useSelector(machineSelectors.selected);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const machines = useSelector((state) =>
-    machineSelectors.search(state, searchText, selectedIDs)
+    machineSelectors.search(state, filter, selectedIDs)
   );
 
   const [currentSort, setCurrentSort] = useState({
@@ -725,7 +725,7 @@ const MachineListTable = ({
                 })
           }
         />
-        {searchText && machines.length === 0 ? (
+        {filter && machines.length === 0 ? (
           <Strip rowClassName="u-align--center">
             <span>No machines match the search criteria.</span>
           </Strip>

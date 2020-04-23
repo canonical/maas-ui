@@ -1,43 +1,70 @@
 import { Col, Row, SearchBox } from "@canonical/react-components";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "app/base/hooks";
 import { filtersToQueryString, getCurrentFilters } from "app/machines/search";
 import FilterAccordion from "./FilterAccordion";
 import GroupSelect from "./GroupSelect";
 
+export const DEBOUNCE_INTERVAL = 500;
+
 const MachineListControls = ({
+  filter,
   grouping,
-  searchText,
+  setFilter,
   setGrouping,
   setHiddenGroups,
-  setSearchText,
 }) => {
   const { history } = useRouter();
+  const intervalRef = useRef(null);
 
-  // Handle updating the search text state and URL.
-  const changeFilters = (searchText) => {
-    // Update the search text state.
-    setSearchText(searchText);
-    // Convert the search string into a query string and update the URL.
-    const filters = getCurrentFilters(searchText);
-    history.push({ search: filtersToQueryString(filters) });
-  };
+  const [searchText, setSearchText] = useState(filter);
+  const [debouncing, setDebouncing] = useState(false);
+
+  // Handle setting the URL and filter in state whenever search text changes.
+  // Filtering function is debounced to prevent excessive repaints.
+  useEffect(() => {
+    if (debouncing) {
+      intervalRef.current = setTimeout(() => {
+        setFilter(searchText);
+        const filters = getCurrentFilters(searchText);
+        history.push({ search: filtersToQueryString(filters) });
+        setDebouncing(false);
+      }, DEBOUNCE_INTERVAL);
+    } else {
+      setFilter(searchText);
+    }
+    return () => clearTimeout(intervalRef.current);
+  }, [debouncing, history, searchText, setFilter]);
 
   return (
     <Row>
       <Col size={3}>
         <FilterAccordion
           searchText={searchText}
-          setSearchText={changeFilters}
+          setSearchText={(searchText) => setSearchText(searchText)}
         />
       </Col>
-      <Col size={6}>
+      <Col size={6} style={{ position: "relative" }}>
         <SearchBox
           externallyControlled
-          onChange={changeFilters}
+          onChange={(searchText) => {
+            setDebouncing(true);
+            setSearchText(searchText);
+          }}
           value={searchText}
         />
+        {/* TODO Caleb 23/04/2020 - Update SearchBox to allow spinner */}
+        {debouncing && (
+          <i
+            className="p-icon--spinner u-animation--spin"
+            style={{
+              position: "absolute",
+              top: ".675rem",
+              right: searchText ? "5rem" : "3rem",
+            }}
+          ></i>
+        )}
       </Col>
       <Col size={3}>
         <GroupSelect

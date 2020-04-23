@@ -5,10 +5,12 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MachineList from "./MachineList";
+import MachineList, { DEBOUNCE_INTERVAL } from "./MachineList";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();
+
+jest.useFakeTimers();
 
 describe("MachineList", () => {
   let initialState;
@@ -235,7 +237,7 @@ describe("MachineList", () => {
     expect(wrapper.find("SearchBox").prop("value")).toBe("test search");
   });
 
-  it("change the URL when the search text changes", () => {
+  it("changes the URL when the search text changes, after the debounce interval", () => {
     let location;
     const store = mockStore(initialState);
     const wrapper = mount(
@@ -259,6 +261,10 @@ describe("MachineList", () => {
     act(() => {
       wrapper.find("SearchBox").props().onChange("status:new");
     });
+    act(() => {
+      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
+    });
+    wrapper.update();
     expect(location.search).toBe("?status=new");
   });
 
@@ -647,12 +653,37 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("input[type='search']")
-      .simulate("change", { target: { value: "test" } });
+    act(() => {
+      wrapper.find("SearchBox").props().onChange("no-machines");
+      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
+    });
+    wrapper.update();
     expect(wrapper.find("Strip span").text()).toBe(
       "No machines match the search criteria."
     );
+  });
+
+  it("displays a spinner while debouncing filter function", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList selectedMachines={[]} setSelectedMachines={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper.find("SearchBox").props().onChange("filtering");
+    });
+    wrapper.update();
+    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(true);
+    act(() => {
+      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
+    });
+    wrapper.update();
+    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(false);
   });
 
   describe("Machine selection", () => {

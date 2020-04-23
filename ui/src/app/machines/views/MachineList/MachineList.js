@@ -16,8 +16,9 @@ const MachineList = () => {
   const currentFilters = queryStringToFilters(location.search);
   const errors = useSelector(machineSelectors.errors);
   const errorMessage = formatErrors(errors);
-  // The search text state is initialised from the URL.
-  const [searchText, setSearchText] = useState(filtersToString(currentFilters));
+
+  // The filter state is initialised from the URL.
+  const [filter, setFilter] = useState(filtersToString(currentFilters));
   const [grouping, setGrouping] = useStorageState(
     localStorage,
     "grouping",
@@ -35,16 +36,16 @@ const MachineList = () => {
         <Notification type="negative">{errorMessage}</Notification>
       ) : null}
       <MachineListControls
+        filter={filter}
         grouping={grouping}
-        searchText={searchText}
+        setFilter={setFilter}
         setGrouping={setGrouping}
         setHiddenGroups={setHiddenGroups}
-        setSearchText={setSearchText}
       />
       <MachineListTable
+        filter={filter}
         grouping={grouping}
         hiddenGroups={hiddenGroups}
-        searchText={searchText}
         setHiddenGroups={setHiddenGroups}
       />
     </>
