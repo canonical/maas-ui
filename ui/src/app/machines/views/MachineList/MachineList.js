@@ -5,7 +5,6 @@ import {
   MainTable,
   Notification,
   Row,
-  SearchBox,
   Strip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,19 +26,13 @@ import {
 import { formatErrors, groupAsMap, simpleSortByKey } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
-import { useLocation, useRouter, useWindowTitle } from "app/base/hooks";
-import {
-  filtersToString,
-  filtersToQueryString,
-  getCurrentFilters,
-  queryStringToFilters,
-} from "app/machines/search";
+import { useLocation, useWindowTitle } from "app/base/hooks";
+import { filtersToString, queryStringToFilters } from "app/machines/search";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
-import FilterAccordion from "./FilterAccordion";
-import GroupSelect from "./GroupSelect";
+import MachineListControls from "./MachineListControls";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
@@ -419,7 +412,6 @@ const generateGroupRows = ({
 
 const MachineList = () => {
   const dispatch = useDispatch();
-  const { history } = useRouter();
   const { location } = useLocation();
   const currentFilters = queryStringToFilters(location.search);
   // The search text state is initialised from the URL.
@@ -545,39 +537,15 @@ const MachineList = () => {
     showMAC,
   };
 
-  // Handle updating the search text state and URL.
-  const changeFilters = (searchText) => {
-    // Update the search text state.
-    setSearchText(searchText);
-    // Convert the search string into a query string and update the URL.
-    const filters = getCurrentFilters(searchText);
-    history.push({ search: filtersToQueryString(filters) });
-  };
-
   return (
     <>
-      <Row>
-        <Col size={3}>
-          <FilterAccordion
-            searchText={searchText}
-            setSearchText={changeFilters}
-          />
-        </Col>
-        <Col size={6}>
-          <SearchBox
-            externallyControlled
-            onChange={changeFilters}
-            value={searchText}
-          />
-        </Col>
-        <Col size={3}>
-          <GroupSelect
-            grouping={grouping}
-            setGrouping={setGrouping}
-            setHiddenGroups={setHiddenGroups}
-          />
-        </Col>
-      </Row>
+      <MachineListControls
+        grouping={grouping}
+        searchText={searchText}
+        setGrouping={setGrouping}
+        setHiddenGroups={setHiddenGroups}
+        setSearchText={setSearchText}
+      />
       {errorMessage ? (
         <Notification type="negative">{errorMessage}</Notification>
       ) : null}
