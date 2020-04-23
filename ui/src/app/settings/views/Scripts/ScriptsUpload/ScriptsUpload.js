@@ -148,8 +148,8 @@ const ScriptsUpload = ({ type }) => {
           )}
 
           <FormCardButtons
-            actionDisabled={acceptedFiles.length === 0}
-            actionLabel="Upload script"
+            submitDisabled={acceptedFiles.length === 0}
+            submitLabel="Upload script"
           />
         </Form>
       </Row>
