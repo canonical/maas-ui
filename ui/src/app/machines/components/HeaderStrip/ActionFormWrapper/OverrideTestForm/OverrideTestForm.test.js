@@ -13,6 +13,13 @@ describe("OverrideTestForm", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      general: {
+        machineActions: {
+          data: [
+            { name: "override-failed-testing", sentence: "change those pools" },
+          ],
+        },
+      },
       machine: {
         errors: {},
         loading: false,
@@ -22,6 +29,10 @@ describe("OverrideTestForm", () => {
           { hostname: "host2", system_id: "def456" },
         ],
         selected: [],
+        statuses: {
+          abc123: { settingPool: false },
+          def456: { settingPool: false },
+        },
       },
       scriptresults: {
         errors: {},
@@ -214,5 +225,27 @@ describe("OverrideTestForm", () => {
         type: "SET_SCRIPT_RESULT_SUPPRESSED",
       },
     ]);
+  });
+
+  it("can render when processing machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        suppressResults: true,
+      })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
   });
 });

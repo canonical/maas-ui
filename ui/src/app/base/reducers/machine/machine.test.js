@@ -375,6 +375,7 @@ describe("machine reducer", () => {
       expect(
         machine(
           {
+            errors: "Uh oh",
             statuses: {
               abc: {
                 settingPool: false,
@@ -391,6 +392,7 @@ describe("machine reducer", () => {
           }
         )
       ).toEqual({
+        errors: {},
         statuses: {
           abc: {
             settingPool: true,

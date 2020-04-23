@@ -94,6 +94,7 @@ const machine = createNextState(
     ACTIONS.forEach(({ status, type }) => {
       switch (action.type) {
         case `${type}_START`:
+          draft.errors = {};
           draft.statuses[action.meta.item.system_id][status] = true;
           break;
         case `${type}_SUCCESS`:

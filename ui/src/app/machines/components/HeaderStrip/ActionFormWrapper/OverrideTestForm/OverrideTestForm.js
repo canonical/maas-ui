@@ -1,6 +1,6 @@
 import pluralize from "pluralize";
 import { Col, Row, Loader } from "@canonical/react-components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -12,6 +12,7 @@ import {
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import MachinesProcessing from "../MachinesProcessing";
 
 const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
@@ -19,17 +20,32 @@ const OverrideTestFormSchema = Yup.object().shape({
 
 export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
-
+  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const failedScriptResults = useSelector(machineSelectors.failedScriptResults);
+  const overridingFailedTestingSelected = useSelector(
+    machineSelectors.overridingFailedTestingSelected
+  );
 
   useEffect(() => {
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
+
+  if (processing) {
+    return (
+      <MachinesProcessing
+        hasErrors={Object.keys(errors).length > 0}
+        machinesProcessing={overridingFailedTestingSelected}
+        setProcessing={setProcessing}
+        setSelectedAction={setSelectedAction}
+        action="override-failed-testing"
+      />
+    );
+  }
 
   const generateFailedTestsMessage = (
     selectedMachines,
@@ -114,7 +130,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
               }
             });
           }
-          setSelectedAction(null);
+          setProcessing(true);
         }}
         loading={!scriptResultsLoaded}
         saving={saving}
