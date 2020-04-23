@@ -10,7 +10,7 @@ import TagSelector from "app/base/components/TagSelector";
 
 export const TagFormFields = () => {
   const dispatch = useDispatch();
-  const { setFieldValue } = useFormikContext();
+  const { initialValues, setFieldValue } = useFormikContext();
   const tags = useSelector(tagSelectors.all);
   const sortedTags = tags
     .map((tag) => ({ displayName: tag.name, name: tag.name }))
@@ -26,6 +26,7 @@ export const TagFormFields = () => {
         <FormikField
           allowNewTags
           component={TagSelector}
+          initialSelected={initialValues.tags}
           label="Tags"
           name="tags"
           onTagsUpdate={(selectedTags) => setFieldValue("tags", selectedTags)}

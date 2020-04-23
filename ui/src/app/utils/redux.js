@@ -84,7 +84,8 @@ export const createStandardReducer = (
     loading: false,
     saved: false,
     saving: false,
-  }
+  },
+  additionalReducers = {}
 ) => {
   return createReducer(initialState, {
     [actions.fetch.start]: (state) => {
@@ -157,5 +158,6 @@ export const createStandardReducer = (
       state.saved = false;
       state.saving = false;
     },
+    ...additionalReducers,
   });
 };

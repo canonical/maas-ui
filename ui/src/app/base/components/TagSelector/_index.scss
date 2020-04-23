@@ -5,6 +5,10 @@
     position: relative;
   }
 
+  .tag-selector .p-form-validation__message {
+    margin-top: 0;
+  }
+
   .tag-selector__input {
     margin-bottom: 0;
     position: relative;
@@ -63,6 +67,10 @@
     border-bottom: 0;
     margin: 0;
     padding: $spv-inner--x-small $sph-inner--small;
+  }
+
+  .is-error .tag-selector__selected-list {
+    border-color: $color-negative;
   }
 
   .tag-selector__selected-item {

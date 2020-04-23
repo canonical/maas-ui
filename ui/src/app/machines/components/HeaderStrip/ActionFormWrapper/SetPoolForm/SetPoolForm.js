@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   machine as machineActions,
@@ -25,16 +25,33 @@ const SetPoolSchema = Yup.object().shape({
 export const SetPoolForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
+  const [initialValues, setInitialValues] = useState({
+    poolSelection: "select",
+    description: "",
+    name: "",
+  });
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
-  const errors = useSelector(machineSelectors.errors);
+  const machineErrors = useSelector(machineSelectors.errors);
+  const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const settingPoolSelected = useSelector(machineSelectors.settingPoolSelected);
+  const errors =
+    Object.keys(machineErrors).length > 0 ? machineErrors : poolErrors;
+
+  useEffect(
+    () => () => {
+      dispatch(machineActions.cleanup());
+      dispatch(resourcePoolActions.cleanup());
+    },
+    [dispatch]
+  );
 
   if (processing) {
     return (
       <MachinesProcessing
+        hasErrors={Object.keys(errors).length > 0}
         machinesProcessing={settingPoolSelected}
         setProcessing={setProcessing}
         setSelectedAction={setSelectedAction}
@@ -48,8 +65,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
       buttons={FormCardButtons}
       buttonsBordered={false}
       errors={errors}
-      cleanup={machineActions.cleanup}
-      initialValues={{ poolSelection: "select", description: "", name: "" }}
+      initialValues={initialValues}
       submitLabel={`Set resource pool of ${selectedMachines.length} ${pluralize(
         "machine",
         selectedMachines.length
@@ -72,6 +88,9 @@ export const SetPoolForm = ({ setSelectedAction }) => {
             });
           }
         }
+        // Store the values in case there are errors and the form needs to be
+        // displayed again.
+        setInitialValues(values);
         setProcessing(true);
       }}
       saving={saving}

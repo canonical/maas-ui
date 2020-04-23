@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import React from "react";
 
 import TagSelector from "./TagSelector";
@@ -26,7 +26,7 @@ describe("TagSelector", () => {
   });
 
   it("renders and matches the snapshot when opened", () => {
-    const component = shallow(
+    const component = mount(
       <TagSelector
         label="Tags"
         placeholder="Select or create tags"
@@ -34,12 +34,12 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find("Label").simulate("click");
+    component.find("Label").first().simulate("click");
     expect(component).toMatchSnapshot();
   });
 
   it("renders and matches the snapshot with tag descriptions", () => {
-    const component = shallow(
+    const component = mount(
       <TagSelector
         label="Tags"
         placeholder="Select or create tags"
@@ -50,7 +50,7 @@ describe("TagSelector", () => {
         ]}
       />
     );
-    component.find("Label").simulate("click");
+    component.find("Label").first().simulate("click");
     expect(component).toMatchSnapshot();
   });
 

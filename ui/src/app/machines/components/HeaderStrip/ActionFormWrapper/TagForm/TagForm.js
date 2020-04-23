@@ -25,15 +25,23 @@ const TagFormSchema = Yup.object().shape({
 export const TagForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
+  const [initialValues, setInitialValues] = useState({ tags: [] });
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const taggingSelected = useSelector(machineSelectors.taggingSelected);
 
+  let formErrors = { ...errors };
+  if (formErrors && formErrors.name) {
+    formErrors.tags = formErrors.name;
+    delete formErrors.name;
+  }
+
   if (processing) {
     return (
       <MachinesProcessing
+        hasErrors={Object.keys(errors).length > 0}
         machinesProcessing={taggingSelected}
         setProcessing={setProcessing}
         setSelectedAction={setSelectedAction}
@@ -46,9 +54,9 @@ export const TagForm = ({ setSelectedAction }) => {
     <FormikForm
       buttons={FormCardButtons}
       buttonsBordered={false}
-      errors={errors}
+      errors={formErrors}
       cleanup={machineActions.cleanup}
-      initialValues={{ tags: [] }}
+      initialValues={initialValues}
       submitLabel={`Tag ${selectedMachines.length} ${pluralize(
         "machine",
         selectedMachines.length
@@ -65,6 +73,7 @@ export const TagForm = ({ setSelectedAction }) => {
             dispatch(machineActions.tag(machine.system_id, values.tags));
           });
         }
+        setInitialValues(values);
         setProcessing(true);
       }}
       saving={saving}

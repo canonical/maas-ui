@@ -85,7 +85,7 @@ describe("MachinesProcessing", () => {
     );
   });
 
-  it("calls functions when processing is complete", () => {
+  it("updates the processing state when processing is complete", () => {
     const setProcessing = jest.fn();
     const setSelectedAction = jest.fn();
     const store = mockStore(state);
@@ -109,5 +109,32 @@ describe("MachinesProcessing", () => {
     wrapper.setProps({ machinesProcessing: [] });
     expect(setProcessing).toHaveBeenCalled();
     expect(setSelectedAction).toHaveBeenCalled();
+  });
+
+  it("updates the processing state when there processing errors", () => {
+    const setProcessing = jest.fn();
+    const setSelectedAction = jest.fn();
+    const store = mockStore(state);
+    const Proxy = ({ machinesProcessing }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachinesProcessing
+            action="set-pool"
+            machinesProcessing={machinesProcessing}
+            setProcessing={setProcessing}
+            setSelectedAction={setSelectedAction}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy machinesProcessing={[{ id: 2 }]} />);
+    expect(setProcessing).not.toHaveBeenCalled();
+    expect(setSelectedAction).not.toHaveBeenCalled();
+    wrapper.setProps({ hasErrors: true });
+    expect(setSelectedAction).not.toHaveBeenCalled();
+    wrapper.setProps({ machinesProcessing: [] });
+    expect(setProcessing).toHaveBeenCalled();
   });
 });
