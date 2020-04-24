@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -20,7 +20,7 @@ export const DhcpEdit = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
   if (!dhcpsnippet) {
     return <h4>DHCP snippet not found</h4>;

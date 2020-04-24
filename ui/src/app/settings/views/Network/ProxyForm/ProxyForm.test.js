@@ -45,7 +45,7 @@ describe("ProxyForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("displays a text input if http proxy is enabled", () => {

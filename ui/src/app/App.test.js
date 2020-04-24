@@ -158,7 +158,7 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("displays a loading message when authenticating", () => {
@@ -171,7 +171,7 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("displays a loading message if fetching auth user", () => {
@@ -184,7 +184,7 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("connects to the WebSocket", () => {

@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -82,7 +82,7 @@ export const AddChassisForm = () => {
   return (
     <>
       {!domainsLoaded ? (
-        <Loader text="Loading" />
+        <Spinner text="Loading" />
       ) : (
         <FormCard sidebar={false} title="Add chassis">
           <FormikForm

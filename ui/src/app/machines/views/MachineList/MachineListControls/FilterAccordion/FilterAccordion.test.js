@@ -64,7 +64,7 @@ describe("FilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("formats link speeds", () => {

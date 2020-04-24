@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -21,7 +21,7 @@ export const RepositoryEdit = () => {
   );
 
   if (loading) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
   if (loaded && !repository) {
     return <h4>Repository not found</h4>;

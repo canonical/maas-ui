@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export const LicenseKeyForm = ({ licenseKey }) => {
   return (
     <FormCard title={title}>
       {!isLoaded ? (
-        <Loader text="loading..." />
+        <Spinner text="loading..." />
       ) : osystems.length > 0 ? (
         <FormikForm
           buttons={FormCardButtons}

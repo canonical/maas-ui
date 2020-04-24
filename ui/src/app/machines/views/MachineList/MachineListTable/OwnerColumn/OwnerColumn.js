@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -39,7 +39,7 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <>
           {updating === null ? null : (
-            <Loader className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-no-margin u-no-padding--left" inline />
           )}
           <span data-test="owner">{owner}</span>
         </>

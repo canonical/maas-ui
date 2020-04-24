@@ -1,6 +1,6 @@
 import {
   Col,
-  Loader,
+  Spinner,
   MainTable,
   Notification,
   Row,
@@ -136,7 +136,7 @@ const Pools = () => {
           <div>
             {poolsLoading && (
               <div className="u-align--center">
-                <Loader text="Loading..." />
+                <Spinner text="Loading..." />
               </div>
             )}
             {poolsLoaded && (

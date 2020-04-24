@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 
@@ -15,7 +15,7 @@ export const PoolEdit = () => {
   );
 
   if (loading) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
   if (loaded && !pool) {
     return <h4>Resource pool not found</h4>;

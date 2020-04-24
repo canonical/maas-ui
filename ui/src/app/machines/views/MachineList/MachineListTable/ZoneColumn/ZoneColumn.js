@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -65,7 +65,7 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <span data-test="zone">
           {updating !== null ? (
-            <Loader className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-no-margin u-no-padding--left" inline />
           ) : null}
           <a
             className="p-link--soft"

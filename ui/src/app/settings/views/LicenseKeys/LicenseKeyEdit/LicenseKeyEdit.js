@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -26,7 +26,7 @@ export const LicenseKeyEdit = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
   if (!licenseKey) {
     return <h4>License key not found</h4>;

@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -52,7 +52,7 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <span data-test="pool">
           {updating !== null ? (
-            <Loader className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-no-margin u-no-padding--left" inline />
           ) : null}
           <Link className="p-link--soft" to="/pools">
             {machine.pool.name}

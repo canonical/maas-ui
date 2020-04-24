@@ -1,4 +1,4 @@
-import { Link, Loader } from "@canonical/react-components";
+import { Link, Spinner } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
@@ -10,7 +10,7 @@ const DhcpTarget = ({ nodeId, subnetId }) => {
   const { loading, loaded, target, type } = useDhcpTarget(nodeId, subnetId);
 
   if (loading || !loaded) {
-    return <Loader inline className="u-no-margin u-no-padding" />;
+    return <Spinner inline className="u-no-margin u-no-padding" />;
   }
 
   const name = subnetId ? (

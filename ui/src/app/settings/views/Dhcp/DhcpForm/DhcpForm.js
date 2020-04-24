@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     (dhcpSnippet.node || dhcpSnippet.subnet) &&
     (loading || !loaded)
   ) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
 
   return (

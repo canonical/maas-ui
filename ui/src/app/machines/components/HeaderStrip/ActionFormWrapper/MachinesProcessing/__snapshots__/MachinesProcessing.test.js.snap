@@ -17,18 +17,18 @@ exports[`MachinesProcessing can render 1`] = `
   setSelectedAction={[MockFunction]}
 >
   <p>
-    <Loader
+    <Spinner
       className="u-no-margin"
       inline={true}
     >
-      <div
-        className="u-no-margin p-loader p-text--default p-loader--inline"
+      <span
+        className="u-no-margin p-spinner p-text--default p-spinner--inline"
       >
         <i
           className="p-icon--spinner u-animation--spin"
         />
-      </div>
-    </Loader>
+      </span>
+    </Spinner>
     0
      of 
     2

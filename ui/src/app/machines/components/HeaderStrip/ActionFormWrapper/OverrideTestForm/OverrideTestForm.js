@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { Col, Row, Loader } from "@canonical/react-components";
+import { Col, Row, Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -84,7 +84,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       {scriptResultsLoaded ? (
         generateFailedTestsMessage(selectedMachines, failedScriptResults)
       ) : (
-        <Loader
+        <Spinner
           className="u-no-padding u-no-margin"
           inline
           text="Loading script results..."
