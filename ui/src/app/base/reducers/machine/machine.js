@@ -151,6 +151,7 @@ const machine = createNextState(
         break;
       case "CREATE_MACHINE_NOTIFY":
         draft.items.push(action.payload);
+        draft.statuses[action.payload.system_id] = DEFAULT_STATUSES;
         break;
       case "DELETE_MACHINE_NOTIFY":
         draft.items = draft.items.filter(
