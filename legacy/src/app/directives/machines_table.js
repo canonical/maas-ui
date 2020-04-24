@@ -91,7 +91,7 @@ function maasMachinesTable(
       machineActions: GeneralManager.getData("machine_actions")
     };
 
-    $scope.DISPLAY_LIMIT = $scope.displayLimit || 5;
+    $scope.DISPLAY_LIMIT = $scope.displayLimit || 50;
     $scope.displayLimits = {};
     const groupLabels = [
       "Failed",
