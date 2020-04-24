@@ -109,7 +109,7 @@ describe("DhcpFormFields", () => {
       select.props().onChange({ target: { name: "type", value: "subnet" } });
     });
     wrapper.update();
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(
       wrapper
         .findWhere(
@@ -133,7 +133,7 @@ describe("DhcpFormFields", () => {
       select.props().onChange({ target: { name: "type", value: "subnet" } });
     });
     wrapper.update();
-    expect(wrapper.find("Loader").exists()).toBe(false);
+    expect(wrapper.find("Spinner").exists()).toBe(false);
     expect(
       wrapper
         .findWhere(

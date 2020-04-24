@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
@@ -60,7 +60,7 @@ const MachinesProcessing = ({
 
   return (
     <p>
-      <Loader inline className="u-no-margin" />
+      <Spinner inline className="u-no-margin" />
       {processedCount} of {selectedMachinesCount} nodes are transitioning to{" "}
       {sentence.toLowerCase()}.
     </p>

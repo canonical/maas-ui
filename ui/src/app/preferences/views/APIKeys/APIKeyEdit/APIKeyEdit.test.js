@@ -39,7 +39,7 @@ describe("APIKeyEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("handles api key not found", () => {

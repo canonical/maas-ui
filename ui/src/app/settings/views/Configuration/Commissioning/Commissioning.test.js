@@ -48,7 +48,7 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("displays the Commissioning form if config is loaded", () => {

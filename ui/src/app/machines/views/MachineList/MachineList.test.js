@@ -216,7 +216,7 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
     // The machine list should also be visible as the machines are
     // loaded in batches.
     expect(wrapper.find("MachineListTable").exists()).toBe(true);

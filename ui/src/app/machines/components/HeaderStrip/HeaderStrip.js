@@ -1,4 +1,4 @@
-import { Button, Col, Loader, Row } from "@canonical/react-components";
+import { Button, Col, Spinner, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
@@ -42,7 +42,7 @@ export const HeaderStrip = () => {
                 )} available`}
               </li>
             ) : (
-              <Loader
+              <Spinner
                 className="u-no-padding u-no-margin"
                 inline
                 text="Loading..."

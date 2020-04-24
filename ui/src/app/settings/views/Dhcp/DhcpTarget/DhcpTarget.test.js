@@ -64,7 +64,7 @@ describe("DhcpTarget", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("can display a subnet link", () => {

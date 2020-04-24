@@ -1,4 +1,4 @@
-import { Col, Loader, Row } from "@canonical/react-components";
+import { Col, Spinner, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -23,7 +23,7 @@ const KernelParameters = () => {
   return (
     <Row>
       <Col size={6}>
-        {loading && <Loader text="Loading..." />}
+        {loading && <Spinner text="Loading..." />}
         {loaded && <KernelParametersForm />}
       </Col>
     </Row>

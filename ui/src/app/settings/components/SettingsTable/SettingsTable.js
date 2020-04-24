@@ -5,7 +5,7 @@ import React from "react";
 
 import {
   Button,
-  Loader,
+  Spinner,
   MainTable,
   SearchBox,
 } from "@canonical/react-components";
@@ -51,7 +51,7 @@ export const SettingsTable = ({
       </div>
       {loading && (
         <div className="settings-table__loader">
-          <Loader />
+          <Spinner />
         </div>
       )}
       <MainTable

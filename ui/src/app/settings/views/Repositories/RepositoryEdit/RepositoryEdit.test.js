@@ -76,7 +76,7 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("handles repository not found", () => {

@@ -134,7 +134,7 @@ describe("AddMachine", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").length).toBe(1);
+    expect(wrapper.find("Spinner").length).toBe(1);
   });
 
   it("can handle saving a machine", () => {
