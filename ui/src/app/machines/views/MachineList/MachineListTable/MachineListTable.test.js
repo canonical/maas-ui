@@ -695,5 +695,35 @@ describe("MachineListTable", () => {
         payload: [],
       });
     });
+
+    it("disables checkbox in header row if there are no machines", () => {
+      const state = { ...initialState };
+      state.machine.items = [];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              setHiddenGroups={jest.fn()}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(
+        wrapper
+          .find("[data-test='all-machines-checkbox'] input[checked=true]")
+          .exists()
+      ).toBe(false);
+      expect(
+        wrapper
+          .find("[data-test='all-machines-checkbox'] input[disabled]")
+          .exists()
+      ).toBe(true);
+    });
   });
 });

@@ -25,7 +25,7 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
           hidePassedIcon
           hideNotRunIcon
           scriptType={machine.network_test_status}
-          tooltipPosition="top-right"
+          tooltipPosition="top-left"
         >
           {fabricName ? (
             <a

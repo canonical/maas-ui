@@ -98,35 +98,21 @@ const NameColumn = ({
     ? generateMAC(machine, machineURL)
     : generateFQDN(machine, machineURL);
   const secondaryRow = !showMAC && generateIPAddresses(machine);
-  const canEdit = machine.permissions.includes("edit");
-  const checkbox = (
-    <Input
-      checked={selected}
-      className="has-inline-label keep-label-opacity"
-      disabled={!canEdit}
-      id={systemId}
-      label={primaryRow}
-      onChange={() => handleCheckbox(machine)}
-      type="checkbox"
-      wrapperClassName="u-no-margin--bottom"
-    />
-  );
 
   return (
     <DoubleRow
       data-test="name-column"
       onToggleMenu={onToggleMenu}
       primary={
-        canEdit ? (
-          checkbox
-        ) : (
-          <Tooltip
-            message="You do not have permission to edit this machine."
-            position="top-left"
-          >
-            {checkbox}
-          </Tooltip>
-        )
+        <Input
+          checked={selected}
+          className="has-inline-label keep-label-opacity"
+          id={systemId}
+          label={primaryRow}
+          onChange={() => handleCheckbox(machine)}
+          type="checkbox"
+          wrapperClassName="u-no-margin--bottom"
+        />
       }
       primaryTextClassName="u-nudge--checkbox"
       secondary={secondaryRow}

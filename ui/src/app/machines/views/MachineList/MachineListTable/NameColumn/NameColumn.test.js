@@ -250,33 +250,4 @@ describe("NameColumn", () => {
     );
     expect(wrapper.find("Input").props().checked).toBe(true);
   });
-
-  it(`disables checkbox and shows tooltip if machine does not
-    have edit permission`, () => {
-    state.machine.items[0] = {
-      domain: {
-        name: "example",
-      },
-      hostname: "koala",
-      permissions: [],
-      system_id: "abc123",
-    };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <NameColumn
-            handleCheckbox={jest.fn()}
-            selected
-            showMAC={true}
-            systemId="abc123"
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Input").props().disabled).toBe(true);
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
-  });
 });

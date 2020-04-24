@@ -31,17 +31,24 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
     machineSelectors.getBySystemId(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
-  let zoneLinks = zones
-    .filter((zone) => zone.id !== machine.zone.id)
-    .map((zone) => ({
-      children: zone.name,
-      onClick: () => {
-        dispatch(machineActions.setZone(systemId, zone.id));
-        setUpdating(zone.id);
-      },
-    }));
-  if (zoneLinks.length === 0) {
-    zoneLinks = [{ children: "No other zones available", disabled: true }];
+
+  let zoneLinks = zones.filter((zone) => zone.id !== machine.zone.id);
+  if (machine.actions.includes("set-zone")) {
+    if (zoneLinks.length !== 0) {
+      zoneLinks = zoneLinks.map((zone) => ({
+        children: zone.name,
+        onClick: () => {
+          dispatch(machineActions.setZone(systemId, zone.id));
+          setUpdating(zone.id);
+        },
+      }));
+    } else {
+      zoneLinks = [{ children: "No other zones available", disabled: true }];
+    }
+  } else {
+    zoneLinks = [
+      { children: "Cannot change zone of this machine", disabled: true },
+    ];
   }
 
   useEffect(() => {

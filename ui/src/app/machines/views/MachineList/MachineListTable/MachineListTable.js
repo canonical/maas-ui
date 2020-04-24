@@ -530,10 +530,13 @@ const MachineListTable = ({
               content: (
                 <div className="u-equal-height u-nudge--checkbox">
                   <Input
-                    checked={checkboxChecked(machines, selectedMachines)}
+                    checked={
+                      checkboxChecked(machines, selectedMachines) &&
+                      machines.length !== 0
+                    }
                     className="has-inline-label"
                     data-test="all-machines-checkbox"
-                    disabled={false}
+                    disabled={machines.length === 0}
                     id="all-machines-checkbox"
                     label={" "}
                     onChange={() => handleAllCheckbox()}
