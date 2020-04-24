@@ -37,6 +37,7 @@ describe("SetPoolForm", () => {
         },
       },
       resourcepool: {
+        errors: {},
         items: [
           { id: 0, name: "default" },
           { id: 1, name: "pool-1" },
@@ -98,7 +99,6 @@ describe("SetPoolForm", () => {
           },
         },
       },
-      { type: "CLEANUP_MACHINE" },
     ]);
   });
 

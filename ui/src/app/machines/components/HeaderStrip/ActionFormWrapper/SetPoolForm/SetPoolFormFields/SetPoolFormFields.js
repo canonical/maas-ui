@@ -9,7 +9,12 @@ import FormikField from "app/base/components/FormikField";
 
 export const SetPoolFormFields = () => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  const { values } = useFormikContext();
+  const {
+    handleChange,
+    values,
+    setFieldValue,
+    setFieldTouched,
+  } = useFormikContext();
 
   const resourcePoolOptions = [
     { label: "Select resource pool", value: "", disabled: true },
@@ -20,6 +25,14 @@ export const SetPoolFormFields = () => {
     })),
   ];
 
+  const handleRadioChange = (evt) => {
+    handleChange(evt);
+    // Reset the name field when changing the radio options otherwise the
+    // selected/provided name will appear in the different name inputs.
+    setFieldValue("name", "");
+    setFieldTouched("name", false, false);
+  };
+
   return (
     <Row>
       <Col size="6">
@@ -29,6 +42,7 @@ export const SetPoolFormFields = () => {
               data-test="select-pool"
               label="Select pool"
               name="poolSelection"
+              onChange={handleRadioChange}
               type="radio"
               value="select"
             />
@@ -38,6 +52,7 @@ export const SetPoolFormFields = () => {
               data-test="create-pool"
               label="Create pool"
               name="poolSelection"
+              onChange={handleRadioChange}
               type="radio"
               value="create"
             />

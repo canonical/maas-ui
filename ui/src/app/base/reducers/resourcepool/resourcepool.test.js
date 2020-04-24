@@ -358,4 +358,19 @@ describe("resourcepool reducer", () => {
       saving: false,
     });
   });
+
+  it("should correctly reduce CREATE_RESOURCEPOOL_WITH_MACHINES", () => {
+    expect(
+      resourcepool(
+        {
+          errors: { name: "Name already exists" },
+        },
+        {
+          type: "CREATE_RESOURCEPOOL_WITH_MACHINES",
+        }
+      )
+    ).toEqual({
+      errors: {},
+    });
+  });
 });

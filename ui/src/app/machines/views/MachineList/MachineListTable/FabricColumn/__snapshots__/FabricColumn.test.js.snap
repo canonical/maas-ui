@@ -15,7 +15,7 @@ exports[`FabricColumn renders 1`] = `
             "status": 1,
           }
         }
-        tooltipPosition="top-right"
+        tooltipPosition="top-left"
       >
         <a
           className="p-link--soft"
@@ -57,7 +57,7 @@ exports[`FabricColumn renders 1`] = `
                   "status": 1,
                 }
               }
-              tooltipPosition="top-right"
+              tooltipPosition="top-left"
             >
               <i
                 className="p-icon--running is-inline"

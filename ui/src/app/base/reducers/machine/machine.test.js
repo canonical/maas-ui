@@ -1,5 +1,28 @@
 import machine from "./machine";
 
+const STATUSES = {
+  aborting: false,
+  acquiring: false,
+  checkingPower: false,
+  commissioning: false,
+  deleting: false,
+  deploying: false,
+  enteringRescueMode: false,
+  exitingRescueMode: false,
+  locking: false,
+  markingBroken: false,
+  markingFixed: false,
+  overridingFailedTesting: false,
+  releasing: false,
+  settingPool: false,
+  settingZone: false,
+  tagging: false,
+  testing: false,
+  turningOff: false,
+  turningOn: false,
+  unlocking: false,
+};
+
 describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(machine(undefined, {})).toEqual({
@@ -32,28 +55,6 @@ describe("machine reducer", () => {
   });
 
   it("should correctly reduce FETCH_MACHINE_SUCCESS", () => {
-    const statuses = {
-      aborting: false,
-      acquiring: false,
-      checkingPower: false,
-      commissioning: false,
-      deleting: false,
-      deploying: false,
-      enteringRescueMode: false,
-      exitingRescueMode: false,
-      locking: false,
-      markingBroken: false,
-      markingFixed: false,
-      overridingFailedTesting: false,
-      releasing: false,
-      settingPool: false,
-      settingZone: false,
-      tagging: false,
-      testing: false,
-      turningOff: false,
-      turningOn: false,
-      unlocking: false,
-    };
     expect(
       machine(
         {
@@ -65,7 +66,7 @@ describe("machine reducer", () => {
           saving: false,
           selected: [],
           statuses: {
-            abc: statuses,
+            abc: STATUSES,
           },
         },
         {
@@ -88,8 +89,8 @@ describe("machine reducer", () => {
       saving: false,
       selected: [],
       statuses: {
-        abc: statuses,
-        def: statuses,
+        abc: STATUSES,
+        def: STATUSES,
       },
     });
   });
@@ -215,9 +216,10 @@ describe("machine reducer", () => {
           saved: false,
           saving: false,
           selected: [],
+          statuses: {},
         },
         {
-          payload: { id: 2, name: "machine2" },
+          payload: { id: 2, name: "machine2", system_id: "abc" },
           type: "CREATE_MACHINE_NOTIFY",
         }
       )
@@ -225,13 +227,16 @@ describe("machine reducer", () => {
       errors: {},
       items: [
         { id: 1, name: "machine1" },
-        { id: 2, name: "machine2" },
+        { id: 2, name: "machine2", system_id: "abc" },
       ],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
       selected: [],
+      statuses: {
+        abc: STATUSES,
+      },
     });
   });
 
@@ -375,6 +380,7 @@ describe("machine reducer", () => {
       expect(
         machine(
           {
+            errors: "Uh oh",
             statuses: {
               abc: {
                 settingPool: false,
@@ -391,6 +397,7 @@ describe("machine reducer", () => {
           }
         )
       ).toEqual({
+        errors: {},
         statuses: {
           abc: {
             settingPool: true,

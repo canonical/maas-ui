@@ -4,143 +4,206 @@ exports[`TagSelector renders and matches the snapshot when closed 1`] = `
 <div
   className="tag-selector"
 >
-  <Label
-    onClick={[Function]}
+  <Field
+    label={
+      <Label
+        onClick={[Function]}
+      >
+        Tags
+      </Label>
+    }
   >
-    Tags
-  </Label>
-  <Input
-    className="tag-selector__input"
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyPress={[Function]}
-    placeholder="Select or create tags"
-    type="text"
-    value=""
-  />
+    <Input
+      className="tag-selector__input"
+      onChange={[Function]}
+      onFocus={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Select or create tags"
+      type="text"
+      value=""
+    />
+  </Field>
 </div>
 `;
 
 exports[`TagSelector renders and matches the snapshot when opened 1`] = `
-<div
-  className="tag-selector"
+<TagSelector
+  label="Tags"
+  onTagsUpdate={[MockFunction]}
+  placeholder="Select or create tags"
+  tags={
+    Array [
+      Object {
+        "displayName": "tag one",
+        "name": "tag1",
+      },
+      Object {
+        "displayName": "tag two",
+        "name": "tag2",
+      },
+    ]
+  }
 >
-  <Label
-    onClick={[Function]}
-  >
-    Tags
-  </Label>
-  <Input
-    className="tag-selector__input"
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyPress={[Function]}
-    placeholder="Select or create tags"
-    type="text"
-    value=""
-  />
   <div
-    className="tag-selector__dropdown"
+    className="tag-selector"
   >
-    <ul
-      className="tag-selector__dropdown-list"
+    <Field
+      label={
+        <Label
+          onClick={[Function]}
+        >
+          Tags
+        </Label>
+      }
     >
-      <li
-        className="tag-selector__dropdown-item"
-        key="tag1"
+      <div
+        className="p-form__group p-form-validation"
       >
-        <Button
-          appearance="base"
-          className="tag-selector__dropdown-button"
-          data-test="existing-tag"
-          onClick={[Function]}
-          type="button"
+        <Label>
+          <label
+            className="p-form__label"
+          >
+            <Label
+              onClick={[Function]}
+            >
+              <label
+                className="p-form__label"
+                onClick={[Function]}
+              >
+                Tags
+              </label>
+            </Label>
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
         >
-          tag one
-        </Button>
-      </li>
-      <li
-        className="tag-selector__dropdown-item"
-        key="tag2"
-      >
-        <Button
-          appearance="base"
-          className="tag-selector__dropdown-button"
-          data-test="existing-tag"
-          onClick={[Function]}
-          type="button"
-        >
-          tag two
-        </Button>
-      </li>
-    </ul>
+          <Input
+            className="tag-selector__input"
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            placeholder="Select or create tags"
+            type="text"
+            value=""
+          >
+            <Field
+              labelFirst={true}
+            >
+              <div
+                className="p-form__group p-form-validation"
+              >
+                <div
+                  className="p-form__control u-clearfix"
+                >
+                  <input
+                    className="p-form-validation__input tag-selector__input"
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    onKeyPress={[Function]}
+                    placeholder="Select or create tags"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </Field>
+          </Input>
+        </div>
+      </div>
+    </Field>
   </div>
-</div>
+</TagSelector>
 `;
 
 exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] = `
-<div
-  className="tag-selector"
+<TagSelector
+  label="Tags"
+  onTagsUpdate={[MockFunction]}
+  placeholder="Select or create tags"
+  tags={
+    Array [
+      Object {
+        "description": "description one",
+        "displayName": "tag one",
+        "name": "tag1",
+      },
+      Object {
+        "description": "description two",
+        "displayName": "tag two",
+        "name": "tag2",
+      },
+    ]
+  }
 >
-  <Label
-    onClick={[Function]}
-  >
-    Tags
-  </Label>
-  <Input
-    className="tag-selector__input"
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyPress={[Function]}
-    placeholder="Select or create tags"
-    type="text"
-    value=""
-  />
   <div
-    className="tag-selector__dropdown"
+    className="tag-selector"
   >
-    <ul
-      className="tag-selector__dropdown-list"
+    <Field
+      label={
+        <Label
+          onClick={[Function]}
+        >
+          Tags
+        </Label>
+      }
     >
-      <li
-        className="tag-selector__dropdown-item"
-        key="tag1"
+      <div
+        className="p-form__group p-form-validation"
       >
-        <Button
-          appearance="base"
-          className="tag-selector__dropdown-button"
-          data-test="existing-tag"
-          onClick={[Function]}
-          type="button"
-        >
-          tag one
-          <div
-            className="tag-selector__dropdown-item-description"
+        <Label>
+          <label
+            className="p-form__label"
           >
-            description one
-          </div>
-        </Button>
-      </li>
-      <li
-        className="tag-selector__dropdown-item"
-        key="tag2"
-      >
-        <Button
-          appearance="base"
-          className="tag-selector__dropdown-button"
-          data-test="existing-tag"
-          onClick={[Function]}
-          type="button"
+            <Label
+              onClick={[Function]}
+            >
+              <label
+                className="p-form__label"
+                onClick={[Function]}
+              >
+                Tags
+              </label>
+            </Label>
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
         >
-          tag two
-          <div
-            className="tag-selector__dropdown-item-description"
+          <Input
+            className="tag-selector__input"
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            placeholder="Select or create tags"
+            type="text"
+            value=""
           >
-            description two
-          </div>
-        </Button>
-      </li>
-    </ul>
+            <Field
+              labelFirst={true}
+            >
+              <div
+                className="p-form__group p-form-validation"
+              >
+                <div
+                  className="p-form__control u-clearfix"
+                >
+                  <input
+                    className="p-form-validation__input tag-selector__input"
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    onKeyPress={[Function]}
+                    placeholder="Select or create tags"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </Field>
+          </Input>
+        </div>
+      </div>
+    </Field>
   </div>
-</div>
+</TagSelector>
 `;

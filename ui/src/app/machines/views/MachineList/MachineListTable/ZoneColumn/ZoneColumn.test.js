@@ -25,6 +25,7 @@ describe("ZoneColumn", () => {
             system_id: "abc123",
             zone: { name: "zone-north", id: 0 },
             spaces: ["management"],
+            actions: ["set-zone"],
           },
         ],
       },
@@ -123,6 +124,26 @@ describe("ZoneColumn", () => {
     expect(wrapper.find("Tooltip").prop("message")).toEqual(
       "space1\nspace2\nspace3"
     );
+  });
+
+  it("displays a message if the machine cannot have its zone changed", () => {
+    state.machine.items[0].actions = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ZoneColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    const items = wrapper.find("DoubleRow").prop("menuLinks");
+    expect(items.length).toBe(1);
+    expect(items[0]).toStrictEqual({
+      children: "Cannot change zone of this machine",
+      disabled: true,
+    });
   });
 
   it("can change zones", () => {

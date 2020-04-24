@@ -24,7 +24,7 @@ const getErrorSentence = (action, count) => {
     case "lock":
       return `${machineString} cannot be locked`;
     case "override-failed-testing":
-      return `Cannot override failed tests on ${machineString}.`;
+      return `Cannot override failed tests on ${machineString}`;
     case "rescue-mode":
       return `${machineString} cannot be put in rescue mode`;
     case "set-pool":

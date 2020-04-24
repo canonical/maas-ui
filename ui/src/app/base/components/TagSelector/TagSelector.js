@@ -1,4 +1,5 @@
 import { Button, Input, Label } from "@canonical/react-components";
+import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -116,6 +117,8 @@ const generateSelectedItems = ({ selectedTags, updateTags }) =>
 export const TagSelector = ({
   allowNewTags = false,
   disabled,
+  error,
+  help,
   initialSelected = [],
   label,
   onTagsUpdate,
@@ -157,45 +160,50 @@ export const TagSelector = ({
 
   return (
     <div className="tag-selector" ref={wrapperRef}>
-      <Label onClick={() => setDropdownOpen(true)}>{label}</Label>
-      {selectedTags.length > 0 && (
-        <ul className="tag-selector__selected-list">
-          {generateSelectedItems({ selectedTags, updateTags })}
-        </ul>
-      )}
-      <Input
-        className={classNames("tag-selector__input", {
-          "tags-selected": selectedTags.length > 0,
-        })}
-        disabled={disabled}
-        onChange={(e) => setFilter(e.target.value)}
-        onFocus={() => setDropdownOpen(true)}
-        onKeyPress={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (allowNewTags) {
-              updateTags([...selectedTags, sanitiseFilter(filter)]);
-            }
-          }
-        }}
-        placeholder={placeholder}
-        required={required}
-        type="text"
-        value={filter}
-      />
-      {dropdownOpen && (
-        <div className="tag-selector__dropdown">
-          <ul className="tag-selector__dropdown-list">
-            {generateDropdownItems({
-              allowNewTags,
-              filter,
-              selectedTags,
-              tags,
-              updateTags,
-            })}
+      <Field
+        error={error}
+        help={help}
+        label={<Label onClick={() => setDropdownOpen(true)}>{label}</Label>}
+      >
+        {selectedTags.length > 0 && (
+          <ul className="tag-selector__selected-list">
+            {generateSelectedItems({ selectedTags, updateTags })}
           </ul>
-        </div>
-      )}
+        )}
+        <Input
+          className={classNames("tag-selector__input", {
+            "tags-selected": selectedTags.length > 0,
+          })}
+          disabled={disabled}
+          onChange={(e) => setFilter(e.target.value)}
+          onFocus={() => setDropdownOpen(true)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (allowNewTags) {
+                updateTags([...selectedTags, sanitiseFilter(filter)]);
+              }
+            }
+          }}
+          placeholder={placeholder}
+          required={required}
+          type="text"
+          value={filter}
+        />
+        {dropdownOpen && (
+          <div className="tag-selector__dropdown">
+            <ul className="tag-selector__dropdown-list">
+              {generateDropdownItems({
+                allowNewTags,
+                filter,
+                selectedTags,
+                tags,
+                updateTags,
+              })}
+            </ul>
+          </div>
+        )}
+      </Field>
     </div>
   );
 };

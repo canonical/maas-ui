@@ -8,21 +8,22 @@ import {
   machine as machineSelectors,
 } from "app/base/selectors";
 
-const useProcessingState = (savedState, setProcessing, setSelectedAction) => {
-  const previousSavedState = useRef(savedState);
+// Handle checking when a value has cycled from false to true.
+const useCycled = (newState, onCycled) => {
+  const previousState = useRef(newState);
   useEffect(() => {
-    if (savedState && !previousSavedState.current) {
-      setProcessing(false);
-      setSelectedAction(null);
+    if (newState && !previousState.current) {
+      onCycled();
     }
-    if (previousSavedState.current !== savedState) {
-      previousSavedState.current = savedState;
+    if (previousState.current !== newState) {
+      previousState.current = newState;
     }
-  }, [savedState, setProcessing, setSelectedAction]);
+  }, [newState, onCycled]);
 };
 
 const MachinesProcessing = ({
   action,
+  hasErrors = false,
   machinesProcessing,
   setProcessing,
   setSelectedAction,
@@ -41,11 +42,21 @@ const MachinesProcessing = ({
     ? selectedMachinesCount - selectedSavingCount
     : 0;
 
-  useProcessingState(
-    selectedSavingCount === 0,
-    setProcessing,
-    setSelectedAction
-  );
+  // If all the machines have finished processing then update the state.
+  useCycled(selectedSavingCount === 0, () => {
+    if (!hasErrors) {
+      setProcessing(false);
+      setSelectedAction(null);
+    }
+  });
+
+  // If the machines are processing and there are errors then exit the
+  // processing state.
+  useCycled(hasErrors, () => {
+    if (processingStarted) {
+      setProcessing(false);
+    }
+  });
 
   return (
     <p>
@@ -58,6 +69,7 @@ const MachinesProcessing = ({
 
 MachinesProcessing.propTypes = {
   action: PropTypes.string.isRequired,
+  hasErrors: PropTypes.bool,
   machinesProcessing: PropTypes.array.isRequired,
   setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
