@@ -66,6 +66,7 @@ export const TestForm = ({ setSelectedAction }) => {
   if (processing) {
     return (
       <MachinesProcessing
+        hasErrors={Object.keys(errors).length > 0}
         machinesProcessing={testingSelected}
         setProcessing={setProcessing}
         setSelectedAction={setSelectedAction}
