@@ -31,6 +31,10 @@
       text-decoration: underline;
     }
 
+    &.is-inline {
+      margin: 0;
+    }
+
     // Table header sort buttons
     th & {
       color: $color-mid-dark;

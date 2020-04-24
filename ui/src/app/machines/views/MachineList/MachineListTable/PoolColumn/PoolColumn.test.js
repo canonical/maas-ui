@@ -25,6 +25,7 @@ describe("PoolColumn", () => {
             system_id: "abc123",
             pool: { id: 0, name: "default" },
             description: "Firmware old",
+            actions: ["set-pool"],
           },
         ],
       },
@@ -112,6 +113,26 @@ describe("PoolColumn", () => {
     expect(items.length).toBe(1);
     expect(items[0]).toStrictEqual({
       children: "No other pools available",
+      disabled: true,
+    });
+  });
+
+  it("displays a message if the machine cannot have its pool changed", () => {
+    state.machine.items[0].actions = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PoolColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    const items = wrapper.find("DoubleRow").prop("menuLinks");
+    expect(items.length).toBe(1);
+    expect(items[0]).toStrictEqual({
+      children: "Cannot change pool of this machine",
       disabled: true,
     });
   });

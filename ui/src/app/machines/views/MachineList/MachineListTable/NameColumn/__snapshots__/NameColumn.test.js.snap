@@ -9,7 +9,6 @@ exports[`NameColumn renders 1`] = `
     primary={
       <Input
         className="has-inline-label keep-label-opacity"
-        disabled={false}
         id="abc123"
         label={
           <a
@@ -47,7 +46,6 @@ exports[`NameColumn renders 1`] = `
           >
             <Input
               className="has-inline-label keep-label-opacity"
-              disabled={false}
               id="abc123"
               label={
                 <a
@@ -92,7 +90,6 @@ exports[`NameColumn renders 1`] = `
                   >
                     <input
                       className="p-form-validation__input has-inline-label keep-label-opacity"
-                      disabled={false}
                       id="abc123"
                       onChange={[Function]}
                       type="checkbox"

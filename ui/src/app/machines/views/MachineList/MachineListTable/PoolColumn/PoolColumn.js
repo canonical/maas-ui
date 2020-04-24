@@ -18,17 +18,24 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
     machineSelectors.getBySystemId(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  let pools = resourcePools
-    .filter((pool) => pool.id !== machine.pool.id)
-    .map((pool) => ({
-      children: pool.name,
-      onClick: () => {
-        dispatch(machineActions.setPool(systemId, pool.id));
-        setUpdating(pool.id);
-      },
-    }));
-  if (pools.length === 0) {
-    pools = [{ children: "No other pools available", disabled: true }];
+
+  let poolLinks = resourcePools.filter((pool) => pool.id !== machine.pool.id);
+  if (machine.actions.includes("set-pool")) {
+    if (poolLinks.length !== 0) {
+      poolLinks = poolLinks.map((pool) => ({
+        children: pool.name,
+        onClick: () => {
+          dispatch(machineActions.setPool(systemId, pool.id));
+          setUpdating(pool.id);
+        },
+      }));
+    } else {
+      poolLinks = [{ children: "No other pools available", disabled: true }];
+    }
+  } else {
+    poolLinks = [
+      { children: "Cannot change pool of this machine", disabled: true },
+    ];
   }
 
   useEffect(() => {
@@ -39,7 +46,7 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={pools}
+      menuLinks={poolLinks}
       menuTitle="Change pool:"
       onToggleMenu={onToggleMenu}
       primary={
