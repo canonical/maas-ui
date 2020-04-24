@@ -25,15 +25,20 @@ const MachineListControls = ({
   // Handle setting the URL and filter in state whenever search text changes.
   // Filtering function is debounced to prevent excessive repaints.
   useEffect(() => {
+    const updateURL = () => {
+      const filters = getCurrentFilters(searchText);
+      history.push({ search: filtersToQueryString(filters) });
+    };
+
     if (debouncing) {
       intervalRef.current = setTimeout(() => {
         setFilter(searchText);
-        const filters = getCurrentFilters(searchText);
-        history.push({ search: filtersToQueryString(filters) });
+        updateURL();
         setDebouncing(false);
       }, DEBOUNCE_INTERVAL);
     } else {
       setFilter(searchText);
+      updateURL();
     }
     return () => clearTimeout(intervalRef.current);
   }, [debouncing, history, searchText, setFilter]);

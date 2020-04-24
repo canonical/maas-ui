@@ -66,6 +66,40 @@ describe("MachineListControls", () => {
     expect(location.search).toBe("?status=new");
   });
 
+  it("changes the URL when the filter accordion changes", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
+          ]}
+        >
+          <MachineListControls
+            filter=""
+            grouping="none"
+            setFilter={jest.fn()}
+            setGrouping={jest.fn()}
+            setHiddenGroups={jest.fn()}
+          />
+          <Route
+            path="*"
+            render={(props) => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper.find("FilterAccordion").props().setSearchText("status:new");
+    });
+    wrapper.update();
+    expect(location.search).toBe("?status=new");
+  });
+
   it("displays a spinner while debouncing search box input", () => {
     const store = mockStore(initialState);
     const wrapper = mount(
