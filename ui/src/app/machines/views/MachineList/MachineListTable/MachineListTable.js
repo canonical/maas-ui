@@ -711,7 +711,7 @@ const MachineListTable = ({
               className: "u-align--right",
             },
           ]}
-          paginate={50}
+          paginate={200}
           rows={
             grouping === "none"
               ? generateRows({ machines, selectedMachines, ...rowProps })
