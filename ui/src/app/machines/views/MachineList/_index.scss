@@ -8,10 +8,11 @@
   .machine-list--grouped .machine-list__machine {
     border: 0;
     position: relative;
+    transform: scale(1);
 
     &::after {
       background-color: $color-mid-light;
-      content: '';
+      content: "";
       height: 1px;
       left: $grouped-machines-indentation;
       position: absolute;
