@@ -31,6 +31,7 @@ describe("AddChassisFormFields", () => {
               name: "manual",
               description: "Manual",
               fields: [],
+              chassis: true,
             },
           ],
           loaded: true,

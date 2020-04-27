@@ -5,10 +5,12 @@ import * as Yup from "yup";
 
 import {
   domain as domainActions,
+  general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
 import {
   domain as domainSelectors,
+  general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
 import {
@@ -18,7 +20,6 @@ import {
   useWindowTitle,
 } from "app/base/hooks";
 import { trimPowerParameters } from "app/utils";
-import chassisPowerTypes from "../chassisPowerTypes";
 import AddChassisFormFields from "../AddChassisFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
@@ -34,11 +35,13 @@ const generateChassisSchema = (parametersSchema) =>
 export const AddChassisForm = () => {
   const dispatch = useDispatch();
 
+  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.chassis);
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const machineErrors = useSelector(machineSelectors.errors);
   const machineSaved = useSelector(machineSelectors.saved);
   const machineSaving = useSelector(machineSelectors.saving);
+  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
 
   const [powerType, setPowerType] = useState("");
   const [resetOnSave, setResetOnSave] = useState(false);
@@ -46,6 +49,7 @@ export const AddChassisForm = () => {
 
   useEffect(() => {
     dispatch(domainActions.fetch());
+    dispatch(generalActions.fetchPowerTypes());
   }, [dispatch]);
 
   useEffect(() => {
@@ -81,7 +85,7 @@ export const AddChassisForm = () => {
 
   return (
     <>
-      {!domainsLoaded ? (
+      {!(domainsLoaded && powerTypesLoaded) ? (
         <Spinner text="Loading" />
       ) : (
         <FormCard sidebar={false} title="Add chassis">
