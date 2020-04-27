@@ -105,4 +105,25 @@ describe("powerTypes selectors", () => {
       expect(powerTypes.errors(state)).toStrictEqual(errors);
     });
   });
+
+  describe("chassis", () => {
+    it("returns chassis powerTypes", () => {
+      const chassisPowerTypes = [
+        { name: "chassis-type-1", chassis: true },
+        { name: "chassis-type-2", chassis: true },
+      ];
+      const nonChassisPowerType = { name: "non-chassis-type", chassis: false };
+      const state = {
+        general: {
+          powerTypes: {
+            data: [...chassisPowerTypes, nonChassisPowerType],
+            errors: {},
+            loaded: true,
+            loading: false,
+          },
+        },
+      };
+      expect(powerTypes.chassis(state)).toStrictEqual(chassisPowerTypes);
+    });
+  });
 });

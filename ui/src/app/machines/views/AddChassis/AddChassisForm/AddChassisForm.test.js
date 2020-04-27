@@ -31,6 +31,7 @@ describe("AddChassisForm", () => {
               name: "manual",
               description: "Manual",
               fields: [],
+              chassis: true,
             },
             {
               name: "dummy",
@@ -46,6 +47,7 @@ describe("AddChassisForm", () => {
                   scope: "bmc",
                 },
               ],
+              chassis: true,
             },
           ],
           loaded: true,
@@ -74,7 +76,7 @@ describe("AddChassisForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const expectedActions = ["FETCH_DOMAIN"];
+    const expectedActions = ["FETCH_DOMAIN", "FETCH_GENERAL_POWER_TYPES"];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(actions.some((action) => action.type === expectedAction));
@@ -84,6 +86,7 @@ describe("AddChassisForm", () => {
   it("displays a spinner if data has not loaded", () => {
     const state = { ...initialState };
     state.domain.loaded = false;
+    state.general.powerTypes.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
