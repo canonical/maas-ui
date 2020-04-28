@@ -40,7 +40,10 @@ const generateIPAddresses = (machine) => {
 
   if (ipAddresses.length) {
     let ipAddressesLine = (
-      <span data-test="ip-addresses" title={ipAddresses[0]}>
+      <span
+        data-test="ip-addresses"
+        title={ipAddresses.length === 1 ? ipAddresses[0] : null}
+      >
         {bootIP || ipAddresses[0]}
         {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
       </span>
