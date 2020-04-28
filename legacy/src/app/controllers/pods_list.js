@@ -253,7 +253,7 @@ function PodsListController(
     if ($scope.onRSDSection()) {
       $scope.add.obj.type = "rsd";
     } else {
-      $scope.add.obj.type = "virsh";
+      $scope.add.obj.type = "lxd";
     }
   };
 

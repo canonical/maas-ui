@@ -658,7 +658,7 @@ function PodDetailsController(
         $scope.machinesSearch = "pod:=" + $scope.pod.name;
         setTimeout(() => {
           $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
-        }, 100);
+        }, 1000);
       }
     });
     $scope.$watch("action.option", function(now, then) {
