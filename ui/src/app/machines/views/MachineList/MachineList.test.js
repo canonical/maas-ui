@@ -365,7 +365,7 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
-    expect(wrapper.find("Notification").text()).toBe("Uh oh!");
+    expect(wrapper.find("Notification").props().children).toBe("Uh oh!");
   });
 
   it("can display a list of errors", () => {
@@ -382,7 +382,9 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
-    expect(wrapper.find("Notification").text()).toBe("Uh oh! It broke");
+    expect(wrapper.find("Notification").props().children).toBe(
+      "Uh oh! It broke"
+    );
   });
 
   it("can display a collection of errors", () => {
@@ -399,9 +401,28 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
-    expect(wrapper.find("Notification").text()).toBe(
+    expect(wrapper.find("Notification").props().children).toBe(
       "machine: Uh oh! network: It broke"
     );
+  });
+
+  it("dispatches action to clean up machine state when dismissing errors", () => {
+    const state = { ...initialState };
+    state.machine.errors = "Everything is broken.";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Notification button").props().onClick();
+    expect(
+      store.getActions().some((action) => action.type === "CLEANUP_MACHINE")
+    ).toBe(true);
   });
 
   it("displays a message if there are no search results", () => {
