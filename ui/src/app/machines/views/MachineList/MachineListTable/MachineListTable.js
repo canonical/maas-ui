@@ -406,334 +406,337 @@ const generateGroupRows = ({
   return rows;
 };
 
-const MachineListTable = React.memo(
-  ({ filter, grouping, hiddenGroups, setHiddenGroups }) => {
-    const dispatch = useDispatch();
-    const selectedMachines = useSelector(machineSelectors.selected);
-    const selectedIDs = useSelector(machineSelectors.selectedIDs);
-    const machines = useSelector((state) =>
-      machineSelectors.search(state, filter, selectedIDs)
-    );
+export const MachineListTable = ({
+  filter,
+  grouping,
+  hiddenGroups,
+  setHiddenGroups,
+}) => {
+  const dispatch = useDispatch();
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const machines = useSelector((state) =>
+    machineSelectors.search(state, filter, selectedIDs)
+  );
 
-    const [currentSort, setCurrentSort] = useState({
-      key: "fqdn",
-      direction: "descending",
-    });
-    const [activeRow, setActiveRow] = useState(null);
-    const [showMAC, setShowMAC] = useState(false);
-    const groups = useMemo(() => generateGroups(grouping, machines), [
-      grouping,
-      machines,
-    ]);
+  const [currentSort, setCurrentSort] = useState({
+    key: "fqdn",
+    direction: "descending",
+  });
+  const [activeRow, setActiveRow] = useState(null);
+  const [showMAC, setShowMAC] = useState(false);
+  const groups = useMemo(() => generateGroups(grouping, machines), [
+    grouping,
+    machines,
+  ]);
 
-    useEffect(() => {
-      dispatch(generalActions.fetchArchitectures());
-      dispatch(generalActions.fetchDefaultMinHweKernel());
-      dispatch(generalActions.fetchHweKernels());
-      dispatch(generalActions.fetchMachineActions());
-      dispatch(generalActions.fetchOsInfo());
-      dispatch(generalActions.fetchPowerTypes());
-      dispatch(generalActions.fetchVersion());
-      dispatch(machineActions.fetch());
-      dispatch(resourcePoolActions.fetch());
-      dispatch(scriptActions.fetch());
-      dispatch(serviceActions.fetch());
-      dispatch(tagActions.fetch());
-      dispatch(userActions.fetch());
-      dispatch(zoneActions.fetch());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(generalActions.fetchArchitectures());
+    dispatch(generalActions.fetchDefaultMinHweKernel());
+    dispatch(generalActions.fetchHweKernels());
+    dispatch(generalActions.fetchMachineActions());
+    dispatch(generalActions.fetchOsInfo());
+    dispatch(generalActions.fetchPowerTypes());
+    dispatch(generalActions.fetchVersion());
+    dispatch(machineActions.fetch());
+    dispatch(resourcePoolActions.fetch());
+    dispatch(scriptActions.fetch());
+    dispatch(serviceActions.fetch());
+    dispatch(tagActions.fetch());
+    dispatch(userActions.fetch());
+    dispatch(zoneActions.fetch());
+  }, [dispatch]);
 
-    // Update sort parameters depending on whether the same sort key was clicked.
-    const updateSort = (newSortKey) => {
-      const { key, direction } = currentSort;
+  // Update sort parameters depending on whether the same sort key was clicked.
+  const updateSort = (newSortKey) => {
+    const { key, direction } = currentSort;
 
-      if (newSortKey === key) {
-        if (direction === "ascending") {
-          setCurrentSort({ key: "", direction: "none" });
-        } else {
-          setCurrentSort({ key, direction: "ascending" });
-        }
+    if (newSortKey === key) {
+      if (direction === "ascending") {
+        setCurrentSort({ key: "", direction: "none" });
       } else {
-        setCurrentSort({ key: newSortKey, direction: "descending" });
+        setCurrentSort({ key, direction: "ascending" });
       }
-    };
+    } else {
+      setCurrentSort({ key: newSortKey, direction: "descending" });
+    }
+  };
 
-    const handleMachineCheckbox = (machine) => {
-      let newSelectedMachines;
-      if (selectedMachines.includes(machine)) {
-        newSelectedMachines = selectedMachines.filter((m) => m !== machine);
-      } else {
-        newSelectedMachines = [...selectedMachines, machine];
-      }
-      dispatch(machineActions.setSelected(newSelectedMachines));
-    };
+  const handleMachineCheckbox = (machine) => {
+    let newSelectedMachines;
+    if (selectedMachines.includes(machine)) {
+      newSelectedMachines = selectedMachines.filter((m) => m !== machine);
+    } else {
+      newSelectedMachines = [...selectedMachines, machine];
+    }
+    dispatch(machineActions.setSelected(newSelectedMachines));
+  };
 
-    const handleGroupCheckbox = (group) => {
-      let newSelectedMachines;
-      if (checkboxChecked(group.machines, selectedMachines)) {
-        // Unselect all machines in the group if all selected
-        newSelectedMachines = group.machines.reduce(
-          (acc, machine) => {
-            if (acc.includes(machine)) {
-              return acc.filter((m) => m !== machine);
-            }
-            return acc;
-          },
-          [...selectedMachines]
-        );
-      } else {
-        // Select all machines if at least one not selected
-        newSelectedMachines = group.machines.reduce(
-          (acc, machine) => {
-            if (!acc.includes(machine)) {
-              return [...acc, machine];
-            }
-            return acc;
-          },
-          [...selectedMachines]
-        );
-      }
-      dispatch(machineActions.setSelected(newSelectedMachines));
-    };
+  const handleGroupCheckbox = (group) => {
+    let newSelectedMachines;
+    if (checkboxChecked(group.machines, selectedMachines)) {
+      // Unselect all machines in the group if all selected
+      newSelectedMachines = group.machines.reduce(
+        (acc, machine) => {
+          if (acc.includes(machine)) {
+            return acc.filter((m) => m !== machine);
+          }
+          return acc;
+        },
+        [...selectedMachines]
+      );
+    } else {
+      // Select all machines if at least one not selected
+      newSelectedMachines = group.machines.reduce(
+        (acc, machine) => {
+          if (!acc.includes(machine)) {
+            return [...acc, machine];
+          }
+          return acc;
+        },
+        [...selectedMachines]
+      );
+    }
+    dispatch(machineActions.setSelected(newSelectedMachines));
+  };
 
-    const handleAllCheckbox = () => {
-      let newSelectedMachines;
-      if (checkboxChecked(machines, selectedMachines)) {
-        newSelectedMachines = [];
-      } else {
-        newSelectedMachines = machines;
-      }
-      dispatch(machineActions.setSelected(newSelectedMachines));
-    };
+  const handleAllCheckbox = () => {
+    let newSelectedMachines;
+    if (checkboxChecked(machines, selectedMachines)) {
+      newSelectedMachines = [];
+    } else {
+      newSelectedMachines = machines;
+    }
+    dispatch(machineActions.setSelected(newSelectedMachines));
+  };
 
-    const rowProps = {
-      activeRow,
-      currentSort,
-      handleMachineCheckbox,
-      setActiveRow,
-      showMAC,
-    };
+  const rowProps = {
+    activeRow,
+    currentSort,
+    handleMachineCheckbox,
+    setActiveRow,
+    showMAC,
+  };
 
-    return (
-      <Row>
-        <Col size={12}>
-          <MainTable
-            className={classNames("p-table-expanding--light", "machine-list", {
-              "machine-list--grouped": grouping !== "none",
-            })}
-            headers={[
-              {
-                content: (
-                  <div className="u-equal-height u-nudge--checkbox">
-                    <Input
-                      checked={
-                        checkboxChecked(machines, selectedMachines) &&
-                        machines.length !== 0
-                      }
-                      className="has-inline-label"
-                      data-test="all-machines-checkbox"
-                      disabled={machines.length === 0}
-                      id="all-machines-checkbox"
-                      label={" "}
-                      onChange={() => handleAllCheckbox()}
-                      type="checkbox"
-                      wrapperClassName="u-no-margin--bottom"
-                    />
-                    <div>
-                      <TableHeader
-                        currentSort={currentSort}
-                        data-test="fqdn-header"
-                        onClick={() => {
-                          setShowMAC(false);
-                          updateSort("fqdn");
-                        }}
-                        sortKey="fqdn"
-                      >
-                        FQDN
-                      </TableHeader>
-                      &nbsp;<strong>|</strong>&nbsp;
-                      <TableHeader
-                        currentSort={currentSort}
-                        data-test="mac-header"
-                        onClick={() => {
-                          setShowMAC(true);
-                          updateSort("pxe_mac");
-                        }}
-                        sortKey="pxe_mac"
-                      >
-                        MAC
-                      </TableHeader>
-                      <TableHeader>IP</TableHeader>
-                    </div>
+  return (
+    <Row>
+      <Col size={12}>
+        <MainTable
+          className={classNames("p-table-expanding--light", "machine-list", {
+            "machine-list--grouped": grouping !== "none",
+          })}
+          headers={[
+            {
+              content: (
+                <div className="u-equal-height u-nudge--checkbox">
+                  <Input
+                    checked={
+                      checkboxChecked(machines, selectedMachines) &&
+                      machines.length !== 0
+                    }
+                    className="has-inline-label"
+                    data-test="all-machines-checkbox"
+                    disabled={machines.length === 0}
+                    id="all-machines-checkbox"
+                    label={" "}
+                    onChange={() => handleAllCheckbox()}
+                    type="checkbox"
+                    wrapperClassName="u-no-margin--bottom"
+                  />
+                  <div>
+                    <TableHeader
+                      currentSort={currentSort}
+                      data-test="fqdn-header"
+                      onClick={() => {
+                        setShowMAC(false);
+                        updateSort("fqdn");
+                      }}
+                      sortKey="fqdn"
+                    >
+                      FQDN
+                    </TableHeader>
+                    &nbsp;<strong>|</strong>&nbsp;
+                    <TableHeader
+                      currentSort={currentSort}
+                      data-test="mac-header"
+                      onClick={() => {
+                        setShowMAC(true);
+                        updateSort("pxe_mac");
+                      }}
+                      sortKey="pxe_mac"
+                    >
+                      MAC
+                    </TableHeader>
+                    <TableHeader>IP</TableHeader>
                   </div>
-                ),
-              },
-              {
-                content: (
-                  <TableHeader
-                    className="p-double-row__header-spacer"
-                    currentSort={currentSort}
-                    data-test="power-header"
-                    onClick={() => updateSort("power_state")}
-                    sortKey="power_state"
-                  >
-                    Power
-                  </TableHeader>
-                ),
-              },
-              {
-                content: (
-                  <TableHeader
-                    className="p-double-row__header-spacer"
-                    currentSort={currentSort}
-                    data-test="status-header"
-                    onClick={() => updateSort("status")}
-                    sortKey="status"
-                  >
-                    Status
-                  </TableHeader>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-test="owner-header"
-                      onClick={() => updateSort("owner")}
-                      sortKey="owner"
-                    >
-                      Owner
-                    </TableHeader>
-                    <TableHeader>Tags</TableHeader>
-                  </>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-test="pool-header"
-                      onClick={() => updateSort("pool")}
-                      sortKey="pool"
-                    >
-                      Pool
-                    </TableHeader>
-                    <TableHeader>Note</TableHeader>
-                  </>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-test="zone-header"
-                      onClick={() => updateSort("zone")}
-                      sortKey="zone"
-                    >
-                      Zone
-                    </TableHeader>
-                    <TableHeader>Spaces</TableHeader>
-                  </>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-test="fabric-header"
-                      onClick={() => updateSort("fabric")}
-                      sortKey="fabric"
-                    >
-                      Fabric
-                    </TableHeader>
-                    <TableHeader>VLAN</TableHeader>
-                  </>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-test="cores-header"
-                      onClick={() => updateSort("cpu_count")}
-                      sortKey="cpu_count"
-                    >
-                      Cores
-                    </TableHeader>
-                    <TableHeader>Arch</TableHeader>
-                  </>
-                ),
-                className: "u-align--right",
-              },
-              {
-                content: (
+                </div>
+              ),
+            },
+            {
+              content: (
+                <TableHeader
+                  className="p-double-row__header-spacer"
+                  currentSort={currentSort}
+                  data-test="power-header"
+                  onClick={() => updateSort("power_state")}
+                  sortKey="power_state"
+                >
+                  Power
+                </TableHeader>
+              ),
+            },
+            {
+              content: (
+                <TableHeader
+                  className="p-double-row__header-spacer"
+                  currentSort={currentSort}
+                  data-test="status-header"
+                  onClick={() => updateSort("status")}
+                  sortKey="status"
+                >
+                  Status
+                </TableHeader>
+              ),
+            },
+            {
+              content: (
+                <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="memory-header"
-                    onClick={() => updateSort("memory")}
-                    sortKey="memory"
+                    data-test="owner-header"
+                    onClick={() => updateSort("owner")}
+                    sortKey="owner"
                   >
-                    RAM
+                    Owner
                   </TableHeader>
-                ),
-                className: "u-align--right",
-              },
-              {
-                content: (
+                  <TableHeader>Tags</TableHeader>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="disks-header"
-                    onClick={() => updateSort("physical_disk_count")}
-                    sortKey="physical_disk_count"
+                    data-test="pool-header"
+                    onClick={() => updateSort("pool")}
+                    sortKey="pool"
                   >
-                    Disks
+                    Pool
                   </TableHeader>
-                ),
-                className: "u-align--right",
-              },
-              {
-                content: (
+                  <TableHeader>Note</TableHeader>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="storage-header"
-                    onClick={() => updateSort("storage")}
-                    sortKey="storage"
+                    data-test="zone-header"
+                    onClick={() => updateSort("zone")}
+                    sortKey="zone"
                   >
-                    Storage
+                    Zone
                   </TableHeader>
-                ),
-                className: "u-align--right",
-              },
-            ]}
-            paginate={200}
-            rows={
-              grouping === "none"
-                ? generateRows({ machines, selectedMachines, ...rowProps })
-                : generateGroupRows({
-                    groups,
-                    handleGroupCheckbox,
-                    hiddenGroups,
-                    selectedMachines,
-                    setHiddenGroups,
-                    ...rowProps,
-                  })
-            }
-          />
-          {filter && machines.length === 0 ? (
-            <Strip rowClassName="u-align--center">
-              <span>No machines match the search criteria.</span>
-            </Strip>
-          ) : null}
-        </Col>
-      </Row>
-    );
-  }
-);
+                  <TableHeader>Spaces</TableHeader>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="fabric-header"
+                    onClick={() => updateSort("fabric")}
+                    sortKey="fabric"
+                  >
+                    Fabric
+                  </TableHeader>
+                  <TableHeader>VLAN</TableHeader>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="cores-header"
+                    onClick={() => updateSort("cpu_count")}
+                    sortKey="cpu_count"
+                  >
+                    Cores
+                  </TableHeader>
+                  <TableHeader>Arch</TableHeader>
+                </>
+              ),
+              className: "u-align--right",
+            },
+            {
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="memory-header"
+                  onClick={() => updateSort("memory")}
+                  sortKey="memory"
+                >
+                  RAM
+                </TableHeader>
+              ),
+              className: "u-align--right",
+            },
+            {
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="disks-header"
+                  onClick={() => updateSort("physical_disk_count")}
+                  sortKey="physical_disk_count"
+                >
+                  Disks
+                </TableHeader>
+              ),
+              className: "u-align--right",
+            },
+            {
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="storage-header"
+                  onClick={() => updateSort("storage")}
+                  sortKey="storage"
+                >
+                  Storage
+                </TableHeader>
+              ),
+              className: "u-align--right",
+            },
+          ]}
+          paginate={200}
+          rows={
+            grouping === "none"
+              ? generateRows({ machines, selectedMachines, ...rowProps })
+              : generateGroupRows({
+                  groups,
+                  handleGroupCheckbox,
+                  hiddenGroups,
+                  selectedMachines,
+                  setHiddenGroups,
+                  ...rowProps,
+                })
+          }
+        />
+        {filter && machines.length === 0 ? (
+          <Strip rowClassName="u-align--center">
+            <span>No machines match the search criteria.</span>
+          </Strip>
+        ) : null}
+      </Col>
+    </Row>
+  );
+};
 
 MachineListTable.propTypes = {
   grouping: PropTypes.string,
@@ -742,4 +745,4 @@ MachineListTable.propTypes = {
   setHiddenGroups: PropTypes.func,
 };
 
-export default MachineListTable;
+export default React.memo(MachineListTable);
