@@ -44,11 +44,13 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
           <span data-test="owner">{owner}</span>
         </>
       }
+      primaryTitle={owner}
       secondary={
         <span title={tags} data-test="tags">
           {tags}
         </span>
       }
+      secondaryTitle={tags}
     />
   );
 };

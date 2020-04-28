@@ -27,6 +27,7 @@ exports[`PoolColumn renders 1`] = `
       </span>
     }
     primaryAriaLabel="Pool"
+    primaryTitle="default"
     secondary={
       <span
         data-test="note"
@@ -36,6 +37,7 @@ exports[`PoolColumn renders 1`] = `
       </span>
     }
     secondaryAriaLabel="Note"
+    secondaryTitle="Firmware old"
   >
     <div
       className="p-double-row"
@@ -49,6 +51,7 @@ exports[`PoolColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            title="default"
           >
             <span
               data-test="pool"
@@ -90,6 +93,7 @@ exports[`PoolColumn renders 1`] = `
                 >
                   <div
                     class="p-double-row__primary-row-text u-truncate"
+                    title="default"
                   >
                     <span
                       data-test="pool"
@@ -142,6 +146,7 @@ exports[`PoolColumn renders 1`] = `
                   >
                     <div
                       class="p-double-row__primary-row-text u-truncate"
+                      title="default"
                     >
                       <span
                         data-test="pool"
@@ -205,6 +210,7 @@ exports[`PoolColumn renders 1`] = `
         <div
           aria-label="Note"
           className="p-double-row__secondary-row u-truncate"
+          title="Firmware old"
         >
           <span
             data-test="note"
