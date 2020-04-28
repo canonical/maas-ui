@@ -116,4 +116,9 @@
   .u-nudge--secondary-row {
     padding-left: $box-size + $sph-inner + $checkbox-offset;
   }
+
+  .machine-list--inline-input .p-form__control,
+  .machine-list--inline-input {
+    display: inline;
+  }
 }

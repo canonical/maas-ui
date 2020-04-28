@@ -60,12 +60,14 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
         </span>
       }
       primaryAriaLabel="Pool"
+      primaryTitle={machine.pool.name}
       secondary={
         <span title={machine.description} data-test="note">
           {machine.description}
         </span>
       }
       secondaryAriaLabel="Note"
+      secondaryTitle={machine.description}
     />
   );
 };

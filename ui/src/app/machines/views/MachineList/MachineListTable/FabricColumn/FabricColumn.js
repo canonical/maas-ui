@@ -40,8 +40,10 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
         </ScriptStatus>
       }
       primaryAriaLabel="Fabric"
+      primaryTitle={fabricName}
       secondary={<span data-test="vlan">{vlan}</span>}
       secondaryAriaLabel="VLAN"
+      secondaryTitle={vlan}
     />
   );
 };
