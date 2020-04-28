@@ -106,6 +106,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
           {powerState}
         </div>
       }
+      primaryTitle={powerState}
       secondary={
         <div
           className="u-upper-case--first"
@@ -115,6 +116,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
           {machine.power_type}
         </div>
       }
+      secondaryTitle={machine.power_type}
     />
   );
 };

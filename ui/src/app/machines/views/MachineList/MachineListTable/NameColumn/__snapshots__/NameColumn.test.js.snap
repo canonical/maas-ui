@@ -25,7 +25,7 @@ exports[`NameColumn renders 1`] = `
         }
         onChange={[Function]}
         type="checkbox"
-        wrapperClassName="u-no-margin--bottom"
+        wrapperClassName="u-no-margin--bottom machine-list--inline-input"
       />
     }
     primaryTextClassName="u-nudge--checkbox"
@@ -62,10 +62,10 @@ exports[`NameColumn renders 1`] = `
               }
               onChange={[Function]}
               type="checkbox"
-              wrapperClassName="u-no-margin--bottom"
+              wrapperClassName="u-no-margin--bottom machine-list--inline-input"
             >
               <Field
-                className="u-no-margin--bottom"
+                className="u-no-margin--bottom machine-list--inline-input"
                 forId="abc123"
                 label={
                   <a
@@ -83,7 +83,7 @@ exports[`NameColumn renders 1`] = `
                 labelFirst={false}
               >
                 <div
-                  className="p-form__group p-form-validation u-no-margin--bottom"
+                  className="p-form__group p-form-validation u-no-margin--bottom machine-list--inline-input"
                 >
                   <div
                     className="p-form__control u-clearfix"

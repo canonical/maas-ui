@@ -26,9 +26,11 @@ exports[`ZoneColumn renders 1`] = `
         </a>
       </span>
     }
+    primaryTitle="zone-north"
     secondary={
       <span
         data-test="spaces"
+        title="management"
       >
         management
       </span>
@@ -45,6 +47,7 @@ exports[`ZoneColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            title="zone-north"
           >
             <span
               data-test="zone"
@@ -73,6 +76,7 @@ exports[`ZoneColumn renders 1`] = `
                 >
                   <div
                     class="p-double-row__primary-row-text u-truncate"
+                    title="zone-north"
                   >
                     <span
                       data-test="zone"
@@ -124,6 +128,7 @@ exports[`ZoneColumn renders 1`] = `
                   >
                     <div
                       class="p-double-row__primary-row-text u-truncate"
+                      title="zone-north"
                     >
                       <span
                         data-test="zone"
@@ -189,6 +194,7 @@ exports[`ZoneColumn renders 1`] = `
         >
           <span
             data-test="spaces"
+            title="management"
           >
             management
           </span>

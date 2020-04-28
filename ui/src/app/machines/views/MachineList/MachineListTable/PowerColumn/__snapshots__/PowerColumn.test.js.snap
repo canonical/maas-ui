@@ -35,6 +35,7 @@ exports[`PowerColumn renders 1`] = `
         on
       </div>
     }
+    primaryTitle="on"
     secondary={
       <div
         className="u-upper-case--first"
@@ -44,6 +45,7 @@ exports[`PowerColumn renders 1`] = `
         virsh
       </div>
     }
+    secondaryTitle="virsh"
   >
     <div
       className="p-double-row--with-icon"
@@ -64,6 +66,7 @@ exports[`PowerColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            title="on"
           >
             <div
               className="u-upper-case--first u-truncate"
@@ -94,6 +97,7 @@ exports[`PowerColumn renders 1`] = `
                 >
                   <div
                     class="p-double-row__primary-row-text u-truncate"
+                    title="on"
                   >
                     <div
                       class="u-upper-case--first u-truncate"
@@ -146,6 +150,7 @@ exports[`PowerColumn renders 1`] = `
                   >
                     <div
                       class="p-double-row__primary-row-text u-truncate"
+                      title="on"
                     >
                       <div
                         class="u-upper-case--first u-truncate"
@@ -204,6 +209,7 @@ exports[`PowerColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
+          title="virsh"
         >
           <div
             className="u-upper-case--first"

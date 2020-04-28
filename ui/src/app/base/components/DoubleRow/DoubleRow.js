@@ -17,9 +17,11 @@ const DoubleRow = ({
   primaryAriaLabel,
   primaryClassName,
   primaryTextClassName,
+  primaryTitle,
   secondary,
   secondaryAriaLabel,
   secondaryClassName,
+  secondaryTitle,
 }) => {
   const parent = useRef(null);
   const hasIcon = icon || iconSpace;
@@ -50,6 +52,7 @@ const DoubleRow = ({
               "p-double-row__primary-row-text u-truncate",
               primaryTextClassName
             )}
+            title={primaryTitle}
           >
             {primary}
           </div>
@@ -71,6 +74,7 @@ const DoubleRow = ({
               secondaryClassName
             )}
             aria-label={secondaryAriaLabel}
+            title={secondaryTitle}
           >
             {secondary}
           </div>
@@ -92,9 +96,11 @@ DoubleRow.propTypes = {
   primaryAriaLabel: PropTypes.string,
   primaryClassName: PropTypes.string,
   primaryTextClassName: PropTypes.string,
+  primaryTitle: PropTypes.string,
   secondary: PropTypes.node,
   secondaryAriaLabel: PropTypes.string,
   secondaryClassName: PropTypes.string,
+  secondaryTitle: PropTypes.string,
 };
 
 export default DoubleRow;

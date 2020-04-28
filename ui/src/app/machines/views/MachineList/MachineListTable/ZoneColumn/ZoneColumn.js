@@ -21,7 +21,11 @@ const getSpaces = (machine) => {
       </Tooltip>
     );
   }
-  return <span data-test="spaces">{machine.spaces[0]}</span>;
+  return (
+    <span data-test="spaces" title={machine.spaces[0]}>
+      {machine.spaces[0]}
+    </span>
+  );
 };
 
 const ZoneColumn = ({ onToggleMenu, systemId }) => {
@@ -75,6 +79,7 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
           </a>
         </span>
       }
+      primaryTitle={machine.zone.name}
       secondary={getSpaces(machine)}
     />
   );
