@@ -1,12 +1,12 @@
 <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
     <div class="row">
         <div class="col-small-2 col-medium-4 col-8">
-            <h1 class="page-header__title">{$ getPageHeading() $}</h1>
+            <h1 class="page-header__title"><span ng-if="add.open">Add </span>{$ getPageHeading() $}</h1>
             <p class="page-header__status u-no-margin--top" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
         </div>
         <div class="col-small-2 col-medium-2 col-4 u-align--right">
             <div class="page-header__controls">
-                <ul class="p-inline-list u-no-margin--bottom">
+                <ul class="p-inline-list u-no-margin--bottom" ng-if="!add.open">
                     <li class="p-inline-list__item" ng-if="selectedItems.length">{$ selectedItems.length $} selected</li>
                     <li class="p-inline-list__item" ng-if="canAddPod()">
                         <button
@@ -96,12 +96,44 @@
         </div>
     </div>
     <div data-ng-class="{ 'u-hide': !add.open }">
+        <hr style="margin-bottom: 1rem" />
         <maas-obj-form obj="add.obj" manager="podManager" manager-method="createItem"
             save-on-blur="false" after-save="cancelAddPod" data-ng-if="add.open" class="p-form--stacked">
-            <div class="row">
-                <h3 class="page-header__dropdown-title p-heading--five">Add {$ getPageHeading() $}</h3>
+            <div class="row" ng-if="add.obj.type !== 'rsd'">
+                <div class="col-2">
+                    <p>KVM host type</p>
+                </div>
+                <div class="col-4">
+                    <ul class="p-inline-list">
+                        <li class="p-inline-list__item" style="display: inline-block">
+                            <input type="radio" data-ng-model="add.obj.type" id="lxd-pod" value="lxd" />
+                            <label for="lxd-pod">LXD</label>
+                        </li>
+                        <li class="p-inline-list__item" style="display: inline-block">
+                            <input type="radio" data-ng-model="add.obj.type" id="virsh-pod" value="virsh" />
+                            <label for="virsh-pod">virsh</label>
+                        </li>
+                    </ul>
+                    <!-- TODO Caleb 28/04/2020 - Replace with real copy when ready -->
+                    <span ng-if="false">
+                        <p ng-if="add.obj.type === 'lxd'">
+                            Why would I like to add a LXD host?<br>
+                            <a class="p-link--external">More about LXD hosts in MAAS...</a>
+                        </p>
+                        <p ng-if="add.obj.type === 'virsh'">
+                            Why would I like to add a virsh host?<br>
+                            <a class="p-link--external">More about virsh hosts in MAAS...</a>
+                        </p>
+                    </span>
+                </div>
+                <div class="col-6">
+                    <maas-obj-field type="text" key="name" label="Name" label-width="2" input-width="4" placeholder="Name (optional)"></maas-obj-field>
+                    <maas-obj-field type="options" key="zone" label="Zone" subtle="false" placeholder="Choose a zone" label-width="2" input-width="4" options="zone.id as zone.name for zone in zones"></maas-obj-field>
+                    <maas-obj-field type="options" key="pool" label="Resource pool" subtle="false" placeholder="Choose a pool" label-width="2" input-width="4" options="pool.id as pool.name for pool in pools" style="margin-bottom: .5rem !important"></maas-obj-field>
+                    <maas-pod-parameters class="row" hide-slider="true" hide-type="true"></maas-pod-parameters>
+                </div>
             </div>
-            <div class="row">
+            <div class="row" ng-if="add.obj.type === 'rsd'">
                 <div class="col-6">
                     <maas-obj-field type="text" key="name" label="Name" label-width="2" input-width="4" placeholder="Name (optional)"></maas-obj-field>
                     <maas-obj-field type="options" key="zone" label="Zone" subtle="false" placeholder="Choose a zone" label-width="2" input-width="4" options="zone.id as zone.name for zone in zones"></maas-obj-field>
