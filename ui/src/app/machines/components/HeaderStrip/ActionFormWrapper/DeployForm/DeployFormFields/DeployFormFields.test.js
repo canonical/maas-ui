@@ -193,6 +193,44 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("[data-test='kvm-warning']").exists()).toBe(false);
   });
 
+  it("enables KVM checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
+    const state = { ...initialState };
+    state.general.osInfo.data.default_release = "bionic";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
+    // Ubuntu 18.04 and checkbox should be enabled.
+    await act(async () => {
+      wrapper
+        .find("Select[name='oSystem']")
+        .simulate("change", { target: { name: "oSystem", value: "centos" } });
+    });
+    wrapper.update();
+    await act(async () => {
+      wrapper
+        .find("Select[name='release']")
+        .simulate("change", { target: { name: "release", value: "centos70" } });
+    });
+    wrapper.update();
+    await act(async () => {
+      wrapper
+        .find("Select[name='oSystem']")
+        .simulate("change", { target: { name: "oSystem", value: "ubuntu" } });
+    });
+    wrapper.update();
+    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+      false
+    );
+  });
+
   it("displays a warning if user has no SSH keys", () => {
     const state = { ...initialState };
     state.user.auth.user.sshkeys_count = 0;

@@ -16,9 +16,10 @@ export const DeployFormFields = () => {
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
-  const releaseOptions = useSelector((state) =>
-    generalSelectors.osInfo.getOsReleases(state, values.oSystem)
+  const allReleaseOptions = useSelector(
+    generalSelectors.osInfo.getAllOsReleases
   );
+  const releaseOptions = allReleaseOptions[values.oSystem];
   const kernelOptions = useSelector((state) =>
     generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
   );
@@ -35,7 +36,11 @@ export const DeployFormFields = () => {
           options={osOptions}
           onChange={(e) => {
             handleChange(e);
-            if (e.target.value !== "ubuntu") {
+            const value = e.target.value;
+            if (allReleaseOptions[value] && allReleaseOptions[value].length) {
+              setFieldValue("release", allReleaseOptions[value][0].value);
+            }
+            if (value !== "ubuntu") {
               setFieldValue("installKVM", false);
             }
           }}
