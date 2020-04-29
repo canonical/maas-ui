@@ -1,47 +1,30 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
 
-import { general as generalActions } from "app/base/actions";
-import { general as generalSelectors } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-const getAddHardwareLinks = (navigationOptions) => {
-  const links = [
-    {
-      children: "Machine",
-      element: Link,
-      to: "/machines/add",
-    },
-    {
-      children: "Chassis",
-      element: Link,
-      to: "/machines/chassis/add",
-    },
-  ];
-
-  return navigationOptions.rsd
-    ? links.concat({
-        children: "RSD",
-        element: "a",
-        href: `${process.env.REACT_APP_ANGULAR_BASENAME}/rsd`,
-      })
-    : links;
-};
-
 export const AddHardwareMenu = ({ disabled = false }) => {
-  const dispatch = useDispatch();
-  const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
-
-  useEffect(() => {
-    dispatch(generalActions.fetchNavigationOptions());
-  }, [dispatch]);
-
   return (
     <ContextualMenu
       data-test="add-hardware-dropdown"
       hasToggleIcon
-      links={getAddHardwareLinks(navigationOptions)}
+      links={[
+        {
+          children: "Machine",
+          element: Link,
+          to: "/machines/add",
+        },
+        {
+          children: "Chassis",
+          element: Link,
+          to: "/machines/chassis/add",
+        },
+        {
+          children: "RSD",
+          element: Link,
+          to: "/machines/rsd/add",
+        },
+      ]}
       position="right"
       toggleAppearance="neutral"
       toggleDisabled={disabled}

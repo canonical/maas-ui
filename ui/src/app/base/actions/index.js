@@ -9,6 +9,7 @@ export { default as machine } from "./machine";
 export { default as messages } from "./messages";
 export { default as notification } from "./notification";
 export { default as packagerepository } from "./packagerepository";
+export { default as pod } from "./pod";
 export { default as resourcepool } from "./resourcepool";
 export { default as scripts } from "./scripts";
 export { default as service } from "./service";
