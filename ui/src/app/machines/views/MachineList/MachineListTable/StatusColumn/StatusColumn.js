@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
@@ -77,7 +77,7 @@ const getProgressText = (machine) => {
 const getStatusIcon = (machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return (
-      <Loader
+      <Spinner
         className="u-no-margin u-no-padding"
         data-test="status-icon"
         inline

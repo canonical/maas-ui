@@ -182,11 +182,11 @@ describe("PoolColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(false);
+    expect(wrapper.find("Spinner").exists()).toBe(false);
     act(() => {
       wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     wrapper.update();
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 });

@@ -212,7 +212,7 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(wrapper.find("FormCard").exists()).toBe(false);
   });
 

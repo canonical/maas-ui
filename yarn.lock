@@ -2082,14 +2082,14 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.6.0.tgz#674efe06c2bbeabd1dd36bbcd5e9769cf49e0782"
-  integrity sha512-38JJIWFs/s91WhQlDes81nVZFheIH0j+O3Uk55OtHLJ14JOcECvFVZPtlttuDJKzyK7488jKeOlj/eI1puYXeQ==
+"@canonical/react-components@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.7.0.tgz#e0c573f1719de237536b71477c58f0208a578149"
+  integrity sha512-GlKWMr+F85wip4WLyNddXTy7mVWxGXhBiwyqmHOSHCq7ysbzdK5uP1MhQh3uGpKGZgVqXdbneRSs+y/HA7acIw==
   dependencies:
     classnames "2.2.6"
     prop-types "15.7.2"
-    vanilla-framework "2.9.0"
+    vanilla-framework "2.10.0"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
@@ -15435,11 +15435,6 @@ vanilla-framework@2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.10.0.tgz#74c0cba977ce058552aa4443cccaa6bbf9308e9e"
   integrity sha512-otQLBXzRBLyiN8RFtHP0E19Iy2p3Frbm7E4TIU7Q7LN+ScmfmgAc7InqbYXvTL9oIATTs0sBD7T/2Fzezgmalg==
-
-vanilla-framework@2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.9.0.tgz#8ac58ee7623cbad780eced886e43a04776e4595d"
-  integrity sha512-FsKPFt+39roDCgImve3RI0ont2qcQhIigEQpeBdmrYXh/+cgjRTKqigeBbUf7CsR0RUOzbvQJZkQXivRC0QT9g==
 
 vary@~1.1.2:
   version "1.1.2"

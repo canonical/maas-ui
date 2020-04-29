@@ -1,9 +1,10 @@
 import { Notification } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 import React, { useState } from "react";
 
 import { formatErrors } from "app/utils";
+import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { useLocation, useWindowTitle } from "app/base/hooks";
 import { filtersToString, queryStringToFilters } from "app/machines/search";
@@ -12,6 +13,7 @@ import MachineListTable from "./MachineListTable";
 
 const MachineList = () => {
   useWindowTitle("Machines");
+  const dispatch = useDispatch();
   const { location } = useLocation();
   const currentFilters = queryStringToFilters(location.search);
   const errors = useSelector(machineSelectors.errors);
@@ -33,7 +35,12 @@ const MachineList = () => {
   return (
     <>
       {errorMessage ? (
-        <Notification type="negative">{errorMessage}</Notification>
+        <Notification
+          close={() => dispatch(machineActions.cleanup())}
+          type="negative"
+        >
+          {errorMessage}
+        </Notification>
       ) : null}
       <MachineListControls
         filter={filter}

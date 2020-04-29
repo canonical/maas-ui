@@ -1,6 +1,6 @@
 import {
   Col,
-  Loader,
+  Spinner,
   Notification,
   Row,
   Select,
@@ -111,7 +111,7 @@ export const DhcpFormFields = ({ editing }) => {
           />
           {type &&
             (isLoading || !hasLoaded ? (
-              <Loader text="loading..." />
+              <Spinner text="loading..." />
             ) : (
               <FormikField
                 component={Select}

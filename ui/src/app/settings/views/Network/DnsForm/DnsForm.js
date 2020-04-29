@@ -1,4 +1,4 @@
-import { Col, Loader, Row, Select } from "@canonical/react-components";
+import { Col, Spinner, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
@@ -42,7 +42,7 @@ const DnsForm = () => {
   return (
     <Row>
       <Col size={6}>
-        {loading && <Loader text="Loading..." />}
+        {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
             initialValues={{

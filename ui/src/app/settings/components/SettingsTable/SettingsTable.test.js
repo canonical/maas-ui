@@ -42,7 +42,7 @@ describe("SettingsTable", () => {
         <span>Content</span>
       </SettingsTable>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(wrapper.find(".settings-table__lines").exists()).toBe(true);
     expect(wrapper.find("MainTable").prop("rows")).toBe(null);
   });

@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -19,7 +19,7 @@ export const APIKeyEdit = () => {
     tokenSelectors.getById(state, parseInt(id))
   );
   if (loading) {
-    return <Loader text="Loading..." />;
+    return <Spinner text="Loading..." />;
   }
   if (!token) {
     return <h4>API key not found</h4>;

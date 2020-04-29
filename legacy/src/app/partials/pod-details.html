@@ -348,7 +348,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="p-table__row">
+                                <tr class="p-table__row" ng-if="pod.type !== 'lxd'">
                                     <td colspan="5">
                                         <button class="p-button--base u-td-outdent-focusable--left p-button--narrow" data-ng-click="composeAddStorage(); sendAnalyticsEvent('KVM details', 'Add storage', 'KVM compose')">
                                             <i class="p-icon--plus"></i>

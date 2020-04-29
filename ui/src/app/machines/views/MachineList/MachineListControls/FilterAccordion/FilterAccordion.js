@@ -1,4 +1,4 @@
-import { Accordion, Button, List, Loader } from "@canonical/react-components";
+import { Accordion, Button, List, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -167,7 +167,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
             sections={sections}
           />
         ) : (
-          <Loader text="Loading..." />
+          <Spinner text="Loading..." />
         )
       }
       hasToggleIcon

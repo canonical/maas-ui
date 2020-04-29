@@ -1,4 +1,4 @@
-import { Col, Loader, Row } from "@canonical/react-components";
+import { Col, Spinner, Row } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -30,7 +30,7 @@ const Deploy = () => {
   return (
     <Row>
       <Col size={6}>
-        {loading && <Loader text="Loading..." />}
+        {loading && <Spinner text="Loading..." />}
         {loaded && <DeployForm />}
       </Col>
     </Row>

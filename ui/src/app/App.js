@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Loader, Notification } from "@canonical/react-components";
+import { Spinner, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as Sentry from "@sentry/browser";
@@ -78,7 +78,7 @@ export const App = () => {
         title={
           <>
             <span className="p-heading--four"></span>
-            <Loader
+            <Spinner
               className="u-no-padding u-no-margin"
               inline
               text="Loading..."

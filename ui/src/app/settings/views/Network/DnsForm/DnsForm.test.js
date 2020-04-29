@@ -45,7 +45,7 @@ describe("DnsForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("dispatches an action to update config on save button click", () => {

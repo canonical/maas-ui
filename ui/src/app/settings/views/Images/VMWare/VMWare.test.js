@@ -31,7 +31,7 @@ describe("VMWare", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("displays the VMWare form if config is loaded", () => {

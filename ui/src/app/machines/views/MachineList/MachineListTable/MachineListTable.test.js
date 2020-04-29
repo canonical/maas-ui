@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import MachineListTable from "./MachineListTable";
+import { MachineListTable } from "./MachineListTable";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();

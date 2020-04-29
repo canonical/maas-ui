@@ -5,8 +5,24 @@
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
   $grouped-machines-indentation: $box-size + $sph-inner - $checkbox-offset; // Checkbox + label - offset
 
-  .machine-list--grouped .machine-list__machine td:first-child {
-    padding-left: $grouped-machines-indentation;
+  .machine-list--grouped .machine-list__machine {
+    border: 0;
+    position: relative;
+    transform: scale(1);
+
+    &::after {
+      background-color: $color-mid-light;
+      content: "";
+      height: 1px;
+      left: $grouped-machines-indentation;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    td:first-child {
+      padding-left: $grouped-machines-indentation;
+    }
   }
 
   .machine-list__machine .p-table-menu {
@@ -99,5 +115,10 @@
 
   .u-nudge--secondary-row {
     padding-left: $box-size + $sph-inner + $checkbox-offset;
+  }
+
+  .machine-list--inline-input .p-form__control,
+  .machine-list--inline-input {
+    display: inline;
   }
 }

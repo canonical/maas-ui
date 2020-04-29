@@ -68,7 +68,7 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Loader").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("shows the table if there are repositories and loaded is true", () => {

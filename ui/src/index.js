@@ -19,8 +19,13 @@ export const history = createBrowserHistory({
 const reducer = createRootReducer(history);
 
 const sagaMiddleware = createSagaMiddleware();
+const checkMiddleware = process.env.REACT_APP_CHECK_MIDDLEWARE === "true";
 const middleware = [
-  ...getDefaultMiddleware({ thunk: false }),
+  ...getDefaultMiddleware({
+    thunk: false,
+    immutableCheck: checkMiddleware,
+    serializableCheck: checkMiddleware,
+  }),
   sagaMiddleware,
   routerMiddleware(history),
 ];

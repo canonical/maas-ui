@@ -406,7 +406,7 @@ const generateGroupRows = ({
   return rows;
 };
 
-const MachineListTable = ({
+export const MachineListTable = ({
   filter,
   grouping,
   hiddenGroups,
@@ -745,4 +745,4 @@ MachineListTable.propTypes = {
   setHiddenGroups: PropTypes.func,
 };
 
-export default MachineListTable;
+export default React.memo(MachineListTable);

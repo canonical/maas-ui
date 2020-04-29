@@ -40,7 +40,10 @@ const generateIPAddresses = (machine) => {
 
   if (ipAddresses.length) {
     let ipAddressesLine = (
-      <span data-test="ip-addresses">
+      <span
+        data-test="ip-addresses"
+        title={ipAddresses.length === 1 ? ipAddresses[0] : null}
+      >
         {bootIP || ipAddresses[0]}
         {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
       </span>
@@ -111,7 +114,7 @@ const NameColumn = ({
           label={primaryRow}
           onChange={() => handleCheckbox(machine)}
           type="checkbox"
-          wrapperClassName="u-no-margin--bottom"
+          wrapperClassName="u-no-margin--bottom machine-list--inline-input"
         />
       }
       primaryTextClassName="u-nudge--checkbox"

@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -90,7 +90,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
         updating === null ? (
           <i title={powerState} className={iconClass}></i>
         ) : (
-          <Loader
+          <Spinner
             className="u-no-margin u-no-padding--left u-no-padding--right"
             inline
           />
@@ -106,6 +106,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
           {powerState}
         </div>
       }
+      primaryTitle={powerState}
       secondary={
         <div
           className="u-upper-case--first"
@@ -115,6 +116,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
           {machine.power_type}
         </div>
       }
+      secondaryTitle={machine.power_type}
     />
   );
 };

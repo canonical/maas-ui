@@ -1,4 +1,4 @@
-import { Loader } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -116,7 +116,7 @@ export const RepositoryForm = ({ type, repository }) => {
   return (
     <>
       {!allLoaded ? (
-        <Loader text="Loading..." />
+        <Spinner text="Loading..." />
       ) : (
         <FormCard title={title}>
           <FormikForm
