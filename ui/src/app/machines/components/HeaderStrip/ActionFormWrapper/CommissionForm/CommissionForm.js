@@ -45,6 +45,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
   const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
   const commissioningSelected = useSelector(
     machineSelectors.commissioningSelected
@@ -64,6 +65,16 @@ export const CommissionForm = ({ setSelectedAction }) => {
       (script) => script.name === "smartctl-validate"
     ),
   ].filter(Boolean);
+  const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
+    if (
+      !(script.name in scriptInputs) &&
+      script.parameters &&
+      script.parameters.url
+    ) {
+      scriptInputs[script.name] = { url: script.parameters.url.default };
+    }
+    return scriptInputs;
+  }, {});
 
   useEffect(() => {
     dispatch(scriptActions.fetch());
@@ -97,6 +108,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
         commissioningScripts:
           commissioningScripts.length > 0 ? formattedCommissioningScripts : [],
         testingScripts: preselectedTestingScripts,
+        scriptInputs: initialScriptInputs,
       }}
       submitLabel={`Commission ${selectedMachines.length} ${pluralize(
         "machine",
@@ -118,6 +130,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
           configureHBA,
           commissioningScripts,
           testingScripts,
+          scriptInputs,
         } = values;
         selectedMachines.forEach((machine) => {
           dispatch(
@@ -130,7 +143,8 @@ export const CommissionForm = ({ setSelectedAction }) => {
               updateFirmware,
               configureHBA,
               commissioningScripts,
-              testingScripts
+              testingScripts,
+              scriptInputs
             )
           );
         });

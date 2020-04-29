@@ -11,7 +11,10 @@ export const CommissionFormFields = ({
   commissioningScripts,
   testingScripts,
 }) => {
-  const { setFieldValue, values } = useFormikContext();
+  const { handleChange, setFieldValue, values } = useFormikContext();
+  const urlScriptsSelected = values.testingScripts.filter((script) =>
+    Object.keys(script.parameters).some((key) => key === "url")
+  );
 
   return (
     <Row>
@@ -33,6 +36,7 @@ export const CommissionFormFields = ({
         />
         <FormikField
           component={TagSelector}
+          data-test="commissioning-scripts-selector"
           disabled={
             values.commissioningScripts.length === commissioningScripts.length
           }
@@ -48,6 +52,7 @@ export const CommissionFormFields = ({
         />
         <FormikField
           component={TagSelector}
+          data-test="testing-scripts-selector"
           disabled={values.testingScripts.length === testingScripts.length}
           initialSelected={preselectedTesting}
           label="Tests"
@@ -59,6 +64,24 @@ export const CommissionFormFields = ({
           required
           tags={testingScripts}
         />
+        {urlScriptsSelected.map((script) => (
+          <FormikField
+            data-test="url-script-input"
+            help={script.parameters.url.description}
+            key={script.name}
+            label={
+              <span>
+                URL(s) to use for <strong>{script.name}</strong> script
+              </span>
+            }
+            name={`scriptInputs[${script.name}].url`}
+            onChange={(e) => {
+              handleChange(e);
+              setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
+            }}
+            type="text"
+          />
+        ))}
       </Col>
       <Col size="6">
         <FormikField
