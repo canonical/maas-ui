@@ -2,7 +2,10 @@
   "name": "@canonical/maas-ui",
   "version": "1.1.1",
   "private": false,
-  "homepage": "https://github.com/canonical-web-and-design/maas-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/canonical-web-and-design/maas-ui.git"
+  },
   "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
   "license": "AGPL-3.0",
   "dependencies": {
