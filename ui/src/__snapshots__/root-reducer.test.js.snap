@@ -151,6 +151,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "pod": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "resourcepool": Object {
     "errors": Object {},
     "items": Array [],
