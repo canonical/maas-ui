@@ -24,7 +24,7 @@ import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
 import bootstrap from "./bootstrap";
-import { Footer, Header } from "@maas-ui/shared";
+import { Footer, Header } from "@canonical/maas-ui-shared";
 
 // filters
 import {
