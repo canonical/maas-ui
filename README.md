@@ -8,6 +8,7 @@
 - [Related Projects](#related-projects)
 - [Built With](#built-with)
 - [Team Members](#team-members)
+- [License](#license)
 
 ## About
 MAAS is an open-source tool that lets you build a data centre from bare-metal servers. You can discover, commission, deploy, and dynamically reconfigure a large network of individual units.
@@ -52,8 +53,10 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
   * [Angularjs](https://angularjs.org/) (legacy)
 
 ## Team Members
+[MAAS UI](https://github.com/orgs/canonical/teams/maas-ui/members) and [Canonical Web & Design](https://github.com/orgs/canonical/teams/web-and-design/members)
 
-
+## Code of Conduct
+This project adopts the [Ubuntu Code of Conduct](https://ubuntu.com/community/code-of-conduct).
 
 ## License
 Code licensed AGPLv3 by Canonical Ltd.
