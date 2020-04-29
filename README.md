@@ -8,6 +8,7 @@
 - [Related Projects](#related-projects)
 - [Built With](#built-with)
 - [Team Members](#team-members)
+- [Code of Conduct](#code-of-conduct)
 - [License](#license)
 
 ## About
