@@ -82,6 +82,7 @@ describe("CommissionForm", () => {
           configureHBA: true,
           testingScripts: [state.scripts.items[0]],
           commissioningScripts: [state.scripts.items[1]],
+          scriptInputs: { testingScript0: { url: "www.url.com" } },
         })
     );
     expect(
@@ -109,6 +110,7 @@ describe("CommissionForm", () => {
                 "configure_hba",
               ],
               testing_scripts: [state.scripts.items[0].id],
+              script_input: { testingScript0: { url: "www.url.com" } },
             },
             system_id: "abc123",
           },
@@ -134,6 +136,7 @@ describe("CommissionForm", () => {
                 "configure_hba",
               ],
               testing_scripts: [state.scripts.items[0].id],
+              script_input: { testingScript0: { url: "www.url.com" } },
             },
             system_id: "def456",
           },

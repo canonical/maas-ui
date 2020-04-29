@@ -132,7 +132,8 @@ machine.commission = (
   updateFirmware,
   configureHBA,
   commissioningScripts,
-  testingScripts
+  testingScripts,
+  scriptInputs
 ) => {
   let formattedCommissioningScripts = [];
   if (commissioningScripts && commissioningScripts.length > 0) {
@@ -155,6 +156,7 @@ machine.commission = (
     commissioning_scripts: formattedCommissioningScripts,
     testing_scripts:
       testingScripts && testingScripts.map((script) => script.id),
+    script_input: scriptInputs,
   });
 };
 
