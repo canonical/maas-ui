@@ -26,10 +26,6 @@ const configureRoutes = ($routeProvider) => {
       template: introTmpl,
       controller: "IntroController",
     })
-    .when("/machines-legacy", {
-      template: nodesListTmpl,
-      controller: "NodesListController"
-    })
     .when("/intro/user", {
       template: introUserTmpl,
       controller: "IntroUserController",
