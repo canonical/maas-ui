@@ -231,6 +231,9 @@
                             </div>
                             <div class="u-align--right">Owners</div>
                         </th>
+                        <th class="p-table__cell" aria-label="Operating system" title="OS">
+                            <div>OS</div>
+                        </th>
                         <th class="p-table__cell" title="Resource pool">
                             <div>Resource pool</div>
                             <div>AZ</div>
@@ -303,8 +306,15 @@
                                     {$ pod.composed_machines_count $}
                                 </div>
                                 <div class="p-double-row__muted-row u-align--right">
-                                    <span ng-if="ownersMap.get(pod.id)">{$ ownersMap.get(pod.id).length $}</span>
-                                    <i class="p-icon--spinner u-animation--spin u-no-margin" ng-if="!ownersMap.get(pod.id)"></i>
+                                    <span ng-if="!loading">{$ ownersMap.get(pod.id).length $}</span>
+                                    <i class="p-icon--spinner u-animation--spin u-no-margin" ng-if="loading"></i>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-table__cell p-double-row" aria-label="Operating system" title="OS">
+                            <div class="p-double-row">
+                                <div class="p-double-row__main-row">
+                                    <span class="u-text-overflow" title="{$ getPodOSName(pod) $}">{$ getPodOSName(pod) $}</span>
                                 </div>
                             </div>
                         </td>
