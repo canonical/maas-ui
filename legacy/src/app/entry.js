@@ -19,11 +19,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
+import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
-import bootstrap from "./bootstrap";
+import bootstrapOverWebsocket from "./bootstrap";
 import { Footer, Header } from "@canonical/maas-ui-shared";
 
 // filters
@@ -237,7 +238,7 @@ const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 const checkAuthenticated = () => {
   // Check that the user is authenticated, otherwise redirect to the React
   // login form.
-  fetch(LOGIN_CANARY_API).then(response => {
+  fetch(LOGIN_CANARY_API).then((response) => {
     if (!response.ok) {
       window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
     }
@@ -320,7 +321,7 @@ function dashboardRedirect($rootScope, $location, $window) {
 // so it doesn't flash up in the nav before angular is ready
 function unhideRSDLinks() {
   let rsdLinks = document.querySelectorAll(".js-rsd-link");
-  rsdLinks.forEach(link => link.classList.remove("u-hide"));
+  rsdLinks.forEach((link) => link.classList.remove("u-hide"));
 }
 
 const renderHeader = ($rootScope, $window, $http) => {
@@ -367,7 +368,7 @@ const renderHeader = ($rootScope, $window, $http) => {
   );
 };
 
-const renderFooter = $window => {
+const renderFooter = ($window) => {
   const footerNode = document.querySelector("#footer");
   if (!footerNode) {
     return;
@@ -405,12 +406,13 @@ Sentry.init({
 });
 
 /* @ngInject */
-const configureSentry = $window => {
+const configureSentry = ($window) => {
   Sentry.setExtra("maasVersion", $window.CONFIG.version);
 };
 
+const moduleName = "MAAS";
 angular
-  .module("MAAS", [
+  .module(moduleName, [
     ngRoute,
     ngCookies,
     ngSanitize,
@@ -600,4 +602,16 @@ angular
   .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
 
-bootstrap();
+bootstrapOverWebsocket();
+
+// export lifecycle events for singlespa
+const ngLifecycles = singleSpaAngularJS({
+  angular,
+  mainAngularModule: moduleName,
+  uiRouter: false,
+  preserveGlobal: false
+});
+
+export const bootstrap = ngLifecycles.bootstrap;
+export const mount = ngLifecycles.mount;
+export const unmount = ngLifecycles.unmount;
