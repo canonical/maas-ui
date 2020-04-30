@@ -31,7 +31,7 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
       const group = groups.find((group) => group.type === option.type);
       group.items.push({
         children: (
-          <div className="u-flex-between">
+          <div className="u-flex--between">
             <span data-test={`action-title-${option.name}`}>
               {option.title}
             </span>

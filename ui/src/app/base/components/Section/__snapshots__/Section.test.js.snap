@@ -18,7 +18,7 @@ exports[`Section renders 1`] = `
   <Strip
     element="main"
     includeCol={false}
-    rowClassName="u-equal-height section__content-wrapper"
+    rowClassName="u-flex section__content-wrapper"
     shallow={true}
   >
     <Col

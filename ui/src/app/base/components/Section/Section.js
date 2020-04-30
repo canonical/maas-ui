@@ -29,7 +29,7 @@ const Section = ({
       <Strip
         element="main"
         includeCol={false}
-        rowClassName="u-equal-height section__content-wrapper"
+        rowClassName="u-flex section__content-wrapper"
         shallow
       >
         {sidebar && (

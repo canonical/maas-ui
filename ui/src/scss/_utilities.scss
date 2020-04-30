@@ -1,7 +1,16 @@
 @mixin maas-utilities {
-  .u-flex-between {
+  .u-flex {
+    display: flex;
+  }
+
+  .u-flex--between {
     display: flex;
     justify-content: space-between;
+  }
+
+  .u-flex--wrap {
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .u-mirror--y {

@@ -66,27 +66,34 @@ export const DeployFormFields = () => {
           />
         )}
         <p>Additional installs</p>
-        <FormikField
-          disabled={!canBeKVMHost}
-          label="Register as MAAS KVM host"
-          name="installKVM"
-          type="checkbox"
-          wrapperClassName="u-sv-1"
-        />
+        <ul className="p-inline-list">
+          <li
+            className="p-inline-list__item"
+            style={{ display: "inline-block" }}
+          >
+            <FormikField
+              disabled={!canBeKVMHost}
+              label="Register as MAAS KVM host"
+              name="installKVM"
+              type="checkbox"
+              wrapperClassName="u-sv-1"
+            />
+          </li>
+          <li className="p-inline-list__item">
+            <a
+              className="p-link--external"
+              href="https://maas.io/docs/kvm-introduction"
+            >
+              About MAAS KVM hosts
+            </a>
+          </li>
+        </ul>
         {!canBeKVMHost && (
           <p data-test="kvm-warning">
             <i className="p-icon--warning is-inline"></i>
             Ubuntu 18.04 is required to create a KVM host.
           </p>
         )}
-        <p>
-          <a
-            className="p-link--external"
-            href="https://maas.io/docs/kvm-introduction"
-          >
-            About MAAS KVM hosts
-          </a>
-        </p>
         {user.sshkeys_count === 0 && (
           <p data-test="sshkeys-warning">
             <i className="p-icon--warning is-inline"></i>

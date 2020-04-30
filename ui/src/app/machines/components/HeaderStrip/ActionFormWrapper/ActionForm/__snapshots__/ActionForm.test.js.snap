@@ -60,13 +60,13 @@ exports[`ActionForm renders 1`] = `
               >
                 <Button
                   appearance="base"
-                  className="u-no-margin--bottom"
+                  className=""
                   data-test="cancel-action"
                   onClick={[Function]}
                   type="button"
                 >
                   <button
-                    className="p-button--base u-no-margin--bottom"
+                    className="p-button--base"
                     data-test="cancel-action"
                     onClick={[Function]}
                     type="button"
@@ -76,12 +76,12 @@ exports[`ActionForm renders 1`] = `
                 </Button>
                 <ActionButton
                   appearance="positive"
-                  className="u-no-margin--bottom"
+                  className=""
                   disabled={false}
                   type="submit"
                 >
                   <button
-                    className="u-no-margin--bottom p-action-button p-button--positive"
+                    className="p-action-button p-button--positive"
                     disabled={false}
                     type="submit"
                   >
