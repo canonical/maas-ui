@@ -67,6 +67,7 @@ function PodsListController(
       memory_over_commit_ratio: 1
     }
   };
+  $scope.osInfo = GeneralManager.getData("osinfo");
   $scope.powerTypes = GeneralManager.getData("power_types");
   $scope.zones = ZonesManager.getItems();
   $scope.pools = ResourcePoolsManager.getItems();
@@ -171,6 +172,7 @@ function PodsListController(
   // checked or not.
   $scope.$watchCollection("pods", function() {
     updateAllViewableChecked();
+    $scope.loadDetails();
   });
 
   // Sorts the table by predicate.
@@ -420,8 +422,23 @@ function PodsListController(
     ) {
       return;
     }
+    const item = items.find(item => item.id === itemId);
+    return item && item.name;
+  };
 
-    return items.find(item => item.id === itemId).name;
+  $scope.getOSInfo = (pod) => {
+    const podHost = $scope.hostMap.get(pod.id);
+    if (podHost) {
+      const baseString = `${podHost.osystem}/${podHost.distro_series}`;
+      const releaseArr = $scope.osInfo.releases.find(
+        (release) => release[0] === baseString
+      );
+      if (releaseArr && podHost.osystem === "ubuntu") {
+        return releaseArr[1].split('"')[0].trim(); // Remove "Adjective Animal"
+      }
+      return (releaseArr && releaseArr[1]) || baseString;
+    }
+    return "Unknown";
   };
 
   $scope.getPowerIconClass = (pod) => {
@@ -482,6 +499,14 @@ function PodsListController(
     }
   };
 
+  $scope.loadDetails = () => {
+    $scope.pods.forEach((pod) => {
+      $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
+      $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
+      $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
+    });
+  };
+
   // Load the required managers for this controller.
   ManagerHelperService.loadManagers($scope, [
     PodsManager,
@@ -504,11 +529,7 @@ function PodsListController(
       $scope.addPod();
     }
 
-    $scope.pods.forEach((pod) => {
-      $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
-      $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
-      $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
-    });
+    $scope.loadDetails();
 
     $scope.loading = false;
 
