@@ -390,6 +390,15 @@ describe("Search", () => {
       ).toEqual("?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south");
     });
 
+    it("does not include selected filters in query string", () => {
+      expect(
+        filtersToQueryString({
+          q: ["moon", "sun"],
+          in: ["selected"],
+        })
+      ).toEqual("?q=moon%2Csun");
+    });
+
     it("can convert a filter object to a query string and back", () => {
       const queryObject = {
         q: ["moon", "sun"],

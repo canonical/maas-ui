@@ -140,7 +140,9 @@ export const filtersToQueryString = (filters) => {
   let copiedFilters = { ...filters };
   // Remove empty filters.
   Object.keys(copiedFilters).forEach((filter) => {
-    if (copiedFilters[filter].length === 0) {
+    // Remove in:selected in in:!selected from the URL as we don't also persist
+    // the selected states of machines.
+    if (copiedFilters[filter].length === 0 || filter === "in") {
       delete copiedFilters[filter];
     }
   });
