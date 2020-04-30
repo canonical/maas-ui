@@ -5,6 +5,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
 
+import {
+  filtersToString,
+  getCurrentFilters,
+  toggleFilter,
+} from "app/machines/search";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import ActionFormWrapper from "./ActionFormWrapper";
@@ -12,7 +17,7 @@ import AddHardwareMenu from "./AddHardwareMenu";
 import HeaderStripTabs from "./HeaderStripTabs";
 import TakeActionMenu from "./TakeActionMenu";
 
-export const HeaderStrip = () => {
+export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
   const dispatch = useDispatch();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -24,6 +29,21 @@ export const HeaderStrip = () => {
   useEffect(() => {
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  const setAction = (action, deselect) => {
+    if (action || deselect) {
+      const filters = getCurrentFilters(searchFilter);
+      const newFilters = toggleFilter(
+        filters,
+        "in",
+        "selected",
+        false,
+        !deselect
+      );
+      setSearchFilter(filtersToString(newFilters));
+    }
+    setSelectedAction(action);
+  };
 
   return (
     <>
@@ -69,7 +89,7 @@ export const HeaderStrip = () => {
                       <AddHardwareMenu disabled={hasSelectedMachines} />
                     </li>
                     <li className="p-inline-list__item last-item">
-                      <TakeActionMenu setSelectedAction={setSelectedAction} />
+                      <TakeActionMenu setSelectedAction={setAction} />
                     </li>
                   </>
                 )}
@@ -86,7 +106,7 @@ export const HeaderStrip = () => {
       {selectedAction && (
         <ActionFormWrapper
           selectedAction={selectedAction}
-          setSelectedAction={setSelectedAction}
+          setSelectedAction={setAction}
         />
       )}
       <HeaderStripTabs />
@@ -95,7 +115,8 @@ export const HeaderStrip = () => {
 };
 
 HeaderStrip.propTypes = {
-  disabled: PropTypes.bool,
+  searchFilter: PropTypes.string,
+  setSearchFilter: PropTypes.func.isRequired,
 };
 
 export default HeaderStrip;

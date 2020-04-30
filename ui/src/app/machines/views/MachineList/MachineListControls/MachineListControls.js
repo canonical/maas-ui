@@ -2,8 +2,6 @@ import { Col, Row, SearchBox } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 
-import { useRouter } from "app/base/hooks";
-import { filtersToQueryString, getCurrentFilters } from "app/machines/search";
 import FilterAccordion from "./FilterAccordion";
 import GroupSelect from "./GroupSelect";
 
@@ -16,39 +14,27 @@ const MachineListControls = ({
   setGrouping,
   setHiddenGroups,
 }) => {
-  const { history } = useRouter();
   const intervalRef = useRef(null);
 
   const [searchText, setSearchText] = useState(filter);
   const [debouncing, setDebouncing] = useState(false);
 
-  // Handle setting the URL and filter in state whenever search text changes.
-  // Filtering function is debounced to prevent excessive repaints.
   useEffect(() => {
-    const updateURL = () => {
-      const filters = getCurrentFilters(searchText);
-      history.push({ search: filtersToQueryString(filters) });
-    };
+    // If the filters change then update the search input text.
+    setSearchText(filter);
+  }, [filter]);
 
-    if (debouncing) {
-      intervalRef.current = setTimeout(() => {
-        setFilter(searchText);
-        updateURL();
-        setDebouncing(false);
-      }, DEBOUNCE_INTERVAL);
-    } else {
-      setFilter(searchText);
-      updateURL();
-    }
-    return () => clearTimeout(intervalRef.current);
-  }, [debouncing, history, searchText, setFilter]);
+  // Clear the timeout when the component is unmounted.
+  useEffect(() => () => clearTimeout(intervalRef.current), []);
 
   return (
     <Row>
       <Col size={3}>
         <FilterAccordion
           searchText={searchText}
-          setSearchText={(searchText) => setSearchText(searchText)}
+          setSearchText={(searchText) => {
+            setFilter(searchText);
+          }}
         />
       </Col>
       <Col size={6} style={{ position: "relative" }}>
@@ -57,6 +43,12 @@ const MachineListControls = ({
           onChange={(searchText) => {
             setDebouncing(true);
             setSearchText(searchText);
+            // Clear the previous timeout.
+            clearTimeout(intervalRef.current);
+            intervalRef.current = setTimeout(() => {
+              setFilter(searchText);
+              setDebouncing(false);
+            }, DEBOUNCE_INTERVAL);
           }}
           value={searchText}
         />

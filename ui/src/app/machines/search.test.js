@@ -325,6 +325,32 @@ describe("Search", () => {
         type: ["exists"],
       });
     });
+
+    it("can handle an expected value when it already exists", () => {
+      const filters = {
+        type: ["value"],
+      };
+      expect(toggleFilter(filters, "type", "value", false, true)).toEqual({
+        type: ["value"],
+      });
+    });
+
+    it("can toggle an expected value", () => {
+      const filters = {
+        type: ["value"],
+      };
+      expect(toggleFilter(filters, "type", "value", false, false)).toEqual({});
+    });
+
+    it("can handle an expected false value when it already does not exist", () => {
+      expect(toggleFilter({}, "type", "value", false, false)).toEqual({});
+    });
+
+    it("can toggle an expected false value", () => {
+      expect(toggleFilter({}, "type", "value", false, true)).toEqual({
+        type: ["value"],
+      });
+    });
   });
 
   describe("getEmptyFilter", () => {

@@ -13,6 +13,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
 import {
+  filtersToString,
+  getCurrentFilters,
+  toggleFilter,
+} from "app/machines/search";
+import {
   general as generalActions,
   machine as machineActions,
   resourcepool as resourcePoolActions,
@@ -411,6 +416,7 @@ export const MachineListTable = ({
   grouping,
   hiddenGroups,
   setHiddenGroups,
+  setSearchFilter,
 }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -429,6 +435,11 @@ export const MachineListTable = ({
     grouping,
     machines,
   ]);
+  const removeSelectedFilter = () => {
+    const filters = getCurrentFilters(filter);
+    const newFilters = toggleFilter(filters, "in", "selected", false, false);
+    setSearchFilter(filtersToString(newFilters));
+  };
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
@@ -469,6 +480,9 @@ export const MachineListTable = ({
     } else {
       newSelectedMachines = [...selectedMachines, machine];
     }
+    if (newSelectedMachines.length === 0) {
+      removeSelectedFilter();
+    }
     dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
@@ -497,6 +511,9 @@ export const MachineListTable = ({
         [...selectedMachines]
       );
     }
+    if (newSelectedMachines.length === 0) {
+      removeSelectedFilter();
+    }
     dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
@@ -504,6 +521,7 @@ export const MachineListTable = ({
     let newSelectedMachines;
     if (checkboxChecked(machines, selectedMachines)) {
       newSelectedMachines = [];
+      removeSelectedFilter();
     } else {
       newSelectedMachines = machines;
     }
@@ -743,6 +761,7 @@ MachineListTable.propTypes = {
   hiddenGroups: PropTypes.arrayOf(PropTypes.string),
   filter: PropTypes.string,
   setHiddenGroups: PropTypes.func,
+  setSearchFilter: PropTypes.func.isRequired,
 };
 
 export default React.memo(MachineListTable);

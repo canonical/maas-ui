@@ -134,7 +134,7 @@ export const ActionForm = ({ selectedAction, setSelectedAction }) => {
         selectedAction.name === "delete" ? "negative" : "positive"
       }
       submitLabel={getSubmitText(selectedAction, selectedMachines.length)}
-      onCancel={() => setSelectedAction(null)}
+      onCancel={() => setSelectedAction(null, true)}
       onSaveAnalytics={{
         action: selectedAction.name,
         category: "Take action menu",

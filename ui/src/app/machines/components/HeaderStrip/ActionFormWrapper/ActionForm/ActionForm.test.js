@@ -87,7 +87,7 @@ describe("ActionForm", () => {
     );
     wrapper.find('[data-test="cancel-action"] button').simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith(null);
+    expect(setSelectedAction).toHaveBeenCalledWith(null, true);
   });
 
   it("displays a negative submit button if selected action is delete", () => {

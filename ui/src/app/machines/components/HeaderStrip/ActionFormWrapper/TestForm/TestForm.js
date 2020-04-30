@@ -91,7 +91,7 @@ export const TestForm = ({ setSelectedAction }) => {
         "machine",
         selectedMachines.length
       )}`}
-      onCancel={() => setSelectedAction(null)}
+      onCancel={() => setSelectedAction(null, true)}
       onSaveAnalytics={{
         action: "Test",
         category: "Take action menu",

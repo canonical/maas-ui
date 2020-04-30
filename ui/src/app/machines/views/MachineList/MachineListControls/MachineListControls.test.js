@@ -1,5 +1,5 @@
 import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -29,9 +29,9 @@ describe("MachineListControls", () => {
     localStorage.clear();
   });
 
-  it("changes the URL when the search text changes, after the debounce interval", () => {
-    let location;
+  it("changes the filter when the search text changes, after the debounce interval", () => {
     const store = mockStore(initialState);
+    const setFilter = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -42,16 +42,9 @@ describe("MachineListControls", () => {
           <MachineListControls
             filter=""
             grouping="none"
-            setFilter={jest.fn()}
+            setFilter={setFilter}
             setGrouping={jest.fn()}
             setHiddenGroups={jest.fn()}
-          />
-          <Route
-            path="*"
-            render={(props) => {
-              location = props.location;
-              return null;
-            }}
           />
         </MemoryRouter>
       </Provider>
@@ -59,16 +52,16 @@ describe("MachineListControls", () => {
     act(() => {
       wrapper.find("SearchBox").props().onChange("status:new");
     });
+    expect(setFilter).not.toHaveBeenCalled();
     act(() => {
       jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
     });
-    wrapper.update();
-    expect(location.search).toBe("?status=new");
+    expect(setFilter).toHaveBeenCalledWith("status:new");
   });
 
-  it("changes the URL when the filter accordion changes", () => {
-    let location;
+  it("changes the filter when the filter accordion changes", () => {
     const store = mockStore(initialState);
+    const setFilter = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -79,16 +72,9 @@ describe("MachineListControls", () => {
           <MachineListControls
             filter=""
             grouping="none"
-            setFilter={jest.fn()}
+            setFilter={setFilter}
             setGrouping={jest.fn()}
             setHiddenGroups={jest.fn()}
-          />
-          <Route
-            path="*"
-            render={(props) => {
-              location = props.location;
-              return null;
-            }}
           />
         </MemoryRouter>
       </Provider>
@@ -96,8 +82,7 @@ describe("MachineListControls", () => {
     act(() => {
       wrapper.find("FilterAccordion").props().setSearchText("status:new");
     });
-    wrapper.update();
-    expect(location.search).toBe("?status=new");
+    expect(setFilter).toHaveBeenCalledWith("status:new");
   });
 
   it("displays a spinner while debouncing search box input", () => {

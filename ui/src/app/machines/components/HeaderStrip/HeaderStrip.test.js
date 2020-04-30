@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -42,6 +43,7 @@ describe("HeaderStrip", () => {
         items: [],
       },
       machine: {
+        errors: {},
         loaded: true,
         items: [
           {
@@ -86,10 +88,16 @@ describe("HeaderStrip", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+        },
       },
       resourcepool: {
         loaded: false,
-        items: [1, 2],
+        items: [
+          { id: 0, name: "default" },
+          { id: 1, name: "other" },
+        ],
       },
       zone: {
         loaded: true,
@@ -116,7 +124,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <HeaderStrip setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -132,7 +140,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <HeaderStrip setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -149,7 +157,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <HeaderStrip setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -168,7 +176,7 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <HeaderStrip setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -185,7 +193,7 @@ describe("HeaderStrip", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <HeaderStrip selectedMachines={[]} setSelectedMachines={jest.fn()} />
+          <HeaderStrip setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -193,5 +201,47 @@ describe("HeaderStrip", () => {
     expect(
       wrapper.find('Button[data-test="add-hardware-dropdown"]').length
     ).toBe(0);
+  });
+
+  it("can add the selected filter when displaying a form", () => {
+    const store = mockStore(initialState);
+    const setSearchFilter = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip setSearchFilter={setSearchFilter} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("TakeActionMenu")
+        .props()
+        .setSelectedAction({ name: "set-pool" })
+    );
+    expect(setSearchFilter).toHaveBeenCalledWith("in:(selected)");
+  });
+
+  it("can remove the selected filter when cancelling a form", () => {
+    const store = mockStore(initialState);
+    const setSearchFilter = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip
+            searchFilter="in:selected"
+            setSearchFilter={setSearchFilter}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("TakeActionMenu").props().setSelectedAction(null, true)
+    );
+    expect(setSearchFilter).toHaveBeenCalledWith("");
   });
 });

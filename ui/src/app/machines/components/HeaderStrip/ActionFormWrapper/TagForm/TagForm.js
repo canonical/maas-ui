@@ -61,7 +61,7 @@ export const TagForm = ({ setSelectedAction }) => {
         "machine",
         selectedMachines.length
       )}`}
-      onCancel={() => setSelectedAction(null)}
+      onCancel={() => setSelectedAction(null, true)}
       onSaveAnalytics={{
         action: "Tag",
         category: "Take action menu",

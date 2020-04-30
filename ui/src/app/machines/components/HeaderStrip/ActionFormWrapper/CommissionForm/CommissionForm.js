@@ -114,7 +114,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
         "machine",
         selectedMachines.length
       )}`}
-      onCancel={() => setSelectedAction(null)}
+      onCancel={() => setSelectedAction(null, true)}
       onSaveAnalytics={{
         action: "Commission",
         category: "Take action menu",
