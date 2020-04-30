@@ -1,4 +1,4 @@
-import { Button, Col, Spinner, Row } from "@canonical/react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
@@ -47,62 +47,58 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
 
   return (
     <>
-      <Row>
-        <Col size="6">
-          <ul className="p-inline-list">
-            <li className="p-inline-list__item p-heading--four">Machines</li>
-            {machinesLoaded ? (
-              <li
-                className="p-inline-list__item last-item u-text--light"
-                data-test="machine-count"
-              >
-                {`${machines.length} ${pluralize(
-                  "machine",
-                  machines.length
-                )} available`}
-              </li>
-            ) : (
-              <Spinner
-                className="u-no-padding u-no-margin"
-                inline
-                text="Loading..."
-              />
-            )}
-          </ul>
-        </Col>
-        <Col size="6" className="u-align--right">
-          <Switch>
-            <Route exact path="/machines">
-              <ul className="p-inline-list u-no-margin--bottom">
-                {selectedMachines.length > 0 && (
-                  <li
-                    className="p-inline-list__item u-text--light"
-                    data-test="selected-count"
-                  >
-                    <span>{`${selectedMachines.length} selected`}</span>
-                    <span className="p-heading--four" />
+      <div className="u-flex--between u-flex--wrap">
+        <ul className="p-inline-list">
+          <li className="p-inline-list__item p-heading--four">Machines</li>
+          {machinesLoaded ? (
+            <li
+              className="p-inline-list__item last-item u-text--light"
+              data-test="machine-count"
+            >
+              {`${machines.length} ${pluralize(
+                "machine",
+                machines.length
+              )} available`}
+            </li>
+          ) : (
+            <Spinner
+              className="u-no-padding u-no-margin"
+              inline
+              text="Loading..."
+            />
+          )}
+        </ul>
+        <Switch>
+          <Route exact path="/machines">
+            <ul className="p-inline-list u-no-margin--bottom">
+              {selectedMachines.length > 0 && (
+                <li
+                  className="p-inline-list__item u-text--light"
+                  data-test="selected-count"
+                >
+                  <span>{`${selectedMachines.length} selected`}</span>
+                  <span className="p-heading--four" />
+                </li>
+              )}
+              {!selectedAction && (
+                <>
+                  <li className="p-inline-list__item">
+                    <AddHardwareMenu disabled={hasSelectedMachines} />
                   </li>
-                )}
-                {!selectedAction && (
-                  <>
-                    <li className="p-inline-list__item">
-                      <AddHardwareMenu disabled={hasSelectedMachines} />
-                    </li>
-                    <li className="p-inline-list__item last-item">
-                      <TakeActionMenu setSelectedAction={setAction} />
-                    </li>
-                  </>
-                )}
-              </ul>
-            </Route>
-            <Route exact path="/pools">
-              <Button data-test="add-pool" element={Link} to="/pools/add">
-                Add pool
-              </Button>
-            </Route>
-          </Switch>
-        </Col>
-      </Row>
+                  <li className="p-inline-list__item last-item">
+                    <TakeActionMenu setSelectedAction={setAction} />
+                  </li>
+                </>
+              )}
+            </ul>
+          </Route>
+          <Route exact path="/pools">
+            <Button data-test="add-pool" element={Link} to="/pools/add">
+              Add pool
+            </Button>
+          </Route>
+        </Switch>
+      </div>
       {selectedAction && (
         <ActionFormWrapper
           selectedAction={selectedAction}

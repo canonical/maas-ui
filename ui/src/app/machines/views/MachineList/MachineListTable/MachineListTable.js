@@ -546,7 +546,7 @@ export const MachineListTable = ({
           headers={[
             {
               content: (
-                <div className="u-equal-height u-nudge--checkbox">
+                <div className="u-flex u-nudge--checkbox">
                   <Input
                     checked={
                       checkboxChecked(machines, selectedMachines) &&

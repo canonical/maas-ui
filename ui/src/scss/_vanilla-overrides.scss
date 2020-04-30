@@ -54,3 +54,9 @@ input[type="radio"] {
   margin-bottom: 0.8rem;
   margin-top: -0.5rem;
 }
+
+// 30-04-2020 Caleb: z-index of mobile tabs chevron is too high
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3027
+.p-tabs::before {
+  z-index: 1;
+}

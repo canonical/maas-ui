@@ -28,7 +28,7 @@ export const FormCardButtons = ({
       >
         <Button
           appearance="base"
-          className="u-no-margin--bottom"
+          className={classNames({ "u-no-margin--bottom": bordered })}
           data-test="cancel-action"
           onClick={() => {
             if (onCancel) {
@@ -44,7 +44,7 @@ export const FormCardButtons = ({
         {secondarySubmit && secondarySubmitLabel && (
           <Button
             appearance="neutral"
-            className="u-no-margin--bottom"
+            className={classNames({ "u-no-margin--bottom": bordered })}
             data-test="secondary-submit"
             disabled={submitDisabled}
             onClick={secondarySubmit}
@@ -55,7 +55,7 @@ export const FormCardButtons = ({
         )}
         <ActionButton
           appearance={submitAppearance}
-          className="u-no-margin--bottom"
+          className={classNames({ "u-no-margin--bottom": bordered })}
           disabled={submitDisabled}
           loading={loading}
           success={success}

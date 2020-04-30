@@ -35,6 +35,7 @@
   }
 
   .filter-accordion .p-contextual-menu__dropdown {
+    max-width: none;
     width: calc(100% - 1px);
   }
 
