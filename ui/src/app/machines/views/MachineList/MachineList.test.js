@@ -1,4 +1,3 @@
-import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -6,7 +5,6 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineList from "./MachineList";
-import { DEBOUNCE_INTERVAL } from "./MachineListControls";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();
@@ -212,7 +210,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -220,22 +218,6 @@ describe("MachineList", () => {
     // The machine list should also be visible as the machines are
     // loaded in batches.
     expect(wrapper.find("Memo(MachineListTable)").exists()).toBe(true);
-  });
-
-  it("can set the search from the URL", () => {
-    const store = mockStore(initialState);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <MachineList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SearchBox").prop("value")).toBe("test search");
   });
 
   it("can filter groups", () => {
@@ -246,7 +228,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -265,7 +247,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -290,7 +272,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -311,7 +293,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -329,7 +311,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -344,7 +326,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -360,7 +342,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -377,7 +359,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -396,7 +378,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -415,7 +397,7 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList setSearchFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -433,15 +415,13 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList />
+          <MachineList
+            searchFilter="this does not match anything"
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.find("SearchBox").props().onChange("no-machines");
-      jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
-    });
-    wrapper.update();
     expect(wrapper.find("Strip span").text()).toBe(
       "No machines match the search criteria."
     );

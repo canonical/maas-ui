@@ -70,7 +70,7 @@ export const DeployForm = ({ setSelectedAction }) => {
         "machine",
         selectedMachines.length
       )}`}
-      onCancel={() => setSelectedAction(null)}
+      onCancel={() => setSelectedAction(null, true)}
       onSaveAnalytics={{
         action: "Deploy",
         category: "Take action menu",

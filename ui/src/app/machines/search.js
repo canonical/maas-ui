@@ -95,19 +95,38 @@ export const isFilterActive = (filters, type, value, exact = false) => {
   return _getFilterValueIndex(filters, type, value) !== -1;
 };
 
-// Toggles a filter on or off based on type and value.
-export const toggleFilter = (filters, type, value, exact) => {
-  if (typeof filters[type] === "undefined") {
-    filters[type] = [];
-  }
+/**
+ * Toggles a filter on or off based on type and value.
+ * @param {Object} filters - The initial filters.
+ * @param {String} type - The filter key.
+ * @param {Any} value - The filter value to toggle.
+ * @param {Boolean} exact - Optional value for whether the value should
+ * exactly match.
+ * @param {Boolean} shouldExist - An optional value for whether the value should
+ * exist or not i.e. if true and the value exists there will be no change and
+ * vice versa.
+ * @returns {Boolean} Tag loading state.
+ */
+export const toggleFilter = (filters, type, value, exact, shouldExist) => {
   if (exact) {
     value = "=" + value;
   }
   const idx = _getFilterValueIndex(filters, type, value);
-  if (idx === -1) {
-    filters[type].push(value);
-  } else {
-    filters[type].splice(idx, 1);
+  const exists = idx !== -1;
+  if (!exists) {
+    if (shouldExist === undefined ? true : shouldExist) {
+      if (typeof filters[type] === "undefined") {
+        filters[type] = [];
+      }
+      filters[type].push(value);
+    }
+  } else if (exists) {
+    if (shouldExist === undefined ? true : !shouldExist) {
+      filters[type].splice(idx, 1);
+      if (filters[type].length === 0) {
+        delete filters[type];
+      }
+    }
   }
   return filters;
 };

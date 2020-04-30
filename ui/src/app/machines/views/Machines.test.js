@@ -1,4 +1,5 @@
-import { MemoryRouter } from "react-router-dom";
+import { act } from "react-dom/test-utils";
+import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -265,5 +266,50 @@ describe("Machines", () => {
       </Provider>
     );
     expect(wrapper.find("NotFound").length).toBe(1);
+  });
+
+  it("can set the search from the URL", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
+          ]}
+        >
+          <Machines />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
+      "test search"
+    );
+  });
+
+  it("changes the URL when the search text changes", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
+          ]}
+        >
+          <Machines />
+          <Route
+            path="*"
+            render={(props) => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper.find("MachineList").props().setSearchFilter("status:new");
+    });
+    expect(location.search).toBe("?status=new");
   });
 });

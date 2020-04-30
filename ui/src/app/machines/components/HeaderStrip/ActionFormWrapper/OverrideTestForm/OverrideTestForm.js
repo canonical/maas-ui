@@ -107,7 +107,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         submitLabel={`Override failed tests for ${
           selectedMachines.length
         } ${pluralize("machine", selectedMachines.length)}`}
-        onCancel={() => setSelectedAction(null)}
+        onCancel={() => setSelectedAction(null, true)}
         onSaveAnalytics={{
           action: "Override",
           category: "Take action menu",

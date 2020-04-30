@@ -209,6 +209,7 @@ describe("MachineListTable", () => {
             grouping="status"
             hiddenGroups={[]}
             setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -235,6 +236,7 @@ describe("MachineListTable", () => {
             grouping="status"
             hiddenGroups={[]}
             setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -274,6 +276,7 @@ describe("MachineListTable", () => {
             grouping="none"
             hiddenGroups={[]}
             setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -323,6 +326,7 @@ describe("MachineListTable", () => {
             grouping="none"
             hiddenGroups={[]}
             setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -402,6 +406,7 @@ describe("MachineListTable", () => {
             grouping="status"
             hiddenGroups={[]}
             setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -429,6 +434,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -453,6 +459,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -477,6 +484,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -500,6 +508,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -535,6 +544,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -570,6 +580,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -605,6 +616,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -640,6 +652,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -675,6 +688,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -710,6 +724,7 @@ describe("MachineListTable", () => {
               grouping="status"
               hiddenGroups={[]}
               setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -725,5 +740,92 @@ describe("MachineListTable", () => {
           .exists()
       ).toBe(true);
     });
+  });
+
+  it("remove selected filter when unchecking the only checked machine", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const setSearchFilter = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListTable
+            filter="in:selected"
+            grouping="status"
+            hiddenGroups={[]}
+            setHiddenGroups={jest.fn()}
+            setSearchFilter={setSearchFilter}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("[data-test='name-column'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id },
+      });
+    expect(setSearchFilter).toHaveBeenCalledWith("");
+  });
+
+  it("remove selected filter when unchecking the only checked group", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const setSearchFilter = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListTable
+            filter="in:selected"
+            grouping="status"
+            hiddenGroups={[]}
+            setHiddenGroups={jest.fn()}
+            setSearchFilter={setSearchFilter}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("[data-test='group-cell'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id },
+      });
+    expect(setSearchFilter).toHaveBeenCalledWith("");
+  });
+
+  it("remove selected filter when unchecking the all machines checkbox", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456", "ghi789"];
+    const store = mockStore(state);
+    const setSearchFilter = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListTable
+            filter="in:selected"
+            grouping="status"
+            hiddenGroups={[]}
+            setHiddenGroups={jest.fn()}
+            setSearchFilter={setSearchFilter}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("[data-test='all-machines-checkbox'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.machine.items[0].system_id },
+      });
+    expect(setSearchFilter).toHaveBeenCalledWith("");
   });
 });
