@@ -1384,11 +1384,11 @@ export function NodeNetworkingController(
     if (nic.tags) {
       params.tags = nic.tags.map(tag => tag.text);
     }
-    if (nic.link_speed && nic.formatted_link_speed) {
-      params.link_speed = nic.formatted_link_speed * 1000;
+    if (parseInt(nic.formatted_link_speed) >= 0) {
+      params.link_speed = parseInt(nic.formatted_link_speed) * 1000;
     }
-    if (nic.interface_speed && nic.formatted_interface_speed) {
-      params.interface_speed = nic.formatted_interface_speed * 1000;
+    if (parseInt(nic.formatted_interface_speed) >= 0) {
+      params.interface_speed = parseInt(nic.formatted_interface_speed) * 1000;
     }
     return params;
   };
