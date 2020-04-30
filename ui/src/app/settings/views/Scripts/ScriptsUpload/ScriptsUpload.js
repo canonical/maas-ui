@@ -41,33 +41,22 @@ const ScriptsUpload = ({ type }) => {
   }, [savedScript, hasErrors, errors, dispatch]);
 
   const onDrop = useCallback(
-    (acceptedFiles, rejectedFiles) => {
-      if (acceptedFiles.length > 1 || rejectedFiles.length > 1) {
-        dispatch(
-          messages.add(`Only a single file may be uploaded.`, "caution")
-        );
-        return;
-      }
+    (acceptedFiles, fileRejections) => {
+      fileRejections.forEach((rejection) => {
+        rejection.errors.forEach((error) => {
+          if (error.code === "too-many-files") {
+            dispatch(
+              messages.add(`Only a single file may be uploaded.`, "negative")
+            );
+            return;
+          }
+          dispatch(messages.add(error.message, "negative"));
+        });
+      });
 
-      if (rejectedFiles.length > 0 && rejectedFiles[0].size > MAX_SIZE_BYTES) {
-        dispatch(
-          messages.add(
-            `File size must be ${MAX_SIZE_BYTES} bytes, or fewer.`,
-            "caution"
-          )
-        );
-        return;
+      if (!fileRejections.length && acceptedFiles.length) {
+        readScript(acceptedFiles[0], dispatch, setScript);
       }
-
-      if (rejectedFiles.length > 0) {
-        dispatch(
-          messages.add(`Invalid filetype, please try again.`, "negative")
-        );
-        return;
-      }
-
-      const acceptedFile = acceptedFiles[0];
-      readScript(acceptedFile, dispatch, setScript);
     },
     [dispatch]
   );

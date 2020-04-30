@@ -83,7 +83,7 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "Invalid filetype, please try again."
+      "File type must be text/*, application/x-csh, application/x-sh"
     );
   });
 
@@ -108,7 +108,7 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "File size must be 2000000 bytes, or fewer."
+      "File is larger than 2000000 bytes"
     );
   });
 
