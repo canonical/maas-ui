@@ -5,63 +5,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import usePortal from "react-useportal";
 
-const getPositionStyle = (position, wrapper, constrainPanelWidth) => {
-  if (!wrapper || !wrapper.current) {
-    return undefined;
-  }
-  // We want the dimensions of the first child of the contextual menu span, not
-  // the span itself. Guard present just in case a child is not defined.
-  const element = wrapper.current.children.length
-    ? wrapper.current.children[0]
-    : wrapper.current;
-  const { bottom, left, width } = element.getBoundingClientRect();
-  const topPos = bottom + (window.scrollY || 0);
-  let leftPos = left;
-
-  switch (position) {
-    case "left":
-      leftPos = left;
-      break;
-    case "center":
-      leftPos = left + width / 2;
-      break;
-    case "right":
-      leftPos = left + width;
-      break;
-    default:
-      break;
-  }
-
-  let styles = { position: "absolute", left: leftPos, top: topPos };
-
-  if (constrainPanelWidth) {
-    styles.width = width;
-  }
-
-  return styles;
-};
-
-const generateLink = (
-  { children, className, onClick, ...props },
-  key,
-  closePortal
-) => (
-  <Button
-    className={classNames("p-contextual-menu__link", className)}
-    key={key}
-    onClick={
-      onClick
-        ? () => {
-            closePortal();
-            onClick();
-          }
-        : null
-    }
-    {...props}
-  >
-    {children}
-  </Button>
-);
+import ContextualMenuDropdown from "./ContextualMenuDropdown";
 
 const ContextualMenu = ({
   className,
@@ -136,49 +80,19 @@ const ContextualMenu = ({
       )}
       {isOpen && (
         <Portal>
-          <span
-            className={wrapperClass}
-            style={getPositionStyle(
-              position,
-              positionNode || wrapper,
-              constrainPanelWidth
-            )}
-          >
-            <span
-              className={classNames(
-                "p-contextual-menu__dropdown",
-                dropdownClassName
-              )}
-              id={id.current}
-              aria-hidden={isOpen ? "false" : "true"}
-              aria-label="submenu"
-            >
-              {dropdownContent
-                ? dropdownContent
-                : links.map((item, i) => {
-                    if (Array.isArray(item)) {
-                      return (
-                        <span className="p-contextual-menu__group" key={i}>
-                          {item.map((link, j) =>
-                            generateLink(link, j, closePortal)
-                          )}
-                        </span>
-                      );
-                    }
-                    if (typeof item === "string") {
-                      return (
-                        <div
-                          className="p-contextual-menu__non-interactive"
-                          key={i}
-                        >
-                          {item}
-                        </div>
-                      );
-                    }
-                    return generateLink(item, i, closePortal);
-                  })}
-            </span>
-          </span>
+          <ContextualMenuDropdown
+            closePortal={closePortal}
+            constrainPanelWidth={constrainPanelWidth}
+            dropdownClassName={dropdownClassName}
+            dropdownContent={dropdownContent}
+            id={id.current}
+            isOpen={isOpen}
+            links={links}
+            position={position}
+            positionNode={positionNode ? positionNode.current : null}
+            wrapper={wrapper.current}
+            wrapperClass={wrapperClass}
+          />
         </Portal>
       )}
     </span>

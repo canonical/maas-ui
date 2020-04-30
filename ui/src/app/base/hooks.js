@@ -277,3 +277,41 @@ export const useAllPowerParameters = (powerTypes) =>
       }, {}),
     [powerTypes]
   );
+
+export const THROTTLE_DELAY = 100;
+
+/**
+ * Handle window resize events.
+ * @param {Function} callback - The function to call when the window resizes.
+ */
+export const useOnWindowResize = (callback) => {
+  const storedCallback = useRef(callback);
+  const timeout = useRef();
+  const lastCall = useRef(Date.now());
+  useEffect(() => {
+    // Clean up the previous listener:
+    window.removeEventListener("resize", storedCallback.current);
+    // Store the callback for the cleanup method.
+    storedCallback.current = () => {
+      if (Date.now() - lastCall.current >= THROTTLE_DELAY) {
+        // This is after the throttle delay so call the callback and reset
+        // the timer.
+        clearTimeout(timeout.current);
+        callback();
+        lastCall.current = Date.now();
+        timeout.current = null;
+      } else if (!timeout.current) {
+        // Set a timeout to call the callback if the window is not resized
+        // after the delay time.
+        timeout.current = setTimeout(() => {
+          callback();
+        }, THROTTLE_DELAY);
+      }
+    };
+    window.addEventListener("resize", storedCallback.current);
+    return () => {
+      clearTimeout(timeout.current);
+      window.removeEventListener("resize", storedCallback.current);
+    };
+  }, [callback]);
+};

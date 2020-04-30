@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContextualMenuDropdown  renders 1`] = `
+<ContextualMenuDropdown
+  links={
+    Array [
+      Object {
+        "children": "Link1",
+      },
+    ]
+  }
+>
+  <span>
+    <span
+      aria-hidden="true"
+      aria-label="submenu"
+      className="p-contextual-menu__dropdown"
+    >
+      <Button
+        className="p-contextual-menu__link"
+        key="0"
+        onClick={null}
+      >
+        <button
+          className="p-button--neutral p-contextual-menu__link"
+          onClick={null}
+        >
+          Link1
+        </button>
+      </Button>
+    </span>
+  </span>
+</ContextualMenuDropdown>
+`;
