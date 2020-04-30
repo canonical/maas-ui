@@ -816,7 +816,7 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("getOSInfo", () => {
+  describe("getPodOSName", () => {
     it("returns host's OS info", () => {
       makeController();
       const pod = { id: 1, host: "abc" };
@@ -828,7 +828,7 @@ describe("PodsListController", function() {
       $scope.osInfo = {
         releases: [["centos/centos70", "CentOS 7"]],
       };
-      expect($scope.getOSInfo(pod)).toEqual("CentOS 7");
+      expect($scope.getPodOSName(pod)).toEqual("CentOS 7");
     });
 
     it("returns trimmed host OS info if OS is ubuntu", () => {
@@ -842,7 +842,7 @@ describe("PodsListController", function() {
       $scope.osInfo = {
         releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
       };
-      expect($scope.getOSInfo(pod)).toEqual("Ubuntu 18.04 LTS");
+      expect($scope.getPodOSName(pod)).toEqual("Ubuntu 18.04 LTS");
     });
 
     it("returns unformatted OS info if MAAS does not know about the release", () => {
@@ -856,13 +856,13 @@ describe("PodsListController", function() {
       $scope.osInfo = {
         releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
       };
-      expect($scope.getOSInfo(pod)).toEqual("ubuntu/focal");
+      expect($scope.getPodOSName(pod)).toEqual("ubuntu/focal");
     });
 
     it("returns unknown if the pod does not have a host", () => {
       makeController();
       const pod = { id: 1, host: undefined };
-      expect($scope.getOSInfo(pod)).toEqual("Unknown");
+      expect($scope.getPodOSName(pod)).toEqual("Unknown");
     });
   });
 });

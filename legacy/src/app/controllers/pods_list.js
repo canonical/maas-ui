@@ -4,6 +4,20 @@
  * MAAS Pods List Controller
  */
 
+const getOSShortName = (node, osInfo) => {
+  if (node) {
+    const baseString = `${node.osystem}/${node.distro_series}`;
+    const releaseArr = osInfo.releases.find(
+      (release) => release[0] === baseString
+    );
+    if (releaseArr && node.osystem === "ubuntu") {
+      return releaseArr[1].split('"')[0].trim(); // Remove "Adjective Animal"
+    }
+    return (releaseArr && releaseArr[1]) || baseString;
+  }
+  return "Unknown";
+};
+
 /* @ngInject */
 function PodsListController(
   $scope,
@@ -426,19 +440,9 @@ function PodsListController(
     return item && item.name;
   };
 
-  $scope.getOSInfo = (pod) => {
+  $scope.getPodOSName = (pod) => {
     const podHost = $scope.hostMap.get(pod.id);
-    if (podHost) {
-      const baseString = `${podHost.osystem}/${podHost.distro_series}`;
-      const releaseArr = $scope.osInfo.releases.find(
-        (release) => release[0] === baseString
-      );
-      if (releaseArr && podHost.osystem === "ubuntu") {
-        return releaseArr[1].split('"')[0].trim(); // Remove "Adjective Animal"
-      }
-      return (releaseArr && releaseArr[1]) || baseString;
-    }
-    return "Unknown";
+    return getOSShortName(podHost, $scope.osInfo);
   };
 
   $scope.getPowerIconClass = (pod) => {
