@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { nodeStatus, scriptStatus } from "app/base/enum";
 import HeaderStrip from "./HeaderStrip";
 
 const mockStore = configureStore();
@@ -45,51 +44,11 @@ describe("HeaderStrip", () => {
       machine: {
         errors: {},
         loaded: true,
-        items: [
-          {
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 4,
-            cpu_test_status: {
-              status: scriptStatus.RUNNING,
-            },
-            distro_series: "bionic",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            hostname: "koala",
-            ip_addresses: [],
-            memory: 8,
-            memory_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            network_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            osystem: "ubuntu",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 1,
-            pool: {},
-            pxe_mac: "00:11:22:33:44:55",
-            spaces: [],
-            status: "Releasing",
-            status_code: nodeStatus.RELEASING,
-            status_message: "",
-            storage: 8,
-            storage_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            testing_status: {
-              status: scriptStatus.PASSED,
-            },
-            system_id: "abc123",
-            zone: {},
-          },
-        ],
+        items: [{ system_id: "abc123" }, { system_id: "def456" }],
         selected: [],
         statuses: {
           abc123: {},
+          def456: {},
         },
       },
       resourcepool: {
@@ -145,7 +104,48 @@ describe("HeaderStrip", () => {
       </Provider>
     );
     expect(wrapper.find('[data-test="machine-count"]').text()).toBe(
-      "1 machine available"
+      "2 machines available"
+    );
+  });
+
+  it("displays a selected machine filter button if some machines have been selected", () => {
+    const state = { ...initialState };
+    state.machine.loaded = true;
+    state.machine.selected = ["abc123"];
+    const setSearchFilter = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip setSearchFilter={setSearchFilter} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="machine-count"]').text()).toBe(
+      "1 of 2 machines selected"
+    );
+    wrapper.find('[data-test="machine-count"] Button').simulate("click");
+    expect(setSearchFilter).toHaveBeenCalledWith("in:(Selected)");
+  });
+
+  it("displays a message when all machines have been selected", () => {
+    const state = { ...initialState };
+    state.machine.loaded = true;
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <HeaderStrip setSearchFilter={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="machine-count"]').text()).toBe(
+      "All machines selected"
     );
   });
 
