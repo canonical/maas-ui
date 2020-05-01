@@ -54,7 +54,8 @@ describe("OverrideTestForm", () => {
     };
   });
 
-  it("displays message for a single machine with no failed tests", () => {
+  it(`displays failed tests warning without suppress tests checkbox for a single
+    machine with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     state.scriptresults.items = {};
@@ -69,31 +70,16 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test-id="failed-results-message"]').html()).toBe(
-      '<span data-test-id="failed-results-message">Machine <strong>host1</strong> has<a href="/MAAS/#/machine/abc123"> failed 0 tests.</a></span>'
+    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+      "Machine host1 has not failed any tests. This can occur if the test suite failed to start."
+    );
+    expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
+      false
     );
   });
 
-  it("displays message for a single machine with failed tests", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find('[data-test-id="failed-results-message"]').html()).toBe(
-      '<span data-test-id="failed-results-message">Machine <strong>host1</strong> has<a href="/MAAS/#/machine/abc123"> failed 2 tests.</a></span>'
-    );
-  });
-
-  it("displays message for multiple machines with no failed tests", () => {
+  it(`displays failed tests warning without suppress tests checkbox for multiple
+    machines with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
     state.scriptresults.items = {};
@@ -109,8 +95,33 @@ describe("OverrideTestForm", () => {
     );
 
     expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "2 machines have failed 0 tests."
+      "2 machines have not failed any tests. This can occur if the test suite failed to start."
     );
+    expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
+      false
+    );
+  });
+
+  it("displays message with link for a single machine with failed tests", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+      "Machine host1 has failed 2 tests."
+    );
+    expect(
+      wrapper.find('[data-test-id="failed-results-message"] a').props().href
+    ).toBe(`${process.env.REACT_APP_BASENAME}/#/machine/abc123`);
   });
 
   it("displays message for multiple machines with failed tests", () => {
