@@ -24,16 +24,27 @@ exports[`ContextualMenu  renders 1`] = `
           </div>
         }
       >
-        <span
-          className="p-contextual-menu"
+        <ContextualMenuDropdown
+          closePortal={[Function]}
+          id="Uakgb_J5m9g-0JDMbcJqLJ"
+          isOpen={true}
+          links={Array []}
+          position="right"
+          positionNode={null}
+          wrapper={null}
+          wrapperClass="p-contextual-menu"
         >
           <span
-            aria-hidden="false"
-            aria-label="submenu"
-            className="p-contextual-menu__dropdown"
-            id="Uakgb_J5m9g-0JDMbcJqLJ"
-          />
-        </span>
+            className="p-contextual-menu"
+          >
+            <span
+              aria-hidden="false"
+              aria-label="submenu"
+              className="p-contextual-menu__dropdown"
+              id="Uakgb_J5m9g-0JDMbcJqLJ"
+            />
+          </span>
+        </ContextualMenuDropdown>
       </Portal>
     </Component>
   </span>
