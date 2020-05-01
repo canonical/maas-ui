@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
 
+import { useLocation } from "app/base/hooks";
 import {
   filtersToString,
   getCurrentFilters,
@@ -19,6 +20,7 @@ import TakeActionMenu from "./TakeActionMenu";
 
 export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
   const dispatch = useDispatch();
+  const { location } = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -29,6 +31,12 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
   useEffect(() => {
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (location.pathname !== "/machines") {
+      setSelectedAction(null);
+    }
+  }, [location.pathname]);
 
   const setAction = (action, deselect) => {
     if (action || deselect) {
