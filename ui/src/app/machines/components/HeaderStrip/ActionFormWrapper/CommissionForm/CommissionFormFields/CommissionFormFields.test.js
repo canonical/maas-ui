@@ -66,7 +66,10 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CommissionForm setSelectedAction={jest.fn()} />
+          <CommissionForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );

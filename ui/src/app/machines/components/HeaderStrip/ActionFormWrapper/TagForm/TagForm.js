@@ -1,4 +1,5 @@
 import pluralize from "pluralize";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -22,9 +23,8 @@ const TagFormSchema = Yup.object().shape({
     .required("You must select at least one tag."),
 });
 
-export const TagForm = ({ setSelectedAction }) => {
+export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const [initialValues, setInitialValues] = useState({ tags: [] });
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
@@ -83,6 +83,12 @@ export const TagForm = ({ setSelectedAction }) => {
       <TagFormFields />
     </FormikForm>
   );
+};
+
+TagForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default TagForm;

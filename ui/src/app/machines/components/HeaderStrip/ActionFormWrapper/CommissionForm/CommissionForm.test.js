@@ -64,7 +64,10 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CommissionForm setSelectedAction={jest.fn()} />
+          <CommissionForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -154,7 +157,31 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CommissionForm setSelectedAction={jest.fn()} />
+          <CommissionForm
+            processing={true}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CommissionForm
+            setProcessing={setProcessing}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -173,7 +200,6 @@ describe("CommissionForm", () => {
           commissioningScripts: [state.scripts.items[1]],
         })
     );
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

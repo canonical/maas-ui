@@ -1,7 +1,7 @@
 import { Button, Col, Row } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { machine as machineActions } from "app/base/actions";
@@ -38,25 +38,30 @@ const getErrorSentence = (action, count) => {
   }
 };
 
-export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
+export const ActionFormWrapper = ({
+  selectedAction,
+  setSelectedAction,
+  _processing = false,
+}) => {
   const dispatch = useDispatch();
-
+  // Initialise the processing state from a prop to allow testing the state change.
+  const [processing, setProcessing] = useState(_processing);
   const selectedMachines = useSelector(machineSelectors.selected);
-
-  const [actionableMachines, setActionableMachines] = useState([]);
-  const actionDisabled = actionableMachines.length !== selectedMachines.length;
-
-  useLayoutEffect(() => {
-    if (selectedAction) {
-      const actionable = selectedMachines.filter((machine) =>
-        machine.actions.includes(selectedAction.name)
-      );
-      setActionableMachines(actionable);
-    }
-  }, [selectedAction, selectedMachines]);
+  let actionableMachines = [];
+  if (selectedAction) {
+    actionableMachines = selectedMachines.filter((machine) =>
+      machine.actions.includes(selectedAction.name)
+    );
+  }
+  // The action should be disabled if not all the selected machines can perform
+  // The selected action. When machines are processing the available actions
+  // can change, so the action should not be disabled while processing.
+  const actionDisabled =
+    !processing && actionableMachines.length !== selectedMachines.length;
 
   useEffect(() => {
     if (selectedMachines.length === 0) {
+      // All the machines were deselected so close the form.
       setSelectedAction(null);
     }
   }, [selectedMachines, setSelectedAction]);
@@ -65,22 +70,66 @@ export const ActionFormWrapper = ({ selectedAction, setSelectedAction }) => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
         case "commission":
-          return <CommissionForm setSelectedAction={setSelectedAction} />;
+          return (
+            <CommissionForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "deploy":
-          return <DeployForm setSelectedAction={setSelectedAction} />;
+          return (
+            <DeployForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "override-failed-testing":
-          return <OverrideTestForm setSelectedAction={setSelectedAction} />;
+          return (
+            <OverrideTestForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "set-pool":
-          return <SetPoolForm setSelectedAction={setSelectedAction} />;
+          return (
+            <SetPoolForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "set-zone":
-          return <SetZoneForm setSelectedAction={setSelectedAction} />;
+          return (
+            <SetZoneForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "tag":
-          return <TagForm setSelectedAction={setSelectedAction} />;
+          return (
+            <TagForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case "test":
-          return <TestForm setSelectedAction={setSelectedAction} />;
+          return (
+            <TestForm
+              processing={processing}
+              setProcessing={setProcessing}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         default:
           return (
             <ActionForm
+              processing={processing}
+              setProcessing={setProcessing}
               selectedAction={selectedAction}
               setSelectedAction={setSelectedAction}
             />
