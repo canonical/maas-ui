@@ -54,7 +54,10 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -110,7 +113,30 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm
+            processing={true}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const store = mockStore(state);
+    state.machine.selected = ["abc123", "def456"];
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SetPoolForm
+            setProcessing={setProcessing}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -121,7 +147,6 @@ describe("SetPoolForm", () => {
         description: "",
       })
     );
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });
