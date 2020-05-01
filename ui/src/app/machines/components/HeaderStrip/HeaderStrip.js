@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
 
+import { useLocation } from "app/base/hooks";
 import {
   filtersToString,
   getCurrentFilters,
@@ -17,8 +18,30 @@ import AddHardwareMenu from "./AddHardwareMenu";
 import HeaderStripTabs from "./HeaderStripTabs";
 import TakeActionMenu from "./TakeActionMenu";
 
+const getMachineCount = (machines, selectedMachines, setSearchFilter) => {
+  const machineCountString = `${machines.length} ${pluralize(
+    "machine",
+    machines.length
+  )}`;
+  if (selectedMachines.length) {
+    if (machines.length === selectedMachines.length) {
+      return "All machines selected";
+    }
+    return (
+      <Button
+        className="p-button--link"
+        onClick={() => setSearchFilter("in:(Selected)")}
+      >
+        {`${selectedMachines.length} of ${machineCountString} selected`}
+      </Button>
+    );
+  }
+  return `${machineCountString} available`;
+};
+
 export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
   const dispatch = useDispatch();
+  const { location } = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -29,6 +52,12 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
   useEffect(() => {
     dispatch(machineActions.fetch());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (location.pathname !== "/machines") {
+      setSelectedAction(null);
+    }
+  }, [location.pathname]);
 
   const setAction = (action, deselect) => {
     if (action || deselect) {
@@ -55,10 +84,7 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
               className="p-inline-list__item last-item u-text--light"
               data-test="machine-count"
             >
-              {`${machines.length} ${pluralize(
-                "machine",
-                machines.length
-              )} available`}
+              {getMachineCount(machines, selectedMachines, setSearchFilter)}
             </li>
           ) : (
             <Spinner
@@ -71,15 +97,6 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
         <Switch>
           <Route exact path="/machines">
             <ul className="p-inline-list u-no-margin--bottom">
-              {selectedMachines.length > 0 && (
-                <li
-                  className="p-inline-list__item u-text--light"
-                  data-test="selected-count"
-                >
-                  <span>{`${selectedMachines.length} selected`}</span>
-                  <span className="p-heading--four" />
-                </li>
-              )}
               {!selectedAction && (
                 <>
                   <li className="p-inline-list__item">
