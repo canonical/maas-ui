@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 import PropTypes from "prop-types";
 import React from "react";
+import classNames from "classnames";
 
 import { formatErrors } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
