@@ -14,4 +14,9 @@
     height: $spv-inner--large;
     width: $spv-inner--large;
   }
+
+  .section__content {
+    // Raise the content above the sidebar so that the card shadows are on top.
+    z-index: 1;
+  }
 }
