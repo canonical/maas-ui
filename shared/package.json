@@ -24,7 +24,7 @@
     "enzyme-to-json": "3.4.4",
     "eslint": "6.8.0",
     "eslint-plugin-react": "7.19.0",
-    "jest": "25.5.3",
+    "jest": "25.5.4",
     "npm-package-json-lint": "5.1.0"
   },
   "dependencies": {
