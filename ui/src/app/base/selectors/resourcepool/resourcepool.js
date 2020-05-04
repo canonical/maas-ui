@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const resourcepool = {};
 
 /**
@@ -48,7 +50,9 @@ resourcepool.saved = (state) => state.resourcepool.saved;
  * @param {Number} id - id of resource pool to return.
  * @returns {Object} Resource pool that matches id.
  */
-resourcepool.getById = (state, id) =>
-  state.resourcepool.items.find((pool) => pool.id === id);
+resourcepool.getById = createSelector(
+  [resourcepool.all, (state, id) => id],
+  (pools, id) => pools.find((pool) => pool.id === id)
+);
 
 export default resourcepool;

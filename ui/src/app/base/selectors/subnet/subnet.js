@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const subnet = {};
 
 /**
@@ -26,7 +28,9 @@ subnet.loaded = (state) => state.subnet.loaded;
  * @param {Object} state - The redux state.
  * @returns {Array} A subnet.
  */
-subnet.getById = (state, id) =>
-  state.subnet.items.find((subnet) => subnet.id === id);
+subnet.getById = createSelector(
+  [subnet.all, (state, id) => id],
+  (subnets, id) => subnets.find((subnet) => subnet.id === id)
+);
 
 export default subnet;

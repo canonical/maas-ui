@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const controller = {};
 
 /**
@@ -26,7 +28,9 @@ controller.loaded = (state) => state.controller.loaded;
  * @param {Object} state - The redux state.
  * @returns {Array} A controller.
  */
-controller.getBySystemId = (state, id) =>
-  state.controller.items.find((controller) => controller.system_id === id);
+controller.getBySystemId = createSelector(
+  [controller.all, (state, id) => id],
+  (controllers, id) => controllers.find(({ system_id }) => system_id === id)
+);
 
 export default controller;
