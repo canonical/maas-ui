@@ -124,7 +124,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +140,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -156,7 +156,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -173,7 +173,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -202,7 +202,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -240,7 +240,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

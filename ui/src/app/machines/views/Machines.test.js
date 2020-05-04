@@ -312,4 +312,37 @@ describe("Machines", () => {
     });
     expect(location.search).toBe("?status=new");
   });
+
+  it("closes the take action form when route changes from /machines", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <Machines />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open action form
+    act(() =>
+      wrapper
+        .find("TakeActionMenu")
+        .props()
+        .setSelectedAction({ name: "set-pool" })
+    );
+    wrapper.update();
+    expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);
+
+    // Click pools tab, action form should close
+    act(() => {
+      wrapper
+        .find("HeaderStrip Link[to='/pools']")
+        .simulate("click", { button: 0 });
+    });
+    wrapper.update();
+    expect(wrapper.find("ActionFormWrapper").exists()).toBe(false);
+  });
 });

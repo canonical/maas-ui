@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 
 import {
   general as generalActions,
@@ -23,9 +24,12 @@ const DeploySchema = Yup.object().shape({
   installKVM: Yup.boolean(),
 });
 
-export const DeployForm = ({ setSelectedAction }) => {
+export const DeployForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
@@ -95,6 +99,12 @@ export const DeployForm = ({ setSelectedAction }) => {
       <DeployFormFields />
     </FormikForm>
   );
+};
+
+DeployForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default DeployForm;

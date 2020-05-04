@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -22,9 +23,12 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({ setSelectedAction }) => {
+export const SetPoolForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const [initialValues, setInitialValues] = useState({
     poolSelection: "select",
     description: "",
@@ -100,6 +104,12 @@ export const SetPoolForm = ({ setSelectedAction }) => {
       <SetPoolFormFields />
     </FormikForm>
   );
+};
+
+SetPoolForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default SetPoolForm;

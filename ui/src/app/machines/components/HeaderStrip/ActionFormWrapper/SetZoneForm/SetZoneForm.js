@@ -2,7 +2,8 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import {
@@ -18,9 +19,12 @@ const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
 });
 
-export const SetZoneForm = ({ setSelectedAction }) => {
+export const SetZoneForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
@@ -89,6 +93,12 @@ export const SetZoneForm = ({ setSelectedAction }) => {
       </Row>
     </FormikForm>
   );
+};
+
+SetZoneForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default SetZoneForm;

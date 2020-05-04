@@ -47,7 +47,7 @@ describe("TagForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm setSelectedAction={jest.fn()} />
+          <TagForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -107,7 +107,31 @@ describe("TagForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm setSelectedAction={jest.fn()} />
+          <TagForm
+            processing={true}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TagForm
+            setProcessing={setProcessing}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -119,7 +143,6 @@ describe("TagForm", () => {
           tags: [{ name: "tag1" }, { name: "tag2" }],
         })
     );
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

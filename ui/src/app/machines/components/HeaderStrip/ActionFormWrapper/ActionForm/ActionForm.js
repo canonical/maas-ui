@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import pluralize from "pluralize";
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
@@ -103,9 +104,13 @@ const useSelectedProcessing = (actionName) => {
   return useSelector(selector);
 };
 
-export const ActionForm = ({ selectedAction, setSelectedAction }) => {
+export const ActionForm = ({
+  processing,
+  setProcessing,
+  selectedAction,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
@@ -155,6 +160,12 @@ export const ActionForm = ({ selectedAction, setSelectedAction }) => {
       saved={saved}
     />
   );
+};
+
+ActionForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default ActionForm;
