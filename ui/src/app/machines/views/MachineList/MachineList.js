@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 import PropTypes from "prop-types";
 import React from "react";
-import classNames from "classnames";
+// import classNames from "classnames";
 
 import { formatErrors } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
@@ -14,6 +14,7 @@ import MachineListTable from "./MachineListTable";
 
 const MachineList = ({ searchFilter, setSearchFilter }) => {
   useWindowTitle("Machines");
+  let unusedVar;
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const errorMessage = formatErrors(errors);
