@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const dhcpsnippet = {};
 
 /**
@@ -13,19 +15,24 @@ dhcpsnippet.all = (state) => state.dhcpsnippet.items;
  * @param {String} term - The term to match against.
  * @returns {Array} A filtered list of dhcp snippets.
  */
-dhcpsnippet.search = (state, term) => {
-  return state.dhcpsnippet.items.filter(
-    (dhcpsnippet) =>
-      dhcpsnippet.name.includes(term) || dhcpsnippet.description.includes(term)
-  );
-};
+dhcpsnippet.search = createSelector(
+  [dhcpsnippet.all, (state, term) => term],
+  (dhcpsnippets, term) =>
+    dhcpsnippets.filter(
+      (snippet) =>
+        snippet.name.includes(term) || snippet.description.includes(term)
+    )
+);
 
 /**
  * Returns number of dhcp snippets
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all dhcp snippets.
  */
-dhcpsnippet.count = (state) => state.dhcpsnippet.items.length;
+dhcpsnippet.count = createSelector(
+  [dhcpsnippet.all],
+  (dhcpsnippets) => dhcpsnippets.length
+);
 
 /**
  * Whether dhcp snippets are loading.
@@ -67,7 +74,9 @@ dhcpsnippet.saved = (state) => state.dhcpsnippet.saved;
  * @param {Object} state - The redux state.
  * @returns {Array} A dhcp snippet.
  */
-dhcpsnippet.getById = (state, id) =>
-  state.dhcpsnippet.items.find((dhcpsnippet) => dhcpsnippet.id === id);
+dhcpsnippet.getById = createSelector(
+  [dhcpsnippet.all, (state, id) => id],
+  (dhcpsnippets, id) => dhcpsnippets.find((snippet) => snippet.id === id)
+);
 
 export default dhcpsnippet;

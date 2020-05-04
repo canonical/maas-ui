@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const packagerepository = {};
 
 /**
@@ -12,7 +14,10 @@ packagerepository.all = (state) => state.packagerepository.items;
  * @param {Object} state - The redux state.
  * @returns {Number} Count of all repositories.
  */
-packagerepository.count = (state) => state.packagerepository.items.length;
+packagerepository.count = createSelector(
+  [packagerepository.all],
+  (repositories) => repositories.length
+);
 
 /**
  * Returns true if repositories are loading.
@@ -55,11 +60,13 @@ packagerepository.errors = (state) => state.packagerepository.errors;
  * @param {String} term - The term to match against.
  * @returns {Array} A filtered list of repositories.
  */
-packagerepository.search = (state, term) => {
-  return state.packagerepository.items.filter(
-    (repo) => repo.name.includes(term) || repo.url.includes(term)
-  );
-};
+packagerepository.search = createSelector(
+  [packagerepository.all, (state, term) => term],
+  (repositories, term) =>
+    repositories.filter(
+      (repo) => repo.name.includes(term) || repo.url.includes(term)
+    )
+);
 
 /**
  * Returns repository that matches given id
@@ -67,7 +74,9 @@ packagerepository.search = (state, term) => {
  * @param {Number} id - id of repository to return.
  * @returns {Object} Repository that matches id.
  */
-packagerepository.getById = (state, id) =>
-  state.packagerepository.items.find((repo) => repo.id === id);
+packagerepository.getById = createSelector(
+  [packagerepository.all, (state, id) => id],
+  (repositories, id) => repositories.find((repo) => repo.id === id)
+);
 
 export default packagerepository;

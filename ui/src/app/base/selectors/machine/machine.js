@@ -86,8 +86,10 @@ ACTIONS.forEach(({ status }) => {
  * @param {Object} state - The redux state.
  * @returns {Array} A machine.
  */
-machine.getBySystemId = (state, id) =>
-  state.machine.items.find((machine) => machine.system_id === id);
+machine.getBySystemId = createSelector(
+  [machine.all, (state, id) => id],
+  (machines, id) => machines.find(({ system_id }) => system_id === id)
+);
 
 /**
  * Returns machine errors.
@@ -97,25 +99,19 @@ machine.getBySystemId = (state, id) =>
 machine.errors = (state) => state.machine.errors;
 
 /**
- * Gets the search terms and selected machines.
- * @param {Object} state - The redux state.
- * @param {String} terms - The search string.
- * @param {Array} selectedIDs - The selected machine ids.
- * @returns {Array} The search terms and selected machines.
- */
-machine._getSearchParams = (state, terms, selectedIDs) => ({
-  terms,
-  selectedIDs,
-});
-
-/**
  * Get machines that match terms.
  * @param {Object} state - The redux state.
  * @param {String} terms - The terms to match against.
  * @returns {Array} A filtered list of machines.
  */
 machine.search = createSelector(
-  [machine.all, machine._getSearchParams],
+  [
+    machine.all,
+    (state, terms, selectedIDs) => ({
+      terms,
+      selectedIDs,
+    }),
+  ],
   (items, { terms, selectedIDs }) => {
     if (!terms) {
       return items;

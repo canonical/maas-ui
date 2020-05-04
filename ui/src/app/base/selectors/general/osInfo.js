@@ -8,13 +8,12 @@ import { generateGeneralSelector } from "./utils";
 const osInfo = generateGeneralSelector("osInfo");
 
 /**
- * Returns kernels data
- * @param {Object} state - the redux state
- * @param {String} release - the release to get kernel options for
- * @returns {Array} - the available kernel options
+ * Returns kernels data.
+ * @param {Object} data - The osinfo data.
+ * @param {String} release - The release to get kernel options for.
+ * @returns {Array} - The available kernel options.
  */
-osInfo.getUbuntuKernelOptions = (state, release) => {
-  const { data } = state.general.osInfo;
+const _getUbuntuKernelOptions = (data, release) => {
   let kernelOptions = [];
 
   if (data.kernels && data.kernels.ubuntu && data.kernels.ubuntu[release]) {
@@ -30,35 +29,44 @@ osInfo.getUbuntuKernelOptions = (state, release) => {
 };
 
 /**
+ * Returns kernels data.
+ * @param {Object} state -The redux state.
+ * @param {String} release - The release to get kernel options for.
+ * @returns {Array} - The available kernel options.
+ */
+osInfo.getUbuntuKernelOptions = createSelector(
+  [osInfo.get, (state, release) => release],
+  (allOsInfo, release) => _getUbuntuKernelOptions(allOsInfo, release)
+);
+
+/**
  * Returns all ubuntu kernel options
  * @param {Object} state - the redux state
  * @returns {Object} - all ubuntu kernel options
  */
-osInfo.getAllUbuntuKernelOptions = (state) => {
-  const { data } = state.general.osInfo;
+osInfo.getAllUbuntuKernelOptions = createSelector([osInfo.get], (allOsInfo) => {
   let allUbuntuKernelOptions = {};
 
-  if (data.kernels && data.kernels.ubuntu) {
-    Object.keys(data.kernels.ubuntu).forEach((key) => {
-      allUbuntuKernelOptions[key] = osInfo.getUbuntuKernelOptions(state, key);
+  if (allOsInfo.kernels && allOsInfo.kernels.ubuntu) {
+    Object.keys(allOsInfo.kernels.ubuntu).forEach((key) => {
+      allUbuntuKernelOptions[key] = _getUbuntuKernelOptions(allOsInfo, key);
     });
   }
 
   return allUbuntuKernelOptions;
-};
+});
 
 /**
  * Returns OS releases
- * @param {Object} state - the redux state
+ * @param {Object} data - The osinfo data.
  * @param {String} os - the OS to get releases of
  * @returns {Array} - the available OS releases
  */
-osInfo.getOsReleases = (state, os) => {
-  const { data } = state.general.osInfo;
+const _getOsReleases = (allOsInfo, os) => {
   let osReleases = [];
 
-  if (data.releases) {
-    osReleases = data.releases
+  if (allOsInfo.releases) {
+    osReleases = allOsInfo.releases
       .filter((release) => release[0].includes(os))
       .map((release) => ({
         value: release[0].split("/")[1],
@@ -70,23 +78,33 @@ osInfo.getOsReleases = (state, os) => {
 };
 
 /**
+ * Returns OS releases
+ * @param {Object} state - the redux state
+ * @param {String} os - the OS to get releases of
+ * @returns {Array} - the available OS releases
+ */
+osInfo.getOsReleases = createSelector(
+  [osInfo.get, (state, os) => os],
+  (allOsInfo, os) => _getOsReleases(allOsInfo, os)
+);
+
+/**
  * Returns an object with all OS releases
  * @param {Object} state - the redux state
  * @returns {Object} - all OS releases
  */
-osInfo.getAllOsReleases = (state) => {
-  const { data } = state.general.osInfo;
+osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo) => {
   const allOsReleases = {};
 
-  if (data.osystems && data.releases) {
-    data.osystems.forEach((osystem) => {
+  if (allOsInfo.osystems && allOsInfo.releases) {
+    allOsInfo.osystems.forEach((osystem) => {
       const os = osystem[0];
-      allOsReleases[os] = osInfo.getOsReleases(state, os);
+      allOsReleases[os] = _getOsReleases(allOsInfo, os);
     });
   }
 
   return allOsReleases;
-};
+});
 
 /**
  * Returns an object with all OS releases
