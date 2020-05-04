@@ -12,9 +12,47 @@ describe("ActionFormWrapper", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      general: {
+        machineActions: {
+          data: [{ name: "commission", sentence: "commission" }],
+        },
+      },
       machine: {
+        errors: {},
         items: [],
         selected: [],
+        statuses: { a: {}, b: {} },
+      },
+      scripts: {
+        errors: {},
+        loading: false,
+        loaded: true,
+        items: [
+          {
+            name: "smartctl-validate",
+            tags: ["commissioning", "storage"],
+            parameters: {
+              storage: {
+                argument_format: "{path}",
+                type: "storage",
+              },
+            },
+            type: 2,
+          },
+          {
+            name: "internet-connectivity",
+            tags: ["internet", "network-validation", "network"],
+            parameters: {
+              url: {
+                default: "https://connectivity-check.ubuntu.com",
+                description:
+                  "A comma seperated list of URLs, IPs, or domains to test if the specified interface has access to. Any protocol supported by curl is support. If no protocol or icmp is given the URL will be pinged.",
+                required: true,
+              },
+            },
+            type: 2,
+          },
+        ],
       },
     };
   });
@@ -42,6 +80,34 @@ describe("ActionFormWrapper", () => {
     );
     expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
       true
+    );
+  });
+
+  it(`does not display a warning when processing and not all selected machines
+    can perform selected action`, () => {
+    const state = { ...initialState };
+    state.machine.items = [
+      { system_id: "a", actions: ["commission"] },
+      { system_id: "b", actions: [] },
+    ];
+    state.machine.selected = ["a", "b"];
+    const store = mockStore(state);
+    let wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ActionFormWrapper
+            selectedAction={{ name: "commission" }}
+            setSelectedAction={jest.fn()}
+            _processing={true}
+          />
+        </MemoryRouter>
+      </Provider>,
+      { context: store }
+    );
+    expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
+      false
     );
   });
 

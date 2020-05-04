@@ -53,7 +53,10 @@ describe("SetZoneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetZoneForm setSelectedAction={jest.fn()} />
+          <SetZoneForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -109,7 +112,30 @@ describe("SetZoneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetZoneForm setSelectedAction={jest.fn()} />
+          <SetZoneForm
+            processing={true}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const store = mockStore(state);
+    state.machine.selected = ["abc123", "def456"];
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SetZoneForm
+            setProcessing={setProcessing}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -118,7 +144,6 @@ describe("SetZoneForm", () => {
         zone: "zone-1",
       })
     );
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

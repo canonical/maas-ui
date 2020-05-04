@@ -2,42 +2,43 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 
 const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
 });
 
-export const SetZoneForm = ({ setSelectedAction }) => {
+export const SetZoneForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const zones = useSelector(zoneSelectors.all);
   const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={settingZoneSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="set-zone"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    settingZoneSelected,
+    setProcessing,
+    setSelectedAction,
+    "set-zone",
+    Object.keys(errors).length > 0
+  );
 
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
@@ -72,7 +73,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={SetZoneSchema}
     >
@@ -89,6 +90,12 @@ export const SetZoneForm = ({ setSelectedAction }) => {
       </Row>
     </FormikForm>
   );
+};
+
+SetZoneForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default SetZoneForm;

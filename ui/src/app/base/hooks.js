@@ -66,7 +66,13 @@ export const useFormikErrors = (errors) => {
       !simpleObjectEquality(errors, previousErrors)
     ) {
       Object.keys(errors).forEach((field) => {
-        setFieldError(field, errors[field].join(" "));
+        let errorString;
+        if (Array.isArray(errors[field])) {
+          errorString = errors[field].join(" ");
+        } else {
+          errorString = errors[field];
+        }
+        setFieldError(field, errorString);
         setFieldTouched(field, true, false);
       });
     }

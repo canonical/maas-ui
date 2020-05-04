@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 
 import {
   general as generalActions,
@@ -11,9 +12,9 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 import DeployFormFields from "./DeployFormFields";
 
 const DeploySchema = Yup.object().shape({
@@ -23,12 +24,14 @@ const DeploySchema = Yup.object().shape({
   installKVM: Yup.boolean(),
 });
 
-export const DeployForm = ({ setSelectedAction }) => {
+export const DeployForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
@@ -42,16 +45,14 @@ export const DeployForm = ({ setSelectedAction }) => {
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={deployingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="deploy"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    deployingSelected,
+    setProcessing,
+    setSelectedAction,
+    "deploy",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -88,13 +89,19 @@ export const DeployForm = ({ setSelectedAction }) => {
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />
     </FormikForm>
   );
+};
+
+DeployForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default DeployForm;

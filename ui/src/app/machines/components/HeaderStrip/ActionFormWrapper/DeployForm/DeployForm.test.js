@@ -128,7 +128,7 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm setSelectedAction={jest.fn()} />
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -194,7 +194,31 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={true}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm
+            setProcessing={setProcessing}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -206,7 +230,6 @@ describe("DeployForm", () => {
         installKVM: false,
       })
     );
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

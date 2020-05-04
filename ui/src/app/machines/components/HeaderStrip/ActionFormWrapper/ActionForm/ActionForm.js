@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import pluralize from "pluralize";
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 import { kebabToCamelCase } from "app/utils";
 
 const getSubmitText = (action, count) => {
@@ -103,25 +104,26 @@ const useSelectedProcessing = (actionName) => {
   return useSelector(selector);
 };
 
-export const ActionForm = ({ selectedAction, setSelectedAction }) => {
+export const ActionForm = ({
+  processing,
+  setProcessing,
+  selectedAction,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const selectedProcessing = useSelectedProcessing(selectedAction.name);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        action={selectedAction.name}
-        machinesProcessing={selectedProcessing}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    selectedProcessing,
+    setProcessing,
+    setSelectedAction,
+    selectedAction.name,
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -151,10 +153,16 @@ export const ActionForm = ({ selectedAction, setSelectedAction }) => {
         }
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
     />
   );
+};
+
+ActionForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default ActionForm;

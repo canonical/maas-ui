@@ -58,6 +58,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "release" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -80,6 +81,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "release" }}
+            setProcessing={jest.fn()}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -103,6 +105,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "delete" }}
+            setProcessing={jest.fn()}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -123,6 +126,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "abort" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -162,6 +166,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "acquire" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -201,6 +206,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "delete" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -242,6 +248,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "exit-rescue-mode" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -283,6 +290,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "lock" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -322,6 +330,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "mark-broken" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -361,6 +370,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "mark-fixed" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -400,6 +410,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "off" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -439,6 +450,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "on" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -478,6 +490,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "release" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -517,6 +530,7 @@ describe("ActionForm", () => {
         >
           <ActionForm
             selectedAction={{ name: "unlock" }}
+            setProcessing={jest.fn()}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -555,14 +569,37 @@ describe("ActionForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionForm
+            processing={true}
             selectedAction={{ name: "unlock" }}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+  });
+
+  it("can set the processing state when successfully submitting", () => {
+    const state = { ...initialState };
+    state.machine.items = [{ system_id: "abc123", actions: ["unlock"] }];
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const setProcessing = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ActionForm
+            selectedAction={{ name: "unlock" }}
+            setProcessing={setProcessing}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
     act(() => wrapper.find("Formik").props().onSubmit());
-    wrapper.update();
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

@@ -1,5 +1,6 @@
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -11,9 +12,9 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 import CommissionFormFields from "./CommissionFormFields";
 
 const CommissionFormSchema = Yup.object().shape({
@@ -37,12 +38,14 @@ const CommissionFormSchema = Yup.object().shape({
     .required(),
 });
 
-export const CommissionForm = ({ setSelectedAction }) => {
+export const CommissionForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
@@ -80,16 +83,14 @@ export const CommissionForm = ({ setSelectedAction }) => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={commissioningSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="commission"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    commissioningSelected,
+    setProcessing,
+    setSelectedAction,
+    "commission",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -150,7 +151,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={CommissionFormSchema}
     >
@@ -162,6 +163,12 @@ export const CommissionForm = ({ setSelectedAction }) => {
       />
     </FormikForm>
   );
+};
+
+CommissionForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default CommissionForm;

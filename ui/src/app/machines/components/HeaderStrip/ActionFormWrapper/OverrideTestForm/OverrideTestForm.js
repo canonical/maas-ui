@@ -1,6 +1,7 @@
 import { Col, Row, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,10 +10,10 @@ import {
   machine as machineSelectors,
   scriptresults as scriptresultsSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
@@ -60,12 +61,14 @@ const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
 });
 
-export const OverrideTestForm = ({ setSelectedAction }) => {
+export const OverrideTestForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const failedScriptResults = useSelector(machineSelectors.failedScriptResults);
@@ -78,17 +81,14 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        hasErrors={Object.keys(errors).length > 0}
-        machinesProcessing={overridingFailedTestingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="override-failed-testing"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    overridingFailedTestingSelected,
+    setProcessing,
+    setSelectedAction,
+    "override-failed-testing",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -130,7 +130,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         setProcessing(true);
       }}
       loading={!scriptResultsLoaded}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={OverrideTestFormSchema}
     >
@@ -183,6 +183,12 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       </Row>
     </FormikForm>
   );
+};
+
+OverrideTestForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default OverrideTestForm;

@@ -11,7 +11,7 @@ import { useWindowTitle } from "app/base/hooks";
 import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";
 
-const MachineList = ({ searchFilter, setSearchFilter }) => {
+const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
@@ -29,7 +29,7 @@ const MachineList = ({ searchFilter, setSearchFilter }) => {
 
   return (
     <>
-      {errorMessage ? (
+      {errorMessage && !headerFormOpen ? (
         <Notification
           close={() => dispatch(machineActions.cleanup())}
           type="negative"
@@ -56,6 +56,7 @@ const MachineList = ({ searchFilter, setSearchFilter }) => {
 };
 
 MachineList.propTypes = {
+  headerFormOpen: PropTypes.bool,
   searchFilter: PropTypes.string,
   setSearchFilter: PropTypes.func.isRequired,
 };

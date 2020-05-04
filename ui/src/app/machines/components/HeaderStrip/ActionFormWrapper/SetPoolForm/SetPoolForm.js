@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import pluralize from "pluralize";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -11,10 +12,10 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import SetPoolFormFields from "./SetPoolFormFields";
-import MachinesProcessing from "../MachinesProcessing";
 
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
@@ -22,9 +23,12 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({ setSelectedAction }) => {
+export const SetPoolForm = ({
+  processing,
+  setProcessing,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
-  const [processing, setProcessing] = useState(false);
   const [initialValues, setInitialValues] = useState({
     poolSelection: "select",
     description: "",
@@ -32,7 +36,6 @@ export const SetPoolForm = ({ setSelectedAction }) => {
   });
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const machineErrors = useSelector(machineSelectors.errors);
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
@@ -48,17 +51,14 @@ export const SetPoolForm = ({ setSelectedAction }) => {
     [dispatch]
   );
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        hasErrors={Object.keys(errors).length > 0}
-        machinesProcessing={settingPoolSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="set-pool"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    settingPoolSelected,
+    setProcessing,
+    setSelectedAction,
+    "set-pool",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -93,13 +93,19 @@ export const SetPoolForm = ({ setSelectedAction }) => {
         setInitialValues(values);
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={SetPoolSchema}
     >
       <SetPoolFormFields />
     </FormikForm>
   );
+};
+
+SetPoolForm.propTypes = {
+  processing: PropTypes.bool,
+  setProcessing: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default SetPoolForm;

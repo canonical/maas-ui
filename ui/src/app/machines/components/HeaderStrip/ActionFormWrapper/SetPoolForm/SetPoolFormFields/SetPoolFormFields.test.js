@@ -32,6 +32,7 @@ describe("SetPoolFormFields", () => {
         },
       },
       resourcepool: {
+        errors: {},
         items: [
           { id: 0, name: "default" },
           { id: 1, name: "pool-1" },
@@ -47,7 +48,10 @@ describe("SetPoolFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +71,10 @@ describe("SetPoolFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
