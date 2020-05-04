@@ -25,6 +25,7 @@ const Machines = () => {
   const currentFilters = queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
   const [searchFilter, setFilter] = useState(filtersToString(currentFilters));
+  const [selectedAction, setSelectedAction] = useState();
 
   const setSearchFilter = (searchText) => {
     setFilter(searchText);
@@ -39,13 +40,16 @@ const Machines = () => {
       title={
         <HeaderStrip
           searchFilter={searchFilter}
+          selectedAction={selectedAction}
           setSearchFilter={setSearchFilter}
+          setSelectedAction={setSelectedAction}
         />
       }
     >
       <Switch>
         <Route exact path="/machines">
           <MachineList
+            headerFormOpen={!!selectedAction}
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}
           />

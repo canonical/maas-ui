@@ -120,7 +120,7 @@ describe("SetZoneForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("MachinesProcessing").exists()).toBe(true);
+    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
   });
 
   it("can set the processing state when successfully submitting", () => {

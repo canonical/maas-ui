@@ -10,10 +10,10 @@ import {
   machine as machineSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 
 const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
@@ -27,21 +27,18 @@ export const SetZoneForm = ({
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const zones = useSelector(zoneSelectors.all);
   const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={settingZoneSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="set-zone"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    settingZoneSelected,
+    setProcessing,
+    setSelectedAction,
+    "set-zone",
+    Object.keys(errors).length > 0
+  );
 
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
@@ -76,7 +73,7 @@ export const SetZoneForm = ({
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={SetZoneSchema}
     >

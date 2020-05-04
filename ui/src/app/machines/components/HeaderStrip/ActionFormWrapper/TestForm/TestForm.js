@@ -12,9 +12,9 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 import TestFormFields from "./TestFormFields";
 
 const TestFormSchema = Yup.object().shape({
@@ -36,7 +36,6 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
@@ -63,17 +62,14 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        hasErrors={Object.keys(errors).length > 0}
-        machinesProcessing={testingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="test"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    testingSelected,
+    setProcessing,
+    setSelectedAction,
+    "test",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -111,7 +107,7 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={TestFormSchema}
     >
