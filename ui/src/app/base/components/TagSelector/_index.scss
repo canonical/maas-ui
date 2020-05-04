@@ -10,7 +10,6 @@
   }
 
   .tag-selector__input {
-    margin-bottom: 0;
     position: relative;
 
     &.tags-selected {
@@ -33,7 +32,7 @@
     overflow: auto;
     position: absolute;
     right: 0;
-    top: 100%;
+    top: calc(100% - #{$input-margin-bottom});
     z-index: 10;
   }
 
