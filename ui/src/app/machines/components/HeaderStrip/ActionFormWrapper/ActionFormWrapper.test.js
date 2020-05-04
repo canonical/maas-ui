@@ -1,4 +1,3 @@
-import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -106,7 +105,6 @@ describe("ActionFormWrapper", () => {
       </Provider>,
       { context: store }
     );
-    // act(() => wrapper.find("CommissionForm").props().setProcessing(true));
     expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
       false
     );
