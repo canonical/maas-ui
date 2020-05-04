@@ -77,7 +77,11 @@ const getGroupSecondaryString = (machines, selectedMachines) => {
 };
 
 const checkboxChecked = (machines, selectedMachines) =>
-  machines.every((machine) => selectedMachines.includes(machine));
+  machines.some((machine) => selectedMachines.includes(machine));
+
+const checkboxMixed = (machines, selectedMachines) =>
+  selectedMachines.length &&
+  machines.some((machine) => !selectedMachines.includes(machine));
 
 const machineSort = (currentSort) => {
   const { key, direction } = currentSort;
@@ -347,7 +351,12 @@ const generateGroupRows = ({
                 primary={
                   <Input
                     checked={checkboxChecked(machines, selectedMachines)}
-                    className="has-inline-label"
+                    className={classNames("has-inline-label", {
+                      "p-checkbox--mixed": checkboxMixed(
+                        machines,
+                        selectedMachines
+                      ),
+                    })}
                     disabled={false}
                     id={label}
                     label={<strong>{label}</strong>}
@@ -552,7 +561,12 @@ export const MachineListTable = ({
                       checkboxChecked(machines, selectedMachines) &&
                       machines.length !== 0
                     }
-                    className="has-inline-label"
+                    className={classNames("has-inline-label", {
+                      "p-checkbox--mixed": checkboxMixed(
+                        machines,
+                        selectedMachines
+                      ),
+                    })}
                     data-test="all-machines-checkbox"
                     disabled={machines.length === 0}
                     id="all-machines-checkbox"

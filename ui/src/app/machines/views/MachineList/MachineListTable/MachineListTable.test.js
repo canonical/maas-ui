@@ -467,6 +467,13 @@ describe("MachineListTable", () => {
       expect(
         wrapper.find("[data-test='group-cell'] input[checked=true]").length
       ).toBe(1);
+      expect(
+        wrapper
+          .find("[data-test='group-cell'] input")
+          .at(0)
+          .props()
+          .className.includes("p-checkbox--mixed")
+      ).toBe(false);
     });
 
     it("shows a checked checkbox in header row if all machines are selected", () => {
@@ -493,6 +500,12 @@ describe("MachineListTable", () => {
         wrapper.find("[data-test='all-machines-checkbox'] input[checked=true]")
           .length
       ).toBe(1);
+      expect(
+        wrapper
+          .find("[data-test='all-machines-checkbox'] input")
+          .props()
+          .className.includes("p-checkbox--mixed")
+      ).toBe(false);
     });
 
     it("correctly dispatches action when unchecked machine checkbox clicked", () => {
@@ -568,7 +581,7 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when unchecked group checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123"];
+      state.machine.selected = [];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -591,7 +604,7 @@ describe("MachineListTable", () => {
         .simulate("change", {
           target: { name: state.machine.items[0].system_id },
         });
-      // Not all machines in group selected => select machines in group
+      // No machines in group selected => select machines in group
       expect(
         store
           .getActions()
@@ -638,9 +651,37 @@ describe("MachineListTable", () => {
       });
     });
 
-    it("correctly dispatches action when unchecked header checkbox clicked", () => {
+    it("shows group checkbox in mixed selection state if some machines selected", () => {
       const state = { ...initialState };
       state.machine.selected = ["abc123"];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(
+        wrapper
+          .find("[data-test='group-cell'] input")
+          .at(0)
+          .props()
+          .className.includes("p-checkbox--mixed")
+      ).toBe(true);
+    });
+
+    it("correctly dispatches action when unchecked header checkbox clicked", () => {
+      const state = { ...initialState };
+      state.machine.selected = [];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -663,7 +704,7 @@ describe("MachineListTable", () => {
         .simulate("change", {
           target: { name: state.machine.items[0].system_id },
         });
-      // Not all machines selected => select all machines
+      // No machines selected => select all machines
       expect(
         store
           .getActions()
@@ -740,6 +781,34 @@ describe("MachineListTable", () => {
           .exists()
       ).toBe(true);
     });
+  });
+
+  it("shows header checkbox in mixed selection state if some machines selected", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListTable
+            filter=""
+            grouping="status"
+            hiddenGroups={[]}
+            setHiddenGroups={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("[data-test='all-machines-checkbox'] input")
+        .at(0)
+        .props()
+        .className.includes("p-checkbox--mixed")
+    ).toBe(true);
   });
 
   it("remove selected filter when unchecking the only checked machine", () => {
