@@ -83,7 +83,7 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "File type must be text/*, application/x-csh, application/x-sh"
+      "foo.jpg: File type must be text/*, application/x-csh, application/x-sh"
     );
   });
 
@@ -108,11 +108,11 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "File is larger than 2000000 bytes"
+      "foo.sh: File is larger than 2000000 bytes"
     );
   });
 
-  it("displays an error if multiple files are uploaded", async () => {
+  it("displays a single error if multiple files are uploaded", async () => {
     const store = mockStore(initialState);
     const files = [
       createFile("foo.sh", 1000, "text/script"),
@@ -138,6 +138,7 @@ describe("ScriptsUpload", () => {
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
       "Only a single file may be uploaded."
     );
+    expect(store.getActions().length).toBe(1);
   });
 
   it("dispatches uploadScript without a name if script has metadata", async () => {

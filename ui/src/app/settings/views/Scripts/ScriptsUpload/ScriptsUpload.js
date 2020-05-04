@@ -42,15 +42,23 @@ const ScriptsUpload = ({ type }) => {
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
+      let tooManyFiles = false; // only display 'too-many-files' error once.
       fileRejections.forEach((rejection) => {
         rejection.errors.forEach((error) => {
+          // override error message for 'too-many-files' as we prefer ours.
           if (error.code === "too-many-files") {
-            dispatch(
-              messages.add(`Only a single file may be uploaded.`, "negative")
-            );
+            if (!tooManyFiles) {
+              dispatch(
+                messages.add(`Only a single file may be uploaded.`, "negative")
+              );
+            }
+            tooManyFiles = true;
             return;
           }
-          dispatch(messages.add(error.message, "negative"));
+          // handle all other errors
+          dispatch(
+            messages.add(`${rejection.file.name}: ${error.message}`, "negative")
+          );
         });
       });
 
