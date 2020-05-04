@@ -122,17 +122,17 @@ const RepositoryFormFields = ({ type }) => {
           ]}
           className="is-split--small u-hide--small"
         />
-        <label>Architectures</label>
+        <p className="u-no-margin--bottom">Architectures</p>
         {generateCheckboxGroup("arches", knownArchitectures, formikProps)}
         {values.default && (
           <>
-            <label>Disabled pockets</label>
+            <p className="u-no-margin--bottom">Disabled pockets</p>
             {generateCheckboxGroup(
               "disabled_pockets",
               pocketsToDisable,
               formikProps
             )}
-            <label>Disabled components</label>
+            <p className="u-no-margin--bottom">Disabled components</p>
             {generateCheckboxGroup(
               "disabled_components",
               componentsToDisable,

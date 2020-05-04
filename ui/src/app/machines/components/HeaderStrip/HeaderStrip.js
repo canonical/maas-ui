@@ -1,7 +1,7 @@
 import { Button, Spinner } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
 
@@ -39,15 +39,18 @@ const getMachineCount = (machines, selectedMachines, setSearchFilter) => {
   return `${machineCountString} available`;
 };
 
-export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
+export const HeaderStrip = ({
+  searchFilter,
+  selectedAction,
+  setSearchFilter,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
   const { location } = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
   const hasSelectedMachines = selectedMachines.length > 0;
-
-  const [selectedAction, setSelectedAction] = useState();
 
   useEffect(() => {
     dispatch(machineActions.fetch());
@@ -57,7 +60,7 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
     if (location.pathname !== "/machines") {
       setSelectedAction(null);
     }
-  }, [location.pathname]);
+  }, [location.pathname, setSelectedAction]);
 
   const setAction = (action, deselect) => {
     if (action || deselect) {
@@ -129,7 +132,9 @@ export const HeaderStrip = ({ searchFilter, setSearchFilter }) => {
 
 HeaderStrip.propTypes = {
   searchFilter: PropTypes.string,
+  selectedAction: PropTypes.object,
   setSearchFilter: PropTypes.func.isRequired,
+  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default HeaderStrip;

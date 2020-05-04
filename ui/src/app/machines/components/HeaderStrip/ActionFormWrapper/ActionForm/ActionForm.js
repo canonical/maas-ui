@@ -5,9 +5,9 @@ import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 import { kebabToCamelCase } from "app/utils";
 
 const getSubmitText = (action, count) => {
@@ -113,20 +113,17 @@ export const ActionForm = ({
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const selectedProcessing = useSelectedProcessing(selectedAction.name);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        action={selectedAction.name}
-        machinesProcessing={selectedProcessing}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    selectedProcessing,
+    setProcessing,
+    setSelectedAction,
+    selectedAction.name,
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -156,7 +153,7 @@ export const ActionForm = ({
         }
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
     />
   );

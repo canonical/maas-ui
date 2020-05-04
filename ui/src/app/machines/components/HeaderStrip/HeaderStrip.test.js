@@ -52,6 +52,7 @@ describe("HeaderStrip", () => {
         },
       },
       resourcepool: {
+        errors: {},
         loaded: false,
         items: [
           { id: 0, name: "default" },
@@ -83,7 +84,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -99,7 +103,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -119,7 +126,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={setSearchFilter} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={setSearchFilter}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +150,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -157,7 +170,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -176,7 +192,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -193,7 +212,10 @@ describe("HeaderStrip", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <HeaderStrip setSearchFilter={jest.fn()} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -211,7 +233,10 @@ describe("HeaderStrip", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <HeaderStrip setSearchFilter={setSearchFilter} />
+          <HeaderStrip
+            setSelectedAction={jest.fn()}
+            setSearchFilter={setSearchFilter}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -233,6 +258,7 @@ describe("HeaderStrip", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <HeaderStrip
+            setSelectedAction={jest.fn()}
             searchFilter="in:selected"
             setSearchFilter={setSearchFilter}
           />

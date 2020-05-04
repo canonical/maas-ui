@@ -18,6 +18,7 @@ describe("ActionFormWrapper", () => {
         },
       },
       machine: {
+        errors: {},
         items: [],
         selected: [],
         statuses: { a: {}, b: {} },

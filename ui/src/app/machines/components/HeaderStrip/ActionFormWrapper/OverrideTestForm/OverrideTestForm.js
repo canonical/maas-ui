@@ -10,10 +10,10 @@ import {
   machine as machineSelectors,
   scriptresults as scriptresultsSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
@@ -69,7 +69,6 @@ export const OverrideTestForm = ({
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const failedScriptResults = useSelector(machineSelectors.failedScriptResults);
@@ -82,17 +81,14 @@ export const OverrideTestForm = ({
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        hasErrors={Object.keys(errors).length > 0}
-        machinesProcessing={overridingFailedTestingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="override-failed-testing"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    overridingFailedTestingSelected,
+    setProcessing,
+    setSelectedAction,
+    "override-failed-testing",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -134,7 +130,7 @@ export const OverrideTestForm = ({
         setProcessing(true);
       }}
       loading={!scriptResultsLoaded}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={OverrideTestFormSchema}
     >
