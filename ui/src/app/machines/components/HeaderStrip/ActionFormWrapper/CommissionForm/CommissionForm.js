@@ -12,9 +12,9 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 import CommissionFormFields from "./CommissionFormFields";
 
 const CommissionFormSchema = Yup.object().shape({
@@ -46,7 +46,6 @@ export const CommissionForm = ({
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
@@ -84,16 +83,14 @@ export const CommissionForm = ({
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={commissioningSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="commission"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    commissioningSelected,
+    setProcessing,
+    setSelectedAction,
+    "commission",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -154,7 +151,7 @@ export const CommissionForm = ({
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={CommissionFormSchema}
     >

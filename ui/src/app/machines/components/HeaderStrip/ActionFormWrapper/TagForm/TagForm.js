@@ -6,9 +6,9 @@ import * as Yup from "yup";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import MachinesProcessing from "../MachinesProcessing";
 import TagFormFields from "./TagFormFields";
 
 const TagFormSchema = Yup.object().shape({
@@ -28,7 +28,6 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
   const [initialValues, setInitialValues] = useState({ tags: [] });
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const taggingSelected = useSelector(machineSelectors.taggingSelected);
 
@@ -37,18 +36,16 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
     formErrors.tags = formErrors.name;
     delete formErrors.name;
   }
+  const hasErrors = Object.keys(errors).length > 0;
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        hasErrors={Object.keys(errors).length > 0}
-        machinesProcessing={taggingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="tag"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    taggingSelected,
+    setProcessing,
+    setSelectedAction,
+    "tag",
+    hasErrors
+  );
 
   return (
     <FormikForm
@@ -76,7 +73,7 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
         setInitialValues(values);
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={TagFormSchema}
     >

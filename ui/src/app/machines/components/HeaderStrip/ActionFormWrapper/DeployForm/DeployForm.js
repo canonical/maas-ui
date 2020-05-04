@@ -12,9 +12,9 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
+import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import MachinesProcessing from "../MachinesProcessing";
 import DeployFormFields from "./DeployFormFields";
 
 const DeploySchema = Yup.object().shape({
@@ -32,7 +32,6 @@ export const DeployForm = ({
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
   const errors = useSelector(machineSelectors.errors);
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
@@ -46,16 +45,14 @@ export const DeployForm = ({
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
-  if (processing) {
-    return (
-      <MachinesProcessing
-        machinesProcessing={deployingSelected}
-        setProcessing={setProcessing}
-        setSelectedAction={setSelectedAction}
-        action="deploy"
-      />
-    );
-  }
+  useMachinesProcessing(
+    processing,
+    deployingSelected,
+    setProcessing,
+    setSelectedAction,
+    "deploy",
+    Object.keys(errors).length > 0
+  );
 
   return (
     <FormikForm
@@ -92,7 +89,7 @@ export const DeployForm = ({
         });
         setProcessing(true);
       }}
-      saving={saving}
+      saving={processing}
       saved={saved}
       validationSchema={DeploySchema}
     >

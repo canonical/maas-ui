@@ -32,6 +32,7 @@ describe("SetPoolFormFields", () => {
         },
       },
       resourcepool: {
+        errors: {},
         items: [
           { id: 0, name: "default" },
           { id: 1, name: "pool-1" },
