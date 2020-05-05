@@ -13,12 +13,12 @@ describe("Header", () => {
       <Header
         authUser={{
           is_superuser: true,
-          username: "koala"
+          username: "koala",
         }}
         basename="/MAAS"
         completedIntro={true}
         location={{
-          pathname: "/"
+          pathname: "/",
         }}
         logout={jest.fn()}
       />
@@ -32,7 +32,7 @@ describe("Header", () => {
         authUser={null}
         basename="/MAAS"
         location={{
-          pathname: "/"
+          pathname: "/",
         }}
         logout={jest.fn()}
       />
@@ -46,17 +46,17 @@ describe("Header", () => {
       <Header
         authUser={{
           is_superuser: true,
-          username: "koala"
+          username: "koala",
         }}
         basename="/MAAS"
         location={{
-          pathname: "/"
+          pathname: "/",
         }}
         logout={logout}
       />
     );
     wrapper
-      .findWhere(n => n.name() === "a" && n.text() === "Log out")
+      .findWhere((n) => n.name() === "a" && n.text() === "Log out")
       .last()
       .simulate("click", { preventDefault: jest.fn() });
     expect(logout).toHaveBeenCalled();
@@ -67,25 +67,22 @@ describe("Header", () => {
       <Header
         authUser={{
           is_superuser: true,
-          username: "koala"
+          username: "koala",
         }}
         basename="/MAAS"
         completedIntro={false}
         location={{
-          pathname: "/"
+          pathname: "/",
         }}
         logout={jest.fn()}
       />
     );
     expect(
-      wrapper.findWhere(n => n.name() === "a" && n.text() === "Skip").exists()
+      wrapper.findWhere((n) => n.name() === "a" && n.text() === "Skip").exists()
     ).toBe(true);
-    expect(
-      wrapper
-        .find(".p-navigation__links")
-        .at(0)
-        .props().children
-    ).toBe(false);
+    expect(wrapper.find(".p-navigation__links").at(0).props().children).toBe(
+      false
+    );
   });
 
   it("can highlight a new URL", () => {
@@ -93,12 +90,12 @@ describe("Header", () => {
       <Header
         authUser={{
           is_superuser: true,
-          username: "koala"
+          username: "koala",
         }}
         basename="/MAAS"
         completedIntro={true}
         location={{
-          pathname: "/settings"
+          pathname: "/settings",
         }}
         logout={jest.fn()}
       />
@@ -113,13 +110,13 @@ describe("Header", () => {
       <Header
         authUser={{
           is_superuser: true,
-          username: "koala"
+          username: "koala",
         }}
         basename="/MAAS"
         completedIntro={true}
         location={{
           hash: "#/devices",
-          pathname: "/MAAS/"
+          pathname: "/MAAS/",
         }}
         logout={jest.fn()}
       />

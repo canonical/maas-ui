@@ -84,50 +84,6 @@ exports[`Header renders 1`] = `
             >
               Hardware
             </a>
-            <ul
-              className="p-subnav__items"
-            >
-              <li
-                key="/machines"
-              >
-                <a
-                  className="p-subnav__item"
-                  href="/machines"
-                >
-                  Machines
-                </a>
-              </li>
-              <li
-                key="/devices"
-              >
-                <a
-                  className="p-subnav__item"
-                  href="/MAAS/#/devices"
-                >
-                  Devices
-                </a>
-              </li>
-              <li
-                key="/controllers"
-              >
-                <a
-                  className="p-subnav__item"
-                  href="/MAAS/#/controllers"
-                >
-                  Controllers
-                </a>
-              </li>
-              <li
-                key="/kvm"
-              >
-                <a
-                  className="p-subnav__item"
-                  href="/MAAS/#/kvm"
-                >
-                  KVM
-                </a>
-              </li>
-            </ul>
           </li>
           <li
             className="p-navigation__link u-hide--hardware-menu-threshold"
