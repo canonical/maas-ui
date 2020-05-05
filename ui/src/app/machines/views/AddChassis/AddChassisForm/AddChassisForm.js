@@ -19,7 +19,7 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import { trimPowerParameters } from "app/utils";
+import { formatPowerParameters } from "app/utils";
 import AddChassisFormFields from "../AddChassisFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
@@ -69,7 +69,8 @@ export const AddChassisForm = () => {
 
   const ChassisSchema = usePowerParametersSchema(
     powerType,
-    generateChassisSchema
+    generateChassisSchema,
+    true
   );
 
   const allPowerParameters = useAllPowerParameters(chassisPowerTypes);
@@ -107,7 +108,11 @@ export const AddChassisForm = () => {
               const params = {
                 chassis_type: values.power_type,
                 domain: values.domain,
-                ...trimPowerParameters(powerType, values.power_parameters),
+                ...formatPowerParameters(
+                  powerType,
+                  values.power_parameters,
+                  true
+                ),
               };
               dispatch(machineActions.addChassis(params));
               setSavingChassis(params.hostname || "chassis");

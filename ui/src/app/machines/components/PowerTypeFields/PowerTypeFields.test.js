@@ -91,4 +91,55 @@ describe("PowerTypeFields", () => {
         .text()
     ).toBe("Choice 2");
   });
+
+  it("does not show node fields if using chassis power types", async () => {
+    const formikProps = {
+      setFieldValue: jest.fn(),
+      setFieldTouched: jest.fn(),
+    };
+    const powerTypes = [
+      {
+        name: "power_type",
+        description: "Power",
+        fields: [
+          {
+            name: "field1",
+            label: "Label1",
+            scope: "bmc",
+          },
+          {
+            name: "field2",
+            label: "Label2",
+            scope: "node",
+          },
+        ],
+      },
+    ];
+    const wrapper = mount(
+      <Formik>
+        <PowerTypeFields
+          forChassis
+          formikProps={formikProps}
+          powerTypes={powerTypes}
+          selectedPowerType="power_type"
+        />
+      </Formik>
+    );
+
+    // Select the power type from the dropdown
+    await act(async () => {
+      wrapper
+        .find("select[name='power_type']")
+        .props()
+        .onChange({ target: { name: "power_type", value: "power_type" } });
+    });
+    wrapper.update();
+
+    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
+      false
+    );
+  });
 });

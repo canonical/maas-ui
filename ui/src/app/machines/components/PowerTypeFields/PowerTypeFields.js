@@ -3,7 +3,36 @@ import React from "react";
 
 import FormikField from "app/base/components/FormikField";
 
+const generateFields = (powerTypeFields, forChassis) => {
+  // When adding a chassis we need only a subset of fields that aren't specific
+  // to individual nodes.
+  const fields = forChassis
+    ? powerTypeFields.filter((field) => field.scope !== "node")
+    : [...powerTypeFields];
+
+  return fields.map((field) => (
+    <FormikField
+      component={field.field_type === "choice" ? Select : Input}
+      key={field.name}
+      label={field.label}
+      name={`power_parameters.${field.name}`}
+      options={
+        field.field_type === "choice"
+          ? field.choices.map((choice) => ({
+              key: `${field.name}-${choice[0]}`,
+              label: choice[1],
+              value: choice[0],
+            }))
+          : undefined
+      }
+      required={field.required}
+      type={field.field_type === "password" ? "password" : "text"}
+    />
+  ));
+};
+
 export const PowerTypeFields = ({
+  forChassis = false,
   formikProps,
   powerTypes,
   selectedPowerType,
@@ -32,26 +61,7 @@ export const PowerTypeFields = ({
         }}
         required
       />
-      {powerType &&
-        powerType.fields.map((field) => (
-          <FormikField
-            component={field.field_type === "choice" ? Select : Input}
-            key={field.name}
-            label={field.label}
-            name={`power_parameters.${field.name}`}
-            options={
-              field.field_type === "choice"
-                ? field.choices.map((choice) => ({
-                    key: `${field.name}-${choice[0]}`,
-                    label: choice[1],
-                    value: choice[0],
-                  }))
-                : undefined
-            }
-            required={field.required}
-            type={field.field_type === "password" ? "password" : "text"}
-          />
-        ))}
+      {powerType && generateFields(powerType.fields, forChassis)}
     </>
   );
 };
