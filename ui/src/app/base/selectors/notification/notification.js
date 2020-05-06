@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const notification = {};
 
 /**
@@ -26,47 +28,46 @@ notification.loaded = (state) => state.notification.loaded;
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.getById = (state, id) =>
-  state.notification.items.find((notification) => notification.id === id);
+notification.getById = createSelector(
+  [notification.all, (state, id) => id],
+  (notifications, id) =>
+    notifications.find((notification) => notification.id === id)
+);
 
 /**
  * Returns notifications of type 'warning'
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.warnings = (state) =>
-  state.notification.items.filter(
-    (notification) => notification.category === "warning"
-  );
+notification.warnings = createSelector([notification.all], (notifications) =>
+  notifications.filter((notification) => notification.category === "warning")
+);
 
 /**
  * Returns notifications of type 'error'
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.errors = (state) =>
-  state.notification.items.filter(
-    (notification) => notification.category === "error"
-  );
+notification.errors = createSelector([notification.all], (notifications) =>
+  notifications.filter((notification) => notification.category === "error")
+);
 
 /**
  * Returns notifications of type 'success'
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.success = (state) =>
-  state.notification.items.filter(
-    (notification) => notification.category === "success"
-  );
+notification.success = createSelector([notification.all], (notifications) =>
+  notifications.filter((notification) => notification.category === "success")
+);
 
 /**
  * Returns notifications of type 'info'
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.info = (state) =>
-  state.notification.items.filter(
-    (notification) => notification.category === "info"
-  );
+notification.info = createSelector([notification.all], (notifications) =>
+  notifications.filter((notification) => notification.category === "info")
+);
 
 export default notification;

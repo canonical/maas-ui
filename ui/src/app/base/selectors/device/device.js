@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const device = {};
 
 /**
@@ -26,7 +28,9 @@ device.loaded = (state) => state.device.loaded;
  * @param {Object} state - The redux state.
  * @returns {Array} A device.
  */
-device.getBySystemId = (state, id) =>
-  state.device.items.find((device) => device.system_id === id);
+device.getBySystemId = createSelector(
+  [device.all, (state, id) => id],
+  (devices, id) => devices.find(({ system_id }) => system_id === id)
+);
 
 export default device;

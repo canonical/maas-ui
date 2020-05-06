@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const scriptresults = {};
 
 /**
@@ -30,18 +32,20 @@ scriptresults.loaded = (state) => state.scriptresults.loaded;
 scriptresults.saved = (state) => state.scriptresults.saved;
 
 /**
- * Returns true if script results have errors
- * @param {Object} state - Redux state
- * @returns {Boolean} Script results have errors
- */
-scriptresults.hasErrors = (state) =>
-  Object.entries(state.scriptresults.errors).length > 0;
-
-/**
  * Returns script result errors.
  * @param {Object} state - The redux state.
  * @returns {Array} Errors for a script result.
  */
 scriptresults.errors = (state) => state.scripts.errors;
+
+/**
+ * Returns true if script results have errors
+ * @param {Object} state - Redux state
+ * @returns {Boolean} Script results have errors
+ */
+scriptresults.hasErrors = createSelector(
+  [scriptresults.errors],
+  (errors) => Object.entries(errors).length > 0
+);
 
 export default scriptresults;

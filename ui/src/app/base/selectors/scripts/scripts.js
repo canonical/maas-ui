@@ -27,8 +27,10 @@ scripts.loading = (state) => state.scripts.loading;
  * @param {Object} state - Redux state
  * @returns {Number} Number of scripts
  */
-
-scripts.count = (state) => state.scripts.items.length;
+scripts.count = createSelector(
+  [scripts.all],
+  (scriptItems) => scriptItems.length
+);
 
 /**
  * Returns true if scripts have loaded
@@ -45,13 +47,6 @@ scripts.loaded = (state) => state.scripts.loaded;
 scripts.saved = (state) => state.scripts.saved;
 
 /**
- * Returns true if scripts have errors
- * @param {Object} state - Redux state
- * @returns {Boolean} Scripts have errors
- */
-scripts.hasErrors = (state) => Object.entries(state.scripts.errors).length > 0;
-
-/**
  * Returns script errors.
  * @param {Object} state - The redux state.
  * @returns {Array} Errors for a script.
@@ -59,22 +54,32 @@ scripts.hasErrors = (state) => Object.entries(state.scripts.errors).length > 0;
 scripts.errors = (state) => state.scripts.errors;
 
 /**
+ * Returns true if scripts have errors
+ * @param {Object} state - Redux state
+ * @returns {Boolean} Scripts have errors
+ */
+scripts.hasErrors = createSelector(
+  [scripts.errors],
+  (errors) => Object.entries(errors).length > 0
+);
+
+/**
  * Returns all commissioning scripts
  * @param {Object} state - Redux state
  * @returns {Array} Commissioning scripts
  */
-scripts.commissioning = (state) =>
-  state.scripts.items.filter(
-    (item) => item.type === SCRIPT_TYPES.COMMISSIONING
-  );
+scripts.commissioning = createSelector([scripts.all], (scriptItems) =>
+  scriptItems.filter((item) => item.type === SCRIPT_TYPES.COMMISSIONING)
+);
 
 /**
  * Returns all testing scripts
  * @param {Object} state - Redux state
  * @returns {Array} Testing scripts
  */
-scripts.testing = (state) =>
-  state.scripts.items.filter((item) => item.type === SCRIPT_TYPES.TESTING);
+scripts.testing = createSelector([scripts.all], (scriptItems) =>
+  scriptItems.filter((item) => item.type === SCRIPT_TYPES.TESTING)
+);
 
 /**
  * Returns testing scripts that contain a URL parameter
@@ -94,16 +99,19 @@ scripts.testingWithUrl = createSelector([scripts.testing], (testScripts) =>
  * @param {String} type - The type of script.
  * @returns {Array} A filtered list of scripts.
  */
-scripts.search = (state, term, type) => {
-  const scripts = state.scripts.items.filter(
-    (item) => item.type === SCRIPT_TYPES[type.toUpperCase()]
-  );
-  if (term) {
-    return scripts.filter(
-      (item) => item.name.includes(term) || item.description.includes(term)
+scripts.search = createSelector(
+  [scripts.all, (state, term, type) => ({ term, type })],
+  (scriptItems, { term, type }) => {
+    const scripts = scriptItems.filter(
+      (item) => item.type === SCRIPT_TYPES[type.toUpperCase()]
     );
+    if (term) {
+      return scripts.filter(
+        (item) => item.name.includes(term) || item.description.includes(term)
+      );
+    }
+    return scripts;
   }
-  return scripts;
-};
+);
 
 export default scripts;
