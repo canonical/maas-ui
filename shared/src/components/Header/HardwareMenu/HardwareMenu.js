@@ -18,7 +18,7 @@ export const HardwareMenu = ({ generateLink, links, toggleHardwareMenu }) => {
       if (
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target) &&
-        !event.target.className.includes("hardware-menu")
+        !event.target.className.includes("hardware-menu__toggle")
       ) {
         toggleHardwareMenu(event);
       }

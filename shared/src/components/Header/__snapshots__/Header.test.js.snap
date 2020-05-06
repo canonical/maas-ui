@@ -80,6 +80,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
+              className="hardware-menu__toggle"
               onClick={[Function]}
             >
               Hardware

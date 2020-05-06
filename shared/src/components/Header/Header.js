@@ -204,7 +204,12 @@ export const Header = ({
                 role="menuitem"
               >
                 {/* eslint-disable-next-line */}
-                <a onClick={toggleHardwareMenu}>Hardware</a>
+                <a
+                  onClick={toggleHardwareMenu}
+                  className="hardware-menu__toggle"
+                >
+                  Hardware
+                </a>
                 {hardwareMenuOpen && (
                   <HardwareMenu
                     generateLink={generateLink}
