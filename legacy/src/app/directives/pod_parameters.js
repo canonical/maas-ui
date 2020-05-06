@@ -44,7 +44,7 @@ export function maasPodParameters(
           var html = "";
           angular.forEach(type.fields, function(field) {
             if (field.scope === "bmc") {
-              if (field.name === "power_pass") {
+              if (field.name === "power_pass" || field.name === "password") {
                 html += '<maas-obj-field type="password" key="';
               } else {
                 html += '<maas-obj-field type="text" key="';
