@@ -30,33 +30,44 @@ exports[`NotificationList renders a list of messages 1`] = `
             id={1}
             message="an error"
           >
-            <p
+            <div
               className="p-notification__response u-no-max-width"
             >
-              <span
-                className="p-notification__status"
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "an error",
-                  }
-                }
-                data-test="notification-message"
-              />
-              <Button
-                appearance="link"
-                className="p-notification__action"
-                data-test="action-link"
-                onClick={[Function]}
+              <ul
+                className="p-inline-list u-no-margin--bottom"
               >
-                <button
-                  className="p-button--link p-notification__action"
-                  data-test="action-link"
-                  onClick={[Function]}
+                <li
+                  className="p-inline-list__item"
                 >
-                  Dismiss
-                </button>
-              </Button>
-            </p>
+                  <span
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "an error",
+                      }
+                    }
+                    data-test="notification-message"
+                  />
+                </li>
+                <li
+                  className="p-inline-list__item"
+                >
+                  <Button
+                    appearance="link"
+                    className="p-notification__action"
+                    data-test="action-link"
+                    onClick={[Function]}
+                  >
+                    <button
+                      className="p-button--link p-notification__action"
+                      data-test="action-link"
+                      onClick={[Function]}
+                    >
+                      Dismiss
+                    </button>
+                  </Button>
+                </li>
+              </ul>
+            </div>
           </NotificationGroupMessage>
         </div>
       </div>

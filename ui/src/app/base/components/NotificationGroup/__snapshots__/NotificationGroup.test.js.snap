@@ -27,46 +27,57 @@ exports[`NotificationGroup renders 1`] = `
       <div
         className="p-notification__toggle"
       >
-        <p
+        <div
           className="p-notification__response u-no-max-width"
         >
-          <Button
-            appearance="link"
-            aria-label="2 negative, click to open messages."
-            className="u-no-margin u-no-padding"
-            onClick={[Function]}
+          <ul
+            className="p-inline-list u-no-margin--bottom"
           >
-            <button
-              aria-label="2 negative, click to open messages."
-              className="p-button--link u-no-margin u-no-padding"
-              onClick={[Function]}
+            <li
+              className="p-inline-list__item"
             >
-              <span
-                className="p-notification__status"
-                data-test="notification-count"
+              <Button
+                appearance="link"
+                aria-label="2 negative, click to open messages."
+                onClick={[Function]}
               >
-                2 Errors
-              </span>
-              <small>
-                <i
-                  className="p-icon--expand"
-                />
-              </small>
-            </button>
-          </Button>
-          <Button
-            appearance="link"
-            className="p-notification__action u-no-margin u-no-padding"
-            onClick={[Function]}
-          >
-            <button
-              className="p-button--link p-notification__action u-no-margin u-no-padding"
-              onClick={[Function]}
+                <button
+                  aria-label="2 negative, click to open messages."
+                  className="p-button--link"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="p-notification__status"
+                    data-test="notification-count"
+                  >
+                    2 Errors
+                  </span>
+                  <small>
+                    <i
+                      className="p-icon--expand"
+                    />
+                  </small>
+                </button>
+              </Button>
+            </li>
+            <li
+              className="p-inline-list__item"
             >
-              Dismiss all
-            </button>
-          </Button>
-        </p>
+              <Button
+                appearance="link"
+                className="p-notification__action"
+                onClick={[Function]}
+              >
+                <button
+                  className="p-button--link p-notification__action"
+                  onClick={[Function]}
+                >
+                  Dismiss all
+                </button>
+              </Button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
