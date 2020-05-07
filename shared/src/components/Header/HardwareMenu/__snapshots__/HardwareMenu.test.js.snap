@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HardwareMenu renders 1`] = `
+<ul
+  className="p-subnav__items"
+>
+  <li
+    key="/machines"
+    onClick={[Function]}
+  />
+</ul>
+`;
