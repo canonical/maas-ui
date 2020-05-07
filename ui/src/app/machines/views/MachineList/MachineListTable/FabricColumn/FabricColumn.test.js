@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import FabricColumn from "./FabricColumn";
+import { FabricColumn } from "./FabricColumn";
 
 const mockStore = configureStore();
 

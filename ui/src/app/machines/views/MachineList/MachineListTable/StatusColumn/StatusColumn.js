@@ -9,6 +9,7 @@ import {
 } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
+import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 
@@ -99,13 +100,14 @@ const getStatusIcon = (machine) => {
   return "";
 };
 
-const StatusColumn = ({ onToggleMenu, systemId }) => {
+export const StatusColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const osReleases = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)
   );
+  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
   const actionLinks = useMachineActions(systemId, [
     "abort",
@@ -145,7 +147,7 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
       iconSpace={true}
       menuLinks={menuLinks}
       menuTitle="Take action:"
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={toggleMenu}
       primary={
         <span
           data-test="status-text"
@@ -164,8 +166,8 @@ const StatusColumn = ({ onToggleMenu, systemId }) => {
 };
 
 StatusColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
+  onToggleMenu: PropTypes.func.isRequired,
   systemId: PropTypes.string.isRequired,
 };
 
-export default StatusColumn;
+export default React.memo(StatusColumn);

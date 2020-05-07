@@ -9,7 +9,7 @@ import {
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
 import {
@@ -109,19 +109,12 @@ const generateRows = ({
   handleMachineCheckbox,
   machines,
   selectedMachines,
-  setActiveRow,
+  onToggleMenu,
   showMAC,
 }) => {
   const sortedMachines = [...machines].sort(machineSort(currentSort));
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
-    const onToggleMenu = (open) => {
-      if (open && !activeRow) {
-        setActiveRow(row.system_id);
-      } else if (!open || (open && activeRow)) {
-        setActiveRow(null);
-      }
-    };
 
     return {
       key: row.system_id,
@@ -133,7 +126,6 @@ const generateRows = ({
           content: (
             <NameColumn
               handleCheckbox={handleMachineCheckbox}
-              onToggleMenu={onToggleMenu}
               selected={selectedMachines.includes(row)}
               showMAC={showMAC}
               systemId={row.system_id}
@@ -169,35 +161,19 @@ const generateRows = ({
           ),
         },
         {
-          content: (
-            <FabricColumn
-              onToggleMenu={onToggleMenu}
-              systemId={row.system_id}
-            />
-          ),
+          content: <FabricColumn systemId={row.system_id} />,
         },
         {
-          content: (
-            <CoresColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          ),
+          content: <CoresColumn systemId={row.system_id} />,
         },
         {
-          content: (
-            <RamColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          ),
+          content: <RamColumn systemId={row.system_id} />,
         },
         {
-          content: (
-            <DisksColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
-          ),
+          content: <DisksColumn systemId={row.system_id} />,
         },
         {
-          content: (
-            <StorageColumn
-              onToggleMenu={onToggleMenu}
-              systemId={row.system_id}
-            />
-          ),
+          content: <StorageColumn systemId={row.system_id} />,
         },
       ],
     };
@@ -537,11 +513,22 @@ export const MachineListTable = ({
     dispatch(machineActions.setSelected(newSelectedMachines));
   };
 
+  const onToggleMenu = useCallback(
+    (systemId, open) => {
+      if (open && !activeRow) {
+        setActiveRow(systemId);
+      } else if (!open || (open && activeRow)) {
+        setActiveRow(null);
+      }
+    },
+    [activeRow]
+  );
+
   const rowProps = {
     activeRow,
     currentSort,
     handleMachineCheckbox,
-    setActiveRow,
+    onToggleMenu,
     showMAC,
   };
 

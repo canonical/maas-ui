@@ -9,15 +9,17 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
+import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const PoolColumn = ({ onToggleMenu, systemId }) => {
+export const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
+  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
   let poolLinks = resourcePools.filter((pool) => pool.id !== machine.pool.id);
   if (machine.actions.includes("set-pool")) {
@@ -48,7 +50,7 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
     <DoubleRow
       menuLinks={poolLinks}
       menuTitle="Change pool:"
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={toggleMenu}
       primary={
         <span data-test="pool">
           {updating !== null ? (
@@ -73,8 +75,8 @@ const PoolColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PoolColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
+  onToggleMenu: PropTypes.func.isRequired,
   systemId: PropTypes.string.isRequired,
 };
 
-export default PoolColumn;
+export default React.memo(PoolColumn);

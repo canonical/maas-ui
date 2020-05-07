@@ -86,13 +86,7 @@ const generateMAC = (machine, machineURL) => {
   );
 };
 
-const NameColumn = ({
-  handleCheckbox,
-  onToggleMenu,
-  selected,
-  showMAC,
-  systemId,
-}) => {
+export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -105,7 +99,6 @@ const NameColumn = ({
   return (
     <DoubleRow
       data-test="name-column"
-      onToggleMenu={onToggleMenu}
       primary={
         <Input
           checked={selected}
@@ -127,9 +120,8 @@ const NameColumn = ({
 NameColumn.propTypes = {
   handleCheckbox: PropTypes.func,
   selected: PropTypes.bool,
-  onToggleMenu: PropTypes.func,
   showMAC: PropTypes.bool,
   systemId: PropTypes.string.isRequired,
 };
 
-export default NameColumn;
+export default React.memo(NameColumn);

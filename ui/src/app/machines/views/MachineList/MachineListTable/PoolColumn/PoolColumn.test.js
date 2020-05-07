@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import PoolColumn from "./PoolColumn";
+import { PoolColumn } from "./PoolColumn";
 
 const mockStore = configureStore();
 
@@ -52,7 +52,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -68,7 +68,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -84,7 +84,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +105,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -125,7 +125,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -144,7 +144,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -178,7 +178,7 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

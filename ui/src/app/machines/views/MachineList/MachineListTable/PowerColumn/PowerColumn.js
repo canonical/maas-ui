@@ -6,14 +6,16 @@ import React, { useEffect, useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const PowerColumn = ({ onToggleMenu, systemId }) => {
+export const PowerColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
+  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
   const iconClass = classNames({
     "p-icon--power-on": machine.power_state === "on",
@@ -100,7 +102,7 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
       menuClassName="p-table-menu--hasIcon"
       menuLinks={menuLinks}
       menuTitle="Take action:"
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={toggleMenu}
       primary={
         <div className="u-upper-case--first u-truncate" data-test="power_state">
           {powerState}
@@ -122,8 +124,8 @@ const PowerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PowerColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
+  onToggleMenu: PropTypes.func.isRequired,
   systemId: PropTypes.string.isRequired,
 };
 
-export default PowerColumn;
+export default React.memo(PowerColumn);
