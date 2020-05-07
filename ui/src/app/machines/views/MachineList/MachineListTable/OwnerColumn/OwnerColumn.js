@@ -5,13 +5,15 @@ import PropTypes from "prop-types";
 
 import { machine as machineSelectors } from "app/base/selectors";
 import { useMachineActions } from "app/base/hooks";
+import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const OwnerColumn = ({ onToggleMenu, systemId }) => {
+export const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
+  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
   const owner = machine.owner ? machine.owner : "-";
   const tags = machine.tags ? machine.tags.join(", ") : "";
@@ -35,7 +37,7 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
     <DoubleRow
       menuLinks={menuLinks}
       menuTitle="Take action:"
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={toggleMenu}
       primary={
         <>
           {updating === null ? null : (
@@ -56,8 +58,8 @@ const OwnerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 OwnerColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
+  onToggleMenu: PropTypes.func.isRequired,
   systemId: PropTypes.string.isRequired,
 };
 
-export default OwnerColumn;
+export default React.memo(OwnerColumn);

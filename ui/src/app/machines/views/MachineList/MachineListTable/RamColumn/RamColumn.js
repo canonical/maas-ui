@@ -6,14 +6,13 @@ import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
-const RamColumn = ({ onToggleMenu, systemId }) => {
+export const RamColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
   return (
     <DoubleRow
-      onToggleMenu={onToggleMenu}
       primary={
         <ScriptStatus
           hidePassedIcon
@@ -30,8 +29,7 @@ const RamColumn = ({ onToggleMenu, systemId }) => {
 };
 
 RamColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
-export default RamColumn;
+export default React.memo(RamColumn);

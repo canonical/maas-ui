@@ -2,6 +2,7 @@
 
 exports[`ZoneColumn renders 1`] = `
 <ZoneColumn
+  onToggleMenu={[MockFunction]}
   systemId="abc123"
 >
   <DoubleRow
@@ -14,6 +15,7 @@ exports[`ZoneColumn renders 1`] = `
       ]
     }
     menuTitle="Change AZ:"
+    onToggleMenu={[Function]}
     primary={
       <span
         data-test="zone"
@@ -69,6 +71,7 @@ exports[`ZoneColumn renders 1`] = `
                 },
               ]
             }
+            onToggleMenu={[Function]}
             positionNode={
               Object {
                 "current": <div
@@ -120,6 +123,7 @@ exports[`ZoneColumn renders 1`] = `
                   },
                 ]
               }
+              onToggleMenu={[Function]}
               position="left"
               positionNode={
                 Object {

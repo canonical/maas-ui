@@ -10,6 +10,7 @@ import {
   zone as zoneSelectors,
 } from "app/base/selectors";
 import { generateLegacyURL } from "app/utils";
+import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const getSpaces = (machine) => {
@@ -28,14 +29,14 @@ const getSpaces = (machine) => {
   );
 };
 
-const ZoneColumn = ({ onToggleMenu, systemId }) => {
+export const ZoneColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
-
+  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
   let zoneLinks = zones.filter((zone) => zone.id !== machine.zone.id);
   if (machine.actions.includes("set-zone")) {
     if (zoneLinks.length !== 0) {
@@ -65,7 +66,7 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
     <DoubleRow
       menuLinks={zoneLinks}
       menuTitle="Change AZ:"
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={toggleMenu}
       primary={
         <span data-test="zone">
           {updating !== null ? (
@@ -86,8 +87,8 @@ const ZoneColumn = ({ onToggleMenu, systemId }) => {
 };
 
 ZoneColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
+  onToggleMenu: PropTypes.func.isRequired,
   systemId: PropTypes.string.isRequired,
 };
 
-export default ZoneColumn;
+export default React.memo(ZoneColumn);

@@ -29,6 +29,7 @@ const ContextualMenu = ({
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
     isOpen: !hasToggle,
   });
+  const previousIsOpen = useRef(isOpen);
   const labelNode = toggleLabel ? <span>{toggleLabel}</span> : null;
   const wrapperClass = classNames(
     className,
@@ -38,7 +39,13 @@ const ContextualMenu = ({
   );
 
   useEffect(() => {
-    onToggleMenu && onToggleMenu(isOpen);
+    // The isOpen state is compared to the previous state so that we can
+    // initialise the previous state in a way that means that this effect does
+    // not call onToggleMenu on first render.
+    if (isOpen !== previousIsOpen.current) {
+      onToggleMenu && onToggleMenu(isOpen);
+      previousIsOpen.current = isOpen;
+    }
     // onToggleMenu is excluded from the useEffect deps as onToggleMenu gets
     // redefined on a state update which causes an infinite loop here.
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps

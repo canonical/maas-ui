@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { scriptStatus } from "app/base/enum";
-import DisksColumn from "./DisksColumn";
+import { DisksColumn } from "./DisksColumn";
 
 const mockStore = configureStore();
 

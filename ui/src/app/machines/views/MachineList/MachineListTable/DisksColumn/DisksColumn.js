@@ -6,14 +6,13 @@ import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
-const DisksColumn = ({ onToggleMenu, systemId }) => {
+export const DisksColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
 
   return (
     <DoubleRow
-      onToggleMenu={onToggleMenu}
       primary={
         <ScriptStatus
           data-test="disks"
@@ -30,8 +29,7 @@ const DisksColumn = ({ onToggleMenu, systemId }) => {
 };
 
 DisksColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
-export default DisksColumn;
+export default React.memo(DisksColumn);

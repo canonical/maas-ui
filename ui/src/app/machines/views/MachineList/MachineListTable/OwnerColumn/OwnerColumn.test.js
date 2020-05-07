@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import OwnerColumn from "./OwnerColumn";
+import { OwnerColumn } from "./OwnerColumn";
 
 const mockStore = configureStore();
 
@@ -46,7 +46,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -62,7 +62,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +78,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +94,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -113,7 +113,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -131,7 +131,7 @@ describe("OwnerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OwnerColumn systemId="abc123" />
+          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

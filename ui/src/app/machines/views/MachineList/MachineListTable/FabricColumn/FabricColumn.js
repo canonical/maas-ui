@@ -7,7 +7,7 @@ import { generateLegacyURL } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";
 
-const FabricColumn = ({ onToggleMenu, systemId }) => {
+export const FabricColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -18,7 +18,6 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      onToggleMenu={onToggleMenu}
       primary={
         <ScriptStatus
           data-test="fabric"
@@ -49,8 +48,7 @@ const FabricColumn = ({ onToggleMenu, systemId }) => {
 };
 
 FabricColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
-export default FabricColumn;
+export default React.memo(FabricColumn);

@@ -2,6 +2,7 @@
 
 exports[`PowerColumn renders 1`] = `
 <PowerColumn
+  onToggleMenu={[MockFunction]}
   systemId="abc123"
 >
   <DoubleRow
@@ -27,6 +28,7 @@ exports[`PowerColumn renders 1`] = `
       ]
     }
     menuTitle="Take action:"
+    onToggleMenu={[Function]}
     primary={
       <div
         className="u-upper-case--first u-truncate"
@@ -90,6 +92,7 @@ exports[`PowerColumn renders 1`] = `
                 },
               ]
             }
+            onToggleMenu={[Function]}
             positionNode={
               Object {
                 "current": <div
@@ -142,6 +145,7 @@ exports[`PowerColumn renders 1`] = `
                   },
                 ]
               }
+              onToggleMenu={[Function]}
               position="left"
               positionNode={
                 Object {

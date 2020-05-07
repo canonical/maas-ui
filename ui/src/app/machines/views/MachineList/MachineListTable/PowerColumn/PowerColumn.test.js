@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import PowerColumn from "./PowerColumn";
+import { PowerColumn } from "./PowerColumn";
 
 const mockStore = configureStore();
 
@@ -38,7 +38,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -54,7 +54,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +70,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -87,7 +87,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +106,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -124,7 +124,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -143,7 +143,7 @@ describe("PowerColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PowerColumn systemId="abc123" />
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

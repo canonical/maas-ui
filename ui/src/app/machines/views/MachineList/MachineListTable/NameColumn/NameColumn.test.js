@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import NameColumn from "./NameColumn";
+import { NameColumn } from "./NameColumn";
 
 const mockStore = configureStore();
 

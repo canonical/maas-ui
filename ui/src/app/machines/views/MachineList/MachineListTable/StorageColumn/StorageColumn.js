@@ -6,7 +6,7 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { formatBytes } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const StorageColumn = ({ onToggleMenu, systemId }) => {
+export const StorageColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -14,7 +14,6 @@ const StorageColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      onToggleMenu={onToggleMenu}
       primary={
         <>
           <span data-test="storage-value">{formattedStorage.value}</span>&nbsp;
@@ -29,8 +28,7 @@ const StorageColumn = ({ onToggleMenu, systemId }) => {
 };
 
 StorageColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
-export default StorageColumn;
+export default React.memo(StorageColumn);

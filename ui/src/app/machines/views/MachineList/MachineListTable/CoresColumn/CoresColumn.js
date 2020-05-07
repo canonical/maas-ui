@@ -7,7 +7,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import Tooltip from "app/base/components/Tooltip";
 import { machine as machineSelectors } from "app/base/selectors";
 
-const CoresColumn = ({ onToggleMenu, systemId }) => {
+export const CoresColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
@@ -18,7 +18,6 @@ const CoresColumn = ({ onToggleMenu, systemId }) => {
   return (
     <DoubleRow
       className="u-align--right"
-      onToggleMenu={onToggleMenu}
       primary={
         <ScriptStatus
           data-test="cores"
@@ -42,8 +41,7 @@ const CoresColumn = ({ onToggleMenu, systemId }) => {
 };
 
 CoresColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
-export default CoresColumn;
+export default React.memo(CoresColumn);
