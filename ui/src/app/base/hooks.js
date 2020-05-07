@@ -241,23 +241,31 @@ export const useVisible = (initialValue) => {
  * @param {Function} generateSchemaFunc - Schema generation function.
  * @returns {Object} Yup validation schema with power parameters.
  */
-export const usePowerParametersSchema = (powerType, generateSchemaFunc) => {
+export const usePowerParametersSchema = (
+  powerType,
+  generateSchemaFunc,
+  chassis = false
+) => {
   const [Schema, setSchema] = useState(generateSchemaFunc({}));
 
   useEffect(() => {
     if (powerType) {
       const parametersSchema = powerType.fields.reduce((schema, field) => {
-        if (field.required) {
-          schema[field.name] = Yup.string().required(`${field.label} required`);
-        } else {
-          schema[field.name] = Yup.string();
+        if (!chassis || (chassis && field.scope !== "node")) {
+          if (field.required) {
+            schema[field.name] = Yup.string().required(
+              `${field.label} required`
+            );
+          } else {
+            schema[field.name] = Yup.string();
+          }
         }
         return schema;
       }, {});
       const newSchema = generateSchemaFunc(parametersSchema);
       setSchema(newSchema);
     }
-  }, [generateSchemaFunc, powerType]);
+  }, [chassis, generateSchemaFunc, powerType]);
 
   return Schema;
 };

@@ -17,7 +17,7 @@ import {
   resourcepool as resourcePoolSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
-import { trimPowerParameters } from "app/utils";
+import { formatPowerParameters } from "app/utils";
 import {
   useAddMessage,
   useAllPowerParameters,
@@ -166,7 +166,7 @@ export const AddMachineForm = () => {
                 hostname: values.hostname,
                 min_hwe_kernel: values.min_hwe_kernel,
                 pool: resourcePools.find((pool) => pool.name === values.pool),
-                power_parameters: trimPowerParameters(
+                power_parameters: formatPowerParameters(
                   powerType,
                   values.power_parameters
                 ),
