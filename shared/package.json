@@ -6,6 +6,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "src/**/*.js",
+    "dist/**/*.js",
+    "!/dist/**/*.test.js"
+  ],
+  "main": "dist/index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
     "clean": "rm -rf node_modules dist",
