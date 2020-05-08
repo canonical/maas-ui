@@ -6,6 +6,67 @@ import React from "react";
 import PowerTypeFields from "../PowerTypeFields";
 
 describe("PowerTypeFields", () => {
+  it("gives fields the correct types", async () => {
+    const formikProps = {
+      setFieldValue: jest.fn(),
+      setFieldTouched: jest.fn(),
+    };
+    const powerTypes = [
+      {
+        name: "fake_power_type",
+        description: "This is not real",
+        fields: [
+          {
+            name: "field1",
+            label: "String",
+            field_type: "string",
+          },
+          {
+            name: "field2",
+            label: "Password",
+            field_type: "password",
+          },
+          {
+            name: "field3",
+            label: "Choice",
+            field_type: "choice",
+            choices: [
+              ["choice1", "Choice 1"],
+              ["choice2", "Choice 2"],
+            ],
+          },
+        ],
+      },
+    ];
+    const wrapper = mount(
+      <Formik>
+        <PowerTypeFields
+          formikProps={formikProps}
+          powerTypes={powerTypes}
+          selectedPowerType="fake_power_type"
+        />
+      </Formik>
+    );
+
+    await act(async () => {
+      wrapper
+        .find("select[name='power_type']")
+        .props()
+        .onChange({ target: { name: "power_type", value: "fake_power_type" } });
+    });
+    wrapper.update();
+
+    expect(
+      wrapper.find("Input[name='power_parameters.field1']").props().type
+    ).toBe("text");
+    expect(
+      wrapper.find("Input[name='power_parameters.field2']").props().type
+    ).toBe("password");
+    expect(
+      wrapper.find("Select[name='power_parameters.field3']").props().type
+    ).toBe(undefined);
+  });
+
   it("correctly generates power options from power type", async () => {
     const formikProps = {
       setFieldValue: jest.fn(),
@@ -90,5 +151,56 @@ describe("PowerTypeFields", () => {
         .at(1)
         .text()
     ).toBe("Choice 2");
+  });
+
+  it("does not show node fields if using chassis power types", async () => {
+    const formikProps = {
+      setFieldValue: jest.fn(),
+      setFieldTouched: jest.fn(),
+    };
+    const powerTypes = [
+      {
+        name: "power_type",
+        description: "Power",
+        fields: [
+          {
+            name: "field1",
+            label: "Label1",
+            scope: "bmc",
+          },
+          {
+            name: "field2",
+            label: "Label2",
+            scope: "node",
+          },
+        ],
+      },
+    ];
+    const wrapper = mount(
+      <Formik>
+        <PowerTypeFields
+          forChassis
+          formikProps={formikProps}
+          powerTypes={powerTypes}
+          selectedPowerType="power_type"
+        />
+      </Formik>
+    );
+
+    // Select the power type from the dropdown
+    await act(async () => {
+      wrapper
+        .find("select[name='power_type']")
+        .props()
+        .onChange({ target: { name: "power_type", value: "power_type" } });
+    });
+    wrapper.update();
+
+    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
+      false
+    );
   });
 });

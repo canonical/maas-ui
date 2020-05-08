@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const licensekeys = {};
 
 /**
@@ -30,14 +32,6 @@ licensekeys.loaded = (state) => state.licensekeys.loaded;
 licensekeys.saved = (state) => state.licensekeys.saved;
 
 /**
- * Returns true if license keys have errors
- * @param {Object} state - Redux state
- * @returns {Boolean} License keys have errors
- */
-licensekeys.hasErrors = (state) =>
-  Object.entries(state.licensekeys.errors).length > 0;
-
-/**
  * Returns license keys errors.
  * @param {Object} state - The redux state.
  * @returns {Array} Errors for license keys.
@@ -45,15 +39,28 @@ licensekeys.hasErrors = (state) =>
 licensekeys.errors = (state) => state.licensekeys.errors;
 
 /**
+ * Returns true if license keys have errors
+ * @param {Object} state - Redux state
+ * @returns {Boolean} License keys have errors
+ */
+licensekeys.hasErrors = createSelector(
+  [licensekeys.errors],
+  (errors) => Object.entries(errors).length > 0
+);
+
+/**
  * Get license keys that match a term.
  * @param {Object} state - The redux state.
  * @param {String} term - The term to match against.
  * @returns {Array} A filtered list of license keys.
  */
-licensekeys.search = (state, term) =>
-  state.licensekeys.items.filter(
-    (item) => item.osystem.includes(term) || item.distro_series.includes(term)
-  );
+licensekeys.search = createSelector(
+  [licensekeys.all, (state, term) => term],
+  (licencekeyItems, term) =>
+    licencekeyItems.filter(
+      (item) => item.osystem.includes(term) || item.distro_series.includes(term)
+    )
+);
 
 /**
  * Get license keys for a given osystem and distro_series.
@@ -66,6 +73,17 @@ licensekeys.getByOsystemAndDistroSeries = (state, osystem, distro_series) =>
   state.licensekeys.items.filter(
     (item) => item.osystem === osystem && item.distro_series === distro_series
   )[0];
+
+licensekeys.getByOsystemAndDistroSeries = createSelector(
+  [
+    licensekeys.all,
+    (state, osystem, distro_series) => ({ osystem, distro_series }),
+  ],
+  (licencekeyItems, { osystem, distro_series }) =>
+    licencekeyItems.filter(
+      (item) => item.osystem === osystem && item.distro_series === distro_series
+    )[0]
+);
 
 /**
  * Get the saving state.

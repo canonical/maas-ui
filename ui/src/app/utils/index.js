@@ -8,4 +8,4 @@ export { groupAsMap } from "./groupAsMap";
 export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
 export { simpleSortByKey } from "./simpleSortByKey";
-export { trimPowerParameters } from "./trimPowerParameters";
+export { formatPowerParameters } from "./formatPowerParameters";

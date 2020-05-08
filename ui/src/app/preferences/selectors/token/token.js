@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const token = {};
 
 /**
@@ -48,7 +50,9 @@ token.saved = (state) => state.token.saved;
  * @param {String} id - A token id.
  * @returns {Array} An authorisation token.
  */
-token.getById = (state, id) =>
-  state.token.items.find((token) => token.id === id);
+
+token.getById = createSelector([token.all, (state, id) => id], (tokens, id) =>
+  tokens.find((token) => token.id === id)
+);
 
 export default token;

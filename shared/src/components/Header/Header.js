@@ -2,10 +2,14 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-const useVisible = initialValue => {
+import HardwareMenu from "./HardwareMenu";
+
+const useVisible = (initialValue) => {
   const [value, setValue] = useState(initialValue);
-  const toggleValue = evt => {
-    evt.preventDefault();
+  const toggleValue = (evt, preventDefault = true) => {
+    if (preventDefault) {
+      evt.preventDefault();
+    }
     setValue(!value);
   };
   return [value, toggleValue];
@@ -26,7 +30,7 @@ export const Header = ({
   showRSD,
   urlChange,
   uuid,
-  version
+  version,
 }) => {
   const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
   const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
@@ -34,12 +38,12 @@ export const Header = ({
   useEffect(() => {
     let unlisten;
     if (!debug && enableAnalytics && uuid && version && authUser) {
-      (function(w, d, s, l, i) {
+      (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
+          dl = l !== "dataLayer" ? "&l=" + l : "";
         j.async = true;
         j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
         f.parentNode.insertBefore(j, f);
@@ -47,12 +51,12 @@ export const Header = ({
 
       window.ga =
         window.ga ||
-        function() {
+        function () {
           (window.ga.q = window.ga.q || []).push(arguments);
         };
       window.ga.l = +new Date();
       window.ga("create", "UA-1018242-63", "auto", {
-        userId: `${uuid}-${authUser.id}`
+        userId: `${uuid}-${authUser.id}`,
       });
       window.ga("set", "dimension1", version);
       window.ga("set", "dimension2", uuid);
@@ -70,67 +74,67 @@ export const Header = ({
     return () => {
       unlisten && unlisten();
     };
-  }, [debug, enableAnalytics, uuid, version, authUser]);
+  }, [debug, enableAnalytics, uuid, version, authUser, rootScope, urlChange]);
 
   const links = [
     {
       inHardwareMenu: true,
       isLegacy: false,
       label: "Machines",
-      url: "/machines"
+      url: "/machines",
     },
     {
       inHardwareMenu: true,
       isLegacy: true,
       label: "Devices",
-      url: "/devices"
+      url: "/devices",
     },
     {
       adminOnly: true,
       inHardwareMenu: true,
       isLegacy: true,
       label: "Controllers",
-      url: "/controllers"
+      url: "/controllers",
     },
     {
       inHardwareMenu: true,
       isLegacy: true,
       label: "KVM",
-      url: "/kvm"
+      url: "/kvm",
     },
     {
       hidden: !showRSD,
       inHardwareMenu: true,
       isLegacy: true,
       label: "RSD",
-      url: "/rsd"
+      url: "/rsd",
     },
     {
       isLegacy: true,
       label: "Images",
-      url: "/images"
+      url: "/images",
     },
     {
       isLegacy: true,
       label: "DNS",
-      url: "/domains"
+      url: "/domains",
     },
     {
       isLegacy: true,
       label: "AZs",
-      url: "/zones"
+      url: "/zones",
     },
     {
       isLegacy: true,
       label: "Subnets",
-      url: "/networks?by=fabric"
+      url: "/networks?by=fabric",
     },
     {
       adminOnly: true,
       isLegacy: false,
       label: "Settings",
-      url: "/settings"
-    }
+      url: "/settings",
+    },
   ]
     // Remove the admin only items if the user is not an admin.
     .filter(
@@ -139,8 +143,8 @@ export const Header = ({
     // Remove the hidden items.
     .filter(({ hidden }) => !hidden);
 
-  const generateLegacyURL = url => `${basename}/#${url}`;
-  const generateNewURL = url => `${basename}${newURLPrefix}${url}`;
+  const generateLegacyURL = (url) => `${basename}/#${url}`;
+  const generateNewURL = (url) => `${basename}${newURLPrefix}${url}`;
   const generateURL = (url, isLegacy) => {
     if (isLegacy) {
       return generateLegacyURL(url);
@@ -163,34 +167,15 @@ export const Header = ({
     );
   };
 
-  const generateHardwareMenu = hardwareLinks => {
-    const linkItems = hardwareLinks.map(link => (
-      <li key={link.url}>{generateLink(link, "p-subnav__item")}</li>
-    ));
-    return (
-      <li
-        className={classNames(
-          "p-navigation__link p-subnav is-dark hardware-menu",
-          { "is-active": hardwareMenuOpen }
-        )}
-        role="menuitem"
-      >
-        <a onClick={toggleHardwareMenu}>Hardware</a>
-        <ul className="p-subnav__items">{linkItems}</ul>
-      </li>
-    );
-  };
-
-  const generateNavItems = links => {
-    const hardwareLinks = links.filter(link => link.inHardwareMenu);
-    const hardwareMenu = generateHardwareMenu(hardwareLinks);
+  const generateNavItems = (links) => {
+    const hardwareLinks = links.filter((link) => link.inHardwareMenu);
     const path = location.pathname + location.hash;
 
-    const linkItems = links.map(link => (
+    const linkItems = links.map((link) => (
       <li
         className={classNames("p-navigation__link", {
           "is-selected": path.startsWith(generateURL(link.url, link.isLegacy)),
-          "u-hide--hardware-menu-threshold": link.inHardwareMenu
+          "u-hide--hardware-menu-threshold": link.inHardwareMenu,
         })}
         key={link.url}
         role="menuitem"
@@ -202,7 +187,7 @@ export const Header = ({
     return (
       <nav
         className={classNames("p-navigation__nav", {
-          "u-show": mobileMenuOpen
+          "u-show": mobileMenuOpen,
         })}
       >
         <span className="u-off-screen">
@@ -211,7 +196,28 @@ export const Header = ({
         <ul className="p-navigation__links" role="menu">
           {completedIntro && (
             <>
-              {hardwareMenu}
+              <li
+                className={classNames(
+                  "p-navigation__link p-subnav is-dark hardware-menu",
+                  { "is-active": hardwareMenuOpen }
+                )}
+                role="menuitem"
+              >
+                {/* eslint-disable-next-line */}
+                <a
+                  onClick={toggleHardwareMenu}
+                  className="hardware-menu__toggle"
+                >
+                  Hardware
+                </a>
+                {hardwareMenuOpen && (
+                  <HardwareMenu
+                    generateLink={generateLink}
+                    links={hardwareLinks}
+                    toggleHardwareMenu={toggleHardwareMenu}
+                  />
+                )}
+              </li>
               {linkItems}
             </>
           )}
@@ -219,8 +225,9 @@ export const Header = ({
         <ul className="p-navigation__links" role="menu">
           {!completedIntro && (
             <li className="p-navigation__link" role="menuitem">
+              {/* eslint-disable-next-line */}
               <a
-                onClick={evt => {
+                onClick={(evt) => {
                   evt.preventDefault();
                   onSkip();
                 }}
@@ -233,15 +240,16 @@ export const Header = ({
             className={classNames("p-navigation__link", {
               "is-selected": location.pathname.startsWith(
                 generateURL("/account/prefs", false)
-              )
+              ),
             })}
             role="menuitem"
           >
             {generateLink({ url: "/account/prefs", label: authUser.username })}
           </li>
           <li className="p-navigation__link" role="menuitem">
+            {/* eslint-disable-next-line */}
             <a
-              onClick={evt => {
+              onClick={(evt) => {
                 evt.preventDefault();
                 localStorage.removeItem("maas-config");
                 logout();
@@ -287,6 +295,7 @@ export const Header = ({
                 </svg>
               </a>
             </div>
+            {/* eslint-disable-next-line */}
             <a
               className="p-navigation__toggle--open"
               title="Toggle menu"
@@ -304,9 +313,9 @@ export const Header = ({
 
 Header.propTypes = {
   authUser: PropTypes.shape({
-    id: PropTypes.id,
+    id: PropTypes.number,
     is_superuser: PropTypes.bool,
-    username: PropTypes.string
+    username: PropTypes.string,
   }),
   basename: PropTypes.string.isRequired,
   completedIntro: PropTypes.bool,
@@ -315,7 +324,7 @@ Header.propTypes = {
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
     hash: PropTypes.string,
-    pathname: PropTypes.string.isRequired
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
   logout: PropTypes.func.isRequired,
   newURLPrefix: PropTypes.string,
@@ -324,7 +333,7 @@ Header.propTypes = {
   showRSD: PropTypes.bool,
   urlChange: PropTypes.func,
   uuid: PropTypes.string,
-  version: PropTypes.string
+  version: PropTypes.string,
 };
 
 export default Header;
