@@ -5,6 +5,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/**/*.js",
+    "!/dist/**/*.test.js"
+  ],
   "main": "./dist/main.js",
   "repository": {
     "type": "git",

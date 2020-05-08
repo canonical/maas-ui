@@ -9,7 +9,6 @@ module.exports = {
   entry: {
     maas: ["babel-polyfill", "macaroon-bakery", "./src/app/entry.js"],
   },
-
   module: {
     rules: [
       {

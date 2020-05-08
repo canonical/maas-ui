@@ -15,7 +15,7 @@ module.exports = merge(common, {
   output: {
     path: path.resolve(__dirname, "./dist"),
     library: "maas-ui-legacy",
-    libraryTarget: 'umd',
+    libraryTarget: "umd",
     filename: "main.js",
     publicPath: "/MAAS/",
   },

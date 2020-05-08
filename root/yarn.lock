@@ -829,10 +829,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blrandel/maas-ui-legacy@0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@blrandel/maas-ui-legacy/-/maas-ui-legacy-0.1.12.tgz#8c8ebc08bc63d2d4541d426d79370914bc0671b8"
-  integrity sha512-3qasYYAAYD7OAS8b/h3NHopOWisDOjZUeDZYDX4DXYvV4NJzI8H/Hzd0KgRY+AHDYHzqk4YEjfAbkmM0CZ0R7Q==
+"@blrandel/maas-ui-legacy@0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@blrandel/maas-ui-legacy/-/maas-ui-legacy-0.1.13.tgz#5abf81ed0260ee2e3cf6b529d5a8a2fb1106ff89"
+  integrity sha512-geukGwyz4ouuxRdmYMmQr3/WWELAy9wR9i5K7yf+yF2I97xvFw9kD2jFcZ+1pgJpPDn0WsyPYu9rRnV0oBVqpg==
   dependencies:
     "@canonical/maas-ui-shared" "0.1.1"
     "@sentry/browser" "5.15.5"
