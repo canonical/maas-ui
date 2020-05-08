@@ -1,14 +1,18 @@
 {
   "name": "@canonical/maas-ui-shared",
-  "private": false,
   "version": "0.1.0",
   "main": "dist/index.js",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir dist",
     "clean": "rm -rf node_modules dist",
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
     "lint-package-json": "npmPkgJsonLint .",
+    "prepublishOnly": "yarn build",
     "test": "jest --testPathIgnorePatterns=dist",
     "watch": "yarn build --watch"
   },
