@@ -63,7 +63,7 @@
     "webpack-merge": "4.2.2"
   },
   "dependencies": {
-    "@canonical/maas-ui-shared": "0.1.0",
+    "@canonical/maas-ui-shared": "0.1.1",
     "@sentry/browser": "5.15.5",
     "@sentry/integrations": "5.15.5",
     "angular": "1.7.9",
