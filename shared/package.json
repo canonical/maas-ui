@@ -1,11 +1,9 @@
 {
-  "name": "@canonical/maas-ui-shared",
+  "name": "@maas-ui/maas-ui-shared",
   "version": "0.1.1",
+  "license": "AGPL-3.0",
+  "private": true,
   "main": "dist/index.js",
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "files": [
     "src/**/*.js",
     "dist/**/*.js",

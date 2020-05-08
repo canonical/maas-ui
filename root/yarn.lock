@@ -829,37 +829,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blrandel/maas-ui-legacy@0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@blrandel/maas-ui-legacy/-/maas-ui-legacy-0.1.14.tgz#fbf173edcd2a64b155b9f261ce9c927c0b3a0af9"
-  integrity sha512-Y84Jw2CiHgoKqVKnviWo5i6XP/gf5ioij4TojfaeGXdrcVH+QEClBsBhcP46dJEOP2tvMa5ZnOX3cxilL4CRDg==
-  dependencies:
-    "@canonical/maas-ui-shared" "0.1.1"
-    "@sentry/browser" "5.15.5"
-    "@sentry/integrations" "5.15.5"
-    angular "1.7.9"
-    angular-cookies "1.7.9"
-    angular-route "1.7.9"
-    angular-sanitize "1.7.9"
-    angular-vs-repeat "1.1.11"
-    babel-polyfill "6.26.0"
-    cross-env "7.0.2"
-    jquery "3.5.0"
-    js-cookie "2.2.1"
-    macaroon-bakery "0.2.1"
-    ng-tags-input "3.2.0"
-    single-spa-angularjs "^3.2.0"
-    vanilla-framework "2.0.1"
-
-"@canonical/maas-ui-shared@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-ui-shared/-/maas-ui-shared-0.1.1.tgz#3bfebbfe5a94423a8906e0ed189713e9bccabf79"
-  integrity sha512-fPmgpVqjEAj7s7Q6WYp3MCtsJvHIiwcKVpwRbwHu9MF2KRspiic8yiy22oEKQ81I74IJSP2+yPpEVOmY4Kc5aw==
-  dependencies:
-    prop-types "15.7.2"
-    react "16.13.1"
-    react-dom "16.13.1"
-
 "@sentry/browser@5.15.5":
   version "5.15.5"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.15.5.tgz#d9a51f1388581067b50d30ed9b1aed2cbb333a36"

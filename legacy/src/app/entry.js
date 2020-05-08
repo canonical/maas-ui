@@ -25,7 +25,7 @@ import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
 import bootstrapOverWebsocket from "./bootstrap";
-import { Footer, Header } from "@canonical/maas-ui-shared";
+import { Footer, Header } from "@maas-ui/maas-ui-shared";
 
 // filters
 import {
@@ -231,6 +231,8 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
+const debug = process.env.NODE_ENV === "development";
+
 const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
@@ -240,7 +242,24 @@ const checkAuthenticated = () => {
   // login form.
   fetch(LOGIN_CANARY_API).then((response) => {
     if (!response.ok) {
-      window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+      if (debug) {
+        console.log(
+          "You're not logged in, find this log and fill in your details here"
+        );
+        fetch("/MAAS/accounts/login/", {
+          method: "POST",
+          mode: "no-cors",
+          credentials: "include",
+          headers: new Headers({
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "X-Requested-With": "XMLHttpRequest",
+          }),
+          body: "username=admin&password=EatRoads82",
+        });
+      } else {
+        window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+      }
     }
   });
 };
@@ -336,7 +355,6 @@ const renderHeader = ($rootScope, $window, $http) => {
     uuid,
     version,
   } = $window.CONFIG;
-  const debug = process.env.NODE_ENV === "development";
   ReactDOM.render(
     <Header
       authUser={current_user}
@@ -609,7 +627,7 @@ const ngLifecycles = singleSpaAngularJS({
   angular,
   mainAngularModule: moduleName,
   uiRouter: false,
-  preserveGlobal: false
+  preserveGlobal: false,
 });
 
 export const bootstrap = ngLifecycles.bootstrap;

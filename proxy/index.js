@@ -13,7 +13,7 @@ app.use(
   createProxyMiddleware(
     [`${process.env.BASENAME}/api`, `${process.env.BASENAME}/accounts`],
     {
-      target: process.env.MAAS_URL
+      target: process.env.MAAS_URL,
     }
   )
 );
@@ -22,15 +22,26 @@ app.use(
 app.use(
   createProxyMiddleware(`${process.env.BASENAME}/ws`, {
     target: process.env.MAAS_URL,
-    ws: true
+    ws: true,
   })
 );
 
+// Proxy to the root app.
+app.use(
+  createProxyMiddleware(
+    [`${process.env.BASENAME}/`, "/root-application.js", "/0.js"],
+    {
+      target: `http://localhost:8080/`,
+    }
+  )
+);
+
+/*
 // Proxy the HMR endpoint to the React client.
 app.use(
   createProxyMiddleware("/sockjs-node", {
     target: `http://localhost:${UI_PORT}/`,
-    ws: true
+    ws: true,
   })
 );
 
@@ -38,35 +49,38 @@ app.use(
 app.use(
   createProxyMiddleware("/sockjs-legacy", {
     target: `http://localhost:${LEGACY_PORT}/`,
-    ws: true
+    ws: true,
   })
 );
+*/
 
+/*
 // Proxy URLs and assets to the React client.
 app.use(
   createProxyMiddleware(
     [
       `${process.env.BASENAME}${process.env.REACT_BASENAME}`,
       "/static/",
-      "/maas-favicon-32px.png"
+      "/maas-favicon-32px.png",
     ],
     {
-      target: `http://localhost:${UI_PORT}/`
+      target: `http://localhost:${UI_PORT}/`,
     }
   )
 );
+*/
 
 // Proxy the HMR url to the React client.
 app.use(
   createProxyMiddleware("/main.*.hot-update.js", {
-    target: `http://localhost:${UI_PORT}/`
+    target: `http://localhost:${UI_PORT}/`,
   })
 );
 
 // Proxy the remaining URLs to the Angular client.
 app.use(
   createProxyMiddleware(`${process.env.BASENAME}/`, {
-    target: `http://localhost:${LEGACY_PORT}/`
+    target: `http://localhost:${LEGACY_PORT}/`,
   })
 );
 
