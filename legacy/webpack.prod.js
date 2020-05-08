@@ -1,6 +1,7 @@
+const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const common = require("./webpack.common.js");
@@ -11,5 +12,17 @@ module.exports = merge(common, {
   optimization: {
     minimizer: [new OptimizeCSSAssetsPlugin({})],
   },
-  plugins: [new CleanWebpackPlugin()],
+  output: {
+    path: path.resolve(__dirname, "./dist"),
+    library: "maas-ui-legacy",
+    libraryTarget: 'umd',
+    filename: "main.js",
+    publicPath: "/MAAS/",
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
+  ],
 });

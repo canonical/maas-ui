@@ -5,7 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./src/app/entry",
+  "main": "./dist/main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/canonical-web-and-design/maas-ui.git"
