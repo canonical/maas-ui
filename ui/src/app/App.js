@@ -12,7 +12,7 @@ import { general as generalSelectors } from "app/base/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { Footer, Header } from "@canonical/maas-ui-shared";
+import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
 import { useLocation, useRouter } from "app/base/hooks";

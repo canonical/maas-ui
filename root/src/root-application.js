@@ -23,8 +23,8 @@ function showExcept(routes) {
 
 registerApplication({
   name: "legacy",
-  app: () => import("@blrandel/maas-ui-legacy"),
-  activeWhen: "/",
+  app: () => import("@maas-ui/maas-ui-legacy"),
+  activeWhen: "/MAAS/",
 });
 
 start();

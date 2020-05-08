@@ -5119,7 +5119,7 @@ clean-stack@^2.0.0:
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
-clean-webpack-plugin@^3.0.0:
+clean-webpack-plugin@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/clean-webpack-plugin/-/clean-webpack-plugin-3.0.0.tgz#a99d8ec34c1c628a4541567aa7b457446460c62b"
   integrity sha512-MciirUH5r+cYLGCOL5JX/ZLzOZbVr1ot3Fw+KcvbhUb6PM+yycqd9ZhIlcigQ5gl+XhppNmw3bEFuaaMNyLj3A==
@@ -14530,10 +14530,15 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
-single-spa-angularjs@^3.2.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-3.3.0.tgz#603c01d7b0d4682185300c4be7402395f6ddbd66"
-  integrity sha512-knGbJvkUtdy04DuppS7PWDBY3MQF2ih31CqNq6g/9QiwcR+A/VB6lGIOKYhrWyPUK75H1fxpcXRd2OWnrVgTGg==
+single-spa-angularjs@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-3.2.0.tgz#e80a6726acef157233ff54497d04131406d20cf4"
+  integrity sha512-J6gVmso9WVD65OoU/RO4AwopZJC3fitvGiNmROvE/RZvSLJjqm00DSY38s+uTG9OG1hv1JhaTSwYOt3gsPt/XA==
+
+single-spa@5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/single-spa/-/single-spa-5.4.0.tgz#da3c5cf60f79e02c2ed7bebd86299d4f37fec569"
+  integrity sha512-VxD4kh7sCOuMUqYbFjtBz2eHDySTOQnmwuFmDJvhQwDXUz9mOX7Ps9xSnqGXEZDXOf/YEAE1mRfmX1cwVSjkag==
 
 sisteransi@^1.0.3:
   version "1.0.3"

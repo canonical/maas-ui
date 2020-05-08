@@ -1,5 +1,5 @@
 {
-  "name": "@canonical/maas-ui-proxy",
+  "name": "@maas-ui/maas-ui-proxy",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -11,7 +11,7 @@
     "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
     "serve-legacy": "cd ../legacy && yarn run start",
     "serve-proxy": "node ./index.js",
-    "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\" \"yarn watch-shared\"",
+    "start": "yarn serve-proxy",
     "watch-shared": "cd ../shared && yarn watch"
   },
   "devDependencies": {
