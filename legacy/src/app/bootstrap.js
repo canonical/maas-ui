@@ -1,14 +1,4 @@
-import * as angular from "angular";
 import Cookies from "js-cookie";
-
-const bootstrapApp = config => {
-  // set global config, and bootstrap angular app
-  window.CONFIG = config;
-  angular.element(document).ready(() => {
-    const el = document.getElementById("app");
-    angular.bootstrap(el, ["MAAS"], { strictDi: true });
-  });
-};
 
 const buildUrl = () => {
   const host = process.env.MAAS_WEBSOCKET_HOST
@@ -32,7 +22,7 @@ const buildUrl = () => {
 
   // Build the URL. Include the :port only if it has a value.
   let url = proto + "://" + host;
-  if (angular.isString(port) && port.length > 0) {
+  if (port && port.length > 0) {
     url += ":" + port;
   }
   url += path + "ws";
@@ -40,78 +30,85 @@ const buildUrl = () => {
   return url;
 };
 
-const bootstrapOverWebsocket = () => {
-  let config = {};
-  const webSocket = new WebSocket(buildUrl());
+const setupWebsocket = () => {
+  return new Promise((resolve, reject) => {
+    let config = {};
+    const webSocket = new WebSocket(buildUrl());
 
-  const sendMsg = (id, method) => {
-    var msg = {
-      request_id: id,
-      type: 0,
-      method
+    const sendMsg = (id, method) => {
+      var msg = {
+        request_id: id,
+        type: 0,
+        method,
+      };
+
+      webSocket.send(JSON.stringify(msg));
     };
 
-    webSocket.send(JSON.stringify(msg));
-  };
+    const messagesReceived = [];
+    webSocket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
 
-  const messagesReceived = [];
-  webSocket.onmessage = event => {
-    const msg = JSON.parse(event.data);
+      switch (msg.request_id) {
+        // user.auth_user
+        case 1: {
+          config.current_user = msg.result;
+          messagesReceived.push(1);
+          break;
+        }
 
-    switch (msg.request_id) {
-      // user.auth_user
-      case 1: {
-        config.current_user = msg.result;
-        messagesReceived.push(1);
-        break;
+        // config.list
+        case 2: {
+          const requiredConfigKeys = [
+            "completed_intro",
+            "maas_name",
+            "maas_url",
+            "rpc_shared_secret",
+            "uuid",
+            "enable_analytics",
+          ];
+
+          requiredConfigKeys.forEach((key) => {
+            let result = msg.result.filter((item) => item.name === key);
+            if (result.length > 0) {
+              config[key] = result[0].value;
+            }
+          });
+
+          messagesReceived.push(2);
+          break;
+        }
+
+        // general.version
+        case 3:
+          config.version = msg.result;
+          messagesReceived.push(3);
+          break;
+
+        // general.navigation_options
+        case 4:
+          config.navigation_options = msg.result;
+          messagesReceived.push(4);
+          break;
       }
-
-      // config.list
-      case 2: {
-        const requiredConfigKeys = [
-          "completed_intro",
-          "maas_name",
-          "maas_url",
-          "rpc_shared_secret",
-          "uuid",
-          "enable_analytics"
-        ];
-
-        requiredConfigKeys.forEach(key => {
-          let result = msg.result.filter(item => item.name === key);
-          if (result.length > 0) {
-            config[key] = result[0].value;
-          }
-        });
-
-        messagesReceived.push(2);
-        break;
+      if (messagesReceived.length === 4) {
+        console.log("setting config", config);
+        window.CONFIG = config;
+        console.log('resolving config')
+        resolve(config);
       }
+    };
 
-      // general.version
-      case 3:
-        config.version = msg.result;
-        messagesReceived.push(3);
-        break;
+    webSocket.onopen = () => {
+      sendMsg(1, "user.auth_user");
+      sendMsg(2, "config.list");
+      sendMsg(3, "general.version");
+      sendMsg(4, "general.navigation_options");
+    };
 
-      // general.navigation_options
-      case 4:
-        config.navigation_options = msg.result;
-        messagesReceived.push(4);
-        break;
-    }
-    if (messagesReceived.length === 4) {
-      bootstrapApp(config);
-      webSocket.close();
-    }
-  };
-
-  webSocket.onopen = () => {
-    sendMsg(1, "user.auth_user");
-    sendMsg(2, "config.list");
-    sendMsg(3, "general.version");
-    sendMsg(4, "general.navigation_options");
-  };
+    webSocket.onerror = (err) =>
+      reject(err);
+  });
 };
 
-export default bootstrapOverWebsocket;
+export default setupWebsocket;

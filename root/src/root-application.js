@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable func-names */
-/* global window legacyApp */
-import { registerApplication, start } from "single-spa";
+import { registerApplication, setBootstrapMaxTime, start } from "single-spa";
 
 function showWhenAnyOf(routes) {
   return function (location) {
@@ -20,6 +19,8 @@ function showExcept(routes) {
     return routes.every((route) => location.pathname !== route);
   };
 }
+
+setBootstrapMaxTime(3000, true, 10000);
 
 registerApplication({
   name: "legacy",
