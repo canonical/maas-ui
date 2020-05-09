@@ -24,7 +24,7 @@ import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
-import bootstrapOverWebsocket from "./bootstrap";
+import setupWebsocket from "./bootstrap";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 
 // filters
@@ -428,17 +428,17 @@ const configureSentry = ($window) => {
   Sentry.setExtra("maasVersion", $window.CONFIG.version);
 };
 
-const moduleName = "MAAS";
-angular
-  .module(moduleName, [
-    ngRoute,
-    ngCookies,
-    ngSanitize,
-    "ngTagsInput",
-    "vs-repeat",
-    "ngSentry",
-  ])
-  .config(configureMaas)
+const maasModule = "MAAS";
+const MAAS = angular.module(maasModule, [
+  ngRoute,
+  ngCookies,
+  ngSanitize,
+  "ngTagsInput",
+  "vs-repeat",
+  "ngSentry",
+]);
+
+MAAS.config(configureMaas)
   .run(configureSentry)
   .run(displayTemplate)
   .run(dashboardRedirect)
@@ -620,27 +620,13 @@ angular
   .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
 
-//bootstrapOverWebsocket();
-
-angular
-  .module("bootstrap", [
-    ngRoute,
-    ngCookies,
-    ngSanitize,
-    "ngTagsInput",
-    "vs-repeat",
-    "ngSentry",
-  ])
-  .run(bootstrapOverWebsocket);
-
-// export lifecycle events for singlespa
-const ngLifecycles = singleSpaAngularJS({
+const lifecycles = singleSpaAngularJS({
   angular,
-  mainAngularModule: "bootstrap",
+  mainAngularModule: maasModule,
   uiRouter: false,
   preserveGlobal: false,
 });
 
-export const bootstrap = ngLifecycles.bootstrap;
-export const mount = ngLifecycles.mount;
-export const unmount = ngLifecycles.unmount;
+export const bootstrap = [setupWebsocket, lifecycles.bootstrap];
+export const mount = lifecycles.mount;
+export const unmount = lifecycles.unmount;
