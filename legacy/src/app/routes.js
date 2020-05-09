@@ -183,12 +183,14 @@ const configureRoutes = ($routeProvider) => {
       template: dashboardTmpl,
       controller: "DashboardController",
     });
-
+/*
   routes.otherwise({
     redirectTo: () => {
       window.location.replace(`${process.env.BASENAME}/r/machines`);
     },
   });
+  */
+
 };
 
 export default configureRoutes;

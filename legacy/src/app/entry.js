@@ -620,12 +620,23 @@ angular
   .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
 
-bootstrapOverWebsocket();
+//bootstrapOverWebsocket();
+
+angular
+  .module("bootstrap", [
+    ngRoute,
+    ngCookies,
+    ngSanitize,
+    "ngTagsInput",
+    "vs-repeat",
+    "ngSentry",
+  ])
+  .run(bootstrapOverWebsocket);
 
 // export lifecycle events for singlespa
 const ngLifecycles = singleSpaAngularJS({
   angular,
-  mainAngularModule: moduleName,
+  mainAngularModule: "bootstrap",
   uiRouter: false,
   preserveGlobal: false,
 });
