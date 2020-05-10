@@ -25,7 +25,6 @@ exports[`NotificationList renders a list of messages 1`] = `
           className="p-notification__toggle"
         >
           <NotificationGroupMessage
-            action="Dismiss"
             actionHandler={[Function]}
             id={1}
             message="an error"
@@ -47,24 +46,6 @@ exports[`NotificationList renders a list of messages 1`] = `
                     }
                     data-test="notification-message"
                   />
-                </li>
-                <li
-                  className="p-inline-list__item"
-                >
-                  <Button
-                    appearance="link"
-                    className="p-notification__action"
-                    data-test="action-link"
-                    onClick={[Function]}
-                  >
-                    <button
-                      className="p-button--link p-notification__action"
-                      data-test="action-link"
-                      onClick={[Function]}
-                    >
-                      Dismiss
-                    </button>
-                  </Button>
                 </li>
               </ul>
             </div>

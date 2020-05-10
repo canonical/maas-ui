@@ -19,7 +19,9 @@ export const notificationTypes = {
 
 const dismissAll = (notifications, dispatch) => {
   notifications.forEach((notification) => {
-    dismiss(notification.id, dispatch);
+    if (notification.dismissable) {
+      dismiss(notification.id, dispatch);
+    }
   });
 };
 
@@ -82,7 +84,7 @@ const NotificationGroup = ({ notifications, type }) => {
             <NotificationGroupMessage
               message={notifications[0].message}
               id={notifications[0].id}
-              action="Dismiss"
+              action={notifications[0].dismissable ? "Dismiss" : undefined}
               actionHandler={dismiss}
             />
           )}
@@ -94,7 +96,7 @@ const NotificationGroup = ({ notifications, type }) => {
                 <NotificationGroupMessage
                   message={notification.message}
                   id={notification.id}
-                  action="Dismiss"
+                  action={notification.dismissable ? "Dismiss" : undefined}
                   actionHandler={dismiss}
                 />
               </li>
