@@ -14,7 +14,6 @@ function ZonesListController(
   GeneralManager
 ) {
   // Set title and page.
-  console.log('zones list!')
   $rootScope.title = "Zones";
   $rootScope.page = "zones";
 
