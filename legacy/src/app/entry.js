@@ -154,7 +154,7 @@ import ZonesListController from "./controllers/zones_list";
 
 // directives
 // prettier-ignore
-import main from "./directives/main";
+import layout from "./directives/layout";
 import loading from "./directives/loading";
 import storageDisksPartitions from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
@@ -553,7 +553,7 @@ MAAS.config(configureMaas)
   .controller("ZoneDetailsController", ZoneDetailsController)
   .controller("ZonesListController", ZonesListController)
   // directives
-  .directive("main", main)
+  .directive("layout", layout)
   .directive("ngLoading", loading)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
@@ -628,7 +628,7 @@ const lifecycles = singleSpaAngularJS({
 
   uiRouter: false,
   preserveGlobal: false,
-  template: '<main />'
+  template: '<layout />'
 });
 
 export const bootstrap = [setupWebsocket, lifecycles.bootstrap];

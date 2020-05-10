@@ -14,6 +14,7 @@ function ImagesController(
   ManagerHelperService,
   GeneralManager
 ) {
+  console.log('images!')
   $rootScope.page = "images";
   $rootScope.title = "Loading...";
 

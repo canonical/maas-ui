@@ -183,6 +183,7 @@ const configureRoutes = ($routeProvider) => {
       template: dashboardTmpl,
       controller: "DashboardController",
     });
+
 /*
   routes.otherwise({
     redirectTo: () => {
