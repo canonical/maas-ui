@@ -21,14 +21,14 @@ describe("SpaceDetailsController", function() {
   }
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $location, $scope, $q, $routeParams;
+  var $controller, $rootScope, $location, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load any injected managers and services.
@@ -64,7 +64,7 @@ describe("SpaceDetailsController", function() {
     var controller = $controller("SpaceDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       SpacesManager: SpacesManager,
       VLANsManager: VLANsManager,
@@ -87,7 +87,7 @@ describe("SpaceDetailsController", function() {
     );
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.space_id = space.id;
+    $stateParams.space_id = space.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -108,7 +108,7 @@ describe("SpaceDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.space_id = "xyzzy";
+    $stateParams.space_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -124,7 +124,7 @@ describe("SpaceDetailsController", function() {
     var defer = $q.defer();
     makeController(defer);
     SpacesManager._activeItem = space;
-    $routeParams.space_id = space.id;
+    $stateParams.space_id = space.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -138,7 +138,7 @@ describe("SpaceDetailsController", function() {
     spyOn(SpacesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.space_id = space.id;
+    $stateParams.space_id = space.id;
 
     defer.resolve();
     $rootScope.$digest();

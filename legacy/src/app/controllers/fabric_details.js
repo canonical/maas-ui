@@ -8,7 +8,7 @@
 function FabricDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $filter,
   $location,
   FabricsManager,
@@ -179,7 +179,7 @@ function FabricDetailsController(
     // this fabric set to active. Only call setActiveItem if not
     // already the activeItem.
     var activeFabric = FabricsManager.getActiveItem();
-    var requestedFabric = parseInt($routeParams.fabric_id, 10);
+    var requestedFabric = parseInt($stateParams.fabric_id, 10);
 
     if (isNaN(requestedFabric)) {
       ErrorService.raiseError("Invalid fabric identifier.");

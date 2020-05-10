@@ -8,7 +8,7 @@
 function SettingsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   PackageRepositoriesManager,
   DHCPSnippetsManager,
   MachinesManager,
@@ -126,10 +126,10 @@ function SettingsController(
   };
 
   // Setup page variables based on section.
-  if ($routeParams.section === "dhcp") {
+  if ($stateParams.section === "dhcp") {
     $rootScope.title = "DHCP snippets";
     $scope.currentpage = "dhcp";
-  } else if ($routeParams.section === "repositories") {
+  } else if ($stateParams.section === "repositories") {
     $rootScope.title = "Package repositories";
     $scope.currentpage = "repositories";
   }

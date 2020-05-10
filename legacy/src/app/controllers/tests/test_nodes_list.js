@@ -26,14 +26,14 @@ describe("NodesListController", function() {
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $scope, $q, $routeParams, $location;
+  var $controller, $rootScope, $scope, $q, $stateParams, $location;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load the required managers.
@@ -105,7 +105,7 @@ describe("NodesListController", function() {
       $q: $q,
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       MachinesManager: MachinesManager,
       DevicesManager: DevicesManager,
@@ -394,17 +394,17 @@ describe("NodesListController", function() {
     expect($scope.tabs.switches.search).toBe(query);
   });
 
-  it("sets nodes search from $routeParams.query", function() {
+  it("sets nodes search from $stateParams.query", function() {
     var query = makeName("query");
-    $routeParams.query = query;
+    $stateParams.query = query;
     makeController();
     expect($scope.tabs.machines.search).toBe(query);
   });
 
   it(`calls updateFilters for nodes if search
-      from $routeParams.query`, function() {
+      from $stateParams.query`, function() {
     var query = makeName("query");
-    $routeParams.query = query;
+    $stateParams.query = query;
     makeController();
     expect($scope.tabs.machines.filters._).toEqual([query]);
   });
@@ -1939,12 +1939,12 @@ describe("NodesListController", function() {
 
   describe("showswitches", function() {
     it("is true if switches=on", function() {
-      $routeParams.switches = "on";
+      $stateParams.switches = "on";
       makeController();
       expect($scope.showswitches).toBe(true);
     });
     it("is false if switches=off", function() {
-      $routeParams.switches = "off";
+      $stateParams.switches = "off";
       makeController();
       expect($scope.showswitches).toBe(false);
     });

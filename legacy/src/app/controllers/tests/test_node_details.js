@@ -150,11 +150,11 @@ describe("NodeDetailsController", function () {
     };
   }
 
-  // Create the node that will be used and set the routeParams.
-  let node, $routeParams;
+  // Create the node that will be used and set the stateParams.
+  let node, $stateParams;
   beforeEach(function () {
     node = makeNode();
-    $routeParams = {
+    $stateParams = {
       system_id: node.system_id,
     };
   });
@@ -188,7 +188,7 @@ describe("NodeDetailsController", function () {
     var controller = $controller("NodeDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       MachinesManager: MachinesManager,
       DevicesManager: DevicesManager,
@@ -318,10 +318,10 @@ describe("NodeDetailsController", function () {
     });
   });
 
-  it("sets initial area to routeParams value", function () {
-    $routeParams.area = makeName("area");
+  it("sets initial area to stateParams value", function () {
+    $stateParams.area = makeName("area");
     makeController();
-    expect($scope.section.area).toEqual($routeParams.area);
+    expect($scope.section.area).toEqual($stateParams.area);
   });
 
   it("calls loadManagers for machine", function () {

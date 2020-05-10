@@ -8,7 +8,7 @@
  * notification events about pods.
  */
 
-function PodsManager(RegionConnection, Manager, $location, $routeParams) {
+function PodsManager(RegionConnection, Manager, $location, $stateParams) {
   function PodsManager() {
     Manager.call(this);
 
@@ -72,7 +72,7 @@ PodsManager.$inject = [
   "RegionConnection",
   "Manager",
   "$location",
-  "$routeParams"
+  "$stateParams"
 ];
 
 export default PodsManager;

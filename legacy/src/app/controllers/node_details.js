@@ -42,7 +42,7 @@ export const getRanges = (array) => {
 function NodeDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   $filter,
   DevicesManager,
@@ -92,7 +92,7 @@ function NodeDetailsController(
   $scope.power_types = GeneralManager.getData("power_types");
   $scope.osinfo = GeneralManager.getData("osinfo");
   $scope.section = {
-    area: angular.isString($routeParams.area) ? $routeParams.area : "summary"
+    area: angular.isString($stateParams.area) ? $stateParams.area : "summary"
   };
   $scope.osSelection = {
     osystem: null,
@@ -1654,7 +1654,7 @@ function NodeDetailsController(
     var activeNode = $scope.nodesManager.getActiveItem();
     if (
       angular.isObject(activeNode) &&
-      activeNode.system_id === $routeParams.system_id
+      activeNode.system_id === $stateParams.system_id
     ) {
       nodeLoaded(activeNode);
 
@@ -1665,7 +1665,7 @@ function NodeDetailsController(
         );
       }
     } else {
-      $scope.nodesManager.setActiveItem($routeParams.system_id).then(
+      $scope.nodesManager.setActiveItem($stateParams.system_id).then(
         function(node) {
           nodeLoaded(node);
           if (angular.isObject($scope.node.vlan)) {
