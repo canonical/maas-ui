@@ -74,7 +74,6 @@ function MasterController($rootScope, $window, $http) {
     $rootScope.$on("$routeChangeSuccess", function (event, next, current) {
       // Update the header when the route changes.
       renderHeader();
-      console.log('rendering header')
     });
   };
 

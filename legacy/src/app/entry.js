@@ -156,7 +156,6 @@ import ZonesListController from "./controllers/zones_list";
 
 // directives
 // prettier-ignore
-import layout from "./directives/layout";
 import loading from "./directives/loading";
 import storageDisksPartitions from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
@@ -488,7 +487,6 @@ MAAS.config(configureMaas)
   .controller("ZoneDetailsController", ZoneDetailsController)
   .controller("ZonesListController", ZonesListController)
   // directives
-  .directive("layout", layout)
   .directive("ngLoading", loading)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
