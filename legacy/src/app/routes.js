@@ -1,3 +1,4 @@
+import layoutTmpl from "./partials/layout.html";
 import dashboardTmpl from "./partials/dashboard.html";
 import domainDetailsTmpl from "./partials/domain-details.html";
 import domainsListTmpl from "./partials/domains-list.html";
@@ -22,68 +23,74 @@ import zonesListTmpl from "./partials/zones-list.html";
 const configureRoutes = ($stateProvider) => {
   let routes;
   routes = $stateProvider
-    .state("intro", {
+    .state("master", {
+      abstract: true,
+      template: layoutTmpl,
+      controller: "MasterController",
+    })
+    .state("master.intro", {
       url: "/intro",
       template: introTmpl,
       controller: "IntroController",
     })
-    .state("introUser", {
+    .state("master.introUser", {
       url: "/intro/user",
       template: introUserTmpl,
       controller: "IntroUserController",
     })
-    .state("machineResultDetails", {
+    .state("master.machineResultDetails", {
       url: "/machine/:system_id/:result_type/:id",
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
-    .state("machineEvents", {
+    .state("master.machineEvents", {
       url: "/machine/:system_id/events",
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
-    .state("machineDetails", {
+    .state("master.machineDetails", {
       url: "/machine/:system_id",
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
-    .state("devices", {
+    .state("master.devices", {
       url: "/devices",
       template: nodesListTmpl,
       controller: "NodesListController",
     })
-    .state("deviceResultDetails", {
+    .state("master.deviceResultDetails", {
       url: "/device/:system_id/:result_type/:id",
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
-    .state("/device/:system_id/events", {
+    .state("master.deviceEvents", {
+      url: "/device/:system_id/events",
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
-    .state("deviceDetails", {
+    .state("master.deviceDetails", {
       url: "/device/:system_id",
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
-    .state("controllers", {
+    .state("master.controllers", {
       url: "/controllers",
       template: nodesListTmpl,
       controller: "NodesListController",
     })
-    .state("controllerResultDetails", {
+    .state("master.controllerResultDetails", {
       url: "/controller/:system_id/:result_type/:id",
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
-    .state("controllerEvents", {
+    .state("master.controllerEvents", {
       url: "/controller/:system_id/events",
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
-    .state("controllerDetails", {
+    .state("master.controllerDetails", {
       url: "/controller/:system_id",
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
@@ -129,91 +136,91 @@ const configureRoutes = ($stateProvider) => {
       url: "/node/controller/:system_id/events",
       redirectTo: "/controller/:system_id/events",
     })
-    .state("kvm", {
+    .state("master.kvm", {
       url: "/kvm",
       template: podsListTmpl,
       controller: "PodsListController",
     })
-    .state("kvmDetails", {
+    .state("master.kvmDetails", {
       url: "/kvm/:id",
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
     .state("pods", { url: "/pods", redirectTo: "/kvm" })
     .state("podDetails", { url: "/pod/:id", redirectTo: "/kvm/:id" })
-    .state("rsd", {
+    .state("master.rsd", {
       url: "/rsd",
       template: podsListTmpl,
       controller: "PodsListController",
     })
-    .state("rsdDetails", {
+    .state("master.rsdDetails", {
       url: "/rsd/:id",
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
-    .state("images", {
+    .state("master.images", {
       url: "/images",
       template: imagesTmpl,
       controller: "ImagesController",
     })
-    .state("domains", {
+    .state("master.domains", {
       url: "/domains",
       template: domainsListTmpl,
       controller: "DomainsListController",
     })
-    .state("domainDetails", {
+    .state("master.domainDetails", {
       url: "/domain/:domain_id",
       template: domainDetailsTmpl,
       controller: "DomainDetailsController",
     })
-    .state("spaceDetails", {
+    .state("master.spaceDetails", {
       url: "/space/:space_id",
       template: spaceDetailsTmpl,
       controller: "SpaceDetailsController",
     })
-    .state("fabricDetails", {
+    .state("master.fabricDetails", {
       url: "/fabric/:fabric_id",
       template: fabricDetailsTmpl,
       controller: "FabricDetailsController",
     })
-    .state("subnets", {
+    .state("master.subnets", {
       url: "/subnets",
       redirectTo: "/networks?by=fabric",
     })
-    .state("network", {
+    .state("master.network", {
       url: "/networks",
       template: networksListTmpl,
       controller: "NetworksListController",
       reloadOnSearch: false,
     })
-    .state("subnetDetails", {
+    .state("master.subnetDetails", {
       url: "/subnet/:subnet_id",
       template: subnetDetailsTmpl,
       controller: "SubnetDetailsController",
     })
-    .state("vlanDetails", {
+    .state("master.vlanDetails", {
       url: "/vlan/:vlan_id",
       template: vlanDetailsTmpl,
       controller: "VLANDetailsController",
       controllerAs: "vlanDetails",
     })
-    .state("zoneDetails", {
+    .state("master.zoneDetails", {
       url: "/zone/:zone_id",
       template: zoneDetailsTmpl,
       controller: "ZoneDetailsController",
     })
-    .state("zones", {
+    .state("master.zones", {
       url: "/zones",
       template: zonesListTmpl,
       controller: "ZonesListController",
       reloadOnSearch: false,
     })
-    .state("pools", {
+    .state("master.pools", {
       url: "/pools",
       template: nodesListTmpl,
       controller: "NodesListController",
     })
-    .state("dashboard", {
+    .state("master.dashboard", {
       url: "/dashboard",
       template: dashboardTmpl,
       controller: "DashboardController",

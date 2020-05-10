@@ -20,7 +20,7 @@ function showExcept(routes) {
   };
 }
 
-setBootstrapMaxTime(3000, true, 10000);
+setBootstrapMaxTime(6000, true, 10000);
 
 registerApplication({
   name: "legacy",
