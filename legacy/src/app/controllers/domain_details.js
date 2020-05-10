@@ -8,7 +8,7 @@
 function DomainDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   DomainsManager,
   UsersManager,
@@ -175,7 +175,7 @@ function DomainDetailsController(
     // this domain set to active. Only call setActiveItem if not
     // already the activeItem.
     var activeDomain = DomainsManager.getActiveItem();
-    var requestedDomain = parseInt($routeParams.domain_id, 10);
+    var requestedDomain = parseInt($stateParams.domain_id, 10);
     if (isNaN(requestedDomain)) {
       ErrorService.raiseError("Invalid domain identifier.");
     } else if (

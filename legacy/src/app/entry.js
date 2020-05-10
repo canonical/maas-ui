@@ -118,6 +118,7 @@ import VLANsManager from "./factories/vlans";
 import ZonesManager from "./factories/zones";
 
 // controllers
+import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
 import AddDomainController from "./controllers/add_domain";
 import AddHardwareController from "./controllers/add_hardware";
@@ -345,75 +346,6 @@ function unhideRSDLinks() {
   rsdLinks.forEach((link) => link.classList.remove("u-hide"));
 }
 
-const renderHeader = ($rootScope, $window, $http) => {
-  const headerNode = document.querySelector("#header");
-  if (!headerNode) {
-    return;
-  }
-  const {
-    completed_intro,
-    navigation_options,
-    current_user,
-    uuid,
-    version,
-  } = $window.CONFIG;
-  ReactDOM.render(
-    <Header
-      authUser={current_user}
-      basename={process.env.BASENAME}
-      completedIntro={
-        completed_intro && current_user && current_user.completed_intro
-      }
-      debug={debug}
-      enableAnalytics={window.CONFIG.enable_analytics}
-      location={window.location}
-      logout={() => {
-        localStorage.clear();
-        $http.post(LOGOUT_API).then(() => {
-          $window.location.href = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
-        });
-      }}
-      newURLPrefix={process.env.REACT_BASENAME}
-      onSkip={() => {
-        // Call skip inside this function because skip won't exist when the
-        // header is first rendered.
-        $rootScope.skip();
-      }}
-      rootScope={$rootScope}
-      showRSD={navigation_options && navigation_options.rsd}
-      uuid={uuid}
-      version={version}
-    />,
-    headerNode
-  );
-};
-
-const renderFooter = ($window) => {
-  const footerNode = document.querySelector("#footer");
-  if (!footerNode) {
-    return;
-  }
-  ReactDOM.render(
-    <Footer
-      maasName={$window.CONFIG.maas_name}
-      version={$window.CONFIG.version}
-    />,
-    footerNode
-  );
-};
-
-/* @ngInject */
-const displayTemplate = ($rootScope, $window, $http) => {
-  $rootScope.site = window.CONFIG.maas_name;
-  renderHeader($rootScope, $window, $http);
-  renderFooter($window);
-
-  $rootScope.$on("$routeChangeSuccess", function (event, next, current) {
-    // Update the header when the route changes.
-    renderHeader($rootScope, $window, $http);
-  });
-};
-
 Sentry.init({
   beforeSend(event) {
     if (process.env.NODE_ENV === "production") {
@@ -443,7 +375,7 @@ const MAAS = angular.module(maasModule, [
 
 MAAS.config(configureMaas)
   .run(configureSentry)
-  .run(displayTemplate)
+  //.run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)
   .run(unhideRSDLinks)
@@ -522,6 +454,7 @@ MAAS.config(configureMaas)
   .service("SearchService", SearchService)
   .service("ValidationService", ValidationService)
   // controllers
+  .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
   .controller("AddDomainController", AddDomainController)
   .controller("AddHardwareController", AddHardwareController)
