@@ -117,7 +117,7 @@ describe("NodeResultsController", function() {
 
     return $controller("NodeResultsController", {
       $scope: $scope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       MachinesManager: MachinesManager,
       ControllersManager: ControllersManager,
       NodeResultsManagerFactory: NodeResultsManagerFactory,
@@ -126,11 +126,11 @@ describe("NodeResultsController", function() {
     });
   }
 
-  // Create the node that will be used and set the routeParams.
-  var node, $routeParams;
+  // Create the node that will be used and set the stateParams.
+  var node, $stateParams;
   beforeEach(function() {
     node = makeNode();
-    $routeParams = {
+    $stateParams = {
       system_id: node.system_id
     };
   });

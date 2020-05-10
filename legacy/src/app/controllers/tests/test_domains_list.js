@@ -12,13 +12,13 @@ describe("DomainsListController", function() {
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $scope, $q, $routeParams;
+  var $controller, $rootScope, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load the managers and services.
@@ -49,7 +49,7 @@ describe("DomainsListController", function() {
     var controller = $controller("DomainsListController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       DomainsManager: DomainsManager,
       ManagerHelperService: ManagerHelperService
     });

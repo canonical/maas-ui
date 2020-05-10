@@ -8,7 +8,7 @@
 function SpaceDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $filter,
   $location,
   SpacesManager,
@@ -138,7 +138,7 @@ function SpaceDetailsController(
     // this space set to active. Only call setActiveItem if not
     // already the activeItem.
     var activeSpace = SpacesManager.getActiveItem();
-    var requestedSpace = parseInt($routeParams.space_id, 10);
+    var requestedSpace = parseInt($stateParams.space_id, 10);
     if (isNaN(requestedSpace)) {
       ErrorService.raiseError("Invalid space identifier.");
     } else if (

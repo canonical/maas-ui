@@ -12,6 +12,7 @@
 import "../scss/build.scss";
 
 import * as angular from "angular";
+import uiRouter from "@uirouter/angularjs";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
@@ -270,7 +271,7 @@ checkAuthenticated();
 /* @ngInject */
 function configureMaas(
   $interpolateProvider,
-  $routeProvider,
+  $stateProvider,
   $httpProvider,
   $locationProvider,
   $compileProvider,
@@ -305,7 +306,7 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  configureRoutes($routeProvider);
+  configureRoutes($stateProvider);
 }
 
 // Force users to #/intro when it has not been completed.
@@ -434,6 +435,7 @@ const MAAS = angular.module(maasModule, [
   ngRoute,
   ngCookies,
   ngSanitize,
+  uiRouter,
   "ngTagsInput",
   "vs-repeat",
   "ngSentry",
@@ -625,10 +627,8 @@ MAAS.config(configureMaas)
 const lifecycles = singleSpaAngularJS({
   angular,
   mainAngularModule: maasModule,
-
-  uiRouter: false,
-  preserveGlobal: false,
-  template: '<layout />'
+  uiRouter: true,
+  preserveGlobal: false
 });
 
 export const bootstrap = [setupWebsocket, lifecycles.bootstrap];

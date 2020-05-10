@@ -12,14 +12,14 @@ describe("NetworksListController", function() {
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $scope, $q, $routeParams, $location;
+  var $controller, $rootScope, $scope, $q, $stateParams, $location;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load the managers and services.
@@ -53,7 +53,7 @@ describe("NetworksListController", function() {
     var controller = $controller("NetworksListController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       SubnetsManager: SubnetsManager,
       FabricsManager: FabricsManager,

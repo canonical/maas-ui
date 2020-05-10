@@ -3214,18 +3214,6 @@
     "@types/source-list-map" "*"
     source-map "^0.6.1"
 
-"@types/webpack@^4.4.31":
-  version "4.41.12"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.12.tgz#0386ee2a2814368e2f2397abb036c0bf173ff6c3"
-  integrity sha512-BpCtM4NnBen6W+KEhrL9jKuZCXVtiH6+0b6cxdvNt2EwU949Al334PjQSl2BeAyvAX9mgoNNG21wvjP3xZJJ5w==
-  dependencies:
-    "@types/anymatch" "*"
-    "@types/node" "*"
-    "@types/tapable" "*"
-    "@types/uglify-js" "*"
-    "@types/webpack-sources" "*"
-    source-map "^0.6.0"
-
 "@types/webpack@^4.41.8":
   version "4.41.9"
   resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.9.tgz#f0ed8d46d69efe11573441f8eb112d934fc4efe9"
@@ -5118,14 +5106,6 @@ clean-stack@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
-
-clean-webpack-plugin@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/clean-webpack-plugin/-/clean-webpack-plugin-3.0.0.tgz#a99d8ec34c1c628a4541567aa7b457446460c62b"
-  integrity sha512-MciirUH5r+cYLGCOL5JX/ZLzOZbVr1ot3Fw+KcvbhUb6PM+yycqd9ZhIlcigQ5gl+XhppNmw3bEFuaaMNyLj3A==
-  dependencies:
-    "@types/webpack" "^4.4.31"
-    del "^4.1.1"
 
 cli-cursor@^1.0.2:
   version "1.0.2"
@@ -14529,16 +14509,6 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
-
-single-spa-angularjs@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-3.2.0.tgz#e80a6726acef157233ff54497d04131406d20cf4"
-  integrity sha512-J6gVmso9WVD65OoU/RO4AwopZJC3fitvGiNmROvE/RZvSLJjqm00DSY38s+uTG9OG1hv1JhaTSwYOt3gsPt/XA==
-
-single-spa@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/single-spa/-/single-spa-5.4.0.tgz#da3c5cf60f79e02c2ed7bebd86299d4f37fec569"
-  integrity sha512-VxD4kh7sCOuMUqYbFjtBz2eHDySTOQnmwuFmDJvhQwDXUz9mOX7Ps9xSnqGXEZDXOf/YEAE1mRfmX1cwVSjkag==
 
 sisteransi@^1.0.3:
   version "1.0.3"

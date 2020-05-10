@@ -10,7 +10,7 @@ function NodesListController(
   $scope,
   $interval,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $route,
   $location,
   $window,
@@ -52,7 +52,7 @@ function NodesListController(
   $scope.devices = DevicesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
   $scope.switches = SwitchesManager.getItems();
-  $scope.showswitches = $routeParams.switches === "on";
+  $scope.showswitches = $stateParams.switches === "on";
   $scope.currentpage = "machines";
   $scope.osinfo = {};
   $scope.scripts = ScriptsManager.getItems();
@@ -1370,8 +1370,8 @@ function NodesListController(
     $scope.updateFilters("switches");
   }
 
-  // Set the query if the present in $routeParams.
-  var query = $routeParams.query;
+  // Set the query if the present in $stateParams.
+  var query = $stateParams.query;
   if (angular.isString(query)) {
     $scope.tabs[$scope.currentpage].search = query;
     $scope.updateFilters($scope.currentpage);

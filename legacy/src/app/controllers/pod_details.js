@@ -9,7 +9,7 @@ function PodDetailsController(
   $scope,
   $rootScope,
   $location,
-  $routeParams,
+  $stateParams,
   $filter,
   PodsManager,
   GeneralManager,
@@ -32,7 +32,7 @@ function PodDetailsController(
 
   $rootScope.title = "Loading...";
 
-  if ($scope.onRSDSection($routeParams.id)) {
+  if ($scope.onRSDSection($stateParams.id)) {
     $rootScope.page = "rsd";
     $scope.pageType = "RSD";
   } else {
@@ -238,7 +238,7 @@ function PodDetailsController(
       function() {
         // If the action was delete, then go back to listing.
         if ($scope.action.option.name === "delete") {
-          if ($scope.onRSDSection($routeParams.id)) {
+          if ($scope.onRSDSection($stateParams.id)) {
             $location.path("/rsd");
           } else {
             $location.path("/kvm");
@@ -698,7 +698,7 @@ function PodDetailsController(
     var activePod = PodsManager.getActiveItem();
     if (
       angular.isObject(activePod) &&
-      activePod.id === parseInt($routeParams.id, 10)
+      activePod.id === parseInt($stateParams.id, 10)
     ) {
       $scope.pod = activePod;
       $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
@@ -706,7 +706,7 @@ function PodDetailsController(
       $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
       $scope.startWatching();
     } else {
-      PodsManager.setActiveItem(parseInt($routeParams.id, 10)).then(
+      PodsManager.setActiveItem(parseInt($stateParams.id, 10)).then(
         function(pod) {
           $scope.pod = pod;
           $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
