@@ -78,6 +78,7 @@ function MasterController($rootScope, $window, $http) {
   };
 
   displayTemplate();
+
 }
 
 export default MasterController;
