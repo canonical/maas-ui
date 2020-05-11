@@ -25,7 +25,9 @@ setBootstrapMaxTime(6000, true, 10000);
 registerApplication({
   name: "legacy",
   app: () => import("@maas-ui/maas-ui-legacy"),
-  activeWhen: "/MAAS/",
+  // TODO: make this use the env vars:
+  // activeWhen: `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`,
+  activeWhen: `/MAAS/#`,
 });
 
 start();

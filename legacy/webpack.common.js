@@ -2,12 +2,18 @@ const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotenvFlow = require("dotenv-flow-webpack");
 
 module.exports = {
   entry: {
     maas: ["babel-polyfill", "macaroon-bakery", "./src/app/entry.js"],
+  },
+  output: {
+    path: path.resolve(__dirname, "./dist"),
+    library: "maas-ui-legacy",
+    libraryTarget: "umd",
+    filename: "main.js",
+    publicPath: "/MAAS/",
   },
   module: {
     rules: [
@@ -55,6 +61,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, "./src/assets"), to: "assets" },
     ]),

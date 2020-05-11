@@ -230,8 +230,6 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
-const debug = process.env.NODE_ENV === "development";
-
 const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 
@@ -240,24 +238,7 @@ const checkAuthenticated = () => {
   // login form.
   fetch(LOGIN_CANARY_API).then((response) => {
     if (!response.ok) {
-      if (debug) {
-        console.log(
-          "You're not logged in, find this log and fill in your details here"
-        );
-        fetch("/MAAS/accounts/login/", {
-          method: "POST",
-          mode: "no-cors",
-          credentials: "include",
-          headers: new Headers({
-            Accept: "application/json",
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "X-Requested-With": "XMLHttpRequest",
-          }),
-          body: "username=admin&password=EatRoads82",
-        });
-      } else {
-        window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
-      }
+      window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
     }
   });
 };
@@ -271,7 +252,8 @@ function configureMaas(
   $httpProvider,
   $locationProvider,
   $compileProvider,
-  tagsInputConfigProvider
+  tagsInputConfigProvider,
+  $urlRouterProvider
 ) {
   // Disable debugInfo unless in a Jest context.
   // Re-enable debugInfo in development by running
@@ -302,7 +284,7 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  configureRoutes($stateProvider);
+  configureRoutes($stateProvider, $urlRouterProvider);
 }
 
 // Force users to #/intro when it has not been completed.
@@ -554,7 +536,7 @@ const lifecycles = singleSpaAngularJS({
   angular,
   mainAngularModule: maasModule,
   uiRouter: true,
-  preserveGlobal: false
+  preserveGlobal: false,
 });
 
 export const bootstrap = [setupWebsocket, lifecycles.bootstrap];
