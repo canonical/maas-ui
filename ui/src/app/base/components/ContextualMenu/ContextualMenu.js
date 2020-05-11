@@ -6,6 +6,7 @@ import React, { useEffect, useRef } from "react";
 import usePortal from "react-useportal";
 
 import ContextualMenuDropdown from "./ContextualMenuDropdown";
+import { usePrevious } from "app/base/hooks";
 
 const ContextualMenu = ({
   className,
@@ -29,7 +30,7 @@ const ContextualMenu = ({
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
     isOpen: !hasToggle,
   });
-  const previousIsOpen = useRef(isOpen);
+  const previousIsOpen = usePrevious(isOpen);
   const labelNode = toggleLabel ? <span>{toggleLabel}</span> : null;
   const wrapperClass = classNames(
     className,
@@ -42,9 +43,8 @@ const ContextualMenu = ({
     // The isOpen state is compared to the previous state so that we can
     // initialise the previous state in a way that means that this effect does
     // not call onToggleMenu on first render.
-    if (isOpen !== previousIsOpen.current) {
+    if (isOpen !== previousIsOpen) {
       onToggleMenu && onToggleMenu(isOpen);
-      previousIsOpen.current = isOpen;
     }
     // onToggleMenu is excluded from the useEffect deps as onToggleMenu gets
     // redefined on a state update which causes an infinite loop here.
