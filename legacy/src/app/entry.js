@@ -16,8 +16,6 @@ import uiRouter from "@uirouter/angularjs";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
-import React from "react";
-import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
 import singleSpaAngularJS from "single-spa-angularjs";
@@ -26,7 +24,6 @@ import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
-import { Footer, Header } from "@maas-ui/maas-ui-shared";
 
 // filters
 import {
@@ -237,7 +234,6 @@ const debug = process.env.NODE_ENV === "development";
 
 const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
-const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
 const checkAuthenticated = () => {
   // Check that the user is authenticated, otherwise redirect to the React
@@ -374,7 +370,6 @@ const MAAS = angular.module(maasModule, [
 
 MAAS.config(configureMaas)
   .run(configureSentry)
-  //.run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)
   .run(unhideRSDLinks)
