@@ -43,10 +43,10 @@ export const useLocation = () => {
  * @returns {*} Previous value.
  */
 export const usePrevious = (value) => {
-  const ref = useRef();
+  const ref = useRef(value);
   useEffect(() => {
     ref.current = value;
-  });
+  }, [value]);
   return ref.current;
 };
 
