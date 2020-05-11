@@ -60,14 +60,7 @@ module.exports = {
     ]),
     new MiniCssExtractPlugin({
       // This file is relative to output.path above.
-      filename: "assets/css/[name].[hash].css",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/index.html.ejs",
-      inject: "body",
-      minify: {
-        removeAttributeQuotes: false,
-      },
+      filename: "assets/css/[name].css",
     }),
     new webpack.ProvidePlugin({
       "window.jQuery": "jquery",

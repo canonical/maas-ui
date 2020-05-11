@@ -1,4 +1,5 @@
 require("dotenv-flow").config();
+const path = require("path");
 var express = require("express");
 var { createProxyMiddleware } = require("http-proxy-middleware");
 
@@ -24,6 +25,11 @@ app.use(
     target: process.env.MAAS_URL,
     ws: true,
   })
+);
+
+app.use(
+  `${process.env.BASENAME}/assets`,
+  express.static(path.join(__dirname, "../legacy/dist/assets/"))
 );
 
 // Proxy to the root app.
