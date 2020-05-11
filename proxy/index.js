@@ -8,6 +8,7 @@ var app = express();
 const PROXY_PORT = 8400;
 const UI_PORT = 8401;
 const LEGACY_PORT = 8402;
+const ROOT_PORT = 8404;
 
 // Proxy API endpoints to the MAAS.
 app.use(
@@ -27,19 +28,11 @@ app.use(
   })
 );
 
+// Proxy the legacy assets to the Angular client.
 app.use(
-  `${process.env.BASENAME}/assets`,
-  express.static(path.join(__dirname, "../legacy/dist/assets/"))
-);
-
-// Proxy to the root app.
-app.use(
-  createProxyMiddleware(
-    [`${process.env.BASENAME}/`, "/root-application.js", "/0.js"],
-    {
-      target: `http://localhost:8080/`,
-    }
-  )
+  createProxyMiddleware(`${process.env.BASENAME}/assets`, {
+    target: `http://localhost:${LEGACY_PORT}/`,
+  })
 );
 
 /*
@@ -50,6 +43,7 @@ app.use(
     ws: true,
   })
 );
+*/
 
 // Proxy the HMR endpoint to the Angular client.
 app.use(
@@ -58,7 +52,6 @@ app.use(
     ws: true,
   })
 );
-*/
 
 /*
 // Proxy URLs and assets to the React client.
@@ -77,16 +70,16 @@ app.use(
 */
 
 // Proxy the HMR url to the React client.
-app.use(
-  createProxyMiddleware("/main.*.hot-update.js", {
-    target: `http://localhost:${UI_PORT}/`,
-  })
-);
+// app.use(
+//   createProxyMiddleware("/main.*.hot-update.js", {
+//     target: `http://localhost:${UI_PORT}/`,
+//   })
+// );
 
-// Proxy the remaining URLs to the Angular client.
+// Proxy to the single-spa root app.
 app.use(
-  createProxyMiddleware(`${process.env.BASENAME}/`, {
-    target: `http://localhost:${LEGACY_PORT}/`,
+  createProxyMiddleware("/", {
+    target: `http://localhost:${ROOT_PORT}/`,
   })
 );
 

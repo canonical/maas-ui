@@ -15,7 +15,6 @@
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "start": "yarn serve",
-    "start-singlespa": "cd root && yarn start",
     "clean": "yarn clean-all",
     "clean-all": "rm -rf build && yarn clean-monorepo && yarn clean-proxy && yarn clean-shared && yarn clean-legacy && yarn clean-ui && yarn clean-root",
     "clean-monorepo": "rm -rf node_modules",

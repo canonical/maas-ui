@@ -20,9 +20,8 @@ import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
 /* @ngInject */
-const configureRoutes = ($stateProvider) => {
-  let routes;
-  routes = $stateProvider
+const configureRoutes = ($stateProvider, $urlRouterProvider) => {
+  $stateProvider
     .state("master", {
       abstract: true,
       template: layoutTmpl,
@@ -226,13 +225,9 @@ const configureRoutes = ($stateProvider) => {
       controller: "DashboardController",
     });
 
-  /*
-  routes.otherwise({
-    redirectTo: () => {
-      window.location.replace(`${process.env.BASENAME}/r/machines`);
-    },
+  $urlRouterProvider.otherwise(() => {
+    window.location.replace(`${process.env.BASENAME}/r/machines`);
   });
-  */
 };
 
 export default configureRoutes;

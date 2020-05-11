@@ -6,7 +6,6 @@ import { Footer, Header } from "@maas-ui/maas-ui-shared";
 /* @ngInject */
 function MasterController($rootScope, $window, $http) {
   const debug = process.env.NODE_ENV === "development";
-
   const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
   const renderHeader = () => {
@@ -78,7 +77,6 @@ function MasterController($rootScope, $window, $http) {
   };
 
   displayTemplate();
-
 }
 
 export default MasterController;

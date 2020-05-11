@@ -1,4 +1,3 @@
-const webpack = require("webpack");
 const merge = require("webpack-merge");
 const path = require("path");
 
@@ -12,6 +11,7 @@ module.exports = merge(common, {
     compress: true,
     public: "0.0.0.0:8400",
     sockPath: "/sockjs-legacy",
+    writeToDisk: true,
   },
   devtool: "eval-source-map",
 });
