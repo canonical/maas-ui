@@ -1,4 +1,3 @@
-import { navigateToUrl } from "single-spa";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -166,7 +165,8 @@ export const Header = ({
         className={linkClass}
         href={linkURL}
         onClick={(evt) => {
-          navigateToUrl(evt);
+          evt.preventDefault();
+          window.history.pushState(null, null, linkURL);
         }}
       >
         {label}
