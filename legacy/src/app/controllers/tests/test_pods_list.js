@@ -891,8 +891,8 @@ describe("PodsListController", function () {
   describe("formatMemory", () => {
     it("correctly formats memory", () => {
       makeController();
-      expect($scope.formatMemory(0)).toEqual("0 MiB");
-      expect($scope.formatMemory(1023)).toEqual("1023 MiB");
+      expect($scope.formatMemory(0)).toEqual("0 GiB");
+      expect($scope.formatMemory(300)).toEqual("0.29 GiB");
       expect($scope.formatMemory(1024)).toEqual("1 GiB");
       expect($scope.formatMemory(3000)).toEqual("2.9 GiB");
     });

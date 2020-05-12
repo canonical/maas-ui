@@ -515,10 +515,7 @@ function PodsListController(
   };
 
   $scope.formatMemory = (mib) => {
-    if (mib >= 1024) {
-      return `${Number((mib / 1024).toPrecision(2)).toString()} GiB`;
-    }
-    return `${Number(mib.toPrecision(2)).toString()} MiB`;
+    return `${Number((mib / 1024).toPrecision(2)).toString()} GiB`;
   };
 
   $scope.loadDetails = () => {
