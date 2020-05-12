@@ -503,6 +503,17 @@ function PodsListController(
     }
   };
 
+  $scope.getPodTotalStorage = (pod) => {
+    // XXX Caleb 12.05.2020: Special case for LXD pods in which
+    // pod.total.local_storage refers to the pod host instead of the pod itself.
+    // Remove when fixed in the backend.
+    // https://bugs.launchpad.net/maas/+bug/1878117
+    if (pod.type === "lxd") {
+      return pod.storage_pools.reduce((total, pool) => total + pool.total, 0);
+    }
+    return pod.total.local_storage;
+  };
+
   $scope.loadDetails = () => {
     $scope.pods.forEach((pod) => {
       $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))

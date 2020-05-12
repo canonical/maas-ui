@@ -381,7 +381,7 @@
                             <div class="p-popover--left">
                                 <div class="p-double-row">
                                     <div class="p-double-row__main-row">
-                                        <meter class="p-meter p-meter--thin" max="{$ pod.total.local_storage $}" value="{$ getMeterValue(pod.total.local_storage, pod.used.local_storage) $}" ng-class="{'is-over': pod.used.local_storage > pod.total.local_storage}">
+                                        <meter class="p-meter p-meter--thin" max="{$ getPodTotalStorage(pod) $}" value="{$ getMeterValue(getPodTotalStorage(pod), pod.used.local_storage) $}" ng-class="{'is-over': pod.used.local_storage > getPodTotalStorage(pod)}">
                                         </meter>
                                     </div>
                                     <div class="p-double-row__muted-row u-align--right">
@@ -442,9 +442,9 @@
                                                         </td>
                                                         <td class="p-double-row">
                                                             <div class="p-double-row__main-row">
-                                                                <meter class="p-meter" max="{$ pod.total.local_storage $}"
-                                                                    value="{$ getMeterValue(pod.total.local_storage, pod.used.local_storage) $}"
-                                                                    ng-class="{'is-over': pod.used.local_storage > pod.total.local_storage}">
+                                                                <meter class="p-meter" max="{$ getPodTotalStorage(pod) $}"
+                                                                    value="{$ getMeterValue(getPodTotalStorage(pod), pod.used.local_storage) $}"
+                                                                    ng-class="{'is-over': pod.used.local_storage > getPodTotalStorage(pod)}">
                                                                 </meter>
                                                             </div>
                                                             <div>
