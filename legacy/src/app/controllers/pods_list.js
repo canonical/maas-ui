@@ -526,7 +526,6 @@ function PodsListController(
       $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
       $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
       $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
-      console.log($scope);
     });
   };
 
