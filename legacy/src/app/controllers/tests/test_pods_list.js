@@ -7,13 +7,13 @@
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("PodsListController", function() {
+describe("PodsListController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q, $location;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
@@ -31,7 +31,7 @@ describe("PodsListController", function() {
   let UsersManager;
   let ZonesManager;
 
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ControllersManager = $injector.get("ControllersManager");
     GeneralManager = $injector.get("GeneralManager");
     MachinesManager = $injector.get("MachinesManager");
@@ -44,7 +44,7 @@ describe("PodsListController", function() {
 
   // Mock the websocket connection to the region
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
@@ -74,7 +74,7 @@ describe("PodsListController", function() {
       UsersManager: UsersManager,
       ZonesManager: ZonesManager,
       MachinesManager: MachinesManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
@@ -86,28 +86,28 @@ describe("PodsListController", function() {
     var pod = {
       id: podId++,
       $selected: false,
-      permissions: []
+      permissions: [],
     };
     PodsManager._items.push(pod);
     return pod;
   }
 
-  it("sets title and page on $rootScope if KVM", function() {
+  it("sets title and page on $rootScope if KVM", function () {
     makeController();
     expect($rootScope.title).toBe("KVM");
     expect($rootScope.page).toBe("kvm");
   });
 
-  it("sets title and page on $rootScope if RSD", function() {
+  it("sets title and page on $rootScope if RSD", function () {
     makeController();
     $location.path("/rsd");
-    $scope.$on("$routeChangeSuccess", function() {
+    $scope.$on("$routeChangeSuccess", function () {
       expect($rootScope.title).toBe("RSD");
       expect($rootScope.page).toBe("rsd");
     });
   });
 
-  it("sets initial values on $scope", function() {
+  it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
     expect($scope.pods).toBe(PodsManager.getItems());
@@ -137,7 +137,7 @@ describe("PodsListController", function() {
     ]);
   });
 
-  it("sets loading to false with loadManagers resolves", function() {
+  it("sets loading to false with loadManagers resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -145,22 +145,22 @@ describe("PodsListController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  describe("isRackControllerConnected", function() {
-    it("returns false no powerTypes", function() {
+  describe("isRackControllerConnected", function () {
+    it("returns false no powerTypes", function () {
       makeController();
       $scope.powerTypes = [];
       expect($scope.isRackControllerConnected()).toBe(false);
     });
 
-    it("returns true if powerTypes", function() {
+    it("returns true if powerTypes", function () {
       makeController();
       $scope.powerTypes = [{}];
       expect($scope.isRackControllerConnected()).toBe(true);
     });
   });
 
-  describe("canAddPod", function() {
-    it("returns false if not global permission", function() {
+  describe("canAddPod", function () {
+    it("returns false if not global permission", function () {
       makeController();
       spyOn(UsersManager, "hasGlobalPermission").and.returnValue(false);
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
@@ -170,14 +170,14 @@ describe("PodsListController", function() {
       );
     });
 
-    it("returns false if rack disconnected", function() {
+    it("returns false if rack disconnected", function () {
       makeController();
       spyOn(UsersManager, "hasGlobalPermission").and.returnValue(true);
       spyOn($scope, "isRackControllerConnected").and.returnValue(false);
       expect($scope.canAddPod()).toBe(false);
     });
 
-    it("returns true if super user, rack connected", function() {
+    it("returns true if super user, rack connected", function () {
       makeController();
       spyOn(UsersManager, "hasGlobalPermission").and.returnValue(true);
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
@@ -188,15 +188,15 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("showActions", function() {
-    it("returns false if no permissions on pods", function() {
+  describe("showActions", function () {
+    it("returns false if no permissions on pods", function () {
       makeController();
       var pod = makePod();
       PodsManager._items.push(pod);
       expect($scope.showActions()).toBe(false);
     });
 
-    it("returns false if compose permissions on pods", function() {
+    it("returns false if compose permissions on pods", function () {
       makeController();
       var pod = makePod();
       pod.permissions.push("compose");
@@ -204,7 +204,7 @@ describe("PodsListController", function() {
       expect($scope.showActions()).toBe(false);
     });
 
-    it("returns true if edit permissions on pods", function() {
+    it("returns true if edit permissions on pods", function () {
       makeController();
       var pod = makePod();
       pod.permissions.push("edit");
@@ -213,33 +213,33 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("toggleChecked", function() {
+  describe("toggleChecked", function () {
     var pod;
-    beforeEach(function() {
+    beforeEach(function () {
       makeController();
       pod = makePod();
       $scope.filteredItems = $scope.pods;
     });
 
-    it("selects object", function() {
+    it("selects object", function () {
       $scope.toggleChecked(pod);
       expect(pod.$selected).toBe(true);
     });
 
-    it("deselects object", function() {
+    it("deselects object", function () {
       PodsManager.selectItem(pod.id);
       $scope.toggleChecked(pod);
       expect(pod.$selected).toBe(false);
     });
 
-    it("sets allViewableChecked to true when all objects selected", function() {
+    it("sets allViewableChecked to true when all objects selected", function () {
       $scope.toggleChecked(pod);
       expect($scope.allViewableChecked).toBe(true);
     });
 
     it(
       "sets allViewableChecked to false when not all objects " + "selected",
-      function() {
+      function () {
         makePod();
         $scope.toggleChecked(pod);
         expect($scope.allViewableChecked).toBe(false);
@@ -248,14 +248,14 @@ describe("PodsListController", function() {
 
     it(
       "sets allViewableChecked to false when selected and " + "deselected",
-      function() {
+      function () {
         $scope.toggleChecked(pod);
         $scope.toggleChecked(pod);
         expect($scope.allViewableChecked).toBe(false);
       }
     );
 
-    it("clears action option when none selected", function() {
+    it("clears action option when none selected", function () {
       $scope.action.option = {};
       $scope.toggleChecked(pod);
       $scope.toggleChecked(pod);
@@ -263,29 +263,29 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("toggleCheckAll", function() {
+  describe("toggleCheckAll", function () {
     var pod1, pod2;
-    beforeEach(function() {
+    beforeEach(function () {
       makeController();
       pod1 = makePod();
       pod2 = makePod();
       $scope.filteredItems = $scope.pods;
     });
 
-    it("selects all objects", function() {
+    it("selects all objects", function () {
       $scope.toggleCheckAll();
       expect(pod1.$selected).toBe(true);
       expect(pod2.$selected).toBe(true);
     });
 
-    it("deselects all objects", function() {
+    it("deselects all objects", function () {
       $scope.toggleCheckAll();
       $scope.toggleCheckAll();
       expect(pod1.$selected).toBe(false);
       expect(pod2.$selected).toBe(false);
     });
 
-    it("clears action option when none selected", function() {
+    it("clears action option when none selected", function () {
       $scope.action.option = {};
       $scope.toggleCheckAll();
       $scope.toggleCheckAll();
@@ -293,15 +293,15 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("sortTable", function() {
-    it("sets predicate", function() {
+  describe("sortTable", function () {
+    it("sets predicate", function () {
       makeController();
       var predicate = makeName("predicate");
       $scope.sortTable(predicate);
       expect($scope.predicate).toBe(predicate);
     });
 
-    it("reverses reverse", function() {
+    it("reverses reverse", function () {
       makeController();
       $scope.reverse = true;
       $scope.sortTable(makeName("predicate"));
@@ -309,15 +309,15 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("actionCancel", function() {
-    it("sets actionOption to null", function() {
+  describe("actionCancel", function () {
+    it("sets actionOption to null", function () {
       makeController();
       $scope.action.option = {};
       $scope.actionCancel();
       expect($scope.action.option).toBeNull();
     });
 
-    it("resets actionProgress", function() {
+    it("resets actionProgress", function () {
       makeController();
       $scope.action.progress.total = makeInteger(1, 10);
       $scope.action.progress.completed = makeInteger(1, 10);
@@ -337,7 +337,7 @@ describe("PodsListController", function() {
       $scope.action.option = {
         name: "refresh",
         operation: () => false,
-        isSingle: true
+        isSingle: true,
       };
       $scope.actionGo();
       expect(spy).toHaveBeenCalled();
@@ -374,7 +374,7 @@ describe("PodsListController", function() {
       let spy = spyOn(PodsManager, "unselectItem");
       $scope.action.option = {
         name: "refresh",
-        operation: refresh
+        operation: refresh,
       };
       $scope.selectedItems = [pod];
       $scope.actionGo();
@@ -458,21 +458,21 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("hasActionsInProgress", function() {
-    it("returns false if action.progress.total not > 0", function() {
+  describe("hasActionsInProgress", function () {
+    it("returns false if action.progress.total not > 0", function () {
       makeController();
       $scope.action.progress.total = 0;
       expect($scope.hasActionsInProgress()).toBe(false);
     });
 
-    it("returns true if action.progress total != completed", function() {
+    it("returns true if action.progress total != completed", function () {
       makeController();
       $scope.action.progress.total = 1;
       $scope.action.progress.completed = 0;
       expect($scope.hasActionsInProgress()).toBe(true);
     });
 
-    it("returns false if actionProgress total == completed", function() {
+    it("returns false if actionProgress total == completed", function () {
       makeController();
       $scope.action.progress.total = 1;
       $scope.action.progress.completed = 1;
@@ -480,24 +480,24 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("hasActionsFailed", function() {
-    it("returns false if no errors", function() {
+  describe("hasActionsFailed", function () {
+    it("returns false if no errors", function () {
       makeController();
       $scope.action.progress.errors = 0;
       expect($scope.hasActionsFailed()).toBe(false);
     });
 
-    it("returns true if errors", function() {
+    it("returns true if errors", function () {
       makeController();
       $scope.action.progress.errors = 1;
       expect($scope.hasActionsFailed()).toBe(true);
     });
   });
 
-  describe("addPod", function() {
+  describe("addPod", function () {
     function makeZone(id) {
       var zone = {
-        name: makeName("name")
+        name: makeName("name"),
       };
       if (angular.isDefined(id)) {
         zone.id = id;
@@ -509,7 +509,7 @@ describe("PodsListController", function() {
 
     function makePool(id) {
       var pool = {
-        name: makeName("pool")
+        name: makeName("pool"),
       };
       if (angular.isDefined(id)) {
         pool.id = id;
@@ -519,7 +519,7 @@ describe("PodsListController", function() {
       return pool;
     }
 
-    it("sets add.open to true", function() {
+    it("sets add.open to true", function () {
       makeController();
       var zero = makeZone(0);
       ZonesManager._items.push(makeZone());
@@ -537,8 +537,8 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("cancelAddPod", function() {
-    it("set add.open to false and clears add.obj", function() {
+  describe("cancelAddPod", function () {
+    it("set add.open to false and clears add.obj", function () {
       makeController();
       var obj = {};
       $scope.add.obj = obj;
@@ -550,111 +550,85 @@ describe("PodsListController", function() {
     });
   });
 
-  describe("getPowerTypeTitle", function() {
-    it("returns power_type description", function() {
+  describe("getPowerTypeTitle", function () {
+    it("returns power_type description", function () {
       makeController();
       $scope.powerTypes = [
         {
           name: "power_type",
-          description: "Power type"
-        }
+          description: "Power type",
+        },
       ];
       expect($scope.getPowerTypeTitle("power_type")).toBe("Power type");
     });
 
-    it("returns power_type passed in", function() {
+    it("returns power_type passed in", function () {
       makeController();
       $scope.powerTypes = [];
       expect($scope.getPowerTypeTitle("power_type")).toBe("power_type");
     });
   });
 
-  describe("onRSDSection", function() {
-    it("returns true if URL is 'rsd'", function() {
+  describe("onRSDSection", function () {
+    it("returns true if URL is 'rsd'", function () {
       makeController();
       $location.path("/rsd");
       expect($scope.onRSDSection()).toBe(true);
     });
 
-    it("returns false if URL is 'kvm'", function() {
+    it("returns false if URL is 'kvm'", function () {
       makeController();
       $location.path("/kvm");
       expect($scope.onRSDSection()).toBe(false);
     });
   });
 
-  describe("filterPods", function() {
-    it("returns only rsd if on rsd page", function() {
+  describe("filterPods", function () {
+    it("returns only rsd if on rsd page", function () {
       makeController();
       $location.path("/rsd");
       var pods = [{ type: "virsh" }, { type: "rsd" }, { type: "virsh" }];
       expect($scope.filterPods(pods)).toEqual([{ type: "rsd" }]);
     });
 
-    it("returns only kvm if on kvm page", function() {
+    it("returns only kvm if on kvm page", function () {
       makeController();
       var pods = [{ type: "virsh" }, { type: "rsd" }, { type: "virsh" }];
       expect($scope.filterPods(pods)).toEqual([
         { type: "virsh" },
-        { type: "virsh" }
+        { type: "virsh" },
       ]);
     });
   });
 
-  describe("getPageHeading", function() {
-    it("returns RSD if on rsd page", function() {
+  describe("getPageHeading", function () {
+    it("returns RSD if on rsd page", function () {
       makeController();
       $location.path("/rsd");
       expect($scope.getPageHeading()).toBe("RSD");
     });
 
-    it("returns KVM if on kvm page", function() {
+    it("returns KVM if on kvm page", function () {
       makeController();
       expect($scope.getPageHeading()).toBe("KVM");
     });
   });
 
-  describe("getDetailsRoute", function() {
-    it("returns rsd if on rsd page", function() {
+  describe("getDetailsRoute", function () {
+    it("returns rsd if on rsd page", function () {
       makeController();
       $location.path("/rsd");
       expect($scope.getDetailsRoute()).toBe("rsd");
     });
 
-    it("returns kvm if on kvm page", function() {
+    it("returns kvm if on kvm page", function () {
       makeController();
       expect($scope.getDetailsRoute()).toBe("kvm");
     });
   });
 
-  describe("getDefaultPoolData", function() {
-    it("returns data for default pool", function() {
-      makeController();
-
-      $scope.pods = [
-        {
-          default_storage_pool: "foo",
-          storage_pools: [
-            {
-              id: "foo",
-              name: "firstpool"
-            },
-            {
-              id: "bar",
-              name: "secondpool"
-            }
-          ]
-        }
-      ];
-
-      expect($scope.getDefaultPoolData($scope.pods[0])).toEqual(
-        $scope.pods[0].storage_pools[0]
-      );
-    });
-  });
-
-  describe("getTotalNetworkDiskSize", function() {
-    it("returns total network size", function() {
+  describe("getDefaultPoolData", function () {
+    it("returns data for default pool", function () {
       makeController();
 
       $scope.pods = [
@@ -664,31 +638,57 @@ describe("PodsListController", function() {
             {
               id: "foo",
               name: "firstpool",
-              total: 53424
             },
             {
               id: "bar",
               name: "secondpool",
-              total: 64939
+            },
+          ],
+        },
+      ];
+
+      expect($scope.getDefaultPoolData($scope.pods[0])).toEqual(
+        $scope.pods[0].storage_pools[0]
+      );
+    });
+  });
+
+  describe("getTotalNetworkDiskSize", function () {
+    it("returns total network size", function () {
+      makeController();
+
+      $scope.pods = [
+        {
+          default_storage_pool: "foo",
+          storage_pools: [
+            {
+              id: "foo",
+              name: "firstpool",
+              total: 53424,
+            },
+            {
+              id: "bar",
+              name: "secondpool",
+              total: 64939,
             },
             {
               id: "baz",
               name: "thirdpool",
-              total: 93829
-            }
-          ]
-        }
+              total: 93829,
+            },
+          ],
+        },
       ];
 
       expect($scope.getTotalNetworkDiskSize($scope.pods[0])).toEqual(158768);
     });
   });
 
-  describe("getMeterValue", function() {
+  describe("getMeterValue", function () {
     it(
       "returns given value if more than 3% of total and " +
         "greater than 0% of total",
-      function() {
+      function () {
         makeController();
         expect($scope.getMeterValue(679, 598)).toBe(598);
       }
@@ -696,13 +696,13 @@ describe("PodsListController", function() {
 
     it(
       "returns 3% of total if value is less than or " + "equal to 3% of total",
-      function() {
+      function () {
         makeController();
         expect($scope.getMeterValue(257, 3)).toBe(8);
       }
     );
 
-    it("returns 0 if value is 0", function() {
+    it("returns 0 if value is 0", function () {
       makeController();
       expect($scope.getMeterValue(473, 0)).toBe(0);
     });
@@ -746,7 +746,7 @@ describe("PodsListController", function() {
       let items = [
         { id: 0, name: "foo" },
         { id: 1, name: "bar" },
-        { id: 2, name: "baz" }
+        { id: 2, name: "baz" },
       ];
       expect($scope.getItemName(2, items)).toBe("baz");
     });
@@ -863,6 +863,38 @@ describe("PodsListController", function() {
       makeController();
       const pod = { id: 1, host: undefined };
       expect($scope.getPodOSName(pod)).toEqual("Unknown");
+    });
+  });
+
+  describe("getPodTotalStorage", () => {
+    it("can correctly calculate the total storage of an lxd pod", () => {
+      makeController();
+      const pod = {
+        type: "lxd",
+        total: { local_storage: 123 },
+        storage_pools: [{ total: 100 }, { total: 200 }],
+      };
+      expect($scope.getPodTotalStorage(pod)).toEqual(300);
+    });
+
+    it("correctly returns the total storage of a non-lxd pod", () => {
+      makeController();
+      const pod = {
+        type: "virsh",
+        total: { local_storage: 123 },
+        storage_pools: [{ total: 100 }, { total: 200 }],
+      };
+      expect($scope.getPodTotalStorage(pod)).toEqual(123);
+    });
+  });
+
+  describe("formatMemory", () => {
+    it("correctly formats memory", () => {
+      makeController();
+      expect($scope.formatMemory(0)).toEqual("0 MiB");
+      expect($scope.formatMemory(1023)).toEqual("1023 MiB");
+      expect($scope.formatMemory(1024)).toEqual("1 GiB");
+      expect($scope.formatMemory(3000)).toEqual("2.9 GiB");
     });
   });
 });

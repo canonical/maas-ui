@@ -514,11 +514,19 @@ function PodsListController(
     return pod.total.local_storage;
   };
 
+  $scope.formatMemory = (mib) => {
+    if (mib >= 1024) {
+      return `${Number((mib / 1024).toPrecision(2)).toString()} GiB`;
+    }
+    return `${Number(mib.toPrecision(2)).toString()} MiB`;
+  };
+
   $scope.loadDetails = () => {
     $scope.pods.forEach((pod) => {
       $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
       $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
       $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
+      console.log($scope);
     });
   };
 

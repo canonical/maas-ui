@@ -367,13 +367,73 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="p-table__cell p-double-row" aria-label="RAM (GiB)" title="{$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $} {$ pod.memory_over_commit_ratio !== 1 ? 'x ' + pod.total.memory_gb + ' overcommit' : '' $}">
-                            <div class="p-double-row">
-                                <div class="p-double-row__main-row">
-                                    <meter class="p-meter p-meter--thin" max="{$ pod.total.memory * pod.memory_over_commit_ratio $}" value="{$ getMeterValue(pod.total.memory * pod.memory_over_commit_ratio, pod.used.memory) $}" ng-class="{'is-over': pod.used.memory > pod.total.memory * pod.memory_over_commit_ratio}"></meter>
+                        <td class="p-table__cell p-double-row" aria-label="RAM (GiB)" title="{$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $} {$ pod.memory_over_commit_ratio !== 1 ? 'x ' + pod.memory_over_commit_ratio + ' overcommit' : '' $}">
+                            <div class="p-popover--left">
+                                <div class="p-double-row">
+                                    <div class="p-double-row__main-row">
+                                        <meter class="p-meter p-meter--thin" max="{$ pod.total.memory * pod.memory_over_commit_ratio $}" value="{$ getMeterValue(pod.total.memory * pod.memory_over_commit_ratio, pod.used.memory) $}" ng-class="{'is-over': pod.used.memory > pod.total.memory * pod.memory_over_commit_ratio}"></meter>
+                                    </div>
+                                    <div class="p-double-row__muted-row u-align--right">
+                                        {$ formatMemory(pod.used.memory) $}
+                                    </div>
                                 </div>
-                                <div class="p-double-row__muted-row u-align--right">
-                                    {$ pod.used.memory * 1000 * 1000 | formatBytes $}
+                                <div class="p-popover__content">
+                                    <table class="p-meter__table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <ul class="p-legend--table-header">
+                                                        <li>
+                                                            <div class="p-legend__text text-base">
+                                                                {$ formatMemory(pod.total.memory) $}
+                                                                <span ng-if="pod.memory_over_commit_ratio !== 1" style="text-transform: lowercase">
+                                                                    {$ 'x ' + pod.memory_over_commit_ratio $}
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="p-legend__item p-legend__item--free" style="float: right;">
+                                                            <div class="p-legend__text text-base">
+                                                                Free
+                                                            </div>
+                                                        </li>
+                                                        <li class="p-legend__item p-legend__item--used" style="float: right;">
+                                                            <div class="p-legend__text text-base">
+                                                                Used
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="p-double-row">
+                                                    <div class="p-double-row__main-row">
+                                                        <meter
+                                                            class="p-meter"
+                                                            max="{$ pod.total.memory * pod.memory_over_commit_ratio $}"
+                                                            ng-class="{'is-over': pod.used.memory > pod.total.memory * pod.memory_over_commit_ratio}"
+                                                            value="{$ getMeterValue(pod.total.memory * pod.memory_over_commit_ratio, pod.used.memory) $}"
+                                                        ></meter>
+                                                    </div>
+                                                    <div>
+                                                        <ul class="p-legend--table-row">
+                                                            <li class="p-legend__item p-legend__item--used">
+                                                                <div class="p-legend__text">
+                                                                    {$ formatMemory(pod.used.memory) $}
+                                                                </div>
+                                                            </li>
+                                                            <li class="p-legend__item p-legend__item--free">
+                                                                <div class="p-legend__text">
+                                                                    {$ formatMemory(pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory) $}
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </td>
