@@ -6,6 +6,7 @@
  * Provides the websocket connection between the client and the MAAS regiond
  * service.
  */
+import * as angular from "angular";
 
 // Message types
 const MSG_TYPE = {
