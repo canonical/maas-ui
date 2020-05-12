@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable func-names */
-import { registerApplication, setBootstrapMaxTime, start } from "single-spa";
+import { registerApplication, start } from "single-spa";
 
 function showWhenAnyOf(routes) {
   return function (location) {
@@ -20,14 +20,20 @@ function showExcept(routes) {
   };
 }
 
-setBootstrapMaxTime(6000, true, 10000);
-
 registerApplication({
   name: "legacy",
   app: () => import("@maas-ui/maas-ui-legacy"),
   // TODO: make this use the env vars:
   // activeWhen: `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`,
-  activeWhen: `/MAAS/#`,
+  activeWhen: "/MAAS/#",
+});
+
+registerApplication({
+  name: "ui",
+  app: () => import("@maas-ui/maas-ui"),
+  // TODO: make this use the env vars:
+  // activeWhen: `${process.env.BASENAME}${process.env.REACT_BASENAME}`,
+  activeWhen: "/MAAS/r",
 });
 
 start();

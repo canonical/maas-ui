@@ -1,3 +1,4 @@
+import { navigateToUrl } from "single-spa";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -161,7 +162,13 @@ export const Header = ({
     return generateLocalLink && !isLegacy ? (
       generateLocalLink(linkURL, label, linkClass)
     ) : (
-      <a className={linkClass} href={linkURL}>
+      <a
+        className={linkClass}
+        href={linkURL}
+        onClick={(evt) => {
+          navigateToUrl(evt);
+        }}
+      >
         {label}
       </a>
     );
