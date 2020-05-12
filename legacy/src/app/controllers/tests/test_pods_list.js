@@ -777,21 +777,6 @@ describe("PodsListController", function () {
     });
   });
 
-  describe("getPodOwners", () => {
-    it("returns a list of unique owners of pod VMs", () => {
-      makeController();
-      const pod = { id: 1 };
-      $scope.machines = [
-        { owner: "user1", pod: { id: 1 } },
-        { owner: "user1", pod: { id: 1 } },
-        { owner: "user2", pod: { id: 1 } },
-        { owner: "user3", pod: { id: 1 } },
-        { owner: "user4", pod: { id: 2 } },
-      ];
-      expect($scope.getPodOwners(pod)).toEqual(["user1", "user2", "user3"]);
-    });
-  });
-
   describe("getPodHost", () => {
     it("can get the machine that is associated with a pod", () => {
       makeController();

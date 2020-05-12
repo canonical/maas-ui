@@ -88,7 +88,6 @@ function PodsListController(
   $scope.machines = MachinesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
   $scope.hostMap = new Map();
-  $scope.ownersMap = new Map();
   $scope.defaultPoolMap = new Map();
 
   // Called to update `allViewableChecked`.
@@ -465,22 +464,6 @@ function PodsListController(
     return "p-icon--power-unknown";
   };
 
-  // XXX Caleb 08.04.2020: Replace with owners_count in the markup once
-  // available on the pod object.
-  // https://bugs.launchpad.net/maas/+bug/1871742
-  $scope.getPodOwners = (pod) =>
-    $scope.machines.reduce((owners, machine) => {
-      if (
-        machine.pod &&
-        machine.pod.id === pod.id &&
-        machine.owner &&
-        !owners.includes(machine.owner)
-      ) {
-        owners.push(machine.owner);
-      }
-      return owners;
-    }, []);
-
   $scope.getPodHost = (pod) => {
     if (pod.host) {
       const hostMachine = $scope.machines.find(
@@ -522,7 +505,6 @@ function PodsListController(
     $scope.pods.forEach((pod) => {
       $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
       $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
-      $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
     });
   };
 
