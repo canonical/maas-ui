@@ -41,7 +41,8 @@ export function maasNotifications(NotificationsManager, ManagerHelperService) {
 
       scope.dismissCategory = category => {
         const categoryNotifications = scope.notifications.filter(
-          notification => notification.category === category
+          (notification) =>
+            notification.category === category && notification.dismissable
         );
         categoryNotifications.forEach(notification => {
           scope.dismiss(notification);

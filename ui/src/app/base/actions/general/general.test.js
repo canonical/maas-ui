@@ -31,16 +31,6 @@ describe("general actions", () => {
     });
   });
 
-  it("should handle fetching deprecationNotices", () => {
-    expect(general.fetchDeprecationNotices()).toEqual({
-      type: "FETCH_GENERAL_DEPRECATION_NOTICES",
-      meta: {
-        model: "general",
-        method: "deprecation_notices",
-      },
-    });
-  });
-
   it("should handle fetching hwe kernels", () => {
     expect(general.fetchHweKernels()).toEqual({
       type: "FETCH_GENERAL_HWE_KERNELS",
