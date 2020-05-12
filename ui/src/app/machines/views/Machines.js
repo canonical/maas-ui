@@ -36,7 +36,6 @@ const Machines = () => {
   return (
     <Section
       headerClassName="u-no-padding--bottom"
-      showDeprecations
       title={
         <HeaderStrip
           searchFilter={searchFilter}

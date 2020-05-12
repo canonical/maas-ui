@@ -20,7 +20,6 @@ general.fetchComponentsToDisable = generateGeneralAction(
 general.fetchDefaultMinHweKernel = generateGeneralAction(
   "default_min_hwe_kernel"
 );
-general.fetchDeprecationNotices = generateGeneralAction("deprecation_notices");
 general.fetchHweKernels = generateGeneralAction("hwe_kernels");
 general.fetchKnownArchitectures = generateGeneralAction("known_architectures");
 general.fetchMachineActions = generateGeneralAction("machine_actions");
