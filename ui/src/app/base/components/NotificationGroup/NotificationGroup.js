@@ -19,7 +19,9 @@ export const notificationTypes = {
 
 const dismissAll = (notifications, dispatch) => {
   notifications.forEach((notification) => {
-    dismiss(notification.id, dispatch);
+    if (notification.dismissable) {
+      dismiss(notification.id, dispatch);
+    }
   });
 };
 
@@ -43,41 +45,46 @@ const NotificationGroup = ({ notifications, type }) => {
       <div className={`p-notification--${type}`}>
         <div className="p-notification__toggle">
           {notifications.length > 1 ? (
-            <p className="p-notification__response u-no-max-width">
-              <Button
-                appearance="link"
-                onClick={toggleGroup}
-                className="u-no-margin u-no-padding"
-                aria-label={`${notifications.length} ${type}, click to open messages.`}
-              >
-                <span
-                  className="p-notification__status"
-                  data-test="notification-count"
-                >
-                  {notificationCount}
-                </span>
-                <small>
-                  <i
-                    className={classNames({
-                      "p-icon--collapse": groupOpen,
-                      "p-icon--expand": !groupOpen,
-                    })}
-                  ></i>
-                </small>
-              </Button>
-              <Button
-                appearance="link"
-                className="p-notification__action u-no-margin u-no-padding"
-                onClick={() => dismissAll(notifications, dispatch)}
-              >
-                Dismiss all
-              </Button>
-            </p>
+            <div className="p-notification__response u-no-max-width">
+              <ul className="p-inline-list u-no-margin--bottom">
+                <li className="p-inline-list__item">
+                  <Button
+                    appearance="link"
+                    aria-label={`${notifications.length} ${type}, click to open messages.`}
+                    onClick={toggleGroup}
+                  >
+                    <span
+                      className="p-notification__status"
+                      data-test="notification-count"
+                    >
+                      {notificationCount}
+                    </span>
+                    <small>
+                      <i
+                        className={classNames({
+                          "p-icon--collapse": groupOpen,
+                          "p-icon--expand": !groupOpen,
+                        })}
+                      ></i>
+                    </small>
+                  </Button>
+                </li>
+                <li className="p-inline-list__item">
+                  <Button
+                    appearance="link"
+                    className="p-notification__action"
+                    onClick={() => dismissAll(notifications, dispatch)}
+                  >
+                    Dismiss all
+                  </Button>
+                </li>
+              </ul>
+            </div>
           ) : (
             <NotificationGroupMessage
               message={notifications[0].message}
               id={notifications[0].id}
-              action="Dismiss"
+              action={notifications[0].dismissable ? "Dismiss" : undefined}
               actionHandler={dismiss}
             />
           )}
@@ -89,7 +96,7 @@ const NotificationGroup = ({ notifications, type }) => {
                 <NotificationGroupMessage
                   message={notification.message}
                   id={notification.id}
-                  action="Dismiss"
+                  action={notification.dismissable ? "Dismiss" : undefined}
                   actionHandler={dismiss}
                 />
               </li>

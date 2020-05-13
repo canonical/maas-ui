@@ -21,7 +21,8 @@ describe("maasNotifications", function() {
       users: false,
       admins: true,
       created: "Fri, 27 Jan. 2017 12:19:52",
-      updated: "Fri, 27 Jan. 2017 12:19:52"
+      updated: "Fri, 27 Jan. 2017 12:19:52",
+      dismissable: true,
     },
     {
       id: 2,
@@ -32,7 +33,8 @@ describe("maasNotifications", function() {
       users: true,
       admins: false,
       created: "Fri, 27 Jan. 2017 12:19:52",
-      updated: "Fri, 27 Jan. 2017 12:19:52"
+      updated: "Fri, 27 Jan. 2017 12:19:52",
+      dismissable: true,
     },
     {
       id: 3,
@@ -43,7 +45,8 @@ describe("maasNotifications", function() {
       users: false,
       admins: false,
       created: "Fri, 27 Jan. 2017 12:19:52",
-      updated: "Fri, 27 Jan. 2017 12:19:52"
+      updated: "Fri, 27 Jan. 2017 12:19:52",
+      dismissable: true,
     }
   ];
   var exampleAdditionalNotification = {
@@ -55,7 +58,8 @@ describe("maasNotifications", function() {
     users: true,
     admins: true,
     created: "Thu, 16 Feb. 2017 16:39:36",
-    updated: "Thu, 16 Feb. 2017 16:39:36"
+    updated: "Thu, 16 Feb. 2017 16:39:36",
+    dismissable: false
   };
 
   // Load the NotificationsManager and
@@ -119,7 +123,8 @@ describe("maasNotifications", function() {
       expect(dismiss).toHaveBeenCalledWith(notification);
     });
 
-    it("dismisses all in category when dismiss all link is clicked", () => {
+    it(`dismisses all in category when dismiss all link is clicked, unless the
+      notification is not dismissable`, () => {
       const notifications = [
         ...exampleNotifications,
         exampleAdditionalNotification
@@ -129,7 +134,7 @@ describe("maasNotifications", function() {
       const directive = compileDirective();
       directive.find('[data-test="dismiss-all"]').click();
       expect(dismiss).toHaveBeenCalledWith(notifications[2]);
-      expect(dismiss).toHaveBeenCalledWith(notifications[3]);
+      expect(dismiss).not.toHaveBeenCalledWith(notifications[3]);
     });
 
     it("adjusts class according to category", function() {
