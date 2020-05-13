@@ -161,7 +161,14 @@ export const Header = ({
     return generateLocalLink && !isLegacy ? (
       generateLocalLink(linkURL, label, linkClass)
     ) : (
-      <a className={linkClass} href={linkURL}>
+      <a
+        className={linkClass}
+        href={linkURL}
+        onClick={(evt) => {
+          evt.preventDefault();
+          window.history.pushState(null, null, linkURL);
+        }}
+      >
         {label}
       </a>
     );

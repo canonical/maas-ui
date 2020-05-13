@@ -11540,6 +11540,13 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-app-rewired@2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/react-app-rewired/-/react-app-rewired-2.1.6.tgz#33ee3076a7f34d6a7c94e649cac67e7c8c580de8"
+  integrity sha512-06flj0kK5tf/RN4naRv/sn6j3sQd7rsURoRLKLpffXDzJeNiAaTNic+0I8Basojy5WDwREkTqrMLewSAjcb13w==
+  dependencies:
+    semver "^5.6.0"
+
 react-dev-utils@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
@@ -12701,6 +12708,11 @@ single-spa-angularjs@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-3.2.0.tgz#e80a6726acef157233ff54497d04131406d20cf4"
   integrity sha512-J6gVmso9WVD65OoU/RO4AwopZJC3fitvGiNmROvE/RZvSLJjqm00DSY38s+uTG9OG1hv1JhaTSwYOt3gsPt/XA==
+
+single-spa-react@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/single-spa-react/-/single-spa-react-2.14.0.tgz#4a55ea74a57db06adb41f0de3419a0c378745e1b"
+  integrity sha512-KQ2/y7/JBIquK0WUiwb1/Y7f4qTZITNotw+JwNPesj0WKeCi91u0LOZe2ps56QMJbyB4UrA5IzMBwbYWDr1pIw==
 
 single-spa@5.4.0:
   version "5.4.0"
