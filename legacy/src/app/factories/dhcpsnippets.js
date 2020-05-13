@@ -7,6 +7,7 @@
  * RegionConnection to load the DHCPSnippets, update the DHCPSnippets, and
  * listen for notification events about DHCPSnippets.
  */
+import angular from "angular";
 
 function DHCPSnippetsManager(RegionConnection, Manager) {
   function DHCPSnippetsManager() {

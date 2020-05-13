@@ -3,6 +3,7 @@
  *
  * Unit tests for placeholder directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

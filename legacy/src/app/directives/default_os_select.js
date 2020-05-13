@@ -3,6 +3,7 @@
  *
  * OS/Release select directive.
  */
+import angular from "angular";
 
 function maasDefaultOsSelect() {
   return {

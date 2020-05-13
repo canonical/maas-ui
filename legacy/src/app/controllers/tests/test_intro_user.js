@@ -3,6 +3,7 @@
  *
  * Unit tests for IntroUserController.
  */
+import angular from "angular";
 
 describe("IntroUserController", function() {
   // Load the MAAS module.

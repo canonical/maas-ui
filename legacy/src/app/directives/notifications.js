@@ -3,6 +3,7 @@
  *
  * Notifications.
  */
+import angular from "angular";
 
 import NotificationsTmpl from "../partials/nodelist/notifications.html";
 

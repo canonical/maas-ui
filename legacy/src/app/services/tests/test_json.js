@@ -3,6 +3,7 @@
  *
  * Unit tests for JSONService.
  */
+import angular from "angular";
 
 describe("JSONService", function() {
   // Load the MAAS module.

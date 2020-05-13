@@ -5,6 +5,7 @@
  *
  * Shows the image status for a controller.
  */
+import angular from "angular";
 
 /* @ngInject */
 export function ControllerImageStatusService(

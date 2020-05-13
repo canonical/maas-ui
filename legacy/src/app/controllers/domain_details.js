@@ -3,6 +3,7 @@
  *
  * MAAS Domain Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function DomainDetailsController(

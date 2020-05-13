@@ -3,6 +3,7 @@
  *
  * Unit tests for nodesFilter.
  */
+import angular from "angular";
 
 describe("nodesFilter", function() {
   // Load the MAAS module.

@@ -3,6 +3,7 @@
  *
  * Power parameters directive.
  */
+import angular from "angular";
 
 const powerParametersTmpl = `<div class="p-form__group row">
     <label for="power-type"

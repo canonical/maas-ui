@@ -3,8 +3,9 @@
  *
  * Boot images directive.
  */
+import angular from "angular";
 
- import bootImagesTmpl from "../partials/boot-images.html";
+import bootImagesTmpl from "../partials/boot-images.html";
 
 /* @ngInject */
 export function maasBootImagesStatus(BootResourcesManager) {
@@ -26,9 +27,9 @@ export function maasBootImagesStatus(BootResourcesManager) {
       '<i class="p-icon--loading u-animation--spin"></i>',
       "Step 2/2: Rack controller(s) importing",
       "</span>",
-      "</p>"
+      "</p>",
     ].join(""),
-    controller: BootImagesStatusController
+    controller: BootImagesStatusController,
   };
 
   /* @ngInject */
@@ -51,10 +52,10 @@ export function maasBootImages(
   return {
     restrict: "E",
     scope: {
-      design: "=?"
+      design: "=?",
     },
     template: bootImagesTmpl,
-    controller: BootImagesController
+    controller: BootImagesController,
   };
 
   /* @ngInject */
@@ -81,18 +82,18 @@ export function maasBootImages(
       selections: {
         changed: false,
         releases: [],
-        arches: []
-      }
+        arches: [],
+      },
     };
     $scope.ubuntuCoreImages = [];
     $scope.ubuntu_core = {
       changed: false,
-      images: []
+      images: [],
     };
     $scope.otherImages = [];
     $scope.other = {
       changed: false,
-      images: []
+      images: [],
     };
     $scope.generatedImages = [];
     $scope.customImages = [];
@@ -100,12 +101,12 @@ export function maasBootImages(
     $scope.removingImage = null;
 
     // Return true if the authenticated user is super user.
-    $scope.isSuperUser = function() {
+    $scope.isSuperUser = function () {
       return UsersManager.isSuperUser();
     };
 
     // Return the overall title icon.
-    $scope.getTitleIcon = function() {
+    $scope.getTitleIcon = function () {
       if ($scope.bootResources.resources.length === 0) {
         return "p-icon--success-muted";
       } else {
@@ -114,7 +115,7 @@ export function maasBootImages(
     };
 
     // Return true if the mirror path section should be shown.
-    $scope.showMirrorPath = function() {
+    $scope.showMirrorPath = function () {
       if ($scope.source.source_type === "custom") {
         return true;
       } else {
@@ -123,17 +124,17 @@ export function maasBootImages(
     };
 
     // Return true if the advanced options are shown.
-    $scope.isShowingAdvancedOptions = function() {
+    $scope.isShowingAdvancedOptions = function () {
       return $scope.source.showingAdvanced;
     };
 
     // Toggle showing the advanced options.
-    $scope.toggleAdvancedOptions = function() {
+    $scope.toggleAdvancedOptions = function () {
       $scope.source.showingAdvanced = !$scope.source.showingAdvanced;
     };
 
     // Return true if both keyring options are set.
-    $scope.bothKeyringOptionsSet = function() {
+    $scope.bothKeyringOptionsSet = function () {
       return (
         $scope.source.keyring_filename.length > 0 &&
         $scope.source.keyring_data.length > 0
@@ -142,12 +143,12 @@ export function maasBootImages(
 
     // Return true when the connect button for the mirror path
     // should be shown.
-    $scope.showConnectButton = function() {
+    $scope.showConnectButton = function () {
       return $scope.source.isNew;
     };
 
     // Called when the source radio changed.
-    $scope.sourceChanged = function() {
+    $scope.sourceChanged = function () {
       var currentSources = $scope.bootResources.ubuntu.sources;
       if (currentSources.length === 0) {
         $scope.source.isNew = true;
@@ -171,7 +172,7 @@ export function maasBootImages(
         $scope.source.selections = {
           changed: false,
           releases: [],
-          arches: []
+          arches: [],
         };
       }
       $scope.updateSource();
@@ -185,7 +186,7 @@ export function maasBootImages(
     };
 
     // Return true when the connect button should be disabled.
-    $scope.isConnectButtonDisabled = function() {
+    $scope.isConnectButtonDisabled = function () {
       if ($scope.source.source_type === "maas.io") {
         return false;
       } else {
@@ -198,30 +199,30 @@ export function maasBootImages(
     };
 
     // Return the source parameters.
-    $scope.getSourceParams = function() {
+    $scope.getSourceParams = function () {
       if ($scope.source.source_type === "maas.io") {
         return {
-          source_type: "maas.io"
+          source_type: "maas.io",
         };
       } else {
         return {
           source_type: $scope.source.source_type,
           url: $scope.source.url,
           keyring_filename: $scope.source.keyring_filename,
-          keyring_data: $scope.source.keyring_data
+          keyring_data: $scope.source.keyring_data,
         };
       }
     };
 
     // Select the default images that should be selected. Current
     // defaults are '18.04 LTS' and 'amd64'.
-    $scope.selectDefaults = function() {
-      angular.forEach($scope.source.releases, function(release) {
+    $scope.selectDefaults = function () {
+      angular.forEach($scope.source.releases, function (release) {
         if (release.name === "bionic") {
           $scope.source.selections.releases.push(release);
         }
       });
-      angular.forEach($scope.source.arches, function(arch) {
+      angular.forEach($scope.source.arches, function (arch) {
         if (arch.name === "amd64") {
           $scope.source.selections.arches.push(arch);
         }
@@ -231,7 +232,7 @@ export function maasBootImages(
     // Connected to the simplestreams endpoint. This only gets the
     // information from the endpoint it does not save it into the
     // database.
-    $scope.connect = function() {
+    $scope.connect = function () {
       if ($scope.isConnectButtonDisabled()) {
         return;
       }
@@ -245,7 +246,7 @@ export function maasBootImages(
       $scope.source.selections.arches = [];
       $scope.regenerateUbuntuImages();
       BootResourcesManager.fetch(source).then(
-        function(data) {
+        function (data) {
           $scope.source.connecting = false;
           data = angular.fromJson(data);
           $scope.source.releases = data.releases;
@@ -253,7 +254,7 @@ export function maasBootImages(
           $scope.selectDefaults();
           $scope.regenerateUbuntuImages();
         },
-        function(error) {
+        function (error) {
           $scope.source.connecting = false;
           $scope.source.errorMessage = error;
         }
@@ -261,7 +262,7 @@ export function maasBootImages(
     };
 
     // Return true if the connect block should be shown.
-    $scope.showConnectBlock = function() {
+    $scope.showConnectBlock = function () {
       return (
         $scope.source.tooMany ||
         ($scope.source.isNew && !$scope.showSelections())
@@ -270,20 +271,20 @@ export function maasBootImages(
 
     // Return true if the release and architecture selection
     // should be shown.
-    $scope.showSelections = function() {
+    $scope.showSelections = function () {
       return (
         $scope.source.releases.length > 0 && $scope.source.arches.length > 0
       );
     };
 
     // Return the Ubuntu LTS releases.
-    $scope.getUbuntuLTSReleases = function() {
+    $scope.getUbuntuLTSReleases = function () {
       var releases = $scope.bootResources.ubuntu.releases;
       if ($scope.source.isNew) {
         releases = $scope.source.releases;
       }
       var filtered = [];
-      angular.forEach(releases, function(release) {
+      angular.forEach(releases, function (release) {
         if (!release.deleted && release.title.indexOf("LTS") !== -1) {
           filtered.push(release);
         }
@@ -292,13 +293,13 @@ export function maasBootImages(
     };
 
     // Return the Ubuntu non-LTS releases.
-    $scope.getUbuntuNonLTSReleases = function() {
+    $scope.getUbuntuNonLTSReleases = function () {
       var releases = $scope.bootResources.ubuntu.releases;
       if ($scope.source.isNew) {
         releases = $scope.source.releases;
       }
       var filtered = [];
-      angular.forEach(releases, function(release) {
+      angular.forEach(releases, function (release) {
         if (!release.deleted && release.title.indexOf("LTS") === -1) {
           filtered.push(release);
         }
@@ -307,13 +308,13 @@ export function maasBootImages(
     };
 
     // Return the available architectures.
-    $scope.getArchitectures = function() {
+    $scope.getArchitectures = function () {
       var arches = $scope.bootResources.ubuntu.arches;
       if ($scope.source.isNew) {
         arches = $scope.source.arches;
       }
       var filtered = [];
-      angular.forEach(arches, function(arch) {
+      angular.forEach(arches, function (arch) {
         if (!arch.deleted) {
           filtered.push(arch);
         }
@@ -322,12 +323,12 @@ export function maasBootImages(
     };
 
     // Return true if the source has this selected.
-    $scope.isSelected = function(type, obj) {
+    $scope.isSelected = function (type, obj) {
       return $scope.source.selections[type].indexOf(obj) >= 0;
     };
 
     // Toggle the selection of the release or the architecture.
-    $scope.toggleSelection = function(type, obj) {
+    $scope.toggleSelection = function (type, obj) {
       var idx = $scope.source.selections[type].indexOf(obj);
       if (idx === -1) {
         $scope.source.selections[type].push(obj);
@@ -339,7 +340,7 @@ export function maasBootImages(
     };
 
     // Return true if the images table should be shown.
-    $scope.showImagesTable = function() {
+    $scope.showImagesTable = function () {
       if ($scope.ubuntuImages.length > 0) {
         return true;
       } else {
@@ -352,17 +353,19 @@ export function maasBootImages(
     };
 
     // Regenerates the Ubuntu images list for the directive.
-    $scope.regenerateUbuntuImages = function() {
-      var getResource = function() {
+    $scope.regenerateUbuntuImages = function () {
+      var getResource = function () {
         return null;
       };
-      var resources = $scope.bootResources.resources.filter(function(resource) {
+      var resources = $scope.bootResources.resources.filter(function (
+        resource
+      ) {
         var name_split = resource.name.split("/");
         var resource_os = name_split[0];
         return resource.rtype === 0 && resource_os === "ubuntu";
       });
       if (!$scope.source.isNew) {
-        getResource = function(release, arch) {
+        getResource = function (release, arch) {
           var i;
           for (i = 0; i < resources.length; i++) {
             // Only care about Ubuntu images.
@@ -380,8 +383,8 @@ export function maasBootImages(
 
       // Create the images based on the selections.
       $scope.ubuntuImages.length = 0;
-      angular.forEach($scope.source.selections.releases, function(release) {
-        angular.forEach($scope.source.selections.arches, function(arch) {
+      angular.forEach($scope.source.selections.releases, function (release) {
+        angular.forEach($scope.source.selections.arches, function (arch) {
           var image = {
             icon: "p-icon--status-queued",
             title: release.title,
@@ -389,7 +392,7 @@ export function maasBootImages(
             size: "-",
             status: "Selected for download",
             beingDeleted: false,
-            name: release.name
+            name: release.name,
           };
           var resource = getResource(release.name, arch.name);
           if (angular.isObject(resource)) {
@@ -408,7 +411,7 @@ export function maasBootImages(
       // If not a new source and images remain in resources, then
       // those are set to be deleted.
       if (!$scope.source.isNew) {
-        angular.forEach(resources, function(resource) {
+        angular.forEach(resources, function (resource) {
           var name_split = resource.name.split("/");
           var image = {
             icon: "p-icon--status-failed",
@@ -417,7 +420,7 @@ export function maasBootImages(
             size: resource.size,
             status: "Will be deleted",
             beingDeleted: true,
-            name: name_split[1]
+            name: name_split[1],
           };
           $scope.ubuntuImages.push(image);
         });
@@ -425,14 +428,14 @@ export function maasBootImages(
     };
 
     // Regenerates the Ubuntu Core images list for the directive.
-    $scope.regenerateUbuntuCoreImages = function() {
-      var isUbuntuCore = function(resource) {
+    $scope.regenerateUbuntuCoreImages = function () {
+      var isUbuntuCore = function (resource) {
         var name_split = resource.name.split("/");
         var resource_os = name_split[0];
         return resource.rtype === 0 && resource_os === "ubuntu-core";
       };
       var resources = $scope.bootResources.resources.filter(isUbuntuCore);
-      var getResource = function(release, arch) {
+      var getResource = function (release, arch) {
         var i;
         for (i = 0; i < resources.length; i++) {
           // Only care about other images. Removing custom,
@@ -450,7 +453,7 @@ export function maasBootImages(
 
       // Create the images based on the selections.
       $scope.ubuntuCoreImages.length = 0;
-      angular.forEach($scope.ubuntu_core.images, function(ubuntuCoreImage) {
+      angular.forEach($scope.ubuntu_core.images, function (ubuntuCoreImage) {
         if (ubuntuCoreImage.checked) {
           var name_split = ubuntuCoreImage.name.split("/");
           var image = {
@@ -459,7 +462,7 @@ export function maasBootImages(
             arch: name_split[1],
             size: "-",
             status: "Selected for download",
-            beingDeleted: false
+            beingDeleted: false,
           };
           var resource = getResource(name_split[3], name_split[1]);
           if (angular.isObject(resource)) {
@@ -476,22 +479,22 @@ export function maasBootImages(
 
       // If not a new source and images remain in resources, then
       // those are set to be deleted.
-      angular.forEach(resources, function(resource) {
+      angular.forEach(resources, function (resource) {
         var image = {
           icon: "p-icon--status-failed",
           title: resource.title,
           arch: resource.arch,
           size: resource.size,
           status: "Will be deleted",
-          beingDeleted: true
+          beingDeleted: true,
         };
         $scope.ubuntuCoreImages.push(image);
       });
     };
 
     // Regenerates the other images list for the directive.
-    $scope.regenerateOtherImages = function() {
-      var isOther = function(resource) {
+    $scope.regenerateOtherImages = function () {
+      var isOther = function (resource) {
         var name_split = resource.name.split("/");
         var resource_os = name_split[0];
         return (
@@ -502,7 +505,7 @@ export function maasBootImages(
         );
       };
       var resources = $scope.bootResources.resources.filter(isOther);
-      var getResource = function(release, arch) {
+      var getResource = function (release, arch) {
         var i;
         for (i = 0; i < resources.length; i++) {
           // Only care about other images. Removing custom,
@@ -520,7 +523,7 @@ export function maasBootImages(
 
       // Create the images based on the selections.
       $scope.otherImages.length = 0;
-      angular.forEach($scope.other.images, function(otherImage) {
+      angular.forEach($scope.other.images, function (otherImage) {
         if (otherImage.checked) {
           var name_split = otherImage.name.split("/");
           var image = {
@@ -529,7 +532,7 @@ export function maasBootImages(
             arch: name_split[1],
             size: "-",
             status: "Selected for download",
-            beingDeleted: false
+            beingDeleted: false,
           };
           var resource = getResource(name_split[3], name_split[1]);
           if (angular.isObject(resource)) {
@@ -546,24 +549,24 @@ export function maasBootImages(
 
       // If not a new source and images remain in resources, then
       // those are set to be deleted.
-      angular.forEach(resources, function(resource) {
+      angular.forEach(resources, function (resource) {
         var image = {
           icon: "p-icon--status-failed",
           title: resource.title,
           arch: resource.arch,
           size: resource.size,
           status: "Will be deleted",
-          beingDeleted: true
+          beingDeleted: true,
         };
         $scope.otherImages.push(image);
       });
     };
 
     // Helper for basic image generation.
-    $scope._regenerateImages = function(rtype, images) {
+    $scope._regenerateImages = function (rtype, images) {
       // Create the generated images list.
       images.length = 0;
-      angular.forEach($scope.bootResources.resources, function(resource) {
+      angular.forEach($scope.bootResources.resources, function (resource) {
         if (resource.rtype === rtype) {
           var image = {
             icon: "p-icon--status-" + resource.icon,
@@ -571,7 +574,7 @@ export function maasBootImages(
             arch: resource.arch,
             image_id: resource.id,
             size: resource.size,
-            status: resource.status
+            status: resource.status,
           };
           if (resource.downloading) {
             image.icon += " u-animation--pulse";
@@ -582,17 +585,17 @@ export function maasBootImages(
     };
 
     // Regenerates the generated images list for the directive.
-    $scope.regenerateGeneratedImages = function() {
+    $scope.regenerateGeneratedImages = function () {
       $scope._regenerateImages(1, $scope.generatedImages);
     };
 
     // Regenerates the custom images list for the directive.
-    $scope.regenerateCustomImages = function() {
+    $scope.regenerateCustomImages = function () {
       $scope._regenerateImages(2, $scope.customImages);
     };
 
     // Returns true if at least one LTS is selected.
-    $scope.ltsIsSelected = function() {
+    $scope.ltsIsSelected = function () {
       var i;
       for (i = 0; i < $scope.ubuntuImages.length; i++) {
         // Must have LTS in the title and not being deleted.
@@ -611,7 +614,7 @@ export function maasBootImages(
     };
 
     // Returns true if the commission series is selected
-    $scope.commissioningSeriesSelected = function() {
+    $scope.commissioningSeriesSelected = function () {
       var i;
       for (i = 0; i < $scope.ubuntuImages.length; i++) {
         if (
@@ -626,22 +629,22 @@ export function maasBootImages(
     };
 
     // Return if we are asking about deleting this image.
-    $scope.isShowingDeleteConfirm = function(image) {
+    $scope.isShowingDeleteConfirm = function (image) {
       return image === $scope.removingImage;
     };
 
     // Mark the image for deletion.
-    $scope.quickRemove = function(image) {
+    $scope.quickRemove = function (image) {
       $scope.removingImage = image;
     };
 
     // Cancel image deletion.
-    $scope.cancelRemove = function() {
+    $scope.cancelRemove = function () {
       $scope.removingImage = null;
     };
 
     // Mark the image for deletion.
-    $scope.confirmRemove = function(image) {
+    $scope.confirmRemove = function (image) {
       if (image === $scope.removingImage) {
         BootResourcesManager.deleteImage({ id: image.image_id });
       }
@@ -649,18 +652,18 @@ export function maasBootImages(
     };
 
     // Return true if the stop import button should be shown.
-    $scope.showStopImportButton = function() {
+    $scope.showStopImportButton = function () {
       return $scope.bootResources.region_import_running;
     };
 
     // Return true if should show save selection button, this
     // doesn't mean it can actually be clicked.
-    $scope.showSaveSelection = function() {
+    $scope.showSaveSelection = function () {
       return $scope.showImagesTable();
     };
 
     // Return true if can save the current selection.
-    $scope.canSaveSelection = function() {
+    $scope.canSaveSelection = function () {
       var commissioning_series_being_deleted = false;
       var commissioning_series_arches = 0;
       var i;
@@ -698,7 +701,7 @@ export function maasBootImages(
     };
 
     // Return the text for the save selection button.
-    $scope.getSaveSelectionText = function() {
+    $scope.getSaveSelectionText = function () {
       if ($scope.saving) {
         return "Saving...";
       } else if ($scope.saved) {
@@ -709,12 +712,12 @@ export function maasBootImages(
     };
 
     // Return true if can stop current import.
-    $scope.canStopImport = function() {
+    $scope.canStopImport = function () {
       return !$scope.saving && !$scope.stopping;
     };
 
     // Return the text for the stop import button.
-    $scope.getStopImportText = function() {
+    $scope.getStopImportText = function () {
       if ($scope.stopping) {
         return "Stopping...";
       } else {
@@ -723,32 +726,32 @@ export function maasBootImages(
     };
 
     // Called to stop the import.
-    $scope.stopImport = function() {
+    $scope.stopImport = function () {
       if (!$scope.canStopImport()) {
         return;
       }
 
       $scope.stopping = true;
-      BootResourcesManager.stopImport().then(function() {
+      BootResourcesManager.stopImport().then(function () {
         $scope.stopping = false;
       });
     };
 
     // Save the selections into boot selections.
-    $scope.saveSelection = function() {
+    $scope.saveSelection = function () {
       if (!$scope.canSaveSelection()) {
         return;
       }
 
       var params = $scope.getSourceParams();
-      params.releases = $scope.source.selections.releases.map(function(obj) {
+      params.releases = $scope.source.selections.releases.map(function (obj) {
         return obj.name;
       });
-      params.arches = $scope.source.selections.arches.map(function(obj) {
+      params.arches = $scope.source.selections.arches.map(function (obj) {
         return obj.name;
       });
       $scope.saving = true;
-      BootResourcesManager.saveUbuntu(params).then(function() {
+      BootResourcesManager.saveUbuntu(params).then(function () {
         $scope.saving = false;
         $scope.source.isNew = false;
         $scope.source.selections.changed = false;
@@ -757,17 +760,17 @@ export function maasBootImages(
       });
     };
 
-    $scope.savedTimeout = function() {
+    $scope.savedTimeout = function () {
       $scope.saved = true;
       $timeout(() => ($scope.saved = false), 3000);
     };
 
     // Re-create an array with the new objects using the old
     // selected array.
-    $scope.getNewSelections = function(newObjs, oldSelections) {
+    $scope.getNewSelections = function (newObjs, oldSelections) {
       var newSelections = [];
-      angular.forEach(newObjs, function(obj) {
-        angular.forEach(oldSelections, function(selection) {
+      angular.forEach(newObjs, function (obj) {
+        angular.forEach(oldSelections, function (selection) {
           if (obj.name === selection.name) {
             newSelections.push(obj);
           }
@@ -777,7 +780,7 @@ export function maasBootImages(
     };
 
     // Update the source information.
-    $scope.updateSource = function() {
+    $scope.updateSource = function () {
       // Do not update if the source is new.
       if ($scope.source.isNew) {
         return;
@@ -806,12 +809,12 @@ export function maasBootImages(
           // User didn't make a change update to the
           // current selections server side.
           $scope.source.selections.releases = $scope.source.releases.filter(
-            function(obj) {
+            function (obj) {
               return obj.checked;
             }
           );
           $scope.source.selections.arches = $scope.source.arches.filter(
-            function(obj) {
+            function (obj) {
               return obj.checked;
             }
           );
@@ -835,11 +838,11 @@ export function maasBootImages(
         $scope.source.releases = $scope.bootResources.ubuntu.releases;
         $scope.source.arches = $scope.bootResources.ubuntu.arches;
         $scope.source.selections.releases = $scope.source.releases.filter(
-          function(obj) {
+          function (obj) {
             return obj.checked;
           }
         );
-        $scope.source.selections.arches = $scope.source.arches.filter(function(
+        $scope.source.selections.arches = $scope.source.arches.filter(function (
           obj
         ) {
           return obj.checked;
@@ -854,55 +857,55 @@ export function maasBootImages(
     };
 
     // Toggle the selection of Ubuntu Core images.
-    $scope.toggleUbuntuCoreSelection = function(image) {
+    $scope.toggleUbuntuCoreSelection = function (image) {
       $scope.ubuntu_core.changed = true;
       image.checked = !image.checked;
       $scope.regenerateUbuntuCoreImages();
     };
 
     // Save the Ubuntu Core image selections into boot selections.
-    $scope.saveUbuntuCoreSelection = function() {
+    $scope.saveUbuntuCoreSelection = function () {
       var params = {
         images: $scope.ubuntu_core.images
-          .filter(function(image) {
+          .filter(function (image) {
             return image.checked;
           })
-          .map(function(image) {
+          .map(function (image) {
             return image.name;
-          })
+          }),
       };
       $scope.saving = true;
-      BootResourcesManager.saveUbuntuCore(params).then(function() {
+      BootResourcesManager.saveUbuntuCore(params).then(function () {
         $scope.saving = false;
       });
     };
 
     // Toggle the selection of other images.
-    $scope.toggleOtherSelection = function(image) {
+    $scope.toggleOtherSelection = function (image) {
       $scope.other.changed = true;
       image.checked = !image.checked;
       $scope.regenerateOtherImages();
     };
 
     // Save the other image selections into boot selections.
-    $scope.saveOtherSelection = function() {
+    $scope.saveOtherSelection = function () {
       var params = {
         images: $scope.other.images
-          .filter(function(image) {
+          .filter(function (image) {
             return image.checked;
           })
-          .map(function(image) {
+          .map(function (image) {
             return image.name;
-          })
+          }),
       };
       $scope.saving = true;
-      BootResourcesManager.saveOther(params).then(function() {
+      BootResourcesManager.saveOther(params).then(function () {
         $scope.saving = false;
       });
     };
 
     // Return True if the Ubuntu image can be removed.
-    $scope.canBeRemoved = function(image) {
+    $scope.canBeRemoved = function (image) {
       // Image must have a resourceId to be able to be removed.
       if (!angular.isNumber(image.resourceId)) {
         return false;
@@ -929,7 +932,7 @@ export function maasBootImages(
     };
 
     // Deletes the give image.
-    $scope.deleteImage = function(image) {
+    $scope.deleteImage = function (image) {
       if (angular.isObject(image)) {
         $scope.ubuntuDeleteId = image.resourceId;
       } else {
@@ -938,7 +941,7 @@ export function maasBootImages(
     };
 
     // Deletes the give image.
-    $scope.confirmDeleteImage = function() {
+    $scope.confirmDeleteImage = function () {
       // Delete the image by its resourceId.
       BootResourcesManager.deleteImage({ id: $scope.ubuntuDeleteId });
       $scope.ubuntuDeleteId = null;
@@ -947,13 +950,13 @@ export function maasBootImages(
     // Start polling now that the directive is viewable and ensure
     // the UserManager is loaded.
     var ready = 2;
-    BootResourcesManager.startPolling().then(function() {
+    BootResourcesManager.startPolling().then(function () {
       ready -= 1;
       if (ready === 0) {
         $scope.loading = false;
       }
     });
-    ManagerHelperService.loadManager($scope, UsersManager).then(function() {
+    ManagerHelperService.loadManager($scope, UsersManager).then(function () {
       ready -= 1;
       if (ready === 0) {
         $scope.loading = false;
@@ -962,7 +965,7 @@ export function maasBootImages(
 
     // Update the source information with the ubuntu source
     // information changes.
-    $scope.$watch("bootResources.ubuntu", function() {
+    $scope.$watch("bootResources.ubuntu", function () {
       if (!angular.isObject($scope.bootResources.ubuntu)) {
         return;
       }
@@ -970,7 +973,7 @@ export function maasBootImages(
     });
 
     // Regenerate the images array when the resources change.
-    $scope.$watch("bootResources.resources", function() {
+    $scope.$watch("bootResources.resources", function () {
       if (!angular.isArray($scope.bootResources.resources)) {
         return;
       }
@@ -981,7 +984,7 @@ export function maasBootImages(
       $scope.regenerateCustomImages();
     });
 
-    $scope.$watch("bootResources.ubuntu_core_images", function() {
+    $scope.$watch("bootResources.ubuntu_core_images", function () {
       var images = $scope.bootResources.ubuntu_core_images;
       if (!angular.isArray(images)) {
         return;
@@ -992,7 +995,7 @@ export function maasBootImages(
       $scope.regenerateUbuntuCoreImages();
     });
 
-    $scope.$watch("bootResources.other_images", function() {
+    $scope.$watch("bootResources.other_images", function () {
       if (!angular.isArray($scope.bootResources.other_images)) {
         return;
       }
@@ -1003,7 +1006,7 @@ export function maasBootImages(
     });
 
     // Stop polling when the directive is destroyed.
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
       BootResourcesManager.stopPolling();
     });
   }

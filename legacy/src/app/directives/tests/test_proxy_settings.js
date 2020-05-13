@@ -3,6 +3,7 @@
  *
  * Unit tests for MAAS proxy settings directive.
  */
+import angular from "angular";
 
 import template from "../../partials/proxy-settings.html";
 

@@ -3,6 +3,7 @@
  *
  * Unit tests for window width.
  */
+import angular from "angular";
 
 describe("maasWindowWidth", function() {
   // Load the MAAS module.

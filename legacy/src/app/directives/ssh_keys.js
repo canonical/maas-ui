@@ -3,8 +3,9 @@
  *
  * SSH keys directive.
  */
+import angular from "angular";
 
- import sshKeysTmpl from "../partials/ssh-keys.html";
+import sshKeysTmpl from "../partials/ssh-keys.html";
 
 /* @ngInject */
 function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
@@ -12,7 +13,7 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
     restrict: "E",
     scope: {},
     template: sshKeysTmpl,
-    controller: SSHKeysController
+    controller: SSHKeysController,
   };
 
   /* @ngInject */
@@ -25,12 +26,12 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
       authId: "",
       key: "",
       error: null,
-      saving: false
+      saving: false,
     };
     $scope.sourceTitles = {
       lp: "Launchpad",
       gh: "Github",
-      upload: "Upload"
+      upload: "Upload",
     };
     $scope.openRow = null;
     $scope.rowMode = null;
@@ -39,18 +40,18 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
     $scope.trustAsHtml = $sce.trustAsHtml;
 
     // Open a row.
-    $scope.open = function(obj, mode) {
+    $scope.open = function (obj, mode) {
       $scope.openRow = obj.id;
       $scope.rowMode = mode;
     };
 
     // Close the open row.
-    $scope.close = function() {
+    $scope.close = function () {
       $scope.openRow = null;
     };
 
     // Returns true if the key can be imported.
-    $scope.canImportKeys = function() {
+    $scope.canImportKeys = function () {
       if ($scope.add.saving) {
         return false;
       } else if ($scope.add.source === "lp" || $scope.add.source === "gh") {
@@ -61,7 +62,7 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
     };
 
     // Called to import the key.
-    $scope.importKeys = function() {
+    $scope.importKeys = function () {
       if (!$scope.canImportKeys()) {
         return;
       }
@@ -70,12 +71,12 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
       if ($scope.add.source === "lp" || $scope.add.source === "gh") {
         SSHKeysManager.importKeys({
           protocol: $scope.add.source,
-          auth_id: $scope.add.authId
+          auth_id: $scope.add.authId,
         }).then(
-          function() {
+          function () {
             $scope.open(
               {
-                id: `${$scope.add.source}/${$scope.add.authId}`
+                id: `${$scope.add.source}/${$scope.add.authId}`,
               },
               "view"
             );
@@ -84,7 +85,7 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
             $scope.add.authId = "";
             $scope.add.key = "";
           },
-          function(error) {
+          function (error) {
             $scope.add.saving = false;
             var errorJson = JSONService.tryParse(error);
             if (angular.isObject(errorJson)) {
@@ -100,15 +101,15 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
         );
       } else {
         SSHKeysManager.createItem({
-          key: $scope.add.key
+          key: $scope.add.key,
         }).then(
-          function() {
+          function () {
             $scope.add.saving = false;
             $scope.add.source = "lp";
             $scope.add.authId = "";
             $scope.add.key = "";
           },
-          function(error) {
+          function (error) {
             $scope.add.saving = false;
             var errorJson = JSONService.tryParse(error);
             if (angular.isObject(errorJson)) {
@@ -128,17 +129,17 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
     };
 
     // Called to delete the selected group of keys.
-    $scope.confirmDelete = function(obj) {
-      angular.forEach(obj.keys, function(key) {
+    $scope.confirmDelete = function (obj) {
+      angular.forEach(obj.keys, function (key) {
         SSHKeysManager.deleteItem(key);
       });
     };
 
     // Updates the groupedKeys that is used to render the table.
-    $scope.$watchCollection("keys", function() {
+    $scope.$watchCollection("keys", function () {
       $scope.groupedKeys = [];
       var keyMap = {};
-      angular.forEach($scope.keys, function(key) {
+      angular.forEach($scope.keys, function (key) {
         var groupObj,
           keysource = key.keysource;
         if (angular.isObject(keysource)) {
@@ -151,7 +152,7 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
               id: keysourceKey,
               source: keysource.protocol,
               authId: keysource.auth_id,
-              keys: [key]
+              keys: [key],
             };
             keyMap[keysourceKey] = groupObj;
             $scope.groupedKeys.push(groupObj);
@@ -161,14 +162,14 @@ function maasSshKeys($sce, SSHKeysManager, ManagerHelperService, JSONService) {
             id: "upload/" + key.id,
             source: "upload",
             authId: "",
-            keys: [key]
+            keys: [key],
           };
           $scope.groupedKeys.push(groupObj);
         }
       });
     });
 
-    ManagerHelperService.loadManager($scope, SSHKeysManager).then(function() {
+    ManagerHelperService.loadManager($scope, SSHKeysManager).then(function () {
       $scope.loading = false;
     });
   }

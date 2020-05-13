@@ -5,6 +5,7 @@
  *
  * Used by controllers to convert user inputs.
  */
+import angular from "angular";
 
 function ConverterService() {
   // Case is important: 1kB is 1000 bytes, whereas 1KB is 1024 bytes.

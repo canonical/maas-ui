@@ -3,6 +3,7 @@
  *
  * MAAS Fabric Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function FabricDetailsController(

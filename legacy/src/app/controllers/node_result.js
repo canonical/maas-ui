@@ -3,6 +3,7 @@
  *
  * MAAS Script Result Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NodeResultController(

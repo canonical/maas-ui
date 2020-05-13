@@ -7,6 +7,7 @@
  * RegionConnection to load the NodeResults, and listen for
  * notification events about NodeResults.
  */
+import angular from "angular";
 
 import { HardwareType } from "../enum";
 

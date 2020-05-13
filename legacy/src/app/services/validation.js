@@ -5,6 +5,7 @@
  *
  * Used by controllers to validate user inputs.
  */
+import angular from "angular";
 
 /* @ngInject */
 function ValidationService(ConverterService) {

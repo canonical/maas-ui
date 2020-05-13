@@ -3,6 +3,7 @@
  *
  * Unit tests for nodes list filter directive.
  */
+import angular from "angular";
 
 describe("nodesListFilter", () => {
   // Load the MAAS module.

@@ -7,6 +7,7 @@
  * RegionConnection to load the VLANs, update the VLANs, and listen for
  * notification events about VLANs.
  */
+import angular from "angular";
 
 function VLANsManager(RegionConnection, Manager) {
   function VLANsManager() {

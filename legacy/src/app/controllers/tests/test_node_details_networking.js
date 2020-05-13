@@ -3,6 +3,7 @@
  *
  * Unit tests for NodeNetworkingController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";

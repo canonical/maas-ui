@@ -8,6 +8,7 @@
  * could be improved for other browsers, but this should only be used as a
  * last resort to prevent something bad happening on a misbehaving browser.
  */
+import angular from "angular";
 
 /* @ngInject */
 function BrowserService($window) {

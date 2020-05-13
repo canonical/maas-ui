@@ -3,6 +3,7 @@
  *
  * Unit tests for by_subnet filters.
  */
+import angular from "angular";
 
 describe("filterBySubnet", function() {
   // Load the MAAS module.

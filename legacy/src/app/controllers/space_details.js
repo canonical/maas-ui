@@ -3,6 +3,7 @@
  *
  * MAAS Space Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function SpaceDetailsController(

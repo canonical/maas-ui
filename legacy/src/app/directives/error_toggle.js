@@ -6,6 +6,7 @@
  * Hides the element if an error occurs or no connection to the region
  * is present.
  */
+import angular from "angular";
 
 /* @ngInject */
 function maasErrorToggle($timeout, RegionConnection, ErrorService) {

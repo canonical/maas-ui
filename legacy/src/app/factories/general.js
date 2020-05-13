@@ -11,6 +11,7 @@
  * than extending the Manager service. It still provides the Manager service
  * interface allowing the ManagerHelperService to load this manager.
  */
+import angular from "angular";
 
 function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   // Constructor

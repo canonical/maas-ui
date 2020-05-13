@@ -3,6 +3,7 @@
  *
  * Unit tests for IPRangesManager.
  */
+import angular from "angular";
 
 describe("IPRangesManager", function() {
   // Load the MAAS module.

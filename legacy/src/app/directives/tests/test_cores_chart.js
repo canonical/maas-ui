@@ -3,6 +3,7 @@
  *
  * Unit tests for cores chart directive.
  */
+import angular from "angular";
 
 describe("maasCoresChart", () => {
   // Load the MAAS module.

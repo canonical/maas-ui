@@ -3,6 +3,7 @@
  *
  * MAAS Subnet Details Controller
  */
+import angular from "angular";
 
 export function filterSource() {
   return function(subnets, source) {

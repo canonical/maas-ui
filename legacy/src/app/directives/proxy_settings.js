@@ -3,8 +3,7 @@
  *
  * Proxy settings directive.
  */
-
- import proxySettingsTmpl from "../partials/proxy-settings.html";
+import proxySettingsTmpl from "../partials/proxy-settings.html";
 
 /* @ngInject */
 function maasProxySettings(ConfigsManager, ManagerHelperService) {
@@ -12,13 +11,13 @@ function maasProxySettings(ConfigsManager, ManagerHelperService) {
     restrict: "E",
     scope: {},
     template: proxySettingsTmpl,
-    controller: ProxySettingsController
+    controller: ProxySettingsController,
   };
 
   /* @ngInject */
   function ProxySettingsController($scope) {
     $scope.loading = true;
-    ManagerHelperService.loadManager($scope, ConfigsManager).then(function() {
+    ManagerHelperService.loadManager($scope, ConfigsManager).then(function () {
       $scope.loading = false;
       $scope.httpProxy = ConfigsManager.getItemFromList("http_proxy");
       $scope.enableHttpProxy = ConfigsManager.getItemFromList(

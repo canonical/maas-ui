@@ -3,6 +3,7 @@
  *
  * Script select directive.
  */
+import angular from "angular";
 
 import addScriptsTmpl from "../partials/add-scripts.html";
 

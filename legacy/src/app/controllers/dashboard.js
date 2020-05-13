@@ -3,6 +3,7 @@
  *
  * MAAS Dashboard Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function DashboardController(

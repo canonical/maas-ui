@@ -3,6 +3,7 @@
  *
  * Unit tests for SSHKeysManager.
  */
+import angular from "angular";
 
 describe("SSHKeysManager", function() {
   // Load the MAAS module.

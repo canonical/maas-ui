@@ -3,6 +3,7 @@
  *
  * Unit tests for the double click overlay.
  */
+import angular from "angular";
 
 describe("maasDblClickOverlay", function() {
   // Load the MAAS module.

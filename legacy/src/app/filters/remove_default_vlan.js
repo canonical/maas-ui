@@ -3,6 +3,7 @@
  *
  * MAAS Filter to remove the default VLAN as an option.
  */
+import angular from "angular";
 
 function removeDefaultVLAN() {
   return function(vlans) {

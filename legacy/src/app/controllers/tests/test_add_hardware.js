@@ -3,6 +3,7 @@
  *
  * Unit tests for AddHardwareController.
  */
+ import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";

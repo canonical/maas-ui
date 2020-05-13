@@ -7,6 +7,7 @@
  * controller listing and view pages. The manager is a subclass of
  * NodesManager.
  */
+import angular from "angular";
 
 function ControllersManager(RegionConnection, NodesManager, ServicesManager) {
   function ControllersManager() {

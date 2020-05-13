@@ -3,6 +3,7 @@
  *
  * MAAS Error Service
  */
+import angular from "angular";
 
 function ErrorService() {
   // Holds the client error.

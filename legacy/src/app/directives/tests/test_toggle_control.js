@@ -3,6 +3,7 @@
  *
  * Unit tests for toggle control directive.
  */
+import angular from "angular";
 
 describe("maastoggleCtrl", function() {
   // Load the MAAS module.

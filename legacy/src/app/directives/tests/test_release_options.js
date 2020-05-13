@@ -3,6 +3,7 @@
  *
  * Unit tests for release options directive.
  */
+import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 

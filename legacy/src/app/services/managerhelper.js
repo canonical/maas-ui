@@ -7,6 +7,7 @@
  * managers and makes sure that all items in the manager are loaded
  * before resolving the defer.
  */
+import angular from "angular";
 
 /* @ngInject */
 function ManagerHelperService($q, $timeout, ErrorService, RegionConnection) {

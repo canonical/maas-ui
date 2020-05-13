@@ -3,6 +3,7 @@
  *
  * Unit tests for machines table directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 import "angular-mocks";

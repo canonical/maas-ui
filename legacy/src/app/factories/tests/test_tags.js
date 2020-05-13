@@ -3,6 +3,7 @@
  *
  * Unit tests for TagsManager.
  */
+import angular from "angular";
 
 describe("TagsManager", function() {
   // Load the MAAS module.

@@ -3,7 +3,6 @@
  *
  * Unit tests for action button directive.
  */
-
  import angular from "angular";
  import "angular-mocks";
 

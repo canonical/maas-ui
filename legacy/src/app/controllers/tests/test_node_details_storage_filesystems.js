@@ -1,3 +1,5 @@
+import angular from "angular";
+
 describe("NodeAddSpecialFilesystemController", function() {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));

@@ -3,6 +3,7 @@
  *
  * Unit tests for controller image status directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

@@ -3,6 +3,7 @@
  *
  * MAAS Networks List Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NetworksListController(

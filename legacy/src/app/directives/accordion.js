@@ -8,6 +8,7 @@
  * at a time, selecting another accordion will set "active" on that
  * accordion tab.
  */
+import angular from "angular";
 
 function maasAccordion() {
   return {

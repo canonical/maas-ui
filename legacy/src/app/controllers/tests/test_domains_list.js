@@ -3,6 +3,7 @@
  *
  * Unit tests for DomainsListController.
  */
+import angular from "angular";
 
 import { makeInteger } from "testing/utils";
 import MockWebSocket from "testing/websocket";

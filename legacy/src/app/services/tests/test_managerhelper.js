@@ -3,6 +3,7 @@
  *
  * Unit tests for ManagerHelperService.
  */
+import angular from "angular";
 
 describe("ManagerHelperService", function() {
   // Load the MAAS module.

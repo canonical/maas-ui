@@ -3,6 +3,7 @@
  *
  * Unit tests for SpacesListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 

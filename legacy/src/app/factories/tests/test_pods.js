@@ -3,6 +3,7 @@
  *
  * Unit tests for PodsManager.
  */
+import angular from "angular";
 
 import { makeFakeResponse, makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";

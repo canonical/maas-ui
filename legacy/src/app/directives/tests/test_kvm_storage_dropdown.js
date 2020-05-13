@@ -3,6 +3,7 @@
  *
  * Unit tests for KVM storage dropdown directive.
  */
+import angular from "angular";
 
 describe("kvmStorageDropdown", () => {
   // Load the MAAS module.

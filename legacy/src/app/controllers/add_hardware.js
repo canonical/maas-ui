@@ -3,6 +3,7 @@
  *
  * MAAS Add Hardware Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function AddHardwareController(

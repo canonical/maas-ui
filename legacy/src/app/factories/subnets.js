@@ -7,6 +7,7 @@
  * RegionConnection to load the subnets, update the subnets, and listen for
  * notification events about subnets.
  */
+import angular from "angular";
 
 function SubnetsManager(RegionConnection, Manager) {
   function SubnetsManager() {

@@ -3,6 +3,7 @@
  *
  * Unit tests for filterRange.
  */
+import angular from "angular";
 
 describe("filterRange", function() {
   // Load the MAAS module.

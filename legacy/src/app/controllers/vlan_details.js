@@ -3,6 +3,7 @@
  *
  * MAAS VLAN Details Controller
  */
+import angular from "angular";
 
 export function ignoreSelf() {
   return function(objects, self) {

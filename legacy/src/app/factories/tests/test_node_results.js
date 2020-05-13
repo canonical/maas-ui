@@ -3,6 +3,7 @@
  *
  * Unit tests for NodeResultsManagerFactory.
  */
+import angular from "angular";
 
 import {
   makeBoolean,

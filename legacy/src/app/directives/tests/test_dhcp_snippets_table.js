@@ -3,6 +3,7 @@
  *
  * Unit tests for DHCP snippets table directive.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 

@@ -3,6 +3,7 @@
  *
  * Unit tests for PreferencesController.
  */
+import angular from "angular";
 
 describe("PreferencesController", function() {
   // Load the MAAS module.
