@@ -34,9 +34,10 @@
     &.is-inline {
       margin: 0;
     }
+  }
 
-    // Table header sort buttons
-    th & {
+  table {
+    th .p-button--link {
       color: $color-mid-dark;
       font-weight: 400;
 
@@ -45,12 +46,12 @@
         margin-left: $sp-x-small;
       }
     }
-  }
 
-  table .p-button--link {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    padding-top: 0;
+    .p-button--link {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
   }
 
   .p-button--link:not(:last-of-type):not(:only-of-type) {

@@ -21,6 +21,9 @@ import zonesListTmpl from "./partials/zones-list.html";
 
 /* @ngInject */
 const configureRoutes = ($stateProvider, $urlRouterProvider) => {
+  // Remove class on the HTML element when initialed to aid styling separation.
+  document.getElementsByTagName('html')[0].classList.remove("ui-view");
+
   $stateProvider
     .state("master", {
       abstract: true,

@@ -38,6 +38,9 @@ export const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 const Root = () => {
+  // Apply class on the HTML element when initialed to aid styling separation.
+  document.getElementsByTagName("html")[0].classList.add("ui-view");
+
   console.info(`${appName} ${appVersion} (${process.env.REACT_APP_GIT_SHA}).`);
   return (
     <Provider store={store}>

@@ -42,13 +42,19 @@ input[type="checkbox"],
 input[type="radio"] {
   + label {
     margin-bottom: 0.6rem;
+  }
+}
 
-    .p-list__item:not(:first-child) &,
-    .p-form__group:not(:first-child) & {
+.p-list__item,
+.p-form__group {
+  &:not(:first-child) {
+    input[type="checkbox"],
+    input[type="radio"] {
       margin-top: -0.5rem;
     }
   }
 }
+
 .p-form-help-text,
 .p-form-validation__message {
   margin-bottom: 0.8rem;
