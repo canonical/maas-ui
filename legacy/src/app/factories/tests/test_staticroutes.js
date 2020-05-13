@@ -3,6 +3,7 @@
  *
  * Unit tests for StaticRoutesManager.
  */
+import angular from "angular";
 
 describe("StaticRoutesManager", function() {
   // Load the MAAS module.

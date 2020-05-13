@@ -3,6 +3,7 @@
  *
  * Unit tests for ConverterService.
  */
+import angular from "angular";
 
 describe("ConverterService", function() {
   // Load the MAAS module.

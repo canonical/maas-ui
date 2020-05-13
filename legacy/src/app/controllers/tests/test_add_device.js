@@ -3,9 +3,11 @@
  *
  * Unit tests for AddDeviceController.
  */
+ import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
+
 
 describe("AddDeviceController", function() {
   // Load the MAAS module.

@@ -7,6 +7,7 @@
  * RegionConnection to load the fabrics, update the fabrics, and listen for
  * notification events about fabrics.
  */
+import angular from "angular";
 
 function FabricsManager(RegionConnection, Manager) {
   function FabricsManager() {

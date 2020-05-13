@@ -3,6 +3,7 @@
  *
  * MAAS Filter Subnets by VLAN.
  */
+import angular from "angular";
 
 export function filterByVLAN() {
   return function(subnets, vlan) {

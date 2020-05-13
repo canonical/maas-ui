@@ -5,6 +5,7 @@
  *
  * Renders the machines listing.
  */
+import angular from "angular";
 
 import { NodeStatus } from "../enum";
 import machinesTableTmpl from "../partials/machines-table.html";

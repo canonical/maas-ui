@@ -3,6 +3,7 @@
  *
  * Converts bytes into human readable string, e.g. 10 GB
  */
+import angular from "angular";
 
 export function formatBytes() {
   return function(bytes) {

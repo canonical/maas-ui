@@ -3,6 +3,7 @@
  *
  * MAAS Node Details Controller
  */
+import angular from "angular";
 
 import { HardwareType, NodeTypes } from "../enum";
 

@@ -3,8 +3,9 @@
  *
  * IP Ranges directive.
  */
+import angular from "angular";
 
- import ipRangesTmpl from "../partials/ipranges.html";
+import ipRangesTmpl from "../partials/ipranges.html";
 
 /* @ngInject */
 function maasIpRanges(
@@ -17,10 +18,10 @@ function maasIpRanges(
     restrict: "E",
     scope: {
       subnet: "=",
-      vlan: "="
+      vlan: "=",
     },
     template: ipRangesTmpl,
-    controller: IpRangesController
+    controller: IpRangesController,
   };
 
   /* @ngInject */
@@ -37,19 +38,19 @@ function maasIpRanges(
       name: "reserve_range",
       title: "Reserve range",
       selectedTitle: "Reserve range",
-      objectName: "reserveRange"
+      objectName: "reserveRange",
     };
 
     $scope.RESERVE_DYNAMIC_RANGE = {
       name: "reserve_dynamic_range",
       title: "Reserve dynamic range",
       selectedTitle: "Reserve dynamic range",
-      objectName: "reserveDynamicRange"
+      objectName: "reserveDynamicRange",
     };
 
     $scope.actionOptions = [$scope.RESERVE_RANGE, $scope.RESERVE_DYNAMIC_RANGE];
 
-    $scope.actionChanged = function() {
+    $scope.actionChanged = function () {
       var actionOptionName = $scope.actionOption
         ? $scope.actionOption.name
         : null;
@@ -64,17 +65,17 @@ function maasIpRanges(
     };
 
     // Return true if the authenticated user is super user.
-    $scope.isSuperUser = function() {
+    $scope.isSuperUser = function () {
       return UsersManager.isSuperUser();
     };
 
     // Called to start adding a new IP range.
-    $scope.addRange = function(type) {
+    $scope.addRange = function (type) {
       $scope.newRange = {
         type: type,
         start_ip: "",
         end_ip: "",
-        comment: ""
+        comment: "",
       };
       if (angular.isObject($scope.subnet)) {
         $scope.newRange.subnet = $scope.subnet.id;
@@ -88,14 +89,14 @@ function maasIpRanges(
     };
 
     // Cancel adding the new IP range.
-    $scope.cancelAddRange = function() {
+    $scope.cancelAddRange = function () {
       $scope.newRange = null;
       $scope.actionOption = null;
     };
 
     // Return true if the IP range can be modified by the
     // authenticated user.
-    $scope.ipRangeCanBeModified = function(range) {
+    $scope.ipRangeCanBeModified = function (range) {
       if ($scope.isSuperUser()) {
         return true;
       } else {
@@ -108,12 +109,12 @@ function maasIpRanges(
     };
 
     // Return true if the IP range is in edit mode.
-    $scope.isIPRangeInEditMode = function(range) {
+    $scope.isIPRangeInEditMode = function (range) {
       return $scope.editIPRange === range;
     };
 
     // Toggle edit mode for the IP range.
-    $scope.ipRangeToggleEditMode = function(range) {
+    $scope.ipRangeToggleEditMode = function (range) {
       $scope.deleteIPRange = null;
       if ($scope.isIPRangeInEditMode(range)) {
         $scope.editIPRange = null;
@@ -123,35 +124,35 @@ function maasIpRanges(
     };
 
     // Clear edit mode for the IP range.
-    $scope.ipRangeClearEditMode = function() {
+    $scope.ipRangeClearEditMode = function () {
       $scope.editIPRange = null;
     };
 
     // Return true if the IP range is in delete mode.
-    $scope.isIPRangeInDeleteMode = function(range) {
+    $scope.isIPRangeInDeleteMode = function (range) {
       return $scope.deleteIPRange === range;
     };
 
     // Enter delete mode for the IP range.
-    $scope.ipRangeEnterDeleteMode = function(range) {
+    $scope.ipRangeEnterDeleteMode = function (range) {
       $scope.editIPRange = null;
       $scope.deleteIPRange = range;
     };
 
     // Exit delete mode for the IP range.
-    $scope.ipRangeCancelDelete = function() {
+    $scope.ipRangeCancelDelete = function () {
       $scope.deleteIPRange = null;
     };
 
     // Perform the delete operation on the IP range.
-    $scope.ipRangeConfirmDelete = function() {
-      IPRangesManager.deleteItem($scope.deleteIPRange).then(function() {
+    $scope.ipRangeConfirmDelete = function () {
+      IPRangesManager.deleteItem($scope.deleteIPRange).then(function () {
         $scope.deleteIPRange = null;
       });
     };
 
     // Sort ranges by starting IP address.
-    $scope.ipRangeSort = function(range) {
+    $scope.ipRangeSort = function (range) {
       if (range.start_ip.indexOf(":") !== -1) {
         return ConverterService.ipv6Expand(range.start_ip);
       } else {
@@ -162,8 +163,8 @@ function maasIpRanges(
     // Load the required managers.
     ManagerHelperService.loadManagers($scope, [
       IPRangesManager,
-      UsersManager
-    ]).then(function() {
+      UsersManager,
+    ]).then(function () {
       $scope.loading = false;
     });
   }

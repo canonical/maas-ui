@@ -3,6 +3,7 @@
  *
  * Unit tests for error toggle.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

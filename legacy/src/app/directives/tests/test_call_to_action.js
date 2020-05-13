@@ -3,6 +3,7 @@
  *
  * Unit tests for Call-To-Action dropdown directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

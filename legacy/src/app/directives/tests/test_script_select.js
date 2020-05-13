@@ -3,8 +3,8 @@
  *
  * Unit tests for script select directive.
  */
-
 import angular from "angular";
+
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 

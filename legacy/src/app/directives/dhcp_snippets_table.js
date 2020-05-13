@@ -3,6 +3,7 @@
  *
  * DHCP snippets table directive.
  */
+import angular from "angular";
 
 import dhcpSnippetsTableTmpl from "../partials/dhcp-snippets-table.html";
 

@@ -3,6 +3,7 @@
  *
  * Unit tests for SpacesManager.
  */
+import angular from "angular";
 
 describe("SpacesManager", function() {
   // Load the MAAS module.

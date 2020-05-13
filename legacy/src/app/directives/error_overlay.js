@@ -6,6 +6,7 @@
  * Directive overrides the entire transcluded element if an error occurs or
  * connection to the region over the websocket fails or becomes disconnected.
  */
+import angular from "angular";
 
 import errorOverlayTmpl from "../partials/directives/error_overlay.html";
 

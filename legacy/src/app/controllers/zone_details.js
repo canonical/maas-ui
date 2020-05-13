@@ -3,6 +3,7 @@
  *
  * MAAS Zone Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function ZoneDetailsController(

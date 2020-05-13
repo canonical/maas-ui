@@ -3,6 +3,7 @@
  *
  * Unit tests for pod parameters directive.
  */
+import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 

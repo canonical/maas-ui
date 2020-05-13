@@ -3,6 +3,7 @@
  *
  * MAAS Add Device Controller
  */
+ import angular from "angular";
 
 /* @ngInject */
 function AddDeviceController(

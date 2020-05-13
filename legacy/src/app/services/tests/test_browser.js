@@ -3,6 +3,7 @@
  *
  * Unit tests for BrowserService.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

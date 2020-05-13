@@ -8,6 +8,7 @@
  * are both Nodes).  The manager uses the RegionConnection to load the nodes,
  * update the nodes, and listen for notification events about nodes.
  */
+import angular from "angular";
 
 function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
   function NodesManager() {

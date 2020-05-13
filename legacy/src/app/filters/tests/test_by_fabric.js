@@ -3,6 +3,7 @@
  *
  * Unit tests for filterByFabric.
  */
+import angular from "angular";
 
 describe("filterByFabric", function() {
   // Load the MAAS module.

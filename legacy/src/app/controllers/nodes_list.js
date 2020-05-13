@@ -3,6 +3,7 @@
  *
  * MAAS Nodes List Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NodesListController(

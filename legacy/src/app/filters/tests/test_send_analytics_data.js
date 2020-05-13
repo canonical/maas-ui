@@ -3,6 +3,7 @@
  *
  * Unit tests for sendAnalyticsEvent.
  */
+import angular from "angular";
 
 describe("sendAnalyticsEvent", () => {
   // Load the MAAS module.

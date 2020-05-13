@@ -14,6 +14,7 @@
  * This means that the client needs to use polling so the region controller
  * can ask each rack controller what is the status of your images.
  */
+import angular from "angular";
 
 function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   function BootResourcesManager() {

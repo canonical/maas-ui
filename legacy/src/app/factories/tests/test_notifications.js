@@ -3,6 +3,7 @@
  *
  * Unit tests for NotificationsManager.
  */
+import angular from "angular";
 
 describe("NotificationsManager", function() {
   // Load the MAAS module.

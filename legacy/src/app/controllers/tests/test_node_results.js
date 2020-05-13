@@ -3,6 +3,7 @@
  *
  * Unit tests for NodeResultsController
  */
+import angular from "angular";
 
 import {
   makeFakeResponse,

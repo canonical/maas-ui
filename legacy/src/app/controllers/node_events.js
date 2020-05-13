@@ -3,6 +3,7 @@
  *
  * MAAS Node Events Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NodeEventsController(

@@ -6,6 +6,7 @@
  * Directive that connects a field to an object from the websocket. The field
  * is an instant save on blur.
  */
+import angular from "angular";
 
 /* @ngInject */
 export function maasObjForm(JSONService) {

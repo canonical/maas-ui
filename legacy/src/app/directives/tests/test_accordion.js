@@ -3,6 +3,7 @@
  *
  * Unit tests for accordion directive.
  */
+import angular from "angular";
 
 describe("maasAccordion", function() {
   // Load the MAAS module.

@@ -3,6 +3,7 @@
  *
  * Unit tests for VLANsManager.
  */
+import angular from "angular";
 
 import { makeInteger } from "testing/utils";
 

@@ -3,6 +3,7 @@
  *
  * MAAS Filter Subnets by VLAN.
  */
+import angular from "angular";
 
 function orderByDate() {
   return function(items, field, field2) {

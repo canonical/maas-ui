@@ -3,6 +3,7 @@
  *
  * Unit tests for default OS select.
  */
+import angular from "angular";
 
 describe("maasDefaultOSSelect", function() {
   // Load the MAAS module.

@@ -3,6 +3,7 @@
  *
  * Call to action directive.
  */
+import angular from "angular";
 
 import ctaTmpl from "../partials/directives/cta.html";
 

@@ -1,3 +1,5 @@
+import angular from "angular";
+
 import { HardwareType } from "../enum";
 
 /* Copyright 2015-2018 Canonical Ltd.  This software is licensed under the

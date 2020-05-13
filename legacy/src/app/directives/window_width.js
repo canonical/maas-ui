@@ -9,6 +9,7 @@
  * development.
  *
  */
+import angular from "angular";
 
 /* @ngInject */
 function windowWidth($window) {

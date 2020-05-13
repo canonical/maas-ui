@@ -3,6 +3,7 @@
  *
  * Unit tests for ValidationService.
  */
+import angular from "angular";
 
 describe("ValidationService", function() {
   // Load the MAAS module.

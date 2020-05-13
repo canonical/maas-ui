@@ -3,6 +3,7 @@
  *
  * MAAS Pod Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function PodDetailsController(

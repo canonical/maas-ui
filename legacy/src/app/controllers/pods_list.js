@@ -3,6 +3,7 @@
  *
  * MAAS Pods List Controller
  */
+import angular from "angular";
 
 const getOSShortName = (node, osInfo) => {
   if (node) {

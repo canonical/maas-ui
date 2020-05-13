@@ -3,6 +3,7 @@
  *
  * Unit tests for ScriptsManager.
  */
+import angular from "angular";
 
 describe("ScriptsManager", function() {
   // Load the MAAS module.

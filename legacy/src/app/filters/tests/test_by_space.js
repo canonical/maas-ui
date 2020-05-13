@@ -3,6 +3,7 @@
  *
  * Unit tests for filterBySpace.
  */
+import angular from "angular";
 
 describe("filterBySpace", function() {
   // Load the MAAS module.

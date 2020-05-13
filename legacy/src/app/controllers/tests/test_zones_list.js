@@ -3,6 +3,7 @@
  *
  * Unit tests for ZonesListController.
  */
+import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 

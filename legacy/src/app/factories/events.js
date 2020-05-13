@@ -6,6 +6,7 @@
  * Manages all of the events for a node in the browser. The manager uses the
  * RegionConnection to load the events and listen for event notifications.
  */
+import angular from "angular";
 
 function EventsManagerFactory(RegionConnection, Manager) {
   function EventsManager(nodeId, factory) {

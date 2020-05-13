@@ -3,6 +3,7 @@
  *
  * Unit tests for enter blur directive.
  */
+import angular from "angular";
 
 describe("maasEnterBlur", function() {
   // Load the MAAS module.

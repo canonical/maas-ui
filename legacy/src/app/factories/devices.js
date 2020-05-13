@@ -8,6 +8,7 @@
  * RegionConnection to load the devices, update the devices, and listen for
  * notification events about devices.
  */
+import angular from "angular";
 
 function DevicesManager(RegionConnection, NodesManager) {
   function DevicesManager() {

@@ -3,6 +3,7 @@
  *
  * Filter objects with subnet foreign key references by a particular subnet.
  */
+import angular from "angular";
 
 export function filterBySubnet() {
   return function(foreign_objects, subnet, key) {

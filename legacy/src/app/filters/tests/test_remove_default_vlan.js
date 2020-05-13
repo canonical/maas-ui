@@ -3,6 +3,7 @@
  *
  * Unit tests for removeDefaultVLAN.
  */
+import angular from "angular";
 
 describe("removeDefaultVLAN", function() {
   // Load the MAAS module.

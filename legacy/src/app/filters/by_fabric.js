@@ -3,6 +3,7 @@
  *
  * MAAS Filter VLANs by Fabric.
  */
+import angular from "angular";
 
 function filterByFabric() {
   return function(vlans, fabric) {

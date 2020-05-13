@@ -3,6 +3,7 @@
  *
  * MAAS Settings Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function SettingsController(

@@ -3,6 +3,7 @@
  *
  * Unit tests for FabricsManager.
  */
+import angular from "angular";
 
 import { makeInteger } from "testing/utils";
 

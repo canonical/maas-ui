@@ -3,6 +3,7 @@
  *
  * Creates the auto-formatting for MAC address inputs.
  */
+import angular from "angular";
 
 function macAddress() {
   return {

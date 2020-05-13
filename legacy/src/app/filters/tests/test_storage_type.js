@@ -3,6 +3,7 @@
  *
  * Unit tests for formatStorageType.
  */
+import angular from "angular";
 
 describe("formatStorageType", function() {
   // Load the MAAS module.
