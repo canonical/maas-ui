@@ -9,6 +9,7 @@
  * notification events about switches.
  */
 import angular from "angular";
+
 function SwitchesManager(RegionConnection, NodesManager) {
   function SwitchesManager() {
     NodesManager.call(this);
