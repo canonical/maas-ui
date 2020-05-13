@@ -88,7 +88,6 @@ function PodsListController(
   $scope.machines = MachinesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
   $scope.hostMap = new Map();
-  $scope.ownersMap = new Map();
   $scope.defaultPoolMap = new Map();
 
   // Called to update `allViewableChecked`.
@@ -465,22 +464,6 @@ function PodsListController(
     return "p-icon--power-unknown";
   };
 
-  // XXX Caleb 08.04.2020: Replace with owners_count in the markup once
-  // available on the pod object.
-  // https://bugs.launchpad.net/maas/+bug/1871742
-  $scope.getPodOwners = (pod) =>
-    $scope.machines.reduce((owners, machine) => {
-      if (
-        machine.pod &&
-        machine.pod.id === pod.id &&
-        machine.owner &&
-        !owners.includes(machine.owner)
-      ) {
-        owners.push(machine.owner);
-      }
-      return owners;
-    }, []);
-
   $scope.getPodHost = (pod) => {
     if (pod.host) {
       const hostMachine = $scope.machines.find(
@@ -503,11 +486,25 @@ function PodsListController(
     }
   };
 
+  $scope.getPodTotalStorage = (pod) => {
+    // XXX Caleb 12.05.2020: Special case for LXD pods in which
+    // pod.total.local_storage refers to the pod host instead of the pod itself.
+    // Remove when fixed in the backend.
+    // https://bugs.launchpad.net/maas/+bug/1878117
+    if (pod.type === "lxd") {
+      return pod.storage_pools.reduce((total, pool) => total + pool.total, 0);
+    }
+    return pod.total.local_storage;
+  };
+
+  $scope.formatMemory = (mib) => {
+    return `${Number((mib / 1024).toPrecision(2)).toString()} GiB`;
+  };
+
   $scope.loadDetails = () => {
     $scope.pods.forEach((pod) => {
       $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
       $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
-      $scope.ownersMap.set(pod.id, $scope.getPodOwners(pod));
     });
   };
 

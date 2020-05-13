@@ -7,7 +7,6 @@ $bar-height: 11px;
 @mixin maas-p-cores-chart {
   maas-cores-chart {
     @extend %maas-element;
-    top: 3px;
   }
 
   .p-cores-chart {
@@ -70,7 +69,12 @@ $bar-height: 11px;
   }
 
   .p-cores-chart--double-row {
+    top: 3px;
     width: auto;
+  }
+
+  .p-cores-chart--overcommit {
+    top: 3px;
   }
 
   .p-core {

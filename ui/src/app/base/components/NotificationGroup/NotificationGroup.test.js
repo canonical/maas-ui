@@ -85,8 +85,18 @@ describe("NotificationGroup", () => {
   it("can dismiss multiple notifications", () => {
     const store = mockStore(state);
     const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" },
+      {
+        id: 1,
+        category: "error",
+        message: "an error occurred",
+        dismissable: true,
+      },
+      {
+        id: 2,
+        category: "error",
+        message: "an error occurred",
+        dismissable: true,
+      },
     ];
 
     const wrapper = mount(
@@ -102,10 +112,44 @@ describe("NotificationGroup", () => {
     expect(store.getActions()[1].type).toEqual("DELETE_NOTIFICATION");
   });
 
+  it("does not dismiss undismissable notifications when dismissing a group", () => {
+    const store = mockStore(state);
+    const notifications = [
+      {
+        id: 1,
+        category: "warning",
+        message: "dismissable warning",
+        dismissable: true,
+      },
+      {
+        id: 2,
+        category: "warning",
+        message: "undismissable warning",
+        dismissable: false,
+      },
+    ];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <NotificationGroup notifications={notifications} type="caution" />
+      </Provider>
+    );
+
+    wrapper.find("Button").at(1).simulate("click");
+
+    expect(store.getActions().length).toEqual(1);
+    expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
+  });
+
   it("can dismiss a single notification", () => {
     const store = mockStore(state);
     const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
+      {
+        id: 1,
+        category: "error",
+        message: "an error occurred",
+        dismissable: true,
+      },
     ];
 
     const wrapper = mount(
@@ -118,6 +162,28 @@ describe("NotificationGroup", () => {
 
     expect(store.getActions().length).toEqual(1);
     expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
+  });
+
+  it("does not show a dismiss action if notification is not dismissable", () => {
+    const store = mockStore(state);
+    const notifications = [
+      {
+        id: 1,
+        category: "error",
+        message: "an error occurred",
+        dismissable: false,
+      },
+    ];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <NotificationGroup notifications={notifications} type="negative" />
+      </Provider>
+    );
+
+    expect(wrapper.find("button[data-test='action-link']").exists()).toBe(
+      false
+    );
   });
 
   it("can toggle multiple notifications", () => {
