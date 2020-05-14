@@ -200,6 +200,7 @@
   .p-table-menu {
     @extend .p-contextual-menu;
     margin-bottom: -$sp-unit;
+    margin-left: 0 !important;
     width: 100%;
 
     %table-menu-link {

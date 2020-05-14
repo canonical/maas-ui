@@ -725,8 +725,9 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     data-ng-click="tabs.controllers.addController = false">Close</a>
         </div>
     </div>
-    <nav class="p-tabs u-hr--fixed-width" data-ng-if="currentpage === 'machines' || currentpage === 'pools'">
+    <nav class="p-tabs" data-ng-if="currentpage === 'machines' || currentpage === 'pools'">
         <div class="row">
+            <hr class="u-no-margin--bottom" />
             <ul class="p-tabs__list" role="tablist">
                 <li class="p-tabs__item" role="presentation">
                     <a href="r/machines" class="p-tabs__link" role="tab"

@@ -14,7 +14,7 @@
   }
 
   .p-cta__toggle {
-    margin-bottom: $spv-inner--x-small;
+    margin-bottom: 0;
     padding-right: $sph-inner * 2 + map-get($icon-sizes, default);
 
     .page-header__controls--controllers & {
