@@ -134,7 +134,7 @@ export const App = () => {
   }
 
   return (
-    <>
+    <div id="maas-ui">
       <Header
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
@@ -158,7 +158,7 @@ export const App = () => {
       />
       {content}
       {maasName && version && <Footer maasName={maasName} version={version} />}
-    </>
+    </div>
   );
 };
 

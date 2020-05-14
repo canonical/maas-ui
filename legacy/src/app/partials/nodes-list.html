@@ -836,7 +836,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     <th class="p-table__cell">
                         <span class="u-float--left">
                             <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('devices')" data-ng-checked="tabs.devices.allViewableChecked" id="check-all-devices" data-ng-disabled="hasActionsInProgress('devices')" />
-                            <label for="check-all-devices" class="p-form__label is-inline-label"></label>
+                            <label for="check-all-devices" class="p-form__label is-table-header"></label>
                         </span>
                         <span role="columnheader" data-ng-click="sortTable('fqdn', 'devices')" data-ng-class="{'is-sorted': tabs.devices.predicate === 'fqdn', 'sort-asc': tabs.devices.reverse === false, 'sort-desc': tabs.devices.reverse === true}">
                             <abbr>FQDN</abbr>
@@ -996,7 +996,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         <th class="p-table__cell">
                             <span class="u-float--left">
                                 <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('controllers')" data-ng-checked="tabs.controllers.allViewableChecked" id="check-all-controllers" data-ng-disabled="hasActionsInProgress('controllers')" />
-                                <label for="check-all-controllers" class="p-form__label is-inline-label"></label>
+                                <label for="check-all-controllers" class="p-form__label is-table-header"></label>
                             </span>
                             <span role="columnheader" data-ng-click="sortTable('fqdn', 'controllers')" data-ng-class="{'is-sorted': tabs.controllers.predicate === 'fqdn', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}">
                                 Name

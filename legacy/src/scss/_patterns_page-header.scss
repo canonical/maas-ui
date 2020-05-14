@@ -9,6 +9,7 @@
     &__title {
       @include vf-heading-4;
       display: inline-block;
+      margin-bottom: .95rem;
     }
 
     &__status {
