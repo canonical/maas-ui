@@ -9,7 +9,18 @@ import Tooltip from "app/base/components/Tooltip";
 
 const generateFQDN = (machine, machineURL) => {
   return (
-    <a href={machineURL} title={machine.fqdn}>
+    <a
+      href={machineURL}
+      onClick={(evt) => {
+        evt.preventDefault();
+        window.history.pushState(
+          null,
+          null,
+          `${process.env.REACT_APP_BASENAME}${machineURL}`
+        );
+      }}
+      title={machine.fqdn}
+    >
       <strong>
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
