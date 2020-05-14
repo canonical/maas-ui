@@ -116,17 +116,18 @@
 
     @media only screen and (max-width: $breakpoint-x-large) {
       grid:
-        [row1-start] "cpu cpu-tests memory storage" min-content [row1-end]
-        [row2-start] "cpu cpu-tests memory-tests storage-tests" min-content [row2-end]
-        [row3-start] "overview details details details" min-content [row3-end]
-        [row4-start] "overview test-warning test-warning test-warning" min-content [row4-end]
-        / 1fr 1fr 1fr 1fr;
+        [row1-start] "cpu cpu cpu memory memory memory storage storage storage" min-content [row1-end]
+        [row2-start] "cpu-tests cpu-tests cpu-tests memory-tests memory-tests memory-tests storage-tests storage-tests storage-tests" min-content [row2-end]
+        [row3-start] "overview overview details details details details details details details" min-content [row3-end]
+        [row4-start] "overview overview test-warning test-warning test-warning test-warning test-warning test-warning test-warning" min-content [row4-end]
+        / 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
       .cpu {
         padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
       }
 
       .cpu-tests {
+        padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
         &::after {
           content: none;
         }

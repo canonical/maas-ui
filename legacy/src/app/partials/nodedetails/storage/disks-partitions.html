@@ -39,7 +39,7 @@
                     data-ng-class="{ 'is-error': isNameInvalid(item) }">
                     <div data-ng-if="canEdit()" class="p-double-row__checkbox">
                         <input type="checkbox" class="checkbox u-float--left" id="{$ item.name $}" data-ng-hide="isAvailableDisabled()" data-ng-checked="item.$selected" data-ng-click="toggleAvailableSelect(item)" data-ng-disabled="isAvailableDisabled()" />
-                        <label for="{$ item.name $}"></label>
+                        <label class="is-inline-label" for="{$ item.name $}"></label>
                     </div>
                     <div data-ng-class="{'p-double-row__rows-container--checkbox': canEdit(), 'p-double-row__rows-container': !canEdit()}">
                         <div class="p-double-row__main-row">

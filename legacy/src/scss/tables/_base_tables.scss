@@ -119,7 +119,7 @@
   }
 
   .numa-tooltip {
-    padding-left: $sph-inner--large;
+    padding-left: $sph-inner;
 
     &.show-warning::after {
       @include vf-icon-size(map-get($icon-sizes, default));
