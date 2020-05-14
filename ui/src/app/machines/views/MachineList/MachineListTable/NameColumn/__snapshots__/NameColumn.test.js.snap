@@ -13,6 +13,7 @@ exports[`NameColumn renders 1`] = `
         label={
           <a
             href="/#/undefined/abc123"
+            onClick={[Function]}
           >
             <strong>
               koala
@@ -50,6 +51,7 @@ exports[`NameColumn renders 1`] = `
               label={
                 <a
                   href="/#/undefined/abc123"
+                  onClick={[Function]}
                 >
                   <strong>
                     koala
@@ -70,6 +72,7 @@ exports[`NameColumn renders 1`] = `
                 label={
                   <a
                     href="/#/undefined/abc123"
+                    onClick={[Function]}
                   >
                     <strong>
                       koala
@@ -103,6 +106,7 @@ exports[`NameColumn renders 1`] = `
                       >
                         <a
                           href="/#/undefined/abc123"
+                          onClick={[Function]}
                         >
                           <strong>
                             koala

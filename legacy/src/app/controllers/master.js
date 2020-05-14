@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 
 /* @ngInject */
-function MasterController($rootScope, $window, $http) {
+function MasterController($rootScope, $transitions, $window, $http) {
   const debug = process.env.NODE_ENV === "development";
   const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
@@ -69,12 +69,12 @@ function MasterController($rootScope, $window, $http) {
     $rootScope.site = window.CONFIG.maas_name;
     renderHeader();
     renderFooter();
-
-    $rootScope.$on("$routeChangeSuccess", function (event, next, current) {
-      // Update the header when the route changes.
-      renderHeader();
-    });
   };
+
+  $transitions.onSuccess({}, () => {
+    // Update the header when the route changes.
+    renderHeader();
+  });
 
   displayTemplate();
 }

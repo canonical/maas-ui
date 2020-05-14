@@ -3041,7 +3041,7 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
-"@uirouter/angularjs@^1.0.26":
+"@uirouter/angularjs@1.0.26":
   version "1.0.26"
   resolved "https://registry.yarnpkg.com/@uirouter/angularjs/-/angularjs-1.0.26.tgz#680ba48ac2c5608a6621c09fadb88a80ceb2e0cc"
   integrity sha512-90kS4j0cBk1rpipE/CFC+/cNpc32WHI5536oHsJzAOIDY1NoSmb5TMOISrJslg7sBGF56NEtGoRVf42gaACrfA==
@@ -14395,10 +14395,10 @@ single-spa-react@2.14.0:
   resolved "https://registry.yarnpkg.com/single-spa-react/-/single-spa-react-2.14.0.tgz#4a55ea74a57db06adb41f0de3419a0c378745e1b"
   integrity sha512-KQ2/y7/JBIquK0WUiwb1/Y7f4qTZITNotw+JwNPesj0WKeCi91u0LOZe2ps56QMJbyB4UrA5IzMBwbYWDr1pIw==
 
-single-spa@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/single-spa/-/single-spa-5.4.0.tgz#da3c5cf60f79e02c2ed7bebd86299d4f37fec569"
-  integrity sha512-VxD4kh7sCOuMUqYbFjtBz2eHDySTOQnmwuFmDJvhQwDXUz9mOX7Ps9xSnqGXEZDXOf/YEAE1mRfmX1cwVSjkag==
+single-spa@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/single-spa/-/single-spa-5.5.0.tgz#3546ba3f07a82bef9311abb6da748cec8b75dfbf"
+  integrity sha512-ZmHmBz5mSB8RYPIApBMzFoP7a35DWg6wo5E5LQVLYw87Rk5s2JPQH3BHU7cu+Ndls5GEWcMq6ryrwstZQGhyag==
 
 sisteransi@^1.0.0:
   version "1.0.0"
