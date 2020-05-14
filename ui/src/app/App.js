@@ -41,6 +41,29 @@ export const App = () => {
   const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
 
+
+  useEffect(() => {
+    window.addEventListener("popstate", (evt) => {
+      if (evt.singleSpa) {
+        const reactRoute =
+          window.location.pathname.split("/")[2] ===
+          process.env.REACT_APP_REACT_BASENAME.substr(1);
+        if (reactRoute) {
+          // get subPath e.g. 'settings' in '/MAAS/r/settings/configuration'
+          const newSubpath = window.location.pathname.split("/").slice(3)[0];
+          const lastSubpath = history.location.pathname.split("/")[1];
+          console.log("new path", newSubpath);
+          console.log("last path", lastSubpath);
+          if (newSubpath !== lastSubpath) {
+            console.log("updating history to", `/${newSubpath}`);
+            history.push(`/${newSubpath}`);
+          }
+        }
+      }
+    });
+  }, []);
+
+
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
   }, [dispatch]);
