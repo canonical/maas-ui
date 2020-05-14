@@ -1,16 +1,12 @@
 @mixin maas-p-sticky-footer {
-  html {
-    height: 100%;
-  }
-
-  body {
-    min-height: 100%;
+  #maas-legacy {
+    min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
-  }
 
-  .p-footer {
-    grid-row-end: span 1;
-    grid-row-start: auto;
+    .p-footer {
+      grid-row-end: span 1;
+      grid-row-start: auto;
+    }
   }
 }

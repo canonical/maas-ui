@@ -48,7 +48,7 @@
         data-ng-repeat="storage in pod.storage_pools"
       >
         <div class="row">
-          <div class="col-small-2 col-medium-3 col-4">
+          <div class="col-small-2 col-medium-3 col-2">
             <p class="u-min-margin--bottom">
               <strong>{$ storage.name $}</strong>
             </p>
@@ -60,7 +60,7 @@
             </p>
             <p>{$ storage.total | formatBytes $}</p>
           </div>
-          <div class="col-small-4 col-medium-6 col-6">
+          <div class="col-small-4 col-medium-6 col-4">
             <div class="p-meter__container">
               <meter
                 class="p-meter p-meter--kvm"
@@ -87,7 +87,7 @@
       </li>
       <li class="p-list__item">
         <div class="row">
-          <div class="col-6 col-start-large-7 u-space-between">
+          <div class="col-4 col-start-large-5 u-space-between">
             <div class="p-legend__item p-legend__item--used">
               <span class="p-legend__text default-text">
                 Used

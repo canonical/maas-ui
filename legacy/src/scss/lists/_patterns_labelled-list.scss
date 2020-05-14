@@ -1,6 +1,6 @@
 @mixin maas-labelled-lists {
   .p-list--labelled {
-    @include vf-list;
+    @extend %vf-list;
 
     .p-list__item {
       @extend %vf-list-item;
