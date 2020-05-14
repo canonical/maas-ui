@@ -1,117 +1,89 @@
-<header class="p-strip--light is-shallow u-no-padding--bottom page-header" data-ng-class="{'u-no-padding--bottom': currentpage === 'machines' || currentpage === 'pools'}" media-query="min-width: 769px">
-    <div class="row flex-row">
-        <div class="flex-item">
-            <h1 class="page-header__title">{$ title $}</h1>
-            <p class="page-header__status u-no-margin--top" data-ng-show="loading">
-                <span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
-            </p>
-            <p class="page-header__status" data-ng-show="!loading">
-                <ng-pluralize data-ng-if="currentpage === 'machines' || currentpage == 'pools'" count="machines.length" when="{'one': '{$ machines.length $} machine available', 'other': '{$ machines.length $} machines available'}"></ng-pluralize>
-                <ng-pluralize data-ng-if="currentpage === 'devices'" count="devices.length" when="{'one': '{$ devices.length $} device available', 'other': '{$ devices.length $} devices available'}"></ng-pluralize>
-                <ng-pluralize data-ng-if="currentpage === 'controllers'" count="controllers.length" when="{'one': '{$ controllers.length $} controller available', 'other': '{$ controllers.length $} controllers available'}"></ng-pluralize>
-            </p>
-        </div>
-        <div class="u-align--right" data-ng-show="currentpage === 'machines'">
-            <div>
-                <ul class="p-inline-list u-no-margin--bottom">
-                    <li class="p-inline-list__item" data-ng-show="tabs.machines.selectedItems.length">
-                        <a data-ng-click="showSelected('machines')">{$ tabs.machines.selectedItems.length $} selected</a>
+<!-- Header strip -->
+<header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
+    <div class="row">
+        <div class="col-12">
+            <div class="u-flex--space-between">
+
+                <!-- Title + node count -->
+                <ul class="p-inline-list">
+                    <li class="p-inline-list__item p-heading--four">
+                        {$ title $}
                     </li>
-                    <li class="p-inline-list__item"
-                        data-ng-class="{'u-no-margin--right': !tabs.machines.selectedItems.length}"
-                        data-ng-hide="!canAddMachine()">
-                        <div
-                            data-maas-cta="addHardwareOptions"
-                            data-ng-model="addHardwareOption"
-                            data-ng-change="addHardwareOptionChanged()"
-                            data-default-title="Add hardware">
-                        </div>
+                    <li class="p-inline-list__item" ng-if="loading">
+                        <span><i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
                     </li>
-                    <li class="p-inline-list__item" data-ng-show="tabs.machines.selectedItems.length">
-                        <span
-                            data-selected-items="tabs.machines.selectedItems.length"
-                            data-maas-cta="tabs.machines.takeActionOptions"
-                            data-ng-click="updateAvailableActions('machines')"
-                            data-ng-model="tabs.machines.actionOption"
-                            data-ng-change="actionOptionSelected('machines')">
+                    <li class="p-inline-list__item p-text--muted" ng-if="!loading">
+                        <span ng-if="currentpage === 'devices'">
+                            <span ng-if="!tabs.devices.selectedItems.length">
+                                {$ devices.length $} <ng-pluralize count="devices.length" when="{'one': 'device available', 'other': 'devices available'}"></ng-pluralize>
+                            </span>
+                            <span ng-if="tabs.devices.selectedItems.length && tabs.devices.selectedItems.length !== devices.length">
+                                {$ tabs.devices.selectedItems.length $} of {$ devices.length $} <ng-pluralize count="devices.length" when="{'one': 'device selected', 'other': 'devices selected'}"></ng-pluralize>
+                            </span>
+                            <span ng-if="tabs.devices.selectedItems.length && tabs.devices.selectedItems.length === devices.length">
+                                {$ devices.length $} <ng-pluralize count="devices.length" when="{'one': 'device selected', 'other': 'devices selected'}"></ng-pluralize>
+                            </span>
+                        </span>
+                        <span ng-if="currentpage === 'controllers'">
+                            <span ng-if="!tabs.controllers.selectedItems.length">
+                                {$ controllers.length $} <ng-pluralize count="controllers.length" when="{'one': 'controller available', 'other': 'controllers available'}"></ng-pluralize>
+                            </span>
+                            <span ng-if="tabs.controllers.selectedItems.length && tabs.controllers.selectedItems.length !== controllers.length">
+                                {$ tabs.controllers.selectedItems.length $} of {$ controllers.length $} <ng-pluralize count="controllers.length" when="{'one': 'controller selected', 'other': 'controllers selected'}"></ng-pluralize>
+                            </span>
+                            <span ng-if="tabs.controllers.selectedItems.length && tabs.controllers.selectedItems.length === controllers.length">
+                                {$ controllers.length $} <ng-pluralize count="controllers.length" when="{'one': 'controller selected', 'other': 'controllers selected'}"></ng-pluralize>
+                            </span>
                         </span>
                     </li>
                 </ul>
-            </div>
-        </div>
 
-        <div data-ng-show="currentpage === 'pools'">
-            <div class="page-header__controls"
-                 data-ng-show="canCreateResourcePool()">
-              <button class="p-button--neutral u-no-margin--bottom"
-                      data-ng-click="tabs.pools.addPool()"
-                      data-ng-if="!tabs.pools.actionOption">Add pool</button>
-              <button class="p-button--neutral ng-hide"
-                      data-ng-click="tabs.pools.cancelAddPool()"
-                      data-ng-if="tabs.pools.actionOption">Cancel add pool</button>
-            </div>
-        </div>
-
-        <div data-ng-show="currentpage === 'devices' || currentpage === 'controllers'">
-            <div class="page-header__controls" data-ng-show="currentpage === 'devices'">
-                <div data-ng-hide="tabs.devices.selectedItems.length">
-                    <button class="p-button--neutral u-no-margin--bottom"
-                        data-ng-click="addDevice()"
-                        data-ng-if="!addDeviceScope.viewable">Add device</button>
-                    <button class="p-button--neutral u-no-margin--bottom ng-hide"
-                        data-ng-click="cancelAddDevice()"
-                        data-ng-if="addDeviceScope.viewable">Cancel add device</button>
-                </div>
-                <ul class="p-inline-list u-no-margin--bottom" data-ng-show="tabs.devices.selectedItems.length">
+                <!-- Action buttons -->
+                <ul class="p-inline-list u-no-margin--bottom" ng-if="currentpage === 'devices' && !tabs.devices.actionOption && !addDeviceScope.viewable">
                     <li class="p-inline-list__item">
-                        <a data-ng-click="showSelected('devices')">{$ tabs.devices.selectedItems.length $} selected&nbsp;</a>
+                        <button
+                            class="p-button--neutral u-no-margin--bottom"
+                            ng-click="addDevice()"
+                            ng-disabled="tabs.devices.selectedItems.length"
+                        >
+                            Add device
+                        </button>
                     </li>
                     <li class="p-inline-list__item">
-                        <span
-                            data-selected-items="tabs.devices.selectedItems.length"
-                            data-maas-cta="tabs.devices.takeActionOptions"
-                            data-ng-click="updateAvailableActions('devices')"
-                            data-ng-model="tabs.devices.actionOption"
-                            data-ng-change="actionOptionSelected('devices')">
+                        <span class="p-tooltip--left">
+                            <span
+                                disabled="!tabs.devices.selectedItems.length"
+                                maas-cta="tabs.devices.takeActionOptions"
+                                ng-change="actionOptionSelected('devices')"
+                                ng-click="updateAvailableActions('devices')"
+                                ng-model="tabs.devices.actionOption"
+                                selected-items="tabs.devices.selectedItems.length"
+                            ></span>
+                            <span class="p-tooltip__message" ng-if="!tabs.devices.selectedItems.length">Select devices below to perform an action.</span>
                         </span>
                     </li>
                 </ul>
-            </div>
-
-            <div class="page-header__controls page-header__controls--controllers u-no-margin--top" data-ng-show="currentpage === 'controllers'">
-                <div data-ng-if="!tabs.controllers.selectedItems.length">
-                    <button class="p-button--neutral u-no-margin--bottom"
-                        data-ng-click="tabs.controllers.addController = true"
-                        data-ng-if="!tabs.controllers.addController">Add rack controller</button>
-                </div>
-                <ul class="p-inline-list u-no-margin--top u-no-margin--bottom" data-ng-show="tabs.controllers.selectedItems.length">
+                <ul class="p-inline-list u-no-margin--bottom" ng-if="currentpage === 'controllers' && !tabs.controllers.actionOption && !tabs.controllers.addController">
                     <li class="p-inline-list__item">
-                        <a data-ng-click="showSelected('controllers')">{$ tabs.controllers.selectedItems.length $} selected&nbsp;</a>
+                        <button
+                            class="p-button--neutral u-no-margin--bottom"
+                            ng-click="tabs.controllers.addController = true"
+                            ng-disabled="tabs.controllers.selectedItems.length"
+                        >
+                            Add rack controller
+                        </button>
                     </li>
                     <li class="p-inline-list__item">
-                        <span
-                            data-selected-items="tabs.controllers.selectedItems.length"
-                            data-maas-cta="tabs.controllers.takeActionOptions"
-                            data-ng-click="updateAvailableActions('controllers')"
-                            data-ng-model="tabs.controllers.actionOption"
-                            data-ng-change="actionOptionSelected('controllers')">
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="page-header__controls u-no-margin--top u-float--right ng-hide" data-ng-show="currentpage === 'switches'">
-                <ul class="p-inline-list u-no-margin--top ng-hide" data-ng-show="tabs.switches.selectedItems.length">
-                    <li class="p-inline-list__item">
-                        <a data-ng-click="showSelected('switches')">{$ tabs.switches.selectedItems.length $} selected&nbsp;</a>
-                    </li>
-                    <li class="p-inline-list__item">
-                        <span
-                            data-selected-items="tabs.switches.selectedItems.length"
-                            data-maas-cta="tabs.switches.takeActionOptions"
-                            data-ng-click="updateAvailableActions('switches')"
-                            data-ng-model="tabs.switches.actionOption"
-                            data-ng-change="actionOptionSelected('switches')">
+                        <span class="p-tooltip--left">
+                            <span
+                                disabled="!tabs.controllers.selectedItems.length"
+                                maas-cta="tabs.controllers.takeActionOptions"
+                                ng-change="actionOptionSelected('controllers')"
+                                ng-click="updateAvailableActions('controllers')"
+                                ng-model="tabs.controllers.actionOption"
+                                selected-items="tabs.controllers.selectedItems.length"
+                            ></span>
+                            <span class="p-tooltip__message" ng-if="!tabs.controllers.selectedItems.length">Select controllers below to perform an action.</span>
                         </span>
                     </li>
                 </ul>
@@ -581,7 +553,9 @@
                 <tfoot>
                     <tr class="u-no-border--top">
                         <td>
-                            <button class="p-button--neutral" data-ng-click="addInterface()">+ Add another interface</button>
+                            <button class="p-button--neutral u-no-margin--bottom" data-ng-click="addInterface()">
+                                <i class="p-icon--plus"></i>&nbsp;Add another interface
+                            </button>
                         </td>
                     </tr>
                 </tfoot>
@@ -604,6 +578,9 @@
 
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !tabs.controllers.actionOption }">
         <div class="page-header__section col-12 ng-hide" data-ng-hide="isActionError('controllers') || hasActionsInProgress('controllers')">
+            <div class="row">
+                <hr />
+            </div>
             <div class="row" data-ng-if="tabs.controllers.actionOption.name === 'set-zone' || tabs.controllers.actionOption.name === 'test'">
                 <form class="p-form p-form--inline">
                     <div class="ng-hide" data-ng-show="tabs.controllers.actionOption.name === 'set-zone'">
@@ -859,7 +836,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     <th class="p-table__cell">
                         <span class="u-float--left">
                             <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('devices')" data-ng-checked="tabs.devices.allViewableChecked" id="check-all-devices" data-ng-disabled="hasActionsInProgress('devices')" />
-                            <label for="check-all-devices" class="p-form__label"></label>
+                            <label for="check-all-devices" class="p-form__label is-inline-label"></label>
                         </span>
                         <span role="columnheader" data-ng-click="sortTable('fqdn', 'devices')" data-ng-class="{'is-sorted': tabs.devices.predicate === 'fqdn', 'sort-asc': tabs.devices.reverse === false, 'sort-desc': tabs.devices.reverse === true}">
                             <abbr>FQDN</abbr>
@@ -880,7 +857,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                     <td class="p-table__cell" aria-label="FQDN">
                         <span class="u-float--left">
                             <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(device, 'devices')" data-ng-checked="device.$selected" id="{$ device.fqdn $}" data-ng-disabled="hasActionsInProgress('devices')"/>
-                            <label for="{$ device.fqdn $}" class="p-form__label"></label>
+                            <label for="{$ device.fqdn $}" class="p-form__label is-inline-label"></label>
                         </span>
                         <a class="p-domain-name" href="#/{$ device.link_type $}/{$ device.system_id $}" title="{$ device.fqdn $}">
                             <span class="p-domain-name__host">{$ device.hostname $}</span><span class="p-domain-name__tld">.{$ device.domain.name $}</span>
@@ -1019,7 +996,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         <th class="p-table__cell">
                             <span class="u-float--left">
                                 <input type="checkbox" class="u-float--none" data-ng-click="toggleCheckAll('controllers')" data-ng-checked="tabs.controllers.allViewableChecked" id="check-all-controllers" data-ng-disabled="hasActionsInProgress('controllers')" />
-                                <label for="check-all-controllers" class="p-form__label"></label>
+                                <label for="check-all-controllers" class="p-form__label is-inline-label"></label>
                             </span>
                             <span role="columnheader" data-ng-click="sortTable('fqdn', 'controllers')" data-ng-class="{'is-sorted': tabs.controllers.predicate === 'fqdn', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}">
                                 Name
@@ -1041,7 +1018,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                         <td class="p-table__cell" aria-label="FQDN">
                             <span class="u-float--left">
                                 <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(controller, 'controllers')" data-ng-checked="controller.$selected" id="{$ controller.fqdn $}" data-ng-disabled="hasActionsInProgress('controllers')"/>
-                                <label for="{$ controller.fqdn $}" class="p-form__label"></label>
+                                <label for="{$ controller.fqdn $}" class="p-form__label is-inline-label"></label>
                             </span>
                             <a class="p-domain-name" href="#/{$ controller.link_type $}/{$ controller.system_id $}" title="{$ controller.fqdn $}">
                                 <span class="p-domain-name__host">{$ controller.hostname $}</span><span class="p-domain-name__tld">.{$ controller.domain.name $}</span>

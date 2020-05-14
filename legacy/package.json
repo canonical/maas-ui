@@ -83,7 +83,7 @@
     "macaroon-bakery": "0.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "3.2.0",
-    "vanilla-framework": "2.0.1"
+    "vanilla-framework": "2.10.1"
   },
   "npmpackagejsonlint": {
     "rules": {
