@@ -53,3 +53,26 @@ const Root = () => {
 export default Root;
 
 serviceWorker.unregister();
+
+window.addEventListener("popstate", (evt) => {
+  if (evt.singleSpa) {
+    // not a maas-ui-legacy route
+    console.log(window.location.pathname.split("/"));
+    const reactRoute =
+      window.location.pathname.split("/")[2] ===
+      process.env.REACT_APP_REACT_BASENAME.substr(1);
+    console.log("reactROute", reactRoute);
+    if (reactRoute) {
+      console.log(window.location.pathname);
+      console.log(history.location.pathname);
+      const newPath = window.location.pathname.split("/").slice(3)[0];
+      const lastPath = history.location.pathname.split("/")[1];
+      console.log("new path", newPath);
+      console.log("last path", lastPath);
+      if (newPath !== lastPath) {
+        console.log("updating history to", `/${newPath}`);
+        history.push(`/${newPath}`);
+      }
+    }
+  }
+});
