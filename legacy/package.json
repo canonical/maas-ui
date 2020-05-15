@@ -24,7 +24,7 @@
     "prettier": "prettier --write 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "prettier-check": "prettier --check 'src/**/*.{js,scss}' '!**/build.scss' '!**/*-min.js'",
     "prepublishOnly": "yarn build",
-    "start": "NODE_ENV=development webpack-dev-server --open --config webpack.dev.js --port 8402 --host 0.0.0.0 --disable-host-check",
+    "start": "NODE_ENV=development webpack-dev-server --config webpack.dev.js --port 8402 --host 0.0.0.0 --disable-host-check",
     "test": "jest",
     "watch": "NODE_ENV=development webpack --watch"
   },

@@ -23,17 +23,13 @@ function showExcept(routes) {
 registerApplication({
   name: "legacy",
   app: () => import("@maas-ui/maas-ui-legacy"),
-  // TODO: make this use the env vars:
-  // activeWhen: `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`,
-  activeWhen: "/MAAS/#",
+  activeWhen: `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`,
 });
 
 registerApplication({
   name: "ui",
   app: () => import("@maas-ui/maas-ui"),
-  // TODO: make this use the env vars:
-  // activeWhen: `${process.env.BASENAME}${process.env.REACT_BASENAME}`,
-  activeWhen: "/MAAS/r",
+  activeWhen: `${process.env.BASENAME}${process.env.REACT_BASENAME}`,
 });
 
 start();
