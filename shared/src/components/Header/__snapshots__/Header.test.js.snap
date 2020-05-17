@@ -93,6 +93,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/machines"
+              onClick={[Function]}
             >
               Machines
             </a>
@@ -104,6 +105,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/devices"
+              onClick={[Function]}
             >
               Devices
             </a>
@@ -115,6 +117,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/controllers"
+              onClick={[Function]}
             >
               Controllers
             </a>
@@ -126,6 +129,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/kvm"
+              onClick={[Function]}
             >
               KVM
             </a>
@@ -137,6 +141,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/images"
+              onClick={[Function]}
             >
               Images
             </a>
@@ -148,6 +153,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/domains"
+              onClick={[Function]}
             >
               DNS
             </a>
@@ -159,6 +165,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/zones"
+              onClick={[Function]}
             >
               AZs
             </a>
@@ -170,6 +177,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/MAAS/#/networks?by=fabric"
+              onClick={[Function]}
             >
               Subnets
             </a>
@@ -181,6 +189,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/settings"
+              onClick={[Function]}
             >
               Settings
             </a>
@@ -196,6 +205,7 @@ exports[`Header renders 1`] = `
           >
             <a
               href="/account/prefs"
+              onClick={[Function]}
             >
               koala
             </a>
