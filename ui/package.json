@@ -47,7 +47,6 @@
     "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-app-rewired start",
     "serve": "yarn run start",
     "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-app-rewired build --profile && rm -rf dist && mv build dist",
-    "postbuild-disabled": "mkdir -p dist && tar -C build -czvf dist/maas-ui-v$npm_package_version.tar.gz .",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
