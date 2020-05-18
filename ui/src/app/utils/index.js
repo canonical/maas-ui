@@ -1,6 +1,8 @@
 export { capitaliseFirst } from "./capitaliseFirst";
 export { formatBytes } from "./formatBytes";
 export { formatErrors } from "./formatErrors";
+export { formatMacAddress } from "./formatMacAddress";
+export { formatPowerParameters } from "./formatPowerParameters";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { getMachineValue } from "./search";
 export { generateLegacyURL } from "./generateLegacyURL";
@@ -8,4 +10,3 @@ export { groupAsMap } from "./groupAsMap";
 export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
 export { simpleSortByKey } from "./simpleSortByKey";
-export { formatPowerParameters } from "./formatPowerParameters";
