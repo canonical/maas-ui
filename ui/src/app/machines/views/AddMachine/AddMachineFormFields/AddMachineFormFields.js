@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import { formatMacAddress } from "app/utils";
 import {
   domain as domainSelectors,
   general as generalSelectors,
@@ -23,7 +24,7 @@ export const AddMachineFormFields = ({ saved }) => {
   const [extraMACs, setExtraMACs] = useState([]);
 
   const formikProps = useFormikContext();
-  const { setFieldValue, values } = formikProps;
+  const { errors, setFieldValue, values } = formikProps;
 
   useEffect(() => {
     if (saved) {
@@ -128,6 +129,9 @@ export const AddMachineFormFields = ({ saved }) => {
           label="MAC address"
           maxLength="17"
           name="pxe_mac"
+          onChange={(e) => {
+            setFieldValue("pxe_mac", formatMacAddress(e.target.value));
+          }}
           placeholder="00:00:00:00:00:00"
           required
           type="text"
@@ -139,10 +143,11 @@ export const AddMachineFormFields = ({ saved }) => {
             key={`extra-macs-${i}`}
           >
             <Input
+              error={errors?.extra_macs && errors.extra_macs[i]}
               maxLength="17"
               onChange={(e) => {
                 const newExtraMACs = [...extraMACs];
-                newExtraMACs[i] = e.target.value;
+                newExtraMACs[i] = formatMacAddress(e.target.value);
                 setExtraMACs(newExtraMACs);
                 setFieldValue("extra_macs", newExtraMACs);
               }}
