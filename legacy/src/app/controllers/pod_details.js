@@ -74,6 +74,8 @@ function PodDetailsController(
       sentence: "compose"
     },
     obj: {
+      cores: "",
+      memory: "",
       storage: [
         {
           type: "local",
@@ -91,6 +93,7 @@ function PodDetailsController(
   $scope.domains = DomainsManager.getItems();
   $scope.zones = ZonesManager.getItems();
   $scope.pools = ResourcePoolsManager.getItems();
+  $scope.availableWithOvercommit = PodsManager.availableWithOvercommit;
   $scope.section = {
     area: "summary"
   };
@@ -263,25 +266,60 @@ function PodDetailsController(
     iface.showOptions = true;
   };
 
-  $scope.validateMachineCompose = function() {
+  $scope.validateMachineCompose = () => {
+    const { availableWithOvercommit, compose, pod } = $scope;
+
     if ($scope.compose.obj.requests.length < 1) {
       $scope.updateRequests();
     }
 
-    const requests = $scope.compose.obj.requests;
-    const hostname = $scope.compose.obj.hostname;
-    let valid = true;
-    if (angular.isDefined(hostname) && hostname !== "") {
-      valid = ValidationService.validateHostname(hostname);
+    // Validate hostname
+    const hostname = compose.obj.hostname;
+    if (hostname && !ValidationService.validateHostname(hostname)) {
+      return false;
     }
 
-    requests.forEach(function(request) {
-      if (request.size > request.available || request.size === "") {
-        valid = false;
+    // Validate storage pool requests
+    const requests = compose.obj.requests;
+    for (let i = 0; i < requests.length; i++) {
+      if (!requests[i].size || requests[i].size > requests[i].available) {
+        return false;
       }
-    });
+    }
 
-    return valid;
+    // Validate available cores
+    const availableCores = availableWithOvercommit(
+      pod.total.cores,
+      pod.used.cores,
+      pod.cpu_over_commit_ratio,
+      1
+    );
+    if (
+      compose.obj.cores &&
+      (isNaN(compose.obj.cores) ||
+        Number(compose.obj.cores) <= 0 ||
+        Number(compose.obj.cores) > availableCores)
+    ) {
+      return false;
+    }
+
+    // Validate available memory
+    const availableMemory = availableWithOvercommit(
+      pod.total.memory_gb,
+      pod.used.memory_gb,
+      pod.memory_over_commit_ratio,
+      1
+    );
+    if (
+      compose.obj.memory &&
+      (isNaN(compose.obj.memory) ||
+        Number(compose.obj.memory) <= 0 ||
+        Number(compose.obj.memory / 1024) > availableMemory)
+    ) {
+      return false;
+    }
+
+    return true;
   };
 
   $scope.updateRequests = function() {
@@ -297,7 +335,7 @@ function PodDetailsController(
         requests.push({
           poolId: storage.pool.id,
           size: storage.size,
-          available: Math.round(storage.pool.available / 1000 / 1000 / 1000)
+          available: storage.pool.available / Math.pow(1000, 3)
         });
       }
     });
@@ -362,9 +400,6 @@ function PodDetailsController(
     $scope.action.option = $scope.compose.action;
     $scope.updateRequests();
   };
-
-  // Calculate the available cores with overcommit applied
-  $scope.availableWithOvercommit = PodsManager.availableWithOvercommit;
 
   // Strip trailing zero
   $scope.stripTrailingZero = function(value) {
@@ -437,6 +472,8 @@ function PodDetailsController(
   // Called to cancel composition.
   $scope.cancelCompose = function() {
     $scope.compose.obj = {
+      cores: "",
+      memory: "",
       storage: [
         {
           type: "local",

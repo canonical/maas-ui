@@ -28,11 +28,13 @@
             </div>
             <div class="col-medium-2 col-4">
                 <div class="page-header__controls" data-ng-if="canEdit() && !action.option">
-                    <div data-maas-cta="action.options"
-                        data-ng-click="updateAvailableActions('pods')"
-                        data-ng-model="action.option"
-                        data-ng-change="actionOptionChanged()">
-                    </div>
+                    <div
+                        maas-cta="action.options"
+                        ng-change="actionOptionChanged()"
+                        ng-click="updateAvailableActions('pods')"
+                        ng-if="!action.option"
+                        ng-model="action.option"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -42,6 +44,7 @@
                 <div class="row">
                     <div class="col-12">
                         <hr />
+                        <div maas-obj-hide-saving><maas-obj-errors></maas-obj-errors></div>
                         <h3 class="p-heading--four">Compose machine</h3>
                     </div>
                 </div>
@@ -58,15 +61,43 @@
                         <maas-obj-field type="options" key="zone"
                             label="Zone" subtle="false" placeholder="Choose a zone"
                             options="zone.id as zone.name for zone in zones"
-                            label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4" disabled></maas-obj-field>
+                            label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
                         <maas-obj-field type="options" key="pool" label="Pool" subtle="false" placeholder="Choose a pool"
                             options="pool.id as pool.name for pool in pools" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
                     </div>
                     <div class="col-6">
                         <maas-obj-field type="options" key="architecture" label="Architecture" subtle="false" placeholder="Any architecture" placeholder-enabled="true"
                             options="arch for arch in pod.architectures" data-ng-if="pod.architectures.length > 1" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
-                        <maas-obj-field type="text" key="cores" label="Cores" subtle="false" placeholder="Number of cores (optional)" subtle-text="{$ availableWithOvercommit(pod.total.cores, pod.used.cores, pod.cpu_over_commit_ratio, 1) $} cores available" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
-                        <maas-obj-field type="text" key="memory" label="RAM (MB)" subtle="false" placeholder="Memory amount (optional)" subtle-text="{$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GB available" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
+                        <div class="p-form__group row">
+                            <label for="cores" class="p-form__label col-2">Cores</label>
+                            <div class="p-form__control col-4">
+                                <input
+                                    id="cores"
+                                    placeholder="Number of cores (optional)"
+                                    name="cores"
+                                    ng-model="compose.obj.cores"
+                                    type="text"
+                                />
+                                <p class="p-form-help-text">
+                                    {$ availableWithOvercommit(pod.total.cores, pod.used.cores, pod.cpu_over_commit_ratio, 1) $} cores available
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-form__group row">
+                            <label for="cores" class="p-form__label col-2">RAM (MiB)</label>
+                            <div class="p-form__control col-4">
+                                <input
+                                    id="memory"
+                                    placeholder="Memory amount (optional)"
+                                    name="memory"
+                                    ng-model="compose.obj.memory"
+                                    type="text"
+                                />
+                                <p class="p-form-help-text">
+                                    {$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GiB available
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="p-strip">
@@ -363,7 +394,6 @@
                 <div class="row">
                     <div class="col-12">
                         <hr>
-                        <div maas-obj-hide-saving><maas-obj-errors></maas-obj-errors></div>
                         <div class="u-align--right" maas-obj-hide-saving>
                             <button class="p-button--base" type="button" data-ng-click="cancelCompose()">Cancel</button>
                             <button class="p-button--positive" maas-obj-save ng-disabled="!validateMachineCompose()" data-ng-click="sendAnalyticsEvent('KVM details', 'Submit form', 'KVM compose')">Compose machine</button>

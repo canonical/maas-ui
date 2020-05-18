@@ -61,7 +61,17 @@ describe("PodDetailsController", function() {
       default_pool: 0,
       $selected: false,
       capabilities: [],
-      permissions: []
+      permissions: [],
+      cpu_over_commit_ratio: 1,
+      memory_over_commit_ratio: 1,
+      total: {
+        cores: 8,
+        memory_gb: 4,
+      },
+      used: {
+        cores: 0,
+        memory_gb: 0,
+      },
     };
     PodsManager._items.push(pod);
     return pod;
@@ -160,6 +170,8 @@ describe("PodDetailsController", function() {
         sentence: "compose"
       },
       obj: {
+        cores: "",
+        memory: "",
         storage: [
           {
             type: "local",
@@ -559,29 +571,89 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("validateMachineCompose", function() {
-    it("returns true for empty string", function() {
+  describe("validateMachineCompose", () => {
+    it("correctly validates hostname", () => {
       makeController();
+      $scope.pod = makePod();
+      $scope.compose.obj.hostname = "!@#";
+      expect($scope.validateMachineCompose()).toBe(false);
       $scope.compose.obj.hostname = "";
       expect($scope.validateMachineCompose()).toBe(true);
-    });
-
-    it("returns true for undefined", function() {
-      makeController();
-      $scope.compose.obj.hostname = undefined;
+      $scope.compose.obj.hostname = "hostname123";
       expect($scope.validateMachineCompose()).toBe(true);
     });
 
-    it("returns true for valid hostname", function() {
+    it("correctly validates storage requests", () => {
       makeController();
-      $scope.compose.obj.hostname = "testing-hostname";
-      expect($scope.validateMachineCompose()).toBe(true);
-    });
-
-    it("returns false for invalid hostname", function() {
-      makeController();
-      $scope.compose.obj.hostname = "testing_hostname";
+      $scope.pod = makePod();
+      $scope.compose.obj.requests = [{ size: 8, available: 4 }];
       expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.requests = [{ size: 0, available: 8 }];
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.requests = [{ size: 8, available: 16 }];
+      expect($scope.validateMachineCompose()).toBe(true);
+    });
+
+    it("correctly validates cpu request without overcommit", () => {
+      makeController();
+      $scope.pod = makePod();
+      $scope.pod.total.cores = 8;
+      $scope.compose.obj.cores = 10;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.cores = -1;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.cores = "4 cores please";
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.cores = "";
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.cores = 4;
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.cores = 8;
+      expect($scope.validateMachineCompose()).toBe(true);
+    });
+
+    it("correctly validates cpu request with overcommit", () => {
+      makeController();
+      $scope.pod = makePod();
+      $scope.pod.total.cores = 8;
+      $scope.pod.cpu_over_commit_ratio = 2.0;
+      $scope.compose.obj.cores = 20;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.cores = 8;
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.cores = 16;
+      expect($scope.validateMachineCompose()).toBe(true);
+    });
+
+    it("correctly validates memory request without overcommit", () => {
+      makeController();
+      $scope.pod = makePod();
+      $scope.pod.total.memory_gb = 8;
+      $scope.compose.obj.memory = 9000;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.memory = -1;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.memory = "4 GiB";
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.memory = "";
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.memory = 2048;
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.memory = 8192;
+      expect($scope.validateMachineCompose()).toBe(true);
+    });
+
+    it("correctly validates memory request with overcommit", () => {
+      makeController();
+      $scope.pod = makePod();
+      $scope.pod.total.memory_gb = 8;
+      $scope.pod.memory_over_commit_ratio = 2.0;
+      $scope.compose.obj.memory = 18000;
+      expect($scope.validateMachineCompose()).toBe(false);
+      $scope.compose.obj.memory = 8192;
+      expect($scope.validateMachineCompose()).toBe(true);
+      $scope.compose.obj.memory = 16384;
+      expect($scope.validateMachineCompose()).toBe(true);
     });
   });
 
@@ -859,6 +931,8 @@ describe("PodDetailsController", function() {
       $scope.cancelCompose();
       expect($scope.compose.obj).not.toBe(otherObj);
       expect($scope.compose.obj).toEqual({
+        cores: "",
+        memory: "",
         storage: [
           {
             type: "local",
