@@ -82,16 +82,8 @@
 @include ScriptsUpload;
 @include UsersList;
 
-html {
-  height: 100%;
-}
-
-body {
+#maas-ui {
   background-color: $color-light;
-  min-height: 100%;
-}
-
-#root {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;

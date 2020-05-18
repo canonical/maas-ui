@@ -3,6 +3,7 @@
  *
  * Unit tests for external login directive.
  */
+import angular from "angular";
 
 describe("maasExternalLogin", function() {
   var $rootScope,

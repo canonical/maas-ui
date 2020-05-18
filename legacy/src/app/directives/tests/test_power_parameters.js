@@ -3,6 +3,7 @@
  *
  * Unit tests for power parameters directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

@@ -3,6 +3,7 @@
  *
  * Unit tests for ImagesController.
  */
+import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 

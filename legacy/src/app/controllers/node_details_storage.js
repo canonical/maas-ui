@@ -3,6 +3,7 @@
  *
  * MAAS Node Storage Controller
  */
+import angular from "angular";
 
 // Filter that is specific to the NodeStorageController. Remove the available
 // disks from the list if being used in the availableNew.

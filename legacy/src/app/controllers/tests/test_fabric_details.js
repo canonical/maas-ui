@@ -3,6 +3,7 @@
  *
  * Unit tests for FabricsListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -22,14 +23,14 @@ describe("FabricDetailsController", function() {
   }
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $location, $scope, $q, $routeParams;
+  var $controller, $rootScope, $location, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load any injected managers and services.
@@ -71,7 +72,7 @@ describe("FabricDetailsController", function() {
     var controller = $controller("FabricDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       FabricsManager: FabricsManager,
       VLANsManager: VLANsManager,
@@ -93,7 +94,7 @@ describe("FabricDetailsController", function() {
     );
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.fabric_id = fabric.id;
+    $stateParams.fabric_id = fabric.id;
 
     $rootScope.$digest();
     defer.resolve();
@@ -116,7 +117,7 @@ describe("FabricDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.fabric_id = "xyzzy";
+    $stateParams.fabric_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -132,7 +133,7 @@ describe("FabricDetailsController", function() {
     var defer = $q.defer();
     makeController(defer);
     FabricsManager._activeItem = fabric;
-    $routeParams.fabric_id = fabric.id;
+    $stateParams.fabric_id = fabric.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -146,7 +147,7 @@ describe("FabricDetailsController", function() {
     spyOn(FabricsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.fabric_id = fabric.id;
+    $stateParams.fabric_id = fabric.id;
 
     defer.resolve();
     $rootScope.$digest();

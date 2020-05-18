@@ -3,6 +3,7 @@
  *
  * Unit tests for ZonesListController.
  */
+import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 
@@ -11,13 +12,13 @@ describe("ZonesListController", function() {
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $scope, $q, $routeParams;
+  var $controller, $rootScope, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load the managers and services.
@@ -48,7 +49,7 @@ describe("ZonesListController", function() {
     var controller = $controller("ZonesListController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       ZonesManager: ZonesManager,
       ManagerHelperService: ManagerHelperService
     });

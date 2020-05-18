@@ -12,7 +12,7 @@ import { general as generalSelectors } from "app/base/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";
-import { Footer, Header } from "@canonical/maas-ui-shared";
+import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
 import { useLocation, useRouter } from "app/base/hooks";
@@ -40,6 +40,31 @@ export const App = () => {
   const dispatch = useDispatch();
   const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
+
+  useEffect(() => {
+    // window.history.pushState events from *outside* of react
+    // are not observeable by react-router, which watches the history
+    // object for changes. To compensate for this, we manually push a route
+    // to history when SingleSPA mounts the react app, otherwise react just
+    // renders the last view when the app was unmounted.
+    if (history) {
+      window.addEventListener("popstate", (evt) => {
+        if (evt.singleSpa) {
+          const reactRoute =
+            window.location.pathname.split("/")[2] ===
+            process.env.REACT_APP_REACT_BASENAME.substr(1);
+          if (reactRoute) {
+            // get subPath e.g. 'settings' in '/MAAS/r/settings/configuration'
+            const newSubpath = window.location.pathname.split("/").slice(3)[0];
+            const lastSubpath = history.location.pathname.split("/")[1];
+            if (newSubpath !== lastSubpath) {
+              history.replace(`/${newSubpath}`);
+            }
+          }
+        }
+      });
+    }
+  }, [history]);
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -109,7 +134,7 @@ export const App = () => {
   }
 
   return (
-    <>
+    <div id="maas-ui">
       <Header
         authUser={authUser}
         basename={process.env.REACT_APP_BASENAME}
@@ -133,7 +158,7 @@ export const App = () => {
       />
       {content}
       {maasName && version && <Footer maasName={maasName} version={version} />}
-    </>
+    </div>
   );
 };
 

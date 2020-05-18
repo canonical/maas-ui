@@ -3,6 +3,7 @@
  *
  * Unit tests for controller status directive.
  */
+import angular from "angular";
 
 import { makeName, pickItem } from "testing/utils";
 

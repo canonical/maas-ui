@@ -3,6 +3,7 @@
  *
  * MAAS Subnet Details Controller
  */
+import angular from "angular";
 
 export function filterSource() {
   return function(subnets, source) {
@@ -20,7 +21,7 @@ export function filterSource() {
 export function SubnetDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   ConfigsManager,
   SubnetsManager,
@@ -441,7 +442,7 @@ export function SubnetDetailsController(
     // this subnet set to active. Only call setActiveItem if not
     // already the activeItem.
     var activeSubnet = SubnetsManager.getActiveItem();
-    var requestedSubnet = parseInt($routeParams.subnet_id, 10);
+    var requestedSubnet = parseInt($stateParams.subnet_id, 10);
     if (isNaN(requestedSubnet)) {
       ErrorService.raiseError("Invalid subnet identifier.");
     } else if (

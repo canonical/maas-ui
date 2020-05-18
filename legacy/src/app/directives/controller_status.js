@@ -3,6 +3,7 @@
  *
  * Controller status icon. Used in the controllers listing on the nodes page.
  */
+import angular from "angular";
 
 const controllerStatusTmpl = [
   "<span>",

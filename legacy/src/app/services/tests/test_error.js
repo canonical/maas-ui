@@ -3,8 +3,10 @@
  *
  * Unit tests for ErrorService.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
+
 describe("ErrorService", function() {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));

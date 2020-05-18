@@ -3,6 +3,7 @@
  *
  * Unit tests for DiscoveriesManager.
  */
+import angular from "angular";
 
 describe("DiscoveriesManager", function() {
   // Load the MAAS module.

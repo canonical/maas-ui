@@ -7,6 +7,7 @@
  * RegionConnection to load the users, update the users, and listen for
  * notification events about users.
  */
+import angular from "angular";
 
 function UsersManager(Manager, RegionConnection, ErrorService) {
   function UsersManager() {

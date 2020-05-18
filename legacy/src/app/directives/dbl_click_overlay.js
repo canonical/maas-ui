@@ -8,6 +8,7 @@
  * receive no click events. This overlays the element with another element
  * that will still receive click events.
  */
+import angular from "angular";
 
 const dblClickOverlayTmpl = [
   '<div class="maas-dbl-overlay">',

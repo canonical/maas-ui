@@ -3,12 +3,13 @@
  *
  * MAAS Zone Details Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function ZoneDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   ZonesManager,
   UsersManager,
@@ -105,7 +106,7 @@ function ZoneDetailsController(
       // this zone set to active. Only call setActiveItem if not
       // already the activeItem.
       var activeZone = ZonesManager.getActiveItem();
-      var requestedZone = parseInt($routeParams.zone_id, 10);
+      var requestedZone = parseInt($stateParams.zone_id, 10);
       if (isNaN(requestedZone)) {
         ErrorService.raiseError("Invalid zone identifier.");
       } else if (

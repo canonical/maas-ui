@@ -3,6 +3,7 @@
  *
  * Unit tests for RegionConnection.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";

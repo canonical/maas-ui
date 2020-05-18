@@ -3,6 +3,7 @@
  *
  * Unit tests for SubnetsListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -51,14 +52,14 @@ describe("SubnetDetailsController", function() {
   }
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $location, $scope, $q, $routeParams;
+  var $controller, $rootScope, $location, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
     $location = $injector.get("$filter");
   }));
 
@@ -107,7 +108,7 @@ describe("SubnetDetailsController", function() {
     var controller = $controller("SubnetDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       ConfigsManager: ConfigsManager,
       SubnetsManager: SubnetsManager,
@@ -134,7 +135,7 @@ describe("SubnetDetailsController", function() {
     });
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.subnet_id = subnet.id;
+    $stateParams.subnet_id = subnet.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -159,7 +160,7 @@ describe("SubnetDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.subnet_id = "xyzzy";
+    $stateParams.subnet_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -179,7 +180,7 @@ describe("SubnetDetailsController", function() {
     var defer = $q.defer();
     makeController(defer);
     SubnetsManager._activeItem = subnet;
-    $routeParams.subnet_id = subnet.id;
+    $stateParams.subnet_id = subnet.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -197,7 +198,7 @@ describe("SubnetDetailsController", function() {
     });
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.subnet_id = subnet.id;
+    $stateParams.subnet_id = subnet.id;
 
     defer.resolve();
     $rootScope.$digest();

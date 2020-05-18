@@ -3,6 +3,7 @@
  *
  * MAAS Nodes Filter
  */
+import angular from "angular";
 
 /* @ngInject */
 function nodesFilter($filter, SearchService) {

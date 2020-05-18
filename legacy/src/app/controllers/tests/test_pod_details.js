@@ -3,6 +3,7 @@
  *
  * Unit tests for PodDetailsController.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -66,14 +67,14 @@ describe("PodDetailsController", function() {
     return pod;
   }
 
-  // Create the pod that will be used and set the routeParams.
-  var pod, $routeParams;
+  // Create the pod that will be used and set the stateParams.
+  var pod, $stateParams;
   beforeEach(function() {
     pod = makePod();
     const domain = { id: 0 };
     DomainsManager._items.push(domain);
     ZonesManager._items.push(domain);
-    $routeParams = {
+    $stateParams = {
       id: pod.id
     };
   });
@@ -96,7 +97,7 @@ describe("PodDetailsController", function() {
       $scope: $scope,
       $rootScope: $rootScope,
       $location: $location,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       PodsManager: PodsManager,
       UsersManager: UsersManager,
       DomainsManager: DomainsManager,

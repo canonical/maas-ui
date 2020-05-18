@@ -1,24 +1,43 @@
+<!-- Header strip -->
 <header class="p-strip--light is-shallow u-no-padding--bottom page-header" media-query="min-width: 769px">
     <div class="row">
-        <div class="col-small-2 col-medium-4 col-8">
-            <h1 class="page-header__title"><span ng-if="add.open">Add </span>{$ getPageHeading() $}</h1>
-            <p class="page-header__status u-no-margin--top" data-ng-show="loading"><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></p>
-        </div>
-        <div class="col-small-2 col-medium-2 col-4 u-align--right">
-            <div class="page-header__controls">
-                <ul class="p-inline-list u-no-margin--bottom" ng-if="!add.open">
-                    <li class="p-inline-list__item" ng-if="selectedItems.length">{$ selectedItems.length $} selected</li>
+        <div class="col-12">
+            <div class="u-flex--space-between">
+
+                <!-- Title + node count -->
+                <ul class="p-inline-list">
+                    <li class="p-inline-list__item p-heading--four">
+                        <span ng-if="add.open">Add </span>{$ getPageHeading() $}
+                    </li>
+                    <li class="p-inline-list__item" ng-if="loading">
+                        <span><i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
+                    </li>
+                    <li class="p-inline-list__item p-text--muted" ng-if="!loading && page !== 'rsd'">
+                        <span ng-if="!selectedItems.length">
+                            {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host available', 'other': 'VM hosts available'}"></ng-pluralize>
+                        </span>
+                        <span ng-if="selectedItems.length && selectedItems.length !== pods.length">
+                            {$ selectedItems.length $} of {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
+                        </span>
+                        <span ng-if="selectedItems.length && selectedItems.length === pods.length">
+                            {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
+                        </span>
+                    </li>
+                </ul>
+
+                <!-- Action buttons -->
+                <ul class="p-inline-list u-no-margin--bottom" ng-if="!add.open && !action.option">
                     <li class="p-inline-list__item" ng-if="canAddPod()">
                         <button
                             class="p-button--neutral u-no-margin--bottom"
                             ng-click="addPod()"
-                            ng-disabled="add.open || selectedItems.length"
+                            ng-disabled="selectedItems.length"
                             ng-if="canAddPod()"
                         >
                             Add {$ getPageHeading() $}
                         </button>
                     </li>
-                    <li class="p-inline-list__item" ng-if="showActions()">
+                    <li class="p-inline-list__item last-item" ng-if="showActions()">
                         <span class="p-tooltip--left">
                             <div
                                 disabled="!selectedItems.length"
@@ -27,14 +46,15 @@
                                 ng-model="action.option"
                                 selected-items="selectedItems.length"
                             ></div>
-                            <span class="p-tooltip__message" ng-if="!selectedItems.length">Select a KVM host to take action</span>
+                            <span class="p-tooltip__message" ng-if="!selectedItems.length && page !== 'rsd'">Select VM hosts below to perform an action.</span>
                         </span>
                     </li>
-                </div>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="row" data-ng-class="{ 'u-hide': !action.option }">
+    <div class="row" ng-if="action.option">
+        <hr />
         <div class="col-12 u-align--right" data-ng-if="!isActionErFror() && !hasActionsInProgress()">
             <form>
                 <p data-ng-if="hasActionsFailed()">
@@ -95,8 +115,8 @@
             </div>
         </div>
     </div>
-    <div data-ng-class="{ 'u-hide': !add.open }">
-        <hr style="margin-bottom: 1rem" />
+    <div class="row" ng-if="add.open">
+        <hr />
         <maas-obj-form obj="add.obj" manager="podManager" manager-method="createItem"
             save-on-blur="false" after-save="cancelAddPod" data-ng-if="add.open" class="p-form--stacked">
             <div class="row" ng-if="add.obj.type !== 'rsd'">
@@ -199,14 +219,15 @@
                         <th class="p-table__cell p-double-row">
                             <div class="p-double-row__checkbox" data-ng-if="!hideActions">
                                 <input
-                                id="check-all-pods"
-                                ng-checked="allViewableChecked"
-                                ng-click="toggleCheckAll()"
-                                ng-disabled="add.open || hasActionsInProgress()"
-                                ng-if="showActions()"
-                                type="checkbox"
+                                    id="check-all-pods"
+                                    ng-checked="allViewableChecked"
+                                    ng-click="toggleCheckAll()"
+                                    ng-disabled="add.open || hasActionsInProgress()"
+                                    ng-if="showActions()"
+                                    type="checkbox"
                                 />
                                 <label
+                                    class="is-table-header"
                                     for="check-all-pods"
                                     ng-if="showActions()"
                                 ></label>
@@ -268,7 +289,7 @@
                                     type="checkbox"
                                 />
                                 <label
-                                    class="p-table--pods-checkbox-label"
+                                    class="p-table--pods-checkbox-label is-inline-label"
                                     for="{$ pod.id $}"
                                 ></label>
                             </div>

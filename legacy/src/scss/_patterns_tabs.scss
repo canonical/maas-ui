@@ -61,6 +61,10 @@
         $base-font-sizes,
         base
       ); //XXX (2): restore font-size after removing white-space around inline-block items above
+
+      &::after {
+        content: none;
+      }
     }
 
     &__link {

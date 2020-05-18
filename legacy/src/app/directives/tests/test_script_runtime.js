@@ -3,6 +3,7 @@
  *
  * Unit tests for script runtime directive.
  */
+import angular from "angular";
 
 describe("maasScriptRunTime", function() {
   // Load the MAAS module.

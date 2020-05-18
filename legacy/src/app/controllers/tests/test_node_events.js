@@ -3,6 +3,7 @@
  *
  * Unit tests for NodeEventsController.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -62,11 +63,11 @@ describe("NodeEventsController", function() {
     };
   }
 
-  // Create the node that will be used and set the routeParams.
-  var node, $routeParams;
+  // Create the node that will be used and set the stateParams.
+  var node, $stateParams;
   beforeEach(function() {
     node = makeNode();
-    $routeParams = {
+    $stateParams = {
       system_id: node.system_id
     };
   });
@@ -87,7 +88,7 @@ describe("NodeEventsController", function() {
     return $controller("NodeEventsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       MachinesManager: MachinesManager,
       ControllersManager: ControllersManager,
       EventsManagerFactory: EventsManagerFactory,

@@ -7,6 +7,7 @@
  * notifications, await new, updated, and deleted notifications, and to
  * dismiss them.
  */
+import angular from "angular";
 
 function NotificationsManager(RegionConnection, Manager) {
   function NotificationsManager() {

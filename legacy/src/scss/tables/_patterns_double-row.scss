@@ -3,6 +3,7 @@
   $icon-space: map-get($icon-sizes, default) + $sph-inner--small;
 
   .p-double-row {
+    display: block;
     overflow: visible;
 
     %p-double-row__icon-container {

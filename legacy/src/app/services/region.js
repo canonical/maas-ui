@@ -6,6 +6,7 @@
  * Provides the websocket connection between the client and the MAAS regiond
  * service.
  */
+import angular from "angular";
 
 // Message types
 const MSG_TYPE = {
@@ -288,7 +289,7 @@ class RegionConnection {
     }
 
     // Append final '/' if missing from end of path.
-    if (path[path.length - 1] !== "/") {
+    if (path && path[path.length - 1] !== "/") {
       path += "/";
     }
 

@@ -3,6 +3,7 @@
  *
  * MAAS Intro Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function IntroUserController(

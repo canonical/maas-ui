@@ -3,6 +3,8 @@
  *
  * Pod parameters directive.
  */
+import angular from "angular";
+
 import podParametersTmpl from "../partials/directives/pod-parameters.html";
 
 /* @ngInject */

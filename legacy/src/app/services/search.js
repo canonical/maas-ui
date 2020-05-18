@@ -3,6 +3,7 @@
  *
  * MAAS Nodes Search Services
  */
+import angular from "angular";
 
 function SearchService() {
   // Holds an empty filter object.

@@ -7,6 +7,7 @@
  * RegionConnection to load the tags, update the tags, and listen for
  * notification events about tags.
  */
+import angular from "angular";
 
 function TagsManager(RegionConnection, Manager) {
   function TagsManager() {

@@ -3,6 +3,7 @@
  *
  * Unit tests for MAAS object form.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

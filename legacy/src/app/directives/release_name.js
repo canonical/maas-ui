@@ -5,6 +5,7 @@
  *
  * Converts the provided release name into the release title.
  */
+import angular from "angular";
 
 /* @ngInject */
 function maasReleaseName(GeneralManager) {

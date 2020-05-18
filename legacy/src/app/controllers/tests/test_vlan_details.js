@@ -3,6 +3,7 @@
  *
  * Unit tests for SubentsListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -128,7 +129,7 @@ describe("VLANDetailsController", function() {
   }));
 
   var vlan, fabric, fabric2, primaryController, secondaryController;
-  var subnet, $routeParams;
+  var subnet, $stateParams;
   beforeEach(function() {
     primaryController = makeRackController(1, "primary", "p1");
     secondaryController = makeRackController(2, "secondary", "p2");
@@ -139,7 +140,7 @@ describe("VLANDetailsController", function() {
     fabric2 = makeFabric(2);
     makeSpace();
     subnet = makeSubnet();
-    $routeParams = {
+    $stateParams = {
       vlan_id: vlan.id
     };
   });
@@ -156,7 +157,7 @@ describe("VLANDetailsController", function() {
     var controller = $controller("VLANDetailsController as vlanDetails", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $filter: $filter,
       $location: $location,
       VLANsManager: VLANsManager,
@@ -213,7 +214,7 @@ describe("VLANDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.vlan_id = "xyzzy";
+    $stateParams.vlan_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -229,7 +230,7 @@ describe("VLANDetailsController", function() {
     var defer = $q.defer();
     var controller = makeController(defer);
     VLANsManager._activeItem = vlan;
-    $routeParams.vlan_id = vlan.id;
+    $stateParams.vlan_id = vlan.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -243,7 +244,7 @@ describe("VLANDetailsController", function() {
     spyOn(VLANsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.vlan_id = vlan.id;
+    $stateParams.vlan_id = vlan.id;
 
     defer.resolve();
     $rootScope.$digest();

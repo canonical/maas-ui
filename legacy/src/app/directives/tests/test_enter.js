@@ -3,6 +3,7 @@
  *
  * Unit tests for enter directive.
  */
+import angular from "angular";
 
 describe("maasEnter", function() {
   // Load the MAAS module.

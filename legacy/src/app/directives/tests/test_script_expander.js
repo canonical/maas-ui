@@ -3,6 +3,7 @@
  *
  * Unit tests for script expander.
  */
+import angular from "angular";
 
 describe("pScriptExpander", function() {
   // Load the MAAS module.

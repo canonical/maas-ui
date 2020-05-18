@@ -1,17 +1,20 @@
 {
-  "name": "@canonical/maas-ui-proxy",
+  "name": "@maas-ui/maas-ui-proxy",
   "private": true,
   "version": "0.1.0",
   "scripts": {
     "clean": "rm -rf node_modules",
-    "cypress-ci": "start-server-and-test start '8400|8401|8402' cypress-run",
+    "cypress-ci": "start-server-and-test serve-apps '8401|8402' serve-base '8400|8404' cypress-run",
     "cypress-open": "yarn cypress open",
     "cypress-run": "yarn cypress run",
     "lint": "npmPkgJsonLint .",
-    "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
-    "serve-legacy": "cd ../legacy && yarn run start",
+    "serve-apps": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn watch-shared\"",
+    "serve-base": "wait-on http://0.0.0.0:8401 && wait-on http://0.0.0.0:8402 && concurrently \"yarn serve-root\" \"yarn serve-proxy\"",
     "serve-proxy": "node ./index.js",
-    "start": "concurrently \"yarn serve-ui\" \"yarn serve-legacy\" \"yarn serve-proxy\" \"yarn watch-shared\"",
+    "serve-legacy": "cd ../legacy && yarn run start",
+    "serve-root": "cd ../root && yarn start",
+    "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
+    "start": "concurrently \"yarn serve-apps\" \"yarn serve-base\"",
     "watch-shared": "cd ../shared && yarn watch"
   },
   "devDependencies": {
@@ -20,7 +23,8 @@
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.3",
     "npm-package-json-lint": "5.1.0",
-    "start-server-and-test": "1.11.0"
+    "start-server-and-test": "1.11.0",
+    "wait-on": "5.0.0"
   },
   "npmpackagejsonlint": {
     "rules": {

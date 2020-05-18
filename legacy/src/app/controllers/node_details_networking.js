@@ -1,3 +1,5 @@
+import angular from "angular";
+
 import { HardwareType } from "../enum";
 
 /* Copyright 2015-2018 Canonical Ltd.  This software is licensed under the
@@ -224,7 +226,7 @@ export function NodeNetworkingController(
   JSONService,
   DHCPSnippetsManager,
   $log,
-  $routeParams
+  $stateParams
 ) {
   // Different interface types.
   var INTERFACE_TYPE = {
@@ -293,7 +295,7 @@ export function NodeNetworkingController(
   ];
 
   $scope.networkSection = {
-    area: angular.isString($routeParams.area) ? $routeParams.area : "summary"
+    area: angular.isString($stateParams.area) ? $stateParams.area : "summary"
   };
 
   // Set the initial values for this scope.

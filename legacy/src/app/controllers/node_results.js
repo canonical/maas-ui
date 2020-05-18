@@ -1,15 +1,16 @@
-import { ScriptStatus } from "../enum";
-
 /* Copyright 2017-2018 Canonical Ltd.  This software is licensed under the
  * GNU Affero General Public License version 3 (see the file LICENSE).
  *
  * MAAS Node Results Controller
  */
+import angular from "angular";
+
+import { ScriptStatus } from "../enum";
 
 /* @ngInject */
 function NodeResultsController(
   $scope,
-  $routeParams,
+  $stateParams,
   $location,
   MachinesManager,
   ControllersManager,
@@ -124,11 +125,11 @@ function NodeResultsController(
       var activeNode = $scope.nodesManager.getActiveItem();
       if (
         angular.isObject(activeNode) &&
-        activeNode.system_id === $routeParams.system_id
+        activeNode.system_id === $stateParams.system_id
       ) {
         nodeLoaded(activeNode);
       } else {
-        $scope.nodesManager.setActiveItem($routeParams.system_id).then(
+        $scope.nodesManager.setActiveItem($stateParams.system_id).then(
           function(node) {
             nodeLoaded(node);
           },

@@ -3,12 +3,13 @@
  *
  * MAAS Node Events Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NodeEventsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   MachinesManager,
   ControllersManager,
@@ -81,11 +82,11 @@ function NodeEventsController(
       var activeNode = $scope.nodesManager.getActiveItem();
       if (
         angular.isObject(activeNode) &&
-        activeNode.system_id === $routeParams.system_id
+        activeNode.system_id === $stateParams.system_id
       ) {
         nodeLoaded(activeNode);
       } else {
-        $scope.nodesManager.setActiveItem($routeParams.system_id).then(
+        $scope.nodesManager.setActiveItem($stateParams.system_id).then(
           function(node) {
             nodeLoaded(node);
 

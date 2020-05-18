@@ -3,6 +3,7 @@
  *
  * Unit tests for DHCPSnippetsManager.
  */
+import angular from "angular";
 
 import { makeFakeResponse, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";

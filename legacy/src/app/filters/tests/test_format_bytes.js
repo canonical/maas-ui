@@ -3,6 +3,7 @@
  *
  * Unit tests for formatBytes.
  */
+import angular from "angular";
 
 describe("formatBytes", function() {
   // Load the MAAS module.

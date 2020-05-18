@@ -3,6 +3,7 @@
  *
  * MAAS Filter Subnets by Space.
  */
+import angular from "angular";
 
 export function filterBySpace() {
   return function(objects, space) {

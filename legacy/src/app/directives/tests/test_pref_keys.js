@@ -3,6 +3,7 @@
  *
  * Unit tests for user preference keys directive.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

@@ -3,6 +3,7 @@
  *
  * Unit tests for SettingsController.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -42,10 +43,10 @@ describe("SettingsController", function() {
     spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
   }));
 
-  // Setup the routeParams.
-  var $routeParams;
+  // Setup the stateParams.
+  var $stateParams;
   beforeEach(function() {
-    $routeParams = {};
+    $stateParams = {};
   });
 
   // Make a fake repository.
@@ -75,7 +76,7 @@ describe("SettingsController", function() {
     return $controller("SettingsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       PackageRepositoriesManager: PackageRepositoriesManager,
       DHCPSnippetsManager: DHCPSnippetsManager,
       SubnetsManager: SubnetsManager,
@@ -119,14 +120,14 @@ describe("SettingsController", function() {
   });
 
   it("sets the values for 'dhcp' section", function() {
-    $routeParams.section = "dhcp";
+    $stateParams.section = "dhcp";
     makeController();
     expect($scope.title).toBe("DHCP snippets");
     expect($scope.currentpage).toBe("dhcp");
   });
 
   it("sets the values for 'repositories' section", function() {
-    $routeParams.section = "repositories";
+    $stateParams.section = "repositories";
     makeController();
     expect($scope.title).toBe("Package repositories");
     expect($scope.currentpage).toBe("repositories");

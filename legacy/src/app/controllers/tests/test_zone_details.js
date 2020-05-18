@@ -3,6 +3,7 @@
  *
  * Unit tests for ZonesListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -22,14 +23,14 @@ describe("ZoneDetailsController", function() {
   }
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $location, $scope, $q, $routeParams;
+  var $controller, $rootScope, $location, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load any injected managers and services.
@@ -67,7 +68,7 @@ describe("ZoneDetailsController", function() {
     var controller = $controller("ZoneDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       ZonesManager: ZonesManager,
       UsersManager: UsersManager,
@@ -86,7 +87,7 @@ describe("ZoneDetailsController", function() {
     );
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.zone_id = zone.id;
+    $stateParams.zone_id = zone.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -107,7 +108,7 @@ describe("ZoneDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.zone_id = "xyzzy";
+    $stateParams.zone_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -123,7 +124,7 @@ describe("ZoneDetailsController", function() {
     var defer = $q.defer();
     makeController(defer);
     ZonesManager._activeItem = zone;
-    $routeParams.zone_id = zone.id;
+    $stateParams.zone_id = zone.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -137,7 +138,7 @@ describe("ZoneDetailsController", function() {
     spyOn(ZonesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.zone_id = zone.id;
+    $stateParams.zone_id = zone.id;
 
     defer.resolve();
     $rootScope.$digest();

@@ -3,6 +3,7 @@
  *
  * Unit tests for NodeResultController.
  */
+import angular from "angular";
 
 import { makeFakeResponse, makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -59,12 +60,12 @@ describe("NodeResultController", function() {
     return node;
   }
 
-  // Create the node that will be used and set the routeParams.
-  var node, $routeParams, script_result;
+  // Create the node that will be used and set the stateParams.
+  var node, $stateParams, script_result;
   beforeEach(function() {
     node = makeNode();
     script_result = makeResult();
-    $routeParams = {
+    $stateParams = {
       id: script_result.id,
       system_id: node.system_id
     };
@@ -86,7 +87,7 @@ describe("NodeResultController", function() {
     return $controller("NodeResultController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       MachinesManager: MachinesManager,
       ControllersManager: ControllersManager,

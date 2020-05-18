@@ -3,6 +3,7 @@
  *
  * Unit tests for SubnetsManager.
  */
+import angular from "angular";
 
 describe("SubnetsManager", function() {
   // Load the MAAS module.

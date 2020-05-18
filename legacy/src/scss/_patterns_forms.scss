@@ -28,22 +28,13 @@
   }
 
   .p-form-help-text {
-    padding-top: $spv-inner--small;
-    line-height: 1.5;
+    margin-top: -$spv-inner--small;
   }
 }
 
 @mixin maas-p-form-stacked {
   .p-form--stacked {
-    .p-form__label {
-      @extend .col-medium-2;
-      @extend .col-2;
-    }
-
     .p-form__control {
-      @extend .col-medium-4;
-      @extend .col-4;
-
       & > .p-control-text {
         @extend %default-text;
         display: block;

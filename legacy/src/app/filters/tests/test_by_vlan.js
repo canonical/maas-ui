@@ -3,6 +3,7 @@
  *
  * Unit tests for filterByVLAN.
  */
+import angular from "angular";
 
 describe("filterByVLAN", function() {
   // Load the MAAS module.

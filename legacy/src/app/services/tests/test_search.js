@@ -3,6 +3,7 @@
  *
  * Unit tests for SearchService.
  */
+import angular from "angular";
 
 import { makeName } from "testing/utils";
 

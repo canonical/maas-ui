@@ -3,6 +3,7 @@
  *
  * Unit tests for mac address directive.
  */
+import angular from "angular";
 
 describe("maasmacAddress", function() {
   // Load the MAAS module.

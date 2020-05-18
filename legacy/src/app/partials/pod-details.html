@@ -27,7 +27,7 @@
                     data-ng-click="saveEditName()">Save</button>
             </div>
             <div class="col-medium-2 col-4">
-                <div class="page-header__controls" data-ng-if="canEdit()">
+                <div class="page-header__controls" data-ng-if="canEdit() && !action.option">
                     <div data-maas-cta="action.options"
                         data-ng-click="updateAvailableActions('pods')"
                         data-ng-model="action.option"
@@ -54,19 +54,19 @@
                             </div>
                         </div>
                         <maas-obj-field type="options" key="domain" label="Domain" subtle="false" placeholder="Choose a domain"
-                            options="domain.id as domain.name for domain in domains" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
+                            options="domain.id as domain.name for domain in domains" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
                         <maas-obj-field type="options" key="zone"
                             label="Zone" subtle="false" placeholder="Choose a zone"
                             options="zone.id as zone.name for zone in zones"
-                            label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4" disabled></maas-obj-field>
+                            label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4" disabled></maas-obj-field>
                         <maas-obj-field type="options" key="pool" label="Pool" subtle="false" placeholder="Choose a pool"
-                            options="pool.id as pool.name for pool in pools" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
+                            options="pool.id as pool.name for pool in pools" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
                     </div>
                     <div class="col-6">
                         <maas-obj-field type="options" key="architecture" label="Architecture" subtle="false" placeholder="Any architecture" placeholder-enabled="true"
-                            options="arch for arch in pod.architectures" data-ng-if="pod.architectures.length > 1" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
-                        <maas-obj-field type="text" key="cores" label="Cores" subtle="false" placeholder="Number of cores (optional)" subtle-text="{$ availableWithOvercommit(pod.total.cores, pod.used.cores, pod.cpu_over_commit_ratio, 1) $} cores available" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
-                        <maas-obj-field type="text" key="memory" label="RAM (MB)" subtle="false" placeholder="Memory amount (optional)" subtle-text="{$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GB available" label-width="2" label-width-tablet="2" input-width="3" input-width-tablet="4"></maas-obj-field>
+                            options="arch for arch in pod.architectures" data-ng-if="pod.architectures.length > 1" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
+                        <maas-obj-field type="text" key="cores" label="Cores" subtle="false" placeholder="Number of cores (optional)" subtle-text="{$ availableWithOvercommit(pod.total.cores, pod.used.cores, pod.cpu_over_commit_ratio, 1) $} cores available" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
+                        <maas-obj-field type="text" key="memory" label="RAM (MB)" subtle="false" placeholder="Memory amount (optional)" subtle-text="{$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GB available" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="4"></maas-obj-field>
                     </div>
                 </div>
                 <div class="p-strip">
@@ -101,9 +101,9 @@
                                 </thead>
                                 <tbody>
                                     <tr class="p-table__row" data-ng-repeat="iface in compose.obj.interfaces track by $index">
-                                        <td class="u-valign--middle">
+                                        <td class="u-valign--middle" style="text-overflow: unset;">
                                             <button
-                                                class="p-button--base u-td-outdent-focusable--left p-button--narrow"
+                                                class="p-button--base u-td-outdent-focusable--left p-button--narrow u-no-margin--bottom"
                                                 data-ng-click="composeRemoveInterface(iface)"
                                                 data-ng-if="iface.name !== 'default'"
                                             >
@@ -191,18 +191,18 @@
                                                                         Space: {$ space.name $}
                                                                     </h4>
                                                                     <div
-                                                                        class="p-option-selector__option--subnets row"
+                                                                        class="p-option-selector__option--subnets"
                                                                         tabindex="0"
                                                                         data-ng-click="selectSubnet(subnet, iface)"
                                                                         data-ng-keyup="$event.keyCode == 13 && selectSubnet(subnet, iface)"
                                                                         data-ng-repeat="subnet in availableSubnets | filter:bySpace(space.name) | orderBy:['version', 'cidr']">
-                                                                        <div class="p-option-selector__option-cell--subnets col-6 col-medium-6 col-small-4">
+                                                                        <div class="p-option-selector__option-cell--subnets">
                                                                             <span>{$ subnet.displayName $}</span>
                                                                         </div>
-                                                                        <div class="p-option-selector__option-cell--subnets col-3 col-medium-3 col-small-2">
+                                                                        <div class="p-option-selector__option-cell--subnets">
                                                                             <span>{$ subnet.fabric.name $}</span>
                                                                         </div>
-                                                                        <div class="p-option-selector__option-cell--subnets col-3 col-medium-3 col-small-2">
+                                                                        <div class="p-option-selector__option-cell--subnets">
                                                                             <div ng-switch on="subnet.vlan.vid">
                                                                                 <div ng-switch-when="0">untagged</div>
                                                                                 <div ng-switch-default>
@@ -217,18 +217,18 @@
                                                             <div data-ng-if="!iface.selectedSpace && hasSpacelessSubnets()">
                                                                 <h4 class="p-option-selector__title--subnets u-no-max-width">Space: (unassigned)</h4>
                                                                 <div
-                                                                    class="p-option-selector__option--subnets row"
+                                                                    class="p-option-selector__option--subnets"
                                                                     tabindex="0"
                                                                     data-ng-click="selectSubnet(subnet, iface)"
                                                                     data-ng-keyup="$event.keyCode == 13 && selectSubnet(subnet, iface)"
                                                                     data-ng-repeat="subnet in availableSubnets | filter:bySpace() | orderBy:['version', 'cidr']">
-                                                                    <div class="p-option-selector__option-cell--subnets col-6 col-medium-6 col-small-4">
+                                                                    <div class="p-option-selector__option-cell--subnets">
                                                                         <span>{$ subnet.displayName $}</span>
                                                                     </div>
-                                                                    <div class="p-option-selector__option-cell--subnets col-3 col-medium-3 col-small-2">
+                                                                    <div class="p-option-selector__option-cell--subnets">
                                                                         <span>{$ subnet.fabric.name $}</span>
                                                                     </div>
-                                                                    <div class="p-option-selector__option-cell--subnets col-3 col-medium-3 col-small-2">
+                                                                    <div class="p-option-selector__option-cell--subnets">
                                                                         <div ng-switch on="subnet.vlan.vid">
                                                                             <div ng-switch-when="0">untagged</div>
                                                                             <div ng-switch-default>
@@ -303,7 +303,7 @@
                                 <tr class="p-table__row" data-ng-repeat="storage in compose.obj.storage">
                                     <td>
                                         <div data-ng-if="!storage.boot">
-                                            <button class="p-button--base u-td-outdent-focusable--left p-button--narrow" data-ng-click="composeRemoveDisk(storage); sendAnalyticsEvent('KVM details', 'Remove storage', 'KVM compose')">
+                                            <button class="p-button--base u-td-outdent-focusable--left p-button--narrow u-no-margin--bottom" data-ng-click="composeRemoveDisk(storage); sendAnalyticsEvent('KVM details', 'Remove storage', 'KVM compose')">
                                                 <i class="p-icon--close"></i>
                                                 <span class="u-off-screen">Remove</span>
                                             </button>
@@ -350,7 +350,7 @@
                                 </tr>
                                 <tr class="p-table__row" ng-if="pod.type !== 'lxd'">
                                     <td colspan="5">
-                                        <button class="p-button--base u-td-outdent-focusable--left p-button--narrow" data-ng-click="composeAddStorage(); sendAnalyticsEvent('KVM details', 'Add storage', 'KVM compose')">
+                                        <button class="p-button--base u-td-outdent-focusable--left p-button--narrow u-no-margin--bottom" data-ng-click="composeAddStorage(); sendAnalyticsEvent('KVM details', 'Add storage', 'KVM compose')">
                                             <i class="p-icon--plus"></i>
                                             <span class="u-off-screen">Add another device</span>
                                         </button>
@@ -378,7 +378,9 @@
         </div>
 
         <div class="page-header__dropdown u-hide" data-ng-class="{ 'u-show': action.option && action.option.name !== 'compose' }">
-            <hr />
+            <div class="row">
+                <hr />
+            </div>
             <div class="row" data-ng-if="action.inProgress">
                 <div class="col-12">
                     <p>
@@ -415,11 +417,12 @@
                 </div>
             </form>
         </div>
-        <nav class="p-tabs u-hr--fixed-width">
+        <nav class="p-tabs">
             <div class="row">
+                <hr class="u-no-margin--bottom" />
                 <ul class="p-tabs__list" role="tablist" data-ng-class="{ 'u-hide': action.option }">
                     <li class="p-tabs__item" role="presentation">
-                        <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machines</a>
+                        <a href="" role="tab" class="p-tabs__link" data-ng-class="{ 'is-active': section.area === 'summary'}" data-ng-click="section.area = 'summary'">{$ pod.composed_machines_count $} composed machine<span ng-if="pod.composed_machines_count !== 1">s</span></a>
                     </li>
                     <li class="p-tabs__item" role="presentation">
                         <a href="" role="tab" class="p-tabs__link" data-ng-if="canEdit()" data-ng-class="{ 'is-active': section.area === 'configuration'}" data-ng-click="section.area= 'configuration'">Configuration</a>
@@ -436,7 +439,7 @@
                     <label class="p-pod-edit__label" ng-if="pod.type === 'lxd'">LXD URL:</label>
                     <label class="p-pod-edit__label" ng-if="pod.type === 'virsh'">Virsh:</label>
                     <div class="p-code-copyable-wrapper">
-                        <div class="p-code-copyable">
+                        <div class="p-code-copyable u-no-margin--bottom">
                             <input class="p-code-copyable__input" value="{$ pod.power_address $}" readonly="readonly">
                             <button class="p-code-copyable__action" data-ng-click="copyToClipboard($event)">Copy to clipboard</button>
                         </div>
@@ -506,7 +509,7 @@
                             label="Resource pool" subtle="false"
                             placeholder="Choose a pool"
                             options="pool.id as pool.name for pool in pools" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="3"></maas-obj-field>
-                        <maas-obj-field type="tags" key="tags" label="Tags"
+                        <maas-obj-field class="tags--inline" type="tags" key="tags" label="Tags"
                             disable-label="false" placeholder="Add a tag" label-width="2" label-width-tablet="2" input-width="4" input-width-tablet="3"></maas-obj-field>
                     </div>
                     <div class="col-6">

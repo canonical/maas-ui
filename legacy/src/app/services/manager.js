@@ -7,6 +7,7 @@
  * uses the RegionConnection to load the items, update the items, and listen
  * for notification events about the items.
  */
+import angular from "angular";
 
 /* @ngInject */
 function Manager($q, $rootScope, $timeout, RegionConnection) {

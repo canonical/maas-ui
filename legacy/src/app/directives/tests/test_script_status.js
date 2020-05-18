@@ -3,6 +3,7 @@
  *
  * Unit tests for script status icon select directive.
  */
+import angular from "angular";
 
 describe("maasScriptStatus", function() {
   // Load the MAAS module.

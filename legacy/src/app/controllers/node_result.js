@@ -3,12 +3,13 @@
  *
  * MAAS Script Result Controller
  */
+import angular from "angular";
 
 /* @ngInject */
 function NodeResultController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $location,
   MachinesManager,
   ControllersManager,
@@ -49,7 +50,7 @@ function NodeResultController(
 
     // Get the NodeResultsManager and load it.
     var nodeResultsManager = NodeResultsManagerFactory.getManager($scope.node);
-    var requestedResult = parseInt($routeParams.id, 10);
+    var requestedResult = parseInt($stateParams.id, 10);
     nodeResultsManager.getItem(requestedResult).then(function(result) {
       $scope.result = result;
       $scope.get_result_data($scope.output);
@@ -82,11 +83,11 @@ function NodeResultController(
       var activeNode = $scope.nodesManager.getActiveItem();
       if (
         angular.isObject(activeNode) &&
-        activeNode.system_id === $routeParams.system_id
+        activeNode.system_id === $stateParams.system_id
       ) {
         nodeLoaded(activeNode);
       } else {
-        $scope.nodesManager.setActiveItem($routeParams.system_id).then(
+        $scope.nodesManager.setActiveItem($stateParams.system_id).then(
           function(node) {
             nodeLoaded(node);
 

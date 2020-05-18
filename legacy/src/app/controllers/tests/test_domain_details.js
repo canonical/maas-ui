@@ -3,6 +3,7 @@
  *
  * Unit tests for DomainsListController.
  */
+import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
@@ -24,14 +25,14 @@ describe("DomainDetailsController", function() {
   }
 
   // Grab the needed angular pieces.
-  var $controller, $rootScope, $location, $scope, $q, $routeParams;
+  var $controller, $rootScope, $location, $scope, $q, $stateParams;
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
-    $routeParams = {};
+    $stateParams = {};
   }));
 
   // Load any injected managers and services.
@@ -69,7 +70,7 @@ describe("DomainDetailsController", function() {
     var controller = $controller("DomainDetailsController", {
       $scope: $scope,
       $rootScope: $rootScope,
-      $routeParams: $routeParams,
+      $stateParams: $stateParams,
       $location: $location,
       DomainsManager: DomainsManager,
       UsersManager: UsersManager,
@@ -88,7 +89,7 @@ describe("DomainDetailsController", function() {
     );
     var defer = $q.defer();
     var controller = makeController(defer);
-    $routeParams.domain_id = domain.id;
+    $stateParams.domain_id = domain.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -109,7 +110,7 @@ describe("DomainDetailsController", function() {
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.domain_id = "xyzzy";
+    $stateParams.domain_id = "xyzzy";
 
     defer.resolve();
     $rootScope.$digest();
@@ -125,7 +126,7 @@ describe("DomainDetailsController", function() {
     var defer = $q.defer();
     makeController(defer);
     DomainsManager._activeItem = domain;
-    $routeParams.domain_id = domain.id;
+    $stateParams.domain_id = domain.id;
 
     defer.resolve();
     $rootScope.$digest();
@@ -139,7 +140,7 @@ describe("DomainDetailsController", function() {
     spyOn(DomainsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
-    $routeParams.domain_id = domain.id;
+    $stateParams.domain_id = domain.id;
 
     defer.resolve();
     $rootScope.$digest();

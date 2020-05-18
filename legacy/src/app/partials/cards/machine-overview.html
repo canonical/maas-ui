@@ -1,7 +1,7 @@
 <span class="l-grid__machine-overview p-card u-no-padding">
 
   <div class="overview">
-    <strong class="p-muted-heading u-sv1">{$ isVM ? "Virtual Machine Status" : "Machine Status" $}</strong>
+    <strong class="p-muted-heading">{$ isVM ? "Virtual Machine Status" : "Machine Status" $}</strong>
     <h4 class="u-no-margin--bottom">
       <i class="p-icon--locked" ng-if="node.locked">Locked: </i>
       {$ node.status $}
@@ -19,22 +19,16 @@
 
   <div class="cpu">
     <div class="u-space-between">
-      <strong class="p-muted-heading u-no-margin--bottom">CPU</strong>
-      <span ng-if="windowWidth > 1300 || windowWidth <= 1036" class="p-text--muted">{$ node.architecture $}</span>
+      <strong class="p-muted-heading">CPU</strong>
+      <span>{$ node.architecture $}</span>
     </div>
     <h4 class="u-no-margin--bottom">{$ getCPUSubtext() $}</h4>
-    <p ng-if="windowWidth > 1300 || windowWidth <= 1036" class="p-text--muted">
+    <p class="p-text--muted">
       {$ node.metadata.cpu_model || "Unknown model" $}
     </p>
   </div>
 
   <div class="cpu-tests u-space-vertically">
-    <div>
-      <div ng-if="windowWidth <= 1300 && windowWidth > 1036">
-        <p class="p-text--muted u-sv-1">{$ node.architecture $}</p>
-        <p class="p-text--muted">{$ node.metadata.cpu_model || "Unknown model" $}</p>
-      </div>
-    </div>
     <div>
       <ul class="p-inline-list u-no-margin--bottom">
         <li class="p-inline-list__item--compact" ng-if="node.cpu_test_status.passed > 0">
@@ -72,7 +66,7 @@
   </div>
 
   <div class="memory">
-    <strong class="p-muted-heading u-sv1">Memory</strong>
+    <strong class="p-muted-heading">Memory</strong>
     <h4>{$ node.memory ? node.memory + " GiB" : "Unknown" $}</h4>
   </div>
 
@@ -113,7 +107,7 @@
   </div>
 
   <div class="storage">
-    <strong class="p-muted-heading u-sv1">
+    <strong class="p-muted-heading">
       <a
         ng-click="openSection('storage'); sendAnalyticsEvent('Machine details', 'Card heading click: Storage', 'Machine summary tab')">Storage&nbsp;&rsaquo;</a>
     </strong>

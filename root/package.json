@@ -1,0 +1,48 @@
+{
+  "name": "@maas-ui/maas-ui-root",
+  "version": "0.0.1",
+  "description": "SingleSPA app which registers maas-ui-legacy and maas-ui apps.",
+  "main": "src/root-application.js",
+  "scripts": {
+    "start": "webpack-dev-server --host 0.0.0.0 --port 8404",
+    "serve": "yarn start",
+    "build": "webpack --config webpack.config.js -p",
+    "clean": "rm -rf dist node_modules",
+    "lint": "yarn lint-package-json && yarn lint-js",
+    "lint-js": "eslint src",
+    "lint-package-json": "npmPkgJsonLint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canonical-web-and-design/maas-ui.git"
+  },
+  "author": "Canonical Webteam",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/canonical-web-and-design/maas-ui.git"
+  },
+  "npmpackagejsonlint": {
+    "rules": {
+      "prefer-absolute-version-dependencies": "error",
+      "prefer-absolute-version-devDependencies": "error",
+      "prefer-alphabetical-dependencies": "error",
+      "prefer-alphabetical-devDependencies": "error"
+    }
+  },
+  "devDependencies": {
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.1.0",
+    "clean-webpack-plugin": "3.0.0",
+    "dotenv-flow-webpack": "1.0.0",
+    "eslint": "7.0.0",
+    "html-webpack-plugin": "4.3.0",
+    "npm-package-json-lint": "5.1.0",
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "3.10.3"
+  },
+  "dependencies": {
+    "@maas-ui/maas-ui": "1.1.1",
+    "@maas-ui/maas-ui-legacy": "0.1.0",
+    "single-spa": "5.5.0"
+  }
+}

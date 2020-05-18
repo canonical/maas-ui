@@ -3,6 +3,7 @@
  *
  * Unit tests for ConfigsManager.
  */
+import angular from "angular";
 
 describe("ConfigsManager", function() {
   // Load the MAAS module.

@@ -3,9 +3,10 @@
  *
  * MAAS Pods List Controller
  */
+import angular from "angular";
 
 const getOSShortName = (node, osInfo) => {
-  if (node) {
+  if (node && osInfo.releases) {
     const baseString = `${node.osystem}/${node.distro_series}`;
     const releaseArr = osInfo.releases.find(
       (release) => release[0] === baseString

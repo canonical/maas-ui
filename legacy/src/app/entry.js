@@ -12,19 +12,18 @@
 import "../scss/build.scss";
 
 import * as angular from "angular";
+import uiRouter from "@uirouter/angularjs";
 import ngCookies from "angular-cookies";
 import ngRoute from "angular-route";
 import ngSanitize from "angular-sanitize";
-import React from "react";
-import ReactDOM from "react-dom";
 require("ng-tags-input");
 require("angular-vs-repeat");
+import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
 import configureRoutes from "./routes";
-import bootstrap from "./bootstrap";
-import { Footer, Header } from "@canonical/maas-ui-shared";
+import setupWebsocket from "./bootstrap";
 
 // filters
 import {
@@ -116,6 +115,7 @@ import VLANsManager from "./factories/vlans";
 import ZonesManager from "./factories/zones";
 
 // controllers
+import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
 import AddDomainController from "./controllers/add_domain";
 import AddHardwareController from "./controllers/add_hardware";
@@ -232,12 +232,11 @@ import windowWidth from "./directives/window_width";
 
 const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
-const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
 
 const checkAuthenticated = () => {
   // Check that the user is authenticated, otherwise redirect to the React
   // login form.
-  fetch(LOGIN_CANARY_API).then(response => {
+  fetch(LOGIN_CANARY_API).then((response) => {
     if (!response.ok) {
       window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
     }
@@ -249,11 +248,12 @@ checkAuthenticated();
 /* @ngInject */
 function configureMaas(
   $interpolateProvider,
-  $routeProvider,
+  $stateProvider,
   $httpProvider,
   $locationProvider,
   $compileProvider,
-  tagsInputConfigProvider
+  tagsInputConfigProvider,
+  $urlRouterProvider
 ) {
   // Disable debugInfo unless in a Jest context.
   // Re-enable debugInfo in development by running
@@ -284,7 +284,7 @@ function configureMaas(
   // Batch http responses into digest cycles
   $httpProvider.useApplyAsync(true);
 
-  configureRoutes($routeProvider);
+  configureRoutes($stateProvider, $urlRouterProvider);
 }
 
 // Force users to #/intro when it has not been completed.
@@ -320,78 +320,8 @@ function dashboardRedirect($rootScope, $location, $window) {
 // so it doesn't flash up in the nav before angular is ready
 function unhideRSDLinks() {
   let rsdLinks = document.querySelectorAll(".js-rsd-link");
-  rsdLinks.forEach(link => link.classList.remove("u-hide"));
+  rsdLinks.forEach((link) => link.classList.remove("u-hide"));
 }
-
-const renderHeader = ($rootScope, $window, $http) => {
-  const headerNode = document.querySelector("#header");
-  if (!headerNode) {
-    return;
-  }
-  const {
-    completed_intro,
-    navigation_options,
-    current_user,
-    uuid,
-    version,
-  } = $window.CONFIG;
-  const debug = process.env.NODE_ENV === "development";
-  ReactDOM.render(
-    <Header
-      authUser={current_user}
-      basename={process.env.BASENAME}
-      completedIntro={
-        completed_intro && current_user && current_user.completed_intro
-      }
-      debug={debug}
-      enableAnalytics={window.CONFIG.enable_analytics}
-      location={window.location}
-      logout={() => {
-        localStorage.clear();
-        $http.post(LOGOUT_API).then(() => {
-          $window.location.href = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
-        });
-      }}
-      newURLPrefix={process.env.REACT_BASENAME}
-      onSkip={() => {
-        // Call skip inside this function because skip won't exist when the
-        // header is first rendered.
-        $rootScope.skip();
-      }}
-      rootScope={$rootScope}
-      showRSD={navigation_options && navigation_options.rsd}
-      uuid={uuid}
-      version={version}
-    />,
-    headerNode
-  );
-};
-
-const renderFooter = $window => {
-  const footerNode = document.querySelector("#footer");
-  if (!footerNode) {
-    return;
-  }
-  ReactDOM.render(
-    <Footer
-      maasName={$window.CONFIG.maas_name}
-      version={$window.CONFIG.version}
-    />,
-    footerNode
-  );
-};
-
-/* @ngInject */
-const displayTemplate = ($rootScope, $window, $http) => {
-  $rootScope.site = window.CONFIG.maas_name;
-  renderHeader($rootScope, $window, $http);
-  renderFooter($window);
-
-  $rootScope.$on("$routeChangeSuccess", function (event, next, current) {
-    // Update the header when the route changes.
-    renderHeader($rootScope, $window, $http);
-  });
-};
 
 Sentry.init({
   beforeSend(event) {
@@ -405,22 +335,23 @@ Sentry.init({
 });
 
 /* @ngInject */
-const configureSentry = $window => {
+const configureSentry = ($window) => {
   Sentry.setExtra("maasVersion", $window.CONFIG.version);
 };
 
-angular
-  .module("MAAS", [
-    ngRoute,
-    ngCookies,
-    ngSanitize,
-    "ngTagsInput",
-    "vs-repeat",
-    "ngSentry",
-  ])
-  .config(configureMaas)
+const maasModule = "MAAS";
+const MAAS = angular.module(maasModule, [
+  ngRoute,
+  ngCookies,
+  ngSanitize,
+  uiRouter,
+  "ngTagsInput",
+  "vs-repeat",
+  "ngSentry",
+]);
+
+MAAS.config(configureMaas)
   .run(configureSentry)
-  .run(displayTemplate)
   .run(dashboardRedirect)
   .run(introRedirect)
   .run(unhideRSDLinks)
@@ -499,6 +430,7 @@ angular
   .service("SearchService", SearchService)
   .service("ValidationService", ValidationService)
   // controllers
+  .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
   .controller("AddDomainController", AddDomainController)
   .controller("AddHardwareController", AddHardwareController)
@@ -600,4 +532,13 @@ angular
   .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
 
-bootstrap();
+const lifecycles = singleSpaAngularJS({
+  angular,
+  mainAngularModule: maasModule,
+  uiRouter: true,
+  preserveGlobal: false,
+});
+
+export const bootstrap = [setupWebsocket, lifecycles.bootstrap];
+export const mount = lifecycles.mount;
+export const unmount = lifecycles.unmount;

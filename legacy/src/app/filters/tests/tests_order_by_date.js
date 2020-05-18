@@ -3,6 +3,7 @@
  *
  * Unit tests for filterByFabric.
  */
+import angular from "angular";
 
 describe("orderByDate", function() {
   // Load the MAAS module.

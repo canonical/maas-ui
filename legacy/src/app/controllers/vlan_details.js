@@ -3,6 +3,7 @@
  *
  * MAAS VLAN Details Controller
  */
+import angular from "angular";
 
 export function ignoreSelf() {
   return function(objects, self) {
@@ -32,7 +33,7 @@ export function removeNoDHCP() {
 export function VLANDetailsController(
   $scope,
   $rootScope,
-  $routeParams,
+  $stateParams,
   $filter,
   $location,
   $timeout,
@@ -747,7 +748,7 @@ export function VLANDetailsController(
     vm.vlan = vlan;
     updateVLAN();
     vm.loaded = true;
-    if ($routeParams.provide_dhcp) {
+    if ($stateParams.provide_dhcp) {
       // Put this at the end of event loop otherwise
       // it doesn't have the data it needs
       $timeout(function() {
@@ -788,7 +789,7 @@ export function VLANDetailsController(
     // this vlan set to active. Only call setActiveItem if not
     // already the activeItem.
     var activeVLAN = VLANsManager.getActiveItem();
-    var requestedVLAN = parseInt($routeParams.vlan_id, 10);
+    var requestedVLAN = parseInt($stateParams.vlan_id, 10);
 
     if (isNaN(requestedVLAN)) {
       ErrorService.raiseError("Invalid VLAN identifier.");

@@ -5,6 +5,7 @@
  *
  * Provides the interactivity of the MAAS key section of the user profile.
  */
+import angular from "angular";
 
 /* @ngInject */
 export function maasPrefKeys($q, RegionConnection, UsersManager) {
