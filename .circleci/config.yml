@@ -54,9 +54,8 @@ jobs:
       - run:
           name: Initialise MAAS
           command: |
-            sudo maas init \
+            sudo maas init region+rack \
               --maas-url=http://$IP_ADDRESS:5240/MAAS \
-              --mode region+rack \
               --database-host=localhost \
               --database-name=$MAAS_DBNAME \
               --database-user=$MAAS_DBUSER \
@@ -65,7 +64,9 @@ jobs:
               --username=admin \
               --password=test \
               --email=fake@email.com
-            sudo maas config
+            # Uncomment when maas config bug is fixed on the backend
+            # https://bugs.launchpad.net/maas/+bug/1879205
+            # sudo maas config
       - run:
           name: Set proxy url and start cypress tests
           command: |
