@@ -1152,7 +1152,7 @@ export function maasObjErrors($compile) {
     restrict: "E",
     require: ["^^maasObjForm"],
     scope: {},
-    template: '<ul class="p-list u-no-margin--top"></ul>',
+    template: '<ul class="p-list u-no-margin--bottom"></ul>',
     link: function(scope, element, attrs, controllers) {
       // Set on the controller the global error handler.
       controllers[0].errorScope = scope;
@@ -1171,11 +1171,12 @@ export function maasObjErrors($compile) {
             ul.append(
               $compile(
                 '<li class="p-list__item">' +
-                  '<i class="p-icon--error"></i> ' +
-                  '<span ng-bind="errors[' +
-                  i +
-                  ']"></span>' +
-                  "</li>"
+                  '<div class="p-notification--negative">' +
+                    '<p class="p-notification__response">' +
+                      '<span ng-bind="errors[' + i + ']"></span>' +
+                    '</p>' +
+                  '</div>' +
+                '</li>'
               )(scope)
             );
           }

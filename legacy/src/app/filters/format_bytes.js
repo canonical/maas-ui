@@ -5,7 +5,7 @@
  */
 
 export function formatBytes() {
-  return function(bytes) {
+  return function (bytes) {
     var bytesInKilobyte = 1000;
     var kilobytesInMegabyte = 1000;
     var megabytesInGigabyte = 1000;
@@ -23,18 +23,25 @@ export function formatBytes() {
     if (bytes >= bytesInTerabyte) {
       return (
         Number(
-          bytes /
+          (
+            bytes /
             bytesInKilobyte /
             kilobytesInMegabyte /
             megabytesInGigabyte /
             gigabytesInTerabyte
-        ).toPrecision(3) + " TB"
+          ).toPrecision(3)
+        ).toString() + " TB"
       );
     } else if (bytes >= bytesInGigabyte) {
       return (
-        Math.round(
-          bytes / bytesInKilobyte / kilobytesInMegabyte / megabytesInGigabyte
-        ) + " GB"
+        Number(
+          (
+            bytes /
+            bytesInKilobyte /
+            kilobytesInMegabyte /
+            megabytesInGigabyte
+          ).toPrecision(3)
+        ).toString() + " GB"
       );
     } else if (bytes >= bytesInMegabyte) {
       return Math.round(bytes / bytesInKilobyte / kilobytesInMegabyte) + " MB";
@@ -49,7 +56,7 @@ export function formatBytes() {
 }
 
 export function convertGigabyteToBytes() {
-  return function(gigabytes) {
+  return function (gigabytes) {
     var bytesInKilobyte = 1000;
     var kilobytesInMegabyte = 1000;
     var megabytesInGigabyte = 1000;

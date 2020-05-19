@@ -1017,7 +1017,7 @@ describe("maasObjForm", function() {
 
       // Error is placed on the input and in the global section.
       expect(getErrorList(field)).toEqual(["Error: " + keyError]);
-      expect(getErrorList(errors)).toEqual([" " + error]);
+      expect(getErrorList(errors)).toEqual([error]);
 
       // Has error returns true.
       expect($scope.obj.$maasForm.hasErrors()).toBe(true);

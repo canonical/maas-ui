@@ -5541,7 +5541,7 @@ describe("NodeStorageController", function() {
       expect($scope.getFormattedTotalDiskSize(disks)).toBe("3 GB");
     });
 
-    it("returns formtted string in TB", function() {
+    it("returns formatted string in TB", function() {
       makeController();
       var disks = [
         {
@@ -5551,7 +5551,7 @@ describe("NodeStorageController", function() {
           size: 2000000000000
         }
       ];
-      expect($scope.getFormattedTotalDiskSize(disks)).toBe("3.00 TB");
+      expect($scope.getFormattedTotalDiskSize(disks)).toBe("3 TB");
     });
   });
 });
