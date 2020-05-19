@@ -167,16 +167,12 @@
                                                 <div ng-switch-default>
                                                     <div class="form__group-input">
                                                         <input
+                                                            ng-blur="selectSubnetByIP(iface)"
+                                                            ng-keypress="$event.keyCode === 13 && $event.preventDefault()"
+                                                            ng-model="iface.ipaddress"
+                                                            placeholder="Leave empty to auto-assign"
                                                             type="text"
-                                                            data-ng-if="iface.space || iface.subnet && !iface.ipaddress"
-                                                            value="(auto-assigned)" disabled>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Manual IP Address (optional)"
-                                                            data-ng-if="!iface.space && !iface.subnet || iface.ipaddress"
-                                                            data-ng-model="iface.ipaddress"
-                                                            data-ng-blur="selectSubnetByIP(iface)"
-                                                            data-ng-keypress="$event.keyCode === 13 && $event.preventDefault()">
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,9 +186,10 @@
                                                     data-ng-model="iface.selectedSpace"
                                                     data-ng-change="resetSubnetList(iface)"
                                                     data-ng-if="spaces.length > 0"
-                                                    data-ng-disabled="iface.ipaddress.length > 0"
-                                                    data-ng-keypress="$event.keyCode === 13 && $event.preventDefault()">
-                                                    <option value="">Select a space (optional)</option>
+                                                    data-ng-keypress="$event.keyCode === 13 && $event.preventDefault()"
+                                                >
+                                                    <option disabled>Select a space</option>
+                                                    <option value="">None</option>
                                                     <option data-ng-repeat="space in spaces">{$ space.name $}</option>
                                                 </select>
                                             </div>
@@ -208,12 +205,11 @@
                                                             placeholder="Select a subnet"
                                                             data-ng-model="iface.subnet.displayName"
                                                             data-ng-focus="openSubnetOptions(iface)"
-                                                            data-ng-disabled="iface.ipaddress.length > 0"
                                                             data-ng-keypress="$event.keyCode === 13 && $event.preventDefault()">
                                                         <div
                                                             class="p-option-selector__options--subnets"
                                                             ng-if="iface.showOptions">
-                                                            <button class="p-button--close" ng-click="closeOptions(iface)">
+                                                            <button class="p-button--close p-button--base" ng-click="closeOptions(iface)">
                                                                 <i class="p-icon--close">Close</i>
                                                             </button>
                                                             <div>
