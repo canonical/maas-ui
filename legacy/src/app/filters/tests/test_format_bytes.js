@@ -34,6 +34,6 @@ describe("formatBytes", function() {
 
   it(`returns value in terabytes if greater than
       or equal to 1 terabyte, to 3 significant figures`, function() {
-    expect(formatBytes(2000000000000)).toEqual("2.00 TB");
+    expect(formatBytes(2000000000000)).toEqual("2 TB");
   });
 });
