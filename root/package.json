@@ -4,9 +4,9 @@
   "description": "SingleSPA app which registers maas-ui-legacy and maas-ui apps.",
   "main": "src/root-application.js",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0 --port 8404",
+    "start": "webpack-dev-server --host 0.0.0.0 --port 8404 --config webpack.dev.js",
     "serve": "yarn start",
-    "build": "webpack --config webpack.config.js -p",
+    "build": "webpack --config webpack.prod.js -p",
     "clean": "rm -rf dist node_modules",
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
@@ -38,7 +38,8 @@
     "html-webpack-plugin": "4.3.0",
     "npm-package-json-lint": "5.1.0",
     "webpack-cli": "3.3.11",
-    "webpack-dev-server": "3.10.3"
+    "webpack-dev-server": "3.10.3",
+    "webpack-merge": "4.2.2"
   },
   "dependencies": {
     "@maas-ui/maas-ui": "1.1.1",
