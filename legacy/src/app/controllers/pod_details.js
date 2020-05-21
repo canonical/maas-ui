@@ -74,12 +74,12 @@ function PodDetailsController(
       sentence: "compose"
     },
     obj: {
-      cores: 0,
-      memory: 0,
+      cores: "",
+      memory: "",
       storage: [
         {
           type: "local",
-          size: 0,
+          size: "",
           tags: [],
           pool: {},
           boot: true
@@ -282,7 +282,12 @@ function PodDetailsController(
     // Validate storage pool requests
     const requests = compose.obj.requests;
     for (let i = 0; i < requests.length; i++) {
-      if (!requests[i].size || requests[i].size > requests[i].available) {
+      if (
+        requests[i].size &&
+        (isNaN(requests[i].size) ||
+          Number(requests[i].size) <= 0 ||
+          Number(requests[i].size) > Number(requests[i].available))
+      ) {
         return false;
       }
     }
@@ -409,11 +414,21 @@ function PodDetailsController(
   };
 
   // Called before the compose params is sent over the websocket.
-  $scope.composePreProcess = function(params) {
-    params = angular.copy(params);
-    params.id = $scope.pod.id;
+  $scope.composePreProcess = (formValues) => {
+    const { compose, pod } = $scope;
+    const params = {
+      architecture: formValues.architecture,
+      cores: formValues.cores || $scope.getDefaultComposeValue("cores"),
+      domain: formValues.domain,
+      hostname: formValues.hostname,
+      id: pod.id,
+      memory: formValues.memory || $scope.getDefaultComposeValue("memory"),
+      pool: formValues.pool,
+      zone: formValues.zone,
+    };
+
     // Sort boot disk first.
-    var sorted = $scope.compose.obj.storage.sort(function(a, b) {
+    const sortedDisks = compose.obj.storage.sort((a, b) => {
       if (a.boot === b.boot) {
         return 0;
       } else if (a.boot && !b.boot) {
@@ -422,13 +437,15 @@ function PodDetailsController(
         return 1;
       }
     });
+
     // Create the storage constraint.
-    var storage = [];
-    angular.forEach(sorted, function(disk, idx) {
-      var constraint = idx + ":" + disk.size;
-      var tags = disk.tags.map(function(tag) {
-        return tag.text;
-      });
+    // <storage-index>:<size>(<tag>[,<tag>...])
+    // e.g. "0:8(tag1, tag2)"
+    const storage = [];
+    sortedDisks.forEach((disk, i) => {
+      const diskSize = disk.size || $scope.getDefaultComposeValue("storage");
+      let constraint = i + ":" + diskSize;
+      const tags = disk.tags.map((tag) => tag.text);
       if ($scope.pod.type === "rsd") {
         tags.splice(0, 0, disk.type);
       } else {
@@ -441,6 +458,7 @@ function PodDetailsController(
 
     // Create the interface constraint.
     // <interface-name>:<key>=<value>[,<key>=<value>];...
+    // e.g. "eth0:ip=192.168.0.0,subnet_cidr=192.168.0.0/24"
     const interfaceConstraints = $scope.compose.obj.interfaces
       .filter((iface) => iface.ipaddress || iface.subnet)
       .map((iface) => {
@@ -664,13 +682,15 @@ function PodDetailsController(
 
   $scope.getDefaultComposeValue = (param) => {
     if ($scope.pod) {
-      const podPowerType = $scope.power_types.find((type) => type.name === $scope.pod.type);
+      const podPowerType = $scope.power_types.find(
+        (type) => type.name === $scope.pod.type
+      );
       if (podPowerType) {
-        const  { defaults } = podPowerType;
-        return defaults[param] || 0;
+        const { defaults } = podPowerType;
+        return defaults[param] || "";
       }
     }
-    return 0;
+    return "";
   };
 
   // Start watching key fields.

@@ -95,6 +95,18 @@ describe("maasPodParameters", function() {
           ]
         },
         {
+          name: "lxd",
+          description: "LXD",
+          driver_type: "pod",
+          fields: [
+            {
+              name: "power_address",
+              label: "Power address",
+              scope: "bmc"
+            },
+          ]
+        },
+        {
           name: "ipmi",
           description: "IPMI",
           driver_type: "power",
@@ -108,7 +120,7 @@ describe("maasPodParameters", function() {
     it("sets podTypes", function() {
       var directive = compileDirective("true");
       var scope = directive.isolateScope();
-      podTypes = [powerTypes[0], powerTypes[1]];
+      podTypes = [powerTypes[0], powerTypes[1], powerTypes[2]];
       expect(scope.podTypes).toEqual(podTypes);
     });
 

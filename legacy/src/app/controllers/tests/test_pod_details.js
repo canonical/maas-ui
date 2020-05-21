@@ -59,6 +59,7 @@ describe("PodDetailsController", function() {
   function makePod() {
     var pod = {
       id: podId++,
+      type: "lxd",
       default_pool: 0,
       $selected: false,
       capabilities: [],
@@ -76,6 +77,10 @@ describe("PodDetailsController", function() {
     };
     PodsManager._items.push(pod);
     return pod;
+  }
+
+  function defaultPowerTypes() {
+    return [{ name: "lxd", defaults: { cores: 1, memory: 2048, storage: 8 } }];
   }
 
   // Create the pod that will be used and set the stateParams.
@@ -176,7 +181,7 @@ describe("PodDetailsController", function() {
         storage: [
           {
             type: "local",
-            size: 8,
+            size: "",
             tags: [],
             pool: {},
             boot: true
@@ -575,6 +580,7 @@ describe("PodDetailsController", function() {
     it("correctly validates hostname", () => {
       makeController();
       $scope.pod = makePod();
+      $scope.power_types = defaultPowerTypes();
       $scope.compose.obj.hostname = "!@#";
       expect($scope.validateMachineCompose()).toBe(false);
       $scope.compose.obj.hostname = "";
@@ -586,17 +592,19 @@ describe("PodDetailsController", function() {
     it("correctly validates storage requests", () => {
       makeController();
       $scope.pod = makePod();
-      $scope.compose.obj.requests = [{ size: 8, available: 4 }];
+      $scope.power_types = defaultPowerTypes();
+      $scope.compose.obj.requests = [{ size: "8", available: 4 }];
       expect($scope.validateMachineCompose()).toBe(false);
-      $scope.compose.obj.requests = [{ size: 0, available: 8 }];
+      $scope.compose.obj.requests = [{ size: "0", available: 8 }];
       expect($scope.validateMachineCompose()).toBe(false);
-      $scope.compose.obj.requests = [{ size: 8, available: 16 }];
+      $scope.compose.obj.requests = [{ size: "8", available: 16 }];
       expect($scope.validateMachineCompose()).toBe(true);
     });
 
     it("correctly validates cpu request without overcommit", () => {
       makeController();
       $scope.pod = makePod();
+      $scope.power_types = defaultPowerTypes();
       $scope.pod.total.cores = 8;
       $scope.compose.obj.cores = 10;
       expect($scope.validateMachineCompose()).toBe(false);
@@ -615,6 +623,7 @@ describe("PodDetailsController", function() {
     it("correctly validates cpu request with overcommit", () => {
       makeController();
       $scope.pod = makePod();
+      $scope.power_types = defaultPowerTypes();
       $scope.pod.total.cores = 8;
       $scope.pod.cpu_over_commit_ratio = 2.0;
       $scope.compose.obj.cores = 20;
@@ -628,6 +637,7 @@ describe("PodDetailsController", function() {
     it("correctly validates memory request without overcommit", () => {
       makeController();
       $scope.pod = makePod();
+      $scope.power_types = defaultPowerTypes();
       $scope.pod.total.memory_gb = 8;
       $scope.compose.obj.memory = 9000;
       expect($scope.validateMachineCompose()).toBe(false);
@@ -646,6 +656,7 @@ describe("PodDetailsController", function() {
     it("correctly validates memory request with overcommit", () => {
       makeController();
       $scope.pod = makePod();
+      $scope.power_types = defaultPowerTypes();
       $scope.pod.total.memory_gb = 8;
       $scope.pod.memory_over_commit_ratio = 2.0;
       $scope.compose.obj.memory = 18000;
@@ -702,11 +713,7 @@ describe("PodDetailsController", function() {
     it("sets id to pod id", function() {
       makeControllerResolveSetActiveItem();
       $scope.pod.type = "rsd";
-      expect($scope.composePreProcess({})).toEqual({
-        id: $scope.pod.id,
-        storage: "0:8(local)",
-        interfaces: ""
-      });
+      expect($scope.composePreProcess({}).id).toEqual($scope.pod.id);
     });
 
     it("sets rsd storage based on compose.obj.storage", function() {
@@ -750,12 +757,9 @@ describe("PodDetailsController", function() {
           boot: false
         }
       ];
-      expect($scope.composePreProcess({})).toEqual({
-        id: $scope.pod.id,
-        storage:
-          "0:50(local,happy,days)," + "1:20(iscsi,one,two),2:60(local,other)",
-        interfaces: ""
-      });
+      expect($scope.composePreProcess({}).storage).toEqual(
+        "0:50(local,happy,days)," + "1:20(iscsi,one,two),2:60(local,other)"
+      );
     });
 
     it("correctly sets the interface constraints", function() {
@@ -781,11 +785,9 @@ describe("PodDetailsController", function() {
         "eth1:ip=192.168.1.5,subnet_cidr=192.168.1.0/24",
         "eth2:subnet_cidr=192.168.2.0/24"
       ].join(";");
-      expect($scope.composePreProcess({})).toEqual({
-        id: $scope.pod.id,
-        storage: "0:8()",
-        interfaces: expectedInterfaces
-      });
+      expect($scope.composePreProcess({}).interfaces).toEqual(
+        expectedInterfaces
+      );
     });
 
     it("sets virsh storage based on compose.obj.storage", function() {
@@ -835,12 +837,9 @@ describe("PodDetailsController", function() {
           boot: false
         }
       ];
-      expect($scope.composePreProcess({})).toEqual({
-        id: $scope.pod.id,
-        storage:
-          "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)",
-        interfaces: ""
-      });
+      expect($scope.composePreProcess({}).storage).toEqual(
+        "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)"
+      );
     });
 
     it("sets virsh storage based on compose.obj.storage", function() {
@@ -890,12 +889,9 @@ describe("PodDetailsController", function() {
           boot: false
         }
       ];
-      expect($scope.composePreProcess({})).toEqual({
-        id: $scope.pod.id,
-        storage:
-          "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)",
-        interfaces: ""
-      });
+      expect($scope.composePreProcess({}).storage).toEqual(
+        "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)"
+      );
     });
   });
 
@@ -913,7 +909,7 @@ describe("PodDetailsController", function() {
         storage: [
           {
             type: "local",
-            size: 8,
+            size: "",
             tags: [],
             pool: {},
             boot: true
@@ -938,7 +934,7 @@ describe("PodDetailsController", function() {
       expect($scope.compose.obj.storage.length).toBe(2);
       expect($scope.compose.obj.storage[1]).toEqual({
         type: "local",
-        size: 8,
+        size: "",
         tags: [],
         pool: {},
         boot: false
@@ -947,6 +943,7 @@ describe("PodDetailsController", function() {
 
     it("adds a new iscsi storage item", function() {
       makeControllerResolveSetActiveItem();
+      $scope.power_types = defaultPowerTypes();
       $scope.pod.capabilities.push("iscsi_storage");
       expect($scope.compose.obj.storage.length).toBe(1);
       $scope.composeAddStorage();
@@ -1043,16 +1040,16 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("getComposeDefaultValue", () => {
+  describe("getDefaultComposeValue", () => {
     it("correctly returns default compose values for pod type", () => {
       makeControllerResolveSetActiveItem();
       $scope.pod = { type: "lxd" };
       $scope.power_types = [
         { name: "lxd", defaults: { cores: 1, memory: 2048, storage: 8 } },
       ];
-      expect($scope.getComposeDefaultValue("cores")).toBe(1);
-      expect($scope.getComposeDefaultValue("memory")).toBe(2048);
-      expect($scope.getComposeDefaultValue("storage")).toBe(8);
+      expect($scope.getDefaultComposeValue("cores")).toBe(1);
+      expect($scope.getDefaultComposeValue("memory")).toBe(2048);
+      expect($scope.getDefaultComposeValue("storage")).toBe(8);
     });
   });
 });
