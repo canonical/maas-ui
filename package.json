@@ -12,7 +12,7 @@
     "build-ui": "cd ui && yarn install && yarn build",
     "cypress-open": "cd proxy && yarn cypress-open",
     "cypress-run": "cd proxy && yarn cypress-run",
-    "copy-build": "mkdir -p build && cp -R root/dist/* build/ && cp -R legacy/dist/assets build/ && cp -R ui/dist/static build/",
+    "copy-build": "mkdir -p build && cp -R root/dist/* build/ && cp -R legacy/dist/assets build/",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "start": "yarn serve",

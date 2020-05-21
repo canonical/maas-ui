@@ -7,7 +7,6 @@ import createSagaMiddleware from "redux-saga";
 
 import { name as appName, version as appVersion } from "../package.json";
 import rootSaga from "./root-saga";
-import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
 import createRootReducer from "./root-reducer";
