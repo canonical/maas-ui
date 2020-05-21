@@ -74,12 +74,12 @@ function PodDetailsController(
       sentence: "compose"
     },
     obj: {
-      cores: "",
-      memory: "",
+      cores: 0,
+      memory: 0,
       storage: [
         {
           type: "local",
-          size: 8,
+          size: 0,
           tags: [],
           pool: {},
           boot: true
@@ -477,12 +477,12 @@ function PodDetailsController(
   // Called to cancel composition.
   $scope.cancelCompose = function() {
     $scope.compose.obj = {
-      cores: "",
-      memory: "",
+      cores: $scope.getDefaultComposeValue("cores"),
+      memory: $scope.getDefaultComposeValue("memory"),
       storage: [
         {
           type: "local",
-          size: 8,
+          size: $scope.getDefaultComposeValue("storage"),
           tags: [],
           pool: $scope.getDefaultStoragePool(),
           boot: true
@@ -506,7 +506,7 @@ function PodDetailsController(
   $scope.composeAddStorage = function() {
     var storage = {
       type: "local",
-      size: 8,
+      size: $scope.getDefaultComposeValue("storage"),
       tags: [],
       pool: $scope.getDefaultStoragePool(),
       boot: false
@@ -662,6 +662,17 @@ function PodDetailsController(
     }
   };
 
+  $scope.getDefaultComposeValue = (param) => {
+    if ($scope.pod) {
+      const podPowerType = $scope.power_types.find((type) => type.name === $scope.pod.type);
+      if (podPowerType) {
+        const  { defaults } = podPowerType;
+        return defaults[param] || 0;
+      }
+    }
+    return 0;
+  };
+
   // Start watching key fields.
   $scope.startWatching = function() {
     $scope.$watch("subnets", function() {
@@ -746,6 +757,11 @@ function PodDetailsController(
     ) {
       $scope.pod = activePod;
       $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
+      $scope.compose.obj.storage[0].size = $scope.getDefaultComposeValue(
+        "storage"
+      );
+      $scope.compose.obj.cores = $scope.getDefaultComposeValue("cores");
+      $scope.compose.obj.memory = $scope.getDefaultComposeValue("memory");
       $scope.loaded = true;
       $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
       $scope.startWatching();
@@ -754,6 +770,11 @@ function PodDetailsController(
         function(pod) {
           $scope.pod = pod;
           $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
+          $scope.compose.obj.storage[0].size = $scope.getDefaultComposeValue(
+            "storage"
+          );
+          $scope.compose.obj.cores = $scope.getDefaultComposeValue("cores");
+          $scope.compose.obj.memory = $scope.getDefaultComposeValue("memory");
           $scope.loaded = true;
           $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
           $scope.startWatching();

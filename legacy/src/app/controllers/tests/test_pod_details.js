@@ -1042,4 +1042,17 @@ describe("PodDetailsController", function() {
       expect($scope.onRSDSection()).toBe(false);
     });
   });
+
+  describe("getComposeDefaultValue", () => {
+    it("correctly returns default compose values for pod type", () => {
+      makeControllerResolveSetActiveItem();
+      $scope.pod = { type: "lxd" };
+      $scope.power_types = [
+        { name: "lxd", defaults: { cores: 1, memory: 2048, storage: 8 } },
+      ];
+      expect($scope.getComposeDefaultValue("cores")).toBe(1);
+      expect($scope.getComposeDefaultValue("memory")).toBe(2048);
+      expect($scope.getComposeDefaultValue("storage")).toBe(8);
+    });
+  });
 });
