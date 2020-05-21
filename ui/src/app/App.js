@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as Sentry from "@sentry/browser";
 
-import styles from "../scss/index.scss";
+import "../scss/index.scss";
 
 import {
   auth as authActions,
@@ -42,11 +42,6 @@ export const App = () => {
   const dispatch = useDispatch();
   const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
-
-  useEffect(() => {
-    //load styles once application is mounted
-    styles.use();
-  }, []);
 
   useEffect(() => {
     // window.history.pushState events from *outside* of react

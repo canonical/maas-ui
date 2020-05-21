@@ -16,7 +16,6 @@ const addLoaders = (loaderOptions = {}) => (config) => {
   const getStyleLoader = () => [
     {
       loader: "style-loader",
-      options: { injectType: "lazyStyleTag" },
     },
     {
       loader: require.resolve("css-loader"),
