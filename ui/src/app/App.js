@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as Sentry from "@sentry/browser";
 
+import "../scss/index.scss";
+
 import {
   auth as authActions,
   general as generalActions,
