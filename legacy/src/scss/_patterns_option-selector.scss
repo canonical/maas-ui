@@ -174,7 +174,7 @@
     .p-option-selector__options--subnets {
       @extend %p-card--highlighted;
       left: -45vw;
-      padding-bottom: 0;
+      padding-bottom: $spv-inner--scaleable;
       position: absolute;
       width: 90vw;
       z-index: 10;
@@ -195,6 +195,7 @@
       @extend %muted-heading;
       border-bottom: 1px solid $color-mid-light;
       margin-bottom: 0;
+      margin-top: $spv-inner--x-small--scaleable;
       padding-bottom: $spv-inner--x-small--scaleable;
     }
 
@@ -202,10 +203,6 @@
       @include vf-focus;
       cursor: pointer;
       display: flex;
-
-      &:last-of-type {
-        margin-bottom: $spv-outer--small-scaleable;
-      }
 
       &:not(:last-of-type) {
         position: relative;

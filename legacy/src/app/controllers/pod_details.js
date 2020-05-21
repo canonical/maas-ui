@@ -441,19 +441,24 @@ function PodDetailsController(
 
     // Create the interface constraint.
     // <interface-name>:<key>=<value>[,<key>=<value>];...
-    var interfaces = [];
-    angular.forEach($scope.compose.obj.interfaces, function(iface) {
-      let row = "";
-      if (iface.ipaddress) {
-        row = `${iface.name}:ip=${iface.ipaddress}`;
-      } else if (iface.subnet) {
-        row = `${iface.name}:subnet_cidr=${iface.subnet.cidr}`;
-      }
-      if (row) {
-        interfaces.push(row);
-      }
-    });
-    params.interfaces = interfaces.join(";");
+    const interfaceConstraints = $scope.compose.obj.interfaces
+      .filter((iface) => iface.ipaddress || iface.subnet)
+      .map((iface) => {
+        const constraints = [];
+        if (iface.ipaddress) {
+          constraints.push(`ip=${iface.ipaddress}`);
+        }
+        if (iface.subnet) {
+          constraints.push(`subnet_cidr=${iface.subnet.cidr}`);
+        }
+        if (iface.name) {
+          return `${iface.name}:${constraints.join(",")}`;
+        }
+        return "";
+      })
+      .filter(Boolean)
+      .join(";");
+    params.interfaces = interfaceConstraints;
 
     return params;
   };
@@ -641,6 +646,7 @@ function PodDetailsController(
       name: `eth${$scope.compose.obj.interfaces.length}`
     };
     $scope.compose.obj.interfaces.push(iface);
+    $scope.resetSubnetList(iface);
   };
 
   // Remove an interface from interfaces config.
