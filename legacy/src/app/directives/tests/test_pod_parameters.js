@@ -159,9 +159,20 @@ describe("maasPodParameters", function() {
       expect($scope.obj.$maasForm.fields.rsd_id).toBeUndefined();
     });
 
-    it("creates maas-obj-field with type='slider'", function() {
+    it("creates maas-obj-field with type='slider' and pod type='virsh'", function() {
       var directive = compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "virsh");
+      $scope.$digest();
+
+      var sliders = angular.element(
+        directive.find('maas-obj-field[type="slider"]')
+      );
+      expect(sliders.length).toBe(2);
+    });
+
+    it("creates maas-obj-field with type='slider' and pod type='lxd'", function() {
+      var directive = compileDirective("false");
+      $scope.obj.$maasForm.updateValue("type", "lxd");
       $scope.$digest();
 
       var sliders = angular.element(
