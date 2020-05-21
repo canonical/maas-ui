@@ -68,11 +68,11 @@ describe("PodDetailsController", function() {
       memory_over_commit_ratio: 1,
       total: {
         cores: 8,
-        memory_gb: 4,
+        memory: 8192,
       },
       used: {
         cores: 0,
-        memory_gb: 0,
+        memory: 0,
       },
     };
     PodsManager._items.push(pod);
@@ -576,6 +576,18 @@ describe("PodDetailsController", function() {
     });
   });
 
+  describe("validateRequest", () => {
+    it("correctly validates requests", () => {
+      makeController();
+      // Request is empty, therefore default is assumed.
+      expect($scope.validateRequest("", 2)).toBe(true);
+      expect($scope.validateRequest(0, 2)).toBe(false);
+      expect($scope.validateRequest(1, 2)).toBe(true);
+      expect($scope.validateRequest(2, 2)).toBe(true);
+      expect($scope.validateRequest(3, 2)).toBe(false);
+    });
+  });
+
   describe("validateMachineCompose", () => {
     it("correctly validates hostname", () => {
       makeController();
@@ -638,7 +650,7 @@ describe("PodDetailsController", function() {
       makeController();
       $scope.pod = makePod();
       $scope.power_types = defaultPowerTypes();
-      $scope.pod.total.memory_gb = 8;
+      $scope.pod.total.memory = 8192;
       $scope.compose.obj.memory = 9000;
       expect($scope.validateMachineCompose()).toBe(false);
       $scope.compose.obj.memory = -1;
@@ -657,7 +669,7 @@ describe("PodDetailsController", function() {
       makeController();
       $scope.pod = makePod();
       $scope.power_types = defaultPowerTypes();
-      $scope.pod.total.memory_gb = 8;
+      $scope.pod.total.memory = 8192;
       $scope.pod.memory_over_commit_ratio = 2.0;
       $scope.compose.obj.memory = 18000;
       expect($scope.validateMachineCompose()).toBe(false);

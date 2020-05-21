@@ -266,6 +266,17 @@ function PodDetailsController(
     iface.showOptions = true;
   };
 
+  $scope.validateRequest = (requested, available) => {
+    // Empty implies default, so is valid.
+    if (requested === "") {
+      return true;
+    }
+    if ((requested && isNaN(requested)) || (available && isNaN(available))) {
+      return false;
+    }
+    return Number(requested) > 0 && Number(available) >= Number(requested);
+  };
+
   $scope.validateMachineCompose = () => {
     const { availableWithOvercommit, compose, pod } = $scope;
 
@@ -282,45 +293,31 @@ function PodDetailsController(
     // Validate storage pool requests
     const requests = compose.obj.requests;
     for (let i = 0; i < requests.length; i++) {
-      if (
-        requests[i].size &&
-        (isNaN(requests[i].size) ||
-          Number(requests[i].size) <= 0 ||
-          Number(requests[i].size) > Number(requests[i].available))
-      ) {
+      if (!$scope.validateRequest(requests[i].size, requests[i].available)) {
         return false;
       }
     }
 
     // Validate available cores
+    const requestedCores = compose.obj.cores;
     const availableCores = availableWithOvercommit(
       pod.total.cores,
       pod.used.cores,
       pod.cpu_over_commit_ratio,
       1
     );
-    if (
-      compose.obj.cores &&
-      (isNaN(compose.obj.cores) ||
-        Number(compose.obj.cores) <= 0 ||
-        Number(compose.obj.cores) > availableCores)
-    ) {
+    if (!$scope.validateRequest(requestedCores, availableCores)) {
       return false;
     }
 
     // Validate available memory
+    const requestedMemory = compose.obj.memory;
     const availableMemory = availableWithOvercommit(
-      pod.total.memory_gb,
-      pod.used.memory_gb,
-      pod.memory_over_commit_ratio,
-      1
+      pod.total.memory,
+      pod.used.memory,
+      pod.memory_over_commit_ratio
     );
-    if (
-      compose.obj.memory &&
-      (isNaN(compose.obj.memory) ||
-        Number(compose.obj.memory) <= 0 ||
-        Number(compose.obj.memory / 1024) > availableMemory)
-    ) {
+    if (!$scope.validateRequest(requestedMemory, availableMemory)) {
       return false;
     }
 

@@ -94,7 +94,7 @@
                                     type="text"
                                 />
                                 <p class="p-form-help-text">
-                                    {$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GiB available
+                                    {$ availableWithOvercommit(pod.total.memory, pod.used.memory, pod.memory_over_commit_ratio) $}MiB available
                                 </p>
                             </div>
                         </div>
