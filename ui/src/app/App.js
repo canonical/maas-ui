@@ -56,11 +56,13 @@ export const App = () => {
             window.location.pathname.split("/")[2] ===
             process.env.REACT_APP_REACT_BASENAME.substr(1);
           if (reactRoute) {
+            // Get path without basename, react basename
+            const newRoute = window.location.pathname.split("/").slice(3);
             // get subPath e.g. 'settings' in '/MAAS/r/settings/configuration'
-            const newSubpath = window.location.pathname.split("/").slice(3)[0];
+            const newSubpath = newRoute[0];
             const lastSubpath = history.location.pathname.split("/")[1];
             if (newSubpath !== lastSubpath) {
-              history.replace(`/${newSubpath}`);
+              history.replace(`/${newRoute}`);
             }
           }
         }
