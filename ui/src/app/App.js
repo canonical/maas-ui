@@ -95,9 +95,17 @@ export const App = () => {
   // Explicitly check that completedIntro is false so that it doesn't redirect
   // if the config isn't defined yet.
   if (completedIntro === false) {
-    window.location = `${basename}/#/intro`;
+    window.history.pushState(
+      null,
+      null,
+      `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro`
+    );
   } else if (authUser && !authUser.completed_intro) {
-    window.location = `${basename}/#/intro/user`;
+    window.history.pushState(
+      null,
+      null,
+      `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro/user`
+    );
   }
 
   let content;

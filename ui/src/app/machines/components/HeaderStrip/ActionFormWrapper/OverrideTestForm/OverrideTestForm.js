@@ -23,14 +23,11 @@ const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
       numFailedTests
     )}.`;
     if (singleMachine) {
+      const url = `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${singleMachine.system_id}`;
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <a
-            href={`${process.env.REACT_APP_BASENAME}/#/machine/${singleMachine.system_id}`}
-          >
-            {numFailedTestsString}
-          </a>
+          <a href={url}>{numFailedTestsString}</a>
         </span>
       );
     }
@@ -163,7 +160,7 @@ export const OverrideTestForm = ({
                       <br />
                       {selectedMachines.length === 1 ? (
                         <a
-                          href={`${process.env.REACT_APP_BASENAME}/#/machine/${selectedMachines[0].system_id}`}
+                          href={`${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${selectedMachines[0].system_id}`}
                         >
                           Machine > Hardware tests
                         </a>

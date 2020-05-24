@@ -22,40 +22,45 @@ function IntroUserController(
 
   // Set the skip function on the rootScope to allow skipping the
   // intro view.
-  $rootScope.skip = function() {
+  $rootScope.skip = function () {
     $scope.clickContinue(true);
   };
 
   // Return true if super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if continue can be clicked.
-  $scope.canContinue = function() {
+  $scope.canContinue = function () {
     return $scope.user.sshkeys_count > 0;
   };
 
+  const redirectToMachineList = () => {
+    window.history.pushState(
+      null,
+      null,
+      `${process.env.BASENAME}${process.env.REACT_BASENAME}/machines`
+    );
+  };
+
   // Called when continue button is clicked.
-  $scope.clickContinue = function(force) {
+  $scope.clickContinue = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
     if (force || $scope.canContinue()) {
-      UsersManager.markIntroComplete().then(function() {
-        // Reload the whole page so that CONFIG will
-        // be set to the new value.
-        $window.location.reload();
+      UsersManager.markIntroComplete().then(function () {
+        redirectToMachineList();
       });
     }
   };
 
-  // If intro has been completed redirect to '/'.
   if ($window.CONFIG.current_user.completed_intro) {
-    $location.path("/");
+    redirectToMachineList();
   } else {
     // Load the required managers.
-    ManagerHelperService.loadManager($scope, UsersManager).then(function() {
+    ManagerHelperService.loadManager($scope, UsersManager).then(function () {
       $scope.loading = false;
       $scope.user = UsersManager.getAuthUser();
     });
