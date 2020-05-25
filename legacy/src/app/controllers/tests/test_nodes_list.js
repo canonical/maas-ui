@@ -277,7 +277,7 @@ describe("NodesListController", function() {
     expect($scope.devices).toBe(DevicesManager.getItems());
     expect($scope.pools).toBe(ResourcePoolsManager.getItems());
     expect($scope.controllers).toBe(ControllersManager.getItems());
-    expect($scope.osinfo).toBe(GeneralManager.getData("osinfo"));
+    expect($scope.osinfo).toStrictEqual(GeneralManager.getData("osinfo"));
     expect($scope.addHardwareOption).toBeNull();
     expect($scope.addHardwareOptions).toEqual([
       {

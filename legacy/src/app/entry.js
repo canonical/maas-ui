@@ -22,7 +22,7 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import configureRoutes from "./routes";
+import configureRoutes, { prefixRoute } from "./routes";
 import setupWebsocket from "./bootstrap";
 
 // filters
@@ -270,10 +270,9 @@ function configureMaas(
     loadOnEmpty: true,
   });
 
-  $locationProvider.hashPrefix("");
   $locationProvider.html5Mode({
-    enabled: false,
-    requireBase: true,
+    enabled: true,
+    requireBase: false,
   });
 
   // Set the $httpProvider to send the csrftoken in the header of any
@@ -289,27 +288,27 @@ function configureMaas(
 
 // Force users to #/intro when it has not been completed.
 /* @ngInject */
-function introRedirect($rootScope, $location, $window) {
+function introRedirect($rootScope, $window) {
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
     if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
-        $location.path("/intro");
+        window.history.pushState(null, null, prefixRoute("/intro"));
       }
     } else if ($window.CONFIG && !$window.CONFIG.current_user.completed_intro) {
       if (next.controller !== "IntroUserController") {
-        $location.path("/intro/user");
+        window.history.pushState(null, null, prefixRoute("/intro/user"));
       }
     }
   });
 }
 
 /* @ngInject */
-function dashboardRedirect($rootScope, $location, $window) {
+function dashboardRedirect($rootScope, $window) {
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
     // Only superusers currently have access to the dashboard
     if ($window.CONFIG && !$window.CONFIG.current_user.is_superuser) {
       if (next.controller == "DashboardController") {
-        $location.path("/machines");
+        window.history.pushState(null, null, "/machines");
       }
     }
   });

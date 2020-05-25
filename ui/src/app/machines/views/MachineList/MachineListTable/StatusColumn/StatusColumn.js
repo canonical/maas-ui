@@ -131,12 +131,12 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
       {
         children: "See logs",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=logs`,
+        href: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${systemId}?area=logs`,
       },
       {
         children: "See events",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}/#/machine/${systemId}?area=events`,
+        href: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${systemId}?area=events`,
       },
     ],
   ];

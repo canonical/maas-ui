@@ -130,7 +130,9 @@ describe("OverrideTestForm", () => {
     );
     expect(
       wrapper.find('[data-test-id="failed-results-message"] a').props().href
-    ).toBe(`${process.env.REACT_APP_BASENAME}/#/machine/abc123`);
+    ).toBe(
+      `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/abc123`
+    );
   });
 
   it("displays message for multiple machines with failed tests", () => {

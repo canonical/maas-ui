@@ -45,8 +45,6 @@ function NodesListController(
   $rootScope.page = "machines";
 
   // Set initial values.
-  $scope.BASENAME = process.env.BASENAME;
-  $scope.REACT_BASENAME = process.env.REACT_BASENAME;
   $scope.machines = MachinesManager.getItems();
   $scope.zones = ZonesManager.getItems();
   $scope.pools = ResourcePoolsManager.getItems();

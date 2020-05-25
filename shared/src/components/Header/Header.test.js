@@ -115,7 +115,7 @@ describe("Header", () => {
         basename="/MAAS"
         completedIntro={true}
         location={{
-          hash: "#/devices",
+          hash: "l/devices",
           pathname: "/MAAS/",
         }}
         logout={jest.fn()}

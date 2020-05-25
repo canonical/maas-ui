@@ -17,7 +17,7 @@ exports[`Header renders 1`] = `
         >
           <a
             className="p-navigation__link"
-            href="/MAAS/#/dashboard"
+            href="/MAAS/l/dashboard"
           >
             <svg
               alt=""
@@ -104,7 +104,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/devices"
+              href="/MAAS/l/devices"
               onClick={[Function]}
             >
               Devices
@@ -116,7 +116,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/controllers"
+              href="/MAAS/l/controllers"
               onClick={[Function]}
             >
               Controllers
@@ -128,7 +128,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/kvm"
+              href="/MAAS/l/kvm"
               onClick={[Function]}
             >
               KVM
@@ -140,7 +140,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/images"
+              href="/MAAS/l/images"
               onClick={[Function]}
             >
               Images
@@ -152,7 +152,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/domains"
+              href="/MAAS/l/domains"
               onClick={[Function]}
             >
               DNS
@@ -164,7 +164,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/zones"
+              href="/MAAS/l/zones"
               onClick={[Function]}
             >
               AZs
@@ -176,7 +176,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/#/networks?by=fabric"
+              href="/MAAS/l/networks?by=fabric"
               onClick={[Function]}
             >
               Subnets

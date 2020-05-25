@@ -19,6 +19,9 @@ import vlanDetailsTmpl from "./partials/vlan-details.html";
 import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
+export const prefixRoute = (route) =>
+  `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}${route}`;
+
 /* @ngInject */
 const configureRoutes = ($stateProvider, $urlRouterProvider) => {
   $stateProvider
@@ -28,206 +31,202 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
       controller: "MasterController",
     })
     .state("master.intro", {
-      url: "/intro",
+      url: prefixRoute("/intro"),
       template: introTmpl,
       controller: "IntroController",
     })
     .state("master.introUser", {
-      url: "/intro/user",
+      url: prefixRoute("/intro/user"),
       template: introUserTmpl,
       controller: "IntroUserController",
     })
     .state("master.machineResultDetails", {
-      url: "/machine/:system_id/:result_type/:id",
+      url: prefixRoute("/machine/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.machineEvents", {
-      url: "/machine/:system_id/events",
+      url: prefixRoute("/machine/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.machineDetails", {
-      url: "/machine/:system_id",
+      url: prefixRoute("/machine/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("master.devices", {
-      url: "/devices",
+      url: prefixRoute("/devices"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.deviceResultDetails", {
-      url: "/device/:system_id/:result_type/:id",
+      url: prefixRoute("/device/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.deviceEvents", {
-      url: "/device/:system_id/events",
+      url: prefixRoute("/device/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.deviceDetails", {
-      url: "/device/:system_id",
+      url: prefixRoute("/device/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("master.controllers", {
-      url: "/controllers",
+      url: prefixRoute("/controllers"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.controllerResultDetails", {
-      url: "/controller/:system_id/:result_type/:id",
+      url: prefixRoute("/controller/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.controllerEvents", {
-      url: "/controller/:system_id/events",
+      url: prefixRoute("/controller/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.controllerDetails", {
-      url: "/controller/:system_id",
+      url: prefixRoute("/controller/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("nodes", {
-      url: "/nodes",
-      redirectTo: "/machines",
+      url: prefixRoute("/nodes"),
+      redirectTo: prefixRoute("/machines"),
     })
     .state("nodeDetails", {
-      url: "/node/machine/:system_id",
-      redirectTo: "/machine/:system_id",
+      url: prefixRoute("/node/machine/:system_id"),
+      redirectTo: prefixRoute("/machine/:system_id"),
     })
     .state("nodeResultDetails", {
-      url: "/node/machine/:system_id/:result_type/:id",
-      redirectTo: "/machine/:system_id/:result_type/:id",
+      url: prefixRoute("/node/machine/:system_id/:result_type/:id"),
+      redirectTo: prefixRoute("/machine/:system_id/:result_type/:id"),
     })
     .state("nodeEvents", {
-      url: "/node/machine/:system_id/events",
-      redirectTo: "/machine/:system_id/events",
+      url: prefixRoute("/node/machine/:system_id/events"),
+      redirectTo: prefixRoute("/machine/:system_id/events"),
     })
     .state("nodeDeviceDetails", {
-      url: "/node/device/:system_id",
-      redirectTo: "/device/:system_id",
+      url: prefixRoute("/node/device/:system_id"),
+      redirectTo: prefixRoute("/device/:system_id"),
     })
     .state("nodeDeviceResultDetail", {
-      url: "/node/device/:system_id/:result_type/:id",
-      redirectTo: "/device/:system_id/:result_type/:id",
+      url: prefixRoute("/node/device/:system_id/:result_type/:id"),
+      redirectTo: prefixRoute("/device/:system_id/:result_type/:id"),
     })
     .state("nodeDeviceEvents", {
-      url: "/node/device/:system_id/events",
-      redirectTo: "/device/:system_id/events",
+      url: prefixRoute("/node/device/:system_id/events"),
+      redirectTo: prefixRoute("/device/:system_id/events"),
     })
     .state("nodeControllerDetails", {
-      url: "/node/controller/:system_id",
-      redirectTo: "/controller/:system_id",
+      url: prefixRoute("/node/controller/:system_id"),
+      redirectTo: prefixRoute("/controller/:system_id"),
     })
     .state("nodeControllerResultDetails", {
-      url: "/node/controller/:system_id/:result_type/:id",
-      redirectTo: "/controller/:system_id/:result_type/:id",
+      url: prefixRoute("/node/controller/:system_id/:result_type/:id"),
+      redirectTo: prefixRoute("/controller/:system_id/:result_type/:id"),
     })
     .state("nodeControllerEvents", {
-      url: "/node/controller/:system_id/events",
-      redirectTo: "/controller/:system_id/events",
+      url: prefixRoute("/node/controller/:system_id/events"),
+      redirectTo: prefixRoute("/controller/:system_id/events"),
     })
     .state("master.kvm", {
-      url: "/kvm",
+      url: prefixRoute("/kvm"),
       template: podsListTmpl,
       controller: "PodsListController",
     })
     .state("master.kvmDetails", {
-      url: "/kvm/:id",
+      url: prefixRoute("/kvm/:id"),
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
-    .state("pods", { url: "/pods", redirectTo: "/kvm" })
-    .state("podDetails", { url: "/pod/:id", redirectTo: "/kvm/:id" })
+    .state("pods", { url: prefixRoute("/pods"), redirectTo: prefixRoute("/kvm") })
+    .state("podDetails", { url: prefixRoute("/pod/:id"), redirectTo: prefixRoute("/kvm/:id") })
     .state("master.rsd", {
-      url: "/rsd",
+      url: prefixRoute("/rsd"),
       template: podsListTmpl,
       controller: "PodsListController",
     })
     .state("master.rsdDetails", {
-      url: "/rsd/:id",
+      url: prefixRoute("/rsd/:id"),
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
     .state("master.images", {
-      url: "/images",
+      url: prefixRoute("/images"),
       template: imagesTmpl,
       controller: "ImagesController",
     })
     .state("master.domains", {
-      url: "/domains",
+      url: prefixRoute("/domains"),
       template: domainsListTmpl,
       controller: "DomainsListController",
     })
     .state("master.domainDetails", {
-      url: "/domain/:domain_id",
+      url: prefixRoute("/domain/:domain_id"),
       template: domainDetailsTmpl,
       controller: "DomainDetailsController",
     })
     .state("master.spaceDetails", {
-      url: "/space/:space_id",
+      url: prefixRoute("/space/:space_id"),
       template: spaceDetailsTmpl,
       controller: "SpaceDetailsController",
     })
     .state("master.fabricDetails", {
-      url: "/fabric/:fabric_id",
+      url: prefixRoute("/fabric/:fabric_id"),
       template: fabricDetailsTmpl,
       controller: "FabricDetailsController",
     })
     .state("master.subnets", {
-      url: "/subnets",
+      url: prefixRoute("/subnets"),
       redirectTo: "/networks?by=fabric",
     })
     .state("master.network", {
-      url: "/networks",
+      url: prefixRoute("/networks"),
       template: networksListTmpl,
       controller: "NetworksListController",
       reloadOnSearch: false,
     })
     .state("master.subnetDetails", {
-      url: "/subnet/:subnet_id",
+      url: prefixRoute("/subnet/:subnet_id"),
       template: subnetDetailsTmpl,
       controller: "SubnetDetailsController",
     })
     .state("master.vlanDetails", {
-      url: "/vlan/:vlan_id",
+      url: prefixRoute("/vlan/:vlan_id"),
       template: vlanDetailsTmpl,
       controller: "VLANDetailsController",
       controllerAs: "vlanDetails",
     })
     .state("master.zoneDetails", {
-      url: "/zone/:zone_id",
+      url: prefixRoute("/zone/:zone_id"),
       template: zoneDetailsTmpl,
       controller: "ZoneDetailsController",
     })
     .state("master.zones", {
-      url: "/zones",
+      url: prefixRoute("/zones"),
       template: zonesListTmpl,
       controller: "ZonesListController",
       reloadOnSearch: false,
     })
     .state("master.pools", {
-      url: "/pools",
+      url: prefixRoute("/pools"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.dashboard", {
-      url: "/dashboard",
+      url: prefixRoute("/dashboard"),
       template: dashboardTmpl,
       controller: "DashboardController",
     });
-
-  $urlRouterProvider.otherwise(() => {
-    window.location.replace(`${process.env.BASENAME}/r/machines`);
-  });
 };
 
 export default configureRoutes;

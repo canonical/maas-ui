@@ -131,7 +131,7 @@
                         <tr data-ng-repeat="row in rows | orderBy:predicate:reverse track by $index">
                             <td class="table-col--50">
                                 <div class="u-text-overflow">
-                                    <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
+                                    <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                                 </div>
                             </td>
                             <td class="table-col--10">
@@ -141,12 +141,12 @@
                             </td>
                             <td class="table-col--15">
                                 <div class="u-text-overflow">
-                                    <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
+                                    <a href="{$ legacyURLBase $}/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                                 </div>
                             </td>
                             <td class="table-col--25">
                                 <div class="u-text-overflow">
-                                    <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric_name $}</a>
+                                    <a href="{$ legacyURLBase $}/fabric/{$ row.fabric.id $}">{$ row.fabric_name $}</a>
                                 </div>
                             </td>
                         </tr>

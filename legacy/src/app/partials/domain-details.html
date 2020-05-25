@@ -226,11 +226,11 @@
                             <!--
                                 Node type is an enum (see node-details.html and the comment therein).
                             -->
-                            <span data-ng-switch-when="0"><a href="#/machine/{$ row.system_id $}">{$ row.name $}</a></span>
-                            <span data-ng-switch-when="1"><a href="#/device/{$ row.system_id $}">{$ row.name $}</a></span>
-                            <span data-ng-switch-when="2"><a href="#/controller/{$ row.system_id $}">{$ row.name $}</a></span>
-                            <span data-ng-switch-when="3"><a href="#/controller/{$ row.system_id $}">{$ row.name $}</a></span>
-                            <span data-ng-switch-when="4"><a href="#/controller/{$ row.system_id $}">{$ row.name $}</a></span>
+                            <span data-ng-switch-when="0"><a href="{$ legacyURLBase $}/machine/{$ row.system_id $}">{$ row.name $}</a></span>
+                            <span data-ng-switch-when="1"><a href="{$ legacyURLBase $}/device/{$ row.system_id $}">{$ row.name $}</a></span>
+                            <span data-ng-switch-when="2"><a href="{$ legacyURLBase $}/controller/{$ row.system_id $}">{$ row.name $}</a></span>
+                            <span data-ng-switch-when="3"><a href="{$ legacyURLBase $}/controller/{$ row.system_id $}">{$ row.name $}</a></span>
+                            <span data-ng-switch-when="4"><a href="{$ legacyURLBase $}/controller/{$ row.system_id $}">{$ row.name $}</a></span>
                             <span data-ng-switch-default>{$ row.name $}</span>
                         </div>
                     </span>

@@ -27,7 +27,7 @@
                 <hr />
                 <div class="row">
                     <div class="col-8">
-                        <p>You will start mapping your subnet. Go to the <a href="#/dashboard">dashboard</a> to see the discovered items.</p>
+                        <p>You will start mapping your subnet. Go to the <a href="{$ legacyURLBase $}/dashboard">dashboard</a> to see the discovered items.</p>
                     </div>
                     <div class="col-4">
                         <div class="u-align--right">
@@ -247,7 +247,7 @@
                     </div>
                     <div class="p-form__control col-4">
                         <p>
-                            <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>
+                            <a data-ng-if="space !== null" href="{$ legacyURLBase $}/space/{$ space.id $}">{$ space.name $}</a>
                             <span data-ng-if="space === null">
                                 (undefined)
                                 <span class="p-tooltip--top-center">
@@ -315,7 +315,7 @@
                             </div>
                             <div class="p-form__control col-4">
                                 <p>
-                                    <a data-ng-if="space !== null" href="#/space/{$ space.id $}">{$ space.name $}</a>
+                                    <a data-ng-if="space !== null" href="{$ legacyURLBase $}/space/{$ space.id $}">{$ space.name $}</a>
                                     <span data-ng-if="space === null">
                                         (undefined)
                                         <span class="p-tooltip--top-center">
@@ -598,14 +598,14 @@
                             <td aria-label="IP Address" title="{$ ip.ip $}">{$ ip.ip $}</td>
                             <td aria-label="Type" title="{$ getAllocType(ip.alloc_type) $}">{$ getAllocType(ip.alloc_type) $}</td>
                             <td aria-label="Node" data-ng-switch="ip.node_summary.node_type">
-                                <span data-ng-switch-when="0"><a href="#/machine/{$ ip.node_summary.system_id $}">{$
+                                <span data-ng-switch-when="0"><a href="{$ legacyURLBase $}/machine/{$ ip.node_summary.system_id $}">{$
                                         ip.node_summary.hostname $}</a></span>
                                 <span data-ng-switch-when="1">{$ ip.node_summary.hostname $}</span>
-                                <span data-ng-switch-when="2"><a href="#/controller/{$ ip.node_summary.system_id $}">{$
+                                <span data-ng-switch-when="2"><a href="{$ legacyURLBase $}/controller/{$ ip.node_summary.system_id $}">{$
                                         ip.node_summary.hostname $}</a></span>
-                                <span data-ng-switch-when="3"><a href="#/controller/{$ ip.node_summary.system_id $}">{$
+                                <span data-ng-switch-when="3"><a href="{$ legacyURLBase $}/controller/{$ ip.node_summary.system_id $}">{$
                                         ip.node_summary.hostname $}</a></span>
-                                <span data-ng-switch-when="4"><a href="#/controller/{$ ip.node_summary.system_id $}">{$
+                                <span data-ng-switch-when="4"><a href="{$ legacyURLBase $}/controller/{$ ip.node_summary.system_id $}">{$
                                         ip.node_summary.hostname $}</a></span>
                                 <span data-ng-switch-default>{$ ip.node_summary.hostname $}</span>
                             </td>

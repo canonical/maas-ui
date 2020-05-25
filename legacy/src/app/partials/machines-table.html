@@ -125,7 +125,7 @@
                 </div>
                 <div class="p-double-row__rows-container--checkbox">
                     <div class="p-double-row__main-row">
-                        <a class="p-domain-name u-text-overflow" href="#/{$ node.link_type $}/{$ node.system_id $}" title="{$ node.fqdn $}">
+                        <a class="p-domain-name u-text-overflow" href="{$ legacyURLBase $}/{$ node.link_type $}/{$ node.system_id $}" title="{$ node.fqdn $}">
                             <span data-ng-if="node.locked" title="This machine is locked. You have to unlock it to perform any actions." aria-describedby="{$ node.fqdn $}-locked-state">
                                 <i class="p-icon--locked">Locked: </i>
                             </span>
@@ -154,8 +154,8 @@
                     <label class="p-checkbox--action checkbox-label" for="{$ node.fqdn $}" ng-class="getCheckboxClass(node)"></label>
                 </div>
                 <span class="u-text-overflow">
-                    <a href="#/{$ node.link_type $}/{$ node.system_id $}" title="{$ node.pxe_mac_vendor $}">{$ node.pxe_mac $}</a>
-                    <a href="#/{$ node.link_type $}/{$ node.system_id $}" class="extra-macs" data-ng-show="node.extra_macs.length">(+{$ node.extra_macs.length $})</a>
+                    <a href="{$ legacyURLBase $}/{$ node.link_type $}/{$ node.system_id $}" title="{$ node.pxe_mac_vendor $}">{$ node.pxe_mac $}</a>
+                    <a href="{$ legacyURLBase $}/{$ node.link_type $}/{$ node.system_id $}" class="extra-macs" data-ng-show="node.extra_macs.length">(+{$ node.extra_macs.length $})</a>
                 </span>
             </td>
             <td class="p-table__col--power p-double-row" aria-label="Power state">
@@ -265,13 +265,13 @@
                         </div>
                         <div class="p-contextual-menu__group">
                             <a
-                                href="#/machine/{$ node.system_id $}?area=logs"
+                                href="{$ legacyURLBase $}/machine/{$ node.system_id $}?area=logs"
                                 class="p-table-menu__link"
                             >
                                 See logs
                             </a>
                             <a
-                                href="#/machine/{$ node.system_id $}?area=events"
+                                href="{$ legacyURLBase $}/machine/{$ node.system_id $}?area=events"
                                 class="p-table-menu__link"
                             >
                                 See events
@@ -328,7 +328,7 @@
                     <div class="p-double-row__rows-container">
                         <div class="p-double-row__main-row" aria-label="Pool">
                             <i class="p-icon--spinner u-animation--spin" data-ng-if="node['set-pool-transition']">Setting pool</i>
-                            <span class="u-text-overflow" data-ng-if="node.pool.name"><a class="p-link--soft" href="#/pools" title="{$ node.pool.name $}"> {$ node.pool.name $}</a></span>
+                            <span class="u-text-overflow" data-ng-if="node.pool.name"><a class="p-link--soft" href="{$ legacyURLBase $}/pools" title="{$ node.pool.name $}"> {$ node.pool.name $}</a></span>
                             <span class="u-text-overflow" data-ng-if="!node.pool.name">-</span>
                             <button
                                 class="p-table-menu__toggle p-icon--chevron u-hide--br3"
@@ -367,7 +367,7 @@
                     <div class="p-double-row__rows-container">
                         <div class="p-double-row__main-row" aria-label="Zone" title="{$ node.zone.name $}">
                             <i class="p-icon--spinner u-animation--spin" data-ng-if="node['set-zone-transition']">Setting zone</i>
-                            <span class="u-text-overflow" data-ng-if="node.zone.name"><a class="p-link--soft" href="#/zone/{$ node.zone.id $}" title="{$ node.zone.name $}">{$ node.zone.name $}</a></span>
+                            <span class="u-text-overflow" data-ng-if="node.zone.name"><a class="p-link--soft" href="{$ legacyURLBase $}/zone/{$ node.zone.id $}" title="{$ node.zone.name $}">{$ node.zone.name $}</a></span>
                             <span class="u-text-overflow" data-ng-if="!node.zone.name">-</span>
                             <button
                                 class="p-table-menu__toggle p-icon--chevron u-hide--br3"
@@ -422,11 +422,11 @@
                 </div>
                 <div class="p-double-row__rows-container--icon">
                     <div class="p-double-row__main-row" aria-label="Fabric">
-                        <span class="u-text-overflow" data-ng-if="node.vlan.fabric_name"><a class="p-link--soft" href="#/fabric/{$ node.vlan.fabric_id $}" title="{$ node.vlan.fabric_name $}">{$ node.vlan.fabric_name $}</a></span>
+                        <span class="u-text-overflow" data-ng-if="node.vlan.fabric_name"><a class="p-link--soft" href="{$ legacyURLBase $}/fabric/{$ node.vlan.fabric_id $}" title="{$ node.vlan.fabric_name $}">{$ node.vlan.fabric_name $}</a></span>
                         <span class="u-text-overflow" data-ng-if="!node.vlan.fabric_name">-</span>
                     </div>
                     <div data-ng-if="node.vlan.name" class="p-double-row__muted-row" aria-label="VLAN">
-                        <span class="u-text-overflow" data-ng-if="node.vlan.name"><a class="p-muted-text p-link--muted" href="#/vlan/{$ node.vlan.id $}" title="{$ node.vlan.name $}">{$ node.vlan.name $}</a></span>
+                        <span class="u-text-overflow" data-ng-if="node.vlan.name"><a class="p-muted-text p-link--muted" href="{$ legacyURLBase $}/vlan/{$ node.vlan.id $}" title="{$ node.vlan.name $}">{$ node.vlan.name $}</a></span>
                     </div>
                 </div>
             </td>

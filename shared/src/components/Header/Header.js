@@ -143,7 +143,7 @@ export const Header = ({
     // Remove the hidden items.
     .filter(({ hidden }) => !hidden);
 
-  const generateLegacyURL = (url) => `${basename}/#${url}`;
+  const generateLegacyURL = (url) => `${basename}/l${url}`;
   const generateNewURL = (url) => `${basename}${newURLPrefix}${url}`;
   const generateURL = (url, isLegacy) => {
     if (isLegacy) {

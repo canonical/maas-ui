@@ -142,7 +142,7 @@
                     </div>
                     <div class="col-4 col-small-2 col-medium-3">
                         <div class="p-form__control">
-                            <p><a href="#/fabric/{$ vlanDetails.fabric.id $}">{$ vlanDetails.fabric.name $}</a></p>
+                            <p><a href="{$ legacyURLBase $}/fabric/{$ vlanDetails.fabric.id $}">{$ vlanDetails.fabric.name $}</a></p>
                         </div>
                     </div>
                 </div>
@@ -159,11 +159,11 @@
                     <div class="col-4 col-small-2 col-medium-3">
                         <div class="p-form__control">
                             <span data-ng-if="vlanDetails.primaryRack">
-                                <a href="#/controller/{$ vlanDetails.primaryRack.system_id $}">{$ vlanDetails.primaryRack.hostname $}</a><span
+                                <a href="{$ legacyURLBase $}/controller/{$ vlanDetails.primaryRack.system_id $}">{$ vlanDetails.primaryRack.hostname $}</a><span
                                     data-ng-if="vlanDetails.secondaryRack">,</span>
                             </span>
                             <span data-ng-if="vlanDetails.secondaryRack">
-                                <a href="#/controller/{$ vlanDetails.secondaryRack.system_id $}">{$ vlanDetails.secondaryRack.hostname $}</a>
+                                <a href="{$ legacyURLBase $}/controller/{$ vlanDetails.secondaryRack.system_id $}">{$ vlanDetails.secondaryRack.hostname $}</a>
                             </span>
                             <span data-ng-if="!vlanDetails.primaryRack && !vlanDetails.secondaryRack">-</span>
                         </div>
@@ -204,7 +204,7 @@
                                 <div class="p-form__control">
                                     <p>
                                         <span data-ng-repeat="rack in vlanDetails.relatedControllers">
-                                            <a href="#/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
+                                            <a href="{$ legacyURLBase $}/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
                                         </span>
                                     </p>
                                 </div>
@@ -586,13 +586,13 @@
                 <tbody>
                     <tr data-ng-repeat="row in vlanDetails.relatedSubnets">
                         <td class="col-6 u-text-overflow" aria-label="Subnet">
-                            <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet.cidr $}</a>
+                            <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet.cidr $}</a>
                         </td>
                         <td class="col-2 u-text-overflow" aria-label="Used">
                             {$ row.subnet.statistics.usage_string $}
                         </td>
                         <td class="col-4 u-text-overflow" aria-label="Space">
-                            <a href="#space/{$ row.space.id $}">{$ row.space.name $}</a>
+                            <a href="{$ legacyURLBase $}/space/{$ row.space.id $}">{$ row.space.name $}</a>
                         </td>
                     </tr>
                 </tbody>
