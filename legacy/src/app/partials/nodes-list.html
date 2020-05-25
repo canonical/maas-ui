@@ -192,7 +192,7 @@
                                         <p ng-if="isSSHKeyWarning(tab)">
                                             <i class="p-icon--warning">Warning:</i>
                                             <span>Login will not be possible because no SSH keys have been added to your account.</span><br />
-                                            <span>To add an SSH key, visit <a href="{$ BASENAME $}{$ REACT_BASENAME $}/account/prefs/ssh-keys">your account page</a>.</span>
+                                            <span>To add an SSH key, visit <a href="{$ newURLBase $}/account/prefs/ssh-keys">your account page</a>.</span>
                                         </p>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@
                                     <label class="p-form__label col-2 col-small-2 col-medium-2">Tag machines</label>
                                     <div class="p-form__control col-3 col-small-2 col-medium-3 tags--inline">
                                         <span data-ng-repeat="tag in node.tags" data-ng-hide="summary.editing">
-                                            <a href="r/machines/?q=tags:({$ tag $})">{$ tag $}</a>
+                                            <a href="{$ newURLBase $}/machines?q=tags:({$ tag $})">{$ tag $}</a>
                                         </span>
                                         <tags-input data-ng-model="tags" allowed-tags-pattern="[\w-]+" placeholder="Enter a tag">
                                             <auto-complete source="tagsAutocomplete($query)"></auto-complete>
@@ -269,7 +269,7 @@
                                 <i class="p-icon--warning"></i>
                                 <span data-ng-if="tabs[tab].selectedItems.length === 1">
                                     Machine <strong>{$ tabs[tab].selectedItems[0].fqdn $}</strong> has
-                                    <a href="#/{$ tabs[tab].selectedItems[0].link_type $}/{$ tabs[tab].selectedItems[0].system_id $}?area=testing">
+                                    <a href="{$ legacyURLBase $}/{$ tabs[tab].selectedItems[0].link_type $}/{$ tabs[tab].selectedItems[0].system_id $}?area=testing">
                                         failed {$ getFailedTestCount(tab) $} tests</a>.
                                 </span>
                                 <span data-ng-if="tabs[tab].selectedItems.length > 1">
@@ -282,7 +282,7 @@
                                 <input type="checkbox" id="suppress-tests" data-ng-model="tabs[tab].suppressFailedTestsChecked" data-ng-change="toggleHideFailIcons(tab)">
                                 <label for="suppress-tests">Suppress test-failure icons in the machines list. Results remain visible in
                                     <span data-ng-if="tabs[tab].selectedItems.length === 1">
-                                        <a href="#/{$ tabs[tab].selectedItems[0].link_type $}/{$ tabs[tab].selectedItems[0].system_id $}?area=testing">Machine &gt; Hardware tests</a>.
+                                        <a href="{$ legacyURLBase $}/{$ tabs[tab].selectedItems[0].link_type $}/{$ tabs[tab].selectedItems[0].system_id $}?area=testing">Machine &gt; Hardware tests</a>.
                                     </span>
                                     <span data-ng-if="tabs[tab].selectedItems.length > 1">Machine &gt; Hardware tests.</span>
                                 </label>
@@ -387,7 +387,7 @@
                             <i class="p-icon--warning">Warning</i>
                             {$ tabs[tab].selectedItems.length $}
                             <span data-ng-pluralize count="tabs[tab].selectedItems.length" when="{'one': 'node', 'other': 'nodes'}"></span>
-                            cannot be {$ tabs[tab].actionOption.sentence $}, because the required boot images have not been imported. To import boot images, visit the <a href="#/images">images page</a>.
+                            cannot be {$ tabs[tab].actionOption.sentence $}, because the required boot images have not been imported. To import boot images, visit the <a href="{$ legacyURLBase $}/images">images page</a>.
                         </p>
                     </div>
                 </div>
@@ -464,7 +464,7 @@
 
         <section class="page-header__section row" data-ng-hide="architectures.length">
             <p class="page-header__message page-header__message--error">
-                Cannot add {$ mode $} until boot images have been imported. To fix, visit the <a href="#/images">images page</a>.
+                Cannot add {$ mode $} until boot images have been imported. To fix, visit the <a href="{$ legacyURLBase $}/images">images page</a>.
             </p>
         </section>
     </div>
@@ -730,13 +730,13 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
             <hr class="u-no-margin--bottom" />
             <ul class="p-tabs__list" role="tablist">
                 <li class="p-tabs__item" role="presentation">
-                    <a href="r/machines" class="p-tabs__link" role="tab"
+                    <a href="{$ newURLBase $}/machines" class="p-tabs__link" role="tab"
                         data-ng-class="{ 'is-active': currentpage === 'machines'}">
                         <ng-pluralize count="machines.length" when="{'one': '{$ machines.length $} Machine', 'other': '{$ machines.length $} Machines'}"></ng-pluralize>
                     </a>
                 </li>
                 <li class="p-tabs__item" role="presentation">
-                    <a href="#/pools" class="p-tabs__link" role="tab"
+                    <a href="{$ legacyURLBase $}/pools" class="p-tabs__link" role="tab"
                         data-ng-class="{ 'is-active': currentpage === 'pools'}">
                         <ng-pluralize count="pools.length" when="{'one': '{$ pools.length $} Resource pool', 'other': '{$ pools.length $} Resource pools'}"></ng-pluralize>
                     </a>
@@ -860,7 +860,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                             <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(device, 'devices')" data-ng-checked="device.$selected" id="{$ device.fqdn $}" data-ng-disabled="hasActionsInProgress('devices')"/>
                             <label for="{$ device.fqdn $}" class="p-form__label is-inline-label"></label>
                         </span>
-                        <a class="p-domain-name" href="#/{$ device.link_type $}/{$ device.system_id $}" title="{$ device.fqdn $}">
+                        <a class="p-domain-name" href="{$ legacyURLBase $}/{$ device.link_type $}/{$ device.system_id $}" title="{$ device.fqdn $}">
                             <span class="p-domain-name__host">{$ device.hostname $}</span><span class="p-domain-name__tld">.{$ device.domain.name $}</span>
                         </a>
                     </td>
@@ -1021,7 +1021,7 @@ sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tab
                                 <input type="checkbox" class="u-float--none" data-ng-click="toggleChecked(controller, 'controllers')" data-ng-checked="controller.$selected" id="{$ controller.fqdn $}" data-ng-disabled="hasActionsInProgress('controllers')"/>
                                 <label for="{$ controller.fqdn $}" class="p-form__label is-inline-label"></label>
                             </span>
-                            <a class="p-domain-name" href="#/{$ controller.link_type $}/{$ controller.system_id $}" title="{$ controller.fqdn $}">
+                            <a class="p-domain-name" href="{$ legacyURLBase $}/{$ controller.link_type $}/{$ controller.system_id $}" title="{$ controller.fqdn $}">
                                 <span class="p-domain-name__host">{$ controller.hostname $}</span><span class="p-domain-name__tld">.{$ controller.domain.name $}</span>
                             </a>
                         </td>

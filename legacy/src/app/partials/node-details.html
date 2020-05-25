@@ -348,7 +348,7 @@
         <div class="row">
             <div class="p-notification--information u-no-margin--bottom">
                 <p class="p-notification__response">
-                    You can now enable <strong>high availability DHCP</strong> on {$ node.vlan.fabric_name $} {$ getNotificationVLANText() $}. <a href="/#/vlan/{$ node.vlan.id $}?provide_dhcp=true">Reconfigure</a> the DHCP configuration. <a
+                    You can now enable <strong>high availability DHCP</strong> on {$ node.vlan.fabric_name $} {$ getNotificationVLANText() $}. <a href="{$ legacyURLBase $}/vlan/{$ node.vlan.id $}?provide_dhcp=true">Reconfigure</a> the DHCP configuration. <a
                         class="p-notification__action" data-ng-click="dismissHighAvailabilityNotification()">Dismiss</a>
                 </p>
             </div>
@@ -463,7 +463,7 @@
                                 data-ng-class="{'is-disabled': !summary.editing }">Tags</label>
                             <div class="p-form__control col-4 tags--inline">
                                 <span data-ng-repeat="tag in node.tags" data-ng-hide="summary.editing">
-                                    <a href="r/machines/?q=tags:({$ tag $})">{$ tag $}</a>
+                                    <a href="{$ newURLBase $}/machines?q=tags:({$ tag $})">{$ tag $}</a>
                                 </span>
                                 <tags-input data-ng-model="summary.tags"
                                     data-ng-hide="!summary.editing" allowed-tags-pattern="[\w-]+">
@@ -717,10 +717,10 @@
                         <tbody>
                             <tr class="p-table__row" data-ng-repeat="vlanRow in vlanTable">
                                 <td title="{$ vlanRow['fabric'].name $}">
-                                    <a href="#/fabric/{$ vlanRow['fabric'].id $}">{$ vlanRow['fabric'].name $}</a>
+                                    <a href="{$ legacyURLBase $}/fabric/{$ vlanRow['fabric'].id $}">{$ vlanRow['fabric'].name $}</a>
                                 </td>
                                 <td title="{$ getVLANText(vlanRow['vlan']) $}">
-                                    <a href="#/vlan/{$ vlanRow['vlan'].id $}">{$ getVLANText(vlanRow['vlan']) $}</a>
+                                    <a href="{$ legacyURLBase $}/vlan/{$ vlanRow['vlan'].id $}">{$ getVLANText(vlanRow['vlan']) $}</a>
                                 </td>
                                 <td>
                                     <span data-ng-if="vlanRow.vlan.dhcp_on === true || vlanRow.vlan.relay_vlan !== null || vlanRow.vlan.external_dhcp === true" title="Enabled">Enabled</span>
@@ -728,14 +728,14 @@
                                 </td>
                                 <td>
                                     <div class="u-no-margin--top" data-ng-repeat="subnet in vlanRow['subnets']">
-                                        <a href="#/subnet/{$ subnet.id $}" title="{$ getSubnetText(subnet) $}">{$ getSubnetText(subnet) $}</a>
+                                        <a href="{$ legacyURLBase $}/subnet/{$ subnet.id $}" title="{$ getSubnetText(subnet) $}">{$ getSubnetText(subnet) $}</a>
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="#/controller/{$ vlanRow['primary_rack'].system_id $}" title="{$ vlanRow['primary_rack'].fqdn $}">{$ vlanRow['primary_rack'].fqdn $}</a>
+                                    <a href="{$ legacyURLBase $}/controller/{$ vlanRow['primary_rack'].system_id $}" title="{$ vlanRow['primary_rack'].fqdn $}">{$ vlanRow['primary_rack'].fqdn $}</a>
                                 </td>
                                 <td>
-                                    <a href="#/controller/{$ vlanRow['secondary_rack'].system_id $}" title="{$ vlanRow['secondary_rack'].fqdn $}">{$ vlanRow['secondary_rack'].fqdn $}</a>
+                                    <a href="{$ legacyURLBase $}/controller/{$ vlanRow['secondary_rack'].system_id $}" title="{$ vlanRow['secondary_rack'].fqdn $}">{$ vlanRow['secondary_rack'].fqdn $}</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -942,12 +942,12 @@
                                     <td class="p-double-row" aria-label="Subnet CIDR">
                                         <div class="p-double-row__main-row" aria-label="Subnet CIDR" title="{$ interface.subnet.cidr $}">
                                             <span data-ng-if="interface.subnet.cidr">
-                                                <a class="p-link--soft" href="/#/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
+                                                <a class="p-link--soft" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
                                             </span>
                                             <span data-ng-if="!interface.subnet.cidr">Unconfigured</span>
                                         </div>
                                         <div data-ng-if="interface.subnet.name" class="p-double-row__muted-row" aria-label="Subnet name" title="{$ interface.subnet.name $}">
-                                            <a class="p-muted-text p-link--muted" href="/#/subnet/{$ interface.subnet.id $}">{$ interface.subnet.name $}</a>
+                                            <a class="p-muted-text p-link--muted" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$ interface.subnet.name $}</a>
                                         </div>
                                     </td>
                                     <td class="p-double-row">
@@ -1247,7 +1247,7 @@
                                         <div class="p-double-row__rows-container">
                                             <div class="p-double-row__main-row" aria-label="Fabric">
                                                 <span title="{$ interface.fabric.name || 'Disconnected' $}">
-                                                    <a class="p-link--soft" data-ng-if="interface.fabric" href="/#/fabric/{$ interface.fabric.id $}">{$
+                                                    <a class="p-link--soft" data-ng-if="interface.fabric" href="{$ legacyURLBase $}/fabric/{$ interface.fabric.id $}">{$
                                                         interface.fabric.name $}</a>
                                                     <span data-ng-if="!interface.fabric.name">Disconnected</span>
                                                 </span>
@@ -1255,7 +1255,7 @@
                                             <div class="p-double-row__muted-row" aria-label="VLAN">
                                                 <span title="{$ getVLANText(interface.vlan) $}">
                                                     <a class="p-muted-text p-link--muted" data-ng-if="interface.vlan"
-                                                        href="/#/vlan/{$ interface.vlan.id $}">
+                                                        href="{$ legacyURLBase $}/vlan/{$ interface.vlan.id $}">
                                                         {$ getVLANText(interface.vlan) $}
                                                     </a>
                                                 </span>
@@ -1267,13 +1267,13 @@
                                             title="{$ getSubnetText(interface.subnet) $}" class="p-double-row__rows-container">
                                             <div class="p-double-row__main-row" aria-label="Subnet CIDR" title="{$ interface.subnet.cidr $}">
                                                 <span data-ng-if="interface.subnet.cidr">
-                                                    <a class="p-link--soft" href="/#/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
+                                                    <a class="p-link--soft" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
                                                 </span>
                                                 <span data-ng-if="!interface.subnet.cidr">Unconfigured</span>
                                             </div>
                                             <div data-ng-if="interface.subnet.name" class="p-double-row__muted-row" aria-label="Subnet name"
                                                 title="{$ interface.subnet.name $}">
-                                                <a class="p-muted-text p-link--muted" href="/#/subnet/{$ interface.subnet.id $}">{$
+                                                <a class="p-muted-text p-link--muted" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$
                                                     interface.subnet.name $}</a>
                                             </div>
                                         </div>
@@ -1380,7 +1380,7 @@
                                             <div class="p-double-row__main-row" aria-label="Fabric">
                                                 <span title="{$ editInterface.fabric.name || 'Disconnected' $}">
                                                     <a class="p-link--soft" data-ng-if="editInterface.fabric"
-                                                        href="/#/fabric/{$ editInterface.fabric.id $}">{$
+                                                        href="{$ legacyURLBase $}/fabric/{$ editInterface.fabric.id $}">{$
                                                         editInterface.fabric.name $}</a>
                                                     <span data-ng-if="!editInterface.fabric.name">Disconnected</span>
                                                 </span>
@@ -1388,7 +1388,7 @@
                                             <div class="p-double-row__muted-row" aria-label="VLAN">
                                                 <span title="{$ getVLANText(editInterface.vlan) $}">
                                                     <a class="p-muted-text p-link--muted" data-ng-if="editInterface.vlan"
-                                                        href="/#/vlan/{$ editInterface.vlan.id $}">
+                                                        href="{$ legacyURLBase $}/vlan/{$ editInterface.vlan.id $}">
                                                         {$ getVLANText(editInterface.vlan) $}
                                                     </a>
                                                 </span>
@@ -1400,14 +1400,14 @@
                                             title="{$ getSubnetText(editInterface.subnet) $}" class="p-double-row__rows-container">
                                             <div class="p-double-row__main-row" aria-label="Subnet CIDR" title="{$ editInterface.subnet.cidr $}">
                                                 <span data-ng-if="editInterface.subnet.cidr">
-                                                    <a class="p-link--soft" href="/#/subnet/{$ editInterface.subnet.id $}">{$ editInterface.subnet.cidr
+                                                    <a class="p-link--soft" href="{$ legacyURLBase $}/subnet/{$ editInterface.subnet.id $}">{$ editInterface.subnet.cidr
                                                         $}</a>
                                                 </span>
                                                 <span data-ng-if="!editInterface.subnet.cidr">Unconfigured</span>
                                             </div>
                                             <div data-ng-if="editInterface.subnet.name" class="p-double-row__muted-row" aria-label="Subnet name"
                                                 title="{$ editInterface.subnet.name $}">
-                                                <a class="p-muted-text p-link--muted" href="/#/subnet/{$ editInterface.subnet.id $}">{$
+                                                <a class="p-muted-text p-link--muted" href="{$ legacyURLBase $}/subnet/{$ editInterface.subnet.id $}">{$
                                                     editInterface.subnet.name $}</a>
                                             </div>
                                         </div>
@@ -2641,13 +2641,13 @@
                                     <div class="p-double-row__rows-container">
                                         <div class="p-double-row__main-row" aria-label="Fabric">
                                             <span data-ng-if="!isEditing(interface)" title="{$ interface.fabric.name || 'Disconnected' $}">
-                                                <a class="p-link--soft" data-ng-if="interface.fabric" href="/#/fabric/{$ interface.fabric.id $}">{$ interface.fabric.name $}</a>
+                                                <a class="p-link--soft" data-ng-if="interface.fabric" href="{$ legacyURLBase $}/fabric/{$ interface.fabric.id $}">{$ interface.fabric.name $}</a>
                                                 <span data-ng-if="!interface.fabric.name">Disconnected</span>
                                             </span>
                                         </div>
                                         <div class="p-double-row__muted-row" aria-label="VLAN">
                                             <span data-ng-if="!isEditing(interface)" title="{$ getVLANText(interface.vlan) $}">
-                                                <a class="p-muted-text p-link--muted" data-ng-if="interface.vlan" href="/#/vlan/{$ interface.vlan.id $}">
+                                                <a class="p-muted-text p-link--muted" data-ng-if="interface.vlan" href="{$ legacyURLBase $}/vlan/{$ interface.vlan.id $}">
                                                     {$ getVLANText(interface.vlan) $}
                                                 </a>
                                             </span>
@@ -2659,14 +2659,14 @@
                                         <div class="p-double-row__main-row" aria-label="Subnet CIDR" title="{$ interface.subnet.cidr $}">
                                             <div class="u-text-overflow">
                                                 <span data-ng-if="interface.subnet.cidr">
-                                                    <a class="p-link--soft" href="/#/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
+                                                    <a class="p-link--soft" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$ interface.subnet.cidr $}</a>
                                                 </span>
                                                 <span data-ng-if="!interface.subnet.cidr">Unconfigured</span>
                                             </div>
                                         </div>
                                         <div data-ng-if="interface.subnet.name" class="p-double-row__muted-row" aria-label="Subnet name" title="{$ interface.subnet.name $}">
                                             <div class="u-text-overflow">
-                                                <a class="p-muted-text p-link--muted" href="/#/subnet/{$ interface.subnet.id $}">{$ interface.subnet.name $}</a>
+                                                <a class="p-muted-text p-link--muted" href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}">{$ interface.subnet.name $}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -3553,7 +3553,7 @@
     <section class="p-strip" data-ng-if="section.area === 'events'">
         <div class="row">
             <div class="col-12 u-align--right" data-ng-if="node.events.length">
-                <a href="#/{$ type_name $}/{$ node.system_id $}/events">View full history</a>
+                <a href="{$ legacyURLBase $}/{$ type_name $}/{$ node.system_id $}/events">View full history</a>
             </div>
         </div>
         <div class="row">

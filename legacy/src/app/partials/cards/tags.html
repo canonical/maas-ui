@@ -5,7 +5,7 @@
   <p>
     <span data-ng-if="!node.tags.length"><i>No tags</i></span>
     <span data-ng-repeat="tag in node.tags">
-        <a href="r/machines/?q=tags:({$ tag $})">{$ tag $}</a>
+        <a href="{$ newURLBase $}/machines?q=tags:({$ tag $})">{$ tag $}</a>
     </span>
   </p>
   <p data-ng-if="canEdit()"><a data-ng-click="section.area = 'configuration'">Edit &rsaquo;</a></p>

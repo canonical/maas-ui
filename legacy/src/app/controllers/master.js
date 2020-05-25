@@ -7,6 +7,8 @@ import { Footer, Header } from "@maas-ui/maas-ui-shared";
 function MasterController($rootScope, $transitions, $window, $http) {
   const debug = process.env.NODE_ENV === "development";
   const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
+  $rootScope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
+  $rootScope.newURLBase = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
 
   const renderHeader = () => {
     const headerNode = document.querySelector("#header");

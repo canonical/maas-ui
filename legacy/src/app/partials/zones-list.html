@@ -75,19 +75,19 @@
             <tbody vs-repeat vs-scroll-parent="window">
                 <tr role="row" class="p-table__row" data-ng-repeat="zone in zones | orderBy:predicate:reverse track by $index">
                     <td aria-label="Name" title="{$ zone.name $}">
-                        <a href="#/zone/{$ zone.id $}">{$ zone.name $}</a>
+                        <a href="{$ legacyURLBase $}/zone/{$ zone.id $}">{$ zone.name $}</a>
                     </td>
                     <td aria-label="Description" title="{$ zone.description $}">
                         {$ zone.description $}
                     </td>
                     <td aria-label="Machines" class="u-align--right">
-                        <a href="r/machines?q=zone:({$ zone.name $})">{$ zone.machines_count $}</a>
+                        <a href="{$ newURLBase $}/machines?q=zone:({$ zone.name $})">{$ zone.machines_count $}</a>
                     </td>
                     <td aria-label="Devices" class="u-align--right">
-                        <a href="#/devices?query=zone:({$ zone.name $})">{$ zone.devices_count $}</a>
+                        <a href="{$ legacyURLBase $}/devices?query=zone:({$ zone.name $})">{$ zone.devices_count $}</a>
                     </td>
                     <td aria-label="Controllers" class="u-align--right">
-                        <a href="#/controllers?query=zone:({$ zone.name $})">{$ zone.controllers_count $}</a>
+                        <a href="{$ legacyURLBase $}/controllers?query=zone:({$ zone.name $})">{$ zone.controllers_count $}</a>
                     </td>
                 </tr>
             </tbody>

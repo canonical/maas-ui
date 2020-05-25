@@ -119,7 +119,7 @@
                         <div class="col-4 col-medium-4">
                             <div class="p-form__control">
                                 <span data-ng-repeat="rack in racks | orderBy:'hostname' track by rack.system_id">
-                                    <a href="#/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
+                                    <a href="{$ legacyURLBase $}/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
                                 </span>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                                 <div class="col-4 col-small-4 col-medium-4">
                                     <div class="p-form__control">
                                         <span data-ng-repeat="rack in racks | orderBy:'hostname' track by rack.system_id">
-                                            <a href="#/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
+                                            <a href="{$ legacyURLBase $}/controller/{$ rack.system_id $}">{$ rack.hostname $}</a><span ng-show="!$last">,</span>
                                         </span>
                                     </div>
                                 </div>
@@ -190,12 +190,12 @@
                             <tr data-ng-repeat="row in rows | orderBy:predicate:reverse track by $index">
                                 <td class="col-3" aria-label="VLAN">
                                     <div class="u-text-overflow">
-                                        <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
+                                        <a href="{$ legacyURLBase $}/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                                     </div>
                                 </td>
                                 <td class="col-5" aria-label="Subnet">
                                     <div class="u-text-overflow">
-                                        <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
+                                        <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                                     </div>
                                 </td>
                                 <td class="col-2" aria-label="Available">
@@ -205,7 +205,7 @@
                                 </td>
                                 <td class="col-2" aria-label="Space">
                                     <div class="u-text-overflow">
-                                        <a href="#/space/{$ row.space.id $}">{$ row.space_name $}</a>
+                                        <a href="{$ legacyURLBase $}/space/{$ row.space.id $}">{$ row.space_name $}</a>
                                     </div>
                                 </td>
                             </tr>

@@ -81,6 +81,7 @@ function maasMachinesTable(
     const machines = MachinesManager.getItems();
 
     // Scope variables.
+    $scope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
     $scope.table = {
       column: "fqdn",
       predicate: $scope.defaultSort || "fqdn",

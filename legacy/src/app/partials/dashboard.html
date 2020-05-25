@@ -181,8 +181,8 @@
                         <tr data-ng-if="convertTo.saved">
                             <td class="col-11">
                                 <i class="p-icon--success">Success:</i> {$ convertTo.hostname $} has been added.
-                                <a href="#/machine/{$ convertTo.parent $}" data-ng-if="convertTo.parent">Go to the machine devices page.</a>
-                                <a href="#/devices" data-ng-if="!convertTo.parent">Go to the device listing.</a>
+                                <a href="{$ legacyURLBase $}/machine/{$ convertTo.parent $}" data-ng-if="convertTo.parent">Go to the machine devices page.</a>
+                                <a href="{$ legacyURLBase $}/devices" data-ng-if="!convertTo.parent">Go to the device listing.</a>
                             </td>
                             <td class="col-1">
                                 <button class="p-button--neutral" data-ng-click="convertTo.saved = false">Clear</button>
@@ -299,7 +299,7 @@
                                                         <label class="p-form__label is-disabled col-2">Fabric</label>
                                                         <div class="p-form__control col-4">
                                                             <span class="p-control-text">
-                                                                <a href="#/fabric/{$ discovery.fabric $}">
+                                                                <a href="{$ legacyURLBase $}/fabric/{$ discovery.fabric $}">
                                                                     {$ discovery.fabric_name $}
                                                                 </a>
                                                             </span>
@@ -309,7 +309,7 @@
                                                         <label class="p-form__label is-disabled col-2">VLAN</label>
                                                         <div class="p-form__control col-4">
                                                             <span class="p-control-text">
-                                                                <a href="#/vlan/{$ discovery.vlan $}">
+                                                                <a href="{$ legacyURLBase $}/vlan/{$ discovery.vlan $}">
                                                                     {$ getVLANName(discovery.vlan) $}
                                                                 </a>
                                                             </span>
@@ -318,7 +318,7 @@
                                                     <div class="p-form__group row">
                                                         <label class="p-form__label is-disabled col-2">Subnet</label>
                                                         <div class="p-form__control col-4">
-                                                            <a href="#/subnet/{$ discovery.subnet $}" class="p-control-text">{$ getSubnetName(discovery.subnet) $}</a>
+                                                            <a href="{$ legacyURLBase $}/subnet/{$ discovery.subnet $}" class="p-control-text">{$ getSubnetName(discovery.subnet) $}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -453,9 +453,9 @@
                         <div class="row u-no-padding">
                             <div class="col-6 col-medium-3 col-small-4 u-vertically-center">
                                 <span style="word-break:break-all;">
-                                    <a href="#/subnet/{$ subnet.id $}">{$ subnet.cidr $}</a>
+                                    <a href="{$ legacyURLBase $}/subnet/{$ subnet.id $}">{$ subnet.cidr $}</a>
                                     <span ng-if="getSubnetFabric(subnet)">
-                                        on <a href="#/fabric/{$ getSubnetFabric(subnet).id $}">{$ getSubnetFabric(subnet).name $}</a>
+                                        on <a href="{$ legacyURLBase $}/fabric/{$ getSubnetFabric(subnet).id $}">{$ getSubnetFabric(subnet).name $}</a>
                                     </span>
                                 </span>
                             </div>

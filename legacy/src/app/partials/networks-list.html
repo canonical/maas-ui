@@ -198,19 +198,19 @@
                 <tbody>
                     <tr ng-repeat="row in group.spaces.rows">
                         <td aria-label="Space" class="p-table__cell--space" ng-class="{ 'no-border': !row.space_name }" title="{$ row.space_name $}">
-                            <a href="#/space/{$ row.space.id $}">{$ row.space_name $}</a>
+                            <a href="{$ legacyURLBase $}/space/{$ row.space.id $}">{$ row.space_name $}</a>
                         </td>
                         <td aria-label="VLAN" class="p-table__cell--vlan" title="{$ row.vlan_name $}">
-                            <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
+                            <a href="{$ legacyURLBase $}/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
                         <td aria-label="DHCP" class="p-table__cell--dhcp" title="{$ row.dhcp $}">
                             {$ row.dhcp $}
                         </td>
                         <td aria-label="Fabric" class="p-table__cell--fabric" title="{$ row.fabric.name $}">
-                            <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
+                            <a href="{$ legacyURLBase $}/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
                         </td>
                         <td aria-label="Subnet" class="p-table__cell--subnet" title="{$ row.subnet_name $}">
-                            <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
+                            <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
                         <td aria-label="Available IPs" class="p-table__cell--ips u-align--right" title="{$ row.subnet.statistics.available_string $}">
                             {$ row.subnet.statistics.available_string $}
@@ -225,16 +225,16 @@
                             </span>
                         </td>
                         <td aria-label="VLAN" class="p-table__cell--vlan" title="{$ row.vlan_name $}">
-                            <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
+                            <a href="{$ legacyURLBase $}/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
                         <td aria-label="DHCP" class="p-table__cell--dhcp" title="{$ row.dhcp $}">
                             {$ row.dhcp $}
                         </td>
                         <td aria-label="Fabric" class="p-table__cell--fabric" title="{$ row.fabric.name $}">
-                            <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
+                            <a href="{$ legacyURLBase $}/fabric/{$ row.fabric.id $}">{$ row.fabric.name $}</a>
                         </td>
                         <td aria-label="Subnet" class="p-table__cell--subnet" title="{$ row.subnet_name $}">
-                            <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
+                            <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
                         <td aria-label="Available IPs" class="p-table__cell--ips u-align--right" title="{$ row.subnet.statistics.available_string $}">
                             {$ row.subnet.statistics.available_string $}
@@ -257,22 +257,22 @@
                 <tbody>
                     <tr ng-repeat="row in group.fabrics.rows">
                         <td aria-label="Fabric" class="p-table__cell--fabric" ng-class="{ 'no-border': !row.fabric_name }" title="{$ row.fabric_name $}">
-                            <a href="#/fabric/{$ row.fabric.id $}">{$ row.fabric_name $}</a>
+                            <a href="{$ legacyURLBase $}/fabric/{$ row.fabric.id $}">{$ row.fabric_name $}</a>
                         </td>
                         <td aria-label="VLAN" class="p-table__cell--vlan" ng-class="{ 'no-border': !row.vlan_name }" title="{$ row.vlan_name $}">
-                            <a href="#/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
+                            <a href="{$ legacyURLBase $}/vlan/{$ row.vlan.id $}">{$ row.vlan_name $}</a>
                         </td>
                         <td aria-label="DHCP" class="p-table__cell--dhcp" title="{$ row.dhcp $}">
                             {$ row.dhcp $}
                         </td>
                         <td aria-label="Subnet" class="p-table__cell--subnet" title="{$ row.subnet_name $}">
-                            <a href="#/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
+                            <a href="{$ legacyURLBase $}/subnet/{$ row.subnet.id $}">{$ row.subnet_name $}</a>
                         </td>
                         <td aria-label="Available IPs" class="p-table__cell--ips" title="{$ row.subnet.statistics.available_string $}">
                             {$ row.subnet.statistics.available_string $}
                         </td>
                         <td aria-label="Space" class="p-table__cell--space" title="{$ row.space ? row.space.name : '(undefined)' $}">
-                            <a href="#/space/{$ row.space.id $}" ng-if="row.space">{$ row.space.name $}</a>
+                            <a href="{$ legacyURLBase $}/space/{$ row.space.id $}" ng-if="row.space">{$ row.space.name $}</a>
                         </td>
                     </tr>
                 </tbody>
