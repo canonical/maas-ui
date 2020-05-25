@@ -243,9 +243,9 @@ function PodDetailsController(
         // If the action was delete, then go back to listing.
         if ($scope.action.option.name === "delete") {
           if ($scope.onRSDSection($stateParams.id)) {
-            $location.path("/rsd");
+            $rootScope.navigateToLegacy("/rsd");
           } else {
-            $location.path("/kvm");
+            $rootScope.navigateToLegacy("/kvm");
           }
         }
         $scope.action.inProgress = false;

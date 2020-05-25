@@ -77,7 +77,7 @@ describe("DhcpTarget", () => {
       </Provider>
     );
     const link = wrapper.find("Link");
-    expect(link.prop("href").includes("#/subnet/1")).toBe(true);
+    expect(link.prop("href").includes("/subnet/1")).toBe(true);
     expect(link.text()).toEqual("10.0.0.99");
   });
 
@@ -91,7 +91,7 @@ describe("DhcpTarget", () => {
       </Provider>
     );
     const link = wrapper.find("Link");
-    expect(link.prop("href").includes("#/machine/xyz")).toBe(true);
+    expect(link.prop("href").includes("/machine/xyz")).toBe(true);
     expect(link).toMatchSnapshot();
   });
 });

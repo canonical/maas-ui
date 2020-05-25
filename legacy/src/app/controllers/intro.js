@@ -88,9 +88,9 @@ function IntroController(
     }
   };
 
-  // If intro has been completed redirect to '/'.
+  // If intro has been completed redirect to machine list.
   if ($window.CONFIG.completed_intro) {
-    $location.path("/");
+    $rootScope.navigateToNew("/machines");
   } else {
     // Load the required managers.
     var managers = [ConfigsManager, PackageRepositoriesManager];

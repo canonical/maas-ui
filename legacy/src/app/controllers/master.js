@@ -9,6 +9,12 @@ function MasterController($rootScope, $transitions, $window, $http) {
   const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
   $rootScope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
   $rootScope.newURLBase = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+  $rootScope.navigateToLegacy = (route) => {
+    window.history.pushState(null, null, `${$rootScope.legacyURLBase}${route}`);
+  };
+  $rootScope.navigateToNew = (route) => {
+    window.history.pushState(null, null, `${$rootScope.newURLBase}${route}`);
+  };
 
   const renderHeader = () => {
     const headerNode = document.querySelector("#header");
@@ -35,7 +41,7 @@ function MasterController($rootScope, $transitions, $window, $http) {
         logout={() => {
           localStorage.clear();
           $http.post(LOGOUT_API).then(() => {
-            $window.location.href = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+            $rootScope.navigateToNew("/");
           });
         }}
         newURLPrefix={process.env.REACT_BASENAME}

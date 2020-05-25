@@ -231,7 +231,7 @@ export function SubnetDetailsController(
         function(result) {
           $scope.actionOption = null;
           $scope.actionError = null;
-          $location.path("/networks");
+          $rootScope.navigateToLegacy("/networks");
         },
         function(error) {
           $scope.actionError = ManagerHelperService.parseValidationError(error);

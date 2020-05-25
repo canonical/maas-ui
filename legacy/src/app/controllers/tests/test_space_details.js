@@ -26,6 +26,7 @@ describe("SpaceDetailsController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -226,10 +227,7 @@ describe("SpaceDetailsController", function() {
   });
 
   describe("deleteSpace", function() {
-    it("calls deleteSpace", function() {
-      $location = {};
-      $location.path = jasmine.createSpy("path");
-      $location.search = jasmine.createSpy("search");
+    it("calls deleteSpace and redirects to network list", function() {
       makeController();
       var deleteSpace = spyOn(SpacesManager, "deleteSpace");
       var defer = $q.defer();
@@ -238,8 +236,7 @@ describe("SpaceDetailsController", function() {
       defer.resolve();
       $rootScope.$apply();
       expect(deleteSpace).toHaveBeenCalled();
-      expect($location.path).toHaveBeenCalledWith("/networks");
-      expect($location.search).toHaveBeenCalledWith("by", "space");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/networks");
     });
   });
 });

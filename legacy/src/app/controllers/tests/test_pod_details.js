@@ -17,6 +17,7 @@ describe("PodDetailsController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -563,11 +564,10 @@ describe("PodDetailsController", function() {
         operation: refresh
       };
 
-      spyOn($location, "path");
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
-      expect($location.path).toHaveBeenCalledWith("/kvm");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/kvm");
     });
   });
 
