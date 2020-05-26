@@ -201,7 +201,7 @@ function NodesListController(
     $scope.toggleFilter("pool", pool.name, "machines");
     $scope.toggleTab("machines");
     // update the location URL otherwise to match the tab
-    $location.path("/machines");
+    $rootScope.navigateToNew("/machines");
   };
   $scope.tabs.pools.isDefaultPool = function(pool) {
     return pool.id === 0;
@@ -1135,7 +1135,7 @@ function NodesListController(
   $scope.addHardwareOptionChanged = function() {
     if ($scope.addHardwareOption) {
       if ($scope.addHardwareOption.name === "rsd") {
-        $location.path("/rsd");
+        $rootScope.navigateToLegacy("/rsd");
         $location.search("addItem", true);
         $route.reload();
       } else {

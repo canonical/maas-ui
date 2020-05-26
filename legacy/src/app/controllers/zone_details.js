@@ -91,7 +91,7 @@ function ZoneDetailsController(
     ZonesManager.deleteItem($scope.zone).then(
       function() {
         $scope.confirmingDelete = false;
-        $location.path("/zones");
+        $rootScope.navigateToLegacy("/zones");
       },
       function(error) {
         $scope.error = ManagerHelperService.parseValidationError(error);

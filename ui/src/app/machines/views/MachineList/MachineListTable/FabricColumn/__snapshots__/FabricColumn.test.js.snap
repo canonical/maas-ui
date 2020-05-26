@@ -19,7 +19,7 @@ exports[`FabricColumn renders 1`] = `
       >
         <a
           className="p-link--soft"
-          href="/MAAS/#/fabric/0"
+          href="/MAAS/l/fabric/0"
         >
           fabric-0
         </a>
@@ -67,7 +67,7 @@ exports[`FabricColumn renders 1`] = `
               />
               <a
                 className="p-link--soft"
-                href="/MAAS/#/fabric/0"
+                href="/MAAS/l/fabric/0"
               >
                 fabric-0
               </a>

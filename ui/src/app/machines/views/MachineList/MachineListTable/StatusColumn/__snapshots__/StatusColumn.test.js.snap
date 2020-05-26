@@ -181,13 +181,13 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
     <Button
       className="p-contextual-menu__link"
       element="a"
-      href="/MAAS/#/machine/abc123?area=logs"
+      href="/MAAS/l/machine/abc123?area=logs"
       key="0"
       onClick={null}
     >
       <a
         className="p-button--neutral p-contextual-menu__link"
-        href="/MAAS/#/machine/abc123?area=logs"
+        href="/MAAS/l/machine/abc123?area=logs"
         onClick={null}
       >
         See logs
@@ -196,13 +196,13 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
     <Button
       className="p-contextual-menu__link"
       element="a"
-      href="/MAAS/#/machine/abc123?area=events"
+      href="/MAAS/l/machine/abc123?area=events"
       key="1"
       onClick={null}
     >
       <a
         className="p-button--neutral p-contextual-menu__link"
-        href="/MAAS/#/machine/abc123?area=events"
+        href="/MAAS/l/machine/abc123?area=events"
         onClick={null}
       >
         See events
@@ -227,12 +227,12 @@ exports[`StatusColumn renders 1`] = `
           Object {
             "children": "See logs",
             "element": "a",
-            "href": "/MAAS/#/machine/abc123?area=logs",
+            "href": "/MAAS/l/machine/abc123?area=logs",
           },
           Object {
             "children": "See events",
             "element": "a",
-            "href": "/MAAS/#/machine/abc123?area=events",
+            "href": "/MAAS/l/machine/abc123?area=events",
           },
         ],
       ]
@@ -290,12 +290,12 @@ exports[`StatusColumn renders 1`] = `
                   Object {
                     "children": "See logs",
                     "element": "a",
-                    "href": "/MAAS/#/machine/abc123?area=logs",
+                    "href": "/MAAS/l/machine/abc123?area=logs",
                   },
                   Object {
                     "children": "See events",
                     "element": "a",
-                    "href": "/MAAS/#/machine/abc123?area=events",
+                    "href": "/MAAS/l/machine/abc123?area=events",
                   },
                 ],
               ]
@@ -346,12 +346,12 @@ exports[`StatusColumn renders 1`] = `
                     Object {
                       "children": "See logs",
                       "element": "a",
-                      "href": "/MAAS/#/machine/abc123?area=logs",
+                      "href": "/MAAS/l/machine/abc123?area=logs",
                     },
                     Object {
                       "children": "See events",
                       "element": "a",
-                      "href": "/MAAS/#/machine/abc123?area=events",
+                      "href": "/MAAS/l/machine/abc123?area=events",
                     },
                   ],
                 ]

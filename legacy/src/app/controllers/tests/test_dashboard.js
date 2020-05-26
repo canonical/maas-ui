@@ -17,6 +17,7 @@ describe("DashboardController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -423,7 +424,7 @@ describe("DashboardController", function() {
       expect($location.path).not.toHaveBeenCalled();
     });
 
-    it("calls $location.path if goTo without parent", function() {
+    it("redirects to devices list if goTo without parent", function() {
       makeController();
       var id = makeInteger(0, 100);
       $scope.selectedDevice = id;
@@ -431,15 +432,14 @@ describe("DashboardController", function() {
         goTo: true
       };
       spyOn(DiscoveriesManager, "_removeItem");
-      spyOn($location, "path");
       $scope.afterSave({
         hostname: makeName("hostname"),
         parent: null
       });
-      expect($location.path).toHaveBeenCalledWith("/devices/");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/devices");
     });
 
-    it("calls $location.path if goTo with parent", function() {
+    it("redirects to device details if goTo with parent", function() {
       makeController();
       var id = makeInteger(0, 100);
       $scope.selectedDevice = id;
@@ -447,13 +447,12 @@ describe("DashboardController", function() {
         goTo: true
       };
       spyOn(DiscoveriesManager, "_removeItem");
-      spyOn($location, "path");
       var parent = makeName("parent");
       $scope.afterSave({
         hostname: makeName("hostname"),
         parent: parent
       });
-      expect($location.path).toHaveBeenCalledWith("/device/" + parent);
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/device/" + parent);
     });
   });
 

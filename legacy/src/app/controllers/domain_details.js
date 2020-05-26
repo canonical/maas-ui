@@ -159,7 +159,7 @@ function DomainDetailsController(
     DomainsManager.deleteDomain($scope.domain).then(
       function() {
         $scope.actionInProgress = false;
-        $location.path("/domains");
+        $rootScope.navigateToLegacy("/domains");
       },
       function(error) {
         $scope.error = ManagerHelperService.parseValidationError(error);

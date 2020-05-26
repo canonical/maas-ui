@@ -320,9 +320,9 @@ function DashboardController(
     $scope.convertTo.saved = true;
     if ($scope.convertTo.goTo) {
       if (angular.isString(obj.parent)) {
-        $location.path("/device/" + obj.parent);
+        $rootScope.navigateToLegacy(`/device/${obj.parent}`);
       } else {
-        $location.path("/devices/");
+        $rootScope.navigateToLegacy("/devices");
       }
     }
   };

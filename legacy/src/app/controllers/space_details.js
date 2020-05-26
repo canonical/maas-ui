@@ -118,8 +118,7 @@ function SpaceDetailsController(
     SpacesManager.deleteSpace($scope.space).then(
       function() {
         $scope.confirmingDelete = false;
-        $location.path("/networks");
-        $location.search("by", "space");
+        $rootScope.navigateToLegacy("/networks");
       },
       function(error) {
         $scope.error = ManagerHelperService.parseValidationError(error);

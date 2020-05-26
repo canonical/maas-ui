@@ -27,6 +27,7 @@ describe("FabricDetailsController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -269,10 +270,7 @@ describe("FabricDetailsController", function() {
   });
 
   describe("deleteFabric", function() {
-    it("calls deleteFabric", function() {
-      $location = {};
-      $location.path = jasmine.createSpy("path");
-      $location.search = jasmine.createSpy("search");
+    it("calls deleteFabric and redirects to network list", function() {
       makeController();
       var deleteFabric = spyOn(FabricsManager, "deleteFabric");
       var defer = $q.defer();
@@ -281,8 +279,7 @@ describe("FabricDetailsController", function() {
       defer.resolve();
       $rootScope.$apply();
       expect(deleteFabric).toHaveBeenCalled();
-      expect($location.path).toHaveBeenCalledWith("/networks");
-      expect($location.search).toHaveBeenCalledWith("by", "fabric");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/networks");
     });
   });
 });

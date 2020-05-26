@@ -22,7 +22,7 @@ exports[`ZoneColumn renders 1`] = `
       >
         <a
           className="p-link--soft"
-          href="/MAAS/#/zone/0"
+          href="/MAAS/l/zone/0"
         >
           zone-north
         </a>
@@ -56,7 +56,7 @@ exports[`ZoneColumn renders 1`] = `
             >
               <a
                 className="p-link--soft"
-                href="/MAAS/#/zone/0"
+                href="/MAAS/l/zone/0"
               >
                 zone-north
               </a>
@@ -86,7 +86,7 @@ exports[`ZoneColumn renders 1`] = `
                     >
                       <a
                         class="p-link--soft"
-                        href="/MAAS/#/zone/0"
+                        href="/MAAS/l/zone/0"
                       >
                         zone-north
                       </a>
@@ -139,7 +139,7 @@ exports[`ZoneColumn renders 1`] = `
                       >
                         <a
                           class="p-link--soft"
-                          href="/MAAS/#/zone/0"
+                          href="/MAAS/l/zone/0"
                         >
                           zone-north
                         </a>
