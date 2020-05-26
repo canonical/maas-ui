@@ -79,7 +79,7 @@ function PodDetailsController(
       storage: [
         {
           type: "local",
-          size: 8,
+          size: "",
           tags: [],
           pool: {},
           boot: true
@@ -266,6 +266,17 @@ function PodDetailsController(
     iface.showOptions = true;
   };
 
+  $scope.validateRequest = (requested, available) => {
+    // Empty implies default, so is valid.
+    if (requested === "") {
+      return true;
+    }
+    if ((requested && isNaN(requested)) || (available && isNaN(available))) {
+      return false;
+    }
+    return Number(requested) > 0 && Number(available) >= Number(requested);
+  };
+
   $scope.validateMachineCompose = () => {
     const { availableWithOvercommit, compose, pod } = $scope;
 
@@ -282,40 +293,31 @@ function PodDetailsController(
     // Validate storage pool requests
     const requests = compose.obj.requests;
     for (let i = 0; i < requests.length; i++) {
-      if (!requests[i].size || requests[i].size > requests[i].available) {
+      if (!$scope.validateRequest(requests[i].size, requests[i].available)) {
         return false;
       }
     }
 
     // Validate available cores
+    const requestedCores = compose.obj.cores;
     const availableCores = availableWithOvercommit(
       pod.total.cores,
       pod.used.cores,
       pod.cpu_over_commit_ratio,
       1
     );
-    if (
-      compose.obj.cores &&
-      (isNaN(compose.obj.cores) ||
-        Number(compose.obj.cores) <= 0 ||
-        Number(compose.obj.cores) > availableCores)
-    ) {
+    if (!$scope.validateRequest(requestedCores, availableCores)) {
       return false;
     }
 
     // Validate available memory
+    const requestedMemory = compose.obj.memory;
     const availableMemory = availableWithOvercommit(
-      pod.total.memory_gb,
-      pod.used.memory_gb,
-      pod.memory_over_commit_ratio,
-      1
+      pod.total.memory,
+      pod.used.memory,
+      pod.memory_over_commit_ratio
     );
-    if (
-      compose.obj.memory &&
-      (isNaN(compose.obj.memory) ||
-        Number(compose.obj.memory) <= 0 ||
-        Number(compose.obj.memory / 1024) > availableMemory)
-    ) {
+    if (!$scope.validateRequest(requestedMemory, availableMemory)) {
       return false;
     }
 
@@ -409,11 +411,21 @@ function PodDetailsController(
   };
 
   // Called before the compose params is sent over the websocket.
-  $scope.composePreProcess = function(params) {
-    params = angular.copy(params);
-    params.id = $scope.pod.id;
+  $scope.composePreProcess = (formValues) => {
+    const { compose, pod } = $scope;
+    const params = {
+      architecture: formValues.architecture,
+      cores: formValues.cores || $scope.getDefaultComposeValue("cores"),
+      domain: formValues.domain,
+      hostname: formValues.hostname,
+      id: pod.id,
+      memory: formValues.memory || $scope.getDefaultComposeValue("memory"),
+      pool: formValues.pool,
+      zone: formValues.zone,
+    };
+
     // Sort boot disk first.
-    var sorted = $scope.compose.obj.storage.sort(function(a, b) {
+    const sortedDisks = compose.obj.storage.sort((a, b) => {
       if (a.boot === b.boot) {
         return 0;
       } else if (a.boot && !b.boot) {
@@ -422,13 +434,15 @@ function PodDetailsController(
         return 1;
       }
     });
+
     // Create the storage constraint.
-    var storage = [];
-    angular.forEach(sorted, function(disk, idx) {
-      var constraint = idx + ":" + disk.size;
-      var tags = disk.tags.map(function(tag) {
-        return tag.text;
-      });
+    // <storage-index>:<size>(<tag>[,<tag>...])
+    // e.g. "0:8(tag1, tag2)"
+    const storage = [];
+    sortedDisks.forEach((disk, i) => {
+      const diskSize = disk.size || $scope.getDefaultComposeValue("storage");
+      let constraint = i + ":" + diskSize;
+      const tags = disk.tags.map((tag) => tag.text);
       if ($scope.pod.type === "rsd") {
         tags.splice(0, 0, disk.type);
       } else {
@@ -441,6 +455,7 @@ function PodDetailsController(
 
     // Create the interface constraint.
     // <interface-name>:<key>=<value>[,<key>=<value>];...
+    // e.g. "eth0:ip=192.168.0.0,subnet_cidr=192.168.0.0/24"
     const interfaceConstraints = $scope.compose.obj.interfaces
       .filter((iface) => iface.ipaddress || iface.subnet)
       .map((iface) => {
@@ -477,12 +492,12 @@ function PodDetailsController(
   // Called to cancel composition.
   $scope.cancelCompose = function() {
     $scope.compose.obj = {
-      cores: "",
-      memory: "",
+      cores: $scope.getDefaultComposeValue("cores"),
+      memory: $scope.getDefaultComposeValue("memory"),
       storage: [
         {
           type: "local",
-          size: 8,
+          size: $scope.getDefaultComposeValue("storage"),
           tags: [],
           pool: $scope.getDefaultStoragePool(),
           boot: true
@@ -506,7 +521,7 @@ function PodDetailsController(
   $scope.composeAddStorage = function() {
     var storage = {
       type: "local",
-      size: 8,
+      size: $scope.getDefaultComposeValue("storage"),
       tags: [],
       pool: $scope.getDefaultStoragePool(),
       boot: false
@@ -662,6 +677,19 @@ function PodDetailsController(
     }
   };
 
+  $scope.getDefaultComposeValue = (param) => {
+    if ($scope.pod) {
+      const podPowerType = $scope.power_types.find(
+        (type) => type.name === $scope.pod.type
+      );
+      if (podPowerType) {
+        const { defaults } = podPowerType;
+        return defaults[param] || "";
+      }
+    }
+    return "";
+  };
+
   // Start watching key fields.
   $scope.startWatching = function() {
     $scope.$watch("subnets", function() {
@@ -746,6 +774,11 @@ function PodDetailsController(
     ) {
       $scope.pod = activePod;
       $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
+      $scope.compose.obj.storage[0].size = $scope.getDefaultComposeValue(
+        "storage"
+      );
+      $scope.compose.obj.cores = $scope.getDefaultComposeValue("cores");
+      $scope.compose.obj.memory = $scope.getDefaultComposeValue("memory");
       $scope.loaded = true;
       $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
       $scope.startWatching();
@@ -754,6 +787,11 @@ function PodDetailsController(
         function(pod) {
           $scope.pod = pod;
           $scope.compose.obj.storage[0].pool = $scope.getDefaultStoragePool();
+          $scope.compose.obj.storage[0].size = $scope.getDefaultComposeValue(
+            "storage"
+          );
+          $scope.compose.obj.cores = $scope.getDefaultComposeValue("cores");
+          $scope.compose.obj.memory = $scope.getDefaultComposeValue("memory");
           $scope.loaded = true;
           $scope.machinesSearch = "pod-id:=" + $scope.pod.id;
           $scope.startWatching();

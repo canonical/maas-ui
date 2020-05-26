@@ -61,7 +61,7 @@ export function maasPodParameters(
             }
           });
 
-          if (type.name === "virsh" && attrs.hideSlider !== "true") {
+          if ((type.name === "virsh" || type.name === "lxd") && attrs.hideSlider !== "true") {
             html +=
               '<maas-obj-field type="slider" key="' +
               'cpu_over_commit_ratio" label="CPU overcommit" ' +

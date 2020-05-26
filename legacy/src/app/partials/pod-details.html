@@ -73,7 +73,7 @@
                             <div class="p-form__control col-4">
                                 <input
                                     id="cores"
-                                    placeholder="Number of cores (optional)"
+                                    placeholder="{$ getDefaultComposeValue('cores') $} (default)"
                                     name="cores"
                                     ng-model="compose.obj.cores"
                                     type="text"
@@ -88,13 +88,13 @@
                             <div class="p-form__control col-4">
                                 <input
                                     id="memory"
-                                    placeholder="Memory amount (optional)"
+                                    placeholder="{$ getDefaultComposeValue('memory') $} (default)"
                                     name="memory"
                                     ng-model="compose.obj.memory"
                                     type="text"
                                 />
                                 <p class="p-form-help-text">
-                                    {$ availableWithOvercommit(pod.total.memory_gb, pod.used.memory_gb, pod.memory_over_commit_ratio, 1) $}GiB available
+                                    {$ availableWithOvercommit(pod.total.memory, pod.used.memory, pod.memory_over_commit_ratio) $}MiB available
                                 </p>
                             </div>
                         </div>
@@ -338,15 +338,15 @@
                                     </td>
                                     <td class="p-table--action-cell">
                                         <div class="form__group-input" style="position: relative">
-                                            <input type="number" min="0" class="u-no-margin--bottom" placeholder="Enter capacity" ng-keypress="numberOnly($event)"
+                                            <input type="text" class="u-no-margin--bottom" placeholder="{$ getDefaultComposeValue('storage') $} (default)" ng-eypress="numberOnly($event)"
                                                 data-ng-model="storage.size"
                                                 data-ng-change="updateRequests(storage)"
                                                 data-ng-click="sendAnalyticsEvent('KVM details', 'Change capacity value: ' + storage.size + ' GB', 'KVM compose')"
-                                                ng-class="{'in-warning': !storage.size || storage.size < 8}">
+                                                ng-class="{'in-warning': storage.size !== '' && storage.size < 8}">
                                             <span class="p-tooltip--top-left u-float--right"
                                                 style="position: absolute; top: 8px; right: 8px;"
                                                 aria-describedby="storage-size-warning"
-                                                data-ng-if="(storage.size > 0 && storage.size < 8) || storage.size == 0">
+                                                data-ng-if="storage.size !== '' && storage.size < 8">
                                                 <i class="p-icon--warning">Warning</i>
                                                 <span class="p-tooltip__message" role="tooltip" id="storage-size-warning">Ubuntu typically requires 8GB minimum. Lower allocations may fail.</span>
                                             </span>
