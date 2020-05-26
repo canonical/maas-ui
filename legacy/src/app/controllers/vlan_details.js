@@ -400,7 +400,7 @@ export function VLANDetailsController(
     if (vm.actionOption.name === "delete") {
       VLANsManager.deleteVLAN(vm.vlan).then(
         function() {
-          $location.path("/networks");
+          $rootScope.navigateToLegacy("/networks");
           vm.actionOption = null;
           vm.actionError = null;
         },

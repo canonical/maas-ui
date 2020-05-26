@@ -158,8 +158,7 @@ function FabricDetailsController(
     FabricsManager.deleteFabric($scope.fabric).then(
       function() {
         $scope.confirmingDelete = false;
-        $location.path("/networks");
-        $location.search("by", "fabric");
+        $rootScope.navigateToLegacy("/networks");
       },
       function(reply) {
         $scope.error = ManagerHelperService.parseValidationError(reply.error);

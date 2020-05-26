@@ -2,11 +2,11 @@
 
 exports[`DhcpTarget can display a node link 1`] = `
 <Link
-  href="/MAAS/#/machine/xyz"
+  href="/MAAS/l/machine/xyz"
 >
   <a
     className=""
-    href="/MAAS/#/machine/xyz"
+    href="/MAAS/l/machine/xyz"
   >
     machine1
     <small>

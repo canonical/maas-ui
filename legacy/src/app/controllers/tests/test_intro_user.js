@@ -14,6 +14,7 @@ describe("IntroUserController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToNew = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -91,11 +92,10 @@ describe("IntroUserController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  it("calls $location.path if already completed", function() {
+  it("redirects to machine list if already completed", function() {
     $window.CONFIG.current_user.completed_intro = true;
-    spyOn($location, "path");
     makeController();
-    expect($location.path).toHaveBeenCalledWith("/");
+    expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
   });
 
   it("sets user on resolve", function() {

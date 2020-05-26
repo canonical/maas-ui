@@ -4,7 +4,8 @@ import React from "react";
 
 import { useDhcpTarget } from "app/settings/hooks";
 
-const generateURL = (url) => `${process.env.REACT_APP_BASENAME}/${url}`;
+const generateURL = (url) =>
+  `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}${url}`;
 
 const DhcpTarget = ({ nodeId, subnetId }) => {
   const { loading, loaded, target, type } = useDhcpTarget(nodeId, subnetId);
@@ -21,7 +22,7 @@ const DhcpTarget = ({ nodeId, subnetId }) => {
       <small>.{target.domain.name}</small>
     </>
   );
-  const url = generateURL(`#/${type}/${nodeId || subnetId}`);
+  const url = generateURL(`/${type}/${nodeId || subnetId}`);
   return <Link href={url}>{name}</Link>;
 };
 

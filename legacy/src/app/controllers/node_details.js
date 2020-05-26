@@ -1033,7 +1033,13 @@ function NodeDetailsController(
         function() {
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
-            $location.path("/machines");
+            if ($scope.type_name === "machine") {
+              $rootScope.navigateToNew("/machines");
+            } else if ($scope.type_name === "device") {
+              $rootScope.navigateToLegacy("/devices");
+            } else if ($scope.type_name === "controller") {
+              $rootScope.navigateToLegacy("/controllers");
+            }
           }
           $scope.action.option = null;
           $scope.action.error = null;

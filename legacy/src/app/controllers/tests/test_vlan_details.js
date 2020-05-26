@@ -100,6 +100,7 @@ describe("VLANDetailsController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $filter = $injector.get("$filter");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
@@ -353,7 +354,7 @@ describe("VLANDetailsController", function() {
     $scope.$digest();
   });
 
-  it("actionOption cleared on action success", function() {
+  it("actionOption cleared on action success and redirects to network list", function() {
     var controller = makeControllerResolveSetActiveItem();
     controller.actionOption = controller.DELETE_ACTION;
     var defer = $q.defer();
@@ -363,6 +364,7 @@ describe("VLANDetailsController", function() {
     $scope.$digest();
     expect(controller.actionOption).toBe(null);
     expect(controller.actionError).toBe(null);
+    expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/networks");
   });
 
   it(

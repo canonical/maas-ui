@@ -56,6 +56,7 @@ describe("SubnetDetailsController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -649,7 +650,7 @@ describe("SubnetDetailsController", function() {
       expect($scope.actionError).toBe(error);
     });
 
-    it("delete action calls deleteSubnet", function() {
+    it("delete action calls deleteSubnet and redirects to network list", function() {
       $location.path = jasmine.createSpy("path");
       makeControllerResolveSetActiveItem();
       var deleteSubnet = spyOn(SubnetsManager, "deleteSubnet");
@@ -663,7 +664,7 @@ describe("SubnetDetailsController", function() {
       defer.resolve();
       $scope.$digest();
       expect(deleteSubnet).toHaveBeenCalled();
-      expect($location.path).toHaveBeenCalledWith("/networks");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/networks");
       expect($scope.actionOption).toBeNull();
       expect($scope.actionError).toBeNull();
     });

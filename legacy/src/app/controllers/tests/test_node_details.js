@@ -40,6 +40,7 @@ describe("NodeDetailsController", function () {
   beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToNew = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -1460,7 +1461,6 @@ describe("NodeDetailsController", function () {
       makeController();
       var defer = $q.defer();
       spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
-      spyOn($location, "path");
       $scope.node = node;
       $scope.action.option = {
         name: "delete",
@@ -1468,7 +1468,7 @@ describe("NodeDetailsController", function () {
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
-      expect($location.path).toHaveBeenCalledWith("/machines");
+      expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
     });
 
     it("sets actionError when rejected", function () {

@@ -31,6 +31,7 @@ describe("NodesListController", function() {
   beforeEach(inject(function($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
+    $rootScope.navigateToNew = jest.fn();
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -2034,7 +2035,7 @@ describe("NodesListController", function() {
       var pool = { id: 10, name: "foo" };
       $scope.tabs.pools.goToPoolMachines(pool);
       expect(machinesTab.search).toEqual("pool:(=foo)");
-      expect($location.path()).toEqual("/machines");
+      expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
     });
   });
 

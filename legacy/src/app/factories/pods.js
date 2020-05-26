@@ -8,7 +8,13 @@
  * notification events about pods.
  */
 
-function PodsManager(RegionConnection, Manager, $location, $stateParams) {
+function PodsManager(
+  RegionConnection,
+  Manager,
+  $location,
+  $rootScope,
+  $stateParams
+) {
   function PodsManager() {
     Manager.call(this);
 
@@ -17,7 +23,7 @@ function PodsManager(RegionConnection, Manager, $location, $stateParams) {
 
     // Listen for notify events for the pod object.
     var self = this;
-    RegionConnection.registerNotifier("pod", function(action, data) {
+    RegionConnection.registerNotifier("pod", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -25,18 +31,18 @@ function PodsManager(RegionConnection, Manager, $location, $stateParams) {
   PodsManager.prototype = new Manager();
 
   // Refresh the pod information
-  PodsManager.prototype.refresh = function(pod) {
+  PodsManager.prototype.refresh = function (pod) {
     var self = this;
-    return RegionConnection.callMethod("pod.refresh", pod).then(function(pod) {
+    return RegionConnection.callMethod("pod.refresh", pod).then(function (pod) {
       self._replaceItem(pod);
       return pod;
     });
   };
 
   // Compose a machine in the pod.
-  PodsManager.prototype.compose = function(params) {
+  PodsManager.prototype.compose = function (params) {
     var self = this;
-    return RegionConnection.callMethod("pod.compose", params).then(function(
+    return RegionConnection.callMethod("pod.compose", params).then(function (
       pod
     ) {
       self._replaceItem(pod);
@@ -45,7 +51,7 @@ function PodsManager(RegionConnection, Manager, $location, $stateParams) {
   };
 
   // Calculate the available cores with overcommit applied
-  PodsManager.prototype.availableWithOvercommit = function(
+  PodsManager.prototype.availableWithOvercommit = function (
     total,
     used,
     overcommitRatio,
@@ -61,9 +67,9 @@ function PodsManager(RegionConnection, Manager, $location, $stateParams) {
   };
 
   // Detect if on RSD page
-  PodsManager.prototype.onRSDSection = function(podID) {
-    return $location.path() === "/rsd" || $location.path() === "/rsd/" + podID;
-  };
+  PodsManager.prototype.onRSDSection = (podID) =>
+    $location.path().endsWith("/rsd") ||
+    $location.path().endsWith(`/rsd/${podID}`);
 
   return new PodsManager();
 }
@@ -72,7 +78,8 @@ PodsManager.$inject = [
   "RegionConnection",
   "Manager",
   "$location",
-  "$stateParams"
+  "$rootScope",
+  "$stateParams",
 ];
 
 export default PodsManager;
