@@ -95,6 +95,18 @@ describe("maasPodParameters", function() {
           ]
         },
         {
+          name: "lxd",
+          description: "LXD",
+          driver_type: "pod",
+          fields: [
+            {
+              name: "power_address",
+              label: "Power address",
+              scope: "bmc"
+            },
+          ]
+        },
+        {
           name: "ipmi",
           description: "IPMI",
           driver_type: "power",
@@ -108,7 +120,7 @@ describe("maasPodParameters", function() {
     it("sets podTypes", function() {
       var directive = compileDirective("true");
       var scope = directive.isolateScope();
-      podTypes = [powerTypes[0], powerTypes[1]];
+      podTypes = [powerTypes[0], powerTypes[1], powerTypes[2]];
       expect(scope.podTypes).toEqual(podTypes);
     });
 
@@ -159,9 +171,20 @@ describe("maasPodParameters", function() {
       expect($scope.obj.$maasForm.fields.rsd_id).toBeUndefined();
     });
 
-    it("creates maas-obj-field with type='slider'", function() {
+    it("creates maas-obj-field with type='slider' and pod type='virsh'", function() {
       var directive = compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "virsh");
+      $scope.$digest();
+
+      var sliders = angular.element(
+        directive.find('maas-obj-field[type="slider"]')
+      );
+      expect(sliders.length).toBe(2);
+    });
+
+    it("creates maas-obj-field with type='slider' and pod type='lxd'", function() {
+      var directive = compileDirective("false");
+      $scope.obj.$maasForm.updateValue("type", "lxd");
       $scope.$digest();
 
       var sliders = angular.element(
