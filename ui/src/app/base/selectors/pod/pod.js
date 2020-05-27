@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const pod = {};
 
 /**
@@ -41,5 +43,14 @@ pod.saved = (state) => state.pod.saved;
  * @returns {Object} Machine errors state.
  */
 pod.errors = (state) => state.pod.errors;
+
+/**
+ * Returns a pod for the given id.
+ * @param {Object} state - The redux state.
+ * @returns {Array} A machine.
+ */
+pod.getById = createSelector([pod.all, (state, id) => id], (pods, id) =>
+  pods.find((pod) => pod.id === Number(id))
+);
 
 export default pod;
