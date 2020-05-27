@@ -4,7 +4,7 @@ const merge = require("webpack-merge");
 
 const common = require('./webpack.common.js');
 
-const publicPath = '/MAAS/r/';
+const publicPath = process.env.PUBLIC_PATH || '/MAAS/r/';
 
 module.exports = merge(common, {
   mode: "production",
