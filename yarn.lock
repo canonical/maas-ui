@@ -2499,13 +2499,6 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@rescripts/utilities@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@rescripts/utilities/-/utilities-0.0.7.tgz#fac07a981fcc9674c9b55cedb9da67f03dadda52"
-  integrity sha512-kdk4qvNYXOH7mVJCP/URokp5J+1HCR+tT1Zgtp8X9hLywn6WoKlU/tQ2ECB/NPOHrZjp/DGXWeQBAchLXV8q2w==
-  dependencies:
-    ramda "^0.26.0"
-
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -13163,7 +13156,7 @@ railroad-diagrams@^1.0.0:
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
   integrity sha1-635iZ1SN3t+4mcG5Dlc3RVnN234=
 
-ramda@0.26.1, ramda@^0.26.0:
+ramda@0.26.1:
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
   integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
