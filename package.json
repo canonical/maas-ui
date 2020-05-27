@@ -12,7 +12,7 @@
     "build-ui": "cd ui && yarn install && yarn build",
     "cypress-open": "cd proxy && yarn cypress-open",
     "cypress-run": "cd proxy && yarn cypress-run",
-    "copy-build": "mkdir -p build && cp -R root/dist/* build/ && cp -R legacy/dist/assets build/ && cp ui/dist/static/css/*.css.map build/assets/css/ui.css.map && cp ui/dist/static/css/*.css build/assets/css/ui.css",
+    "copy-build": "mkdir -p build && cp -R root/dist/* build/ && cp -R legacy/dist/assets build/ && cp ui/dist/static/css/main.*.css.map build/assets/css/ui.css.map && cp ui/dist/static/css/main.*.css build/assets/css/ui.css",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "start": "yarn serve",
