@@ -4,7 +4,10 @@
     "node": true
   },
   "extends": ["eslint:recommended"],
-  "rules": { },
+  "globals": {
+    "document": false
+  },
+  "rules": {},
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,

@@ -104,8 +104,7 @@ const setupWebsocket = () => {
       sendMsg(4, "general.navigation_options");
     };
 
-    webSocket.onerror = (err) =>
-      reject(err);
+    webSocket.onerror = (err) => reject(err);
   });
 };
 
