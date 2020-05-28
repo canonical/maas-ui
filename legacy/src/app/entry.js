@@ -253,7 +253,7 @@ function configureMaas(
   $locationProvider,
   $compileProvider,
   tagsInputConfigProvider,
-  $urlRouterProvider
+  $urlRouterProvider,
 ) {
   // Disable debugInfo unless in a Jest context.
   // Re-enable debugInfo in development by running

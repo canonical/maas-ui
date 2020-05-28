@@ -15,7 +15,10 @@ registerApplication({
     showLoading();
     return import("@maas-ui/maas-ui-legacy");
   },
-  activeWhen: `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`,
+  activeWhen: (location) =>
+    location.pathname.startsWith(
+      `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`
+    ) || location.hash.startsWith("#"),
 });
 
 registerApplication({
