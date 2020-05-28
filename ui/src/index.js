@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
@@ -37,6 +37,13 @@ export const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 const Root = () => {
+  useEffect(() => {
+    const loadingNode = document.querySelector(".root-loading");
+    if (!loadingNode.classList.contains("u-hide")) {
+      loadingNode.classList.add("u-hide");
+    }
+  }, []);
+
   console.info(`${appName} ${appVersion} (${process.env.REACT_APP_GIT_SHA}).`);
   let styles;
   if (process.env.NODE_ENV === "production") {
