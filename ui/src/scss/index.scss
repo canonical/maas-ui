@@ -5,6 +5,7 @@
 @import "~vanilla-framework/scss/vanilla";
 @include vf-base;
 @include vf-p-buttons;
+@include vf-p-contextual-menu;
 @include vf-p-icons;
 @include vf-p-lists;
 @include vf-u-baseline-grid;
@@ -14,6 +15,7 @@
 
 // Import and include MAAS global styles
 @import "./patterns_buttons";
+@import "./patterns_cta";
 @import "./patterns_double-row";
 @import "./patterns_footer";
 @import "./patterns_forms";
@@ -26,6 +28,7 @@
 @import "./patterns_tabs";
 @import "./utilities";
 @include maas-buttons;
+@include maas-p-cta;
 @include maas-double-row;
 @include maas-footer;
 @include maas-forms;
