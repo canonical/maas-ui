@@ -1,5 +1,7 @@
 import { registerApplication, start } from "single-spa";
 
+import "./scss/base.scss";
+
 registerApplication({
   name: "legacy",
   app: () => import("@maas-ui/maas-ui-legacy"),

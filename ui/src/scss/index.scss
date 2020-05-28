@@ -2,7 +2,12 @@
 @import "./settings";
 
 // Import and include base Vanilla
-@import "~vanilla-framework/scss/build";
+@import "~vanilla-framework/scss/vanilla";
+@include vf-base;
+@include vf-p-buttons;
+@include vf-p-icons;
+@include vf-p-lists;
+@include vf-u-baseline-grid;
 
 // Import MAAS overrides of Vanilla patterns
 @import "./vanilla-overrides";

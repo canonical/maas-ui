@@ -2,6 +2,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DotenvFlow = require("dotenv-flow-webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
@@ -15,6 +16,26 @@ module.exports = {
       {
         test: /\.js?$/,
         loader: ["babel-loader"],
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              url: false,
+            },
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: ["node_modules"],
+              },
+            },
+          },
+        ],
       },
     ],
   },
@@ -32,6 +53,9 @@ module.exports = {
       { from: path.resolve(__dirname, "src/*.png"), to: "[name].[ext]" },
     ]),
     new DotenvFlow(),
+    new MiniCssExtractPlugin({
+      filename: "assets/css/[name].css",
+    }),
   ],
   externals: [],
 };
