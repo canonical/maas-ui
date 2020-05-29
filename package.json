@@ -38,7 +38,8 @@
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
     "test-shared": "cd shared && yarn run test",
-    "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared"
+    "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared",
+    "ui": "cd proxy && yarn start-ui"
   },
   "workspaces": {
     "packages": [

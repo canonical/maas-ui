@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "build-root-css": "cd ../root && [ -f dist/assets/css/root-application.css ] || { yarn install; node-sass --importer=../node_modules/node-sass-tilde-importer src/scss/base.scss dist/assets/css/root-application.css; }",
     "clean": "rm -rf node_modules",
     "cypress-ci": "start-server-and-test serve-apps '8401|8402' serve-base '8400|8404' cypress-run",
     "cypress-open": "yarn cypress open",
@@ -14,7 +15,10 @@
     "serve-legacy": "cd ../legacy && yarn run start",
     "serve-root": "cd ../root && yarn start",
     "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
+    "serve-ui-proxy": "node ./ui.js",
+    "serve-ui-standalone": "yarn build-root-css && cd ../ui && BROWSER=none PORT=8401 yarn run standalone",
     "start": "concurrently \"yarn serve-apps\" \"yarn serve-base\"",
+    "start-ui": "concurrently \"yarn serve-ui-standalone\" \"yarn watch-shared\" \"yarn serve-ui-proxy\"",
     "watch-shared": "cd ../shared && yarn watch"
   },
   "devDependencies": {
@@ -22,6 +26,7 @@
     "cypress": "4.5.0",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.3",
+    "node-sass-tilde-importer": "^1.0.2",
     "npm-package-json-lint": "5.1.0",
     "start-server-and-test": "1.11.0",
     "wait-on": "5.0.0"
