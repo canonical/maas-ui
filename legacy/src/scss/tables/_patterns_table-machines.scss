@@ -166,14 +166,6 @@
     .p-table--machines tbody &:hover,
     .p-table--machines tbody &:focus-within {
       background-color: $color-x-light;
-
-      .p-table-menu__toggle {
-        display: inline-block;
-      }
-
-      .p-table-menu:not(.is-hidden) .p-double-row__main-row .u-text-overflow {
-        max-width: calc(100% - 1.5rem);
-      }
     }
   }
 
@@ -194,119 +186,6 @@
       @extend %small-text;
       margin-bottom: map-get($line-heights, default-text) -
         map-get($line-heights, small) - map-get($nudges, nudge--small);
-    }
-  }
-
-  .p-table-menu {
-    @extend .p-contextual-menu;
-    margin-bottom: -$sp-unit;
-    margin-left: 0 !important;
-    width: 100%;
-
-    %table-menu-link {
-      @extend .p-contextual-menu__link;
-      padding: $spv-inner--small $sph-inner;
-      position: relative;
-      transition: 0s;
-
-      &::before {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: map-get($icon-sizes, default);
-        content: "";
-        height: 17px;
-        left: $sph-inner;
-        position: absolute;
-        top: $spv-inner--medium;
-        width: map-get($icon-sizes, default);
-      }
-    }
-
-    %table-menu-title {
-      border-bottom: 1px solid $color-light-new;
-      color: $color-mid-dark;
-      font-size: 0.75rem;
-      font-weight: 400;
-      padding: $spv-inner--x-small $sph-inner;
-      text-transform: uppercase;
-    }
-
-    .p-table-menu__title {
-      @extend %table-menu-title;
-    }
-
-    .p-table-menu__title--icon {
-      @extend %table-menu-title;
-      padding-left: $sp-xx-large;
-    }
-
-    .p-table-menu__footer {
-      border-top: 1px solid $color-light-new;
-      color: $color-mid-dark;
-      padding: $spv-inner--x-small $sp-xx-large;
-    }
-
-    .p-table-menu__toggle {
-      @extend %icon;
-      @include vf-icon-chevron;
-      border: 0;
-      display: none;
-      left: $sp-x-small;
-      opacity: 0.25;
-      top: 1px;
-
-      td:hover &,
-      td:focus-within & {
-        opacity: 1;
-      }
-    }
-
-    .p-table-menu__dropdown {
-      @extend .p-contextual-menu__dropdown;
-      left: -#{$sph-inner};
-      max-width: none;
-      min-width: 100%;
-      top: $sp-x-large;
-      width: -moz-max-content;
-      width: max-content;
-
-      .p-contextual-menu__group {
-        border-color: $color-light-new;
-      }
-    }
-
-    .p-table-menu__link {
-      @extend %table-menu-link;
-    }
-
-    .p-table-menu__check-power {
-      @extend %table-menu-link;
-      padding-left: $sp-xx-large;
-      padding-right: $sp-xx-large;
-    }
-
-    .p-table-menu__power-on {
-      @extend %table-menu-link;
-      padding-left: $sp-xx-large;
-      padding-right: $sp-xx-large;
-
-      &::before {
-        @include maas-icon-power-on($color-positive);
-      }
-    }
-
-    .p-table-menu__power-off {
-      @extend %table-menu-link;
-      padding-left: $sp-xx-large;
-      padding-right: $sp-xx-large;
-
-      &::before {
-        @include maas-icon-power-on($color-mid-light);
-      }
-    }
-
-    .p-double-row__icon-container {
-      cursor: pointer;
     }
   }
 }

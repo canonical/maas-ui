@@ -1,7 +1,8 @@
 @mixin maas-buttons {
   // Button styles that make it look like a link
   .p-button--link {
-    @extend %p-button--base;
+    @extend %vf-button-base;
+    background-color: inherit;
     border: 0 !important;
     color: $color-link;
     font-size: inherit;

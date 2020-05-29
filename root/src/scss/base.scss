@@ -3,3 +3,13 @@
 
 // Import and include base Vanilla
 @import "~vanilla-framework/scss/build";
+
+.root-loading {
+  background-color: $color-light;
+  height: 100vh;
+}
+
+.root-loading__header {
+  @extend %vf-has-box-shadow;
+  background-color: $color-x-light;
+}

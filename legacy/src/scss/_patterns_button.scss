@@ -53,8 +53,8 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
   }
 
   .p-button--link {
-    @extend %p-button--base;
-
+    @extend %vf-button-base;
+    background-color: inherit;
     border: 0;
     color: $color-link;
     line-height: 1.25rem;

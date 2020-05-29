@@ -1,11 +1,15 @@
 // Import settings
 @import "./settings";
 
-// Import and include base Vanilla
+// Import and include Vanilla classes/placeholders needed for custom styling.
+// NOTE: If you add another mixin here be sure to check every instance of that
+// component as it alters the class ordering in Vanilla and may cause
+// regressions.
 @import "~vanilla-framework/scss/vanilla";
-@include vf-base;
-@include vf-p-buttons;
-@include vf-p-icons;
+@include vf-b-placeholders;
+@include vf-b-button;
+@include vf-b-grid-definitions;
+@include vf-p-icons-common;
 @include vf-p-lists;
 @include vf-u-baseline-grid;
 

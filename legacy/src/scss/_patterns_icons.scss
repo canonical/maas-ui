@@ -248,7 +248,8 @@
     }
 
     &--audit {
-      @extend .p-icon--information;
+      @extend %icon;
+      @include vf-icon-info($color-mid-dark);
     }
   }
 
@@ -273,11 +274,13 @@
   }
 
   .p-icon--pass {
-    @extend .p-icon--success;
+    @extend %icon;
+    @include vf-icon-success($color-positive);
   }
 
   .p-icon--info {
-    @extend .p-icon--information;
+    @extend %icon;
+    @include vf-icon-info($color-mid-dark);
   }
 
   [class^="p-icon"] {
