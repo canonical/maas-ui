@@ -45,8 +45,11 @@ export const Header = ({
           j = d.createElement(s),
           dl = l !== "dataLayer" ? "&l=" + l : "";
         j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
+        const src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        j.src = src;
+        if (document.querySelectorAll(`script[src="${src}"]`).length === 0) {
+          f.parentNode.insertBefore(j, f);
+        }
       })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
 
       window.ga =
