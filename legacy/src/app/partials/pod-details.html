@@ -338,11 +338,16 @@
                                     </td>
                                     <td class="p-table--action-cell">
                                         <div class="form__group-input" style="position: relative">
-                                            <input type="text" class="u-no-margin--bottom" placeholder="{$ getDefaultComposeValue('storage') $} (default)" ng-eypress="numberOnly($event)"
-                                                data-ng-model="storage.size"
-                                                data-ng-change="updateRequests(storage)"
-                                                data-ng-click="sendAnalyticsEvent('KVM details', 'Change capacity value: ' + storage.size + ' GB', 'KVM compose')"
-                                                ng-class="{'in-warning': storage.size !== '' && storage.size < 8}">
+                                            <input
+                                                class="u-no-margin--bottom"
+                                                min="0"
+                                                ng-change="updateRequests(storage)"
+                                                ng-class="{'in-warning': storage.size !== '' && storage.size < 8}"
+                                                ng-click="sendAnalyticsEvent('KVM details', 'Change capacity value: ' + storage.size + ' GB', 'KVM compose')"
+                                                ng-model="storage.size"
+                                                placeholder="{$ getDefaultComposeValue('storage') $} (default)"
+                                                type="number"
+                                            >
                                             <span class="p-tooltip--top-left u-float--right"
                                                 style="position: absolute; top: 8px; right: 8px;"
                                                 aria-describedby="storage-size-warning"
