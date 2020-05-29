@@ -148,8 +148,14 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
-    .state("pods", { url: prefixRoute("/pods"), redirectTo: prefixRoute("/kvm") })
-    .state("podDetails", { url: prefixRoute("/pod/:id"), redirectTo: prefixRoute("/kvm/:id") })
+    .state("pods", {
+      url: prefixRoute("/pods"),
+      redirectTo: prefixRoute("/kvm"),
+    })
+    .state("podDetails", {
+      url: prefixRoute("/pod/:id"),
+      redirectTo: prefixRoute("/kvm/:id"),
+    })
     .state("master.rsd", {
       url: prefixRoute("/rsd"),
       template: podsListTmpl,
@@ -227,6 +233,26 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
       template: dashboardTmpl,
       controller: "DashboardController",
     });
+
+  $urlRouterProvider.otherwise(($injector, $location) => {
+    // Redirect old hash routes to new routes
+    if ($location.hash()) {
+      window.history.pushState(
+        null,
+        null,
+        `${process.env.BASENAME}${
+          process.env.ANGULAR_BASENAME
+        }${$location.hash()}`
+      );
+    } else {
+      // fallthrough redirect machine listing
+      window.history.pushState(
+        null,
+        null,
+        `${process.env.BASENAME}${process.env.REACT_BASENAME}/machines`
+      );
+    }
+  });
 };
 
 export default configureRoutes;
