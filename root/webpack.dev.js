@@ -9,14 +9,14 @@ const publicPath = "/";
 module.exports = merge(common, {
   mode: "development",
   output: {
-    publicPath
+    publicPath,
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.ejs"),
       inject: false,
       templateParameters: {
-        publicPath
+        publicPath,
       },
     }),
   ],
@@ -26,5 +26,6 @@ module.exports = merge(common, {
     historyApiFallback: true,
     open: true,
     public: "0.0.0.0:8400",
+    writeToDisk: true,
   },
 });
