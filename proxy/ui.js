@@ -7,8 +7,6 @@ var app = express();
 
 const PROXY_PORT = 8400;
 const UI_PORT = 8401;
-const LEGACY_PORT = 8402;
-const ROOT_PORT = 8404;
 
 // Proxy API endpoints to the MAAS.
 app.use(
@@ -28,17 +26,10 @@ app.use(
   })
 );
 
-// Proxy the legacy assets to the Angular client.
+// Proxy the HMR endpoint to the React client.
 app.use(
-  createProxyMiddleware(`${process.env.BASENAME}/assets`, {
-    target: `http://localhost:${LEGACY_PORT}/`,
-  })
-);
-
-// Proxy the HMR endpoint to the Angular client.
-app.use(
-  createProxyMiddleware("/sockjs-legacy", {
-    target: `http://localhost:${LEGACY_PORT}/`,
+  createProxyMiddleware("/sockjs-node", {
+    target: `http://localhost:${UI_PORT}/`,
     ws: true,
   })
 );
@@ -46,7 +37,7 @@ app.use(
 // Proxy to the single-spa root app.
 app.use(
   createProxyMiddleware("/", {
-    target: `http://localhost:${ROOT_PORT}/`,
+    target: `http://localhost:${UI_PORT}/`,
   })
 );
 

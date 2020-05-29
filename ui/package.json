@@ -44,6 +44,7 @@
     "yup": "0.28.5"
   },
   "scripts": {
+    "standalone": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` REACT_APP_STANDALONE=true react-scripts start",
     "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-app-rewired start",
     "serve": "yarn run start",
     "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-app-rewired build --profile && rm -rf dist && mv build dist",

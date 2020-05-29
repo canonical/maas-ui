@@ -1,5 +1,6 @@
 import { Provider } from "react-redux";
 import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
@@ -39,6 +40,9 @@ sagaMiddleware.run(rootSaga);
 const Root = () => {
   useEffect(() => {
     const loadingNode = document.querySelector(".root-loading");
+    if (!loadingNode) {
+      return;
+    }
     if (!loadingNode.classList.contains("u-hide")) {
       loadingNode.classList.add("u-hide");
     }
@@ -67,6 +71,11 @@ const Root = () => {
     </Provider>
   );
 };
+
+if (process.env.REACT_APP_STANDALONE === "true") {
+  require("@maas-ui/maas-ui-root/dist/assets/css/root-application.css");
+  ReactDOM.render(<Root />, document.getElementById("root"));
+}
 
 export default Root;
 
