@@ -25,7 +25,24 @@ describe("KVMList", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: [],
+        items: [
+          {
+            cpu_over_commit_ratio: 1,
+            id: 1,
+            memory_over_commit_ratio: 1,
+            name: "pod-1",
+            total: {
+              memory: 8192,
+              cores: 8,
+              local_storage: 1000000000000,
+            },
+            used: {
+              memory: 2048,
+              cores: 4,
+              local_storage: 100000000000,
+            },
+          },
+        ],
       },
     };
   });
@@ -46,7 +63,6 @@ describe("KVMList", () => {
 
   it("displays links to details pages", () => {
     const state = { ...initialState };
-    state.pod.items = [{ id: 1 }];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -59,5 +75,50 @@ describe("KVMList", () => {
       wrapper.find("table tbody tr").at(0).find("td:first-child Link").props()
         .to
     ).toBe("/kvm/1");
+  });
+
+  it("displays available cores", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Meter").at(0).find(".p-meter__labels").text()).toBe(
+      "4 cores free"
+    );
+  });
+
+  it("displays available memory", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Meter").at(1).find(".p-meter__labels").text()).toBe(
+      "6 GiB free"
+    );
+  });
+
+  it("displays available storage", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Meter").at(2).find(".p-meter__labels").text()).toBe(
+      "900 GB free"
+    );
   });
 });
