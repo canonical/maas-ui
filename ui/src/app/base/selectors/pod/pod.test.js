@@ -58,4 +58,23 @@ describe("pod selectors", () => {
     };
     expect(pod.errors(state)).toStrictEqual("Data is incorrect");
   });
+
+  it("can get a pod by id", () => {
+    const state = {
+      pod: {
+        items: [
+          { name: "pod-1", id: 111 },
+          { name: "podrick", id: 222 },
+        ],
+      },
+    };
+    expect(pod.getById(state, 222)).toStrictEqual({
+      name: "podrick",
+      id: 222,
+    });
+    expect(pod.getById(state, "222")).toStrictEqual({
+      name: "podrick",
+      id: 222,
+    });
+  });
 });
