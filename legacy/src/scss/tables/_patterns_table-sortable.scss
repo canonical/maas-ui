@@ -1,24 +1,37 @@
 @mixin maas-table-sortable {
-  .p-table--sortable {
-    [role="columnheader"] {
-      @extend th[role="columnheader"][aria-sort];
+  %heading-icon {
+    @include vf-icon-chevron;
+    @include vf-icon-size(.875rem);
+    $vertical-offset: 1px;
 
-      &::after {
-        @extend %icon;
-        @include vf-icon-chevron;
-        @include vf-icon-size(0.75rem);
-        background-size: auto;
-        margin-left: $sph-inner--small;
-      }
+    background: {
+      repeat: no-repeat;
+      size: 100%;
+    }
 
-      &.is-sorted.sort-asc::after {
-        content: "";
-      }
+    content: '';
+    display: inline-block;
+    margin-left: $sp-x-small;
+    vertical-align: calc(#{$vertical-offset} + #{0.5 * $cap-height} - #{0.5 * $default-icon-size});
+  }
 
-      &.is-sorted.sort-desc::after {
-        content: "";
-        transform: rotate(180deg);
-      }
+  .p-table--sortable [role="columnheader"] {
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &.is-sorted.sort-asc::after {
+      @extend %heading-icon;
+    }
+
+    &.is-sorted.sort-desc::after {
+      @extend %heading-icon;
+
+      transform: rotate(180deg);
+    }
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

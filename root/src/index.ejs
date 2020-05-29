@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="root-loading">
-      <header class="p-navigation is-dark">
+      <nav class="p-navigation is-dark">
         <div class="p-navigation__row row">
           <div class="p-navigation__banner">
             <div class="p-navigation__logo">
@@ -39,11 +39,14 @@
             </div>
           </div>
         </div>
-      </header>
-      <header class="p-strip--light is-shallow u-no-padding--bottom">
+      </nav>
+      <header class="p-strip is-shallow root-loading__header">
         <div class="row">
-          <div class="col-medium-4 col-8">
-            <h4><span class="u-text--loading"><i class="p-icon--spinner u-animation--spin"></i> Loading...</span></h4>
+          <div class="col-12">
+            <p class="u-no-margin--bottom">
+              <i class="p-icon--spinner u-animation--spin"></i>
+              <span style="margin-left: .25rem;">Loading...</span>
+            </p>
           </div>
         </div>
       </header>

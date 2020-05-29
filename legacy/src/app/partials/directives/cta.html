@@ -1,6 +1,6 @@
-<div class="p-cta">
+<div class="p-contextual-menu">
   <button
-    class="p-cta__toggle u-no-margin--right"
+    class="p-contextual-menu__toggle p-button--positive has-icon u-no-margin--right"
     aria-controls="#cta-menu"
     aria-expanded="false"
     aria-haspopup="true"
@@ -8,26 +8,27 @@
     data-ng-class="{'p-button--positive': getTitle() === 'Take action', 'is-selected': shown}"
     data-ng-disabled="disabled"
   >
-    {$ getTitle() $}
+    <span>{$ getTitle() $}</span>
+    <i class="p-icon--contextual-menu p-contextual-menu__indicator is-light"></i>
   </button>
   <div
-    class="p-cta__dropdown"
+    class="p-contextual-menu__dropdown p-cta-dropdown"
     id="cta-menu"
     aria-hidden="false"
     aria-label="submenu"
     data-ng-show="shown"
   >
-    <span class="p-cta__group" data-ng-repeat="type in getActionTypes()">
+    <span class="p-contextual-menu__group" data-ng-repeat="type in getActionTypes()">
       <button
-        class="p-cta__link"
+        class="p-contextual-menu__link u-flex--space-between"
         data-ng-repeat="select in maasCta | filter:{ type: type }"
         data-ng-if="showAction(select)"
         data-ng-click="selectItem(select)"
         data-ng-class="{'is-unavailable': selectedItems && select.available == 0}"
       >
-        {$ getOptionTitle(select) $}
-        <div class="p-cta__count" data-ng-if="showCount(select)">
-          <span>{$ select.available $}</span>
+        <span>{$ getOptionTitle(select) $}</span>
+        <span class="p-text--muted" data-ng-if="showCount(select)">
+          {$ select.available $}
         </div>
       </button>
     </span>
