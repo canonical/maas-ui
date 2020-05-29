@@ -10,7 +10,11 @@ import MockWebSocket from "testing/websocket";
 
 describe("RegionConnection", function() {
   // Load the MAAS module to test.
-  beforeEach(angular.mock.module("MAAS"));
+  beforeEach(
+    angular.mock.module("MAAS", ($urlRouterProvider) =>
+      $urlRouterProvider.deferIntercept()
+    )
+  );
 
   // Grab the needed angular pieces.
   var $timeout, $rootScope, $q, $cookies, $window;
