@@ -248,7 +248,7 @@ describe("Pools", () => {
       .at(1)
       .find("Link");
     expect(link.exists()).toBe(true);
-    expect(link.prop("to")).toBe("/machines?pool=default");
+    expect(link.prop("to")).toBe("/machines?pool=%3Ddefault");
     expect(link.text()).toBe("1 of 5 ready");
   });
 
