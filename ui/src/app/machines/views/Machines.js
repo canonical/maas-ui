@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { useLocation, useRouter } from "app/base/hooks";
+import { useLocation, usePrevious, useRouter } from "app/base/hooks";
 import {
   filtersToQueryString,
   filtersToString,
@@ -32,6 +32,15 @@ const Machines = () => {
     const filters = getCurrentFilters(searchText);
     history.push({ search: filtersToQueryString(filters) });
   };
+
+  const previousPath = usePrevious(location.pathname);
+
+  useEffect(() => {
+    // When the page changes (e.g. /pools -> /machines) then update the filters.
+    if (location.pathname !== previousPath) {
+      setFilter(filtersToString(currentFilters));
+    }
+  }, [location.pathname, currentFilters, previousPath]);
 
   return (
     <Section
