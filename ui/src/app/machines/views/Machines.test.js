@@ -165,7 +165,24 @@ describe("Machines", () => {
         items: [],
       },
       resourcepool: {
-        items: [],
+        errors: {},
+        loaded: true,
+        items: [
+          {
+            id: 0,
+            name: "default",
+            description: "default",
+            is_default: true,
+            permissions: [],
+          },
+          {
+            id: 1,
+            name: "Backup",
+            description: "A backup pool",
+            is_default: false,
+            permissions: [],
+          },
+        ],
       },
       zone: {
         items: [],
@@ -278,6 +295,32 @@ describe("Machines", () => {
     );
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
       "test search"
+    );
+  });
+
+  it("updates the filter when the page changes", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
+          ]}
+        >
+          <Machines />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("HeaderStrip Link[to='/pools']")
+      .simulate("click", { button: 0 });
+    wrapper.update();
+    wrapper
+      .find("Link[to='/machines?pool=%3Ddefault']")
+      .simulate("click", { button: 0 });
+    wrapper.update();
+    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
+      "pool:(=default)"
     );
   });
 

@@ -24,8 +24,9 @@ const getMachinesLabel = (row) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
+  const filters = filtersToQueryString({ pool: `=${row.name}` });
   return (
-    <Link to={`/machines${filtersToQueryString({ pool: row.name })}`}>
+    <Link to={`/machines${filters}`}>
       {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
     </Link>
   );
