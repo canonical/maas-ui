@@ -16,7 +16,7 @@ MAAS is an open-source tool that lets you build a data centre from bare-metal se
 
 ![screenshot](https://user-images.githubusercontent.com/130286/80558424-738d7300-8a2e-11ea-9777-4d5fc72788b3.png)
 
-This repository contains the sourcecode for the [MAAS](http://maas.io) web app, maas-ui.
+This repository contains the sourcecode for the [MAAS](https://maas.io) web app, maas-ui.
 
 It is comprised of the following [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/):
 
