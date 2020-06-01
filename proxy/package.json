@@ -26,7 +26,7 @@
     "cypress": "4.5.0",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.3",
-    "node-sass-tilde-importer": "^1.0.2",
+    "node-sass-tilde-importer": "1.0.2",
     "npm-package-json-lint": "5.1.0",
     "start-server-and-test": "1.11.0",
     "wait-on": "5.0.0"
