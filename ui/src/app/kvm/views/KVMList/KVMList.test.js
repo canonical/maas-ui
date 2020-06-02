@@ -77,7 +77,7 @@ describe("KVMList", () => {
     ).toBe("/kvm/1");
   });
 
-  it("displays available cores", () => {
+  it("displays total cores", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -88,11 +88,11 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").at(0).find(".p-meter__labels").text()).toBe(
-      "4 cores free"
+      "8"
     );
   });
 
-  it("displays available memory", () => {
+  it("displays used memory", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -103,11 +103,11 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").at(1).find(".p-meter__labels").text()).toBe(
-      "6 GiB free"
+      "2 GiB"
     );
   });
 
-  it("displays available storage", () => {
+  it("displays used storage", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -118,7 +118,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").at(2).find(".p-meter__labels").text()).toBe(
-      "900 GB free"
+      "100 GB"
     );
   });
 });

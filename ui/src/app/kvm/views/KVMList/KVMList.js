@@ -47,19 +47,10 @@ const KVMList = () => {
               </thead>
               <tbody>
                 {pods.map((pod) => {
-                  const freeCores =
-                    pod.total.cores * pod.cpu_over_commit_ratio -
-                    pod.used.cores;
-                  const freeMemory = formatBytes(
-                    pod.total.memory * pod.memory_over_commit_ratio -
-                      pod.used.memory,
-                    "MiB",
-                    { binary: true }
-                  );
-                  const freeStorage = formatBytes(
-                    pod.total.local_storage - pod.used.local_storage,
-                    "B"
-                  );
+                  const usedMemory = formatBytes(pod.used.memory, "MiB", {
+                    binary: true,
+                  });
+                  const usedStorage = formatBytes(pod.used.local_storage, "B");
                   return (
                     <tr key={pod.id}>
                       <td>
@@ -76,7 +67,7 @@ const KVMList = () => {
                           data={[
                             {
                               key: `${pod.name}-cpu-meter`,
-                              label: `${freeCores} cores free`,
+                              label: `${pod.total.cores}`,
                               value: pod.used.cores,
                             },
                           ]}
@@ -91,7 +82,7 @@ const KVMList = () => {
                           data={[
                             {
                               key: `${pod.name}-memory-meter`,
-                              label: `${freeMemory.value} ${freeMemory.unit} free`,
+                              label: `${usedMemory.value} ${usedMemory.unit}`,
                               value: pod.used.memory,
                             },
                           ]}
@@ -106,7 +97,7 @@ const KVMList = () => {
                           data={[
                             {
                               key: `${pod.name}-storage-meter`,
-                              label: `${freeStorage.value} ${freeStorage.unit} free`,
+                              label: `${usedStorage.value} ${usedStorage.unit}`,
                               value: pod.used.local_storage,
                             },
                           ]}
