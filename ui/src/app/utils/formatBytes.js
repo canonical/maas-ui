@@ -14,7 +14,8 @@ export const formatBytes = (
   unit,
   { binary = false, precision = 2 } = {}
 ) => {
-  const parsedValue = parseFloat(value);
+  const negative = value < 0;
+  const parsedValue = parseFloat(Math.abs(value));
   if (parsedValue === 0) {
     return { value: 0, unit: "B" };
   }
@@ -34,7 +35,7 @@ export const formatBytes = (
   );
 
   return {
-    value: valueInUnit,
+    value: negative ? -valueInUnit : valueInUnit,
     unit: sizes[j],
   };
 };

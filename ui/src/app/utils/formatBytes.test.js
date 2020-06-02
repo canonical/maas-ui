@@ -40,4 +40,23 @@ describe("formatBytes", () => {
       unit: "GiB",
     });
   });
+
+  it("can handle negative numbers", () => {
+    expect(formatBytes(-1, "B")).toStrictEqual({
+      value: -1,
+      unit: "B",
+    });
+    expect(formatBytes(-2000, "MB")).toStrictEqual({
+      value: -2,
+      unit: "GB",
+    });
+    expect(formatBytes(-1234, "GB", { precision: 4 })).toStrictEqual({
+      value: -1.234,
+      unit: "TB",
+    });
+    expect(formatBytes(-1024, "MiB", { binary: true })).toStrictEqual({
+      value: -1,
+      unit: "GiB",
+    });
+  });
 });
