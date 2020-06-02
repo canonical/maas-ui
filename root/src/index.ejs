@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="shortcut icon" href="<%= publicPath %>maas-favicon-32px.png" />
-    <link rel="stylesheet" href="<%= publicPath %>assets/css/root-application.css" />
+    <% htmlWebpackPlugin.files.css.forEach(function(file){ %>
+      <link rel="stylesheet" href="<%= file %>" />
+    <% }); %>
     <title>MAAS UI</title>
   </head>
   <body>
@@ -51,6 +53,8 @@
         </div>
       </header>
     </div>
-    <script src="<%= publicPath %>root-application.js"></script>
+    <% htmlWebpackPlugin.files.js.forEach(function(file){ %>
+      <script src="<%= file %>"></script>
+    <% }); %>
   </body>
 </html>
