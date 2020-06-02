@@ -6,6 +6,6 @@ import { formatBytes } from "./formatBytes";
  * @returns {String} Formatted value and unit.
  */
 export const formatSpeedUnits = (speedInMbytes) => {
-  const adjusted = formatBytes(speedInMbytes, "MB", 1);
+  const adjusted = formatBytes(speedInMbytes, "MB", { precision: 1 });
   return `${adjusted.value} ${adjusted.unit[0]}bps`;
 };
