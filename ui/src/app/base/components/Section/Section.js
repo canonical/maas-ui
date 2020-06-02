@@ -22,15 +22,15 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
       <Strip
         element="main"
         includeCol={false}
-        rowClassName="u-flex section__content-wrapper"
+        rowClassName="section__content-wrapper"
         shallow
       >
         {sidebar && (
-          <Col element="aside" size="2" className="section__sidebar">
+          <Col element="aside" size="3" className="section__sidebar">
             {sidebar}
           </Col>
         )}
-        <Col size={sidebar ? 10 : 12} className="section__content">
+        <Col size={sidebar ? 9 : 12} className="section__content">
           <NotificationList />
           {children}
         </Col>
