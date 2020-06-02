@@ -10,7 +10,10 @@ const publicPath = "/MAAS/r/";
 
 const getStylesheet = (dir) => {
   const outputPath = path.resolve(process.cwd(), dir);
-  return fs.readdirSync(outputPath).find((file) => file.endsWith(".css"));
+  const stylesheet = fs
+    .readdirSync(outputPath)
+    .find((file) => file.endsWith(".css"));
+  return `${publicPath}assets/css/${stylesheet}`;
 };
 
 module.exports = merge(common, {
