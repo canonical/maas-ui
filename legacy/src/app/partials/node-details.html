@@ -3386,7 +3386,7 @@
     </section>
 
     <section data-ng-if="section.area === 'storage'" data-ng-controller="NodeStorageController">
-        <form>
+        <form class="p-strip">
             <div data-ng-if="canEdit() && (node.status_code === 4 || node.status_code === 10)">
                 <div class="u-fixed-width" data-ng-if="!confirmStorageLayout">
                     <div class="p-form__group u-align--right">
