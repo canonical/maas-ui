@@ -16,15 +16,19 @@ window.addEventListener("single-spa:before-app-change", (evt) => {
   } = evt.detail.newAppStatuses;
   const uiStylesheet = document.querySelector(".ui-stylesheet");
   const legacyStylesheet = document.querySelector(".legacy-stylesheet");
-  if (ui === "MOUNTED") {
-    uiStylesheet.disabled = false;
-  } else {
-    uiStylesheet.disabled = true;
+  if (uiStylesheet) {
+    if (ui === "MOUNTED") {
+      uiStylesheet.disabled = false;
+    } else {
+      uiStylesheet.disabled = true;
+    }
   }
-  if (legacy === "MOUNTED") {
-    legacyStylesheet.disabled = false;
-  } else {
-    legacyStylesheet.disabled = true;
+  if (legacyStylesheet) {
+    if (legacy === "MOUNTED") {
+      legacyStylesheet.disabled = false;
+    } else {
+      legacyStylesheet.disabled = true;
+    }
   }
 });
 
