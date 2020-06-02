@@ -7,6 +7,12 @@
     <% htmlWebpackPlugin.files.css.forEach(function(file){ %>
       <link rel="stylesheet" href="<%= file %>" />
     <% }); %>
+    <% if (uiStylesheet) { %>
+      <link rel="stylesheet" href="<%= uiStylesheet %>" class="ui-stylesheet" />
+    <% } %>
+    <% if (legacyStylesheet) { %>
+      <link rel="stylesheet" href="<%= legacyStylesheet %>" class="legacy-stylesheet" />
+    <% } %>
     <title>MAAS UI</title>
   </head>
   <body>
