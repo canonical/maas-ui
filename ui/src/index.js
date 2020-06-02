@@ -49,23 +49,11 @@ const Root = () => {
   }, []);
 
   console.info(`${appName} ${appVersion} (${process.env.REACT_APP_GIT_SHA}).`);
-  let styles;
-  if (process.env.NODE_ENV === "production") {
-    styles = (
-      <link
-        href={`${process.env.REACT_APP_BASENAME}/assets/css/ui.css`}
-        rel="stylesheet"
-      />
-    );
-  }
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <React.StrictMode>
-          <>
-            {styles}
-            <App />
-          </>
+          <App />
         </React.StrictMode>
       </ConnectedRouter>
     </Provider>

@@ -69,7 +69,7 @@ module.exports = {
     ]),
     new MiniCssExtractPlugin({
       // This file is relative to output.path above.
-      filename: "assets/css/[name].css",
+      filename: "assets/css/[name].[contenthash].css",
     }),
     new webpack.ProvidePlugin({
       "window.jQuery": "jquery",

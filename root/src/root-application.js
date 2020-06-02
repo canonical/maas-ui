@@ -9,6 +9,25 @@ const showLoading = () => {
   }
 };
 
+window.addEventListener("single-spa:before-app-change", (evt) => {
+  const {
+    legacy = "NOT_MOUNTED",
+    ui = "NOT_MOUNTED",
+  } = evt.detail.newAppStatuses;
+  const uiStylesheet = document.querySelector(".ui-stylesheet");
+  const legacyStylesheet = document.querySelector(".legacy-stylesheet");
+  if (ui === "MOUNTED") {
+    uiStylesheet.disabled = false;
+  } else {
+    uiStylesheet.disabled = true;
+  }
+  if (legacy === "MOUNTED") {
+    legacyStylesheet.disabled = false;
+  } else {
+    legacyStylesheet.disabled = true;
+  }
+});
+
 registerApplication({
   name: "legacy",
   app: () => {

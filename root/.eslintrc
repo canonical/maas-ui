@@ -5,7 +5,8 @@
   },
   "extends": ["eslint:recommended"],
   "globals": {
-    "document": false
+    "document": false,
+    "window": false
   },
   "rules": {},
   "parser": "babel-eslint",

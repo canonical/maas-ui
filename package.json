@@ -15,7 +15,7 @@
     "copy-build": "mkdir -p build && yarn copy-root && yarn copy-legacy-assets && yarn copy-ui-css",
     "copy-legacy-assets": "cp -Ru legacy/dist/assets build/",
     "copy-root": "cp -R root/dist/* build/",
-    "copy-ui-css": "cp ui/dist/static/css/main.*.css.map build/assets/css/ui.css.map && cp ui/dist/static/css/main.*.css build/assets/css/ui.css",
+    "copy-ui-css": "cp ui/dist/static/css/* build/assets/css/",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "start": "yarn serve",
