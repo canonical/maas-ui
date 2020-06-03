@@ -114,6 +114,8 @@ export function maasErrorOverlay(
         if (angular.isString(error)) {
           scope.clientError = true;
           scope.error = ErrorService._error;
+        } else {
+          scope.clientError = false;
         }
       };
 
