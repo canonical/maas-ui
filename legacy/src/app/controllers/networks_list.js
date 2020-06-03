@@ -286,9 +286,16 @@ function NetworksListController(
     $scope.newObject = null;
   };
 
-  // Return the name name for the VLAN.
+  // Return the short name for the VLAN.
   $scope.getVLANName = function(vlan) {
     return VLANsManager.getName(vlan);
+  };
+
+  // Return the full name for the VLAN.
+  $scope.getFullVLANName = function(vlan_id) {
+    var vlan = VLANsManager.getItemFromList(vlan_id);
+    var fabric = FabricsManager.getItemFromList(vlan.fabric);
+    return FabricsManager.getName(fabric) + "." + VLANsManager.getName(vlan);
   };
 
   // Return the name of the fabric from its given ID.
@@ -310,6 +317,8 @@ function NetworksListController(
 
     if (vlan.dhcp_on) {
       return "MAAS-provided";
+    } else if (vlan.relay_vlan) {
+      return "Relayed via " + $scope.getFullVLANName(vlan.relay_vlan);
     }
 
     return "No DHCP";

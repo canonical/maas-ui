@@ -1519,6 +1519,13 @@ function NodeDetailsController(
     return text;
   };
 
+  // Return the full name for the VLAN.
+  $scope.getFullVLANName = function(vlan_id) {
+    var vlan = VLANsManager.getItemFromList(vlan_id);
+    var fabric = FabricsManager.getItemFromList(vlan.fabric);
+    return FabricsManager.getName(fabric) + "." + VLANsManager.getName(vlan);
+  };
+
   $scope.getDHCPStatus = iface => {
     const { vlans } = $scope;
     const vlan = vlans.find(vlan => vlan.id === iface.vlan_id);
@@ -1529,7 +1536,10 @@ function NodeDetailsController(
 
       if (vlan.dhcp_on) {
         return "MAAS-provided";
+      } else if (vlan.relay_vlan) {
+        return "Relayed via " + $scope.getFullVLANName(vlan.relay_vlan);
       }
+
     }
     return "No DHCP";
   };
