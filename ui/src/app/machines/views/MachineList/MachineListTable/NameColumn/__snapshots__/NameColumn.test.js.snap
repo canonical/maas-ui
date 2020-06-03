@@ -12,7 +12,7 @@ exports[`NameColumn renders 1`] = `
         id="abc123"
         label={
           <a
-            href="/l/undefined/abc123"
+            href="/MAAS/l/undefined/abc123"
             onClick={[Function]}
           >
             <strong>
@@ -50,7 +50,7 @@ exports[`NameColumn renders 1`] = `
               id="abc123"
               label={
                 <a
-                  href="/l/undefined/abc123"
+                  href="/MAAS/l/undefined/abc123"
                   onClick={[Function]}
                 >
                   <strong>
@@ -71,7 +71,7 @@ exports[`NameColumn renders 1`] = `
                 forId="abc123"
                 label={
                   <a
-                    href="/l/undefined/abc123"
+                    href="/MAAS/l/undefined/abc123"
                     onClick={[Function]}
                   >
                     <strong>
@@ -105,7 +105,7 @@ exports[`NameColumn renders 1`] = `
                         htmlFor="abc123"
                       >
                         <a
-                          href="/l/undefined/abc123"
+                          href="/MAAS/l/undefined/abc123"
                           onClick={[Function]}
                         >
                           <strong>
