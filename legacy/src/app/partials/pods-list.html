@@ -125,24 +125,20 @@
                 </div>
                 <div class="col-4">
                     <ul class="p-inline-list">
-                        <li class="p-inline-list__item" style="display: inline-block">
-                            <input type="radio" data-ng-model="add.obj.type" id="lxd-pod" value="lxd" />
-                            <label for="lxd-pod">LXD</label>
-                        </li>
-                        <li class="p-inline-list__item" style="display: inline-block">
+                        <li class="p-inline-list__item" style="display: inline-block; margin-right: 1.5rem;">
                             <input type="radio" data-ng-model="add.obj.type" id="virsh-pod" value="virsh" />
                             <label for="virsh-pod">virsh</label>
                         </li>
+                        <li class="p-inline-list__item" style="display: inline-block">
+                            <input type="radio" data-ng-model="add.obj.type" id="lxd-pod" value="lxd" />
+                            <label for="lxd-pod">
+                                LXD
+                                <span class="p-label--new" style="display: inline; margin-left: .5rem;">Beta</span>
+                            </label>
+                        </li>
                     </ul>
-                    <!-- TODO Caleb 28/04/2020 - Replace with real copy when ready -->
-                    <span ng-if="false">
-                        <p ng-if="add.obj.type === 'lxd'">
-                            Why would I like to add a LXD host?<br>
-                            <a class="p-link--external">More about LXD hosts in MAAS...</a>
-                        </p>
-                        <p ng-if="add.obj.type === 'virsh'">
-                            Why would I like to add a virsh host?<br>
-                            <a class="p-link--external">More about virsh hosts in MAAS...</a>
+                        <p>
+                            <a class="p-link--external" href="https://maas.io/docs/intro-to-vm-hosting">More about KVM hosts in MAAS...</a>
                         </p>
                     </span>
                 </div>
