@@ -16,7 +16,9 @@ module.exports = merge(common, {
       template: path.resolve(__dirname, "src", "index.ejs"),
       inject: false,
       templateParameters: {
+        legacyStylesheet: `/MAAS/assets/css/maas.css`,
         publicPath,
+        uiStylesheet: null,
       },
     }),
   ],

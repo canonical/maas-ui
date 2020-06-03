@@ -45,7 +45,7 @@
   },
   "scripts": {
     "standalone": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` REACT_APP_STANDALONE=true react-scripts start",
-    "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-app-rewired start",
+    "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` REACT_APP_STANDALONE=false react-app-rewired start",
     "serve": "yarn run start",
     "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` REACT_APP_STANDALONE=false react-app-rewired build --profile && rm -rf dist && mv build dist",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",

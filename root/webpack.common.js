@@ -9,7 +9,7 @@ module.exports = {
     "root-application": "src/root-application.js",
   },
   output: {
-    filename: "[name].js",
+    filename: "[name].[contenthash].js",
   },
   module: {
     rules: [
@@ -54,7 +54,7 @@ module.exports = {
     ]),
     new DotenvFlow(),
     new MiniCssExtractPlugin({
-      filename: "assets/css/[name].css",
+      filename: "assets/css/[name].[contenthash].css",
     }),
   ],
   externals: [],
