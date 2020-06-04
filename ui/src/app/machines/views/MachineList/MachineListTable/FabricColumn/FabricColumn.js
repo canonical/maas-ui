@@ -14,6 +14,7 @@ export const FabricColumn = ({ systemId }) => {
 
   const fabricID = machine.vlan && machine.vlan.fabric_id;
   const fabricName = machine.vlan && machine.vlan.fabric_name;
+  const fabricURL = generateLegacyURL(`/fabric/${fabricID}`);
   const vlan = machine.vlan && machine.vlan.name ? machine.vlan.name : "";
 
   return (
@@ -30,6 +31,10 @@ export const FabricColumn = ({ systemId }) => {
             <a
               className="p-link--soft"
               href={generateLegacyURL(`/fabric/${fabricID}`)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                window.history.pushState(null, null, fabricURL);
+              }}
             >
               {fabricName}
             </a>

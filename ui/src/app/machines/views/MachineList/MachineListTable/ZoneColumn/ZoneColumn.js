@@ -62,6 +62,8 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
     }
   }, [updating, machine.zone.id]);
 
+  const zoneURL = generateLegacyURL(`/zone/${machine.zone.id}`);
+
   return (
     <DoubleRow
       menuLinks={zoneLinks}
@@ -74,7 +76,11 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
           ) : null}
           <a
             className="p-link--soft"
-            href={generateLegacyURL(`/zone/${machine.zone.id}`)}
+            href={zoneURL}
+            onClick={(evt) => {
+              evt.preventDefault();
+              window.history.pushState(null, null, zoneURL);
+            }}
           >
             {machine.zone.name}
           </a>

@@ -20,6 +20,7 @@ exports[`FabricColumn renders 1`] = `
         <a
           className="p-link--soft"
           href="/MAAS/l/fabric/0"
+          onClick={[Function]}
         >
           fabric-0
         </a>
@@ -68,6 +69,7 @@ exports[`FabricColumn renders 1`] = `
               <a
                 className="p-link--soft"
                 href="/MAAS/l/fabric/0"
+                onClick={[Function]}
               >
                 fabric-0
               </a>
