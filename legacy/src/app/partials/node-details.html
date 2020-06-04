@@ -2467,6 +2467,7 @@
                                 <th>Subnet</th>
                                 <th>IP Address</th>
                                 <th><div class="u-align--right">Actions</div></th>
+                                <th class="u-hide"></th>
                             </tr>
 
                             <tr data-ng-if="!isDevice" class="p-table--is-not-device">
@@ -2523,8 +2524,14 @@
                                 <td class="p-table--action-cell">
                                     <div class="u-align--right">
                                         <div class="p-contextual-menu" toggle-ctrl data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)">
-                                            <button class="p-button--base is-small p-contextual-menu__toggle" data-ng-click="toggleMenu()"><i class="p-icon--contextual-menu u-no-margin--right">Actions</i></button>
-                                            <div class="p-contextual-menu__dropdown" role="menu" data-ng-show="isToggled">
+                                            <button
+                                                class="p-button--base is-small p-contextual-menu__toggle u-no-margin--right"
+                                                data-ng-click="toggleMenu()"
+                                                data-ng-if="!(isShowingDeleteConfirm() && isInterfaceSelected(interface))"
+                                            >
+                                                <i class="p-icon--contextual-menu u-no-margin--right">Actions</i>
+                                            </button>
+                                            <div class="p-contextual-menu__dropdown" role="menu" data-ng-if="isToggled">
                                                 <button class="p-contextual-menu__link"
                                                     data-ng-if="!cannotEditInterface(interface)"
                                                     aria-label="Edit"
@@ -2548,7 +2555,20 @@
                                         <div class="col-7"></div>
                                     </div>
                                 </td>
-
+                                <td ng-if="isShowingDeleteConfirm() && isInterfaceSelected(interface)">
+                                    <div class="row">
+                                        <hr />
+                                        <div class="col-8">
+                                            <p class="u-no-margin--bottom"><span class="p-icon--warning">Warning:</span> Are you sure you want to remove this {$ getRemoveTypeText(interface) $}?</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="u-align--right">
+                                                <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
+                                                <button class="p-button--negative u-no-margin--top" data-ng-click="confirmRemove(interface)">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
 
                             <!--
