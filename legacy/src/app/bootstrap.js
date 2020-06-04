@@ -93,6 +93,7 @@ const setupWebsocket = () => {
       }
       if (messagesReceived.length === 4) {
         window.CONFIG = config;
+        webSocket.close();
         resolve(config);
       }
     };
