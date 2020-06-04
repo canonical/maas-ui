@@ -18,13 +18,13 @@ exports[`Section renders 1`] = `
   <Strip
     element="main"
     includeCol={false}
-    rowClassName="u-flex section__content-wrapper"
+    rowClassName="section__content-wrapper"
     shallow={true}
   >
     <Col
       className="section__sidebar"
       element="aside"
-      size="2"
+      size="3"
     >
       <div>
         Sidebar
@@ -32,7 +32,7 @@ exports[`Section renders 1`] = `
     </Col>
     <Col
       className="section__content"
-      size={10}
+      size={9}
     >
       <NotificationList />
       content

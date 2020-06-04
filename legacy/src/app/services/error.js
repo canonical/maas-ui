@@ -17,6 +17,11 @@ function ErrorService() {
       this._error = error;
     }
   };
+
+  // Clear the current error.
+  this.clearError = function() {
+    this._error = null;
+  };
 }
 
 export default ErrorService;

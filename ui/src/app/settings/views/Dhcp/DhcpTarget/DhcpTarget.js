@@ -2,10 +2,8 @@ import { Link, Spinner } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { generateLegacyURL } from "app/utils";
 import { useDhcpTarget } from "app/settings/hooks";
-
-const generateURL = (url) =>
-  `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}${url}`;
 
 const DhcpTarget = ({ nodeId, subnetId }) => {
   const { loading, loaded, target, type } = useDhcpTarget(nodeId, subnetId);
@@ -22,8 +20,18 @@ const DhcpTarget = ({ nodeId, subnetId }) => {
       <small>.{target.domain.name}</small>
     </>
   );
-  const url = generateURL(`/${type}/${nodeId || subnetId}`);
-  return <Link href={url}>{name}</Link>;
+  const url = generateLegacyURL(`/${type}/${nodeId || subnetId}`);
+  return (
+    <Link
+      href={url}
+      onClick={(evt) => {
+        evt.preventDefault();
+        window.history.pushState(null, null, url);
+      }}
+    >
+      {name}
+    </Link>
+  );
 };
 
 DhcpTarget.propTypes = {

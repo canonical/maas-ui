@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import { generateLegacyURL } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
@@ -13,11 +14,7 @@ const generateFQDN = (machine, machineURL) => {
       href={machineURL}
       onClick={(evt) => {
         evt.preventDefault();
-        window.history.pushState(
-          null,
-          null,
-          `${process.env.REACT_APP_BASENAME}${machineURL}`
-        );
+        window.history.pushState(null, null, machineURL);
       }}
       title={machine.fqdn}
     >
@@ -87,11 +84,27 @@ const generateIPAddresses = (machine) => {
 const generateMAC = (machine, machineURL) => {
   return (
     <>
-      <a href={machineURL} title={machine.pxe_mac_vendor}>
+      <a
+        href={machineURL}
+        onClick={(evt) => {
+          evt.preventDefault();
+          window.history.pushState(null, null, machineURL);
+        }}
+        title={machine.pxe_mac_vendor}
+      >
         {machine.pxe_mac}
       </a>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (
-        <a href={machineURL}> (+{machine.extra_macs.length})</a>
+        <a
+          href={machineURL}
+          onClick={(evt) => {
+            evt.preventDefault();
+            window.history.pushState(null, null, machineURL);
+          }}
+        >
+          {" "}
+          (+{machine.extra_macs.length})
+        </a>
       ) : null}
     </>
   );
@@ -101,7 +114,9 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getBySystemId(state, systemId)
   );
-  const machineURL = `${process.env.REACT_APP_ANGULAR_BASENAME}/${machine.link_type}/${machine.system_id}`;
+  const machineURL = generateLegacyURL(
+    `/${machine.link_type}/${machine.system_id}`
+  );
   const primaryRow = showMAC
     ? generateMAC(machine, machineURL)
     : generateFQDN(machine, machineURL);

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 
 /* @ngInject */
-function MasterController($rootScope, $transitions, $window, $http) {
+function MasterController($rootScope, $transitions, $window, $http, ErrorService) {
   const debug = process.env.NODE_ENV === "development";
   const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
   $rootScope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
@@ -82,6 +82,11 @@ function MasterController($rootScope, $transitions, $window, $http) {
     renderHeader();
     renderFooter();
   };
+
+  $transitions.onStart({}, () => {
+    // Clear the error overlay if it exists.
+    ErrorService.clearError();
+  });
 
   $transitions.onSuccess({}, () => {
     // Update the header when the route changes.

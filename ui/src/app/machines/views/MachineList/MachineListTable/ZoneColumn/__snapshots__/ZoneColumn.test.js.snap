@@ -23,6 +23,7 @@ exports[`ZoneColumn renders 1`] = `
         <a
           className="p-link--soft"
           href="/MAAS/l/zone/0"
+          onClick={[Function]}
         >
           zone-north
         </a>
@@ -57,6 +58,7 @@ exports[`ZoneColumn renders 1`] = `
               <a
                 className="p-link--soft"
                 href="/MAAS/l/zone/0"
+                onClick={[Function]}
               >
                 zone-north
               </a>

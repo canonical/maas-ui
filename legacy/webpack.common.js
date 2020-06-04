@@ -67,10 +67,6 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, "./src/assets"), to: "assets" },
     ]),
-    new MiniCssExtractPlugin({
-      // This file is relative to output.path above.
-      filename: "assets/css/[name].css",
-    }),
     new webpack.ProvidePlugin({
       "window.jQuery": "jquery",
     }),

@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { generateLegacyURL } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
@@ -23,11 +24,19 @@ const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
       numFailedTests
     )}.`;
     if (singleMachine) {
-      const url = `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${singleMachine.system_id}`;
+      const url = generateLegacyURL(`/machine/${singleMachine.system_id}`);
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <a href={url}>{numFailedTestsString}</a>
+          <a
+            href={url}
+            onClick={(evt) => {
+              evt.preventDefault();
+              window.history.pushState(null, null, url);
+            }}
+          >
+            {numFailedTestsString}
+          </a>
         </span>
       );
     }
@@ -160,7 +169,19 @@ export const OverrideTestForm = ({
                       <br />
                       {selectedMachines.length === 1 ? (
                         <a
-                          href={`${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${selectedMachines[0].system_id}`}
+                          href={generateLegacyURL(
+                            `/machine/${selectedMachines[0].system_id}`
+                          )}
+                          onClick={(evt) => {
+                            evt.preventDefault();
+                            window.history.pushState(
+                              null,
+                              null,
+                              generateLegacyURL(
+                                `/machine/${selectedMachines[0].system_id}`
+                              )
+                            );
+                          }}
                         >
                           Machine > Hardware tests
                         </a>

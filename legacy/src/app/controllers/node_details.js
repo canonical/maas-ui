@@ -1701,7 +1701,7 @@ function NodeDetailsController(
       );
       activeNode = $scope.nodesManager.getActiveItem();
     }
-    if ($scope.isDevice) {
+    if ($scope.isDevice && activeNode) {
       $scope.ip_assignment = activeNode.ip_assignment;
     }
   });
