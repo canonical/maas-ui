@@ -22,6 +22,7 @@ It is comprised of the following [yarn workspaces](https://yarnpkg.com/lang/en/d
 
   - *ui*: the react maas client (all new work should be in this workspace).
   - *legacy*: the angularjs maas client.
+  - *root*: a single-spa app, providing top-level routing between both *ui* and *legacy*.
   - *shared*: code shared between both legacy and ui.
   - *proxy*: a proxying express project, used for serving both legacy and ui projects in development.
 
@@ -51,6 +52,7 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
 ## Built With
   * [React](https://reactjs.org/)
   * [Redux](https://redux.js.org/)
+  * [single-spa](https://single-spa.js.org/)
   * [Angularjs](https://angularjs.org/) (legacy)
 
 ## Team Members
