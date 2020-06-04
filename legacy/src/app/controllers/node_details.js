@@ -1519,14 +1519,19 @@ function NodeDetailsController(
     return text;
   };
 
-  // Return the full name for the VLAN.
-  $scope.getFullVLANName = function(vlan_id) {
-    var vlan = VLANsManager.getItemFromList(vlan_id);
-    var fabric = FabricsManager.getItemFromList(vlan.fabric);
-    return FabricsManager.getName(fabric) + "." + VLANsManager.getName(vlan);
+  $scope.isRelayed = (iface) => {
+    const vlan = $scope.vlans.find(vlan => vlan.id === iface.vlan_id);
+    return vlan && vlan.relay_vlan;
   };
 
-  $scope.getDHCPStatus = iface => {
+  // Return the full name for the VLAN.
+  $scope.getFullVLANName = function(vlan_id) {
+    const vlan = VLANsManager.getItemFromList(vlan_id);
+    const fabric = FabricsManager.getItemFromList(vlan.fabric);
+    return `${FabricsManager.getName(fabric)}.${VLANsManager.getName(vlan)}`;
+  };
+
+  $scope.getDHCPStatus = (iface, fullName = false) => {
     const { vlans } = $scope;
     const vlan = vlans.find(vlan => vlan.id === iface.vlan_id);
     if (vlan) {
@@ -1536,8 +1541,14 @@ function NodeDetailsController(
 
       if (vlan.dhcp_on) {
         return "MAAS-provided";
-      } else if (vlan.relay_vlan) {
-        return "Relayed via " + $scope.getFullVLANName(vlan.relay_vlan);
+      }
+
+      if (vlan.relay_vlan) {
+        if (fullName) {
+          return `Relayed via ${$scope.getFullVLANName(vlan.relay_vlan)}`;
+        } else {
+          return "Relayed";
+        }
       }
 
     }

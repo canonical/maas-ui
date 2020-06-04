@@ -473,5 +473,14 @@ describe("NetworksListController", function() {
       const vlan = { external_dhcp: null, dhcp_on: false };
       expect($scope.getDHCPStatus(vlan)).toEqual("No DHCP");
     });
+
+    it("returns correct text if DHCP is relayed", () => {
+      makeController();
+      const fabrics = [{ id: 1, name: "fabric-1" }];
+      const vlans = [{ id: 2, vid: "vlan-1", relay_vlan: 3}, { fabric: 1, id: 3, vid: "vlan-2"}];
+      FabricsManager._items = fabrics;
+      VLANsManager._items = vlans;
+      expect($scope.getDHCPStatus(vlans[0])).toEqual("Relayed via fabric-1.vlan-2");
+    });
   });
 });
