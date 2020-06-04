@@ -27,7 +27,7 @@ Please try to adhere to semantic versioning when creating a release. Although re
 ### Process
 
 1. Create a new local branch e.g. release-0.1.2.
-2. Run `yarn release [version]` where version is in the form `0.1.2`. This will build a tarball in `ui/dist`, bump the version in `ui/package.json` and create a tag with a 'v' prefix. You will also need to manually bump the version in the root `package.json`.
+2. Run `yarn release [version]` where version is in the form `0.1.2`. This will bump the version in `ui/package.json` and create a tag with a 'v' prefix. You will also need to manually update the root and legacy `package.json` versions as well as the root dependencies `@maas-ui/maas-ui` and `@maas-ui/maas-ui-legacy`.
 3. Propose this against the latest release branch (e.g. 2.8) and merge.
 4. From the [releases page](https://github.com/canonical-web-and-design/maas-ui/releases), edit the draft release. Feel free to edit this to make the changelog more readable. Also make sure to choose the correct target branch if releasing fixes intended for an older API version.
 5. Add the tarball created earlier from `ui/dist` and create the release.
