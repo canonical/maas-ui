@@ -6,7 +6,6 @@ import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import createSagaMiddleware from "redux-saga";
 
-import { name as appName, version as appVersion } from "../package.json";
 import rootSaga from "./root-saga";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
@@ -48,7 +47,6 @@ const Root = () => {
     }
   }, []);
 
-  console.info(`${appName} ${appVersion} (${process.env.REACT_APP_GIT_SHA}).`);
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
