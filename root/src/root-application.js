@@ -1,4 +1,5 @@
 import { registerApplication, start } from "single-spa";
+import { name as appName, version as appVersion } from "../../ui/package.json";
 
 import "./scss/base.scss";
 
@@ -8,6 +9,8 @@ const showLoading = () => {
     loadingNode.classList.remove("u-hide");
   }
 };
+
+console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
 
 window.addEventListener("single-spa:before-app-change", (evt) => {
   const {
