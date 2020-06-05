@@ -1,6 +1,6 @@
 {
   "name": "maas-ui",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "scripts": {
     "build": "yarn build-shared",
     "build-all": "yarn clean-all && yarn build-shared && yarn build-legacy && yarn build-ui && yarn copy-build",
