@@ -1,5 +1,5 @@
 const path = require("path");
-const webpack = require('webpack');
+const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DotenvFlow = require("dotenv-flow-webpack");
@@ -54,9 +54,7 @@ module.exports = {
       { from: path.resolve(__dirname, "src/*.png"), to: "[name].[ext]" },
     ]),
     new webpack.DefinePlugin({
-      "process.env": {
-        GIT_SHA: JSON.stringify(process.env.GIT_SHA),
-      },
+      "process.env.GIT_SHA": JSON.stringify(process.env.GIT_SHA)
     }),
     new DotenvFlow(),
     new MiniCssExtractPlugin({

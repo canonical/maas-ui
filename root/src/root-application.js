@@ -10,9 +10,7 @@ const showLoading = () => {
   }
 };
 
-window.addEventListener("single-spa:first-mount", () => {
-  console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
-});
+console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
 
 window.addEventListener("single-spa:before-app-change", (evt) => {
   const {
