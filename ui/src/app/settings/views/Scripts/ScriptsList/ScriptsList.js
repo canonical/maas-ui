@@ -27,7 +27,7 @@ const generateRows = (
     const expanded = expandedId === script.id;
     const showDelete = expandedType === "delete";
 
-    const [lastHistory] = script.history.slice(-1);
+    const lastHistory = script.history[0];
 
     let scriptSrc;
     if (lastHistory.data) {
