@@ -205,6 +205,37 @@ describe("machine reducer", () => {
     });
   });
 
+  it("should update if machine exists on CREATE_MACHINE_NOTIFY", () => {
+    expect(
+      machine(
+        {
+          errors: {},
+          items: [{ id: 1, name: "machine1", system_id: "abc" }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: [],
+          statuses: { abc: STATUSES },
+        },
+        {
+          payload: { id: 1, name: "machine1-newname", system_id: "abc" },
+          type: "CREATE_MACHINE_NOTIFY",
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 1, name: "machine1-newname", system_id: "abc" }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+      statuses: {
+        abc: STATUSES,
+      },
+    });
+  });
   it("should correctly reduce CREATE_MACHINE_NOTIFY", () => {
     expect(
       machine(
