@@ -3,6 +3,7 @@ import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
@@ -26,14 +27,8 @@ const getSubmitText = (action, count) => {
       return `Mark ${machineString} broken`;
     case "mark-fixed":
       return `Mark ${machineString} fixed`;
-    case "override-failed-testing":
-      return `Override failed tests for ${machineString}.`;
     case "rescue-mode":
       return `Enter rescue mode for ${machineString}`;
-    case "set-pool":
-      return `Set pool of ${machineString}`;
-    case "set-zone":
-      return `Set zone of ${machineString}`;
     default:
       return `${action.name.charAt(0).toUpperCase()}${action.name.slice(
         1
@@ -117,11 +112,9 @@ export const ActionForm = ({
   const selectedProcessing = useSelectedProcessing(selectedAction.name);
 
   useMachinesProcessing(
-    processing,
     selectedProcessing,
     setProcessing,
     setSelectedAction,
-    selectedAction.name,
     Object.keys(errors).length > 0
   );
 
@@ -154,6 +147,11 @@ export const ActionForm = ({
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        selectedProcessing.length,
+        selectedMachines.length,
+        selectedAction.name
+      )}
       saved={saved}
     />
   );

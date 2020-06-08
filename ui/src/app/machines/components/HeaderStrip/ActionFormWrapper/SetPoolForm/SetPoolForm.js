@@ -4,6 +4,7 @@ import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
+import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   resourcepool as resourcePoolActions,
@@ -52,11 +53,9 @@ export const SetPoolForm = ({
   );
 
   useMachinesProcessing(
-    processing,
     settingPoolSelected,
     setProcessing,
     setSelectedAction,
-    "set-pool",
     Object.keys(errors).length > 0
   );
 
@@ -94,6 +93,11 @@ export const SetPoolForm = ({
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        settingPoolSelected.length,
+        selectedMachines.length,
+        "set-pool"
+      )}
       saved={saved}
       validationSchema={SetPoolSchema}
     >

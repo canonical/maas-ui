@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   scripts as scriptActions,
@@ -84,11 +85,9 @@ export const CommissionForm = ({
   }, [dispatch]);
 
   useMachinesProcessing(
-    processing,
     commissioningSelected,
     setProcessing,
     setSelectedAction,
-    "commission",
     Object.keys(errors).length > 0
   );
 
@@ -152,6 +151,11 @@ export const CommissionForm = ({
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        commissioningSelected.length,
+        selectedMachines.length,
+        "commission"
+      )}
       saved={saved}
       validationSchema={CommissionFormSchema}
     >

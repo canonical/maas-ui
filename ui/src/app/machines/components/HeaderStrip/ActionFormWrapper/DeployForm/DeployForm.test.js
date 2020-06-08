@@ -188,6 +188,7 @@ describe("DeployForm", () => {
   it("can show the status when processing machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
+    state.machine.statuses.abc123 = { deploying: true };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -203,6 +204,9 @@ describe("DeployForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Starting deployment for 1 of 2 machines..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {
