@@ -266,7 +266,7 @@ describe("createStandardReducer", () => {
       });
     });
 
-    it("should correctly reduce CREATE_FOO_NOTIFY", () => {
+    it("should add a new item to state on CREATE_FOO_NOTIFY", () => {
       expect(
         reducer(
           {
@@ -294,6 +294,33 @@ describe("createStandardReducer", () => {
         saving: false,
       });
     });
+
+    it("should update an existing item on CREATE_FOO_NOTIFY", () => {
+      expect(
+        reducer(
+          {
+            errors: {},
+            items: [{ id: 1, name: "foo" }],
+            loaded: false,
+            loading: false,
+            saved: false,
+            saving: false,
+          },
+          {
+            payload: { id: 1, name: "bar" },
+            type: "CREATE_FOO_NOTIFY",
+          }
+        )
+      ).toEqual({
+        errors: {},
+        items: [{ id: 1, name: "bar" }],
+        loaded: false,
+        loading: false,
+        saved: false,
+        saving: false,
+      });
+    });
+
   });
 
   describe("update", () => {

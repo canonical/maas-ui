@@ -150,8 +150,8 @@ const machine = createNextState(
         draft.saving = false;
         break;
       case "CREATE_MACHINE_NOTIFY":
-        // In the event that the server erroneously attempts to create an existing machine
-        // ensure we update instead.
+        // In the event that the server erroneously attempts to create an existing machine,
+        // due to a race condition etc., ensure we update instead of creating duplicates.
         const existingIdx = draft.items.findIndex(
           (draftItem) => draftItem.id === action.payload.id
         );
