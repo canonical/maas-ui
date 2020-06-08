@@ -12,7 +12,7 @@ const TableDeleteConfirm = ({
 }) => {
   return (
     <Row>
-      <Col size={sidebar ? "7" : "9"}>
+      <Col size={sidebar ? "6" : "9"}>
         <p className="u-no-margin--bottom u-no-max-width">
           {message ||
             `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
