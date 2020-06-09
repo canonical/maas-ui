@@ -3,7 +3,7 @@
 exports[`TableDeleteConfirm renders 1`] = `
 <Row>
   <Col
-    size="7"
+    size="6"
   >
     <p
       className="u-no-margin--bottom u-no-max-width"
