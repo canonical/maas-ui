@@ -23,6 +23,7 @@ const FormikForm = ({
   resetOnSave,
   loading,
   saving,
+  savingLabel,
   saved,
   savedRedirect,
   secondarySubmit,
@@ -70,6 +71,7 @@ const FormikForm = ({
         resetOnSave={resetOnSave}
         loading={loading}
         saving={saving}
+        savingLabel={savingLabel}
         saved={saved}
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel={secondarySubmitLabel}
@@ -102,6 +104,7 @@ FormikForm.propTypes = {
   resetOnSave: PropTypes.bool,
   loading: PropTypes.bool,
   saving: PropTypes.bool,
+  savingLabel: PropTypes.string,
   saved: PropTypes.bool,
   savedRedirect: PropTypes.string,
   secondarySubmit: PropTypes.func,

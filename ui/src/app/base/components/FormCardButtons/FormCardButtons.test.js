@@ -52,4 +52,19 @@ describe("FormCardButtons ", () => {
     wrapper.find('[data-test="cancel-action"] button').simulate("click");
     expect(onCancel).toHaveBeenCalled();
   });
+
+  it("can display a loading label", () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+        <FormCardButtons
+          loading
+          loadingLabel="Be patient!"
+          submitLabel="Save"
+        />
+      </MemoryRouter>
+    );
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Be patient!"
+    );
+  });
 });

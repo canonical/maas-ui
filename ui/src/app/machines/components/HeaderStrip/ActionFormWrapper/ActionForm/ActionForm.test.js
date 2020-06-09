@@ -578,6 +578,9 @@ describe("ActionForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Unlocking machine..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {
