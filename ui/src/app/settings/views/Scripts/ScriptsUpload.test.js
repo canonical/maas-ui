@@ -38,7 +38,7 @@ describe("ScriptsUpload", () => {
     };
   });
 
-  it("accepts files of text and application mimetype", async () => {
+  it("accepts files of text mimetype", async () => {
     const store = mockStore(initialState);
 
     const files = [createFile("foo.sh", 2000, "text/script")];
