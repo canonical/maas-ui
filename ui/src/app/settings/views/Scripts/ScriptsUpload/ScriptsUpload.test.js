@@ -83,7 +83,7 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "foo.jpg: File type must be text/*, application/x-csh, application/x-sh"
+      "foo.jpg: File type must be text/*, application/x-csh, application/x-sh, application/x-shellscript"
     );
   });
 
