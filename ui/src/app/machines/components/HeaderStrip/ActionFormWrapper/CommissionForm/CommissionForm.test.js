@@ -151,6 +151,7 @@ describe("CommissionForm", () => {
   it("can show the status when processing machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
+    state.machine.statuses.abc123 = { commissioning: true };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -166,6 +167,9 @@ describe("CommissionForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Starting commissioning for 1 of 2 machines..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {

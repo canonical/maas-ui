@@ -107,6 +107,7 @@ describe("SetZoneForm", () => {
   it("can show the status when processing machines", () => {
     const store = mockStore(state);
     state.machine.selected = ["abc123", "def456"];
+    state.machine.statuses.abc123 = { settingZone: true };
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -121,6 +122,9 @@ describe("SetZoneForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Setting zone for 1 of 2 machines..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {

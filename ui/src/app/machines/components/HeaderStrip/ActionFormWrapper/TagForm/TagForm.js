@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
@@ -39,11 +40,9 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
   const hasErrors = Object.keys(errors).length > 0;
 
   useMachinesProcessing(
-    processing,
     taggingSelected,
     setProcessing,
     setSelectedAction,
-    "tag",
     hasErrors
   );
 
@@ -74,6 +73,11 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        taggingSelected.length,
+        selectedMachines.length,
+        "tag"
+      )}
       saved={saved}
       validationSchema={TagFormSchema}
     >

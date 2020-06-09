@@ -8,6 +8,7 @@ import { useRouter } from "app/base/hooks";
 export const FormCardButtons = ({
   bordered = true,
   loading,
+  loadingLabel,
   onCancel,
   secondarySubmit,
   secondarySubmitLabel,
@@ -64,6 +65,14 @@ export const FormCardButtons = ({
           {submitLabel}
         </ActionButton>
       </div>
+      {loading && loadingLabel && (
+        <p
+          className="u-text--light u-align-text--right"
+          data-test="loading-label"
+        >
+          {loadingLabel}
+        </p>
+      )}
     </>
   );
 };
@@ -71,6 +80,7 @@ export const FormCardButtons = ({
 FormCardButtons.propTypes = {
   bordered: PropTypes.bool,
   loading: PropTypes.bool,
+  loadingLabel: PropTypes.string,
   onCancel: PropTypes.func,
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,

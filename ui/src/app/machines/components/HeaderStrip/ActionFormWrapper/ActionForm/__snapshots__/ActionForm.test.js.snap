@@ -25,6 +25,7 @@ exports[`ActionForm renders 1`] = `
       }
     }
     onSubmit={[Function]}
+    savingLabel="Releasing 0 of 0 machines..."
     submitAppearance="positive"
     submitLabel="Release 0 machines"
   >
@@ -38,6 +39,7 @@ exports[`ActionForm renders 1`] = `
         errors={Object {}}
         initialValues={Object {}}
         onCancel={[Function]}
+        savingLabel="Releasing 0 of 0 machines..."
         submitAppearance="positive"
         submitLabel="Release 0 machines"
       >
@@ -51,6 +53,7 @@ exports[`ActionForm renders 1`] = `
             <div />
             <FormCardButtons
               bordered={false}
+              loadingLabel="Releasing 0 of 0 machines..."
               onCancel={[Function]}
               submitAppearance="positive"
               submitDisabled={false}
