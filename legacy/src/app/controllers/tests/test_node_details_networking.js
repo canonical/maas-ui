@@ -5289,4 +5289,30 @@ describe("NodeNetworkingController", function() {
       expect($scope.getInterfaceNumaNodes(iface)).toEqual([0, 1, 2]);
     });
   });
+
+  describe("isInterfaceConnected", () => {
+    it("returns true if the interface itself is connected", () => {
+      makeController();
+      const connected = {
+        link_connected: true
+      };
+      const notConnected = { link_connected: false };
+      expect($scope.isInterfaceConnected(connected)).toEqual(true);
+      expect($scope.isInterfaceConnected(notConnected)).toEqual(false);
+    });
+
+    it("returns true if the interface that is being aliased is connected", () => {
+      makeController();
+      const connected = {
+        type: 'alias',
+        members: [{ link_connected: true }],
+      };
+      const notConnected = {
+        type: 'alias',
+        members: [{ link_connected: false }],
+      };
+      expect($scope.isInterfaceConnected(connected)).toEqual(true);
+      expect($scope.isInterfaceConnected(notConnected)).toEqual(false);
+    });
+  });
 });
