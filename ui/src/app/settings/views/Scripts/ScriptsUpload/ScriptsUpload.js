@@ -78,7 +78,8 @@ const ScriptsUpload = ({ type }) => {
     isDragReject,
   } = useDropzone({
     onDrop,
-    accept: "text/*, application/x-csh, application/x-sh, application/x-shellscript",
+    accept:
+      "text/*, application/x-csh, application/x-sh, application/x-shellscript",
     maxSize: MAX_SIZE_BYTES,
     multiple: false,
   });
@@ -113,11 +114,11 @@ const ScriptsUpload = ({ type }) => {
           {isDragActive ? (
             <p className="u-no-margin--bottom">Drop the file here ...</p>
           ) : (
-              <p className="u-no-margin--bottom">
-                Drag 'n' drop a script here ('.sh' file ext required), or click to
-                select a file
-              </p>
-            )}
+            <p className="u-no-margin--bottom">
+              Drag 'n' drop a script here ('.sh' file ext required), or click to
+              select a file
+            </p>
+          )}
         </div>
       </Row>
       <Row>
