@@ -81,10 +81,12 @@ describe("maasBootImages", function() {
       keyring_data: "",
       releases: [],
       arches: [],
+      osystems: [],
       selections: {
         changed: false,
         releases: [],
-        arches: []
+        arches: [],
+        osystems: []
       }
     });
     expect(scope.otherImages).toEqual([]);
@@ -397,7 +399,8 @@ describe("maasBootImages", function() {
       expect(scope.source.selections).toEqual({
         changed: false,
         releases: [],
-        arches: []
+        arches: [],
+        osystems: [],
       });
     });
 
@@ -430,7 +433,8 @@ describe("maasBootImages", function() {
       expect(scope.source.selections).toEqual({
         changed: false,
         releases: [],
-        arches: []
+        arches: [],
+        osystems: [],
       });
     });
 
@@ -465,7 +469,8 @@ describe("maasBootImages", function() {
       expect(scope.source.selections).toEqual({
         changed: false,
         releases: [],
-        arches: []
+        arches: [],
+        osystems: [],
       });
     });
   });
@@ -553,8 +558,9 @@ describe("maasBootImages", function() {
       scope.source.arches = [amd64];
       scope.selectDefaults();
 
-      expect(scope.source.selections.releases).toEqual([bionic]);
-      expect(scope.source.selections.arches).toEqual([amd64]);
+      expect(scope.source.selections.osystems).toEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      ]);
     });
   });
 
@@ -872,84 +878,80 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("isSelected", function() {
-    it("returns true if in release selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.releases = [obj];
-      expect(scope.isSelected("releases", obj)).toBe(true);
+  describe("isOSSelected", () => {
+    it("returns true if release/arch combination is selected", function () {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+        { osystem: "ubuntu", release: "focal", arches: ["arm64"] },
+      ];
+      expect(scope.isOSSelected("bionic", "amd64")).toBe(true);
+      expect(scope.isOSSelected("focal", "arm64")).toBe(true);
     });
 
-    it("returns false if not in release selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.releases = [obj];
-      expect(scope.isSelected("releases", {})).toBe(false);
-    });
-
-    it("returns true if in arch selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.arches = [obj];
-      expect(scope.isSelected("arches", obj)).toBe(true);
-    });
-
-    it("returns false if not in arch selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.arches = [obj];
-      expect(scope.isSelected("arches", {})).toBe(false);
+    it("returns false if release/arch combination is not selected", function () {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+        { osystem: "ubuntu", release: "focal", arches: ["arm64"] },
+      ];
+      expect(scope.isOSSelected("bionic", "arm64")).toBe(false);
+      expect(scope.isOSSelected("focal", "amd64")).toBe(false);
     });
   });
 
-  describe("toggleSelection", function() {
-    it("selects the obj for releases", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
+  describe("toggleSelectedOS", () => {
+    it("Adds new osystem to selected if release is not present", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.toggleSelection("releases", obj);
-      expect(scope.source.selections.changed).toBe(true);
-      expect(scope.source.selections.releases).toEqual([obj]);
+      scope.source.selections.osystems = [];
+      scope.toggleSelectedOS("bionic", "amd64");
+      expect(scope.source.selections.osystems).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("deselects the obj for releases", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.releases = [obj];
+    it("Adds new arch to existing osystem if release present", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.toggleSelection("releases", obj);
-      expect(scope.source.selections.changed).toBe(true);
-      expect(scope.source.selections.releases).toEqual([]);
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: "bionic", arches: ["arm64"] },
+      ];
+      scope.toggleSelectedOS("bionic", "amd64");
+      expect(scope.source.selections.osystems).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["arm64", "amd64"] },
+      ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("selects the obj for arches", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
+    it("Removes arch from existing osystem if release present", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.toggleSelection("arches", obj);
-      expect(scope.source.selections.changed).toBe(true);
-      expect(scope.source.selections.arches).toEqual([obj]);
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64", "arm64"] },
+      ];
+      scope.toggleSelectedOS("bionic", "amd64");
+      expect(scope.source.selections.osystems).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["arm64"] },
+      ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("deselects the obj for arches", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var obj = {};
-      scope.source.selections.arches = [obj];
+    it("Removes osystem if release is present and last arch removed", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.toggleSelection("arches", obj);
-      expect(scope.source.selections.changed).toBe(true);
-      expect(scope.source.selections.arches).toEqual([]);
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      ];
+      scope.toggleSelectedOS("bionic", "amd64");
+      expect(scope.source.selections.osystems).toStrictEqual([]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
   });
@@ -994,8 +996,11 @@ describe("maasBootImages", function() {
         name: makeName("arch"),
         title: makeName("archTitle")
       };
-      scope.source.selections.releases = [release];
-      scope.source.selections.arches = [arch];
+      scope.source.releases = [release];
+      scope.source.arches = [arch];
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: release.name, arches: [arch.name] },
+      ];
       scope.regenerateUbuntuImages();
       expect(scope.ubuntuImages).toEqual([
         {
@@ -1037,8 +1042,11 @@ describe("maasBootImages", function() {
           downloading: true
         }
       ];
-      scope.source.selections.releases = [release];
-      scope.source.selections.arches = [arch];
+      scope.source.releases = [release];
+      scope.source.arches = [arch];
+      scope.source.selections.osystems = [
+        { osystem: "ubuntu", release: release.name, arches: [arch.name] },
+      ];
       scope.regenerateUbuntuImages();
       expect(scope.ubuntuImages).toEqual([
         {
@@ -1719,32 +1727,23 @@ describe("maasBootImages", function() {
   });
 
   describe("saveSelection", function() {
-    it("passes selected releases and arches", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      var defer = $q.defer();
+    it("passes selected osystems", function() {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      const defer = $q.defer();
       spyOn(BootResourcesManager, "saveUbuntu").and.returnValue(defer.promise);
       spyOn(scope, "canSaveSelection").and.returnValue(true);
 
-      var release = makeName("release");
-      scope.source.selections.releases = [
-        {
-          name: release
-        }
-      ];
-      var arch = makeName("arch");
-      scope.source.selections.arches = [
-        {
-          name: arch
-        }
-      ];
+      const release = makeName("release");
+      const arch = makeName("arch");
+      const osystem = { osystem: "ubuntu", release, arches: [arch]}
+      scope.source.selections.osystems = [osystem];
       scope.saveSelection();
 
       expect(scope.saving).toBe(true);
       expect(BootResourcesManager.saveUbuntu).toHaveBeenCalledWith({
         source_type: "maas.io",
-        releases: [release],
-        arches: [arch]
+        osystems: [osystem],
       });
     });
 
@@ -1802,7 +1801,7 @@ describe("maasBootImages", function() {
         source_type: "custom",
         url: makeName("url"),
         keyring_filename: makeName("keyring_filename"),
-        keyring_data: makeName("keyring_data")
+        keyring_data: makeName("keyring_data"),
       };
       var release = {
         name: makeName("release"),
@@ -1820,10 +1819,13 @@ describe("maasBootImages", function() {
         name: makeName("arch"),
         checked: true
       };
-      scope.bootResources.ubuntu = {
-        sources: [source],
-        releases: [release, releaseChecked],
-        arches: [arch, archChecked]
+      scope.bootResources = {
+        resources: [{ arch: "amd64", name: "ubuntu/bionic", rtype: 0 }],
+        ubuntu: {
+          sources: [source],
+          releases: [release, releaseChecked],
+          arches: [arch, archChecked]
+        }
       };
       spyOn(scope, "regenerateUbuntuImages");
       scope.updateSource();
@@ -1836,6 +1838,9 @@ describe("maasBootImages", function() {
       expect(scope.source.arches).toBe(scope.bootResources.ubuntu.arches);
       expect(scope.source.selections.releases).toEqual([releaseChecked]);
       expect(scope.source.selections.arches).toEqual([archChecked]);
+      expect(scope.source.selections.osystems).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
@@ -2072,6 +2077,42 @@ describe("maasBootImages", function() {
         id: image.resourceId
       });
       expect(scope.ubuntuDeleteId).toBeNull();
+    });
+  });
+
+  describe("unsupportedArch", () => {
+    it("returns true if release/arch combination is not supported", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      const release = { name: "bionic", unsupported_arches: ["i386"] };
+      scope.source.releases = [release];
+      expect(scope.unsupportedArch("bionic", "i386")).toBe(true);
+      expect(scope.unsupportedArch("bionic", "amd64")).toBe(false);
+    });
+  });
+
+  describe("convertResourcesToOSystems", () => {
+    it("correctly converts resources objects into osystem objects", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      expect(scope.convertResourcesToOSystems([])).toStrictEqual([]);
+      expect(
+        scope.convertResourcesToOSystems([
+          { arch: "amd64", name: "ubuntu/bionic", rtype: 0 },
+        ])
+      ).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      ]);
+      expect(
+        scope.convertResourcesToOSystems([
+          { arch: "amd64", name: "ubuntu/bionic", rtype: 0 },
+          { arch: "arm64", name: "ubuntu/bionic", rtype: 0 },
+          { arch: "amd64", name: "centos/centos70", rtype: 0 },
+        ])
+      ).toStrictEqual([
+        { osystem: "ubuntu", release: "bionic", arches: ["amd64", "arm64"] },
+        { osystem: "centos", release: "centos70", arches: ["amd64"] },
+      ]);
     });
   });
 });
