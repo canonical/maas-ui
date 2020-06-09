@@ -17,7 +17,7 @@ const createFile = (name, size, type, contents = "") => {
   Reflect.defineProperty(file, "size", {
     get() {
       return size;
-    },
+    }
   });
   return file;
 };
@@ -27,14 +27,14 @@ describe("ScriptsUpload", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: [],
+        items: []
       },
       scripts: {
         loading: false,
         loaded: true,
         errors: {},
-        items: [],
-      },
+        items: []
+      }
     };
   });
 
@@ -55,7 +55,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -79,7 +79,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -102,7 +102,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -127,7 +127,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -140,7 +140,7 @@ describe("ScriptsUpload", () => {
     const store = mockStore(initialState);
     const files = [
       createFile("foo.sh", 1000, "text/script"),
-      createFile("bar.sh", 1000, "text/script"),
+      createFile("bar.sh", 1000, "text/script")
     ];
 
     const wrapper = mount(
@@ -155,7 +155,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -171,7 +171,7 @@ describe("ScriptsUpload", () => {
       callback({
         name: "foo",
         script: contents,
-        hasMetadata: true,
+        hasMetadata: true
       });
     });
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
@@ -188,7 +188,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -200,8 +200,8 @@ describe("ScriptsUpload", () => {
       { type: "CLEANUP_SCRIPTS" },
       {
         payload: { contents, type: "testing" },
-        type: "UPLOAD_SCRIPT",
-      },
+        type: "UPLOAD_SCRIPT"
+      }
     ]);
   });
 
@@ -212,7 +212,7 @@ describe("ScriptsUpload", () => {
       callback({
         name: "foo",
         script: contents,
-        hasMetadata: false,
+        hasMetadata: false
       });
     });
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
@@ -229,7 +229,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {},
+        persist: () => {}
       });
     });
 
@@ -241,8 +241,8 @@ describe("ScriptsUpload", () => {
       { type: "CLEANUP_SCRIPTS" },
       {
         payload: { contents, type: "testing", name: "foo" },
-        type: "UPLOAD_SCRIPT",
-      },
+        type: "UPLOAD_SCRIPT"
+      }
     ]);
   });
 });
