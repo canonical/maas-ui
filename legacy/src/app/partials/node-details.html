@@ -296,8 +296,8 @@
                     </li>
                     <li class="p-tabs__item" role="presentation">
                         <a role="tab" class="p-tabs__link" data-ng-if="!isController && devices.length"
-                            data-ng-class="{ 'is-active': section.area === 'containers'}"
-                            data-ng-click="openSection('containers')">Containers</a>
+                            data-ng-class="{ 'is-active': section.area === 'instances'}"
+                            data-ng-click="openSection('instances')">Instances</a>
                     </li>
                     <li class="p-tabs__item" role="presentation">
                         <a role="tab" class="p-tabs__link" data-ng-if="isController"
@@ -359,7 +359,7 @@
         <node-details-summary />
     </section>
 
-    <section class="p-strip" data-ng-if="section.area === 'containers'">
+    <section class="p-strip" data-ng-if="section.area === 'instances'">
         <div class="row">
             <table>
                 <thead>
