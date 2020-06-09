@@ -19,11 +19,11 @@ const FormikFormContent = ({
   resetOnSave,
   loading,
   saving,
+  savingLabel,
   saved,
   secondarySubmit,
   secondarySubmitLabel,
   submitAppearance,
-  submitDisabled,
   submitLabel = "Save",
 }) => {
   const { handleSubmit, resetForm, submitForm, values } = useFormikContext();
@@ -62,6 +62,7 @@ const FormikFormContent = ({
         bordered={buttonsBordered}
         loading={saving}
         onCancel={onCancel}
+        loadingLabel={savingLabel}
         secondarySubmit={
           secondarySubmit
             ? () => {
@@ -82,14 +83,16 @@ const FormikFormContent = ({
 
 FormikFormContent.propTypes = {
   allowAllEmpty: PropTypes.bool,
+  allowUnchanged: PropTypes.bool,
   buttons: PropTypes.func,
   buttonsBordered: PropTypes.bool,
   children: PropTypes.node,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  loading: PropTypes.bool,
   onCancel: PropTypes.func,
   onValuesChanged: PropTypes.func,
-  loading: PropTypes.bool,
   saving: PropTypes.bool,
+  savingLabel: PropTypes.string,
   saved: PropTypes.bool,
   secondarySubmit: PropTypes.func,
   secondarySubmitLabel: PropTypes.string,
