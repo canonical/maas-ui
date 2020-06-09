@@ -62,6 +62,30 @@ describe("ScriptsUpload", () => {
     expect(wrapper.text()).toContain("foo.sh (2000 bytes) ready for upload");
   });
 
+  it("accepts files of application mimetype", async () => {
+    const store = mockStore(initialState);
+
+    const files = [createFile("foo.sh", 2000, "application/x-shellscript")];
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsUpload type="testing" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      wrapper.find("input").simulate("change", {
+        target: { files },
+        preventDefault: () => {},
+        persist: () => {}
+      });
+    });
+
+    expect(wrapper.text()).toContain("foo.sh (2000 bytes) ready for upload");
+  });
+
   it("displays an error if a file with a non text mimetype is uploaded", async () => {
     const store = mockStore(initialState);
     const files = [createFile("foo.jpg", 200, "image/jpg")];
