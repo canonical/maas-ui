@@ -261,6 +261,7 @@ describe("OverrideTestForm", () => {
   it("can render when processing machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
+    state.machine.statuses.abc123 = { overridingFailedTesting: true };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -276,6 +277,9 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Overriding failed tests for 1 of 2 machines..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {

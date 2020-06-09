@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { getProcessingLabel } from "../utils";
 import { generateLegacyURL } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import {
@@ -88,11 +89,9 @@ export const OverrideTestForm = ({
   }, [dispatch, selectedMachines]);
 
   useMachinesProcessing(
-    processing,
     overridingFailedTestingSelected,
     setProcessing,
     setSelectedAction,
-    "override-failed-testing",
     Object.keys(errors).length > 0
   );
 
@@ -137,6 +136,11 @@ export const OverrideTestForm = ({
       }}
       loading={!scriptResultsLoaded}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        overridingFailedTestingSelected.length,
+        selectedMachines.length,
+        "override-failed-testing"
+      )}
       saved={saved}
       validationSchema={OverrideTestFormSchema}
     >

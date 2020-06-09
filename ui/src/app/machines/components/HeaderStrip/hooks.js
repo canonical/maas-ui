@@ -14,11 +14,9 @@ const useCycled = (newState, onCycled) => {
 };
 
 export const useMachinesProcessing = (
-  processing,
   machinesProcessing,
   setProcessing,
   setSelectedAction,
-  action,
   hasErrors = false
 ) => {
   const processingStarted = useRef(false);

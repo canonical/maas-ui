@@ -4,6 +4,7 @@ import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
+import { getProcessingLabel } from "../utils";
 import {
   general as generalActions,
   machine as machineActions,
@@ -46,11 +47,9 @@ export const DeployForm = ({
   }, [dispatch]);
 
   useMachinesProcessing(
-    processing,
     deployingSelected,
     setProcessing,
     setSelectedAction,
-    "deploy",
     Object.keys(errors).length > 0
   );
 
@@ -90,6 +89,11 @@ export const DeployForm = ({
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        deployingSelected.length,
+        selectedMachines.length,
+        "deploy"
+      )}
       saved={saved}
       validationSchema={DeploySchema}
     >

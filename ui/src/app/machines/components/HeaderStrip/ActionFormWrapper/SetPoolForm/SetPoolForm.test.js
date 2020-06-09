@@ -108,6 +108,7 @@ describe("SetPoolForm", () => {
   it("can render when processing machines", () => {
     const store = mockStore(state);
     state.machine.selected = ["abc123", "def456"];
+    state.machine.statuses.abc123 = { settingPool: true };
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -122,6 +123,9 @@ describe("SetPoolForm", () => {
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
+      "Setting pool for 1 of 2 machines..."
+    );
   });
 
   it("can set the processing state when successfully submitting", () => {

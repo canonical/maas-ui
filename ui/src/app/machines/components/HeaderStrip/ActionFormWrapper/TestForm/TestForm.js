@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   scripts as scriptActions,
@@ -63,11 +64,9 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
   }, [dispatch]);
 
   useMachinesProcessing(
-    processing,
     testingSelected,
     setProcessing,
     setSelectedAction,
-    "test",
     Object.keys(errors).length > 0
   );
 
@@ -108,6 +107,11 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        testingSelected.length,
+        selectedMachines.length,
+        "test"
+      )}
       saved={saved}
       validationSchema={TestFormSchema}
     >
