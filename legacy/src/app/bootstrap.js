@@ -33,7 +33,7 @@ const buildUrl = () => {
 const setupWebsocket = () => {
   return new Promise((resolve, reject) => {
     let config = {};
-    const webSocket = new WebSocket(buildUrl());
+    window.legacyWS = new WebSocket(buildUrl());
 
     const sendMsg = (id, method) => {
       var msg = {
@@ -42,11 +42,11 @@ const setupWebsocket = () => {
         method,
       };
 
-      webSocket.send(JSON.stringify(msg));
+      window.legacyWS.send(JSON.stringify(msg));
     };
 
     const messagesReceived = [];
-    webSocket.onmessage = (event) => {
+    window.legacyWS.onmessage = (event) => {
       const msg = JSON.parse(event.data);
 
       switch (msg.request_id) {
@@ -93,19 +93,18 @@ const setupWebsocket = () => {
       }
       if (messagesReceived.length === 4) {
         window.CONFIG = config;
-        webSocket.close();
         resolve(config);
       }
     };
 
-    webSocket.onopen = () => {
+    window.legacyWS.onopen = () => {
       sendMsg(1, "user.auth_user");
       sendMsg(2, "config.list");
       sendMsg(3, "general.version");
       sendMsg(4, "general.navigation_options");
     };
 
-    webSocket.onerror = (err) => reject(err);
+    window.legacyWS.onerror = (err) => reject(err);
   });
 };
 
