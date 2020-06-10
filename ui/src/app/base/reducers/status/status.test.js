@@ -78,6 +78,8 @@ describe("status", () => {
         }
       )
     ).toStrictEqual({
+      connected: false,
+      connecting: false,
       error: "Error!",
     });
   });

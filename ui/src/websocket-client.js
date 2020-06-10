@@ -1,10 +1,27 @@
+import getCookie from "./app/base/sagas/utils";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
 class WebSocketClient {
-  constructor(websocket_url) {
-    this.socket = new ReconnectingWebSocket(websocket_url);
+  constructor() {
     this._nextId = 0;
     this._requests = new Map();
+  }
+
+  /**
+   * Dynamically build a websocket url from window.location
+   * @param {string} csrftoken - A csrf token string.
+   * @return {string} The built websocket url.
+   */
+  buildURL() {
+    const csrftoken = getCookie("csrftoken");
+    if (!csrftoken) {
+      throw new Error(
+        "No csrftoken found, please ensure you are logged into MAAS."
+      );
+    }
+    const { hostname, port } = window.location;
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    return `${protocol}//${hostname}:${port}/MAAS/ws?csrftoken=${csrftoken}`;
   }
 
   /**
@@ -26,6 +43,15 @@ class WebSocketClient {
     const id = this._getId();
     this._requests.set(id, action);
     return id;
+  }
+
+  /**
+   * Create a reconnecting websocket and connect to it.
+   * @returns {Object} The websocket that was created.
+   */
+  connect() {
+    this.socket = new ReconnectingWebSocket(this.buildURL());
+    return this.socket;
   }
 
   /**

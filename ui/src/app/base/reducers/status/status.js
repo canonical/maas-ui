@@ -67,6 +67,8 @@ const status = createReducer(initialState, {
   },
   [statusActions.websocketError]: (state, action) => {
     state.error = action.error;
+    state.connected = false;
+    state.connecting = false;
   },
   [statusActions.externalLoginURL]: (state, action) => {
     state.externalLoginURL = action.payload.url;
