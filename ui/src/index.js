@@ -10,6 +10,7 @@ import rootSaga from "./root-saga";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
 import createRootReducer from "./root-reducer";
+import WebSocketClient from "./websocket-client";
 
 export const history = createBrowserHistory({
   basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`,
@@ -34,7 +35,9 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 });
 
-sagaMiddleware.run(rootSaga);
+let websocketClient = new WebSocketClient();
+
+sagaMiddleware.run(rootSaga, websocketClient);
 
 const Root = () => {
   useEffect(() => {
