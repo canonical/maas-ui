@@ -17,13 +17,13 @@ import {
   watchAddMachineChassis,
 } from "./app/base/sagas";
 
-export default function* rootSaga() {
+export default function* rootSaga(websocketClient) {
   yield all([
     watchCheckAuthenticated(),
     watchLogin(),
     watchLogout(),
     watchExternalLogin(),
-    watchWebSockets(actionHandlers),
+    watchWebSockets(websocketClient, actionHandlers),
     watchCreateLicenseKey(),
     watchUpdateLicenseKey(),
     watchDeleteLicenseKey(),

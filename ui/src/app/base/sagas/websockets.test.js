@@ -16,16 +16,14 @@ import {
   watchMessages,
   watchWebSockets,
 } from "./websockets";
-import getCookie from "./utils";
-import WebSocketClient from "../../../websocket-client";
-
-jest.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
   let socketChannel, socketClient;
 
   beforeEach(() => {
     socketClient = {
+      buildURL: jest.fn(),
+      connect: jest.fn(),
       getRequest: jest.fn(),
       send: jest.fn(),
       socket: {
@@ -33,10 +31,6 @@ describe("websocket sagas", () => {
       },
     };
     socketChannel = jest.fn();
-
-    WebSocketClient.mockImplementation(() => {
-      return socketClient;
-    });
   });
 
   afterEach(() => {
@@ -44,11 +38,8 @@ describe("websocket sagas", () => {
   });
 
   it("connects to a WebSocket", () => {
-    return expectSaga(watchWebSockets)
-      .provide([
-        [call(getCookie, "csrftoken"), "foo"],
-        [call(createConnection, "foo"), {}],
-      ])
+    return expectSaga(watchWebSockets, socketClient)
+      .provide([[call(createConnection, socketClient), {}]])
       .take("WEBSOCKET_CONNECT")
       .put({
         type: "WEBSOCKET_CONNECTED",
@@ -63,11 +54,11 @@ describe("websocket sagas", () => {
     const error = new Error(
       "No csrftoken found, please ensure you are logged into MAAS."
     );
-    return expectSaga(watchWebSockets)
-      .provide([
-        [call(getCookie, "csrftoken"), undefined],
-        [call(createConnection, "foo"), {}],
-      ])
+    socketClient.socket = null;
+    socketClient.buildURL = jest.fn(() => {
+      throw error;
+    });
+    return expectSaga(watchWebSockets, socketClient)
       .take("WEBSOCKET_CONNECT")
       .put({ type: "WEBSOCKET_ERROR", error: error.message })
       .dispatch({
@@ -78,7 +69,7 @@ describe("websocket sagas", () => {
 
   it("can create a WebSocket connection", () => {
     expect.assertions(1);
-    const socket = createConnection();
+    const socket = createConnection(socketClient);
     socketClient.socket.onopen();
     return expect(socket).resolves.toEqual(socketClient);
   });
