@@ -49,17 +49,14 @@ describe("Manager", function() {
     FakeNodesManager.prototype = new Manager();
     NodesManager = new FakeNodesManager();
 
-    // Mock buildSocket so an actual connection is not made.
+    // Mock getWebSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
-    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
+    spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
   // Open the connection to the region before each test.
   beforeEach(function(done) {
-    RegionConnection.registerHandler("open", function() {
-      done();
-    });
-    RegionConnection.connect("");
+    RegionConnection.connect(() => done());
   });
 
   // Copy node and remove $selected field.
@@ -753,7 +750,7 @@ describe("Manager", function() {
         expect(NodesManager._activeItem).toBeNull();
         done();
       });
-      $timeout.flush();
+      $timeout.flush(1000);
     });
 
     it("sets _activeItem to item", function(done) {

@@ -36,6 +36,13 @@ describe("RegionConnection", function() {
     spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
   }));
 
+  afterEach(() => {
+    if (RegionConnection.getWebSocket()) {
+      const onClose = RegionConnection.getWebSocket().onclose;
+      onClose && onClose({});
+    }
+  });
+
   describe("newRequestId", function() {
     it("starts at 1", function() {
       expect(RegionConnection.newRequestId()).toBe(1);
@@ -270,9 +277,9 @@ describe("RegionConnection", function() {
   });
 
   describe("connect", function() {
-    var url = "http://test-url",
-      buildUrlSpy;
+    var url, buildUrlSpy;
     beforeEach(function() {
+      url = "http://test-url";
       buildUrlSpy = spyOn(RegionConnection, "_buildUrl");
       buildUrlSpy.and.returnValue(url);
     });
@@ -289,14 +296,14 @@ describe("RegionConnection", function() {
 
     it("sets websocket handlers", function() {
       RegionConnection.connect();
-      expect(webSocket.onopen).not.toBeNull();
-      expect(webSocket.onerror).not.toBeNull();
-      expect(webSocket.onclose).not.toBeNull();
+      expect(RegionConnection.getWebSocket().onopen).not.toBeNull();
+      expect(RegionConnection.getWebSocket().onerror).not.toBeNull();
+      expect(RegionConnection.getWebSocket().onclose).not.toBeNull();
     });
 
     it("sets connect to true when onopen called", function() {
       RegionConnection.connect();
-      webSocket.onopen({});
+      RegionConnection.getWebSocket().onopen({});
       expect(RegionConnection.isConnected()).toBe(true);
     });
 
@@ -307,12 +314,12 @@ describe("RegionConnection", function() {
         done();
       });
       RegionConnection.connect();
-      webSocket.onerror(evt_obj);
+      RegionConnection.getWebSocket().onerror(evt_obj);
     });
 
     it("isConnected() is false when onclose called", function() {
       RegionConnection.connect();
-      webSocket.onclose({});
+      RegionConnection.getWebSocket().onclose({});
       expect(RegionConnection.isConnected()).toBe(false);
     });
 
@@ -323,14 +330,14 @@ describe("RegionConnection", function() {
         done();
       });
       RegionConnection.connect();
-      webSocket.onclose(evt_obj);
+      RegionConnection.getWebSocket().onclose(evt_obj);
     });
 
     it("calls onMessage when onmessage called", function() {
       var sampleData = { sample: "data" };
       spyOn(RegionConnection, "onMessage");
       RegionConnection.connect();
-      webSocket.onmessage({ data: angular.toJson(sampleData) });
+      RegionConnection.getWebSocket().onmessage({ data: angular.toJson(sampleData) });
       expect(RegionConnection.onMessage).toHaveBeenCalledWith(sampleData);
     });
   });
@@ -355,12 +362,12 @@ describe("RegionConnection", function() {
     it("sets websocket to null", function() {
       RegionConnection.connect("");
       RegionConnection.retry();
-      expect(RegionConnection.websocket).toBeNull();
+      expect(RegionConnection.getWebSocket()).toBeNull();
     });
 
     it("clears out event handlers", function() {
       RegionConnection.connect("");
-      let ws = RegionConnection.websocket;
+      let ws = RegionConnection.getWebSocket();
       RegionConnection.retry();
       expect(ws.onopen).toBeNull();
       expect(ws.onerror).toBeNull();
@@ -504,11 +511,13 @@ describe("RegionConnection", function() {
     });
 
     it("resolves defer once open handler is called", function(done) {
-      RegionConnection.defaultConnect().then(function() {
+      const onOpen = () => $timeout.flush();
+      RegionConnection.defaultConnect(onOpen).then(function() {
         expect(RegionConnection.handlers.open).toEqual([]);
         expect(RegionConnection.handlers.error).toEqual([]);
         done();
       });
+      $timeout.flush(1000);
     });
 
     it("rejects defer once error handler is called", function(done) {
@@ -687,7 +696,7 @@ describe("RegionConnection", function() {
       var method = "testing_method";
       var params = { arg1: 1, arg2: 2 };
       RegionConnection.callMethod(method, params);
-      expect(webSocket.send).toHaveBeenCalledWith(
+      expect(RegionConnection.getWebSocket().send).toHaveBeenCalledWith(
         angular.toJson({
           type: 0,
           request_id: RegionConnection.requestId,
