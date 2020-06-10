@@ -9,7 +9,7 @@ import {
   race,
 } from "redux-saga/effects";
 
-import MESSAGE_TYPES from "app/base/constants";
+import { MESSAGE_TYPES } from "app/base/constants";
 
 let loadedModels = [];
 

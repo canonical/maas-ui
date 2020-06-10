@@ -7,7 +7,7 @@ exports[`FormCard  renders 1`] = `
 >
   <Row>
     <Col
-      size="2"
+      size={2}
     >
       <h4
         className="form-card__title"
@@ -16,7 +16,7 @@ exports[`FormCard  renders 1`] = `
       </h4>
     </Col>
     <Col
-      size="8"
+      size={7}
     />
   </Row>
 </Card>
