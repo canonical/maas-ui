@@ -1,5 +1,8 @@
+import getCookie from "./app/base/sagas/utils";
 import WebSocketClient from "./websocket-client";
 import { WebSocket } from "mock-socket";
+
+jest.mock("./app/base/sagas/utils");
 
 describe("websocket client", () => {
   let client, windowWebsocket;
@@ -10,12 +13,20 @@ describe("websocket client", () => {
 
   beforeEach(() => {
     window.WebSocket = WebSocket;
+    getCookie.mockImplementation(() => "abc123");
     client = new WebSocketClient("ws://example.com/ws");
+    client.connect();
     client.socket.send = jest.fn();
   });
 
   afterAll(() => {
     window.WebSocket = windowWebsocket;
+  });
+
+  it("throws an error if the csrftoken does not exist", () => {
+    getCookie.mockImplementation(() => null);
+    const client2 = new WebSocketClient("ws://example.com/ws");
+    expect(client2.connect).toThrow();
   });
 
   it("can send a message", () => {

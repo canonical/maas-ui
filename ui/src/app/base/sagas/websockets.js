@@ -10,8 +10,6 @@ import {
 } from "redux-saga/effects";
 
 import MESSAGE_TYPES from "app/base/constants";
-import getCookie from "./utils";
-import WebSocketClient from "../../../websocket-client";
 
 let loadedModels = [];
 
@@ -63,28 +61,32 @@ const resetLoaded = () => {
 };
 
 /**
- * Dynamically build a websocket url from window.location
- * @param {string} csrftoken - A csrf token string.
- * @return {string} The built websocket url.
- */
-const buildWsUrl = (csrftoken) => {
-  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-  const host = window.location.hostname;
-  const port = window.location.port;
-  return `${protocol}//${host}:${port}/MAAS/ws?csrftoken=${csrftoken}`;
-};
-
-/**
  * Create a WebSocket connection via the client.
  */
-export function createConnection(csrftoken) {
+export function createConnection(websocketClient) {
+  // As the socket automatically tries to reconnect we don't reject this
+  // promise, but rather wait for it to eventually connect.
   return new Promise((resolve, reject) => {
-    const url = buildWsUrl(csrftoken);
-    const socketClient = new WebSocketClient(url);
-    // As the socket automatically tries to reconnect we don't reject this
-    // promise, but rather wait for it to eventually connect.
-    socketClient.socket.onopen = () => {
-      resolve(socketClient);
+    const readyState = (websocketClient.socket || {}).readyState;
+    if (readyState === WebSocket.OPEN) {
+      resolve(websocketClient);
+      return;
+    } else if (
+      !websocketClient.socket ||
+      [WebSocket.CLOSED, WebSocket.CLOSING].includes(readyState)
+    ) {
+      try {
+        // Check that the csrftoken etc. exist to create the connection. The
+        // check is done here because we don't want to reject errors when
+        // connecting so that the reconnecting websocket can keep trying.
+        websocketClient.buildURL();
+      } catch (error) {
+        reject(error);
+      }
+      websocketClient.connect();
+    }
+    websocketClient.socket.onopen = () => {
+      resolve(websocketClient);
     };
   });
 }
@@ -356,15 +358,9 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
  * @param {Array} messageHandlers - Sagas that should handle specific messages
  * via the websocket channel.
  */
-export function* setupWebSocket(messageHandlers = []) {
+export function* setupWebSocket(websocketClient, messageHandlers = []) {
   try {
-    const csrftoken = yield call(getCookie, "csrftoken");
-    if (!csrftoken) {
-      throw new Error(
-        "No csrftoken found, please ensure you are logged into MAAS."
-      );
-    }
-    const socketClient = yield call(createConnection, csrftoken);
+    const socketClient = yield call(createConnection, websocketClient);
     yield put({ type: "WEBSOCKET_CONNECTED" });
     // Set up the list of models that have been loaded.
     resetLoaded();
@@ -406,6 +402,11 @@ export function* setupWebSocket(messageHandlers = []) {
  * @param {Array} messageHandlers - Additional sagas to be handled by the
  * websocket channel.
  */
-export function* watchWebSockets(messageHandlers) {
-  yield takeLatest("WEBSOCKET_CONNECT", setupWebSocket, messageHandlers);
+export function* watchWebSockets(websocketClient, messageHandlers) {
+  yield takeLatest(
+    "WEBSOCKET_CONNECT",
+    setupWebSocket,
+    websocketClient,
+    messageHandlers
+  );
 }
