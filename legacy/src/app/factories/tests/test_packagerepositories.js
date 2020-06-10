@@ -20,15 +20,12 @@ describe("PackageRepositoriesManager", function() {
 
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
-    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
+    spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
   // Open the connection to the region before each test.
   beforeEach(function(done) {
-    RegionConnection.registerHandler("open", function() {
-      done();
-    });
-    RegionConnection.connect("");
+    RegionConnection.connect(() => done());
   });
 
   // Make a random repo.

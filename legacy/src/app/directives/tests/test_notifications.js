@@ -74,7 +74,7 @@ describe("maasNotifications", function() {
     // Mock buildSocket so an actual connection is not made.
     let RegionConnection = $injector.get("RegionConnection");
     let webSocket = new MockWebSocket();
-    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
+    spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
   describe("maas-notifications", function() {

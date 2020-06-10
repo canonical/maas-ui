@@ -5,6 +5,7 @@ import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
@@ -32,11 +33,9 @@ export const SetZoneForm = ({
   const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
 
   useMachinesProcessing(
-    processing,
     settingZoneSelected,
     setProcessing,
     setSelectedAction,
-    "set-zone",
     Object.keys(errors).length > 0
   );
 
@@ -74,6 +73,11 @@ export const SetZoneForm = ({
         setProcessing(true);
       }}
       saving={processing}
+      savingLabel={getProcessingLabel(
+        settingZoneSelected.length,
+        selectedMachines.length,
+        "set-zone"
+      )}
       saved={saved}
       validationSchema={SetZoneSchema}
     >

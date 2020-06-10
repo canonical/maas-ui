@@ -150,8 +150,17 @@ const machine = createNextState(
         draft.saving = false;
         break;
       case "CREATE_MACHINE_NOTIFY":
-        draft.items.push(action.payload);
-        draft.statuses[action.payload.system_id] = DEFAULT_STATUSES;
+        // In the event that the server erroneously attempts to create an existing machine,
+        // due to a race condition etc., ensure we update instead of creating duplicates.
+        const existingIdx = draft.items.findIndex(
+          (draftItem) => draftItem.id === action.payload.id
+        );
+        if (existingIdx !== -1) {
+          draft.items[existingIdx] = action.payload;
+        } else {
+          draft.items.push(action.payload);
+          draft.statuses[action.payload.system_id] = DEFAULT_STATUSES;
+        }
         break;
       case "DELETE_MACHINE_NOTIFY":
         draft.items = draft.items.filter(

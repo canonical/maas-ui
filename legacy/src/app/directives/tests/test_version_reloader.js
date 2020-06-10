@@ -28,7 +28,7 @@ describe("maasVersionReloader", function() {
 
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
-    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
+    spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
   // Create a new scope before each test.

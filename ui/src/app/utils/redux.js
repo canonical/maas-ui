@@ -114,7 +114,16 @@ export const createStandardReducer = (
       state.saving = false;
     },
     [actions.create.notify]: (state, action) => {
-      state.items.push(action.payload);
+      // In the event that the server erroneously attempts to create an existing model,
+      // due to a race condition etc., ensure we update instead of creating duplicates.
+      const existingIdx = state.items.findIndex(
+        (draftItem) => draftItem.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+      }
     },
     [actions.update.start]: (state) => {
       state.saved = false;

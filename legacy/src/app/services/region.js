@@ -14,19 +14,19 @@ const MSG_TYPE = {
   RESPONSE: 1,
   NOTIFY: 2,
   PING: 3,
-  PING_REPLY: 4
+  PING_REPLY: 4,
 };
 
 // Response types
 const RESPONSE_TYPE = {
   SUCCESS: 0,
-  ERROR: 1
+  ERROR: 1,
 };
 
 const REGION_STATE = {
   DOWN: 0,
   UP: 1,
-  RETRY: 2
+  RETRY: 2,
 };
 
 class RegionConnection {
@@ -47,7 +47,6 @@ class RegionConnection {
     this.pingsInFlight = new Set();
     this.requestId = 0;
     this.url = null;
-    this.websocket = null;
     this.state = REGION_STATE.DOWN;
     this.ensureConnectionPromise = null;
     this.connectionCheckInterval = 5000;
@@ -65,7 +64,7 @@ class RegionConnection {
     this.handlers = {
       open: [],
       error: [],
-      close: []
+      close: [],
     };
 
     // Object containing a fields with list of functions. When
@@ -73,6 +72,22 @@ class RegionConnection {
     // in this object. If the field exists in the object the list
     // of functions will be called with the action and obj_id.
     this.notifiers = {};
+
+    // When the app is unmounted (e.g. when switching between legacy and ui)
+    // then clear the listeners so that they are not duplicated with the app
+    // remounts.
+    $rootScope.$on("$destroy", () => {
+      this.pingsInFlight.clear();
+      this.$timeout.cancel(this.ensureConnectionPromise);
+      this.ensureConnectionPromise = null;
+      const websocket = this.getWebSocket();
+      if (websocket) {
+        websocket.onopen = null;
+        websocket.onerror = null;
+        websocket.onclose = null;
+        websocket.onmessage = null;
+      }
+    });
   }
 
   // Return a new request id.
@@ -135,6 +150,16 @@ class RegionConnection {
     return new WebSocket(url);
   }
 
+  // Get the current websocket.
+  getWebSocket() {
+    return this.$window.legacyWS;
+  }
+
+  // Set the current websocket.
+  setWebSocket(socket) {
+    this.$window.legacyWS = socket;
+  }
+
   send(request) {
     if (this.state !== REGION_STATE.UP) {
       this.log.warn(
@@ -144,14 +169,14 @@ class RegionConnection {
     }
     // XXX mpontillo 2018-11-19: really we should handle errors here
     // in a more robust way, but that's a bigger change.
-    this.websocket.send(angular.toJson(request));
+    this.getWebSocket().send(angular.toJson(request));
   }
 
   ping() {
     let request_id = this.newRequestId();
     let request = {
       type: MSG_TYPE.PING,
-      request_id: request_id
+      request_id: request_id,
     };
     this.pingsInFlight.add(request_id);
     this.send(request);
@@ -198,35 +223,51 @@ class RegionConnection {
   }
 
   // Opens the websocket connection.
-  connect() {
-    this.url = this._buildUrl();
-    this.websocket = this.buildSocket(this.url);
-
-    this.websocket.onopen = evt => {
+  connect(onOpen) {
+    let websocket = this.getWebSocket();
+    const onopen = () => {
       this.state = REGION_STATE.UP;
       this.pingsInFlight.clear();
       this.scheduleEnsureConnection();
-      angular.forEach(this.handlers.open, func => {
-        func(evt);
+      // Use timeout to call this on the next digest.
+      this.$timeout(() => {
+        angular.forEach(this.handlers.open, (func) => func());
       });
+      onOpen && onOpen();
       this.log.debug("WebSocket connection established.");
     };
-    this.websocket.onerror = evt => {
+    const readyState = (websocket || {}).readyState;
+    if (readyState === WebSocket.OPEN) {
+      // If the websocket is already connected the run setup immediately.
+      onopen();
+    } else {
+      if (
+        !websocket ||
+        [WebSocket.CLOSED, WebSocket.CLOSING].includes(readyState)
+      ) {
+        // Set up a new websocket.
+        this.url = this._buildUrl();
+        websocket = this.buildSocket(this.url);
+        this.setWebSocket(websocket);
+      }
+      websocket.onopen = () => onopen();
+    }
+    websocket.onerror = (evt) => {
       this.log.error("WebSocket error: ", evt);
-      angular.forEach(this.handlers.error, func => {
+      angular.forEach(this.handlers.error, (func) => {
         func(evt);
       });
     };
-    this.websocket.onclose = evt => {
+    websocket.onclose = (evt) => {
       let url = this.url.split("?")[0];
       this.log.warn("WebSocket connection closed: " + url);
-      angular.forEach(this.handlers.close, func => {
+      angular.forEach(this.handlers.close, (func) => {
         func(evt);
       });
-      this.websocket = null;
+      websocket = null;
       this.retry();
     };
-    this.websocket.onmessage = evt => {
+    websocket.onmessage = (evt) => {
       this.onMessage(angular.fromJson(evt.data));
     };
   }
@@ -236,15 +277,16 @@ class RegionConnection {
     // Ensure the socket is closed, if applicable. If the WebSocket
     // is already null (such as what might happen if this method is
     // called from the onclose() hanlder), no need to close it again.
-    if (this.websocket) {
+    const websocket = this.getWebSocket();
+    if (websocket) {
       // Clear out event handlers. By now we already know the
       // websocket is closed; we don't want stray events from the
       // now-dead websocket to affect the existing connection.
-      this.websocket.onopen = null;
-      this.websocket.onerror = null;
-      this.websocket.onclose = null;
-      this.websocket.close();
-      this.websocket = null;
+      websocket.onopen = null;
+      websocket.onerror = null;
+      websocket.onclose = null;
+      websocket.close();
+      this.setWebSocket(null);
     }
     // Set the state to RETRY so that ensureConnection will attempt
     // to reconnect the next time it runs.
@@ -315,7 +357,7 @@ class RegionConnection {
   }
 
   // Opens the default websocket connection.
-  defaultConnect() {
+  defaultConnect(onOpen) {
     // Already been called but the connection has not been completed.
     if (angular.isObject(this.defaultConnectDefer)) {
       return this.defaultConnectDefer.promise;
@@ -336,13 +378,13 @@ class RegionConnection {
 
     // Start the connection.
     defer = this.defaultConnectDefer = this.$q.defer();
-    let opened = evt => {
+    let opened = (evt) => {
       this.defaultConnectDefer = null;
       this.unregisterHandler("open", opened);
       this.unregisterHandler("error", errored);
       this.$rootScope.$apply(defer.resolve(evt));
     };
-    let errored = evt => {
+    let errored = (evt) => {
       this.defaultConnectDefer = null;
       this.unregisterHandler("open", opened);
       this.unregisterHandler("error", errored);
@@ -350,7 +392,7 @@ class RegionConnection {
     };
     this.registerHandler("open", opened);
     this.registerHandler("error", errored);
-    this.connect();
+    this.connect(onOpen);
     return defer.promise;
   }
 
@@ -385,7 +427,7 @@ class RegionConnection {
           this.$rootScope.$apply(
             defer.reject({
               error: msg.error,
-              request: remembered_request
+              request: remembered_request,
             })
           );
         } else {
@@ -402,7 +444,7 @@ class RegionConnection {
   onNotify(msg) {
     let handlers = this.notifiers[msg.name];
     if (angular.isArray(handlers)) {
-      angular.forEach(handlers, function(handler) {
+      angular.forEach(handlers, function (handler) {
         handler(msg.action, msg.data);
       });
     }
@@ -423,7 +465,7 @@ class RegionConnection {
       type: MSG_TYPE.REQUEST,
       request_id: request_id,
       method: method,
-      params: params
+      params: params,
     };
     this.callbacks[request_id] = defer;
     // If requested, remember what the details of the request were,

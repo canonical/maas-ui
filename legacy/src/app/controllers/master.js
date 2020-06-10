@@ -93,6 +93,13 @@ function MasterController($rootScope, $transitions, $window, $http, ErrorService
     renderHeader();
   });
 
+  $rootScope.$watch("title", () => {
+    const maasName = window.CONFIG.maas_name;
+    const maasNamePart = maasName ? `${maasName} ` : "";
+    const titlePart = $rootScope.title ? `${$rootScope.title} | ` : "";
+    $window.document.title = `${titlePart}${maasNamePart}MAAS`;
+  });
+
   displayTemplate();
 }
 

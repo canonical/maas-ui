@@ -760,7 +760,10 @@ function PodDetailsController(
     FabricsManager,
     SpacesManager
   ]).then(function() {
-    $scope.spaces = SpacesManager.getItems();
+    // Only display spaces with assigned subnets.
+    $scope.spaces = SpacesManager.getItems().filter(
+      (space) => space.subnet_ids.length > 0
+    )
     $scope.subnets = SubnetsManager.getItems();
     $scope.availableSubnets = [];
 

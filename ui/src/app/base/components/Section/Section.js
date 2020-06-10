@@ -3,9 +3,11 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { COL_SIZES } from "app/base/constants";
 import NotificationList from "app/base/components/NotificationList";
 
 const Section = ({ children, headerClassName, sidebar, title }) => {
+  const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <div className="section">
       <Strip
@@ -26,11 +28,14 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
         shallow
       >
         {sidebar && (
-          <Col element="aside" size="3" className="section__sidebar">
+          <Col element="aside" size={SIDEBAR} className="section__sidebar">
             {sidebar}
           </Col>
         )}
-        <Col size={sidebar ? 9 : 12} className="section__content">
+        <Col
+          size={sidebar ? TOTAL - SIDEBAR : TOTAL}
+          className="section__content"
+        >
           <NotificationList />
           {children}
         </Col>
