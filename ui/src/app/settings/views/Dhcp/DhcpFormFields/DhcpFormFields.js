@@ -1,8 +1,6 @@
 import {
-  Col,
   Spinner,
   Notification,
-  Row,
   Select,
   Textarea,
 } from "@canonical/react-components";
@@ -76,52 +74,46 @@ export const DhcpFormFields = ({ editing }) => {
           This snippet is disabled and will not be used by MAAS.
         </Notification>
       )}
-      <Row>
-        <Col size="4">
-          <FormikField
-            name="name"
-            label="Snippet name"
-            required={true}
-            type="text"
-          />
-          <FormikField name="enabled" label="Enabled" type="checkbox" />
-          <FormikField
-            component={Textarea}
-            name="description"
-            label="Description"
-          />
-        </Col>
-        <Col size="4">
+      <FormikField
+        name="name"
+        label="Snippet name"
+        required={true}
+        type="text"
+      />
+      <FormikField name="enabled" label="Enabled" type="checkbox" />
+      <FormikField
+        component={Textarea}
+        name="description"
+        label="Description"
+      />
+      <FormikField
+        component={Select}
+        name="type"
+        label="Type"
+        onChange={(e) => {
+          formikProps.handleChange(e);
+          formikProps.setFieldValue("entity", "");
+          formikProps.setFieldTouched("entity", false, false);
+        }}
+        options={[
+          { value: "", label: "Global" },
+          { value: "subnet", label: "Subnet" },
+          { value: "controller", label: "Controller" },
+          { value: "machine", label: "Machine" },
+          { value: "device", label: "Device" },
+        ]}
+      />
+      {type &&
+        (isLoading || !hasLoaded ? (
+          <Spinner text="loading..." />
+        ) : (
           <FormikField
             component={Select}
-            name="type"
-            label="Type"
-            onChange={(e) => {
-              formikProps.handleChange(e);
-              formikProps.setFieldValue("entity", "");
-              formikProps.setFieldTouched("entity", false, false);
-            }}
-            options={[
-              { value: "", label: "Global" },
-              { value: "subnet", label: "Subnet" },
-              { value: "controller", label: "Controller" },
-              { value: "machine", label: "Machine" },
-              { value: "device", label: "Device" },
-            ]}
+            name="entity"
+            label="Applies to"
+            options={generateOptions(type, models)}
           />
-          {type &&
-            (isLoading || !hasLoaded ? (
-              <Spinner text="loading..." />
-            ) : (
-              <FormikField
-                component={Select}
-                name="entity"
-                label="Applies to"
-                options={generateOptions(type, models)}
-              />
-            ))}
-        </Col>
-      </Row>
+        ))}
       <FormikField
         component={Textarea}
         name="value"

@@ -2,7 +2,10 @@ import { Card, Col, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { COL_SIZES } from "app/base/constants";
+
 export const FormCard = ({ children, sidebar = true, stacked, title }) => {
+  const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
   const titleNode = <h4 className="form-card__title">{title}</h4>;
   const content = stacked ? (
     <>
@@ -11,8 +14,10 @@ export const FormCard = ({ children, sidebar = true, stacked, title }) => {
     </>
   ) : (
     <Row>
-      <Col size="2">{titleNode}</Col>
-      <Col size={sidebar ? "8" : "10"}>{children}</Col>
+      <Col size={CARD_TITLE}>{titleNode}</Col>
+      <Col size={sidebar ? TOTAL - SIDEBAR - CARD_TITLE : TOTAL - CARD_TITLE}>
+        {children}
+      </Col>
     </Row>
   );
   return (

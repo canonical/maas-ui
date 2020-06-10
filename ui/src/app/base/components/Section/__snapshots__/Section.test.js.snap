@@ -24,7 +24,7 @@ exports[`Section renders 1`] = `
     <Col
       className="section__sidebar"
       element="aside"
-      size="3"
+      size={3}
     >
       <div>
         Sidebar
