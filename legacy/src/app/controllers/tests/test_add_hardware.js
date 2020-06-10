@@ -41,7 +41,7 @@ describe("AddHardwareController", function() {
 
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
-    spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
+    spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
   // Create the parent scope and the scope for the controller.

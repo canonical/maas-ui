@@ -2,6 +2,8 @@ import { Button, Col, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { COL_SIZES } from "app/base/constants";
+
 const TableDeleteConfirm = ({
   sidebar = true,
   message,
@@ -10,9 +12,16 @@ const TableDeleteConfirm = ({
   onCancel,
   onConfirm,
 }) => {
+  const { DELETE_ROW_BUTTONS, SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <Row>
-      <Col size={sidebar ? "6" : "9"}>
+      <Col
+        size={
+          sidebar
+            ? TOTAL - SIDEBAR - DELETE_ROW_BUTTONS
+            : TOTAL - DELETE_ROW_BUTTONS
+        }
+      >
         <p className="u-no-margin--bottom u-no-max-width">
           {message ||
             `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
@@ -21,7 +30,7 @@ const TableDeleteConfirm = ({
           </span>
         </p>
       </Col>
-      <Col size="3" className="u-align--right">
+      <Col size={DELETE_ROW_BUTTONS} className="u-align--right">
         <Button className="u-no-margin--bottom" onClick={onCancel}>
           Cancel
         </Button>
