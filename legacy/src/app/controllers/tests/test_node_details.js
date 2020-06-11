@@ -2863,6 +2863,24 @@ describe("NodeDetailsController", function () {
       $scope.vlans = [];
       expect($scope.getDHCPStatus(iface)).toEqual("No DHCP");
     });
+
+    it("returns correct text if DHCP is relayed", () => {
+      makeController();
+      $scope.vlans = [{ id: 1, relay_vlan: 2 }]
+      const iface = { vlan_id: 1 };
+      expect($scope.getDHCPStatus(iface)).toEqual("Relayed");
+    });
+
+    it("returns correct text if DHCP is relayed and full name required", () => {
+      makeController();
+      const vlans = [{ id: 2, vid: "vlan-1", relay_vlan: 3}, { fabric: 1, id: 3, vid: "vlan-2"}];
+      const fabrics = [{ id: 1, name: "fabric-1" }];
+      const iface = { vlan_id: 2 };
+      $scope.vlans = vlans;
+      FabricsManager._items = fabrics;
+      VLANsManager._items = vlans;
+      expect($scope.getDHCPStatus(iface, true)).toEqual("Relayed via fabric-1.vlan-2");
+    });
   });
 
   describe("getFabricName", () => {
