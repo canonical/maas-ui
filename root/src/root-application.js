@@ -13,6 +13,7 @@ const showLoading = () => {
 console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
 
 window.addEventListener("single-spa:before-app-change", (evt) => {
+
   const {
     legacy = "NOT_MOUNTED",
     ui = "NOT_MOUNTED",
@@ -31,6 +32,11 @@ window.addEventListener("single-spa:before-app-change", (evt) => {
       legacyStylesheet.disabled = false;
     } else {
       legacyStylesheet.disabled = true;
+    }
+
+    // If both apps are not mounted, likely a result of a redirect to legacy.
+    if (legacy !== "MOUNTED" && ui !== "MOUNTED") {
+      legacyStylesheet.disabled = false;
     }
   }
 });
