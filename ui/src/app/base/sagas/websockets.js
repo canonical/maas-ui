@@ -230,6 +230,7 @@ export function* handleMessage(socketChannel, socketClient) {
       yield put({ type: "WEBSOCKET_DISCONNECTED" });
     } else if (response.type === "open") {
       yield put({ type: "WEBSOCKET_CONNECTED" });
+      resetLoaded();
     } else {
       // This is a response message, fetch the corresponding action for the
       // message that was sent.

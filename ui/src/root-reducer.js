@@ -26,6 +26,7 @@ import {
   zone,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
+import { initialState as userInitialState } from "./app/base/reducers/user/user";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>
@@ -63,6 +64,23 @@ const createRootReducer = (history) => (state, action) => {
       // Status reducer defaults to authenticating = true to stop login screen
       // flashing. It's overwritten here otherwise app is stuck loading.
       { status: { authenticating: false } },
+      action
+    );
+  } else if (
+    [
+      "WEBSOCKET_ERROR",
+      "WEBSOCKET_DISCONNECTED",
+      "CHECK_AUTHENTICATED_ERROR",
+    ].includes(action.type)
+  ) {
+    return createAppReducer(history)(
+      {
+        status: state.status,
+        user: {
+          ...userInitialState,
+          auth: state.user.auth,
+        },
+      },
       action
     );
   }
