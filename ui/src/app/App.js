@@ -162,6 +162,9 @@ export const App = () => {
         logout={() => {
           dispatch(statusActions.websocketDisconnect());
           dispatch(statusActions.logout());
+          if (window.legacyWS) {
+            window.legacyWS.close();
+          }
         }}
         showRSD={navigationOptions.rsd}
         urlChange={history.listen}
