@@ -1158,12 +1158,13 @@ export function NodeNetworkingController(
         bridge_stp: nic.params.bridge_stp,
         bridge_type: nic.params.bridge_type,
         bond_mode: nic.params.bond_mode,
-        xmitHashPolicy: nic.params.bond_xmit_hash_policy,
-        lacpRate: nic.params.bond_lacp_rate,
+        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
+        bond_lacp_rate: nic.params.bond_lacp_rate,
         bond_downdelay: nic.params.bond_downdelay,
         bond_updelay: nic.params.bond_updelay,
         bond_miimon: nic.params.bond_miimon
       };
+      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
       if (angular.isDefined(nic.subnet) && nic.subnet !== null) {
         $scope.editInterface.defaultSubnet = nic.subnet;
       } else {
@@ -1193,13 +1194,13 @@ export function NodeNetworkingController(
         bridge_stp: nic.params.bridge_stp,
         bridge_type: nic.params.bridge_type,
         bond_mode: nic.params.bond_mode,
-        xmitHashPolicy: nic.params.bond_xmit_hash_policy,
-        lacpRate: nic.params.bond_lacp_rate,
+        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
+        bond_lacp_rate: nic.params.bond_lacp_rate,
         bond_downdelay: nic.params.bond_downdelay,
         bond_updelay: nic.params.bond_updelay,
         bond_miimon: nic.params.bond_miimon
       };
-
+      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
       $scope.editInterface.parents = nic.parents;
       $scope.editInterface.members = nic.members;
       if (nic.members && nic.members.length) {
@@ -1842,8 +1843,8 @@ export function NodeNetworkingController(
         vlan: vlan,
         subnet: subnet,
         bond_mode: "active-backup",
-        lacpRate: "fast",
-        xmitHashPolicy: "layer2",
+        bond_lacp_rate: "fast",
+        bond_xmit_hash_policy: "layer2",
         bond_updelay: 0,
         bond_downdelay: 0,
         bond_miimon: 100
@@ -1901,14 +1902,14 @@ export function NodeNetworkingController(
     if ($scope.editInterface) {
       return (
         $scope.editInterface.bond_mode === "802.3ad" &&
-        ($scope.editInterface.xmitHashPolicy === "layer3+4" ||
-          $scope.editInterface.xmitHashPolicy === "encap3+4")
+        ($scope.editInterface.bond_xmit_hash_policy === "layer3+4" ||
+          $scope.editInterface.bond_xmit_hash_policy === "encap3+4")
       );
     } else {
       return (
         $scope.newBondInterface.bond_mode === "802.3ad" &&
-        ($scope.newBondInterface.xmitHashPolicy === "layer3+4" ||
-          $scope.newBondInterface.xmitHashPolicy === "encap3+4")
+        ($scope.newBondInterface.bond_xmit_hash_policy === "layer3+4" ||
+          $scope.newBondInterface.bond_xmit_hash_policy === "encap3+4")
       );
     }
   };
@@ -1988,8 +1989,8 @@ export function NodeNetworkingController(
       }),
       parents: parents,
       bond_mode: $scope.newBondInterface.bond_mode,
-      bond_lacp_rate: $scope.newBondInterface.lacpRate,
-      bond_xmit_hash_policy: $scope.newBondInterface.xmitHashPolicy,
+      bond_lacp_rate: $scope.newBondInterface.bond_lacp_rate,
+      bond_xmit_hash_policy: $scope.newBondInterface.bond_xmit_hash_policy,
       vlan: vlan_id,
       subnet: subnet_id,
       mode: $scope.newBondInterface.mode,
@@ -2366,6 +2367,35 @@ export function NodeNetworkingController(
     $scope.showEditWarning = true;
   };
 
+  // Set defaults or clear form fields depending on selected link monitoring.
+  $scope.handleEditLinkMonitoring = (linkMonitoring) => {
+    $scope.editInterfaceLinkMonitoring = linkMonitoring;
+    $scope.editInterface.bond_downdelay = 0;
+    $scope.editInterface.bond_updelay = 0;
+
+    if (linkMonitoring === "mii") {
+      $scope.editInterface.bond_miimon = 100;
+    } else {
+      $scope.editInterface.bond_miimon = 0;
+    }
+  };
+
+  // Set defaults or clear form fields depending on selected bond mode.
+  $scope.handleEditBondMode = (bondMode) => {
+    $scope.editInterface.bond_mode = bondMode;
+    if ($scope.showLACPRate()) {
+      $scope.editInterface.bond_lacp_rate = "fast";
+    } else {
+      $scope.editInterface.bond_lacp_rate = "";
+    }
+
+    if ($scope.showXMITHashPolicy()) {
+      $scope.editInterface.bond_xmit_hash_policy = "layer2";
+    } else {
+      $scope.editInterface.bond_xmit_hash_policy = "";
+    }
+  };
+
   $scope.getNetworkTestingStatus = nic => {
     const results = $scope.networkTestingResults;
     const resultKey = `${nic.name} (${nic.mac_address})`;
@@ -2425,6 +2455,10 @@ export function NodeNetworkingController(
   };
 
   $scope.isInterfaceConnected = (nic) => {
+    if (!nic) {
+      return;
+    }
+
     if (nic.type === 'alias' && nic.members.length) {
       return nic.members.some((member) => member.link_connected);
     }

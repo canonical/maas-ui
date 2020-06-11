@@ -3691,8 +3691,8 @@ describe("NodeNetworkingController", function() {
         fabric: "",
         vlan: {},
         subnet: "",
-        lacpRate: "fast",
-        xmitHashPolicy: "layer2",
+        bond_lacp_rate: "fast",
+        bond_xmit_hash_policy: "layer2",
         bond_updelay: 0,
         bond_downdelay: 0,
         bond_miimon: 100
@@ -3844,14 +3844,14 @@ describe("NodeNetworkingController", function() {
     it("returns true if policy is layer3+4", function() {
       makeController();
       $scope.newBondInterface.bond_mode = "802.3ad";
-      $scope.newBondInterface.xmitHashPolicy = "layer3+4";
+      $scope.newBondInterface.bond_xmit_hash_policy = "layer3+4";
       expect($scope.showLACPRate()).toBe(true);
     });
 
     it("returns true if policy is encap3+4", function() {
       makeController();
       $scope.newBondInterface.bond_mode = "802.3ad";
-      $scope.newBondInterface.xmitHashPolicy = "encap3+4";
+      $scope.newBondInterface.bond_xmit_hash_policy = "encap3+4";
       expect($scope.showLACPRate()).toBe(true);
     });
 
@@ -3862,7 +3862,7 @@ describe("NodeNetworkingController", function() {
         link_id: -1
       };
       $scope.newBondInterface.bond_mode = "802.3ad";
-      $scope.newBondInterface.xmitHashPolicy = "layer2+3";
+      $scope.newBondInterface.bond_xmit_hash_policy = "layer2+3";
       expect($scope.showLACPRate()).toBe(false);
     });
   });
@@ -5194,6 +5194,47 @@ describe("NodeNetworkingController", function() {
       };
       $scope.selectedMode = null;
       expect($scope.canMarkAsConnected(nic)).toBe(true);
+    });
+  });
+
+  describe("handleEditLinkMonitoring", () => {
+    it("clears bond monitoring frequency value if MII not selected", () => {
+      makeController();
+      $scope.editInterface = {
+        bond_miimon: 0,
+        bond_downdelay: 0,
+        bond_updelay: 0,
+      };
+      $scope.handleEditLinkMonitoring("mii");
+      expect($scope.editInterface.bond_miimon).toBe(100);
+      $scope.handleEditLinkMonitoring("");
+      expect($scope.editInterface.bond_miimon).toBe(0);
+    });
+  });
+
+  describe("handleEditBondMode", () => {
+    it("clears LACP rate if bond mode does not support it", () => {
+      makeController();
+      $scope.editInterface = {
+        bond_lacp_rate: "",
+        bond_mode: "balance-rr",
+      };
+      $scope.handleEditBondMode("802.3ad");
+      expect($scope.editInterface.bond_lacp_rate).toBe("fast");
+      $scope.handleEditBondMode("balance-rr");
+      expect($scope.editInterface.bond_lacp_rate).toBe("");
+    });
+
+    it("clears hash policy if bond mode does not support it", () => {
+      makeController();
+      $scope.editInterface = {
+        bond_xmit_hash_policy: "",
+        bond_mode: "balance-rr",
+      };
+      $scope.handleEditBondMode("802.3ad");
+      expect($scope.editInterface.bond_xmit_hash_policy).toBe("layer2");
+      $scope.handleEditBondMode("balance-rr");
+      expect($scope.editInterface.bond_xmit_hash_policy).toBe("");
     });
   });
 
