@@ -1,7 +1,7 @@
 @mixin maas-table-subnets {
     .p-table--subnets {
       .p-table__cell--fabric {
-        width: 14%;
+        width: 13%;
       }
 
       .p-table__cell--space {
@@ -9,19 +9,19 @@
       }
 
       .p-table__cell--vlan {
-        width: 14%;
+        width: 13%;
       }
 
       .p-table__cell--subnet {
-        width: 30%;
+        width: 28%;
       }
 
       .p-table__cell--ips {
-        width: 14%;
+        width: 12%;
       }
 
       .p-table__cell--dhcp {
-        width: 14%;
+        width: 20%;
       }
 
       @media only screen and (max-width: $breakpoint-large) {

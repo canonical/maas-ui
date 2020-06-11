@@ -977,7 +977,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(interface.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="interface.vlan && interface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(interface.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(interface.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1323,7 +1329,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td ng-if="!isDevice">{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(interface.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="interface.vlan && interface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(interface.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(interface.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr data-ng-repeat="interface in editInterface.members" data-ng-if="isBond(editInterface)">
                                     <td class=" p-double-row" aria-label="Name">
@@ -1467,7 +1479,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(interface.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="interface.vlan && interface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(interface.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(interface.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr class="p-table__row--muted"
                                     data-ng-repeat="interface in interfaces | filterEditInterface:editInterface"
@@ -1573,7 +1591,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td aria-label="DHCP">{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(editInterface.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="editInterface.vlan && editInterface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(editInterface.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(editInterface.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -2192,7 +2216,13 @@
                                             </span>
                                         </span>
                                     </td>
-                                    <td>{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(parent.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="parent.vlan && parent.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(parent.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(parent.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr class="p-table__row--muted" data-ng-repeat="interface in interfaces | filterSelectedInterfaces:selectedInterfaces:newBondInterface" data-ng-if="isShowingInterfaces">
                                     <td class="p-double-row" aria-label="Name">
@@ -2304,7 +2334,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td aria-label="DHCP">{$ getDHCPStatus(interface.vlan) $}</td>
+                                    <td style="overflow: visible;">
+                                        {$ getDHCPStatus(interface.vlan) $}
+                                        <span class="p-tooltip--btm-right" ng-if="interface.vlan && interface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                            <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(interface.vlan, true) $}</i>
+                                            <span class="p-tooltip__message">{$ getDHCPStatus(interface.vlan, true) $}</span>
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -2774,8 +2810,12 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td style="overflow: visible;">
                                     {$ getDHCPStatus(interface.vlan) $}
+                                    <span class="p-tooltip--btm-right" ng-if="interface.vlan && interface.vlan.relay_vlan" style="margin-left: .25rem;">
+                                        <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(interface.vlan, true) $}</i>
+                                        <span class="p-tooltip__message">{$ getDHCPStatus(interface.vlan, true) $}</span>
+                                    </span>
                                 </td>
                                 <td class="p-table--action-cell u-vertically-center u-align--right">
                                     <div class="p-contextual-menu" toggle-ctrl data-ng-if="(!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)) && !isEditing(interface) && !(isShowingDeleteConfirm() && isInterfaceSelected(interface))">

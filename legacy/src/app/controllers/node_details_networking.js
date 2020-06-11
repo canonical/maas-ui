@@ -2299,7 +2299,14 @@ export function NodeNetworkingController(
       );
   };
 
-  $scope.getDHCPStatus = vlan => {
+  // Return the full name for the VLAN.
+  $scope.getFullVLANName = (vlanID) => {
+    const vlan = VLANsManager.getItemFromList(vlanID);
+    const fabric = FabricsManager.getItemFromList(vlan.fabric);
+    return `${FabricsManager.getName(fabric)}.${VLANsManager.getName(vlan)}`;
+  };
+
+  $scope.getDHCPStatus = (vlan, fullName) => {
     if (vlan) {
       if (vlan.external_dhcp) {
         return `External (${vlan.external_dhcp})`;
@@ -2307,6 +2314,14 @@ export function NodeNetworkingController(
 
       if (vlan.dhcp_on) {
         return "MAAS-provided";
+      }
+
+      if (vlan.relay_vlan) {
+        if (fullName) {
+          return `Relayed via ${$scope.getFullVLANName(vlan.relay_vlan)}`;
+        } else {
+          return "Relayed";
+        }
       }
     }
 
