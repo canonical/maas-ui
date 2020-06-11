@@ -2424,6 +2424,13 @@ export function NodeNetworkingController(
     );
   };
 
+  $scope.isInterfaceConnected = (nic) => {
+    if (nic.type === 'alias' && nic.members.length) {
+      return nic.members.some((member) => member.link_connected);
+    }
+    return nic.link_connected;
+  };
+
   $scope.formatSpeedUnits = speedInMbytes => {
     const megabytesInGigabyte = 1000;
     const gigabytesInTerabyte = 1000;
