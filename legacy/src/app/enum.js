@@ -47,7 +47,7 @@ export const NodeStatus = {
   // Running tests on Node
   TESTING: 21,
   // Testing has failed
-  FAILED_TESTING: 22
+  FAILED_TESTING: 22,
 };
 
 export const ScriptStatus = {
@@ -62,11 +62,11 @@ export const ScriptStatus = {
   FAILED_INSTALLING: 8,
   SKIPPED: 9,
   APPLYING_NETCONF: 10,
-  FAILED_APPLYING_NETCONF: 11
+  FAILED_APPLYING_NETCONF: 11,
 };
 
 export const NodeTypes = {
-  REGION_CONTROLLER: 3
+  REGION_CONTROLLER: 3,
 };
 
 export const HardwareType = {
@@ -74,5 +74,11 @@ export const HardwareType = {
   CPU: 1,
   MEMORY: 2,
   STORAGE: 3,
-  NETWORK: 4
+  NETWORK: 4,
+};
+
+export const BootResourceType = {
+  DOWNLOADED: 0,
+  GENERATED: 1,
+  UPLOADED: 2,
 };
