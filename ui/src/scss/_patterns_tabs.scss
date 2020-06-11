@@ -1,5 +1,8 @@
 @mixin maas-tabs {
-  .p-tabs__list.no-border::after {
-    content: none;
+  .p-tabs__list.no-border {
+    &::after,
+    .p-tabs__item::after {
+      content: none;
+    }
   }
 }

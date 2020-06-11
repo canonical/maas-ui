@@ -1,0 +1,45 @@
+@mixin Meter {
+  $meter-height: $sp-unit * 2;
+  $meter-height--small: $sp-unit * 1.5;
+
+  .p-meter {
+    margin-bottom: $sp-unit * 1.5;
+    padding-top: $spv-inner--x-small;
+  }
+
+  .p-meter__bar {
+    border-radius: $meter-height;
+    height: $meter-height;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .p-meter__labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -#{$sp-unit * .25};
+    padding-top: $sp-unit * 1.25;
+  }
+
+  .p-meter__filled {
+    height: 100%;
+    position: absolute;
+    width: 0%;
+  }
+
+  .p-meter--small {
+    margin-bottom: $sp-unit * 1.75;;
+    padding-top: $sp-unit * .75;
+
+    .p-meter__bar {
+      border-radius: $meter-height--small;
+      height: $meter-height--small;
+      margin-bottom: $sp-unit * .75;
+    }
+
+    .p-meter__labels {
+      margin-bottom: 0;
+      padding-top: $sp-unit * .25;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import ErrorBoundary from "app/base/components/ErrorBoundary";
+import KVM from "app/kvm/views/KVM";
 import Machines from "app/machines/views/Machines";
 import NotFound from "app/base/views/NotFound";
 import Preferences from "app/preferences/views/Preferences";
@@ -18,10 +19,18 @@ const Routes = () => (
       }}
     />
     <Route
-      path="/settings"
+      path="/account/prefs"
       render={() => (
         <ErrorBoundary>
-          <Settings />
+          <Preferences />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path="/kvm"
+      render={() => (
+        <ErrorBoundary>
+          <KVM />
         </ErrorBoundary>
       )}
     />
@@ -42,10 +51,10 @@ const Routes = () => (
       )}
     />
     <Route
-      path="/account/prefs"
+      path="/settings"
       render={() => (
         <ErrorBoundary>
-          <Preferences />
+          <Settings />
         </ErrorBoundary>
       )}
     />
