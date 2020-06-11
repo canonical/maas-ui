@@ -2,7 +2,7 @@ import { createStandardReducer } from "app/utils/redux";
 
 import { user as userActions } from "app/base/actions";
 
-const initialState = {
+export const initialState = {
   auth: {},
   errors: {},
   items: [],
