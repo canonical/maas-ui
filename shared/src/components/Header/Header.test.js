@@ -115,8 +115,7 @@ describe("Header", () => {
         basename="/MAAS"
         completedIntro={true}
         location={{
-          hash: "l/devices",
-          pathname: "/MAAS/",
+          pathname: "/MAAS/l/devices",
         }}
         logout={jest.fn()}
       />
@@ -124,5 +123,26 @@ describe("Header", () => {
     const selected = wrapper.find(".p-navigation__link.is-selected");
     expect(selected.exists()).toBe(true);
     expect(selected.text()).toEqual("Devices");
+  });
+
+  it("can highlight a url with a query param", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala",
+        }}
+        basename="/MAAS"
+        completedIntro={true}
+        location={{
+          search: "?by=fabric",
+          pathname: "/MAAS/l/networks",
+        }}
+        logout={jest.fn()}
+      />
+    );
+    const selected = wrapper.find(".p-navigation__link.is-selected");
+    expect(selected.exists()).toBe(true);
+    expect(selected.text()).toEqual("Subnets");
   });
 });
