@@ -109,11 +109,10 @@
                         <div ng-repeat="release in getUbuntuLTSReleases() | orderBy: '-title'">
                             <input
                                 id="{$ release.name $}"
-                                name="selected-release"
+                                ng-checked="isReleaseSelected(release.name)"
+                                ng-click="toggleUbuntuRelease(release)"
                                 ng-disabled="saving"
-                                ng-model="$parent.selectedUbuntuRelease"
-                                type="radio"
-                                value="{$ release.name $}"
+                                type="checkbox"
                             >
                             <label for="{$ release.name $}">{$ release.title $}</label>
                         </div>
@@ -122,11 +121,10 @@
                         <div ng-repeat="release in getUbuntuNonLTSReleases() | orderBy: '-title'">
                             <input
                                 id="{$ release.name $}"
-                                name="selected-release"
+                                ng-checked="isReleaseSelected(release.name)"
+                                ng-click="toggleUbuntuRelease(release)"
                                 ng-disabled="saving"
-                                ng-model="$parent.selectedUbuntuRelease"
-                                type="radio"
-                                value="{$ release.name $}"
+                                type="checkbox"
                             >
                             <label for="{$ release.name $}">{$ release.title $}</label>
                         </div>
@@ -139,20 +137,18 @@
                     <span class="p-tooltip--top-left">
                         <input
                             id="{$ arch.name $}"
-                            ng-checked="isOSSelected(selectedUbuntuRelease, arch.name)"
-                            ng-click="toggleSelectedOS(selectedUbuntuRelease, arch.name)"
-                            ng-disabled="saving || !selectedUbuntuRelease || unsupportedArch(selectedUbuntuRelease, arch.name)"
+                            ng-checked="isArchSelected(arch.name)"
+                            ng-click="toggleUbuntuArchitecture(arch)"
+                            ng-disabled="isArchDisabled(arch.name)"
                             type="checkbox"
                         >
-                        <label for="{$ arch.name $}">{$ arch.title $}</label>
-                        <span
-                            class="p-tooltip__message"
-                            ng-if="selectedUbuntuRelease && unsupportedArch(selectedUbuntuRelease, arch.name)"
-                        >This release/architecture combination is unsupported.</span>
-                        <span
-                            class="p-tooltip__message"
-                            ng-if="!selectedUbuntuRelease"
-                        >Please select a release first.</span>
+                        <label for="{$ arch.name $}">
+                            {$ arch.title $}
+                            <span ng-if="showUnsupportedWarning(arch.name)">
+                                <i class="p-icon--warning" style="margin-left: 1.5rem; margin-right: .5rem;"></i>
+                                Not supported in 20.04 LTS or later
+                            </span>
+                        </label>
                     </span>
                 </div>
             </div>
