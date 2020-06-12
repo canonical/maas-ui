@@ -8,14 +8,14 @@ import angular from "angular";
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("maasBootImages", function() {
+describe("maasBootImages", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   var $q, $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $q = $injector.get("$q");
     $templateCache = $injector.get("$templateCache");
     $templateCache.put("static/partials/boot-images.html?v=undefined", "");
@@ -23,7 +23,7 @@ describe("maasBootImages", function() {
 
   // Load the required managers.
   var BootResourcesManager, UsersManager, ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     BootResourcesManager = $injector.get("BootResourcesManager");
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
@@ -35,7 +35,7 @@ describe("maasBootImages", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -48,11 +48,11 @@ describe("maasBootImages", function() {
     var html = [
       "<div>",
       '<maas-boot-images design="' + design + '"></maas-boot-images>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -61,7 +61,7 @@ describe("maasBootImages", function() {
     return directive.find("maas-boot-images");
   }
 
-  it("sets initial variables", function() {
+  it("sets initial variables", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.loading).toBe(true);
@@ -81,18 +81,16 @@ describe("maasBootImages", function() {
       keyring_data: "",
       releases: [],
       arches: [],
-      osystems: [],
       selections: {
         changed: false,
         releases: [],
         arches: [],
-        osystems: []
-      }
+      },
     });
     expect(scope.otherImages).toEqual([]);
     expect(scope.other).toEqual({
       changed: false,
-      images: []
+      images: [],
     });
     expect(scope.generatedImages).toEqual([]);
     expect(scope.customImages).toEqual([]);
@@ -100,7 +98,7 @@ describe("maasBootImages", function() {
     expect(scope.removingImage).toBeNull();
   });
 
-  it("clears loading once polling and user manager loaded", function() {
+  it("clears loading once polling and user manager loaded", function () {
     var pollingDefer = $q.defer();
     spyOn(BootResourcesManager, "startPolling").and.returnValue(
       pollingDefer.promise
@@ -120,7 +118,7 @@ describe("maasBootImages", function() {
     expect(scope.loading).toBe(false);
   });
 
-  it("calls updateSource when ubuntu changes", function() {
+  it("calls updateSource when ubuntu changes", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "updateSource");
@@ -130,7 +128,7 @@ describe("maasBootImages", function() {
     expect(scope.updateSource).toHaveBeenCalled();
   });
 
-  it("calls all regenerates when resources changes", function() {
+  it("calls all regenerates when resources changes", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "regenerateUbuntuImages");
@@ -148,7 +146,7 @@ describe("maasBootImages", function() {
     expect(scope.regenerateCustomImages).toHaveBeenCalled();
   });
 
-  it("sets ubuntu_core.images when ubuntu_core change", function() {
+  it("sets ubuntu_core.images when ubuntu_core change", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "regenerateUbuntuCoreImages");
@@ -160,7 +158,7 @@ describe("maasBootImages", function() {
     expect(scope.regenerateUbuntuCoreImages).toHaveBeenCalled();
   });
 
-  it("doesnt sets ubuntu_core.images when ubuntu_core changed", function() {
+  it("doesnt sets ubuntu_core.images when ubuntu_core changed", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "regenerateUbuntuCoreImages");
@@ -173,7 +171,7 @@ describe("maasBootImages", function() {
     expect(scope.regenerateUbuntuCoreImages).toHaveBeenCalled();
   });
 
-  it("sets other.images when other_images change", function() {
+  it("sets other.images when other_images change", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "regenerateOtherImages");
@@ -185,7 +183,7 @@ describe("maasBootImages", function() {
     expect(scope.regenerateOtherImages).toHaveBeenCalled();
   });
 
-  it("doesnt sets other.images when other changed", function() {
+  it("doesnt sets other.images when other changed", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     spyOn(scope, "regenerateOtherImages");
@@ -198,15 +196,15 @@ describe("maasBootImages", function() {
     expect(scope.regenerateOtherImages).toHaveBeenCalled();
   });
 
-  it("stops polling when scope is destroyed", function() {
+  it("stops polling when scope is destroyed", function () {
     var directive = compileDirective();
     spyOn(BootResourcesManager, "stopPolling");
     directive.scope().$destroy();
     expect(BootResourcesManager.stopPolling).toHaveBeenCalled();
   });
 
-  describe("isSuperUser", function() {
-    it("returns UsersManager.isSuperUser", function() {
+  describe("isSuperUser", function () {
+    it("returns UsersManager.isSuperUser", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
 
@@ -216,15 +214,15 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getTitleIcon", function() {
-    it("returns error when no resources", function() {
+  describe("getTitleIcon", function () {
+    it("returns error when no resources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       BootResourcesManager._data.resources = [];
       expect(scope.getTitleIcon()).toBe("p-icon--success-muted");
     });
 
-    it("returns success when resources", function() {
+    it("returns success when resources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       BootResourcesManager._data.resources = [{}];
@@ -232,15 +230,15 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("showMirrorPath", function() {
-    it("returns true when custom", function() {
+  describe("showMirrorPath", function () {
+    it("returns true when custom", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
       expect(scope.showMirrorPath()).toBe(true);
     });
 
-    it("returns false when maas.io", function() {
+    it("returns false when maas.io", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "maas.io";
@@ -248,8 +246,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("isShowingAdvancedOptions", function() {
-    it("returns showingAdvanced", function() {
+  describe("isShowingAdvancedOptions", function () {
+    it("returns showingAdvanced", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var sentinel = {};
@@ -258,8 +256,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("toggleAdvancedOptions", function() {
-    it("inverts showingAdvanced", function() {
+  describe("toggleAdvancedOptions", function () {
+    it("inverts showingAdvanced", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.showingAdvanced = false;
@@ -270,28 +268,28 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("bothKeyringOptionsSet", function() {
-    it("returns false if neither set", function() {
+  describe("bothKeyringOptionsSet", function () {
+    it("returns false if neither set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       expect(scope.bothKeyringOptionsSet()).toBe(false);
     });
 
-    it("returns false if keyring_filename set", function() {
+    it("returns false if keyring_filename set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.keyring_filename = makeName("file");
       expect(scope.bothKeyringOptionsSet()).toBe(false);
     });
 
-    it("returns false if keyring_data set", function() {
+    it("returns false if keyring_data set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.keyring_data = makeName("data");
       expect(scope.bothKeyringOptionsSet()).toBe(false);
     });
 
-    it("returns true if both set set", function() {
+    it("returns true if both set set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.keyring_filename = makeName("file");
@@ -300,8 +298,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("showConnectButton", function() {
-    it("returns isNew", function() {
+  describe("showConnectButton", function () {
+    it("returns isNew", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var sentinel = {};
@@ -310,57 +308,57 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("sourceChanged", function() {
-    it("sets isNew if no sources", function() {
+  describe("sourceChanged", function () {
+    it("sets isNew if no sources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources = {
         resources: [],
         ubuntu: {
-          sources: []
-        }
+          sources: [],
+        },
       };
       spyOn(scope, "connect");
       scope.sourceChanged();
       expect(scope.source.isNew).toBe(true);
     });
 
-    it("calls connect when no sources", function() {
+    it("calls connect when no sources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources = {
         resources: [],
         ubuntu: {
-          sources: []
-        }
+          sources: [],
+        },
       };
       spyOn(scope, "connect");
       scope.sourceChanged();
       expect(scope.connect).toHaveBeenCalled();
     });
 
-    it("calls connect when no sources", function() {
+    it("calls connect when no sources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources = {
         resources: [],
         ubuntu: {
-          sources: []
-        }
+          sources: [],
+        },
       };
       spyOn(scope, "connect");
       scope.sourceChanged();
       expect(scope.connect).toHaveBeenCalled();
     });
 
-    it("calls updateSource and regenerateUbuntuImages", function() {
+    it("calls updateSource and regenerateUbuntuImages", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources = {
         resources: [],
         ubuntu: {
-          sources: []
-        }
+          sources: [],
+        },
       };
       spyOn(scope, "connect");
       spyOn(scope, "updateSource");
@@ -370,75 +368,7 @@ describe("maasBootImages", function() {
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("changing to maas.io clears options and selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      scope.bootResources = {
-        resources: [],
-        ubuntu: {
-          sources: [
-            {
-              source_type: "custom"
-            }
-          ]
-        }
-      };
-      scope.source.isNew = false;
-      scope.source.source_type = "maas.io";
-      scope.source.releases = [{}, {}];
-      scope.source.arches = [{}, {}];
-      scope.source.selections = {
-        changed: true,
-        releases: [{}],
-        arches: [{}]
-      };
-      spyOn(scope, "connect");
-      scope.sourceChanged();
-      expect(scope.source.releases).toEqual([]);
-      expect(scope.source.arches).toEqual([]);
-      expect(scope.source.selections).toEqual({
-        changed: false,
-        releases: [],
-        arches: [],
-        osystems: [],
-      });
-    });
-
-    it("changing to custom clears options and selections", function() {
-      var directive = compileDirective();
-      var scope = directive.isolateScope();
-      scope.bootResources = {
-        resources: [],
-        ubuntu: {
-          sources: [
-            {
-              source_type: "maas.io"
-            }
-          ]
-        }
-      };
-      scope.source.isNew = false;
-      scope.source.source_type = "custom";
-      scope.source.releases = [{}, {}];
-      scope.source.arches = [{}, {}];
-      scope.source.selections = {
-        changed: true,
-        releases: [{}],
-        arches: [{}]
-      };
-      spyOn(scope, "connect");
-      scope.sourceChanged();
-      expect(scope.source.releases).toEqual([]);
-      expect(scope.source.arches).toEqual([]);
-      expect(scope.source.selections).toEqual({
-        changed: false,
-        releases: [],
-        arches: [],
-        osystems: [],
-      });
-    });
-
-    it("changing to custom url clears options and selections", function() {
+    it("changing to maas.io clears options and selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources = {
@@ -447,20 +377,18 @@ describe("maasBootImages", function() {
           sources: [
             {
               source_type: "custom",
-              url: ""
-            }
-          ]
-        }
+            },
+          ],
+        },
       };
       scope.source.isNew = false;
-      scope.source.source_type = "custom";
-      scope.source.url = makeName("url");
+      scope.source.source_type = "maas.io";
       scope.source.releases = [{}, {}];
       scope.source.arches = [{}, {}];
       scope.source.selections = {
         changed: true,
         releases: [{}],
-        arches: [{}]
+        arches: [{}],
       };
       spyOn(scope, "connect");
       scope.sourceChanged();
@@ -470,20 +398,87 @@ describe("maasBootImages", function() {
         changed: false,
         releases: [],
         arches: [],
-        osystems: [],
+      });
+    });
+
+    it("changing to custom clears options and selections", function () {
+      var directive = compileDirective();
+      var scope = directive.isolateScope();
+      scope.bootResources = {
+        resources: [],
+        ubuntu: {
+          sources: [
+            {
+              source_type: "maas.io",
+            },
+          ],
+        },
+      };
+      scope.source.isNew = false;
+      scope.source.source_type = "custom";
+      scope.source.releases = [{}, {}];
+      scope.source.arches = [{}, {}];
+      scope.source.selections = {
+        changed: true,
+        releases: [{}],
+        arches: [{}],
+      };
+      spyOn(scope, "connect");
+      scope.sourceChanged();
+      expect(scope.source.releases).toEqual([]);
+      expect(scope.source.arches).toEqual([]);
+      expect(scope.source.selections).toEqual({
+        changed: false,
+        releases: [],
+        arches: [],
+      });
+    });
+
+    it("changing to custom url clears options and selections", function () {
+      var directive = compileDirective();
+      var scope = directive.isolateScope();
+      scope.bootResources = {
+        resources: [],
+        ubuntu: {
+          sources: [
+            {
+              source_type: "custom",
+              url: "",
+            },
+          ],
+        },
+      };
+      scope.source.isNew = false;
+      scope.source.source_type = "custom";
+      scope.source.url = makeName("url");
+      scope.source.releases = [{}, {}];
+      scope.source.arches = [{}, {}];
+      scope.source.selections = {
+        changed: true,
+        releases: [{}],
+        arches: [{}],
+      };
+      spyOn(scope, "connect");
+      scope.sourceChanged();
+      expect(scope.source.releases).toEqual([]);
+      expect(scope.source.arches).toEqual([]);
+      expect(scope.source.selections).toEqual({
+        changed: false,
+        releases: [],
+        arches: [],
       });
     });
   });
 
-  describe("isConnectButtonDisabled", function() {
-    it("never disabled when maas.io", function() {
+  describe("isConnectButtonDisabled", function () {
+    it("never disabled when maas.io", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "maas.io";
       expect(scope.isConnectButtonDisabled()).toBe(false);
     });
 
-    it("disabled when custom and both keyrings are set", function() {
+    it("disabled when custom and both keyrings are set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
@@ -491,7 +486,7 @@ describe("maasBootImages", function() {
       expect(scope.isConnectButtonDisabled()).toBe(true);
     });
 
-    it("disabled when custom and no url", function() {
+    it("disabled when custom and no url", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
@@ -499,7 +494,7 @@ describe("maasBootImages", function() {
       expect(scope.isConnectButtonDisabled()).toBe(true);
     });
 
-    it("disabled when custom connecting", function() {
+    it("disabled when custom connecting", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
@@ -508,7 +503,7 @@ describe("maasBootImages", function() {
       expect(scope.isConnectButtonDisabled()).toBe(true);
     });
 
-    it("enabled when custom and not connecting", function() {
+    it("enabled when custom and not connecting", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
@@ -518,17 +513,17 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getSourceParams", function() {
-    it("maas.io only returns source_type", function() {
+  describe("getSourceParams", function () {
+    it("maas.io only returns source_type", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "maas.io";
       expect(scope.getSourceParams()).toEqual({
-        source_type: "maas.io"
+        source_type: "maas.io",
       });
     });
 
-    it("custom returns all fields", function() {
+    it("custom returns all fields", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.source_type = "custom";
@@ -539,33 +534,32 @@ describe("maasBootImages", function() {
         source_type: "custom",
         url: scope.source.url,
         keyring_filename: scope.source.keyring_filename,
-        keyring_data: scope.source.keyring_data
+        keyring_data: scope.source.keyring_data,
       });
     });
   });
 
-  describe("selectDefaults", function() {
-    it("selects bionic and amd64", function() {
+  describe("selectDefaults", function () {
+    it("selects bionic and amd64", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var bionic = {
-        name: "bionic"
+        name: "bionic",
       };
       var amd64 = {
-        name: "amd64"
+        name: "amd64",
       };
       scope.source.releases = [bionic];
       scope.source.arches = [amd64];
       scope.selectDefaults();
 
-      expect(scope.source.selections.osystems).toEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-      ]);
+      expect(scope.source.selections.releases).toEqual([bionic]);
+      expect(scope.source.selections.arches).toEqual([amd64]);
     });
   });
 
-  describe("connect", function() {
-    it("does nothing if disabled", function() {
+  describe("connect", function () {
+    it("does nothing if disabled", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "isConnectButtonDisabled").and.returnValue(true);
@@ -574,7 +568,7 @@ describe("maasBootImages", function() {
       expect(BootResourcesManager.fetch).not.toHaveBeenCalled();
     });
 
-    it("toggles connecting and sets options and defaults", function() {
+    it("toggles connecting and sets options and defaults", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "isConnectButtonDisabled").and.returnValue(false);
@@ -593,14 +587,14 @@ describe("maasBootImages", function() {
       var data = angular.toJson({
         releases: [
           {
-            name: release
-          }
+            name: release,
+          },
         ],
         arches: [
           {
-            name: arch
-          }
-        ]
+            name: arch,
+          },
+        ],
       });
       defer.resolve(data);
       $scope.$digest();
@@ -608,19 +602,19 @@ describe("maasBootImages", function() {
       expect(scope.source.connecting).toBe(false);
       expect(scope.source.releases).toEqual([
         {
-          name: release
-        }
+          name: release,
+        },
       ]);
       expect(scope.source.arches).toEqual([
         {
-          name: arch
-        }
+          name: arch,
+        },
       ]);
       expect(scope.selectDefaults).toHaveBeenCalled();
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("toggles connecting and sets error", function() {
+    it("toggles connecting and sets error", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "isConnectButtonDisabled").and.returnValue(false);
@@ -642,15 +636,15 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("showConnectBlock", function() {
-    it("true if tooMany sources", function() {
+  describe("showConnectBlock", function () {
+    it("true if tooMany sources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.tooMany = true;
       expect(scope.showConnectBlock()).toBe(true);
     });
 
-    it("true if new and not showing selections", function() {
+    it("true if new and not showing selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.isNew = true;
@@ -658,7 +652,7 @@ describe("maasBootImages", function() {
       expect(scope.showConnectBlock()).toBe(true);
     });
 
-    it("false if new and showing selections", function() {
+    it("false if new and showing selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.isNew = true;
@@ -666,7 +660,7 @@ describe("maasBootImages", function() {
       expect(scope.showConnectBlock()).toBe(false);
     });
 
-    it("false if not new", function() {
+    it("false if not new", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.isNew = false;
@@ -675,8 +669,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("showSelections", function() {
-    it("true releases and arches exist", function() {
+  describe("showSelections", function () {
+    it("true releases and arches exist", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.releases = [{}];
@@ -684,7 +678,7 @@ describe("maasBootImages", function() {
       expect(scope.showSelections()).toBe(true);
     });
 
-    it("false if only releases", function() {
+    it("false if only releases", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.releases = [{}];
@@ -692,7 +686,7 @@ describe("maasBootImages", function() {
       expect(scope.showSelections()).toBe(false);
     });
 
-    it("false if only arches", function() {
+    it("false if only arches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.source.releases = [];
@@ -701,60 +695,60 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getUbuntuLTSReleases", function() {
-    it("filters bootResources to LTS", function() {
+  describe("getUbuntuLTSReleases", function () {
+    it("filters bootResources to LTS", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var lts = {
         title: "16.04 LTS",
-        deleted: false
+        deleted: false,
       };
       var nonLTS = {
         title: "16.10",
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: [lts, nonLTS]
-        }
+          releases: [lts, nonLTS],
+        },
       };
       expect(scope.getUbuntuLTSReleases()).toEqual([lts]);
     });
 
-    it("filters deleted releases", function() {
+    it("filters deleted releases", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var lts = {
         title: "16.04 LTS",
-        deleted: false
+        deleted: false,
       };
       var deletedLTS = {
         title: "12.04 LTS",
-        deleted: true
+        deleted: true,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: [lts, deletedLTS]
-        }
+          releases: [lts, deletedLTS],
+        },
       };
       expect(scope.getUbuntuLTSReleases()).toEqual([lts]);
     });
 
-    it("filters new sources to LTS", function() {
+    it("filters new sources to LTS", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var lts = {
         title: "16.04 LTS",
-        deleted: false
+        deleted: false,
       };
       var nonLTS = {
         title: "16.10",
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: []
-        }
+          releases: [],
+        },
       };
       scope.source.isNew = true;
       scope.source.releases = [lts, nonLTS];
@@ -762,60 +756,60 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getUbuntuNonLTSReleases", function() {
-    it("filters bootResources to non-LTS", function() {
+  describe("getUbuntuNonLTSReleases", function () {
+    it("filters bootResources to non-LTS", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var lts = {
         title: "16.04 LTS",
-        deleted: false
+        deleted: false,
       };
       var nonLTS = {
         title: "16.10",
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: [lts, nonLTS]
-        }
+          releases: [lts, nonLTS],
+        },
       };
       expect(scope.getUbuntuNonLTSReleases()).toEqual([nonLTS]);
     });
 
-    it("filters deleted releases", function() {
+    it("filters deleted releases", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var nonLTS = {
         title: "16.10",
-        deleted: false
+        deleted: false,
       };
       var deleted = {
         title: "15.04",
-        deleted: true
+        deleted: true,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: [nonLTS, deleted]
-        }
+          releases: [nonLTS, deleted],
+        },
       };
       expect(scope.getUbuntuNonLTSReleases()).toEqual([nonLTS]);
     });
 
-    it("filters new sources to non-LTS", function() {
+    it("filters new sources to non-LTS", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var lts = {
         title: "16.04 LTS",
-        deleted: false
+        deleted: false,
       };
       var nonLTS = {
         title: "16.10",
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: []
-        }
+          releases: [],
+        },
       };
       scope.source.isNew = true;
       scope.source.releases = [lts, nonLTS];
@@ -823,54 +817,54 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getArchitectures", function() {
-    it("returns bootResources arches", function() {
+  describe("getArchitectures", function () {
+    it("returns bootResources arches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var arch1 = {
-        deleted: false
+        deleted: false,
       };
       var arch2 = {
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          arches: [arch1, arch2]
-        }
+          arches: [arch1, arch2],
+        },
       };
       expect(scope.getArchitectures()).toEqual([arch1, arch2]);
     });
 
-    it("filters deleted arches", function() {
+    it("filters deleted arches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var arch1 = {
-        deleted: false
+        deleted: false,
       };
       var arch2 = {
-        deleted: true
+        deleted: true,
       };
       scope.bootResources = {
         ubuntu: {
-          arches: [arch1, arch2]
-        }
+          arches: [arch1, arch2],
+        },
       };
       expect(scope.getArchitectures()).toEqual([arch1]);
     });
 
-    it("returns new sources arches", function() {
+    it("returns new sources arches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var arch1 = {
-        deleted: false
+        deleted: false,
       };
       var arch2 = {
-        deleted: false
+        deleted: false,
       };
       scope.bootResources = {
         ubuntu: {
-          arches: []
-        }
+          arches: [],
+        },
       };
       scope.source.isNew = true;
       scope.source.arches = [arch1, arch2];
@@ -878,93 +872,127 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("isOSSelected", () => {
-    it("returns true if release/arch combination is selected", function () {
+  describe("isReleaseSelected", () => {
+    it("correctly returns whether release is selected", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-        { osystem: "ubuntu", release: "focal", arches: ["arm64"] },
+      scope.source.selections.releases = [
+        { name: "bionic" },
+        { name: "focal" },
       ];
-      expect(scope.isOSSelected("bionic", "amd64")).toBe(true);
-      expect(scope.isOSSelected("focal", "arm64")).toBe(true);
-    });
-
-    it("returns false if release/arch combination is not selected", function () {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-        { osystem: "ubuntu", release: "focal", arches: ["arm64"] },
-      ];
-      expect(scope.isOSSelected("bionic", "arm64")).toBe(false);
-      expect(scope.isOSSelected("focal", "amd64")).toBe(false);
+      expect(scope.isReleaseSelected("bionic")).toBe(true);
+      expect(scope.isReleaseSelected("xenial")).toBe(false);
     });
   });
 
-  describe("toggleSelectedOS", () => {
-    it("Adds new osystem to selected if release is not present", () => {
+  describe("isArchSelected", () => {
+    it("correctly returns whether arch is selected", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.source.selections.arches = [{ name: "amd64" }, { name: "arm64" }];
+      expect(scope.isArchSelected("amd64")).toBe(true);
+      expect(scope.isArchSelected("i386")).toBe(false);
+    });
+  });
+
+  describe("isArchDisabled", () => {
+    it("returns true if currently saving", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.saving = true;
+      expect(scope.isArchDisabled("amd64")).toBe(true);
+    });
+
+    it("returns true if only one release selected and the arch is unsupported", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.source.selections.releases = [
+        { name: "focal", unsupported_arches: ["i386"] },
+      ];
+      expect(scope.isArchDisabled("i386")).toBe(true);
+    });
+  });
+
+  describe("toggleUbuntuRelease", () => {
+    it("correctly adds to release selections", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.source.selections.osystems = [];
-      scope.toggleSelectedOS("bionic", "amd64");
-      expect(scope.source.selections.osystems).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
+      scope.source.selections.releases = [{ name: "focal" }];
+      scope.toggleUbuntuRelease({ name: "bionic" });
+      expect(scope.source.selections.releases).toStrictEqual([
+        { name: "focal" },
+        { name: "bionic" },
       ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("Adds new arch to existing osystem if release present", () => {
+    it("correctly removes from release selections", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: "bionic", arches: ["arm64"] },
+      scope.source.selections.releases = [
+        { name: "bionic" },
+        { name: "focal" },
       ];
-      scope.toggleSelectedOS("bionic", "amd64");
-      expect(scope.source.selections.osystems).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["arm64", "amd64"] },
+      scope.toggleUbuntuRelease({ name: "bionic" });
+      expect(scope.source.selections.releases).toStrictEqual([
+        { name: "focal" },
       ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("Removes arch from existing osystem if release present", () => {
+    it("removes unsupported arches if only one selected release", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64", "arm64"] },
+      scope.source.selections.releases = [
+        { name: "bionic" },
+        { name: "focal", unsupported_arches: ["i386"] },
       ];
-      scope.toggleSelectedOS("bionic", "amd64");
-      expect(scope.source.selections.osystems).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["arm64"] },
+      scope.source.selections.arches = [{ name: "i386" }];
+      scope.toggleUbuntuRelease({ name: "bionic" });
+      expect(scope.source.selections.releases).toStrictEqual([
+        { name: "focal", unsupported_arches: ["i386"] },
+      ]);
+      expect(scope.source.selections.arches).toStrictEqual([]);
+    });
+  });
+
+  describe("toggleUbuntuArchitecture", () => {
+    it("correctly adds to architecture selections", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      spyOn(scope, "regenerateUbuntuImages");
+      scope.source.selections.arches = [{ name: "amd64" }];
+      scope.toggleUbuntuArchitecture({ name: "arm64" });
+      expect(scope.source.selections.arches).toStrictEqual([
+        { name: "amd64" },
+        { name: "arm64" },
       ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("Removes osystem if release is present and last arch removed", () => {
+    it("correctly removes from architecture selections", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       spyOn(scope, "regenerateUbuntuImages");
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-      ];
-      scope.toggleSelectedOS("bionic", "amd64");
-      expect(scope.source.selections.osystems).toStrictEqual([]);
+      scope.source.selections.arches = [{ name: "amd64" }, { name: "arm64" }];
+      scope.toggleUbuntuArchitecture({ name: "arm64" });
+      expect(scope.source.selections.arches).toStrictEqual([{ name: "amd64" }]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
   });
 
-  describe("showImagesTable", function() {
-    it("returns true if ubuntuImages exist", function() {
+  describe("showImagesTable", function () {
+    it("returns true if ubuntuImages exist", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.ubuntuImages = [{}];
       expect(scope.showImagesTable()).toBe(true);
     });
 
-    it("returns true source has arches and releases", function() {
+    it("returns true source has arches and releases", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.ubuntuImages = [];
@@ -973,7 +1001,7 @@ describe("maasBootImages", function() {
       expect(scope.showImagesTable()).toBe(true);
     });
 
-    it("returns false no images and no source info", function() {
+    it("returns false no images and no source info", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.ubuntuImages = [];
@@ -983,24 +1011,23 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("regenerateUbuntuImages", function() {
-    it("builds images based on selections", function() {
+  describe("regenerateUbuntuImages", function () {
+    it("builds images based on selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.resources = [];
       var release = {
         name: makeName("release"),
-        title: makeName("releaseTitle")
+        title: makeName("releaseTitle"),
       };
       var arch = {
         name: makeName("arch"),
-        title: makeName("archTitle")
+        title: makeName("archTitle"),
       };
       scope.source.releases = [release];
+      scope.source.selections.releases = [release];
       scope.source.arches = [arch];
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: release.name, arches: [arch.name] },
-      ];
+      scope.source.selections.arches = [arch];
       scope.regenerateUbuntuImages();
       expect(scope.ubuntuImages).toEqual([
         {
@@ -1010,21 +1037,54 @@ describe("maasBootImages", function() {
           size: "-",
           status: "Selected for download",
           beingDeleted: false,
-          name: release.name
-        }
+          name: release.name,
+        },
       ]);
     });
 
-    it("builds images based on selection and resource", function() {
+    it("does not build images for unsupported release/arch cominations", () => {
+      const directive = compileDirective();
+      const scope = directive.isolateScope();
+      scope.bootResources.resources = [];
+      const supported = {
+        name: "bionic",
+        title: "18.04",
+        unsupported_arches: [],
+      };
+      const unsupported = {
+        name: "focal",
+        title: "20.04",
+        unsupported_arches: ["i386"],
+      };
+      const arch = { name: "i386", title: "i386" };
+      scope.source.releases = [supported, unsupported];
+      scope.source.selections.releases = [supported, unsupported];
+      scope.source.arches = [arch];
+      scope.source.selections.arches = [arch];
+      scope.regenerateUbuntuImages();
+      expect(scope.ubuntuImages).toEqual([
+        {
+          icon: "p-icon--status-queued",
+          title: supported.title,
+          arch: arch.title,
+          size: "-",
+          status: "Selected for download",
+          beingDeleted: false,
+          name: supported.name,
+        },
+      ]);
+    });
+
+    it("builds images based on selection and resource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var release = {
         name: makeName("release"),
-        title: makeName("releaseTitle")
+        title: makeName("releaseTitle"),
       };
       var arch = {
         name: makeName("arch"),
-        title: makeName("archTitle")
+        title: makeName("archTitle"),
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1039,14 +1099,13 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.source.releases = [release];
+      scope.source.selections.releases = [release];
       scope.source.arches = [arch];
-      scope.source.selections.osystems = [
-        { osystem: "ubuntu", release: release.name, arches: [arch.name] },
-      ];
+      scope.source.selections.arches = [arch];
       scope.regenerateUbuntuImages();
       expect(scope.ubuntuImages).toEqual([
         {
@@ -1057,21 +1116,21 @@ describe("maasBootImages", function() {
           status: status,
           beingDeleted: false,
           name: release.name,
-          resourceId: resourceId
-        }
+          resourceId: resourceId,
+        },
       ]);
     });
 
-    it("marks resource as being deleted", function() {
+    it("marks resource as being deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var release = {
         name: makeName("release"),
-        title: makeName("releaseTitle")
+        title: makeName("releaseTitle"),
       };
       var arch = {
         name: makeName("arch"),
-        title: makeName("archTitle")
+        title: makeName("archTitle"),
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1085,8 +1144,8 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.source.selections.releases = [];
       scope.source.selections.arches = [];
@@ -1099,14 +1158,14 @@ describe("maasBootImages", function() {
           size: size,
           status: "Will be deleted",
           beingDeleted: true,
-          name: release.name
-        }
+          name: release.name,
+        },
       ]);
     });
   });
 
-  describe("regenerateUbuntuCoreImages", function() {
-    it("builds images based on selections", function() {
+  describe("regenerateUbuntuCoreImages", function () {
+    it("builds images based on selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.resources = [];
@@ -1116,7 +1175,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: true
+        checked: true,
       };
       scope.ubuntu_core.images = [image];
       scope.regenerateUbuntuCoreImages();
@@ -1127,12 +1186,12 @@ describe("maasBootImages", function() {
           arch: arch,
           size: "-",
           status: "Selected for download",
-          beingDeleted: false
-        }
+          beingDeleted: false,
+        },
       ]);
     });
 
-    it("builds images based on selection and resource", function() {
+    it("builds images based on selection and resource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var release = makeName("release");
@@ -1141,7 +1200,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: true
+        checked: true,
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1154,8 +1213,8 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.ubuntu_core.images = [image];
       scope.regenerateUbuntuCoreImages();
@@ -1166,12 +1225,12 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: status,
-          beingDeleted: false
-        }
+          beingDeleted: false,
+        },
       ]);
     });
 
-    it("marks resource as being deleted", function() {
+    it("marks resource as being deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var release = makeName("release");
@@ -1180,7 +1239,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: false
+        checked: false,
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1194,8 +1253,8 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.ubuntu_core.images = [image];
       scope.regenerateUbuntuCoreImages();
@@ -1206,14 +1265,14 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: "Will be deleted",
-          beingDeleted: true
-        }
+          beingDeleted: true,
+        },
       ]);
     });
   });
 
-  describe("regenerateOtherImages", function() {
-    it("builds images based on selections", function() {
+  describe("regenerateOtherImages", function () {
+    it("builds images based on selections", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.resources = [];
@@ -1224,7 +1283,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: true
+        checked: true,
       };
       scope.other.images = [image];
       scope.regenerateOtherImages();
@@ -1235,12 +1294,12 @@ describe("maasBootImages", function() {
           arch: arch,
           size: "-",
           status: "Selected for download",
-          beingDeleted: false
-        }
+          beingDeleted: false,
+        },
       ]);
     });
 
-    it("builds images based on selection and resource", function() {
+    it("builds images based on selection and resource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var os = makeName("os");
@@ -1250,7 +1309,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: true
+        checked: true,
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1263,8 +1322,8 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.other.images = [image];
       scope.regenerateOtherImages();
@@ -1275,12 +1334,12 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: status,
-          beingDeleted: false
-        }
+          beingDeleted: false,
+        },
       ]);
     });
 
-    it("marks resource as being deleted", function() {
+    it("marks resource as being deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var os = makeName("os");
@@ -1290,7 +1349,7 @@ describe("maasBootImages", function() {
       var image = {
         name: name,
         title: makeName("title"),
-        checked: false
+        checked: false,
       };
       var icon = makeName("icon");
       var size = makeName("size");
@@ -1304,8 +1363,8 @@ describe("maasBootImages", function() {
           icon: icon,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.other.images = [image];
       scope.regenerateOtherImages();
@@ -1316,14 +1375,14 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: "Will be deleted",
-          beingDeleted: true
-        }
+          beingDeleted: true,
+        },
       ]);
     });
   });
 
-  describe("regenerateGeneratedImages", function() {
-    it("builds images based on resource", function() {
+  describe("regenerateGeneratedImages", function () {
+    it("builds images based on resource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var icon = makeName("icon");
@@ -1340,8 +1399,8 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.regenerateGeneratedImages();
       expect(scope.generatedImages).toEqual([
@@ -1351,14 +1410,14 @@ describe("maasBootImages", function() {
           arch: arch,
           image_id: 3,
           size: size,
-          status: status
-        }
+          status: status,
+        },
       ]);
     });
   });
 
-  describe("regenerateCustomImages", function() {
-    it("builds images based on resource", function() {
+  describe("regenerateCustomImages", function () {
+    it("builds images based on resource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var icon = makeName("icon");
@@ -1375,8 +1434,8 @@ describe("maasBootImages", function() {
           arch: arch,
           size: size,
           status: status,
-          downloading: true
-        }
+          downloading: true,
+        },
       ];
       scope.regenerateCustomImages();
       expect(scope.customImages).toEqual([
@@ -1386,21 +1445,21 @@ describe("maasBootImages", function() {
           arch: arch,
           image_id: 3,
           size: size,
-          status: status
-        }
+          status: status,
+        },
       ]);
     });
   });
 
-  describe("isShowingDeleteConfirm", function() {
-    it("returns false when not deleting", function() {
+  describe("isShowingDeleteConfirm", function () {
+    it("returns false when not deleting", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = { image_id: 3 };
       expect(scope.isShowingDeleteConfirm(image)).toBe(false);
     });
 
-    it("returns true when deleting this image", function() {
+    it("returns true when deleting this image", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image1 = { image_id: 3 };
@@ -1408,7 +1467,7 @@ describe("maasBootImages", function() {
       expect(scope.isShowingDeleteConfirm(image1)).toBe(true);
     });
 
-    it("returns false when deleting other image", function() {
+    it("returns false when deleting other image", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image1 = { image_id: 3 };
@@ -1418,8 +1477,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("quickRemove", function() {
-    it("sets removingImage", function() {
+  describe("quickRemove", function () {
+    it("sets removingImage", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = { image_id: 3 };
@@ -1428,8 +1487,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("cancelRemove", function() {
-    it("clears removingImage", function() {
+  describe("cancelRemove", function () {
+    it("clears removingImage", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = { image_id: 3 };
@@ -1439,8 +1498,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("confirmRemove", function() {
-    it("calls delete_image if given removingImage", function() {
+  describe("confirmRemove", function () {
+    it("calls delete_image if given removingImage", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image1 = { image_id: 3 };
@@ -1449,11 +1508,11 @@ describe("maasBootImages", function() {
       scope.confirmRemove(image1);
       expect(scope.removingImage).toBe(null);
       expect(BootResourcesManager.deleteImage).toHaveBeenCalledWith({
-        id: image1.image_id
+        id: image1.image_id,
       });
     });
 
-    it("does not call delete_image if given other image", function() {
+    it("does not call delete_image if given other image", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image1 = { image_id: 3 };
@@ -1466,95 +1525,95 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("ltsIsSelected", function() {
-    it("returns true if LTS is selected", function() {
+  describe("ltsIsSelected", function () {
+    it("returns true if LTS is selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         title: "16.04 LTS",
-        beingDeleted: false
+        beingDeleted: false,
       };
       scope.ubuntuImages = [image];
       expect(scope.ltsIsSelected()).toBe(true);
     });
 
-    it("returns true if 14 series LTS is selected", function() {
+    it("returns true if 14 series LTS is selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         title: "14.04 LTS",
-        beingDeleted: false
+        beingDeleted: false,
       };
       scope.ubuntuImages = [image];
       expect(scope.ltsIsSelected()).toBe(true);
     });
 
-    it("returns false if LTS is being deleted", function() {
+    it("returns false if LTS is being deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         title: "16.04 LTS",
-        beingDeleted: true
+        beingDeleted: true,
       };
       scope.ubuntuImages = [image];
       expect(scope.ltsIsSelected()).toBe(false);
     });
 
-    it("returns false if less than 14 series", function() {
+    it("returns false if less than 14 series", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         title: "12.04 LTS",
-        beingDeleted: false
+        beingDeleted: false,
       };
       scope.ubuntuImages = [image];
       expect(scope.ltsIsSelected()).toBe(false);
     });
   });
 
-  describe("commissioningSeriesSelected", function() {
-    it("returns true when selected", function() {
+  describe("commissioningSeriesSelected", function () {
+    it("returns true when selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.ubuntu = {
-        commissioning_series: makeName("series")
+        commissioning_series: makeName("series"),
       };
       scope.ubuntuImages = [
         {
           name: scope.bootResources.ubuntu.commissioning_series,
-          beingDeleted: false
-        }
+          beingDeleted: false,
+        },
       ];
       expect(scope.commissioningSeriesSelected()).toBe(true);
     });
 
-    it("returns false when being deleted", function() {
+    it("returns false when being deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.ubuntu = {
-        commissioning_series: makeName("series")
+        commissioning_series: makeName("series"),
       };
       scope.ubuntuImages = [
         {
           name: scope.bootResources.ubuntu.commissioning_series,
-          beingDeleted: true
-        }
+          beingDeleted: true,
+        },
       ];
       expect(scope.commissioningSeriesSelected()).toBe(false);
     });
 
-    it("returns false when unselected", function() {
+    it("returns false when unselected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.ubuntu = {
-        commissioning_series: makeName("series")
+        commissioning_series: makeName("series"),
       };
       expect(scope.commissioningSeriesSelected()).toBe(false);
     });
   });
 
-  describe("showStopImportButton", function() {
-    it("returns region_import_running", function() {
+  describe("showStopImportButton", function () {
+    it("returns region_import_running", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var sentinel = {};
@@ -1563,8 +1622,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("showSaveSelection", function() {
-    it("returns showImagesTable", function() {
+  describe("showSaveSelection", function () {
+    it("returns showImagesTable", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var sentinel = {};
@@ -1573,46 +1632,46 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("canSaveSelection", function() {
-    it("returns false if deleting commissioning series", function() {
+  describe("canSaveSelection", function () {
+    it("returns false if deleting commissioning series", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.ubuntu = {
-        commissioning_series: makeName("series")
+        commissioning_series: makeName("series"),
       };
       scope.ubuntuImages = [
         {
           beingDeleted: true,
-          name: scope.bootResources.ubuntu.commissioning_series
-        }
+          name: scope.bootResources.ubuntu.commissioning_series,
+        },
       ];
       expect(scope.canSaveSelection()).toBe(false);
     });
 
-    it("returns true if deleting one commissioning series", function() {
+    it("returns true if deleting one commissioning series", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
       spyOn(scope, "ltsIsSelected").and.returnValue(true);
       scope.bootResources.ubuntu = {
-        commissioning_series: makeName("series")
+        commissioning_series: makeName("series"),
       };
       scope.ubuntuImages = [
         {
           beingDeleted: true,
           name: scope.bootResources.ubuntu.commissioning_series,
-          arch: makeName("arch")
+          arch: makeName("arch"),
         },
         {
           beingDeleted: false,
           name: scope.bootResources.ubuntu.commissioning_series,
-          arch: makeName("arch")
-        }
+          arch: makeName("arch"),
+        },
       ];
       expect(scope.canSaveSelection()).toBe(true);
     });
 
-    it("returns false if saving", function() {
+    it("returns false if saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = true;
@@ -1620,7 +1679,7 @@ describe("maasBootImages", function() {
       expect(scope.canSaveSelection()).toBe(false);
     });
 
-    it("returns false if stopping", function() {
+    it("returns false if stopping", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
@@ -1629,7 +1688,7 @@ describe("maasBootImages", function() {
       expect(scope.canSaveSelection()).toBe(false);
     });
 
-    it("returns false if not lts selected", function() {
+    it("returns false if not lts selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
@@ -1637,7 +1696,7 @@ describe("maasBootImages", function() {
       expect(scope.canSaveSelection()).toBe(false);
     });
 
-    it("returns true if lts selected and not saving", function() {
+    it("returns true if lts selected and not saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
@@ -1646,15 +1705,15 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getSaveSelectionText", function() {
-    it("returns 'Saving...' when saving", function() {
+  describe("getSaveSelectionText", function () {
+    it("returns 'Saving...' when saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = true;
       expect(scope.getSaveSelectionText()).toBe("Saving...");
     });
 
-    it("returns 'Update selection' when not saving", function() {
+    it("returns 'Update selection' when not saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
@@ -1662,22 +1721,22 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("canStopImport", function() {
-    it("returns false if saving", function() {
+  describe("canStopImport", function () {
+    it("returns false if saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = true;
       expect(scope.canStopImport()).toBe(false);
     });
 
-    it("returns false if stopping", function() {
+    it("returns false if stopping", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.stopping = true;
       expect(scope.canStopImport()).toBe(false);
     });
 
-    it("returns true if not saving or stopping", function() {
+    it("returns true if not saving or stopping", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.saving = false;
@@ -1686,15 +1745,15 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("getStopImportText", function() {
-    it("returns 'Stopping...' when stopping", function() {
+  describe("getStopImportText", function () {
+    it("returns 'Stopping...' when stopping", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.stopping = true;
       expect(scope.getStopImportText()).toBe("Stopping...");
     });
 
-    it("returns 'Stop import' when not stopping", function() {
+    it("returns 'Stop import' when not stopping", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.stopping = false;
@@ -1702,8 +1761,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("stopImport", function() {
-    it("does nothing if cannot stop", function() {
+  describe("stopImport", function () {
+    it("does nothing if cannot stop", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "canStopImport").and.returnValue(false);
@@ -1712,7 +1771,7 @@ describe("maasBootImages", function() {
       expect(BootResourcesManager.stopImport).not.toHaveBeenCalled();
     });
 
-    it("calls BootResourcesManager.stopImport", function() {
+    it("calls BootResourcesManager.stopImport", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -1726,8 +1785,8 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("saveSelection", function() {
-    it("passes selected osystems", function() {
+  describe("saveSelection", function () {
+    it("passes selected osystems", function () {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       const defer = $q.defer();
@@ -1736,18 +1795,20 @@ describe("maasBootImages", function() {
 
       const release = makeName("release");
       const arch = makeName("arch");
-      const osystem = { osystem: "ubuntu", release, arches: [arch]}
-      scope.source.selections.osystems = [osystem];
+      scope.source.selections.releases = [release];
+      scope.source.selections.arches = [arch];
       scope.saveSelection();
 
       expect(scope.saving).toBe(true);
       expect(BootResourcesManager.saveUbuntu).toHaveBeenCalledWith({
         source_type: "maas.io",
-        osystems: [osystem],
+        osystems: [
+          { osystem: "ubuntu", release: release.name, arches: [arch.name] },
+        ],
       });
     });
 
-    it("clears saving and calls updateSource", function() {
+    it("clears saving and calls updateSource", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -1757,14 +1818,14 @@ describe("maasBootImages", function() {
       var release = makeName("release");
       scope.source.selections.releases = [
         {
-          name: release
-        }
+          name: release,
+        },
       ];
       var arch = makeName("arch");
       scope.source.selections.arches = [
         {
-          name: arch
-        }
+          name: arch,
+        },
       ];
       scope.source.isNew = true;
       scope.source.selections.changed = true;
@@ -1781,12 +1842,12 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("updateSource", function() {
-    it("sets to new and custom when no source", function() {
+  describe("updateSource", function () {
+    it("sets to new and custom when no source", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.bootResources.ubuntu = {
-        sources: []
+        sources: [],
       };
       scope.updateSource();
       expect(scope.source.isNew).toBe(true);
@@ -1794,7 +1855,7 @@ describe("maasBootImages", function() {
       expect(scope.source.errorMessage).toBe("Currently no source exists.");
     });
 
-    it("sets releases and arches and selections when source", function() {
+    it("sets releases and arches and selections when source", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var source = {
@@ -1805,27 +1866,27 @@ describe("maasBootImages", function() {
       };
       var release = {
         name: makeName("release"),
-        checked: false
+        checked: false,
       };
       var releaseChecked = {
         name: makeName("release"),
-        checked: true
+        checked: true,
       };
       var arch = {
         name: makeName("arch"),
-        checked: false
+        checked: false,
       };
       var archChecked = {
         name: makeName("arch"),
-        checked: true
+        checked: true,
       };
       scope.bootResources = {
         resources: [{ arch: "amd64", name: "ubuntu/bionic", rtype: 0 }],
         ubuntu: {
           sources: [source],
           releases: [release, releaseChecked],
-          arches: [arch, archChecked]
-        }
+          arches: [arch, archChecked],
+        },
       };
       spyOn(scope, "regenerateUbuntuImages");
       scope.updateSource();
@@ -1838,35 +1899,32 @@ describe("maasBootImages", function() {
       expect(scope.source.arches).toBe(scope.bootResources.ubuntu.arches);
       expect(scope.source.selections.releases).toEqual([releaseChecked]);
       expect(scope.source.selections.arches).toEqual([archChecked]);
-      expect(scope.source.selections.osystems).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-      ]);
       expect(scope.regenerateUbuntuImages).toHaveBeenCalled();
     });
 
-    it("sets tooMany when multiple sources", function() {
+    it("sets tooMany when multiple sources", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var release = {
         name: makeName("release"),
-        checked: false
+        checked: false,
       };
       var releaseChecked = {
         name: makeName("release"),
-        checked: true
+        checked: true,
       };
       var arch = {
         name: makeName("arch"),
-        checked: false
+        checked: false,
       };
       var archChecked = {
         name: makeName("arch"),
-        checked: true
+        checked: true,
       };
       scope.bootResources.ubuntu = {
         sources: [{}, {}],
         releases: [release, releaseChecked],
-        arches: [arch, archChecked]
+        arches: [arch, archChecked],
       };
       spyOn(scope, "regenerateUbuntuImages");
       scope.updateSource();
@@ -1880,12 +1938,12 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("toggleUbuntuCoreSelection", function() {
-    it("toggles checked and sets changed", function() {
+  describe("toggleUbuntuCoreSelection", function () {
+    it("toggles checked and sets changed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
-        checked: true
+        checked: true,
       };
       spyOn(scope, "regenerateUbuntuCoreImages");
       scope.toggleUbuntuCoreSelection(image);
@@ -1895,13 +1953,13 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("saveUbuntuCoreSelection", function() {
-    it("passes correct params and toggles saving", function() {
+  describe("saveUbuntuCoreSelection", function () {
+    it("passes correct params and toggles saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         name: makeName("name"),
-        checked: true
+        checked: true,
       };
       scope.ubuntu_core.images = [image];
       var defer = $q.defer();
@@ -1912,7 +1970,7 @@ describe("maasBootImages", function() {
 
       expect(scope.saving).toBe(true);
       expect(BootResourcesManager.saveUbuntuCore).toHaveBeenCalledWith({
-        images: [image.name]
+        images: [image.name],
       });
       defer.resolve();
       $scope.$digest();
@@ -1920,12 +1978,12 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("toggleOtherSelection", function() {
-    it("toggles checked and sets changed", function() {
+  describe("toggleOtherSelection", function () {
+    it("toggles checked and sets changed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
-        checked: true
+        checked: true,
       };
       spyOn(scope, "regenerateOtherImages");
       scope.toggleOtherSelection(image);
@@ -1935,13 +1993,13 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("saveOtherSelection", function() {
-    it("passes correct params and toggles saving", function() {
+  describe("saveOtherSelection", function () {
+    it("passes correct params and toggles saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
         name: makeName("name"),
-        checked: true
+        checked: true,
       };
       scope.other.images = [image];
       var defer = $q.defer();
@@ -1950,7 +2008,7 @@ describe("maasBootImages", function() {
 
       expect(scope.saving).toBe(true);
       expect(BootResourcesManager.saveOther).toHaveBeenCalledWith({
-        images: [image.name]
+        images: [image.name],
       });
       defer.resolve();
       $scope.$digest();
@@ -1958,104 +2016,104 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("canBeRemoved", function() {
-    it("returns false if no resourceId", function() {
+  describe("canBeRemoved", function () {
+    it("returns false if no resourceId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       expect(scope.canBeRemoved({})).toBe(false);
     });
 
-    it("returns true when title matches a deleted release", function() {
+    it("returns true when title matches a deleted release", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var title = makeName("title");
       var release = {
         title: title,
-        deleted: true
+        deleted: true,
       };
       var image = {
         resourceId: makeInteger(0, 100),
-        title: title
+        title: title,
       };
       scope.bootResources = {
         ubuntu: {
-          releases: [release]
-        }
+          releases: [release],
+        },
       };
       expect(scope.canBeRemoved(image)).toBe(true);
     });
 
-    it("returns true when arch matches a deleted arch", function() {
+    it("returns true when arch matches a deleted arch", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var title = makeName("title");
       var archName = makeName("arch");
       var release = {
         title: title,
-        deleted: false
+        deleted: false,
       };
       var arch = {
         name: archName,
-        deleted: true
+        deleted: true,
       };
       var image = {
         resourceId: makeInteger(0, 100),
         title: title,
-        arch: archName
+        arch: archName,
       };
       scope.bootResources = {
         ubuntu: {
           releases: [release],
-          arches: [arch]
-        }
+          arches: [arch],
+        },
       };
       expect(scope.canBeRemoved(image)).toBe(true);
     });
 
-    it("returns false when release and arch not deleted", function() {
+    it("returns false when release and arch not deleted", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var title = makeName("title");
       var archName = makeName("arch");
       var release = {
         title: title,
-        deleted: false
+        deleted: false,
       };
       var arch = {
         name: archName,
-        deleted: false
+        deleted: false,
       };
       var image = {
         resourceId: makeInteger(0, 100),
         title: title,
-        arch: archName
+        arch: archName,
       };
       scope.bootResources = {
         ubuntu: {
           releases: [release],
-          arches: [arch]
-        }
+          arches: [arch],
+        },
       };
       expect(scope.canBeRemoved(image)).toBe(false);
     });
   });
 
-  describe("deleteImage", function() {
-    it("sets ubuntuDeleteId", function() {
+  describe("deleteImage", function () {
+    it("sets ubuntuDeleteId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
-        resourceId: makeInteger(0, 100)
+        resourceId: makeInteger(0, 100),
       };
       scope.deleteImage(image);
       expect(scope.ubuntuDeleteId).toBe(image.resourceId);
     });
 
-    it("clears ubuntuDeleteId", function() {
+    it("clears ubuntuDeleteId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
-        resourceId: makeInteger(0, 100)
+        resourceId: makeInteger(0, 100),
       };
       scope.deleteImage(image);
       scope.deleteImage();
@@ -2063,18 +2121,18 @@ describe("maasBootImages", function() {
     });
   });
 
-  describe("confirmDeleteImage", function() {
-    it("calls deleteImage and clears ubuntuDeleteId", function() {
+  describe("confirmDeleteImage", function () {
+    it("calls deleteImage and clears ubuntuDeleteId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var image = {
-        resourceId: makeInteger(0, 100)
+        resourceId: makeInteger(0, 100),
       };
       scope.deleteImage(image);
       spyOn(BootResourcesManager, "deleteImage");
       scope.confirmDeleteImage();
       expect(BootResourcesManager.deleteImage).toHaveBeenCalledWith({
-        id: image.resourceId
+        id: image.resourceId,
       });
       expect(scope.ubuntuDeleteId).toBeNull();
     });
@@ -2084,35 +2142,22 @@ describe("maasBootImages", function() {
     it("returns true if release/arch combination is not supported", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      const release = { name: "bionic", unsupported_arches: ["i386"] };
-      scope.source.releases = [release];
-      expect(scope.unsupportedArch("bionic", "i386")).toBe(true);
-      expect(scope.unsupportedArch("bionic", "amd64")).toBe(false);
+      const release = { name: "focal", unsupported_arches: ["i386"] };
+      expect(scope.unsupportedArch(release, "i386")).toBe(true);
+      expect(scope.unsupportedArch(release, "amd64")).toBe(false);
     });
   });
 
-  describe("convertResourcesToOSystems", () => {
-    it("correctly converts resources objects into osystem objects", () => {
+  describe("showUnsupportedWarning", () => {
+    it(`returns true if more than one release is selected and the arch is
+      not supported for at least one of them`, () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
-      expect(scope.convertResourcesToOSystems([])).toStrictEqual([]);
-      expect(
-        scope.convertResourcesToOSystems([
-          { arch: "amd64", name: "ubuntu/bionic", rtype: 0 },
-        ])
-      ).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64"] },
-      ]);
-      expect(
-        scope.convertResourcesToOSystems([
-          { arch: "amd64", name: "ubuntu/bionic", rtype: 0 },
-          { arch: "arm64", name: "ubuntu/bionic", rtype: 0 },
-          { arch: "amd64", name: "centos/centos70", rtype: 0 },
-        ])
-      ).toStrictEqual([
-        { osystem: "ubuntu", release: "bionic", arches: ["amd64", "arm64"] },
-        { osystem: "centos", release: "centos70", arches: ["amd64"] },
-      ]);
+      scope.source.selections.releases = [
+        { name: "focal", unsupported_arches: ["i386"] },
+        { name: "bionic", unsupported_arches: [] },
+      ];
+      expect(scope.showUnsupportedWarning("i386")).toBe(true);
     });
   });
 });
