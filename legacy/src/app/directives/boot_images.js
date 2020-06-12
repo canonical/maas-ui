@@ -67,7 +67,6 @@ export function maasBootImages(
     $scope.loading = true;
     $scope.saving = false;
     $scope.saved = false;
-    $scope.selectedUbuntuRelease = "";
     $scope.stopping = false;
     $scope.design = $scope.design || "page";
     $scope.bootResources = BootResourcesManager.getData();
@@ -84,12 +83,10 @@ export function maasBootImages(
       keyring_data: "",
       releases: [],
       arches: [],
-      osystems: [],
       selections: {
         changed: false,
         releases: [],
         arches: [],
-        osystems: [],
       },
     };
     $scope.ubuntuCoreImages = [];
@@ -176,12 +173,10 @@ export function maasBootImages(
         }
         $scope.source.releases = [];
         $scope.source.arches = [];
-        $scope.source.osystems = [];
         $scope.source.selections = {
           changed: false,
           releases: [],
           arches: [],
-          osystems: [],
         };
       }
       $scope.updateSource();
@@ -223,57 +218,56 @@ export function maasBootImages(
       }
     };
 
+    const getOsystemsParam = () => {
+      const selectedReleases = $scope.source.selections.releases;
+      const selectedArches = $scope.source.selections.arches;
+      let osystems = [];
+
+      if (selectedReleases.length && selectedArches.length) {
+        selectedReleases.forEach((release) => {
+          selectedArches.forEach((arch) => {
+            const releaseInOsystems = osystems.find(
+              (osystem) => osystem.release === release.name
+            );
+            if (releaseInOsystems) {
+              osystems = osystems.map((osystem) =>
+                osystem.release === release.name &&
+                !$scope.unsupportedArch(release, arch.name)
+                  ? {
+                      osystem: "ubuntu",
+                      release: release.name,
+                      arches: [...osystem.arches, arch.name],
+                    }
+                  : osystem
+              );
+            } else {
+              osystems.push({
+                osystem: "ubuntu",
+                release: release.name,
+                arches: [arch.name],
+              });
+            }
+          });
+        });
+      }
+      return osystems;
+    };
+
     // Select the default images that should be selected. Current
     // defaults are '18.04 LTS' and 'amd64'.
     $scope.selectDefaults = () => {
-      const source = $scope.source;
-      if (
-        source.releases.some((release) => release.name === DEFAULT_RELEASE) &&
-        source.arches.some((arch) => arch.name === DEFAULT_ARCH)
-      ) {
-        $scope.source.selections.osystems = [
-          {
-            osystem: "ubuntu",
-            release: DEFAULT_RELEASE,
-            arches: [DEFAULT_ARCH],
-          },
-        ];
+      const defaultRelease = $scope.source.releases.find(
+        (release) => release.name === DEFAULT_RELEASE
+      );
+      const defaultArch = $scope.source.arches.find(
+        (arch) => arch.name === DEFAULT_ARCH
+      );
+      if (defaultRelease) {
+        $scope.source.selections.releases = [defaultRelease];
       }
-    };
-
-    // Convert resources data returned from BootResource manager into osystem
-    // objects that can be used in the save_ubuntu websocket handler.
-    $scope.convertResourcesToOSystems = (resources) => {
-      if (!resources) {
-        return [];
+      if (defaultArch) {
+        $scope.source.selections.arches = [defaultArch];
       }
-      return resources.reduce((osystems, resource) => {
-        const split = resource.name.split("/");
-        const osName = split[0];
-        const osRelease = split[1];
-        if (resource.rtype === BootResourceType.DOWNLOADED) {
-          if (osystems.some((osystem) => osystem.release === osRelease)) {
-            return osystems.map((osystem) =>
-              osystem.release === osRelease
-                ? {
-                    osystem: osName,
-                    release: osRelease,
-                    arches: [...osystem.arches, resource.arch],
-                  }
-                : osystem
-            );
-          }
-          return [
-            ...osystems,
-            {
-              osystem: osName,
-              release: osRelease,
-              arches: [resource.arch],
-            },
-          ];
-        }
-        return osystems;
-      }, []);
     };
 
     // Connected to the simplestreams endpoint. This only gets the
@@ -292,7 +286,6 @@ export function maasBootImages(
       $scope.source.selections.changed = true;
       $scope.source.selections.releases = [];
       $scope.source.selections.arches = [];
-      $scope.source.selections.osystems = [];
       $scope.regenerateUbuntuImages();
       BootResourcesManager.fetch(source).then(
         function (data) {
@@ -300,9 +293,6 @@ export function maasBootImages(
           data = angular.fromJson(data);
           $scope.source.releases = data.releases;
           $scope.source.arches = data.arches;
-          $scope.source.osystems = $scope.convertResourcesToOSystems(
-            $scope.bootResources.resources
-          );
           $scope.selectDefaults();
           $scope.regenerateUbuntuImages();
         },
@@ -374,78 +364,80 @@ export function maasBootImages(
       return filtered;
     };
 
-    // Return true if the release/architecture combination is selected.
-    $scope.isOSSelected = (release, archName) => {
-      const osystem = $scope.source.selections.osystems.find(
-        (osystem) => osystem.release === release
-      );
-      return osystem && osystem.arches && osystem.arches.includes(archName);
-    };
-
-    const getNewSelectedOSs = (releaseName, archName) => {
-      const selectedOSs = $scope.source.selections.osystems;
-      const releaseInSelected = selectedOSs.find(
-        (osystem) => osystem.release === releaseName
-      );
-      if (!releaseInSelected) {
-        // If the release is not in selected, add it to selections with the arch.
-        return [
-          ...selectedOSs,
-          { osystem: "ubuntu", release: releaseName, arches: [archName] },
+    $scope.toggleUbuntuRelease = (release) => {
+      if (
+        $scope.source.selections.releases.some(
+          (selectedRelease) => selectedRelease.name === release.name
+        )
+      ) {
+        $scope.source.selections.releases = $scope.source.selections.releases.filter(
+          (selectedRelease) => selectedRelease.name !== release.name
+        );
+      } else {
+        $scope.source.selections.releases = [
+          ...$scope.source.selections.releases,
+          release,
         ];
       }
-      if (!releaseInSelected.arches.includes(archName)) {
-        // If release is in selected, but not arch, add the arch to the arches
-        // array.
-        return selectedOSs.map((osystem) =>
-          osystem.release === releaseName
-            ? {
-                osystem: "ubuntu",
-                release: releaseName,
-                arches: [...osystem.arches, archName],
-              }
-            : osystem
+      // If number of selected releases changes to 1, clear the unsupported arches.
+      if ($scope.source.selections.releases.length === 1) {
+        $scope.source.selections.arches = $scope.source.selections.arches.filter(
+          (arch) =>
+            !$scope.unsupportedArch(
+              $scope.source.selections.releases[0],
+              arch.name
+            )
         );
       }
-      if (releaseInSelected.arches.length === 1) {
-        // If release/arch is already selected and it's the last arch,
-        // remove OS from selections.
-        return selectedOSs.filter((osystem) => osystem.release !== releaseName);
-      }
-      // If release/arch is already selected and there is more than one
-      // arch selected for release, remove arch from arches array.
-      return selectedOSs.map((osystem) =>
-        osystem.release === releaseName
-          ? {
-              osystem: "ubuntu",
-              release: releaseName,
-              arches: osystem.arches.filter((a) => a !== archName),
-            }
-          : osystem
-      );
-    };
-
-    // Toggle the selection of the release/architecture combination.
-    $scope.toggleSelectedOS = (releaseName, archName) => {
-      $scope.source.selections.osystems = getNewSelectedOSs(
-        releaseName,
-        archName
-      );
       $scope.source.selections.changed = true;
       $scope.regenerateUbuntuImages();
     };
 
-    // Returns whether given release/arch combination is unsupported.
-    $scope.unsupportedArch = (releaseName, archName) => {
-      const release = $scope.source.releases.find(
-        (release) => release.name === releaseName
-      );
+    $scope.toggleUbuntuArchitecture = (arch) => {
+      if (
+        $scope.source.selections.arches.some(
+          (selectedArch) => selectedArch.name === arch.name
+        )
+      ) {
+        $scope.source.selections.arches = $scope.source.selections.arches.filter(
+          (selectedArch) => selectedArch.name !== arch.name
+        );
+      } else {
+        $scope.source.selections.arches = [
+          ...$scope.source.selections.arches,
+          arch,
+        ];
+      }
+      $scope.source.selections.changed = true;
+      $scope.regenerateUbuntuImages();
+    };
+
+    $scope.unsupportedArch = (release, archName) =>
+      release.unsupported_arches &&
+      release.unsupported_arches.includes(archName);
+
+    $scope.showUnsupportedWarning = (archName) => {
+      const selectedReleases = $scope.source.selections.releases;
       return (
-        release &&
-        release.unsupported_arches &&
-        release.unsupported_arches.includes(archName)
+        selectedReleases.length > 1 &&
+        selectedReleases.some((release) =>
+          $scope.unsupportedArch(release, archName)
+        )
       );
     };
+
+    $scope.isReleaseSelected = (releaseName) =>
+      $scope.source.selections.releases.some(
+        (release) => release.name === releaseName
+      );
+
+    $scope.isArchSelected = (archName) =>
+      $scope.source.selections.arches.some((arch) => arch.name === archName);
+
+    $scope.isArchDisabled = (archName) =>
+      $scope.saving ||
+      ($scope.source.selections.releases.length === 1 &&
+        $scope.unsupportedArch($scope.source.selections.releases[0], archName));
 
     // Return true if the images table should be shown.
     $scope.showImagesTable = function () {
@@ -470,7 +462,10 @@ export function maasBootImages(
       ) {
         var name_split = resource.name.split("/");
         var resource_os = name_split[0];
-        return resource.rtype === 0 && resource_os === "ubuntu";
+        return (
+          resource.rtype === BootResourceType.DOWNLOADED &&
+          resource_os === "ubuntu"
+        );
       });
       if (!$scope.source.isNew) {
         getResource = function (release, arch) {
@@ -491,34 +486,30 @@ export function maasBootImages(
 
       // Create the images based on the selections.
       $scope.ubuntuImages.length = 0;
-      $scope.source.selections.osystems.forEach((osystem) => {
-        const release = $scope.source.releases.find(
-          (release) => release.name === osystem.release
-        );
-        osystem.arches.forEach((archName) => {
-          const arch = $scope.source.arches.find(
-            (arch) => arch.name === archName
-          );
-          const image = {
-            icon: "p-icon--status-queued",
-            title: release.title,
-            arch: arch.title,
-            size: "-",
-            status: "Selected for download",
-            beingDeleted: false,
-            name: release.name,
-          };
-          const resource = getResource(release.name, arch.name);
-          if (angular.isObject(resource)) {
-            image.resourceId = resource.id;
-            image.icon = "p-icon--status-" + resource.icon;
-            image.size = resource.size;
-            image.status = resource.status;
-            if (resource.downloading) {
-              image.icon += " u-animation--pulse";
+      $scope.source.selections.releases.forEach((release) => {
+        $scope.source.selections.arches.forEach((arch) => {
+          if (!$scope.unsupportedArch(release, arch.name)) {
+            const image = {
+              icon: "p-icon--status-queued",
+              title: release.title,
+              arch: arch.title,
+              size: "-",
+              status: "Selected for download",
+              beingDeleted: false,
+              name: release.name,
+            };
+            const resource = getResource(release.name, arch.name);
+            if (angular.isObject(resource)) {
+              image.resourceId = resource.id;
+              image.icon = "p-icon--status-" + resource.icon;
+              image.size = resource.size;
+              image.status = resource.status;
+              if (resource.downloading) {
+                image.icon += " u-animation--pulse";
+              }
             }
+            $scope.ubuntuImages.push(image);
           }
-          $scope.ubuntuImages.push(image);
         });
       });
 
@@ -857,8 +848,8 @@ export function maasBootImages(
         return;
       }
 
-      var params = $scope.getSourceParams();
-      params.osystems = $scope.source.selections.osystems;
+      const params = $scope.getSourceParams();
+      params.osystems = getOsystemsParam();
       $scope.saving = true;
       BootResourcesManager.saveUbuntu(params).then(function () {
         $scope.saving = false;
@@ -914,15 +905,9 @@ export function maasBootImages(
         }
         $scope.source.releases = $scope.bootResources.ubuntu.releases;
         $scope.source.arches = $scope.bootResources.ubuntu.arches;
-        $scope.source.osystems = $scope.convertResourcesToOSystems(
-          $scope.bootResources.resources
-        );
         if (!$scope.source.selections.changed) {
           // User didn't make a change update to the
           // current selections server side.
-          $scope.source.selections.osystems = $scope.source.osystems.filter(
-            (os) => os.osystem === "ubuntu"
-          );
           $scope.source.selections.releases = $scope.source.releases.filter(
             function (obj) {
               return obj.checked;
