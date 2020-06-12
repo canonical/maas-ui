@@ -1851,7 +1851,7 @@ export function NodeNetworkingController(
         bond_xmit_hash_policy: "layer2",
         bond_updelay: 0,
         bond_downdelay: 0,
-        bond_miimon: 100
+        bond_miimon: 0,
       };
     }
   };

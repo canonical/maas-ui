@@ -3695,7 +3695,7 @@ describe("NodeNetworkingController", function() {
         bond_xmit_hash_policy: "layer2",
         bond_updelay: 0,
         bond_downdelay: 0,
-        bond_miimon: 100
+        bond_miimon: 0
       });
     });
   });
@@ -4008,7 +4008,7 @@ describe("NodeNetworkingController", function() {
         subnet: subnet.id,
         mode: "static",
         ip_address: "192.168.1.100",
-        bond_miimon: 100,
+        bond_miimon: 0,
         bond_updelay: 0,
         bond_downdelay: 0
       });
@@ -4061,7 +4061,7 @@ describe("NodeNetworkingController", function() {
         subnet: null,
         mode: undefined,
         ip_address: undefined,
-        bond_miimon: 100,
+        bond_miimon: 0,
         bond_updelay: 0,
         bond_downdelay: 0
       });
