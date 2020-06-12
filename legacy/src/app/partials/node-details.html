@@ -1855,9 +1855,12 @@
                                                     <div class="p-form__group row">
                                                         <label for="bond-mode" class="p-form__label col-2">Bond mode</label>
                                                         <div class="p-form__control col-4">
-                                                            <select name="bond-mode"
-                                                                data-ng-model="editInterface.bond_mode"
-                                                                data-ng-options="mode[0] as mode[1] for mode in bondOptions.modes">
+                                                            <select
+                                                                name="bond-mode"
+                                                                ng-change="handleEditBondMode(editInterface.bond_mode)"
+                                                                ng-model="editInterface.bond_mode"
+                                                                ng-options="mode[0] as mode[1] for mode in bondOptions.modes"
+                                                            >
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1867,7 +1870,7 @@
                                                         <div class="p-form__control col-4">
                                                             <select name="xmit-hash-policy"
                                                                 class="p-form-validation__input"
-                                                                data-ng-model="editInterface.xmitHashPolicy"
+                                                                data-ng-model="editInterface.bond_xmit_hash_policy"
                                                                 data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies">
                                                             </select>
                                                             <p class="p-form-validation__message" data-ng-if="showLACPRate() && modeAndPolicyCompliant()">
@@ -1879,7 +1882,7 @@
                                                         <label for="lacp-rate" class="p-form__label col-2">LACP rate</label>
                                                         <div class="p-form__control col-4">
                                                             <select name="lacp-rate"
-                                                                data-ng-model="editInterface.lacpRate"
+                                                                data-ng-model="editInterface.bond_lacp_rate"
                                                                 data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates">
                                                             </select>
                                                         </div>
@@ -1981,7 +1984,12 @@
                                                     <div class="p-form__group row">
                                                         <label for="link-monitoring" class="p-form__label col-2">Link monitoring</label>
                                                         <div class="p-form__control col-4">
-                                                            <select name="link-monitoring" id="link-monitoring" data-ng-model="editInterfaceLinkMonitoring">
+                                                            <select
+                                                                id="link-monitoring"
+                                                                name="link-monitoring"
+                                                                ng-change="handleEditLinkMonitoring(editInterfaceLinkMonitoring)"
+                                                                ng-model="editInterfaceLinkMonitoring"
+                                                            >
                                                                 <option value="">No link monitoring</option>
                                                                 <option value="mii">MII link monitoring</option>
                                                             </select>
@@ -2137,11 +2145,11 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(parent) && !isBridge(parent)">
                                                 <span
                                                     aria-describedby="not-connected-tooltip"
                                                     class="p-tooltip--top-left"
-                                                    ng-if="!isInterfaceConnected(interface)"
+                                                    ng-if="!isInterfaceConnected(parent)"
                                                 >
                                                     <i class="p-icon--error"></i>
                                                     <span class="p-tooltip__message" role="tooltip" id="not-connected-tooltip">This interface is disconnected.</span>
@@ -2149,20 +2157,20 @@
                                                 <span
                                                     aria-describedby="link-speed-tooltip"
                                                     class="p-tooltip--top-left"
-                                                    ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                                                    ng-if="isInterfaceConnected(parent) && parent.link_speed < parent.interface_speed"
                                                 >
                                                     <i class="p-icon--warning"></i>
                                                     <span class="p-tooltip__message" role="tooltip" id="link-speed-tooltip">Link connected to slow interface.</span>
                                                 </span>
                                                 <i
                                                     class="p-icon--placeholder"
-                                                    ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed">
+                                                    ng-if="isInterfaceConnected(parent) && parent.link_speed === parent.interface_speed">
                                                 </i>
                                             </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
-                                                {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
+                                            <span ng-if="!isBond(parent) && !isBridge(parent)">
+                                                {$ formatSpeedUnits(parent.link_speed) $}/{$ formatSpeedUnits(parent.interface_speed) $}
                                             </span>
                                         </div>
                                     </td>
@@ -2370,7 +2378,7 @@
                                         <div class="p-form__control col-4">
                                             <select name="xmit-hash-policy"
                                                 class="p-form-validation__input"
-                                                data-ng-model="newBondInterface.xmitHashPolicy"
+                                                data-ng-model="newBondInterface.bond_xmit_hash_policy"
                                                 data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies">
                                             </select>
                                             <p class="p-form-validation__message" data-ng-if="showLACPRate() && modeAndPolicyCompliant()">
@@ -2382,7 +2390,7 @@
                                         <label for="lacp-rate" class="p-form__label col-2">LACP rate</label>
                                         <div class="p-form__control col-4">
                                             <select name="lacp-rate"
-                                                data-ng-model="newBondInterface.lacpRate"
+                                                data-ng-model="newBondInterface.bond_lacp_rate"
                                                 data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates">
                                             </select>
                                         </div>
@@ -3228,7 +3236,7 @@
                                                     <label for="lacp-rate" class="p-form__label">LACP rate</label>
                                                     <div class="p-form__control">
                                                         <select name="lacp-rate"
-                                                            data-ng-model="newBondInterface.lacpRate"
+                                                            data-ng-model="newBondInterface.bond_lacp_rate"
                                                             data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates">
                                                         </select>
                                                     </div>
@@ -3237,7 +3245,7 @@
                                                     <label for="xmit-hash-policy" class="p-form__label">XMIT hash policy</label>
                                                     <div class="p-form__control">
                                                         <select name="xmit-hash-policy"
-                                                            data-ng-model="newBondInterface.xmitHashPolicy"
+                                                            data-ng-model="newBondInterface.bond_xmit_hash_policy"
                                                             data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies">
                                                         </select>
                                                     </div>
