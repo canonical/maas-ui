@@ -13,23 +13,20 @@ const showLoading = () => {
 console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
 
 window.addEventListener("single-spa:before-app-change", (evt) => {
-  const {
-    legacy = "NOT_MOUNTED",
-    ui = "NOT_MOUNTED",
-  } = evt.detail.newAppStatuses;
+  const { legacy, ui } = evt.detail.newAppStatuses;
   const uiStylesheet = document.querySelector(".ui-stylesheet");
   const legacyStylesheet = document.querySelector(".legacy-stylesheet");
   if (uiStylesheet) {
     if (ui === "MOUNTED") {
       uiStylesheet.disabled = false;
-    } else {
+    } else if (ui === "NOT_MOUNTED") {
       uiStylesheet.disabled = true;
     }
   }
   if (legacyStylesheet) {
     if (legacy === "MOUNTED") {
       legacyStylesheet.disabled = false;
-    } else {
+    } else if (legacy === "NOT_MOUNTED") {
       legacyStylesheet.disabled = true;
     }
   }
@@ -53,7 +50,10 @@ registerApplication({
     showLoading();
     return import("@maas-ui/maas-ui");
   },
-  activeWhen: `${process.env.BASENAME}${process.env.REACT_BASENAME}`,
+  activeWhen: (location) =>
+    location.pathname.startsWith(
+      `${process.env.BASENAME}${process.env.REACT_BASENAME}`
+    ) && !location.hash.startsWith("#"),
 });
 
 start();
