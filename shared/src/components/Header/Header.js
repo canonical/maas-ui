@@ -65,7 +65,7 @@ export const Header = ({
       window.ga("set", "dimension2", uuid);
 
       const sendPageview = () => {
-        const path = window.location.pathname + window.location.hash;
+        const path = window.location.pathname + window.location.search;
         window.ga("send", "pageview", path);
       };
       if (rootScope) {
@@ -179,7 +179,7 @@ export const Header = ({
 
   const generateNavItems = (links) => {
     const hardwareLinks = links.filter((link) => link.inHardwareMenu);
-    const path = location.pathname + location.hash;
+    const path = location.pathname + location.search;
 
     const linkItems = links.map((link) => (
       <li
@@ -333,7 +333,7 @@ Header.propTypes = {
   enableAnalytics: PropTypes.bool,
   generateLocalLink: PropTypes.func,
   location: PropTypes.shape({
-    hash: PropTypes.string,
+    search: PropTypes.string,
     pathname: PropTypes.string.isRequired,
   }).isRequired,
   logout: PropTypes.func.isRequired,
