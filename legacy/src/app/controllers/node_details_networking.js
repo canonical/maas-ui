@@ -2463,7 +2463,7 @@ export function NodeNetworkingController(
       return;
     }
 
-    if (nic.type === 'alias' && nic.members.length) {
+    if (nic.type === 'alias' && nic.members && nic.members.length) {
       return nic.members.some((member) => member.link_connected);
     }
     return nic.link_connected;
