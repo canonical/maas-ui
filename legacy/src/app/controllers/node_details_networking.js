@@ -154,6 +154,10 @@ export function filterSelectedInterfaces() {
 
       return (
         selectedInterfaces.indexOf(itemKey) === -1 &&
+        item.fabric &&
+        item.vlan &&
+        newBondInterface.fabric &&
+        newBondInterface.vlan &&
         item.fabric.name === newBondInterface.fabric.name &&
         item.vlan.id === newBondInterface.vlan.id
       );
