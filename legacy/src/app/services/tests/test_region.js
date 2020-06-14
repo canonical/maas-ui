@@ -705,5 +705,13 @@ describe("RegionConnection", function() {
         })
       );
     });
+
+    it("does not send a message if the websocket is not available", function () {
+      var method = "testing_method";
+      var params = { arg1: 1, arg2: 2 };
+      spyOn(RegionConnection, "getWebSocket").and.returnValue(null);
+      RegionConnection.callMethod(method, params);
+      expect(webSocket.send).not.toHaveBeenCalled();
+    });
   });
 });
