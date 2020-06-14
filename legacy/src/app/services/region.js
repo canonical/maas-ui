@@ -169,7 +169,10 @@ class RegionConnection {
     }
     // XXX mpontillo 2018-11-19: really we should handle errors here
     // in a more robust way, but that's a bigger change.
-    this.getWebSocket().send(angular.toJson(request));
+    const websocket = this.getWebSocket();
+    if (websocket) {
+      websocket.send(angular.toJson(request));
+    }
   }
 
   ping() {
