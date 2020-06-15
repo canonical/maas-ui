@@ -170,7 +170,7 @@ class RegionConnection {
     // XXX mpontillo 2018-11-19: really we should handle errors here
     // in a more robust way, but that's a bigger change.
     const websocket = this.getWebSocket();
-    if (websocket) {
+    if (websocket && websocket.readyState === WebSocket.OPEN) {
       websocket.send(angular.toJson(request));
     }
   }
