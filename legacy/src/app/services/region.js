@@ -259,7 +259,7 @@ class RegionConnection {
       });
     };
     websocket.onclose = (evt) => {
-      let url = this.url.split("?")[0];
+      let url = (this.url || this._buildUrl()).split("?")[0];
       this.log.warn("WebSocket connection closed: " + url);
       angular.forEach(this.handlers.close, (func) => {
         func(evt);
