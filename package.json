@@ -52,6 +52,7 @@
     "nohoist": [
       "**/babel**",
       "**/eslint**",
+      "**/prettier**",
       "**/react-scripts**",
       "**/jest",
       "**/webpack**"
