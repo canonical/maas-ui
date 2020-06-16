@@ -64,9 +64,11 @@ module.exports = {
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
     }),
-    new CopyWebpackPlugin([
-      { from: path.resolve(__dirname, "./src/assets"), to: "assets" },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, "./src/assets"), to: "assets" },
+      ],
+    }),
     new webpack.ProvidePlugin({
       "window.jQuery": "jquery",
     }),
