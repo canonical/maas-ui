@@ -6,7 +6,7 @@
 import angular from "angular";
 
 import { makeName } from "testing/utils";
-import MockWebSocket from "testing/websocket";
+import MockWebSocket, {READY_STATES} from "testing/websocket";
 
 describe("RegionConnection", function() {
   // Load the MAAS module to test.
@@ -33,6 +33,7 @@ describe("RegionConnection", function() {
 
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
+    webSocket.readyState = READY_STATES.OPEN;
     spyOn(RegionConnection, "buildSocket").and.returnValue(webSocket);
   }));
 
@@ -704,6 +705,22 @@ describe("RegionConnection", function() {
           params: params
         })
       );
+    });
+  });
+
+  describe("send", function() {
+    it("does not send a message if the websocket is not available", function () {
+      spyOn(webSocket, "send");
+      spyOn(RegionConnection, "getWebSocket").and.returnValue(null);
+      RegionConnection.send();
+      expect(webSocket.send).not.toHaveBeenCalled();
+    });
+
+    it("does not send a message if the websocket is not ready", function () {
+      spyOn(webSocket, "send");
+      webSocket.readyState = READY_STATES.CONNECTING;
+      RegionConnection.send();
+      expect(webSocket.send).not.toHaveBeenCalled();
     });
   });
 });

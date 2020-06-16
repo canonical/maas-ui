@@ -169,7 +169,10 @@ class RegionConnection {
     }
     // XXX mpontillo 2018-11-19: really we should handle errors here
     // in a more robust way, but that's a bigger change.
-    this.getWebSocket().send(angular.toJson(request));
+    const websocket = this.getWebSocket();
+    if (websocket && websocket.readyState === WebSocket.OPEN) {
+      websocket.send(angular.toJson(request));
+    }
   }
 
   ping() {
@@ -259,7 +262,7 @@ class RegionConnection {
       });
     };
     websocket.onclose = (evt) => {
-      let url = this.url.split("?")[0];
+      let url = (this.url || this._buildUrl()).split("?")[0];
       this.log.warn("WebSocket connection closed: " + url);
       angular.forEach(this.handlers.close, (func) => {
         func(evt);
