@@ -17,6 +17,10 @@
     transform: rotate(180deg);
   }
 
+  .u-no-text-transform {
+    text-transform: none !important;
+  }
+
   .u-text--light {
     color: $color-mid-dark;
   }
