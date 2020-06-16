@@ -50,4 +50,19 @@ describe("zone selectors", () => {
     };
     expect(zone.errors(state)).toStrictEqual("Data is incorrect");
   });
+
+  it("can get a zone by id", () => {
+    const state = {
+      zone: {
+        items: [
+          { name: "foo", id: 1 },
+          { name: "bar", id: 2 },
+        ],
+      },
+    };
+    expect(zone.getById(state, 1)).toStrictEqual({
+      name: "foo",
+      id: 1,
+    });
+  });
 });
