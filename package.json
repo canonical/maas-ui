@@ -13,7 +13,7 @@
     "cypress-open": "cd proxy && yarn cypress-open",
     "cypress-run": "cd proxy && yarn cypress-run",
     "copy-build": "mkdir -p build && yarn copy-root && yarn copy-legacy-assets && yarn copy-ui-css",
-    "copy-legacy-assets": "cp -Ru legacy/dist/assets build/",
+    "copy-legacy-assets": "cp -R legacy/dist/assets build/",
     "copy-root": "cp -R root/dist/* build/",
     "copy-ui-css": "cp ui/dist/static/css/* build/assets/css/",
     "release": "cd ui && yarn run release",

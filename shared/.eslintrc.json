@@ -5,5 +5,10 @@
     "no-only-tests/no-only-tests": "error",
     "no-unused-vars": "error",
     "prettier/prettier": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
