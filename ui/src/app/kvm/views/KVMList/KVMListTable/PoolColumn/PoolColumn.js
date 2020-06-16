@@ -6,6 +6,7 @@ import {
   resourcepool as poolSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import DoubleRow from "app/base/components/DoubleRow";
 
 const PoolColumn = ({ id }) => {
   const pod = useSelector((state) => podSelectors.getById(state, id));
@@ -17,13 +18,10 @@ const PoolColumn = ({ id }) => {
   );
 
   return (
-    <>
-      <span data-test="pod-pool">{pool && pool.name}</span>
-      <br />
-      <small className="u-text--light" data-test="pod-zone">
-        {zone && zone.name}
-      </small>
-    </>
+    <DoubleRow
+      primary={<span data-test="pod-pool">{pool && pool.name}</span>}
+      secondary={<span data-test="pod-zone">{zone && zone.name}</span>}
+    />
   );
 };
 

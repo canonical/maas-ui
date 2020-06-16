@@ -1,9 +1,9 @@
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
+import { getPowerIcon } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { useToggleMenu } from "app/machines/hooks";
@@ -17,12 +17,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
-  const iconClass = classNames({
-    "p-icon--power-on": machine.power_state === "on",
-    "p-icon--power-off": machine.power_state === "off",
-    "p-icon--power-error": machine.power_state === "error",
-    "p-icon--power-unknown": machine.power_state === "unknown",
-  });
+  const iconClass = getPowerIcon(machine);
 
   const menuLinks = [];
 
