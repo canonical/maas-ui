@@ -187,7 +187,7 @@ export const OverrideTestForm = ({
                             );
                           }}
                         >
-                          Machine > Hardware tests
+                          Machine &gt; Hardware tests
                         </a>
                       ) : (
                         "Machine > Hardware tests"
