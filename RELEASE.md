@@ -18,6 +18,7 @@ Currently `maas-ui` map to `maas-core` versions in the following way:
 |:-------:|:---------:|
 | 0.x.x   | 2.7       |
 | 1.x.x   | 2.8       |
+| 2.x.x   | 2.9       | (master)
 
 ## Creating a release
 
@@ -27,8 +28,7 @@ Please try to adhere to semantic versioning when creating a release. Although re
 ### Process
 
 1. Create a new local branch e.g. release-0.1.2.
-2. Run `yarn release [version]` where version is in the form `0.1.2`. This will bump the version in `ui/package.json` and create a tag with a 'v' prefix. You will also need to manually update the root and legacy `package.json` versions as well as the root dependencies `@maas-ui/maas-ui` and `@maas-ui/maas-ui-legacy`.
-3. Propose this against the latest release branch (e.g. 2.8) and merge.
-4. From the [releases page](https://github.com/canonical-web-and-design/maas-ui/releases), edit the draft release. Feel free to edit this to make the changelog more readable. Also make sure to choose the correct target branch if releasing fixes intended for an older API version.
-5. Add the tarball created earlier from `ui/dist` and create the release.
-6. Email the MAAS & Design list with the changelog, with the subject "new maas-ui release - [version]", including the hash and tag of the release.
+2. Run `yarn release [version]` where version is in the form `0.1.2`. This will bump the version in `ui/package.json` and create a tag with a 'v' prefix. You will also need to manually update the root, shared and legacy `package.json` versions as well as the dependencies `@maas-ui/maas-ui` and `@maas-ui/maas-ui-legacy`.
+3. Propose this against the appropriate branch and merge.
+4. From the [releases page](https://github.com/canonical-web-and-design/maas-ui/releases), edit the draft release. Edit the title to reflect which MAAS release this maas-ui release targets e.g. `v0.1.2 [2.7]`. Feel free to edit the changelog to make it more readable. Also make sure to choose the correct target branch if releasing a backported fix.
+5. Email the MAAS & Design list with the changelog, with the subject "new maas-ui release - [version]", including the hash and tag of the release.
