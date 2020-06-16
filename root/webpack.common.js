@@ -50,11 +50,13 @@ module.exports = {
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ["dist"],
     }),
-    new CopyWebpackPlugin([
-      { from: path.resolve(__dirname, "src/*.png"), to: "[name].[ext]" },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, "src/*.png"), to: "[name].[ext]" },
+      ],
+    }),
     new webpack.DefinePlugin({
-      "process.env.GIT_SHA": JSON.stringify(process.env.GIT_SHA)
+      "process.env.GIT_SHA": JSON.stringify(process.env.GIT_SHA),
     }),
     new DotenvFlow(),
     new MiniCssExtractPlugin({
