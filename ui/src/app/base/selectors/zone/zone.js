@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 const zone = {};
 
 /**
@@ -27,5 +29,15 @@ zone.loaded = (state) => state.zone.loaded;
  * @returns {Object} Zone errors.
  */
 zone.errors = (state) => state.zone.errors;
+
+/**
+ * Returns zone that matches given id
+ * @param {Object} state - The redux state.
+ * @param {Number} id - id of resource pool to return.
+ * @returns {Object} Resource pool that matches id.
+ */
+zone.getById = createSelector([zone.all, (state, id) => id], (zones, id) =>
+  zones.find((zone) => zone.id === id)
+);
 
 export default zone;
