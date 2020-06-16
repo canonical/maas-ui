@@ -56,7 +56,8 @@
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "lint": "yarn lint-package-json && yarn lint-js",
+    "betterer": "betterer",
+    "lint": "yarn lint-package-json && yarn lint-js && yarn betterer",
     "lint-js": "eslint src",
     "lint-package-json": "npmPkgJsonLint .",
     "clean": "rm -rf node_modules build dist"
@@ -74,6 +75,8 @@
     ]
   },
   "devDependencies": {
+    "@betterer/cli": "1.2.0",
+    "@betterer/typescript": "1.2.0",
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
     "babel-eslint": "10.1.0",
