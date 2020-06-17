@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import { getStatusText } from "app/utils";
 import {
   general as generalSelectors,
   machine as machineSelectors,
@@ -21,9 +22,6 @@ const hideFailedTestWarningStatuses = [
   nodeStatus.NEW,
   nodeStatus.TESTING,
 ];
-
-// Node statuses for which the OS + release is made human-readable.
-const formattedReleaseStatuses = [nodeStatus.DEPLOYED, nodeStatus.DEPLOYING];
 
 // Node statuses that are temporary.
 const transientStatuses = [
@@ -44,29 +42,6 @@ const failedScriptStatuses = [
   scriptStatus.FAILED_INSTALLING,
   scriptStatus.TIMEDOUT,
 ];
-
-const getStatusText = (machine, osReleases) => {
-  if (formattedReleaseStatuses.includes(machine.status_code)) {
-    const machineRelease = osReleases.find(
-      (release) => release.value === machine.distro_series
-    );
-
-    if (machineRelease) {
-      let releaseTitle;
-      if (machine.osystem === "ubuntu") {
-        releaseTitle = machineRelease.label.split('"')[0].trim();
-      } else {
-        releaseTitle = machineRelease.label;
-      }
-
-      if (machine.status_code === nodeStatus.DEPLOYING) {
-        return `Deploying ${releaseTitle}`;
-      }
-      return releaseTitle;
-    }
-  }
-  return machine.status;
-};
 
 const getProgressText = (machine) => {
   if (transientStatuses.includes(machine.status_code)) {

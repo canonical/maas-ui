@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+  controller as controllerActions,
+  general as generalActions,
+  machine as machineActions,
   pod as podActions,
   resourcepool as poolActions,
   zone as zoneActions,
@@ -40,6 +43,9 @@ const KVMListTable = () => {
   const pods = useSelector(podSelectors.all);
 
   useEffect(() => {
+    dispatch(controllerActions.fetch());
+    dispatch(generalActions.fetchOsInfo());
+    dispatch(machineActions.fetch());
     dispatch(podActions.fetch());
     dispatch(poolActions.fetch());
     dispatch(zoneActions.fetch());
@@ -51,7 +57,11 @@ const KVMListTable = () => {
         <MainTable
           headers={[
             { content: "FQDN" },
-            { content: "Power" },
+            {
+              content: (
+                <span className="p-double-row__header-spacer">Power</span>
+              ),
+            },
             { content: "KVM Host Type" },
             {
               className: "u-align--right",
@@ -65,7 +75,9 @@ const KVMListTable = () => {
                 </>
               ),
             },
-            { content: "OS" },
+            {
+              content: <span className="p-double-row__header-spacer">OS</span>,
+            },
             {
               content: (
                 <>
