@@ -12,6 +12,34 @@ describe("KVMListTable", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
+      controller: {
+        loaded: true,
+        loading: false,
+        items: [],
+      },
+      general: {
+        osInfo: {
+          loaded: true,
+          loading: false,
+          data: {
+            osystems: [
+              ["centos", "CentOS"],
+              ["ubuntu", "Ubuntu"],
+            ],
+            releases: [
+              ["centos/centos66", "CentOS 6"],
+              ["centos/centos70", "CentOS 7"],
+              ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+              ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"'],
+            ],
+          },
+        },
+      },
+      machine: {
+        loaded: true,
+        loading: false,
+        items: [],
+      },
       pod: {
         items: [
           {
@@ -66,7 +94,14 @@ describe("KVMListTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const expectedActions = ["FETCH_POD", "FETCH_RESOURCEPOOL", "FETCH_ZONE"];
+    const expectedActions = [
+      "FETCH_CONTROLLER",
+      "FETCH_GENERAL_OSINFO",
+      "FETCH_MACHINE",
+      "FETCH_POD",
+      "FETCH_RESOURCEPOOL",
+      "FETCH_ZONE",
+    ];
     const actualActions = store.getActions();
     expect(
       actualActions.every((action) => expectedActions.includes(action.type))

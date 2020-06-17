@@ -1,5 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import controller from "../controller";
+import machine from "../machine";
+
 const pod = {};
 
 /**
@@ -51,6 +54,27 @@ pod.errors = (state) => state.pod.errors;
  */
 pod.getById = createSelector([pod.all, (state, id) => id], (pods, id) =>
   pods.find((pod) => pod.id === Number(id))
+);
+
+/**
+ * Returns the pod host, which can be either a machine or controller.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Pod host machine/controller.
+ */
+pod.getHost = createSelector(
+  [machine.all, controller.all, (state, pod) => pod],
+  (machines, controllers, pod) => {
+    if (!(pod && pod.host)) {
+      return;
+    }
+    const hostMachine = machines.find(
+      (machine) => machine.system_id === pod.host
+    );
+    const hostController = controllers.find(
+      (controller) => controller.system_id === pod.host
+    );
+    return hostMachine || hostController;
+  }
 );
 
 export default pod;
