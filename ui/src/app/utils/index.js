@@ -6,6 +6,8 @@ export { formatPowerParameters } from "./formatPowerParameters";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { getMachineValue } from "./search";
 export { generateLegacyURL } from "./generateLegacyURL";
+export { getPowerIcon } from "./getPowerIcon";
+export { getStatusText } from "./getStatusText";
 export { groupAsMap } from "./groupAsMap";
 export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
