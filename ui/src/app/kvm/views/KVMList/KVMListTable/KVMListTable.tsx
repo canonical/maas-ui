@@ -10,6 +10,7 @@ import {
   resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
+import { Pod } from "app/base/types";
 import { pod as podSelectors } from "app/base/selectors";
 import CPUColumn from "./CPUColumn";
 import NameColumn from "./NameColumn";
@@ -21,7 +22,7 @@ import StorageColumn from "./StorageColumn";
 import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
 
-const generateRows = (pods) => {
+const generateRows = (pods: Pod[]) => {
   return pods.map((pod) => ({
     key: pod.id,
     columns: [
@@ -38,7 +39,7 @@ const generateRows = (pods) => {
   }));
 };
 
-const KVMListTable = () => {
+const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
   const pods = useSelector(podSelectors.all);
 

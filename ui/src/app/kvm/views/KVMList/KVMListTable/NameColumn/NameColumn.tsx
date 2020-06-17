@@ -3,10 +3,15 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { pod as podSelectors } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const NameColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
+type Props = { id: number };
+
+const NameColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
 
   return (
     <DoubleRow

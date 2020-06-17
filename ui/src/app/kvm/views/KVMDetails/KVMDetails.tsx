@@ -6,15 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
 import { useParams, useRouter, useWindowTitle } from "app/base/hooks";
+import { RootState } from "app/base/types";
 import Section from "app/base/components/Section";
 import Tabs from "app/base/components/Tabs";
 
-const KVMDetails = () => {
+const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { location } = useRouter();
 
-  const pod = useSelector((state) => podSelectors.getById(state, id));
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, Number(id))
+  );
 
   useWindowTitle(`KVM ${pod?.name || "details"}`);
 

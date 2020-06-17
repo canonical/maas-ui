@@ -5,7 +5,7 @@ import KVMListHeader from "./KVMListHeader";
 import KVMListTable from "./KVMListTable";
 import Section from "app/base/components/Section";
 
-const KVMList = () => {
+const KVMList = (): JSX.Element => {
   useWindowTitle("KVM");
 
   return (

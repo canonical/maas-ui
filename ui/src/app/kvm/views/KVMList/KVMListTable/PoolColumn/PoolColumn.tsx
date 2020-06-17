@@ -6,14 +6,19 @@ import {
   resourcepool as poolSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const PoolColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
-  const pool = useSelector((state) =>
+type Props = { id: number };
+
+const PoolColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
+  const pool = useSelector((state: RootState) =>
     poolSelectors.getById(state, pod && pod.pool)
   );
-  const zone = useSelector((state) =>
+  const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, pod && pod.zone)
   );
 

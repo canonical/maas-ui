@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
 
-const KVMListHeader = () => {
+const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const pods = useSelector(podSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);

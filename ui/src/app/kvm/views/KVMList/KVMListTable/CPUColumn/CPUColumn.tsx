@@ -2,10 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { pod as podSelectors } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import Meter from "app/base/components/Meter";
 
-const CPUColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
+type Props = { id: number };
+
+const CPUColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
 
   return (
     <Meter

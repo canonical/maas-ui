@@ -1,3 +1,7 @@
+type Byte = { value: number; unit: string };
+
+type FormatBytesConfig = { binary?: boolean; precision?: number };
+
 /**
  * Format bytes to the appropriate unit at supplied precision.
  *
@@ -6,16 +10,16 @@
  * @param {object} config - config object
  * @param {boolean} config.binary - whether formatting should be done in base 10 or 2
  * @param {number} config.precision - significant figures of returned value
- * @returns {object} formatted value and unit object
+ * @returns {Byte} formatted value and byte unit object
  */
 
 export const formatBytes = (
-  value,
-  unit,
-  { binary = false, precision = 2 } = {}
-) => {
+  value: number,
+  unit: string,
+  { binary = false, precision = 2 }: FormatBytesConfig = {}
+): Byte => {
   const negative = value < 0;
-  const parsedValue = parseFloat(Math.abs(value));
+  const parsedValue = Math.abs(value);
   if (parsedValue === 0) {
     return { value: 0, unit: "B" };
   }

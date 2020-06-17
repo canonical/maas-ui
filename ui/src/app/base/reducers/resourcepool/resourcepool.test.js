@@ -2,7 +2,7 @@ import resourcepool from "./resourcepool";
 
 describe("resourcepool reducer", () => {
   it("should return the initial state", () => {
-    expect(resourcepool(undefined, {})).toEqual({
+    expect(resourcepool(undefined, { type: "" })).toEqual({
       errors: {},
       items: [],
       loaded: false,
@@ -75,6 +75,8 @@ describe("resourcepool reducer", () => {
           items: [],
           loaded: false,
           loading: false,
+          saved: false,
+          saving: false,
         },
         {
           error: "Could not fetch resource pools",
@@ -86,6 +88,8 @@ describe("resourcepool reducer", () => {
       items: [],
       loaded: false,
       loading: false,
+      saved: false,
+      saving: false,
     });
   });
 
@@ -364,6 +368,11 @@ describe("resourcepool reducer", () => {
       resourcepool(
         {
           errors: { name: "Name already exists" },
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: true,
+          saving: true,
         },
         {
           type: "CREATE_RESOURCEPOOL_WITH_MACHINES",
@@ -371,6 +380,11 @@ describe("resourcepool reducer", () => {
       )
     ).toEqual({
       errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: true,
+      saving: true,
     });
   });
 });

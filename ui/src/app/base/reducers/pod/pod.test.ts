@@ -2,7 +2,7 @@ import pod from "./pod";
 
 describe("pod reducer", () => {
   it("should return the initial state", () => {
-    expect(pod(undefined, {})).toEqual({
+    expect(pod(undefined, { type: "" })).toEqual({
       errors: {},
       items: [],
       loaded: false,
