@@ -1,68 +1,348 @@
 # Hacking
 
-- [Development Setup](#maas-ui-development-setup)
-- [Building](#building)
+- [Development setup](#maas-ui-development-setup)
+- [Running a branch](#running-a-branch)
+- [Setting up or connecting to a MAAS](#maas-deployments)
+- [Creating a Multipass instance](#creating-a-multipass-instance)
+- [Building for production](#building)
 - [Testing with Cypress](#testing-with-cypress)
 - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
-## maas-ui development setup
+# maas-ui development setup
 
-**Note: You will need access to an instance of MAAS running in order to run maas-ui.**
+**Note: You will need access to a running instance of MAAS in order to run maas-ui.**
 
-Although we recommend developing against an already deployed MAAS,
-to setup a local MAAS in a container, you can follow the steps in this [guide](https://docs.google.com/document/d/17Rc_wpaOylXADmh6yIDlGjOVzaAgyLWe3SbnK3C5SL0/).
+## Set up a development container
 
-### Generate an SSH key in your container (LXD and multipass)
+You may wish to use an existing Multipass instance or you can create a new one (see the section on [setting up a Multipass instance](#creating-a-multipass-instance)).
 
-**Note: If you intend to develop against a local MAAS, the following instructions should be run in the container running MAAS.**
+For now, we'll assume you have a Multipass instance name "dev".
 
-Inside your container (LXD or multipass) [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
+Start your instance:
+
+```shell
+multipass start dev
+```
+
+Make sure your instance has [SSH credentials](#ssh-credentials) and then SSH into your machine, optionally with agent forwarding:
+
+```shell
+ssh [-A] multipass@dev.local
+```
 
 ### Clone the repository
 
-Inside your MAAS container (LXD or multipass), clone the maas-ui repository. If you are going to be developing on maas-ui then do the following:
+If you're planning to contribute changes to maas-ui then first you'll need to make a fork of the [maas-ui project](https://github.com/canonical-web-and-design/maas-ui) in GitHub.
 
-```
+Then, inside your MAAS container clone the maas-ui repository.
+
+```shell
 git clone -o upstream git@github.com:canonical-web-and-design/maas-ui
 cd maas-ui
 git remote add origin git@github.com:<github-username>/maas-ui
 ```
 
-Otherwise run:
+Otherwise you can just use:
 
-```
-git clone git@github.com:<github-username>/maas-ui
+```shell
+git clone git@github.com:canonical-web-and-design/maas-ui
+cd maas-ui
 ```
 
 ### Edit local config
 
 By default maas-ui will connect to `karura.internal` which requires Canonical VPN access. If you wish to develop against a different MAAS then you can create a local env:
 
-```
-cp proxy/.env proxy/.env.local
-```
-
-Update the contents of that file to:
-
-```
-MAAS_URL="http://<your-maas-ip>:5240/"
+```shell
+touch proxy/.env.local
 ```
 
+Update the contents of that file to point to a MAAS. [See the section on MAAS deployments](#maas-deployments).
 
-### Install Docker inside your container (LXD and multipass)
+```shell
+MAAS_URL="http://<maas-ip-or-hostname>:5240/"
+```
 
-The simplest way is to use [dotrun snap](https://snapcraft.io/dotrun). Once installed you can run `dotrun` in the root of this project.
+The easiest way to run maas-ui is with [Dotrun](https://github.com/canonical-web-and-design/dotrun). You can install it with:
+
+```shell
+sudo snap install dotrun
+```
+
+You should now be able to run maas-ui and log into your MAAS:
+
+```shell
+dotrun
+```
+
+Once everything has built you can access the site using the hostname:
+
+[http://dev.local:8400/MAAS/](http://dev.local:8400/MAAS/).
+
+### Running a branch
+
+To run a branch from a PR you can find and click on the link "command line instructions" and copy the command from "Step 1". It should look something like:
+
+```shell
+git checkout -b username-branch-name master
+git pull https://github.com/username/maas-ui.git branch-name
+```
+
+Run those commands from the maas-ui dir (`cd ~/maas-ui`).
+
+Then run the branch with:
+
+```shell
+dotrun
+```
+
+If something doesn't seem right you can try:
+
+```shell
+dotrun clean
+dotrun
+```
+
+# MAAS deployments
+
+## Canonical VPN deployments
+
+If you have access to the Canonical VPN you can use one of the following MAAS deployments. You may need to do some [additional configuration](#vpn-configuration) inside your multipass instance.
+
+Once connected to the VPN you can connect to one of the following MAAS deployments using the [credentials](https://wiki.canonical.com/WebAndDesign/DesignMaasLab).
+
+### Karura
+
+[karura.internal](http://karura.internal:5240/MAAS) (last stable release).
+
+### Bolla
+
+[bolla.internal](http://bolla.internal:5240/MAAS) (master)
+
+## Local deployments
+
+### Snap deployment
+
+The easiest way to run a MAAS locally is using a snap. However, this method does not provide sample data and therefore will not have everything e.g. there will be no machines.
+
+First you'll need to [create a Multipass instance](#creating-a-multipass-instance), call it something like "snap-maas".
+
+Then enter the shell for that instance:
+
+```shell
+multipass shell snap-maas
+```
+
+Now install MAAS and a test database:
+
+```shell
+sudo snap install maas maas-test-db
+```
+
+Once that has completed you'll need to intialise the MAAS:
+
+```shell
+sudo maas init region+rack --database-uri maas-test-db:///
+```
+
+Now create a user:
+
+```shell
+sudo maas createadmin
+```
+
+You should now be able to access the MAAS in your browser:
+
+[http://snap-maas.local:8400/MAAS/](http://snap-maas.local:8400/MAAS/).
+
+You might now need to [configure maas-ui](#edit-local-config) to use this MAAS.
+
+#### Updating a snap MAAS
+
+To update your MAAS manually you can run:
+
+```shell
+sudo snap refresh maas
+```
+
+You can update to a different version with something like:
+
+```shell
+sudo snap refresh --channel=2.8 maas
+```
+
+### Development deployment
+
+First you'll need to [create a Multipass instance](#creating-a-multipass-instance), call it something like "dev-maas".
+
+Then enter the shell for that instance:
+
+```shell
+multipass shell dev-maas
+```
+
+You'll need to fetch the current MAAS master:
+
+```shell
+git clone http://git.launchpad.net/maas
+```
+
+And then build MAAS and set up some sampledata:
+
+```shell
+cd maas
+make install-dependencies
+make
+make syncdb
+make sampledata
+```
+
+Now you should be ready to start the MAAS, you'll need to do this each time you start the Multipass instance.
+
+```shell
+make start
+```
+
+At this point you can [configure maas-ui](#edit-local-config) to use this maas with the default credentials (admin/test). If you wish to view the ui from that MAAS deployment you'll need to [build the UI](#running-maas-ui-from-a-development-maas).
+
+#### Stopping a development MAAS
+
+If you need to stop the MAAS you can run:
+
+```shell
+ps -ef | grep 'regiond' | grep -v grep | awk '{print $2}' | xargs -r kill -9
+```
+
+#### Updating a development MAAS
+
+Enter the shell for your MAAS instance:
+
+```shell
+multipass shell dev-maas
+```
+
+If MAAS is currently running then [stop it](#stopping-a-development-maas).
+
+Now fetch the latest master, clean and rebuild your MAAS.
+
+_Note: this will clear all your MAAS data and is more reliable, but you can attempt to run `make clean` instead of `make clean+db` to preserve your current data._
+
+```shell
+cd ~/maas
+make clean+db
+git pull
+make install-dependencies
+make
+make syncdb
+make sampledata
+make start
+```
+
+#### Running maas-ui from a development maas
+
+If you have previously built the UI then run:
+
+```shell
+cd ~/maas
+make clean-ui
+```
+
+Optional: if you wish to use a specific branch of maas-ui then run:
+
+```shell
+git config --file=.gitmodules submodule.src/maasui/src.url https://github.com/[github-username]/maas-ui.git
+git config --file=.gitmodules submodule.src/maasui/src.branch [branch name]
+git submodule sync
+git submodule update --init --recursive --remote
+```
+
+Optional: if you want to restore to maas-ui master then run:
+
+```shell
+git checkout .gitmodules
+git submodule sync
+git submodule update --init --recursive --remote
+```
+
+Now you can make the UI
+
+```shell
+make ui
+```
+
+If that fails you can try:
+
+```shell
+SKIP_PREFLIGHT_CHECK=true make ui
+```
+
+You should now be able to access the MAAS in your browser:
+
+[http://dev-maas.local:8400/MAAS/](http://dev-maas.local:8400/MAAS/).
+
+# Creating a Multipass instance
+
+## Install Multipass
+
+First, install Multipass:
+
+- [on Linux](https://multipass.run/docs/installing-on-linux), or
+- [on a Mac](https://multipass.run/docs/installing-on-macos).
+
+## Create the instance:
+
+To be able to run maas-ui or MAAS you should allocate as many resources as you can to the instance. Don't worry, it'll share the CPU and RAM with the host and only take up the disk space it currently requires.
+
+_Note: you can't increase the disk size once the instance has been created_
+
+Check what resources your computer has and then run:
+
+```shell
+multipass launch -c [the number of cores] -d [some amount of disk space] -m [the amount of ram] --name [the instance name]
+```
+
+You should end up with a command something like this:
+
+```shell
+multipass launch -c 4 -d 20G -m 16G --name dev
+```
+
+## SSH credentials
+
+You have two options for having SSH credentials in your Multipass instance.
+
+### Host credentials
+
+This method allows you to use the SSH credentials from your host machine and doesn't require you to create new SSH credentials for each Multipass instance.
+
+You can follow [this guide](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) for setting up the ssh-agent.
+
+Then you can log into your instance with:
+
+```shell
+ssh -A multipass@[instance-name].local
+```
+
+### Instance credentials
+
+Access your instance with:
+
+```shell
+multipass shell [instance-name]
+```
+
+Then [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
 
 ### macOS
 
-#### VPN Configuration
+#### VPN configuration
 
-To connect to a remote MAAS over the VPN, you'll need to configure *nat* on your macOS host:
+To connect to a remote MAAS over the VPN, you'll need to configure _nat_ on your macOS host:
 
 1. run `ifconfig` and make note of the `utun` interfaces.
 2. For every `utun` interface, add the following line to `/etc/pf.conf` directly after any existing `nat-anchor` or `nat` commands (the order is significant):
 
-```
+```shell
 nat on utun0 from bridge100:network to any -> (utun0)
 ```
 
@@ -71,36 +351,14 @@ nat on utun0 from bridge100:network to any -> (utun0)
 
 Be aware that this may prevent reaching hosts on your internal network. You can of course comment out the `nat` configuration and rerun `sudo pfctl -f /etc/pf.conf` to reset everything.
 
-#### Docker
-
-If running `dotrun` from your macOS, you'll need to [Use multipass to creeate an Ubuntu VM](https://multipass.run).
-
-### Running
-
-To run the MAAS UI project through a Docker container, from the root of the MAAS UI project run:
-
-```
-dotrun
-```
-
-If you get babel errors then you should run `yarn clean-all` and retry.
-
-Otherwise you can run the project on your host machine directly if you have node and yarn installed, using:
-
-```
-yarn serve
-```
-
-From here you should be able to view the project at &lt;your-local-maas-ip&gt;:8400/MAAS/
-
 ## Building
 
 Ensure both node (current LTS) and yarn are installed.
 
 From the root of the MAAS UI project run:
 
-```
-yarn build-all
+```shell
+dotrun build-all
 ```
 
 Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
@@ -113,7 +371,7 @@ Optimised production bundles for both `ui` and `legacy` will be built, and outpu
 
 To run headless Cypress tests, enter the following command from the root of the project:
 
-```
+```shell
 yarn test-cypress
 ```
 
@@ -127,13 +385,13 @@ By launching the Cypress Test Runner, you will be able to to see commands as the
 
 If developing directly on your host machine, simply run maas-ui in development as normal:
 
-```
+```shell
 yarn serve
 ```
 
 Then open the Cypress Test Runner by running:
 
-```
+```shell
 yarn cypress-open
 ```
 
@@ -143,19 +401,19 @@ You should then see a list of test specs in maas-ui. You can run all interactive
 
 You will need to create or update an LXD profile that allows running GUI applications. If creating a new profile, run:
 
-```
+```shell
 lxc profile create gui
 ```
 
 Open the profile config:
 
-```
+```shell
 lxc profile edit gui
 ```
 
 And replace with the following yaml:
 
-``` yaml
+```yaml
 config:
   environment.DISPLAY: :0
   raw.idmap: both 1000 1000
@@ -186,38 +444,38 @@ used_by:
 
 Now either launch a new container with this profile, for example using Ubuntu 18.04:
 
-```
+```shell
 lxc launch --profile default --profile gui ubuntu:18.04 container-name
 ```
 
 Or if you have an existing LXD container, you can update the profile by running:
 
-```
+```shell
 lxc profile assign existing-container default,gui
 lxc restart existing-container
 ```
 
 Install the following dependencies in your container, which are required for Cypress to relay information to the host machine:
 
-```
+```shell
 sudo apt-get install xvfb libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
 ```
 
 You may need to install Cypress explicitly if you've set up file-sharing with your host/container.
 
-```
+```shell
 node_modules/.bin/cypress install
 ```
 
 You should now be able to open the Cypress Test Runner in your container by running:
 
-```
+```shell
 yarn cypress-open
 ```
 
 If you encounter an error with file watchers e.g. `ENOSPC: System limit for number of file watchers reached`, run:
 
-```
+```shell
 echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
@@ -228,20 +486,20 @@ For more information on running GUI applications in LXD, refer to [this blog pos
 
 Install the following dependencies in your multipass, which are required for Cypress to relay information to the host machine:
 
-```
+```shell
 sudo apt-get install xvfb libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
 ```
 
 Next, validate whether ssh on the multipass VM is configured to forward X11 communication. Ensure you have the following values in `/etc/ssh/ssh_config`:
 
-```
+```shell
 ForwardX11 yes
 ForwardX11Trusted yes
 ```
 
 And the following values in `/etc/ssh/sshd_config`:
 
-```
+```shell
 X11Forwarding yes
 X11DisplayOffset 10
 PrintMotd no
@@ -258,7 +516,7 @@ Since you are running from an Ubuntu graphical desktop then you already have an 
 
 First install XQuartz, which is the Mac version of X11. You can install XQuartz using homebrew with:
 
-```
+```shell
 brew cask install xquartz
 ```
 
@@ -266,7 +524,7 @@ Or directly from the website [here](https://www.xquartz.org/). You will now need
 
 Start XQuartz using:
 
-```
+```shell
 open -a XQuartz
 ```
 
@@ -276,17 +534,18 @@ In the XQuartz preferences, go to the “Security” tab and make sure you’ve 
 
 Establish an ssh connection from your graphical desktop to the remote X client using the “-Y” switch for trusted X11 forwarding. Note that you may need to add your host's public SSH key to the multipass' list of allowed hosts.
 
-```
+```shell
 ssh -Y multipass@<multipass-ip>
 ```
 
 You should now be able to run the Cypress Test Runner by running:
 
-```
+```shell
 yarn cypress-open
 ```
 
 ## Adding a new yarn workspace
+
 To add a new yarn workspace, edit `package.json` and add the project's directory name to the `workspaces` array.
 
 To import modules from existing projects in your new project, add the dependant projects to your projects dependencies in `package.json`.
