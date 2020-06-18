@@ -5,7 +5,7 @@ import KVMDetails from "./KVMDetails";
 import KVMList from "./KVMList";
 import NotFound from "app/base/views/NotFound";
 
-const KVM = () => {
+const KVM = (): JSX.Element => {
   return (
     <Switch>
       <Route exact path="/kvm">

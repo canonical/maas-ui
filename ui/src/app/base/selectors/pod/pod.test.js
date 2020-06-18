@@ -72,10 +72,6 @@ describe("pod selectors", () => {
       name: "podrick",
       id: 222,
     });
-    expect(pod.getById(state, "222")).toStrictEqual({
-      name: "podrick",
-      id: 222,
-    });
   });
 
   it("can get a pod's host machine", () => {

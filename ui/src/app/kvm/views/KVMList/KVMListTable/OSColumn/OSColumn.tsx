@@ -8,12 +8,19 @@ import {
   machine as machineSelectors,
   pod as podSelectors,
 } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const OSColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
-  const host = useSelector((state) => podSelectors.getHost(state, pod));
-  const osReleases = useSelector((state) =>
+type Props = { id: number };
+
+const OSColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
+  const host = useSelector((state: RootState) =>
+    podSelectors.getHost(state, pod)
+  );
+  const osReleases = useSelector((state: RootState) =>
     generalSelectors.osInfo.getOsReleases(state, host && host.osystem)
   );
   const machinesLoading = useSelector(machineSelectors.loading);

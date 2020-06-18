@@ -88,6 +88,7 @@ DoubleRow.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
   iconSpace: PropTypes.bool,
+  iconTitle: PropTypes.string,
   menuClassName: PropTypes.string,
   menuLinks: TableMenu.propTypes.links,
   menuTitle: PropTypes.string,

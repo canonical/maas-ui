@@ -2,7 +2,7 @@ import zone from "./zone";
 
 describe("zone reducer", () => {
   it("should return the initial state", () => {
-    expect(zone(undefined, {})).toEqual({
+    expect(zone(undefined, { type: "" })).toEqual({
       errors: {},
       items: [],
       loaded: false,

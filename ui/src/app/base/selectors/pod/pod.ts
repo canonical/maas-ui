@@ -1,59 +1,59 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { Pod, RootState, TSFixMe } from "app/base/types";
 import controller from "../controller";
 import machine from "../machine";
-
-const pod = {};
 
 /**
  * Returns all pods.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all pods.
  */
-pod.all = (state) => state.pod.items;
+const all = (state: RootState): Pod[] => state.pod.items;
 
 /**
  * Whether pods are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loading state.
  */
-pod.loading = (state) => state.pod.loading;
+const loading = (state: RootState): boolean => state.pod.loading;
 
 /**
  * Whether pods have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loaded state.
  */
-pod.loaded = (state) => state.pod.loaded;
+const loaded = (state: RootState): boolean => state.pod.loaded;
 
 /**
  * Get the pod saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether pods are being saved.
  */
-pod.saving = (state) => state.pod.saving;
+const saving = (state: RootState): boolean => state.pod.saving;
 
 /**
  * Get the pod saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether pods have been saved.
  */
-pod.saved = (state) => state.pod.saved;
+const saved = (state: RootState): boolean => state.pod.saved;
 
 /**
  * Returns pod errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Machine errors state.
  */
-pod.errors = (state) => state.pod.errors;
+const errors = (state: RootState): TSFixMe => state.pod.errors;
 
 /**
  * Returns a pod for the given id.
  * @param {Object} state - The redux state.
- * @returns {Array} A machine.
+ * @returns {Object} The pod that matches the given id.
  */
-pod.getById = createSelector([pod.all, (state, id) => id], (pods, id) =>
-  pods.find((pod) => pod.id === Number(id))
+const getById = createSelector(
+  [all, (_: RootState, id: number) => id],
+  (pods, id) => pods.find((pod) => pod.id === id)
 );
 
 /**
@@ -61,8 +61,8 @@ pod.getById = createSelector([pod.all, (state, id) => id], (pods, id) =>
  * @param {Object} state - The redux state.
  * @returns {Object} Pod host machine/controller.
  */
-pod.getHost = createSelector(
-  [machine.all, controller.all, (state, pod) => pod],
+const getHost = createSelector(
+  [machine.all, controller.all, (_: RootState, pod: Pod) => pod],
   (machines, controllers, pod) => {
     if (!(pod && pod.host)) {
       return;
@@ -76,5 +76,16 @@ pod.getHost = createSelector(
     return hostMachine || hostController;
   }
 );
+
+const pod = {
+  all,
+  errors,
+  getById,
+  getHost,
+  loaded,
+  loading,
+  saving,
+  saved,
+};
 
 export default pod;

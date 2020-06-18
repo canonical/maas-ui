@@ -2,9 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { pod as podSelectors } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
-const formatHostType = (type) => {
+const formatHostType = (type: string) => {
   switch (type) {
     case "lxd":
       return "LXD";
@@ -15,8 +16,12 @@ const formatHostType = (type) => {
   }
 };
 
-const TypeColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
+type Props = { id: number };
+
+const TypeColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
 
   return (
     <DoubleRow

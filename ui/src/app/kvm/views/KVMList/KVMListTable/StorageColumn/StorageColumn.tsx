@@ -3,10 +3,15 @@ import { useSelector } from "react-redux";
 
 import { formatBytes } from "app/utils";
 import { pod as podSelectors } from "app/base/selectors";
+import { RootState } from "app/base/types";
 import Meter from "app/base/components/Meter";
 
-const PoolColumn = ({ id }) => {
-  const pod = useSelector((state) => podSelectors.getById(state, id));
+type Props = { id: number };
+
+const StorageColumn = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
   const usedStorage = formatBytes(pod.used.local_storage, "B");
 
   return (
@@ -26,4 +31,4 @@ const PoolColumn = ({ id }) => {
   );
 };
 
-export default PoolColumn;
+export default StorageColumn;
