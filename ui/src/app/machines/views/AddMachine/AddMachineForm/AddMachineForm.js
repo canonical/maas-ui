@@ -46,7 +46,10 @@ const generateMachineSchema = (parametersSchema) =>
     power_type: Yup.string().required("Power type required"),
     pxe_mac: Yup.string()
       .matches(/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address")
-      .required("At least one MAC address required"),
+      .when("power_type", {
+        is: (power_type) => power_type !== "ipmi",
+        then: Yup.string().required("At least one MAC address required"),
+      }),
     zone: Yup.string().required("Zone required"),
   });
 
