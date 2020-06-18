@@ -1,13 +1,13 @@
 import { Spinner } from "@canonical/react-components";
 import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import {
   status as statusSelectors,
   user as userSelectors,
 } from "app/base/selectors";
-import { useParams } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
 import UserForm from "../UserForm";
 

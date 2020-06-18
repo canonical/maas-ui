@@ -2,10 +2,12 @@ import { Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
-import { useParams, useRouter, useWindowTitle } from "app/base/hooks";
+import { useRouter, useWindowTitle } from "app/base/hooks";
+
 import { RootState } from "app/base/types";
 import Section from "app/base/components/Section";
 import Tabs from "app/base/components/Tabs";
