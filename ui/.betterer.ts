@@ -6,4 +6,9 @@ export default {
     strict: true,
   }),
   "no TSFixMe types": regexpBetterer("**/*.ts", /(\s*TSFixMe)/i),
+  "migrate js files to ts": {
+    test: () => countJsFiles(),
+    constraint: smaller,
+    goal: 0,
+  },
 };

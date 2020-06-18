@@ -1180,7 +1180,7 @@
     find-up "^4.1.0"
     tslib "^2.0.0"
 
-"@betterer/constraints@^1.0.2":
+"@betterer/constraints@1.0.2", "@betterer/constraints@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-1.0.2.tgz#78ab5033cd551989e272fed06b9d8ba3dd36e939"
   integrity sha512-hUKJqkaDpcJkOZb8oQLBy9BzP3gjpeHGQayNCY6g23CeP0/Ympv+Z03OQzTgVCSg5SutYFeWFjvMxnTI09fkUA==

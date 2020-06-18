@@ -196,4 +196,7 @@ exports[`no TSFixMe types`] = {
       [205, 9, 8, "RegExp match", "1152173309"]
     ]
   }`
+exports[`migrate js files to ts`] = {
+  timestamp: 1592468736035,
+  value: `712`
 };
