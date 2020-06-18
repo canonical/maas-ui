@@ -1,0 +1,51 @@
+@mixin KVMListTable {
+  .kvm-list-table {
+    td,
+    th {
+      // FQDN
+      &:nth-child(1) {
+        @include breakpoint-widths(60%, 30%, 20%, 11%);
+      }
+
+      // Power
+      &:nth-child(2) {
+        @include breakpoint-widths(0, 20%, 20%, 11%);
+      }
+
+      // KVM host type
+      &:nth-child(3) {
+        @include breakpoint-widths(40%, 20%, 15%, 8%);
+      }
+
+      // VMs / Owners
+      &:nth-child(4) {
+        @include breakpoint-widths(0, 0, 0%, 7%);
+      }
+
+      // OS
+      &:nth-child(5) {
+        @include breakpoint-widths(0, 30%, 25%, 15%);
+      }
+
+      // Resource pool / AZ
+      &:nth-child(6) {
+        @include breakpoint-widths(0, 0, 20%, 12%);
+      }
+
+      // CPU
+      &:nth-child(7) {
+        @include breakpoint-widths(0, 0, 0, 12%);
+      }
+
+      // RAM
+      &:nth-child(8) {
+        @include breakpoint-widths(0, 0, 0, 12%);
+      }
+
+      // Storage
+      &:nth-child(9) {
+        @include breakpoint-widths(0, 0, 0, 12%);
+      }
+    }
+  }
+}
