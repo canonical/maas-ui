@@ -115,4 +115,42 @@ describe("pod selectors", () => {
       system_id: "abc123",
     });
   });
+
+  it("can get all pod hosts", () => {
+    const state = {
+      controller: {
+        items: [
+          { name: "playstation-controller", system_id: "aaaaaa" },
+          { name: "xbox-controller", system_id: "bbbbbb" },
+        ],
+      },
+      machine: {
+        items: [
+          { name: "mean-bean-machine", system_id: "cccccc" },
+          { name: "lean-cuisine-machine", system_id: "dddddd" },
+        ],
+      },
+      pod: {
+        items: [
+          { host: "aaaaaa", name: "pod-1" },
+          { host: "bbbbbb", name: "pod-1" },
+          { host: "cccccc", name: "pod-1" },
+        ],
+      },
+    };
+    expect(pod.getAllHosts(state)).toStrictEqual([
+      {
+        name: "playstation-controller",
+        system_id: "aaaaaa",
+      },
+      {
+        name: "xbox-controller",
+        system_id: "bbbbbb",
+      },
+      {
+        name: "mean-bean-machine",
+        system_id: "cccccc",
+      },
+    ]);
+  });
 });
