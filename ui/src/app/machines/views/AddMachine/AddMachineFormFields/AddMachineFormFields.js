@@ -83,7 +83,7 @@ export const AddMachineFormFields = ({ saved }) => {
   ];
 
   const macAddressRequired =
-    values.power_type === "ipmi" ? {} : { required: "required" };
+    values.power_type === "ipmi" ? {} : { required: true };
 
   return (
     <Row>
