@@ -58,7 +58,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "betterer": "betterer",
-    "lint": "yarn lint-package-json && yarn lint-js && yarn betterer",
+    "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
     "lint-package-json": "npmPkgJsonLint .",
     "clean": "rm -rf node_modules build dist"
