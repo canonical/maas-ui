@@ -4,6 +4,7 @@
 - [Running a branch](#running-a-branch)
 - [Setting up or connecting to a MAAS](#maas-deployments)
 - [Creating a Multipass instance](#creating-a-multipass-instance)
+- [Creating a LXD instance](#creating-a-lxd-instance)
 - [Building for production](#building)
 - [Testing with Cypress](#testing-with-cypress)
 - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
@@ -14,9 +15,13 @@
 
 ## Set up a development container
 
-You may wish to use an existing Multipass instance or you can create a new one (see the section on [setting up a Multipass instance](#creating-a-multipass-instance)).
+### Start the instance
 
-For now, we'll assume you have a Multipass instance name "dev".
+You may wish to use an existing instance, or you can [create a Multipass instance](#creating-a-multipass-instance) or [create a LXD instance](#creating-a-lxd-instance).
+
+For now we'll assume you have an instance called "dev".
+
+#### Multipass
 
 Start your instance:
 
@@ -28,6 +33,20 @@ Make sure your instance has [SSH credentials](#ssh-credentials) and then SSH int
 
 ```shell
 ssh [-A] multipass@dev.local
+```
+
+#### LXD
+
+Start your instance:
+
+```shell
+lxc start dev
+```
+
+Connect to the instance as the provided `ubuntu` user:
+
+```shell
+lxc exec dev bash -- su ubuntu
 ```
 
 ### Clone the repository
@@ -125,12 +144,20 @@ Once connected to the VPN you can connect to one of the following MAAS deploymen
 
 The easiest way to run a MAAS locally is using a snap. However, this method does not provide sample data and therefore will not have everything e.g. there will be no machines.
 
-First you'll need to [create a Multipass instance](#creating-a-multipass-instance), call it something like "snap-maas".
+First you'll need to either [create a Multipass instance](#creating-a-multipass-instance) or [create a LXD container](#creating-a-lxd-container), call it something like "snap-maas".
 
 Then enter the shell for that instance:
 
+#### Multipass
+
 ```shell
 multipass shell snap-maas
+```
+
+#### LXD
+
+```shell
+lxc exec snap-maas bash -- su ubuntu
 ```
 
 Now install MAAS and a test database:
@@ -173,12 +200,19 @@ sudo snap refresh --channel=2.8 maas
 
 ### Development deployment
 
-First you'll need to [create a Multipass instance](#creating-a-multipass-instance), call it something like "dev-maas".
+First you'll need to either [create a Multipass instance](#creating-a-multipass-instance) or [create a LXD container](#creating-a-lxd-instance), call it something like "dev-maas".
 
 Then enter the shell for that instance:
 
+#### Multipass
+
 ```shell
 multipass shell dev-maas
+```
+
+#### LXD
+```
+lxc exec dev-maas bash -- su ubuntu
 ```
 
 You'll need to fetch the current MAAS master:
@@ -217,9 +251,18 @@ ps -ef | grep 'regiond' | grep -v grep | awk '{print $2}' | xargs -r kill -9
 
 Enter the shell for your MAAS instance:
 
+#### Multipass
+
 ```shell
 multipass shell dev-maas
 ```
+
+#### LXD
+
+``` shell
+lxc exec dev-maas -- su ubuntu
+```
+
 
 If MAAS is currently running then [stop it](#stopping-a-development-maas).
 
@@ -351,7 +394,59 @@ nat on utun0 from bridge100:network to any -> (utun0)
 
 Be aware that this may prevent reaching hosts on your internal network. You can of course comment out the `nat` configuration and rerun `sudo pfctl -f /etc/pf.conf` to reset everything.
 
-## Building
+# Creating a LXD instance
+
+## Install LXD on Linux
+
+The recommended way to install LXD is with the snap. For the latest stable release, use:
+
+``` shell
+snap install lxd
+```
+
+If you previously had the LXD deb package installed, you can migrate all your existing data over with:
+``` shell
+lxd.migrate
+```
+
+See the [official LXD docs](https://linuxcontainers.org/lxd/getting-started-cli/#installation) for information on installing LXD on other OSes.
+
+## Initialise LXD
+
+By default, LXD comes with no configured network or storage. You can get a basic configuration suitable for MAAS with:
+
+``` shell
+lxd init
+```
+
+## Launch the instance
+
+You can launch an instance with the command `lxc launch`:
+
+``` shell
+lxc launch imageserver:imagename instancename
+```
+
+For example, to create an instance based on the Ubuntu Focal Fossa image with the name `focal-maas`, you would run:
+
+``` shell
+lxc launch ubuntu:20.04 focal-maas
+```
+
+See [the image server for LXC and LXD](https://us.images.linuxcontainers.org/) for a list of available images.
+
+## Container credentials
+
+Access your instance with:
+
+```shell
+lxc exec [container-name] bash -- su ubuntu
+```
+
+Then [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
+
+
+# Building
 
 Ensure both node (current LTS) and yarn are installed.
 
@@ -363,11 +458,11 @@ dotrun build-all
 
 Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
 
-## Testing with Cypress
+# Testing with Cypress
 
 [Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
 
-### Running headless tests
+## Running headless tests
 
 To run headless Cypress tests, enter the following command from the root of the project:
 
@@ -377,11 +472,11 @@ yarn test-cypress
 
 This will automatically start legacy, ui and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
 
-### Interactive testing
+## Interactive testing
 
 By launching the Cypress Test Runner, you will be able to to see commands as they execute while also viewing the UI while it's being tested. Note that because the Cypress Test Runner is a graphical application, launching it in a container or VM will require some extra steps because you will need to forward the XVFB messages from Cypress out of the container into an X11 server running on the host machine.
 
-#### Interactive testing on host machine
+### Interactive testing on host machine
 
 If developing directly on your host machine, simply run maas-ui in development as normal:
 
@@ -397,7 +492,7 @@ yarn cypress-open
 
 You should then see a list of test specs in maas-ui. You can run all interactive tests by clicking "Run all specs" in the top-right of the window.
 
-#### Interactive testing in LXD
+### Interactive testing in LXD
 
 You will need to create or update an LXD profile that allows running GUI applications. If creating a new profile, run:
 
@@ -482,7 +577,7 @@ sudo sysctl -p
 
 For more information on running GUI applications in LXD, refer to [this blog post](https://blog.simos.info/how-to-easily-run-graphics-accelerated-gui-apps-in-lxd-containers-on-your-ubuntu-desktop/).
 
-#### Interactive testing in multipass
+### Interactive testing in multipass
 
 Install the following dependencies in your multipass, which are required for Cypress to relay information to the host machine:
 
@@ -508,11 +603,11 @@ TCPKeepAlive yes
 
 The following steps will differ depending on the OS of the host system.
 
-##### Ubuntu setup
+#### Ubuntu setup
 
 Since you are running from an Ubuntu graphical desktop then you already have an X11 server running locally so no further installation is necessary.
 
-##### MacOS setup
+#### MacOS setup
 
 First install XQuartz, which is the Mac version of X11. You can install XQuartz using homebrew with:
 
@@ -530,7 +625,7 @@ open -a XQuartz
 
 In the XQuartz preferences, go to the “Security” tab and make sure you’ve got “Allow connections from network clients” ticked.
 
-##### Establish connection
+#### Establish connection
 
 Establish an ssh connection from your graphical desktop to the remote X client using the “-Y” switch for trusted X11 forwarding. Note that you may need to add your host's public SSH key to the multipass' list of allowed hosts.
 
@@ -544,7 +639,7 @@ You should now be able to run the Cypress Test Runner by running:
 yarn cypress-open
 ```
 
-## Adding a new yarn workspace
+# Adding a new yarn workspace
 
 To add a new yarn workspace, edit `package.json` and add the project's directory name to the `workspaces` array.
 
