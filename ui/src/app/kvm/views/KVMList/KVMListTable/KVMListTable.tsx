@@ -56,6 +56,7 @@ const KVMListTable = (): JSX.Element => {
     <Row>
       <Col size={12}>
         <MainTable
+          className="kvm-list-table"
           headers={[
             { content: "FQDN" },
             {
