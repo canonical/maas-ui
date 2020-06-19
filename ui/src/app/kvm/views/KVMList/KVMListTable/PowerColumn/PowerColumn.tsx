@@ -26,7 +26,7 @@ const PowerColumn = ({ id }: Props): JSX.Element => {
   const iconClass = getPowerIcon(host, loading);
 
   let powerText = "Unknown";
-  if (host && host.power_state) {
+  if (host && "power_state" in host) {
     powerText = capitaliseFirst(host.power_state);
   } else if (!host && loading) {
     powerText = "";

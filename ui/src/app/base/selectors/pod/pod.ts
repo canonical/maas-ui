@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { Pod, RootState, TSFixMe } from "app/base/types";
+import { Controller, Machine, Pod, RootState, TSFixMe } from "app/base/types";
 import controller from "../controller";
 import machine from "../machine";
 
@@ -57,15 +57,44 @@ const getById = createSelector(
 );
 
 /**
+ * Returns all machines/controllers that host a pod.
+ * @param {Object} state - The redux state.
+ * @returns {Object} Pod host machine/controller.
+ */
+const getAllHosts = createSelector(
+  [all, machine.all, controller.all],
+  (pods: Pod[], machines: Machine[], controllers: Controller[]) => {
+    return pods.reduce((hosts, pod) => {
+      if (pod.host) {
+        const hostMachine = machines.find(
+          (machine) => machine.system_id === pod.host
+        );
+        if (hostMachine) {
+          return [...hosts, hostMachine];
+        } else {
+          const hostController = controllers.find(
+            (controller) => controller.system_id === pod.host
+          );
+          if (hostController) {
+            return [...hosts, hostController];
+          }
+        }
+      }
+      return hosts;
+    }, []);
+  }
+);
+
+/**
  * Returns the pod host, which can be either a machine or controller.
  * @param {Object} state - The redux state.
  * @returns {Object} Pod host machine/controller.
  */
 const getHost = createSelector(
   [machine.all, controller.all, (_: RootState, pod: Pod) => pod],
-  (machines, controllers, pod) => {
+  (machines: Machine[], controllers: Controller[], pod: Pod) => {
     if (!(pod && pod.host)) {
-      return;
+      return null;
     }
     const hostMachine = machines.find(
       (machine) => machine.system_id === pod.host
@@ -80,6 +109,7 @@ const getHost = createSelector(
 const pod = {
   all,
   errors,
+  getAllHosts,
   getById,
   getHost,
   loaded,

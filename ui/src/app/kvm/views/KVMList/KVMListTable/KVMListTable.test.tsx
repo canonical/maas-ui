@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import { nodeStatus } from "app/base/enum";
 import KVMListTable from "./KVMListTable";
 
 const mockStore = configureStore();
@@ -63,6 +64,28 @@ describe("KVMListTable", () => {
             },
             zone: 1,
           },
+          {
+            cpu_over_commit_ratio: 1,
+            composed_machines_count: 5,
+            host: null,
+            id: 2,
+            memory_over_commit_ratio: 1,
+            name: "pod-2",
+            owners_count: 5,
+            pool: 2,
+            total: {
+              cores: 16,
+              local_storage: 2000000000000,
+              memory: 16384,
+            },
+            type: "lxd",
+            used: {
+              cores: 8,
+              local_storage: 200000000000,
+              memory: 4068,
+            },
+            zone: 1,
+          },
         ],
       },
       resourcepool: {
@@ -106,5 +129,219 @@ describe("KVMListTable", () => {
     expect(
       actualActions.every((action) => expectedActions.includes(action.type))
     ).toBe(true);
+  });
+
+  it("shows pods sorted by descending FQDN by default", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="fqdn-header"] i').exists()).toBe(true);
+    expect(
+      wrapper
+        .find('[data-test="fqdn-header"] i')
+        .props()
+        .className.includes("u-mirror--y")
+    ).toBe(false);
+  });
+
+  it("can sort by parameters of the pods themselves", () => {
+    const state = { ...initialState };
+    state.pod.items[0].composed_machines_count = 1;
+    state.pod.items[1].composed_machines_count = 2;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+
+    // Pods are initially sorted by descending FQDN
+    expect(
+      wrapper.find('[data-test="vms-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "name",
+      direction: "descending",
+    });
+
+    // Click the VMs table header to order by descending VMs count
+    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="vms-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "composed_machines_count",
+      direction: "descending",
+    });
+    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+
+    // Click the VMs table header again to order by ascending VMs count
+    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="vms-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "composed_machines_count",
+      direction: "ascending",
+    });
+    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+
+    // Click the VMs table header again to remove sort
+    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="vms-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "",
+      direction: "none",
+    });
+  });
+
+  it("can sort by power state of pod hosts", () => {
+    const state = { ...initialState };
+    state.machine.items = [
+      {
+        power_state: "on",
+        system_id: "abc123",
+      },
+      {
+        power_state: "error",
+        system_id: "def456",
+      },
+    ];
+    state.pod.items[0].host = "abc123";
+    state.pod.items[1].host = "def456";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+
+    // Sort pods by descending power state.
+    wrapper.find('[data-test="power-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="power-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "power",
+      direction: "descending",
+    });
+    // First pod host is "on", second pod host is "error", so second pod should be first.
+    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+
+    // Reverse sort order
+    wrapper.find('[data-test="power-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="power-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "power",
+      direction: "ascending",
+    });
+    // First pod host is "on", second pod host is "error", so first pod should be first.
+    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+  });
+
+  it("can sort by OS of pod hosts", () => {
+    const state = { ...initialState };
+    state.machine.items = [
+      {
+        distro_series: "bionic",
+        osystem: "ubuntu",
+        status_code: nodeStatus.DEPLOYED,
+        system_id: "abc123",
+      },
+      {
+        distro_series: "centos70",
+        osystem: "centos",
+        status_code: nodeStatus.DEPLOYED,
+        system_id: "def456",
+      },
+    ];
+    state.pod.items[0].host = "abc123";
+    state.pod.items[1].host = "def456";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+
+    // Sort pods by descending OS.
+    wrapper.find('[data-test="os-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="os-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "os",
+      direction: "descending",
+    });
+    // First pod host is "Ubuntu 18.04 LTS", second pod host is "CentOS 7", so second pod should be first.
+    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+
+    // Reverse sort order
+    wrapper.find('[data-test="os-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="os-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "os",
+      direction: "ascending",
+    });
+    // First pod host is "Ubuntu 18.04 LTS", second pod host is "CentOS 7", so first pod should be first.
+    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+  });
+
+  it("can sort by pod resource pool", () => {
+    const state = { ...initialState };
+    state.resourcepool.items = [
+      {
+        id: 1,
+        name: "first-pool",
+      },
+      {
+        id: 2,
+        name: "second-pool",
+      },
+    ];
+    state.pod.items[0].pool = 1;
+    state.pod.items[1].pool = 2;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+
+    // Sort pods by descending pool.
+    wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="pool-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "pool",
+      direction: "descending",
+    });
+    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+
+    // Reverse sort order
+    wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
+    expect(
+      wrapper.find('[data-test="pool-header"]').props().currentSort
+    ).toStrictEqual({
+      key: "pool",
+      direction: "ascending",
+    });
+    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
   });
 });
