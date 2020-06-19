@@ -146,4 +146,30 @@ describe("AddMachineFormFields", () => {
     wrapper.update();
     expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(false);
   });
+
+  it("does not require MAC address field if power_type is 'ipmi'", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <AddMachineForm />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Power type is "manual" by default, therefore MAC address is required.
+    expect(wrapper.find("Input[name='pxe_mac']").props().required).toBe(true);
+    // Select the ipmi power type from the dropdown.
+    await act(async () => {
+      wrapper
+        .find("select[name='power_type']")
+        .props()
+        .onChange({ target: { name: "power_type", value: "ipmi" } });
+    });
+    wrapper.update();
+    // "ipmi" power type should not require MAC address.
+    expect(wrapper.find("Input[name='pxe_mac']").props().required).toBe(false);
+  });
 });

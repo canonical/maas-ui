@@ -1206,6 +1206,18 @@
     npmlog "^4.1.2"
     tslib "^2.0.0"
 
+"@betterer/regexp@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-1.2.0.tgz#d42727a18ca63b7bf01ce92774678174d98eeddb"
+  integrity sha512-55QVcPpcamX51G1jJHcx74DwNtDmOtA/y10+sTWooypu9SpflOkwIvqlSnYmlFsa9EeNGqB5ZK2no9IrwJ9xGQ==
+  dependencies:
+    "@betterer/betterer" "^1.2.0"
+    "@betterer/errors" "^1.2.0"
+    callsite "^1.0.0"
+    glob "^7.1.4"
+    minimatch "^3.0.4"
+    tslib "^2.0.0"
+
 "@betterer/typescript@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/typescript/-/typescript-1.2.0.tgz#363aafb08cb3487576bf4271f693eea604cb8541"
@@ -2175,7 +2187,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-redux@^7.1.9":
+"@types/react-redux@7.1.9":
   version "7.1.9"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.9.tgz#280c13565c9f13ceb727ec21e767abe0e9b4aec3"
   integrity sha512-mpC0jqxhP4mhmOl3P4ipRsgTgbNofMRXJb08Ms6gekViLj61v1hOZEKWDCyWsdONr6EjEA6ZHXC446wdywDe0w==
