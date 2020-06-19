@@ -1,6 +1,6 @@
 import React from "react";
+import { useParams } from "react-router";
 
-import { useParams } from "app/base/hooks";
 import RepositoryForm from "../RepositoryForm";
 
 export const RepositoryAdd = () => {

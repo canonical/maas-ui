@@ -1,10 +1,10 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import { packagerepository as repositoryActions } from "app/base/actions";
 import { packagerepository as repositorySelectors } from "app/base/selectors";
-import { useParams } from "app/base/hooks";
 import RepositoryForm from "../RepositoryForm";
 
 export const RepositoryEdit = () => {
