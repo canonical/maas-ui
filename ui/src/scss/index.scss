@@ -16,6 +16,9 @@
 // Import MAAS overrides of Vanilla patterns
 @import "./vanilla-overrides";
 
+// Import MAAS global mixins
+@import "./breakpoint-widths";
+
 // Import and include MAAS global styles
 @import "./patterns_buttons";
 @import "./patterns_double-row";
@@ -58,6 +61,10 @@
 @include Section;
 @include TableMenu;
 @include TagSelector;
+
+// kvm
+@import "~app/kvm/views/KVMList/KVMListTable";
+@include KVMListTable;
 
 // machines
 @import "~app/machines/views/MachineList";

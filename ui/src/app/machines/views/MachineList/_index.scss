@@ -1,5 +1,3 @@
-@import "./machine-list-breakpoint-widths";
-
 @mixin MachineList {
   $box-size: 1rem;
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
