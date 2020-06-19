@@ -4,6 +4,7 @@
   "private": true,
   "license": "AGPL-3.0",
   "scripts": {
+    "betterer": "yarn --cwd ui betterer",
     "build": "yarn build-shared",
     "build-all": "yarn clean-all && yarn build-shared && yarn build-legacy && yarn build-ui && yarn build-root && yarn copy-build",
     "build-shared": "cd shared && yarn install && yarn build",

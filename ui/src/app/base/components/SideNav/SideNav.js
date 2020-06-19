@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 
-import { useLocation, useRouter } from "app/base/hooks";
+import { useLocation } from "app/base/hooks";
 
 const _generateSection = (section, location, match) => {
   let subNav = null;
@@ -62,7 +62,7 @@ const _generateSection = (section, location, match) => {
 };
 
 export const SideNav = ({ items }) => {
-  const { match } = useRouter();
+  const match = useRouteMatch();
   const { location } = useLocation();
   const sections = items.map((item) => _generateSection(item, location, match));
   return (

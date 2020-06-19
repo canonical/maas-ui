@@ -1,7 +1,6 @@
 import React from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, useRouteMatch } from "react-router-dom";
 
-import { useRouter } from "app/base/hooks";
 import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
 import DhcpAdd from "app/settings/views/Dhcp/DhcpAdd";
@@ -32,7 +31,7 @@ import VMWare from "app/settings/views/Images/VMWare";
 import Windows from "app/settings/views/Images/Windows";
 
 const Routes = () => {
-  const { match } = useRouter();
+  const match = useRouteMatch();
   return (
     <Switch>
       <Route

@@ -1,8 +1,8 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
-import { useParams } from "app/base/hooks";
 import { token as tokenActions } from "app/preferences/actions";
 import { token as tokenSelectors } from "app/preferences/selectors";
 import APIKeyForm from "../APIKeyForm";

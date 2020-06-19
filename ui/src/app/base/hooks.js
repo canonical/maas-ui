@@ -20,8 +20,6 @@ import { simpleObjectEquality } from "app/settings/utils";
 
 export const useRouter = () => useContext(RouterContext);
 
-export const useParams = () => useRouter().match.params;
-
 export const useLocation = () => {
   const { location, history } = useRouter();
   function navigate(to, { replace = false } = {}) {
