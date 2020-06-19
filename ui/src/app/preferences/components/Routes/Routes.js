@@ -1,7 +1,6 @@
 import React from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, useRouteMatch } from "react-router-dom";
 
-import { useRouter } from "app/base/hooks";
 import AddSSHKey from "app/preferences/views/SSHKeys/AddSSHKey";
 import AddSSLKey from "app/preferences/views/SSLKeys/AddSSLKey";
 import APIKeyAdd from "app/preferences/views/APIKeys/APIKeyAdd";
@@ -13,7 +12,7 @@ import SSHKeyList from "app/preferences/views/SSHKeys/SSHKeyList";
 import SSLKeyList from "app/preferences/views/SSLKeys/SSLKeyList";
 
 const Routes = () => {
-  const { match } = useRouter();
+  const match = useRouteMatch();
   return (
     <Switch>
       <Redirect exact from={`${match.path}/`} to={`${match.path}/details`} />
