@@ -82,8 +82,7 @@ export const AddMachineFormFields = ({ saved }) => {
     })),
   ];
 
-  const macAddressRequired =
-    values.power_type === "ipmi" ? {} : { required: true };
+  const macAddressRequired = values.power_type !== "ipmi";
 
   return (
     <Row>
@@ -136,7 +135,7 @@ export const AddMachineFormFields = ({ saved }) => {
             setFieldValue("pxe_mac", formatMacAddress(e.target.value));
           }}
           placeholder="00:00:00:00:00:00"
-          {...macAddressRequired}
+          required={macAddressRequired}
           type="text"
         />
         {extraMACs.map((mac, i) => (
