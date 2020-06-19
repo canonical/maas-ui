@@ -4,12 +4,12 @@ import { smaller } from "@betterer/constraints";
 
 const { execSync } = require("child_process");
 
-const jsFileCount = execSync(
+const jsFileCount = parseInt(execSync(
   'find . -type f -name "*.js" -not -path "./node_modules/*" | wc -l',
   { encoding: "utf8" }
 )
   .replace("\n", "")
-  .trim();
+  .trim());
 
 export default {
   "stricter compilation": typescriptBetterer("./tsconfig.json", {
