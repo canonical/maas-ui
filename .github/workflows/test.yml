@@ -26,3 +26,20 @@ jobs:
       - run: yarn build-all
         env:
           CI: true
+  betterer:
+    name: Betterer
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - run: yarn betterer
+        env:
+          CI: true
