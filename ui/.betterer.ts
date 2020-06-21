@@ -1,5 +1,5 @@
 import { typescriptBetterer } from "@betterer/typescript";
-import { regexpBetterer } from '@betterer/regexp';
+import { regexpBetterer } from "@betterer/regexp";
 import { smaller } from "@betterer/constraints";
 
 const { execSync } = require("child_process");
