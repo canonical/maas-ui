@@ -50,6 +50,32 @@ describe("pod selectors", () => {
     expect(pod.saved(state)).toEqual(true);
   });
 
+  it("can get the selected pod ids", () => {
+    const state = {
+      pod: {
+        selected: [1, 2, 4],
+        items: [],
+      },
+    };
+    expect(pod.selectedIDs(state)).toEqual([1, 2, 4]);
+  });
+
+  it("can get the selected pods", () => {
+    const state = {
+      pod: {
+        selected: [1, 2],
+        items: [
+          { id: 1, name: "pod-1" },
+          { id: 2, name: "pod-2" },
+        ],
+      },
+    };
+    expect(pod.selected(state)).toEqual([
+      { id: 1, name: "pod-1" },
+      { id: 2, name: "pod-2" },
+    ]);
+  });
+
   it("can get the errors state", () => {
     const state = {
       pod: {

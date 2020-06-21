@@ -58,6 +58,13 @@ describe("pod actions", () => {
     });
   });
 
+  it("can handle selecting pods", () => {
+    expect(pod.setSelected([{ id: 1 }, { id: 2 }, { id: 4 }])).toEqual({
+      type: "SET_SELECTED_PODS",
+      payload: [1, 2, 4],
+    });
+  });
+
   it("can handle cleaning pods", () => {
     expect(pod.cleanup()).toEqual({
       type: "CLEANUP_POD",

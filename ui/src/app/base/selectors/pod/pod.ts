@@ -40,11 +40,27 @@ const saving = (state: RootState): boolean => state.pod.saving;
 const saved = (state: RootState): boolean => state.pod.saved;
 
 /**
+ * Returns selected pod ids.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Selected pod ids.
+ */
+const selectedIDs = (state: RootState): number[] => state.pod.selected;
+
+/**
  * Returns pod errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Machine errors state.
  */
 const errors = (state: RootState): TSFixMe => state.pod.errors;
+
+/**
+ * Returns selected pods.
+ * @param {Object} state - The redux state.
+ * @returns {Array} Selected pods.
+ */
+const selected = createSelector([all, selectedIDs], (pods, selectedIDs) =>
+  selectedIDs.map((id) => pods.find((pod) => id === pod.id))
+);
 
 /**
  * Returns a pod for the given id.
@@ -116,6 +132,8 @@ const pod = {
   loading,
   saving,
   saved,
+  selected,
+  selectedIDs,
 };
 
 export default pod;
