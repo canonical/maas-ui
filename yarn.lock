@@ -1169,6 +1169,24 @@
     ts-node "^8.5.4"
     tslib "^2.0.0"
 
+"@betterer/betterer@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@betterer/betterer/-/betterer-1.2.1.tgz#5ad745fddc2479a0f17d2ca80e5df24330797b8d"
+  integrity sha512-fqeli8Qcn122tYjqTBszEy6VltbxbIqAZ1KQ9mljPfas0hy+kbvpuji1tJqWsNv0aJNsEhy6FWDW/wFSdl5KjQ==
+  dependencies:
+    "@betterer/constraints" "^1.0.2"
+    "@betterer/errors" "^1.2.0"
+    "@betterer/logger" "^1.0.2"
+    chokidar "^3.3.1"
+    djb2a "^1.2.0"
+    find-up "^4.1.0"
+    gitignore-globs "^0.1.1"
+    jest-diff "^26.0.1"
+    lines-and-columns "^1.1.6"
+    safe-string-literal "^1.0.1"
+    ts-node "^8.5.4"
+    tslib "^2.0.0"
+
 "@betterer/cli@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/cli/-/cli-1.2.0.tgz#e7d0c9d41e2ca6613d79251dd5bfb2e39cd9dc54"
@@ -1180,7 +1198,7 @@
     find-up "^4.1.0"
     tslib "^2.0.0"
 
-"@betterer/constraints@^1.0.2":
+"@betterer/constraints@1.0.2", "@betterer/constraints@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-1.0.2.tgz#78ab5033cd551989e272fed06b9d8ba3dd36e939"
   integrity sha512-hUKJqkaDpcJkOZb8oQLBy9BzP3gjpeHGQayNCY6g23CeP0/Ympv+Z03OQzTgVCSg5SutYFeWFjvMxnTI09fkUA==
@@ -1206,12 +1224,12 @@
     npmlog "^4.1.2"
     tslib "^2.0.0"
 
-"@betterer/regexp@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-1.2.0.tgz#d42727a18ca63b7bf01ce92774678174d98eeddb"
-  integrity sha512-55QVcPpcamX51G1jJHcx74DwNtDmOtA/y10+sTWooypu9SpflOkwIvqlSnYmlFsa9EeNGqB5ZK2no9IrwJ9xGQ==
+"@betterer/regexp@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-1.2.1.tgz#57dfc963e438f7d84269e4e57869c1c42c547ed0"
+  integrity sha512-j0vZKfqgBEQl1IqFBaqw87XKzspAWPG9Ru0HuT+CjuXKmkmHOrcYdutrmNYBZ6V/4plmVda+qtuml1MooEOQjA==
   dependencies:
-    "@betterer/betterer" "^1.2.0"
+    "@betterer/betterer" "^1.2.1"
     "@betterer/errors" "^1.2.0"
     callsite "^1.0.0"
     glob "^7.1.4"
