@@ -109,6 +109,7 @@ const ContextualMenu = ({
 ContextualMenu.propTypes = {
   className: PropTypes.string,
   constrainPanelWidth: PropTypes.bool,
+  dropdownClassName: PropTypes.string,
   dropdownContent: PropTypes.node,
   hasToggleIcon: PropTypes.bool,
   links: PropTypes.arrayOf(

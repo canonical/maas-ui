@@ -155,10 +155,10 @@ export const useWindowTitle = (title) => {
 
 /**
  * Send an analytics event.
- * @param {String} sendCondition - Whether the analytics event should be sent.
- * @param {String} eventCategory - The analytics category.
- * @param {String} eventAction - The analytics action.
- * @param {String} eventLabel - The analytics label.
+ * @param {boolean} sendCondition - Whether the analytics event should be sent.
+ * @param {string} eventCategory - The analytics category.
+ * @param {string} eventAction - The analytics action.
+ * @param {string} eventLabel - The analytics label.
  */
 export const useSendAnalytics = (
   sendCondition,
@@ -247,7 +247,7 @@ export const usePowerParametersSchema = (
   const [Schema, setSchema] = useState(generateSchemaFunc({}));
 
   useEffect(() => {
-    if (powerType) {
+    if (powerType && powerType.fields) {
       const parametersSchema = powerType.fields.reduce((schema, field) => {
         if (!chassis || (chassis && field.scope !== "node")) {
           if (field.required) {

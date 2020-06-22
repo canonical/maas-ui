@@ -185,6 +185,7 @@ export const AddMachineFormFields = ({ saved }) => {
       </Col>
       <Col size="5">
         <PowerTypeFields
+          driverType="node"
           formikProps={formikProps}
           powerTypes={powerTypes}
           selectedPowerType={values.power_type}

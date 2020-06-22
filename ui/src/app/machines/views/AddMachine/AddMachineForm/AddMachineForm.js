@@ -171,7 +171,8 @@ export const AddMachineForm = () => {
                 pool: resourcePools.find((pool) => pool.name === values.pool),
                 power_parameters: formatPowerParameters(
                   powerType,
-                  values.power_parameters
+                  values.power_parameters,
+                  "node"
                 ),
                 power_type: values.power_type,
                 pxe_mac: values.pxe_mac,

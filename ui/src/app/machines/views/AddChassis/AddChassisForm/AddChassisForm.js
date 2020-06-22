@@ -111,7 +111,7 @@ export const AddChassisForm = () => {
                 ...formatPowerParameters(
                   powerType,
                   values.power_parameters,
-                  true
+                  "chassis"
                 ),
               };
               dispatch(machineActions.addChassis(params));

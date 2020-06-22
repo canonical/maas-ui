@@ -8,10 +8,10 @@ import NotFound from "app/base/views/NotFound";
 const KVM = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path="/kvm">
+      <Route exact path={["/kvm", "/kvm/add"]}>
         <KVMList />
       </Route>
-      <Route path="/kvm/:id">
+      <Route exact path="/kvm/:id">
         <KVMDetails />
       </Route>
       <Route path="*">

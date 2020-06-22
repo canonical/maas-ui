@@ -35,7 +35,7 @@ export const AddChassisFormFields = ({ chassisPowerTypes }) => {
       </Col>
       <Col size="5">
         <PowerTypeFields
-          forChassis
+          driverType="chassis"
           formikProps={formikProps}
           powerTypes={chassisPowerTypes}
           selectedPowerType={values.power_type}
