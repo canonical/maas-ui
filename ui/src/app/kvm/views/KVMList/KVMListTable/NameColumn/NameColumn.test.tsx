@@ -19,6 +19,7 @@ describe("NameColumn", () => {
             name: "pod-1",
           },
         ],
+        selected: [],
       },
     };
   });
@@ -29,11 +30,27 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn id={1} />
+          <NameColumn handleCheckbox={jest.fn()} id={1} />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Link").text()).toBe("pod-1");
     expect(wrapper.find("Link").props().to).toBe("/kvm/1");
+  });
+
+  it("sets checkbox to checked if pod is in selected state", () => {
+    const state = { ...initialState };
+    state.pod.selected = [1];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn handleCheckbox={jest.fn()} id={1} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Input").prop("checked")).toBe(true);
   });
 });

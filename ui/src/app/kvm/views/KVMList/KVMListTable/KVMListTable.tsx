@@ -1,4 +1,5 @@
-import { Col, MainTable, Row } from "@canonical/react-components";
+import { Col, Input, MainTable, Row } from "@canonical/react-components";
+import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -38,6 +39,12 @@ type Sort = {
   direction: "ascending" | "descending" | "none";
   key: string;
 };
+
+const checkboxChecked = (pods: Pod[], selectedPodIDs: number[]) =>
+  pods.some((pod) => selectedPodIDs.includes(pod.id));
+
+const checkboxMixed = (pods: Pod[], selectedPodIDs: number[]) =>
+  selectedPodIDs.length && pods.some((pod) => !selectedPodIDs.includes(pod.id));
 
 const podSort = (
   currentSort: Sort,
@@ -94,6 +101,7 @@ const podSort = (
 
 const generateRows = (
   pods: Pod[],
+  handlePodCheckbox: (pod: Pod) => void,
   currentSort: Sort,
   podHosts: (Controller | Machine)[],
   pools: ResourcePool[],
@@ -105,7 +113,9 @@ const generateRows = (
   return sortedPods.map((pod) => ({
     key: pod.id,
     columns: [
-      { content: <NameColumn id={pod.id} /> },
+      {
+        content: <NameColumn handleCheckbox={handlePodCheckbox} id={pod.id} />,
+      },
       { content: <PowerColumn id={pod.id} /> },
       { content: <TypeColumn id={pod.id} /> },
       { className: "u-align--right", content: <VMsColumn id={pod.id} /> },
@@ -120,10 +130,11 @@ const generateRows = (
 
 const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
+  const osReleases = useSelector(generalSelectors.osInfo.getAllOsReleases);
   const pods = useSelector(podSelectors.all);
   const podHosts = useSelector(podSelectors.getAllHosts);
   const pools = useSelector(poolSelectors.all);
-  const osReleases = useSelector(generalSelectors.osInfo.getAllOsReleases);
+  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
 
   const [currentSort, setCurrentSort] = useState<Sort>({
     key: "name",
@@ -154,6 +165,28 @@ const KVMListTable = (): JSX.Element => {
     }
   };
 
+  const handlePodCheckbox = (pod: Pod) => {
+    let newSelectedPods: number[];
+    if (checkboxChecked([pod], selectedPodIDs)) {
+      newSelectedPods = selectedPodIDs.filter(
+        (podID: number) => podID !== pod.id
+      );
+    } else {
+      newSelectedPods = [...selectedPodIDs, pod.id];
+    }
+    dispatch(podActions.setSelected(newSelectedPods));
+  };
+
+  const handleAllCheckbox = () => {
+    let newSelectedPods: number[];
+    if (checkboxChecked(pods, selectedPodIDs)) {
+      newSelectedPods = [];
+    } else {
+      newSelectedPods = pods.map((pod) => pod.id);
+    }
+    dispatch(podActions.setSelected(newSelectedPods));
+  };
+
   return (
     <Row>
       <Col size={12}>
@@ -162,14 +195,31 @@ const KVMListTable = (): JSX.Element => {
           headers={[
             {
               content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-test="fqdn-header"
-                  onClick={() => updateSort("name")}
-                  sortKey="name"
-                >
-                  FQDN
-                </TableHeader>
+                <div className="u-flex">
+                  <Input
+                    checked={
+                      checkboxChecked(pods, selectedPodIDs) && pods.length !== 0
+                    }
+                    className={classNames("has-inline-label", {
+                      "p-checkbox--mixed": checkboxMixed(pods, selectedPodIDs),
+                    })}
+                    data-test="all-pods-checkbox"
+                    disabled={pods.length === 0}
+                    id="all-pods-checkbox"
+                    label={" "}
+                    onChange={() => handleAllCheckbox()}
+                    type="checkbox"
+                    wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
+                  />
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="fqdn-header"
+                    onClick={() => updateSort("name")}
+                    sortKey="name"
+                  >
+                    FQDN
+                  </TableHeader>
+                </div>
               ),
             },
             {
@@ -279,7 +329,14 @@ const KVMListTable = (): JSX.Element => {
             },
           ]}
           paginate={50}
-          rows={generateRows(pods, currentSort, podHosts, pools, osReleases)}
+          rows={generateRows(
+            pods,
+            handlePodCheckbox,
+            currentSort,
+            podHosts,
+            pools,
+            osReleases
+          )}
         />
       </Col>
     </Row>

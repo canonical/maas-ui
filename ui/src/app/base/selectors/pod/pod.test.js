@@ -67,6 +67,7 @@ describe("pod selectors", () => {
         items: [
           { id: 1, name: "pod-1" },
           { id: 2, name: "pod-2" },
+          { id: 3, name: "pod-3" },
         ],
       },
     };

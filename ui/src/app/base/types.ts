@@ -183,6 +183,11 @@ export type ResourcePoolState = {
   saving: boolean;
 };
 
+export type SelectPodAction = {
+  type: "SET_SELECTED_PODS";
+  payload: number[];
+};
+
 export type TestStatus = {
   status: number;
   pending: number;

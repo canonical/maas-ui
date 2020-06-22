@@ -87,6 +87,7 @@ describe("KVMListTable", () => {
             zone: 1,
           },
         ],
+        selected: [],
       },
       resourcepool: {
         items: [
@@ -166,7 +167,7 @@ describe("KVMListTable", () => {
 
     // Pods are initially sorted by descending FQDN
     expect(
-      wrapper.find('[data-test="vms-header"]').props().currentSort
+      wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "name",
       direction: "descending",
@@ -175,7 +176,7 @@ describe("KVMListTable", () => {
     // Click the VMs table header to order by descending VMs count
     wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').props().currentSort
+      wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "composed_machines_count",
       direction: "descending",
@@ -185,7 +186,7 @@ describe("KVMListTable", () => {
     // Click the VMs table header again to order by ascending VMs count
     wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').props().currentSort
+      wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "composed_machines_count",
       direction: "ascending",
@@ -195,7 +196,7 @@ describe("KVMListTable", () => {
     // Click the VMs table header again to remove sort
     wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').props().currentSort
+      wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "",
       direction: "none",
@@ -229,7 +230,7 @@ describe("KVMListTable", () => {
     // Sort pods by descending power state.
     wrapper.find('[data-test="power-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="power-header"]').props().currentSort
+      wrapper.find('[data-test="power-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "power",
       direction: "descending",
@@ -240,7 +241,7 @@ describe("KVMListTable", () => {
     // Reverse sort order
     wrapper.find('[data-test="power-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="power-header"]').props().currentSort
+      wrapper.find('[data-test="power-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "power",
       direction: "ascending",
@@ -280,7 +281,7 @@ describe("KVMListTable", () => {
     // Sort pods by descending OS.
     wrapper.find('[data-test="os-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="os-header"]').props().currentSort
+      wrapper.find('[data-test="os-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "os",
       direction: "descending",
@@ -291,7 +292,7 @@ describe("KVMListTable", () => {
     // Reverse sort order
     wrapper.find('[data-test="os-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="os-header"]').props().currentSort
+      wrapper.find('[data-test="os-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "os",
       direction: "ascending",
@@ -327,7 +328,7 @@ describe("KVMListTable", () => {
     // Sort pods by descending pool.
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="pool-header"]').props().currentSort
+      wrapper.find('[data-test="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
       direction: "descending",
@@ -337,11 +338,106 @@ describe("KVMListTable", () => {
     // Reverse sort order
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="pool-header"]').props().currentSort
+      wrapper.find('[data-test="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
       direction: "ascending",
     });
     expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+  });
+
+  it("shows a checked checkbox in header row if all pods are selected", () => {
+    const state = { ...initialState };
+    state.pod.selected = [1, 2];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("[data-test='all-pods-checkbox'] input[checked=true]").length
+    ).toBe(1);
+    expect(
+      wrapper
+        .find("[data-test='all-pods-checkbox'] input")
+        .props()
+        .className.includes("p-checkbox--mixed")
+    ).toBe(false);
+  });
+
+  it("shows a mixed checkbox in header row if only some pods are selected", () => {
+    const state = { ...initialState };
+    state.pod.selected = [1];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("[data-test='all-pods-checkbox'] input[checked=true]").length
+    ).toBe(1);
+    expect(
+      wrapper
+        .find("[data-test='all-pods-checkbox'] input")
+        .props()
+        .className.includes("p-checkbox--mixed")
+    ).toBe(true);
+  });
+
+  it("correctly dispatches action when unchecked pod checkbox clicked", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("[data-test='pod-checkbox'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.pod.items[0].id },
+      });
+
+    expect(
+      store.getActions().find((action) => action.type === "SET_SELECTED_PODS")
+    ).toStrictEqual({
+      type: "SET_SELECTED_PODS",
+      payload: [1],
+    });
+  });
+
+  it("correctly dispatches action when checked pod checkbox clicked", () => {
+    const state = { ...initialState };
+    state.pod.selected = [1];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListTable />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("[data-test='pod-checkbox'] input")
+      .at(0)
+      .simulate("change", {
+        target: { name: state.pod.items[0].id },
+      });
+
+    expect(
+      store.getActions().find((action) => action.type === "SET_SELECTED_PODS")
+    ).toStrictEqual({
+      type: "SET_SELECTED_PODS",
+      payload: [],
+    });
   });
 });
