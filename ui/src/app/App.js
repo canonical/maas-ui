@@ -10,6 +10,7 @@ import {
   auth as authActions,
   general as generalActions,
 } from "app/base/actions";
+import getCookie from "app/utils";
 import { general as generalSelectors } from "app/base/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
@@ -92,20 +93,24 @@ export const App = () => {
     }
   }, [dispatch, connected]);
 
-  // Explicitly check that completedIntro is false so that it doesn't redirect
-  // if the config isn't defined yet.
-  if (completedIntro === false) {
-    window.history.pushState(
-      null,
-      null,
-      `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro`
-    );
-  } else if (authUser && !authUser.completed_intro) {
-    window.history.pushState(
-      null,
-      null,
-      `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro/user`
-    );
+  // the skipintro cookie is set by Cypress to make integration testing easier
+  const skipIntro = getCookie("skipintro");
+  if (!skipIntro) {
+    // Explicitly check that completedIntro is false so that it doesn't redirect
+    // if the config isn't defined yet.
+    if (completedIntro === false) {
+      window.history.pushState(
+        null,
+        null,
+        `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro`
+      );
+    } else if (authUser && !authUser.completed_intro) {
+      window.history.pushState(
+        null,
+        null,
+        `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro/user`
+      );
+    }
   }
 
   let content;

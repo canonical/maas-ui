@@ -4,6 +4,7 @@ export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";
 export { formatPowerParameters } from "./formatPowerParameters";
 export { formatSpeedUnits } from "./formatSpeedUnits";
+export { getCookie } from "./getCookie";
 export { getMachineValue } from "./search";
 export { generateLegacyURL } from "./generateLegacyURL";
 export { getPowerIcon } from "./getPowerIcon";

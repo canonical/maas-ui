@@ -26,6 +26,7 @@
     "cypress": "4.9.0",
     "dotenv-flow": "3.1.0",
     "http-proxy-middleware": "1.0.4",
+    "nanoid": "3.1.10",
     "node-sass-tilde-importer": "1.0.2",
     "npm-package-json-lint": "5.1.0",
     "start-server-and-test": "1.11.0",
@@ -38,5 +39,8 @@
       "prefer-alphabetical-dependencies": "error",
       "prefer-alphabetical-devDependencies": "error"
     }
+  },
+  "dependencies": {
+    "js-cookie": "2.2.1"
   }
 }
