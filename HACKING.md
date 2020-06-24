@@ -6,6 +6,7 @@
 - [Creating a Multipass instance](#creating-a-multipass-instance)
 - [Creating a LXD instance](#creating-a-lxd-instance)
 - [Building for production](#building)
+- [Creating a fake windows image](#creating-a-fake-windows-image)
 - [Testing with Cypress](#testing-with-cypress)
 - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
@@ -211,6 +212,7 @@ multipass shell dev-maas
 ```
 
 #### LXD
+
 ```
 lxc exec dev-maas bash -- su ubuntu
 ```
@@ -259,10 +261,9 @@ multipass shell dev-maas
 
 #### LXD
 
-``` shell
+```shell
 lxc exec dev-maas -- su ubuntu
 ```
-
 
 If MAAS is currently running then [stop it](#stopping-a-development-maas).
 
@@ -400,12 +401,13 @@ Be aware that this may prevent reaching hosts on your internal network. You can 
 
 The recommended way to install LXD is with the snap. For the latest stable release, use:
 
-``` shell
+```shell
 snap install lxd
 ```
 
 If you previously had the LXD deb package installed, you can migrate all your existing data over with:
-``` shell
+
+```shell
 lxd.migrate
 ```
 
@@ -415,7 +417,7 @@ See the [official LXD docs](https://linuxcontainers.org/lxd/getting-started-cli/
 
 By default, LXD comes with no configured network or storage. You can get a basic configuration suitable for MAAS with:
 
-``` shell
+```shell
 lxd init
 ```
 
@@ -423,13 +425,13 @@ lxd init
 
 You can launch an instance with the command `lxc launch`:
 
-``` shell
+```shell
 lxc launch imageserver:imagename instancename
 ```
 
 For example, to create an instance based on the Ubuntu Focal Fossa image with the name `focal-maas`, you would run:
 
-``` shell
+```shell
 lxc launch ubuntu:20.04 focal-maas
 ```
 
@@ -445,7 +447,6 @@ lxc exec [container-name] bash -- su ubuntu
 
 Then [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
 
-
 # Building
 
 Ensure both node (current LTS) and yarn are installed.
@@ -458,11 +459,75 @@ dotrun build-all
 
 Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
 
-# Testing with Cypress
+# Creating a fake windows image
 
+You can create a fake Windows image if you need to test MAAS with a windows image (e.g. for managing license keys).
+
+Note: you will need a local [development](#development-deployment) or [snap](#snap-deployment) MAAS.
+
+Connect to you instance:
+
+#### Multipass
+
+```shell
+multipass shell dev-maas
+```
+
+#### LXD
+
+```shell
+lxc exec dev-maas bash -- su ubuntu
+```
+
+## Create the image
+
+Now create a fake Windows image:
+
+```shell
+dd if=/dev/zero of=windows-dd bs=512 count=10000
+```
+
+## Login to MAAS
+
+You will need to log in to the CLI (if you haven't before).
+
+You will be prompted for you API key which you can get from `<your-maas-url>:5240/MAAS/r/account/prefs/api-keys`.
+
+#### Development MAAS
+
+```shell
+<path-to-maas-dir>/bin/maas login <new-profile-name> http://localhost:5240/MAAS/
+```
+
+#### Snap MAAS
+
+```shell
+maas login <new-profile-name> http://localhost:5240/MAAS/
+```
+
+## Upload the image
+
+Ensure you have downloaded and synced an amd64 ubuntu image (via `<your-maas-url>:5240/MAAS/l/images`), this is required to populate architecture for the following step.
+
+Now you can upload the image (remember to use `<path-to-maas-dir>/bin/maas/...` if you're using a development MAAS):
+
+```shell
+maas <profile-name> boot-resources create name=windows/win2012 title="Windows Server 2012" architecture=amd64/generic filetype=ddtgz content@=windows-dd
+```
+
+Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your Windows image should appear under the "Custom Images" section.
+
+## License keys
+
+If you're testing license keys the format is: `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
+
+# Testing with Cypress
 [Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
 
 ## Running headless tests
+
+### Note
+⚠️ Cypress tests assume that the user `admin` with password `test` exists on the maas server.
 
 To run headless Cypress tests, enter the following command from the root of the project:
 

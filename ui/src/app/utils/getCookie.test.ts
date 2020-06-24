@@ -1,6 +1,6 @@
-import getCookie from "./utils";
+import { getCookie } from "app/utils";
 
-describe("saga utils", () => {
+describe("getCookie", () => {
   it("returns undefined if a cookie is not found", () => {
     expect(getCookie("foo")).toEqual(undefined);
   });
@@ -11,7 +11,6 @@ describe("saga utils", () => {
         return "a=foo; b=bar; c=baz";
       }),
     });
-
     expect(getCookie("b")).toEqual("bar");
   });
 });

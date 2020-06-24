@@ -1,8 +1,8 @@
-import getCookie from "./app/base/sagas/utils";
+import { getCookie } from "app/utils";
 import WebSocketClient from "./websocket-client";
 import { WebSocket } from "mock-socket";
 
-jest.mock("./app/base/sagas/utils");
+jest.mock("app/utils");
 
 describe("websocket client", () => {
   let client, windowWebsocket;
