@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import bakery from "bakery";
-import getCookie from "./utils";
+import { getCookie } from "app/utils";
 
 const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
 const ROOT_API = "/MAAS/api/2.0/";
