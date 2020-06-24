@@ -9,6 +9,7 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: false,
+      selected: [],
     });
   });
 
@@ -24,6 +25,7 @@ describe("pod reducer", () => {
       loading: true,
       saved: false,
       saving: false,
+      selected: [],
     });
   });
 
@@ -37,6 +39,7 @@ describe("pod reducer", () => {
           loading: true,
           saved: false,
           saving: false,
+          selected: [],
         },
         {
           type: "FETCH_POD_SUCCESS",
@@ -52,7 +55,7 @@ describe("pod reducer", () => {
       loaded: true,
       saved: false,
       saving: false,
-
+      selected: [],
       items: [
         { id: 1, name: "pod1" },
         { id: 2, name: "pod2" },
@@ -70,6 +73,7 @@ describe("pod reducer", () => {
           loading: false,
           saved: false,
           saving: false,
+          selected: [],
         },
         {
           error: "Could not fetch pods",
@@ -83,6 +87,7 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: false,
+      selected: [],
     });
   });
 
@@ -96,6 +101,7 @@ describe("pod reducer", () => {
           loading: false,
           saved: true,
           saving: false,
+          selected: [],
         },
         {
           type: "CREATE_POD_START",
@@ -108,6 +114,7 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: true,
+      selected: [],
     });
   });
 
@@ -121,6 +128,7 @@ describe("pod reducer", () => {
           loading: false,
           saved: false,
           saving: true,
+          selected: [],
         },
         {
           error: { name: "Pod name already exists" },
@@ -134,6 +142,7 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: false,
+      selected: [],
     });
   });
 
@@ -147,6 +156,7 @@ describe("pod reducer", () => {
           loading: false,
           saved: false,
           saving: false,
+          selected: [],
         },
         {
           payload: { id: 2, name: "pod2" },
@@ -163,6 +173,35 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: false,
+      selected: [],
+    });
+  });
+
+  it("should correctly reduce SET_SELECTED_PODS", () => {
+    expect(
+      pod(
+        {
+          errors: {},
+          items: [],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: [],
+        },
+        {
+          payload: [1, 2, 4],
+          type: "SET_SELECTED_PODS",
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [1, 2, 4],
     });
   });
 });

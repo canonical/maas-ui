@@ -47,5 +47,9 @@
         @include breakpoint-widths(0, 0, 0, 12%);
       }
     }
+
+    .u-align-header-checkbox {
+      top: -.175rem;
+    }
   }
 }

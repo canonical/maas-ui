@@ -104,6 +104,7 @@ export type MachineState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
+  selected: string[];
 };
 
 export type PodHint = {
@@ -158,6 +159,7 @@ export type PodState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
+  selected: number[];
 };
 
 export type ResourcePool = {
@@ -179,6 +181,11 @@ export type ResourcePoolState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
+};
+
+export type SelectPodAction = {
+  type: "SET_SELECTED_PODS";
+  payload: number[];
 };
 
 export type TestStatus = {

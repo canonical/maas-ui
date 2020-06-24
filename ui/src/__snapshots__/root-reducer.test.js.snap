@@ -152,6 +152,7 @@ Object {
     "loading": false,
     "saved": false,
     "saving": false,
+    "selected": Array [],
   },
   "resourcepool": Object {
     "errors": Object {},
