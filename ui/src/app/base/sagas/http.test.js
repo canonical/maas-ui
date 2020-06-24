@@ -3,7 +3,7 @@ import { throwError } from "redux-saga-test-plan/providers";
 
 import { expectSaga } from "redux-saga-test-plan";
 
-import getCookie from "app/utils";
+import { getCookie } from "app/utils";
 import {
   api,
   checkAuthenticatedSaga,

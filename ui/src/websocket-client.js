@@ -1,4 +1,4 @@
-import getCookie from "app/utils";
+import { getCookie } from "app/utils";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
 class WebSocketClient {
