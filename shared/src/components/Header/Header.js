@@ -241,6 +241,7 @@ export const Header = ({
                   evt.preventDefault();
                   onSkip();
                 }}
+                data-test="skipIntro"
               >
                 Skip
               </a>

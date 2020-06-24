@@ -522,10 +522,12 @@ Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your W
 If you're testing license keys the format is: `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
 
 # Testing with Cypress
-
 [Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
 
 ## Running headless tests
+
+### Note
+⚠️ Cypress tests assume that the user `admin` with password `test` exists on the maas server.
 
 To run headless Cypress tests, enter the following command from the root of the project:
 
