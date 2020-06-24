@@ -1,3 +1,5 @@
+import { login } from "../utils";
+
 context("Machine listing", () => {
   beforeEach(() => {
     login();
