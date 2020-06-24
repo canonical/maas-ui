@@ -1,11 +1,11 @@
 import { customAlphabet } from 'nanoid'
 
-import { generateMac, login } from "./utils";
+import { generateMac, login } from "../utils";
 
 const nanoid = customAlphabet('1234567890abcdefghi', 10);
 context("Machine listing", () => {
   beforeEach(() => {
-    Cypress.config('defaultCommandTimeout', 5000);
+    Cypress.config('defaultCommandTimeout', 10000);
     login();
     cy.setCookie('skipintro', 'true');
     cy.visit(

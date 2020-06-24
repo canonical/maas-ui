@@ -40,7 +40,5 @@
       "prefer-alphabetical-devDependencies": "error"
     }
   },
-  "dependencies": {
-    "js-cookie": "2.2.1"
-  }
+  "dependencies": {}
 }
