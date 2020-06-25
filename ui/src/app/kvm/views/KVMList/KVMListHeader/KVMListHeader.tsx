@@ -22,7 +22,7 @@ const getPodCount = (pods: Pod[], selectedPodIDs: number[]) => {
 
 const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
-  const pods = useSelector(podSelectors.all);
+  const pods = useSelector(podSelectors.kvm);
   const podsLoaded = useSelector(podSelectors.loaded);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
 

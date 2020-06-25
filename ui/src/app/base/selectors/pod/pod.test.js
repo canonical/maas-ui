@@ -10,6 +10,40 @@ describe("pod selectors", () => {
     expect(pod.all(state)).toEqual([{ name: "pod1" }]);
   });
 
+  it("can get all KVMs", () => {
+    const state = {
+      pod: {
+        items: [
+          { name: "kvm1", type: "virsh" },
+          { name: "kvm2", type: "lxd" },
+          { name: "rsd1", type: "rsd" },
+          { name: "rsd2", type: "rsd" },
+        ],
+      },
+    };
+    expect(pod.kvm(state)).toStrictEqual([
+      { name: "kvm1", type: "virsh" },
+      { name: "kvm2", type: "lxd" },
+    ]);
+  });
+
+  it("can get all RSDs", () => {
+    const state = {
+      pod: {
+        items: [
+          { name: "kvm1", type: "virsh" },
+          { name: "kvm2", type: "lxd" },
+          { name: "rsd1", type: "rsd" },
+          { name: "rsd2", type: "rsd" },
+        ],
+      },
+    };
+    expect(pod.rsd(state)).toStrictEqual([
+      { name: "rsd1", type: "rsd" },
+      { name: "rsd2", type: "rsd" },
+    ]);
+  });
+
   it("can get the loading state", () => {
     const state = {
       pod: {

@@ -131,7 +131,7 @@ const generateRows = (
 const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
   const osReleases = useSelector(generalSelectors.osInfo.getAllOsReleases);
-  const pods = useSelector(podSelectors.all);
+  const pods = useSelector(podSelectors.kvm);
   const podHosts = useSelector(podSelectors.getAllHosts);
   const pools = useSelector(poolSelectors.all);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
