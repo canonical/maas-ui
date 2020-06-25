@@ -1,6 +1,4 @@
-import { __RouterContext as RouterContext } from "react-router";
 import { notificationTypes } from "@canonical/react-components";
-import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
@@ -14,26 +12,6 @@ import { machine as machineSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";
 import { kebabToCamelCase } from "app/utils";
 import { simpleObjectEquality } from "app/settings/utils";
-
-// Router hooks inspired by: https://github.com/ReactTraining/react-router/issues/6430#issuecomment-510266079
-// These should be replaced with official hooks if/when they become available.
-
-export const useRouter = () => useContext(RouterContext);
-
-export const useLocation = () => {
-  const { location, history } = useRouter();
-  function navigate(to, { replace = false } = {}) {
-    if (replace) {
-      history.replace(to);
-    } else {
-      history.push(to);
-    }
-  }
-  return {
-    location,
-    navigate,
-  };
-};
 
 /**
  * Returns previous value of a variable.

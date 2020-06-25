@@ -2,6 +2,7 @@ import { Col, Row } from "@canonical/react-components";
 import pluralize from "pluralize";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import {
   machine as machineActions,
@@ -11,7 +12,6 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
-import { useRouter } from "app/base/hooks";
 import Tabs from "app/base/components/Tabs";
 
 export const HeaderStripTabs = () => {
@@ -21,7 +21,7 @@ export const HeaderStripTabs = () => {
   const machinesLoading = useSelector(machineSelectors.loading);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
-  const { location } = useRouter();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(machineActions.fetch());

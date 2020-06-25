@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Spinner, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
@@ -18,15 +18,14 @@ import { config as configSelectors } from "app/settings/selectors";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
-import { useLocation, useRouter } from "app/base/hooks";
 import { websocket } from "./base/actions";
 import Login from "app/base/components/Login";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
 
 export const App = () => {
-  const { history } = useRouter();
-  const { location } = useLocation();
+  const history = useHistory();
+  const location = useLocation();
   const authUser = useSelector(authSelectors.get);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
