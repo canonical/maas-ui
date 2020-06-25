@@ -12,6 +12,22 @@ import machine from "../machine";
 const all = (state: RootState): Pod[] => state.pod.items;
 
 /**
+ * Returns all KVMs.
+ * @param {Object} state - The redux state.
+ * @returns {Array} A list of all KVMs.
+ */
+const kvm = (state: RootState): Pod[] =>
+  state.pod.items.filter((pod) => pod.type !== "rsd");
+
+/**
+ * Returns all RSDs.
+ * @param {Object} state - The redux state.
+ * @returns {Array} A list of all RSDs.
+ */
+const rsd = (state: RootState): Pod[] =>
+  state.pod.items.filter((pod) => pod.type === "rsd");
+
+/**
  * Whether pods are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loading state.
@@ -128,8 +144,10 @@ const pod = {
   getAllHosts,
   getById,
   getHost,
+  kvm,
   loaded,
   loading,
+  rsd,
   saving,
   saved,
   selected,
