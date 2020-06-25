@@ -56,10 +56,7 @@ jobs:
           command: |
             sudo maas init region+rack \
               --maas-url=http://$IP_ADDRESS:5240/MAAS \
-              --database-host=localhost \
-              --database-name=$MAAS_DBNAME \
-              --database-user=$MAAS_DBUSER \
-              --database-pass=$MAAS_DBPASS
+              --database-uri=postgres://$MAAS_DBUSER:$MAAS_DBPASS@localhost/$MAAS_DBNAME
             sudo maas createadmin \
               --username=admin \
               --password=test \
