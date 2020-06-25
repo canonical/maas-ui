@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import pluralize from "pluralize";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, useLocation } from "react-router-dom";
 
-import { useLocation } from "app/base/hooks";
 import {
   filtersToString,
   getCurrentFilters,
@@ -46,7 +45,7 @@ export const HeaderStrip = ({
   setSelectedAction,
 }) => {
   const dispatch = useDispatch();
-  const { location } = useLocation();
+  const location = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
