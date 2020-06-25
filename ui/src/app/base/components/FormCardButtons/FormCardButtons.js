@@ -2,8 +2,7 @@ import { ActionButton, Button } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
-
-import { useRouter } from "app/base/hooks";
+import { useHistory } from "react-router-dom";
 
 export const FormCardButtons = ({
   bordered = true,
@@ -17,7 +16,7 @@ export const FormCardButtons = ({
   submitLabel,
   success,
 }) => {
-  const { history } = useRouter();
+  const history = useHistory();
 
   return (
     <>

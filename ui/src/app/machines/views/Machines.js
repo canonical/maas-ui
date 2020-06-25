@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
-import { useLocation, usePrevious, useRouter } from "app/base/hooks";
+import { usePrevious } from "app/base/hooks";
 import {
   filtersToQueryString,
   filtersToString,
@@ -20,8 +20,8 @@ import HeaderStrip from "app/machines/components/HeaderStrip";
 import Section from "app/base/components/Section";
 
 const Machines = () => {
-  const { history } = useRouter();
-  const { location } = useLocation();
+  const history = useHistory();
+  const location = useLocation();
   const currentFilters = queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
   const [searchFilter, setFilter] = useState(filtersToString(currentFilters));
