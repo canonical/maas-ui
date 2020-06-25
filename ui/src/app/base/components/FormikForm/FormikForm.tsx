@@ -5,7 +5,39 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
 import { useSendAnalytics } from "app/base/hooks";
+import { TSFixMe } from "app/base/types";
 import FormikFormContent from "app/base/components/FormikFormContent";
+
+type Props = {
+  allowAllEmpty?: boolean;
+  allowUnchanged?: boolean;
+  Buttons?: JSX.Element;
+  buttonsBordered?: boolean;
+  cleanup?: () => void;
+  children: JSX.Element;
+  errors?: TSFixMe;
+  initialValues: TSFixMe;
+  loading?: boolean;
+  onCancel?: () => void;
+  onSaveAnalytics?: {
+    action?: string;
+    category?: string;
+    label?: string;
+  };
+  onSubmit: (values?: TSFixMe, formikBag?: TSFixMe) => void;
+  onValuesChanged?: (values: TSFixMe) => void;
+  resetOnSave?: boolean;
+  saving?: boolean;
+  savingLabel?: string;
+  saved?: boolean;
+  savedRedirect?: string;
+  secondarySubmit?: () => void;
+  secondarySubmitLabel?: string;
+  submitAppearance?: string;
+  submitLabel?: string;
+  validationSchema?: TSFixMe;
+  [x: string]: TSFixMe;
+};
 
 const FormikForm = ({
   allowAllEmpty,
@@ -16,12 +48,12 @@ const FormikForm = ({
   children,
   errors,
   initialValues,
+  loading,
   onCancel,
   onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
   resetOnSave,
-  loading,
   saving,
   savingLabel,
   saved,
@@ -32,7 +64,7 @@ const FormikForm = ({
   submitLabel,
   validationSchema,
   ...props
-}) => {
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
 
   useSendAnalytics(

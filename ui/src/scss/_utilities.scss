@@ -1,4 +1,12 @@
 @mixin maas-utilities {
+  .u-display-inline {
+    display: inline;
+  }
+
+  .u-display-inline-block {
+    display: inline-block !important;
+  }
+
   .u-flex {
     display: flex;
   }
@@ -19,6 +27,14 @@
 
   .u-no-text-transform {
     text-transform: none !important;
+  }
+
+  .u-nudge-right {
+    padding-left: $sph-inner !important;
+  }
+
+  .u-nudge-right--small {
+    padding-left: $sph-inner--small !important;
   }
 
   .u-text--light {

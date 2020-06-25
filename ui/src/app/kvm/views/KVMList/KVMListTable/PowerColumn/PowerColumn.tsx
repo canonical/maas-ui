@@ -36,11 +36,7 @@ const PowerColumn = ({ id }: Props): JSX.Element => {
     <DoubleRow
       icon={<i className={iconClass}></i>}
       iconSpace
-      primary={
-        <span className="u-nudge-right--small" data-test="pod-power">
-          {powerText}
-        </span>
-      }
+      primary={<span data-test="pod-power">{powerText}</span>}
     />
   );
 };

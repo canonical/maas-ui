@@ -153,7 +153,7 @@ describe("PowerTypeFields", () => {
     ).toBe("Choice 2");
   });
 
-  it("does not show node fields if using chassis power types", async () => {
+  it("does not show select if showSelect is false", async () => {
     const formikProps = {
       setFieldValue: jest.fn(),
       setFieldTouched: jest.fn(),
@@ -179,7 +179,44 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Formik>
         <PowerTypeFields
-          forChassis
+          formikProps={formikProps}
+          powerTypes={powerTypes}
+          selectedPowerType="power_type"
+          showSelect={false}
+        />
+      </Formik>
+    );
+
+    expect(wrapper.find("Select").exists()).toBe(false);
+  });
+
+  it("does not show node fields if using non-node driver type", async () => {
+    const formikProps = {
+      setFieldValue: jest.fn(),
+      setFieldTouched: jest.fn(),
+    };
+    const powerTypes = [
+      {
+        name: "power_type",
+        description: "Power",
+        fields: [
+          {
+            name: "field1",
+            label: "Label1",
+            scope: "bmc",
+          },
+          {
+            name: "field2",
+            label: "Label2",
+            scope: "node",
+          },
+        ],
+      },
+    ];
+    const wrapper = mount(
+      <Formik>
+        <PowerTypeFields
+          driverType="chassis"
           formikProps={formikProps}
           powerTypes={powerTypes}
           selectedPowerType="power_type"

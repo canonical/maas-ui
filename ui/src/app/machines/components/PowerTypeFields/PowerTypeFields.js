@@ -3,12 +3,13 @@ import React from "react";
 
 import FormikField from "app/base/components/FormikField";
 
-const generateFields = (powerTypeFields, forChassis) => {
-  // When adding a chassis we need only a subset of fields that aren't specific
-  // to individual nodes.
-  const fields = forChassis
-    ? powerTypeFields.filter((field) => field.scope !== "node")
-    : [...powerTypeFields];
+const generateFields = (powerTypeFields, driverType) => {
+  // When adding a chassis or pod we need only a subset of fields that aren't
+  // specific to individual nodes.
+  const fields =
+    driverType === "node"
+      ? [...powerTypeFields]
+      : powerTypeFields.filter((field) => field.scope !== "node");
 
   return fields.map((field) => {
     const { choices, field_type, label, name, required } = field;
@@ -39,10 +40,11 @@ const generateFields = (powerTypeFields, forChassis) => {
 };
 
 export const PowerTypeFields = ({
-  forChassis = false,
+  driverType = "node",
   formikProps,
   powerTypes,
   selectedPowerType,
+  showSelect = true,
 }) => {
   const { setFieldTouched, setFieldValue } = formikProps;
   const powerTypeOptions = [
@@ -57,18 +59,20 @@ export const PowerTypeFields = ({
 
   return (
     <>
-      <FormikField
-        component={Select}
-        label="Power type"
-        name="power_type"
-        options={powerTypeOptions}
-        onChange={(e) => {
-          setFieldValue("power_type", e.target.value);
-          setFieldTouched("power_type", false);
-        }}
-        required
-      />
-      {powerType && generateFields(powerType.fields, forChassis)}
+      {showSelect && (
+        <FormikField
+          component={Select}
+          label="Power type"
+          name="power_type"
+          options={powerTypeOptions}
+          onChange={(e) => {
+            setFieldValue("power_type", e.target.value);
+            setFieldTouched("power_type", false);
+          }}
+          required
+        />
+      )}
+      {powerType && generateFields(powerType.fields, driverType)}
     </>
   );
 };

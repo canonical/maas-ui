@@ -4,12 +4,21 @@ import PropTypes from "prop-types";
 import React, { useRef } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 
+import { TSFixMe } from "app/base/types";
+
+type Props = {
+  Component?: JSX.Element;
+  name: string;
+  value?: string;
+  [x: string]: TSFixMe;
+};
+
 const FormikField = ({
   component: Component = Input,
   name,
   value,
   ...props
-}) => {
+}: Props): JSX.Element => {
   const id = useRef(nanoid());
   const [field, meta] = useField({ name, type: props.type, value });
   return (

@@ -41,11 +41,7 @@ const OSColumn = ({ id }: Props): JSX.Element => {
         loading && <i className="p-icon--spinner u-animation--spin"></i>
       }
       iconSpace
-      primary={
-        <span className="u-nudge-right--small" data-test="pod-os">
-          {osText}
-        </span>
-      }
+      primary={<span data-test="pod-os">{osText}</span>}
     />
   );
 };

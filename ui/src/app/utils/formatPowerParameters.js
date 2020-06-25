@@ -8,6 +8,7 @@
  *
  * @param {Object} powerType - selected power type
  * @param {Object} powerParameters - all power parameters entered in Formik form
+ * @param {String} driverType - power driver type, "chassis" | "node" | "pod"
  * @returns {Object} power parameters relevant to selected power type
  */
 
@@ -22,19 +23,19 @@ const chassisParameterMap = new Map([
 export const formatPowerParameters = (
   powerType,
   powerParameters,
-  chassis = false
+  driverType = "node"
 ) => {
   const formattedParameters = {};
   if (powerType && powerType.fields) {
     powerType.fields.forEach((field) => {
-      if (chassis) {
-        if (field.scope !== "node") {
-          const fieldName =
-            (chassis && chassisParameterMap.get(field.name)) || field.name;
-          formattedParameters[fieldName] = powerParameters[field.name];
-        }
-      } else {
+      if (
+        driverType === "node" ||
+        (driverType === "pod" && field.scope !== "node")
+      ) {
         formattedParameters[field.name] = powerParameters[field.name];
+      } else if (driverType === "chassis" && field.scope !== "node") {
+        const fieldName = chassisParameterMap.get(field.name);
+        formattedParameters[fieldName] = powerParameters[field.name];
       }
     });
   }
