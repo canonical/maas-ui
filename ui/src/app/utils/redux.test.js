@@ -475,6 +475,7 @@ describe("createStandardReducer", () => {
             loading: false,
             saved: false,
             saving: false,
+            selected: [1, 2],
           },
           {
             payload: 2,
@@ -488,6 +489,7 @@ describe("createStandardReducer", () => {
         loading: false,
         saved: false,
         saving: false,
+        selected: [1],
       });
     });
   });

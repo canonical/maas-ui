@@ -1,19 +1,45 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
+import { pod as podSelectors } from "app/base/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
+import Tooltip from "app/base/components/Tooltip";
 
-const KVMListActionMenu = (): JSX.Element => {
+type Props = { setSelectedAction: (action: string) => void };
+
+const KVMListActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
+  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const actionMenuDisabled = selectedPodIDs.length === 0;
+
   return (
-    <ContextualMenu
-      data-test="action-dropdown"
-      hasToggleIcon
-      links={[]}
-      position="right"
-      toggleAppearance="positive"
-      toggleClassName="u-no-margin--bottom"
-      toggleDisabled
-      toggleLabel="Take action"
-    />
+    <Tooltip
+      message={
+        actionMenuDisabled
+          ? "Select KVMs below to perform an action."
+          : undefined
+      }
+      position="left"
+    >
+      <ContextualMenu
+        data-test="action-dropdown"
+        hasToggleIcon
+        links={[
+          {
+            children: "Refresh",
+            onClick: () => setSelectedAction("refresh"),
+          },
+          {
+            children: "Delete",
+            onClick: () => setSelectedAction("delete"),
+          },
+        ]}
+        position="right"
+        toggleAppearance="positive"
+        toggleClassName="u-no-margin--bottom"
+        toggleDisabled={actionMenuDisabled}
+        toggleLabel="Take action"
+      />
+    </Tooltip>
   );
 };
 

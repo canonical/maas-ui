@@ -84,4 +84,20 @@ describe("KVMListHeader", () => {
       "All VM hosts selected"
     );
   });
+
+  it("disables 'Add KVM' button if at least one KVM is selected", () => {
+    const state = { ...initialState };
+    state.pod.selected = [1];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('Button[data-test="add-kvm"]').prop("disabled")).toBe(
+      true
+    );
+  });
 });

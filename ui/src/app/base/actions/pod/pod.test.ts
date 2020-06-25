@@ -58,6 +58,21 @@ describe("pod actions", () => {
     });
   });
 
+  it("can handle refreshing pods", () => {
+    expect(pod.refresh(1)).toEqual({
+      type: "REFRESH_POD",
+      meta: {
+        model: "pod",
+        method: "refresh",
+      },
+      payload: {
+        params: {
+          id: 1,
+        },
+      },
+    });
+  });
+
   it("can handle selecting pods", () => {
     expect(pod.setSelected([1, 2, 4])).toEqual({
       type: "SET_SELECTED_PODS",

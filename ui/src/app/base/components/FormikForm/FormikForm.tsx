@@ -14,7 +14,7 @@ type Props = {
   Buttons?: JSX.Element;
   buttonsBordered?: boolean;
   cleanup?: () => void;
-  children: JSX.Element;
+  children?: JSX.Element;
   errors?: TSFixMe;
   initialValues: TSFixMe;
   loading?: boolean;

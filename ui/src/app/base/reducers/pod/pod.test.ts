@@ -177,6 +177,62 @@ describe("pod reducer", () => {
     });
   });
 
+  it("should correctly reduce REFRESH_POD_ERROR", () => {
+    expect(
+      pod(
+        {
+          errors: {},
+          items: [{ id: 1, cpu_speed: 100 }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: [],
+        },
+        {
+          error: "You dun goofed",
+          type: "REFRESH_POD_ERROR",
+        }
+      )
+    ).toEqual({
+      errors: "You dun goofed",
+      items: [{ id: 1, cpu_speed: 100 }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+    });
+  });
+
+  it("should correctly reduce REFRESH_POD_SUCCESS", () => {
+    expect(
+      pod(
+        {
+          errors: {},
+          items: [{ id: 1, cpu_speed: 100 }],
+          loaded: false,
+          loading: false,
+          saved: false,
+          saving: false,
+          selected: [],
+        },
+        {
+          payload: { id: 1, cpu_speed: 200 },
+          type: "REFRESH_POD_SUCCESS",
+        }
+      )
+    ).toEqual({
+      errors: {},
+      items: [{ id: 1, cpu_speed: 200 }],
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+    });
+  });
+
   it("should correctly reduce SET_SELECTED_PODS", () => {
     expect(
       pod(

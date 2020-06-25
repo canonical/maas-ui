@@ -161,6 +161,11 @@ export const createStandardReducer = (
     [actions.delete.notify]: (state, action) => {
       const index = state.items.findIndex((item) => item.id === action.payload);
       state.items.splice(index, 1);
+      if ("selected" in state) {
+        state.selected = state.selected.filter(
+          (podId) => podId !== action.payload
+        );
+      }
     },
     [actions.cleanup]: (state) => {
       state.errors = {};
