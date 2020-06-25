@@ -14,13 +14,24 @@
                     </li>
                     <li class="p-inline-list__item p-text--muted" ng-if="!loading && page !== 'rsd'">
                         <span ng-if="!selectedItems.length">
-                            {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host available', 'other': 'VM hosts available'}"></ng-pluralize>
+                            {$ kvms.length $} <ng-pluralize count="kvms.length" when="{'one': 'VM host available', 'other': 'VM hosts available'}"></ng-pluralize>
                         </span>
-                        <span ng-if="selectedItems.length && selectedItems.length !== pods.length">
-                            {$ selectedItems.length $} of {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
+                        <span ng-if="selectedItems.length && selectedItems.length !== kvms.length">
+                            {$ selectedItems.length $} of {$ kvms.length $} <ng-pluralize count="kvms.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
                         </span>
-                        <span ng-if="selectedItems.length && selectedItems.length === pods.length">
-                            {$ pods.length $} <ng-pluralize count="pods.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
+                        <span ng-if="selectedItems.length && selectedItems.length === kvms.length">
+                            {$ kvms.length $} <ng-pluralize count="kvms.length" when="{'one': 'VM host selected', 'other': 'VM hosts selected'}"></ng-pluralize>
+                        </span>
+                    </li>
+                    <li class="p-inline-list__item p-text--muted" ng-if="!loading && page === 'rsd'">
+                        <span ng-if="!selectedItems.length">
+                            {$ rsds.length $} <ng-pluralize count="rsds.length" when="{'one': 'RSD available', 'other': 'RSDs available'}"></ng-pluralize>
+                        </span>
+                        <span ng-if="selectedItems.length && selectedItems.length !== rsds.length">
+                            {$ selectedItems.length $} of {$ rsds.length $} <ng-pluralize count="rsds.length" when="{'one': 'RSD selected', 'other': 'RSDs selected'}"></ng-pluralize>
+                        </span>
+                        <span ng-if="selectedItems.length && selectedItems.length === rsds.length">
+                            {$ rsds.length $} <ng-pluralize count="rsds.length" when="{'one': 'RSD selected', 'other': 'RSDs selected'}"></ng-pluralize>
                         </span>
                     </li>
                 </ul>

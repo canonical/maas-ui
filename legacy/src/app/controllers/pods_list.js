@@ -39,6 +39,8 @@ function PodsListController(
   // Set initial values.
   $scope.podManager = PodsManager;
   $scope.pods = PodsManager.getItems();
+  $scope.kvms = [];
+  $scope.rsds = [];
   $scope.loading = true;
 
   if ($scope.onRSDSection()) {
@@ -531,6 +533,8 @@ function PodsListController(
       $scope.addPod();
     }
 
+    $scope.kvms = $scope.pods.filter((pod) => pod.type !== "rsd");
+    $scope.rsds = $scope.pods.filter((pod) => pod.type === "rsd");
     $scope.loadDetails();
 
     $scope.loading = false;
