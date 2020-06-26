@@ -22,7 +22,7 @@ import {
   useWindowTitle,
 } from "app/base/hooks";
 import { PowerType, TSFixMe } from "app/base/types";
-import { formatPowerParameters } from "app/utils";
+import { formatErrors, formatPowerParameters } from "app/utils";
 import AddKVMFormFields from "./AddKVMFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
@@ -92,15 +92,7 @@ export const AddKVMForm = (): JSX.Element => {
   );
 
   const allPowerParameters = useAllPowerParameters(powerTypes);
-
-  let errors = "";
-  if (podErrors && typeof podErrors === "string") {
-    errors = podErrors;
-  } else if (podErrors && typeof podErrors === "object") {
-    Object.keys(podErrors).forEach((key) => {
-      errors = errors + `${podErrors[key]} `;
-    });
-  }
+  const errors = formatErrors(podErrors);
 
   return (
     <>
