@@ -6,7 +6,7 @@
  * Provides a mock websocket connection.
  */
 
-var READY_STATES = {
+export var READY_STATES = {
   CONNECTING: 0,
   OPEN: 1,
   CLOSING: 2,
