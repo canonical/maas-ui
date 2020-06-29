@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@betterer/cli": "1.2.1",
-    "@betterer/constraints": "1.0.2",
+    "@betterer/constraints": "2.0.0",
     "@betterer/regexp": "2.2.0",
     "@betterer/typescript": "2.2.0",
     "@typescript-eslint/eslint-plugin": "3.4.0",
