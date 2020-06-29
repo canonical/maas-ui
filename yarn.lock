@@ -25,7 +25,7 @@
   dependencies:
     "@babel/highlight" "^7.8.3"
 
-"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1", "@babel/code-frame@^7.5.5", "@babel/code-frame@^7.8.3":
+"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1", "@babel/code-frame@^7.8.3":
   version "7.10.1"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.1.tgz#d5481c5095daa1c57e16e54c6f9198443afb49ff"
   integrity sha512-IGhtTmpjGbYzcEDOw7DcQtbQSXcG9ftmAXtWTu9V936vDye4xjjekktFAtgZsWpzTj/X01jocB46mTywm/4SZw==
@@ -1477,24 +1477,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@betterer/betterer@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@betterer/betterer/-/betterer-1.2.1.tgz#5ad745fddc2479a0f17d2ca80e5df24330797b8d"
-  integrity sha512-fqeli8Qcn122tYjqTBszEy6VltbxbIqAZ1KQ9mljPfas0hy+kbvpuji1tJqWsNv0aJNsEhy6FWDW/wFSdl5KjQ==
-  dependencies:
-    "@betterer/constraints" "^1.0.2"
-    "@betterer/errors" "^1.2.0"
-    "@betterer/logger" "^1.0.2"
-    chokidar "^3.3.1"
-    djb2a "^1.2.0"
-    find-up "^4.1.0"
-    gitignore-globs "^0.1.1"
-    jest-diff "^26.0.1"
-    lines-and-columns "^1.1.6"
-    safe-string-literal "^1.0.1"
-    ts-node "^8.5.4"
-    tslib "^2.0.0"
-
 "@betterer/betterer@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/betterer/-/betterer-2.2.0.tgz#a04689ea0e04f4dfd661a0cf585a6b205290d41e"
@@ -1516,13 +1498,13 @@
     ts-node "^8.10.2"
     tslib "^2.0.0"
 
-"@betterer/cli@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@betterer/cli/-/cli-1.2.1.tgz#64ef4990a6d47e51c0c25b8d8da79c435346ca92"
-  integrity sha512-4Dncdqr9z/z5cjALhTHJQLh7B+kfRi1vfe+00426kwG9vnwXRjro+PN1JoNG/WTUK/54aTe5WGwxxyujIfP6Sg==
+"@betterer/cli@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@betterer/cli/-/cli-2.2.0.tgz#31492330c25bbbba4a86078ebb7b10140e4f672e"
+  integrity sha512-BcbNIvpjlc3BZkQCvkFMx35XOI35lAI+PeS8HWTi01vutksWtf3UmMB1RwRsG4j5RfBu7zN/SaVlh8/Kr0kcVg==
   dependencies:
-    "@betterer/betterer" "^1.2.1"
-    "@betterer/errors" "^1.2.0"
+    "@betterer/betterer" "^2.2.0"
+    "@betterer/errors" "^2.2.0"
     commander "^5.1.0"
     find-up "^4.1.0"
     tslib "^2.0.0"
@@ -1534,38 +1516,12 @@
   dependencies:
     tslib "^2.0.0"
 
-"@betterer/constraints@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-1.0.2.tgz#78ab5033cd551989e272fed06b9d8ba3dd36e939"
-  integrity sha512-hUKJqkaDpcJkOZb8oQLBy9BzP3gjpeHGQayNCY6g23CeP0/Ympv+Z03OQzTgVCSg5SutYFeWFjvMxnTI09fkUA==
-  dependencies:
-    tslib "^2.0.0"
-
-"@betterer/errors@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@betterer/errors/-/errors-1.2.0.tgz#b73a03522894c5f16b9993e8c0bc4508ef6b736f"
-  integrity sha512-R5vtgnGRio3BEW7Ry4gyTSTq+GlyjIfIIt+9vk+nvZq7QPgKE8waOb4NSpoBoW8BkelhYZTbVeFIlBzDWr1FwQ==
-  dependencies:
-    "@betterer/logger" "^1.0.2"
-
 "@betterer/errors@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/errors/-/errors-2.2.0.tgz#c3146d83fdc10a2fcbc05d9432ca429fcb8b02be"
   integrity sha512-+JIBzqk73YKX9KQLlwqCce0nvcCaQL1yYAgzriPTLLQNew6SupFklbygec7QWnNhjjIzcLJfOfu4udYjJBwnxw==
   dependencies:
     "@betterer/logger" "^2.2.0"
-
-"@betterer/logger@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@betterer/logger/-/logger-1.0.2.tgz#84ee468c18d71bfe629f658fe0066cda87073c33"
-  integrity sha512-0o0ACjuIu0OjfFT80Cfx+cDBdlhrupkr4TR9wyqG9j2Ws5F5Lnt9udxYmPCON1clu205SpvJPwla7yHupKqWYg==
-  dependencies:
-    "@babel/code-frame" "^7.5.5"
-    chalk "^4.0.0"
-    lines-and-columns "^1.1.6"
-    log-update "^4.0.0"
-    npmlog "^4.1.2"
-    tslib "^2.0.0"
 
 "@betterer/logger@^2.2.0":
   version "2.2.0"
@@ -2097,16 +2053,6 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
-
-"@jest/types@^26.0.1":
-  version "26.0.1"
-  resolved "https://registry.yarnpkg.com/@jest/types/-/types-26.0.1.tgz#b78333fbd113fa7aec8d39de24f88de8686dac67"
-  integrity sha512-IbtjvqI9+eS1qFnOIEL7ggWmT+iK/U+Vde9cGWtYb/b6XgKb3X44ZAe/z9YZzoAAZ/E92m0DqrilF934IGNnQA==
-  dependencies:
-    "@types/istanbul-lib-coverage" "^2.0.0"
-    "@types/istanbul-reports" "^1.1.1"
-    "@types/yargs" "^15.0.0"
-    chalk "^4.0.0"
 
 "@jest/types@^26.1.0":
   version "26.1.0"
@@ -8782,16 +8728,6 @@ jest-diff@^25.2.1:
     jest-get-type "^25.2.6"
     pretty-format "^25.5.0"
 
-jest-diff@^26.0.1:
-  version "26.0.1"
-  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-26.0.1.tgz#c44ab3cdd5977d466de69c46929e0e57f89aa1de"
-  integrity sha512-odTcHyl5X+U+QsczJmOjWw5tPvww+y9Yim5xzqxVl/R1j4z71+fHW4g8qu1ugMmKdFdxw+AtQgs5mupPnzcIBQ==
-  dependencies:
-    chalk "^4.0.0"
-    diff-sequences "^26.0.0"
-    jest-get-type "^26.0.0"
-    pretty-format "^26.0.1"
-
 jest-diff@^26.1.0:
   version "26.1.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-26.1.0.tgz#00a549bdc936c9691eb4dc25d1fbd78bf456abb2"
@@ -12308,16 +12244,6 @@ pretty-format@^25.2.1, pretty-format@^25.5.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
-pretty-format@^26.0.1:
-  version "26.0.1"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-26.0.1.tgz#a4fe54fe428ad2fd3413ca6bbd1ec8c2e277e197"
-  integrity sha512-SWxz6MbupT3ZSlL0Po4WF/KujhQaVehijR2blyRDCzk9e45EaYMVhMBn49fnRuHxtkSpXTes1GxNpVmH86Bxfw==
-  dependencies:
-    "@jest/types" "^26.0.1"
-    ansi-regex "^5.0.0"
-    ansi-styles "^4.0.0"
-    react-is "^16.12.0"
-
 pretty-format@^26.1.0:
   version "26.1.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-26.1.0.tgz#272b9cd1f1a924ab5d443dc224899d7a65cb96ec"
@@ -14763,7 +14689,7 @@ trim-newlines@^3.0.0:
   dependencies:
     glob "^7.1.2"
 
-ts-node@^8.10.2, ts-node@^8.5.4:
+ts-node@^8.10.2:
   version "8.10.2"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.10.2.tgz#eee03764633b1234ddd37f8db9ec10b75ec7fb8d"
   integrity sha512-ISJJGgkIpDdBhWVu3jufsWpK3Rzo7bdiIXJjQc0ynKxVOVcg2oIrf2H2cejminGrptVc6q6/uynAHNCuWGbpVA==
