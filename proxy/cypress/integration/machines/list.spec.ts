@@ -1,12 +1,10 @@
-import { login } from "../utils";
+import { makeUIURL, login } from "../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(
-      `${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}/machines`
-    );
+    cy.visit(makeUIURL("/machines"));
   });
 
   afterEach(() => {
