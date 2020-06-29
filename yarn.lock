@@ -1579,16 +1579,13 @@
     npmlog "^4.1.2"
     tslib "^2.0.0"
 
-"@betterer/regexp@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-1.2.1.tgz#57dfc963e438f7d84269e4e57869c1c42c547ed0"
-  integrity sha512-j0vZKfqgBEQl1IqFBaqw87XKzspAWPG9Ru0HuT+CjuXKmkmHOrcYdutrmNYBZ6V/4plmVda+qtuml1MooEOQjA==
+"@betterer/regexp@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-2.2.0.tgz#db0a526bb7f5fa05f98331c7f50439bb7f976b38"
+  integrity sha512-A7g/qTkq3pjtwR99SJelgq0bT2acjdyG2dOZDHO+Kl2su6i+DuijTxyj2WGarX4KzzU8QitwhpXHByBQizzxfw==
   dependencies:
-    "@betterer/betterer" "^1.2.1"
-    "@betterer/errors" "^1.2.0"
-    callsite "^1.0.0"
-    glob "^7.1.4"
-    minimatch "^3.0.4"
+    "@betterer/betterer" "^2.2.0"
+    "@betterer/errors" "^2.2.0"
     tslib "^2.0.0"
 
 "@betterer/typescript@2.2.0":
