@@ -85,6 +85,7 @@
     "@betterer/cli": "2.2.0",
     "@betterer/constraints": "2.0.0",
     "@betterer/regexp": "2.2.0",
+    "@betterer/reporter": "2.2.0",
     "@betterer/typescript": "2.2.0",
     "@typescript-eslint/eslint-plugin": "3.4.0",
     "@typescript-eslint/parser": "3.4.0",

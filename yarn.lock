@@ -1544,6 +1544,16 @@
     "@betterer/errors" "^2.2.0"
     tslib "^2.0.0"
 
+"@betterer/reporter@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@betterer/reporter/-/reporter-2.2.0.tgz#eb3f13f939c024f2133bad00d0ce971efead1f76"
+  integrity sha512-AOm5SzNYQgeUf9xgjMMJA7pl5jTChQ8PsJVV4RkAg6YMs/tZ/5621eXnv2TP21gQ9rfe+OXHxTchoT32uhYvWQ==
+  dependencies:
+    "@betterer/betterer" "^2.2.0"
+    "@betterer/errors" "^2.2.0"
+    "@betterer/logger" "^2.2.0"
+    tslib "^2.0.0"
+
 "@betterer/typescript@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/typescript/-/typescript-2.2.0.tgz#6a8641efa219c7543101356f442320dfe83cd25d"
