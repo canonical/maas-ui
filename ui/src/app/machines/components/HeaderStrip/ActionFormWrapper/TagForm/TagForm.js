@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import TagFormFields from "./TagFormFields";
@@ -39,11 +39,14 @@ export const TagForm = ({ processing, setProcessing, setSelectedAction }) => {
   }
   const hasErrors = Object.keys(errors).length > 0;
 
-  useMachinesProcessing(
-    taggingSelected,
-    setProcessing,
-    setSelectedAction,
-    hasErrors
+  useProcessing(
+    taggingSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    hasErrors,
+    () => setProcessing(false)
   );
 
   return (

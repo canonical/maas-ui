@@ -13,7 +13,7 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import DeployFormFields from "./DeployFormFields";
@@ -46,11 +46,14 @@ export const DeployForm = ({
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
-  useMachinesProcessing(
-    deployingSelected,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    deployingSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   return (

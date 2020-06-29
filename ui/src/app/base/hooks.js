@@ -305,3 +305,54 @@ export const useOnWindowResize = (callback) => {
     };
   }, [callback]);
 };
+
+/**
+ * Handle checking when a value has cycled from false to true.
+ * @param {boolean} value - The value to check.
+ * @param {() => void} onCycled - The function to call when the value changes from false to true.
+ */
+const useCycled = (value, onCycled) => {
+  const previousValue = useRef(value);
+  useEffect(() => {
+    if (value && !previousValue.current) {
+      onCycled();
+    }
+    if (previousValue.current !== value) {
+      previousValue.current = value;
+    }
+  }, [value, onCycled]);
+};
+
+/**
+ * Handle displaying action progress for batched actions.
+ * @param {number} processingCount - The number of items currently being processed.
+ * @param {() => void} onComplete - The function to call when all the items have been processed.
+ * @param {boolean} hasErrors - Whether there are any item errors in state.
+ * @param {() => void} onError - The function to call when an error occurs.
+ */
+export const useProcessing = (
+  processingCount,
+  onComplete,
+  hasErrors = false,
+  onError
+) => {
+  const processingStarted = useRef(false);
+  if (processingStarted.current === false && processingCount > 0) {
+    processingStarted.current = true;
+  }
+
+  // If all the items have finished processing and there are no errors, run the
+  // onComplete function.
+  useCycled(processingCount === 0, () => {
+    if (!hasErrors) {
+      onComplete();
+    }
+  });
+
+  // If the items are processing and errors occur, run the onError function.
+  useCycled(hasErrors, () => {
+    if (processingStarted) {
+      onError();
+    }
+  });
+};

@@ -6,7 +6,7 @@ import React from "react";
 import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import { kebabToCamelCase } from "app/utils";
@@ -101,8 +101,8 @@ const useSelectedProcessing = (actionName) => {
 
 export const ActionForm = ({
   processing,
-  setProcessing,
   selectedAction,
+  setProcessing,
   setSelectedAction,
 }) => {
   const dispatch = useDispatch();
@@ -111,11 +111,14 @@ export const ActionForm = ({
   const errors = useSelector(machineSelectors.errors);
   const selectedProcessing = useSelectedProcessing(selectedAction.name);
 
-  useMachinesProcessing(
-    selectedProcessing,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    selectedProcessing.length,
+    () => {
+      setSelectedAction(null);
+      setProcessing(false);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   return (

@@ -13,7 +13,7 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import TestFormFields from "./TestFormFields";
@@ -41,6 +41,7 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
   const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
+
   const formattedScripts = scripts.map((script) => ({
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
@@ -63,11 +64,14 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  useMachinesProcessing(
-    testingSelected,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    testingSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   return (

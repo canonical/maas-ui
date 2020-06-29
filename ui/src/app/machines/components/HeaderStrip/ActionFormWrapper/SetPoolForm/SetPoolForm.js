@@ -13,7 +13,7 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import SetPoolFormFields from "./SetPoolFormFields";
@@ -52,11 +52,14 @@ export const SetPoolForm = ({
     [dispatch]
   );
 
-  useMachinesProcessing(
-    settingPoolSelected,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    settingPoolSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   return (

@@ -12,7 +12,7 @@ import {
   machine as machineSelectors,
   scriptresults as scriptresultsSelectors,
 } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
@@ -88,11 +88,14 @@ export const OverrideTestForm = ({
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
 
-  useMachinesProcessing(
-    overridingFailedTestingSelected,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    overridingFailedTestingSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   return (

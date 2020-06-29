@@ -1,6 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { Controller, Machine, Pod, RootState, TSFixMe } from "app/base/types";
+import {
+  Controller,
+  Machine,
+  Pod,
+  PodState,
+  RootState,
+  TSFixMe,
+} from "app/base/types";
 import controller from "../controller";
 import machine from "../machine";
 
@@ -61,6 +68,13 @@ const saved = (state: RootState): boolean => state.pod.saved;
  * @returns {Array} Selected pod ids.
  */
 const selectedIDs = (state: RootState): number[] => state.pod.selected;
+
+/**
+ * Returns pod statuses.
+ * @param {RootState} state - The redux state.
+ * @returns {PodStatuses} Pod statuses.
+ */
+const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 
 /**
  * Returns pod errors.
@@ -138,8 +152,50 @@ const getHost = createSelector(
   }
 );
 
+/**
+ * Returns the pods which are being deleted.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Pods being deleted.
+ */
+const deleting = createSelector([all, statuses], (pods, statuses) =>
+  pods.filter((pod) => statuses[pod.id].deleting)
+);
+
+/**
+ * Returns the pods which are selected and being deleted.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Selected pods being deleted.
+ */
+const deletingSelected = createSelector(
+  [deleting, selectedIDs],
+  (deletingPods, selectedPodIDs) =>
+    deletingPods.filter((pod) => selectedPodIDs.includes(pod.id))
+);
+
+/**
+ * Returns the pods which are being refreshed.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Pods being refreshed.
+ */
+const refreshing = createSelector([all, statuses], (pods, statuses) =>
+  pods.filter((pod) => statuses[pod.id].refreshing)
+);
+
+/**
+ * Returns the pods which are selected and being refreshed.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Selected pods being refreshed.
+ */
+const refreshingSelected = createSelector(
+  [refreshing, selectedIDs],
+  (refreshingPods, selectedPodIDs) =>
+    refreshingPods.filter((pod) => selectedPodIDs.includes(pod.id))
+);
+
 const pod = {
   all,
+  deleting,
+  deletingSelected,
   errors,
   getAllHosts,
   getById,
@@ -147,11 +203,14 @@ const pod = {
   kvm,
   loaded,
   loading,
+  refreshing,
+  refreshingSelected,
   rsd,
   saving,
   saved,
   selected,
   selectedIDs,
+  statuses,
 };
 
 export default pod;
