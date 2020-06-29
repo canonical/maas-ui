@@ -1,6 +1,8 @@
+import { makeUIURL } from "../utils";
+
 context("Login page", () => {
   beforeEach(() => {
-    cy.visit(`${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}`);
+    cy.visit(makeUIURL("/"));
   });
 
   it("is disabled by default", () => {

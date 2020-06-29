@@ -35,6 +35,19 @@ app.use(
   })
 );
 
+// Stop the React HMR from timing out.
+app.use(
+  createProxyMiddleware("/sockjs-node", {
+    target: `http://localhost:${UI_PORT}/`,
+    ws: true,
+    onProxyReq: (proxyReq, req, res) => {
+      // Return a 404 instead of letting the browser time out or receive
+      // invalid data.
+      res.status(404).send();
+    },
+  })
+);
+
 // Proxy the HMR endpoint to the Angular client.
 app.use(
   createProxyMiddleware("/sockjs-legacy", {
