@@ -13725,10 +13725,10 @@ single-spa-angularjs@3.3.0:
   resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-3.3.0.tgz#603c01d7b0d4682185300c4be7402395f6ddbd66"
   integrity sha512-knGbJvkUtdy04DuppS7PWDBY3MQF2ih31CqNq6g/9QiwcR+A/VB6lGIOKYhrWyPUK75H1fxpcXRd2OWnrVgTGg==
 
-single-spa-react@2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/single-spa-react/-/single-spa-react-2.14.0.tgz#4a55ea74a57db06adb41f0de3419a0c378745e1b"
-  integrity sha512-KQ2/y7/JBIquK0WUiwb1/Y7f4qTZITNotw+JwNPesj0WKeCi91u0LOZe2ps56QMJbyB4UrA5IzMBwbYWDr1pIw==
+single-spa-react@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/single-spa-react/-/single-spa-react-3.0.0.tgz#449e763360ea657c8421efb2151690a8ccf37c46"
+  integrity sha512-vwLoz04oyizZw7mjfBbmr7vsWBZjgT0qlMLB3scfR5y676RRF7pzvsCq0MxKw+Cc74UUAYjd/nVtLMzfON47ww==
 
 single-spa@5.5.3:
   version "5.5.3"
