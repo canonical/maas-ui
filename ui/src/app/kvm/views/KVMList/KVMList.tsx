@@ -11,7 +11,7 @@ const KVMList = (): JSX.Element => {
   useWindowTitle("KVM");
 
   return (
-    <Section headerClassName="u-no-padding--bottom" title={<KVMListHeader />}>
+    <Section header={<KVMListHeader />} headerClassName="u-no-padding--bottom">
       <Switch>
         <Route exact path="/kvm">
           <KVMListTable />

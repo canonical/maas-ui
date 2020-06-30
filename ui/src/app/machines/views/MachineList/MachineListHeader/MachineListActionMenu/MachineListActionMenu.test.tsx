@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import TakeActionMenu from "./TakeActionMenu";
+import MachineListActionMenu from "./MachineListActionMenu";
 
 const mockStore = configureStore();
 
-describe("TakeActionMenu", () => {
+describe("MachineListActionMenu", () => {
   let initialState;
   beforeEach(() => {
     initialState = {
@@ -36,7 +36,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -57,7 +57,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -87,7 +87,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +129,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -163,7 +163,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -192,7 +192,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -239,12 +239,13 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <MachineListActionMenu setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
-    const links = wrapper.find('[data-test="take-action-dropdown"]').props()
-      .links;
+    const links = wrapper
+      .find('[data-test="take-action-dropdown"]')
+      .prop("links");
     expect(links[0].length).toBe(1);
     expect(links[1].length).toBe(2);
     expect(links[2].length).toBe(1);
@@ -266,7 +267,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={setSelectedAction} />
+          <MachineListActionMenu setSelectedAction={setSelectedAction} />
         </MemoryRouter>
       </Provider>
     );

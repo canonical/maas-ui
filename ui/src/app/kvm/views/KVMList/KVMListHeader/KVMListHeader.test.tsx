@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+import * as React from "react";
 
 import KVMListHeader from "./KVMListHeader";
 
@@ -19,6 +19,10 @@ describe("KVMListHeader", () => {
         selected: [],
       },
     };
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("displays a loader if pods have not loaded", () => {
@@ -46,7 +50,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="pod-count"]').text()).toBe(
+    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
       "2 VM hosts available"
     );
   });
@@ -63,7 +67,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="pod-count"]').text()).toBe(
+    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
       "1 of 2 VM hosts selected"
     );
   });
@@ -80,7 +84,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="pod-count"]').text()).toBe(
+    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
       "All VM hosts selected"
     );
   });
@@ -99,5 +103,23 @@ describe("KVMListHeader", () => {
     expect(wrapper.find('Button[data-test="add-kvm"]').prop("disabled")).toBe(
       true
     );
+  });
+
+  it("clears action form if no KVMs are selected", () => {
+    const state = { ...initialState };
+    state.pod.selected = [];
+    const store = mockStore(state);
+    const setSelectedAction = jest.fn();
+    jest
+      .spyOn(React, "useState")
+      .mockImplementation(() => ["", setSelectedAction]);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMListHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(setSelectedAction).toHaveBeenCalledWith(null);
   });
 });

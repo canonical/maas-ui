@@ -312,7 +312,7 @@ describe("Machines", () => {
       </Provider>
     );
     wrapper
-      .find("HeaderStrip Link[to='/pools']")
+      .find("MachineListHeader Link[to='/pools']")
       .simulate("click", { button: 0 });
     wrapper.update();
     wrapper
@@ -377,7 +377,7 @@ describe("Machines", () => {
     // Click pools tab, action form should close
     act(() => {
       wrapper
-        .find("HeaderStrip Link[to='/pools']")
+        .find("MachineListHeader Link[to='/pools']")
         .simulate("click", { button: 0 });
     });
     wrapper.update();

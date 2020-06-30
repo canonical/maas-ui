@@ -116,7 +116,7 @@ export const App = () => {
   if (authLoading || connecting || authenticating) {
     content = (
       <Section
-        title={
+        header={
           <>
             <span className="p-heading--four"></span>
             <Spinner
@@ -132,7 +132,7 @@ export const App = () => {
     content = <Login />;
   } else if (connectionError || !connected) {
     content = (
-      <Section title="Failed to connect.">
+      <Section header="Failed to connect.">
         <Notification type="negative" status="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.

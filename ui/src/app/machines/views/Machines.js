@@ -12,11 +12,11 @@ import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
 import AddRSDForm from "app/machines/views/AddRSD/AddRSDForm";
 import MachineList from "app/machines/views/MachineList";
+import MachineListHeader from "./MachineList/MachineListHeader";
 import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 import Pools from "app/pools/views/Pools";
-import HeaderStrip from "app/machines/components/HeaderStrip";
 import Section from "app/base/components/Section";
 
 const Machines = () => {
@@ -45,8 +45,8 @@ const Machines = () => {
   return (
     <Section
       headerClassName="u-no-padding--bottom"
-      title={
-        <HeaderStrip
+      header={
+        <MachineListHeader
           searchFilter={searchFilter}
           selectedAction={selectedAction}
           setSearchFilter={setSearchFilter}

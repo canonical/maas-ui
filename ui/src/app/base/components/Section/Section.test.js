@@ -6,7 +6,7 @@ import Section from "./Section";
 describe("Section", () => {
   it("renders", () => {
     const wrapper = shallow(
-      <Section title="Settings" sidebar={<div>Sidebar</div>}>
+      <Section header="Settings" sidebar={<div>Sidebar</div>}>
         content
       </Section>
     );
@@ -14,7 +14,7 @@ describe("Section", () => {
   });
 
   it("renders without a sidebar", () => {
-    const wrapper = shallow(<Section title="Settings">content</Section>);
+    const wrapper = shallow(<Section header="Settings">content</Section>);
     expect(wrapper.find(".section__sidebar").length).toEqual(0);
     expect(
       wrapper
@@ -27,7 +27,7 @@ describe("Section", () => {
 
   it("can render a node as a title", () => {
     const wrapper = shallow(
-      <Section title={<span data-test="test">Node title</span>}>
+      <Section header={<span data-test="test">Node title</span>}>
         content
       </Section>
     );

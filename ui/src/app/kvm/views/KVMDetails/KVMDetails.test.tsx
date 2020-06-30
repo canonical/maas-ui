@@ -59,7 +59,9 @@ describe("KVMDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="pod-name"]').text()).toBe("pod-name");
+    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
+      "pod-name"
+    );
   });
 
   it("can display composed machines count", () => {
@@ -78,10 +80,10 @@ describe("KVMDetails", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='kvm-details-tabs'] Link").at(0).text()
+      wrapper.find("[data-test='section-header-tabs'] Link").at(0).text()
     ).toBe("5 composed machines");
     expect(
-      wrapper.find("[data-test='kvm-details-tabs'] Link").at(0).props()[
+      wrapper.find("[data-test='section-header-tabs'] Link").at(0).props()[
         "aria-selected"
       ]
     ).toBe(true);

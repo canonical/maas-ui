@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
+import { MachineAction } from "app/base/types";
 import ActionForm from "./ActionForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
@@ -15,7 +16,7 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
-const getErrorSentence = (action, count) => {
+const getErrorSentence = (action: MachineAction, count: number) => {
   const machineString = `${count} ${pluralize("machine", count)}`;
 
   switch (action.name) {
@@ -38,11 +39,17 @@ const getErrorSentence = (action, count) => {
   }
 };
 
+type Props = {
+  selectedAction: MachineAction;
+  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  _processing?: boolean;
+};
+
 export const ActionFormWrapper = ({
   selectedAction,
   setSelectedAction,
   _processing = false,
-}) => {
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   // Initialise the processing state from a prop to allow testing the state change.
   const [processing, setProcessing] = useState(_processing);
@@ -136,45 +143,40 @@ export const ActionFormWrapper = ({
           );
       }
     }
+    return null;
   };
 
-  return (
-    <Row>
-      <hr />
-      <Col size="12">
-        {actionDisabled ? (
-          <p data-test="machine-action-warning">
-            <i className="p-icon--warning" style={{ marginRight: ".5rem" }} />
-            <span>
-              {getErrorSentence(
-                selectedAction,
-                selectedMachines.length - actionableMachines.length
-              )}
-              . To proceed,{" "}
-              <Button
-                appearance="link"
-                data-test="select-actionable-machines"
-                inline
-                onClick={() =>
-                  dispatch(machineActions.setSelected(actionableMachines))
-                }
-              >
-                update your selection
-              </Button>
-              .
-            </span>
-          </p>
-        ) : (
-          getFormComponent()
+  return actionDisabled ? (
+    <p data-test="machine-action-warning">
+      <i className="p-icon--warning" />
+      <span className="u-nudge-right--small">
+        {getErrorSentence(
+          selectedAction,
+          selectedMachines.length - actionableMachines.length
         )}
-      </Col>
-    </Row>
+        . To proceed,{" "}
+        <Button
+          appearance="link"
+          data-test="select-actionable-machines"
+          inline
+          onClick={() =>
+            dispatch(machineActions.setSelected(actionableMachines))
+          }
+        >
+          update your selection
+        </Button>
+        .
+      </span>
+    </p>
+  ) : (
+    getFormComponent()
   );
 };
 
 ActionFormWrapper.propTypes = {
   selectedAction: PropTypes.object,
   setSelectedAction: PropTypes.func.isRequired,
+  _processing: PropTypes.bool,
 };
 
 export default ActionFormWrapper;

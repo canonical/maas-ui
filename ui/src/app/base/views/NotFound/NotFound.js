@@ -10,7 +10,7 @@ const NotFound = ({ includeSection = false }) => {
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {
     return (
-      <Section title={title}>
+      <Section header={title}>
         <h2 className="p-heading--four">{message}</h2>
       </Section>
     );
