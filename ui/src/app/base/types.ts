@@ -162,6 +162,12 @@ export type PodState = {
   saved: boolean;
   saving: boolean;
   selected: number[];
+  statuses: {
+    [x: number]: {
+      deleting: boolean;
+      refreshing: boolean;
+    };
+  };
 };
 
 export type PowerField = {

@@ -19,6 +19,16 @@ describe("KVMActionFormWrapper", () => {
         ],
         selected: [],
         errors: {},
+        statuses: {
+          1: {
+            deleting: false,
+            refreshing: false,
+          },
+          2: {
+            deleting: false,
+            refreshing: false,
+          },
+        },
       },
     };
   });
@@ -77,5 +87,23 @@ describe("KVMActionFormWrapper", () => {
       true
     );
     expect(wrapper.find("RefreshForm").exists()).toBe(true);
+  });
+
+  it("clears action form if no KVMs are selected", () => {
+    const state = { ...initialState };
+    state.pod.selected = [];
+    const store = mockStore(state);
+    const setSelectedAction = jest.fn();
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMActionFormWrapper
+            selectedAction="refresh"
+            setSelectedAction={setSelectedAction}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(setSelectedAction).toHaveBeenCalledWith(null);
   });
 });

@@ -11,7 +11,7 @@ import {
   machine as machineSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
-import { useMachinesProcessing } from "app/machines/components/HeaderStrip/hooks";
+import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -32,11 +32,14 @@ export const SetZoneForm = ({
   const zones = useSelector(zoneSelectors.all);
   const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
 
-  useMachinesProcessing(
-    settingZoneSelected,
-    setProcessing,
-    setSelectedAction,
-    Object.keys(errors).length > 0
+  useProcessing(
+    settingZoneSelected.length,
+    () => {
+      setProcessing(false);
+      setSelectedAction(null);
+    },
+    Object.keys(errors).length > 0,
+    () => setProcessing(false)
   );
 
   const zoneOptions = [
