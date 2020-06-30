@@ -40,6 +40,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn betterer
+      - run: yarn betterer > results.txt
+        continue-on-error: true
         env:
           CI: true
+      - name: Upload betterer results
+        uses: actions/upload-artifact@v1
+        with:
+          name: betterer-report
+          path: results.txt
+
