@@ -36,3 +36,4 @@ Related Launchpad maas issue in the form `lp#number`.
 
 In general, please propose fixes against *master* rather than release branches (e.g. 2.7), unless the fix is only applicable for that specific release. Please apply backport labels to the PR (e.g. "Backport 2.7") for the appropriate releases to target.
 
+Only bug and security fixes should be backported, new features should only land in master.
