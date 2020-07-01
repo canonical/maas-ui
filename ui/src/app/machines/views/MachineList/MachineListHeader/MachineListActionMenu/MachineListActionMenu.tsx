@@ -7,10 +7,15 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
+import { Machine, MachineAction } from "app/base/types";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import Tooltip from "app/base/components/Tooltip";
 
-const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
+const getTakeActionLinks = (
+  actionOptions: MachineAction[],
+  machines: Machine[],
+  setSelectedAction: (action: MachineAction, deselect?: boolean) => void
+) => {
   const initGroups = [
     { type: "lifecycle", items: [] },
     { type: "power", items: [] },
@@ -55,7 +60,11 @@ const getTakeActionLinks = (actionOptions, machines, setSelectedAction) => {
   return groupedLinks.map((group) => group.items);
 };
 
-export const TakeActionMenu = ({ setSelectedAction }) => {
+type Props = {
+  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+};
+
+export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const actionOptions = useSelector(generalSelectors.machineActions.get);
   const selectedMachines = useSelector(machineSelectors.selected);

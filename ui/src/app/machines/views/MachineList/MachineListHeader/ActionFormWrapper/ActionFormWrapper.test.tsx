@@ -72,7 +72,12 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{ name: "commission" }}
+            selectedAction={{
+              name: "commission",
+              sentence: "commissioned",
+              title: "Commission...",
+              type: "lifecycle",
+            }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -92,13 +97,18 @@ describe("ActionFormWrapper", () => {
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);
-    let wrapper = mount(
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{ name: "commission" }}
+            selectedAction={{
+              name: "commission",
+              sentence: "commissioned",
+              title: "Commission...",
+              type: "lifecycle",
+            }}
             setSelectedAction={jest.fn()}
             _processing={true}
           />
@@ -125,7 +135,12 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{ name: "commission" }}
+            selectedAction={{
+              name: "commission",
+              sentence: "commissioned",
+              title: "Commission...",
+              type: "lifecycle",
+            }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>

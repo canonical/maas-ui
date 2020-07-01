@@ -99,6 +99,13 @@ export type Machine = {
   zone: TSFixMe;
 };
 
+export type MachineAction = {
+  name: string;
+  sentence: string;
+  title: string;
+  type: string;
+};
+
 export type MachineState = {
   errors: TSFixMe;
   items: Machine[];

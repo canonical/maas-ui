@@ -11,7 +11,7 @@ import { useWindowTitle } from "app/base/hooks";
 
 import { RootState } from "app/base/types";
 import Section from "app/base/components/Section";
-import Tabs from "app/base/components/Tabs";
+import SectionHeader from "app/base/components/SectionHeader";
 
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -31,36 +31,27 @@ const KVMDetails = (): JSX.Element => {
   return (
     <Section
       headerClassName={pod && "u-no-padding--bottom"}
-      title={
+      header={
         pod ? (
-          <>
-            <div>
-              <h4 className="u-sv1" data-test="pod-name">
-                {pod.name}
-              </h4>
-            </div>
-            <hr className="u-no-margin--bottom" />
-            <Tabs
-              data-test="kvm-details-tabs"
-              links={[
-                {
-                  active: location.pathname.endsWith(`/kvm/${pod.id}`),
-                  label: `${pod.composed_machines_count} ${pluralize(
-                    "composed machine",
-                    pod.composed_machines_count
-                  )}`,
-                  path: `/kvm/${pod.id}`,
-                },
-                {
-                  active: location.pathname.endsWith(`/kvm/${pod.id}/edit`),
-                  label: "Configuration",
-                  path: `/kvm/${pod.id}/edit`,
-                },
-              ]}
-              listClassName="u-no-margin--bottom"
-              noBorder
-            />
-          </>
+          <SectionHeader
+            tabLinks={[
+              {
+                active: location.pathname.endsWith(`/kvm/${pod.id}`),
+                label: pluralize(
+                  "composed machine",
+                  pod.composed_machines_count,
+                  true
+                ),
+                path: `/kvm/${pod.id}`,
+              },
+              {
+                active: location.pathname.endsWith(`/kvm/${pod.id}/edit`),
+                label: "Configuration",
+                path: `/kvm/${pod.id}/edit`,
+              },
+            ]}
+            title={pod.name}
+          />
         ) : (
           <>
             <span className="p-heading--four"></span>

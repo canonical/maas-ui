@@ -5,7 +5,7 @@ import Section from "app/base/components/Section";
 import Nav from "app/preferences/components/Nav";
 
 const Preferences = () => (
-  <Section title="My preferences" sidebar={<Nav />}>
+  <Section header="My preferences" sidebar={<Nav />}>
     <Routes />
   </Section>
 );

@@ -6,7 +6,7 @@ import React from "react";
 import { COL_SIZES } from "app/base/constants";
 import NotificationList from "app/base/components/NotificationList";
 
-const Section = ({ children, headerClassName, sidebar, title }) => {
+const Section = ({ children, header, headerClassName, sidebar }) => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <div className="section">
@@ -15,10 +15,10 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
         element="header"
         shallow
       >
-        {typeof title === "string" ? (
-          <h1 className="p-heading--four u-no-margin--bottom">{title}</h1>
+        {typeof header === "string" ? (
+          <h1 className="p-heading--four u-no-margin--bottom">{header}</h1>
         ) : (
-          title
+          header
         )}
       </Strip>
       <Strip
@@ -46,9 +46,9 @@ const Section = ({ children, headerClassName, sidebar, title }) => {
 
 Section.propTypes = {
   children: PropTypes.node,
+  header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
   headerClassName: PropTypes.string,
   sidebar: PropTypes.node,
-  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
 };
 
 export default Section;

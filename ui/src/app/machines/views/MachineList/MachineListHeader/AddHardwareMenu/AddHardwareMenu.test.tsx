@@ -11,6 +11,6 @@ describe("AddHardwareMenu", () => {
 
   it("can be disabled", () => {
     const wrapper = shallow(<AddHardwareMenu disabled />);
-    expect(wrapper.find("ContextualMenu").props().toggleDisabled).toBe(true);
+    expect(wrapper.find("ContextualMenu").prop("toggleDisabled")).toBe(true);
   });
 });

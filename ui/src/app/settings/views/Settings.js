@@ -16,11 +16,11 @@ const Settings = () => {
   }, [dispatch]);
 
   if (!authUser || !authUser.is_superuser) {
-    return <Section title="You do not have permission to view this page." />;
+    return <Section header="You do not have permission to view this page." />;
   }
 
   return (
-    <Section title="Settings" sidebar={<SettingsNav />}>
+    <Section header="Settings" sidebar={<SettingsNav />}>
       <Routes />
     </Section>
   );

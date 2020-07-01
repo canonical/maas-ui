@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-export const AddHardwareMenu = ({ disabled = false }) => {
+type Props = {
+  disabled?: boolean;
+};
+
+export const AddHardwareMenu = ({ disabled = false }: Props): JSX.Element => {
   return (
     <ContextualMenu
       data-test="add-hardware-dropdown"
