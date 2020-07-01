@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState, TSFixMe, Zone } from "app/base/types";
+import { TSFixMe, Zone } from "app/base/types";
+import { RootState } from "app/store/root/types";
 
 /**
  * Returns all zones.

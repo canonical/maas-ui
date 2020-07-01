@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 
-import { pod as podActions } from "app/base/actions";
+import { actions as podActions } from "app/store/pod";
 import { pod as podSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 
-import { RootState } from "app/base/types";
+import { RootState } from "app/store/root/types";
 import Section from "app/base/components/Section";
 import Tabs from "app/base/components/Tabs";
 

@@ -1,15 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import {
-  Controller,
-  Machine,
-  Pod,
-  PodState,
-  RootState,
-  TSFixMe,
-} from "app/base/types";
-import controller from "../controller";
-import machine from "../machine";
+import { Controller, Machine, TSFixMe } from "app/base/types";
+import { Pod, PodState } from "./types";
+import { RootState } from "app/store/root/types";
+import controller from "app/base/selectors/controller";
+import machine from "app/base/selectors/machine";
 
 /**
  * Returns all pods.

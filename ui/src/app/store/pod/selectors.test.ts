@@ -1,4 +1,4 @@
-import pod from "./pod";
+import pod from "./selectors";
 
 describe("pod selectors", () => {
   it("can get all items", () => {

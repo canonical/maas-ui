@@ -1,8 +1,8 @@
-import pod, { DEFAULT_STATUSES } from "./pod";
+import reducers, { actions, DEFAULT_STATUSES } from "./index";
 
 describe("pod reducer", () => {
   it("should return the initial state", () => {
-    expect(pod(undefined, { type: "" })).toEqual({
+    expect(reducers(undefined, { type: "" })).toEqual({
       errors: {},
       items: [],
       loaded: false,
@@ -14,10 +14,10 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_POD_START", () => {
+  it("should correctly reduce FETCH_START", () => {
     expect(
-      pod(undefined, {
-        type: "FETCH_POD_START",
+      reducers(undefined, {
+        type: actions.fetchStart().type,
       })
     ).toEqual({
       errors: {},
@@ -31,9 +31,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_POD_SUCCESS", () => {
+  it("should correctly reduce FETCH_SUCCESS", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [],
@@ -45,7 +45,7 @@ describe("pod reducer", () => {
           statuses: {},
         },
         {
-          type: "FETCH_POD_SUCCESS",
+          type: actions.fetchSuccess().type,
           payload: [
             { id: 1, name: "pod1" },
             { id: 2, name: "pod2" },
@@ -67,9 +67,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_POD_ERROR", () => {
+  it("should correctly reduce FETCH_ERROR", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [],
@@ -82,7 +82,7 @@ describe("pod reducer", () => {
         },
         {
           error: "Could not fetch pods",
-          type: "FETCH_POD_ERROR",
+          type: actions.fetchError().type,
         }
       )
     ).toEqual({
@@ -97,9 +97,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_POD_START", () => {
+  it("should correctly reduce CREATE_START", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [],
@@ -111,7 +111,7 @@ describe("pod reducer", () => {
           statuses: {},
         },
         {
-          type: "CREATE_POD_START",
+          type: actions.createStart().type,
         }
       )
     ).toEqual({
@@ -126,9 +126,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_POD_ERROR", () => {
+  it("should correctly reduce CREATE_ERROR", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [],
@@ -141,7 +141,7 @@ describe("pod reducer", () => {
         },
         {
           error: { name: "Pod name already exists" },
-          type: "CREATE_POD_ERROR",
+          type: actions.createError().type,
         }
       )
     ).toEqual({
@@ -156,9 +156,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_POD_NOTIFY", () => {
+  it("should correctly reduce CREATE_NOTIFY", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1, name: "pod1" }],
@@ -171,7 +171,7 @@ describe("pod reducer", () => {
         },
         {
           payload: { id: 2, name: "pod2" },
-          type: "CREATE_POD_NOTIFY",
+          type: "CREATE_NOTIFY",
         }
       )
     ).toEqual({
@@ -189,9 +189,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_POD_START", () => {
+  it("should correctly reduce DELETE_START", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1 }],
@@ -208,7 +208,7 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          type: "DELETE_POD_START",
+          type: "DELETE_START",
         }
       )
     ).toEqual({
@@ -223,9 +223,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_POD_SUCCESS", () => {
+  it("should correctly reduce DELETE_SUCCESS", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1 }],
@@ -242,7 +242,7 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          type: "DELETE_POD_SUCCESS",
+          type: "DELETE_SUCCESS",
         }
       )
     ).toEqual({
@@ -257,9 +257,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_POD_ERROR", () => {
+  it("should correctly reduce DELETE_ERROR", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1 }],
@@ -277,7 +277,7 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          type: "DELETE_POD_ERROR",
+          type: "DELETE_ERROR",
         }
       )
     ).toEqual({
@@ -292,9 +292,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce DELETE_POD_NOTIFY", () => {
+  it("should correctly reduce DELETE_NOTIFY", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1 }, { id: 2 }],
@@ -312,7 +312,7 @@ describe("pod reducer", () => {
             },
           },
           payload: 1,
-          type: "DELETE_POD_NOTIFY",
+          type: "DELETE_NOTIFY",
         }
       )
     ).toEqual({
@@ -327,9 +327,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce REFRESH_POD_START", () => {
+  it("should correctly reduce REFRESH_START", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1 }],
@@ -346,7 +346,7 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          type: "REFRESH_POD_START",
+          type: "REFRESH_START",
         }
       )
     ).toEqual({
@@ -361,9 +361,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce REFRESH_POD_SUCCESS", () => {
+  it("should correctly reduce REFRESH_SUCCESS", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1, cpu_speed: 100 }],
@@ -381,7 +381,7 @@ describe("pod reducer", () => {
             },
           },
           payload: { id: 1, cpu_speed: 200 },
-          type: "REFRESH_POD_SUCCESS",
+          type: "REFRESH_SUCCESS",
         }
       )
     ).toEqual({
@@ -396,9 +396,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce REFRESH_POD_ERROR", () => {
+  it("should correctly reduce REFRESH_ERROR", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [{ id: 1, cpu_speed: 100 }],
@@ -416,7 +416,7 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          type: "REFRESH_POD_ERROR",
+          type: "REFRESH_ERROR",
         }
       )
     ).toEqual({
@@ -431,9 +431,9 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce SET_SELECTED_PODS", () => {
+  it("should correctly reduce SET_SELECTED", () => {
     expect(
-      pod(
+      reducers(
         {
           errors: {},
           items: [],
@@ -446,7 +446,7 @@ describe("pod reducer", () => {
         },
         {
           payload: [1, 2, 4],
-          type: "SET_SELECTED_PODS",
+          type: "SET_SELECTED",
         }
       )
     ).toEqual({

@@ -13,7 +13,7 @@ type Props = {
   allowUnchanged?: boolean;
   Buttons?: JSX.Element;
   buttonsBordered?: boolean;
-  cleanup?: () => void;
+  cleanup?: TSFixMe;
   children?: JSX.Element;
   errors?: TSFixMe;
   initialValues: TSFixMe;

@@ -5,10 +5,10 @@ import * as Yup from "yup";
 
 import {
   general as generalActions,
-  pod as podActions,
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
+import { actions as podActions } from "app/store/pod";
 import {
   general as generalSelectors,
   pod as podSelectors,

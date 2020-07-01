@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { pod as podActions } from "app/base/actions";
+import { actions as podActions } from "app/store/pod";
 import { pod as podSelectors } from "app/base/selectors";
 import { useProcessing } from "app/base/hooks";
 import { formatErrors } from "app/utils";

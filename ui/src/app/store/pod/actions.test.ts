@@ -1,4 +1,4 @@
-import pod from "./pod";
+import { actions as pod } from "./index";
 
 describe("pod actions", () => {
   it("should handle fetching pods", () => {
