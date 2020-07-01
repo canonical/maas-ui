@@ -37,10 +37,10 @@ machine.addChassis = (params) => {
   };
 };
 
-machine.setSelected = (machines) => {
+machine.setSelected = (machineIDs) => {
   return {
     type: "SET_SELECTED_MACHINES",
-    payload: machines.map((machine) => machine.system_id),
+    payload: machineIDs,
   };
 };
 

@@ -26,7 +26,6 @@ exports[`NameColumn renders 1`] = `
             </small>
           </a>
         }
-        onChange={[Function]}
         type="checkbox"
         wrapperClassName="u-no-margin--bottom machine-list--inline-input"
       />
@@ -66,7 +65,6 @@ exports[`NameColumn renders 1`] = `
                   </small>
                 </a>
               }
-              onChange={[Function]}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom machine-list--inline-input"
             >
@@ -100,7 +98,6 @@ exports[`NameColumn renders 1`] = `
                     <input
                       className="p-form-validation__input has-inline-label keep-label-opacity"
                       id="abc123"
-                      onChange={[Function]}
                       type="checkbox"
                     />
                     <Label

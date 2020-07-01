@@ -26,6 +26,7 @@ import {
   resourcepool as poolSelectors,
 } from "app/base/selectors";
 import { useTableSort } from "app/base/hooks";
+import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
 import CPUColumn from "./CPUColumn";
 import NameColumn from "./NameColumn";
 import OSColumn from "./OSColumn";
@@ -36,12 +37,6 @@ import StorageColumn from "./StorageColumn";
 import TableHeader from "app/base/components/TableHeader";
 import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
-
-const checkboxChecked = (pods: Pod[], selectedPodIDs: number[]) =>
-  pods.some((pod) => selectedPodIDs.includes(pod.id));
-
-const checkboxMixed = (pods: Pod[], selectedPodIDs: number[]) =>
-  selectedPodIDs.length && pods.some((pod) => !selectedPodIDs.includes(pod.id));
 
 const getSortValue = (
   sortKey: Sort["key"],
@@ -77,12 +72,22 @@ const getSortValue = (
   }
 };
 
-const generateRows = (pods: Pod[], handlePodCheckbox: (pod: Pod) => void) =>
+const generateRows = (
+  pods: Pod[],
+  selectedPodIDs: Pod["id"][],
+  handleRowCheckbox: (podID: Pod["id"], selectedPodIDs: Pod["id"][]) => void
+) =>
   pods.map((pod) => ({
     key: pod.id,
     columns: [
       {
-        content: <NameColumn handleCheckbox={handlePodCheckbox} id={pod.id} />,
+        content: (
+          <NameColumn
+            handleCheckbox={() => handleRowCheckbox(pod.id, selectedPodIDs)}
+            id={pod.id}
+            selected={someInArray(pod.id, selectedPodIDs)}
+          />
+        ),
       },
       { content: <PowerColumn id={pod.id} /> },
       { content: <TypeColumn id={pod.id} /> },
@@ -102,11 +107,18 @@ const KVMListTable = (): JSX.Element => {
   const podHosts = useSelector(podSelectors.getAllHosts);
   const pools = useSelector(poolSelectors.all);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const podIDs = pods.map((pod) => pod.id);
 
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
     direction: "descending",
   });
+  const {
+    handleGroupCheckbox,
+    handleRowCheckbox,
+  } = generateCheckboxHandlers((podIDs) =>
+    dispatch(podActions.setSelected(podIDs))
+  );
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
@@ -116,28 +128,6 @@ const KVMListTable = (): JSX.Element => {
     dispatch(poolActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
-
-  const handlePodCheckbox = (pod: Pod) => {
-    let newSelectedPods: number[];
-    if (checkboxChecked([pod], selectedPodIDs)) {
-      newSelectedPods = selectedPodIDs.filter(
-        (podID: number) => podID !== pod.id
-      );
-    } else {
-      newSelectedPods = [...selectedPodIDs, pod.id];
-    }
-    dispatch(podActions.setSelected(newSelectedPods));
-  };
-
-  const handleAllCheckbox = () => {
-    let newSelectedPods: number[];
-    if (checkboxChecked(pods, selectedPodIDs)) {
-      newSelectedPods = [];
-    } else {
-      newSelectedPods = pods.map((pod) => pod.id);
-    }
-    dispatch(podActions.setSelected(newSelectedPods));
-  };
 
   const sortedPods = sortRows(pods, podHosts, pools, osReleases);
 
@@ -151,17 +141,15 @@ const KVMListTable = (): JSX.Element => {
               content: (
                 <div className="u-flex">
                   <Input
-                    checked={
-                      checkboxChecked(pods, selectedPodIDs) && pods.length !== 0
-                    }
+                    checked={someInArray(podIDs, selectedPodIDs)}
                     className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": checkboxMixed(pods, selectedPodIDs),
+                      "p-checkbox--mixed": someNotAll(podIDs, selectedPodIDs),
                     })}
                     data-test="all-pods-checkbox"
                     disabled={pods.length === 0}
                     id="all-pods-checkbox"
                     label={" "}
-                    onChange={() => handleAllCheckbox()}
+                    onChange={() => handleGroupCheckbox(podIDs, selectedPodIDs)}
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />
@@ -283,7 +271,7 @@ const KVMListTable = (): JSX.Element => {
             },
           ]}
           paginate={50}
-          rows={generateRows(sortedPods, handlePodCheckbox)}
+          rows={generateRows(sortedPods, selectedPodIDs, handleRowCheckbox)}
         />
       </Col>
     </Row>

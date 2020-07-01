@@ -30,7 +30,7 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn handleCheckbox={jest.fn()} id={1} />
+          <NameColumn handleCheckbox={jest.fn()} id={1} selected={false} />
         </MemoryRouter>
       </Provider>
     );
@@ -38,7 +38,7 @@ describe("NameColumn", () => {
     expect(wrapper.find("Link").props().to).toBe("/kvm/1");
   });
 
-  it("sets checkbox to checked if pod is in selected state", () => {
+  it("sets checkbox to checked if pod is selected", () => {
     const state = { ...initialState };
     state.pod.selected = [1];
     const store = mockStore(state);
@@ -47,7 +47,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn handleCheckbox={jest.fn()} id={1} />
+          <NameColumn handleCheckbox={jest.fn()} id={1} selected />
         </MemoryRouter>
       </Provider>
     );

@@ -1,7 +1,7 @@
 import { Input } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import { generateLegacyURL } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
@@ -131,7 +131,7 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
           className="has-inline-label keep-label-opacity"
           id={systemId}
           label={primaryRow}
-          onChange={() => handleCheckbox(machine)}
+          onChange={handleCheckbox}
           type="checkbox"
           wrapperClassName="u-no-margin--bottom machine-list--inline-input"
         />

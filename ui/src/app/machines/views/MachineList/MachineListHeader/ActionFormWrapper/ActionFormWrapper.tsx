@@ -54,17 +54,20 @@ export const ActionFormWrapper = ({
   // Initialise the processing state from a prop to allow testing the state change.
   const [processing, setProcessing] = useState(_processing);
   const selectedMachines = useSelector(machineSelectors.selected);
-  let actionableMachines = [];
-  if (selectedAction) {
-    actionableMachines = selectedMachines.filter((machine) =>
-      machine.actions.includes(selectedAction.name)
-    );
-  }
+  const actionableMachineIDs = selectedAction
+    ? selectedMachines.reduce((machineIDs, machine) => {
+        if (machine.actions.includes(selectedAction.name)) {
+          machineIDs.push(machine.system_id);
+        }
+        return machineIDs;
+      }, [])
+    : [];
+
   // The action should be disabled if not all the selected machines can perform
   // The selected action. When machines are processing the available actions
   // can change, so the action should not be disabled while processing.
   const actionDisabled =
-    !processing && actionableMachines.length !== selectedMachines.length;
+    !processing && actionableMachineIDs.length !== selectedMachines.length;
 
   useEffect(() => {
     if (selectedMachines.length === 0) {
@@ -152,7 +155,7 @@ export const ActionFormWrapper = ({
       <span className="u-nudge-right--small">
         {getErrorSentence(
           selectedAction,
-          selectedMachines.length - actionableMachines.length
+          selectedMachines.length - actionableMachineIDs.length
         )}
         . To proceed,{" "}
         <Button
@@ -160,7 +163,7 @@ export const ActionFormWrapper = ({
           data-test="select-actionable-machines"
           inline
           onClick={() =>
-            dispatch(machineActions.setSelected(actionableMachines))
+            dispatch(machineActions.setSelected(actionableMachineIDs))
           }
         >
           update your selection
