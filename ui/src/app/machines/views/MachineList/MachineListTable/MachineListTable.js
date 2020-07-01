@@ -30,6 +30,7 @@ import {
 import { groupAsMap, simpleSortByKey } from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
+import { useTableSort } from "app/base/hooks";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -44,7 +45,7 @@ import StorageColumn from "./StorageColumn";
 import TableHeader from "app/base/components/TableHeader";
 import ZoneColumn from "./ZoneColumn";
 
-const getSortValue = (machine, sortKey) => {
+const getSortValue = (sortKey, machine) => {
   switch (sortKey) {
     case "domain":
       return machine.domain && machine.domain.name;
@@ -83,36 +84,16 @@ const checkboxMixed = (machines, selectedMachines) =>
   selectedMachines.length &&
   machines.some((machine) => !selectedMachines.includes(machine));
 
-const machineSort = (currentSort) => {
-  const { key, direction } = currentSort;
-
-  return function (a, b) {
-    const sortA = getSortValue(a, key);
-    const sortB = getSortValue(b, key);
-
-    if (direction === "none") {
-      return 0;
-    }
-    if (sortA < sortB) {
-      return direction === "descending" ? -1 : 1;
-    }
-    if (sortA > sortB) {
-      return direction === "descending" ? 1 : -1;
-    }
-    return 0;
-  };
-};
-
 const generateRows = ({
   activeRow,
-  currentSort,
   handleMachineCheckbox,
   machines,
-  selectedMachines,
   onToggleMenu,
+  selectedMachines,
   showMAC,
+  sortRows,
 }) => {
-  const sortedMachines = [...machines].sort(machineSort(currentSort));
+  const sortedMachines = sortRows(machines);
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
 
@@ -409,11 +390,11 @@ export const MachineListTable = ({
   const machines = useSelector((state) =>
     machineSelectors.search(state, filter, selectedIDs)
   );
-
-  const [currentSort, setCurrentSort] = useState({
+  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "fqdn",
     direction: "descending",
   });
+
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
   const groups = useMemo(() => generateGroups(grouping, machines), [
@@ -442,21 +423,6 @@ export const MachineListTable = ({
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
-
-  // Update sort parameters depending on whether the same sort key was clicked.
-  const updateSort = (newSortKey) => {
-    const { key, direction } = currentSort;
-
-    if (newSortKey === key) {
-      if (direction === "ascending") {
-        setCurrentSort({ key: "", direction: "none" });
-      } else {
-        setCurrentSort({ key, direction: "ascending" });
-      }
-    } else {
-      setCurrentSort({ key: newSortKey, direction: "descending" });
-    }
-  };
 
   const handleMachineCheckbox = (machine) => {
     let newSelectedMachines;
@@ -526,10 +492,10 @@ export const MachineListTable = ({
 
   const rowProps = {
     activeRow,
-    currentSort,
     handleMachineCheckbox,
     onToggleMenu,
     showMAC,
+    sortRows,
   };
 
   return (
