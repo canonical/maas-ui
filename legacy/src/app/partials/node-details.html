@@ -1197,9 +1197,7 @@
                                     </td>
                                     <td aria-label="Boot interface" ng-if="!isDevice">
                                         <span class="u-align--center u-hide u-show--large">
-                                            <input type="radio" name="bootInterface" id="{$ interface.name $}" checked
-                                                data-ng-if="!isController && isBootInterface(interface)" class="u-no-margin">
-                                            <label for="{$ interface.name $}"></label>
+                                            <i class="p-icon--success" id="{$ interface.name $}" name="bootInterface" data-ng-if="!isController && isBootInterface(interface)"></i>
                                         </span>
                                         <span class="u-hide--large"
                                             data-ng-if="!isController && isBootInterface(interface) && !isEditing(interface)">Yes</span>
@@ -2627,10 +2625,7 @@
                                 </td>
                                 <td aria-label="Boot interface">
                                     <span class="u-align--center">
-                                        <input type="radio" name="bootInterface" id="{$ interface.name $}" checked
-                                            data-ng-if="!isController && isBootInterface(interface) && !isEditing(interface)"
-                                            class="u-no-margin">
-                                        <label class="u-no-margin" for="{$ interface.name $}"></label>
+                                        <i class="p-icon--success" id="{$ interface.name $}" name="bootInterface" data-ng-if="!isController && isBootInterface(interface)"></i>
                                     </span>
                                 </td>
                                 <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
