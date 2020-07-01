@@ -25,6 +25,7 @@ const KVMDetails = (): JSX.Element => {
   useWindowTitle(`KVM ${pod?.name || "details"}`);
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(podActions.fetch());
   }, [dispatch]);
 

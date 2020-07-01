@@ -1,31 +1,34 @@
 import {
   createSlice,
+  PayloadAction,
   SliceCaseReducers,
   ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
 
 import { TSFixMe } from "app/base/types";
 
-export interface InitialState {
+export interface GenericState<T> {
   errors?: TSFixMe;
-  items?: TSFixMe[];
+  items?: T[];
   loaded?: boolean;
   loading?: boolean;
   saved?: boolean;
   saving?: boolean;
+  selected?: string[];
   [key: string]: any;
 }
 
 export const createStandardSlice = <
-  Reducers extends SliceCaseReducers<InitialState>
+  T,
+  Reducers extends SliceCaseReducers<GenericState<T>>
 >({
   name = "",
   initialState,
   reducers,
 }: {
   name: string;
-  initialState: InitialState;
-  reducers: Reducers;
+  initialState: GenericState<T>;
+  reducers: ValidateSliceCaseReducers<GenericState<T>, Reducers>;
 }) =>
   createSlice({
     name,
@@ -38,9 +41,10 @@ export const createStandardSlice = <
       saving: false,
       ...initialState,
     },
+    // @ts-ignore
     reducers: {
       fetch: {
-        prepare: (params?: TSFixMe) => ({
+        prepare: (params?: object) => ({
           meta: {
             model: name,
             method: "list",
@@ -51,14 +55,17 @@ export const createStandardSlice = <
         }),
         reducer: () => {},
       },
-      fetchStart: (state: InitialState) => {
+      fetchStart: (state) => {
         state.loading = true;
       },
-      fetchError: (state: InitialState, action: TSFixMe) => {
+      fetchError: (
+        state,
+        action: PayloadAction<T, string, TSFixMe, TSFixMe>
+      ) => {
         state.errors = action.error;
         state.loading = false;
       },
-      fetchSuccess: (state: InitialState, action: TSFixMe) => {
+      fetchSuccess: (state, action: PayloadAction<T[]>) => {
         state.loading = false;
         state.loaded = true;
         state.items = action.payload;
@@ -75,28 +82,33 @@ export const createStandardSlice = <
         }),
         reducer: () => {},
       },
-      createStart: (state: InitialState) => {
+      createStart: (state) => {
         state.saved = false;
         state.saving = true;
       },
-      createError: (state: InitialState, action: TSFixMe) => {
+      createError: (
+        state,
+        action: PayloadAction<T, string, TSFixMe, TSFixMe>
+      ) => {
         state.errors = action.error;
         state.saving = false;
       },
-      createSuccess: (state: InitialState) => {
+      createSuccess: (state) => {
         state.errors = {};
         state.saved = true;
         state.saving = false;
       },
-      createNotify: (state: InitialState, action: TSFixMe) => {
+      createNotify: (state, action: PayloadAction<T>) => {
         // In the event that the server erroneously attempts to create an existing model,
         // due to a race condition etc., ensure we update instead of creating duplicates.
         const existingIdx = state.items.findIndex(
+          // @ts-ignore
           (draftItem: TSFixMe) => draftItem.id === action.payload.id
         );
         if (existingIdx !== -1) {
           state.items[existingIdx] = action.payload;
         } else {
+          // @ts-ignore
           state.items.push(action.payload);
         }
       },
@@ -112,22 +124,27 @@ export const createStandardSlice = <
         }),
         reducer: () => {},
       },
-      updateStart: (state: InitialState) => {
+      updateStart: (state) => {
         state.saved = false;
         state.saving = true;
       },
-      updateError: (state: InitialState, action: TSFixMe) => {
+      updateError: (
+        state,
+        action: PayloadAction<T, string, TSFixMe, TSFixMe>
+      ) => {
         state.errors = action.error;
         state.saving = false;
       },
-      updateSuccess: (state: InitialState) => {
+      updateSuccess: (state) => {
         state.errors = {};
         state.saved = true;
         state.saving = false;
       },
-      updateNotify: (state: InitialState, action: TSFixMe) => {
+      updateNotify: (state, action: PayloadAction<T>) => {
         for (let i in state.items) {
+          // @ts-ignore
           if (state.items[i].id === action.payload.id) {
+            // @ts-ignore
             state.items[i] = action.payload;
           }
         }
@@ -146,31 +163,34 @@ export const createStandardSlice = <
         }),
         reducer: () => {},
       },
-      deleteStart: (state: InitialState) => {
+      deleteStart: (state) => {
         state.saved = false;
         state.saving = true;
       },
-      deleteError: (state: InitialState, action: TSFixMe) => {
+      deleteError: (
+        state,
+        action: PayloadAction<T, string, TSFixMe, TSFixMe>
+      ) => {
         state.errors = action.error;
         state.saving = false;
       },
-      deleteSuccess: (state: InitialState) => {
+      deleteSuccess: (state) => {
         state.errors = {};
         state.saved = true;
         state.saving = false;
       },
-      deleteNotify: (state: InitialState, action: TSFixMe) => {
+      deleteNotify: (state, action: PayloadAction<string>) => {
         const index = state.items.findIndex(
           (item: TSFixMe) => item.id === action.payload
         );
         state.items.splice(index, 1);
         if ("selected" in state) {
           state.selected = state.selected.filter(
-            (podId: TSFixMe) => podId !== action.payload
+            (id: string) => id !== action.payload
           );
         }
       },
-      cleanup: (state: InitialState) => {
+      cleanup: (state) => {
         state.errors = {};
         state.saved = false;
         state.saving = false;

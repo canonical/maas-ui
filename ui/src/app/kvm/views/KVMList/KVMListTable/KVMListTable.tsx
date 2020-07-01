@@ -12,13 +12,8 @@ import {
   resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  Controller,
-  Machine,
-  Pod,
-  ResourcePool,
-  TSFixMe,
-} from "app/base/types";
+import { Controller, Machine, ResourcePool, TSFixMe } from "app/base/types";
+import { Pod } from "app/store/pod/types";
 import {
   general as generalSelectors,
   pod as podSelectors,
@@ -145,6 +140,7 @@ const KVMListTable = (): JSX.Element => {
     dispatch(controllerActions.fetch());
     dispatch(generalActions.fetchOsInfo());
     dispatch(machineActions.fetch());
+    // @ts-ignore
     dispatch(podActions.fetch());
     dispatch(poolActions.fetch());
     dispatch(zoneActions.fetch());

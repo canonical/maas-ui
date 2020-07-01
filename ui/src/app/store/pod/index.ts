@@ -1,4 +1,6 @@
-import { createStandardSlice } from "app/store/utils";
+import { PayloadAction } from "@reduxjs/toolkit";
+
+import { createStandardSlice, GenericState } from "app/store/utils";
 import { Pod } from "./types";
 import { TSFixMe } from "app/base/types";
 
@@ -13,10 +15,10 @@ const podSlice = createStandardSlice({
   initialState: {
     selected: [],
     statuses: {},
-  },
+  } as GenericState<Pod>,
   // Additional or overriding reducers specific to pods.
   reducers: {
-    fetchSuccess: (state: TSFixMe, action: TSFixMe) => {
+    fetchSuccess: (state: TSFixMe, action: PayloadAction<Pod[]>) => {
       action.payload.forEach((newItem: Pod) => {
         // If the item already exists, update it, otherwise
         // add it to the store.
@@ -34,7 +36,7 @@ const podSlice = createStandardSlice({
       state.loaded = true;
       state.loading = false;
     },
-    createNotify: (state: TSFixMe, action: TSFixMe) => {
+    createNotify: (state: TSFixMe, action: PayloadAction<Pod>) => {
       // In the event that the server erroneously attempts to create an existing machine,
       // due to a race condition etc., ensure we update instead of creating duplicates.
       const existingIdx = state.items.findIndex(
@@ -47,17 +49,26 @@ const podSlice = createStandardSlice({
         state.statuses[action.payload.id] = DEFAULT_STATUSES;
       }
     },
-    deleteStart: (state: TSFixMe, action: TSFixMe) => {
+    deleteStart: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe>
+    ) => {
       state.statuses[action.meta.item.id].deleting = true;
     },
-    deleteSuccess: (state: TSFixMe, action: TSFixMe) => {
+    deleteSuccess: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe>
+    ) => {
       state.statuses[action.meta.item.id].deleting = false;
     },
-    deleteError: (state: TSFixMe, action: TSFixMe) => {
+    deleteError: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe, TSFixMe>
+    ) => {
       state.errors = action.error;
       state.statuses[action.meta.item.id].deleting = false;
     },
-    deleteNotify: (state: TSFixMe, action: TSFixMe) => {
+    deleteNotify: (state: TSFixMe, action: PayloadAction<Pod["id"]>) => {
       state.items = state.items.filter((pod: Pod) => pod.id !== action.payload);
       state.selected = state.selected.filter(
         (podID: Pod["id"]) => podID !== action.payload
@@ -77,10 +88,16 @@ const podSlice = createStandardSlice({
       }),
       reducer: () => {},
     },
-    refreshStart: (state: TSFixMe, action: TSFixMe) => {
+    refreshStart: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe>
+    ) => {
       state.statuses[action.meta.item.id].refreshing = true;
     },
-    refreshSuccess: (state: TSFixMe, action: TSFixMe) => {
+    refreshSuccess: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe>
+    ) => {
       for (const i in state.items) {
         if (state.items[i].id === action.payload.id) {
           state.items[i] = action.payload;
@@ -89,7 +106,10 @@ const podSlice = createStandardSlice({
       }
       state.statuses[action.meta.item.id].refreshing = false;
     },
-    refreshError: (state: TSFixMe, action: TSFixMe) => {
+    refreshError: (
+      state: TSFixMe,
+      action: PayloadAction<Pod, string, TSFixMe, TSFixMe>
+    ) => {
       state.errors = action.error;
       state.statuses[action.meta.item.id].refreshing = false;
     },
@@ -97,7 +117,7 @@ const podSlice = createStandardSlice({
       prepare: (podIDs: Pod["id"][]) => ({
         payload: podIDs,
       }),
-      reducer: (state: TSFixMe, action: TSFixMe) => {
+      reducer: (state: TSFixMe, action: PayloadAction<Pod["id"][]>) => {
         state.selected = action.payload;
       },
     },

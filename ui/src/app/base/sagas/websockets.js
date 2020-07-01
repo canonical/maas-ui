@@ -257,10 +257,22 @@ export function* handleMessage(socketChannel, socketClient) {
           type: `${action.type}_ERROR`,
           error,
         });
+        // Temporarily send both formats of action names.
+        yield put({
+          meta: { item },
+          type: `${action.type}Error`,
+          error,
+        });
       } else {
         yield put({
           meta: { item },
           type: `${action.type}_SUCCESS`,
+          payload: response.result,
+        });
+        // Temporarily send both formats of action names.
+        yield put({
+          meta: { item },
+          type: `${action.type}Success`,
           payload: response.result,
         });
         // Handle batching, if required.
@@ -313,6 +325,8 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
   }
 
   yield put({ meta: { item: params || payload }, type: `${type}_START` });
+  // Temporarily send both formats of action names.
+  yield put({ meta: { item: params || payload }, type: `${type}Start` });
   let requestIDs = [];
   try {
     if (params && Array.isArray(params)) {

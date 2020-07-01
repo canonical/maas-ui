@@ -30,6 +30,7 @@ const KVMListHeader = (): JSX.Element => {
   const [selectedAction, setSelectedAction] = useState("");
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(podActions.fetch());
   }, [dispatch]);
 
