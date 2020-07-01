@@ -33,10 +33,6 @@ Fixes: # .
 Related Launchpad maas issue in the form `lp#number`.
 
 ## Backports
- - master
- - ...
 
-In general, please propose fixes against *master* rather than release branches (e.g. 2.7), unless the
-fix is only applicable for that specific release. Please apply the "backport" label
-if appropriate, and indicate here which releases should receive a backport (e.g. 2.7, 2.8).
+In general, please propose fixes against *master* rather than release branches (e.g. 2.7), unless the fix is only applicable for that specific release. Please apply backport labels to the PR (e.g. "Backport 2.7") for the appropriate releases to target.
 
