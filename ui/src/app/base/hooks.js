@@ -356,3 +356,61 @@ export const useProcessing = (
     }
   });
 };
+
+/**
+ * @typedef {object} TableSort
+ * @property {Sort} currentSort - The current sort key and direction.
+ * @property {function} sortRows - The function that sorts table rows.
+ * @property {(newSortKey: Sort["key"]) => void} updateSort - The function used to update current sort.
+ */
+
+/**
+ * Handle sorting in tables.
+ * @param {function} sortValueGetter - The function that determines what value to use when comparing row objects.
+ * @param {Sort} initialSort - The initial sort key and direction on table render.
+ * @returns {TableSort} The properties and helper functions to use in table sorting.
+ */
+export const useTableSort = (sortValueGetter, initialSort) => {
+  const [currentSort, setCurrentSort] = useState(initialSort);
+
+  // Update current sort depending on whether the same sort key was clicked.
+  const updateSort = (newSortKey) => {
+    const { key, direction } = currentSort;
+
+    if (newSortKey === key) {
+      if (direction === "ascending") {
+        setCurrentSort({ key: "", direction: "none" });
+      } else {
+        setCurrentSort({ key, direction: "ascending" });
+      }
+    } else {
+      setCurrentSort({ key: newSortKey, direction: "descending" });
+    }
+  };
+
+  // Sort rows according to sortValueGetter. Additional arguments will need to be
+  // passed to both the sortValueGetter and sortRows functions.
+  const sortRows = (items, ...args) => {
+    const { key, direction } = currentSort;
+
+    const sortFunctionGenerator = (itemA, itemB) => {
+      const sortA = sortValueGetter(key, itemA, ...args);
+      const sortB = sortValueGetter(key, itemB, ...args);
+
+      if (direction === "none") {
+        return 0;
+      }
+      if (sortA < sortB) {
+        return direction === "descending" ? -1 : 1;
+      }
+      if (sortA > sortB) {
+        return direction === "descending" ? 1 : -1;
+      }
+      return 0;
+    };
+
+    return [...items].sort(sortFunctionGenerator, ...args);
+  };
+
+  return { currentSort, sortRows, updateSort };
+};

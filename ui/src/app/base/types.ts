@@ -223,6 +223,11 @@ export type ResourcePoolState = {
   saving: boolean;
 };
 
+export type Sort = {
+  direction: "ascending" | "descending" | "none";
+  key: string;
+};
+
 export type TestStatus = {
   status: number;
   pending: number;

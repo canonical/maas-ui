@@ -1,6 +1,6 @@
 import { Col, Input, MainTable, Row } from "@canonical/react-components";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getStatusText } from "app/utils";
@@ -17,6 +17,7 @@ import {
   Machine,
   Pod,
   ResourcePool,
+  Sort,
   TSFixMe,
 } from "app/base/types";
 import {
@@ -24,6 +25,7 @@ import {
   pod as podSelectors,
   resourcepool as poolSelectors,
 } from "app/base/selectors";
+import { useTableSort } from "app/base/hooks";
 import CPUColumn from "./CPUColumn";
 import NameColumn from "./NameColumn";
 import OSColumn from "./OSColumn";
@@ -35,82 +37,48 @@ import TableHeader from "app/base/components/TableHeader";
 import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
 
-type Sort = {
-  direction: "ascending" | "descending" | "none";
-  key: string;
-};
-
 const checkboxChecked = (pods: Pod[], selectedPodIDs: number[]) =>
   pods.some((pod) => selectedPodIDs.includes(pod.id));
 
 const checkboxMixed = (pods: Pod[], selectedPodIDs: number[]) =>
   selectedPodIDs.length && pods.some((pod) => !selectedPodIDs.includes(pod.id));
 
-const podSort = (
-  currentSort: Sort,
+const getSortValue = (
+  sortKey: Sort["key"],
+  pod: Pod,
   podHosts: (Controller | Machine)[],
   pools: ResourcePool[],
   osReleases: TSFixMe
 ) => {
-  const getSortValue = (pod: Pod, sortKey: Sort["key"]) => {
-    const podHost = podHosts.find((host) => host.system_id === pod.host);
-    const podPool = pools.find((pool) => pod.pool === pool.id);
+  const podHost = podHosts.find((host) => host.system_id === pod.host);
+  const podPool = pools.find((pool) => pod.pool === pool.id);
 
-    switch (sortKey) {
-      case "power":
-        if (podHost && "power_state" in podHost) {
-          return podHost.power_state;
-        }
-        return "unknown";
-      case "os":
-        if (podHost && podHost.osystem in osReleases) {
-          return getStatusText(podHost, osReleases[podHost.osystem]);
-        }
-        return "unknown";
-      case "pool":
-        return podPool?.name || "unknown";
-      case "cpu":
-        return pod.used.cores;
-      case "ram":
-        return pod.used.memory;
-      case "storage":
-        return pod.used.local_storage;
-      default:
-        return pod[sortKey];
-    }
-  };
-
-  const { key, direction } = currentSort;
-
-  return function (podA: Pod, podB: Pod) {
-    const sortA = getSortValue(podA, key);
-    const sortB = getSortValue(podB, key);
-
-    if (direction === "none") {
-      return 0;
-    }
-    if (sortA < sortB) {
-      return direction === "descending" ? -1 : 1;
-    }
-    if (sortA > sortB) {
-      return direction === "descending" ? 1 : -1;
-    }
-    return 0;
-  };
+  switch (sortKey) {
+    case "power":
+      if (podHost && "power_state" in podHost) {
+        return podHost.power_state;
+      }
+      return "unknown";
+    case "os":
+      if (podHost && podHost.osystem in osReleases) {
+        return getStatusText(podHost, osReleases[podHost.osystem]);
+      }
+      return "unknown";
+    case "pool":
+      return podPool?.name || "unknown";
+    case "cpu":
+      return pod.used.cores;
+    case "ram":
+      return pod.used.memory;
+    case "storage":
+      return pod.used.local_storage;
+    default:
+      return pod[sortKey];
+  }
 };
 
-const generateRows = (
-  pods: Pod[],
-  handlePodCheckbox: (pod: Pod) => void,
-  currentSort: Sort,
-  podHosts: (Controller | Machine)[],
-  pools: ResourcePool[],
-  osReleases: TSFixMe
-) => {
-  const sortedPods = [...pods].sort(
-    podSort(currentSort, podHosts, pools, osReleases)
-  );
-  return sortedPods.map((pod) => ({
+const generateRows = (pods: Pod[], handlePodCheckbox: (pod: Pod) => void) =>
+  pods.map((pod) => ({
     key: pod.id,
     columns: [
       {
@@ -126,7 +94,6 @@ const generateRows = (
       { content: <StorageColumn id={pod.id} /> },
     ],
   }));
-};
 
 const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -136,7 +103,7 @@ const KVMListTable = (): JSX.Element => {
   const pools = useSelector(poolSelectors.all);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
 
-  const [currentSort, setCurrentSort] = useState<Sort>({
+  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
     direction: "descending",
   });
@@ -149,21 +116,6 @@ const KVMListTable = (): JSX.Element => {
     dispatch(poolActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
-
-  // Update sort parameters depending on whether the same sort key was clicked.
-  const updateSort = (newSortKey: Sort["key"]) => {
-    const { key, direction } = currentSort;
-
-    if (newSortKey === key) {
-      if (direction === "ascending") {
-        setCurrentSort({ key: "", direction: "none" });
-      } else {
-        setCurrentSort({ key, direction: "ascending" });
-      }
-    } else {
-      setCurrentSort({ key: newSortKey, direction: "descending" });
-    }
-  };
 
   const handlePodCheckbox = (pod: Pod) => {
     let newSelectedPods: number[];
@@ -186,6 +138,8 @@ const KVMListTable = (): JSX.Element => {
     }
     dispatch(podActions.setSelected(newSelectedPods));
   };
+
+  const sortedPods = sortRows(pods, podHosts, pools, osReleases);
 
   return (
     <Row>
@@ -329,14 +283,7 @@ const KVMListTable = (): JSX.Element => {
             },
           ]}
           paginate={50}
-          rows={generateRows(
-            pods,
-            handlePodCheckbox,
-            currentSort,
-            podHosts,
-            pools,
-            osReleases
-          )}
+          rows={generateRows(sortedPods, handlePodCheckbox)}
         />
       </Col>
     </Row>
