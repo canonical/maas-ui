@@ -1,3 +1,12 @@
+export type AuthState = {
+  errors: TSFixMe;
+  loaded: boolean;
+  loading: boolean;
+  saved: boolean;
+  saving: boolean;
+  user: User;
+};
+
 export type Choice = [string, string];
 
 export type Controller = {
@@ -238,6 +247,27 @@ export type TestStatus = {
 
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
+export type User = {
+  completed_intro: boolean;
+  email: string;
+  global_permissions: string[];
+  id: number;
+  is_superuser: boolean;
+  last_name: string;
+  sshkeys_count: number;
+  username: string;
+};
+
+export type UserState = {
+  auth: AuthState;
+  errors: TSFixMe;
+  items: User[];
+  loaded: boolean;
+  loading: boolean;
+  saved: boolean;
+  saving: boolean;
+};
+
 export type Zone = {
   controllers_count: number;
   created: string;
@@ -263,5 +293,6 @@ export type RootState = {
   machine: MachineState;
   pod: PodState;
   resourcepool: ResourcePoolState;
+  user: UserState;
   zone: ZoneState;
 };
