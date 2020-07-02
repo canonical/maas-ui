@@ -1,17 +1,17 @@
-import { Machine } from "app/base/types";
+import { isMachine, Host } from "app/base/types";
 
 /**
- * Returns the correct icon given a machine's power status.
- * @param {Machine} machine - the machine who's power you are checking.
+ * Returns the correct icon given a host's power status.
+ * @param {Host} host - a machine or controller.
  * @param {boolean} loading - whether the data is still loading.
  * @returns {string} icon class
  */
-export const getPowerIcon = (machine?: Machine, loading?: boolean): string => {
-  if (loading && !machine) {
+export const getPowerIcon = (host?: Host, loading?: boolean): string => {
+  if (loading && !host) {
     return "p-icon--spinner u-animation--spin";
   }
-  if (machine && machine.power_state) {
-    return `p-icon--power-${machine.power_state}`;
+  if (host && isMachine(host) && host.power_state) {
+    return `p-icon--power-${host.power_state}`;
   }
   return "p-icon--power-unknown";
 };

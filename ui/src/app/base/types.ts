@@ -200,6 +200,11 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
+// TODO: Machines and Controllers are almost identical save a few properties,
+// the Host type should represent the intersection with Machine and Controller
+// only adding the appropriate specific types e.g. controller.version
+export type Host = Machine | Controller;
+
 export type Machine = {
   actions: string[];
   architecture: string;
@@ -251,6 +256,13 @@ export type Machine = {
   vlan: TSFixMe;
   zone: TSFixMe;
 } & Model;
+
+/**
+ * Type guard to determine if host is a machine.
+ * @param {Host} host - a machine or controller.
+ */
+export const isMachine = (host: Host): host is Machine =>
+  (host as Machine).power_state !== undefined;
 
 export type Controller = {
   actions: string[];

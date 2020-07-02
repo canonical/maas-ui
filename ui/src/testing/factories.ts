@@ -1,6 +1,6 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import { Machine, Model, TestStatus } from "app/base/types";
+import { Controller, Machine, Model, TestStatus } from "app/base/types";
 
 const model = define<Model>({
   id: sequence,
@@ -22,6 +22,7 @@ const ip_addresses = () => [];
 const link_speeds = () => [];
 const permissions = () => [];
 const spaces = () => [];
+const service_ids = () => [];
 const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => ["test"];
@@ -76,4 +77,40 @@ export const machine = extend<Model, Machine>(model, {
   testing_status: testStatus,
   vlan: null,
   zone: null,
+});
+
+export const controller = extend<Model, Controller>(model, {
+  actions,
+  architecture: "amd64/generic",
+  cpu_count: 1,
+  cpu_speed: 0,
+  cpu_test_status: testStatus,
+  description: "a test machine",
+  distro_series: "",
+  domain: null,
+  fqdn: "test.maas",
+  hostname: "test-controller",
+  interface_test_status: testStatus,
+  last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
+  link_type: "machine",
+  locked: false,
+  memory_test_status: testStatus,
+  memory: 1,
+  network_test_status: testStatus,
+  node_type_display: "Controller",
+  node_type: 4,
+  osystem: "ubuntu",
+  other_test_status: testStatus,
+  permissions,
+  pool: null,
+  service_ids,
+  status_code: 6,
+  status_message: "",
+  status: "Deployed",
+  storage_test_status: testStatus,
+  system_id: random.toString(),
+  tags,
+  version_long: "2.9.0~alpha1 (8668-g.71d5929ae) (snap)",
+  version_short: "2.9.0~alpha1",
+  version: "2.9.0~alpha1-8668-g.71d5929ae",
 });
