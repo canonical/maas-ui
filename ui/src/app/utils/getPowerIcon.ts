@@ -10,7 +10,7 @@ export const getPowerIcon = (host?: Host, loading?: boolean): string => {
   if (loading && !host) {
     return "p-icon--spinner u-animation--spin";
   }
-  if (host && isMachine(host) && host.power_state) {
+  if (host && isMachine(host)) {
     return `p-icon--power-${host.power_state}`;
   }
   return "p-icon--power-unknown";
