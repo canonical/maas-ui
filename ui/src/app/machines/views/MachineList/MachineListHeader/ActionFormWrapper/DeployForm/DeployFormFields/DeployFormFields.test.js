@@ -244,4 +244,27 @@ describe("DeployFormFields", () => {
     );
     expect(wrapper.find("[data-test='sshkeys-warning']").exists()).toBe(true);
   });
+
+  it("can display the user data input", async () => {
+    const state = { ...initialState };
+    state.general.osInfo.data.default_release = "bionic";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField[name='userData']").exists()).toBe(false);
+    await act(async () => {
+      wrapper.find("input[name='toggleUserData']").simulate("change", {
+        target: { name: "toggleUserData", checked: true },
+      });
+    });
+    wrapper.update();
+    expect(wrapper.find("FormikField[name='userData']").exists()).toBe(true);
+  });
 });
