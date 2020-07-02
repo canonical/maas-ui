@@ -13,6 +13,7 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
+import { Machine, MachineAction } from "app/base/types";
 import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -25,11 +26,24 @@ const DeploySchema = Yup.object().shape({
   installKVM: Yup.boolean(),
 });
 
+export type DeployFormValues = {
+  installKVM: boolean;
+  kernel: string;
+  oSystem: string;
+  release: string;
+};
+
+type Props = {
+  processing: boolean;
+  setProcessing: (processing: boolean) => void;
+  setSelectedAction: (action?: MachineAction, deselect?: boolean) => void;
+};
+
 export const DeployForm = ({
   processing,
   setProcessing,
   setSelectedAction,
-}) => {
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const saved = useSelector(machineSelectors.saved);
@@ -38,7 +52,9 @@ export const DeployForm = ({
     generalSelectors.defaultMinHweKernel.get
   );
   const osInfo = useSelector(generalSelectors.osInfo.get);
-  const deployingSelected = useSelector(machineSelectors.deployingSelected);
+  const deployingSelected: Machine["system_id"][] = useSelector(
+    machineSelectors.deployingSelected
+  );
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -79,7 +95,7 @@ export const DeployForm = ({
         category: "Take action menu",
         label: "Deploy selected machines",
       }}
-      onSubmit={(values) => {
+      onSubmit={(values: DeployFormValues) => {
         const extra = {
           osystem: values.oSystem,
           distro_series: values.release,
