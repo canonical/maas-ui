@@ -180,7 +180,6 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
       true
     );
-    expect(wrapper.find("[data-test='kvm-warning']").exists()).toBe(true);
     await act(async () => {
       wrapper
         .find("select[name='release']")
@@ -190,7 +189,6 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
       false
     );
-    expect(wrapper.find("[data-test='kvm-warning']").exists()).toBe(false);
   });
 
   it("enables KVM checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
