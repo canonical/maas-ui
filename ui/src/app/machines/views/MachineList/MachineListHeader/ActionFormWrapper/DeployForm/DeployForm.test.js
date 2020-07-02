@@ -185,6 +185,101 @@ describe("DeployForm", () => {
     ]);
   });
 
+  it("can deploy with user data", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        oSystem: "ubuntu",
+        release: "bionic",
+        kernel: "",
+        installKVM: false,
+        userData: "test script",
+      })
+    );
+    expect(
+      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+    ).toStrictEqual([
+      {
+        type: "DEPLOY_MACHINE",
+        meta: {
+          model: "machine",
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: "deploy",
+            extra: {
+              osystem: "ubuntu",
+              distro_series: "bionic",
+              hwe_kernel: "",
+              install_kvm: false,
+              user_data: "test script",
+            },
+            system_id: "abc123",
+          },
+        },
+      },
+    ]);
+  });
+
+  it("ignores user data that is an empty string", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        oSystem: "ubuntu",
+        release: "bionic",
+        kernel: "",
+        installKVM: false,
+        userData: "",
+      })
+    );
+    expect(
+      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+    ).toStrictEqual([
+      {
+        type: "DEPLOY_MACHINE",
+        meta: {
+          model: "machine",
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: "deploy",
+            extra: {
+              osystem: "ubuntu",
+              distro_series: "bionic",
+              hwe_kernel: "",
+              install_kvm: false,
+            },
+            system_id: "abc123",
+          },
+        },
+      },
+    ]);
+  });
+
   it("can show the status when processing machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];

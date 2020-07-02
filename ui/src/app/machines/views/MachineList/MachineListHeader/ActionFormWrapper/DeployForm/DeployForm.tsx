@@ -31,6 +31,7 @@ export type DeployFormValues = {
   kernel: string;
   oSystem: string;
   release: string;
+  userData?: string;
 };
 
 type Props = {
@@ -101,6 +102,8 @@ export const DeployForm = ({
           distro_series: values.release,
           install_kvm: values.installKVM,
           hwe_kernel: values.kernel,
+          ...(values.userData &&
+            values.userData !== "" && { user_data: values.userData }),
         };
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.deploy(machine.system_id, extra));

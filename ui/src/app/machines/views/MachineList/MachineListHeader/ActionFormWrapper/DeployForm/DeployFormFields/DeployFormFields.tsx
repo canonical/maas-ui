@@ -1,5 +1,5 @@
-import { Col, List, Row, Select } from "@canonical/react-components";
-import React from "react";
+import { Col, List, Row, Select, Textarea } from "@canonical/react-components";
+import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ import { User } from "app/base/types";
 import FormikField from "app/base/components/FormikField";
 
 export const DeployFormFields = (): JSX.Element => {
+  const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue } = formikProps;
   const { values }: { values: DeployFormValues } = formikProps;
@@ -102,6 +103,30 @@ export const DeployFormFields = (): JSX.Element => {
             ]}
             inline
           />
+          <FormikField
+            label="Cloud-init user data..."
+            name="toggleUserData"
+            type="checkbox"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(evt);
+              setUserDataVisible(evt.target.checked);
+              setFieldValue("userData", "");
+            }}
+            wrapperClassName={userDataVisible ? "u-sv2" : null}
+          />
+          {userDataVisible && (
+            <FormikField
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
+              className="u-sv2"
+              component={Textarea}
+              name="userData"
+              placeholder="Paste script here"
+              spellCheck="false"
+              style={{ minHeight: "15rem" }}
+            />
+          )}
         </Col>
       </Row>
       {user.sshkeys_count === 0 && (
