@@ -260,8 +260,8 @@ describe("DeployFormFields", () => {
     );
     expect(wrapper.find("FormikField[name='userData']").exists()).toBe(false);
     await act(async () => {
-      wrapper.find("input[name='toggleUserData']").simulate("change", {
-        target: { name: "toggleUserData", checked: true },
+      wrapper.find("input[name='includeUserData']").simulate("change", {
+        target: { name: "includeUserData", checked: true },
       });
     });
     wrapper.update();

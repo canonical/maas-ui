@@ -27,6 +27,7 @@ const DeploySchema = Yup.object().shape({
 });
 
 export type DeployFormValues = {
+  includeUserData: boolean;
   installKVM: boolean;
   kernel: string;
   oSystem: string;
@@ -102,7 +103,8 @@ export const DeployForm = ({
           distro_series: values.release,
           install_kvm: values.installKVM,
           hwe_kernel: values.kernel,
-          ...(values.userData &&
+          ...(values.includeUserData &&
+            values.userData &&
             values.userData !== "" && { user_data: values.userData }),
         };
         selectedMachines.forEach((machine) => {

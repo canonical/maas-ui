@@ -185,7 +185,7 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("can deploy with user data", () => {
+  it("can deploy with user-data", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -200,10 +200,11 @@ describe("DeployForm", () => {
     );
     act(() =>
       wrapper.find("Formik").props().onSubmit({
+        includeUserData: true,
+        installKVM: false,
+        kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
-        kernel: "",
-        installKVM: false,
         userData: "test script",
       })
     );
@@ -233,7 +234,7 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("ignores user data that is an empty string", () => {
+  it("ignores user-data if the cloud-init option is not checked", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -248,10 +249,11 @@ describe("DeployForm", () => {
     );
     act(() =>
       wrapper.find("Formik").props().onSubmit({
+        includeUserData: false,
+        installKVM: false,
+        kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
-        kernel: "",
-        installKVM: false,
         userData: "",
       })
     );
