@@ -104,13 +104,12 @@ export const DeployFormFields = (): JSX.Element => {
             inline
           />
           <FormikField
-            label="Cloud-init user data..."
-            name="toggleUserData"
+            label="Cloud-init user-data&hellip;"
+            name="includeUserData"
             type="checkbox"
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(evt);
               setUserDataVisible(evt.target.checked);
-              setFieldValue("userData", "");
             }}
             wrapperClassName={userDataVisible ? "u-sv2" : null}
           />
