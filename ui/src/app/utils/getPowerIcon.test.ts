@@ -1,24 +1,28 @@
 import { getPowerIcon } from "./getPowerIcon";
 
+import { machine as machineFactory } from "testing/factories";
+
+const machine = machineFactory();
+
 describe("getPowerIcon", () => {
   it("correctly returns on icon", () => {
-    expect(getPowerIcon({ power_state: "on" })).toEqual("p-icon--power-on");
+    machine.power_state = "on";
+    expect(getPowerIcon(machine)).toEqual("p-icon--power-on");
   });
 
   it("correctly returns off icon", () => {
-    expect(getPowerIcon({ power_state: "off" })).toEqual("p-icon--power-off");
+    machine.power_state = "off";
+    expect(getPowerIcon(machine)).toEqual("p-icon--power-off");
   });
 
   it("correctly returns error icon", () => {
-    expect(getPowerIcon({ power_state: "error" })).toEqual(
-      "p-icon--power-error"
-    );
+    machine.power_state = "error";
+    expect(getPowerIcon(machine)).toEqual("p-icon--power-error");
   });
 
   it("correctly returns unknown icon", () => {
-    expect(getPowerIcon({ power_state: "unknown" })).toEqual(
-      "p-icon--power-unknown"
-    );
+    machine.power_state = "unknown";
+    expect(getPowerIcon(machine)).toEqual("p-icon--power-unknown");
     expect(getPowerIcon()).toEqual("p-icon--power-unknown");
   });
 
