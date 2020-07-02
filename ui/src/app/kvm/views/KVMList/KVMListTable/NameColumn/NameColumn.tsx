@@ -7,28 +7,31 @@ import { pod as podSelectors } from "app/base/selectors";
 import { Pod, RootState } from "app/base/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
-type Props = { handleCheckbox: (pod: Pod) => void; id: number };
+type Props = {
+  handleCheckbox: (podID: Pod["id"]) => void;
+  id: number;
+  selected: boolean;
+};
 
-const NameColumn = ({ handleCheckbox, id }: Props): JSX.Element => {
+const NameColumn = ({ handleCheckbox, id, selected }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
 
   return (
     <DoubleRow
       primary={
         <Input
-          checked={selectedPodIDs.includes(pod.id)}
+          checked={selected}
           className="has-inline-label keep-label-opacity"
           data-test="pod-checkbox"
-          id={`${pod.id}`}
+          id={`${id}`}
           label={
-            <Link to={`/kvm/${pod.id}`}>
+            <Link to={`/kvm/${id}`}>
               <strong>{pod.name}</strong>
             </Link>
           }
-          onChange={() => handleCheckbox(pod)}
+          onChange={handleCheckbox}
           type="checkbox"
           wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
         />

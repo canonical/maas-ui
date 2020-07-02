@@ -27,7 +27,13 @@ import {
   user as userActions,
   zone as zoneActions,
 } from "app/base/actions";
-import { groupAsMap, simpleSortByKey } from "app/utils";
+import {
+  generateCheckboxHandlers,
+  groupAsMap,
+  simpleSortByKey,
+  someInArray,
+  someNotAll,
+} from "app/utils";
 import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
@@ -60,15 +66,15 @@ const getSortValue = (sortKey, machine) => {
   }
 };
 
-const getGroupSecondaryString = (machines, selectedMachines) => {
-  let string = `${machines.length} ${pluralize("machine", machines.length)}`;
-  const selectedCount = machines.reduce(
-    (sum, machine) => (selectedMachines.includes(machine) ? sum + 1 : sum),
+const getGroupSecondaryString = (machineIDs, selectedIDs) => {
+  let string = pluralize("machine", machineIDs.length, true);
+  const selectedCount = machineIDs.reduce(
+    (sum, machine) => (selectedIDs.includes(machine) ? sum + 1 : sum),
     0
   );
 
   if (selectedCount) {
-    if (selectedCount === machines.length) {
+    if (selectedCount === machineIDs.length) {
       string = `${string} selected`;
     } else {
       string = `${string}, ${selectedCount} selected`;
@@ -77,19 +83,12 @@ const getGroupSecondaryString = (machines, selectedMachines) => {
   return string;
 };
 
-const checkboxChecked = (machines, selectedMachines) =>
-  machines.some((machine) => selectedMachines.includes(machine));
-
-const checkboxMixed = (machines, selectedMachines) =>
-  selectedMachines.length &&
-  machines.some((machine) => !selectedMachines.includes(machine));
-
 const generateRows = ({
   activeRow,
-  handleMachineCheckbox,
+  handleRowCheckbox,
   machines,
   onToggleMenu,
-  selectedMachines,
+  selectedIDs,
   showMAC,
   sortRows,
 }) => {
@@ -106,8 +105,10 @@ const generateRows = ({
         {
           content: (
             <NameColumn
-              handleCheckbox={handleMachineCheckbox}
-              selected={selectedMachines.includes(row)}
+              handleCheckbox={() =>
+                handleRowCheckbox(row.system_id, selectedIDs)
+              }
+              selected={someInArray(row.system_id, selectedIDs)}
               showMAC={showMAC}
               systemId={row.system_id}
             />
@@ -288,7 +289,7 @@ const generateGroupRows = ({
   groups,
   handleGroupCheckbox,
   hiddenGroups,
-  selectedMachines,
+  selectedIDs,
   setHiddenGroups,
   ...rowProps
 }) => {
@@ -297,6 +298,7 @@ const generateGroupRows = ({
   groups.length &&
     groups.forEach((group) => {
       const { label, machines } = group;
+      const machineIDs = machines.map((machine) => machine.system_id);
       const collapsed = hiddenGroups.includes(label);
       rows.push({
         className: "machine-list__group",
@@ -307,23 +309,22 @@ const generateGroupRows = ({
                 data-test="group-cell"
                 primary={
                   <Input
-                    checked={checkboxChecked(machines, selectedMachines)}
+                    checked={someInArray(machineIDs, selectedIDs)}
                     className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": checkboxMixed(
-                        machines,
-                        selectedMachines
-                      ),
+                      "p-checkbox--mixed": someNotAll(machineIDs, selectedIDs),
                     })}
                     disabled={false}
                     id={label}
                     label={<strong>{label}</strong>}
-                    onChange={() => handleGroupCheckbox(group)}
+                    onChange={() =>
+                      handleGroupCheckbox(machineIDs, selectedIDs)
+                    }
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom"
                   />
                 }
                 primaryTextClassName="u-nudge--checkbox"
-                secondary={getGroupSecondaryString(machines, selectedMachines)}
+                secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
                 secondaryClassName="u-nudge--secondary-row"
               />
             ),
@@ -369,7 +370,7 @@ const generateGroupRows = ({
       rows = rows.concat(
         generateRows({
           machines: visibleMachines,
-          selectedMachines,
+          selectedIDs,
           ...rowProps,
         })
       );
@@ -385,11 +386,11 @@ export const MachineListTable = ({
   setSearchFilter,
 }) => {
   const dispatch = useDispatch();
-  const selectedMachines = useSelector(machineSelectors.selected);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const machines = useSelector((state) =>
     machineSelectors.search(state, filter, selectedIDs)
   );
+  const machineIDs = machines.map((machine) => machine.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "fqdn",
     direction: "descending",
@@ -424,60 +425,14 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const handleMachineCheckbox = (machine) => {
-    let newSelectedMachines;
-    if (selectedMachines.includes(machine)) {
-      newSelectedMachines = selectedMachines.filter((m) => m !== machine);
-    } else {
-      newSelectedMachines = [...selectedMachines, machine];
+  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers(
+    (machineIDs) => {
+      if (machineIDs.length === 0) {
+        removeSelectedFilter();
+      }
+      dispatch(machineActions.setSelected(machineIDs));
     }
-    if (newSelectedMachines.length === 0) {
-      removeSelectedFilter();
-    }
-    dispatch(machineActions.setSelected(newSelectedMachines));
-  };
-
-  const handleGroupCheckbox = (group) => {
-    let newSelectedMachines;
-    if (checkboxChecked(group.machines, selectedMachines)) {
-      // Unselect all machines in the group if all selected
-      newSelectedMachines = group.machines.reduce(
-        (acc, machine) => {
-          if (acc.includes(machine)) {
-            return acc.filter((m) => m !== machine);
-          }
-          return acc;
-        },
-        [...selectedMachines]
-      );
-    } else {
-      // Select all machines if at least one not selected
-      newSelectedMachines = group.machines.reduce(
-        (acc, machine) => {
-          if (!acc.includes(machine)) {
-            return [...acc, machine];
-          }
-          return acc;
-        },
-        [...selectedMachines]
-      );
-    }
-    if (newSelectedMachines.length === 0) {
-      removeSelectedFilter();
-    }
-    dispatch(machineActions.setSelected(newSelectedMachines));
-  };
-
-  const handleAllCheckbox = () => {
-    let newSelectedMachines;
-    if (checkboxChecked(machines, selectedMachines)) {
-      newSelectedMachines = [];
-      removeSelectedFilter();
-    } else {
-      newSelectedMachines = machines;
-    }
-    dispatch(machineActions.setSelected(newSelectedMachines));
-  };
+  );
 
   const onToggleMenu = useCallback(
     (systemId, open) => {
@@ -492,7 +447,7 @@ export const MachineListTable = ({
 
   const rowProps = {
     activeRow,
-    handleMachineCheckbox,
+    handleRowCheckbox,
     onToggleMenu,
     showMAC,
     sortRows,
@@ -510,21 +465,17 @@ export const MachineListTable = ({
               content: (
                 <div className="u-flex u-nudge--checkbox">
                   <Input
-                    checked={
-                      checkboxChecked(machines, selectedMachines) &&
-                      machines.length !== 0
-                    }
+                    checked={someInArray(machineIDs, selectedIDs)}
                     className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": checkboxMixed(
-                        machines,
-                        selectedMachines
-                      ),
+                      "p-checkbox--mixed": someNotAll(machineIDs, selectedIDs),
                     })}
                     data-test="all-machines-checkbox"
                     disabled={machines.length === 0}
                     id="all-machines-checkbox"
                     label={" "}
-                    onChange={() => handleAllCheckbox()}
+                    onChange={() =>
+                      handleGroupCheckbox(machineIDs, selectedIDs)
+                    }
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom"
                   />
@@ -702,12 +653,12 @@ export const MachineListTable = ({
           paginate={50}
           rows={
             grouping === "none"
-              ? generateRows({ machines, selectedMachines, ...rowProps })
+              ? generateRows({ machines, selectedIDs, ...rowProps })
               : generateGroupRows({
                   groups,
                   handleGroupCheckbox,
                   hiddenGroups,
-                  selectedMachines,
+                  selectedIDs,
                   setHiddenGroups,
                   ...rowProps,
                 })
