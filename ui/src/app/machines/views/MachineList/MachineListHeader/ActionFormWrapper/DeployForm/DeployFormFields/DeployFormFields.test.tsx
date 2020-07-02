@@ -6,11 +6,12 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import DeployForm from "../DeployForm";
+import { TSFixMe } from "app/base/types";
 
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {
-  let initialState;
+  let initialState: TSFixMe;
   beforeEach(() => {
     initialState = {
       config: {
@@ -124,7 +125,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +145,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -156,7 +165,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -173,7 +186,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -200,7 +217,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -238,7 +259,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -254,7 +279,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm
+            processing={false}
+            setProcessing={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
