@@ -4904,6 +4904,11 @@ cookie@0.4.0:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
   integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
 
+cooky-cutter@1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/cooky-cutter/-/cooky-cutter-1.5.4.tgz#f3ad313147c1231ad4991727311faa79e366eff9"
+  integrity sha512-K+lHJHtMhpKLqBbD2GdTHTfx+8GXTDQBVKKjz8+WZa0Gd9fssCRHEBP9mXou+4Hmk3JEScBq1oo1C+/e0Ly+qA==
+
 copy-concurrently@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/copy-concurrently/-/copy-concurrently-1.0.5.tgz#92297398cae34937fcafd6ec8139c18051f0b5e0"

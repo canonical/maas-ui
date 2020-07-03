@@ -4,13 +4,20 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import { machine as machineFactory } from "testing/factories";
 import { PowerColumn } from "./PowerColumn";
 
 const mockStore = configureStore();
 
 describe("PowerColumn", () => {
   let state;
+  let machine;
   beforeEach(() => {
+    machine = machineFactory();
+    machine.system_id = "abc123";
+    machine.power_state = "on";
+    machine.power_type = "virsh";
+
     state = {
       config: {
         items: [],
@@ -19,20 +26,14 @@ describe("PowerColumn", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: [
-          {
-            actions: [],
-            system_id: "abc123",
-            power_state: "on",
-            power_type: "virsh",
-          },
-        ],
+        items: [machine],
       },
     };
   });
 
   it("renders", () => {
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -49,6 +50,7 @@ describe("PowerColumn", () => {
   it("displays the correct power state", () => {
     state.machine.items[0].power_state = "off";
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -65,6 +67,7 @@ describe("PowerColumn", () => {
   it("displays the correct power type", () => {
     state.machine.items[0].power_type = "manual";
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -82,6 +85,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].actions = ["on"];
     state.machine.items[0].power_state = "off";
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -93,6 +97,7 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+
     expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
       "Turn on"
     );
@@ -101,6 +106,7 @@ describe("PowerColumn", () => {
   it("can show a menu item to turn a machine off", () => {
     state.machine.items[0].actions = ["off"];
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -112,6 +118,7 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+
     expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
       "Turn off"
     );
@@ -119,6 +126,7 @@ describe("PowerColumn", () => {
 
   it("can show a menu item to check power", () => {
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -130,6 +138,7 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+
     expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
       "Check power"
     );
@@ -138,6 +147,7 @@ describe("PowerColumn", () => {
   it("can show a message when there are no menu items", () => {
     state.machine.items[0].power_state = "unknown";
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -149,6 +159,7 @@ describe("PowerColumn", () => {
     );
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+
     expect(wrapper.find(".p-contextual-menu__link").at(1).text()).toEqual(
       "No power actions available"
     );
