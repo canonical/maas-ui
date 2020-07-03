@@ -1,10 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   resourcepool as resourcePoolActions,
@@ -13,9 +11,7 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormikForm from "app/base/components/FormikForm";
-import FormCardButtons from "app/base/components/FormCardButtons";
+import ActionForm from "app/base/components/ActionForm";
 import SetPoolFormFields from "./SetPoolFormFields";
 
 const SetPoolSchema = Yup.object().shape({
@@ -24,11 +20,7 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({
-  processing,
-  setProcessing,
-  setSelectedAction,
-}) => {
+export const SetPoolForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState({
     poolSelection: "select",
@@ -36,7 +28,6 @@ export const SetPoolForm = ({
     name: "",
   });
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const machineErrors = useSelector(machineSelectors.errors);
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
@@ -52,32 +43,14 @@ export const SetPoolForm = ({
     [dispatch]
   );
 
-  useProcessing(
-    settingPoolSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
-      buttons={FormCardButtons}
-      buttonsBordered={false}
+    <ActionForm
+      actionName="set-pool"
+      cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
       initialValues={initialValues}
-      submitLabel={`Set resource pool of ${selectedMachines.length} ${pluralize(
-        "machine",
-        selectedMachines.length
-      )}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Set resource pool",
-        category: "Take action menu",
-        label: "Set resource pool of selected machines",
-      }}
+      modelName="machine"
       onSubmit={(values) => {
         if (values.poolSelection === "create") {
           const machineIDs = selectedMachines.map(({ system_id }) => system_id);
@@ -93,25 +66,17 @@ export const SetPoolForm = ({
         // Store the values in case there are errors and the form needs to be
         // displayed again.
         setInitialValues(values);
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        settingPoolSelected.length,
-        selectedMachines.length,
-        "set-pool"
-      )}
-      saved={saved}
+      processingCount={settingPoolSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={SetPoolSchema}
     >
       <SetPoolFormFields />
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 SetPoolForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

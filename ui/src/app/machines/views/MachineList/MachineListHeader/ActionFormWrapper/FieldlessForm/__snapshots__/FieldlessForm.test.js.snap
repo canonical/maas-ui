@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FieldlessForm renders 1`] = `
+<FieldlessForm
+  selectedAction={
+    Object {
+      "name": "release",
+    }
+  }
+  setSelectedAction={[MockFunction]}
+>
+  <ActionForm
+    actionName="release"
+    allowUnchanged={true}
+    cleanup={[Function]}
+    clearSelectedAction={[Function]}
+    errors={Object {}}
+    modelName="machine"
+    onSubmit={[Function]}
+    processingCount={0}
+    selectedCount={0}
+    submitAppearance="positive"
+  >
+    <FormikForm
+      allowUnchanged={true}
+      buttons={[Function]}
+      buttonsBordered={false}
+      cleanup={[Function]}
+      errors=""
+      initialValues={Object {}}
+      onCancel={[Function]}
+      onSaveAnalytics={
+        Object {
+          "action": "release",
+          "category": "Take action form",
+          "label": "Release machine",
+        }
+      }
+      onSubmit={[Function]}
+      saving={false}
+      savingLabel="Releasing machine..."
+      submitAppearance="positive"
+      submitLabel="Release machine"
+    >
+      <Formik
+        initialValues={Object {}}
+        onSubmit={[Function]}
+      >
+        <FormikFormContent
+          allowUnchanged={true}
+          buttons={[Function]}
+          buttonsBordered={false}
+          errors=""
+          initialValues={Object {}}
+          onCancel={[Function]}
+          saving={false}
+          savingLabel="Releasing machine..."
+          submitAppearance="positive"
+          submitLabel="Release machine"
+        >
+          <Form
+            onSubmit={[Function]}
+          >
+            <form
+              className=""
+              onSubmit={[Function]}
+            >
+              <div />
+              <FormCardButtons
+                bordered={false}
+                loading={false}
+                loadingLabel="Releasing machine..."
+                onCancel={[Function]}
+                submitAppearance="positive"
+                submitDisabled={false}
+                submitLabel="Release machine"
+              >
+                <div
+                  className="form-card__buttons"
+                >
+                  <Button
+                    appearance="base"
+                    className=""
+                    data-test="cancel-action"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <button
+                      className="p-button--base"
+                      data-test="cancel-action"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                  </Button>
+                  <ActionButton
+                    appearance="positive"
+                    className=""
+                    disabled={false}
+                    loading={false}
+                    type="submit"
+                  >
+                    <button
+                      className="p-action-button p-button--positive"
+                      disabled={false}
+                      type="submit"
+                    >
+                      Release machine
+                    </button>
+                  </ActionButton>
+                </div>
+              </FormCardButtons>
+            </form>
+          </Form>
+        </FormikFormContent>
+      </Formik>
+    </FormikForm>
+  </ActionForm>
+</FieldlessForm>
+`;

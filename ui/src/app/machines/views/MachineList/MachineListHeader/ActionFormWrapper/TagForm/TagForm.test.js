@@ -47,7 +47,7 @@ describe("TagForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <TagForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -96,57 +96,5 @@ describe("TagForm", () => {
         },
       },
     ]);
-  });
-
-  it("can show the status when processing machines", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.statuses.abc123 = { tagging: true };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <TagForm
-            processing={true}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Tagging 1 of 2 machines..."
-    );
-  });
-
-  it("can set the processing state when successfully submitting", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    const store = mockStore(state);
-    const setProcessing = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <TagForm
-            setProcessing={setProcessing}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          tags: [{ name: "tag1" }, { name: "tag2" }],
-        })
-    );
-    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

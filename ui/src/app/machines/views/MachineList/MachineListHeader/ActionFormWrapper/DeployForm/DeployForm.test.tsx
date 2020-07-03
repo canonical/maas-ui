@@ -128,7 +128,7 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -194,7 +194,7 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -243,7 +243,7 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -280,57 +280,5 @@ describe("DeployForm", () => {
         },
       },
     ]);
-  });
-
-  it("can show the status when processing machines", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.statuses.abc123 = { deploying: true };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DeployForm
-            processing={true}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Starting deployment for 1 of 2 machines..."
-    );
-  });
-
-  it("can set the processing state when successfully submitting", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    const store = mockStore(state);
-    const setProcessing = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DeployForm
-            setProcessing={setProcessing}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        oSystem: "ubuntu",
-        release: "bionic",
-        kernel: "",
-        installKVM: false,
-      })
-    );
-    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

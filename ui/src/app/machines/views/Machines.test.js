@@ -70,7 +70,7 @@ describe("Machines", () => {
         items: [],
       },
       machine: {
-        errors: null,
+        errors: {},
         loading: false,
         loaded: true,
         items: [
@@ -160,6 +160,10 @@ describe("Machines", () => {
           },
         ],
         selected: [],
+        statuses: {
+          abc123: {},
+          def456: {},
+        },
       },
       notification: {
         items: [],

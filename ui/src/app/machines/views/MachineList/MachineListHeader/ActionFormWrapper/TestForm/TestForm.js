@@ -1,10 +1,8 @@
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   scripts as scriptActions,
@@ -13,9 +11,7 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormCardButtons from "app/base/components/FormCardButtons";
-import FormikForm from "app/base/components/FormikForm";
+import ActionForm from "app/base/components/ActionForm";
 import TestFormFields from "./TestFormFields";
 
 const TestFormSchema = Yup.object().shape({
@@ -33,10 +29,9 @@ const TestFormSchema = Yup.object().shape({
   urls: Yup.object(),
 });
 
-export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
+export const TestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
@@ -64,38 +59,19 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  useProcessing(
-    testingSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
+    <ActionForm
+      actionName="test"
       allowUnchanged
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
       cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
       initialValues={{
         enableSSH: false,
         scripts: preselected,
         scriptInputs: initialScriptInputs,
       }}
-      submitLabel={`Test ${selectedMachines.length} ${pluralize(
-        "machine",
-        selectedMachines.length
-      )}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Test",
-        category: "Take action menu",
-        label: "Test selected machines",
-      }}
+      modelName="machine"
       onSubmit={(values) => {
         const { enableSSH, scripts, scriptInputs } = values;
         selectedMachines.forEach((machine) => {
@@ -108,25 +84,17 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
             )
           );
         });
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        testingSelected.length,
-        selectedMachines.length,
-        "test"
-      )}
-      saved={saved}
+      processingCount={testingSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={TestFormSchema}
     >
       <TestFormFields preselected={preselected} scripts={formattedScripts} />
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 TestForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

@@ -1,40 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React from "react";
 
-import { getProcessingLabel } from "../utils";
+import { kebabToCamelCase } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormikForm from "app/base/components/FormikForm";
-import FormCardButtons from "app/base/components/FormCardButtons";
-import { kebabToCamelCase } from "app/utils";
-
-const getSubmitText = (action, count) => {
-  const machineString = `${count} ${pluralize("machine", count)}`;
-
-  switch (action.name) {
-    case "exit-rescue-mode":
-      return `Exit rescue mode for ${machineString}`;
-    case "abort":
-      return `Abort actions for ${machineString}`;
-    case "on":
-      return `Power on ${machineString}`;
-    case "off":
-      return `Power off ${machineString}`;
-    case "mark-broken":
-      return `Mark ${machineString} broken`;
-    case "mark-fixed":
-      return `Mark ${machineString} fixed`;
-    case "rescue-mode":
-      return `Enter rescue mode for ${machineString}`;
-    default:
-      return `${action.name.charAt(0).toUpperCase()}${action.name.slice(
-        1
-      )} ${machineString}`;
-  }
-};
+import ActionForm from "app/base/components/ActionForm";
 
 // List of machine actions that do not require any extra parameters sent through
 // the websocket apart from machine system id. All other actions will have
@@ -99,45 +70,20 @@ const useSelectedProcessing = (actionName) => {
   return useSelector(selector);
 };
 
-export const ActionForm = ({
-  processing,
-  selectedAction,
-  setProcessing,
-  setSelectedAction,
-}) => {
+export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const selectedProcessing = useSelectedProcessing(selectedAction.name);
 
-  useProcessing(
-    selectedProcessing.length,
-    () => {
-      setSelectedAction(null);
-      setProcessing(false);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
+    <ActionForm
+      actionName={selectedAction.name}
+      allowUnchanged
       cleanup={machineActions.cleanup}
-      initialValues={{}}
-      submitAppearance={
-        selectedAction.name === "delete" ? "negative" : "positive"
-      }
-      submitLabel={getSubmitText(selectedAction, selectedMachines.length)}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: selectedAction.name,
-        category: "Take action menu",
-        label: selectedAction.title,
-      }}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
+      modelName="machine"
       onSubmit={() => {
         if (fieldlessActions.includes(selectedAction.name)) {
           const actionMethod = kebabToCamelCase(selectedAction.name);
@@ -147,23 +93,19 @@ export const ActionForm = ({
             }
           });
         }
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        selectedProcessing.length,
-        selectedMachines.length,
-        selectedAction.name
-      )}
-      saved={saved}
+      processingCount={selectedProcessing.length}
+      selectedCount={selectedMachines.length}
+      submitAppearance={
+        selectedAction.name === "delete" ? "negative" : "positive"
+      }
     />
   );
 };
 
-ActionForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
+FieldlessForm.propTypes = {
+  selectedAction: PropTypes.object.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 
-export default ActionForm;
+export default FieldlessForm;

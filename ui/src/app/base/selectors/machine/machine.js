@@ -63,6 +63,29 @@ machine.selectedIDs = (state) => state.machine.selected;
  */
 machine.statuses = (state) => state.machine.statuses;
 
+/**
+ * Returns IDs of machines that are currently being processed.
+ * @param {Object} state - The redux state.
+ * @returns {Machine["system_id"][]} List of machines being processed.
+ */
+machine.processing = (state) =>
+  Object.keys(state.machine.statuses).filter((machineID) =>
+    Object.keys(state.machine.statuses[machineID]).some(
+      (status) => state.machine.statuses[machineID][status] === true
+    )
+  );
+
+/**
+ * Returns IDs of machines that are both selected and currently being processed.
+ * @param {Object} state - The redux state.
+ * @returns {Machine["system_id"][]} List of selected machines being processed.
+ */
+machine.selectedProcessing = createSelector(
+  [machine.selectedIDs, machine.processing],
+  (selectedIDs, processing) =>
+    processing.filter((id) => selectedIDs.includes(id))
+);
+
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
   machine[status] = createSelector(

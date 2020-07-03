@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import { formatErrors } from "app/utils";
-import FormikForm from "app/base/components/FormikForm";
-import FormCardButtons from "app/base/components/FormCardButtons";
+import ActionForm from "app/base/components/ActionForm";
 
 type Props = {
   setSelectedAction: (action: string) => void;
@@ -14,54 +11,25 @@ type Props = {
 
 const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const podErrors = useSelector(podSelectors.errors);
+  const errors = useSelector(podSelectors.errors);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
   const deletingSelected = useSelector(podSelectors.deletingSelected);
-  const [processing, setProcessing] = useState(false);
-
-  const selectedCount =
-    selectedPodIDs.length === 1 ? "KVM" : `${selectedPodIDs.length} KVMs`;
-  const errors = formatErrors(podErrors);
-
-  useProcessing(
-    deletingSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(podErrors).length > 0,
-    () => setProcessing(false)
-  );
 
   return (
-    <FormikForm
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
+    <ActionForm
+      actionName="delete"
       cleanup={podActions.cleanup}
-      initialValues={{}}
-      onCancel={() => setSelectedAction("")}
-      onSaveAnalytics={{
-        action: "Delete",
-        category: "Take action menu",
-        label: "Delete selected KVMs",
-      }}
+      clearSelectedAction={() => setSelectedAction(null)}
+      errors={errors}
+      modelName="KVM"
       onSubmit={() => {
         selectedPodIDs.forEach((podID) => {
           dispatch(podActions.delete(podID));
         });
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={
-        selectedPodIDs.length === 1
-          ? "Deleting KVM..."
-          : `Deleting ${
-              selectedPodIDs.length - deletingSelected.length
-            } of ${selectedCount}...`
-      }
+      processingCount={deletingSelected.length}
+      selectedCount={selectedPodIDs.length}
       submitAppearance="negative"
-      submitLabel={`Delete ${selectedCount}`}
     />
   );
 };

@@ -96,6 +96,14 @@ describe("ActionFormWrapper", () => {
       { system_id: "b", actions: [] },
     ];
     state.machine.selected = ["a", "b"];
+    state.machine.statuses = {
+      a: {
+        commissioning: true,
+      },
+      b: {
+        commissioning: true,
+      },
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -110,7 +118,6 @@ describe("ActionFormWrapper", () => {
               type: "lifecycle",
             }}
             setSelectedAction={jest.fn()}
-            _processing={true}
           />
         </MemoryRouter>
       </Provider>,
