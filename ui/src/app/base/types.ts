@@ -262,7 +262,7 @@ export type Machine = {
  * @param {Host} host - a machine or controller.
  */
 export const isMachine = (host: Host): host is Machine =>
-  (host as Machine).power_state !== undefined;
+  (host as Machine).link_type === "machine";
 
 export type Controller = {
   actions: string[];
