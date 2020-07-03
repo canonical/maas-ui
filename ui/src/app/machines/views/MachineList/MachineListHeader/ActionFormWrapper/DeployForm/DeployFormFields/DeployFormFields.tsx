@@ -1,4 +1,4 @@
-import { Col, List, Row, Select, Textarea } from "@canonical/react-components";
+import { Col, List, Row, Select } from "@canonical/react-components";
 import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import {
 } from "app/base/selectors";
 import { DeployFormValues } from "../DeployForm";
 import { User } from "app/base/types";
+import UserDataField from "./UserDataField";
 import FormikField from "app/base/components/FormikField";
 
 export const DeployFormFields = (): JSX.Element => {
@@ -113,19 +114,7 @@ export const DeployFormFields = (): JSX.Element => {
             }}
             wrapperClassName={userDataVisible ? "u-sv2" : null}
           />
-          {userDataVisible && (
-            <FormikField
-              autoCapitalize="off"
-              autoComplete="off"
-              autoCorrect="off"
-              className="u-sv2"
-              component={Textarea}
-              name="userData"
-              placeholder="Paste script here"
-              spellCheck="false"
-              style={{ minHeight: "15rem" }}
-            />
-          )}
+          {userDataVisible && <UserDataField />}
         </Col>
       </Row>
       {user.sshkeys_count === 0 && (
