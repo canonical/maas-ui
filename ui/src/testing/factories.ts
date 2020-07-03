@@ -92,7 +92,7 @@ export const controller = extend<Model, Controller>(model, {
   hostname: "test-controller",
   interface_test_status: testStatus,
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
-  link_type: "machine",
+  link_type: "controller",
   locked: false,
   memory_test_status: testStatus,
   memory: 1,
