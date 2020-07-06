@@ -42,6 +42,11 @@
     "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared",
     "ui": "cd proxy && yarn start-ui"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run betterer"
+    }
+  },
   "workspaces": {
     "packages": [
       "legacy",
@@ -57,5 +62,8 @@
       "**/jest",
       "**/webpack**"
     ]
+  },
+  "devDependencies": {
+    "husky": "4.2.5"
   }
 }
