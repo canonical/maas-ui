@@ -104,14 +104,12 @@ export type ResourcePoolState = {
   saving: boolean;
 };
 
-type TestResult = -1 | 0 | 1;
-
 export type TestStatus = {
-  status: TestResult;
-  pending: TestResult;
-  running: TestResult;
-  passed: TestResult;
-  failed: TestResult;
+  status: number;
+  pending: number;
+  running: number;
+  passed: number;
+  failed: number;
 };
 
 export type UserState = {
