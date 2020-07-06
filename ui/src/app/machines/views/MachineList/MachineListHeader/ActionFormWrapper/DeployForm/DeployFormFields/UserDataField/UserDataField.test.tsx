@@ -10,6 +10,21 @@ import { TSFixMe } from "app/base/types";
 
 const mockStore = configureStore();
 
+class MockFileReader {
+  result: string;
+  constructor() {
+    this.result = "test file content";
+  }
+  /* eslint-disable @typescript-eslint/no-empty-function */
+  onabort() {}
+  onerror() {}
+  onload() {}
+  /* eslint-enable @typescript-eslint/no-empty-function */
+  readAsText() {
+    this.onload();
+  }
+}
+
 const createFile = (
   name: string,
   size: number,
@@ -132,6 +147,10 @@ describe("DeployFormFields", () => {
       },
     };
     const store = mockStore(state);
+    const mockedFileReader = jest.spyOn(window, "FileReader");
+    (mockedFileReader as jest.Mock).mockImplementation(
+      () => new MockFileReader()
+    );
     wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
@@ -149,6 +168,10 @@ describe("DeployFormFields", () => {
       });
     });
     wrapper.update();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("accepts files of text mimetype", async () => {
@@ -203,6 +226,19 @@ describe("DeployFormFields", () => {
     wrapper.update();
     expect(wrapper.find("FormikField[name='userData']").prop("error")).toEqual(
       "Only a single file may be uploaded."
+    );
+  });
+
+  it("can populate the textarea from the file", async () => {
+    const files = [createFile("foo.sh", 2000, "text/script")];
+    await act(async () => {
+      wrapper.find("UserDataField input[type='file']").simulate("change", {
+        target: { files },
+      });
+    });
+    wrapper.update();
+    expect(wrapper.find("textarea[name='userData']").prop("value")).toEqual(
+      "test file content"
     );
   });
 });
