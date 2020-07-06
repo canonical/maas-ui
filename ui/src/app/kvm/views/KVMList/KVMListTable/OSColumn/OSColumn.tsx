@@ -17,29 +17,30 @@ const OSColumn = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const host = useSelector((state: RootState) =>
+  const hostDetails = useSelector((state: RootState) =>
     podSelectors.getHost(state, pod)
   );
   const osReleases = useSelector((state: RootState) =>
-    generalSelectors.osInfo.getOsReleases(state, host && host.osystem)
+    generalSelectors.osInfo.getOsReleases(
+      state,
+      hostDetails && hostDetails.osystem
+    )
   );
   const machinesLoading = useSelector(machineSelectors.loading);
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const loading = machinesLoading || controllersLoading;
+  const loading =
+    pod.host && !hostDetails && (machinesLoading || controllersLoading);
 
   let osText = "Unknown";
-  if (host) {
-    osText = getStatusText(host, osReleases);
-  } else if (!host && loading) {
+  if (hostDetails) {
+    osText = getStatusText(hostDetails, osReleases);
+  } else if (loading) {
     osText = "";
   }
 
   return (
     <DoubleRow
-      icon={
-        !host &&
-        loading && <i className="p-icon--spinner u-animation--spin"></i>
-      }
+      icon={loading && <i className="p-icon--spinner u-animation--spin"></i>}
       iconSpace
       primary={<span data-test="pod-os">{osText}</span>}
     />

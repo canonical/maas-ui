@@ -1,7 +1,32 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import React from "react";
 
 import Meter from "./Meter";
+
+const mockClientRect = ({
+  bottom = 0,
+  height = 0,
+  left = 0,
+  right = 0,
+  toJSON = () => undefined,
+  top = 0,
+  width = 0,
+  x = 0,
+  y = 0,
+}) =>
+  jest.fn(() => {
+    return {
+      bottom,
+      height,
+      left,
+      right,
+      toJSON,
+      top,
+      width,
+      x,
+      y,
+    };
+  });
 
 describe("Meter", () => {
   it("renders", () => {
@@ -123,5 +148,57 @@ describe("Meter", () => {
     expect(wrapper.find(".p-meter__filled").at(3).props().style.left).toBe(
       "60%"
     );
+  });
+
+  it("can be made segmented", () => {
+    const wrapper = mount(
+      <Meter data={[{ key: "filled", value: 2 }]} max={10} segmented />
+    );
+    expect(wrapper.find(".p-meter__separators").exists()).toBe(true);
+  });
+
+  it("can set the segment separator color", () => {
+    const wrapper = mount(
+      <Meter
+        data={[{ key: "filled", value: 2 }]}
+        max={10}
+        segmented
+        separatorColor="#abc123"
+      />
+    );
+
+    const backgroundStyle = wrapper.find(".p-meter__separators").props().style
+      .background as string;
+    expect(backgroundStyle.includes("#abc123")).toBe(true);
+  });
+
+  it("sets segment width to 1px if not enough space to show all segments", () => {
+    // Make width 128px so max number of segments is 64 (1px segment, 1px separator)
+    Element.prototype.getBoundingClientRect = mockClientRect({
+      width: 128,
+    });
+    const wrapper = mount(
+      <Meter data={[{ key: "filled", value: 10 }]} segmented max={100} />
+    );
+
+    const backgroundStyle = wrapper.find(".p-meter__separators").props().style
+      .background as string;
+    const trimmed = backgroundStyle.replace(/\s\s+/g, " ");
+    expect(trimmed).toBe(
+      "repeating-linear-gradient( to right, transparent 0, transparent 1px, #F7F7F7 1px, #F7F7F7 2px )"
+    );
+  });
+
+  it("snaps to floor base 2 width if segmented", () => {
+    // Width of container is 200px, so floor base 2 number (e.g 2, 4, 8, 16, etc) is 128
+    Element.prototype.getBoundingClientRect = mockClientRect({
+      width: 200,
+    });
+    const wrapper = mount(
+      <Meter data={[{ key: "filled", value: 10 }]} segmented max={100} />
+    );
+
+    const barWidth = wrapper.find(".p-meter__bar").props().style.width;
+    expect(barWidth).toBe(128);
   });
 });

@@ -16,19 +16,20 @@ const PowerColumn = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const host = useSelector((state: RootState) =>
+  const hostDetails = useSelector((state: RootState) =>
     podSelectors.getHost(state, pod)
   );
   const machinesLoading = useSelector(machineSelectors.loading);
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const loading = machinesLoading || controllersLoading;
+  const loading =
+    pod.host && !hostDetails && (machinesLoading || controllersLoading);
 
-  const iconClass = getPowerIcon(host, loading);
+  const iconClass = getPowerIcon(hostDetails, loading);
 
   let powerText = "Unknown";
-  if (host && "power_state" in host) {
-    powerText = capitaliseFirst(host.power_state);
-  } else if (!host && loading) {
+  if (hostDetails && "power_state" in hostDetails) {
+    powerText = capitaliseFirst(hostDetails.power_state);
+  } else if (loading) {
     powerText = "";
   }
 

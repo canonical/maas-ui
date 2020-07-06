@@ -12,7 +12,10 @@ const StorageColumn = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const usedStorage = formatBytes(pod.used.local_storage, "B");
+  const availableStorage = formatBytes(pod.total.local_storage, "B");
+  const assignedStorage = formatBytes(pod.used.local_storage, "B", {
+    convertTo: availableStorage.unit,
+  });
 
   return (
     <Meter
@@ -20,7 +23,7 @@ const StorageColumn = ({ id }: Props): JSX.Element => {
       data={[
         {
           key: `${pod.name}-storage-meter`,
-          label: `${usedStorage.value} ${usedStorage.unit}`,
+          label: `${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`,
           value: pod.used.local_storage,
         },
       ]}

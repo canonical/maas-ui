@@ -35,10 +35,11 @@ describe("PowerColumn", () => {
     };
   });
 
-  it(`shows a spinner if machines/controllers are loading and pod's host has not
-    been found yet`, () => {
+  it(`shows a spinner if machines/controllers are loading and pod's host is not
+    yet in state`, () => {
     const state = { ...initialState };
     state.machine.loading = true;
+    state.pod.items[0].host = "abc123";
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
