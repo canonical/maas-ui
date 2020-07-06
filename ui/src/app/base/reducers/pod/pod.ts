@@ -1,6 +1,6 @@
 import { createNextState } from "@reduxjs/toolkit";
 
-import { Pod } from "app/store/pod/types";
+import type { Pod } from "app/store/pod/types";
 
 const initialState = {
   errors: {},

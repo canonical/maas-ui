@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { pod as podSelectors } from "app/base/selectors";
-import { Pod } from "app/store/pod/types";
-import { RootState } from "app/store/root/types";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = {

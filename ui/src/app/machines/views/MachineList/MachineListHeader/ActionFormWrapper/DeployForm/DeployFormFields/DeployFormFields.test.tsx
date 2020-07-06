@@ -6,7 +6,7 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import DeployForm from "../DeployForm";
-import { TSFixMe } from "app/base/types";
+import type { TSFixMe } from "app/base/types";
 
 const mockStore = configureStore();
 

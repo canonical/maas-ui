@@ -1,9 +1,9 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import { Controller } from "app/store/controller/types";
-import { Device } from "app/store/device/types";
-import { Machine } from "app/store/machine/types";
-import { Model } from "app/store/types";
+import type { Controller } from "app/store/controller/types";
+import type { Device } from "app/store/device/types";
+import type { Machine } from "app/store/machine/types";
+import type { Model } from "app/store/types";
 import {
   ModelRef,
   BaseNode,

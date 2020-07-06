@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
 import { useSendAnalytics } from "app/base/hooks";
-import { TSFixMe } from "app/base/types";
+import type { TSFixMe } from "app/base/types";
 import FormikFormContent from "app/base/components/FormikFormContent";
 
 type Props = {

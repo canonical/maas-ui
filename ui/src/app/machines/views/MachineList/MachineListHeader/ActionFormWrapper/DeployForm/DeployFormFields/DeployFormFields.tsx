@@ -10,7 +10,7 @@ import {
   general as generalSelectors,
 } from "app/base/selectors";
 import { DeployFormValues } from "../DeployForm";
-import { User } from "app/store/user/types";
+import type { User } from "app/store/user/types";
 import UserDataField from "./UserDataField";
 import FormikField from "app/base/components/FormikField";
 
