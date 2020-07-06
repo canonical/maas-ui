@@ -1531,17 +1531,17 @@
     find-up "^4.1.0"
     tslib "^2.0.0"
 
-"@betterer/constraints@2.0.0", "@betterer/constraints@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-2.0.0.tgz#ac98970c490de661cedf202de5b7e2ba0e668fd3"
-  integrity sha512-RGPkyguSX7c/cKA8XATd6V0VbO1hoSPZaEwwG9k9UZ2Pmxz10HDCPBFXt1Z3a6jqDEM5bbGQ4Bf6Sn8r29gqug==
-  dependencies:
-    tslib "^2.0.0"
-
-"@betterer/constraints@^3.0.0":
+"@betterer/constraints@3.0.0", "@betterer/constraints@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-3.0.0.tgz#8b88f89d65dba414ec96aaac371fd52216c78628"
   integrity sha512-Zx75ZlVOLZvQy01IOiCvdyWcZvUV4AIKpzUczx5JqKUIi38Qi/YH8/ZRToWn4I1bHEpIQRSisfy8MYukxt/ueg==
+  dependencies:
+    tslib "^2.0.0"
+
+"@betterer/constraints@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-2.0.0.tgz#ac98970c490de661cedf202de5b7e2ba0e668fd3"
+  integrity sha512-RGPkyguSX7c/cKA8XATd6V0VbO1hoSPZaEwwG9k9UZ2Pmxz10HDCPBFXt1Z3a6jqDEM5bbGQ4Bf6Sn8r29gqug==
   dependencies:
     tslib "^2.0.0"
 
