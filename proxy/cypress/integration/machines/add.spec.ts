@@ -24,5 +24,5 @@ context("Machine add", () => {
     cy.get("p.p-notification__response").contains(
       `${hostname} added successfully.`
     );
-  });
+  }).skip();
 });
