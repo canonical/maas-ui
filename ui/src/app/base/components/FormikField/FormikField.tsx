@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useRef } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 
-import { TSFixMe } from "app/base/types";
+import type { TSFixMe } from "app/base/types";
 
 type Props = {
   Component?: JSX.Element;

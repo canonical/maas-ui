@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { pod as podSelectors } from "app/base/selectors";
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
 const formatHostType = (type: string) => {

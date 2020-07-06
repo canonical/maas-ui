@@ -1,9 +1,9 @@
-import { ControllerState } from "app/store/controller/types";
-import { MachineState } from "app/store/machine/types";
-import { ResourcePoolState } from "app/store/resourcepool/types";
-import { PodState } from "app/store/pod/types";
-import { UserState } from "app/store/user/types";
-import { ZoneState } from "app/store/zone/types";
+import type { ControllerState } from "app/store/controller/types";
+import type { MachineState } from "app/store/machine/types";
+import type { ResourcePoolState } from "app/store/resourcepool/types";
+import type { PodState } from "app/store/pod/types";
+import type { UserState } from "app/store/user/types";
+import type { ZoneState } from "app/store/zone/types";
 
 export type RootState = {
   controller: ControllerState;

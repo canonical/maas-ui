@@ -1,4 +1,4 @@
-import { Pod } from "app/store/pod/types";
+import type { Pod } from "app/store/pod/types";
 import { createStandardActions } from "app/utils/redux";
 
 const pod = createStandardActions("pod");

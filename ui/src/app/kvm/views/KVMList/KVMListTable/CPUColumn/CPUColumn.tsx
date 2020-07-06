@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { pod as podSelectors } from "app/base/selectors";
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import Meter from "app/base/components/Meter";
 
 type Props = { id: number };

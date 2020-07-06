@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { ResourcePool } from "app/store/resourcepool/types";
-import { RootState } from "app/store/root/types";
-import { TSFixMe } from "app/base/types";
+import type { ResourcePool } from "app/store/resourcepool/types";
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all resource pools.

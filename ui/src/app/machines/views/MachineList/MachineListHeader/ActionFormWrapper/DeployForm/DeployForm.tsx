@@ -13,7 +13,7 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
-import { Machine, MachineAction } from "app/store/machine/types";
+import type { Machine, MachineAction } from "app/store/machine/types";
 import { useProcessing } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
