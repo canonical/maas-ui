@@ -1498,13 +1498,35 @@
     ts-node "^8.10.2"
     tslib "^2.0.0"
 
-"@betterer/cli@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@betterer/cli/-/cli-2.2.0.tgz#31492330c25bbbba4a86078ebb7b10140e4f672e"
-  integrity sha512-BcbNIvpjlc3BZkQCvkFMx35XOI35lAI+PeS8HWTi01vutksWtf3UmMB1RwRsG4j5RfBu7zN/SaVlh8/Kr0kcVg==
+"@betterer/betterer@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/betterer/-/betterer-3.0.0.tgz#3497047571b2044b0accc57d588f5a522fa1360d"
+  integrity sha512-r1KRcb5Mz5kBXxpQADBWSO8cEICb69OHaVrcFUCw/qmwmUpJG8ocTjY7BKyo+yAzip26GbRIKQpixlVTZ8Nz/w==
   dependencies:
-    "@betterer/betterer" "^2.2.0"
-    "@betterer/errors" "^2.2.0"
+    "@betterer/constraints" "^3.0.0"
+    "@betterer/errors" "^3.0.0"
+    "@betterer/logger" "^3.0.0"
+    "@betterer/reporter" "^3.0.0"
+    "@betterer/watch-reporter" "^3.0.0"
+    callsite "^1.0.0"
+    chokidar "^3.3.1"
+    djb2a "^1.2.0"
+    find-up "^4.1.0"
+    gitignore-globs "^0.1.1"
+    globby "^11.0.1"
+    jest-diff "^26.1.0"
+    lines-and-columns "^1.1.6"
+    safe-string-literal "^1.0.1"
+    ts-node "^8.10.2"
+    tslib "^2.0.0"
+
+"@betterer/cli@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/cli/-/cli-3.0.0.tgz#062cca637c049800f1539145bc025847531df989"
+  integrity sha512-rGyA225UaFnPHVOkI8KVOqgiCMh/kB9ja07X2+mvdEH4uYVclHOLa+V+B8JzKIlyz+yMgu2fKci1D28ybNDNLg==
+  dependencies:
+    "@betterer/betterer" "^3.0.0"
+    "@betterer/errors" "^3.0.0"
     commander "^5.1.0"
     find-up "^4.1.0"
     tslib "^2.0.0"
@@ -1516,6 +1538,13 @@
   dependencies:
     tslib "^2.0.0"
 
+"@betterer/constraints@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-3.0.0.tgz#8b88f89d65dba414ec96aaac371fd52216c78628"
+  integrity sha512-Zx75ZlVOLZvQy01IOiCvdyWcZvUV4AIKpzUczx5JqKUIi38Qi/YH8/ZRToWn4I1bHEpIQRSisfy8MYukxt/ueg==
+  dependencies:
+    tslib "^2.0.0"
+
 "@betterer/errors@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/errors/-/errors-2.2.0.tgz#c3146d83fdc10a2fcbc05d9432ca429fcb8b02be"
@@ -1523,10 +1552,29 @@
   dependencies:
     "@betterer/logger" "^2.2.0"
 
+"@betterer/errors@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/errors/-/errors-3.0.0.tgz#7de7634f93b619094659cc60032548f4a7e64a3b"
+  integrity sha512-8s0xfvaQzD8DlglgXjdeopauahkHVBaSbB2O0j7mLJYpR5+INnn54FEv+chqsHnhvAnx38x5RQpAC1bQuhRC4g==
+  dependencies:
+    "@betterer/logger" "^3.0.0"
+
 "@betterer/logger@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/logger/-/logger-2.2.0.tgz#18378d6c652505580cdfa8935005cb784f56a99f"
   integrity sha512-IyxMzbgWfr/i5hqX+TSe/wGqcGafLpLTbwOhctF0AN2dQoNtFOiggd9XQJw8Kezc+EkjpPg65jhADhPGlewHFg==
+  dependencies:
+    "@babel/code-frame" "^7.10.3"
+    chalk "^4.1.0"
+    lines-and-columns "^1.1.6"
+    log-update "^4.0.0"
+    npmlog "^4.1.2"
+    tslib "^2.0.0"
+
+"@betterer/logger@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/logger/-/logger-3.0.0.tgz#2e60b78cddabd81cc4ef993426a97b26c39db528"
+  integrity sha512-bTW8Jmz9wJtBqX5hnn+fBiWxrscF3cbXmMvALSiTX4bFF9zgKVPGQLUKr6+OooFPWTL8ayGP8jY6a0Jmj6+3gA==
   dependencies:
     "@babel/code-frame" "^7.10.3"
     chalk "^4.1.0"
@@ -1554,6 +1602,16 @@
     "@betterer/logger" "^2.2.0"
     tslib "^2.0.0"
 
+"@betterer/reporter@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/reporter/-/reporter-3.0.0.tgz#20e577a2299b0d21abfc699b4164a34bafca928c"
+  integrity sha512-LRre2YR/di44IA1S0648m6TkiqQceH4FEB5ob83UoOjEdkAQv3JI3vZWvPRgXx3SHLPCTEvaatgUkrWr+j9VLg==
+  dependencies:
+    "@betterer/betterer" "^3.0.0"
+    "@betterer/errors" "^3.0.0"
+    "@betterer/logger" "^3.0.0"
+    tslib "^2.0.0"
+
 "@betterer/typescript@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@betterer/typescript/-/typescript-2.2.0.tgz#6a8641efa219c7543101356f442320dfe83cd25d"
@@ -1561,6 +1619,15 @@
   dependencies:
     "@betterer/betterer" "^2.2.0"
     "@betterer/errors" "^2.2.0"
+    tslib "^2.0.0"
+
+"@betterer/watch-reporter@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/watch-reporter/-/watch-reporter-3.0.0.tgz#9aef5faf380d9a7a8d2bee10edb6a39f837f051c"
+  integrity sha512-21sy324HmmlGqrW1P7ISB+q1hkOwq2ABLVBtYlX8IzJD4lVsPGyNVsWl7zBTMiF7GGNL29r274c55Fws2Bxj9w==
+  dependencies:
+    "@betterer/betterer" "^3.0.0"
+    "@betterer/logger" "^3.0.0"
     tslib "^2.0.0"
 
 "@canonical/macaroon-bakery@0.3.0":
