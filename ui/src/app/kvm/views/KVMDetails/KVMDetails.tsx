@@ -9,7 +9,7 @@ import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 
-import { RootState } from "app/base/types";
+import { RootState } from "app/store/root/types";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 

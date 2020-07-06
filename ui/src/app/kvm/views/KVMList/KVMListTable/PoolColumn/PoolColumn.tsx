@@ -6,7 +6,7 @@ import {
   resourcepool as poolSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
-import { RootState } from "app/base/types";
+import { RootState } from "app/store/root/types";
 import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };

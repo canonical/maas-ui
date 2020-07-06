@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { formatBytes } from "app/utils";
 import { pod as podSelectors } from "app/base/selectors";
-import { RootState } from "app/base/types";
+import { RootState } from "app/store/root/types";
 import Meter from "app/base/components/Meter";
 
 type Props = { id: number };

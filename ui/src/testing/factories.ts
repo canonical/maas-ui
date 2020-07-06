@@ -1,15 +1,15 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
+import { Controller } from "app/store/controller/types";
+import { Device } from "app/store/device/types";
+import { Machine } from "app/store/machine/types";
+import { Model } from "app/store/types";
 import {
-  Controller,
-  Device,
-  Machine,
-  Model,
   ModelRef,
-  Node,
+  BaseNode,
   SimpleNode,
   TestStatus,
-} from "app/base/types";
+} from "app/store/node/types";
 
 const model = define<Model>({
   id: sequence,
@@ -66,7 +66,7 @@ export const device = extend<SimpleNode, Device>(simpleNode, {
   zone: null,
 });
 
-const node = extend<SimpleNode, Node>(simpleNode, {
+const node = extend<SimpleNode, BaseNode>(simpleNode, {
   architecture: "amd64/generic",
   description: "a test node",
   cpu_count: 1,
@@ -87,7 +87,7 @@ const node = extend<SimpleNode, Node>(simpleNode, {
   storage_test_status: testStatus,
 });
 
-export const machine = extend<Node, Machine>(node, {
+export const machine = extend<BaseNode, Machine>(node, {
   commissioning_status: testStatus,
   description: "a test machine",
   extra_macs,
@@ -115,7 +115,7 @@ export const machine = extend<Node, Machine>(node, {
   zone: null,
 });
 
-export const controller = extend<Node, Controller>(node, {
+export const controller = extend<BaseNode, Controller>(node, {
   description: "a test controller",
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
   link_type: "controller",

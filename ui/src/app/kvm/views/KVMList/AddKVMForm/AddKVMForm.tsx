@@ -21,7 +21,8 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import { PowerType, TSFixMe } from "app/base/types";
+import { PowerType } from "app/store/general/types";
+import { TSFixMe } from "app/base/types";
 import { formatErrors, formatPowerParameters } from "app/utils";
 import AddKVMFormFields from "./AddKVMFormFields";
 import FormCard from "app/base/components/FormCard";

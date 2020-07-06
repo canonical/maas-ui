@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
-import { MachineAction } from "app/base/types";
+import { MachineAction } from "app/store/machine/types";
 import ActionForm from "./ActionForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";

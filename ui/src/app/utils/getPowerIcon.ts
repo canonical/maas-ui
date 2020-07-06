@@ -1,4 +1,5 @@
-import { isMachine, Host } from "app/base/types";
+import type { Host } from "app/store/host/types";
+import { isMachine } from "app/store/utils";
 
 /**
  * Returns the correct icon given a host's power status.

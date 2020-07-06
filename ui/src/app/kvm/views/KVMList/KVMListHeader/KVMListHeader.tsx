@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
-import { Pod } from "app/base/types";
+import { Pod } from "app/store/pod/types";
 import KVMActionFormWrapper from "./KVMActionFormWrapper";
 import KVMListActionMenu from "./KVMListActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
