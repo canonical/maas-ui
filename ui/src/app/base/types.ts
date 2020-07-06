@@ -104,12 +104,14 @@ export type ResourcePoolState = {
   saving: boolean;
 };
 
+type TestResult = -1 | 0 | 1;
+
 export type TestStatus = {
-  status: number;
-  pending: number;
-  running: number;
-  passed: number;
-  failed: number;
+  status: TestResult;
+  pending: TestResult;
+  running: TestResult;
+  passed: TestResult;
+  failed: TestResult;
 };
 
 export type UserState = {
@@ -136,7 +138,20 @@ export type Model = {
   id: number;
 };
 
-export type User = {
+/**
+ * A named foreign model reference, e.g. machine.domain
+ */
+export type ModelRef = Model & {
+  name: string;
+};
+
+export type Vlan = Model & {
+  name: string;
+  fabric_id: number;
+  fabric_name: string;
+};
+
+export type User = Model & {
   completed_intro: boolean;
   email: string;
   global_permissions: string[];
@@ -144,9 +159,9 @@ export type User = {
   last_name: string;
   sshkeys_count: number;
   username: string;
-} & Model;
+};
 
-export type Zone = {
+export type Zone = Model & {
   controllers_count: number;
   created: string;
   description: string;
@@ -154,9 +169,9 @@ export type Zone = {
   machines_count: number;
   name: string;
   updated: string;
-} & Model;
+};
 
-export type Pod = {
+export type Pod = Model & {
   architectures: string[];
   available: PodHint;
   capabilities: string[];
@@ -183,7 +198,7 @@ export type Pod = {
   updated: string;
   used: PodHint;
   zone: number;
-} & Model;
+};
 
 export type PodHint = {
   cores: number;
@@ -200,62 +215,124 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
-// TODO: Machines and Controllers are almost identical save a few properties,
-// the Host type should represent the intersection with Machine and Controller
-// only adding the appropriate specific types e.g. controller.version
-export type Host = Machine | Controller;
-
-export type Machine = {
+/**
+ * SimpleNode represents the intersection of Devices, Machines and Controllers
+ */
+export type SimpleNode = Model & {
   actions: string[];
+  domain: ModelRef;
+  hostname: string;
+  fqdn: string;
+  link_type: string;
+  node_type_display: string;
+  permissions: string[];
+  system_id: string;
+  tags: string[];
+};
+
+export type Device = SimpleNode & {
+  extra_macs: string[];
+  fabrics: string[];
+  ip_address?: string;
+  ip_assignment: "external" | "dynamic" | "static";
+  link_speeds: number[];
+  owner: string;
+  parent?: string;
+  primary_mac: string;
+  spaces: string[];
+  subnets: string[];
+  zone: ModelRef;
+};
+
+type NodeStatus =
+  | "New"
+  | "Commissioning"
+  | "Failed commissioning"
+  | "Missing"
+  | "Ready"
+  | "Reserved"
+  | "Allocated"
+  | "Deploying"
+  | "Deployed"
+  | "Retired"
+  | "Broken"
+  | "Failed deployment"
+  | "Releasing"
+  | "Releasing failed"
+  | "Disk erasing"
+  | "Failed disk erasing"
+  | "Rescue mode"
+  | "Entering rescue mode"
+  | "Failed to enter rescue mode"
+  | "Exiting rescue mode"
+  | "Failed to exit rescue mode"
+  | "Testing"
+  | "Failed testing";
+
+/**
+ * Node represents the intersection of Machines and Controllers
+ */
+export type Node = SimpleNode & {
   architecture: string;
-  commissioning_status: TestStatus;
-  cpu_count: 1;
-  cpu_speed: 0;
+  cpu_count: number;
+  cpu_speed: number;
   cpu_test_status: TestStatus;
   description: string;
   distro_series: string;
-  domain: TSFixMe;
-  extra_macs: string[];
-  fabrics: string[];
-  fqdn: string;
-  has_logs: boolean;
-  hostname: string;
   interface_test_status: TestStatus;
-  ip_addresses: string[];
-  link_speeds: number[];
-  link_type: string;
   locked: boolean;
+  memory: number;
   memory_test_status: TestStatus;
-  memory: 1;
   network_test_status: TestStatus;
-  node_type_display: string;
-  numa_nodes_count: number;
   osystem: string;
   other_test_status: TestStatus;
+  pool?: ModelRef;
+  status: NodeStatus;
+  status_message: string;
+  status_code: number;
+  storage_test_status: TestStatus;
+};
+
+type IpAddresses = {
+  ip: string;
+  is_boot: boolean;
+};
+
+export type Machine = Node & {
+  commissioning_status: TestStatus;
+  extra_macs: string[];
+  fabrics: string[];
+  has_logs: boolean;
+  ip_addresses: IpAddresses[];
+  link_speeds: number[];
+  numa_nodes_count: number;
   owner: string;
-  permissions: string[];
   physical_disk_count: number;
-  pod?: Pod;
-  pool?: ResourcePool;
+  pod?: ModelRef;
   power_state: PowerState;
   power_type: string;
   pxe_mac_vendor: string;
   pxe_mac: string;
   spaces: string[];
   sriov_support: boolean;
-  status_code: number;
-  status_message?: string;
-  status: string;
   storage_tags: string[];
-  storage_test_status: TestStatus;
   storage: number;
   subnets: string[];
-  system_id: string;
-  tags: string[];
   testing_status: TestStatus;
-  vlan: TSFixMe;
-  zone: TSFixMe;
-} & Model;
+  vlan: Vlan;
+  zone: ModelRef;
+};
+
+export type Controller = Node & {
+  last_image_sync: string;
+  node_type: number; // TODO: it seems odd that this is only exposed for controller
+  service_ids: number[];
+  version_long: string;
+  version_short: string;
+  version: string;
+};
+
+export type Host = Machine | Controller;
 
 /**
  * Type guard to determine if host is a machine.
@@ -264,43 +341,7 @@ export type Machine = {
 export const isMachine = (host: Host): host is Machine =>
   (host as Machine).link_type === "machine";
 
-export type Controller = {
-  actions: string[];
-  architecture: string;
-  cpu_count: number;
-  cpu_speed: number;
-  cpu_test_status: TestStatus;
-  description: string;
-  distro_series: string;
-  domain: TSFixMe;
-  fqdn: string;
-  hostname: string;
-  interface_test_status: TestStatus;
-  last_image_sync: string;
-  link_type: string;
-  locked: boolean;
-  memory_test_status: TestStatus;
-  memory: number;
-  network_test_status: TestStatus;
-  node_type_display: string;
-  node_type: number;
-  osystem: string;
-  other_test_status: TestStatus;
-  permissions: string[];
-  pool?: ResourcePool;
-  service_ids: number[];
-  status_code: number;
-  status_message: string;
-  status: string;
-  storage_test_status: TestStatus;
-  system_id: string;
-  tags: string[];
-  version_long: string;
-  version_short: string;
-  version: string;
-} & Model;
-
-export type ResourcePool = {
+export type ResourcePool = Model & {
   created: string;
   description: string;
   is_default: boolean;
@@ -309,4 +350,4 @@ export type ResourcePool = {
   name: string;
   permissions: string[];
   updated: string;
-} & Model;
+};

@@ -1,115 +1,127 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import { Controller, Machine, Model, TestStatus } from "app/base/types";
+import {
+  Controller,
+  Device,
+  Machine,
+  Model,
+  ModelRef,
+  Node,
+  SimpleNode,
+  TestStatus,
+} from "app/base/types";
 
 const model = define<Model>({
   id: sequence,
 });
 
+const modelRef = extend<Model, ModelRef>(model, {
+  name: `modelref-${random}`,
+});
+
 const testStatus = define<TestStatus>({
-  status: 1,
+  status: 0,
   pending: 0,
   running: 0,
-  passed: 1,
+  passed: 0,
   failed: 0,
 });
 
-// TODO: these factory functions should be fleshed out and typed
 const actions = () => [];
 const extra_macs = () => [];
 const fabrics = () => [];
 const ip_addresses = () => [];
 const link_speeds = () => [];
 const permissions = () => [];
-const spaces = () => [];
 const service_ids = () => [];
+const spaces = () => [];
 const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => ["test"];
 
-export const machine = extend<Model, Machine>(model, {
+const simpleNode = extend<Model, SimpleNode>(model, {
   actions,
+  domain: modelRef,
+  hostname: `test-machine-${random}`,
+  fqdn: "test.maas",
+  link_type: "",
+  node_type_display: "",
+  permissions,
+  system_id: random.toString(),
+  tags,
+});
+
+export const device = extend<SimpleNode, Device>(simpleNode, {
+  extra_macs,
+  fabrics,
+  ip_address: "192.168.1.100",
+  ip_assignment: "dynamic",
+  link_speeds,
+  node_type_display: "Device",
+  owner: "admin",
+  parent: null,
+  primary_mac: "de:ad:be:ef:ba:c1",
+  spaces,
+  subnets,
+  zone: null,
+});
+
+const node = extend<SimpleNode, Node>(simpleNode, {
   architecture: "amd64/generic",
-  commissioning_status: testStatus,
+  description: "a test node",
   cpu_count: 1,
   cpu_speed: 0,
   cpu_test_status: testStatus,
-  description: "a test machine",
   distro_series: "",
-  domain: null,
+  interface_test_status: testStatus,
+  locked: false,
+  memory: 1,
+  memory_test_status: testStatus,
+  network_test_status: testStatus,
+  osystem: "ubuntu",
+  other_test_status: testStatus,
+  pool: null,
+  status: "Allocated",
+  status_message: "",
+  status_code: 10,
+  storage_test_status: testStatus,
+});
+
+export const machine = extend<Node, Machine>(node, {
+  commissioning_status: testStatus,
+  description: "a test machine",
   extra_macs,
   fabrics,
-  fqdn: "test.maas",
   has_logs: false,
-  hostname: "test-machine",
-  interface_test_status: testStatus,
   ip_addresses,
   link_speeds,
   link_type: "machine",
-  locked: false,
-  memory_test_status: testStatus,
-  memory: 1,
-  network_test_status: testStatus,
   node_type_display: "Machine",
   numa_nodes_count: 1,
-  osystem: "ubuntu",
-  other_test_status: testStatus,
   owner: "admin",
-  permissions,
   physical_disk_count: 1,
   pod: null,
-  pool: null,
   power_state: "on",
   power_type: "manual",
   pxe_mac_vendor: "Unknown vendor",
   pxe_mac: "de:ad:be:ef:aa:b1",
   spaces,
   sriov_support: false,
-  status_code: 10,
-  status_message: "",
-  status: "Allocated",
   storage_tags,
-  storage_test_status: testStatus,
   storage: 8,
   subnets,
-  system_id: random.toString(),
-  tags,
   testing_status: testStatus,
   vlan: null,
   zone: null,
 });
 
-export const controller = extend<Model, Controller>(model, {
-  actions,
-  architecture: "amd64/generic",
-  cpu_count: 1,
-  cpu_speed: 0,
-  cpu_test_status: testStatus,
-  description: "a test machine",
-  distro_series: "",
-  domain: null,
-  fqdn: "test.maas",
-  hostname: "test-controller",
-  interface_test_status: testStatus,
+export const controller = extend<Node, Controller>(node, {
+  description: "a test controller",
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
   link_type: "controller",
-  locked: false,
-  memory_test_status: testStatus,
-  memory: 1,
-  network_test_status: testStatus,
   node_type_display: "Controller",
   node_type: 4,
-  osystem: "ubuntu",
-  other_test_status: testStatus,
-  permissions,
-  pool: null,
   service_ids,
-  status_code: 6,
-  status_message: "",
-  status: "Deployed",
-  storage_test_status: testStatus,
-  system_id: random.toString(),
-  tags,
   version_long: "2.9.0~alpha1 (8668-g.71d5929ae) (snap)",
   version_short: "2.9.0~alpha1",
   version: "2.9.0~alpha1-8668-g.71d5929ae",
