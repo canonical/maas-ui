@@ -5,8 +5,9 @@ import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { Provider } from "react-redux";
 
-import DeployForm from "../../DeployForm";
+import { machine as machineFactory } from "testing/factories";
 import { TSFixMe } from "app/base/types";
+import DeployForm from "../../DeployForm";
 
 const mockStore = configureStore();
 
@@ -15,11 +16,15 @@ class MockFileReader {
   constructor() {
     this.result = "test file content";
   }
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  onabort() {}
-  onerror() {}
-  onload() {}
-  /* eslint-enable @typescript-eslint/no-empty-function */
+  onabort() {
+    // This method can be overridden in this test file as needed.
+  }
+  onerror() {
+    // This method can be overridden in this test file as needed.
+  }
+  onload() {
+    // This method can be overridden in this test file as needed.
+  }
   readAsText() {
     this.onload();
   }
@@ -45,6 +50,7 @@ describe("DeployFormFields", () => {
   let wrapper: ReactWrapper;
 
   beforeEach(async () => {
+    const machines = [machineFactory(), machineFactory()];
     state = {
       config: {
         items: [
@@ -111,19 +117,12 @@ describe("DeployFormFields", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: [
-          {
-            system_id: "abc123",
-          },
-          {
-            system_id: "def456",
-          },
-        ],
+        items: machines,
         selected: [],
-        statuses: {
-          abc123: {},
-          def456: {},
-        },
+        statuses: machines.reduce((statuses, { system_id }) => {
+          statuses[system_id] = {};
+          return statuses;
+        }, {}),
       },
       user: {
         auth: {
