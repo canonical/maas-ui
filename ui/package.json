@@ -82,7 +82,7 @@
     ]
   },
   "devDependencies": {
-    "@betterer/cli": "2.2.0",
+    "@betterer/cli": "3.0.0",
     "@betterer/constraints": "2.0.0",
     "@betterer/regexp": "2.2.0",
     "@betterer/reporter": "2.2.0",
