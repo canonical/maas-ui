@@ -18,7 +18,7 @@ import {
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
 } from "app/base/selectors";
-import { Machine, MachineAction, MachineState } from "app/base/types";
+import { Machine, MachineAction, MachineState } from "app/store/machine/types";
 import ActionFormWrapper from "./ActionFormWrapper";
 import AddHardware from "./AddHardwareMenu";
 import MachineListActionMenu from "./MachineListActionMenu";

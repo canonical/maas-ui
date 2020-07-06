@@ -12,14 +12,11 @@ import {
   resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  Controller,
-  Machine,
-  Pod,
-  ResourcePool,
-  Sort,
-  TSFixMe,
-} from "app/base/types";
+import { Controller } from "app/store/controller/types";
+import { Machine } from "app/store/machine/types";
+import { Pod } from "app/store/pod/types";
+import { ResourcePool } from "app/store/resourcepool/types";
+import { Sort, TSFixMe } from "app/base/types";
 import {
   general as generalSelectors,
   pod as podSelectors,

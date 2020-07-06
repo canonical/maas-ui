@@ -1,4 +1,6 @@
-import { RootState, TSFixMe, User } from "app/base/types";
+import { RootState } from "app/store/root/types";
+import { TSFixMe } from "app/base/types";
+import { User } from "app/store/user/types";
 
 /**
  * Get the authenticated user.

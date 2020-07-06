@@ -1,13 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import {
-  Controller,
-  Machine,
-  Pod,
-  PodState,
-  RootState,
-  TSFixMe,
-} from "app/base/types";
+import { Controller } from "app/store/controller/types";
+import { Machine } from "app/store/machine/types";
+import { Pod, PodState } from "app/store/pod/types";
+import { RootState } from "app/store/root/types";
+import { TSFixMe } from "app/base/types";
 import controller from "../controller";
 import machine from "../machine";
 
