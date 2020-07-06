@@ -139,17 +139,17 @@ export type Model = {
 /**
  * A named foreign model reference, e.g. machine.domain
  */
-export type ModelRef = {
+export type ModelRef = Model & {
   name: string;
-} & Model;
+};
 
-export type Vlan = {
+export type Vlan = Model & {
   name: string;
   fabric_id: number;
   fabric_name: string;
-} & Model;
+};
 
-export type User = {
+export type User = Model & {
   completed_intro: boolean;
   email: string;
   global_permissions: string[];
@@ -157,9 +157,9 @@ export type User = {
   last_name: string;
   sshkeys_count: number;
   username: string;
-} & Model;
+};
 
-export type Zone = {
+export type Zone = Model & {
   controllers_count: number;
   created: string;
   description: string;
@@ -167,9 +167,9 @@ export type Zone = {
   machines_count: number;
   name: string;
   updated: string;
-} & Model;
+};
 
-export type Pod = {
+export type Pod = Model & {
   architectures: string[];
   available: PodHint;
   capabilities: string[];
@@ -196,7 +196,7 @@ export type Pod = {
   updated: string;
   used: PodHint;
   zone: number;
-} & Model;
+};
 
 export type PodHint = {
   cores: number;
@@ -216,7 +216,7 @@ export type PodHintExtras = {
 /**
  * SimpleNode represents the intersection of Devices, Machines and Controllers
  */
-export type SimpleNode = {
+export type SimpleNode = Model & {
   actions: string[];
   domain: ModelRef;
   hostname: string;
@@ -226,9 +226,9 @@ export type SimpleNode = {
   permissions: string[];
   system_id: string;
   tags: string[];
-} & Model;
+};
 
-export type Device = {
+export type Device = SimpleNode & {
   extra_macs: string[];
   fabrics: string[];
   ip_address?: string;
@@ -240,7 +240,7 @@ export type Device = {
   spaces: string[];
   subnets: string[];
   zone: ModelRef;
-} & SimpleNode;
+};
 
 type NodeStatus =
   | "New"
@@ -270,7 +270,7 @@ type NodeStatus =
 /**
  * Node represents the intersection of Machines and Controllers
  */
-export type Node = {
+export type Node = SimpleNode & {
   architecture: string;
   cpu_count: number;
   cpu_speed: number;
@@ -289,14 +289,14 @@ export type Node = {
   status_message: string;
   status_code: number;
   storage_test_status: TestStatus;
-} & SimpleNode;
+};
 
 type IpAddresses = {
   ip: string;
   is_boot: boolean;
 };
 
-export type Machine = {
+export type Machine = Node & {
   commissioning_status: TestStatus;
   extra_macs: string[];
   fabrics: string[];
@@ -319,16 +319,16 @@ export type Machine = {
   testing_status: TestStatus;
   vlan: Vlan;
   zone: ModelRef;
-} & Node;
+};
 
-export type Controller = {
+export type Controller = Node & {
   last_image_sync: string;
   node_type: number; // TODO: it seems odd that this is only exposed for controller
   service_ids: number[];
   version_long: string;
   version_short: string;
   version: string;
-} & Node;
+};
 
 export type Host = Machine | Controller;
 
@@ -339,7 +339,7 @@ export type Host = Machine | Controller;
 export const isMachine = (host: Host): host is Machine =>
   (host as Machine).link_type === "machine";
 
-export type ResourcePool = {
+export type ResourcePool = Model & {
   created: string;
   description: string;
   is_default: boolean;
@@ -348,4 +348,4 @@ export type ResourcePool = {
   name: string;
   permissions: string[];
   updated: string;
-} & Model;
+};
