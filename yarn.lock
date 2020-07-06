@@ -1592,17 +1592,7 @@
     "@betterer/errors" "^3.0.0"
     tslib "^2.0.0"
 
-"@betterer/reporter@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@betterer/reporter/-/reporter-2.2.0.tgz#eb3f13f939c024f2133bad00d0ce971efead1f76"
-  integrity sha512-AOm5SzNYQgeUf9xgjMMJA7pl5jTChQ8PsJVV4RkAg6YMs/tZ/5621eXnv2TP21gQ9rfe+OXHxTchoT32uhYvWQ==
-  dependencies:
-    "@betterer/betterer" "^2.2.0"
-    "@betterer/errors" "^2.2.0"
-    "@betterer/logger" "^2.2.0"
-    tslib "^2.0.0"
-
-"@betterer/reporter@^3.0.0":
+"@betterer/reporter@3.0.0", "@betterer/reporter@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@betterer/reporter/-/reporter-3.0.0.tgz#20e577a2299b0d21abfc699b4164a34bafca928c"
   integrity sha512-LRre2YR/di44IA1S0648m6TkiqQceH4FEB5ob83UoOjEdkAQv3JI3vZWvPRgXx3SHLPCTEvaatgUkrWr+j9VLg==
