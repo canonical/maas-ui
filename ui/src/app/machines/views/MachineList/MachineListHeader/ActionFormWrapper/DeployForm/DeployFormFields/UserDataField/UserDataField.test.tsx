@@ -16,15 +16,9 @@ class MockFileReader {
   constructor() {
     this.result = "test file content";
   }
-  onabort() {
-    // This method can be overridden in this test file as needed.
-  }
-  onerror() {
-    // This method can be overridden in this test file as needed.
-  }
-  onload() {
-    // This method can be overridden in this test file as needed.
-  }
+  onabort = () => undefined;
+  onerror = () => undefined;
+  onload = () => undefined;
   readAsText() {
     this.onload();
   }
