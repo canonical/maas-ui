@@ -1583,13 +1583,13 @@
     npmlog "^4.1.2"
     tslib "^2.0.0"
 
-"@betterer/regexp@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-2.2.0.tgz#db0a526bb7f5fa05f98331c7f50439bb7f976b38"
-  integrity sha512-A7g/qTkq3pjtwR99SJelgq0bT2acjdyG2dOZDHO+Kl2su6i+DuijTxyj2WGarX4KzzU8QitwhpXHByBQizzxfw==
+"@betterer/regexp@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-3.0.0.tgz#90d4bd6f8996656062e45403f7deadaf8f34da3a"
+  integrity sha512-N4JDS8pZZp5KLcECFXFeE4svNLVOS1beAYUC96p4biL/2UG9OROhFbFEa3Bn0qwtd3846OWo6QjGOIFOqkXRYQ==
   dependencies:
-    "@betterer/betterer" "^2.2.0"
-    "@betterer/errors" "^2.2.0"
+    "@betterer/betterer" "^3.0.0"
+    "@betterer/errors" "^3.0.0"
     tslib "^2.0.0"
 
 "@betterer/reporter@2.2.0":
