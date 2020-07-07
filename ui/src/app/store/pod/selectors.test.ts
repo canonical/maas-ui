@@ -1,8 +1,9 @@
-import pod from "./pod";
+import type { TSFixMe } from "app/base/types";
+import pod from "./selectors";
 
 describe("pod selectors", () => {
   it("can get all items", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         items: [{ name: "pod1" }],
       },
@@ -11,7 +12,7 @@ describe("pod selectors", () => {
   });
 
   it("can get all KVMs", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         items: [
           { name: "kvm1", type: "virsh" },
@@ -28,7 +29,7 @@ describe("pod selectors", () => {
   });
 
   it("can get all RSDs", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         items: [
           { name: "kvm1", type: "virsh" },
@@ -45,7 +46,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         loading: true,
         items: [],
@@ -55,7 +56,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         loaded: true,
         items: [],
@@ -65,7 +66,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         saving: true,
         items: [],
@@ -75,7 +76,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         saved: true,
         items: [],
@@ -85,7 +86,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the selected pod ids", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         selected: [1, 2, 4],
         items: [],
@@ -95,7 +96,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the selected pods", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         selected: [1, 2],
         items: [
@@ -112,7 +113,7 @@ describe("pod selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         errors: "Data is incorrect",
       },
@@ -121,7 +122,7 @@ describe("pod selectors", () => {
   });
 
   it("can get a pod by id", () => {
-    const state = {
+    const state: TSFixMe = {
       pod: {
         items: [
           { name: "pod-1", id: 111 },
@@ -136,7 +137,7 @@ describe("pod selectors", () => {
   });
 
   it("can get a pod's host machine", () => {
-    const state = {
+    const state: TSFixMe = {
       controller: {
         items: [{ name: "fat-controller", system_id: "qwerty" }],
       },
@@ -150,14 +151,15 @@ describe("pod selectors", () => {
         items: [{ host: "abc123", name: "pod-1" }],
       },
     };
-    expect(pod.getHost(state, { host: "abc123" })).toStrictEqual({
+    const host: TSFixMe = { host: "abc123" };
+    expect(pod.getHost(state, host)).toStrictEqual({
       name: "mean-bean-machine",
       system_id: "abc123",
     });
   });
 
   it("can get a pod's host controller", () => {
-    const state = {
+    const state: TSFixMe = {
       controller: {
         items: [
           { name: "playstation-controller", system_id: "abc123" },
@@ -171,14 +173,15 @@ describe("pod selectors", () => {
         items: [{ host: "abc123", name: "pod-1" }],
       },
     };
-    expect(pod.getHost(state, { host: "abc123" })).toStrictEqual({
+    const host: TSFixMe = { host: "abc123" };
+    expect(pod.getHost(state, host)).toStrictEqual({
       name: "playstation-controller",
       system_id: "abc123",
     });
   });
 
   it("can get all pod hosts", () => {
-    const state = {
+    const state: TSFixMe = {
       controller: {
         items: [
           { name: "playstation-controller", system_id: "aaaaaa" },

@@ -2,7 +2,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import tag from "./tag";
+import tag from "./selectors";
 
 describe("tag selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       tag: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       tag: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = {
+    const state: TSFixMe = {
       tag: {
         errors: "Data is incorrect",
       },

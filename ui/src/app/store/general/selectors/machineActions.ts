@@ -1,5 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { MachineAction } from "app/store/general/types";
+import type { RootState } from "app/store/root/types";
+
 /**
  * Selector for all possible machine actions.
  */
@@ -15,8 +18,12 @@ const machineActions = generateGeneralSelector("machineActions");
  * @returns {Object} A machine action.
  */
 machineActions.getByName = createSelector(
-  [machineActions.get, (state, name) => name],
-  (actions, name) => actions.find((action) => action.name === name)
+  [
+    machineActions.get,
+    (_state: RootState, name: MachineAction["name"]) => name,
+  ],
+  (actions: MachineAction[], name) =>
+    actions.find((action: MachineAction) => action.name === name)
 );
 
 export default machineActions;

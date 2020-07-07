@@ -23,7 +23,7 @@ describe("navigationOptions selectors", () => {
   describe("loading", () => {
     it("returns navigationOptions loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           navigationOptions: {
             data: {},
@@ -40,7 +40,7 @@ describe("navigationOptions selectors", () => {
   describe("loaded", () => {
     it("returns navigationOptions loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           navigationOptions: {
             data: {},
@@ -57,7 +57,7 @@ describe("navigationOptions selectors", () => {
   describe("errors", () => {
     it("returns navigationOptions errors state", () => {
       const errors = "Cannot fetch navigationOptions.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           navigationOptions: {
             data: {},

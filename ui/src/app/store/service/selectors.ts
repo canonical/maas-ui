@@ -1,31 +1,39 @@
-const service = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all services.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all services.
  */
-service.all = (state) => state.service.items;
+const all = (state: RootState): TSFixMe => state.service.items;
 
 /**
  * Whether services are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Service loading state.
  */
-service.loading = (state) => state.service.loading;
+const loading = (state: RootState): boolean => state.service.loading;
 
 /**
  * Whether services have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Service loaded state.
  */
-service.loaded = (state) => state.service.loaded;
+const loaded = (state: RootState): boolean => state.service.loaded;
 
 /**
  * Returns services errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Service errors state.
  */
-service.errors = (state) => state.service.errors;
+const errors = (state: RootState): TSFixMe => state.service.errors;
+
+const service = {
+  all,
+  errors,
+  loaded,
+  loading,
+};
 
 export default service;

@@ -1,12 +1,13 @@
+import type { TSFixMe } from "app/base/types";
 import {
   message as messageFactory,
   messageState as messageStateFactory,
 } from "testing/factories";
-import messages from "./messages";
+import messages from "./selectors";
 
 describe("messages", () => {
   it("can get all messages", () => {
-    const state = {
+    const state: TSFixMe = {
       messages: messageStateFactory({
         items: [
           messageFactory({

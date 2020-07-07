@@ -23,7 +23,7 @@ describe("machineActions selectors", () => {
   describe("loading", () => {
     it("returns machineActions loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           machineActions: {
             data: [],
@@ -40,7 +40,7 @@ describe("machineActions selectors", () => {
   describe("loaded", () => {
     it("returns machineActions loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           machineActions: {
             data: [],
@@ -57,7 +57,7 @@ describe("machineActions selectors", () => {
   describe("errors", () => {
     it("returns machineActions errors state", () => {
       const errors = "Cannot fetch machineActions.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           machineActions: {
             data: [],
@@ -92,7 +92,7 @@ describe("machineActions selectors", () => {
         type: "lifecycle",
       },
     ];
-    const state = {
+    const state: TSFixMe = {
       general: {
         machineActions: {
           data,

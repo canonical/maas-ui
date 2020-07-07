@@ -1,15 +1,31 @@
 import type { ControllerState } from "app/store/controller/types";
+import type { DeviceState } from "app/store/device/types";
 import type { MachineState } from "app/store/machine/types";
-import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { PodState } from "app/store/pod/types";
+import type { ResourcePoolState } from "app/store/resourcepool/types";
+import type { TSFixMe } from "app/base/types";
 import type { UserState } from "app/store/user/types";
 import type { ZoneState } from "app/store/zone/types";
 
 export type RootState = {
   controller: ControllerState;
+  device: DeviceState;
+  dhcpsnippet: TSFixMe;
+  domain: TSFixMe;
+  general: TSFixMe;
+  licensekeys: TSFixMe;
   machine: MachineState;
+  messages: TSFixMe;
+  notification: TSFixMe;
+  packagerepository: TSFixMe;
   pod: PodState;
   resourcepool: ResourcePoolState;
+  scriptresults: TSFixMe;
+  scripts: TSFixMe;
+  service: TSFixMe;
+  status: TSFixMe;
+  subnet: TSFixMe;
+  tag: TSFixMe;
   user: UserState;
   zone: ZoneState;
 };

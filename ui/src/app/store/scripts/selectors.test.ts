@@ -2,7 +2,7 @@ import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
-import scripts from "./scripts";
+import scripts from "./selectors";
 
 describe("scripts selectors", () => {
   describe("all", () => {
@@ -20,7 +20,7 @@ describe("scripts selectors", () => {
 
   describe("loading", () => {
     it("returns scripts loading state", () => {
-      const state = {
+      const state: TSFixMe = {
         scripts: {
           loading: true,
           loaded: false,
@@ -33,7 +33,7 @@ describe("scripts selectors", () => {
 
   describe("loaded", () => {
     it("returns scripts loaded state", () => {
-      const state = {
+      const state: TSFixMe = {
         scripts: {
           loading: false,
           loaded: true,
@@ -63,7 +63,7 @@ describe("scripts selectors", () => {
           type: 0,
         },
       ];
-      const state = {
+      const state: TSFixMe = {
         scripts: {
           loading: false,
           loaded: true,
@@ -105,7 +105,7 @@ describe("scripts selectors", () => {
           type: 2,
         },
       ];
-      const state = {
+      const state: TSFixMe = {
         scripts: {
           loading: false,
           loaded: true,
@@ -155,7 +155,7 @@ describe("scripts selectors", () => {
           type: 2,
         },
       ];
-      const state = {
+      const state: TSFixMe = {
         scripts: {
           loading: false,
           loaded: true,

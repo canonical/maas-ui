@@ -22,7 +22,7 @@ describe("architectures selectors", () => {
   describe("loading", () => {
     it("returns architectures loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           architectures: {
             data: [],
@@ -39,7 +39,7 @@ describe("architectures selectors", () => {
   describe("loaded", () => {
     it("returns architectures loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           architectures: {
             data: [],
@@ -56,7 +56,7 @@ describe("architectures selectors", () => {
   describe("errors", () => {
     it("returns architectures errors state", () => {
       const errors = "Cannot fetch architectures.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           architectures: {
             data: [],

@@ -22,7 +22,7 @@ describe("defaultMinHweKernel selectors", () => {
   describe("loading", () => {
     it("returns defaultMinHweKernel loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           defaultMinHweKernel: {
             data: "",
@@ -39,7 +39,7 @@ describe("defaultMinHweKernel selectors", () => {
   describe("loaded", () => {
     it("returns defaultMinHweKernel loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           defaultMinHweKernel: {
             data: "",
@@ -56,7 +56,7 @@ describe("defaultMinHweKernel selectors", () => {
   describe("errors", () => {
     it("returns defaultMinHweKernel errors state", () => {
       const errors = "Cannot fetch defaultMinHweKernel.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           defaultMinHweKernel: {
             data: "",

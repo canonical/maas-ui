@@ -23,7 +23,7 @@ describe("version selectors", () => {
   describe("loading", () => {
     it("returns version loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           version: {
             data: "",
@@ -40,7 +40,7 @@ describe("version selectors", () => {
   describe("loaded", () => {
     it("returns version loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           version: {
             data: "",
@@ -57,7 +57,7 @@ describe("version selectors", () => {
   describe("errors", () => {
     it("returns version errors state", () => {
       const errors = "Cannot fetch version.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           version: {
             data: "",
@@ -73,7 +73,7 @@ describe("version selectors", () => {
 
   describe("minor", () => {
     it("returns the minor version", () => {
-      const state = {
+      const state: TSFixMe = {
         general: {
           version: {
             data: "2.8.0~alpha1",

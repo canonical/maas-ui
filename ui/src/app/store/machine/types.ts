@@ -48,4 +48,5 @@ export type MachineState = {
   saved: boolean;
   saving: boolean;
   selected: string[];
+  statuses: TSFixMe;
 };

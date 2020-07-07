@@ -22,7 +22,7 @@ describe("knownArchitectures selectors", () => {
   describe("loading", () => {
     it("returns knownArchitectures loading state", () => {
       const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           knownArchitectures: {
             loading: true,
@@ -38,7 +38,7 @@ describe("knownArchitectures selectors", () => {
   describe("loaded", () => {
     it("returns knownArchitectures loaded state", () => {
       const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           knownArchitectures: {
             loading: false,
@@ -54,7 +54,7 @@ describe("knownArchitectures selectors", () => {
   describe("errors", () => {
     it("returns knownArchitectures errors state", () => {
       const errors = "Cannot fetch known architectures.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           knownArchitectures: {
             data: [],

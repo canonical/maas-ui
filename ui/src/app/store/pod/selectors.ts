@@ -6,8 +6,8 @@ import type { Machine } from "app/store/machine/types";
 import type { Pod, PodState } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { TSFixMe } from "app/base/types";
-import controller from "../controller";
-import machine from "../machine";
+import controller from "app/store/controller/selectors";
+import machine from "app/store/machine/selectors";
 
 /**
  * Returns all pods.
@@ -204,8 +204,8 @@ const pod = {
   refreshing,
   refreshingSelected,
   rsd,
-  saving,
   saved,
+  saving,
   selected,
   selectedIDs,
   statuses,

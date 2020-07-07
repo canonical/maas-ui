@@ -1,5 +1,5 @@
 import { statusState as statusStateFactory } from "testing/factories";
-import status from "./status";
+import status from "./selectors";
 
 describe("status", () => {
   it("can get the connected status", () => {
@@ -12,7 +12,7 @@ describe("status", () => {
   });
 
   it("can get the error status", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         error: false,
       },
@@ -21,7 +21,7 @@ describe("status", () => {
   });
 
   it("can get the authenticated status", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         authenticated: false,
       },
@@ -30,7 +30,7 @@ describe("status", () => {
   });
 
   it("can get the authenticating status", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         authenticating: false,
       },
@@ -39,7 +39,7 @@ describe("status", () => {
   });
 
   it("can get the connecting status", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         connecting: false,
       },
@@ -48,7 +48,7 @@ describe("status", () => {
   });
 
   it("can get the external auth url", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         externalAuthURL: "http://login.example.com",
       },
@@ -57,7 +57,7 @@ describe("status", () => {
   });
 
   it("can get the external login url", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         externalLoginURL: "http://login.example.com",
       },
@@ -66,7 +66,7 @@ describe("status", () => {
   });
 
   it("can get the noUsers status", () => {
-    const state = {
+    const state: TSFixMe = {
       status: {
         noUsers: true,
       },

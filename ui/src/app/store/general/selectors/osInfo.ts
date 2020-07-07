@@ -4,6 +4,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { generateGeneralSelector } from "./utils";
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 const osInfo = generateGeneralSelector("osInfo");
 
@@ -13,7 +15,7 @@ const osInfo = generateGeneralSelector("osInfo");
  * @param {String} release - The release to get kernel options for.
  * @returns {Array} - The available kernel options.
  */
-const _getUbuntuKernelOptions = (data, release) => {
+const _getUbuntuKernelOptions = (data: TSFixMe, release: TSFixMe): TSFixMe => {
   let kernelOptions = [];
 
   if (data.kernels && data.kernels.ubuntu && data.kernels.ubuntu[release]) {
@@ -35,7 +37,7 @@ const _getUbuntuKernelOptions = (data, release) => {
  * @returns {Array} - The available kernel options.
  */
 osInfo.getUbuntuKernelOptions = createSelector(
-  [osInfo.get, (state, release) => release],
+  [osInfo.get, (_state: RootState, release: TSFixMe) => release],
   (allOsInfo, release) => _getUbuntuKernelOptions(allOsInfo, release)
 );
 
@@ -44,17 +46,20 @@ osInfo.getUbuntuKernelOptions = createSelector(
  * @param {Object} state - the redux state
  * @returns {Object} - all ubuntu kernel options
  */
-osInfo.getAllUbuntuKernelOptions = createSelector([osInfo.get], (allOsInfo) => {
-  let allUbuntuKernelOptions = {};
+osInfo.getAllUbuntuKernelOptions = createSelector(
+  [osInfo.get],
+  (allOsInfo: TSFixMe) => {
+    const allUbuntuKernelOptions = {};
 
-  if (allOsInfo.kernels && allOsInfo.kernels.ubuntu) {
-    Object.keys(allOsInfo.kernels.ubuntu).forEach((key) => {
-      allUbuntuKernelOptions[key] = _getUbuntuKernelOptions(allOsInfo, key);
-    });
+    if (allOsInfo.kernels && allOsInfo.kernels.ubuntu) {
+      Object.keys(allOsInfo.kernels.ubuntu).forEach((key) => {
+        allUbuntuKernelOptions[key] = _getUbuntuKernelOptions(allOsInfo, key);
+      });
+    }
+
+    return allUbuntuKernelOptions;
   }
-
-  return allUbuntuKernelOptions;
-});
+);
 
 /**
  * Returns OS releases
@@ -62,13 +67,13 @@ osInfo.getAllUbuntuKernelOptions = createSelector([osInfo.get], (allOsInfo) => {
  * @param {String} os - the OS to get releases of
  * @returns {Array} - the available OS releases
  */
-const _getOsReleases = (allOsInfo, os) => {
+const _getOsReleases = (allOsInfo: TSFixMe, os: TSFixMe): TSFixMe => {
   let osReleases = [];
 
   if (allOsInfo.releases) {
     osReleases = allOsInfo.releases
-      .filter((release) => release[0].includes(os))
-      .map((release) => ({
+      .filter((release: TSFixMe) => release[0].includes(os))
+      .map((release: TSFixMe) => ({
         value: release[0].split("/")[1],
         label: release[1],
       }));
@@ -84,7 +89,7 @@ const _getOsReleases = (allOsInfo, os) => {
  * @returns {Array} - the available OS releases
  */
 osInfo.getOsReleases = createSelector(
-  [osInfo.get, (state, os) => os],
+  [osInfo.get, (_state: RootState, os: TSFixMe) => os],
   (allOsInfo, os) => _getOsReleases(allOsInfo, os)
 );
 
@@ -93,11 +98,11 @@ osInfo.getOsReleases = createSelector(
  * @param {Object} state - the redux state
  * @returns {Object} - all OS releases
  */
-osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo) => {
+osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo: TSFixMe) => {
   const allOsReleases = {};
 
   if (allOsInfo.osystems && allOsInfo.releases) {
-    allOsInfo.osystems.forEach((osystem) => {
+    allOsInfo.osystems.forEach((osystem: TSFixMe) => {
       const os = osystem[0];
       allOsReleases[os] = _getOsReleases(allOsInfo, os);
     });
@@ -115,14 +120,14 @@ osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo) => {
 osInfo.getLicensedOsReleases = createSelector(
   [osInfo.getAllOsReleases],
   (releases) => {
-    let results = {};
-    for (let [key, value] of Object.entries(releases)) {
-      const licensedReleases = value.filter((release) => {
+    const results = {};
+    for (const [key, value] of Object.entries(releases)) {
+      const licensedReleases = value.filter((release: TSFixMe) => {
         return release.value.endsWith("*");
       });
 
       if (licensedReleases.length > 0) {
-        const releases = licensedReleases.map((r) => {
+        const releases = licensedReleases.map((r: TSFixMe) => {
           r.value = r.value.slice(0, -1);
           return r;
         });

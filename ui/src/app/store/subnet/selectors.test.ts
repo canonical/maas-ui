@@ -2,7 +2,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import subnet from "./subnet";
+import subnet from "./selectors";
 
 describe("subnet selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       subnet: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       subnet: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get a subnet by id", () => {
-    const state = {
+    const state: TSFixMe = {
       subnet: {
         items: [
           { name: "maas.test", id: 808 },

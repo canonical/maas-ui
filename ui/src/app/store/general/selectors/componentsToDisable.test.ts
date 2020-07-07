@@ -22,7 +22,7 @@ describe("componentsToDisable selectors", () => {
   describe("loading", () => {
     it("returns componentsToDisable loading state", () => {
       const data = ["restricted", "universe", "multiverse"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           componentsToDisable: {
             loading: true,
@@ -38,7 +38,7 @@ describe("componentsToDisable selectors", () => {
   describe("loaded", () => {
     it("returns componentsToDisable loaded state", () => {
       const data = ["restricted", "universe", "multiverse"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           componentsToDisable: {
             loading: false,
@@ -54,7 +54,7 @@ describe("componentsToDisable selectors", () => {
   describe("errors", () => {
     it("returns componentsToDisable errors state", () => {
       const errors = "Cannot fetch components to disable.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           componentsToDisable: {
             data: [],

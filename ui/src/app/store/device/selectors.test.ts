@@ -1,8 +1,9 @@
-import device from "./device";
+import type { TSFixMe } from "app/base/types";
+import device from "./selectors";
 
 describe("device selectors", () => {
   it("can get all items", () => {
-    const state = {
+    const state: TSFixMe = {
       device: {
         items: [{ name: "maas.test" }],
       },
@@ -11,7 +12,7 @@ describe("device selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       device: {
         loading: true,
         items: [],
@@ -21,7 +22,7 @@ describe("device selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       device: {
         loaded: true,
         items: [],
@@ -31,7 +32,7 @@ describe("device selectors", () => {
   });
 
   it("can get a device by id", () => {
-    const state = {
+    const state: TSFixMe = {
       device: {
         items: [
           { name: "maas.test", system_id: 808 },

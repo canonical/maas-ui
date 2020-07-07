@@ -2,7 +2,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import zone from "./zone";
+import zone from "./selectors";
 
 describe("zone selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       zone: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       zone: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = {
+    const state: TSFixMe = {
       zone: {
         errors: "Data is incorrect",
       },
@@ -45,7 +45,7 @@ describe("zone selectors", () => {
   });
 
   it("can get a zone by id", () => {
-    const state = {
+    const state: TSFixMe = {
       zone: {
         items: [
           { name: "foo", id: 1 },

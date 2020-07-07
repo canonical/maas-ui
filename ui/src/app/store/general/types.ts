@@ -110,6 +110,13 @@ export type PocketsToDisableState = {
 
 export type Choice = [string, string];
 
+export type MachineAction = {
+  name: string;
+  sentence: string;
+  title: string;
+  type: string;
+};
+
 export type PowerField = {
   choices: Choice[];
   default: number | string;

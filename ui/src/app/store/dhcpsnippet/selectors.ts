@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
-
-const dhcpsnippet = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all dhcp snippets.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all dhcp snippets.
  */
-dhcpsnippet.all = (state) => state.dhcpsnippet.items;
+const all = (state: RootState): TSFixMe => state.dhcpsnippet.items;
 
 /**
  * Get dhcp snippets that match a term.
@@ -15,11 +15,11 @@ dhcpsnippet.all = (state) => state.dhcpsnippet.items;
  * @param {String} term - The term to match against.
  * @returns {Array} A filtered list of dhcp snippets.
  */
-dhcpsnippet.search = createSelector(
-  [dhcpsnippet.all, (state, term) => term],
+const search = createSelector(
+  [all, (_state: RootState, term: string) => term],
   (dhcpsnippets, term) =>
     dhcpsnippets.filter(
-      (snippet) =>
+      (snippet: TSFixMe) =>
         snippet.name.includes(term) || snippet.description.includes(term)
     )
 );
@@ -29,54 +29,64 @@ dhcpsnippet.search = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all dhcp snippets.
  */
-dhcpsnippet.count = createSelector(
-  [dhcpsnippet.all],
-  (dhcpsnippets) => dhcpsnippets.length
-);
+const count = createSelector([all], (dhcpsnippets) => dhcpsnippets.length);
 
 /**
  * Whether dhcp snippets are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} DHCP snippets are loading.
  */
-dhcpsnippet.loading = (state) => state.dhcpsnippet.loading;
+const loading = (state: RootState): boolean => state.dhcpsnippet.loading;
 
 /**
  * Whether dhcp snippets have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} DHCP snippets have loaded.
  */
-dhcpsnippet.loaded = (state) => state.dhcpsnippet.loaded;
+const loaded = (state: RootState): boolean => state.dhcpsnippet.loaded;
 
 /**
  * Returns dhcp snippets errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Errors for a dhcp snippet.
  */
-dhcpsnippet.errors = (state) => state.dhcpsnippet.errors;
+const errors = (state: RootState): boolean => state.dhcpsnippet.errors;
 
 /**
  * Get the saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether dhcp snippets are being saved.
  */
-dhcpsnippet.saving = (state) => state.dhcpsnippet.saving;
+const saving = (state: RootState): boolean => state.dhcpsnippet.saving;
 
 /**
  * Get the saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether dhcp snippets have been saved.
  */
-dhcpsnippet.saved = (state) => state.dhcpsnippet.saved;
+const saved = (state: RootState): boolean => state.dhcpsnippet.saved;
 
 /**
  * Returns a dhcp snippet for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A dhcp snippet.
  */
-dhcpsnippet.getById = createSelector(
-  [dhcpsnippet.all, (state, id) => id],
-  (dhcpsnippets, id) => dhcpsnippets.find((snippet) => snippet.id === id)
+const getById = createSelector(
+  [all, (_state: RootState, id: TSFixMe) => id],
+  (dhcpsnippets, id) =>
+    dhcpsnippets.find((snippet: TSFixMe) => snippet.id === id)
 );
+
+const dhcpsnippet = {
+  all,
+  count,
+  errors,
+  getById,
+  loaded,
+  loading,
+  saved,
+  saving,
+  search,
+};
 
 export default dhcpsnippet;

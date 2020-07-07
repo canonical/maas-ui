@@ -1,74 +1,75 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/base/reducers/machine/machine";
-
-import scriptresults from "../scriptresults";
-
-const machine = {};
+import filterNodes from "app/machines/filter-nodes";
+import scriptresults from "app/store/scriptresults/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all machines.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all machines.
  */
-machine.all = (state) => state.machine.items;
+const all = (state: RootState): Machine[] => state.machine.items;
 
 /**
  * Whether machines are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loading state.
  */
-machine.loading = (state) => state.machine.loading;
+const loading = (state: RootState): boolean => state.machine.loading;
 
 /**
  * Whether machines have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Machines loaded state.
  */
-machine.loaded = (state) => state.machine.loaded;
+const loaded = (state: RootState): boolean => state.machine.loaded;
 
 /**
  * Get the machine saving state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether machines are being saved.
  */
-machine.saving = (state) => state.machine.saving;
+const saving = (state: RootState): boolean => state.machine.saving;
 
 /**
  * Get the machine saved state.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether machines have been saved.
  */
-machine.saved = (state) => state.machine.saved;
+const saved = (state: RootState): boolean => state.machine.saved;
 
 /**
  * Returns machine errors.
  * @param {Object} state - The redux state.
  * @returns {Object} Machine errors state.
  */
-machine.errors = (state) => state.machine.errors;
+const errors = (state: RootState): TSFixMe => state.machine.errors;
 
 /**
  * Returns selected machine system_ids.
  * @param {Object} state - The redux state.
  * @returns {Array} Selected machine system_ids.
  */
-machine.selectedIDs = (state) => state.machine.selected;
+const selectedIDs = (state: RootState): Machine["system_id"][] =>
+  state.machine.selected;
 
 /**
  * Returns all machine statuses.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all statuses.
  */
-machine.statuses = (state) => state.machine.statuses;
+const statuses = (state: RootState): TSFixMe => state.machine.statuses;
 
 /**
  * Returns IDs of machines that are currently being processed.
  * @param {Object} state - The redux state.
  * @returns {Machine["system_id"][]} List of machines being processed.
  */
-machine.processing = (state) =>
+const processing = (state: RootState): Machine["system_id"][] =>
   Object.keys(state.machine.statuses).filter((machineID) =>
     Object.keys(state.machine.statuses[machineID]).some(
       (status) => state.machine.statuses[machineID][status] === true
@@ -80,16 +81,18 @@ machine.processing = (state) =>
  * @param {Object} state - The redux state.
  * @returns {Machine["system_id"][]} List of selected machines being processed.
  */
-machine.selectedProcessing = createSelector(
-  [machine.selectedIDs, machine.processing],
+const selectedProcessing = createSelector(
+  [selectedIDs, processing],
   (selectedIDs, processing) =>
     processing.filter((id) => selectedIDs.includes(id))
 );
 
+const statusSelectors = {};
+
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
-  machine[status] = createSelector(
-    [machine.all, machine.statuses],
+  statusSelectors[status] = createSelector(
+    [all, statuses],
     (machines, statuses) =>
       machines.filter(({ system_id }) => statuses[system_id][status])
   );
@@ -97,9 +100,9 @@ ACTIONS.forEach(({ status }) => {
 
 // Create a selector for selected machines in each machine status.
 ACTIONS.forEach(({ status }) => {
-  machine[`${status}Selected`] = createSelector(
-    [machine[status], machine.selectedIDs],
-    (machines, selectedIDs) =>
+  statusSelectors[`${status}Selected`] = createSelector(
+    [machine[status], selectedIDs],
+    (machines: Machine[], selectedIDs) =>
       machines.filter(({ system_id }) => selectedIDs.includes(system_id))
   );
 });
@@ -109,17 +112,10 @@ ACTIONS.forEach(({ status }) => {
  * @param {Object} state - The redux state.
  * @returns {Array} A machine.
  */
-machine.getBySystemId = createSelector(
-  [machine.all, (state, id) => id],
+const getBySystemId = createSelector(
+  [all, (_state: RootState, id: Machine["system_id"]) => id],
   (machines, id) => machines.find(({ system_id }) => system_id === id)
 );
-
-/**
- * Returns machine errors.
- * @param {Object} state - The redux state.
- * @returns {Object} Errors for machines.
- */
-machine.errors = (state) => state.machine.errors;
 
 /**
  * Get machines that match terms.
@@ -127,10 +123,10 @@ machine.errors = (state) => state.machine.errors;
  * @param {String} terms - The terms to match against.
  * @returns {Array} A filtered list of machines.
  */
-machine.search = createSelector(
+const search = createSelector(
   [
-    machine.all,
-    (state, terms, selectedIDs) => ({
+    all,
+    (_state: RootState, terms: string, selectedIDs: Machine["system_id"]) => ({
       terms,
       selectedIDs,
     }),
@@ -148,12 +144,8 @@ machine.search = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} Selected machines.
  */
-machine.selected = createSelector(
-  [machine.all, machine.selectedIDs],
-  (machines, selectedIDs) =>
-    selectedIDs.map((id) =>
-      machines.find((machine) => id === machine.system_id)
-    )
+const selected = createSelector([all, selectedIDs], (machines, selectedIDs) =>
+  selectedIDs.map((id) => machines.find((machine) => id === machine.system_id))
 );
 
 /**
@@ -161,8 +153,8 @@ machine.selected = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Object} Script results by selected machine key.
  */
-machine.failedScriptResults = createSelector(
-  [scriptresults.all, machine.selectedIDs],
+const failedScriptResults = createSelector(
+  [scriptresults.all, selectedIDs],
   (scriptresults, selectedIDs) =>
     Object.keys(scriptresults)
       .filter((key) => selectedIDs.includes(key))
@@ -171,5 +163,23 @@ machine.failedScriptResults = createSelector(
         return obj;
       }, {})
 );
+
+const machine = {
+  all,
+  errors,
+  failedScriptResults,
+  getBySystemId,
+  loaded,
+  loading,
+  processing,
+  saved,
+  saving,
+  search,
+  selected,
+  selectedIDs,
+  selectedProcessing,
+  statuses,
+  ...statusSelectors,
+};
 
 export default machine;

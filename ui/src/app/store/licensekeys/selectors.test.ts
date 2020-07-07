@@ -2,7 +2,7 @@ import {
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
 } from "testing/factories";
-import licensekeys from "./licensekeys";
+import licensekeys from "./selectors";
 
 describe("licensekeys selectors", () => {
   describe("all", () => {
@@ -20,7 +20,7 @@ describe("licensekeys selectors", () => {
 
   describe("loading", () => {
     it("returns licensekeys loading state", () => {
-      const state = {
+      const state: TSFixMe = {
         licensekeys: {
           loading: true,
           loaded: false,
@@ -33,7 +33,7 @@ describe("licensekeys selectors", () => {
 
   describe("loaded", () => {
     it("returns license keys loaded state", () => {
-      const state = {
+      const state: TSFixMe = {
         licensekeys: {
           loading: false,
           loaded: true,
@@ -46,7 +46,7 @@ describe("licensekeys selectors", () => {
 
   describe("saved", () => {
     it("returns license keys saved state", () => {
-      const state = {
+      const state: TSFixMe = {
         licensekeys: {
           loading: false,
           loaded: true,
@@ -72,7 +72,7 @@ describe("licensekeys selectors", () => {
           license_key: "bar",
         },
       ];
-      const state = {
+      const state: TSFixMe = {
         licensekeys: {
           loading: false,
           loaded: true,

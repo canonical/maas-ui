@@ -1,12 +1,18 @@
-export const generateGeneralSelector = (name) => {
-  const selector = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
-  selector.get = (state) => state.general[name].data;
-  selector.loading = (state) => state.general[name].loading;
-  selector.loaded = (state) => state.general[name].loaded;
-  selector.errors = (state) => state.general[name].errors;
+export const generateGeneralSelector = (name: string): TSFixMe => {
+  const get = (state: RootState) => state.general[name].data;
+  const loading = (state: RootState) => state.general[name].loading;
+  const loaded = (state: RootState) => state.general[name].loaded;
+  const errors = (state: RootState) => state.general[name].errors;
 
-  return selector;
+  return {
+    errors,
+    get,
+    loaded,
+    loading,
+  };
 };
 
 export default generateGeneralSelector;

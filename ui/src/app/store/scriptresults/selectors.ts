@@ -1,13 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-const scriptresults = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns list of all script results.
  * @param {Object} state - Redux state
  * @returns {Array} Script results
  */
-scriptresults.all = (state) => state.scriptresults.items;
+const all = (state: RootState): TSFixMe => state.scriptresults.items;
 
 /**
  * Returns true if script results are loading
@@ -15,37 +16,46 @@ scriptresults.all = (state) => state.scriptresults.items;
  * @returns {Boolean} Scripts results are loading
  */
 
-scriptresults.loading = (state) => state.scriptresults.loading;
+const loading = (state: RootState): boolean => state.scriptresults.loading;
 
 /**
  * Returns true if script results have loaded
  * @param {Object} state - Redux state
  * @returns {Boolean} Scripts results have loaded
  */
-scriptresults.loaded = (state) => state.scriptresults.loaded;
+const loaded = (state: RootState): boolean => state.scriptresults.loaded;
 
 /**
  * Returns true if script results have saved
  * @param {Object} state - Redux state
  * @returns {Boolean} Scripts results have saved
  */
-scriptresults.saved = (state) => state.scriptresults.saved;
+const saved = (state: RootState): boolean => state.scriptresults.saved;
 
 /**
  * Returns script result errors.
  * @param {Object} state - The redux state.
  * @returns {Array} Errors for a script result.
  */
-scriptresults.errors = (state) => state.scripts.errors;
+const errors = (state: RootState): TSFixMe => state.scriptresults.errors;
 
 /**
  * Returns true if script results have errors
  * @param {Object} state - Redux state
  * @returns {Boolean} Script results have errors
  */
-scriptresults.hasErrors = createSelector(
-  [scriptresults.errors],
+const hasErrors = createSelector(
+  [errors],
   (errors) => Object.entries(errors).length > 0
 );
+
+const scriptresults = {
+  all,
+  errors,
+  hasErrors,
+  loaded,
+  loading,
+  saved,
+};
 
 export default scriptresults;

@@ -1,36 +1,44 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-const subnet = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all subnets.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all subnets.
  */
-subnet.all = (state) => state.subnet.items;
+const all = (state: RootState): TSFixMe => state.subnet.items;
 
 /**
  * Whether subnets are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Subnets are loading.
  */
-subnet.loading = (state) => state.subnet.loading;
+const loading = (state: RootState): boolean => state.subnet.loading;
 
 /**
  * Whether subnets have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Subnets have loaded.
  */
-subnet.loaded = (state) => state.subnet.loaded;
+const loaded = (state: RootState): boolean => state.subnet.loaded;
 
 /**
  * Returns a subnet for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A subnet.
  */
-subnet.getById = createSelector(
-  [subnet.all, (state, id) => id],
-  (subnets, id) => subnets.find((subnet) => subnet.id === id)
+const getById = createSelector(
+  [all, (_state: RootState, id: TSFixMe) => id],
+  (subnets, id) => subnets.find((subnet: TSFixMe) => subnet.id === id)
 );
+
+const subnet = {
+  all,
+  getById,
+  loaded,
+  loading,
+};
 
 export default subnet;

@@ -22,7 +22,7 @@ describe("pocketsToDisable selectors", () => {
   describe("loading", () => {
     it("returns pocketsToDisable loading state", () => {
       const data = ["updates", "security", "backports"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           pocketsToDisable: {
             loading: true,
@@ -38,7 +38,7 @@ describe("pocketsToDisable selectors", () => {
   describe("loaded", () => {
     it("returns pocketsToDisable loaded state", () => {
       const data = ["updates", "security", "backports"];
-      const state = {
+      const state: TSFixMe = {
         general: {
           pocketsToDisable: {
             loading: false,
@@ -54,7 +54,7 @@ describe("pocketsToDisable selectors", () => {
   describe("errors", () => {
     it("returns pocketsToDisable errors state", () => {
       const errors = "Cannot fetch pockets to disable.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           pocketsToDisable: {
             data: [],

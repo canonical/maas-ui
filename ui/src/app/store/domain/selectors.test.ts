@@ -2,7 +2,7 @@ import {
   domain as domainFactory,
   domainState as domainStateFactory,
 } from "testing/factories";
-import domain from "./domain";
+import domain from "./selectors";
 
 describe("domain selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("domain selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       domain: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("domain selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       domain: {
         loaded: true,
         items: [],

@@ -2,7 +2,7 @@ import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
 } from "testing/factories";
-import dhcpsnippet from "./dhcpsnippet";
+import dhcpsnippet from "./selectors";
 
 describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can search items", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         items: [
           {
@@ -67,7 +67,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the count", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         loading: true,
         items: [{ name: "class" }, { name: "lease" }],
@@ -77,7 +77,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         saving: true,
         items: [],
@@ -87,7 +87,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         saved: true,
         items: [],
@@ -97,7 +97,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get errors", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         errors: { name: "Name not provided" },
         items: [],
@@ -109,7 +109,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get a dhcp snippet by id", () => {
-    const state = {
+    const state: TSFixMe = {
       dhcpsnippet: {
         loading: true,
         items: [

@@ -1,37 +1,38 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-const notification = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all notifications.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all notifications.
  */
-notification.all = (state) => state.notification.items;
+const all = (state: RootState): TSFixMe => state.notification.items;
 
 /**
  * Whether notifications are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Notifications are loading.
  */
-notification.loading = (state) => state.notification.loading;
+const loading = (state: RootState): boolean => state.notification.loading;
 
 /**
  * Whether notifications have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Notifications have loaded.
  */
-notification.loaded = (state) => state.notification.loaded;
+const loaded = (state: RootState): boolean => state.notification.loaded;
 
 /**
  * Returns a notification for the given id.
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.getById = createSelector(
-  [notification.all, (state, id) => id],
+const getById = createSelector(
+  [all, (_state: RootState, id: TSFixMe) => id],
   (notifications, id) =>
-    notifications.find((notification) => notification.id === id)
+    notifications.find((notification: TSFixMe) => notification.id === id)
 );
 
 /**
@@ -39,8 +40,10 @@ notification.getById = createSelector(
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.warnings = createSelector([notification.all], (notifications) =>
-  notifications.filter((notification) => notification.category === "warning")
+const warnings = createSelector([all], (notifications) =>
+  notifications.filter(
+    (notification: TSFixMe) => notification.category === "warning"
+  )
 );
 
 /**
@@ -48,8 +51,10 @@ notification.warnings = createSelector([notification.all], (notifications) =>
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.errors = createSelector([notification.all], (notifications) =>
-  notifications.filter((notification) => notification.category === "error")
+const errors = createSelector([all], (notifications) =>
+  notifications.filter(
+    (notification: TSFixMe) => notification.category === "error"
+  )
 );
 
 /**
@@ -57,8 +62,10 @@ notification.errors = createSelector([notification.all], (notifications) =>
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.success = createSelector([notification.all], (notifications) =>
-  notifications.filter((notification) => notification.category === "success")
+const success = createSelector([all], (notifications) =>
+  notifications.filter(
+    (notification: TSFixMe) => notification.category === "success"
+  )
 );
 
 /**
@@ -66,8 +73,21 @@ notification.success = createSelector([notification.all], (notifications) =>
  * @param {Object} state - The redux state.
  * @returns {Array} A notification.
  */
-notification.info = createSelector([notification.all], (notifications) =>
-  notifications.filter((notification) => notification.category === "info")
+const info = createSelector([all], (notifications) =>
+  notifications.filter(
+    (notification: TSFixMe) => notification.category === "info"
+  )
 );
+
+const notification = {
+  all,
+  errors,
+  getById,
+  info,
+  loaded,
+  loading,
+  success,
+  warnings,
+};
 
 export default notification;

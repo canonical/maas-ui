@@ -2,7 +2,7 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import service from "./service";
+import service from "./selectors";
 
 describe("service selectors", () => {
   it("can get all items", () => {
@@ -16,7 +16,7 @@ describe("service selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = {
+    const state: TSFixMe = {
       service: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("service selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = {
+    const state: TSFixMe = {
       service: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("service selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = {
+    const state: TSFixMe = {
       service: {
         errors: "Data is incorrect",
       },

@@ -23,7 +23,7 @@ describe("powerTypes selectors", () => {
   describe("loading", () => {
     it("returns powerTypes loading state", () => {
       const loading = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           powerTypes: {
             data: [],
@@ -40,7 +40,7 @@ describe("powerTypes selectors", () => {
   describe("loaded", () => {
     it("returns powerTypes loaded state", () => {
       const loaded = true;
-      const state = {
+      const state: TSFixMe = {
         general: {
           powerTypes: {
             data: [],
@@ -57,7 +57,7 @@ describe("powerTypes selectors", () => {
   describe("errors", () => {
     it("returns powerTypes errors state", () => {
       const errors = "Cannot fetch powerTypes.";
-      const state = {
+      const state: TSFixMe = {
         general: {
           powerTypes: {
             data: [],
@@ -78,7 +78,7 @@ describe("powerTypes selectors", () => {
         { name: "chassis-type-2", chassis: true },
       ];
       const nonChassisPowerType = { name: "non-chassis-type", chassis: false };
-      const state = {
+      const state: TSFixMe = {
         general: {
           powerTypes: {
             data: [...chassisPowerTypes, nonChassisPowerType],
