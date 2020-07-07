@@ -1,0 +1,55 @@
+@mixin CPUPopover {
+  $color-assigned-core: $color-link;
+  $color-unassigned-core: #d3e4ed;
+
+  %core-icon {
+    border-radius: $sp-unit;
+    height: $sp-unit;
+    margin-right: $sph-inner--small;
+    width: $sp-unit;
+  }
+
+  .cpu-popover {
+    @extend %vf-has-box-shadow;
+    @extend %vf-has-round-corners;
+    width: 14rem;
+    z-index: 10;
+  }
+
+  .cpu-popover__primary {
+    background: $color-x-light;
+    padding: $spv-inner--medium $spv-outer--medium;
+  }
+
+  .cpu-popover__secondary {
+    background: $color-light;
+    padding: $spv-inner--medium $spv-outer--medium;
+  }
+
+  .cpu-popover__row {
+    display: flex;
+  }
+
+  .cpu-popover__value {
+    align-items: center;
+    display: flex;
+    flex: 0 0 3.5rem;
+    justify-content: flex-end;
+    padding-right: $sph-inner--small;
+    text-align: right;
+  }
+
+  .cpu-popover__label {
+    flex: 1 1 auto;
+  }
+
+  .cpu-popover__assigned {
+    @extend %core-icon;
+    background-color: $color-assigned-core;
+  }
+
+  .cpu-popover__unassigned {
+    @extend %core-icon;
+    background-color: $color-unassigned-core;
+  }
+}
