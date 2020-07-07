@@ -3,13 +3,13 @@ import { define, extend, random, sequence } from "cooky-cutter";
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
-import type { Model } from "app/store/types";
+import type { Model } from "app/store/types/model";
 import {
   ModelRef,
   BaseNode,
   SimpleNode,
   TestStatus,
-} from "app/store/node/types";
+} from "app/store/types/node";
 
 const model = define<Model>({
   id: sequence,

@@ -1,4 +1,4 @@
-import type { BaseNode } from "app/store/node/types";
+import type { BaseNode } from "app/store/types/node";
 import type { TSFixMe } from "app/base/types";
 
 export type Controller = BaseNode & {

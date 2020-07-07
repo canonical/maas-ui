@@ -1,5 +1,5 @@
 import type { TSFixMe } from "app/base/types";
-import type { Model } from "app/store/types";
+import type { Model } from "app/store/types/model";
 
 export type Zone = Model & {
   controllers_count: number;

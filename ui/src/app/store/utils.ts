@@ -1,4 +1,4 @@
-import type { Host } from "app/store/host/types";
+import type { Host } from "app/store/types/host";
 import type { Machine } from "app/store/machine/types";
 
 /**

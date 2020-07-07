@@ -1,6 +1,5 @@
-// BETTERER RESULTS V1.
+// BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
-  timestamp: 1592774737565,
   value: `{
     "src/app/base/reducers/pod/pod.test.ts:1930988215": [
       [144, 20, 2, "Type \'number\' is not assignable to type \'never\'.", "5861160"],
@@ -165,8 +164,8 @@ exports[`stricter compilation`] = {
     ]
   }`
 };
+
 exports[`no TSFixMe types`] = {
-  timestamp: 1592774742679,
   value: `{
     "src/app/base/selectors/pod/pod.ts:361290740": [
       [2, 45, 8, "RegExp match", "1152173309"],
@@ -180,24 +179,12 @@ exports[`no TSFixMe types`] = {
       [2, 19, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/base/types.ts:2497027810": [
-      [8, 9, 8, "RegExp match", "1152173309"],
-      [38, 9, 8, "RegExp match", "1152173309"],
-      [55, 9, 8, "RegExp match", "1152173309"],
-      [77, 6, 8, "RegExp match", "1152173309"],
-      [78, 7, 8, "RegExp match", "1152173309"],
-      [95, 7, 8, "RegExp match", "1152173309"],
-      [96, 7, 8, "RegExp match", "1152173309"],
-      [100, 9, 8, "RegExp match", "1152173309"],
-      [144, 16, 8, "RegExp match", "1152173309"],
-      [154, 9, 8, "RegExp match", "1152173309"],
-      [175, 9, 8, "RegExp match", "1152173309"],
-      [191, 11, 8, "RegExp match", "1152173309"],
-      [205, 9, 8, "RegExp match", "1152173309"]
+    "src/app/base/types.ts:3778456340": [
+      [0, 11, 8, "RegExp match", "1152173309"]
     ]
   }`
 };
+
 exports[`migrate js files to ts`] = {
-  timestamp: 1592468736035,
-  value: `712`
+  value: `688`
 };
