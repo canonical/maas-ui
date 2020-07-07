@@ -54,10 +54,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <SetPoolForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -103,54 +100,5 @@ describe("SetPoolForm", () => {
         },
       },
     ]);
-  });
-
-  it("can render when processing machines", () => {
-    const store = mockStore(state);
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.statuses.abc123 = { settingPool: true };
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <SetPoolForm
-            processing={true}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Setting pool for 1 of 2 machines..."
-    );
-  });
-
-  it("can set the processing state when successfully submitting", () => {
-    const store = mockStore(state);
-    state.machine.selected = ["abc123", "def456"];
-    const setProcessing = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <SetPoolForm
-            setProcessing={setProcessing}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        poolSelection: "select",
-        name: "pool-1",
-        description: "",
-      })
-    );
-    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

@@ -1,46 +1,27 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React from "react";
 
-import { getProcessingLabel } from "../utils";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormikForm from "app/base/components/FormikForm";
+import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
-import FormCardButtons from "app/base/components/FormCardButtons";
 
 const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
 });
 
-export const SetZoneForm = ({
-  processing,
-  setProcessing,
-  setSelectedAction,
-}) => {
+export const SetZoneForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const zones = useSelector(zoneSelectors.all);
   const settingZoneSelected = useSelector(machineSelectors.settingZoneSelected);
-
-  useProcessing(
-    settingZoneSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
 
   const zoneOptions = [
     { label: "Select your zone", value: "", disabled: true },
@@ -52,36 +33,21 @@ export const SetZoneForm = ({
   ];
 
   return (
-    <FormikForm
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
+    <ActionForm
+      actionName="set-zone"
       cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
       initialValues={{ zone: "" }}
-      submitLabel={`Set zone of ${selectedMachines.length} ${pluralize(
-        "machine",
-        selectedMachines.length
-      )}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Set zone",
-        category: "Take action menu",
-        label: "Set zone of selected machines",
-      }}
+      modelName="machine"
       onSubmit={(values) => {
         const zone = zones.find((zone) => zone.name === values.zone);
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.setZone(machine.system_id, zone.id));
         });
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        settingZoneSelected.length,
-        selectedMachines.length,
-        "set-zone"
-      )}
-      saved={saved}
+      processingCount={settingZoneSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={SetZoneSchema}
     >
       <Row>
@@ -95,13 +61,11 @@ export const SetZoneForm = ({
           />
         </Col>
       </Row>
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 SetZoneForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

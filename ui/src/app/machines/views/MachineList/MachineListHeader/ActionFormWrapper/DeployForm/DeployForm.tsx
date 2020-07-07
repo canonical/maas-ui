@@ -1,10 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
-import { getProcessingLabel } from "../utils";
 import {
   general as generalActions,
   machine as machineActions,
@@ -14,9 +12,7 @@ import {
   machine as machineSelectors,
 } from "app/base/selectors";
 import type { Machine, MachineAction } from "app/store/machine/types";
-import { useProcessing } from "app/base/hooks";
-import FormikForm from "app/base/components/FormikForm";
-import FormCardButtons from "app/base/components/FormCardButtons";
+import ActionForm from "app/base/components/ActionForm";
 import DeployFormFields from "./DeployFormFields";
 
 const DeploySchema = Yup.object().shape({
@@ -36,19 +32,12 @@ export type DeployFormValues = {
 };
 
 type Props = {
-  processing: boolean;
-  setProcessing: (processing: boolean) => void;
   setSelectedAction: (action?: MachineAction, deselect?: boolean) => void;
 };
 
-export const DeployForm = ({
-  processing,
-  setProcessing,
-  setSelectedAction,
-}: Props): JSX.Element => {
+export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
@@ -64,39 +53,20 @@ export const DeployForm = ({
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
-  useProcessing(
-    deployingSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
+    <ActionForm
+      actionName="deploy"
       allowUnchanged
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
       cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
       initialValues={{
         oSystem: osInfo.default_osystem,
         release: osInfo.default_release,
         kernel: defaultMinHweKernel || "",
         installKVM: false,
       }}
-      submitLabel={`Deploy ${selectedMachines.length} ${pluralize(
-        "machine",
-        selectedMachines.length
-      )}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Deploy",
-        category: "Take action menu",
-        label: "Deploy selected machines",
-      }}
+      modelName="machine"
       onSubmit={(values: DeployFormValues) => {
         const extra = {
           osystem: values.oSystem,
@@ -110,25 +80,17 @@ export const DeployForm = ({
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.deploy(machine.system_id, extra));
         });
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        deployingSelected.length,
-        selectedMachines.length,
-        "deploy"
-      )}
-      saved={saved}
+      processingCount={deployingSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 DeployForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

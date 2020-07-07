@@ -5,17 +5,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { getProcessingLabel } from "../utils";
 import { generateLegacyURL } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import {
   machine as machineSelectors,
   scriptresults as scriptresultsSelectors,
 } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormCardButtons from "app/base/components/FormCardButtons";
+import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
 
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
@@ -68,14 +65,9 @@ const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
 });
 
-export const OverrideTestForm = ({
-  processing,
-  setProcessing,
-  setSelectedAction,
-}) => {
+export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const failedScriptResults = useSelector(machineSelectors.failedScriptResults);
@@ -88,36 +80,19 @@ export const OverrideTestForm = ({
     dispatch(machineActions.fetchFailedScriptResults(selectedMachines));
   }, [dispatch, selectedMachines]);
 
-  useProcessing(
-    overridingFailedTestingSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
+    <ActionForm
+      actionName="override-failed-testing"
       allowUnchanged
-      buttons={FormCardButtons}
-      buttonsBordered={false}
+      cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
       disabled={!scriptResultsLoaded}
       errors={errors}
-      cleanup={machineActions.cleanup}
       initialValues={{
         suppressResults: false,
       }}
-      submitLabel={`Override failed tests for ${
-        selectedMachines.length
-      } ${pluralize("machine", selectedMachines.length)}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Override",
-        category: "Take action menu",
-        label: "Override failed tests for selected machines",
-      }}
+      loading={!scriptResultsLoaded}
+      modelName="machine"
       onSubmit={(values) => {
         const { suppressResults } = values;
         selectedMachines.forEach((machine) => {
@@ -135,16 +110,9 @@ export const OverrideTestForm = ({
             }
           });
         }
-        setProcessing(true);
       }}
-      loading={!scriptResultsLoaded}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        overridingFailedTestingSelected.length,
-        selectedMachines.length,
-        "override-failed-testing"
-      )}
-      saved={saved}
+      processingCount={overridingFailedTestingSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={OverrideTestFormSchema}
     >
       <Row>
@@ -206,13 +174,11 @@ export const OverrideTestForm = ({
           )}
         </Col>
       </Row>
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 OverrideTestForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

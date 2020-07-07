@@ -1,10 +1,8 @@
-import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { getProcessingLabel } from "../utils";
 import {
   machine as machineActions,
   scripts as scriptActions,
@@ -13,10 +11,14 @@ import {
   machine as machineSelectors,
   scripts as scriptSelectors,
 } from "app/base/selectors";
-import { useProcessing } from "app/base/hooks";
-import FormCardButtons from "app/base/components/FormCardButtons";
-import FormikForm from "app/base/components/FormikForm";
+import ActionForm from "app/base/components/ActionForm";
 import CommissionFormFields from "./CommissionFormFields";
+
+const formatScripts = (scripts) =>
+  scripts.map((script) => ({
+    ...script,
+    displayName: `${script.name} (${script.tags.join(", ")})`,
+  }));
 
 const CommissionFormSchema = Yup.object().shape({
   enableSSH: Yup.boolean(),
@@ -39,14 +41,9 @@ const CommissionFormSchema = Yup.object().shape({
     .required(),
 });
 
-export const CommissionForm = ({
-  processing,
-  setProcessing,
-  setSelectedAction,
-}) => {
+export const CommissionForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
-  const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
@@ -54,12 +51,6 @@ export const CommissionForm = ({
   const commissioningSelected = useSelector(
     machineSelectors.commissioningSelected
   );
-
-  const formatScripts = (scripts) =>
-    scripts.map((script) => ({
-      ...script,
-      displayName: `${script.name} (${script.tags.join(", ")})`,
-    }));
 
   const formattedCommissioningScripts = formatScripts(commissioningScripts);
   const formattedTestingScripts = formatScripts(testingScripts);
@@ -84,23 +75,13 @@ export const CommissionForm = ({
     dispatch(scriptActions.fetch());
   }, [dispatch]);
 
-  useProcessing(
-    commissioningSelected.length,
-    () => {
-      setProcessing(false);
-      setSelectedAction(null);
-    },
-    Object.keys(errors).length > 0,
-    () => setProcessing(false)
-  );
-
   return (
-    <FormikForm
+    <ActionForm
+      actionName="commission"
       allowUnchanged
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      errors={errors}
       cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
       initialValues={{
         enableSSH: false,
         skipBMCConfig: false,
@@ -113,16 +94,7 @@ export const CommissionForm = ({
         testingScripts: preselectedTestingScripts,
         scriptInputs: initialScriptInputs,
       }}
-      submitLabel={`Commission ${selectedMachines.length} ${pluralize(
-        "machine",
-        selectedMachines.length
-      )}`}
-      onCancel={() => setSelectedAction(null, true)}
-      onSaveAnalytics={{
-        action: "Commission",
-        category: "Take action menu",
-        label: "Commission selected machines",
-      }}
+      modelName="machine"
       onSubmit={(values) => {
         const {
           enableSSH,
@@ -151,15 +123,9 @@ export const CommissionForm = ({
             )
           );
         });
-        setProcessing(true);
       }}
-      saving={processing}
-      savingLabel={getProcessingLabel(
-        commissioningSelected.length,
-        selectedMachines.length,
-        "commission"
-      )}
-      saved={saved}
+      processingCount={commissioningSelected.length}
+      selectedCount={selectedMachines.length}
       validationSchema={CommissionFormSchema}
     >
       <CommissionFormFields
@@ -168,13 +134,11 @@ export const CommissionForm = ({
         commissioningScripts={formattedCommissioningScripts}
         testingScripts={formattedTestingScripts}
       />
-    </FormikForm>
+    </ActionForm>
   );
 };
 
 CommissionForm.propTypes = {
-  processing: PropTypes.bool,
-  setProcessing: PropTypes.func.isRequired,
   setSelectedAction: PropTypes.func.isRequired,
 };
 

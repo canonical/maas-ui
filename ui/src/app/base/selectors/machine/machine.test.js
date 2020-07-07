@@ -100,6 +100,31 @@ describe("machine selectors", () => {
     });
   });
 
+  it("can get machines that are processing", () => {
+    const state = {
+      machine: {
+        statuses: {
+          abc123: { processing: true },
+          def456: { processing: false },
+        },
+      },
+    };
+    expect(machine.processing(state)).toStrictEqual(["abc123"]);
+  });
+
+  it("can get selected machines that are processing", () => {
+    const state = {
+      machine: {
+        selected: ["abc123"],
+        statuses: {
+          abc123: { processing: true },
+          def456: { processing: true },
+        },
+      },
+    };
+    expect(machine.selectedProcessing(state)).toStrictEqual(["abc123"]);
+  });
+
   it("can get machines that are saving pools", () => {
     const state = {
       machine: {

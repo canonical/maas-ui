@@ -72,7 +72,7 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TestForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <TestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -135,61 +135,5 @@ describe("TestForm", () => {
         },
       },
     ]);
-  });
-
-  it("can show the status when processing machines", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.statuses.abc123 = { testing: true };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <TestForm
-            processing={true}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Starting tests for 1 of 2 machines..."
-    );
-  });
-
-  it("can set the processing state when successfully submitting", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    const store = mockStore(state);
-    const setProcessing = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <TestForm
-            setProcessing={setProcessing}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          enableSSH: true,
-          scripts: state.scripts.items,
-          scriptInputs: {
-            "internet-connectivity": "https://connectivity-check.ubuntu.com",
-          },
-        })
-    );
-    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

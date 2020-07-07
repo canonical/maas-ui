@@ -65,10 +65,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -92,10 +89,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -117,10 +111,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -144,10 +135,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -166,10 +154,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -224,10 +209,7 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <OverrideTestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -256,54 +238,5 @@ describe("OverrideTestForm", () => {
         type: "SET_SCRIPT_RESULT_SUPPRESSED",
       },
     ]);
-  });
-
-  it("can render when processing machines", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.statuses.abc123 = { overridingFailedTesting: true };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OverrideTestForm
-            processing={true}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Overriding failed tests for 1 of 2 machines..."
-    );
-  });
-
-  it("can set the processing state when successfully submitting", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
-    const store = mockStore(state);
-    const setProcessing = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OverrideTestForm
-            setProcessing={setProcessing}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        suppressResults: true,
-      })
-    );
-    expect(setProcessing).toHaveBeenCalledWith(true);
   });
 });

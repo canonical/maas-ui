@@ -1,15 +1,15 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import type { MachineAction } from "app/store/machine/types";
-import ActionForm from "./ActionForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
+import FieldlessForm from "./FieldlessForm";
 import OverrideTestForm from "./OverrideTestForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
@@ -17,7 +17,7 @@ import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
 const getErrorSentence = (action: MachineAction, count: number) => {
-  const machineString = `${count} ${pluralize("machine", count)}`;
+  const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
     case "exit-rescue-mode":
@@ -42,17 +42,13 @@ const getErrorSentence = (action: MachineAction, count: number) => {
 type Props = {
   selectedAction: MachineAction;
   setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
-  _processing?: boolean;
 };
 
 export const ActionFormWrapper = ({
   selectedAction,
   setSelectedAction,
-  _processing = false,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  // Initialise the processing state from a prop to allow testing the state change.
-  const [processing, setProcessing] = useState(_processing);
   const selectedMachines = useSelector(machineSelectors.selected);
   const actionableMachineIDs = selectedAction
     ? selectedMachines.reduce((machineIDs, machine) => {
@@ -62,12 +58,14 @@ export const ActionFormWrapper = ({
         return machineIDs;
       }, [])
     : [];
+  const selectedProcessing = useSelector(machineSelectors.selectedProcessing);
 
   // The action should be disabled if not all the selected machines can perform
   // The selected action. When machines are processing the available actions
   // can change, so the action should not be disabled while processing.
   const actionDisabled =
-    !processing && actionableMachineIDs.length !== selectedMachines.length;
+    !selectedProcessing.length &&
+    actionableMachineIDs.length !== selectedMachines.length;
 
   useEffect(() => {
     if (selectedMachines.length === 0) {
@@ -80,66 +78,22 @@ export const ActionFormWrapper = ({
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
         case "commission":
-          return (
-            <CommissionForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <CommissionForm setSelectedAction={setSelectedAction} />;
         case "deploy":
-          return (
-            <DeployForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <DeployForm setSelectedAction={setSelectedAction} />;
         case "override-failed-testing":
-          return (
-            <OverrideTestForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <OverrideTestForm setSelectedAction={setSelectedAction} />;
         case "set-pool":
-          return (
-            <SetPoolForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <SetPoolForm setSelectedAction={setSelectedAction} />;
         case "set-zone":
-          return (
-            <SetZoneForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <SetZoneForm setSelectedAction={setSelectedAction} />;
         case "tag":
-          return (
-            <TagForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <TagForm setSelectedAction={setSelectedAction} />;
         case "test":
-          return (
-            <TestForm
-              processing={processing}
-              setProcessing={setProcessing}
-              setSelectedAction={setSelectedAction}
-            />
-          );
+          return <TestForm setSelectedAction={setSelectedAction} />;
         default:
           return (
-            <ActionForm
-              processing={processing}
-              setProcessing={setProcessing}
+            <FieldlessForm
               selectedAction={selectedAction}
               setSelectedAction={setSelectedAction}
             />
@@ -179,7 +133,6 @@ export const ActionFormWrapper = ({
 ActionFormWrapper.propTypes = {
   selectedAction: PropTypes.object,
   setSelectedAction: PropTypes.func.isRequired,
-  _processing: PropTypes.bool,
 };
 
 export default ActionFormWrapper;
