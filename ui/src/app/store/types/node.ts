@@ -1,11 +1,4 @@
-import type { Model } from "app/store/types/model";
-
-/**
- * A named foreign model reference, e.g. machine.domain
- */
-export type ModelRef = Model & {
-  name: string;
-};
+import type { Model, ModelRef } from "app/store/types/model";
 
 type TestResult = -1 | 0 | 1;
 

@@ -1,5 +1,5 @@
-import type { BaseNode, ModelRef, TestStatus } from "app/store/types/node";
-import type { Model } from "app/store/types/model";
+import type { BaseNode, TestStatus } from "app/store/types/node";
+import type { Model, ModelRef } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
 export type MachineAction = {
