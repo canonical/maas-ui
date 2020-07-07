@@ -44,7 +44,7 @@
   },
   "husky": {
     "hooks": {
-      "post-commit": "yarn run betterer"
+      "pre-push": "yarn run betterer"
     }
   },
   "workspaces": {
