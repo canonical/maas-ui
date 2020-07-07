@@ -1,4 +1,4 @@
-import type { ModelRef, SimpleNode } from "app/store/node/types";
+import type { ModelRef, SimpleNode } from "app/store/types/node";
 
 export type Device = SimpleNode & {
   extra_macs: string[];

@@ -1,4 +1,4 @@
-import type { Model } from "app/store/types";
+import type { Model } from "app/store/types/model";
 
 /**
  * A named foreign model reference, e.g. machine.domain
@@ -58,7 +58,7 @@ type NodeStatus =
   | "Failed testing";
 
 /**
- * Node represents the intersection of Machines and Controllers
+ * BaseNode represents the intersection of Machines and Controllers
  */
 export type BaseNode = SimpleNode & {
   architecture: string;
