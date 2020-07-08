@@ -1,3 +1,5 @@
+import { buildArray } from "testing/factories";
+import { pod as podFactory } from "testing/factories";
 import pod, { DEFAULT_STATUSES } from "./pod";
 
 describe("pod reducer", () => {
@@ -32,6 +34,8 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce FETCH_POD_SUCCESS", () => {
+    const pods = buildArray(podFactory, 2);
+
     expect(
       pod(
         {
@@ -46,10 +50,7 @@ describe("pod reducer", () => {
         },
         {
           type: "FETCH_POD_SUCCESS",
-          payload: [
-            { id: 1, name: "pod1" },
-            { id: 2, name: "pod2" },
-          ],
+          payload: pods,
         }
       )
     ).toEqual({
@@ -60,10 +61,7 @@ describe("pod reducer", () => {
       saving: false,
       selected: [],
       statuses: { 1: DEFAULT_STATUSES, 2: DEFAULT_STATUSES },
-      items: [
-        { id: 1, name: "pod1" },
-        { id: 2, name: "pod2" },
-      ],
+      items: pods,
     });
   });
 
