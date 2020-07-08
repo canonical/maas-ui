@@ -1,13 +1,16 @@
+import { notificationState as notificationStateFactory } from "testing/factories";
 import notification from "./notification";
 
 describe("notification selectors", () => {
   it("can get all items", () => {
     const state = {
-      notification: {
-        items: [{ name: "maas.test" }],
-      },
+      notification: notificationStateFactory({
+        items: [{ message: "Test message" }],
+      }),
     };
-    expect(notification.all(state)).toEqual([{ name: "maas.test" }]);
+    const items = notification.all(state);
+    expect(items.length).toEqual(1);
+    expect(items[0].message).toEqual("Test message");
   });
 
   it("can get the loading state", () => {
