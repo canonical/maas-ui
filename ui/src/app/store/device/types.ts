@@ -8,7 +8,7 @@ export type Device = SimpleNode & {
   ip_assignment: "external" | "dynamic" | "static";
   link_speeds: number[];
   owner: string;
-  parent?: string;
+  parent: string | null; // `parent` is a `system_id`
   primary_mac: string;
   spaces: string[];
   subnets: string[];

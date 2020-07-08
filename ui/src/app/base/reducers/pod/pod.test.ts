@@ -155,11 +155,14 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce CREATE_POD_NOTIFY", () => {
+    const pods = [podFactory({ id: 1, name: "pod1" })];
+    const newPod = podFactory({ id: 2, name: "pod2" });
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1, name: "pod1" }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -168,16 +171,13 @@ describe("pod reducer", () => {
           statuses: { 1: DEFAULT_STATUSES },
         },
         {
-          payload: { id: 2, name: "pod2" },
+          payload: newPod,
           type: "CREATE_POD_NOTIFY",
         }
       )
     ).toEqual({
       errors: {},
-      items: [
-        { id: 1, name: "pod1" },
-        { id: 2, name: "pod2" },
-      ],
+      items: [...pods, newPod],
       loaded: false,
       loading: false,
       saved: false,
@@ -188,11 +188,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_START", () => {
+    const pods = [podFactory({ id: 1, name: "pod1" })];
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -211,7 +213,7 @@ describe("pod reducer", () => {
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1 }],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
@@ -222,11 +224,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_SUCCESS", () => {
+    const pods = [podFactory({ id: 1, name: "pod1" })];
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -245,7 +249,7 @@ describe("pod reducer", () => {
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1 }],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
@@ -256,11 +260,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_ERROR", () => {
+    const pods = [podFactory({ id: 1, name: "pod1" })];
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -280,7 +286,7 @@ describe("pod reducer", () => {
       )
     ).toEqual({
       errors: "Pod cannot be deleted",
-      items: [{ id: 1 }],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
@@ -291,11 +297,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_NOTIFY", () => {
+    const pods = [podFactory({ id: 1 }), podFactory({ id: 2 })];
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1 }, { id: 2 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -315,7 +323,7 @@ describe("pod reducer", () => {
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 2 }],
+      items: pods[1],
       loaded: false,
       loading: false,
       saved: false,
@@ -326,11 +334,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce REFRESH_POD_START", () => {
+    const pods = [podFactory({ id: 1, name: "pod1" })];
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -349,7 +359,7 @@ describe("pod reducer", () => {
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1 }],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
@@ -360,11 +370,14 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce REFRESH_POD_SUCCESS", () => {
+    const pods = [podFactory({ id: 1, cpu_speed: 100 })];
+    const updatedPod = podFactory({ id: 1, cpu_speed: 100 });
+
     expect(
       pod(
         {
           errors: {},
-          items: [{ id: 1, cpu_speed: 100 }],
+          items: pods,
           loaded: false,
           loading: false,
           saved: false,
@@ -378,13 +391,13 @@ describe("pod reducer", () => {
               id: 1,
             },
           },
-          payload: { id: 1, cpu_speed: 200 },
+          payload: updatedPod,
           type: "REFRESH_POD_SUCCESS",
         }
       )
     ).toEqual({
       errors: {},
-      items: [{ id: 1, cpu_speed: 200 }],
+      items: [updatedPod],
       loaded: false,
       loading: false,
       saved: false,
