@@ -8,6 +8,7 @@ import type { UserState } from "app/store/user/types";
 import type { ZoneState } from "app/store/zone/types";
 
 export type RootState = {
+  config: TSFixMe;
   controller: ControllerState;
   device: DeviceState;
   dhcpsnippet: TSFixMe;
@@ -23,9 +24,12 @@ export type RootState = {
   scriptresults: TSFixMe;
   scripts: TSFixMe;
   service: TSFixMe;
+  sshkey: TSFixMe;
+  sslkey: TSFixMe;
   status: TSFixMe;
   subnet: TSFixMe;
   tag: TSFixMe;
+  token: TSFixMe;
   user: UserState;
   zone: ZoneState;
 };

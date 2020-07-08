@@ -2,7 +2,7 @@ import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
 } from "testing/factories";
-import sslkey from "./sslkey";
+import sslkey from "./selectors";
 
 describe("sslkey selectors", () => {
   describe("all", () => {
@@ -19,7 +19,7 @@ describe("sslkey selectors", () => {
 
   describe("loading", () => {
     it("returns sslkey loading state", () => {
-      const state = {
+      const state: TSFixMe = {
         sslkey: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("sslkey selectors", () => {
 
   describe("loaded", () => {
     it("returns sslkey loaded state", () => {
-      const state = {
+      const state: TSFixMe = {
         sslkey: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("sslkey selectors", () => {
 
   describe("errors", () => {
     it("returns sslkey error state", () => {
-      const state = {
+      const state: TSFixMe = {
         sslkey: {
           errors: "Unable to list SSL keys.",
           loading: false,
@@ -59,7 +59,7 @@ describe("sslkey selectors", () => {
 
   describe("saving", () => {
     it("returns sslkey saving state", () => {
-      const state = {
+      const state: TSFixMe = {
         sslkey: {
           saving: false,
           items: [],
@@ -71,7 +71,7 @@ describe("sslkey selectors", () => {
 
   describe("saved", () => {
     it("returns sslkey saved state", () => {
-      const state = {
+      const state: TSFixMe = {
         sslkey: {
           saved: true,
           items: [],

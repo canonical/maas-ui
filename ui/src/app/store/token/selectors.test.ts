@@ -2,7 +2,7 @@ import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
 } from "testing/factories";
-import token from "./token";
+import token from "./selectors";
 
 describe("token selectors", () => {
   describe("all", () => {
@@ -19,7 +19,7 @@ describe("token selectors", () => {
 
   describe("loading", () => {
     it("returns token loading state", () => {
-      const state = {
+      const state: TSFixMe = {
         token: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("token selectors", () => {
 
   describe("loaded", () => {
     it("returns token loaded state", () => {
-      const state = {
+      const state: TSFixMe = {
         token: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("token selectors", () => {
 
   describe("errors", () => {
     it("returns token error state", () => {
-      const state = {
+      const state: TSFixMe = {
         token: {
           errors: "Unable to list SSH keys.",
           loading: false,
@@ -59,7 +59,7 @@ describe("token selectors", () => {
 
   describe("saving", () => {
     it("returns token saving state", () => {
-      const state = {
+      const state: TSFixMe = {
         token: {
           saving: false,
           items: [],
@@ -71,7 +71,7 @@ describe("token selectors", () => {
 
   describe("saved", () => {
     it("returns token saved state", () => {
-      const state = {
+      const state: TSFixMe = {
         token: {
           saved: true,
           items: [],

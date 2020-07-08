@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import React from "react";
 
 import { sslkey as sslkeyActions } from "app/preferences/actions";
-import { sslkey as sslkeySelectors } from "app/preferences/selectors";
+import sslkeySelectors from "app/store/sslkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";

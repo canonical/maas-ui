@@ -5,7 +5,7 @@ import { useFormikContext } from "formik";
 import * as Yup from "yup";
 
 import { sendAnalyticsEvent } from "analytics";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
 import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";

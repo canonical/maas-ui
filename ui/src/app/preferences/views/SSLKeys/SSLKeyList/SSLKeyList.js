@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
 import { sslkey as sslkeyActions } from "app/preferences/actions";
-import { sslkey as sslkeySelectors } from "app/preferences/selectors";
+import sslkeySelectors from "app/store/sslkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";

@@ -14,7 +14,7 @@ import { getCookie } from "app/utils";
 import generalSelectors from "app/store/general/selectors";
 import authSelectors from "app/store/auth/selectors";
 import { config as configActions } from "app/settings/actions";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import status from "app/store/status/selectors";
 import { status as statusActions } from "app/base/actions";

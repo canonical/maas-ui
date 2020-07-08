@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-const config = {};
+import type { RootState } from "app/store/root/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns value of an object in an array, given a certain name.
@@ -8,8 +9,8 @@ const config = {};
  * @param {String} name - Name paramenter of the object to search for.
  * @returns {*} Value parameter of found object.
  */
-const getValueFromName = (arr, name) => {
-  const found = arr.find((item) => item.name === name);
+const getValueFromName = (arr: TSFixMe, name: TSFixMe): TSFixMe => {
+  const found = arr.find((item: TSFixMe) => item.name === name);
   if (found) {
     return found.value;
   }
@@ -22,10 +23,10 @@ const getValueFromName = (arr, name) => {
  * @param {String} name - Name paramenter of the object to search for.
  * @returns {Array.<Object>} Available choices.
  */
-const getOptionsFromName = (arr, name) => {
-  const found = arr.find((item) => item.name === name);
+const getOptionsFromName = (arr: TSFixMe, name: TSFixMe): TSFixMe => {
+  const found = arr.find((item: TSFixMe) => item.name === name);
   if (found && found.choices) {
-    return found.choices.map((choice) => ({
+    return found.choices.map((choice: TSFixMe) => ({
       value: choice[0],
       label: choice[1],
     }));
@@ -38,42 +39,42 @@ const getOptionsFromName = (arr, name) => {
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.config.items.
  */
-config.all = (state) => state.config.items;
+const all = (state: RootState): TSFixMe => state.config.items;
 
 /**
  * Returns true if config is loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Config is loading.
  */
-config.loading = (state) => state.config.loading;
+const loading = (state: RootState): boolean => state.config.loading;
 
 /**
  * Returns true if config has been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Config has loaded.
  */
-config.loaded = (state) => state.config.loaded;
+const loaded = (state: RootState): boolean => state.config.loaded;
 
 /**
  * Returns true if config is saving.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Config is saving.
  */
-config.saving = (state) => state.config.saving;
+const saving = (state: RootState): boolean => state.config.saving;
 
 /**
  * Returns true if config has saved.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Config has saved.
  */
-config.saved = (state) => state.config.saved;
+const saved = (state: RootState): boolean => state.config.saved;
 
 /**
  * Returns the MAAS config for default storage layout.
  * @param {Object} state - The redux state.
  * @returns {String} Default storage layout.
  */
-config.defaultStorageLayout = createSelector([config.all], (configs) =>
+const defaultStorageLayout = createSelector([all], (configs) =>
   getValueFromName(configs, "default_storage_layout")
 );
 
@@ -82,7 +83,7 @@ config.defaultStorageLayout = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} Storage layout options.
  */
-config.storageLayoutOptions = createSelector([config.all], (configs) =>
+const storageLayoutOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "default_storage_layout")
 );
 
@@ -91,7 +92,7 @@ config.storageLayoutOptions = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing on release.
  */
-config.enableDiskErasing = createSelector([config.all], (configs) =>
+const enableDiskErasing = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_disk_erasing_on_release")
 );
 
@@ -100,7 +101,7 @@ config.enableDiskErasing = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing with secure erase.
  */
-config.diskEraseWithSecure = createSelector([config.all], (configs) =>
+const diskEraseWithSecure = createSelector([all], (configs) =>
   getValueFromName(configs, "disk_erase_with_secure_erase")
 );
 
@@ -109,7 +110,7 @@ config.diskEraseWithSecure = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable disk erasing with quick erase.
  */
-config.diskEraseWithQuick = createSelector([config.all], (configs) =>
+const diskEraseWithQuick = createSelector([all], (configs) =>
   getValueFromName(configs, "disk_erase_with_quick_erase")
 );
 
@@ -118,7 +119,7 @@ config.diskEraseWithQuick = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} HTTP proxy.
  */
-config.httpProxy = createSelector([config.all], (configs) =>
+const httpProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "http_proxy")
 );
 
@@ -127,7 +128,7 @@ config.httpProxy = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable HTTP proxy.
  */
-config.enableHttpProxy = createSelector([config.all], (configs) =>
+const enableHttpProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_http_proxy")
 );
 
@@ -136,7 +137,7 @@ config.enableHttpProxy = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Use peer proxy.
  */
-config.usePeerProxy = createSelector([config.all], (configs) =>
+const usePeerProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "use_peer_proxy")
 );
 
@@ -145,8 +146,8 @@ config.usePeerProxy = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Proxy type.
  */
-config.proxyType = createSelector(
-  [config.httpProxy, config.enableHttpProxy, config.usePeerProxy],
+const proxyType = createSelector(
+  [httpProxy, enableHttpProxy, usePeerProxy],
   (httpProxy, enableHttpProxy, usePeerProxy) => {
     if (enableHttpProxy) {
       if (httpProxy) {
@@ -168,7 +169,7 @@ config.proxyType = createSelector(
  * @param {Object} - The redux state.
  * @returns {String} Then MAAS name.
  */
-config.maasName = createSelector([config.all], (configs) =>
+const maasName = createSelector([all], (configs) =>
   getValueFromName(configs, "maas_name")
 );
 
@@ -177,7 +178,7 @@ config.maasName = createSelector([config.all], (configs) =>
  * @param {Object} - The redux state.
  * @returns {String} Then MAAS uuid.
  */
-config.uuid = createSelector([config.all], (configs) =>
+const uuid = createSelector([all], (configs) =>
   getValueFromName(configs, "uuid")
 );
 
@@ -186,7 +187,7 @@ config.uuid = createSelector([config.all], (configs) =>
  * @param {Object} - The redux state.
  * @returns {Boolean} Enable analytics.
  */
-config.analyticsEnabled = createSelector([config.all], (configs) =>
+const analyticsEnabled = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_analytics")
 );
 
@@ -195,7 +196,7 @@ config.analyticsEnabled = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Default distro series.
  */
-config.commissioningDistroSeries = createSelector([config.all], (configs) =>
+const commissioningDistroSeries = createSelector([all], (configs) =>
   getValueFromName(configs, "commissioning_distro_series")
 );
 
@@ -204,7 +205,7 @@ config.commissioningDistroSeries = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} Distro series options.
  */
-config.distroSeriesOptions = createSelector([config.all], (configs) =>
+const distroSeriesOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "commissioning_distro_series")
 );
 
@@ -213,7 +214,7 @@ config.distroSeriesOptions = createSelector([config.all], (configs) =>
  * @param {object} state - The redux state.
  * @returns {String} Default min kernal version.
  */
-config.defaultMinKernelVersion = createSelector([config.all], (configs) =>
+const defaultMinKernelVersion = createSelector([all], (configs) =>
   getValueFromName(configs, "default_min_hwe_kernel")
 );
 
@@ -221,7 +222,7 @@ config.defaultMinKernelVersion = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} DNSSEC validation type.
  */
-config.dnssecValidation = createSelector([config.all], (configs) =>
+const dnssecValidation = createSelector([all], (configs) =>
   getValueFromName(configs, "dnssec_validation")
 );
 
@@ -230,7 +231,7 @@ config.dnssecValidation = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} DNSSEC validation options.
  */
-config.dnssecOptions = createSelector([config.all], (configs) =>
+const dnssecOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "dnssec_validation")
 );
 
@@ -239,7 +240,7 @@ config.dnssecOptions = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} External networks.
  */
-config.dnsTrustedAcl = createSelector([config.all], (configs) =>
+const dnsTrustedAcl = createSelector([all], (configs) =>
   getValueFromName(configs, "dns_trusted_acl")
 );
 
@@ -248,7 +249,7 @@ config.dnsTrustedAcl = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Upstream DNS(s).
  */
-config.upstreamDns = createSelector([config.all], (configs) =>
+const upstreamDns = createSelector([all], (configs) =>
   getValueFromName(configs, "upstream_dns")
 );
 
@@ -257,7 +258,7 @@ config.upstreamDns = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} NTP server(s).
  */
-config.ntpServers = createSelector([config.all], (configs) =>
+const ntpServers = createSelector([all], (configs) =>
   getValueFromName(configs, "ntp_servers")
 );
 
@@ -266,7 +267,7 @@ config.ntpServers = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Enable external NTP servers only.
  */
-config.ntpExternalOnly = createSelector([config.all], (configs) =>
+const ntpExternalOnly = createSelector([all], (configs) =>
   getValueFromName(configs, "ntp_external_only")
 );
 
@@ -275,7 +276,7 @@ config.ntpExternalOnly = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Remote syslog server.
  */
-config.remoteSyslog = createSelector([config.all], (configs) =>
+const remoteSyslog = createSelector([all], (configs) =>
   getValueFromName(configs, "remote_syslog")
 );
 
@@ -284,7 +285,7 @@ config.remoteSyslog = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Enable network discovery.
  */
-config.networkDiscovery = createSelector([config.all], (configs) =>
+const networkDiscovery = createSelector([all], (configs) =>
   getValueFromName(configs, "network_discovery")
 );
 
@@ -293,7 +294,7 @@ config.networkDiscovery = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} Network discovery options.
  */
-config.networkDiscoveryOptions = createSelector([config.all], (configs) =>
+const networkDiscoveryOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "network_discovery")
 );
 
@@ -302,7 +303,7 @@ config.networkDiscoveryOptions = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Number} Active discovery interval in ms.
  */
-config.activeDiscoveryInterval = createSelector([config.all], (configs) =>
+const activeDiscoveryInterval = createSelector([all], (configs) =>
   getValueFromName(configs, "active_discovery_interval")
 );
 
@@ -311,7 +312,7 @@ config.activeDiscoveryInterval = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} Active discovery intervals.
  */
-config.discoveryIntervalOptions = createSelector([config.all], (configs) =>
+const discoveryIntervalOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "active_discovery_interval")
 );
 
@@ -320,7 +321,7 @@ config.discoveryIntervalOptions = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Kernel parameters.
  */
-config.kernelParams = createSelector([config.all], (configs) =>
+const kernelParams = createSelector([all], (configs) =>
   getValueFromName(configs, "kernel_opts")
 );
 
@@ -329,7 +330,7 @@ config.kernelParams = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Windows KMS host.
  */
-config.windowsKmsHost = createSelector([config.all], (configs) =>
+const windowsKmsHost = createSelector([all], (configs) =>
   getValueFromName(configs, "windows_kms_host")
 );
 
@@ -338,7 +339,7 @@ config.windowsKmsHost = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter server.
  */
-config.vCenterServer = createSelector([config.all], (configs) =>
+const vCenterServer = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_server")
 );
 
@@ -347,7 +348,7 @@ config.vCenterServer = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter username.
  */
-config.vCenterUsername = createSelector([config.all], (configs) =>
+const vCenterUsername = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_username")
 );
 
@@ -356,7 +357,7 @@ config.vCenterUsername = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter password.
  */
-config.vCenterPassword = createSelector([config.all], (configs) =>
+const vCenterPassword = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_password")
 );
 
@@ -365,7 +366,7 @@ config.vCenterPassword = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} - vCenter datacenter.
  */
-config.vCenterDatacenter = createSelector([config.all], (configs) =>
+const vCenterDatacenter = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_datacenter")
 );
 
@@ -374,7 +375,7 @@ config.vCenterDatacenter = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state
  * @returns {Boolean} - The value of enable_third_party_drivers
  */
-config.thirdPartyDriversEnabled = createSelector([config.all], (configs) =>
+const thirdPartyDriversEnabled = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_third_party_drivers")
 );
 
@@ -383,7 +384,7 @@ config.thirdPartyDriversEnabled = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Default OS.
  */
-config.defaultOSystem = createSelector([config.all], (configs) =>
+const defaultOSystem = createSelector([all], (configs) =>
   getValueFromName(configs, "default_osystem")
 );
 
@@ -392,7 +393,7 @@ config.defaultOSystem = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Array} Default OS options.
  */
-config.defaultOSystemOptions = createSelector([config.all], (configs) =>
+const defaultOSystemOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "default_osystem")
 );
 
@@ -401,7 +402,7 @@ config.defaultOSystemOptions = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {String} Default distro series.
  */
-config.defaultDistroSeries = createSelector([config.all], (configs) =>
+const defaultDistroSeries = createSelector([all], (configs) =>
   getValueFromName(configs, "default_distro_series")
 );
 
@@ -410,8 +411,53 @@ config.defaultDistroSeries = createSelector([config.all], (configs) =>
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether the intro has been completed
  */
-config.completedIntro = createSelector([config.all], (configs) =>
+const completedIntro = createSelector([all], (configs) =>
   getValueFromName(configs, "completed_intro")
 );
+
+const config = {
+  activeDiscoveryInterval,
+  all,
+  analyticsEnabled,
+  commissioningDistroSeries,
+  completedIntro,
+  defaultDistroSeries,
+  defaultMinKernelVersion,
+  defaultOSystem,
+  defaultOSystemOptions,
+  defaultStorageLayout,
+  discoveryIntervalOptions,
+  diskEraseWithQuick,
+  diskEraseWithSecure,
+  distroSeriesOptions,
+  dnssecOptions,
+  dnssecValidation,
+  dnsTrustedAcl,
+  enableDiskErasing,
+  enableHttpProxy,
+  httpProxy,
+  kernelParams,
+  loaded,
+  loading,
+  maasName,
+  networkDiscovery,
+  networkDiscoveryOptions,
+  ntpExternalOnly,
+  ntpServers,
+  proxyType,
+  remoteSyslog,
+  saved,
+  saving,
+  storageLayoutOptions,
+  thirdPartyDriversEnabled,
+  upstreamDns,
+  usePeerProxy,
+  uuid,
+  vCenterDatacenter,
+  vCenterPassword,
+  vCenterServer,
+  vCenterUsername,
+  windowsKmsHost,
+};
 
 export default config;

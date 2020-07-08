@@ -2,7 +2,7 @@ import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
 } from "testing/factories";
-import sshkey from "./sshkey";
+import sshkey from "./selectors";
 
 describe("sshkey selectors", () => {
   describe("all", () => {
@@ -19,7 +19,7 @@ describe("sshkey selectors", () => {
 
   describe("loading", () => {
     it("returns sshkey loading state", () => {
-      const state = {
+      const state: TSFixMe = {
         sshkey: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("sshkey selectors", () => {
 
   describe("loaded", () => {
     it("returns sshkey loaded state", () => {
-      const state = {
+      const state: TSFixMe = {
         sshkey: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("sshkey selectors", () => {
 
   describe("errors", () => {
     it("returns sshkey error state", () => {
-      const state = {
+      const state: TSFixMe = {
         sshkey: {
           errors: "Unable to list SSH keys.",
           loading: false,
@@ -59,7 +59,7 @@ describe("sshkey selectors", () => {
 
   describe("saving", () => {
     it("returns sshkey saving state", () => {
-      const state = {
+      const state: TSFixMe = {
         sshkey: {
           saving: false,
           items: [],
@@ -71,7 +71,7 @@ describe("sshkey selectors", () => {
 
   describe("saved", () => {
     it("returns sshkey saved state", () => {
-      const state = {
+      const state: TSFixMe = {
         sshkey: {
           saved: true,
           items: [],

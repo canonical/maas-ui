@@ -4,7 +4,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import authSelectors from "app/store/auth/selectors";
 import generalSelectors from "app/store/general/selectors";
 import { DeployFormValues } from "../DeployForm";

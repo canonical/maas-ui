@@ -3,7 +3,7 @@ import React from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import { sendAnalyticsEvent } from "analytics";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
