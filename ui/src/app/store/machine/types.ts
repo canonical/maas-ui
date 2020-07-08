@@ -43,7 +43,7 @@ export type Machine = BaseNode & {
   storage: number;
   subnets: string[];
   testing_status: TestStatus;
-  vlan: Vlan;
+  vlan: Vlan | null;
   zone: ModelRef;
 };
 

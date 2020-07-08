@@ -327,7 +327,7 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ]
-  }`
+  }`,
 };
 
 exports[`no TSFixMe types`] = {
@@ -355,7 +355,7 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [13, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:90613066": [
+    "src/app/store/machine/types.ts:730274029": [
       [2, 13, 8, "RegExp match", "1152173309"],
       [50, 9, 8, "RegExp match", "1152173309"]
     ],
@@ -381,9 +381,9 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [14, 9, 8, "RegExp match", "1152173309"]
     ]
-  }`
+  }`,
 };
 
 exports[`migrate js files to ts`] = {
-  value: `674`
+  value: `677`,
 };
