@@ -1,18 +1,11 @@
-import { define, extend, random, sequence } from "cooky-cutter";
+import { define, extend, random } from "cooky-cutter";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
-import type { Model, ModelRef } from "app/store/types/model";
+import type { Model } from "app/store/types/model";
+import { model, modelRef } from "./model";
 import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
-
-const model = define<Model>({
-  id: sequence,
-});
-
-const modelRef = extend<Model, ModelRef>(model, {
-  name: `modelref-${random}`,
-});
 
 const testStatus = define<TestStatus>({
   status: 0,
