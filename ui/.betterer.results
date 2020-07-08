@@ -323,6 +323,9 @@ exports[`stricter compilation`] = {
       [90, 2, 3, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | AttributeFunction<ModelRef | undefined> | Factory<ModelRef | undefined> | DerivedFunction<...> | undefined\'.", "193426238"],
       [101, 2, 4, "Type \'null\' is not assignable to type \'Vlan | ArrayFactory<never> | AttributeFunction<Vlan> | Factory<Vlan> | DerivedFunction<Machine, Vlan>\'.", "2088175728"],
       [102, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | Factory<ModelRef> | AttributeFunction<ModelRef> | DerivedFunction<Machine, ModelRef>\'.", "2088575771"]
+    ],
+    "src/testing/factories/notification.ts:2660496186": [
+      [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ]
   }`
 };
@@ -355,6 +358,10 @@ exports[`no TSFixMe types`] = {
     "src/app/store/machine/types.ts:90613066": [
       [2, 13, 8, "RegExp match", "1152173309"],
       [50, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/notification/types.ts:910911970": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/pod/types.ts:3311872753": [
       [0, 13, 8, "RegExp match", "1152173309"],

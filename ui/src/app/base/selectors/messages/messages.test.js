@@ -1,22 +1,19 @@
+import { messageState as messageStateFactory } from "testing/factories";
 import messages from "./messages";
 
 describe("messages", () => {
   it("can get all messages", () => {
     const state = {
-      messages: {
+      messages: messageStateFactory({
         items: [
           {
-            id: 1,
             message: "User added",
           },
         ],
-      },
+      }),
     };
-    expect(messages.all(state)).toStrictEqual([
-      {
-        id: 1,
-        message: "User added",
-      },
-    ]);
+    const items = messages.all(state);
+    expect(items.length).toEqual(1);
+    expect(items[0].message).toEqual("User added");
   });
 });
