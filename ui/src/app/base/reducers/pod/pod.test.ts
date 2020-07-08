@@ -1,5 +1,8 @@
 import { buildArray } from "testing/factories";
-import { pod as podFactory } from "testing/factories";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+} from "testing/factories";
 import pod, { DEFAULT_STATUSES } from "./pod";
 
 describe("pod reducer", () => {
@@ -157,24 +160,13 @@ describe("pod reducer", () => {
   it("should correctly reduce CREATE_POD_NOTIFY", () => {
     const pods = [podFactory({ id: 1, name: "pod1" })];
     const newPod = podFactory({ id: 2, name: "pod2" });
+    const podState = podStateFactory({ items: pods });
 
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: DEFAULT_STATUSES },
-        },
-        {
-          payload: newPod,
-          type: "CREATE_POD_NOTIFY",
-        }
-      )
+      pod(podState, {
+        payload: newPod,
+        type: "CREATE_POD_NOTIFY",
+      })
     ).toEqual({
       errors: {},
       items: [...pods, newPod],
@@ -188,29 +180,16 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_START", () => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
-
+    const podState = podStateFactory({ items: { name: "pod1" } });
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { deleting: false } },
-        },
-        {
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
           },
-          type: "DELETE_POD_START",
-        }
-      )
+        },
+        type: "DELETE_POD_START",
+      })
     ).toEqual({
       errors: {},
       items: pods,
