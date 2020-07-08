@@ -1,3 +1,3 @@
 export { device, machine, controller } from "./nodes";
-export { authState, notificationState, userState } from "./state";
+export { authState, messageState, notificationState, userState } from "./state";
 export { user } from "./user";
