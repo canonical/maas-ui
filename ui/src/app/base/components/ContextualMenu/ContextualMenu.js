@@ -124,6 +124,7 @@ ContextualMenu.propTypes = {
   position: PropTypes.oneOf(["left", "center", "right"]),
   toggleAppearance: PropTypes.string,
   toggleClassName: PropTypes.string,
+  toggleDisabled: PropTypes.bool,
   toggleLabel: PropTypes.string,
   toggleLabelFirst: PropTypes.bool,
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
@@ -11,9 +12,11 @@ type Props = {
 
 const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const errors = useSelector(podSelectors.errors);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
   const deletingSelected = useSelector(podSelectors.deletingSelected);
+  const podsToDelete = id ? [Number(id)] : selectedPodIDs;
 
   return (
     <ActionForm
@@ -23,12 +26,12 @@ const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
       errors={errors}
       modelName="KVM"
       onSubmit={() => {
-        selectedPodIDs.forEach((podID) => {
+        podsToDelete.forEach((podID) => {
           dispatch(podActions.delete(podID));
         });
       }}
       processingCount={deletingSelected.length}
-      selectedCount={selectedPodIDs.length}
+      selectedCount={podsToDelete.length}
       submitAppearance="negative"
     />
   );
