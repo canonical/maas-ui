@@ -1,10 +1,10 @@
 import user from "./user";
-import { userState } from "testing/factories";
+import { userState as userStateFactory } from "testing/factories";
 
 describe("users selectors", () => {
   it("can get items", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         items: [
           {
             username: "default",
@@ -19,7 +19,7 @@ describe("users selectors", () => {
 
   it("can get the loading state", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         loading: true,
       }),
     };
@@ -28,7 +28,7 @@ describe("users selectors", () => {
 
   it("can get the loaded state", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         loaded: true,
       }),
     };
@@ -37,7 +37,7 @@ describe("users selectors", () => {
 
   it("can get the saving state", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         saving: true,
       }),
     };
@@ -46,7 +46,7 @@ describe("users selectors", () => {
 
   it("can get the saved state", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         saved: true,
       }),
     };
@@ -55,7 +55,7 @@ describe("users selectors", () => {
 
   it("can get the count", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         items: [{ username: "foo" }, { username: "bar" }],
       }),
     };
@@ -64,7 +64,7 @@ describe("users selectors", () => {
 
   it("can get a user by id", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         items: [
           { username: "foo", id: 808 },
           { username: "bar", id: 909 },
@@ -79,7 +79,7 @@ describe("users selectors", () => {
 
   it("can search items", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         items: [
           {
             username: "admin",
@@ -128,7 +128,7 @@ describe("users selectors", () => {
 
   it("can get user errors", () => {
     const state = {
-      user: userState({
+      user: userStateFactory({
         errors: { username: "Username already exists" },
       }),
     };
