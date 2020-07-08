@@ -29,13 +29,13 @@ exports[`stricter compilation`] = {
       [123, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/FormikField/FormikField.tsx:1946634864": [
-      [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
+      [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/base/components/FormikForm/FormikForm.tsx:4136491328": [
       [70, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/SectionHeader/SectionHeader.tsx:1828886231": [
-      [0, 34, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 34, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [60, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
     ],
     "src/app/base/reducers/pod/pod.test.ts:1336984638": [
@@ -67,18 +67,18 @@ exports[`stricter compilation`] = {
       [76, 24, 5, "Parameter \'props\' implicitly has an \'any\' type.", "187023499"]
     ],
     "src/app/kvm/views/KVMDetails/KVMDetails.tsx:1424820812": [
-      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
+      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1453319310": [
-      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [3, 21, 5, "Could not find a declaration file for module \'yup\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
+      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [3, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [129, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.tsx:4073178480": [
-      [0, 33, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
+      [0, 33, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMActionFormWrapper/DeleteForm/DeleteForm.tsx:4285699560": [
       [21, 51, 4, "Argument of type \'null\' is not assignable to parameter of type \'string\'.", "2087897566"]
@@ -111,7 +111,7 @@ exports[`stricter compilation`] = {
       [108, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:426034803": [
-      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [39, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'SetStateAction<string>\'.", "2087897566"],
       [45, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [65, 6, 11, "Type \'\\"\\" | Element\' is not assignable to type \'Element | undefined\'.\\n  Type \'\\"\\"\' is not assignable to type \'Element | undefined\'.", "3453098368"]
@@ -145,7 +145,7 @@ exports[`stricter compilation`] = {
       [418, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:4176304522": [
-      [0, 43, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 43, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [67, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"],
       [101, 57, 16, "Property \'getAllOsReleases\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "3763145524"],
       [116, 24, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
@@ -156,7 +156,7 @@ exports[`stricter compilation`] = {
       [41, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.tsx:3688026520": [
-      [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [31, 23, 3, "Object is possibly \'undefined\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.test.tsx:2642544460": [
@@ -231,7 +231,7 @@ exports[`stricter compilation`] = {
       [131, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.tsx:3217432980": [
-      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [72, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
       [82, 29, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'(action?: MachineAction | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | undefined\' is not assignable to type \'MachineAction\'.\\n      Type \'undefined\' is not assignable to type \'MachineAction\'.", "167402512"],
       [105, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "1699375473"],
@@ -250,7 +250,7 @@ exports[`stricter compilation`] = {
       [251, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:3049974690": [
-      [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
+      [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
       [46, 21, 17, "Property \'deployingSelected\' does not exist on type \'typeof machine\'.", "3830099655"],
       [60, 51, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction | undefined\'.", "2087897566"],
       [69, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
@@ -266,7 +266,7 @@ exports[`stricter compilation`] = {
       [282, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/DeployFormFields.tsx:1262012646": [
-      [0, 39, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 39, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [25, 28, 16, "Property \'getAllOsReleases\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "3763145524"],
       [27, 25, 17, "Object is of type \'unknown\'.", "4281571837"],
       [29, 28, 22, "Property \'getUbuntuKernelOptions\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "321954485"],
@@ -279,7 +279,7 @@ exports[`stricter compilation`] = {
       [150, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:4246555145": [
-      [0, 34, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 34, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [19, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
       [21, 4, 16, "Object is possibly \'null\'.", "4019370437"],
       [26, 20, 23, "Argument of type \'\\"Reading file aborted.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2851093748"],
@@ -310,7 +310,7 @@ exports[`stricter compilation`] = {
       [53, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:2932673855": [
-      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [82, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
       [126, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"]
     ],
@@ -323,13 +323,13 @@ exports[`stricter compilation`] = {
     "src/app/utils/someNotAll.ts:3892711037": [
       [7, 2, 71, "Type \'boolean | 0\' is not assignable to type \'boolean\'.\\n  Type \'0\' is not assignable to type \'boolean\'.", "1467649629"]
     ],
-    "src/testing/factories/nodes.ts:1289488080": [
-      [56, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string | undefined> | Factory<string | undefined> | DerivedFunction<Device, string | undefined> | undefined\'.", "1898500505"],
-      [60, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | Factory<ModelRef> | AttributeFunction<ModelRef> | DerivedFunction<Device, ModelRef>\'.", "2088575771"],
-      [77, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | AttributeFunction<ModelRef | undefined> | Factory<ModelRef | undefined> | DerivedFunction<...> | undefined\'.", "2088098233"],
-      [97, 2, 3, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | AttributeFunction<ModelRef | undefined> | Factory<ModelRef | undefined> | DerivedFunction<...> | undefined\'.", "193426238"],
-      [108, 2, 4, "Type \'null\' is not assignable to type \'Vlan | ArrayFactory<never> | AttributeFunction<Vlan> | Factory<Vlan> | DerivedFunction<Machine, Vlan>\'.", "2088175728"],
-      [109, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | Factory<ModelRef> | AttributeFunction<ModelRef> | DerivedFunction<Machine, ModelRef>\'.", "2088575771"]
+    "src/testing/factories/nodes.ts:3655359170": [
+      [49, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string | undefined> | Factory<string | undefined> | DerivedFunction<Device, string | undefined> | undefined\'.", "1898500505"],
+      [53, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | Factory<ModelRef> | AttributeFunction<ModelRef> | DerivedFunction<Device, ModelRef>\'.", "2088575771"],
+      [70, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | AttributeFunction<ModelRef | undefined> | Factory<ModelRef | undefined> | DerivedFunction<...> | undefined\'.", "2088098233"],
+      [90, 2, 3, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | AttributeFunction<ModelRef | undefined> | Factory<ModelRef | undefined> | DerivedFunction<...> | undefined\'.", "193426238"],
+      [101, 2, 4, "Type \'null\' is not assignable to type \'Vlan | ArrayFactory<never> | AttributeFunction<Vlan> | Factory<Vlan> | DerivedFunction<Machine, Vlan>\'.", "2088175728"],
+      [102, 2, 4, "Type \'null\' is not assignable to type \'ModelRef | ArrayFactory<never> | Factory<ModelRef> | AttributeFunction<ModelRef> | DerivedFunction<Machine, ModelRef>\'.", "2088575771"]
     ]
   }`
 };
@@ -385,5 +385,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `676`
+  value: `674`
 };
