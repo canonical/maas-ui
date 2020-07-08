@@ -7,10 +7,10 @@ import { pod as podSelectors } from "app/base/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
 type Props = {
-  setSelectedAction: (action: string) => void;
+  setSelectedAction: (action: string | null) => void;
 };
 
-const RefreshForm = ({ setSelectedAction }: Props): JSX.Element => {
+const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const errors = useSelector(podSelectors.errors);

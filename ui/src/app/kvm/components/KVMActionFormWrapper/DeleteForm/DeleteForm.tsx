@@ -7,7 +7,7 @@ import { pod as podSelectors } from "app/base/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
 type Props = {
-  setSelectedAction: (action: string) => void;
+  setSelectedAction: (action: string | null) => void;
 };
 
 const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {

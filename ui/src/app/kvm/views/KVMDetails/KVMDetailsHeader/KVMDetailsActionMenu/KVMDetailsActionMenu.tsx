@@ -2,7 +2,7 @@ import React from "react";
 
 import ContextualMenu from "app/base/components/ContextualMenu";
 
-type Props = { setSelectedAction: (action: string) => void };
+type Props = { setSelectedAction: (action: string | null) => void };
 
 const KVMDetailsActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   return (

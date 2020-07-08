@@ -18,7 +18,7 @@ const KVMDetailsHeader = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
-  const [selectedAction, setSelectedAction] = useState("");
+  const [selectedAction, setSelectedAction] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -44,12 +44,13 @@ const KVMDetailsHeader = (): JSX.Element => {
           : undefined
       }
       formWrapper={
-        selectedAction && (
+        (selectedAction && (
           <KVMActionFormWrapper
             selectedAction={selectedAction}
             setSelectedAction={setSelectedAction}
           />
-        )
+        )) ||
+        undefined
       }
       loading={!pod}
       subtitle={pluralize(

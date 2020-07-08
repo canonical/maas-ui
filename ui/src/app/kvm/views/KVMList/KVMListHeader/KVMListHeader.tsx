@@ -28,7 +28,7 @@ const KVMListHeader = (): JSX.Element => {
   const pods = useSelector(podSelectors.kvm);
   const podsLoaded = useSelector(podSelectors.loaded);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
-  const [selectedAction, setSelectedAction] = useState("");
+  const [selectedAction, setSelectedAction] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(podActions.fetch());
