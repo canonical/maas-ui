@@ -1,16 +1,39 @@
 # Hacking
 
-- [Development setup](#maas-ui-development-setup)
-- [Running a branch](#running-a-branch)
-- [Setting up or connecting to a MAAS](#maas-deployments)
-- [Creating a Multipass instance](#creating-a-multipass-instance)
-- [Creating a LXD instance](#creating-a-lxd-instance)
-- [Building for production](#building)
-- [Creating a fake windows image](#creating-a-fake-windows-image)
-- [Testing with Cypress](#testing-with-cypress)
-- [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
+- Project conventions
+  - [TypeScript](#Typescript)
+    - [Dealing with problems](#dealing-with-problems)
+    - [Betterer](#betterer)
+- Development setup
+  - [Development setup](#development-setup)
+  - [Running a branch](#running-a-branch)
+  - [Setting up or connecting to a MAAS](#maas-deployments)
+  - [Creating a Multipass instance](#creating-a-multipass-instance)
+  - [Creating a LXD instance](#creating-a-lxd-instance)
+  - [Building a production bundle](#building)
+  - [Creating a fake windows image](#creating-a-fake-windows-image)
+  - [Testing with Cypress](#testing-with-cypress)
+  - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
-# maas-ui development setup
+# Project conventions
+
+## TypeScript
+
+maas-ui is in the process of migrating `ui` to TypeScript. Any new modules in `ui` should be written in [TypeScript](https://www.typescriptlang.org/), however `legacy` is exempt.
+
+If your branch touches an existing js module in `ui`, it should be converted to TypeScript. The maas-ui maintainers are happy to help with any issues you might encounter.
+
+### Dealing with problems
+
+There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
+
+### Betterer
+
+maas-ui uses [betterer](https://github.com/phenomnomnominal/betterer) to assist with our goal of enabling TypeScript's `strict` compile option. Once you are ready to create a PR against maas-ui, please run `yarn betterer`, and make a best effort to correct any TypeScript issues your branch may have introduced. CI will block your PR if you have introduced a `strict` mode regression.
+
+If you are unable to address the compiler errors, you can as a last resort run `yarn betterer --update` to force an update of the betterer snapshot. Please do not do this as a matter of course, but seek help if you are having trouble satisfying the compiler.
+
+# Development setup
 
 **Note: You will need access to a running instance of MAAS in order to run maas-ui.**
 
@@ -454,10 +477,10 @@ Ensure both node (current LTS) and yarn are installed.
 From the root of the MAAS UI project run:
 
 ```shell
-dotrun build-all
+yarn build-all
 ```
 
-Optimised production bundles for both `ui` and `legacy` will be built, and output to `./build`.
+An optimised production bundle will be built, and output to `./build`.
 
 # Creating a fake windows image
 
@@ -522,11 +545,13 @@ Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your W
 If you're testing license keys the format is: `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
 
 # Testing with Cypress
+
 [Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
 
 ## Running headless tests
 
 ### Note
+
 ⚠️ Cypress tests assume that the user `admin` with password `test` exists on the maas server.
 
 To run headless Cypress tests, enter the following command from the root of the project:
