@@ -17,11 +17,9 @@ import type { Machine } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Sort, TSFixMe } from "app/base/types";
-import {
-  general as generalSelectors,
-  pod as podSelectors,
-  resourcepool as poolSelectors,
-} from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
+import podSelectors from "app/store/pod/selectors";
+import poolSelectors from "app/store/resourcepool/selectors";
 import { useTableSort } from "app/base/hooks";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
 import CPUColumn from "./CPUColumn";

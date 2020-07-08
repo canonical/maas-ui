@@ -9,12 +9,10 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  general as generalSelectors,
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
+import podSelectors from "app/store/pod/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import {
   useAddMessage,
   useAllPowerParameters,
@@ -46,7 +44,7 @@ export const AddKVMForm = (): JSX.Element => {
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
   const podErrors = useSelector(podSelectors.errors);
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes: TSFixMe = useSelector(generalSelectors.powerTypes.get);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);

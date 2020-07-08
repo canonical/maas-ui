@@ -8,11 +8,9 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import {
-  domain as domainSelectors,
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import domainSelectors from "app/store/domain/selectors";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import {
   useAddMessage,
   useAllPowerParameters,

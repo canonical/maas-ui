@@ -5,10 +5,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { config as configSelectors } from "app/settings/selectors";
-import {
-  auth as authSelectors,
-  general as generalSelectors,
-} from "app/base/selectors";
+import authSelectors from "app/store/auth/selectors";
+import generalSelectors from "app/store/general/selectors";
 import { DeployFormValues } from "../DeployForm";
 import type { User } from "app/store/user/types";
 import UserDataField from "./UserDataField";

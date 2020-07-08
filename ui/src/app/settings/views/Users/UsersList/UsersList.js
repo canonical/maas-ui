@@ -3,13 +3,11 @@ import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
+import authSelectors from "app/store/auth/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { user as userActions } from "app/base/actions";
-import {
-  user as userSelectors,
-  auth as authSelectors,
-} from "app/base/selectors";
-import { status as statusSelectors } from "app/base/selectors";
+import userSelectors from "app/store/user/selectors";
+import statusSelectors from "app/store/status/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";

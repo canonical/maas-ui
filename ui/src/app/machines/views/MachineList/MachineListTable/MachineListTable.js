@@ -34,7 +34,7 @@ import {
   someInArray,
   someNotAll,
 } from "app/utils";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
 import CoresColumn from "./CoresColumn";

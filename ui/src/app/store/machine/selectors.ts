@@ -101,7 +101,7 @@ ACTIONS.forEach(({ status }) => {
 // Create a selector for selected machines in each machine status.
 ACTIONS.forEach(({ status }) => {
   statusSelectors[`${status}Selected`] = createSelector(
-    [machine[status], selectedIDs],
+    [statusSelectors[status], selectedIDs],
     (machines: Machine[], selectedIDs) =>
       machines.filter(({ system_id }) => selectedIDs.includes(system_id))
   );
@@ -165,21 +165,61 @@ const failedScriptResults = createSelector(
 );
 
 const machine = {
+  aborting: statusSelectors["aborting"],
+  abortingSelected: statusSelectors["abortingSelected"],
+  acquiring: statusSelectors["acquiring"],
+  acquiringSelected: statusSelectors["acquiringSelected"],
   all,
+  checkingPower: statusSelectors["checkingPower"],
+  checkingPowerSelected: statusSelectors["checkingPowerSelected"],
+  commissioning: statusSelectors["commissioning"],
+  commissioningSelected: statusSelectors["commissioningSelected"],
+  deleting: statusSelectors["deleting"],
+  deletingSelected: statusSelectors["deletingSelected"],
+  deploying: statusSelectors["deploying"],
+  deployingSelected: statusSelectors["deployingSelected"],
+  enteringRescueMode: statusSelectors["enteringRescueMode"],
+  enteringRescueModeSelected: statusSelectors["enteringRescueModeSelected"],
   errors,
+  exitingRescueMode: statusSelectors["exitingRescueMode"],
+  exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   failedScriptResults,
   getBySystemId,
   loaded,
   loading,
+  locking: statusSelectors["locking"],
+  lockingSelected: statusSelectors["lockingSelected"],
+  markingBroken: statusSelectors["markingBroken"],
+  markingBrokenSelected: statusSelectors["markingBrokenSelected"],
+  markingFixed: statusSelectors["markingFixed"],
+  markingFixedSelected: statusSelectors["markingFixedSelected"],
+  overridingFailedTesting: statusSelectors["overridingFailedTesting"],
+  overridingFailedTestingSelected:
+    statusSelectors["overridingFailedTestingSelected"],
   processing,
+  releasing: statusSelectors["releasing"],
+  releasingSelected: statusSelectors["releasingSelected"],
   saved,
   saving,
   search,
   selected,
   selectedIDs,
   selectedProcessing,
+  settingPool: statusSelectors["settingPool"],
+  settingPoolSelected: statusSelectors["settingPoolSelected"],
+  settingZone: statusSelectors["settingZone"],
+  settingZoneSelected: statusSelectors["settingZoneSelected"],
   statuses,
-  ...statusSelectors,
+  tagging: statusSelectors["tagging"],
+  taggingSelected: statusSelectors["taggingSelected"],
+  testing: statusSelectors["testing"],
+  testingSelected: statusSelectors["testingSelected"],
+  turningOff: statusSelectors["turningOff"],
+  turningOffSelected: statusSelectors["turningOffSelected"],
+  turningOn: statusSelectors["turningOn"],
+  turningOnSelected: statusSelectors["turningOnSelected"],
+  unlocking: statusSelectors["unlocking"],
+  unlockingSelected: statusSelectors["unlockingSelected"],
 };
 
 export default machine;

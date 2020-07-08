@@ -11,13 +11,11 @@ import {
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";
-import {
-  controller as controllerSelectors,
-  device as deviceSelectors,
-  dhcpsnippet as dhcpsnippetSelectors,
-  machine as machineSelectors,
-  subnet as subnetSelectors,
-} from "app/base/selectors";
+import controllerSelectors from "app/store/controller/selectors";
+import deviceSelectors from "app/store/device/selectors";
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import subnetSelectors from "app/store/subnet/selectors";
 import { useAddMessage } from "app/base/hooks";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";

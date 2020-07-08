@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import React, { useState } from "react";
 
 import { resourcepool as poolActions } from "app/base/actions";
-import { resourcepool as poolSelectors } from "app/base/selectors";
+import poolSelectors from "app/store/resourcepool/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";

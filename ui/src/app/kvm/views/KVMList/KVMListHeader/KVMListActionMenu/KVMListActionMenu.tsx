@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { pod as podSelectors } from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import Tooltip from "app/base/components/Tooltip";
 

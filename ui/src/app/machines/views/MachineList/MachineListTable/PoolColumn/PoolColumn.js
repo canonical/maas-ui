@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 

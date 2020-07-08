@@ -7,10 +7,8 @@ import * as Yup from "yup";
 
 import { generateLegacyURL } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  scriptresults as scriptresultsSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import scriptresultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 

@@ -136,9 +136,6 @@ describe("machine selectors", () => {
         },
       },
     };
-    // TSFixMe: TypeScript doesn't know how to read dynamic exports.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     expect(machine.settingPool(state)).toStrictEqual([{ system_id: 909 }]);
   });
 
@@ -154,9 +151,6 @@ describe("machine selectors", () => {
         },
       },
     };
-    // TSFixMe: TypeScript doesn't know how to read dynamic exports.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     expect(machine.settingPoolSelected(state)).toStrictEqual([
       { system_id: 909 },
     ]);

@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import ContextualMenu from "app/base/components/ContextualMenu";
@@ -67,7 +65,9 @@ type Props = {
 
 export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const actionOptions = useSelector(generalSelectors.machineActions.get);
+  const actionOptions: MachineAction[] = useSelector(
+    generalSelectors.machineActions.get
+  );
   const selectedMachines = useSelector(machineSelectors.selected);
 
   useEffect(() => {

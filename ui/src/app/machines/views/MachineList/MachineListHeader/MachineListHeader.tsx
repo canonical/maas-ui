@@ -14,11 +14,9 @@ import {
   machine as machineActions,
   resourcepool as resourcePoolActions,
 } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-} from "app/base/selectors";
-import type { Machine, MachineState } from "app/store/machine/types";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import ActionFormWrapper from "./ActionFormWrapper";
 import AddHardware from "./AddHardwareMenu";
@@ -27,7 +25,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 
 const getMachineCount = (
   machines: Machine[],
-  selectedMachines: MachineState["selected"],
+  selectedMachines: Machine[],
   setSearchFilter: (filter: string) => void
 ) => {
   const machineCountString = `${machines.length} ${pluralize(

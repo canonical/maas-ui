@@ -1,11 +1,9 @@
 import { useSelector } from "react-redux";
 
-import {
-  controller as controllerSelectors,
-  device as deviceSelectors,
-  machine as machineSelectors,
-  subnet as subnetSelectors,
-} from "app/base/selectors";
+import controllerSelectors from "app/store/controller/selectors";
+import deviceSelectors from "app/store/device/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import subnetSelectors from "app/store/subnet/selectors";
 
 export const useDhcpTarget = (nodeId, subnetId) => {
   const subnetLoading = useSelector(subnetSelectors.loading);

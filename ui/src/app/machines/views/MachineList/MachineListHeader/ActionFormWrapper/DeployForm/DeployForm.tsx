@@ -7,10 +7,8 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import ActionForm from "app/base/components/ActionForm";
@@ -43,7 +41,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
-  const osInfo = useSelector(generalSelectors.osInfo.get);
+  const osInfo: TSFixMe = useSelector(generalSelectors.osInfo.get);
   const deployingSelected: Machine["system_id"][] = useSelector(
     machineSelectors.deployingSelected
   );

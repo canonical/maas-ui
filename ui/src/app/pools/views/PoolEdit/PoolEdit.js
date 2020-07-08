@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { resourcepool as poolSelectors } from "app/base/selectors";
+import poolSelectors from "app/store/resourcepool/selectors";
 import PoolForm from "../PoolForm";
 
 export const PoolEdit = () => {

@@ -2,11 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { capitaliseFirst, getPowerIcon } from "app/utils";
-import {
-  controller as controllerSelectors,
-  machine as machineSelectors,
-  pod as podSelectors,
-} from "app/base/selectors";
+import controllerSelectors from "app/store/controller/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import DoubleRow from "app/base/components/DoubleRow";
 

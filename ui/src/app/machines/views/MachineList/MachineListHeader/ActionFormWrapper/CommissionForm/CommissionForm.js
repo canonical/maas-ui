@@ -7,10 +7,8 @@ import {
   machine as machineActions,
   scripts as scriptActions,
 } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  scripts as scriptSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import scriptSelectors from "app/store/scripts/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import CommissionFormFields from "./CommissionFormFields";
 

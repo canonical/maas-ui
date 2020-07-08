@@ -8,10 +8,8 @@ import {
   general as generalActions,
   packagerepository as repositoryActions,
 } from "app/base/actions";
-import {
-  general as generalSelectors,
-  packagerepository as repositorySelectors,
-} from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
+import repositorySelectors from "app/store/packagerepository/selectors";
 import { getRepoDisplayName } from "../utils";
 import { RepositoryShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";

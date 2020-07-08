@@ -7,10 +7,8 @@ import {
   machine as machineActions,
   resourcepool as resourcePoolActions,
 } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import SetPoolFormFields from "./SetPoolFormFields";
 

@@ -8,11 +8,9 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import AddRSDFormFields from "../AddRSDFormFields";
 import FormCard from "app/base/components/FormCard";

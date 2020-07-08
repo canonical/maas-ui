@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import type { RootState } from "app/store/root/types";
 import { pod as podActions } from "app/base/actions";
-import { pod as podSelectors } from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import Section from "app/base/components/Section";
 import KVMConfiguration from "./KVMConfiguration";

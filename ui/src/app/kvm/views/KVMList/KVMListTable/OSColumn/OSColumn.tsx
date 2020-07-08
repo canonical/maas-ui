@@ -2,12 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { getStatusText } from "app/utils";
-import {
-  controller as controllerSelectors,
-  general as generalSelectors,
-  machine as machineSelectors,
-  pod as podSelectors,
-} from "app/base/selectors";
+import controllerSelectors from "app/store/controller/selectors";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import DoubleRow from "app/base/components/DoubleRow";
 

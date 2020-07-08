@@ -10,13 +10,11 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  domain as domainSelectors,
-  general as generalSelectors,
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import domainSelectors from "app/store/domain/selectors";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import { formatPowerParameters } from "app/utils";
 import {
   useAddMessage,
