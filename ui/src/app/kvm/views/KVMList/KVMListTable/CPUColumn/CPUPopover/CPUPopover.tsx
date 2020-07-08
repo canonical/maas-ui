@@ -3,10 +3,10 @@ import React, { useRef } from "react";
 import usePortal from "react-useportal";
 
 const getPositionStyle = (
-  el: React.MutableRefObject<Element>
+  el: React.MutableRefObject<Element | null>
 ): React.CSSProperties => {
   if (!el || !el.current) {
-    return undefined;
+    return {};
   }
 
   const dimensions = el.current.getBoundingClientRect();

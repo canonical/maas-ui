@@ -6,8 +6,10 @@ import CPUPopover from "./CPUPopover";
 describe("CPUPopover", () => {
   const body = document.querySelector("body");
   const app = document.createElement("div");
-  app.setAttribute("id", "app");
-  body.appendChild(app);
+  if (body && app) {
+    app.setAttribute("id", "app");
+    body.appendChild(app);
+  }
 
   // snapshot tests
   it("renders and matches the snapshot", () => {
