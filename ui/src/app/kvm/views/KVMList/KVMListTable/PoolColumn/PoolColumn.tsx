@@ -11,7 +11,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };
 
-const PoolColumn = ({ id }: Props): JSX.Element => {
+const PoolColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -22,12 +22,15 @@ const PoolColumn = ({ id }: Props): JSX.Element => {
     zoneSelectors.getById(state, pod && pod.zone)
   );
 
-  return (
-    <DoubleRow
-      primary={<span data-test="pod-pool">{pool && pool.name}</span>}
-      secondary={<span data-test="pod-zone">{zone && zone.name}</span>}
-    />
-  );
+  if (pod) {
+    return (
+      <DoubleRow
+        primary={<span data-test="pod-pool">{pool?.name}</span>}
+        secondary={<span data-test="pod-zone">{zone?.name}</span>}
+      />
+    );
+  }
+  return null;
 };
 
 export default PoolColumn;

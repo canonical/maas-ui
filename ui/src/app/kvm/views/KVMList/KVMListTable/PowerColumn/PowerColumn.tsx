@@ -12,7 +12,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };
 
-const PowerColumn = ({ id }: Props): JSX.Element => {
+const PowerColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -21,25 +21,31 @@ const PowerColumn = ({ id }: Props): JSX.Element => {
   );
   const machinesLoading = useSelector(machineSelectors.loading);
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const loading =
-    pod.host && !hostDetails && (machinesLoading || controllersLoading);
 
-  const iconClass = getPowerIcon(hostDetails, loading);
+  if (pod) {
+    const loading =
+      Boolean(pod.host) &&
+      !hostDetails &&
+      (machinesLoading || controllersLoading);
 
-  let powerText = "Unknown";
-  if (hostDetails && "power_state" in hostDetails) {
-    powerText = capitaliseFirst(hostDetails.power_state);
-  } else if (loading) {
-    powerText = "";
+    const iconClass = getPowerIcon(hostDetails, loading);
+
+    let powerText = "Unknown";
+    if (hostDetails && "power_state" in hostDetails) {
+      powerText = capitaliseFirst(hostDetails.power_state);
+    } else if (loading) {
+      powerText = "";
+    }
+
+    return (
+      <DoubleRow
+        icon={<i className={iconClass}></i>}
+        iconSpace
+        primary={<span data-test="pod-power">{powerText}</span>}
+      />
+    );
   }
-
-  return (
-    <DoubleRow
-      icon={<i className={iconClass}></i>}
-      iconSpace
-      primary={<span data-test="pod-power">{powerText}</span>}
-    />
-  );
+  return null;
 };
 
 export default PowerColumn;

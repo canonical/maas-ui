@@ -61,7 +61,7 @@ describe("Meter", () => {
 
   it("can be given a custom empty colour", () => {
     const wrapper = shallow(<Meter data={[]} emptyColor="#ABC" />);
-    expect(wrapper.find(".p-meter__bar").props().style.backgroundColor).toBe(
+    expect(wrapper.find(".p-meter__bar").props().style?.backgroundColor).toBe(
       "#ABC"
     );
   });
@@ -77,13 +77,13 @@ describe("Meter", () => {
       />
     );
     expect(
-      wrapper.find(".p-meter__filled").at(0).props().style.backgroundColor
+      wrapper.find(".p-meter__filled").at(0).props().style?.backgroundColor
     ).toBe("#AAA");
     expect(
-      wrapper.find(".p-meter__filled").at(1).props().style.backgroundColor
+      wrapper.find(".p-meter__filled").at(1).props().style?.backgroundColor
     ).toBe("#BBB");
     expect(
-      wrapper.find(".p-meter__filled").at(2).props().style.backgroundColor
+      wrapper.find(".p-meter__filled").at(2).props().style?.backgroundColor
     ).toBe("#CCC");
   });
 
@@ -95,9 +95,9 @@ describe("Meter", () => {
         overColor="#DEF"
       />
     );
-    expect(wrapper.find(".p-meter__filled").props().style.backgroundColor).toBe(
-      "#DEF"
-    );
+    expect(
+      wrapper.find(".p-meter__filled").props().style?.backgroundColor
+    ).toBe("#DEF");
   });
 
   it("correctly calculates datum widths", () => {
@@ -111,16 +111,16 @@ describe("Meter", () => {
         ]}
       />
     );
-    expect(wrapper.find(".p-meter__filled").at(0).props().style.width).toBe(
+    expect(wrapper.find(".p-meter__filled").at(0).props().style?.width).toBe(
       "10%"
     );
-    expect(wrapper.find(".p-meter__filled").at(1).props().style.width).toBe(
+    expect(wrapper.find(".p-meter__filled").at(1).props().style?.width).toBe(
       "20%"
     );
-    expect(wrapper.find(".p-meter__filled").at(2).props().style.width).toBe(
+    expect(wrapper.find(".p-meter__filled").at(2).props().style?.width).toBe(
       "30%"
     );
-    expect(wrapper.find(".p-meter__filled").at(3).props().style.width).toBe(
+    expect(wrapper.find(".p-meter__filled").at(3).props().style?.width).toBe(
       "40%"
     );
   });
@@ -136,16 +136,16 @@ describe("Meter", () => {
         ]}
       />
     );
-    expect(wrapper.find(".p-meter__filled").at(0).props().style.left).toBe(
+    expect(wrapper.find(".p-meter__filled").at(0).props().style?.left).toBe(
       "0%"
     );
-    expect(wrapper.find(".p-meter__filled").at(1).props().style.left).toBe(
+    expect(wrapper.find(".p-meter__filled").at(1).props().style?.left).toBe(
       "10%"
     );
-    expect(wrapper.find(".p-meter__filled").at(2).props().style.left).toBe(
+    expect(wrapper.find(".p-meter__filled").at(2).props().style?.left).toBe(
       "30%"
     );
-    expect(wrapper.find(".p-meter__filled").at(3).props().style.left).toBe(
+    expect(wrapper.find(".p-meter__filled").at(3).props().style?.left).toBe(
       "60%"
     );
   });
@@ -168,7 +168,7 @@ describe("Meter", () => {
     );
 
     const backgroundStyle = wrapper.find(".p-meter__separators").props().style
-      .background as string;
+      ?.background as string;
     expect(backgroundStyle.includes("#abc123")).toBe(true);
   });
 
@@ -182,7 +182,7 @@ describe("Meter", () => {
     );
 
     const backgroundStyle = wrapper.find(".p-meter__separators").props().style
-      .background as string;
+      ?.background as string;
     const trimmed = backgroundStyle.replace(/\s\s+/g, " ");
     expect(trimmed).toBe(
       "repeating-linear-gradient( to right, transparent 0, transparent 1px, #F7F7F7 1px, #F7F7F7 2px )"
@@ -198,7 +198,7 @@ describe("Meter", () => {
       <Meter data={[{ key: "filled", value: 10 }]} segmented max={100} />
     );
 
-    const barWidth = wrapper.find(".p-meter__bar").props().style.width;
+    const barWidth = wrapper.find(".p-meter__bar").props().style?.width;
     expect(barWidth).toBe(128);
   });
 });

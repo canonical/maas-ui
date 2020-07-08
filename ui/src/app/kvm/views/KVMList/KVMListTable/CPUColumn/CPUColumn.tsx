@@ -12,9 +12,9 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const availableCores = pod.total.cores * pod.cpu_over_commit_ratio;
 
   if (pod) {
+    const availableCores = pod.total.cores * pod.cpu_over_commit_ratio;
     return (
       <CPUPopover
         assigned={pod.used.cores}

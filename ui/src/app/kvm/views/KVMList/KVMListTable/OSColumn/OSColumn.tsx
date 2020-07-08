@@ -13,7 +13,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };
 
-const OSColumn = ({ id }: Props): JSX.Element => {
+const OSColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -28,23 +28,29 @@ const OSColumn = ({ id }: Props): JSX.Element => {
   );
   const machinesLoading = useSelector(machineSelectors.loading);
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const loading =
-    pod.host && !hostDetails && (machinesLoading || controllersLoading);
 
-  let osText = "Unknown";
-  if (hostDetails) {
-    osText = getStatusText(hostDetails, osReleases);
-  } else if (loading) {
-    osText = "";
+  if (pod) {
+    const loading =
+      Boolean(pod.host) &&
+      !hostDetails &&
+      (machinesLoading || controllersLoading);
+
+    let osText = "Unknown";
+    if (hostDetails) {
+      osText = getStatusText(hostDetails, osReleases);
+    } else if (loading) {
+      osText = "";
+    }
+
+    return (
+      <DoubleRow
+        icon={loading && <i className="p-icon--spinner u-animation--spin"></i>}
+        iconSpace
+        primary={<span data-test="pod-os">{osText}</span>}
+      />
+    );
   }
-
-  return (
-    <DoubleRow
-      icon={loading && <i className="p-icon--spinner u-animation--spin"></i>}
-      iconSpace
-      primary={<span data-test="pod-os">{osText}</span>}
-    />
-  );
+  return null;
 };
 
 export default OSColumn;

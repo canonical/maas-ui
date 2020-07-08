@@ -14,31 +14,38 @@ type Props = {
   selected: boolean;
 };
 
-const NameColumn = ({ handleCheckbox, id, selected }: Props): JSX.Element => {
+const NameColumn = ({
+  handleCheckbox,
+  id,
+  selected,
+}: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
 
-  return (
-    <DoubleRow
-      primary={
-        <Input
-          checked={selected}
-          className="has-inline-label keep-label-opacity"
-          data-test="pod-checkbox"
-          id={`${id}`}
-          label={
-            <Link to={`/kvm/${id}`}>
-              <strong>{pod.name}</strong>
-            </Link>
-          }
-          onChange={handleCheckbox}
-          type="checkbox"
-          wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
-        />
-      }
-    />
-  );
+  if (pod) {
+    return (
+      <DoubleRow
+        primary={
+          <Input
+            checked={selected}
+            className="has-inline-label keep-label-opacity"
+            data-test="pod-checkbox"
+            id={`${id}`}
+            label={
+              <Link to={`/kvm/${id}`}>
+                <strong>{pod.name}</strong>
+              </Link>
+            }
+            onChange={handleCheckbox}
+            type="checkbox"
+            wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
+          />
+        }
+      />
+    );
+  }
+  return null;
 };
 
 export default NameColumn;

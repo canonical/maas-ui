@@ -18,16 +18,19 @@ const formatHostType = (type: string) => {
 
 type Props = { id: number };
 
-const TypeColumn = ({ id }: Props): JSX.Element => {
+const TypeColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
 
-  return (
-    <DoubleRow
-      primary={<span data-test="pod-type">{formatHostType(pod.type)}</span>}
-    />
-  );
+  if (pod) {
+    return (
+      <DoubleRow
+        primary={<span data-test="pod-type">{formatHostType(pod.type)}</span>}
+      />
+    );
+  }
+  return null;
 };
 
 export default TypeColumn;

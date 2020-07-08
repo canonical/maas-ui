@@ -56,7 +56,7 @@ exports[`stricter compilation`] = {
     "src/app/base/reducers/pod/pod.ts:3778994122": [
       [27, 2, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2764002661"]
     ],
-    "src/app/base/selectors/pod/pod.ts:3015115511": [
+    "src/app/base/selectors/pod/pod.ts:2892996150": [
       [109, 23, 17, "No overload matches this call.\\n  Overload 1 of 3, \'(callbackfn: (previousValue: Pod, currentValue: Pod, currentIndex: number, array: Pod[]) => Pod, initialValue: Pod): Pod\', gave the following error.\\n    Argument of type \'(hosts: never[], pod: Pod) => Controller[] | Machine[]\' is not assignable to parameter of type \'(previousValue: Pod, currentValue: Pod, currentIndex: number, array: Pod[]) => Pod\'.\\n      Types of parameters \'hosts\' and \'previousValue\' are incompatible.\\n        Type \'Pod\' is missing the following properties from type \'never[]\': length, pop, push, concat, and 28 more.\\n  Overload 2 of 3, \'(callbackfn: (previousValue: never[], currentValue: Pod, currentIndex: number, array: Pod[]) => never[], initialValue: never[]): never[]\', gave the following error.\\n    Argument of type \'(hosts: never[], pod: Pod) => Controller[] | Machine[]\' is not assignable to parameter of type \'(previousValue: never[], currentValue: Pod, currentIndex: number, array: Pod[]) => never[]\'.\\n      Type \'Controller[] | Machine[]\' is not assignable to type \'never[]\'.\\n        Type \'Controller[]\' is not assignable to type \'never[]\'.\\n          Type \'Controller\' is not assignable to type \'never\'.", "4184440056"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/KVMActionFormWrapper.test.tsx:88432150": [
@@ -110,7 +110,7 @@ exports[`stricter compilation`] = {
       [45, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [65, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | undefined\'.\\n  Type \'null\' is not assignable to type \'Element | undefined\'.", "3453098368"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUColumn.test.tsx:2065549093": [
+    "src/app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUColumn.test.tsx:3190792186": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [44, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
@@ -146,13 +146,13 @@ exports[`stricter compilation`] = {
       [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [31, 23, 3, "Object is possibly \'undefined\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.test.tsx:2642544460": [
+    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.test.tsx:2366141448": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [55, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [89, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [68, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [90, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2019834130": [
+    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2367413622": [
       [20, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "193426238"],
       [23, 28, 13, "Property \'getOsReleases\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "1772678613"]
     ],
@@ -160,56 +160,35 @@ exports[`stricter compilation`] = {
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:3465902379": [
+    "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:3944289181": [
       [18, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973346775"],
       [21, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973147829"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.test.tsx:2627892494": [
+    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.test.tsx:1989368010": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [39, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [52, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [70, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [53, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [71, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:3802016292": [
-      [19, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "193426238"],
-      [25, 33, 4, "Argument of type \'Controller | Machine | null | undefined\' is not assignable to parameter of type \'Controller | Machine | undefined\'.\\n  Type \'null\' is not assignable to type \'Controller | Machine | undefined\'.", "2087793957"]
+    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:3463297505": [
+      [19, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:4294840152": [
+    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:411821159": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [44, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.tsx:4244075939": [
-      [14, 33, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [21, 18, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [23, 17, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 11, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 30, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.test.tsx:1181964408": [
+    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.test.tsx:1445496861": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [31, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.tsx:172021915": [
-      [14, 34, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [21, 18, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [23, 17, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 11, 3, "Object is possibly \'undefined\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/TypeColumn/TypeColumn.test.tsx:3510081411": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [26, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/TypeColumn/TypeColumn.tsx:1957225268": [
-      [27, 58, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
     "src/app/kvm/views/KVMList/KVMListTable/VMsColumn/VMsColumn.test.tsx:1476552216": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [27, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/VMsColumn/VMsColumn.tsx:3749948392": [
-      [18, 11, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [22, 53, 3, "Object is possibly \'undefined\'.", "193426238"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.test.tsx:2715595244": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -322,7 +301,7 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/base/selectors/pod/pod.ts:3015115511": [
+    "src/app/base/selectors/pod/pod.ts:2892996150": [
       [6, 13, 8, "RegExp match", "1152173309"],
       [80, 34, 8, "RegExp match", "1152173309"]
     ],

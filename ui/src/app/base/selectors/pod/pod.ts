@@ -137,7 +137,7 @@ const getHost = createSelector(
   [machine.all, controller.all, (_: RootState, pod: Pod) => pod],
   (machines: Machine[], controllers: Controller[], pod: Pod) => {
     if (!(pod && pod.host)) {
-      return null;
+      return undefined;
     }
     const hostMachine = machines.find(
       (machine) => machine.system_id === pod.host
