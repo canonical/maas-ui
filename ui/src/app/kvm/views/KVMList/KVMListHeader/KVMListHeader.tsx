@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { pod as podActions } from "app/base/actions";
 import { pod as podSelectors } from "app/base/selectors";
 import type { Pod } from "app/store/pod/types";
-import KVMActionFormWrapper from "./KVMActionFormWrapper";
+import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import KVMListActionMenu from "./KVMListActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 
@@ -28,7 +28,7 @@ const KVMListHeader = (): JSX.Element => {
   const pods = useSelector(podSelectors.kvm);
   const podsLoaded = useSelector(podSelectors.loaded);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
-  const [selectedAction, setSelectedAction] = useState("");
+  const [selectedAction, setSelectedAction] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(podActions.fetch());
