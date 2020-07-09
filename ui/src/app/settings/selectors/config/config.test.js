@@ -1,18 +1,17 @@
+import {
+  config as configFactory,
+  configState as configStateFactory,
+} from "testing/factories";
 import config from "./config";
 
 describe("config selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
-      const allConfigs = [
-        { name: "default_storage_layout", value: "bcache" },
-        { name: "enable_disk_erasing_on_release", value: "foo" },
-      ];
+      const allConfigs = [configFactory(), configFactory()];
       const state = {
-        config: {
-          loading: false,
-          loaded: true,
+        config: configStateFactory({
           items: allConfigs,
-        },
+        }),
       };
       expect(config.all(state)).toStrictEqual(allConfigs);
     });

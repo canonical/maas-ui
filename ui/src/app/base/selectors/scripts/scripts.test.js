@@ -1,26 +1,17 @@
+import {
+  scripts as scriptsFactory,
+  scriptsState as scriptsStateFactory,
+} from "testing/factories";
 import scripts from "./scripts";
 
 describe("scripts selectors", () => {
   describe("all", () => {
     it("returns all scripts", () => {
-      const items = [
-        {
-          name: "commissioning script",
-          description: "a commissioning script",
-          type: 0,
-        },
-        {
-          name: "testing script",
-          description: "a testing script",
-          type: 2,
-        },
-      ];
+      const items = [scriptsFactory(), scriptsFactory()];
       const state = {
-        scripts: {
-          loading: false,
-          loaded: true,
+        scripts: scriptsStateFactory({
           items,
-        },
+        }),
       };
 
       expect(scripts.all(state)).toStrictEqual(items);
