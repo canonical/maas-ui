@@ -368,6 +368,18 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
+    "src/app/store/sshkey/types.ts:2805027575": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sslkey/types.ts:518217640": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/token/types.ts:4281996604": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [15, 9, 8, "RegExp match", "1152173309"]
+    ],
     "src/app/store/user/types.ts:1153084241": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [14, 9, 8, "RegExp match", "1152173309"],

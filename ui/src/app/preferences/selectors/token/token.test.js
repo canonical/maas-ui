@@ -1,22 +1,19 @@
+import {
+  token as tokenFactory,
+  tokenState as tokenStateFactory,
+} from "testing/factories";
 import token from "./token";
 
 describe("token selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
+      const items = [tokenFactory(), tokenFactory()];
       const state = {
-        token: {
-          loading: false,
-          loaded: true,
-          items: [
-            { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" },
-          ],
-        },
+        token: tokenStateFactory({
+          items,
+        }),
       };
-      expect(token.all(state)).toStrictEqual([
-        { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" },
-      ]);
+      expect(token.all(state)).toStrictEqual(items);
     });
   });
 

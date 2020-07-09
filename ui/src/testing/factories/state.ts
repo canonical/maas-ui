@@ -7,6 +7,9 @@ import type { AuthState, UserState } from "app/store/user/types";
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PodState } from "app/store/pod/types";
+import type { SSHKeyState } from "app/store/sshkey/types";
+import type { SSLKeyState } from "app/store/sslkey/types";
+import type { TokenState } from "app/store/token/types";
 
 const defaultState = {
   errors: () => ({}),
@@ -23,6 +26,21 @@ export const authState = define<AuthState>({
   user,
 });
 
+export const sshKeyState = define<SSHKeyState>({
+  ...defaultState,
+  errors: null,
+});
+
+export const sslKeyState = define<SSLKeyState>({
+  ...defaultState,
+  errors: null,
+});
+
+export const tokenState = define<TokenState>({
+  ...defaultState,
+  errors: null,
+});
+
 export const userState = define<UserState>({
   ...defaultState,
   auth: authState,
@@ -36,12 +54,9 @@ export const podState = define<PodState>({
 });
 
 export const notificationState = define<NotificationState>({
+  ...defaultState,
   errors: null,
   items: array(notification),
-  loaded: true,
-  loading: false,
-  saved: true,
-  saving: false,
 });
 
 export const messageState = define<MessageState>({
