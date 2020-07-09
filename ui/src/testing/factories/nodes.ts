@@ -4,7 +4,7 @@ import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodHint, PodHintExtras } from "app/store/pod/types";
-import type { Model, ModelRef } from "app/store/types/model";
+import type { Model } from "app/store/types/model";
 import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
 import { model, modelRef } from "./model";
 
