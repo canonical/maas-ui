@@ -1,11 +1,14 @@
-import { notificationState as notificationStateFactory } from "testing/factories";
+import {
+  notification as notificationFactory,
+  notificationState as notificationStateFactory,
+} from "testing/factories";
 import notification from "./notification";
 
 describe("notification selectors", () => {
   it("can get all items", () => {
     const state = {
       notification: notificationStateFactory({
-        items: [{ message: "Test message" }],
+        items: [notificationFactory({ message: "Test message" })],
       }),
     };
     const items = notification.all(state);

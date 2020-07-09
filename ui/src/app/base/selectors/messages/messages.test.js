@@ -1,4 +1,7 @@
-import { messageState as messageStateFactory } from "testing/factories";
+import {
+  message as messageFactory,
+  messageState as messageStateFactory,
+} from "testing/factories";
 import messages from "./messages";
 
 describe("messages", () => {
@@ -6,9 +9,9 @@ describe("messages", () => {
     const state = {
       messages: messageStateFactory({
         items: [
-          {
+          messageFactory({
             message: "User added",
-          },
+          }),
         ],
       }),
     };
