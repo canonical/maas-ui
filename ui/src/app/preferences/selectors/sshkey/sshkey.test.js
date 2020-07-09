@@ -1,22 +1,19 @@
+import {
+  sshKey as sshKeyFactory,
+  sshKeyState as sshKeyStateFactory,
+} from "testing/factories";
 import sshkey from "./sshkey";
 
 describe("sshkey selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
+      const items = [sshKeyFactory(), sshKeyFactory()];
       const state = {
-        sshkey: {
-          loading: false,
-          loaded: true,
-          items: [
-            { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" },
-          ],
-        },
+        sshkey: sshKeyStateFactory({
+          items,
+        }),
       };
-      expect(sshkey.all(state)).toStrictEqual([
-        { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" },
-      ]);
+      expect(sshkey.all(state)).toStrictEqual(items);
     });
   });
 

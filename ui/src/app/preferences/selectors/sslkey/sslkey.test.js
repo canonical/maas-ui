@@ -1,22 +1,19 @@
+import {
+  sslKey as sslKeyFactory,
+  sslKeyState as sslKeyStateFactory,
+} from "testing/factories";
 import sslkey from "./sslkey";
 
 describe("sslkey selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
+      const items = [sslKeyFactory(), sslKeyFactory()];
       const state = {
-        sslkey: {
-          loading: false,
-          loaded: true,
-          items: [
-            { id: 1, key: "ssh-rsa aabb" },
-            { id: 2, key: "ssh-rsa ccdd" },
-          ],
-        },
+        sslkey: sslKeyStateFactory({
+          items,
+        }),
       };
-      expect(sslkey.all(state)).toStrictEqual([
-        { id: 1, key: "ssh-rsa aabb" },
-        { id: 2, key: "ssh-rsa ccdd" },
-      ]);
+      expect(sslkey.all(state)).toStrictEqual(items);
     });
   });
 
