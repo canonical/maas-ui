@@ -3,7 +3,6 @@ import { array, define } from "cooky-cutter";
 import { message } from "./message";
 import { notification } from "./notification";
 import { user } from "./user";
-import { pod } from "./nodes";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
@@ -11,9 +10,9 @@ import type { PodState } from "app/store/pod/types";
 
 const defaultState = {
   errors: () => ({}),
-  loaded: true,
+  loaded: false,
   loading: false,
-  saved: true,
+  saved: false,
   saving: false,
 };
 
@@ -30,11 +29,9 @@ export const userState = define<UserState>({
 
 export const podState = define<PodState>({
   ...defaultState,
-  items: array(pod),
+  items: () => [],
   selected: () => [],
-  statuses: (id: number) => ({
-    [id]: { deleting: false, refreshing: false },
-  }),
+  statuses: () => ({}),
 });
 
 export const notificationState = define<NotificationState>({
