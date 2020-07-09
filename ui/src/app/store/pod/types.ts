@@ -31,10 +31,11 @@ export type Pod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
+  password?: string;
   permissions: string[];
   pool: number;
   power_address: string;
-  power_pass: string;
+  power_pass?: string;
   owners_count: number;
   storage_pools: TSFixMe[];
   tags: string[];

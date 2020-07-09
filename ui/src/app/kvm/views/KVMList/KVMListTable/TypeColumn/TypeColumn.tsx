@@ -3,18 +3,8 @@ import { useSelector } from "react-redux";
 
 import { pod as podSelectors } from "app/base/selectors";
 import type { RootState } from "app/store/root/types";
+import { formatHostType } from "app/kvm/utils";
 import DoubleRow from "app/base/components/DoubleRow";
-
-const formatHostType = (type: string) => {
-  switch (type) {
-    case "lxd":
-      return "LXD";
-    case "virsh":
-      return "Virsh";
-    default:
-      return type;
-  }
-};
 
 type Props = { id: number };
 

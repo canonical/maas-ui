@@ -1,4 +1,8 @@
 @mixin FormCard {
+  .form-card {
+    overflow: visible; // Allows absolutely positioned elements to extend beyond bottom of card
+  }
+
   .form-card__buttons {
     display: flex;
     justify-content: flex-end;
