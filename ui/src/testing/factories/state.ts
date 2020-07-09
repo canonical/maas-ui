@@ -10,6 +10,7 @@ import type { PodState } from "app/store/pod/types";
 
 const defaultState = {
   errors: () => ({}),
+  items: () => [],
   loaded: false,
   loading: false,
   saved: false,
@@ -18,6 +19,7 @@ const defaultState = {
 
 export const authState = define<AuthState>({
   ...defaultState,
+  errors: () => ({}),
   user,
 });
 
@@ -29,7 +31,6 @@ export const userState = define<UserState>({
 
 export const podState = define<PodState>({
   ...defaultState,
-  items: () => [],
   selected: () => [],
   statuses: () => ({}),
 });
