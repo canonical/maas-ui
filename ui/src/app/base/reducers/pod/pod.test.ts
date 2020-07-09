@@ -1,4 +1,3 @@
-import { buildArray } from "testing/factories";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -37,25 +36,16 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce FETCH_POD_SUCCESS", () => {
-    const pods = buildArray(podFactory, 2);
-
+    const pods = [podFactory()];
+    const podState = podStateFactory({
+      items: [],
+      loading: true,
+    });
     expect(
-      pod(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: true,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          type: "FETCH_POD_SUCCESS",
-          payload: pods,
-        }
-      )
+      pod(podState, {
+        type: "FETCH_POD_SUCCESS",
+        payload: pods,
+      })
     ).toEqual({
       errors: {},
       loading: false,
@@ -63,29 +53,19 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: DEFAULT_STATUSES, 2: DEFAULT_STATUSES },
+      statuses: { 1: DEFAULT_STATUSES },
       items: pods,
     });
   });
 
   it("should correctly reduce FETCH_POD_ERROR", () => {
+    const podState = podStateFactory();
+
     expect(
-      pod(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          error: "Could not fetch pods",
-          type: "FETCH_POD_ERROR",
-        }
-      )
+      pod(podState, {
+        error: "Could not fetch pods",
+        type: "FETCH_POD_ERROR",
+      })
     ).toEqual({
       errors: "Could not fetch pods",
       items: [],
@@ -99,22 +79,12 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce CREATE_POD_START", () => {
+    const podState = podStateFactory({ saved: true });
+
     expect(
-      pod(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: true,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          type: "CREATE_POD_START",
-        }
-      )
+      pod(podState, {
+        type: "CREATE_POD_START",
+      })
     ).toEqual({
       errors: {},
       items: [],
@@ -128,23 +98,13 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce CREATE_POD_ERROR", () => {
+    const podState = podStateFactory();
+
     expect(
-      pod(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true,
-          selected: [],
-          statuses: {},
-        },
-        {
-          error: { name: "Pod name already exists" },
-          type: "CREATE_POD_ERROR",
-        }
-      )
+      pod(podState, {
+        error: { name: "Pod name already exists" },
+        type: "CREATE_POD_ERROR",
+      })
     ).toEqual({
       errors: { name: "Pod name already exists" },
       items: [],
@@ -157,10 +117,16 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce CREATE_POD_NOTIFY", () => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
-    const newPod = podFactory({ id: 2, name: "pod2" });
-    const podState = podStateFactory({ items: pods });
+  it("updates pods on CREATE_POD_NOTIFY", () => {
+    const pods = [podFactory({ id: 1 })];
+    const newPod = podFactory({ id: 2 });
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: { deleting: false, refreshing: false },
+        2: { deleting: false, refreshing: false },
+      },
+    });
 
     expect(
       pod(podState, {
@@ -180,7 +146,12 @@ describe("pod reducer", () => {
   });
 
   it("should correctly reduce DELETE_POD_START", () => {
-    const podState = podStateFactory({ items: { name: "pod1" } });
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: { 1: { deleting: false, refreshing: false } },
+    });
+
     expect(
       pod(podState, {
         meta: {
@@ -198,34 +169,25 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: true } },
+      statuses: { 1: { deleting: true, refreshing: false } },
     });
   });
 
   it("should correctly reduce DELETE_POD_SUCCESS", () => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
-
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: { 1: { deleting: true, refreshing: false } },
+    });
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { deleting: true } },
-        },
-        {
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
           },
-          type: "DELETE_POD_SUCCESS",
-        }
-      )
+        },
+        type: "DELETE_POD_SUCCESS",
+      })
     ).toEqual({
       errors: {},
       items: pods,
@@ -234,35 +196,27 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false } },
+      statuses: { 1: { deleting: false, refreshing: false } },
     });
   });
 
   it("should correctly reduce DELETE_POD_ERROR", () => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: { 1: { deleting: true, refreshing: false } },
+    });
 
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { deleting: true } },
-        },
-        {
-          error: "Pod cannot be deleted",
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        error: "Pod cannot be deleted",
+        meta: {
+          item: {
+            id: 1,
           },
-          type: "DELETE_POD_ERROR",
-        }
-      )
+        },
+        type: "DELETE_POD_ERROR",
+      })
     ).toEqual({
       errors: "Pod cannot be deleted",
       items: pods,
@@ -271,71 +225,60 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false } },
+      statuses: { 1: { deleting: false, refreshing: false } },
     });
   });
 
   it("should correctly reduce DELETE_POD_NOTIFY", () => {
     const pods = [podFactory({ id: 1 }), podFactory({ id: 2 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: { deleting: true, refreshing: false },
+        2: { deleting: false, refreshing: false },
+      },
+    });
 
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { deleting: false }, 2: { deleting: false } },
-        },
-        {
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
           },
-          payload: 1,
-          type: "DELETE_POD_NOTIFY",
-        }
-      )
+        },
+        payload: 1,
+        type: "DELETE_POD_NOTIFY",
+      })
     ).toEqual({
       errors: {},
-      items: pods[1],
+      items: [pods[1]],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 2: { deleting: false } },
+      statuses: { 2: { deleting: false, refreshing: false } },
     });
   });
 
   it("should correctly reduce REFRESH_POD_START", () => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: { deleting: false, refreshing: false },
+      },
+    });
 
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { refreshing: false } },
-        },
-        {
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
           },
-          type: "REFRESH_POD_START",
-        }
-      )
+        },
+        type: "REFRESH_POD_START",
+      })
     ).toEqual({
       errors: {},
       items: pods,
@@ -344,36 +287,30 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { refreshing: true } },
+      statuses: { 1: { deleting: false, refreshing: true } },
     });
   });
 
   it("should correctly reduce REFRESH_POD_SUCCESS", () => {
     const pods = [podFactory({ id: 1, cpu_speed: 100 })];
     const updatedPod = podFactory({ id: 1, cpu_speed: 100 });
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: { deleting: false, refreshing: true },
+      },
+    });
 
     expect(
-      pod(
-        {
-          errors: {},
-          items: pods,
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { refreshing: true } },
-        },
-        {
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
           },
-          payload: updatedPod,
-          type: "REFRESH_POD_SUCCESS",
-        }
-      )
+        },
+        payload: updatedPod,
+        type: "REFRESH_POD_SUCCESS",
+      })
     ).toEqual({
       errors: {},
       items: [updatedPod],
@@ -382,72 +319,75 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { refreshing: false } },
+      statuses: { 1: { deleting: false, refreshing: false } },
     });
   });
 
   it("should correctly reduce REFRESH_POD_ERROR", () => {
+    const pods = [podFactory({ id: 1, cpu_speed: 100 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: { deleting: false, refreshing: true },
+      },
+    });
+
     expect(
-      pod(
-        {
-          errors: {},
-          items: [{ id: 1, cpu_speed: 100 }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { 1: { refreshing: true } },
-        },
-        {
-          error: "You dun goofed",
-          meta: {
-            item: {
-              id: 1,
-            },
+      pod(podState, {
+        error: "You dun goofed",
+        meta: {
+          item: {
+            id: 1,
           },
-          type: "REFRESH_POD_ERROR",
-        }
-      )
+        },
+        type: "REFRESH_POD_ERROR",
+      })
     ).toEqual({
       errors: "You dun goofed",
-      items: [{ id: 1, cpu_speed: 100 }],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { refreshing: false } },
+      statuses: { 1: { deleting: false, refreshing: false } },
     });
   });
 
   it("should correctly reduce SET_SELECTED_PODS", () => {
+    const pods = [
+      podFactory({ id: 1 }),
+      podFactory({ id: 2 }),
+      podFactory({ id: 3 }),
+    ];
+    const podState = podStateFactory({
+      items: pods,
+      selected: [3],
+      statuses: {
+        1: { deleting: false, refreshing: false },
+        2: { deleting: false, refreshing: false },
+        3: { deleting: false, refreshing: false },
+      },
+    });
+
     expect(
-      pod(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          payload: [1, 2, 4],
-          type: "SET_SELECTED_PODS",
-        }
-      )
+      pod(podState, {
+        payload: [1, 2],
+        type: "SET_SELECTED_PODS",
+      })
     ).toEqual({
       errors: {},
-      items: [],
+      items: pods,
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
-      selected: [1, 2, 4],
-      statuses: {},
+      selected: [1, 2],
+      statuses: {
+        1: { deleting: false, refreshing: false },
+        2: { deleting: false, refreshing: false },
+        3: { deleting: false, refreshing: false },
+      },
     });
   });
 });
