@@ -7,23 +7,26 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };
 
-const VMsColumn = ({ id }: Props): JSX.Element => {
+const VMsColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
 
-  return (
-    <DoubleRow
-      primary={
-        <span data-test="pod-machines-count">
-          {pod.composed_machines_count}
-        </span>
-      }
-      primaryClassName="u-align--right"
-      secondary={<span data-test="pod-owners-count">{pod.owners_count}</span>}
-      secondaryClassName="u-align--right"
-    />
-  );
+  if (pod) {
+    return (
+      <DoubleRow
+        primary={
+          <span data-test="pod-machines-count">
+            {pod.composed_machines_count}
+          </span>
+        }
+        primaryClassName="u-align--right"
+        secondary={<span data-test="pod-owners-count">{pod.owners_count}</span>}
+        secondaryClassName="u-align--right"
+      />
+    );
+  }
+  return null;
 };
 
 export default VMsColumn;

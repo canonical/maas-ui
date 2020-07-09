@@ -238,7 +238,7 @@ const KVMListTable = (): JSX.Element => {
                   onClick={() => updateSort("cpu")}
                   sortKey="cpu"
                 >
-                  CPU
+                  CPU cores
                 </TableHeader>
               ),
             },

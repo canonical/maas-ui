@@ -27,6 +27,13 @@
     width: 0%;
   }
 
+  .p-meter__separators {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+
   .p-meter--small {
     margin-bottom: $sp-unit * 1.75;;
     padding-top: $sp-unit * .75;

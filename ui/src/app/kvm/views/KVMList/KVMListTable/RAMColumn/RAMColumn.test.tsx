@@ -29,7 +29,7 @@ describe("RAMColumn", () => {
     };
   });
 
-  it("can display total memory without overcommit", () => {
+  it("can display correct RAM information without overcommit", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -37,11 +37,13 @@ describe("RAMColumn", () => {
         <RAMColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe("2 GiB");
+    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe(
+      "2 of 8 GiB assigned"
+    );
     expect(wrapper.find("Meter").props().max).toBe(8192);
   });
 
-  it("can display total memory with overcommit", () => {
+  it("can display correct RAM information with overcommit", () => {
     const state = { ...initialState };
     state.pod.items[0].memory_over_commit_ratio = 2;
     const store = mockStore(state);
@@ -50,7 +52,9 @@ describe("RAMColumn", () => {
         <RAMColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe("2 GiB");
+    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe(
+      "2 of 16 GiB assigned"
+    );
     expect(wrapper.find("Meter").props().max).toBe(16384);
   });
 });

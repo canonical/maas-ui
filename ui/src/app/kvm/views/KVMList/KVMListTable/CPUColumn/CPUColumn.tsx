@@ -14,6 +14,7 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
   );
 
   if (pod) {
+    const availableCores = pod.total.cores * pod.cpu_over_commit_ratio;
     return (
       <CPUPopover
         assigned={pod.used.cores}
@@ -21,16 +22,17 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
         overcommit={pod.cpu_over_commit_ratio}
       >
         <Meter
-          className="u-no-margin--bottom"
+          className="u-flex--column-align-end u-no-margin--bottom"
           data={[
             {
               key: `${pod.name}-cpu-meter`,
-              label: `${pod.total.cores}`,
+              label: `${pod.used.cores} of ${availableCores} assigned`,
               value: pod.used.cores,
             },
           ]}
           labelsClassName="u-align--right"
-          max={pod.total.cores * pod.cpu_over_commit_ratio}
+          max={availableCores}
+          segmented
           small
         />
       </CPUPopover>

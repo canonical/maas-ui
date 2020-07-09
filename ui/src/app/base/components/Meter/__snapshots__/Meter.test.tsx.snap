@@ -9,6 +9,7 @@ exports[`Meter renders 1`] = `
     style={
       Object {
         "backgroundColor": "#D3E4ED",
+        "width": undefined,
       }
     }
   >
@@ -17,8 +18,8 @@ exports[`Meter renders 1`] = `
       key="datum-1-bar"
       style={
         Object {
-          "backgroundColor": "#007AA6",
-          "borderRight": "1px solid #D3E4ED",
+          "backgroundColor": "#0066CC",
+          "borderRight": "1px solid #F7F7F7",
           "left": "0%",
           "width": "25%",
         }
@@ -30,7 +31,7 @@ exports[`Meter renders 1`] = `
       style={
         Object {
           "backgroundColor": "#0E8420",
-          "borderRight": "1px solid #D3E4ED",
+          "borderRight": undefined,
           "left": "25%",
           "width": "75%",
         }
