@@ -35,7 +35,7 @@ const CommissionFormSchema = Yup.object().shape({
       displayName: Yup.string(),
       description: Yup.string(),
     })
-  )
+  ),
 });
 
 export const CommissionForm = ({ setSelectedAction }) => {
