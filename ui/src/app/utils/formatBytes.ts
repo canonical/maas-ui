@@ -11,7 +11,7 @@ type FormatBytesConfig = {
  *
  * @param {number} value - the value in the supplied byte unit
  * @param {string} unit - the byte unit, e.g. "KB", "TB"
- * @param {object} config - config object
+ * @param {FormatBytsConfig} config - config object
  * @param {boolean} config.binary - whether formatting should be done in base 10 or 2
  * @param {boolean} config.convertTo - the unit to convert to
  * @param {number} config.precision - significant figures of returned value

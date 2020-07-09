@@ -9,12 +9,12 @@
 
       // Power
       &:nth-child(2) {
-        @include breakpoint-widths(0, 20%, 20%, 16%);
+        @include breakpoint-widths(0, 20%, 20%, 15%);
       }
 
       // KVM host type
       &:nth-child(3) {
-        @include breakpoint-widths(40%, 20%, 15%, 13%);
+        @include breakpoint-widths(40%, 20%, 15%, 15%);
       }
 
       // VMs / Owners
@@ -24,7 +24,7 @@
 
       // OS
       &:nth-child(5) {
-        @include breakpoint-widths(0, 30%, 25%, 22%);
+        @include breakpoint-widths(0, 30%, 25%, 21%);
       }
 
       // Resource pool / AZ

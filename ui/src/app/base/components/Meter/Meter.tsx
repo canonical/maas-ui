@@ -4,7 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { useOnWindowResize } from "app/base/hooks";
 
-const DEFAULT_COLORS = ["#0066CC", "#0E8420", "#C7162B", "#F99B11"];
+export const DEFAULT_FILLED_COLORS = [
+  "#0066CC",
+  "#0E8420",
+  "#C7162B",
+  "#F99B11",
+];
+export const DEFAULT_EMPTY_COLOR = "#D3E4ED";
+export const DEFAULT_OVER_COLOR = "#F99B11";
+export const DEFAULT_SEPARATOR_COLOR = "#F7F7F7";
 
 const updateWidths = (
   el: React.MutableRefObject<Element | null>,
@@ -46,12 +54,12 @@ type Props = {
 const Meter = ({
   className,
   data,
-  emptyColor = "#D3E4ED",
+  emptyColor = DEFAULT_EMPTY_COLOR,
   labelsClassName,
   max,
-  overColor = "#F99B11",
+  overColor = DEFAULT_OVER_COLOR,
   segmented = false,
-  separatorColor = "#F7F7F7",
+  separatorColor = DEFAULT_SEPARATOR_COLOR,
   small = false,
 }: Props): JSX.Element => {
   const el = useRef(null);
@@ -98,7 +106,8 @@ const Meter = ({
               key={`${datum.key}-bar`}
               style={{
                 backgroundColor:
-                  datum.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length],
+                  datum.color ||
+                  DEFAULT_FILLED_COLORS[i % DEFAULT_FILLED_COLORS.length],
                 borderRight:
                   i + 1 < data.length
                     ? `1px solid ${separatorColor}`

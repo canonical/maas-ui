@@ -7,7 +7,7 @@ import { isMachine } from "app/store/utils";
  * @param {boolean} loading - whether the data is still loading.
  * @returns {string} icon class
  */
-export const getPowerIcon = (host?: Host, loading?: boolean): string => {
+export const getPowerIcon = (host?: Host | null, loading?: boolean): string => {
   if (loading && !host) {
     return "p-icon--spinner u-animation--spin";
   }

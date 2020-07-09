@@ -1,7 +1,7 @@
 import { mount, shallow } from "enzyme";
 import React from "react";
 
-import Meter from "./Meter";
+import Meter, { DEFAULT_SEPARATOR_COLOR } from "./Meter";
 
 const mockClientRect = ({
   bottom = 0,
@@ -185,7 +185,7 @@ describe("Meter", () => {
       ?.background as string;
     const trimmed = backgroundStyle.replace(/\s\s+/g, " ");
     expect(trimmed).toBe(
-      "repeating-linear-gradient( to right, transparent 0, transparent 1px, #F7F7F7 1px, #F7F7F7 2px )"
+      `repeating-linear-gradient( to right, transparent 0, transparent 1px, ${DEFAULT_SEPARATOR_COLOR} 1px, ${DEFAULT_SEPARATOR_COLOR} 2px )`
     );
   });
 
