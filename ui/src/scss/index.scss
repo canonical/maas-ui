@@ -63,7 +63,9 @@
 @include TagSelector;
 
 // kvm
+@import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
+@include CPUPopover;
 @include KVMListTable;
 
 // machines
