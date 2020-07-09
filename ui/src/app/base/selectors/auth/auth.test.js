@@ -1,13 +1,17 @@
 import auth from "./auth";
-import { userState as userStateFactory } from "testing/factories";
+import {
+  authState as authStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
 
 describe("auth", () => {
   it("can get the current user details", () => {
     const state = {
       user: userStateFactory({
-        auth: {
-          user: { username: "admin" },
-        },
+        auth: authStateFactory({
+          user: userFactory({ username: "admin" }),
+        }),
       }),
     };
     expect(auth.get(state).username).toEqual("admin");
