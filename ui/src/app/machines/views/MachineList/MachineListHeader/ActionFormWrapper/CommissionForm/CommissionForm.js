@@ -29,16 +29,13 @@ const CommissionFormSchema = Yup.object().shape({
       description: Yup.string(),
     })
   ),
-  testingScripts: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required(),
-        displayName: Yup.string(),
-        description: Yup.string(),
-      })
-    )
-    .min(1, "You must select at least one script.")
-    .required(),
+  testingScripts: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required(),
+      displayName: Yup.string(),
+      description: Yup.string(),
+    })
+  ),
 });
 
 export const CommissionForm = ({ setSelectedAction }) => {
