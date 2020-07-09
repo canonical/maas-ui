@@ -1,13 +1,18 @@
+import {
+  packageRepository as packageRepositoryFactory,
+  packageRepositoryState as packageRepositoryStateFactory,
+} from "testing/factories";
 import packagerepository from "./packagerepository";
 
 describe("packagerepository selectors", () => {
   it("can get repository items", () => {
+    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
     const state = {
-      packagerepository: {
-        items: [{ name: "default" }],
-      },
+      packagerepository: packageRepositoryStateFactory({
+        items,
+      }),
     };
-    expect(packagerepository.all(state)).toEqual([{ name: "default" }]);
+    expect(packagerepository.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {

@@ -56,8 +56,8 @@ licensekeys.hasErrors = createSelector(
  */
 licensekeys.search = createSelector(
   [licensekeys.all, (state, term) => term],
-  (licencekeyItems, term) =>
-    licencekeyItems.filter(
+  (licensekeyItems, term) =>
+    licensekeyItems.filter(
       (item) => item.osystem.includes(term) || item.distro_series.includes(term)
     )
 );
@@ -79,8 +79,8 @@ licensekeys.getByOsystemAndDistroSeries = createSelector(
     licensekeys.all,
     (state, osystem, distro_series) => ({ osystem, distro_series }),
   ],
-  (licencekeyItems, { osystem, distro_series }) =>
-    licencekeyItems.filter(
+  (licensekeyItems, { osystem, distro_series }) =>
+    licensekeyItems.filter(
       (item) => item.osystem === osystem && item.distro_series === distro_series
     )[0]
 );
