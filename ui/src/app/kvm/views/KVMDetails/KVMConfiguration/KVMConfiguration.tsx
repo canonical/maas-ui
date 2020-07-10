@@ -90,11 +90,11 @@ const KVMConfiguration = (): JSX.Element => {
             cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
             memory_over_commit_ratio: pod.memory_over_commit_ratio,
             password: podPassword,
-            pool: `${pod.pool}`, // Convert to string for valid HTML, also API expects string
+            pool: `${pod.pool}`, // Convert to string for valid options HTML, also API expects string
             power_address: pod.power_address,
             tags: pod.tags,
             type: pod.type,
-            zone: `${pod.zone}`, // Convert to string for valid HTML, also API expects string
+            zone: `${pod.zone}`, // Convert to string for valid options HTML, also API expects string
           }}
           onCancel={() => history.push({ pathname: `/kvm/${id}` })}
           onSaveAnalytics={{

@@ -11,6 +11,7 @@ import {
 } from "app/base/selectors";
 import { formatHostType } from "app/kvm/utils";
 import FormikField from "app/base/components/FormikField";
+import Slider from "app/base/components/Slider";
 import TagSelector from "app/base/components/TagSelector";
 
 const KVMConfigurationFields = (): JSX.Element => {
@@ -92,6 +93,40 @@ const KVMConfigurationFields = (): JSX.Element => {
           label="Password (optional)"
           name="password"
           type="password"
+        />
+        <FormikField
+          component={Slider}
+          inputDisabled
+          label="CPU overcommit"
+          max={10}
+          min={0.1}
+          name="cpu_over_commit_ratio"
+          onChange={(e: React.FormEvent<HTMLInputElement>) =>
+            setFieldValue(
+              "cpu_over_commit_ratio",
+              Number(e.currentTarget.value)
+            )
+          }
+          showInput
+          step={0.1}
+          value={values.cpu_over_commit_ratio}
+        />
+        <FormikField
+          component={Slider}
+          inputDisabled
+          label="Memory overcommit"
+          max={10}
+          min={0.1}
+          name="memory_over_commit_ratio"
+          onChange={(e: React.FormEvent<HTMLInputElement>) =>
+            setFieldValue(
+              "memory_over_commit_ratio",
+              Number(e.currentTarget.value)
+            )
+          }
+          showInput
+          step={0.1}
+          value={values.memory_over_commit_ratio}
         />
       </Col>
     </Row>

@@ -72,6 +72,12 @@ describe("KVMConfigurationFields", () => {
     expect(wrapper.find("Input[name='password']").props().value).toBe(
       pod.power_pass
     );
+    expect(
+      wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
+    ).toBe(pod.cpu_over_commit_ratio);
+    expect(
+      wrapper.find("Slider[name='memory_over_commit_ratio']").props().value
+    ).toBe(pod.memory_over_commit_ratio);
   });
 
   it("correctly sets initial values for lxd pods", () => {
@@ -109,5 +115,11 @@ describe("KVMConfigurationFields", () => {
     expect(wrapper.find("Input[name='password']").props().value).toBe(
       pod.password
     );
+    expect(
+      wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
+    ).toBe(pod.cpu_over_commit_ratio);
+    expect(
+      wrapper.find("Slider[name='memory_over_commit_ratio']").props().value
+    ).toBe(pod.memory_over_commit_ratio);
   });
 });
