@@ -1,23 +1,16 @@
+import {
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 import zone from "./zone";
 
 describe("zone selectors", () => {
   it("can get all items", () => {
-    const items = [
-      {
-        id: 1,
-        created: "Mon, 16 Sep. 2019 12:19:56",
-        updated: "Mon, 16 Sep. 2019 12:19:56",
-        name: "default",
-        description: "",
-        devices_count: 15,
-        machines_count: 0,
-        controllers_count: 0,
-      },
-    ];
+    const items = [zoneFactory(), zoneFactory()];
     const state = {
-      zone: {
+      zone: zoneStateFactory({
         items,
-      },
+      }),
     };
     expect(zone.all(state)).toEqual(items);
   });

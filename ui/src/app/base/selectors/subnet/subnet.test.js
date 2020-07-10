@@ -1,13 +1,18 @@
+import {
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+} from "testing/factories";
 import subnet from "./subnet";
 
 describe("subnet selectors", () => {
   it("can get all items", () => {
+    const items = [subnetFactory(), subnetFactory()];
     const state = {
-      subnet: {
-        items: [{ name: "maas.test" }],
-      },
+      subnet: subnetStateFactory({
+        items,
+      }),
     };
-    expect(subnet.all(state)).toEqual([{ name: "maas.test" }]);
+    expect(subnet.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {

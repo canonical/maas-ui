@@ -1,13 +1,18 @@
+import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
+} from "testing/factories";
 import domain from "./domain";
 
 describe("domain selectors", () => {
   it("can get all items", () => {
+    const items = [domainFactory()];
     const state = {
-      domain: {
-        items: [{ name: "maas.test" }],
-      },
+      domain: domainStateFactory({
+        items,
+      }),
     };
-    expect(domain.all(state)).toEqual([{ name: "maas.test" }]);
+    expect(domain.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {

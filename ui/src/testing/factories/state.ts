@@ -6,15 +6,23 @@ import { user } from "./user";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { ConfigState } from "app/store/config/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
+import type { DomainState } from "app/store/domain/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState } from "app/store/pod/types";
+import type { ResourcePoolState } from "app/store/resourcepool/types";
+import type { ScriptResultsState } from "app/store/scriptresults/types";
 import type { ScriptsState } from "app/store/scripts/types";
+import type { ServiceState } from "app/store/service/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
+import type { StatusState } from "app/store/status/types";
+import type { SubnetState } from "app/store/subnet/types";
+import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
+import type { ZoneState } from "app/store/zone/types";
 import type {
   ArchitecturesState,
   ComponentsToDisableState,
@@ -169,4 +177,45 @@ export const generalState = define<GeneralState>({
   pocketsToDisable: pocketsToDisableState,
   powerTypes: powerTypesState,
   version: versionState,
+});
+
+export const statusState = define<StatusState>({
+  authenticated: false,
+  authenticating: false,
+  authenticationError: () => ({}),
+  connected: false,
+  connecting: false,
+  error: () => ({}),
+  externalAuthURL: "http://example.com/auth",
+  externalLoginURL: "http://example.com/login",
+  noUsers: false,
+});
+
+export const domainState = define<DomainState>({
+  ...defaultState,
+});
+
+export const resourcePoolState = define<ResourcePoolState>({
+  ...defaultState,
+});
+
+export const scriptResultsState = define<ScriptResultsState>({
+  ...defaultState,
+  items: () => ({}),
+});
+
+export const serviceState = define<ServiceState>({
+  ...defaultState,
+});
+
+export const subnetState = define<SubnetState>({
+  ...defaultState,
+});
+
+export const tagState = define<TagState>({
+  ...defaultState,
+});
+
+export const zoneState = define<ZoneState>({
+  ...defaultState,
 });
