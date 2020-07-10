@@ -2,13 +2,6 @@ import type { BaseNode, TestStatus } from "app/store/types/node";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
-export type MachineAction = {
-  name: string;
-  sentence: string;
-  title: string;
-  type: string;
-};
-
 type IpAddresses = {
   ip: string;
   is_boot: boolean;

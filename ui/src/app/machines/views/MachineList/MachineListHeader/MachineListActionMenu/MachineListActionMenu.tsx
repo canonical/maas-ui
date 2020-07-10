@@ -7,7 +7,8 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
-import type { Machine, MachineAction } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
+import type { MachineAction } from "app/store/general/types";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import Tooltip from "app/base/components/Tooltip";
 
