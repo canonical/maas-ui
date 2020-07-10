@@ -24,7 +24,7 @@ describe("Slider", () => {
     );
     const backgroundStyle = wrapper.find(".p-slider").props().style
       ?.background as string;
-    const trimmed = backgroundStyle.replace(/\s\s+/g, " ");
+    const trimmed = backgroundStyle?.replace(/\s\s+/g, " ");
     const expectedPercentage = "25%"; // ((4 - 2) / (10 - 2)) * 100 = (2 / 8) * 100 = 25
     expect(trimmed.includes(expectedPercentage)).toBe(true);
   });

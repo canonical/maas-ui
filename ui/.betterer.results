@@ -38,7 +38,7 @@ exports[`stricter compilation`] = {
       [0, 34, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [59, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
     ],
-    "src/app/base/components/Slider/Slider.tsx:3550275385": [
+    "src/app/base/components/Slider/Slider.tsx:753275532": [
       [0, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"]
     ],
     "src/app/base/reducers/pod/pod.test.ts:1670915466": [
@@ -357,6 +357,20 @@ exports[`no TSFixMe types`] = {
     "src/app/store/domain/types.ts:2438698325": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [16, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/general/types.ts:1987535520": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [5, 9, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"],
+      [23, 9, 8, "RegExp match", "1152173309"],
+      [32, 9, 8, "RegExp match", "1152173309"],
+      [47, 9, 8, "RegExp match", "1152173309"],
+      [61, 9, 8, "RegExp match", "1152173309"],
+      [72, 9, 8, "RegExp match", "1152173309"],
+      [95, 9, 8, "RegExp match", "1152173309"],
+      [104, 9, 8, "RegExp match", "1152173309"],
+      [138, 9, 8, "RegExp match", "1152173309"],
+      [147, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/types.ts:1987535520": [
       [0, 13, 8, "RegExp match", "1152173309"],

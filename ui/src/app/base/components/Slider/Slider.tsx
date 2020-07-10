@@ -36,8 +36,21 @@ export const Slider = ({
   step = 1,
   value,
 }: Props): JSX.Element => {
-  const filledPercentage = `${((value - min) / (max - min)) * 100}%`;
-
+  let style = {};
+  if (navigator?.userAgent?.includes("AppleWebKit")) {
+    // Range inputs on Webkit browsers don't have a built-in "filled" portion,
+    // so instead it is handled here as a background.
+    const filledPercentage = `${((value - min) / (max - min)) * 100}%`;
+    style = {
+      background: `linear-gradient(
+        to right,
+        ${filledColor} 0%,
+        ${filledColor} ${filledPercentage},
+        ${emptyColor} ${filledPercentage},
+        ${emptyColor} 100%
+      )`,
+    };
+  }
   return (
     <Field error={error} help={help} label={label}>
       <div className="p-slider__wrapper">
@@ -49,15 +62,7 @@ export const Slider = ({
           onChange={onChange}
           required={required}
           step={step}
-          style={{
-            background: `linear-gradient(
-              to right,
-              ${filledColor} 0%,
-              ${filledColor} ${filledPercentage},
-              ${emptyColor} ${filledPercentage},
-              ${emptyColor} 100%
-            )`,
-          }}
+          style={style}
           type="range"
           value={value}
         />

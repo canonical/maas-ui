@@ -16,12 +16,12 @@ exports[`Slider renders with number input 1`] = `
       style={
         Object {
           "background": "linear-gradient(
-              to right,
-              #0066CC 0%,
-              #0066CC 50%,
-              transparent 50%,
-              transparent 100%
-            )",
+        to right,
+        #0066CC 0%,
+        #0066CC 50%,
+        transparent 50%,
+        transparent 100%
+      )",
         }
       }
       type="range"
@@ -57,12 +57,12 @@ exports[`Slider renders without number input 1`] = `
       style={
         Object {
           "background": "linear-gradient(
-              to right,
-              #0066CC 0%,
-              #0066CC 50%,
-              transparent 50%,
-              transparent 100%
-            )",
+        to right,
+        #0066CC 0%,
+        #0066CC 50%,
+        transparent 50%,
+        transparent 100%
+      )",
         }
       }
       type="range"
