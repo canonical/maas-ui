@@ -1,6 +1,7 @@
 import type { Device } from "app/store/device/types";
 import type { Host } from "app/store/types/host";
 import type { Model } from "app/store/types/model";
+import type { Subnet } from "app/store/subnet/types";
 import type { TSFixMe } from "app/base/types";
 
 export type DHCPSnippetHistory = Model & {
@@ -15,7 +16,7 @@ export type DHCPSnippet = Model & {
   history: DHCPSnippetHistory[];
   name: string;
   node: Host | Device | null;
-  subnet: TSFixMe | null; // Replace with Subnet["id"] when the Subnet type has been defined.
+  subnet: Subnet["id"] | null;
   updated: string;
   value: string;
 };

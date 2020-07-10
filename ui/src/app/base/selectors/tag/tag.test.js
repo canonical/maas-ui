@@ -1,22 +1,16 @@
+import {
+  tag as tagFactory,
+  tagState as tagStateFactory,
+} from "testing/factories";
 import tag from "./tag";
 
 describe("tag selectors", () => {
   it("can get all items", () => {
-    const items = [
-      {
-        id: 1,
-        created: "Mon, 16 Sep. 2019 12:22:36",
-        updated: "Mon, 16 Sep. 2019 12:22:36",
-        name: "virtual",
-        definition: "",
-        comment: "",
-        kernel_opts: null,
-      },
-    ];
+    const items = [tagFactory(), tagFactory()];
     const state = {
-      tag: {
+      tag: tagStateFactory({
         items,
-      },
+      }),
     };
     expect(tag.all(state)).toEqual(items);
   });

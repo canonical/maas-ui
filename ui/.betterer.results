@@ -195,7 +195,7 @@ exports[`stricter compilation`] = {
       [92, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [131, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.tsx:3217432980": [
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.tsx:3618445959": [
       [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
       [72, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
       [82, 29, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'(action?: MachineAction | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | undefined\' is not assignable to type \'MachineAction\'.\\n      Type \'undefined\' is not assignable to type \'MachineAction\'.", "167402512"],
@@ -214,12 +214,12 @@ exports[`stricter compilation`] = {
       [250, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [251, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:3049974690": [
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:3879941606": [
       [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
-      [46, 21, 17, "Property \'deployingSelected\' does not exist on type \'typeof machine\'.", "3830099655"],
-      [60, 51, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction | undefined\'.", "2087897566"],
-      [69, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
-      [80, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"]
+      [47, 21, 17, "Property \'deployingSelected\' does not exist on type \'typeof machine\'.", "3830099655"],
+      [61, 51, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction | undefined\'.", "2087897566"],
+      [70, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
+      [81, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/DeployFormFields.test.tsx:162052981": [
       [128, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
@@ -268,16 +268,16 @@ exports[`stricter compilation`] = {
       [252, 11, 5, "Object is of type \'unknown\'.", "173192470"],
       [256, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.tsx:1626104059": [
-      [36, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
-      [37, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
-      [52, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
-      [53, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"]
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.tsx:2618150815": [
+      [37, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
+      [38, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
+      [53, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
+      [54, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:2932673855": [
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:2669831063": [
       [0, 23, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [82, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
-      [126, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"]
+      [79, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
+      [123, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"]
     ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
@@ -290,6 +290,9 @@ exports[`stricter compilation`] = {
     ],
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
+    ],
+    "src/testing/factories/state.ts:2971454815": [
+      [151, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"]
     ]
   }`
 };
@@ -324,18 +327,35 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [13, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/dhcpsnippet/types.ts:4267311850": [
+    "src/app/store/dhcpsnippet/types.ts:2041796238": [
       [4, 13, 8, "RegExp match", "1152173309"],
-      [18, 9, 8, "RegExp match", "1152173309"],
       [24, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/domain/types.ts:2438698325": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [16, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/general/types.ts:1987535520": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [5, 9, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"],
+      [23, 9, 8, "RegExp match", "1152173309"],
+      [32, 9, 8, "RegExp match", "1152173309"],
+      [47, 9, 8, "RegExp match", "1152173309"],
+      [61, 9, 8, "RegExp match", "1152173309"],
+      [72, 9, 8, "RegExp match", "1152173309"],
+      [95, 9, 8, "RegExp match", "1152173309"],
+      [104, 9, 8, "RegExp match", "1152173309"],
+      [138, 9, 8, "RegExp match", "1152173309"],
+      [147, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/licensekeys/types.ts:2257386395": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [11, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:730274029": [
+    "src/app/store/machine/types.ts:33334270": [
       [2, 13, 8, "RegExp match", "1152173309"],
-      [50, 9, 8, "RegExp match", "1152173309"]
+      [43, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/notification/types.ts:910911970": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -354,17 +374,38 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
+    "src/app/store/scriptresults/types.ts:1509395648": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [30, 9, 8, "RegExp match", "1152173309"]
+    ],
     "src/app/store/scripts/types.ts:2264904018": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [15, 14, 8, "RegExp match", "1152173309"],
       [20, 14, 8, "RegExp match", "1152173309"],
       [52, 9, 8, "RegExp match", "1152173309"]
     ],
+    "src/app/store/service/types.ts:3748751936": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [10, 9, 8, "RegExp match", "1152173309"]
+    ],
     "src/app/store/sshkey/types.ts:2805027575": [
       [2, 13, 8, "RegExp match", "1152173309"],
       [19, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/sslkey/types.ts:518217640": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/status/types.ts:3358556468": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [5, 22, 8, "RegExp match", "1152173309"],
+      [8, 8, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/subnet/types.ts:587705301": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [46, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/tag/types.ts:2533761736": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [13, 9, 8, "RegExp match", "1152173309"]
     ],

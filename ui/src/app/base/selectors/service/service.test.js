@@ -1,25 +1,16 @@
+import {
+  service as serviceFactory,
+  serviceState as serviceStateFactory,
+} from "testing/factories";
 import service from "./service";
 
 describe("service selectors", () => {
   it("can get all items", () => {
-    const items = [
-      {
-        id: 1,
-        name: "ntp_rack",
-        status: "dead",
-        status_info: "",
-      },
-      {
-        id: 2,
-        name: "http",
-        status: "unknown",
-        status_info: "",
-      },
-    ];
+    const items = [serviceFactory(), serviceFactory()];
     const state = {
-      service: {
+      service: serviceStateFactory({
         items,
-      },
+      }),
     };
     expect(service.all(state)).toEqual(items);
   });

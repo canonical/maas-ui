@@ -1,13 +1,14 @@
+import { statusState as statusStateFactory } from "testing/factories";
 import status from "./status";
 
 describe("status", () => {
   it("can get the connected status", () => {
     const state = {
-      status: {
-        connected: false,
-      },
+      status: statusStateFactory({
+        connected: true,
+      }),
     };
-    expect(status.connected(state)).toBe(false);
+    expect(status.connected(state)).toBe(true);
   });
 
   it("can get the error status", () => {
