@@ -46,7 +46,7 @@ jobs:
           name: Install MAAS snap and set up postgres database
           command: |
             sudo systemctl enable snapd
-            sudo snap install maas --channel=latest/edge
+            sudo snap install maas --channel=2.8/edge
             sudo -iu postgres psql -c "CREATE USER \"$MAAS_DBUSER\" WITH ENCRYPTED PASSWORD '$MAAS_DBPASS'" >/dev/null
             sudo -iu postgres createdb -O "$MAAS_DBUSER" "$MAAS_DBNAME" >/dev/null
             pg_hba="/etc/postgresql/$POSTGRES_VERSION/main/pg_hba.conf"
