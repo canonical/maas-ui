@@ -8,8 +8,7 @@ export type ScriptsHistory = Model & {
 };
 
 export type ScriptsPackages = {
-  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
-  [x: string]: TSFixMe;
+  [x: string]: string[];
 };
 
 export type ScriptsParameters = {
