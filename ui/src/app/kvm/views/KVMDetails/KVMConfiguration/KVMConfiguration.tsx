@@ -75,10 +75,9 @@ const KVMConfiguration = (): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const loaded =
-    Boolean(pod) && resourcePoolsLoaded && tagsLoaded && zonesLoaded;
+  const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
 
-  if (loaded) {
+  if (typeof pod === "object" && loaded) {
     const podPassword = pod.type === "lxd" ? pod.password : pod.power_pass;
 
     return (

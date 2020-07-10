@@ -8,7 +8,6 @@ import {
   pod as podFactory,
   podState as podStateFactory,
 } from "testing/factories";
-import { formatHostType } from "app/kvm/utils";
 import KVMConfiguration from "../KVMConfiguration";
 
 const mockStore = configureStore();

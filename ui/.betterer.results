@@ -53,7 +53,7 @@ exports[`stricter compilation`] = {
       [335, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
       [373, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"]
     ],
-    "src/app/base/reducers/pod/pod.ts:3778994122": [
+    "src/app/base/reducers/pod/pod.ts:2323457215": [
       [27, 2, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2764002661"]
     ],
     "src/app/base/selectors/pod/pod.ts:3260989378": [
@@ -65,8 +65,28 @@ exports[`stricter compilation`] = {
       [54, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [70, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:114114633": [
-      [29, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
+    "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:4039034563": [
+      [30, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:3820128401": [
+      [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [83, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [100, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [104, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:4096304743": [
+      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
+      [5, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/caleb/Projects/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:1085219694": [
+      [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [40, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [77, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.tsx:3757238586": [
+      [0, 40, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:2892838463": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -367,8 +387,8 @@ exports[`no TSFixMe types`] = {
     ],
     "src/app/store/pod/types.ts:3311872753": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [38, 16, 8, "RegExp match", "1152173309"],
-      [48, 9, 8, "RegExp match", "1152173309"]
+      [39, 16, 8, "RegExp match", "1152173309"],
+      [49, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/resourcepool/types.ts:4045616415": [
       [0, 13, 8, "RegExp match", "1152173309"],
