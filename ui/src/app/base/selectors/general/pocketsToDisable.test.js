@@ -1,3 +1,7 @@
+import {
+  generalState as generalStateFactory,
+  pocketsToDisableState as pocketsToDisableStateFactory,
+} from "testing/factories";
 import pocketsToDisable from "./pocketsToDisable";
 
 describe("pocketsToDisable selectors", () => {
@@ -5,13 +9,11 @@ describe("pocketsToDisable selectors", () => {
     it("returns pocketsToDisable", () => {
       const data = ["updates", "security", "backports"];
       const state = {
-        general: {
-          pocketsToDisable: {
-            loading: false,
-            loaded: true,
+        general: generalStateFactory({
+          pocketsToDisable: pocketsToDisableStateFactory({
             data,
-          },
-        },
+          }),
+        }),
       };
       expect(pocketsToDisable.get(state)).toStrictEqual(data);
     });

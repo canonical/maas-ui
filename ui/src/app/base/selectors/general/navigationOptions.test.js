@@ -1,18 +1,20 @@
+import {
+  generalState as generalStateFactory,
+  navigationOptionsState as navigationOptionsStateFactory,
+  navigationOptions as navigationOptionsFactory,
+} from "testing/factories";
 import navigationOptions from "./navigationOptions";
 
 describe("navigationOptions selectors", () => {
   describe("get", () => {
     it("returns navigationOptions", () => {
-      const data = { rsd: true };
+      const data = navigationOptionsFactory();
       const state = {
-        general: {
-          navigationOptions: {
+        general: generalStateFactory({
+          navigationOptions: navigationOptionsStateFactory({
             data,
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
+          }),
+        }),
       };
       expect(navigationOptions.get(state)).toStrictEqual(data);
     });

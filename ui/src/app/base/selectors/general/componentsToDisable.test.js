@@ -1,3 +1,7 @@
+import {
+  generalState as generalStateFactory,
+  componentsToDisableState as componentsToDisableStateFactory,
+} from "testing/factories";
 import componentsToDisable from "./componentsToDisable";
 
 describe("componentsToDisable selectors", () => {
@@ -5,13 +9,11 @@ describe("componentsToDisable selectors", () => {
     it("returns componentsToDisable", () => {
       const data = ["restricted", "universe", "multiverse"];
       const state = {
-        general: {
-          componentsToDisable: {
-            loading: false,
-            loaded: true,
+        general: generalStateFactory({
+          componentsToDisable: componentsToDisableStateFactory({
             data,
-          },
-        },
+          }),
+        }),
       };
       expect(componentsToDisable.get(state)).toStrictEqual(data);
     });

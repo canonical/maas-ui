@@ -1,37 +1,20 @@
+import {
+  generalState as generalStateFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineAction as machineActionFactory,
+} from "testing/factories";
 import machineActions from "./machineActions";
 
 describe("machineActions selectors", () => {
   describe("get", () => {
     it("returns machineActions", () => {
-      const data = [
-        {
-          name: "commission",
-          title: "Commission...",
-          sentence: "commissioned",
-          type: "lifecycle",
-        },
-        {
-          name: "acquire",
-          title: "Acquire...",
-          sentence: "acquired",
-          type: "lifecycle",
-        },
-        {
-          name: "deploy",
-          title: "Deploy...",
-          sentence: "deployed",
-          type: "lifecycle",
-        },
-      ];
+      const data = [machineActionFactory(), machineActionFactory()];
       const state = {
-        general: {
-          machineActions: {
+        general: generalStateFactory({
+          machineActions: machineActionsStateFactory({
             data,
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
+          }),
+        }),
       };
       expect(machineActions.get(state)).toStrictEqual(data);
     });

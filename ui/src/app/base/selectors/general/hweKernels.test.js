@@ -1,25 +1,20 @@
+import {
+  generalState as generalStateFactory,
+  hweKernelsState as hweKernelsStateFactory,
+  hweKernel as hweKernelFactory,
+} from "testing/factories";
 import hweKernels from "./hweKernels";
 
 describe("hweKernels selectors", () => {
   describe("get", () => {
     it("returns hweKernels", () => {
-      const data = [
-        ["ga-18.04", "bionic (ga-18.04)"],
-        ["ga-18.04-lowlatency", "bionic (ga-18.04-lowlatency)"],
-        ["hwe-18.04-lowlatency", "bionic (hwe-18.04-lowlatency)"],
-        ["hwe-18.04", "bionic (hwe-18.04)"],
-        ["hwe-18.04-lowlatency-edge", "bionic (hwe-18.04-lowlatency-edge)"],
-        ["hwe-18.04-edge", "bionic (hwe-18.04-edge)"],
-      ];
+      const data = [hweKernelFactory(), hweKernelFactory()];
       const state = {
-        general: {
-          hweKernels: {
+        general: generalStateFactory({
+          hweKernels: hweKernelsStateFactory({
             data,
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
+          }),
+        }),
       };
       expect(hweKernels.get(state)).toStrictEqual(data);
     });

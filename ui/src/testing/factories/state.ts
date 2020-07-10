@@ -15,6 +15,20 @@ import type { ScriptsState } from "app/store/scripts/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
 import type { TokenState } from "app/store/token/types";
+import type {
+  ArchitecturesState,
+  ComponentsToDisableState,
+  DefaultMinHweKernelState,
+  GeneralState,
+  HWEKernelsState,
+  KnownArchitecturesState,
+  MachineActionsState,
+  NavigationOptionsState,
+  OSInfoState,
+  PocketsToDisableState,
+  PowerTypesState,
+  VersionState,
+} from "app/store/general/types";
 
 const defaultState = {
   errors: () => ({}),
@@ -23,6 +37,13 @@ const defaultState = {
   loading: false,
   saved: false,
   saving: false,
+};
+
+const defaultGeneralState = {
+  errors: () => ({}),
+  data: () => [],
+  loaded: false,
+  loading: false,
 };
 
 export const authState = define<AuthState>({
@@ -86,4 +107,66 @@ export const notificationState = define<NotificationState>({
 
 export const messageState = define<MessageState>({
   items: array(message),
+});
+
+export const architecturesState = define<ArchitecturesState>({
+  ...defaultGeneralState,
+});
+
+export const componentsToDisableState = define<ComponentsToDisableState>({
+  ...defaultGeneralState,
+});
+
+export const defaultMinHweKernelState = define<DefaultMinHweKernelState>({
+  ...defaultGeneralState,
+  data: "",
+});
+
+export const hweKernelsState = define<HWEKernelsState>({
+  ...defaultGeneralState,
+});
+
+export const knownArchitecturesState = define<KnownArchitecturesState>({
+  ...defaultGeneralState,
+});
+
+export const machineActionsState = define<MachineActionsState>({
+  ...defaultGeneralState,
+});
+
+export const navigationOptionsState = define<NavigationOptionsState>({
+  ...defaultGeneralState,
+  data: null,
+});
+
+export const osInfoState = define<OSInfoState>({
+  ...defaultGeneralState,
+  data: null,
+});
+
+export const pocketsToDisableState = define<PocketsToDisableState>({
+  ...defaultGeneralState,
+});
+
+export const powerTypesState = define<PowerTypesState>({
+  ...defaultGeneralState,
+});
+
+export const versionState = define<VersionState>({
+  ...defaultGeneralState,
+  data: "",
+});
+
+export const generalState = define<GeneralState>({
+  architectures: architecturesState,
+  componentsToDisable: componentsToDisableState,
+  defaultMinHweKernel: defaultMinHweKernelState,
+  hweKernels: hweKernelsState,
+  knownArchitectures: knownArchitecturesState,
+  machineActions: machineActionsState,
+  navigationOptions: navigationOptionsState,
+  osInfo: osInfoState,
+  pocketsToDisable: pocketsToDisableState,
+  powerTypes: powerTypesState,
+  version: versionState,
 });

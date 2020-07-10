@@ -1,3 +1,7 @@
+import {
+  generalState as generalStateFactory,
+  architecturesState as architecturesStateFactory,
+} from "testing/factories";
 import architectures from "./architectures";
 
 describe("architectures selectors", () => {
@@ -5,14 +9,11 @@ describe("architectures selectors", () => {
     it("returns architectures", () => {
       const data = ["amd64/generic"];
       const state = {
-        general: {
-          architectures: {
+        general: generalStateFactory({
+          architectures: architecturesStateFactory({
             data,
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
+          }),
+        }),
       };
       expect(architectures.get(state)).toStrictEqual(data);
     });

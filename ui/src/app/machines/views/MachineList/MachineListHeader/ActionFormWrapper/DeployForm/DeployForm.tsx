@@ -11,7 +11,8 @@ import {
   general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
-import type { Machine, MachineAction } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
+import type { MachineAction } from "app/store/general/types";
 import ActionForm from "app/base/components/ActionForm";
 import DeployFormFields from "./DeployFormFields";
 
