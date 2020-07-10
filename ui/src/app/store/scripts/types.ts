@@ -7,8 +7,18 @@ export type ScriptsHistory = Model & {
   data: string;
 };
 
-export type JSONObject = {
-  // Data from a Django JSONObjectField.
+export type ScriptsPackages = {
+  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
+  [x: string]: TSFixMe;
+};
+
+export type ScriptsParameters = {
+  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
+  [x: string]: TSFixMe;
+};
+
+export type ScriptsResults = {
+  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
   [x: string]: TSFixMe;
 };
 
@@ -23,16 +33,16 @@ export type Scripts = Model & {
   history: ScriptsHistory[];
   may_reboot: boolean;
   name: string;
-  packages: JSONObject;
+  packages: ScriptsPackages;
   parallel_name:
     | "Disabled"
     | "Run along other instances of this script"
     | "Run along any other script.";
   parallel: number;
-  parameters: JSONObject;
+  parameters: ScriptsParameters;
   recommission: boolean;
   resource_uri: string;
-  results: JSONObject;
+  results: ScriptsResults;
   tags: string[];
   timeout: string;
   title: string;
