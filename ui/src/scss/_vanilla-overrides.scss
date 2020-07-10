@@ -55,16 +55,20 @@ input[type="radio"] {
   margin-top: -0.5rem;
 }
 
-/* Chrome, Safari, Edge, Opera */
+// 10-07-2020 Caleb: Slider input misaligned when using type="number" + wrapper
+// should mirror normal form field spacing.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3163
+.p-slider__wrapper {
+  margin-bottom: $input-margin-bottom;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
-.p-slider__input[type=number] {
+.p-slider__input {
   -moz-appearance: textfield;
+  height: auto;
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
