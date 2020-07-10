@@ -354,12 +354,11 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scripts/types.ts:1395981335": [
+    "src/app/store/scripts/types.ts:2264904018": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [11, 14, 8, "RegExp match", "1152173309"],
-      [16, 14, 8, "RegExp match", "1152173309"],
-      [21, 14, 8, "RegExp match", "1152173309"],
-      [53, 9, 8, "RegExp match", "1152173309"]
+      [15, 14, 8, "RegExp match", "1152173309"],
+      [20, 14, 8, "RegExp match", "1152173309"],
+      [52, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/sshkey/types.ts:2805027575": [
       [2, 13, 8, "RegExp match", "1152173309"],
@@ -386,5 +385,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `671`
+  value: `672`
 };
