@@ -1,4 +1,5 @@
 {
-    "baseUrl": "http://localhost:8400",
-    "video": false
+  "baseUrl": "http://localhost:8400",
+  "projectId": "maas-ui",
+  "video": false
 }
