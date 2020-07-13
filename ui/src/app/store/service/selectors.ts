@@ -1,4 +1,5 @@
 import type { RootState } from "app/store/root/types";
+import type { Service } from "app/store/service/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -6,7 +7,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all services.
  */
-const all = (state: RootState): TSFixMe => state.service.items;
+const all = (state: RootState): Service[] => state.service.items;
 
 /**
  * Whether services are loading.

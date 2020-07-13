@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all dhcp snippets.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all dhcp snippets.
  */
-const all = (state: RootState): TSFixMe => state.dhcpsnippet.items;
+const all = (state: RootState): DHCPSnippet[] => state.dhcpsnippet.items;
 
 /**
  * Get dhcp snippets that match a term.
@@ -19,7 +19,7 @@ const search = createSelector(
   [all, (_state: RootState, term: string) => term],
   (dhcpsnippets, term) =>
     dhcpsnippets.filter(
-      (snippet: TSFixMe) =>
+      (snippet: DHCPSnippet) =>
         snippet.name.includes(term) || snippet.description.includes(term)
     )
 );
@@ -72,9 +72,9 @@ const saved = (state: RootState): boolean => state.dhcpsnippet.saved;
  * @returns {Array} A dhcp snippet.
  */
 const getById = createSelector(
-  [all, (_state: RootState, id: TSFixMe) => id],
+  [all, (_state: RootState, id: DHCPSnippet["id"]) => id],
   (dhcpsnippets, id) =>
-    dhcpsnippets.find((snippet: TSFixMe) => snippet.id === id)
+    dhcpsnippets.find((snippet: DHCPSnippet) => snippet.id === id)
 );
 
 const dhcpsnippet = {

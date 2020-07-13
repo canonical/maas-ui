@@ -23,7 +23,7 @@ describe("hweKernels selectors", () => {
   describe("loading", () => {
     it("returns hweKernels loading state", () => {
       const loading = true;
-      const state: TSFixMe = {
+      const state = {
         general: {
           hweKernels: {
             data: [],
@@ -40,7 +40,7 @@ describe("hweKernels selectors", () => {
   describe("loaded", () => {
     it("returns hweKernels loaded state", () => {
       const loaded = true;
-      const state: TSFixMe = {
+      const state = {
         general: {
           hweKernels: {
             data: [],
@@ -57,7 +57,7 @@ describe("hweKernels selectors", () => {
   describe("errors", () => {
     it("returns hweKernels errors state", () => {
       const errors = "Cannot fetch hweKernels.";
-      const state: TSFixMe = {
+      const state = {
         general: {
           hweKernels: {
             data: [],

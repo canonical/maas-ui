@@ -5,16 +5,21 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { generateGeneralSelector } from "./utils";
-import type { TSFixMe } from "app/base/types";
+import type { Version } from "app/store/general/types";
 
-const version = generateGeneralSelector("version");
+const generalSelectors = generateGeneralSelector<Version>("version");
 
-version.minor = createSelector([version.get], (data: TSFixMe) => {
+const minor = createSelector([generalSelectors.get], (data) => {
   const splitVersion = data.split(".");
   if (splitVersion[0] && splitVersion[1]) {
     return `${splitVersion[0]}.${splitVersion[1]}`;
   }
   return "";
 });
+
+const version = {
+  ...generalSelectors,
+  minor,
+};
 
 export default version;

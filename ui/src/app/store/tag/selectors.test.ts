@@ -16,7 +16,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       tag: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       tag: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("tag selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state: TSFixMe = {
+    const state = {
       tag: {
         errors: "Data is incorrect",
       },

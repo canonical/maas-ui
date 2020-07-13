@@ -16,7 +16,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       subnet: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       subnet: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("subnet selectors", () => {
   });
 
   it("can get a subnet by id", () => {
-    const state: TSFixMe = {
+    const state = {
       subnet: {
         items: [
           { name: "maas.test", id: 808 },

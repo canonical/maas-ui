@@ -1,4 +1,5 @@
 import type { RootState } from "app/store/root/types";
+import type { SSHKey } from "app/store/sshkey/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -6,7 +7,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.sshkey.items.
  */
-const all = (state: RootState): TSFixMe => state.sshkey.items;
+const all = (state: RootState): SSHKey[] => state.sshkey.items;
 
 /**
  * Whether the SSH keys are loading.

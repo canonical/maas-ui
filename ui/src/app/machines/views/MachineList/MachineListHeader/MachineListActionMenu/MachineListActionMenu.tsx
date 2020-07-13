@@ -65,9 +65,7 @@ type Props = {
 
 export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const actionOptions: MachineAction[] = useSelector(
-    generalSelectors.machineActions.get
-  );
+  const actionOptions = useSelector(generalSelectors.machineActions.get);
   const selectedMachines = useSelector(machineSelectors.selected);
 
   useEffect(() => {

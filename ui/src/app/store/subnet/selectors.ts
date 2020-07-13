@@ -1,14 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
+import type { Subnet } from "app/store/subnet/types";
 
 /**
  * Returns all subnets.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all subnets.
  */
-const all = (state: RootState): TSFixMe => state.subnet.items;
+const all = (state: RootState): Subnet[] => state.subnet.items;
 
 /**
  * Whether subnets are loading.
@@ -30,8 +30,8 @@ const loaded = (state: RootState): boolean => state.subnet.loaded;
  * @returns {Array} A subnet.
  */
 const getById = createSelector(
-  [all, (_state: RootState, id: TSFixMe) => id],
-  (subnets, id) => subnets.find((subnet: TSFixMe) => subnet.id === id)
+  [all, (_state: RootState, id: Subnet["id"]) => id],
+  (subnets, id) => subnets.find((subnet: Subnet) => subnet.id === id)
 );
 
 const subnet = {

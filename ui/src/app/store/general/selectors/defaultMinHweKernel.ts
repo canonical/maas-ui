@@ -3,7 +3,10 @@
  */
 
 import { generateGeneralSelector } from "./utils";
+import type { DefaultMinHweKernel } from "app/store/general/types";
 
-const defaultMinHweKernel = generateGeneralSelector("defaultMinHweKernel");
+const defaultMinHweKernel = generateGeneralSelector<DefaultMinHweKernel[]>(
+  "defaultMinHweKernel"
+);
 
 export default defaultMinHweKernel;

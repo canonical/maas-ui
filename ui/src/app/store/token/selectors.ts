@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
+import type { Token } from "app/store/token/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -8,7 +9,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.token.items.
  */
-const all = (state: RootState): TSFixMe => state.token.items;
+const all = (state: RootState): Token[] => state.token.items;
 
 /**
  * Whether the authorisation tokens are loading.
@@ -53,8 +54,8 @@ const saved = (state: RootState): boolean => state.token.saved;
  */
 
 const getById = createSelector(
-  [all, (_state: RootState, id: TSFixMe) => id],
-  (tokens, id) => tokens.find((token: TSFixMe) => token.id === id)
+  [all, (_state: RootState, id: Token["id"]) => id],
+  (tokens, id) => tokens.find((token: Token) => token.id === id)
 );
 
 const token = {

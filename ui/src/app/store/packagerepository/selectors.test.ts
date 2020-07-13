@@ -16,7 +16,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         saving: true,
         items: [],
@@ -46,7 +46,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         saved: true,
         items: [],
@@ -56,7 +56,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get packagerepository errors", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         errors: { name: "Name already exists" },
         items: [],
@@ -68,7 +68,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the count", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         loading: true,
         items: [{ name: "foo" }, { name: "bar" }],
@@ -78,7 +78,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get a repository by id", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         loading: true,
         items: [
@@ -94,7 +94,7 @@ describe("packagerepository selectors", () => {
   });
 
   it("can search items", () => {
-    const state: TSFixMe = {
+    const state = {
       packagerepository: {
         items: [
           { name: "main_archive", url: "www.website.com" },

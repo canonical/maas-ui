@@ -5,9 +5,18 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { generateGeneralSelector } from "./utils";
 import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
+import type {
+  OSInfo,
+  OSInfoOSystem,
+  OSInfoRelease,
+} from "app/store/general/types";
 
-const osInfo = generateGeneralSelector("osInfo");
+const generalSelectors = generateGeneralSelector<OSInfo>("osInfo");
+
+export type OSInfoOption = {
+  label: string;
+  value: string;
+};
 
 /**
  * Returns kernels data.
@@ -15,7 +24,10 @@ const osInfo = generateGeneralSelector("osInfo");
  * @param {String} release - The release to get kernel options for.
  * @returns {Array} - The available kernel options.
  */
-const _getUbuntuKernelOptions = (data: TSFixMe, release: TSFixMe): TSFixMe => {
+const _getUbuntuKernelOptions = (
+  data: OSInfo,
+  release: string
+): OSInfoOption[] => {
   let kernelOptions = [];
 
   if (data.kernels && data.kernels.ubuntu && data.kernels.ubuntu[release]) {
@@ -36,8 +48,8 @@ const _getUbuntuKernelOptions = (data: TSFixMe, release: TSFixMe): TSFixMe => {
  * @param {String} release - The release to get kernel options for.
  * @returns {Array} - The available kernel options.
  */
-osInfo.getUbuntuKernelOptions = createSelector(
-  [osInfo.get, (_state: RootState, release: TSFixMe) => release],
+const getUbuntuKernelOptions = createSelector(
+  [generalSelectors.get, (_state: RootState, release: string) => release],
   (allOsInfo, release) => _getUbuntuKernelOptions(allOsInfo, release)
 );
 
@@ -46,9 +58,9 @@ osInfo.getUbuntuKernelOptions = createSelector(
  * @param {Object} state - the redux state
  * @returns {Object} - all ubuntu kernel options
  */
-osInfo.getAllUbuntuKernelOptions = createSelector(
-  [osInfo.get],
-  (allOsInfo: TSFixMe) => {
+const getAllUbuntuKernelOptions = createSelector(
+  [generalSelectors.get],
+  (allOsInfo: OSInfo) => {
     const allUbuntuKernelOptions = {};
 
     if (allOsInfo.kernels && allOsInfo.kernels.ubuntu) {
@@ -67,13 +79,13 @@ osInfo.getAllUbuntuKernelOptions = createSelector(
  * @param {String} os - the OS to get releases of
  * @returns {Array} - the available OS releases
  */
-const _getOsReleases = (allOsInfo: TSFixMe, os: TSFixMe): TSFixMe => {
+const _getOsReleases = (allOsInfo: OSInfo, os: string): OSInfoOption[] => {
   let osReleases = [];
 
   if (allOsInfo.releases) {
     osReleases = allOsInfo.releases
-      .filter((release: TSFixMe) => release[0].includes(os))
-      .map((release: TSFixMe) => ({
+      .filter((release: OSInfoRelease) => release[0].includes(os))
+      .map((release: OSInfoRelease) => ({
         value: release[0].split("/")[1],
         label: release[1],
       }));
@@ -88,8 +100,8 @@ const _getOsReleases = (allOsInfo: TSFixMe, os: TSFixMe): TSFixMe => {
  * @param {String} os - the OS to get releases of
  * @returns {Array} - the available OS releases
  */
-osInfo.getOsReleases = createSelector(
-  [osInfo.get, (_state: RootState, os: TSFixMe) => os],
+const getOsReleases = createSelector(
+  [generalSelectors.get, (_state: RootState, os: string) => os],
   (allOsInfo, os) => _getOsReleases(allOsInfo, os)
 );
 
@@ -98,18 +110,21 @@ osInfo.getOsReleases = createSelector(
  * @param {Object} state - the redux state
  * @returns {Object} - all OS releases
  */
-osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo: TSFixMe) => {
-  const allOsReleases = {};
+const getAllOsReleases = createSelector(
+  [generalSelectors.get],
+  (allOsInfo: OSInfo): { [x: string]: OSInfoOption[] } => {
+    const allOsReleases = {};
 
-  if (allOsInfo.osystems && allOsInfo.releases) {
-    allOsInfo.osystems.forEach((osystem: TSFixMe) => {
-      const os = osystem[0];
-      allOsReleases[os] = _getOsReleases(allOsInfo, os);
-    });
+    if (allOsInfo.osystems && allOsInfo.releases) {
+      allOsInfo.osystems.forEach((osystem: OSInfoOSystem) => {
+        const os = osystem[0];
+        allOsReleases[os] = _getOsReleases(allOsInfo, os);
+      });
+    }
+
+    return allOsReleases;
   }
-
-  return allOsReleases;
-});
+);
 
 /**
  * Returns an object with all OS releases
@@ -117,29 +132,26 @@ osInfo.getAllOsReleases = createSelector([osInfo.get], (allOsInfo: TSFixMe) => {
  * @returns {Object} - all OS releases
  *
  */
-osInfo.getLicensedOsReleases = createSelector(
-  [osInfo.getAllOsReleases],
-  (releases) => {
-    const results = {};
-    for (const [key, value] of Object.entries(releases)) {
-      const licensedReleases = value.filter((release: TSFixMe) => {
-        return release.value.endsWith("*");
+const getLicensedOsReleases = createSelector([getAllOsReleases], (releases) => {
+  const results = {};
+  for (const [key, value] of Object.entries(releases)) {
+    const licensedReleases = value.filter((release) => {
+      return release.value.endsWith("*");
+    });
+
+    if (licensedReleases.length > 0) {
+      const releases = licensedReleases.map((r) => {
+        r.value = r.value.slice(0, -1);
+        return r;
       });
-
-      if (licensedReleases.length > 0) {
-        const releases = licensedReleases.map((r: TSFixMe) => {
-          r.value = r.value.slice(0, -1);
-          return r;
-        });
-        results[key] = releases;
-      }
+      results[key] = releases;
     }
-    return results;
   }
-);
+  return results;
+});
 
-osInfo.getLicensedOsystems = createSelector(
-  [osInfo.getLicensedOsReleases],
+const getLicensedOsystems = createSelector(
+  [getLicensedOsReleases],
   (releases) => {
     const osystems = Object.keys(releases);
     if (osystems) {
@@ -151,5 +163,15 @@ osInfo.getLicensedOsystems = createSelector(
     return [];
   }
 );
+
+const osInfo = {
+  ...generalSelectors,
+  getUbuntuKernelOptions,
+  getAllUbuntuKernelOptions,
+  getOsReleases,
+  getAllOsReleases,
+  getLicensedOsReleases,
+  getLicensedOsystems,
+};
 
 export default osInfo;

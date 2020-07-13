@@ -84,9 +84,12 @@ export type OSInfoKernels = {
   [x: string]: OSInfoOS;
 };
 
+export type OSInfoOSystem = [string, string];
+export type OSInfoRelease = [string, string];
+
 export type OSInfo = {
-  osystems: [string, string][];
-  releases: [string, string][];
+  osystems: OSInfoOSystem[];
+  releases: OSInfoRelease[];
   kernels: OSInfoKernels;
   default_osystem: string;
   default_release: string;
@@ -109,13 +112,6 @@ export type PocketsToDisableState = {
 };
 
 export type Choice = [string, string];
-
-export type MachineAction = {
-  name: string;
-  sentence: string;
-  title: string;
-  type: string;
-};
 
 export type PowerField = {
   choices: Choice[];

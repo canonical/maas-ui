@@ -3,7 +3,10 @@
  */
 
 import { generateGeneralSelector } from "./utils";
+import type { KnownArchitecture } from "app/store/general/types";
 
-const knownArchitectures = generateGeneralSelector("knownArchitectures");
+const knownArchitectures = generateGeneralSelector<KnownArchitecture[]>(
+  "knownArchitectures"
+);
 
 export default knownArchitectures;

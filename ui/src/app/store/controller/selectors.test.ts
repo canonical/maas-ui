@@ -1,9 +1,8 @@
-import type { TSFixMe } from "app/base/types";
 import controller from "./selectors";
 
 describe("controller selectors", () => {
   it("can get all items", () => {
-    const state: TSFixMe = {
+    const state = {
       controller: {
         items: [{ name: "maas.test" }],
       },
@@ -12,7 +11,7 @@ describe("controller selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       controller: {
         loading: true,
         items: [],
@@ -22,7 +21,7 @@ describe("controller selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       controller: {
         loaded: true,
         items: [],
@@ -32,7 +31,7 @@ describe("controller selectors", () => {
   });
 
   it("can get a controller by id", () => {
-    const state: TSFixMe = {
+    const state = {
       controller: {
         items: [
           { name: "maas.test", system_id: 808 },

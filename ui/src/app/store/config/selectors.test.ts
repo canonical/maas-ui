@@ -19,7 +19,7 @@ describe("config selectors", () => {
 
   describe("loading", () => {
     it("returns config loading state", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("config selectors", () => {
 
   describe("loaded", () => {
     it("returns config loaded state", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("config selectors", () => {
 
   describe("saved", () => {
     it("returns config saved state", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           saving: false,
           saved: true,
@@ -58,7 +58,7 @@ describe("config selectors", () => {
 
   describe("defaultStorageLayout", () => {
     it("returns MAAS config for default storage layout", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -71,7 +71,7 @@ describe("config selectors", () => {
 
   describe("storageLayoutOptions", () => {
     it("returns array of storage layout options, formatted as objects", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -102,7 +102,7 @@ describe("config selectors", () => {
 
   describe("enableDiskErasing", () => {
     it("returns MAAS config for enabling disk erase on release", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -115,7 +115,7 @@ describe("config selectors", () => {
 
   describe("diskEraseWithSecure", () => {
     it("returns MAAS config for enabling disk erase with secure erase", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -128,7 +128,7 @@ describe("config selectors", () => {
 
   describe("diskEraseWithQuick", () => {
     it("returns MAAS config for enabling disk erase with quick erase", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -141,7 +141,7 @@ describe("config selectors", () => {
 
   describe("httpProxy", () => {
     it("returns MAAS config for http proxy", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [{ name: "http_proxy", value: "foo" }],
         },
@@ -152,7 +152,7 @@ describe("config selectors", () => {
 
   describe("enableHttpProxy", () => {
     it("returns MAAS config for enabling httpProxy", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [{ name: "enable_http_proxy", value: "bar" }],
         },
@@ -163,7 +163,7 @@ describe("config selectors", () => {
 
   describe("usePeerProxy", () => {
     it("returns MAAS config for enabling peer proxy", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [{ name: "use_peer_proxy", value: "baz" }],
         },
@@ -174,7 +174,7 @@ describe("config selectors", () => {
 
   describe("proxyType", () => {
     it("returns 'noProxy' if enable_http_proxy is false", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [{ name: "enable_http_proxy", value: false }],
         },
@@ -183,7 +183,7 @@ describe("config selectors", () => {
     });
 
     it("returns 'builtInProxy' if enable_http_proxy is true and http_proxy is empty", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [
             { name: "enable_http_proxy", value: true },
@@ -195,7 +195,7 @@ describe("config selectors", () => {
     });
 
     it("returns 'externalProxy' if enable_http_proxy is true and http_proxy is not empty", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [
             { name: "enable_http_proxy", value: true },
@@ -207,7 +207,7 @@ describe("config selectors", () => {
     });
 
     it("returns 'peerProxy' if enable_http_proxy is true, http_proxy is not empty and use_peer_proxy is true", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           items: [
             { name: "enable_http_proxy", value: true },
@@ -222,7 +222,7 @@ describe("config selectors", () => {
 
   describe("maasName", () => {
     it("returns MAAS config for maas name", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -235,7 +235,7 @@ describe("config selectors", () => {
 
   describe("analyticsEnabled", () => {
     it("returns MAAS config for enable analytics", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -248,7 +248,7 @@ describe("config selectors", () => {
 
   describe("commissioningDistroSeries", () => {
     it("returns MAAS config for default distro series", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -261,7 +261,7 @@ describe("config selectors", () => {
 
   describe("distroSeriesOptions", () => {
     it("returns array of distro series options, formatted as objects", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -285,7 +285,7 @@ describe("config selectors", () => {
 
   describe("defaultMinKernelVersion", () => {
     it("returns MAAS config for default kernel version", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -298,7 +298,7 @@ describe("config selectors", () => {
 
   describe("kernelParams", () => {
     it("returns MAAS config for kernel parameters", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -311,7 +311,7 @@ describe("config selectors", () => {
 
   describe("windowsKmsHost", () => {
     it("returns Windows KMS host", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -324,7 +324,7 @@ describe("config selectors", () => {
 
   describe("vCenterServer", () => {
     it("returns vCenter server", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -337,7 +337,7 @@ describe("config selectors", () => {
 
   describe("vCenterUsername", () => {
     it("returns vCenter username", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -350,7 +350,7 @@ describe("config selectors", () => {
 
   describe("vCenterPassword", () => {
     it("returns vCenter password", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -363,7 +363,7 @@ describe("config selectors", () => {
 
   describe("vCenterDatacenter", () => {
     it("returns vCenter datacenter", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -376,7 +376,7 @@ describe("config selectors", () => {
 
   describe("thirdPartyDriversEnabled", () => {
     it("returns value of enable_third_party_drivers", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -389,7 +389,7 @@ describe("config selectors", () => {
 
   describe("defaultOSystem", () => {
     it("returns MAAS config for default OS", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -402,7 +402,7 @@ describe("config selectors", () => {
 
   describe("defaultOSystemOptions", () => {
     it("returns array of default OS options, formatted as objects", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -433,7 +433,7 @@ describe("config selectors", () => {
 
   describe("defaultDistroSeries", () => {
     it("returns MAAS config for default distro series", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,
@@ -446,7 +446,7 @@ describe("config selectors", () => {
 
   describe("completedIntro", () => {
     it("returns MAAS config for completed intro", () => {
-      const state: TSFixMe = {
+      const state = {
         config: {
           loading: false,
           loaded: true,

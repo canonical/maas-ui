@@ -29,7 +29,7 @@ describe("osInfo selectors", () => {
         default_osystem: "",
         default_release: "",
       };
-      const state: TSFixMe = {
+      const state = {
         general: {
           osInfo: {
             loading: true,
@@ -51,7 +51,7 @@ describe("osInfo selectors", () => {
         default_osystem: "",
         default_release: "",
       };
-      const state: TSFixMe = {
+      const state = {
         general: {
           osInfo: {
             loading: false,
@@ -67,7 +67,7 @@ describe("osInfo selectors", () => {
   describe("errors", () => {
     it("returns osInfo errors state", () => {
       const errors = "Cannot fetch os info.";
-      const state: TSFixMe = {
+      const state = {
         general: {
           osInfo: {
             data: [],
@@ -97,7 +97,7 @@ describe("osInfo selectors", () => {
           },
         },
       };
-      const state: TSFixMe = {
+      const state = {
         general: {
           osInfo: {
             loading: false,
@@ -130,7 +130,7 @@ describe("osInfo selectors", () => {
           },
         },
       };
-      const state: TSFixMe = {
+      const state = {
         general: {
           osInfo: {
             loading: false,
@@ -163,7 +163,7 @@ describe("osInfo selectors", () => {
         ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
       ],
     };
-    let state: TSFixMe;
+    let state;
 
     beforeEach(() => {
       state = {
@@ -208,7 +208,7 @@ describe("osInfo selectors", () => {
         ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
       ],
     };
-    let state: TSFixMe;
+    let state;
 
     beforeEach(() => {
       state = {
@@ -248,7 +248,7 @@ describe("osInfo selectors", () => {
         ["windows/win2012*", "Windows 2012 Server"],
       ],
     };
-    let state: TSFixMe;
+    let state;
 
     beforeEach(() => {
       state = {
@@ -281,7 +281,7 @@ describe("osInfo selectors", () => {
         ["windows/win2012*", "Windows 2012 Server"],
       ],
     };
-    let state: TSFixMe;
+    let state;
 
     beforeEach(() => {
       state = {

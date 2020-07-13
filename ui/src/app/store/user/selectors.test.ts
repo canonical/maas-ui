@@ -1,4 +1,4 @@
-import user from "./user";
+import user from "./selectors";
 import {
   user as userFactory,
   userState as userStateFactory,
@@ -6,7 +6,7 @@ import {
 
 describe("users selectors", () => {
   it("can get items", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         items: [
           userFactory({
@@ -21,7 +21,7 @@ describe("users selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         loading: true,
       }),
@@ -30,7 +30,7 @@ describe("users selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         loaded: true,
       }),
@@ -39,7 +39,7 @@ describe("users selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         saving: true,
       }),
@@ -48,7 +48,7 @@ describe("users selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         saved: true,
       }),
@@ -57,7 +57,7 @@ describe("users selectors", () => {
   });
 
   it("can get the count", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         items: [
           userFactory({ username: "foo" }),
@@ -69,7 +69,7 @@ describe("users selectors", () => {
   });
 
   it("can get a user by id", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         items: [
           userFactory({ username: "foo", id: 808 }),
@@ -82,7 +82,7 @@ describe("users selectors", () => {
   });
 
   it("can search items", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         items: [
           userFactory({
@@ -119,7 +119,7 @@ describe("users selectors", () => {
   });
 
   it("can get user errors", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         errors: { username: "Username already exists" },
       }),

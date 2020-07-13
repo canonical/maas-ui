@@ -1,13 +1,13 @@
-import auth from "./auth";
 import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import auth from "./selectors";
 
 describe("auth", () => {
   it("can get the current user details", () => {
-    const state: TSFixMe = {
+    const state = {
       user: userStateFactory({
         auth: authStateFactory({
           user: userFactory({ username: "admin" }),
@@ -18,7 +18,7 @@ describe("auth", () => {
   });
 
   it("can get the current user loading status", () => {
-    const state: TSFixMe = {
+    const state = {
       user: {
         auth: {
           loading: true,
@@ -29,7 +29,7 @@ describe("auth", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: {
         auth: {
           loaded: true,
@@ -40,7 +40,7 @@ describe("auth", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: {
         auth: {
           saving: true,
@@ -51,7 +51,7 @@ describe("auth", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       user: {
         auth: {
           saved: true,
@@ -62,7 +62,7 @@ describe("auth", () => {
   });
 
   it("can get user errors", () => {
-    const state: TSFixMe = {
+    const state = {
       user: {
         auth: {
           errors: { username: "Username already exists" },

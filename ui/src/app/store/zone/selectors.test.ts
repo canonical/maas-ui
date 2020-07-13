@@ -16,7 +16,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       zone: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       zone: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("zone selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state: TSFixMe = {
+    const state = {
       zone: {
         errors: "Data is incorrect",
       },
@@ -45,7 +45,7 @@ describe("zone selectors", () => {
   });
 
   it("can get a zone by id", () => {
-    const state: TSFixMe = {
+    const state = {
       zone: {
         items: [
           { name: "foo", id: 1 },

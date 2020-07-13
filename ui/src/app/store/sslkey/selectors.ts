@@ -1,4 +1,5 @@
 import type { RootState } from "app/store/root/types";
+import type { SSLKey } from "app/store/sslkey/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -6,7 +7,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.sslkey.items.
  */
-const all = (state: RootState): TSFixMe => state.sslkey.items;
+const all = (state: RootState): SSLKey[] => state.sslkey.items;
 
 /**
  * Whether the SSL keys are loading.

@@ -3,7 +3,10 @@
  */
 
 import { generateGeneralSelector } from "./utils";
+import type { NavigationOptions } from "app/store/general/types";
 
-const navigationOptions = generateGeneralSelector("navigationOptions");
+const navigationOptions = generateGeneralSelector<NavigationOptions>(
+  "navigationOptions"
+);
 
 export default navigationOptions;

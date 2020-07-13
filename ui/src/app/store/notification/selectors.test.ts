@@ -1,4 +1,3 @@
-import type { TSFixMe } from "app/base/types";
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,
@@ -7,7 +6,7 @@ import notification from "./selectors";
 
 describe("notification selectors", () => {
   it("can get all items", () => {
-    const state: TSFixMe = {
+    const state = {
       notification: notificationStateFactory({
         items: [notificationFactory({ message: "Test message" })],
       }),
@@ -18,7 +17,7 @@ describe("notification selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       notification: {
         loading: true,
         items: [],
@@ -28,7 +27,7 @@ describe("notification selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       notification: {
         loaded: true,
         items: [],
@@ -38,7 +37,7 @@ describe("notification selectors", () => {
   });
 
   it("can get a notification by id", () => {
-    const state: TSFixMe = {
+    const state = {
       notification: {
         items: [
           {

@@ -19,7 +19,7 @@ describe("sslkey selectors", () => {
 
   describe("loading", () => {
     it("returns sslkey loading state", () => {
-      const state: TSFixMe = {
+      const state = {
         sslkey: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("sslkey selectors", () => {
 
   describe("loaded", () => {
     it("returns sslkey loaded state", () => {
-      const state: TSFixMe = {
+      const state = {
         sslkey: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("sslkey selectors", () => {
 
   describe("errors", () => {
     it("returns sslkey error state", () => {
-      const state: TSFixMe = {
+      const state = {
         sslkey: {
           errors: "Unable to list SSL keys.",
           loading: false,
@@ -59,7 +59,7 @@ describe("sslkey selectors", () => {
 
   describe("saving", () => {
     it("returns sslkey saving state", () => {
-      const state: TSFixMe = {
+      const state = {
         sslkey: {
           saving: false,
           items: [],
@@ -71,7 +71,7 @@ describe("sslkey selectors", () => {
 
   describe("saved", () => {
     it("returns sslkey saved state", () => {
-      const state: TSFixMe = {
+      const state = {
         sslkey: {
           saved: true,
           items: [],

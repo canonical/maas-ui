@@ -1,4 +1,5 @@
 import type { RootState } from "app/store/root/types";
+import type { Tag } from "app/store/tag/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -6,7 +7,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all tags.
  */
-const all = (state: RootState): TSFixMe => state.tag.items;
+const all = (state: RootState): Tag[] => state.tag.items;
 
 /**
  * Whether tags are loading.

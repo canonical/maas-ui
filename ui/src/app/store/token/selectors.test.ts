@@ -19,7 +19,7 @@ describe("token selectors", () => {
 
   describe("loading", () => {
     it("returns token loading state", () => {
-      const state: TSFixMe = {
+      const state = {
         token: {
           loading: false,
           loaded: true,
@@ -32,7 +32,7 @@ describe("token selectors", () => {
 
   describe("loaded", () => {
     it("returns token loaded state", () => {
-      const state: TSFixMe = {
+      const state = {
         token: {
           loading: false,
           loaded: true,
@@ -45,7 +45,7 @@ describe("token selectors", () => {
 
   describe("errors", () => {
     it("returns token error state", () => {
-      const state: TSFixMe = {
+      const state = {
         token: {
           errors: "Unable to list SSH keys.",
           loading: false,
@@ -59,7 +59,7 @@ describe("token selectors", () => {
 
   describe("saving", () => {
     it("returns token saving state", () => {
-      const state: TSFixMe = {
+      const state = {
         token: {
           saving: false,
           items: [],
@@ -71,7 +71,7 @@ describe("token selectors", () => {
 
   describe("saved", () => {
     it("returns token saved state", () => {
-      const state: TSFixMe = {
+      const state = {
         token: {
           saved: true,
           items: [],

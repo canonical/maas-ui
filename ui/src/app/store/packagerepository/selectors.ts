@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { PackageRepository } from "app/store/packagerepository/types";
 import type { RootState } from "app/store/root/types";
 import type { TSFixMe } from "app/base/types";
 
@@ -8,7 +9,8 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all repositories.
  */
-const all = (state: RootState): TSFixMe => state.packagerepository.items;
+const all = (state: RootState): PackageRepository[] =>
+  state.packagerepository.items;
 
 /**
  * Returns count of all repositories
@@ -62,7 +64,8 @@ const search = createSelector(
   [all, (_state: RootState, term: string) => term],
   (repositories, term) =>
     repositories.filter(
-      (repo: TSFixMe) => repo.name.includes(term) || repo.url.includes(term)
+      (repo: PackageRepository) =>
+        repo.name.includes(term) || repo.url.includes(term)
     )
 );
 
@@ -73,8 +76,9 @@ const search = createSelector(
  * @returns {Object} Repository that matches id.
  */
 const getById = createSelector(
-  [all, (_state: RootState, id: TSFixMe) => id],
-  (repositories, id) => repositories.find((repo: TSFixMe) => repo.id === id)
+  [all, (_state: RootState, id: PackageRepository["id"]) => id],
+  (repositories, id) =>
+    repositories.find((repo: PackageRepository) => repo.id === id)
 );
 
 const packagerepository = {

@@ -16,7 +16,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         loaded: true,
         items: [],
@@ -36,7 +36,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can search items", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         items: [
           {
@@ -67,7 +67,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the count", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         loading: true,
         items: [{ name: "class" }, { name: "lease" }],
@@ -77,7 +77,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         saving: true,
         items: [],
@@ -87,7 +87,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         saved: true,
         items: [],
@@ -97,7 +97,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get errors", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         errors: { name: "Name not provided" },
         items: [],
@@ -109,7 +109,7 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get a dhcp snippet by id", () => {
-    const state: TSFixMe = {
+    const state = {
       dhcpsnippet: {
         loading: true,
         items: [

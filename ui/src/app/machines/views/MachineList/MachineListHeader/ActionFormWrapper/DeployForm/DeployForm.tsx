@@ -41,7 +41,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
-  const osInfo: TSFixMe = useSelector(generalSelectors.osInfo.get);
+  const osInfo = useSelector(generalSelectors.osInfo.get);
   const deployingSelected: Machine["system_id"][] = useSelector(
     machineSelectors.deployingSelected
   );

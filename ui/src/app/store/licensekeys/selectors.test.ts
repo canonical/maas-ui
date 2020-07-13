@@ -20,7 +20,7 @@ describe("licensekeys selectors", () => {
 
   describe("loading", () => {
     it("returns licensekeys loading state", () => {
-      const state: TSFixMe = {
+      const state = {
         licensekeys: {
           loading: true,
           loaded: false,
@@ -33,7 +33,7 @@ describe("licensekeys selectors", () => {
 
   describe("loaded", () => {
     it("returns license keys loaded state", () => {
-      const state: TSFixMe = {
+      const state = {
         licensekeys: {
           loading: false,
           loaded: true,
@@ -46,7 +46,7 @@ describe("licensekeys selectors", () => {
 
   describe("saved", () => {
     it("returns license keys saved state", () => {
-      const state: TSFixMe = {
+      const state = {
         licensekeys: {
           loading: false,
           loaded: true,
@@ -72,7 +72,7 @@ describe("licensekeys selectors", () => {
           license_key: "bar",
         },
       ];
-      const state: TSFixMe = {
+      const state = {
         licensekeys: {
           loading: false,
           loaded: true,

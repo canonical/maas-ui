@@ -20,7 +20,7 @@ describe("scripts selectors", () => {
 
   describe("loading", () => {
     it("returns scripts loading state", () => {
-      const state: TSFixMe = {
+      const state = {
         scripts: {
           loading: true,
           loaded: false,
@@ -33,7 +33,7 @@ describe("scripts selectors", () => {
 
   describe("loaded", () => {
     it("returns scripts loaded state", () => {
-      const state: TSFixMe = {
+      const state = {
         scripts: {
           loading: false,
           loaded: true,
@@ -63,7 +63,7 @@ describe("scripts selectors", () => {
           type: 0,
         },
       ];
-      const state: TSFixMe = {
+      const state = {
         scripts: {
           loading: false,
           loaded: true,
@@ -105,7 +105,7 @@ describe("scripts selectors", () => {
           type: 2,
         },
       ];
-      const state: TSFixMe = {
+      const state = {
         scripts: {
           loading: false,
           loaded: true,
@@ -155,7 +155,7 @@ describe("scripts selectors", () => {
           type: 2,
         },
       ];
-      const state: TSFixMe = {
+      const state = {
         scripts: {
           loading: false,
           loaded: true,

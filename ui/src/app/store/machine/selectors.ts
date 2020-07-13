@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { ACTIONS } from "app/base/reducers/machine/machine";
 import filterNodes from "app/machines/filter-nodes";
 import scriptresults from "app/store/scriptresults/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineStatuses } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { TSFixMe } from "app/base/types";
 
@@ -62,7 +62,7 @@ const selectedIDs = (state: RootState): Machine["system_id"][] =>
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all statuses.
  */
-const statuses = (state: RootState): TSFixMe => state.machine.statuses;
+const statuses = (state: RootState): MachineStatuses => state.machine.statuses;
 
 /**
  * Returns IDs of machines that are currently being processed.

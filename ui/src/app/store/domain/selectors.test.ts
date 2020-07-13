@@ -16,7 +16,7 @@ describe("domain selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       domain: {
         loading: true,
         items: [],
@@ -26,7 +26,7 @@ describe("domain selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       domain: {
         loaded: true,
         items: [],

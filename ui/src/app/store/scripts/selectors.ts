@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
+import type { Scripts } from "app/store/scripts/types";
 import type { TSFixMe } from "app/base/types";
 
 const SCRIPT_TYPES = {
@@ -13,7 +14,7 @@ const SCRIPT_TYPES = {
  * @param {Object} state - Redux state
  * @returns {Array} Scripts
  */
-const all = (state: RootState): TSFixMe => state.scripts.items;
+const all = (state: RootState): Scripts[] => state.scripts.items;
 
 /**
  * Returns true if scripts are loading
@@ -68,7 +69,7 @@ const hasErrors = createSelector(
  */
 const commissioning = createSelector([all], (scriptItems) =>
   scriptItems.filter(
-    (item: TSFixMe) => item.type === SCRIPT_TYPES.COMMISSIONING
+    (item: Scripts) => item.type === SCRIPT_TYPES.COMMISSIONING
   )
 );
 
@@ -78,7 +79,7 @@ const commissioning = createSelector([all], (scriptItems) =>
  * @returns {Array} Testing scripts
  */
 const testing = createSelector([all], (scriptItems) =>
-  scriptItems.filter((item: TSFixMe) => item.type === SCRIPT_TYPES.TESTING)
+  scriptItems.filter((item: Scripts) => item.type === SCRIPT_TYPES.TESTING)
 );
 
 /**
@@ -87,7 +88,7 @@ const testing = createSelector([all], (scriptItems) =>
  * @returns {Array} Testing scripts
  */
 const testingWithUrl = createSelector([testing], (testScripts) =>
-  testScripts.filter((script: TSFixMe) =>
+  testScripts.filter((script: Scripts) =>
     Object.keys(script.parameters).some((key) => key === "url")
   )
 );
@@ -103,11 +104,11 @@ const search = createSelector(
   [all, (_state: RootState, term: string, type: string) => ({ term, type })],
   (scriptItems, { term, type }) => {
     const scripts = scriptItems.filter(
-      (item: TSFixMe) => item.type === SCRIPT_TYPES[type.toUpperCase()]
+      (item: Scripts) => item.type === SCRIPT_TYPES[type.toUpperCase()]
     );
     if (term) {
       return scripts.filter(
-        (item: TSFixMe) =>
+        (item: Scripts) =>
           item.name.includes(term) || item.description.includes(term)
       );
     }

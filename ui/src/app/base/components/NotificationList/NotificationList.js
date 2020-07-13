@@ -7,7 +7,7 @@ import {
   notification as notificationActions,
 } from "app/base/actions";
 import NotificationGroup from "app/base/components/NotificationGroup";
-import messageSelectors from "app/store/messages/selectors";
+import messageSelectors from "app/store/message/selectors";
 import notificationSelectors from "app/store/notification/selectors";
 
 const generateMessages = (messages, dispatch) =>

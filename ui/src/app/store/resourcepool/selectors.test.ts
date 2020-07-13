@@ -1,4 +1,3 @@
-import type { TSFixMe } from "app/base/types";
 import resourcepool from "./selectors";
 
 describe("resourcepool selectors", () => {
@@ -16,7 +15,7 @@ describe("resourcepool selectors", () => {
         is_default: true,
       },
     ];
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         items,
       },
@@ -25,7 +24,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         loading: true,
         items: [],
@@ -35,7 +34,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         loaded: true,
         items: [],
@@ -45,7 +44,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         saving: true,
         items: [],
@@ -55,7 +54,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         saved: true,
         items: [],
@@ -65,7 +64,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         errors: "Data is incorrect",
       },
@@ -74,7 +73,7 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get a pool by id", () => {
-    const state: TSFixMe = {
+    const state = {
       resourcepool: {
         loading: true,
         items: [

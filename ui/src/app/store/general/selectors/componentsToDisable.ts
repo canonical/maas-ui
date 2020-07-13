@@ -3,7 +3,10 @@
  */
 
 import { generateGeneralSelector } from "./utils";
+import type { ComponentToDisable } from "app/store/general/types";
 
-const componentsToDisable = generateGeneralSelector("componentsToDisable");
+const componentsToDisable = generateGeneralSelector<ComponentToDisable[]>(
+  "componentsToDisable"
+);
 
 export default componentsToDisable;

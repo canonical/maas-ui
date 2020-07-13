@@ -1,9 +1,8 @@
-import type { TSFixMe } from "app/base/types";
 import machine from "./selectors";
 
 describe("machine selectors", () => {
   it("can get all items", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         items: [{ name: "maas.test" }],
       },
@@ -12,7 +11,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         loading: true,
         items: [],
@@ -22,7 +21,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         loaded: true,
         items: [],
@@ -32,7 +31,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         saving: true,
         items: [],
@@ -42,7 +41,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         saved: true,
         items: [],
@@ -52,7 +51,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         errors: "Data is incorrect",
       },
@@ -61,22 +60,22 @@ describe("machine selectors", () => {
   });
 
   it("can get a machine by id", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         items: [
-          { name: "maas.test", system_id: 808 },
-          { name: "10.0.0.99", system_id: 909 },
+          { name: "maas.test", system_id: "808" },
+          { name: "10.0.0.99", system_id: "909" },
         ],
       },
     };
     expect(machine.getBySystemId(state, "909")).toStrictEqual({
       name: "10.0.0.99",
-      system_id: 909,
+      system_id: "909",
     });
   });
 
   it("can get the error state", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         errors: "Uh oh!",
         items: [],
@@ -87,7 +86,7 @@ describe("machine selectors", () => {
   });
 
   it("can get the machine statuses", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         statuses: {
           808: {},
@@ -102,7 +101,7 @@ describe("machine selectors", () => {
   });
 
   it("can get machines that are processing", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         statuses: {
           abc123: { processing: true },
@@ -114,7 +113,7 @@ describe("machine selectors", () => {
   });
 
   it("can get selected machines that are processing", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         selected: ["abc123"],
         statuses: {
@@ -127,7 +126,7 @@ describe("machine selectors", () => {
   });
 
   it("can get machines that are saving pools", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         items: [{ system_id: 808 }, { system_id: 909 }],
         statuses: {
@@ -140,7 +139,7 @@ describe("machine selectors", () => {
   });
 
   it("can get machines that are both selected and saving pools", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         items: [{ system_id: 808 }, { system_id: 808 }, { system_id: 909 }],
         selected: [909],
@@ -157,7 +156,7 @@ describe("machine selectors", () => {
   });
 
   it("returns failed script results for selected machines", () => {
-    const state: TSFixMe = {
+    const state = {
       machine: {
         items: [
           { name: "selectedMachine", system_id: "foo" },

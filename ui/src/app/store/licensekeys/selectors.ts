@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
+import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -8,7 +9,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - Redux state
  * @returns {Array} license keys
  */
-const all = (state: RootState): TSFixMe => state.licensekeys.items;
+const all = (state: RootState): LicenseKeys[] => state.licensekeys.items;
 
 /**
  * Returns true if license keys are loading
@@ -52,7 +53,7 @@ const search = createSelector(
   [all, (_state: RootState, term: string) => term],
   (licensekeyItems, term) =>
     licensekeyItems.filter(
-      (item: TSFixMe) =>
+      (item: LicenseKeys) =>
         item.osystem.includes(term) || item.distro_series.includes(term)
     )
 );
@@ -67,14 +68,18 @@ const search = createSelector(
 const getByOsystemAndDistroSeries = createSelector(
   [
     all,
-    (_state: RootState, osystem: TSFixMe, distro_series: TSFixMe) => ({
+    (
+      _state: RootState,
+      osystem: LicenseKeys["osystem"],
+      distro_series: LicenseKeys["distro_series"]
+    ) => ({
       osystem,
       distro_series,
     }),
   ],
   (licensekeyItems, { osystem, distro_series }) =>
     licensekeyItems.filter(
-      (item: TSFixMe) =>
+      (item: LicenseKeys) =>
         item.osystem === osystem && item.distro_series === distro_series
     )[0]
 );

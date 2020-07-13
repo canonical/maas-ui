@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
+import type { ScriptResults } from "app/store/scriptresults/types";
 import type { TSFixMe } from "app/base/types";
 
 /**
@@ -8,7 +9,7 @@ import type { TSFixMe } from "app/base/types";
  * @param {Object} state - Redux state
  * @returns {Array} Script results
  */
-const all = (state: RootState): TSFixMe => state.scriptresults.items;
+const all = (state: RootState): ScriptResults => state.scriptresults.items;
 
 /**
  * Returns true if script results are loading

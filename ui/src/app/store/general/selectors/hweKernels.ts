@@ -3,7 +3,8 @@
  */
 
 import { generateGeneralSelector } from "./utils";
+import type { HWEKernel } from "app/store/general/types";
 
-const hweKernels = generateGeneralSelector("hweKernels");
+const hweKernels = generateGeneralSelector<HWEKernel[]>("hweKernels");
 
 export default hweKernels;

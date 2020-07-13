@@ -1,14 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Notification } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all notifications.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all notifications.
  */
-const all = (state: RootState): TSFixMe => state.notification.items;
+const all = (state: RootState): Notification[] => state.notification.items;
 
 /**
  * Whether notifications are loading.
@@ -30,9 +30,9 @@ const loaded = (state: RootState): boolean => state.notification.loaded;
  * @returns {Array} A notification.
  */
 const getById = createSelector(
-  [all, (_state: RootState, id: TSFixMe) => id],
+  [all, (_state: RootState, id: Notification["id"]) => id],
   (notifications, id) =>
-    notifications.find((notification: TSFixMe) => notification.id === id)
+    notifications.find((notification: Notification) => notification.id === id)
 );
 
 /**
@@ -42,7 +42,7 @@ const getById = createSelector(
  */
 const warnings = createSelector([all], (notifications) =>
   notifications.filter(
-    (notification: TSFixMe) => notification.category === "warning"
+    (notification: Notification) => notification.category === "warning"
   )
 );
 
@@ -53,7 +53,7 @@ const warnings = createSelector([all], (notifications) =>
  */
 const errors = createSelector([all], (notifications) =>
   notifications.filter(
-    (notification: TSFixMe) => notification.category === "error"
+    (notification: Notification) => notification.category === "error"
   )
 );
 
@@ -64,7 +64,7 @@ const errors = createSelector([all], (notifications) =>
  */
 const success = createSelector([all], (notifications) =>
   notifications.filter(
-    (notification: TSFixMe) => notification.category === "success"
+    (notification: Notification) => notification.category === "success"
   )
 );
 
@@ -75,7 +75,7 @@ const success = createSelector([all], (notifications) =>
  */
 const info = createSelector([all], (notifications) =>
   notifications.filter(
-    (notification: TSFixMe) => notification.category === "info"
+    (notification: Notification) => notification.category === "info"
   )
 );
 

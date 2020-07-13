@@ -44,7 +44,7 @@ export const AddKVMForm = (): JSX.Element => {
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
   const podErrors = useSelector(podSelectors.errors);
-  const powerTypes: TSFixMe = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes = useSelector(generalSelectors.powerTypes.get);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
