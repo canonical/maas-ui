@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
@@ -7,11 +8,11 @@ import service from "./service";
 describe("service selectors", () => {
   it("can get all items", () => {
     const items = [serviceFactory(), serviceFactory()];
-    const state = {
+    const state = rootStateFactory({
       service: serviceStateFactory({
         items,
       }),
-    };
+    });
     expect(service.all(state)).toEqual(items);
   });
 

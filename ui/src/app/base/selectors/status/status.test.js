@@ -1,13 +1,16 @@
-import { statusState as statusStateFactory } from "testing/factories";
+import {
+  rootState as rootStateFactory,
+  statusState as statusStateFactory,
+} from "testing/factories";
 import status from "./status";
 
 describe("status", () => {
   it("can get the connected status", () => {
-    const state = {
+    const state = rootStateFactory({
       status: statusStateFactory({
         connected: true,
       }),
-    };
+    });
     expect(status.connected(state)).toBe(true);
   });
 

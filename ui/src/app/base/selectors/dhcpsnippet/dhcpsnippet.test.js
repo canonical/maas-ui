@@ -1,17 +1,18 @@
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import dhcpsnippet from "./dhcpsnippet";
 
 describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {
     const items = [dhcpSnippetFactory(), dhcpSnippetFactory()];
-    const state = {
+    const state = rootStateFactory({
       dhcpsnippet: dhcpSnippetStateFactory({
         items,
       }),
-    };
+    });
     expect(dhcpsnippet.all(state)).toEqual(items);
   });
 

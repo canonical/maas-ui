@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   token as tokenFactory,
   tokenState as tokenStateFactory,
 } from "testing/factories";
@@ -8,11 +9,11 @@ describe("token selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
       const items = [tokenFactory(), tokenFactory()];
-      const state = {
+      const state = rootStateFactory({
         token: tokenStateFactory({
           items,
         }),
-      };
+      });
       expect(token.all(state)).toStrictEqual(items);
     });
   });

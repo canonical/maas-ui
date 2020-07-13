@@ -2,6 +2,7 @@ import {
   generalState as generalStateFactory,
   navigationOptionsState as navigationOptionsStateFactory,
   navigationOptions as navigationOptionsFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import navigationOptions from "./navigationOptions";
 
@@ -9,13 +10,13 @@ describe("navigationOptions selectors", () => {
   describe("get", () => {
     it("returns navigationOptions", () => {
       const data = navigationOptionsFactory();
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           navigationOptions: navigationOptionsStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(navigationOptions.get(state)).toStrictEqual(data);
     });
   });

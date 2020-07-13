@@ -1,13 +1,19 @@
+import {
+  rootState as rootStateFactory,
+  device as deviceFactory,
+  deviceState as deviceStateFactory,
+} from "testing/factories";
 import device from "./device";
 
 describe("device selectors", () => {
   it("can get all items", () => {
-    const state = {
-      device: {
-        items: [{ name: "maas.test" }],
-      },
-    };
-    expect(device.all(state)).toEqual([{ name: "maas.test" }]);
+    const items = [deviceFactory(), deviceFactory()];
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        items,
+      }),
+    });
+    expect(device.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {

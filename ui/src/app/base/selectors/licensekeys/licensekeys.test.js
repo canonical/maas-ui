@@ -1,6 +1,7 @@
 import {
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import licensekeys from "./licensekeys";
 
@@ -8,11 +9,11 @@ describe("licensekeys selectors", () => {
   describe("all", () => {
     it("returns all license keys", () => {
       const items = [licenseKeysFactory(), licenseKeysFactory()];
-      const state = {
+      const state = rootStateFactory({
         licensekeys: licenseKeysStateFactory({
           items,
         }),
-      };
+      });
 
       expect(licensekeys.all(state)).toStrictEqual(items);
     });

@@ -2,6 +2,7 @@ import {
   generalState as generalStateFactory,
   powerTypesState as powerTypesStateFactory,
   powerType as powerTypeFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import powerTypes from "./powerTypes";
 
@@ -9,13 +10,13 @@ describe("powerTypes selectors", () => {
   describe("get", () => {
     it("returns powerTypes", () => {
       const data = [powerTypeFactory()];
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           powerTypes: powerTypesStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(powerTypes.get(state)).toStrictEqual(data);
     });
   });

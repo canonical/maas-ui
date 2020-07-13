@@ -1,6 +1,7 @@
 import {
   generalState as generalStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import knownArchitectures from "./knownArchitectures";
 
@@ -8,13 +9,13 @@ describe("knownArchitectures selectors", () => {
   describe("get", () => {
     it("returns knownArchitectures", () => {
       const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           knownArchitectures: knownArchitecturesStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(knownArchitectures.get(state)).toStrictEqual(data);
     });
   });

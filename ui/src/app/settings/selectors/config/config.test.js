@@ -1,6 +1,7 @@
 import {
   config as configFactory,
   configState as configStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import config from "./config";
 
@@ -8,11 +9,11 @@ describe("config selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
       const allConfigs = [configFactory(), configFactory()];
-      const state = {
+      const state = rootStateFactory({
         config: configStateFactory({
           items: allConfigs,
         }),
-      };
+      });
       expect(config.all(state)).toStrictEqual(allConfigs);
     });
   });

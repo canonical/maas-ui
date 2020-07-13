@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
 } from "testing/factories";
@@ -8,11 +9,11 @@ describe("sslkey selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
       const items = [sslKeyFactory(), sslKeyFactory()];
-      const state = {
+      const state = rootStateFactory({
         sslkey: sslKeyStateFactory({
           items,
         }),
-      };
+      });
       expect(sslkey.all(state)).toStrictEqual(items);
     });
   });

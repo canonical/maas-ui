@@ -1,16 +1,17 @@
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import notification from "./notification";
 
 describe("notification selectors", () => {
   it("can get all items", () => {
-    const state = {
+    const state = rootStateFactory({
       notification: notificationStateFactory({
         items: [notificationFactory({ message: "Test message" })],
       }),
-    };
+    });
     const items = notification.all(state);
     expect(items.length).toEqual(1);
     expect(items[0].message).toEqual("Test message");

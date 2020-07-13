@@ -40,6 +40,31 @@ export type Machine = BaseNode & {
   zone: ModelRef;
 };
 
+export type MachineStatuses = {
+  [x: number]: {
+    aborting: boolean;
+    acquiring: boolean;
+    checkingPower: boolean;
+    commissioning: boolean;
+    deleting: boolean;
+    deploying: boolean;
+    enteringRescueMode: boolean;
+    exitingRescueMode: boolean;
+    locking: boolean;
+    markingBroken: boolean;
+    markingFixed: boolean;
+    overridingFailedTesting: boolean;
+    releasing: boolean;
+    settingPool: boolean;
+    settingZone: boolean;
+    tagging: boolean;
+    testing: boolean;
+    turningOff: boolean;
+    turningOn: boolean;
+    unlocking: boolean;
+  };
+};
+
 export type MachineState = {
   errors: TSFixMe;
   items: Machine[];
@@ -48,4 +73,5 @@ export type MachineState = {
   saved: boolean;
   saving: boolean;
   selected: string[];
+  statuses: MachineStatuses;
 };

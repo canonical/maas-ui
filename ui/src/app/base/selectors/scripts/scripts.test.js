@@ -1,6 +1,7 @@
 import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import scripts from "./scripts";
 
@@ -8,11 +9,11 @@ describe("scripts selectors", () => {
   describe("all", () => {
     it("returns all scripts", () => {
       const items = [scriptsFactory(), scriptsFactory()];
-      const state = {
+      const state = rootStateFactory({
         scripts: scriptsStateFactory({
           items,
         }),
-      };
+      });
 
       expect(scripts.all(state)).toStrictEqual(items);
     });
