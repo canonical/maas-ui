@@ -164,7 +164,7 @@ describe("KVMConfiguration", () => {
           pool: "1",
           power_address: "192.168.1.1",
           tags: ["tag1", "tag2"],
-          type: "lxd",
+          type: "virsh",
           zone: "2",
         })
     );

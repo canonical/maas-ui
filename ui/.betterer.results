@@ -71,17 +71,20 @@ exports[`stricter compilation`] = {
     "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:4039034563": [
       [30, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:3820128401": [
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:1827624353": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [83, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [100, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [104, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
+      [104, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
+      [139, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:1892683038": [
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:3273586287": [
       [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [5, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/caleb/Projects/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
+      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/caleb/Projects/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
       [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -103,9 +106,9 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1453319310": [
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:879073754": [
       [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [3, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/caleb/Projects/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
+      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/caleb/Projects/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -357,20 +360,6 @@ exports[`no TSFixMe types`] = {
     "src/app/store/domain/types.ts:2438698325": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [16, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/general/types.ts:1987535520": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [5, 9, 8, "RegExp match", "1152173309"],
-      [14, 9, 8, "RegExp match", "1152173309"],
-      [23, 9, 8, "RegExp match", "1152173309"],
-      [32, 9, 8, "RegExp match", "1152173309"],
-      [47, 9, 8, "RegExp match", "1152173309"],
-      [61, 9, 8, "RegExp match", "1152173309"],
-      [72, 9, 8, "RegExp match", "1152173309"],
-      [95, 9, 8, "RegExp match", "1152173309"],
-      [104, 9, 8, "RegExp match", "1152173309"],
-      [138, 9, 8, "RegExp match", "1152173309"],
-      [147, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/types.ts:1987535520": [
       [0, 13, 8, "RegExp match", "1152173309"],

@@ -8,22 +8,6 @@ exports[`FormCardButtons  renders 1`] = `
   <div
     className="form-card__buttons is-bordered"
   >
-    <Button
-      appearance="base"
-      className="u-no-margin--bottom"
-      data-test="cancel-action"
-      onClick={[Function]}
-      type="button"
-    >
-      <button
-        className="p-button--base u-no-margin--bottom"
-        data-test="cancel-action"
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </Button>
     <ActionButton
       appearance="positive"
       className="u-no-margin--bottom"

@@ -87,7 +87,7 @@ const KVMConfiguration = (): JSX.Element => {
           initialValues={{
             cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
             memory_over_commit_ratio: pod.memory_over_commit_ratio,
-            password: podPassword,
+            password: podPassword || "",
             pool: `${pod.pool}`, // Convert to string for valid options HTML, also API expects string
             power_address: pod.power_address,
             tags: pod.tags,
@@ -104,10 +104,11 @@ const KVMConfiguration = (): JSX.Element => {
               cpu_over_commit_ratio: values.cpu_over_commit_ratio,
               id: pod.id,
               memory_over_commit_ratio: values.memory_over_commit_ratio,
-              password: values.type === "lxd" ? values.password : undefined,
+              password: (values.type === "lxd" && values.password) || undefined,
               pool: values.pool,
               power_address: values.power_address,
-              power_pass: values.type === "lxd" ? undefined : values.password,
+              power_pass:
+                (values.type === "virsh" && values.password) || undefined,
               tags: values.tags.join(","), // API expects comma-separated string
               zone: values.zone,
             };
