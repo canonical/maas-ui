@@ -1,13 +1,19 @@
+import {
+  rootState as rootStateFactory,
+  controller as controllerFactory,
+  controllerState as controllerStateFactory,
+} from "testing/factories";
 import controller from "./controller";
 
 describe("controller selectors", () => {
   it("can get all items", () => {
-    const state = {
-      controller: {
-        items: [{ name: "maas.test" }],
-      },
-    };
-    expect(controller.all(state)).toEqual([{ name: "maas.test" }]);
+    const items = [controllerFactory(), controllerFactory()];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items,
+      }),
+    });
+    expect(controller.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {

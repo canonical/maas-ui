@@ -1,13 +1,19 @@
+import {
+  rootState as rootStateFactory,
+  pod as podFactory,
+  podState as podStateFactory,
+} from "testing/factories";
 import pod from "./pod";
 
 describe("pod selectors", () => {
   it("can get all items", () => {
-    const state = {
-      pod: {
-        items: [{ name: "pod1" }],
-      },
-    };
-    expect(pod.all(state)).toEqual([{ name: "pod1" }]);
+    const items = [podFactory(), podFactory()];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+    });
+    expect(pod.all(state)).toEqual(items);
   });
 
   it("can get all KVMs", () => {

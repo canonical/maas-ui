@@ -2,11 +2,12 @@ import user from "./user";
 import {
   user as userFactory,
   userState as userStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 
 describe("users selectors", () => {
   it("can get items", () => {
-    const state = {
+    const state = rootStateFactory({
       user: userStateFactory({
         items: [
           userFactory({
@@ -14,7 +15,7 @@ describe("users selectors", () => {
           }),
         ],
       }),
-    };
+    });
     const items = user.get(state);
     expect(items.length).toEqual(1);
     expect(items[0].username).toEqual("default");

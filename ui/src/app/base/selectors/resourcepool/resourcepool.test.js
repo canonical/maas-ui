@@ -1,25 +1,18 @@
+import {
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import resourcepool from "./resourcepool";
 
 describe("resourcepool selectors", () => {
   it("can get all items", () => {
-    const items = [
-      {
-        id: 0,
-        created: "Mon, 16 Sep. 2019 12:20:11",
-        updated: "Mon, 16 Sep. 2019 12:20:11",
-        name: "default",
-        description: "Default pool",
-        permissions: ["edit", "delete"],
-        machine_total_count: 24,
-        machine_ready_count: 1,
-        is_default: true,
-      },
-    ];
-    const state = {
-      resourcepool: {
+    const items = [resourcePoolFactory(), resourcePoolFactory()];
+    const state = rootStateFactory({
+      resourcepool: resourcePoolStateFactory({
         items,
-      },
-    };
+      }),
+    });
     expect(resourcepool.all(state)).toEqual(items);
   });
 

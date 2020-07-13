@@ -2,6 +2,7 @@ import {
   generalState as generalStateFactory,
   hweKernelsState as hweKernelsStateFactory,
   hweKernel as hweKernelFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import hweKernels from "./hweKernels";
 
@@ -9,13 +10,13 @@ describe("hweKernels selectors", () => {
   describe("get", () => {
     it("returns hweKernels", () => {
       const data = [hweKernelFactory(), hweKernelFactory()];
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           hweKernels: hweKernelsStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(hweKernels.get(state)).toStrictEqual(data);
     });
   });

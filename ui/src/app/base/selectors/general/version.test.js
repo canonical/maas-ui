@@ -1,5 +1,6 @@
 import {
   generalState as generalStateFactory,
+  rootState as rootStateFactory,
   versionState as versionStateFactory,
 } from "testing/factories";
 import version from "./version";
@@ -9,13 +10,13 @@ describe("version selectors", () => {
     it("returns version", () => {
       const data =
         "2.7.0 from source (git+980af81d5f873550aae14b1f0fec0289bb75aa9c)";
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           version: versionStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(version.get(state)).toStrictEqual(data);
     });
   });

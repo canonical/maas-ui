@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
@@ -7,11 +8,11 @@ import zone from "./zone";
 describe("zone selectors", () => {
   it("can get all items", () => {
     const items = [zoneFactory(), zoneFactory()];
-    const state = {
+    const state = rootStateFactory({
       zone: zoneStateFactory({
         items,
       }),
-    };
+    });
     expect(zone.all(state)).toEqual(items);
   });
 

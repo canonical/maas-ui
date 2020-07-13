@@ -2,6 +2,7 @@ import {
   generalState as generalStateFactory,
   osInfoState as osInfoStateFactory,
   osInfo as osInfoFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import osInfo from "./osInfo";
 
@@ -9,13 +10,13 @@ describe("osInfo selectors", () => {
   describe("get", () => {
     it("returns osInfo", () => {
       const data = osInfoFactory();
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           osInfo: osInfoStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(osInfo.get(state)).toStrictEqual(data);
     });
   });

@@ -5,14 +5,18 @@ import { notification } from "./notification";
 import { user } from "./user";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { ConfigState } from "app/store/config/types";
+import type { ControllerState } from "app/store/controller/types";
+import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
+import type { MachineState } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
+import type { RootState } from "app/store/root/types";
 import type { ScriptResultsState } from "app/store/scriptresults/types";
 import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
@@ -64,12 +68,26 @@ export const configState = define<ConfigState>({
   ...defaultState,
 });
 
+export const controllerState = define<ControllerState>({
+  ...defaultState,
+});
+
+export const deviceState = define<DeviceState>({
+  ...defaultState,
+});
+
 export const dhcpSnippetState = define<DHCPSnippetState>({
   ...defaultState,
 });
 
 export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
+});
+
+export const machineState = define<MachineState>({
+  ...defaultState,
+  selected: () => [],
+  statuses: () => ({}),
 });
 
 export const scriptsState = define<ScriptsState>({
@@ -218,4 +236,31 @@ export const tagState = define<TagState>({
 
 export const zoneState = define<ZoneState>({
   ...defaultState,
+});
+
+export const rootState = define<RootState>({
+  config: configState,
+  controller: controllerState,
+  device: deviceState,
+  dhcpsnippet: dhcpSnippetState,
+  domain: domainState,
+  general: generalState,
+  licensekeys: licenseKeysState,
+  machine: machineState,
+  messages: messageState,
+  notification: notificationState,
+  packagerepository: packageRepositoryState,
+  pod: podState,
+  resourcepool: resourcePoolState,
+  scriptresults: scriptResultsState,
+  scripts: scriptsState,
+  service: serviceState,
+  sshkey: sshKeyState,
+  sslkey: sslKeyState,
+  status: statusState,
+  subnet: subnetState,
+  tag: tagState,
+  token: tokenState,
+  user: userState,
+  zone: zoneState,
 });

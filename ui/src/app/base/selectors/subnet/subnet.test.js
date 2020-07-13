@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
@@ -7,11 +8,11 @@ import subnet from "./subnet";
 describe("subnet selectors", () => {
   it("can get all items", () => {
     const items = [subnetFactory(), subnetFactory()];
-    const state = {
+    const state = rootStateFactory({
       subnet: subnetStateFactory({
         items,
       }),
-    };
+    });
     expect(subnet.all(state)).toEqual(items);
   });
 

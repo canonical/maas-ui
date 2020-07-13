@@ -2,6 +2,7 @@ import {
   generalState as generalStateFactory,
   machineActionsState as machineActionsStateFactory,
   machineAction as machineActionFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import machineActions from "./machineActions";
 
@@ -9,13 +10,13 @@ describe("machineActions selectors", () => {
   describe("get", () => {
     it("returns machineActions", () => {
       const data = [machineActionFactory(), machineActionFactory()];
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           machineActions: machineActionsStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(machineActions.get(state)).toStrictEqual(data);
     });
   });

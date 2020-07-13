@@ -1,17 +1,18 @@
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import packagerepository from "./packagerepository";
 
 describe("packagerepository selectors", () => {
   it("can get repository items", () => {
     const items = [packageRepositoryFactory(), packageRepositoryFactory()];
-    const state = {
+    const state = rootStateFactory({
       packagerepository: packageRepositoryStateFactory({
         items,
       }),
-    };
+    });
     expect(packagerepository.all(state)).toEqual(items);
   });
 

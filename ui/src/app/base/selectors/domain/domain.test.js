@@ -1,17 +1,18 @@
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import domain from "./domain";
 
 describe("domain selectors", () => {
   it("can get all items", () => {
     const items = [domainFactory()];
-    const state = {
+    const state = rootStateFactory({
       domain: domainStateFactory({
         items,
       }),
-    };
+    });
     expect(domain.all(state)).toEqual(items);
   });
 

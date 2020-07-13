@@ -1,6 +1,7 @@
 import {
-  generalState as generalStateFactory,
   defaultMinHweKernelState as defaultMinHweKernelStateFactory,
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import defaultMinHweKernel from "./defaultMinHweKernel";
 
@@ -8,13 +9,13 @@ describe("defaultMinHweKernel selectors", () => {
   describe("get", () => {
     it("returns defaultMinHweKernel", () => {
       const data = "ga-18.04";
-      const state = {
+      const state = rootStateFactory({
         general: generalStateFactory({
           defaultMinHweKernel: defaultMinHweKernelStateFactory({
             data,
           }),
         }),
-      };
+      });
       expect(defaultMinHweKernel.get(state)).toStrictEqual(data);
     });
   });

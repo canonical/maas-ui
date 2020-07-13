@@ -1,4 +1,5 @@
 import {
+  rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
@@ -7,11 +8,11 @@ import tag from "./tag";
 describe("tag selectors", () => {
   it("can get all items", () => {
     const items = [tagFactory(), tagFactory()];
-    const state = {
+    const state = rootStateFactory({
       tag: tagStateFactory({
         items,
       }),
-    };
+    });
     expect(tag.all(state)).toEqual(items);
   });
 

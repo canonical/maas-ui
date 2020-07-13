@@ -1,13 +1,19 @@
+import {
+  rootState as rootStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+} from "testing/factories";
 import machine from "./machine";
 
 describe("machine selectors", () => {
   it("can get all items", () => {
-    const state = {
-      machine: {
-        items: [{ name: "maas.test" }],
-      },
-    };
-    expect(machine.all(state)).toEqual([{ name: "maas.test" }]);
+    const items = [machineFactory(), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+      }),
+    });
+    expect(machine.all(state)).toEqual(items);
   });
 
   it("can get the loading state", () => {
