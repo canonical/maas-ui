@@ -80,7 +80,7 @@ describe("KVMConfiguration", () => {
     expect(wrapper.find("Spinner").length).toBe(1);
   });
 
-  it("can handle updating a KVM", () => {
+  it("can handle updating a lxd KVM", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -129,6 +129,62 @@ describe("KVMConfiguration", () => {
           pool: "1",
           power_address: "192.168.1.1",
           power_pass: undefined,
+          tags: "tag1,tag2",
+          zone: "2",
+        },
+      },
+    });
+  });
+
+  it("can handle updating a virsh KVM", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/kvm/:id/edit"
+            component={() => <KVMConfiguration />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          cpu_over_commit_ratio: 2,
+          memory_over_commit_ratio: 2,
+          password: "password",
+          pool: "1",
+          power_address: "192.168.1.1",
+          tags: ["tag1", "tag2"],
+          type: "lxd",
+          zone: "2",
+        })
+    );
+    expect(
+      store.getActions().find((action) => action.type === "UPDATE_POD")
+    ).toStrictEqual({
+      type: "UPDATE_POD",
+      meta: {
+        method: "update",
+        model: "pod",
+      },
+      payload: {
+        params: {
+          cpu_over_commit_ratio: 2,
+          id: 1,
+          memory_over_commit_ratio: 2,
+          password: undefined,
+          pool: "1",
+          power_address: "192.168.1.1",
+          power_pass: "password", // virsh uses power_pass key
           tags: "tag1,tag2",
           zone: "2",
         },

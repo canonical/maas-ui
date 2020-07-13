@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import { sshkey as sshkeyActions } from "app/preferences/actions";
 import { sshkey as sshkeySelectors } from "app/preferences/selectors";
@@ -25,6 +26,7 @@ const SSHKeySchema = Yup.object().shape({
 
 export const AddSSHKey = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const errors = useSelector(sshkeySelectors.errors);
   const saved = useSelector(sshkeySelectors.saved);
   const saving = useSelector(sshkeySelectors.saving);
@@ -40,6 +42,7 @@ export const AddSSHKey = () => {
         cleanup={sshkeyActions.cleanup}
         errors={errors}
         initialValues={{ auth_id: "", protocol: "", key: "" }}
+        onCancel={() => history.push({ pathname: "/account/prefs/ssh-keys" })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSH keys preferences",

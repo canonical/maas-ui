@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -30,6 +31,7 @@ const AddRSDSchema = Yup.object().shape({
 
 export const AddRSDForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -90,6 +92,7 @@ export const AddRSDForm = () => {
               power_user: "",
               zone: (zones.length && zones[0].id) || 0,
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Pod",

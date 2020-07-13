@@ -2,7 +2,6 @@ import { ActionButton, Button } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 export const FormCardButtons = ({
   bordered = true,
@@ -16,8 +15,6 @@ export const FormCardButtons = ({
   submitLabel,
   success,
 }) => {
-  const history = useHistory();
-
   return (
     <>
       {bordered && <hr />}
@@ -26,21 +23,17 @@ export const FormCardButtons = ({
           "is-bordered": bordered,
         })}
       >
-        <Button
-          appearance="base"
-          className={classNames({ "u-no-margin--bottom": bordered })}
-          data-test="cancel-action"
-          onClick={() => {
-            if (onCancel) {
-              onCancel();
-            } else {
-              history.goBack();
-            }
-          }}
-          type="button"
-        >
-          Cancel
-        </Button>
+        {onCancel && (
+          <Button
+            appearance="base"
+            className={classNames({ "u-no-margin--bottom": bordered })}
+            data-test="cancel-action"
+            onClick={onCancel}
+            type="button"
+          >
+            Cancel
+          </Button>
+        )}
         {secondarySubmit && secondarySubmitLabel && (
           <Button
             appearance="neutral"

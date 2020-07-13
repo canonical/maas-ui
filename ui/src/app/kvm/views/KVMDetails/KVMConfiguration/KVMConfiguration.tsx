@@ -2,7 +2,6 @@ import { Spinner } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import type { RootState } from "app/store/root/types";
@@ -52,7 +51,6 @@ export type KVMConfigurationValues = {
 
 const KVMConfiguration = (): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { id } = useParams();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
@@ -77,7 +75,7 @@ const KVMConfiguration = (): JSX.Element => {
 
   const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
 
-  if (typeof pod === "object" && loaded) {
+  if (!!pod && loaded) {
     const podPassword = pod.type === "lxd" ? pod.password : pod.power_pass;
 
     return (
@@ -96,7 +94,6 @@ const KVMConfiguration = (): JSX.Element => {
             type: pod.type,
             zone: `${pod.zone}`, // Convert to string for valid options HTML, also API expects string
           }}
-          onCancel={() => history.push({ pathname: `/kvm/${id}` })}
           onSaveAnalytics={{
             action: "Edit KVM",
             category: "KVM",
@@ -118,6 +115,7 @@ const KVMConfiguration = (): JSX.Element => {
           }}
           saving={podSaving}
           saved={podSaved}
+          showCancel={false}
           submitLabel="Save changes"
           validationSchema={KVMConfigurationSchema}
         >
