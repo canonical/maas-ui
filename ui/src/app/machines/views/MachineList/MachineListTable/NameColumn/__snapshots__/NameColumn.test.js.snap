@@ -2,6 +2,7 @@
 
 exports[`NameColumn renders 1`] = `
 <NameColumn
+  handleCheckbox={[MockFunction]}
   systemId="abc123"
 >
   <DoubleRow
@@ -26,6 +27,7 @@ exports[`NameColumn renders 1`] = `
             </small>
           </a>
         }
+        onChange={[MockFunction]}
         type="checkbox"
         wrapperClassName="u-no-margin--bottom machine-list--inline-input"
       />
@@ -65,6 +67,7 @@ exports[`NameColumn renders 1`] = `
                   </small>
                 </a>
               }
+              onChange={[MockFunction]}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom machine-list--inline-input"
             >
@@ -98,6 +101,7 @@ exports[`NameColumn renders 1`] = `
                     <input
                       className="p-form-validation__input has-inline-label keep-label-opacity"
                       id="abc123"
+                      onChange={[MockFunction]}
                       type="checkbox"
                     />
                     <Label

@@ -260,4 +260,19 @@ describe("StatusColumn", () => {
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     expect(wrapper.find(".p-contextual-menu__dropdown")).toMatchSnapshot();
   });
+
+  it("does not render table menu if onToggleMenu not provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("TableMenu").exists()).toBe(false);
+  });
 });

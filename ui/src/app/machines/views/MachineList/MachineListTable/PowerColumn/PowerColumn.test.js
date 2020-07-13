@@ -164,4 +164,19 @@ describe("PowerColumn", () => {
       "No power actions available"
     );
   });
+
+  it("does not render table menu if onToggleMenu not provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PowerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("TableMenu").exists()).toBe(false);
+  });
 });

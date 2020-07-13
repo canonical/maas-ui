@@ -897,4 +897,25 @@ describe("MachineListTable", () => {
       });
     expect(setSearchFilter).toHaveBeenCalledWith("");
   });
+
+  it("does not show checkboxes if showActions is false", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListTable showActions={false} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("[data-test='all-machines-checkbox'] input").exists()
+    ).toBe(false);
+    expect(wrapper.find("[data-test='group-cell'] input").exists()).toBe(false);
+    expect(wrapper.find("[data-test='name-column'] input").exists()).toBe(
+      false
+    );
+  });
 });

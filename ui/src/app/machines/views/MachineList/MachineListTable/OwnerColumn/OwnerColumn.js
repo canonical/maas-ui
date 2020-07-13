@@ -35,7 +35,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -58,7 +58,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 OwnerColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

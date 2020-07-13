@@ -46,7 +46,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn handleCheckbox={jest.fn()} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -249,5 +249,19 @@ describe("NameColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Input").props().checked).toBe(true);
+  });
+
+  it("does not render checkbox if onToggleMenu not provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <NameColumn handleCheckbox={undefined} systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Input").exists()).toBe(false);
   });
 });

@@ -141,4 +141,19 @@ describe("OwnerColumn", () => {
       "No owner actions available"
     );
   });
+
+  it("does not render table menu if onToggleMenu not provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OwnerColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("TableMenu").exists()).toBe(false);
+  });
 });
