@@ -32,20 +32,19 @@ const SectionHeader = ({
           >
             {title}
           </li>
-          {subtitle && !loading && (
-            <li
-              className="p-inline-list__item last-item u-text--light"
-              data-test="section-header-subtitle"
-            >
-              {subtitle}
+          {(loading || subtitle) && (
+            <li className="p-inline-list__item last-item u-text--light">
+              {subtitle && !loading && (
+                <span data-test="section-header-subtitle">{subtitle}</span>
+              )}
+              {loading && (
+                <Spinner
+                  className="u-no-padding u-no-margin"
+                  inline
+                  text="Loading..."
+                />
+              )}
             </li>
-          )}
-          {loading && (
-            <Spinner
-              className="u-no-padding u-no-margin"
-              inline
-              text="Loading..."
-            />
           )}
         </ul>
         {buttons?.length && (
