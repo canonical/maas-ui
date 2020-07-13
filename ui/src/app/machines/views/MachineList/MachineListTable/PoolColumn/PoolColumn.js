@@ -48,7 +48,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={poolLinks}
+      menuLinks={onToggleMenu && poolLinks}
       menuTitle="Change pool:"
       onToggleMenu={toggleMenu}
       primary={
@@ -75,7 +75,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PoolColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

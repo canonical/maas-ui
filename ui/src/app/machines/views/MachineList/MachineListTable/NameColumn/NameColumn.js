@@ -126,19 +126,23 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
     <DoubleRow
       data-test="name-column"
       primary={
-        <Input
-          checked={selected}
-          className="has-inline-label keep-label-opacity"
-          id={systemId}
-          label={primaryRow}
-          onChange={handleCheckbox}
-          type="checkbox"
-          wrapperClassName="u-no-margin--bottom machine-list--inline-input"
-        />
+        handleCheckbox ? (
+          <Input
+            checked={selected}
+            className="has-inline-label keep-label-opacity"
+            id={systemId}
+            label={primaryRow}
+            onChange={handleCheckbox}
+            type="checkbox"
+            wrapperClassName="u-no-margin--bottom machine-list--inline-input"
+          />
+        ) : (
+          primaryRow
+        )
       }
-      primaryTextClassName="u-nudge--checkbox"
+      primaryTextClassName={handleCheckbox && "u-nudge--checkbox"}
       secondary={secondaryRow}
-      secondaryClassName="u-nudge--secondary-row"
+      secondaryClassName={handleCheckbox && "u-nudge--secondary-row"}
     />
   );
 };

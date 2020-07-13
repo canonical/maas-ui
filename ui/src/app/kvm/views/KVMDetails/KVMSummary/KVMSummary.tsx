@@ -7,6 +7,7 @@ import { pod as podSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 
 import type { RootState } from "app/store/root/types";
+import MachineListTable from "app/machines/views/MachineList/MachineListTable";
 
 const KVMSummary = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const KVMSummary = (): JSX.Element => {
     dispatch(podActions.fetch());
   }, [dispatch]);
 
-  return <></>;
+  return <MachineListTable filter={`pod-id:=${id}`} showActions={false} />;
 };
 
 export default KVMSummary;

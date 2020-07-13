@@ -120,7 +120,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
     <DoubleRow
       icon={getStatusIcon(machine)}
       iconSpace={true}
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -141,7 +141,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
 };
 
 StatusColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

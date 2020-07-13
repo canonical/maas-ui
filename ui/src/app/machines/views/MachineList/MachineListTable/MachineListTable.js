@@ -89,10 +89,12 @@ const generateRows = ({
   machines,
   onToggleMenu,
   selectedIDs,
+  showActions,
   showMAC,
   sortRows,
 }) => {
   const sortedMachines = sortRows(machines);
+  const menuCallback = showActions ? onToggleMenu : undefined;
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
 
@@ -105,8 +107,10 @@ const generateRows = ({
         {
           content: (
             <NameColumn
-              handleCheckbox={() =>
-                handleRowCheckbox(row.system_id, selectedIDs)
+              handleCheckbox={
+                showActions
+                  ? () => handleRowCheckbox(row.system_id, selectedIDs)
+                  : undefined
               }
               selected={someInArray(row.system_id, selectedIDs)}
               showMAC={showMAC}
@@ -116,30 +120,30 @@ const generateRows = ({
         },
         {
           content: (
-            <PowerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+            <PowerColumn onToggleMenu={menuCallback} systemId={row.system_id} />
           ),
         },
         {
           content: (
             <StatusColumn
-              onToggleMenu={onToggleMenu}
+              onToggleMenu={menuCallback}
               systemId={row.system_id}
             />
           ),
         },
         {
           content: (
-            <OwnerColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+            <OwnerColumn onToggleMenu={menuCallback} systemId={row.system_id} />
           ),
         },
         {
           content: (
-            <PoolColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+            <PoolColumn onToggleMenu={menuCallback} systemId={row.system_id} />
           ),
         },
         {
           content: (
-            <ZoneColumn onToggleMenu={onToggleMenu} systemId={row.system_id} />
+            <ZoneColumn onToggleMenu={menuCallback} systemId={row.system_id} />
           ),
         },
         {
@@ -291,6 +295,7 @@ const generateGroupRows = ({
   hiddenGroups,
   selectedIDs,
   setHiddenGroups,
+  showActions,
   ...rowProps
 }) => {
   let rows = [];
@@ -308,24 +313,31 @@ const generateGroupRows = ({
               <DoubleRow
                 data-test="group-cell"
                 primary={
-                  <Input
-                    checked={someInArray(machineIDs, selectedIDs)}
-                    className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": someNotAll(machineIDs, selectedIDs),
-                    })}
-                    disabled={false}
-                    id={label}
-                    label={<strong>{label}</strong>}
-                    onChange={() =>
-                      handleGroupCheckbox(machineIDs, selectedIDs)
-                    }
-                    type="checkbox"
-                    wrapperClassName="u-no-margin--bottom"
-                  />
+                  showActions ? (
+                    <Input
+                      checked={someInArray(machineIDs, selectedIDs)}
+                      className={classNames("has-inline-label", {
+                        "p-checkbox--mixed": someNotAll(
+                          machineIDs,
+                          selectedIDs
+                        ),
+                      })}
+                      disabled={false}
+                      id={label}
+                      label={<strong>{label}</strong>}
+                      onChange={() =>
+                        handleGroupCheckbox(machineIDs, selectedIDs)
+                      }
+                      type="checkbox"
+                      wrapperClassName="u-no-margin--bottom"
+                    />
+                  ) : (
+                    <strong>{label}</strong>
+                  )
                 }
-                primaryTextClassName="u-nudge--checkbox"
+                primaryTextClassName={showActions && "u-nudge--checkbox"}
                 secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
-                secondaryClassName="u-nudge--secondary-row"
+                secondaryClassName={showActions && "u-nudge--secondary-row"}
               />
             ),
           },
@@ -371,6 +383,7 @@ const generateGroupRows = ({
         generateRows({
           machines: visibleMachines,
           selectedIDs,
+          showActions,
           ...rowProps,
         })
       );
@@ -379,11 +392,12 @@ const generateGroupRows = ({
 };
 
 export const MachineListTable = ({
-  filter,
-  grouping,
-  hiddenGroups,
+  filter = "",
+  grouping = "none",
+  hiddenGroups = [],
   setHiddenGroups,
   setSearchFilter,
+  showActions = true,
 }) => {
   const dispatch = useDispatch();
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
@@ -405,7 +419,7 @@ export const MachineListTable = ({
   const removeSelectedFilter = () => {
     const filters = getCurrentFilters(filter);
     const newFilters = toggleFilter(filters, "in", "selected", false, false);
-    setSearchFilter(filtersToString(newFilters));
+    setSearchFilter && setSearchFilter(filtersToString(newFilters));
   };
 
   useEffect(() => {
@@ -449,6 +463,7 @@ export const MachineListTable = ({
     activeRow,
     handleRowCheckbox,
     onToggleMenu,
+    showActions,
     showMAC,
     sortRows,
   };
@@ -463,22 +478,31 @@ export const MachineListTable = ({
           headers={[
             {
               content: (
-                <div className="u-flex u-nudge--checkbox">
-                  <Input
-                    checked={someInArray(machineIDs, selectedIDs)}
-                    className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": someNotAll(machineIDs, selectedIDs),
-                    })}
-                    data-test="all-machines-checkbox"
-                    disabled={machines.length === 0}
-                    id="all-machines-checkbox"
-                    label={" "}
-                    onChange={() =>
-                      handleGroupCheckbox(machineIDs, selectedIDs)
-                    }
-                    type="checkbox"
-                    wrapperClassName="u-no-margin--bottom"
-                  />
+                <div
+                  className={classNames("u-flex", {
+                    "u-nudge--checkbox": showActions,
+                  })}
+                >
+                  {showActions && (
+                    <Input
+                      checked={someInArray(machineIDs, selectedIDs)}
+                      className={classNames("has-inline-label", {
+                        "p-checkbox--mixed": someNotAll(
+                          machineIDs,
+                          selectedIDs
+                        ),
+                      })}
+                      data-test="all-machines-checkbox"
+                      disabled={machines.length === 0}
+                      id="all-machines-checkbox"
+                      label={" "}
+                      onChange={() =>
+                        handleGroupCheckbox(machineIDs, selectedIDs)
+                      }
+                      type="checkbox"
+                      wrapperClassName="u-no-margin--bottom"
+                    />
+                  )}
                   <div>
                     <TableHeader
                       currentSort={currentSort}
@@ -679,7 +703,8 @@ MachineListTable.propTypes = {
   hiddenGroups: PropTypes.arrayOf(PropTypes.string),
   filter: PropTypes.string,
   setHiddenGroups: PropTypes.func,
-  setSearchFilter: PropTypes.func.isRequired,
+  setSearchFilter: PropTypes.func,
+  showActions: PropTypes.bool,
 };
 
 export default React.memo(MachineListTable);

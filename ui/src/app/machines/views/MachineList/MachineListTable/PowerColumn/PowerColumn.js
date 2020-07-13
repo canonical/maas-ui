@@ -95,7 +95,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
       }
       iconSpace={true}
       menuClassName="p-table-menu--hasIcon"
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -119,7 +119,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PowerColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

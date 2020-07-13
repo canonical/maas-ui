@@ -189,4 +189,19 @@ describe("PoolColumn", () => {
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
+
+  it("does not render table menu if onToggleMenu not provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PoolColumn systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("TableMenu").exists()).toBe(false);
+  });
 });

@@ -66,7 +66,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={zoneLinks}
+      menuLinks={onToggleMenu && zoneLinks}
       menuTitle="Change AZ:"
       onToggleMenu={toggleMenu}
       primary={
@@ -93,7 +93,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
 };
 
 ZoneColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 
