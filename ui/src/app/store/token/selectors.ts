@@ -1,48 +1,50 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-const token = {};
+import type { RootState } from "app/store/root/types";
+import type { Token } from "app/store/token/types";
+import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns a list of all authorisation tokens.
  * @param {Object} state - The redux state.
  * @returns {Array} A list of all state.token.items.
  */
-token.all = (state) => state.token.items;
+const all = (state: RootState): Token[] => state.token.items;
 
 /**
  * Whether the authorisation tokens are loading.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether authorisation tokens are loading.
  */
-token.loading = (state) => state.token.loading;
+const loading = (state: RootState): boolean => state.token.loading;
 
 /**
  * Whether the authorisation tokens have been loaded.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether authorisation tokens have loaded.
  */
-token.loaded = (state) => state.token.loaded;
+const loaded = (state: RootState): boolean => state.token.loaded;
 
 /**
  * Get the authorisation token errors.
  * @param {Object} state - The redux state.
  * @returns {String} The errors from the API.
  */
-token.errors = (state) => state.token.errors;
+const errors = (state: RootState): TSFixMe => state.token.errors;
 
 /**
  * Whether the authorisation tokens are saving.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether authorisation tokens are saving.
  */
-token.saving = (state) => state.token.saving;
+const saving = (state: RootState): boolean => state.token.saving;
 
 /**
  * Whether the authorisation tokens have been saved.
  * @param {Object} state - The redux state.
  * @returns {Boolean} Whether authorisation tokens have saved.
  */
-token.saved = (state) => state.token.saved;
+const saved = (state: RootState): boolean => state.token.saved;
 
 /**
  * Returns an authorisation token for the given id.
@@ -51,8 +53,19 @@ token.saved = (state) => state.token.saved;
  * @returns {Array} An authorisation token.
  */
 
-token.getById = createSelector([token.all, (state, id) => id], (tokens, id) =>
-  tokens.find((token) => token.id === id)
+const getById = createSelector(
+  [all, (_state: RootState, id: Token["id"]) => id],
+  (tokens, id) => tokens.find((token: Token) => token.id === id)
 );
+
+const token = {
+  all,
+  errors,
+  getById,
+  loaded,
+  loading,
+  saved,
+  saving,
+};
 
 export default token;

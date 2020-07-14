@@ -3,7 +3,7 @@ import React from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import DeployFormFields from "app/settings/views/Configuration/DeployFormFields";
 import FormikForm from "app/base/components/FormikForm";
 

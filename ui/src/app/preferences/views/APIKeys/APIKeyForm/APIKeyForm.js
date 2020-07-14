@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { token as tokenActions } from "app/preferences/actions";
-import { token as tokenSelectors } from "app/preferences/selectors";
+import tokenSelectors from "app/store/token/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";

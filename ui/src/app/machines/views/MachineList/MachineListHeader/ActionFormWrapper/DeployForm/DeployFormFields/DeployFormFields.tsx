@@ -4,9 +4,9 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { config as configSelectors } from "app/settings/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { DeployFormValues } from "../DeployForm";
+import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
 import type { User } from "app/store/user/types";
 import type { RootState } from "app/store/root/types";

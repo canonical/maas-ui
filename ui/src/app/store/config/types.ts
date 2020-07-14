@@ -1,9 +1,11 @@
 import type { TSFixMe } from "app/base/types";
 
+export type ConfigChoice = [string | number, string];
+
 export type Config = {
   name: string;
   value: string | boolean | number | null;
-  choices?: [string | number, string][];
+  choices?: ConfigChoice[];
 };
 
 export type ConfigState = {
