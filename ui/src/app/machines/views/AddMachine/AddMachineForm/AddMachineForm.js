@@ -13,7 +13,6 @@ import {
 } from "app/base/actions";
 import {
   domain as domainSelectors,
-  general as generalSelectors,
   machine as machineSelectors,
   resourcepool as resourcePoolSelectors,
   zone as zoneSelectors,
@@ -25,6 +24,7 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
+import generalSelectors from "app/store/general/selectors";
 import AddMachineFormFields from "../AddMachineFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";

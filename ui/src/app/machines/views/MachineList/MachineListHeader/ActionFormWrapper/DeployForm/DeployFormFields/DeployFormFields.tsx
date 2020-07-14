@@ -5,12 +5,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { config as configSelectors } from "app/settings/selectors";
-import {
-  auth as authSelectors,
-  general as generalSelectors,
-} from "app/base/selectors";
+import { auth as authSelectors } from "app/base/selectors";
 import { DeployFormValues } from "../DeployForm";
+import generalSelectors from "app/store/general/selectors";
 import type { User } from "app/store/user/types";
+import type { RootState } from "app/store/root/types";
 import UserDataField from "./UserDataField";
 import FormikField from "app/base/components/FormikField";
 
@@ -26,7 +25,7 @@ export const DeployFormFields = (): JSX.Element => {
     generalSelectors.osInfo.getAllOsReleases
   );
   const releaseOptions = allReleaseOptions[values.oSystem];
-  const kernelOptions = useSelector((state) =>
+  const kernelOptions = useSelector((state: RootState) =>
     generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =

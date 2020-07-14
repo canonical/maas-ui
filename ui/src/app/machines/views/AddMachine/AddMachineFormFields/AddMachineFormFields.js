@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import { formatMacAddress } from "app/utils";
 import {
   domain as domainSelectors,
-  general as generalSelectors,
   resourcepool as resourcePoolSelectors,
   zone as zoneSelectors,
 } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import FormikField from "app/base/components/FormikField";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
 

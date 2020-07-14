@@ -24,16 +24,13 @@ describe("version selectors", () => {
   describe("loading", () => {
     it("returns version loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          version: {
-            data: "",
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          version: versionStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(version.loading(state)).toStrictEqual(loading);
     });
   });
@@ -41,16 +38,13 @@ describe("version selectors", () => {
   describe("loaded", () => {
     it("returns version loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          version: {
-            data: "",
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          version: versionStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(version.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -58,32 +52,26 @@ describe("version selectors", () => {
   describe("errors", () => {
     it("returns version errors state", () => {
       const errors = "Cannot fetch version.";
-      const state = {
-        general: {
-          version: {
-            data: "",
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          version: versionStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(version.errors(state)).toStrictEqual(errors);
     });
   });
 
   describe("minor", () => {
     it("returns the minor version", () => {
-      const state = {
-        general: {
-          version: {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          version: versionStateFactory({
             data: "2.8.0~alpha1",
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(version.minor(state)).toStrictEqual("2.8");
     });
   });

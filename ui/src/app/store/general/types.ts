@@ -76,6 +76,8 @@ export type NavigationOptionsState = {
   loading: boolean;
 };
 
+export type OSInfoOsKernelEntry = [string, string];
+
 export type OSInfoOS = {
   [x: string]: [string, string][];
 };
@@ -84,9 +86,12 @@ export type OSInfoKernels = {
   [x: string]: OSInfoOS;
 };
 
+export type OSInfoOSystem = [string, string];
+export type OSInfoRelease = [string, string];
+
 export type OSInfo = {
-  osystems: [string, string][];
-  releases: [string, string][];
+  osystems: OSInfoOSystem[];
+  releases: OSInfoRelease[];
   kernels: OSInfoKernels;
   default_osystem: string;
   default_release: string;

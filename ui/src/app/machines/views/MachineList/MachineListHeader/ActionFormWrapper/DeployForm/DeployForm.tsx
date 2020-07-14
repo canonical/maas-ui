@@ -7,12 +7,10 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import { machine as machineSelectors } from "app/base/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
+import generalSelectors from "app/store/general/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import DeployFormFields from "./DeployFormFields";
 
@@ -33,7 +31,10 @@ export type DeployFormValues = {
 };
 
 type Props = {
-  setSelectedAction: (action?: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: (
+    action?: MachineAction | null,
+    deselect?: boolean
+  ) => void;
 };
 
 export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {

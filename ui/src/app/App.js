@@ -11,7 +11,7 @@ import {
   general as generalActions,
 } from "app/base/actions";
 import { getCookie } from "app/utils";
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
 import { config as configSelectors } from "app/settings/selectors";

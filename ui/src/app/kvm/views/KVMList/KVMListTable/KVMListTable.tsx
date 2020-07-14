@@ -18,12 +18,12 @@ import type { Pod } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Sort, TSFixMe } from "app/base/types";
 import {
-  general as generalSelectors,
   pod as podSelectors,
   resourcepool as poolSelectors,
 } from "app/base/selectors";
 import { useTableSort } from "app/base/hooks";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
+import generalSelectors from "app/store/general/selectors";
 import CPUColumn from "./CPUColumn";
 import NameColumn from "./NameColumn";
 import OSColumn from "./OSColumn";

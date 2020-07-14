@@ -4,6 +4,8 @@
 
 import { generateGeneralSelector } from "./utils";
 
-const navigationOptions = generateGeneralSelector("navigationOptions");
+const navigationOptions = generateGeneralSelector<"navigationOptions">(
+  "navigationOptions"
+);
 
 export default navigationOptions;

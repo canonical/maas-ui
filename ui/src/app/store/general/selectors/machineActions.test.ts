@@ -24,16 +24,13 @@ describe("machineActions selectors", () => {
   describe("loading", () => {
     it("returns machineActions loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          machineActions: {
-            data: [],
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          machineActions: machineActionsStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(machineActions.loading(state)).toStrictEqual(loading);
     });
   });
@@ -41,16 +38,13 @@ describe("machineActions selectors", () => {
   describe("loaded", () => {
     it("returns machineActions loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          machineActions: {
-            data: [],
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          machineActions: machineActionsStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(machineActions.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -58,16 +52,13 @@ describe("machineActions selectors", () => {
   describe("errors", () => {
     it("returns machineActions errors state", () => {
       const errors = "Cannot fetch machineActions.";
-      const state = {
-        general: {
-          machineActions: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          machineActions: machineActionsStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(machineActions.errors(state)).toStrictEqual(errors);
     });
   });
@@ -93,16 +84,13 @@ describe("machineActions selectors", () => {
         type: "lifecycle",
       },
     ];
-    const state = {
-      general: {
-        machineActions: {
+    const state = rootStateFactory({
+      general: generalStateFactory({
+        machineActions: machineActionsStateFactory({
           data,
-          errors: {},
-          loaded: true,
-          loading: false,
-        },
-      },
-    };
+        }),
+      }),
+    });
     expect(machineActions.getByName(state, "acquire")).toStrictEqual({
       name: "acquire",
       title: "Acquire...",

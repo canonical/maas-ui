@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { general as generalActions } from "app/base/actions";
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";

@@ -1,4 +1,5 @@
 import {
+  componentToDisable as componentToDisableFactory,
   componentsToDisableState as componentsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
@@ -8,7 +9,7 @@ import componentsToDisable from "./componentsToDisable";
 describe("componentsToDisable selectors", () => {
   describe("get", () => {
     it("returns componentsToDisable", () => {
-      const data = ["restricted", "universe", "multiverse"];
+      const data = [componentToDisableFactory(), componentToDisableFactory()];
       const state = rootStateFactory({
         general: generalStateFactory({
           componentsToDisable: componentsToDisableStateFactory({
@@ -22,32 +23,26 @@ describe("componentsToDisable selectors", () => {
 
   describe("loading", () => {
     it("returns componentsToDisable loading state", () => {
-      const data = ["restricted", "universe", "multiverse"];
-      const state = {
-        general: {
-          componentsToDisable: {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          componentsToDisable: componentsToDisableStateFactory({
             loading: true,
-            loaded: false,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(componentsToDisable.loading(state)).toStrictEqual(true);
     });
   });
 
   describe("loaded", () => {
     it("returns componentsToDisable loaded state", () => {
-      const data = ["restricted", "universe", "multiverse"];
-      const state = {
-        general: {
-          componentsToDisable: {
-            loading: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          componentsToDisable: componentsToDisableStateFactory({
             loaded: true,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(componentsToDisable.loaded(state)).toStrictEqual(true);
     });
   });
@@ -55,16 +50,13 @@ describe("componentsToDisable selectors", () => {
   describe("errors", () => {
     it("returns componentsToDisable errors state", () => {
       const errors = "Cannot fetch components to disable.";
-      const state = {
-        general: {
-          componentsToDisable: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          componentsToDisable: componentsToDisableStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(componentsToDisable.errors(state)).toStrictEqual(errors);
     });
   });
