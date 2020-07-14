@@ -41,7 +41,7 @@ export type Machine = BaseNode & {
 };
 
 export type MachineStatuses = {
-  [x: number]: {
+  [x: string]: {
     aborting: boolean;
     acquiring: boolean;
     checkingPower: boolean;
