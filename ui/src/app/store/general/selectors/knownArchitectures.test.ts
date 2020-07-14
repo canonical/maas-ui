@@ -1,5 +1,6 @@
 import {
   generalState as generalStateFactory,
+  knownArchitecture as knownArchitectureFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -8,7 +9,7 @@ import knownArchitectures from "./knownArchitectures";
 describe("knownArchitectures selectors", () => {
   describe("get", () => {
     it("returns knownArchitectures", () => {
-      const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
+      const data = [knownArchitectureFactory(), knownArchitectureFactory()];
       const state = rootStateFactory({
         general: generalStateFactory({
           knownArchitectures: knownArchitecturesStateFactory({
@@ -22,32 +23,26 @@ describe("knownArchitectures selectors", () => {
 
   describe("loading", () => {
     it("returns knownArchitectures loading state", () => {
-      const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
-      const state = {
-        general: {
-          knownArchitectures: {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          knownArchitectures: knownArchitecturesStateFactory({
             loading: true,
-            loaded: false,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(knownArchitectures.loading(state)).toStrictEqual(true);
     });
   });
 
   describe("loaded", () => {
     it("returns knownArchitectures loaded state", () => {
-      const data = ["amd64", "i386", "armhf", "arm64", "ppc64el", "s390x"];
-      const state = {
-        general: {
-          knownArchitectures: {
-            loading: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          knownArchitectures: knownArchitecturesStateFactory({
             loaded: true,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(knownArchitectures.loaded(state)).toStrictEqual(true);
     });
   });
@@ -55,16 +50,13 @@ describe("knownArchitectures selectors", () => {
   describe("errors", () => {
     it("returns knownArchitectures errors state", () => {
       const errors = "Cannot fetch known architectures.";
-      const state = {
-        general: {
-          knownArchitectures: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          knownArchitectures: knownArchitecturesStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(knownArchitectures.errors(state)).toStrictEqual(errors);
     });
   });

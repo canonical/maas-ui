@@ -4,6 +4,8 @@
 
 import { generateGeneralSelector } from "./utils";
 
-const defaultMinHweKernel = generateGeneralSelector("defaultMinHweKernel");
+const defaultMinHweKernel = generateGeneralSelector<"defaultMinHweKernel">(
+  "defaultMinHweKernel"
+);
 
 export default defaultMinHweKernel;

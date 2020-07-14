@@ -4,13 +4,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { getStatusText } from "app/utils";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
+import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
+import generalSelectors from "app/store/general/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 

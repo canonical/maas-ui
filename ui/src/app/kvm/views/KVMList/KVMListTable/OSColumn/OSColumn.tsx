@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { getStatusText } from "app/utils";
 import {
   controller as controllerSelectors,
-  general as generalSelectors,
   machine as machineSelectors,
   pod as podSelectors,
 } from "app/base/selectors";
 import type { RootState } from "app/store/root/types";
+import generalSelectors from "app/store/general/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 
 type Props = { id: number };
@@ -23,7 +23,7 @@ const OSColumn = ({ id }: Props): JSX.Element | null => {
   const osReleases = useSelector((state: RootState) =>
     generalSelectors.osInfo.getOsReleases(
       state,
-      hostDetails && hostDetails.osystem
+      hostDetails ? hostDetails.osystem : undefined
     )
   );
   const machinesLoading = useSelector(machineSelectors.loading);

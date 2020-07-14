@@ -4,6 +4,8 @@
 
 import { generateGeneralSelector } from "./utils";
 
-const pocketsToDisable = generateGeneralSelector("pocketsToDisable");
+const pocketsToDisable = generateGeneralSelector<"pocketsToDisable">(
+  "pocketsToDisable"
+);
 
 export default pocketsToDisable;

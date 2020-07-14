@@ -11,9 +11,9 @@ import {
 } from "app/base/actions";
 import {
   domain as domainSelectors,
-  general as generalSelectors,
   machine as machineSelectors,
 } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import {
   useAddMessage,
   useAllPowerParameters,

@@ -24,16 +24,13 @@ describe("powerTypes selectors", () => {
   describe("loading", () => {
     it("returns powerTypes loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          powerTypes: {
-            data: [],
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          powerTypes: powerTypesStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(powerTypes.loading(state)).toStrictEqual(loading);
     });
   });
@@ -41,16 +38,13 @@ describe("powerTypes selectors", () => {
   describe("loaded", () => {
     it("returns powerTypes loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          powerTypes: {
-            data: [],
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          powerTypes: powerTypesStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(powerTypes.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -58,16 +52,13 @@ describe("powerTypes selectors", () => {
   describe("errors", () => {
     it("returns powerTypes errors state", () => {
       const errors = "Cannot fetch powerTypes.";
-      const state = {
-        general: {
-          powerTypes: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          powerTypes: powerTypesStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(powerTypes.errors(state)).toStrictEqual(errors);
     });
   });
@@ -75,20 +66,17 @@ describe("powerTypes selectors", () => {
   describe("chassis", () => {
     it("returns chassis powerTypes", () => {
       const chassisPowerTypes = [
-        { name: "chassis-type-1", chassis: true },
-        { name: "chassis-type-2", chassis: true },
+        powerTypeFactory({ chassis: true }),
+        powerTypeFactory({ chassis: true }),
       ];
-      const nonChassisPowerType = { name: "non-chassis-type", chassis: false };
-      const state = {
-        general: {
-          powerTypes: {
+      const nonChassisPowerType = powerTypeFactory({ chassis: false });
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          powerTypes: powerTypesStateFactory({
             data: [...chassisPowerTypes, nonChassisPowerType],
-            errors: {},
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(powerTypes.chassis(state)).toStrictEqual(chassisPowerTypes);
     });
   });

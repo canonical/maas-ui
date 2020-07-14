@@ -9,7 +9,7 @@ import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 
 const generateRows = (
   licenseKeys,

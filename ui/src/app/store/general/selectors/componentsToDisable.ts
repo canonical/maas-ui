@@ -4,6 +4,8 @@
 
 import { generateGeneralSelector } from "./utils";
 
-const componentsToDisable = generateGeneralSelector("componentsToDisable");
+const componentsToDisable = generateGeneralSelector<"componentsToDisable">(
+  "componentsToDisable"
+);
 
 export default componentsToDisable;

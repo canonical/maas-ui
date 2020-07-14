@@ -24,16 +24,13 @@ describe("navigationOptions selectors", () => {
   describe("loading", () => {
     it("returns navigationOptions loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          navigationOptions: {
-            data: {},
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          navigationOptions: navigationOptionsStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(navigationOptions.loading(state)).toStrictEqual(loading);
     });
   });
@@ -41,16 +38,13 @@ describe("navigationOptions selectors", () => {
   describe("loaded", () => {
     it("returns navigationOptions loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          navigationOptions: {
-            data: {},
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          navigationOptions: navigationOptionsStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(navigationOptions.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -58,16 +52,13 @@ describe("navigationOptions selectors", () => {
   describe("errors", () => {
     it("returns navigationOptions errors state", () => {
       const errors = "Cannot fetch navigationOptions.";
-      const state = {
-        general: {
-          navigationOptions: {
-            data: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          navigationOptions: navigationOptionsStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(navigationOptions.errors(state)).toStrictEqual(errors);
     });
   });

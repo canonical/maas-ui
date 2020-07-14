@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import { sendAnalyticsEvent } from "analytics";
 import { config as configSelectors } from "app/settings/selectors";
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import { machine as machineActions } from "app/base/actions";
 import { machine as machineSelectors } from "app/base/selectors";
 import { messages } from "app/base/actions";

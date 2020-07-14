@@ -5,6 +5,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import osInfo from "./osInfo";
+import type { RootState } from "app/store/root/types";
 
 describe("osInfo selectors", () => {
   describe("get", () => {
@@ -23,44 +24,26 @@ describe("osInfo selectors", () => {
 
   describe("loading", () => {
     it("returns osInfo loading state", () => {
-      const data = {
-        osystems: [],
-        releases: [],
-        kernels: {},
-        default_osystem: "",
-        default_release: "",
-      };
-      const state = {
-        general: {
-          osInfo: {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             loading: true,
-            loaded: false,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(osInfo.loading(state)).toStrictEqual(true);
     });
   });
 
   describe("loaded", () => {
     it("returns osInfo loaded state", () => {
-      const data = {
-        osystems: [],
-        releases: [],
-        kernels: {},
-        default_osystem: "",
-        default_release: "",
-      };
-      const state = {
-        general: {
-          osInfo: {
-            loading: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             loaded: true,
-            data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(osInfo.loaded(state)).toStrictEqual(true);
     });
   });
@@ -68,23 +51,20 @@ describe("osInfo selectors", () => {
   describe("errors", () => {
     it("returns osInfo errors state", () => {
       const errors = "Cannot fetch os info.";
-      const state = {
-        general: {
-          osInfo: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(osInfo.errors(state)).toStrictEqual(errors);
     });
   });
 
   describe("getUbuntuKernelOptions", () => {
     it("returns options for supplied key", () => {
-      const data = {
+      const data = osInfoFactory({
         kernels: {
           ubuntu: {
             precise: [
@@ -97,16 +77,14 @@ describe("osInfo selectors", () => {
             ],
           },
         },
-      };
-      const state = {
-        general: {
-          osInfo: {
-            loading: false,
-            loaded: true,
+      });
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(osInfo.getUbuntuKernelOptions(state, "precise")).toEqual([
         { value: "", label: "No minimum kernel" },
         { value: "hwe-p", label: "precise (hwe-p)" },
@@ -117,7 +95,7 @@ describe("osInfo selectors", () => {
 
   describe("getAllUbuntuKernelOptions", () => {
     it("returns all ubuntu kernel options", () => {
-      const data = {
+      const data = osInfoFactory({
         kernels: {
           ubuntu: {
             precise: [
@@ -130,16 +108,14 @@ describe("osInfo selectors", () => {
             ],
           },
         },
-      };
-      const state = {
-        general: {
-          osInfo: {
-            loading: false,
-            loaded: true,
+      });
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(osInfo.getAllUbuntuKernelOptions(state)).toEqual({
         precise: [
           { value: "", label: "No minimum kernel" },
@@ -156,26 +132,24 @@ describe("osInfo selectors", () => {
   });
 
   describe("getOsReleases", () => {
-    const data = {
+    const data = osInfoFactory({
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
         ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
         ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
       ],
-    };
-    let state;
+    });
+    let state: RootState;
 
     beforeEach(() => {
-      state = {
-        general: {
-          osInfo: {
-            loading: false,
-            loaded: true,
+      state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
     });
 
     it("returns and formats OS releases with centos argument", () => {
@@ -197,7 +171,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getAllOsReleases", () => {
-    const data = {
+    const data = osInfoFactory({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["centos", "CentOS"],
@@ -208,19 +182,19 @@ describe("osInfo selectors", () => {
         ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
         ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
       ],
-    };
-    let state;
+    });
+    let state: RootState;
 
     beforeEach(() => {
-      state = {
-        general: {
-          osInfo: {
+      state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             loading: false,
             loaded: true,
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
     });
 
     it("returns an object with all OS releases", () => {
@@ -238,7 +212,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getLicensedOsReleases", () => {
-    const data = {
+    const data = osInfoFactory({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["windows", "Windows"],
@@ -248,19 +222,19 @@ describe("osInfo selectors", () => {
         ["centos/centos70", "CentOS 7"],
         ["windows/win2012*", "Windows 2012 Server"],
       ],
-    };
-    let state;
+    });
+    let state: RootState;
 
     beforeEach(() => {
-      state = {
-        general: {
-          osInfo: {
+      state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             loading: false,
             loaded: true,
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
     });
 
     it("returns only licensed releases", () => {
@@ -271,7 +245,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getLicensedOsystems", () => {
-    const data = {
+    const data = osInfoFactory({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["windows", "Windows"],
@@ -281,19 +255,19 @@ describe("osInfo selectors", () => {
         ["centos/centos70", "CentOS 7"],
         ["windows/win2012*", "Windows 2012 Server"],
       ],
-    };
-    let state;
+    });
+    let state: RootState;
 
     beforeEach(() => {
-      state = {
-        general: {
-          osInfo: {
+      state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
             loading: false,
             loaded: true,
             data,
-          },
-        },
-      };
+          }),
+        }),
+      });
     });
 
     it("returns only licensed operating systems", () => {

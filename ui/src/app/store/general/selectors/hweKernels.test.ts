@@ -24,16 +24,13 @@ describe("hweKernels selectors", () => {
   describe("loading", () => {
     it("returns hweKernels loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          hweKernels: {
-            data: [],
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          hweKernels: hweKernelsStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(hweKernels.loading(state)).toStrictEqual(loading);
     });
   });
@@ -41,16 +38,13 @@ describe("hweKernels selectors", () => {
   describe("loaded", () => {
     it("returns hweKernels loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          hweKernels: {
-            data: [],
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          hweKernels: hweKernelsStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(hweKernels.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -58,16 +52,13 @@ describe("hweKernels selectors", () => {
   describe("errors", () => {
     it("returns hweKernels errors state", () => {
       const errors = "Cannot fetch hweKernels.";
-      const state = {
-        general: {
-          hweKernels: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          hweKernels: hweKernelsStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(hweKernels.errors(state)).toStrictEqual(errors);
     });
   });

@@ -10,8 +10,8 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
+import generalSelectors from "app/store/general/selectors";
 import {
-  general as generalSelectors,
   pod as podSelectors,
   resourcepool as resourcePoolSelectors,
   zone as zoneSelectors,
@@ -55,7 +55,7 @@ export const AddKVMForm = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  const [hostType, setHostType] = useState("");
+  const [hostType, setHostType] = useState<TSFixMe>();
   const [savingPod, setSavingPod] = useState(false);
 
   const allLoaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;

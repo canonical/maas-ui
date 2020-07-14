@@ -23,16 +23,13 @@ describe("architectures selectors", () => {
   describe("loading", () => {
     it("returns architectures loading state", () => {
       const loading = true;
-      const state = {
-        general: {
-          architectures: {
-            data: [],
-            errors: {},
-            loaded: false,
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          architectures: architecturesStateFactory({
             loading,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(architectures.loading(state)).toStrictEqual(loading);
     });
   });
@@ -40,16 +37,13 @@ describe("architectures selectors", () => {
   describe("loaded", () => {
     it("returns architectures loaded state", () => {
       const loaded = true;
-      const state = {
-        general: {
-          architectures: {
-            data: [],
-            errors: {},
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          architectures: architecturesStateFactory({
             loaded,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(architectures.loaded(state)).toStrictEqual(loaded);
     });
   });
@@ -57,16 +51,13 @@ describe("architectures selectors", () => {
   describe("errors", () => {
     it("returns architectures errors state", () => {
       const errors = "Cannot fetch architectures.";
-      const state = {
-        general: {
-          architectures: {
-            data: [],
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          architectures: architecturesStateFactory({
             errors,
-            loaded: true,
-            loading: false,
-          },
-        },
-      };
+          }),
+        }),
+      });
       expect(architectures.errors(state)).toStrictEqual(errors);
     });
   });
