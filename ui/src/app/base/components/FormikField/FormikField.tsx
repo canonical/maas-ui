@@ -9,7 +9,7 @@ import type { TSFixMe } from "app/base/types";
 type Props = {
   Component?: JSX.Element;
   name: string;
-  value?: string;
+  value?: number | string;
   [x: string]: TSFixMe;
 };
 
@@ -34,7 +34,7 @@ const FormikField = ({
 FormikField.propTypes = {
   component: PropTypes.func,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default FormikField;

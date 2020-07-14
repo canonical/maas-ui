@@ -1,4 +1,4 @@
-import { Button, Input, Label } from "@canonical/react-components";
+import { Button, Input } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
@@ -159,12 +159,16 @@ export const TagSelector = ({
   }, []);
 
   return (
-    <div className="tag-selector" ref={wrapperRef}>
-      <Field
-        error={error}
-        help={help}
-        label={<Label onClick={() => setDropdownOpen(true)}>{label}</Label>}
-      >
+    <Field
+      error={error}
+      help={help}
+      label={
+        <span onClick={() => setDropdownOpen(true)} ref={wrapperRef}>
+          {label}
+        </span>
+      }
+    >
+      <div className="tag-selector">
         {selectedTags.length > 0 && (
           <ul className="tag-selector__selected-list">
             {generateSelectedItems({ selectedTags, updateTags })}
@@ -203,8 +207,8 @@ export const TagSelector = ({
             </ul>
           </div>
         )}
-      </Field>
-    </div>
+      </div>
+    </Field>
   );
 };
 

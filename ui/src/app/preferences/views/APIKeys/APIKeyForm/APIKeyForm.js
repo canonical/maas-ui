@@ -1,8 +1,9 @@
 import { Col, Row } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import { token as tokenActions } from "app/preferences/actions";
 import { token as tokenSelectors } from "app/preferences/selectors";
@@ -24,6 +25,7 @@ const APIKeyEditSchema = Yup.object().shape({
 export const APIKeyForm = ({ token }) => {
   const editing = !!token;
   const dispatch = useDispatch();
+  const history = useHistory();
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
@@ -46,6 +48,7 @@ export const APIKeyForm = ({ token }) => {
         initialValues={{
           name: token ? token.consumer.name : "",
         }}
+        onCancel={() => history.push({ pathname: "/account/prefs/api-keys" })}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",

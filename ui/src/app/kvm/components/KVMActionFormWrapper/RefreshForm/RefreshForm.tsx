@@ -15,6 +15,7 @@ const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const { id } = useParams();
   const errors = useSelector(podSelectors.errors);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const refreshing = useSelector(podSelectors.refreshing);
   const refreshingSelected = useSelector(podSelectors.refreshingSelected);
   const podsToRefresh = id ? [Number(id)] : selectedPodIDs;
 
@@ -30,7 +31,7 @@ const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
           dispatch(podActions.refresh(podID));
         });
       }}
-      processingCount={refreshingSelected.length}
+      processingCount={id ? refreshing.length : refreshingSelected.length}
       selectedCount={podsToRefresh.length}
     >
       <p>

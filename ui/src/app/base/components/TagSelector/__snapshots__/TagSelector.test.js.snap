@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TagSelector renders and matches the snapshot when closed 1`] = `
-<div
-  className="tag-selector"
+<Field
+  label={
+    <span
+      onClick={[Function]}
+    >
+      Tags
+    </span>
+  }
 >
-  <Field
-    label={
-      <Label
-        onClick={[Function]}
-      >
-        Tags
-      </Label>
-    }
+  <div
+    className="tag-selector"
   >
     <Input
       className="tag-selector__input"
@@ -22,8 +22,8 @@ exports[`TagSelector renders and matches the snapshot when closed 1`] = `
       type="text"
       value=""
     />
-  </Field>
-</div>
+  </div>
+</Field>
 `;
 
 exports[`TagSelector renders and matches the snapshot when opened 1`] = `
@@ -44,39 +44,34 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
     ]
   }
 >
-  <div
-    className="tag-selector"
-  >
-    <Field
-      label={
-        <Label
-          onClick={[Function]}
-        >
-          Tags
-        </Label>
-      }
-    >
-      <div
-        className="p-form__group p-form-validation"
+  <Field
+    label={
+      <span
+        onClick={[Function]}
       >
-        <Label>
-          <label
-            className="p-form__label"
+        Tags
+      </span>
+    }
+  >
+    <div
+      className="p-form__group p-form-validation"
+    >
+      <Label>
+        <label
+          className="p-form__label"
+        >
+          <span
+            onClick={[Function]}
           >
-            <Label
-              onClick={[Function]}
-            >
-              <label
-                className="p-form__label"
-                onClick={[Function]}
-              >
-                Tags
-              </label>
-            </Label>
-          </label>
-        </Label>
+            Tags
+          </span>
+        </label>
+      </Label>
+      <div
+        className="p-form__control u-clearfix"
+      >
         <div
-          className="p-form__control u-clearfix"
+          className="tag-selector"
         >
           <Input
             className="tag-selector__input"
@@ -111,8 +106,8 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
           </Input>
         </div>
       </div>
-    </Field>
-  </div>
+    </div>
+  </Field>
 </TagSelector>
 `;
 
@@ -136,39 +131,34 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
     ]
   }
 >
-  <div
-    className="tag-selector"
-  >
-    <Field
-      label={
-        <Label
-          onClick={[Function]}
-        >
-          Tags
-        </Label>
-      }
-    >
-      <div
-        className="p-form__group p-form-validation"
+  <Field
+    label={
+      <span
+        onClick={[Function]}
       >
-        <Label>
-          <label
-            className="p-form__label"
+        Tags
+      </span>
+    }
+  >
+    <div
+      className="p-form__group p-form-validation"
+    >
+      <Label>
+        <label
+          className="p-form__label"
+        >
+          <span
+            onClick={[Function]}
           >
-            <Label
-              onClick={[Function]}
-            >
-              <label
-                className="p-form__label"
-                onClick={[Function]}
-              >
-                Tags
-              </label>
-            </Label>
-          </label>
-        </Label>
+            Tags
+          </span>
+        </label>
+      </Label>
+      <div
+        className="p-form__control u-clearfix"
+      >
         <div
-          className="p-form__control u-clearfix"
+          className="tag-selector"
         >
           <Input
             className="tag-selector__input"
@@ -203,7 +193,7 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
           </Input>
         </div>
       </div>
-    </Field>
-  </div>
+    </div>
+  </Field>
 </TagSelector>
 `;

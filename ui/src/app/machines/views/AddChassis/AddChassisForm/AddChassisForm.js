@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -34,6 +35,7 @@ const generateChassisSchema = (parametersSchema) =>
 
 export const AddChassisForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const chassisPowerTypes = useSelector(generalSelectors.powerTypes.chassis);
   const domains = useSelector(domainSelectors.all);
@@ -99,6 +101,7 @@ export const AddChassisForm = () => {
               power_parameters: allPowerParameters,
               power_type: "",
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Chassis",

@@ -53,16 +53,19 @@ const pod = createNextState((draft, action) => {
       draft.loading = false;
       break;
     case "CREATE_POD_START":
+    case "UPDATE_POD_START":
       draft.saved = false;
       draft.saving = true;
       break;
     case "CREATE_POD_SUCCESS":
+    case "UPDATE_POD_SUCCESS":
       draft.errors = {};
       draft.saved = true;
       draft.saving = false;
       break;
     case "FETCH_POD_ERROR":
     case "CREATE_POD_ERROR":
+    case "UPDATE_POD_ERROR":
       draft.errors = action.error;
       draft.saving = false;
       break;

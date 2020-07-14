@@ -1,7 +1,8 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -36,8 +37,9 @@ const RepositorySchema = Yup.object().shape({
 });
 
 export const RepositoryForm = ({ type, repository }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [savedRepo, setSavedRepo] = useState();
-
   const componentsToDisableLoaded = useSelector(
     generalSelectors.componentsToDisable.loaded
   );
@@ -56,8 +58,6 @@ export const RepositoryForm = ({ type, repository }) => {
     knownArchitecturesLoaded &&
     pocketsToDisableLoaded &&
     repositoriesLoaded;
-
-  const dispatch = useDispatch();
 
   useAddMessage(
     repositoriesSaved,
@@ -124,6 +124,9 @@ export const RepositoryForm = ({ type, repository }) => {
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}
+            onCancel={() =>
+              history.push({ pathname: "/settings/repositories" })
+            }
             onSaveAnalytics={{
               action: "Saved",
               category: "Package repos settings",

@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -55,6 +56,7 @@ const generateMachineSchema = (parametersSchema) =>
 
 export const AddMachineForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const architectures = useSelector(generalSelectors.architectures.get);
   const architecturesLoaded = useSelector(
@@ -156,6 +158,7 @@ export const AddMachineForm = () => {
               pxe_mac: "",
               zone: (zones.length && zones[0].name) || "",
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Machine",

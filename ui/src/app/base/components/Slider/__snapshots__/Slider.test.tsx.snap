@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider renders correctly 1`] = `
+<Field>
+  <div
+    className="p-slider__wrapper"
+  >
+    <input
+      className="p-slider"
+      disabled={false}
+      max={10}
+      min={0}
+      onChange={[MockFunction]}
+      required={false}
+      step={1}
+      style={
+        Object {
+          "background": "linear-gradient(
+        to right,
+        #0066CC 0%,
+        #0066CC 50%,
+        transparent 50%,
+        transparent 100%
+      )",
+        }
+      }
+      type="range"
+      value={5}
+    />
+    <input
+      className="p-slider__input"
+      disabled={false}
+      max={10}
+      min={0}
+      onChange={[MockFunction]}
+      step={1}
+      type="number"
+      value={5}
+    />
+  </div>
+</Field>
+`;

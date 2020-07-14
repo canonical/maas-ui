@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -42,6 +43,7 @@ export type AddKVMFormValues = { [x: string]: TSFixMe };
 
 export const AddKVMForm = (): JSX.Element => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -112,6 +114,7 @@ export const AddKVMForm = (): JSX.Element => {
               type: initialHostType,
               zone: zones.length ? zones[0].id : "",
             }}
+            onCancel={() => history.push({ pathname: "/kvm" })}
             onSaveAnalytics={{
               action: "Save",
               category: "KVM",
