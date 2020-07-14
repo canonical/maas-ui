@@ -3,7 +3,7 @@ import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
 } from "testing/factories";
-import sshkey from "./sshkey";
+import sshkey from "./selectors";
 
 describe("sshkey selectors", () => {
   describe("all", () => {
@@ -20,64 +20,55 @@ describe("sshkey selectors", () => {
 
   describe("loading", () => {
     it("returns sshkey loading state", () => {
-      const state = {
-        sshkey: {
+      const state = rootStateFactory({
+        sshkey: sshKeyStateFactory({
           loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sshkey.loading(state)).toStrictEqual(false);
     });
   });
 
   describe("loaded", () => {
     it("returns sshkey loaded state", () => {
-      const state = {
-        sshkey: {
-          loading: false,
+      const state = rootStateFactory({
+        sshkey: sshKeyStateFactory({
           loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sshkey.loaded(state)).toStrictEqual(true);
     });
   });
 
   describe("errors", () => {
     it("returns sshkey error state", () => {
-      const state = {
-        sshkey: {
+      const state = rootStateFactory({
+        sshkey: sshKeyStateFactory({
           errors: "Unable to list SSH keys.",
-          loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sshkey.errors(state)).toEqual("Unable to list SSH keys.");
     });
   });
 
   describe("saving", () => {
     it("returns sshkey saving state", () => {
-      const state = {
-        sshkey: {
+      const state = rootStateFactory({
+        sshkey: sshKeyStateFactory({
           saving: false,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sshkey.saving(state)).toStrictEqual(false);
     });
   });
 
   describe("saved", () => {
     it("returns sshkey saved state", () => {
-      const state = {
-        sshkey: {
+      const state = rootStateFactory({
+        sshkey: sshKeyStateFactory({
           saved: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sshkey.saved(state)).toStrictEqual(true);
     });
   });

@@ -3,7 +3,7 @@ import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
 } from "testing/factories";
-import sslkey from "./sslkey";
+import sslkey from "./selectors";
 
 describe("sslkey selectors", () => {
   describe("all", () => {
@@ -20,64 +20,55 @@ describe("sslkey selectors", () => {
 
   describe("loading", () => {
     it("returns sslkey loading state", () => {
-      const state = {
-        sslkey: {
+      const state = rootStateFactory({
+        sslkey: sslKeyStateFactory({
           loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sslkey.loading(state)).toStrictEqual(false);
     });
   });
 
   describe("loaded", () => {
     it("returns sslkey loaded state", () => {
-      const state = {
-        sslkey: {
-          loading: false,
+      const state = rootStateFactory({
+        sslkey: sslKeyStateFactory({
           loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sslkey.loaded(state)).toStrictEqual(true);
     });
   });
 
   describe("errors", () => {
     it("returns sslkey error state", () => {
-      const state = {
-        sslkey: {
+      const state = rootStateFactory({
+        sslkey: sslKeyStateFactory({
           errors: "Unable to list SSL keys.",
-          loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sslkey.errors(state)).toEqual("Unable to list SSL keys.");
     });
   });
 
   describe("saving", () => {
     it("returns sslkey saving state", () => {
-      const state = {
-        sslkey: {
+      const state = rootStateFactory({
+        sslkey: sslKeyStateFactory({
           saving: false,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sslkey.saving(state)).toStrictEqual(false);
     });
   });
 
   describe("saved", () => {
     it("returns sslkey saved state", () => {
-      const state = {
-        sslkey: {
+      const state = rootStateFactory({
+        sslkey: sslKeyStateFactory({
           saved: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(sslkey.saved(state)).toStrictEqual(true);
     });
   });

@@ -2,7 +2,7 @@ import React from "react";
 import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
 
 class ErrorBoundary extends React.Component {

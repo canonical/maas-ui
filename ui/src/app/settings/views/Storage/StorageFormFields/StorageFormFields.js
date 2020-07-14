@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import React from "react";
 
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 
 const StorageFormFields = () => {

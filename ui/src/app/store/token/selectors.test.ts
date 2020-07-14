@@ -3,7 +3,7 @@ import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
 } from "testing/factories";
-import token from "./token";
+import token from "./selectors";
 
 describe("token selectors", () => {
   describe("all", () => {
@@ -20,64 +20,55 @@ describe("token selectors", () => {
 
   describe("loading", () => {
     it("returns token loading state", () => {
-      const state = {
-        token: {
+      const state = rootStateFactory({
+        token: tokenStateFactory({
           loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(token.loading(state)).toStrictEqual(false);
     });
   });
 
   describe("loaded", () => {
     it("returns token loaded state", () => {
-      const state = {
-        token: {
-          loading: false,
+      const state = rootStateFactory({
+        token: tokenStateFactory({
           loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(token.loaded(state)).toStrictEqual(true);
     });
   });
 
   describe("errors", () => {
     it("returns token error state", () => {
-      const state = {
-        token: {
+      const state = rootStateFactory({
+        token: tokenStateFactory({
           errors: "Unable to list SSH keys.",
-          loading: false,
-          loaded: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(token.errors(state)).toEqual("Unable to list SSH keys.");
     });
   });
 
   describe("saving", () => {
     it("returns token saving state", () => {
-      const state = {
-        token: {
+      const state = rootStateFactory({
+        token: tokenStateFactory({
           saving: false,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(token.saving(state)).toStrictEqual(false);
     });
   });
 
   describe("saved", () => {
     it("returns token saved state", () => {
-      const state = {
-        token: {
+      const state = rootStateFactory({
+        token: tokenStateFactory({
           saved: true,
-          items: [],
-        },
-      };
+        }),
+      });
       expect(token.saved(state)).toStrictEqual(true);
     });
   });
