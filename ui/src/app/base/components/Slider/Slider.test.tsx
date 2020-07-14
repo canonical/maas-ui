@@ -4,20 +4,26 @@ import React from "react";
 import Slider from "./Slider";
 
 describe("Slider", () => {
-  it("renders without number input", () => {
+  it("renders correctly", () => {
     const wrapper = shallow(
-      <Slider max={10} min={0} onChange={jest.fn()} value={5} />
+      <Slider max={10} min={0} onChange={jest.fn()} showInput value={5} />
     );
     // Snapshot should not include extra number input beside the slider.
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("renders with number input", () => {
+  it("can render without an additional number input", () => {
     const wrapper = shallow(
-      <Slider max={10} min={0} onChange={jest.fn()} showInput value={5} />
+      <Slider
+        max={10}
+        min={0}
+        onChange={jest.fn()}
+        showInput={false}
+        value={5}
+      />
     );
     // Snapshot should include extra number input beside the slider.
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("input[type='number']").exists()).toBe(false);
   });
 
   it("correctly displays filled portion", () => {

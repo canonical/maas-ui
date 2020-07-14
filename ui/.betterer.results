@@ -28,7 +28,7 @@ exports[`stricter compilation`] = {
       [23, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [123, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
-    "src/app/base/components/FormikField/FormikField.tsx:1946634864": [
+    "src/app/base/components/FormikField/FormikField.tsx:4232142994": [
       [0, 22, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/base/components/FormikForm/FormikForm.tsx:4136491328": [
@@ -71,7 +71,7 @@ exports[`stricter compilation`] = {
     "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:4039034563": [
       [30, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:1827624353": [
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:2470520871": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -452,5 +452,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `870`
+  value: `879`
 };
