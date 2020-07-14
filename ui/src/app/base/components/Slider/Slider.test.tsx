@@ -8,7 +8,6 @@ describe("Slider", () => {
     const wrapper = shallow(
       <Slider max={10} min={0} onChange={jest.fn()} showInput value={5} />
     );
-    // Snapshot should not include extra number input beside the slider.
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -22,7 +21,6 @@ describe("Slider", () => {
         value={5}
       />
     );
-    // Snapshot should include extra number input beside the slider.
     expect(wrapper.find("input[type='number']").exists()).toBe(false);
   });
 
