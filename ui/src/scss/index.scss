@@ -26,6 +26,7 @@
 @import "./patterns_forms";
 @import "./patterns_icons";
 @import "./patterns_links";
+@import "./patterns_lists";
 @import "./patterns_navigation";
 @import "./patterns_notifications";
 @import "./patterns_table-actions";
@@ -38,6 +39,7 @@
 @include maas-forms;
 @include maas-icons;
 @include maas-links;
+@include maas-lists;
 @include maas-navigation;
 @include maas-notifications;
 @include maas-table-actions;

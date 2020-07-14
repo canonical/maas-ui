@@ -30,11 +30,15 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
         data={[
           {
             key: `${pod.name}-memory-meter`,
-            label: `${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} assigned`,
             value: pod.used.memory,
           },
         ]}
-        labelsClassName="u-align--right"
+        label={
+          <small className="u-text--light">
+            {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} assigned`}
+          </small>
+        }
+        labelClassName="u-align--right"
         max={pod.total.memory * pod.memory_over_commit_ratio}
         small
       />

@@ -1,0 +1,24 @@
+@mixin maas-lists {
+  .p-grid-list {
+    display: grid;
+    grid-column-gap: $sph-inner;
+    grid-template-columns: min-content auto;
+  }
+
+  .p-grid-list__label {
+    color: $color-mid-dark;
+    text-align: right;
+    
+    &:not(:nth-last-child(2)) {
+      margin-bottom: $spv-outer--small-scaleable;
+    }
+  }
+
+  .p-grid-list__value {
+    word-break: break-word;
+
+    &:not(:last-child) {
+      margin-bottom: $spv-outer--small-scaleable;
+    }
+  }
+}

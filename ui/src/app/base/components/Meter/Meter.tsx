@@ -35,7 +35,6 @@ const updateWidths = (
 type MeterDatum = {
   color?: string;
   key: string;
-  label?: string;
   value: number;
 };
 
@@ -43,7 +42,8 @@ type Props = {
   className?: string;
   data: MeterDatum[];
   emptyColor?: string;
-  labelsClassName?: string;
+  label?: string | JSX.Element;
+  labelClassName?: string;
   max?: number;
   overColor?: string;
   segmented?: boolean;
@@ -55,7 +55,8 @@ const Meter = ({
   className,
   data,
   emptyColor = DEFAULT_EMPTY_COLOR,
-  labelsClassName,
+  label,
+  labelClassName,
   max,
   overColor = DEFAULT_OVER_COLOR,
   segmented = false,
@@ -63,7 +64,6 @@ const Meter = ({
   small = false,
 }: Props): JSX.Element => {
   const el = useRef(null);
-  const hasLabels = data.some((datum) => datum.label);
   const valueSum = data.reduce((sum, datum) => sum + datum.value, 0);
   const maximum = max || valueSum;
   const datumWidths = data.map((datum) => (datum.value / maximum) * 100);
@@ -136,22 +136,9 @@ const Meter = ({
           />
         )}
       </div>
-      {hasLabels && (
-        <div className={classNames("p-meter__labels", labelsClassName)}>
-          {data.map((datum) => {
-            if (!datum.label) {
-              return null;
-            }
-            return (
-              <div key={`${datum.key}-label`}>
-                {small ? (
-                  <small className="u-text--light">{datum.label}</small>
-                ) : (
-                  datum.label
-                )}
-              </div>
-            );
-          })}
+      {label && (
+        <div className={classNames("p-meter__label", labelClassName)}>
+          {label}
         </div>
       )}
     </div>
@@ -164,12 +151,12 @@ Meter.propTypes = {
     PropTypes.shape({
       color: PropTypes.string,
       key: PropTypes.string.isRequired,
-      label: PropTypes.node,
       value: PropTypes.number,
     })
   ).isRequired,
   emptyColor: PropTypes.string,
-  labelsClassName: PropTypes.string,
+  label: PropTypes.node,
+  labelClassName: PropTypes.string,
   max: PropTypes.number,
   overColor: PropTypes.string,
   segmented: PropTypes.bool,

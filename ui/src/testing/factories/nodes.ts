@@ -1,9 +1,14 @@
-import { define, extend, random } from "cooky-cutter";
+import { define, extend, random, sequence } from "cooky-cutter";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
-import type { Pod, PodHint, PodHintExtras } from "app/store/pod/types";
+import type {
+  Pod,
+  PodHint,
+  PodHintExtras,
+  PodStoragePool,
+} from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
 import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
 import { model, modelRef } from "./model";
@@ -31,7 +36,7 @@ const link_speeds = () => [];
 const permissions = () => ["edit", "delete", "compose"];
 const service_ids = () => [];
 const spaces = () => [];
-const storage_pools = () => [];
+const storage_pools = () => [podStoragePool(), podStoragePool()];
 const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => [];
@@ -138,6 +143,16 @@ const podHintExtras = define<PodHintExtras>({
   iscsi_storage: -1,
   iscsi_storage_gb: "-0.0",
   local_disks: -1,
+});
+
+export const podStoragePool = define<PodStoragePool>({
+  available: 700000000000,
+  total: 1000000000000,
+  used: 300000000000,
+  name: () => `storage-pool-${random()}`,
+  path: () => `/path/to/${random()}`,
+  id: sequence,
+  type: "lvm",
 });
 
 export const pod = extend<Model, Pod>(model, {

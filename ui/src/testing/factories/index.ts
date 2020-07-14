@@ -39,7 +39,7 @@ export {
 } from "./state";
 export { config } from "./config";
 export { domain } from "./domain";
-export { device, machine, controller, pod } from "./nodes";
+export { device, machine, controller, pod, podStoragePool } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
 export { licenseKeys } from "./licensekeys";
 export {
