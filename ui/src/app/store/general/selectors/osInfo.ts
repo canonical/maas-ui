@@ -23,9 +23,9 @@ export type OSInfoOptions = { [x: string]: OSInfoOption[] };
 
 /**
  * Returns kernels data.
- * @param {Object} data - The osinfo data.
+ * @param {OSInfo} data - The osinfo data.
  * @param {String} release - The release to get kernel options for.
- * @returns {Array} - The available kernel options.
+ * @returns {OSInfoOption[]} - The available kernel options.
  */
 const _getUbuntuKernelOptions = (
   data: OSInfo,
@@ -46,9 +46,9 @@ const _getUbuntuKernelOptions = (
 
 /**
  * Returns kernels data.
- * @param {Object} state -The redux state.
+ * @param {RootState} state -The redux state.
  * @param {String} release - The release to get kernel options for.
- * @returns {Array} - The available kernel options.
+ * @returns {OSInfoOption[]} - The available kernel options.
  */
 const getUbuntuKernelOptions = createSelector(
   [generalSelectors.get, (_state: RootState, release: string) => release],
@@ -57,8 +57,8 @@ const getUbuntuKernelOptions = createSelector(
 
 /**
  * Returns all ubuntu kernel options
- * @param {Object} state - the redux state
- * @returns {Object} - all ubuntu kernel options
+ * @param {RootState} state - the redux state
+ * @returns {OSInfoOptions} - all ubuntu kernel options
  */
 const getAllUbuntuKernelOptions = createSelector(
   [generalSelectors.get],
@@ -77,9 +77,9 @@ const getAllUbuntuKernelOptions = createSelector(
 
 /**
  * Returns OS releases
- * @param {Object} data - The osinfo data.
+ * @param {OSInfo} data - The osinfo data.
  * @param {String} os - the OS to get releases of
- * @returns {Array} - the available OS releases
+ * @returns {OSInfoOption[]} - the available OS releases
  */
 const _getOsReleases = (allOsInfo: OSInfo, os?: string): OSInfoOption[] => {
   let osReleases: OSInfoOption[] = [];
@@ -102,9 +102,9 @@ const _getOsReleases = (allOsInfo: OSInfo, os?: string): OSInfoOption[] => {
 
 /**
  * Returns OS releases
- * @param {Object} state - the redux state
+ * @param {RootState} state - the redux state
  * @param {String} os - the OS to get releases of
- * @returns {Array} - the available OS releases
+ * @returns {OSInfoOption[]} - the available OS releases
  */
 const getOsReleases = createSelector(
   [generalSelectors.get, (_state: RootState, os: string | undefined) => os],
@@ -113,8 +113,8 @@ const getOsReleases = createSelector(
 
 /**
  * Returns an object with all OS releases
- * @param {Object} state - the redux state
- * @returns {Object} - all OS releases
+ * @param {RootState} state - the redux state
+ * @returns {OSInfoOptions} - all OS releases
  */
 const getAllOsReleases = createSelector(
   [generalSelectors.get],
@@ -134,8 +134,8 @@ const getAllOsReleases = createSelector(
 
 /**
  * Returns an object with all licensed OS releases.
- * @param {Object} state - the redux state
- * @returns {Object} - all OS releases
+ * @param {RootState} state - the redux state
+ * @returns {OSInfoOptions} - all OS releases
  *
  */
 const getLicensedOsReleases = createSelector([getAllOsReleases], (releases) => {
