@@ -1,3 +1,4 @@
+import { Spinner, Strip } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -9,7 +10,7 @@ import { useWindowTitle } from "app/base/hooks";
 import MachineListTable from "app/machines/views/MachineList/MachineListTable";
 import KVMSummaryStorage from "./KVMSummaryStorage";
 
-const KVMSummary = (): JSX.Element | null => {
+const KVMSummary = (): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const pod = useSelector((state: RootState) =>
@@ -26,14 +27,18 @@ const KVMSummary = (): JSX.Element | null => {
     return (
       <>
         <h4>Storage</h4>
-        <KVMSummaryStorage id={pod.id} />
+        <Strip className="u-sv3" shallow>
+          <KVMSummaryStorage id={pod.id} />
+        </Strip>
         <hr />
         <h4>Machines</h4>
-        <MachineListTable filter={`pod-id:=${pod.id}`} showActions={false} />
+        <Strip shallow>
+          <MachineListTable filter={`pod-id:=${pod.id}`} showActions={false} />
+        </Strip>
       </>
     );
   }
-  return null;
+  return <Spinner text="Loading" />;
 };
 
 export default KVMSummary;

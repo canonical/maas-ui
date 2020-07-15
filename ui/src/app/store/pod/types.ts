@@ -16,9 +16,8 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
-export type PodStoragePool = {
+export type PodStoragePool = Model & {
   available: number;
-  id: number;
   name: string;
   path: string;
   total: number;

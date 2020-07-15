@@ -21,6 +21,7 @@
 
 // Import and include MAAS global styles
 @import "./patterns_buttons";
+@import "./patterns_cards";
 @import "./patterns_double-row";
 @import "./patterns_footer";
 @import "./patterns_forms";
@@ -34,6 +35,7 @@
 @import "./patterns_tabs";
 @import "./utilities";
 @include maas-buttons;
+@include maas-cards;
 @include maas-double-row;
 @include maas-footer;
 @include maas-forms;

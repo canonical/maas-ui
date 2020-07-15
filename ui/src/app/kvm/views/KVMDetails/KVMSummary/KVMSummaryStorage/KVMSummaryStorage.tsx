@@ -1,4 +1,4 @@
-import { Card, Col, Row } from "@canonical/react-components";
+import { Card, Col, Row, Spinner } from "@canonical/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
 
@@ -28,7 +28,7 @@ const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
 
               return (
                 <Col key={`storage-card-${pool.id}`} size="4">
-                  <Card>
+                  <Card className="p-card--transparent">
                     <div className="p-grid-list">
                       <div className="p-grid-list__label">Name</div>
                       <div className="p-grid-list__value">{pool.name}</div>
@@ -71,7 +71,7 @@ const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
       </>
     );
   }
-  return null;
+  return <Spinner text="Loading" />;
 };
 
 export default KVMSummaryStorage;

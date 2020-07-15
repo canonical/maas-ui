@@ -29,7 +29,7 @@ describe("KVMSummaryStorage", () => {
       </Provider>
     );
     expect(wrapper.find("Row")).toHaveLength(2);
-    expect(wrapper.find("Row").at(0).props()?.children).toHaveLength(3);
-    expect(wrapper.find("Row").at(1).props()?.children).toHaveLength(1);
+    expect(wrapper.find("Row").at(0).props().children).toHaveLength(3);
+    expect(wrapper.find("Row").at(1).props().children).toHaveLength(1);
   });
 });

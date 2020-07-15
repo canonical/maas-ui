@@ -106,8 +106,11 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummaryStorage/KVMSummaryStorage.tsx:173402218": [
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.tsx:990639268": [
       [0, 31, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummaryStorage/KVMSummaryStorage.tsx:19770221": [
+      [0, 40, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:879073754": [
       [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
@@ -398,9 +401,9 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [20, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/pod/types.ts:2359527267": [
+    "src/app/store/pod/types.ts:299495599": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [59, 9, 8, "RegExp match", "1152173309"]
+      [58, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/resourcepool/types.ts:4045616415": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -458,5 +461,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `980`
+  value: `986`
 };
