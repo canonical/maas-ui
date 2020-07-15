@@ -40,29 +40,31 @@ export type Machine = BaseNode & {
   zone: ModelRef;
 };
 
+export type MachineStatus = {
+  aborting: boolean;
+  acquiring: boolean;
+  checkingPower: boolean;
+  commissioning: boolean;
+  deleting: boolean;
+  deploying: boolean;
+  enteringRescueMode: boolean;
+  exitingRescueMode: boolean;
+  locking: boolean;
+  markingBroken: boolean;
+  markingFixed: boolean;
+  overridingFailedTesting: boolean;
+  releasing: boolean;
+  settingPool: boolean;
+  settingZone: boolean;
+  tagging: boolean;
+  testing: boolean;
+  turningOff: boolean;
+  turningOn: boolean;
+  unlocking: boolean;
+};
+
 export type MachineStatuses = {
-  [x: string]: {
-    aborting: boolean;
-    acquiring: boolean;
-    checkingPower: boolean;
-    commissioning: boolean;
-    deleting: boolean;
-    deploying: boolean;
-    enteringRescueMode: boolean;
-    exitingRescueMode: boolean;
-    locking: boolean;
-    markingBroken: boolean;
-    markingFixed: boolean;
-    overridingFailedTesting: boolean;
-    releasing: boolean;
-    settingPool: boolean;
-    settingZone: boolean;
-    tagging: boolean;
-    testing: boolean;
-    turningOff: boolean;
-    turningOn: boolean;
-    unlocking: boolean;
-  };
+  [x: string]: MachineStatus;
 };
 
 export type MachineState = {
@@ -72,6 +74,6 @@ export type MachineState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  selected: string[];
+  selected: Machine["system_id"][];
   statuses: MachineStatuses;
 };

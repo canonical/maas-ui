@@ -4,7 +4,7 @@ import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import { tag as tagActions } from "app/base/actions";
-import { tag as tagSelectors } from "app/base/selectors";
+import tagSelectors from "app/store/tag/selectors";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
 

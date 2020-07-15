@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { auth as authSelectors } from "app/base/selectors";
-import { status as statusSelectors } from "app/base/selectors";
-import { user as userSelectors } from "app/base/selectors";
+import authSelectors from "app/store/auth/selectors";
+import statusSelectors from "app/store/status/selectors";
+import userSelectors from "app/store/user/selectors";
 import { UserShape } from "app/base/proptypes";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";

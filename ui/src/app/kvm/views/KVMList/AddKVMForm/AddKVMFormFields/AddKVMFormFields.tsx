@@ -3,14 +3,12 @@ import React from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import {
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import { AddKVMFormValues } from "../AddKVMForm";
-import generalSelectors from "app/store/general/selectors";
 import FormikField from "app/base/components/FormikField";
+import generalSelectors from "app/store/general/selectors";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 
 export const AddKVMFormFields = (): JSX.Element => {
   const powerTypes = useSelector(generalSelectors.powerTypes.get);

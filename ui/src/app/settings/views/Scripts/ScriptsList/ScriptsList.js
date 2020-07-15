@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import { scripts as scriptActions } from "app/base/actions";
-import { scripts as scriptSelectors } from "app/base/selectors";
+import scriptSelectors from "app/store/scripts/selectors";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";

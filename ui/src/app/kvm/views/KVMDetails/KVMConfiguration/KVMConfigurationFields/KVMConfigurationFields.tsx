@@ -4,12 +4,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import type { KVMConfigurationValues } from "../KVMConfiguration";
-import {
-  resourcepool as resourcePoolSelectors,
-  tag as tagSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import { formatHostType } from "app/kvm/utils";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import tagSelectors from "app/store/tag/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import FormikField from "app/base/components/FormikField";
 import Slider from "app/base/components/Slider";
 import TagSelector from "app/base/components/TagSelector";

@@ -4,12 +4,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { getStatusText } from "app/utils";
-import { machine as machineSelectors } from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
-import generalSelectors from "app/store/general/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import Tooltip from "app/base/components/Tooltip";
 
 // Node statuses for which the failed test warning is not shown.

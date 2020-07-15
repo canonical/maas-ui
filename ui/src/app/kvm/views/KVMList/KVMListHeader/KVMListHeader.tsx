@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import { pod as podActions } from "app/base/actions";
-import { pod as podSelectors } from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import KVMListActionMenu from "./KVMListActionMenu";

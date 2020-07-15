@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { formatBytes } from "app/utils";
-import { pod as podSelectors } from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import Meter from "app/base/components/Meter";
 

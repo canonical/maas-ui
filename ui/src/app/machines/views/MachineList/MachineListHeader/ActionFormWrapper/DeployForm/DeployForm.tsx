@@ -7,12 +7,11 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { MachineAction } from "app/store/general/types";
-import generalSelectors from "app/store/general/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import DeployFormFields from "./DeployFormFields";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import type { MachineAction } from "app/store/general/types";
 
 const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),
@@ -45,9 +44,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     generalSelectors.defaultMinHweKernel.get
   );
   const osInfo = useSelector(generalSelectors.osInfo.get);
-  const deployingSelected: Machine["system_id"][] = useSelector(
-    machineSelectors.deployingSelected
-  );
+  const deployingSelected = useSelector(machineSelectors.deployingSelected);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());

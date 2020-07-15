@@ -11,7 +11,7 @@ import {
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";
-import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import { DhcpSnippetShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";

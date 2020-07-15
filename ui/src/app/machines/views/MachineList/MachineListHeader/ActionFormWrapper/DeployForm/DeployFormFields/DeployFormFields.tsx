@@ -4,14 +4,14 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { auth as authSelectors } from "app/base/selectors";
 import { DeployFormValues } from "../DeployForm";
+import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
-import type { User } from "app/store/user/types";
-import type { RootState } from "app/store/root/types";
-import UserDataField from "./UserDataField";
 import FormikField from "app/base/components/FormikField";
+import generalSelectors from "app/store/general/selectors";
+import type { RootState } from "app/store/root/types";
+import type { User } from "app/store/user/types";
+import UserDataField from "./UserDataField";
 
 export const DeployFormFields = (): JSX.Element => {
   const [userDataVisible, setUserDataVisible] = useState(false);

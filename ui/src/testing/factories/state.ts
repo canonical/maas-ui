@@ -10,7 +10,11 @@ import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
-import type { MachineState } from "app/store/machine/types";
+import type {
+  MachineState,
+  MachineStatus,
+  MachineStatuses,
+} from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
@@ -82,6 +86,33 @@ export const dhcpSnippetState = define<DHCPSnippetState>({
 
 export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
+});
+
+export const machineStatus = define<MachineStatus>({
+  aborting: false,
+  acquiring: false,
+  checkingPower: false,
+  commissioning: false,
+  deleting: false,
+  deploying: false,
+  enteringRescueMode: false,
+  exitingRescueMode: false,
+  locking: false,
+  markingBroken: false,
+  markingFixed: false,
+  overridingFailedTesting: false,
+  releasing: false,
+  settingPool: false,
+  settingZone: false,
+  tagging: false,
+  testing: false,
+  turningOff: false,
+  turningOn: false,
+  unlocking: false,
+});
+
+export const machineStatuses = define<MachineStatuses>({
+  testNode: machineStatus,
 });
 
 export const machineState = define<MachineState>({

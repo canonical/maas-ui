@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 

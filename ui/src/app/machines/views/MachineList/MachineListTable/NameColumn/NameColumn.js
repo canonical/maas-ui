@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { generateLegacyURL } from "app/utils";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
 import Tooltip from "app/base/components/Tooltip";
 
