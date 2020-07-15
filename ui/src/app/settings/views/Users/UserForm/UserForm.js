@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 
 import { user as userActions } from "app/base/actions";
-import { user as userSelectors } from "app/base/selectors";
+import userSelectors from "app/store/user/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
 import { useWindowTitle } from "app/base/hooks";

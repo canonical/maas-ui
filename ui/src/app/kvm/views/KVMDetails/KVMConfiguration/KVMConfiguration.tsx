@@ -12,14 +12,12 @@ import {
   tag as tagActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  tag as tagSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import { formatErrors } from "app/utils";
+import podSelectors from "app/store/pod/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import tagSelectors from "app/store/tag/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";

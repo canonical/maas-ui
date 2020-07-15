@@ -3,7 +3,7 @@ import React from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import { domain as domainSelectors } from "app/base/selectors";
+import domainSelectors from "app/store/domain/selectors";
 import FormikField from "app/base/components/FormikField";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
 

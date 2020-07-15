@@ -2,10 +2,8 @@ import { Col, Row, Select } from "@canonical/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
 
-import {
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import FormikField from "app/base/components/FormikField";
 
 export const AddRSDFormFields = () => {

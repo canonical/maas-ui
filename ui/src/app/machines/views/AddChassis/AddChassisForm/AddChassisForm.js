@@ -10,11 +10,6 @@ import {
   machine as machineActions,
 } from "app/base/actions";
 import {
-  domain as domainSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
-import generalSelectors from "app/store/general/selectors";
-import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
@@ -22,9 +17,12 @@ import {
 } from "app/base/hooks";
 import { formatPowerParameters } from "app/utils";
 import AddChassisFormFields from "../AddChassisFormFields";
+import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 
 const generateChassisSchema = (parametersSchema) =>
   Yup.object().shape({

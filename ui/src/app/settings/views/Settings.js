@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { auth as authSelectors } from "app/base/selectors";
+import authSelectors from "app/store/auth/selectors";
 import { config as configActions } from "app/settings/actions";
 import Routes from "app/settings/components/Routes";
 import Section from "app/base/components/Section";

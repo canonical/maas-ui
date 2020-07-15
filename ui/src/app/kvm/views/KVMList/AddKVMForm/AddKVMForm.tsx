@@ -10,25 +10,23 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import generalSelectors from "app/store/general/selectors";
-import {
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import type { PowerType } from "app/store/general/types";
-import type { TSFixMe } from "app/base/types";
 import { formatErrors, formatPowerParameters } from "app/utils";
 import AddKVMFormFields from "./AddKVMFormFields";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import podSelectors from "app/store/pod/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { PowerType } from "app/store/general/types";
+import type { TSFixMe } from "app/base/types";
+import zoneSelectors from "app/store/zone/selectors";
 
 const generateAddKVMSchema = (parametersSchema: TSFixMe) =>
   Yup.object().shape({

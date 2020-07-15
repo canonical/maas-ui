@@ -11,17 +11,17 @@ import {
   general as generalActions,
 } from "app/base/actions";
 import { getCookie } from "app/utils";
-import generalSelectors from "app/store/general/selectors";
-import { auth as authSelectors } from "app/base/selectors";
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
-import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
 import { websocket } from "./base/actions";
+import authSelectors from "app/store/auth/selectors";
+import generalSelectors from "app/store/general/selectors";
 import Login from "app/base/components/Login";
 import Routes from "app/Routes";
 import Section from "app/base/components/Section";
+import status from "app/store/status/selectors";
 
 export const App = () => {
   const history = useHistory();

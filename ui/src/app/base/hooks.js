@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import { sendAnalyticsEvent } from "analytics";
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { messages } from "app/base/actions";
 import { kebabToCamelCase } from "app/utils";
 import { simpleObjectEquality } from "app/settings/utils";

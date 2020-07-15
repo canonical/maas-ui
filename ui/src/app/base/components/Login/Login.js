@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import React, { useEffect } from "react";
 
 import { status as statusActions } from "app/base/actions";
-import { status as statusSelectors } from "app/base/selectors";
+import statusSelectors from "app/store/status/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";

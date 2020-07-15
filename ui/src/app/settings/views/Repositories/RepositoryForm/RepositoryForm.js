@@ -9,7 +9,6 @@ import {
   general as generalActions,
   packagerepository as repositoryActions,
 } from "app/base/actions";
-import { packagerepository as repositorySelectors } from "app/base/selectors";
 import { getRepoDisplayName } from "../utils";
 import { RepositoryShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
@@ -19,6 +18,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import generalSelectors from "app/store/general/selectors";
 import RepositoryFormFields from "../RepositoryFormFields";
+import repositorySelectors from "app/store/packagerepository/selectors";
 
 const RepositorySchema = Yup.object().shape({
   arches: Yup.array(),

@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { general as generalActions } from "app/base/actions";
 import generalSelectors from "app/store/general/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
-import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
+import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";

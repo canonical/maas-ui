@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 
 import Tooltip from "app/base/components/Tooltip";
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import { generateLegacyURL } from "app/utils";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";

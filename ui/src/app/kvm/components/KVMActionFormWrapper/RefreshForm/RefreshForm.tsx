@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import { pod as podActions } from "app/base/actions";
-import { pod as podSelectors } from "app/base/selectors";
+import podSelectors from "app/store/pod/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
 type Props = {

@@ -11,12 +11,6 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  domain as domainSelectors,
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import { formatPowerParameters } from "app/utils";
 import {
   useAddMessage,
@@ -24,11 +18,15 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import generalSelectors from "app/store/general/selectors";
 import AddMachineFormFields from "../AddMachineFormFields";
+import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 
 const generateMachineSchema = (parametersSchema) =>
   Yup.object().shape({

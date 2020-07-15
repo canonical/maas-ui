@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { MachineAction } from "app/store/general/types";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import Tooltip from "app/base/components/Tooltip";
+import type { Machine } from "app/store/machine/types";
+import type { MachineAction } from "app/store/general/types";
 
 const getTakeActionLinks = (
   actionOptions: MachineAction[],

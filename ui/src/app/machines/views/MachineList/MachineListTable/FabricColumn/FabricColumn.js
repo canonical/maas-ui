@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { generateLegacyURL } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 import ScriptStatus from "app/base/components/ScriptStatus";

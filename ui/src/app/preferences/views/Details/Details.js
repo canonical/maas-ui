@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 
 import { auth as authActions, user as userActions } from "app/base/actions";
-import {
-  auth as authSelectors,
-  user as userSelectors,
-} from "app/base/selectors";
+import authSelectors from "app/store/auth/selectors";
+import userSelectors from "app/store/user/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import { status as statusSelectors } from "app/base/selectors";
+import statusSelectors from "app/store/status/selectors";
 import UserForm from "app/base/components/UserForm";
 
 export const Details = () => {

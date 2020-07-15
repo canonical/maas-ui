@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import TagFormFields from "./TagFormFields";
 
