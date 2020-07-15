@@ -13,9 +13,9 @@ const generalSelectors = generateGeneralSelector<"machineActions">(
 
 /**
  * Get a machine action by name.
- * @param {Object} state - The redux state.
- * @param {String} name - The name of a machine action.
- * @returns {Object} A machine action.
+ * @param {RootState} state - The redux state.
+ * @param {MachineAction["name"]} name - The name of a machine action.
+ * @returns {MachineAction} A machine action.
  */
 const getByName = createSelector(
   [
