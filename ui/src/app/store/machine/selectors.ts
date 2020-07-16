@@ -14,58 +14,58 @@ import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all machines.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine[]} A list of all machines.
  */
 const all = (state: RootState): Machine[] => state.machine.items;
 
 /**
  * Whether machines are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Machines loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineState["loading"]} Machines loading state.
  */
 const loading = (state: RootState): boolean => state.machine.loading;
 
 /**
  * Whether machines have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Machines loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineState["loaded"]} Machines loaded state.
  */
 const loaded = (state: RootState): boolean => state.machine.loaded;
 
 /**
  * Get the machine saving state.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Whether machines are being saved.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineState["saving"]} Whether machines are being saved.
  */
 const saving = (state: RootState): boolean => state.machine.saving;
 
 /**
  * Get the machine saved state.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Whether machines have been saved.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineState["saved"]} Whether machines have been saved.
  */
 const saved = (state: RootState): boolean => state.machine.saved;
 
 /**
  * Returns machine errors.
- * @param {Object} state - The redux state.
- * @returns {Object} Machine errors state.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineState["errors"]} Machine errors state.
  */
 const errors = (state: RootState): TSFixMe => state.machine.errors;
 
 /**
  * Returns selected machine system_ids.
- * @param {Object} state - The redux state.
- * @returns {Array} Selected machine system_ids.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine["system_id"][]} Selected machine system_ids.
  */
 const selectedIDs = (state: RootState): Machine["system_id"][] =>
   state.machine.selected;
 
 /**
  * Returns all machine statuses.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all statuses.
+ * @param {RootState} state - The redux state.
+ * @returns {MachineStatuses} A list of all statuses.
  */
 const statuses = (state: RootState): MachineStatuses => state.machine.statuses;
 
@@ -74,7 +74,7 @@ const statusKeys = <T>(statuses: T): (keyof T)[] =>
 
 /**
  * Returns IDs of machines that are currently being processed.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"][]} List of machines being processed.
  */
 const processing = (state: RootState): Machine["system_id"][] =>
@@ -86,7 +86,7 @@ const processing = (state: RootState): Machine["system_id"][] =>
 
 /**
  * Returns IDs of machines that are both selected and currently being processed.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"][]} List of selected machines being processed.
  */
 const selectedProcessing = createSelector(
@@ -119,8 +119,8 @@ ACTIONS.forEach(({ status }) => {
 
 /**
  * Returns a machine for the given id.
- * @param {Object} state - The redux state.
- * @returns {Array} A machine.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine} A machine.
  */
 const getBySystemId = createSelector(
   [all, (_state: RootState, id: Machine["system_id"]) => id],
@@ -129,9 +129,9 @@ const getBySystemId = createSelector(
 
 /**
  * Get machines that match terms.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @param {String} terms - The terms to match against.
- * @returns {Array} A filtered list of machines.
+ * @returns {Machine[]} A filtered list of machines.
  */
 const search = createSelector(
   [
@@ -151,8 +151,8 @@ const search = createSelector(
 
 /**
  * Returns selected machines.
- * @param {Object} state - The redux state.
- * @returns {Array} Selected machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine[]} Selected machines.
  */
 const selected = createSelector([all, selectedIDs], (machines, selectedIDs) =>
   selectedIDs.map((id) => machines.find((machine) => id === machine.system_id))
@@ -160,8 +160,8 @@ const selected = createSelector([all, selectedIDs], (machines, selectedIDs) =>
 
 /**
  * Returns failed script results for selected machines.
- * @param {Object} state - The redux state.
- * @returns {Object} Script results by selected machine key.
+ * @param {RootState} state - The redux state.
+ * @returns {ScriptResults} Script results by selected machine key.
  */
 const failedScriptResults = createSelector(
   [scriptresults.all, selectedIDs],

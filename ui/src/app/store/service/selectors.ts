@@ -4,29 +4,29 @@ import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns all services.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all services.
+ * @param {RootState} state - The redux state.
+ * @returns {Service[]} A list of all services.
  */
 const all = (state: RootState): Service[] => state.service.items;
 
 /**
  * Whether services are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Service loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {ServiceState["loading"]} Service loading state.
  */
 const loading = (state: RootState): boolean => state.service.loading;
 
 /**
  * Whether services have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Service loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {ServiceState["loaded"]} Service loaded state.
  */
 const loaded = (state: RootState): boolean => state.service.loaded;
 
 /**
  * Returns services errors.
- * @param {Object} state - The redux state.
- * @returns {Object} Service errors state.
+ * @param {RootState} state - The redux state.
+ * @returns {ServiceState["errors"]} Service errors state.
  */
 const errors = (state: RootState): TSFixMe => state.service.errors;
 

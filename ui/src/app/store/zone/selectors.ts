@@ -6,37 +6,37 @@ import type { Zone } from "app/store/zone/types";
 
 /**
  * Returns all zones.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all zones.
+ * @param {RootState} state - The redux state.
+ * @returns {Zone[]} A list of all zones.
  */
 const all = (state: RootState): Zone[] => state.zone.items;
 
 /**
  * Whether zones are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Zone loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {ZoneState["loading"]} Zone loading state.
  */
 const loading = (state: RootState): boolean => state.zone.loading;
 
 /**
  * Whether zones have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Zone loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {ZoneState["loaded"]} Zone loaded state.
  */
 const loaded = (state: RootState): boolean => state.zone.loaded;
 
 /**
  * Returns zone errors.
- * @param {Object} state - The redux state.
- * @returns {Object} Zone errors.
+ * @param {RootState} state - The redux state.
+ * @returns {ZoneState["errors"]} Zone errors.
  */
 const errors = (state: RootState): TSFixMe => state.zone.errors;
 
 /**
  * Returns zone that matches given id
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @param {Number} id - id of resource pool to return.
- * @returns {Object} Resource pool that matches id.
+ * @returns {Zone} Resource pool that matches id.
  */
 const getById = createSelector(
   [all, (_: RootState, id: number) => id],

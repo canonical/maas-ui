@@ -6,59 +6,59 @@ import type { TSFixMe } from "app/base/types";
 
 /**
  * Returns list of all repositories
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all repositories.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepository[]} A list of all repositories.
  */
 const all = (state: RootState): PackageRepository[] =>
   state.packagerepository.items;
 
 /**
  * Returns count of all repositories
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @returns {Number} Count of all repositories.
  */
 const count = createSelector([all], (repositories) => repositories.length);
 
 /**
  * Returns true if repositories are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Repositories are loading.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepositoryState["loading"]} Repositories are loading.
  */
 const loading = (state: RootState): boolean => state.packagerepository.loading;
 
 /**
  * Returns true if repositories have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Repositories have loaded.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepositoryState["loaded"]} Repositories have loaded.
  */
 const loaded = (state: RootState): boolean => state.packagerepository.loaded;
 
 /**
  * Get the saving state.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Repositories are saving.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepositoryState["saving"]} Repositories are saving.
  */
 const saving = (state: RootState): boolean => state.packagerepository.saving;
 
 /**
  * Get the saved state.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Repositories have saved.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepositoryState["saved"]} Repositories have saved.
  */
 const saved = (state: RootState): boolean => state.packagerepository.saved;
 
 /**
  * Returns repositories errors.
- * @param {Object} state - The redux state.
- * @returns {Object} Errors for repositories.
+ * @param {RootState} state - The redux state.
+ * @returns {PackageRepositoryState["errors"]} Errors for repositories.
  */
 const errors = (state: RootState): TSFixMe => state.packagerepository.errors;
 
 /**
  * Get repositories that match a term.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @param {String} term - The term to match against.
- * @returns {Array} A filtered list of repositories.
+ * @returns {PackageRepository[]} A filtered list of repositories.
  */
 const search = createSelector(
   [all, (_state: RootState, term: string) => term],
@@ -71,9 +71,9 @@ const search = createSelector(
 
 /**
  * Returns repository that matches given id
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @param {Number} id - id of repository to return.
- * @returns {Object} Repository that matches id.
+ * @returns {PackageRepository} Repository that matches id.
  */
 const getById = createSelector(
   [all, (_state: RootState, id: PackageRepository["id"]) => id],

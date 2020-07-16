@@ -4,29 +4,29 @@ import type { RootState } from "app/store/root/types";
 
 /**
  * Returns all controllers.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all controllers.
+ * @param {RootState} state - The redux state.
+ * @returns {Controller[]} A list of all controllers.
  */
 const all = (state: RootState): Controller[] => state.controller.items;
 
 /**
  * Whether controllers are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Controllers loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {ControllerState["loading"]} Controllers loading state.
  */
 const loading = (state: RootState): boolean => state.controller.loading;
 
 /**
  * Whether controllers have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Controllers loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {ControllerState["loaded"]} Controllers loaded state.
  */
 const loaded = (state: RootState): boolean => state.controller.loaded;
 
 /**
  * Returns a controller for the given id.
- * @param {Object} state - The redux state.
- * @returns {Array} A controller.
+ * @param {RootState} state - The redux state.
+ * @returns {Controller} A controller.
  */
 const getBySystemId = createSelector(
   [all, (_state: RootState, id: Controller["system_id"]) => id],

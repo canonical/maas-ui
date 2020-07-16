@@ -35,28 +35,28 @@ const rsd = (state: RootState): Pod[] =>
 /**
  * Whether pods are loading.
  * @param {RootState} state - The redux state.
- * @returns {boolean} Machines loading state.
+ * @returns {PodState["loading"]} Machines loading state.
  */
 const loading = (state: RootState): boolean => state.pod.loading;
 
 /**
  * Whether pods have been loaded.
  * @param {RootState} state - The redux state.
- * @returns {boolean} Machines loaded state.
+ * @returns {PodState["loaded"]} Machines loaded state.
  */
 const loaded = (state: RootState): boolean => state.pod.loaded;
 
 /**
  * Get the pod saving state.
  * @param {RootState} state - The redux state.
- * @returns {boolean} Whether pods are being saved.
+ * @returns {PodState["saving"]} Whether pods are being saved.
  */
 const saving = (state: RootState): boolean => state.pod.saving;
 
 /**
  * Get the pod saved state.
  * @param {RootState} state - The redux state.
- * @returns {boolean} Whether pods have been saved.
+ * @returns {PodState["saved"]} Whether pods have been saved.
  */
 const saved = (state: RootState): boolean => state.pod.saved;
 
@@ -77,7 +77,7 @@ const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 /**
  * Returns pod errors.
  * @param {RootState} state - The redux state.
- * @returns {TSFixMe} Machine errors state.
+ * @returns {PodState["errors"]} Machine errors state.
  */
 const errors = (state: RootState): TSFixMe => state.pod.errors;
 

@@ -4,29 +4,29 @@ import type { RootState } from "app/store/root/types";
 
 /**
  * Returns all devices.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all devices.
+ * @param {RootState} state - The redux state.
+ * @returns {Device[]} A list of all devices.
  */
 const all = (state: RootState): Device[] => state.device.items;
 
 /**
  * Whether devices are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Devices loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {DeviceState["loading"]} Devices loading state.
  */
 const loading = (state: RootState): boolean => state.device.loading;
 
 /**
  * Whether devices have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Devices loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {DeviceState["loaded"]} Devices loaded state.
  */
 const loaded = (state: RootState): boolean => state.device.loaded;
 
 /**
  * Returns a device for the given id.
- * @param {Object} state - The redux state.
- * @returns {Array} A device.
+ * @param {RootState} state - The redux state.
+ * @returns {Device} A device.
  */
 const getBySystemId = createSelector(
   [all, (_state: RootState, id: Device["system_id"]) => id],

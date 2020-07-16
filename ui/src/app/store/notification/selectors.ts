@@ -5,29 +5,29 @@ import type { RootState } from "app/store/root/types";
 
 /**
  * Returns all notifications.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all notifications.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} A list of all notifications.
  */
 const all = (state: RootState): Notification[] => state.notification.items;
 
 /**
  * Whether notifications are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Notifications are loading.
+ * @param {RootState} state - The redux state.
+ * @returns {NotificationState["loading"]} Notifications are loading.
  */
 const loading = (state: RootState): boolean => state.notification.loading;
 
 /**
  * Whether notifications have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Notifications have loaded.
+ * @param {RootState} state - The redux state.
+ * @returns {NotificationState["loaded"]} Notifications have loaded.
  */
 const loaded = (state: RootState): boolean => state.notification.loaded;
 
 /**
  * Returns a notification for the given id.
- * @param {Object} state - The redux state.
- * @returns {Array} A notification.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification} A notification.
  */
 const getById = createSelector(
   [all, (_state: RootState, id: Notification["id"]) => id],
@@ -37,8 +37,8 @@ const getById = createSelector(
 
 /**
  * Returns notifications of type 'warning'
- * @param {Object} state - The redux state.
- * @returns {Array} A notification.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} Warning notifications.
  */
 const warnings = createSelector([all], (notifications) =>
   notifications.filter(
@@ -48,8 +48,8 @@ const warnings = createSelector([all], (notifications) =>
 
 /**
  * Returns notifications of type 'error'
- * @param {Object} state - The redux state.
- * @returns {Array} A notification.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} Error notifications.
  */
 const errors = createSelector([all], (notifications) =>
   notifications.filter(
@@ -59,8 +59,8 @@ const errors = createSelector([all], (notifications) =>
 
 /**
  * Returns notifications of type 'success'
- * @param {Object} state - The redux state.
- * @returns {Array} A notification.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} Success notifications.
  */
 const success = createSelector([all], (notifications) =>
   notifications.filter(
@@ -70,8 +70,8 @@ const success = createSelector([all], (notifications) =>
 
 /**
  * Returns notifications of type 'info'
- * @param {Object} state - The redux state.
- * @returns {Array} A notification.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} Info notifications.
  */
 const info = createSelector([all], (notifications) =>
   notifications.filter(
