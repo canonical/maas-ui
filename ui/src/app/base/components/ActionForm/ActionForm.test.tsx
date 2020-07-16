@@ -69,6 +69,31 @@ describe("ActionForm", () => {
     expect(clearSelectedAction).toHaveBeenCalled();
   });
 
+  it("runs onSuccess function if processing is successful", () => {
+    const store = mockStore({});
+    const onSuccess = jest.fn();
+    const Proxy = ({ processingCount }) => (
+      <Provider store={store}>
+        <ActionForm
+          modelName="machine"
+          onSubmit={jest.fn()}
+          onSuccess={onSuccess}
+          processingCount={processingCount}
+          selectedCount={2}
+        />
+      </Provider>
+    );
+    const wrapper = mount(<Proxy processingCount={1} />);
+
+    act(() => {
+      wrapper.find("Formik").prop("onSubmit")();
+    });
+    wrapper.setProps({ processingCount: 0 });
+    wrapper.update();
+
+    expect(onSuccess).toHaveBeenCalled();
+  });
+
   it("does not run clearSelectedAction function if errors occur while processing", () => {
     const store = mockStore({});
     const clearSelectedAction = jest.fn();

@@ -23,6 +23,8 @@ export {
   packageRepositoryState,
   pocketsToDisableState,
   podState,
+  podStatus,
+  podStatuses,
   powerTypesState,
   resourcePoolState,
   rootState,

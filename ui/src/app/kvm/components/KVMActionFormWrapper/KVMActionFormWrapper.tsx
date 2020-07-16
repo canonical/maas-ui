@@ -1,5 +1,6 @@
 import React from "react";
 
+import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
@@ -17,6 +18,9 @@ const KVMActionFormWrapper = ({
   }
   return (
     <>
+      {selectedAction === "compose" && (
+        <ComposeForm setSelectedAction={setSelectedAction} />
+      )}
       {selectedAction === "delete" && (
         <DeleteForm setSelectedAction={setSelectedAction} />
       )}

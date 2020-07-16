@@ -3,6 +3,17 @@ import { createStandardActions } from "app/utils/redux";
 
 const pod = createStandardActions("pod");
 
+pod.compose = (params) => {
+  return {
+    type: "COMPOSE_POD",
+    meta: {
+      model: "pod",
+      method: "compose",
+    },
+    payload: { params },
+  };
+};
+
 pod.refresh = (podID: Pod["id"]) => {
   return {
     type: "REFRESH_POD",

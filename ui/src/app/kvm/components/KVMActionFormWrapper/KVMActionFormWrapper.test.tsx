@@ -4,33 +4,32 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  podStatus as podStatusFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import KVMActionFormWrapper from "./KVMActionFormWrapper";
 
 const mockStore = configureStore();
 
 describe("KVMActionFormWrapper", () => {
-  let initialState;
+  let initialState = rootStateFactory();
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          { id: 1, name: "pod-1", type: "lxd" },
-          { id: 2, name: "pod-2", type: "virsh" },
+          podFactory({ id: 1, name: "pod-1", type: "lxd" }),
+          podFactory({ id: 2, name: "pod-2", type: "virsh" }),
         ],
-        selected: [],
-        errors: {},
         statuses: {
-          1: {
-            deleting: false,
-            refreshing: false,
-          },
-          2: {
-            deleting: false,
-            refreshing: false,
-          },
+          1: podStatusFactory(),
+          2: podStatusFactory(),
         },
-      },
-    };
+      }),
+    });
   });
 
   it("does not render if selectedAction is not defined", () => {
@@ -49,6 +48,22 @@ describe("KVMActionFormWrapper", () => {
     expect(wrapper.find("[data-test='kvm-action-form-wrapper']").exists()).toBe(
       false
     );
+  });
+
+  it("renders ComposeForm if compose action selected", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMActionFormWrapper
+            selectedAction="compose"
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("ComposeForm").exists()).toBe(true);
   });
 
   it("renders DeleteForm if delete action selected", () => {

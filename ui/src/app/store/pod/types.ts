@@ -55,6 +55,16 @@ export type Pod = Model & {
   zone: number;
 };
 
+export type PodStatus = {
+  composing: boolean;
+  deleting: boolean;
+  refreshing: boolean;
+};
+
+export type PodStatuses = {
+  [x: number]: PodStatus;
+};
+
 export type PodState = {
   errors: TSFixMe;
   items: Pod[];
@@ -62,11 +72,6 @@ export type PodState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  selected: number[];
-  statuses: {
-    [x: number]: {
-      deleting: boolean;
-      refreshing: boolean;
-    };
-  };
+  selected: Pod["id"][];
+  statuses: PodStatuses;
 };

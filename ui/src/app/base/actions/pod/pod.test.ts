@@ -73,6 +73,20 @@ describe("pod actions", () => {
     });
   });
 
+  it("can handle composing pods", () => {
+    const params = { id: 1 };
+    expect(pod.compose(params)).toEqual({
+      type: "COMPOSE_POD",
+      meta: {
+        model: "pod",
+        method: "compose",
+      },
+      payload: {
+        params,
+      },
+    });
+  });
+
   it("can handle selecting pods", () => {
     expect(pod.setSelected([1, 2, 4])).toEqual({
       type: "SET_SELECTED_PODS",

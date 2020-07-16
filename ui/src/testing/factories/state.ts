@@ -18,7 +18,7 @@ import type {
 import type { MessageState } from "app/store/message/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
-import type { PodState } from "app/store/pod/types";
+import type { PodState, PodStatus, PodStatuses } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 import type { ScriptResultsState } from "app/store/scriptresults/types";
@@ -148,6 +148,16 @@ export const userState = define<UserState>({
   ...defaultState,
   auth: authState,
   items: array(user),
+});
+
+export const podStatus = define<PodStatus>({
+  composing: false,
+  deleting: false,
+  refreshing: false,
+});
+
+export const podStatuses = define<PodStatuses>({
+  1: podStatus,
 });
 
 export const podState = define<PodState>({

@@ -34,7 +34,7 @@ const KVMDetailsHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        location.pathname.endsWith(`/kvm/${id}`)
+        !selectedAction && location.pathname.endsWith(`/kvm/${id}`)
           ? [
               <KVMDetailsActionMenu
                 key="action-dropdown"

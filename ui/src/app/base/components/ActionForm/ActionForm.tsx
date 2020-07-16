@@ -35,6 +35,8 @@ const getLabel = (
       return `${
         processing ? "Starting" : "Start"
       } commissioning for ${modelString}`;
+    case "compose":
+      return `${processing ? "Composing" : "Compose"} ${modelString}`;
     case "delete":
       return `${processing ? "Deleting" : "Delete"} ${modelString}`;
     case "deploy":
@@ -94,6 +96,7 @@ type Props = {
   loading?: boolean;
   modelName: string;
   onSubmit: (...args: unknown[]) => void;
+  onSuccess?: () => void;
   processingCount?: number;
   selectedCount?: number;
   submitAppearance?: string;
@@ -112,6 +115,7 @@ const ActionForm = ({
   loading,
   modelName,
   onSubmit,
+  onSuccess,
   processingCount,
   selectedCount,
   submitAppearance = "positive",
@@ -124,6 +128,7 @@ const ActionForm = ({
     processingCount,
     () => {
       setProcessing(false);
+      onSuccess && onSuccess();
       clearSelectedAction && clearSelectedAction();
     },
     Object.keys(errors).length > 0,
