@@ -37,7 +37,7 @@ describe("CPUColumn", () => {
         <CPUColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe(
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
       "4 of 8 assigned"
     );
     expect(wrapper.find("Meter").props().max).toBe(8);
@@ -52,7 +52,7 @@ describe("CPUColumn", () => {
         <CPUColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe(
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
       "4 of 16 assigned"
     );
     expect(wrapper.find("Meter").props().max).toBe(16);

@@ -38,19 +38,5 @@ exports[`Meter renders 1`] = `
       }
     />
   </div>
-  <div
-    className="p-meter__labels"
-  >
-    <div
-      key="datum-1-label"
-    >
-      One
-    </div>
-    <div
-      key="datum-2-label"
-    >
-      Two
-    </div>
-  </div>
 </div>
 `;

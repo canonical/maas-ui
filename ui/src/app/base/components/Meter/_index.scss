@@ -1,10 +1,10 @@
 @mixin Meter {
-  $meter-height: $sp-unit * 2;
+  $meter-height: $sp-unit * 1.75;
   $meter-height--small: $sp-unit * 1.5;
 
   .p-meter {
     margin-bottom: $sp-unit * 1.5;
-    padding-top: $spv-inner--x-small;
+    padding-top: $sp-unit * 0.75;
   }
 
   .p-meter__bar {
@@ -14,11 +14,11 @@
     position: relative;
   }
 
-  .p-meter__labels {
+  .p-meter__label {
     display: flex;
     justify-content: space-between;
     margin-bottom: -#{$sp-unit * .25};
-    padding-top: $sp-unit * 1.25;
+    padding-top: $sp-unit * 1;
   }
 
   .p-meter__filled {
@@ -44,7 +44,7 @@
       margin-bottom: $sp-unit * .75;
     }
 
-    .p-meter__labels {
+    .p-meter__label {
       margin-bottom: 0;
       padding-top: 0;
     }

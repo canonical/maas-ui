@@ -26,11 +26,15 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
           data={[
             {
               key: `${pod.name}-cpu-meter`,
-              label: `${pod.used.cores} of ${availableCores} assigned`,
               value: pod.used.cores,
             },
           ]}
-          labelsClassName="u-align--right"
+          label={
+            <small className="u-text--light">
+              {`${pod.used.cores} of ${availableCores} assigned`}
+            </small>
+          }
+          labelClassName="u-align--right"
           max={availableCores}
           segmented
           small

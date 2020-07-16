@@ -16,6 +16,15 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
+export type PodStoragePool = Model & {
+  available: number;
+  name: string;
+  path: string;
+  total: number;
+  type: string;
+  used: number;
+};
+
 export type Pod = Model & {
   architectures: string[];
   available: PodHint;
@@ -37,7 +46,7 @@ export type Pod = Model & {
   power_address: string;
   power_pass?: string;
   owners_count: number;
-  storage_pools: TSFixMe[];
+  storage_pools: PodStoragePool[];
   tags: string[];
   total: PodHint;
   type: string;

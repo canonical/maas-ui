@@ -4,7 +4,7 @@
     th {
       // FQDN
       &:nth-child(1) {
-        @include breakpoint-widths(60%, 30%, 20%, 25%);
+        @include breakpoint-widths(60%, 30%, 20%, 24%);
       }
 
       // Power
@@ -19,7 +19,7 @@
 
       // VMs / Owners
       &:nth-child(4) {
-        @include breakpoint-widths(0, 0, 0% 8%);
+        @include breakpoint-widths(0, 0, 0%, 9%);
       }
 
       // OS

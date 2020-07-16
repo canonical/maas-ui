@@ -33,8 +33,8 @@ describe("Meter", () => {
     const wrapper = shallow(
       <Meter
         data={[
-          { key: "datum-1", label: "One", value: 1 },
-          { key: "datum-2", label: "Two", value: 3 },
+          { key: "datum-1", value: 1 },
+          { key: "datum-2", value: 3 },
         ]}
       />
     );
@@ -46,17 +46,17 @@ describe("Meter", () => {
     expect(wrapper.find("div").at(0).props().className).toBe("p-meter--small");
   });
 
-  it("can be given labels", () => {
+  it("can be given a label", () => {
     const wrapper = shallow(
       <Meter
         data={[
-          { key: "datum-1", label: "One", value: 1 },
-          { key: "datum-2", label: "Two", value: 3 },
+          { key: "datum-1", value: 1 },
+          { key: "datum-2", value: 3 },
         ]}
+        label="Meter label"
       />
     );
-    expect(wrapper.find(".p-meter__labels div").at(0).text()).toBe("One");
-    expect(wrapper.find(".p-meter__labels div").at(1).text()).toBe("Two");
+    expect(wrapper.find(".p-meter__label").at(0).text()).toBe("Meter label");
   });
 
   it("can be given a custom empty colour", () => {

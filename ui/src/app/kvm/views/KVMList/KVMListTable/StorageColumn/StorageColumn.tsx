@@ -25,11 +25,15 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
         data={[
           {
             key: `${pod.name}-storage-meter`,
-            label: `${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`,
             value: pod.used.local_storage,
           },
         ]}
-        labelsClassName="u-align--right"
+        label={
+          <small className="u-text--light">
+            {`${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`}
+          </small>
+        }
+        labelClassName="u-align--right"
         max={pod.total.local_storage}
         small
       />
