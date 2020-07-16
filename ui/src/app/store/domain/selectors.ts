@@ -3,22 +3,22 @@ import type { Domain } from "app/store/domain/types";
 
 /**
  * Returns all domains.
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all domains.
+ * @param {RootState} state - The redux state.
+ * @returns {Domain[]} A list of all domains.
  */
 const all = (state: RootState): Domain[] => state.domain.items;
 
 /**
  * Whether domains are loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Domains loading state.
+ * @param {RootState} state - The redux state.
+ * @returns {DomainState["loading"]} Domains loading state.
  */
 const loading = (state: RootState): boolean => state.domain.loading;
 
 /**
  * Whether domains have been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Domains loaded state.
+ * @param {RootState} state - The redux state.
+ * @returns {DomainState["loaded"]} Domains loaded state.
  */
 const loaded = (state: RootState): boolean => state.domain.loaded;
 

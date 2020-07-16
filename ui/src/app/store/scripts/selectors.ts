@@ -13,50 +13,50 @@ type ScriptTypeName = keyof typeof SCRIPT_TYPES;
 
 /**
  * Returns list of all scripts.
- * @param {Object} state - Redux state
- * @returns {Array} Scripts
+ * @param {RootState} state - Redux state
+ * @returns {Scripts[]} Scripts
  */
 const all = (state: RootState): Scripts[] => state.scripts.items;
 
 /**
  * Returns true if scripts are loading
- * @param {Object} state - Redux state
- * @returns {Boolean} Scripts are loading
+ * @param {RootState} state - Redux state
+ * @returns {ScriptsState["loading"]} Scripts are loading
  */
 
 const loading = (state: RootState): boolean => state.scripts.loading;
 
 /**
  * Returns count of scripts
- * @param {Object} state - Redux state
+ * @param {RootState} state - Redux state
  * @returns {Number} Number of scripts
  */
 const count = createSelector([all], (scriptItems) => scriptItems.length);
 
 /**
  * Returns true if scripts have loaded
- * @param {Object} state - Redux state
- * @returns {Boolean} Scripts have loaded
+ * @param {RootState} state - Redux state
+ * @returns {ScriptsState["loaded"]} Scripts have loaded
  */
 const loaded = (state: RootState): boolean => state.scripts.loaded;
 
 /**
  * Returns true if scripts have saved
- * @param {Object} state - Redux state
- * @returns {Boolean} Scripts have saved
+ * @param {RootState} state - Redux state
+ * @returns {ScriptsState["saved"]} Scripts have saved
  */
 const saved = (state: RootState): boolean => state.scripts.saved;
 
 /**
  * Returns script errors.
- * @param {Object} state - The redux state.
- * @returns {Array} Errors for a script.
+ * @param {RootState} state - The redux state.
+ * @returns {ScriptsState["errors"]} Errors for a script.
  */
 const errors = (state: RootState): TSFixMe => state.scripts.errors;
 
 /**
  * Returns true if scripts have errors
- * @param {Object} state - Redux state
+ * @param {RootState} state - Redux state
  * @returns {Boolean} Scripts have errors
  */
 const hasErrors = createSelector(
@@ -66,8 +66,8 @@ const hasErrors = createSelector(
 
 /**
  * Returns all commissioning scripts
- * @param {Object} state - Redux state
- * @returns {Array} Commissioning scripts
+ * @param {RootState} state - Redux state
+ * @returns {Scripts[]} Commissioning scripts
  */
 const commissioning = createSelector([all], (scriptItems) =>
   scriptItems.filter(
@@ -77,8 +77,8 @@ const commissioning = createSelector([all], (scriptItems) =>
 
 /**
  * Returns all testing scripts
- * @param {Object} state - Redux state
- * @returns {Array} Testing scripts
+ * @param {RootState} state - Redux state
+ * @returns {Scripts[]} Testing scripts
  */
 const testing = createSelector([all], (scriptItems) =>
   scriptItems.filter((item: Scripts) => item.type === SCRIPT_TYPES.TESTING)
@@ -86,8 +86,8 @@ const testing = createSelector([all], (scriptItems) =>
 
 /**
  * Returns testing scripts that contain a URL parameter
- * @param {Object} state - Redux state
- * @returns {Array} Testing scripts
+ * @param {RootState} state - Redux state
+ * @returns {Scripts[]} Testing scripts
  */
 const testingWithUrl = createSelector([testing], (testScripts) =>
   testScripts.filter((script: Scripts) =>
@@ -97,10 +97,10 @@ const testingWithUrl = createSelector([testing], (testScripts) =>
 
 /**
  * Get scripts that match a term.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @param {String} term - The term to match against.
  * @param {String} type - The type of script.
- * @returns {Array} A filtered list of scripts.
+ * @returns {Scripts[]} A filtered list of scripts.
  */
 const search = createSelector(
   [all, (_state: RootState, term: string, type: string) => ({ term, type })],
