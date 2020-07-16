@@ -5,9 +5,9 @@ import type { RootState } from "app/store/root/types";
 
 /**
  * Returns value of an object in an array, given a certain name.
- * @param {Array.<Object>} arr - Array to search for name.
- * @param {String} name - Name paramenter of the object to search for.
- * @returns {*} Value parameter of found object.
+ * @param {Config[]} arr - Array to search for name.
+ * @param {Config["name"]} name - Name paramenter of the object to search for.
+ * @returns {Config["value"]} Value parameter of found object.
  */
 const getValueFromName = (
   arr: Config[],
@@ -27,9 +27,9 @@ type Option = {
 
 /**
  * Returns choices of an object in an array, given a certain name.
- * @param {Array.<Object>} arr - Array to search for name.
- * @param {String} name - Name paramenter of the object to search for.
- * @returns {Array.<Object>} Available choices.
+ * @param {Config[]} arr - Array to search for name.
+ * @param {Config["name"]} name - Name paramenter of the object to search for.
+ * @returns {Option[]} Available choices.
  */
 const getOptionsFromName = (
   arr: Config[],
@@ -47,43 +47,43 @@ const getOptionsFromName = (
 
 /**
  * Returns list of all MAAS configs
- * @param {Object} state - The redux state.
- * @returns {Array} A list of all state.config.items.
+ * @param {RootState} state - The redux state.
+ * @returns {Config[]} A list of all state.config.items.
  */
 const all = (state: RootState): Config[] => state.config.items;
 
 /**
  * Returns true if config is loading.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Config is loading.
+ * @param {RootState} state - The redux state.
+ * @returns {ConfigState["loading"]} Config is loading.
  */
 const loading = (state: RootState): boolean => state.config.loading;
 
 /**
  * Returns true if config has been loaded.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Config has loaded.
+ * @param {RootState} state - The redux state.
+ * @returns {ConfigState["loaded"]} Config has loaded.
  */
 const loaded = (state: RootState): boolean => state.config.loaded;
 
 /**
  * Returns true if config is saving.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Config is saving.
+ * @param {RootState} state - The redux state.
+ * @returns {ConfigState["saving"]} Config is saving.
  */
 const saving = (state: RootState): boolean => state.config.saving;
 
 /**
  * Returns true if config has saved.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Config has saved.
+ * @param {RootState} state - The redux state.
+ * @returns {ConfigState["saved"]} Config has saved.
  */
 const saved = (state: RootState): boolean => state.config.saved;
 
 /**
  * Returns the MAAS config for default storage layout.
- * @param {Object} state - The redux state.
- * @returns {String} Default storage layout.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default storage layout.
  */
 const defaultStorageLayout = createSelector([all], (configs) =>
   getValueFromName(configs, "default_storage_layout")
@@ -91,8 +91,8 @@ const defaultStorageLayout = createSelector([all], (configs) =>
 
 /**
  * Returns the possible storage layout options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Storage layout options.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} Storage layout options.
  */
 const storageLayoutOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "default_storage_layout")
@@ -100,8 +100,8 @@ const storageLayoutOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enabling disk erase on release.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Enable disk erasing on release.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable disk erasing on release.
  */
 const enableDiskErasing = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_disk_erasing_on_release")
@@ -109,8 +109,8 @@ const enableDiskErasing = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enabling disk erase with secure erase.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Enable disk erasing with secure erase.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable disk erasing with secure erase.
  */
 const diskEraseWithSecure = createSelector([all], (configs) =>
   getValueFromName(configs, "disk_erase_with_secure_erase")
@@ -118,8 +118,8 @@ const diskEraseWithSecure = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enabling disk erase with quick erase.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Enable disk erasing with quick erase.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable disk erasing with quick erase.
  */
 const diskEraseWithQuick = createSelector([all], (configs) =>
   getValueFromName(configs, "disk_erase_with_quick_erase")
@@ -127,8 +127,8 @@ const diskEraseWithQuick = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for http proxy url.
- * @param {Object} state - The redux state.
- * @returns {String} HTTP proxy.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} HTTP proxy.
  */
 const httpProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "http_proxy")
@@ -136,8 +136,8 @@ const httpProxy = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enabling http proxy.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Enable HTTP proxy.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable HTTP proxy.
  */
 const enableHttpProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_http_proxy")
@@ -145,8 +145,8 @@ const enableHttpProxy = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for using peer proxy.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Use peer proxy.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Use peer proxy.
  */
 const usePeerProxy = createSelector([all], (configs) =>
   getValueFromName(configs, "use_peer_proxy")
@@ -154,7 +154,7 @@ const usePeerProxy = createSelector([all], (configs) =>
 
 /**
  * Returns the proxy type, given other proxy config.
- * @param {Object} state - The redux state.
+ * @param {RootState} state - The redux state.
  * @returns {String} Proxy type.
  */
 const proxyType = createSelector(
@@ -177,8 +177,8 @@ const proxyType = createSelector(
 
 /**
  * Returns the MAAS config for MAAS name.
- * @param {Object} - The redux state.
- * @returns {String} Then MAAS name.
+ * @param {RootState} - The redux state.
+ * @returns {Config["value"]} Then MAAS name.
  */
 const maasName = createSelector([all], (configs) =>
   getValueFromName(configs, "maas_name")
@@ -186,8 +186,8 @@ const maasName = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for MAAS uuid.
- * @param {Object} - The redux state.
- * @returns {String} Then MAAS uuid.
+ * @param {RootState} - The redux state.
+ * @returns {Config["value"]} Then MAAS uuid.
  */
 const uuid = createSelector([all], (configs) =>
   getValueFromName(configs, "uuid")
@@ -195,8 +195,8 @@ const uuid = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enable analytics.
- * @param {Object} - The redux state.
- * @returns {Boolean} Enable analytics.
+ * @param {RootState} - The redux state.
+ * @returns {Config["value"]} Enable analytics.
  */
 const analyticsEnabled = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_analytics")
@@ -204,8 +204,8 @@ const analyticsEnabled = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for default distro series.
- * @param {Object} state - The redux state.
- * @returns {String} Default distro series.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default distro series.
  */
 const commissioningDistroSeries = createSelector([all], (configs) =>
   getValueFromName(configs, "commissioning_distro_series")
@@ -213,8 +213,8 @@ const commissioningDistroSeries = createSelector([all], (configs) =>
 
 /**
  * Returns the possible distro series options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Distro series options.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} Distro series options.
  */
 const distroSeriesOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "commissioning_distro_series")
@@ -222,16 +222,17 @@ const distroSeriesOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for default min kernel version.
- * @param {object} state - The redux state.
- * @returns {String} Default min kernal version.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default min kernal version.
  */
 const defaultMinKernelVersion = createSelector([all], (configs) =>
   getValueFromName(configs, "default_min_hwe_kernel")
 );
 
-/* Returns the MAAS config for enabling DNSSEC validation of upstream zones.
- * @param {Object} state - The redux state.
- * @returns {String} DNSSEC validation type.
+/**
+ * Returns the MAAS config for enabling DNSSEC validation of upstream zones.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} DNSSEC validation type.
  */
 const dnssecValidation = createSelector([all], (configs) =>
   getValueFromName(configs, "dnssec_validation")
@@ -239,8 +240,8 @@ const dnssecValidation = createSelector([all], (configs) =>
 
 /**
  * Returns the possible DNSSEC validation options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} DNSSEC validation options.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} DNSSEC validation options.
  */
 const dnssecOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "dnssec_validation")
@@ -248,8 +249,8 @@ const dnssecOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for the list of external networks that will be allowed to use MAAS for DNS resolution.
- * @param {Object} state - The redux state.
- * @returns {String} External networks.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} External networks.
  */
 const dnsTrustedAcl = createSelector([all], (configs) =>
   getValueFromName(configs, "dns_trusted_acl")
@@ -257,8 +258,8 @@ const dnsTrustedAcl = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for upstream DNS.
- * @param {Object} state - The redux state.
- * @returns {String} Upstream DNS(s).
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Upstream DNS(s).
  */
 const upstreamDns = createSelector([all], (configs) =>
   getValueFromName(configs, "upstream_dns")
@@ -266,8 +267,8 @@ const upstreamDns = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for NTP servers.
- * @param {Object} state - The redux state.
- * @returns {String} NTP server(s).
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} NTP server(s).
  */
 const ntpServers = createSelector([all], (configs) =>
   getValueFromName(configs, "ntp_servers")
@@ -275,8 +276,8 @@ const ntpServers = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for only enabling external NTP servers.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Enable external NTP servers only.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable external NTP servers only.
  */
 const ntpExternalOnly = createSelector([all], (configs) =>
   getValueFromName(configs, "ntp_external_only")
@@ -284,8 +285,8 @@ const ntpExternalOnly = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for remote syslog server to forward machine logs.
- * @param {Object} state - The redux state.
- * @returns {String} Remote syslog server.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Remote syslog server.
  */
 const remoteSyslog = createSelector([all], (configs) =>
   getValueFromName(configs, "remote_syslog")
@@ -293,8 +294,8 @@ const remoteSyslog = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enabling network discovery.
- * @param {Object} state - The redux state.
- * @returns {String} Enable network discovery.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Enable network discovery.
  */
 const networkDiscovery = createSelector([all], (configs) =>
   getValueFromName(configs, "network_discovery")
@@ -302,8 +303,8 @@ const networkDiscovery = createSelector([all], (configs) =>
 
 /**
  * Returns the possible network discovery options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Network discovery options.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} Network discovery options.
  */
 const networkDiscoveryOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "network_discovery")
@@ -311,8 +312,8 @@ const networkDiscoveryOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for active discovery interval.
- * @param {Object} state - The redux state.
- * @returns {Number} Active discovery interval in ms.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Active discovery interval in ms.
  */
 const activeDiscoveryInterval = createSelector([all], (configs) =>
   getValueFromName(configs, "active_discovery_interval")
@@ -320,8 +321,8 @@ const activeDiscoveryInterval = createSelector([all], (configs) =>
 
 /**
  * Returns the possible active discovery intervals reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Active discovery intervals.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} Active discovery intervals.
  */
 const discoveryIntervalOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "active_discovery_interval")
@@ -329,8 +330,8 @@ const discoveryIntervalOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for kernel parameters.
- * @param {Object} state - The redux state.
- * @returns {String} Kernel parameters.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Kernel parameters.
  */
 const kernelParams = createSelector([all], (configs) =>
   getValueFromName(configs, "kernel_opts")
@@ -338,8 +339,8 @@ const kernelParams = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for Windows KMS host.
- * @param {Object} state - The redux state.
- * @returns {String} Windows KMS host.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Windows KMS host.
  */
 const windowsKmsHost = createSelector([all], (configs) =>
   getValueFromName(configs, "windows_kms_host")
@@ -347,8 +348,8 @@ const windowsKmsHost = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for vCenter server.
- * @param {Object} state - The redux state.
- * @returns {String} - vCenter server.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} - vCenter server.
  */
 const vCenterServer = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_server")
@@ -356,8 +357,8 @@ const vCenterServer = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for vCenter username.
- * @param {Object} state - The redux state.
- * @returns {String} - vCenter username.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} - vCenter username.
  */
 const vCenterUsername = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_username")
@@ -365,8 +366,8 @@ const vCenterUsername = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for vCenter password.
- * @param {Object} state - The redux state.
- * @returns {String} - vCenter password.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} - vCenter password.
  */
 const vCenterPassword = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_password")
@@ -374,8 +375,8 @@ const vCenterPassword = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for vCenter datacenter.
- * @param {Object} state - The redux state.
- * @returns {String} - vCenter datacenter.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} - vCenter datacenter.
  */
 const vCenterDatacenter = createSelector([all], (configs) =>
   getValueFromName(configs, "vcenter_datacenter")
@@ -383,8 +384,8 @@ const vCenterDatacenter = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for enable_third_party_drivers
- * @param {Object} state - The redux state
- * @returns {Boolean} - The value of enable_third_party_drivers
+ * @param {RootState} state - The redux state
+ * @returns {Config["value"]} - The value of enable_third_party_drivers
  */
 const thirdPartyDriversEnabled = createSelector([all], (configs) =>
   getValueFromName(configs, "enable_third_party_drivers")
@@ -392,8 +393,8 @@ const thirdPartyDriversEnabled = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for default OS.
- * @param {Object} state - The redux state.
- * @returns {String} Default OS.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default OS.
  */
 const defaultOSystem = createSelector([all], (configs) =>
   getValueFromName(configs, "default_osystem")
@@ -401,8 +402,8 @@ const defaultOSystem = createSelector([all], (configs) =>
 
 /**
  * Returns the possible default OS options reformatted as objects.
- * @param {Object} state - The redux state.
- * @returns {Array} Default OS options.
+ * @param {RootState} state - The redux state.
+ * @returns {Option[]} Default OS options.
  */
 const defaultOSystemOptions = createSelector([all], (configs) =>
   getOptionsFromName(configs, "default_osystem")
@@ -410,8 +411,8 @@ const defaultOSystemOptions = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for default distro series.
- * @param {Object} state - The redux state.
- * @returns {String} Default distro series.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default distro series.
  */
 const defaultDistroSeries = createSelector([all], (configs) =>
   getValueFromName(configs, "default_distro_series")
@@ -419,8 +420,8 @@ const defaultDistroSeries = createSelector([all], (configs) =>
 
 /**
  * Returns the MAAS config for whether the intro has been completed.
- * @param {Object} state - The redux state.
- * @returns {Boolean} Whether the intro has been completed
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Whether the intro has been completed
  */
 const completedIntro = createSelector([all], (configs) =>
   getValueFromName(configs, "completed_intro")
