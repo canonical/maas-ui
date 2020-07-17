@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import * as Yup from "yup";
 
 import type { RootState } from "app/store/root/types";
-import { formatBytes } from "app/utils";
 import {
   domain as domainActions,
   general as generalActions,
@@ -68,38 +67,27 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
     domainsLoaded && poolsLoaded && powerTypesLoaded && zonesLoaded;
 
   if (!!pod && loaded) {
-    const availableCores =
-      pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores;
-    const availableMemory = formatBytes(
-      pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory,
-      "MiB",
-      {
-        binary: true,
-        convertTo: "MiB",
-        precision: 6, // precise up to 999999 MiB
-      }
-    );
     const powerType = powerTypes.find((type) => type.name === pod.type);
-    const powerTypeDefaults = {
+    const available = {
+      cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
+      memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
+    };
+    const defaults = {
       cores: powerType?.defaults?.cores || 1,
       memory: powerType?.defaults?.memory || 2048,
-      storage: powerType?.defaults?.storage || 8,
     };
 
     const ComposeFormSchema = Yup.object().shape({
       architecture: Yup.string(),
       cores: Yup.number("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
-        .max(availableCores, `Only ${availableCores} cores available.`),
+        .max(available.cores, `Only ${available.cores} cores available.`),
       domain: Yup.string(),
       hostname: Yup.string(),
       interfaces: Yup.string(),
       memory: Yup.number("RAM must be a positive number.")
-        .min(1, "RAM must be a positive number.")
-        .max(
-          availableMemory.value,
-          `Only ${availableMemory.value} MiB available.`
-        ),
+        .min(1024, "At least 1024 MiB is required.")
+        .max(available.memory, `Only ${available.memory} MiB available.`),
       pool: Yup.string(),
       storage: Yup.string(),
       zone: Yup.string(),
@@ -153,11 +141,8 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
       >
         <ComposeFormFields
           architectures={pod.architectures}
-          available={{ cores: availableCores, memory: availableMemory.value }}
-          defaults={{
-            cores: powerTypeDefaults.cores,
-            memory: powerTypeDefaults.memory,
-          }}
+          available={available}
+          defaults={defaults}
         />
       </ActionForm>
     );
