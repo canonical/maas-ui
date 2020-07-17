@@ -1,37 +1,19 @@
 import { createSelector } from "@reduxjs/toolkit";
-
+import { generateBaseSelectors } from "app/store/utils";
+import type {
+  LicenseKeys,
+  LicenseKeysState,
+} from "app/store/licensekeys/types";
 import type { RootState } from "app/store/root/types";
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { TSFixMe } from "app/base/types";
 
-/**
- * Returns list of all license keys.
- * @param {RootState} state - Redux state
- * @returns {LicenseKeys[]} license keys
- */
-const all = (state: RootState): LicenseKeys[] => state.licensekeys.items;
+const searchFunction = (licenseKey: LicenseKeys, term: string) =>
+  licenseKey.osystem.includes(term) || licenseKey.distro_series.includes(term);
 
-/**
- * Returns true if license keys are loading
- * @param {RootState} state - Redux state
- * @returns {LicenseKeysState["loading"]} License keys are loading
- */
-
-const loading = (state: RootState): boolean => state.licensekeys.loading;
-
-/**
- * Returns true if license keys have loaded
- * @param {RootState} state - Redux state
- * @returns {LicenseKeysState["loaded"]} License keys have loaded
- */
-const loaded = (state: RootState): boolean => state.licensekeys.loaded;
-
-/**
- * Returns license keys errors.
- * @param {RootState} state - The redux state.
- * @returns {LicenseKeysState["errors"]} Errors for license keys.
- */
-const errors = (state: RootState): TSFixMe => state.licensekeys.errors;
+const defaultSelectors = generateBaseSelectors<LicenseKeysState, "id">(
+  "licensekeys",
+  "id",
+  searchFunction
+);
 
 /**
  * Returns true if license keys have errors
@@ -39,23 +21,8 @@ const errors = (state: RootState): TSFixMe => state.licensekeys.errors;
  * @returns {Boolean} License keys have errors
  */
 const hasErrors = createSelector(
-  [errors],
+  [defaultSelectors.errors],
   (errors) => Object.entries(errors).length > 0
-);
-
-/**
- * Get license keys that match a term.
- * @param {RootState} state - The redux state.
- * @param {String} term - The term to match against.
- * @returns {LicenseKeys[]} A filtered list of license keys.
- */
-const search = createSelector(
-  [all, (_state: RootState, term: string) => term],
-  (licensekeyItems, term) =>
-    licensekeyItems.filter(
-      (item: LicenseKeys) =>
-        item.osystem.includes(term) || item.distro_series.includes(term)
-    )
 );
 
 /**
@@ -67,7 +34,7 @@ const search = createSelector(
  */
 const getByOsystemAndDistroSeries = createSelector(
   [
-    all,
+    defaultSelectors.all,
     (
       _state: RootState,
       osystem: LicenseKeys["osystem"],
@@ -84,30 +51,10 @@ const getByOsystemAndDistroSeries = createSelector(
     )[0]
 );
 
-/**
- * Get the saving state.
- * @param {RootState} state - The redux state.
- * @returns {LicenseKeysState["saving"]} Whether license keys are being saved.
- */
-const saving = (state: RootState): boolean => state.licensekeys.saving;
-
-/**
- * Get the saved state.
- * @param {RootState} state - The redux state.
- * @returns {LicenseKeysState["saved"]} Whether license keys have been saved.
- */
-const saved = (state: RootState): boolean => state.licensekeys.saved;
-
-const licensekeys = {
-  all,
-  errors,
-  getByOsystemAndDistroSeries,
+const selectors = {
+  ...defaultSelectors,
   hasErrors,
-  loaded,
-  loading,
-  saved,
-  saving,
-  search,
+  getByOsystemAndDistroSeries,
 };
 
-export default licensekeys;
+export default selectors;

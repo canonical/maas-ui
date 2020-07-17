@@ -112,7 +112,7 @@ const generateMAC = (machine, machineURL) => {
 
 export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const machineURL = generateLegacyURL(
     `/${machine.link_type}/${machine.system_id}`

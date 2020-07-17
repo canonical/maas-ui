@@ -14,17 +14,15 @@ export const useDhcpTarget = (nodeId, subnetId) => {
   const controllerLoading = useSelector(controllerSelectors.loading);
   const controllerLoaded = useSelector(controllerSelectors.loaded);
   const controller = useSelector((state) =>
-    controllerSelectors.getBySystemId(state, nodeId)
+    controllerSelectors.getById(state, nodeId)
   );
   const deviceLoading = useSelector(deviceSelectors.loading);
   const deviceLoaded = useSelector(deviceSelectors.loaded);
-  const device = useSelector((state) =>
-    deviceSelectors.getBySystemId(state, nodeId)
-  );
+  const device = useSelector((state) => deviceSelectors.getById(state, nodeId));
   const machineLoading = useSelector(machineSelectors.loading);
   const machineLoaded = useSelector(machineSelectors.loaded);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, nodeId)
+    machineSelectors.getById(state, nodeId)
   );
   const isLoading =
     (subnetId && subnetLoading) ||

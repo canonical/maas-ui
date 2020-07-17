@@ -14,7 +14,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);

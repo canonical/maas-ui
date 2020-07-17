@@ -9,7 +9,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 
 export const FabricColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
 
   const fabricID = machine.vlan && machine.vlan.fabric_id;

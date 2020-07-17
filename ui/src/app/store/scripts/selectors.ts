@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { generateBaseSelectors } from "app/store/utils";
 import type { RootState } from "app/store/root/types";
-import type { Scripts } from "app/store/scripts/types";
-import type { TSFixMe } from "app/base/types";
+import type { Scripts, ScriptsState } from "app/store/scripts/types";
 
 enum SCRIPT_TYPES {
   COMMISSIONING = 0,
@@ -11,48 +11,10 @@ enum SCRIPT_TYPES {
 
 type ScriptTypeName = keyof typeof SCRIPT_TYPES;
 
-/**
- * Returns list of all scripts.
- * @param {RootState} state - Redux state
- * @returns {Scripts[]} Scripts
- */
-const all = (state: RootState): Scripts[] => state.scripts.items;
-
-/**
- * Returns true if scripts are loading
- * @param {RootState} state - Redux state
- * @returns {ScriptsState["loading"]} Scripts are loading
- */
-
-const loading = (state: RootState): boolean => state.scripts.loading;
-
-/**
- * Returns count of scripts
- * @param {RootState} state - Redux state
- * @returns {Number} Number of scripts
- */
-const count = createSelector([all], (scriptItems) => scriptItems.length);
-
-/**
- * Returns true if scripts have loaded
- * @param {RootState} state - Redux state
- * @returns {ScriptsState["loaded"]} Scripts have loaded
- */
-const loaded = (state: RootState): boolean => state.scripts.loaded;
-
-/**
- * Returns true if scripts have saved
- * @param {RootState} state - Redux state
- * @returns {ScriptsState["saved"]} Scripts have saved
- */
-const saved = (state: RootState): boolean => state.scripts.saved;
-
-/**
- * Returns script errors.
- * @param {RootState} state - The redux state.
- * @returns {ScriptsState["errors"]} Errors for a script.
- */
-const errors = (state: RootState): TSFixMe => state.scripts.errors;
+const defaultSelectors = generateBaseSelectors<ScriptsState, "id">(
+  "scripts",
+  "id"
+);
 
 /**
  * Returns true if scripts have errors
@@ -60,7 +22,7 @@ const errors = (state: RootState): TSFixMe => state.scripts.errors;
  * @returns {Boolean} Scripts have errors
  */
 const hasErrors = createSelector(
-  [errors],
+  [defaultSelectors.errors],
   (errors) => Object.entries(errors).length > 0
 );
 
@@ -69,7 +31,7 @@ const hasErrors = createSelector(
  * @param {RootState} state - Redux state
  * @returns {Scripts[]} Commissioning scripts
  */
-const commissioning = createSelector([all], (scriptItems) =>
+const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
   scriptItems.filter(
     (item: Scripts) => item.type === SCRIPT_TYPES.COMMISSIONING
   )
@@ -80,7 +42,7 @@ const commissioning = createSelector([all], (scriptItems) =>
  * @param {RootState} state - Redux state
  * @returns {Scripts[]} Testing scripts
  */
-const testing = createSelector([all], (scriptItems) =>
+const testing = createSelector([defaultSelectors.all], (scriptItems) =>
   scriptItems.filter((item: Scripts) => item.type === SCRIPT_TYPES.TESTING)
 );
 
@@ -103,7 +65,10 @@ const testingWithUrl = createSelector([testing], (testScripts) =>
  * @returns {Scripts[]} A filtered list of scripts.
  */
 const search = createSelector(
-  [all, (_state: RootState, term: string, type: string) => ({ term, type })],
+  [
+    defaultSelectors.all,
+    (_state: RootState, term: string, type: string) => ({ term, type }),
+  ],
   (scriptItems, { term, type }) => {
     const scripts = scriptItems.filter(
       (item: Scripts) =>
@@ -120,14 +85,9 @@ const search = createSelector(
 );
 
 const scripts = {
-  all,
+  ...defaultSelectors,
   commissioning,
-  count,
-  errors,
   hasErrors,
-  loaded,
-  loading,
-  saved,
   search,
   testing,
   testingWithUrl,

@@ -106,19 +106,8 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.tsx:2731816469": [
       [0, 31, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummaryStorage/KVMSummaryStorage.tsx:19770221": [
-      [0, 40, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [6, 36, 20, "Cannot find module \'app/base/selectors\' or its corresponding type declarations.", "418645431"],
-      [25, 44, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [25, 57, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [26, 39, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [29, 42, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [33, 59, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [35, 59, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [37, 59, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [44, 43, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [45, 37, 4, "Object is of type \'unknown\'.", "2088098233"],
-      [60, 31, 4, "Object is of type \'unknown\'.", "2088098233"]
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummaryStorage/KVMSummaryStorage.tsx:3775969276": [
+      [0, 40, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1692999044": [
       [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
@@ -191,15 +180,15 @@ exports[`stricter compilation`] = {
       [90, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2435825133": [
-      [18, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "193426238"]
+      [18, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.test.tsx:2138170176": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:2880885888": [
-      [16, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973346775"],
-      [19, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973147829"]
+      [16, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973346775"],
+      [19, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973147829"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.test.tsx:1989368010": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -208,7 +197,7 @@ exports[`stricter compilation`] = {
       [71, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:259372828": [
-      [17, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "193426238"]
+      [17, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:1892145639": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -338,7 +327,7 @@ exports[`no TSFixMe types`] = {
     "src/app/base/types.ts:3778456340": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/auth/selectors.ts:3918254483": [
+    "src/app/store/auth/selectors.ts:1742453516": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
@@ -380,17 +369,9 @@ exports[`no TSFixMe types`] = {
       [143, 9, 8, "RegExp match", "1152173309"],
       [152, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/licensekeys/selectors.ts:3898125274": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [33, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/licensekeys/types.ts:2257386395": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [11, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/machine/selectors.ts:4209583570": [
-      [12, 13, 8, "RegExp match", "1152173309"],
-      [54, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/machine/types.ts:2610046885": [
       [2, 13, 8, "RegExp match", "1152173309"],
@@ -400,32 +381,19 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [19, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/packagerepository/selectors.ts:1555877026": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [54, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/packagerepository/types.ts:3950087859": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [20, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/pod/selectors.ts:1982053574": [
-      [7, 13, 8, "RegExp match", "1152173309"],
-      [79, 13, 7, "RegExp match", "1425257597"],
-      [81, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/pod/types.ts:299495599": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [58, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/resourcepool/selectors.ts:4021278305": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [32, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/resourcepool/types.ts:4045616415": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresults/selectors.ts:1050572240": [
+    "src/app/store/scriptresults/selectors.ts:3780812814": [
       [4, 13, 8, "RegExp match", "1152173309"],
       [40, 34, 8, "RegExp match", "1152173309"]
     ],
@@ -433,35 +401,19 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [30, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scripts/selectors.ts:1936338754": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [54, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/scripts/types.ts:2264904018": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [15, 14, 8, "RegExp match", "1152173309"],
       [20, 14, 8, "RegExp match", "1152173309"],
       [52, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/service/selectors.ts:1034199367": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/service/types.ts:3748751936": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [10, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sshkey/selectors.ts:4232735679": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/sshkey/types.ts:2805027575": [
       [2, 13, 8, "RegExp match", "1152173309"],
       [19, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/sslkey/selectors.ts:1375267519": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/sslkey/types.ts:518217640": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -476,34 +428,18 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [46, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/tag/selectors.ts:2596838696": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/tag/types.ts:2533761736": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [13, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/token/selectors.ts:2093872865": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [32, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/token/types.ts:4281996604": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/user/selectors.ts:2396796424": [
-      [3, 13, 8, "RegExp match", "1152173309"],
-      [56, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/store/user/types.ts:1153084241": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [14, 9, 8, "RegExp match", "1152173309"],
       [24, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/zone/selectors.ts:3530283409": [
-      [3, 13, 8, "RegExp match", "1152173309"],
-      [32, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/zone/types.ts:80244761": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -513,5 +449,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `582`
+  value: `581`
 };

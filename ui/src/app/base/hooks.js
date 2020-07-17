@@ -164,7 +164,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     generalSelectors.machineActions.get
   );
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   let actionLinks = [];
   actions.forEach((action) => {

@@ -76,7 +76,7 @@ describe("machine selectors", () => {
         items,
       }),
     });
-    expect(machine.getBySystemId(state, "909")).toStrictEqual(items[1]);
+    expect(machine.getById(state, "909")).toStrictEqual(items[1]);
   });
 
   it("can get the error state", () => {

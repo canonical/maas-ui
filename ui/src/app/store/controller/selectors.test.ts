@@ -44,6 +44,6 @@ describe("controller selectors", () => {
         items,
       }),
     });
-    expect(controller.getBySystemId(state, "909")).toStrictEqual(items[1]);
+    expect(controller.getById(state, "909")).toStrictEqual(items[1]);
   });
 });

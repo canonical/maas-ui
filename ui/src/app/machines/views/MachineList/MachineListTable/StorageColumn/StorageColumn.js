@@ -8,7 +8,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 
 export const StorageColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const formattedStorage = formatBytes(machine.storage, "GB");
 
