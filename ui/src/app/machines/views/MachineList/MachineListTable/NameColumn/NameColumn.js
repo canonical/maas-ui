@@ -1,3 +1,4 @@
+import { Tooltip } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
@@ -6,7 +7,6 @@ import { useSelector } from "react-redux";
 import { generateLegacyURL } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
-import Tooltip from "app/base/components/Tooltip";
 
 const generateFQDN = (machine, machineURL) => {
   return (

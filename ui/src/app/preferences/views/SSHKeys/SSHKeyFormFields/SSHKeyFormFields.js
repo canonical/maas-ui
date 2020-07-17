@@ -1,9 +1,15 @@
-import { Col, Link, Row, Select, Textarea } from "@canonical/react-components";
+import {
+  Col,
+  Link,
+  Row,
+  Select,
+  Textarea,
+  Tooltip,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import React from "react";
 
 import FormikField from "app/base/components/FormikField";
-import Tooltip from "app/base/components/Tooltip";
 
 export const SSHKeyFormFields = () => {
   const { values } = useFormikContext();

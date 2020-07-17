@@ -2097,14 +2097,20 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.7.0.tgz#e0c573f1719de237536b71477c58f0208a578149"
-  integrity sha512-GlKWMr+F85wip4WLyNddXTy7mVWxGXhBiwyqmHOSHCq7ysbzdK5uP1MhQh3uGpKGZgVqXdbneRSs+y/HA7acIw==
+"@canonical/react-components@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.8.1.tgz#bcee20de656ef815fe7f63b628c9e0dcb42a8955"
+  integrity sha512-DSpjeDEEJF+zSh+nJWdji8a8inUx8KlFrqBykJniBLQGW7BXOy5FmzN9W2As77YeShYGF7TKmuuEhgPKoZonMA==
   dependencies:
+    "@types/jest" "26.0.4"
+    "@types/node" "14.0.23"
+    "@types/react" "16.9.43"
+    "@types/react-dom" "16.9.8"
     classnames "2.2.6"
     prop-types "15.7.2"
-    vanilla-framework "2.10.0"
+    react-useportal "1.0.13"
+    typescript "3.9.6"
+    vanilla-framework "2.14.1"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -3036,6 +3042,11 @@
   version "14.0.22"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.22.tgz#23ea4d88189cec7d58f9e6b66f786b215eb61bdc"
   integrity sha512-emeGcJvdiZ4Z3ohbmw93E/64jRzUHAItSHt8nF7M4TGgQTiWqFVGB8KNpLGFmUHmHLvjvBgFwVlqNcq+VuGv9g==
+
+"@types/node@14.0.23":
+  version "14.0.23"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.23.tgz#676fa0883450ed9da0bb24156213636290892806"
+  integrity sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -15679,11 +15690,6 @@ value-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
-
-vanilla-framework@2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.10.0.tgz#74c0cba977ce058552aa4443cccaa6bbf9308e9e"
-  integrity sha512-otQLBXzRBLyiN8RFtHP0E19Iy2p3Frbm7E4TIU7Q7LN+ScmfmgAc7InqbYXvTL9oIATTs0sBD7T/2Fzezgmalg==
 
 vanilla-framework@2.14.1:
   version "2.14.1"

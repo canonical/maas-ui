@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
@@ -10,7 +10,6 @@ import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import Tooltip from "app/base/components/Tooltip";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
