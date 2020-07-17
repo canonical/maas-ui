@@ -1,9 +1,8 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import Tooltip from "app/base/components/Tooltip";
 import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
 import zoneSelectors from "app/store/zone/selectors";

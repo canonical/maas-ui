@@ -1,9 +1,9 @@
+import { Tooltip } from "@canonical/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
 
 import podSelectors from "app/store/pod/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
-import Tooltip from "app/base/components/Tooltip";
 
 type Props = { setSelectedAction: (action: string) => void };
 
