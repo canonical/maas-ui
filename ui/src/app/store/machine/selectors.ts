@@ -1,58 +1,22 @@
 import { createSelector, Selector } from "@reduxjs/toolkit";
 
+import { generateBaseSelectors } from "app/store/utils";
 import { ACTIONS } from "app/base/reducers/machine/machine";
 import filterNodes from "app/machines/filter-nodes";
 import scriptresults from "app/store/scriptresults/selectors";
 import type {
   Machine,
+  MachineState,
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { ScriptResults } from "app/store/scriptresults/types";
-import type { TSFixMe } from "app/base/types";
 
-/**
- * Returns all machines.
- * @param {RootState} state - The redux state.
- * @returns {Machine[]} A list of all machines.
- */
-const all = (state: RootState): Machine[] => state.machine.items;
-
-/**
- * Whether machines are loading.
- * @param {RootState} state - The redux state.
- * @returns {MachineState["loading"]} Machines loading state.
- */
-const loading = (state: RootState): boolean => state.machine.loading;
-
-/**
- * Whether machines have been loaded.
- * @param {RootState} state - The redux state.
- * @returns {MachineState["loaded"]} Machines loaded state.
- */
-const loaded = (state: RootState): boolean => state.machine.loaded;
-
-/**
- * Get the machine saving state.
- * @param {RootState} state - The redux state.
- * @returns {MachineState["saving"]} Whether machines are being saved.
- */
-const saving = (state: RootState): boolean => state.machine.saving;
-
-/**
- * Get the machine saved state.
- * @param {RootState} state - The redux state.
- * @returns {MachineState["saved"]} Whether machines have been saved.
- */
-const saved = (state: RootState): boolean => state.machine.saved;
-
-/**
- * Returns machine errors.
- * @param {RootState} state - The redux state.
- * @returns {MachineState["errors"]} Machine errors state.
- */
-const errors = (state: RootState): TSFixMe => state.machine.errors;
+const defaultSelectors = generateBaseSelectors<MachineState, "system_id">(
+  "machine",
+  "system_id"
+);
 
 /**
  * Returns selected machine system_ids.
@@ -100,7 +64,7 @@ const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } = {};
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
   statusSelectors[status] = createSelector(
-    [all, statuses],
+    [defaultSelectors.all, statuses],
     (machines, statuses) =>
       machines.filter(
         ({ system_id }) => statuses[system_id][status as keyof MachineStatus]
@@ -118,16 +82,6 @@ ACTIONS.forEach(({ status }) => {
 });
 
 /**
- * Returns a machine for the given id.
- * @param {RootState} state - The redux state.
- * @returns {Machine} A machine.
- */
-const getBySystemId = createSelector(
-  [all, (_state: RootState, id: Machine["system_id"]) => id],
-  (machines, id) => machines.find(({ system_id }) => system_id === id)
-);
-
-/**
  * Get machines that match terms.
  * @param {RootState} state - The redux state.
  * @param {String} terms - The terms to match against.
@@ -135,7 +89,7 @@ const getBySystemId = createSelector(
  */
 const search = createSelector(
   [
-    all,
+    defaultSelectors.all,
     (_state: RootState, terms: string, selectedIDs: Machine["system_id"]) => ({
       terms,
       selectedIDs,
@@ -154,8 +108,12 @@ const search = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Machine[]} Selected machines.
  */
-const selected = createSelector([all, selectedIDs], (machines, selectedIDs) =>
-  selectedIDs.map((id) => machines.find((machine) => id === machine.system_id))
+const selected = createSelector(
+  [defaultSelectors.all, selectedIDs],
+  (machines, selectedIDs) =>
+    selectedIDs.map((id) =>
+      machines.find((machine) => id === machine.system_id)
+    )
 );
 
 /**
@@ -174,12 +132,12 @@ const failedScriptResults = createSelector(
       }, {})
 );
 
-const machine = {
+const selectors = {
+  ...defaultSelectors,
   aborting: statusSelectors["aborting"],
   abortingSelected: statusSelectors["abortingSelected"],
   acquiring: statusSelectors["acquiring"],
   acquiringSelected: statusSelectors["acquiringSelected"],
-  all,
   checkingPower: statusSelectors["checkingPower"],
   checkingPowerSelected: statusSelectors["checkingPowerSelected"],
   commissioning: statusSelectors["commissioning"],
@@ -190,13 +148,9 @@ const machine = {
   deployingSelected: statusSelectors["deployingSelected"],
   enteringRescueMode: statusSelectors["enteringRescueMode"],
   enteringRescueModeSelected: statusSelectors["enteringRescueModeSelected"],
-  errors,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   failedScriptResults,
-  getBySystemId,
-  loaded,
-  loading,
   locking: statusSelectors["locking"],
   lockingSelected: statusSelectors["lockingSelected"],
   markingBroken: statusSelectors["markingBroken"],
@@ -209,8 +163,6 @@ const machine = {
   processing,
   releasing: statusSelectors["releasing"],
   releasingSelected: statusSelectors["releasingSelected"],
-  saved,
-  saving,
   search,
   selected,
   selectedIDs,
@@ -232,4 +184,4 @@ const machine = {
   unlockingSelected: statusSelectors["unlockingSelected"],
 };
 
-export default machine;
+export default selectors;

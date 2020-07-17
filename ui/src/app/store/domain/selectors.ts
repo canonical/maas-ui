@@ -1,31 +1,13 @@
-import type { RootState } from "app/store/root/types";
-import type { Domain } from "app/store/domain/types";
+import { generateBaseSelectors } from "app/store/utils";
+import type { Domain, DomainState } from "app/store/domain/types";
 
-/**
- * Returns all domains.
- * @param {RootState} state - The redux state.
- * @returns {Domain[]} A list of all domains.
- */
-const all = (state: RootState): Domain[] => state.domain.items;
+const searchFunction = (domain: Domain, term: string) =>
+  domain.name.includes(term);
 
-/**
- * Whether domains are loading.
- * @param {RootState} state - The redux state.
- * @returns {DomainState["loading"]} Domains loading state.
- */
-const loading = (state: RootState): boolean => state.domain.loading;
+const selectors = generateBaseSelectors<DomainState, "id">(
+  "domain",
+  "id",
+  searchFunction
+);
 
-/**
- * Whether domains have been loaded.
- * @param {RootState} state - The redux state.
- * @returns {DomainState["loaded"]} Domains loaded state.
- */
-const loaded = (state: RootState): boolean => state.domain.loaded;
-
-const domain = {
-  all,
-  loaded,
-  loading,
-};
-
-export default domain;
+export default selectors;

@@ -87,7 +87,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
             ? dhcpSnippet.node || dhcpSnippet.subnet || ""
             : "",
           name: dhcpSnippet ? dhcpSnippet.name : "",
-          type: dhcpSnippet ? type : "",
+          type: (dhcpSnippet && type) || "",
           value: dhcpSnippet ? dhcpSnippet.value : "",
         }}
         onCancel={() => history.push({ pathname: "/settings/dhcp" })}

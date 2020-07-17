@@ -13,7 +13,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 

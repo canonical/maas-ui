@@ -30,7 +30,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);

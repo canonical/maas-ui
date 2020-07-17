@@ -16,7 +16,7 @@ describe("users selectors", () => {
         ],
       }),
     });
-    const items = user.get(state);
+    const items = user.all(state);
     expect(items.length).toEqual(1);
     expect(items[0].username).toEqual("default");
   });

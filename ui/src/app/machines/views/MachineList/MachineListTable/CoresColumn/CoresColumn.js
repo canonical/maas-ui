@@ -9,7 +9,7 @@ import machineSelectors from "app/store/machine/selectors";
 
 export const CoresColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
 
   const formatShortArch = (arch) =>

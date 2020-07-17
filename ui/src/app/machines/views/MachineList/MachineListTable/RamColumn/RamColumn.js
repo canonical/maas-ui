@@ -8,7 +8,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 
 export const RamColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
 
   return (

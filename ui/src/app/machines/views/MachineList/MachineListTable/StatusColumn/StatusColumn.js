@@ -74,7 +74,7 @@ const getStatusIcon = (machine) => {
 
 export const StatusColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const osReleases = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)

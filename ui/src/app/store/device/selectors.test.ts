@@ -44,6 +44,6 @@ describe("device selectors", () => {
         items,
       }),
     });
-    expect(device.getBySystemId(state, "909")).toStrictEqual(items[1]);
+    expect(device.getById(state, "909")).toStrictEqual(items[1]);
   });
 });

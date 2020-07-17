@@ -1,20 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { generateBaseSelectors } from "app/store/utils";
+import controller from "app/store/controller/selectors";
+import machine from "app/store/machine/selectors";
 import type { Controller } from "app/store/controller/types";
 import type { Host } from "app/store/types/host";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodState } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
-import controller from "app/store/controller/selectors";
-import machine from "app/store/machine/selectors";
 
-/**
- * Returns all pods.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} A list of all pods.
- */
-const all = (state: RootState): Pod[] => state.pod.items;
+const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
+
+const defaultSelectors = generateBaseSelectors<PodState, "id">(
+  "pod",
+  "id",
+  searchFunction
+);
 
 /**
  * Returns all KVMs.
@@ -33,34 +34,6 @@ const rsd = (state: RootState): Pod[] =>
   state.pod.items.filter((pod) => pod.type === "rsd");
 
 /**
- * Whether pods are loading.
- * @param {RootState} state - The redux state.
- * @returns {PodState["loading"]} Machines loading state.
- */
-const loading = (state: RootState): boolean => state.pod.loading;
-
-/**
- * Whether pods have been loaded.
- * @param {RootState} state - The redux state.
- * @returns {PodState["loaded"]} Machines loaded state.
- */
-const loaded = (state: RootState): boolean => state.pod.loaded;
-
-/**
- * Get the pod saving state.
- * @param {RootState} state - The redux state.
- * @returns {PodState["saving"]} Whether pods are being saved.
- */
-const saving = (state: RootState): boolean => state.pod.saving;
-
-/**
- * Get the pod saved state.
- * @param {RootState} state - The redux state.
- * @returns {PodState["saved"]} Whether pods have been saved.
- */
-const saved = (state: RootState): boolean => state.pod.saved;
-
-/**
  * Returns selected pod ids.
  * @param {RootState} state - The redux state.
  * @returns {Pod["id"][]} Selected pod ids.
@@ -75,29 +48,14 @@ const selectedIDs = (state: RootState): number[] => state.pod.selected;
 const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 
 /**
- * Returns pod errors.
- * @param {RootState} state - The redux state.
- * @returns {PodState["errors"]} Machine errors state.
- */
-const errors = (state: RootState): TSFixMe => state.pod.errors;
-
-/**
  * Returns selected pods.
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Selected pods.
  */
-const selected = createSelector([all, selectedIDs], (pods, selectedIDs) =>
-  selectedIDs.map((id) => pods.find((pod) => id === pod.id))
-);
-
-/**
- * Returns a pod for the given id.
- * @param {RootState} state - The redux state.
- * @returns {Pod} The pod that matches the given id.
- */
-const getById = createSelector(
-  [all, (_: RootState, id: number) => id],
-  (pods, id) => pods.find((pod) => pod.id === id)
+const selected = createSelector(
+  [defaultSelectors.all, selectedIDs],
+  (pods, selectedIDs) =>
+    selectedIDs.map((id) => pods.find((pod) => id === pod.id))
 );
 
 /**
@@ -106,7 +64,7 @@ const getById = createSelector(
  * @returns {Host[]} All pod host machines/controllers.
  */
 const getAllHosts = createSelector(
-  [all, machine.all, controller.all],
+  [defaultSelectors.all, machine.all, controller.all],
   (pods: Pod[], machines: Machine[], controllers: Controller[]) => {
     return pods.reduce<Host[]>((hosts, pod) => {
       if (pod.host) {
@@ -155,8 +113,9 @@ const getHost = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Pods being deleted.
  */
-const deleting = createSelector([all, statuses], (pods, statuses) =>
-  pods.filter((pod) => statuses[pod.id].deleting)
+const deleting = createSelector(
+  [defaultSelectors.all, statuses],
+  (pods, statuses) => pods.filter((pod) => statuses[pod.id].deleting)
 );
 
 /**
@@ -175,8 +134,9 @@ const deletingSelected = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Pods composing machines.
  */
-const composing = createSelector([all, statuses], (pods, statuses) =>
-  pods.filter((pod) => statuses[pod.id].composing)
+const composing = createSelector(
+  [defaultSelectors.all, statuses],
+  (pods, statuses) => pods.filter((pod) => statuses[pod.id].composing)
 );
 
 /**
@@ -195,8 +155,9 @@ const composingSelected = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Pods being refreshed.
  */
-const refreshing = createSelector([all, statuses], (pods, statuses) =>
-  pods.filter((pod) => statuses[pod.id].refreshing)
+const refreshing = createSelector(
+  [defaultSelectors.all, statuses],
+  (pods, statuses) => pods.filter((pod) => statuses[pod.id].refreshing)
 );
 
 /**
@@ -210,27 +171,21 @@ const refreshingSelected = createSelector(
     refreshingPods.filter((pod) => selectedPodIDs.includes(pod.id))
 );
 
-const pod = {
-  all,
+const selectors = {
+  ...defaultSelectors,
   composing,
   composingSelected,
   deleting,
   deletingSelected,
-  errors,
   getAllHosts,
-  getById,
   getHost,
   kvm,
-  loaded,
-  loading,
   refreshing,
   refreshingSelected,
   rsd,
-  saved,
-  saving,
   selected,
   selectedIDs,
   statuses,
 };
 
-export default pod;
+export default selectors;

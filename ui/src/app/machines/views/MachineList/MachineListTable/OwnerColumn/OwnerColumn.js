@@ -11,7 +11,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 export const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
