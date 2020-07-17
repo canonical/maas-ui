@@ -61,11 +61,6 @@ input[type="radio"] {
 .p-slider__wrapper {
   margin-bottom: $input-margin-bottom;
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 .p-slider__input {
   -moz-appearance: textfield;
   height: auto;

@@ -1,6 +1,7 @@
 import {
   pod as podFactory,
   podState as podStateFactory,
+  podStatus as podStatusFactory,
 } from "testing/factories";
 import pod, { DEFAULT_STATUSES } from "./pod";
 
@@ -123,8 +124,7 @@ describe("pod reducer", () => {
     const podState = podStateFactory({
       items: pods,
       statuses: {
-        1: { deleting: false, refreshing: false },
-        2: { deleting: false, refreshing: false },
+        1: podStatusFactory(),
       },
     });
 
@@ -145,11 +145,102 @@ describe("pod reducer", () => {
     });
   });
 
+  it("should correctly reduce COMPOSE_POD_START", () => {
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: podStatusFactory(),
+      },
+    });
+
+    expect(
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
+          },
+        },
+        type: "COMPOSE_POD_START",
+      })
+    ).toEqual({
+      errors: {},
+      items: pods,
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+      statuses: { 1: podStatusFactory({ composing: true }) },
+    });
+  });
+
+  it("should correctly reduce COMPOSE_POD_SUCCESS", () => {
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: podStatusFactory({ composing: true }),
+      },
+    });
+
+    expect(
+      pod(podState, {
+        meta: {
+          item: {
+            id: 1,
+          },
+        },
+        type: "COMPOSE_POD_SUCCESS",
+      })
+    ).toEqual({
+      errors: {},
+      items: pods,
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+      statuses: { 1: podStatusFactory({ composing: false }) },
+    });
+  });
+
+  it("should correctly reduce COMPOSE_POD_ERROR", () => {
+    const pods = [podFactory({ id: 1 })];
+    const podState = podStateFactory({
+      items: pods,
+      statuses: {
+        1: podStatusFactory({ composing: true }),
+      },
+    });
+
+    expect(
+      pod(podState, {
+        error: "You dun goofed",
+        meta: {
+          item: {
+            id: 1,
+          },
+        },
+        type: "COMPOSE_POD_ERROR",
+      })
+    ).toEqual({
+      errors: "You dun goofed",
+      items: pods,
+      loaded: false,
+      loading: false,
+      saved: false,
+      saving: false,
+      selected: [],
+      statuses: { 1: podStatusFactory({ composing: false }) },
+    });
+  });
+
   it("should correctly reduce DELETE_POD_START", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
-      statuses: { 1: { deleting: false, refreshing: false } },
+      statuses: { 1: podStatusFactory() },
     });
 
     expect(
@@ -169,7 +260,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: true, refreshing: false } },
+      statuses: { 1: podStatusFactory({ deleting: true }) },
     });
   });
 
@@ -177,7 +268,7 @@ describe("pod reducer", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
-      statuses: { 1: { deleting: true, refreshing: false } },
+      statuses: { 1: podStatusFactory({ deleting: true }) },
     });
     expect(
       pod(podState, {
@@ -196,7 +287,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false, refreshing: false } },
+      statuses: { 1: podStatusFactory({ deleting: false }) },
     });
   });
 
@@ -204,7 +295,7 @@ describe("pod reducer", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
-      statuses: { 1: { deleting: true, refreshing: false } },
+      statuses: { 1: podStatusFactory({ deleting: true }) },
     });
 
     expect(
@@ -225,7 +316,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false, refreshing: false } },
+      statuses: { 1: podStatusFactory({ deleting: false }) },
     });
   });
 
@@ -234,8 +325,8 @@ describe("pod reducer", () => {
     const podState = podStateFactory({
       items: pods,
       statuses: {
-        1: { deleting: true, refreshing: false },
-        2: { deleting: false, refreshing: false },
+        1: podStatusFactory({ deleting: true }),
+        2: podStatusFactory(),
       },
     });
 
@@ -257,7 +348,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 2: { deleting: false, refreshing: false } },
+      statuses: { 2: DEFAULT_STATUSES },
     });
   });
 
@@ -266,7 +357,7 @@ describe("pod reducer", () => {
     const podState = podStateFactory({
       items: pods,
       statuses: {
-        1: { deleting: false, refreshing: false },
+        1: podStatusFactory(),
       },
     });
 
@@ -287,7 +378,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false, refreshing: true } },
+      statuses: { 1: podStatusFactory({ refreshing: true }) },
     });
   });
 
@@ -297,7 +388,7 @@ describe("pod reducer", () => {
     const podState = podStateFactory({
       items: pods,
       statuses: {
-        1: { deleting: false, refreshing: true },
+        1: podStatusFactory({ refreshing: true }),
       },
     });
 
@@ -319,7 +410,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false, refreshing: false } },
+      statuses: { 1: podStatusFactory({ refreshing: false }) },
     });
   });
 
@@ -328,7 +419,7 @@ describe("pod reducer", () => {
     const podState = podStateFactory({
       items: pods,
       statuses: {
-        1: { deleting: false, refreshing: true },
+        1: podStatusFactory({ refreshing: true }),
       },
     });
 
@@ -350,7 +441,7 @@ describe("pod reducer", () => {
       saved: false,
       saving: false,
       selected: [],
-      statuses: { 1: { deleting: false, refreshing: false } },
+      statuses: { 1: podStatusFactory({ refreshing: false }) },
     });
   });
 
@@ -364,9 +455,9 @@ describe("pod reducer", () => {
       items: pods,
       selected: [3],
       statuses: {
-        1: { deleting: false, refreshing: false },
-        2: { deleting: false, refreshing: false },
-        3: { deleting: false, refreshing: false },
+        1: podStatusFactory(),
+        2: podStatusFactory(),
+        3: podStatusFactory(),
       },
     });
 
@@ -384,9 +475,9 @@ describe("pod reducer", () => {
       saving: false,
       selected: [1, 2],
       statuses: {
-        1: { deleting: false, refreshing: false },
-        2: { deleting: false, refreshing: false },
-        3: { deleting: false, refreshing: false },
+        1: podStatusFactory(),
+        2: podStatusFactory(),
+        3: podStatusFactory(),
       },
     });
   });

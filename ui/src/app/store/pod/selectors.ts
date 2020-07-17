@@ -171,6 +171,26 @@ const deletingSelected = createSelector(
 );
 
 /**
+ * Returns the pods which are composing machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Pods composing machines.
+ */
+const composing = createSelector([all, statuses], (pods, statuses) =>
+  pods.filter((pod) => statuses[pod.id].composing)
+);
+
+/**
+ * Returns the pods which are selected and composing machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Selected pods composing machines.
+ */
+const composingSelected = createSelector(
+  [composing, selectedIDs],
+  (composingPods, selectedPodIDs) =>
+    composingPods.filter((pod) => selectedPodIDs.includes(pod.id))
+);
+
+/**
  * Returns the pods which are being refreshed.
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Pods being refreshed.
@@ -192,6 +212,8 @@ const refreshingSelected = createSelector(
 
 const pod = {
   all,
+  composing,
+  composingSelected,
   deleting,
   deletingSelected,
   errors,
