@@ -130,7 +130,7 @@ export const controller = extend<BaseNode, Controller>(node, {
   version: "2.9.0~alpha1-8668-g.71d5929ae",
 });
 
-const podHint = define<PodHint>({
+export const podHint = define<PodHint>({
   cores: 8,
   local_storage: 10000000000,
   local_storage_gb: "1000",

@@ -1,9 +1,7 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import React from "react";
-import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import type { ComposeFormValues } from "../ComposeForm";
 import type { Pod } from "app/store/pod/types";
 import FormikField from "app/base/components/FormikField";
 import domainSelectors from "app/store/domain/selectors";
@@ -12,20 +10,24 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   architectures: Pod["architectures"];
-  availableCores: number;
-  availableMemory: number; // MiB
+  available: {
+    cores: number;
+    memory: number; // MiB
+  };
+  defaults: {
+    cores: number;
+    memory: number; // MiB
+  };
 };
 
 export const ComposeFormFields = ({
   architectures,
-  availableCores,
-  availableMemory,
+  available,
+  defaults,
 }: Props): JSX.Element => {
   const domains = useSelector(domainSelectors.all);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
-  const formikProps = useFormikContext<ComposeFormValues>();
-  const { initialValues } = formikProps;
 
   return (
     <Row>
@@ -91,24 +93,38 @@ export const ComposeFormFields = ({
           ]}
         />
         <FormikField
-          help={`${availableCores} cores available`}
+          help={`${available.cores} cores available`}
           label="Cores"
-          max={`${availableCores}`}
+          max={`${available.cores}`}
           min="1"
           name="cores"
-          placeholder={`${initialValues.cores}`}
+          placeholder={`${defaults.cores} (default)`}
           step="1"
           type="number"
         />
+        {available.cores < defaults.cores && (
+          <p className="p-form-validation__message">
+            <i className="p-icon--warning" />
+            <strong className="p-icon__text">Caution:</strong> The available
+            cores is less than the recommended default.
+          </p>
+        )}
         <FormikField
-          help={`${availableMemory} MiB available`}
+          help={`${available.memory} MiB available`}
           label="RAM (MiB)"
-          max={`${availableMemory}`}
+          max={`${available.memory}`}
           min="1"
           name="memory"
-          placeholder={`${initialValues.memory}`}
+          placeholder={`${defaults.memory} (default)`}
           type="number"
         />
+        {available.memory < defaults.memory && (
+          <p className="p-form-validation__message">
+            <i className="p-icon--warning" />
+            <strong className="p-icon__text">Caution:</strong> The available
+            memory is less than the recommended default.
+          </p>
+        )}
       </Col>
     </Row>
   );

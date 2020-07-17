@@ -73,7 +73,11 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
     const availableMemory = formatBytes(
       pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory,
       "MiB",
-      { binary: true, convertTo: "MiB" }
+      {
+        binary: true,
+        convertTo: "MiB",
+        precision: 6, // precise up to 999999 MiB
+      }
     );
     const powerType = powerTypes.find((type) => type.name === pod.type);
     const powerTypeDefaults = {
@@ -110,11 +114,11 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         errors={errors}
         initialValues={{
           architecture: pod.architectures[0] || "",
-          cores: powerTypeDefaults.cores,
+          cores: "",
           domain: `${domains[0]?.id}` || "",
           hostname: "",
           interfaces: "",
-          memory: powerTypeDefaults.memory,
+          memory: "",
           pool: `${pools[0]?.id}` || "",
           storage: "",
           zone: `${zones[0]?.id}` || "",
@@ -123,12 +127,12 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         onSubmit={(values: ComposeFormValues) => {
           const params = {
             architecture: values.architecture,
-            cores: values.cores || powerTypeDefaults.cores,
+            cores: values.cores,
             domain: Number(values.domain),
             hostname: values.hostname,
             id: Number(id),
             interfaces: undefined, // TODO: https://github.com/canonical-web-and-design/MAAS-squad/issues/2042
-            memory: values.memory || powerTypeDefaults.memory,
+            memory: values.memory,
             pool: Number(values.pool),
             storage: undefined, // TODO: https://github.com/canonical-web-and-design/MAAS-squad/issues/2043
             zone: Number(values.zone),
@@ -149,8 +153,11 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
       >
         <ComposeFormFields
           architectures={pod.architectures}
-          availableCores={availableCores}
-          availableMemory={availableMemory.value}
+          available={{ cores: availableCores, memory: availableMemory.value }}
+          defaults={{
+            cores: powerTypeDefaults.cores,
+            memory: powerTypeDefaults.memory,
+          }}
         />
       </ActionForm>
     );
