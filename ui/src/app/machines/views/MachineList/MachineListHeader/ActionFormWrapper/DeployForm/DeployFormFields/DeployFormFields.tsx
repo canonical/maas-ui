@@ -1,4 +1,5 @@
 import { Col, List, Row, Select } from "@canonical/react-components";
+import classNames from "classnames";
 import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -103,15 +104,28 @@ export const DeployFormFields = (): JSX.Element => {
             ]}
             inline
           />
-          <FormikField
-            label="Cloud-init user-data&hellip;"
-            name="includeUserData"
-            type="checkbox"
-            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-              handleChange(evt);
-              setUserDataVisible(evt.target.checked);
-            }}
-            wrapperClassName={userDataVisible ? "u-sv2" : null}
+          <List
+            items={[
+              <FormikField
+                label="Cloud-init user-data&hellip;"
+                name="includeUserData"
+                type="checkbox"
+                onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(evt);
+                  setUserDataVisible(evt.target.checked);
+                }}
+                wrapperClassName={classNames("u-display-inline-block", {
+                  "u-sv2 u-display-inline-block": userDataVisible,
+                })}
+              />,
+              <a
+                className="p-link--external"
+                href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+              >
+                Read more
+              </a>,
+            ]}
+            inline
           />
           {userDataVisible && <UserDataField />}
         </Col>
