@@ -55,7 +55,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   }, [dispatch]);
 
   // Default OS+release is set in the backend even if the image has not yet been
-  // downloaded. The following condiionals check whether the OS+release actually
+  // downloaded. The following conditionals check whether the OS+release actually
   // exist in state before setting initial values in the form.
   let initialOS = "";
   let initialRelease = "";

@@ -246,7 +246,8 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("[data-test='sshkeys-warning']").exists()).toBe(true);
   });
 
-  it("displays an error if there are no OSes or releases to choose from", () => {
+  it(`displays an error and disables form fields if there are no OSes or
+    releases to choose from`, () => {
     const state = { ...initialState };
     state.general.osInfo.data.osystems = [];
     state.general.osInfo.data.releases = [];
@@ -261,6 +262,15 @@ describe("DeployFormFields", () => {
       </Provider>
     );
     expect(wrapper.find("[data-test='images-error']").exists()).toBe(true);
+    expect(wrapper.find("FormikField[name='oSystem']").props().disabled).toBe(
+      true
+    );
+    expect(wrapper.find("FormikField[name='release']").props().disabled).toBe(
+      true
+    );
+    expect(
+      wrapper.find("FormikField[name='installKVM']").props().disabled
+    ).toBe(true);
   });
 
   it("can display the user data input", async () => {
