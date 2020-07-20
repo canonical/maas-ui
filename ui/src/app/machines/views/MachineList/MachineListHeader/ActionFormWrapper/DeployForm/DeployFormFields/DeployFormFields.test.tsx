@@ -125,11 +125,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -145,11 +141,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -165,11 +157,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -186,11 +174,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -217,11 +201,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -259,15 +239,28 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-test='sshkeys-warning']").exists()).toBe(true);
+  });
+
+  it("displays an error if there are no OSes or releases to choose from", () => {
+    const state = { ...initialState };
+    state.general.osInfo.data.osystems = [];
+    state.general.osInfo.data.releases = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='images-error']").exists()).toBe(true);
   });
 
   it("can display the user data input", async () => {
@@ -279,11 +272,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

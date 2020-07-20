@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { DeployFormValues } from "../DeployForm";
+import { generateLegacyURL } from "app/utils";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
@@ -17,20 +18,21 @@ import UserDataField from "./UserDataField";
 export const DeployFormFields = (): JSX.Element => {
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
-  const { handleChange, setFieldValue } = formikProps;
-  const { values }: { values: DeployFormValues } = formikProps;
+  const { handleChange, setFieldValue, values } = formikProps;
 
   const user: User = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
+  const { osystems, releases } = useSelector(generalSelectors.osInfo.get);
   const allReleaseOptions = useSelector(
     generalSelectors.osInfo.getAllOsReleases
   );
-  const releaseOptions = allReleaseOptions[values.oSystem];
+  const releaseOptions = allReleaseOptions[values.oSystem] || [];
   const kernelOptions = useSelector((state: RootState) =>
     generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =
     values.oSystem === "ubuntu" && values.release === "bionic";
+  const imagesURL = generateLegacyURL("/images");
 
   return (
     <div className="u-sv2">
@@ -130,15 +132,34 @@ export const DeployFormFields = (): JSX.Element => {
           {userDataVisible && <UserDataField />}
         </Col>
       </Row>
+      {(osystems.length === 0 || releases.length === 0) && (
+        <Row>
+          <Col size="12">
+            <p className="u-no-max-width" data-test="images-error">
+              <i className="p-icon--error is-inline"></i>
+              You will not be able to deploy a machine until at least one valid
+              image has been downloaded. To download an image, visit the{" "}
+              <a
+                href={imagesURL}
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  window.history.pushState(null, null, imagesURL);
+                }}
+              >
+                images page
+              </a>
+              .
+            </p>
+          </Col>
+        </Row>
+      )}
       {user.sshkeys_count === 0 && (
         <Row>
           <Col size="12">
-            <p data-test="sshkeys-warning">
+            <p className="u-no-max-width" data-test="sshkeys-warning">
               <i className="p-icon--warning is-inline"></i>
               Login will not be possible because no SSH keys have been added to
-              your account.
-              <br />
-              To add an SSH key, visit your{" "}
+              your account. To add an SSH key, visit your{" "}
               <Link to="/account/prefs/ssh-keys">account page</Link>.
             </p>
           </Col>
