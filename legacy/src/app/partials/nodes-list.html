@@ -714,11 +714,14 @@
             <hr />
             <h4 class="page-header__dropdown-title">Add rack controller</h4>
             <pre><code># To add a new rack controller, SSH into the rack controller.
-# Install the maas-rack-controller package.
-sudo apt install maas-rack-controller
-# Register the rack controller with this MAAS. If the rack controller (and machines)
-# don't have access to the URL, use a different IP address to allow connection.
-sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}</code></pre>
+# Install the maas snap.
+sudo snap install maas
+# Initialize the rack controller with this MAAS.
+sudo maas init rack
+
+# You will be asked for the following input:
+#  - MAAS URL: The MAAS URL for the region controller: http://[region_controller_ip]:5240/MAAS/
+#  - Secret: The a secret stored on the controller: {$ tabs.controllers.registerSecret $}</code></pre>
         </div>
         <div class="u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
                 <a href="" class="p-button--neutral"
