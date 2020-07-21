@@ -11,7 +11,7 @@ enum SCRIPT_TYPES {
 
 type ScriptTypeName = keyof typeof SCRIPT_TYPES;
 
-const defaultSelectors = generateBaseSelectors<ScriptsState, "id">(
+const defaultSelectors = generateBaseSelectors<ScriptsState, Scripts, "id">(
   "scripts",
   "id"
 );

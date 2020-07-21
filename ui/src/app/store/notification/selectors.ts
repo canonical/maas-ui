@@ -6,10 +6,11 @@ import type {
   NotificationState,
 } from "app/store/notification/types";
 
-const defaultSelectors = generateBaseSelectors<NotificationState, "id">(
-  "notification",
+const defaultSelectors = generateBaseSelectors<
+  NotificationState,
+  Notification,
   "id"
-);
+>("notification", "id");
 
 /**
  * Returns notifications of type 'warning'

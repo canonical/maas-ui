@@ -9,11 +9,11 @@ import type { RootState } from "app/store/root/types";
 const searchFunction = (licenseKey: LicenseKeys, term: string) =>
   licenseKey.osystem.includes(term) || licenseKey.distro_series.includes(term);
 
-const defaultSelectors = generateBaseSelectors<LicenseKeysState, "id">(
-  "licensekeys",
-  "id",
-  searchFunction
-);
+const defaultSelectors = generateBaseSelectors<
+  LicenseKeysState,
+  LicenseKeys,
+  "id"
+>("licensekeys", "id", searchFunction);
 
 /**
  * Returns true if license keys have errors

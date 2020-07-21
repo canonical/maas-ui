@@ -11,7 +11,7 @@ import type { RootState } from "app/store/root/types";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 
-const defaultSelectors = generateBaseSelectors<PodState, "id">(
+const defaultSelectors = generateBaseSelectors<PodState, Pod, "id">(
   "pod",
   "id",
   searchFunction
