@@ -43,15 +43,17 @@ function maasMachinesTable(
     },
     template: machinesTableTmpl,
     link: function(scope) {
-      scope.clickHandler = event => {
-        const targetClasses = event.target.classList || [];
-        const parentClasses = event.target.parentNode.classList || [];
+      scope.clickHandler = (event) => {
+        const targetClasses = event.target.classList;
+        const parentClasses = event.target.parentNode.classList;
 
         if (
-          targetClasses.contains("p-table-menu__toggle") ||
-          targetClasses.contains("p-double-row__icon-container") ||
-          parentClasses.contains("p-table-menu__dropdown") ||
-          parentClasses.contains("p-double-row__icon-container")
+          targetClasses &&
+          parentClasses &&
+          (targetClasses.contains("p-table-menu__toggle") ||
+            targetClasses.contains("p-double-row__icon-container") ||
+            parentClasses.contains("p-table-menu__dropdown") ||
+            parentClasses.contains("p-double-row__icon-container"))
         ) {
           return;
         }
