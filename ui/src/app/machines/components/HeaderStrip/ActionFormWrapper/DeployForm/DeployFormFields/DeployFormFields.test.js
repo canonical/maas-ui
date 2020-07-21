@@ -246,4 +246,31 @@ describe("DeployFormFields", () => {
     );
     expect(wrapper.find("[data-test='sshkeys-warning']").exists()).toBe(true);
   });
+
+  it(`displays an error and disables form fields if there are no OSes or
+    releases to choose from`, () => {
+    const state = { ...initialState };
+    state.general.osInfo.data.osystems = [];
+    state.general.osInfo.data.releases = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='images-error']").exists()).toBe(true);
+    expect(wrapper.find("FormikField[name='oSystem']").props().disabled).toBe(
+      true
+    );
+    expect(wrapper.find("FormikField[name='release']").props().disabled).toBe(
+      true
+    );
+    expect(
+      wrapper.find("FormikField[name='installKVM']").props().disabled
+    ).toBe(true);
+  });
 });

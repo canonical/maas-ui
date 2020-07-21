@@ -37,7 +37,9 @@ export const DeployForm = ({
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
-  const osInfo = useSelector(generalSelectors.osInfo.get);
+  const { default_osystem, default_release, osystems, releases } = useSelector(
+    generalSelectors.osInfo.get
+  );
   const deployingSelected = useSelector(machineSelectors.deployingSelected);
 
   useEffect(() => {
@@ -53,16 +55,32 @@ export const DeployForm = ({
     Object.keys(errors).length > 0
   );
 
+  // Default OS+release is set in the backend even if the image has not yet been
+  // downloaded. The following conditionals check whether the OS+release actually
+  // exist in state before setting initial values in the form.
+  let initialOS = "";
+  let initialRelease = "";
+  if (osystems.some((osChoice) => osChoice[0] === default_osystem)) {
+    initialOS = default_osystem;
+  }
+  if (
+    releases.some((releaseChoice) => {
+      const split = releaseChoice[0].split("/");
+      return split.length > 1 && split[1] === default_release;
+    })
+  ) {
+    initialRelease = default_release;
+  }
   return (
     <FormikForm
-      allowUnchanged
+      allowUnchanged={osystems.length !== 0 && releases.length !== 0}
       buttons={FormCardButtons}
       buttonsBordered={false}
       errors={errors}
       cleanup={machineActions.cleanup}
       initialValues={{
-        oSystem: osInfo.default_osystem,
-        release: osInfo.default_release,
+        oSystem: initialOS,
+        release: initialRelease,
         kernel: defaultMinHweKernel || "",
         installKVM: false,
       }}
