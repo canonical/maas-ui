@@ -7,16 +7,24 @@ import * as Yup from "yup";
 import type { RootState } from "app/store/root/types";
 import {
   domain as domainActions,
+  fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
   pod as podActions,
   resourcepool as resourcePoolActions,
+  space as spaceActions,
+  subnet as subnetActions,
+  vlan as vlanActions,
   zone as zoneActions,
 } from "app/base/actions";
 import domainSelectors from "app/store/domain/selectors";
+import fabricSelectors from "app/store/fabric/selectors";
 import generalSelectors from "app/store/general/selectors";
 import podSelectors from "app/store/pod/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import spaceSelectors from "app/store/space/selectors";
+import subnetSelectors from "app/store/subnet/selectors";
+import vlanSelectors from "app/store/vlan/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import ComposeFormFields from "./ComposeFormFields";
@@ -47,24 +55,39 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const composingPods = useSelector(podSelectors.composing);
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
+  const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const pools = useSelector(resourcePoolSelectors.all);
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const powerTypes = useSelector(generalSelectors.powerTypes.get);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const spacesLoaded = useSelector(spaceSelectors.loaded);
+  const subnetsLoaded = useSelector(subnetSelectors.loaded);
+  const vlansLoaded = useSelector(vlanSelectors.loaded);
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const [machineName, setMachineName] = useState("");
 
   useEffect(() => {
     dispatch(domainActions.fetch());
+    dispatch(fabricActions.fetch());
     dispatch(generalActions.fetchPowerTypes());
     dispatch(podActions.fetch());
     dispatch(resourcePoolActions.fetch());
+    dispatch(spaceActions.fetch());
+    dispatch(subnetActions.fetch());
+    dispatch(vlanActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
   const loaded =
-    domainsLoaded && poolsLoaded && powerTypesLoaded && zonesLoaded;
+    domainsLoaded &&
+    fabricsLoaded &&
+    poolsLoaded &&
+    powerTypesLoaded &&
+    spacesLoaded &&
+    subnetsLoaded &&
+    vlansLoaded &&
+    zonesLoaded;
 
   if (!!pod && loaded) {
     const powerType = powerTypes.find((type) => type.name === pod.type);

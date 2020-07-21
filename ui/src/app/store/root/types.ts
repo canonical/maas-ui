@@ -3,6 +3,7 @@ import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
+import type { FabricState } from "app/store/fabric/types";
 import type { GeneralState } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type { MachineState } from "app/store/machine/types";
@@ -14,6 +15,7 @@ import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { ScriptResultsState } from "app/store/scriptresults/types";
 import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
+import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
 import type { StatusState } from "app/store/status/types";
@@ -21,6 +23,7 @@ import type { SubnetState } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
 import type { UserState } from "app/store/user/types";
+import type { VLANState } from "app/store/vlan/types";
 import type { ZoneState } from "app/store/zone/types";
 
 export type RootState = {
@@ -29,6 +32,7 @@ export type RootState = {
   device: DeviceState;
   dhcpsnippet: DHCPSnippetState;
   domain: DomainState;
+  fabric: FabricState;
   general: GeneralState;
   licensekeys: LicenseKeysState;
   machine: MachineState;
@@ -40,6 +44,7 @@ export type RootState = {
   scriptresults: ScriptResultsState;
   scripts: ScriptsState;
   service: ServiceState;
+  space: SpaceState;
   sshkey: SSHKeyState;
   sslkey: SSLKeyState;
   status: StatusState;
@@ -47,5 +52,6 @@ export type RootState = {
   tag: TagState;
   token: TokenState;
   user: UserState;
+  vlan: VLANState;
   zone: ZoneState;
 };

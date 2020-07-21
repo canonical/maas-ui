@@ -8,6 +8,7 @@ export {
   deviceState,
   dhcpSnippetState,
   domainState,
+  fabricState,
   generalState,
   hweKernelsState,
   knownArchitecturesState,
@@ -31,6 +32,7 @@ export {
   scriptResultsState,
   scriptsState,
   serviceState,
+  spaceState,
   sshKeyState,
   sslKeyState,
   statusState,
@@ -39,6 +41,7 @@ export {
   tokenState,
   userState,
   versionState,
+  vlanState,
   zoneState,
 } from "./state";
 export { config } from "./config";
@@ -52,6 +55,7 @@ export {
   podStoragePool,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
+export { fabric } from "./fabric";
 export { licenseKeys } from "./licensekeys";
 export {
   architecture,
@@ -81,10 +85,12 @@ export {
 } from "./scriptresults";
 export { scripts } from "./scripts";
 export { service } from "./service";
+export { space } from "./space";
 export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
 export { subnet, subnetStatistics, subnetStatisticsRange } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
 export { user } from "./user";
+export { vlan } from "./vlan";
 export { zone } from "./zone";

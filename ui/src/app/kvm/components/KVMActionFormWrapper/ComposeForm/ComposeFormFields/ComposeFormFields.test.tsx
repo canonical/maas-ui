@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import {
   domainState as domainStateFactory,
+  fabricState as fabricStateFactory,
   generalState as generalStateFactory,
   pod as podFactory,
   podHint as podHintFactory,
@@ -15,6 +16,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  spaceState as spaceStateFactory,
+  subnetState as subnetStateFactory,
+  vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import ComposeForm from "../ComposeForm";
@@ -29,6 +33,9 @@ describe("ComposeFormFields", () => {
       domain: domainStateFactory({
         loaded: true,
       }),
+      fabric: fabricStateFactory({
+        loaded: true,
+      }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
           data: [powerTypeFactory()],
@@ -41,6 +48,15 @@ describe("ComposeFormFields", () => {
         statuses: { 1: podStatusFactory() },
       }),
       resourcepool: resourcePoolStateFactory({
+        loaded: true,
+      }),
+      space: spaceStateFactory({
+        loaded: true,
+      }),
+      subnet: subnetStateFactory({
+        loaded: true,
+      }),
+      vlan: vlanStateFactory({
         loaded: true,
       }),
       zone: zoneStateFactory({

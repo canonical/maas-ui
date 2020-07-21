@@ -7,6 +7,7 @@ import React from "react";
 
 import {
   domainState as domainStateFactory,
+  fabricState as fabricStateFactory,
   generalState as generalStateFactory,
   pod as podFactory,
   podState as podStateFactory,
@@ -14,6 +15,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  spaceState as spaceStateFactory,
+  subnetState as subnetStateFactory,
+  vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -29,6 +33,9 @@ describe("ComposeForm", () => {
       domain: domainStateFactory({
         loaded: true,
       }),
+      fabric: fabricStateFactory({
+        loaded: true,
+      }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({ loaded: true }),
       }),
@@ -38,6 +45,15 @@ describe("ComposeForm", () => {
         statuses: { 1: podStatusFactory() },
       }),
       resourcepool: resourcePoolStateFactory({
+        loaded: true,
+      }),
+      space: spaceStateFactory({
+        loaded: true,
+      }),
+      subnet: subnetStateFactory({
+        loaded: true,
+      }),
+      vlan: vlanStateFactory({
         loaded: true,
       }),
       zone: zoneStateFactory({
@@ -58,9 +74,13 @@ describe("ComposeForm", () => {
     );
     const expectedActions = [
       "FETCH_DOMAIN",
+      "FETCH_FABRIC",
       "FETCH_GENERAL_POWER_TYPES",
       "FETCH_POD",
       "FETCH_RESOURCEPOOL",
+      "FETCH_SPACE",
+      "FETCH_SUBNET",
+      "FETCH_VLAN",
       "FETCH_ZONE",
     ];
     const actions = store.getActions();

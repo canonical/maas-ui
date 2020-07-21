@@ -9,6 +9,7 @@ import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
+import type { FabricState } from "app/store/fabric/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type {
   MachineState,
@@ -24,12 +25,14 @@ import type { RootState } from "app/store/root/types";
 import type { ScriptResultsState } from "app/store/scriptresults/types";
 import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
+import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
 import type { StatusState } from "app/store/status/types";
 import type { SubnetState } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
+import type { VLANState } from "app/store/vlan/types";
 import type { ZoneState } from "app/store/zone/types";
 import type {
   ArchitecturesState,
@@ -84,6 +87,10 @@ export const dhcpSnippetState = define<DHCPSnippetState>({
   ...defaultState,
 });
 
+export const fabricState = define<FabricState>({
+  ...defaultState,
+});
+
 export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
 });
@@ -122,6 +129,10 @@ export const machineState = define<MachineState>({
 });
 
 export const scriptsState = define<ScriptsState>({
+  ...defaultState,
+});
+
+export const spaceState = define<SpaceState>({
   ...defaultState,
 });
 
@@ -275,6 +286,10 @@ export const tagState = define<TagState>({
   ...defaultState,
 });
 
+export const vlanState = define<VLANState>({
+  ...defaultState,
+});
+
 export const zoneState = define<ZoneState>({
   ...defaultState,
 });
@@ -285,6 +300,7 @@ export const rootState = define<RootState>({
   device: deviceState,
   dhcpsnippet: dhcpSnippetState,
   domain: domainState,
+  fabric: fabricState,
   general: generalState,
   licensekeys: licenseKeysState,
   machine: machineState,
@@ -296,6 +312,7 @@ export const rootState = define<RootState>({
   scriptresults: scriptResultsState,
   scripts: scriptsState,
   service: serviceState,
+  space: spaceState,
   sshkey: sshKeyState,
   sslkey: sslKeyState,
   status: statusState,
@@ -303,5 +320,6 @@ export const rootState = define<RootState>({
   tag: tagState,
   token: tokenState,
   user: userState,
+  vlan: vlanState,
   zone: zoneState,
 });
