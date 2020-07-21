@@ -6,7 +6,7 @@ const searchFunction = (user: User, term: string) =>
   user.email.includes(term) ||
   user.last_name.includes(term);
 
-const selectors = generateBaseSelectors<UserState, "id">(
+const selectors = generateBaseSelectors<UserState, User, "id">(
   "user",
   "id",
   searchFunction

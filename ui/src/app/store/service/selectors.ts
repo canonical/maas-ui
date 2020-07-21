@@ -4,7 +4,7 @@ import type { Service, ServiceState } from "app/store/service/types";
 const searchFunction = (service: Service, term: string) =>
   service.name.includes(term);
 
-const selectors = generateBaseSelectors<ServiceState, "id">(
+const selectors = generateBaseSelectors<ServiceState, Service, "id">(
   "service",
   "id",
   searchFunction

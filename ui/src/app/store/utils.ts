@@ -14,50 +14,101 @@ import type { RootState } from "app/store/root/types";
 export const isMachine = (host: Host): host is Machine =>
   (host as Machine).link_type === "machine";
 
-// Get the models that follow the generic shape.
+// Get the models that follow the generic shape. The following models are excluded:
+// - 'messages' and 'status' are not models from the API.
+// - 'general' has a collection of sub-models that form a different shape.
+// - 'config' contains a collection of children without IDs.
+// - 'scriptresults' returns an object of data rather than an array.
 type CommonStates = Omit<
   RootState,
   "messages" | "general" | "status" | "scriptresults" | "config"
 >;
 
-// Get the types of the common models.
+// Get the types of the common models. e.g. "DHCPSnippetState".
 type CommonStateTypes = CommonStates[keyof CommonStates];
 
-type SearchFunction<A> = (item: A, term: string) => boolean;
+/**
+ * @template I - A model item type e.g. DHCPSnippet
+ */
+type SearchFunction<I> = (item: I, term: string) => boolean;
 
+/**
+ * @template S - The model state type e.g. DHCPSnippetState.
+ * @template I - A model that is used as an an array of items on the provided
+ *               state e.g. DHCPSnippet
+ * @template K - A model key e.g. "id"
+ */
 type BaseSelectors<
+  // Any of the allowed state types.
   S extends CommonStateTypes,
-  I extends keyof S["items"][0]
+  // The model type needs to be a reference to the supplied state so that
+  // TypeScript can validate whether the key exists on the model.
+  // S["items"] will refer to something like `items: DHCPSnippet[];` and `[0]`
+  // will retrieve the type of the model e.g. `DHCPSnippet`.
+  // See: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html#keyof-and-lookup-types
+  I extends S["items"][0],
+  // A model key as a reference to the supplied state item.
+  K extends keyof I
 > = {
   all: (state: RootState) => S["items"];
+  // This method is generated using createSelector so it results
+  // in a function of type `Selector`.
   count: Selector<RootState, number>;
   errors: (state: RootState) => S["errors"];
+  // This method is generated using createSelector with parameters so it results
+  // in a function of type `OutputParametricSelector`.
   getById: OutputParametricSelector<
+    // The provided state.
     RootState,
-    S["items"][0][I],
-    S["items"][0] | null,
-    (items: S["items"], id: S["items"][0][I]) => S["items"][0] | null
+    // The provided parameter (id).
+    I[K],
+    // The result (an item or null).
+    I | null,
+    // The computation function to select an item.
+    (items: S["items"], id: I[K]) => I | null
   >;
   loaded: (state: RootState) => S["loaded"];
   loading: (state: RootState) => S["loading"];
   saved: (state: RootState) => S["saved"];
   saving: (state: RootState) => S["saving"];
+  // This method is generated using createSelector with parameters so it results
+  // in a function of type `OutputParametricSelector`.
   search: OutputParametricSelector<
+    // The provided state.
     RootState,
+    // The search term.
     string,
-    S["items"][0][],
-    (items: S["items"], term: string) => S["items"][0][]
+    // The result (an array of items).
+    I[],
+    // The search computation function.
+    (items: S["items"], term: string) => I[]
   >;
 };
 
+/**
+ * @template S - The model state type e.g. DHCPSnippetState.
+ * @template I - A model that is used as an an array of items on the provided
+ *               state e.g. DHCPSnippet
+ * @template {string} K - A model key e.g. "id"
+ * @param {string} name - The root state key of the model e.g. "dhcpsnippet".
+ * @param {K} indexKey - The key of the id field e.g. "id" or "system_id".
+ * @param {SearchFunction} searchFunction - The function to match items
+ *                                          when filtering.
+ */
 export const generateBaseSelectors = <
+  // Any of the allowed state types.
   S extends CommonStateTypes,
-  I extends keyof S["items"][0]
+  // A model key as a reference from the supplied state. For more explanation
+  // see the BaseSelectors type definition above.
+  I extends S["items"][0],
+  // A model key as a reference from the supplied model.
+  K extends keyof I
 >(
   name: keyof CommonStates,
-  indexKey: I,
-  searchFunction: SearchFunction<S["items"][0]> = () => false
-): BaseSelectors<S, I> => {
+  indexKey: K,
+  // Provide a default search function for models that don't use it.
+  searchFunction: SearchFunction<I> = () => false
+): BaseSelectors<S, I, K> => {
   const all = (state: RootState) => state[name].items;
   const count = createSelector([all], (items) => items.length);
   const errors = (state: RootState) => state[name].errors;
@@ -68,17 +119,12 @@ export const generateBaseSelectors = <
   const search = createSelector(
     [all, (_state: RootState, term: string) => term],
     (items, term) =>
-      (items as Array<S["items"][0]>).filter((item) =>
-        searchFunction(item, term)
-      )
+      (items as Array<I>).filter((item) => searchFunction(item, term))
   );
   const getById = createSelector(
-    [all, (_state: RootState, id: S["items"][0][I]) => id],
+    [all, (_state: RootState, id: I[K]) => id],
     (items, id) => {
-      return (
-        (items as Array<S["items"][0]>).find((item) => item[indexKey] === id) ||
-        null
-      );
+      return (items as Array<I>).find((item) => item[indexKey] === id) || null;
     }
   );
 

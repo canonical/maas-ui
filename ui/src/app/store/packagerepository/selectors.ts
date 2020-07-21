@@ -7,10 +7,10 @@ import type {
 const searchFunction = (repo: PackageRepository, term: string) =>
   repo.name.includes(term) || repo.url.includes(term);
 
-const selectors = generateBaseSelectors<PackageRepositoryState, "id">(
-  "packagerepository",
-  "id",
-  searchFunction
-);
+const selectors = generateBaseSelectors<
+  PackageRepositoryState,
+  PackageRepository,
+  "id"
+>("packagerepository", "id", searchFunction);
 
 export default selectors;

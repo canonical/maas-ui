@@ -13,10 +13,11 @@ import type {
 import type { RootState } from "app/store/root/types";
 import type { ScriptResults } from "app/store/scriptresults/types";
 
-const defaultSelectors = generateBaseSelectors<MachineState, "system_id">(
-  "machine",
+const defaultSelectors = generateBaseSelectors<
+  MachineState,
+  Machine,
   "system_id"
-);
+>("machine", "system_id");
 
 /**
  * Returns selected machine system_ids.

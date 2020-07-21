@@ -7,7 +7,7 @@ import type {
 const searchFunction = (snippet: DHCPSnippet, term: string) =>
   snippet.name.includes(term) || snippet.description.includes(term);
 
-const selectors = generateBaseSelectors<DHCPSnippetState, "id">(
+const selectors = generateBaseSelectors<DHCPSnippetState, DHCPSnippet, "id">(
   "dhcpsnippet",
   "id",
   searchFunction

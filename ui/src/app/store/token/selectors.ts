@@ -1,6 +1,6 @@
 import { generateBaseSelectors } from "app/store/utils";
-import type { TokenState } from "app/store/token/types";
+import type { Token, TokenState } from "app/store/token/types";
 
-const selectors = generateBaseSelectors<TokenState, "id">("token", "id");
+const selectors = generateBaseSelectors<TokenState, Token, "id">("token", "id");
 
 export default selectors;

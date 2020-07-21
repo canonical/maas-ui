@@ -4,7 +4,7 @@ import type { SSHKey, SSHKeyState } from "app/store/sshkey/types";
 const searchFunction = (sshkey: SSHKey, term: string) =>
   sshkey.display.includes(term);
 
-const selectors = generateBaseSelectors<SSHKeyState, "id">(
+const selectors = generateBaseSelectors<SSHKeyState, SSHKey, "id">(
   "sshkey",
   "id",
   searchFunction
