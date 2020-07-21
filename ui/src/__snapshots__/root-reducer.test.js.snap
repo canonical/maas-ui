@@ -42,6 +42,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "fabric": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "general": Object {
     "architectures": Object {
       "data": Array [],
@@ -189,6 +197,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "space": Object {
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "sshkey": Object {
     "errors": null,
     "items": Array [],
@@ -235,6 +251,14 @@ Object {
   },
   "user": Object {
     "auth": Object {},
+    "errors": Object {},
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
+  "vlan": Object {
     "errors": Object {},
     "items": Array [],
     "loaded": false,
