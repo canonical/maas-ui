@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 import * as Yup from "yup";
 
 import type { RootState } from "app/store/root/types";
+import type { Space } from "app/store/space/types";
+import type { Subnet } from "app/store/subnet/types";
 import {
   domain as domainActions,
   fabric as fabricActions,
@@ -28,22 +30,67 @@ import vlanSelectors from "app/store/vlan/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import ComposeFormFields from "./ComposeFormFields";
+import InterfacesTable from "./InterfacesTable";
+
+export type InterfaceField = {
+  id: number;
+  ipAddress?: string;
+  name: string;
+  space: string;
+  subnet: string;
+};
 
 export type ComposeFormValues = {
   architecture: string;
   cores: number;
   domain: string;
   hostname: string;
-  interfaces: string;
+  interfaces: InterfaceField[];
   memory: number;
   pool: string;
   storage: string;
   zone: string;
 };
 
-type Props = {
-  setSelectedAction: (action: string | null) => void;
+/**
+ * Create interface constraints in the form <interface-name>:<key>=<value>[,<key>=<value>];....
+ * e.g. "eth0:ip=192.168.0.0,subnet_cidr=192.168.0.0/24"
+ * @param {InterfaceField[]} interfaces - The interfaces from which to create the constraints.
+ * @param {Space[]} spaces - The spaces in state.
+ * @param {Subnet[]} subnets - The subnets in state.
+ * @returns {string} Interface constraints string.
+ */
+export const createInterfaceConstraints = (
+  interfaces: InterfaceField[],
+  spaces: Space[],
+  subnets: Subnet[]
+): string => {
+  return interfaces
+    .map((iface) => {
+      const constraints: string[] = [];
+      if (iface.ipAddress !== "") {
+        constraints.push(`ip=${iface.ipAddress}`);
+      }
+      if (iface.space !== "") {
+        const space = spaces.find((space) => space.id === Number(iface.space));
+        !!space && constraints.push(`space=${space.name}`);
+      }
+      if (iface.subnet !== "") {
+        const subnet = subnets.find(
+          (subnet) => subnet.id === Number(iface.subnet)
+        );
+        !!subnet && constraints.push(`subnet_cidr=${subnet?.cidr}`);
+      }
+      if (constraints.length >= 1) {
+        return `${iface.name}:${constraints.join(",")}`;
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join(";");
 };
+
+type Props = { setSelectedAction: (action: string | null) => void };
 
 const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -60,7 +107,9 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const powerTypes = useSelector(generalSelectors.powerTypes.get);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const spaces = useSelector(spaceSelectors.all);
   const spacesLoaded = useSelector(spaceSelectors.loaded);
+  const subnets = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const zones = useSelector(zoneSelectors.all);
@@ -71,13 +120,13 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
     dispatch(domainActions.fetch());
     dispatch(fabricActions.fetch());
     dispatch(generalActions.fetchPowerTypes());
-    dispatch(podActions.fetch());
+    dispatch(podActions.get(id));
     dispatch(resourcePoolActions.fetch());
     dispatch(spaceActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
     dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   const loaded =
     domainsLoaded &&
@@ -107,7 +156,15 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         .max(available.cores, `Only ${available.cores} cores available.`),
       domain: Yup.string(),
       hostname: Yup.string(),
-      interfaces: Yup.string(),
+      interfaces: Yup.array().of(
+        Yup.object().shape({
+          id: Yup.number().required("ID is required"),
+          ipAddress: Yup.string(),
+          name: Yup.string().required("Name is required"),
+          space: Yup.string(),
+          subnet: Yup.string(),
+        })
+      ),
       memory: Yup.number("RAM must be a positive number.")
         .min(1024, "At least 1024 MiB is required.")
         .max(available.memory, `Only ${available.memory} MiB available.`),
@@ -128,7 +185,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
           cores: "",
           domain: `${domains[0]?.id}` || "",
           hostname: "",
-          interfaces: "",
+          interfaces: [],
           memory: "",
           pool: `${pools[0]?.id}` || "",
           storage: "",
@@ -136,18 +193,26 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         }}
         modelName="machine"
         onSubmit={(values: ComposeFormValues) => {
+          // Remove any errors before dispatching compose action.
+          dispatch(podActions.cleanup());
+
           const params = {
             architecture: values.architecture,
             cores: values.cores,
             domain: Number(values.domain),
             hostname: values.hostname,
             id: Number(id),
-            interfaces: undefined, // TODO: https://github.com/canonical-web-and-design/MAAS-squad/issues/2042
+            interfaces: createInterfaceConstraints(
+              values.interfaces,
+              spaces,
+              subnets
+            ),
             memory: values.memory,
             pool: Number(values.pool),
             storage: undefined, // TODO: https://github.com/canonical-web-and-design/MAAS-squad/issues/2043
             zone: Number(values.zone),
           };
+
           setMachineName(values.hostname || "Machine");
           dispatch(podActions.compose(params));
         }}
@@ -167,6 +232,8 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
           available={available}
           defaults={defaults}
         />
+        <hr className="u-sv1" />
+        <InterfacesTable />
       </ActionForm>
     );
   }

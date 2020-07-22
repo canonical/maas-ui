@@ -38,6 +38,7 @@ const TableActions = ({
           disabled={deleteDisabled}
           hasIcon
           onClick={() => onDelete()}
+          type="button"
         >
           <i className="p-icon--delete">Delete</i>
         </Button>

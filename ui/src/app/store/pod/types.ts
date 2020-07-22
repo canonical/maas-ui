@@ -25,7 +25,7 @@ export type PodStoragePool = Model & {
   used: number;
 };
 
-export type Pod = Model & {
+export type BasePod = Model & {
   architectures: string[];
   available: PodHint;
   capabilities: string[];
@@ -54,6 +54,13 @@ export type Pod = Model & {
   used: PodHint;
   zone: number;
 };
+
+export type PodDetails = BasePod & {
+  attached_vlans: number[];
+  boot_vlans: number[];
+};
+
+export type Pod = BasePod | PodDetails;
 
 export type PodStatus = {
   composing: boolean;

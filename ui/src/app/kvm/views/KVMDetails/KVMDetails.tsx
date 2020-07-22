@@ -21,8 +21,8 @@ const KVMDetails = (): JSX.Element => {
   const podsLoaded = useSelector(podSelectors.loaded);
 
   useEffect(() => {
-    dispatch(podActions.fetch());
-  }, [dispatch]);
+    dispatch(podActions.get(id));
+  }, [dispatch, id]);
 
   // If KVM has been deleted, redirect to KVM list.
   if (podsLoaded && !pod) {

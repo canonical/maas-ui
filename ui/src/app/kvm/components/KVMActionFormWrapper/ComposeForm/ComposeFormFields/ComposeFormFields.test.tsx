@@ -86,14 +86,14 @@ describe("ComposeFormFields", () => {
     // 10 * 3 - 8 = 22
     expect(
       wrapper.find("FormikField[name='cores'] .p-form-help-text").text()
-    ).toEqual("22 cores available");
+    ).toEqual("22 cores available.");
   });
 
   it("correctly displays the available memory", () => {
     const state = { ...initialState };
     const pod = state.pod.items[0];
-    pod.total.memory = 8;
-    pod.used.memory = 5;
+    pod.total.memory = 8000;
+    pod.used.memory = 5000;
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
     const wrapper = mount(
@@ -107,10 +107,10 @@ describe("ComposeFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    // 8 * 2 - 5 = 11
+    // 8000 * 2 - 5000 = 11000
     expect(
       wrapper.find("FormikField[name='memory'] .p-form-help-text").text()
-    ).toEqual("11 MiB available");
+    ).toEqual("11000 MiB available.");
   });
 
   it("shows warnings if available cores/memory is less than the default", () => {
@@ -144,12 +144,12 @@ describe("ComposeFormFields", () => {
     );
     expect(
       wrapper
-        .find("FormikField[name='cores'] + .p-form-validation__message")
+        .find("FormikField[name='cores'] .p-form-validation__message")
         .exists()
     ).toBe(true);
     expect(
       wrapper
-        .find("FormikField[name='memory'] + .p-form-validation__message")
+        .find("FormikField[name='memory'] .p-form-validation__message")
         .exists()
     ).toBe(true);
   });
