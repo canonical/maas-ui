@@ -1,0 +1,57 @@
+@mixin KVMComposeStorageTable {
+  .kvm-compose-storage-table {
+    td,
+    th {
+      // Capacity
+      &:nth-child(1) {
+        width: 12rem;
+      }
+
+      // Location
+      &:nth-child(2) {
+        width: 50%;
+      }
+
+      // Tags
+      &:nth-child(3) {
+        overflow: visible;
+        width: 50%;
+      }
+
+      // Boot
+      &:nth-child(4) {
+        width: 3.5rem;
+      }
+
+      // Actions
+      &:nth-child(5) {
+        width: 4.5rem;
+      }
+    }
+
+    input[type="radio"] + label {
+      display: inline;
+      padding-top: 0;
+
+      &::before {
+        left: 0.5rem;
+        top: 0.125rem;
+      }
+
+      &::after {
+        left: 0.825rem;
+        top: 0.425rem;
+      }
+
+      @media screen and (max-width: $breakpoint-medium) {
+        &::before {
+          left: 0;
+        }
+
+        &::after {
+          left: 0.325rem;
+        }
+      }
+    }
+  }
+}

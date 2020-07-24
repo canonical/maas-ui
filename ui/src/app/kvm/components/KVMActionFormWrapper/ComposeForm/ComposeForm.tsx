@@ -28,9 +28,19 @@ import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
 import zoneSelectors from "app/store/zone/selectors";
+import { formatBytes } from "app/utils";
 import ActionForm from "app/base/components/ActionForm";
 import ComposeFormFields from "./ComposeFormFields";
 import InterfacesTable from "./InterfacesTable";
+import StorageTable from "./StorageTable";
+
+export type Disk = {
+  location: string;
+  size: number; // GB
+  tags: string[];
+};
+
+export type DiskField = Disk & { id: number };
 
 export type InterfaceField = {
   id: number;
@@ -42,14 +52,21 @@ export type InterfaceField = {
 
 export type ComposeFormValues = {
   architecture: string;
+  bootDisk: number;
   cores: number;
+  disks: DiskField[];
   domain: string;
   hostname: string;
   interfaces: InterfaceField[];
   memory: number;
   pool: string;
-  storage: string;
   zone: string;
+};
+
+export type ComposeFormDefaults = {
+  cores: number;
+  disk: Disk;
+  memory: number;
 };
 
 /**
@@ -92,9 +109,41 @@ export const createInterfaceConstraints = (
     .join(";");
 };
 
+/**
+ * Create storage constraints in the form "<id>:<sizeGB>(<location>,<tag1>,<tag2>,...)"
+ * e.g. "0:8(my-pool, tag1, tag2)"
+ * @param {DiskField[]} disks - The disks from which to create the constraints.
+ * @param {number} bootDiskID - The form id of the boot disk.
+ * @returns {string} Storage constraints string.
+ */
+export const createStorageConstraints = (
+  disks: DiskField[],
+  bootDiskID: number
+): string => {
+  if (!disks || disks.length === 0) {
+    return "";
+  }
+
+  // Sort disks so boot disk is first.
+  const sortedDisks = bootDiskID
+    ? [
+        disks.find((disk) => disk.id === bootDiskID),
+        ...disks.filter((disk) => disk.id !== bootDiskID),
+      ]
+    : disks;
+
+  return sortedDisks
+    .map((disk) => {
+      return `${disk.id}:${disk.size}(${[disk.location, ...disk.tags].join(
+        ","
+      )})`;
+    })
+    .join(",");
+};
+
 type Props = { setSelectedAction: (action: string | null) => void };
 
-const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
+const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const pod = useSelector((state: RootState) =>
@@ -146,9 +195,23 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
     const available = {
       cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
       memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
+      storage: pod.storage_pools.reduce((available, pool) => {
+        available[pool.name] = formatBytes(pool.available, "B", {
+          convertTo: "GB",
+        }).value;
+        return available;
+      }, {}),
     };
+    const defaultPool = pod.storage_pools.find(
+      (pool) => pool.id === pod.default_storage_pool
+    );
     const defaults = {
       cores: powerType?.defaults?.cores || 1,
+      disk: {
+        location: defaultPool?.name || "",
+        size: powerType?.defaults?.storage || 8,
+        tags: [],
+      },
       memory: powerType?.defaults?.memory || 2048,
     };
 
@@ -158,6 +221,43 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
         .max(available.cores, `Only ${available.cores} cores available.`),
+      disks: Yup.array().of(
+        Yup.object()
+          .shape({
+            id: Yup.number().required("ID is required"),
+            location: Yup.string().required("Location is required"),
+            size: Yup.number()
+              .min(1, "At least 1GB required")
+              .required("Size is required"),
+            tags: Yup.array().of(Yup.string()),
+          })
+          .test("enoughSpace", "Not enough space", function test() {
+            // This test validates whether there is enough space in the storage
+            // pools for all disk requests. A functional expression is used
+            // in order to use Yup's "this" context.
+            // https://github.com/jquense/yup#mixedtestname-string-message-string--function-test-function-schema
+            const disks: DiskField[] = this.parent || [];
+
+            let error: Yup.ValidationError;
+            disks.forEach((disk, i) => {
+              const poolName = disk.location;
+              const disksInPool = disks.filter((d) => d.location === poolName);
+              const poolRequestTotal = disksInPool.reduce(
+                (total, d) => total + d.size,
+                0
+              );
+              const availableGB = available.storage[poolName];
+
+              if (poolRequestTotal > availableGB) {
+                error = this.createError({
+                  message: `Only ${availableGB}GB available in ${poolName}.`,
+                  path: `disks[${i}].size`,
+                });
+              }
+            });
+            return error || true;
+          })
+      ),
       domain: Yup.string(),
       hostname: Yup.string(),
       interfaces: Yup.array().of(
@@ -174,7 +274,6 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         .min(1024, "At least 1024 MiB is required.")
         .max(available.memory, `Only ${available.memory} MiB available.`),
       pool: Yup.string(),
-      storage: Yup.string(),
       zone: Yup.string(),
     });
 
@@ -187,13 +286,14 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         errors={errors}
         initialValues={{
           architecture: pod.architectures[0] || "",
+          bootDisk: 1,
           cores: "",
+          disks: [{ ...defaults.disk, id: 1 }],
           domain: `${domains[0]?.id}` || "",
           hostname: "",
           interfaces: [],
           memory: "",
           pool: `${pools[0]?.id}` || "",
-          storage: "",
           zone: `${zones[0]?.id}` || "",
         }}
         modelName="machine"
@@ -214,7 +314,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
             ),
             memory: values.memory,
             pool: Number(values.pool),
-            storage: undefined, // TODO: https://github.com/canonical-web-and-design/MAAS-squad/issues/2043
+            storage: createStorageConstraints(values.disks, values.bootDisk),
             zone: Number(values.zone),
           };
 
@@ -232,13 +332,19 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         processingCount={composingPods.length}
         validationSchema={ComposeFormSchema}
       >
-        <ComposeFormFields
-          architectures={pod.architectures}
-          available={available}
-          defaults={defaults}
-        />
-        <hr className="u-sv1" />
-        <InterfacesTable />
+        <Strip bordered className="u-no-padding--top" shallow>
+          <ComposeFormFields
+            architectures={pod.architectures}
+            available={available}
+            defaults={defaults}
+          />
+        </Strip>
+        <Strip bordered shallow>
+          <InterfacesTable />
+        </Strip>
+        <Strip shallow>
+          <StorageTable defaultDisk={defaults.disk} />
+        </Strip>
       </ActionForm>
     );
   }

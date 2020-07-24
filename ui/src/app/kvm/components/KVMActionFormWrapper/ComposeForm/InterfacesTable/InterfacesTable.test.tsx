@@ -130,7 +130,7 @@ describe("InterfacesTable", () => {
     expect(wrapper.find("[data-test='undefined-interface']").exists()).toBe(
       true
     );
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
 
     // Click "Define" button - table row should change to a defined interface
     await act(async () => {
@@ -140,21 +140,21 @@ describe("InterfacesTable", () => {
     expect(wrapper.find("[data-test='undefined-interface']").exists()).toBe(
       false
     );
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
 
     // Click "Add interface" - another defined interface should be added
     await act(async () => {
       wrapper.find("[data-test='define-interfaces'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("tbody TableRow").length).toBe(2);
+    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(2);
 
     // Click delete button - a defined interface should be removed
     await act(async () => {
       wrapper.find("TableActions button").at(0).simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
   });
 
   it("correctly displays fabric, vlan and PXE details of selected subnet", async () => {

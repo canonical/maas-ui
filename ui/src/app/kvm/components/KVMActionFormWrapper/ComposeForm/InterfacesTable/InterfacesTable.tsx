@@ -121,7 +121,7 @@ export const InterfacesTable = (): JSX.Element => {
           </span>
         </Button>
       </div>
-      <Table className="kvm-compose-interfaces-table" responsive>
+      <Table className="kvm-compose-interfaces-table p-form--table" responsive>
         <thead>
           <TableRow>
             <TableHeader>Name</TableHeader>
@@ -200,18 +200,18 @@ export const InterfacesTable = (): JSX.Element => {
                       ]}
                     />
                   </TableCell>
-                  <TableCell aria-label="Fabric">
+                  <TableCell aria-label="Fabric" className="u-align-non-field">
                     {fabric?.name || <em>Auto-assign</em>}
                   </TableCell>
-                  <TableCell aria-label="VLAN">
+                  <TableCell aria-label="VLAN" className="u-align-non-field">
                     {vlan?.name || <em>Auto-assign</em>}
                   </TableCell>
-                  <TableCell aria-label="PXE">
+                  <TableCell aria-label="PXE" className="u-align-non-field">
                     <i className={getPxeIconClass(pod, vlan)}></i>
                   </TableCell>
                   <TableCell
                     aria-label="Actions"
-                    className="u-align--right u-no-padding--right"
+                    className="u-align--right u-no-padding--right u-align-non-field"
                   >
                     <TableActions
                       deleteDisabled={!!composingPods.length}
