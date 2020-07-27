@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import React, { useState } from "react";
 
-import { useProcessing } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
+import { useProcessing } from "app/base/hooks";
 import { formatErrors } from "app/utils";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -87,7 +88,7 @@ const getLabel = (
 type Props = {
   actionName?: string;
   allowUnchanged?: boolean;
-  children?: JSX.Element;
+  children?: ReactNode;
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
   disabled?: boolean;

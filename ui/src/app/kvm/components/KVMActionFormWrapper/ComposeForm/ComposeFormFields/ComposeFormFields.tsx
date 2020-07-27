@@ -29,6 +29,9 @@ export const ComposeFormFields = ({
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
 
+  const coresCaution = available.cores < defaults.cores;
+  const memoryCaution = available.memory < defaults.memory;
+
   return (
     <Row>
       <Col size="5">
@@ -93,7 +96,15 @@ export const ComposeFormFields = ({
           ]}
         />
         <FormikField
-          help={`${available.cores} cores available`}
+          caution={
+            coresCaution
+              ? `The available cores (${available.cores}) is less than the
+                recommended default (${defaults.cores}).`
+              : undefined
+          }
+          help={
+            coresCaution ? undefined : `${available.cores} cores available.`
+          }
           label="Cores"
           max={`${available.cores}`}
           min="1"
@@ -102,15 +113,16 @@ export const ComposeFormFields = ({
           step="1"
           type="number"
         />
-        {available.cores < defaults.cores && (
-          <p className="p-form-validation__message">
-            <i className="p-icon--warning" />
-            <strong className="p-icon__text">Caution:</strong> The available
-            cores is less than the recommended default.
-          </p>
-        )}
         <FormikField
-          help={`${available.memory} MiB available`}
+          caution={
+            memoryCaution
+              ? `The available memory (${available.memory}MiB) is less than the
+                recommended default (${defaults.memory}MiB).`
+              : undefined
+          }
+          help={
+            memoryCaution ? undefined : `${available.memory} MiB available.`
+          }
           label="RAM (MiB)"
           max={`${available.memory}`}
           min="1024"
@@ -118,13 +130,6 @@ export const ComposeFormFields = ({
           placeholder={`${defaults.memory} (default)`}
           type="number"
         />
-        {available.memory < defaults.memory && (
-          <p className="p-form-validation__message">
-            <i className="p-icon--warning" />
-            <strong className="p-icon__text">Caution:</strong> The available
-            memory is less than the recommended default.
-          </p>
-        )}
       </Col>
     </Row>
   );

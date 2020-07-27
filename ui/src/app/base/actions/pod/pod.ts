@@ -14,6 +14,19 @@ pod.compose = (params) => {
   };
 };
 
+pod.get = (podID: Pod["id"]) => {
+  return {
+    type: "GET_POD",
+    meta: {
+      model: "pod",
+      method: "get",
+    },
+    payload: {
+      params: { id: podID },
+    },
+  };
+};
+
 pod.refresh = (podID: Pod["id"]) => {
   return {
     type: "REFRESH_POD",

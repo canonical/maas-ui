@@ -1,5 +1,6 @@
 import {
   pod as podFactory,
+  podDetails as podDetailsFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
 } from "testing/factories";
@@ -77,6 +78,54 @@ describe("pod reducer", () => {
       selected: [],
       statuses: {},
     });
+  });
+
+  it("should correctly reduce GET_POD_START", () => {
+    const podState = podStateFactory({ items: [], loading: false });
+
+    expect(
+      pod(podState, {
+        type: "GET_POD_START",
+        params: { id: 1 },
+      })
+    ).toEqual(podStateFactory({ loading: true }));
+  });
+
+  it("should correctly reduce GET_POD_SUCCESS", () => {
+    const newPod = podDetailsFactory();
+    const podState = podStateFactory({
+      items: [],
+      loading: true,
+    });
+
+    expect(
+      pod(podState, {
+        type: "GET_POD_SUCCESS",
+        payload: newPod,
+      })
+    ).toEqual(
+      podStateFactory({
+        items: [newPod],
+        loading: false,
+        statuses: { [newPod.id]: podStatusFactory() },
+      })
+    );
+  });
+
+  it("should correctly reduce GET_POD_ERROR", () => {
+    const podState = podStateFactory({ loading: true });
+
+    expect(
+      pod(podState, {
+        error: "Could not get pod",
+        type: "GET_POD_ERROR",
+      })
+    ).toEqual(
+      podStateFactory({
+        errors: "Could not get pod",
+        loading: false,
+      })
+    );
   });
 
   it("should correctly reduce CREATE_POD_START", () => {

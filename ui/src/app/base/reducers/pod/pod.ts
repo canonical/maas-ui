@@ -49,7 +49,7 @@ const pod = createNextState((draft, action) => {
           draft.items[existingIdx] = newItem;
         } else {
           draft.items.push(newItem);
-          // Set up the statuses for this machine.
+          // Set up the statuses for this pod.
           draft.statuses[newItem.id] = DEFAULT_STATUSES;
         }
       });
@@ -67,10 +67,31 @@ const pod = createNextState((draft, action) => {
       draft.saved = true;
       draft.saving = false;
       break;
+    case "GET_POD_START":
+      draft.loading = true;
+      break;
+    case "GET_POD_SUCCESS":
+      const pod = action.payload;
+      // If the item already exists, update it, otherwise
+      // add it to the store.
+      const i = draft.items.findIndex(
+        (draftItem: Pod) => draftItem.id === pod.id
+      );
+      if (i !== -1) {
+        draft.items[i] = pod;
+      } else {
+        draft.items.push(pod);
+        // Set up the statuses for this pod.
+        draft.statuses[pod.id] = DEFAULT_STATUSES;
+      }
+      draft.loading = false;
+      break;
     case "FETCH_POD_ERROR":
+    case "GET_POD_ERROR":
     case "CREATE_POD_ERROR":
     case "UPDATE_POD_ERROR":
       draft.errors = action.error;
+      draft.loading = false;
       draft.saving = false;
       break;
     case "CREATE_POD_NOTIFY":
