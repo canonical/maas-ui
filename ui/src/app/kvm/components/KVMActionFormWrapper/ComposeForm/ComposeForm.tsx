@@ -72,12 +72,14 @@ export const createInterfaceConstraints = (
         constraints.push(`ip=${iface.ipAddress}`);
       }
       if (iface.space !== "") {
-        const space = spaces.find((space) => space.id === Number(iface.space));
+        const space = spaces.find(
+          (space) => space.id === parseInt(iface.space)
+        );
         !!space && constraints.push(`space=${space.name}`);
       }
       if (iface.subnet !== "") {
         const subnet = subnets.find(
-          (subnet) => subnet.id === Number(iface.subnet)
+          (subnet) => subnet.id === parseInt(iface.subnet)
         );
         !!subnet && constraints.push(`subnet_cidr=${subnet?.cidr}`);
       }

@@ -138,10 +138,10 @@ export const InterfacesTable = (): JSX.Element => {
           <tbody>
             {interfaces.map((iface, i) => {
               const space = spaces.find(
-                (space) => space.id === Number(iface.space)
+                (space) => space.id === parseInt(iface.space)
               );
               const subnet = podSubnets.find(
-                (subnet) => subnet.id === Number(iface.subnet)
+                (subnet) => subnet.id === parseInt(iface.subnet)
               );
               const vlan = vlans.find((vlan) => vlan.id === subnet?.vlan);
               const fabric = fabrics.find(

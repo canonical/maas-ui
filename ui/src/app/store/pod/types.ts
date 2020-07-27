@@ -25,6 +25,9 @@ export type PodStoragePool = Model & {
   used: number;
 };
 
+// BasePod is returned from the server when using "pod.list", and is used in the
+// pod list pages. This type is missing some properties due to an optimisation
+// on the backend to reduce the amount of database queries on list pages.
 export type BasePod = Model & {
   architectures: string[];
   available: PodHint;
@@ -55,11 +58,15 @@ export type BasePod = Model & {
   zone: number;
 };
 
+// PodDetails is returned from the server when using "pod.get", and is used in the
+// pod details pages. This type contains all possible properties of a pod model.
 export type PodDetails = BasePod & {
   attached_vlans: number[];
   boot_vlans: number[];
 };
 
+// Depending on where the user has navigated in the app, pods in state can
+// either be of type Pod or PodDetails.
 export type Pod = BasePod | PodDetails;
 
 export type PodStatus = {
