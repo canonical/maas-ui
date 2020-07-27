@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -9,11 +10,6 @@ import {
   machine as machineActions,
 } from "app/base/actions";
 import {
-  domain as domainSelectors,
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
-import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
@@ -21,9 +17,12 @@ import {
 } from "app/base/hooks";
 import { formatPowerParameters } from "app/utils";
 import AddChassisFormFields from "../AddChassisFormFields";
+import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 
 const generateChassisSchema = (parametersSchema) =>
   Yup.object().shape({
@@ -34,6 +33,7 @@ const generateChassisSchema = (parametersSchema) =>
 
 export const AddChassisForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const chassisPowerTypes = useSelector(generalSelectors.powerTypes.chassis);
   const domains = useSelector(domainSelectors.all);
@@ -99,6 +99,7 @@ export const AddChassisForm = () => {
               power_parameters: allPowerParameters,
               power_type: "",
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Chassis",

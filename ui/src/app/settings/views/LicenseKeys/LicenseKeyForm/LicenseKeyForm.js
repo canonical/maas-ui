@@ -1,12 +1,13 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import { general as generalActions } from "app/base/actions";
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
-import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
+import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
@@ -21,13 +22,14 @@ const LicenseKeySchema = Yup.object().shape({
 });
 
 export const LicenseKeyForm = ({ licenseKey }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [savingLicenseKey, setSaving] = useState();
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
-  const dispatch = useDispatch();
   const releases = useSelector(generalSelectors.osInfo.getLicensedOsReleases);
   const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
   const isLoaded = licenseKeysLoaded && osInfoLoaded;
@@ -70,6 +72,7 @@ export const LicenseKeyForm = ({ licenseKey }) => {
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : "",
           }}
+          onCancel={() => history.push({ pathname: "/settings/license-keys" })}
           onSaveAnalytics={{
             action: "Saved",
             category: "License keys settings",

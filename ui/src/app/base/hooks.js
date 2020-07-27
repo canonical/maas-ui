@@ -5,13 +5,13 @@ import { useFormikContext } from "formik";
 import * as Yup from "yup";
 
 import { sendAnalyticsEvent } from "analytics";
-import { config as configSelectors } from "app/settings/selectors";
-import { general as generalSelectors } from "app/base/selectors";
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { messages } from "app/base/actions";
 import { kebabToCamelCase } from "app/utils";
 import { simpleObjectEquality } from "app/settings/utils";
+import configSelectors from "app/store/config/selectors";
+import generalSelectors from "app/store/general/selectors";
 
 /**
  * Returns previous value of a variable.
@@ -164,7 +164,7 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     generalSelectors.machineActions.get
   );
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   let actionLinks = [];
   actions.forEach((action) => {

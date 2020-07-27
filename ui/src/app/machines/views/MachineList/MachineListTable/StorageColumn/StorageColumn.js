@@ -2,13 +2,13 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { formatBytes } from "app/utils";
 import DoubleRow from "app/base/components/DoubleRow";
 
 export const StorageColumn = ({ systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const formattedStorage = formatBytes(machine.storage, "GB");
 

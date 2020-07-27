@@ -4,10 +4,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import {
-  status as statusSelectors,
-  user as userSelectors,
-} from "app/base/selectors";
+import statusSelectors from "app/store/status/selectors";
+import userSelectors from "app/store/user/selectors";
 import { user as userActions } from "app/base/actions";
 import UserForm from "../UserForm";
 

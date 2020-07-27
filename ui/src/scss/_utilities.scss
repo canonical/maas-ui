@@ -16,6 +16,12 @@
     justify-content: space-between;
   }
 
+  .u-flex--column-align-end {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+  }
+
   .u-flex--wrap {
     display: flex;
     flex-wrap: wrap;

@@ -1,0 +1,35 @@
+import { array, define, extend, random } from "cooky-cutter";
+
+import { model } from "./model";
+import type { Model } from "app/store/types/model";
+import type {
+  ScriptResult,
+  ScriptResultResult,
+  ScriptResults,
+} from "app/store/scriptresults/types";
+
+export const scriptResultResult = define<ScriptResultResult>({
+  name: "test name",
+  title: "test title",
+  description: "test description",
+  value: "test value",
+  surfaced: false,
+});
+
+export const scriptResult = extend<Model, ScriptResult>(model, {
+  endtime: random,
+  estimated_runtime: "test runtime",
+  hardware_type: 3,
+  name: "test name",
+  result_type: 1,
+  results: array(scriptResultResult),
+  runtime: "test runtime",
+  starttime: random,
+  status_name: "test status",
+  suppressed: false,
+  tags: "test, tags",
+});
+
+export const scriptResults = define<ScriptResults>({
+  testResult: array(scriptResult),
+});

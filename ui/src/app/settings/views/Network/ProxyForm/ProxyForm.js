@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import FormikForm from "app/base/components/FormikForm";
 import ProxyFormFields from "../ProxyFormFields";

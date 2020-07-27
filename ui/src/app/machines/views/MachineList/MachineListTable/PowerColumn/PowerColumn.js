@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { getPowerIcon } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
@@ -13,7 +13,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
@@ -95,7 +95,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
       }
       iconSpace={true}
       menuClassName="p-table-menu--hasIcon"
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -119,7 +119,7 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PowerColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

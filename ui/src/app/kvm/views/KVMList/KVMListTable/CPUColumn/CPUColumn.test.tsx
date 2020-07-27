@@ -29,7 +29,7 @@ describe("CPUColumn", () => {
     };
   });
 
-  it("can display total cores without overcommit", () => {
+  it("can display correct cpu core information without overcommit", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -37,11 +37,13 @@ describe("CPUColumn", () => {
         <CPUColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe("8");
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "4 of 8 assigned"
+    );
     expect(wrapper.find("Meter").props().max).toBe(8);
   });
 
-  it("can display total cores with overcommit", () => {
+  it("can display correct cpu core information with overcommit", () => {
     const state = { ...initialState };
     state.pod.items[0].cpu_over_commit_ratio = 2;
     const store = mockStore(state);
@@ -50,7 +52,9 @@ describe("CPUColumn", () => {
         <CPUColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe("8");
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "4 of 16 assigned"
+    );
     expect(wrapper.find("Meter").props().max).toBe(16);
   });
 });

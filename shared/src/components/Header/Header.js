@@ -101,7 +101,6 @@ export const Header = ({
     },
     {
       inHardwareMenu: true,
-      isLegacy: true,
       label: "KVM",
       url: "/kvm",
     },

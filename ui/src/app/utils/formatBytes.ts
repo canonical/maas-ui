@@ -1,14 +1,19 @@
 type Byte = { value: number; unit: string };
 
-type FormatBytesConfig = { binary?: boolean; precision?: number };
+type FormatBytesConfig = {
+  binary?: boolean;
+  convertTo?: string;
+  precision?: number;
+};
 
 /**
- * Format bytes to the appropriate unit at supplied precision.
+ * Format bytes to the appropriate/supplied unit at supplied precision.
  *
  * @param {number} value - the value in the supplied byte unit
  * @param {string} unit - the byte unit, e.g. "KB", "TB"
- * @param {object} config - config object
+ * @param {FormatBytsConfig} config - config object
  * @param {boolean} config.binary - whether formatting should be done in base 10 or 2
+ * @param {boolean} config.convertTo - the unit to convert to
  * @param {number} config.precision - significant figures of returned value
  * @returns {Byte} formatted value and byte unit object
  */
@@ -16,12 +21,12 @@ type FormatBytesConfig = { binary?: boolean; precision?: number };
 export const formatBytes = (
   value: number,
   unit: string,
-  { binary = false, precision = 2 }: FormatBytesConfig = {}
+  { binary = false, convertTo, precision = 3 }: FormatBytesConfig = {}
 ): Byte => {
   const negative = value < 0;
   const parsedValue = Math.abs(value);
   if (parsedValue === 0) {
-    return { value: 0, unit: "B" };
+    return { value: 0, unit: convertTo || "B" };
   }
   const k = binary ? 1024 : 1000;
   const sizes = binary
@@ -33,9 +38,11 @@ export const formatBytes = (
   const valueInBytes = parsedValue * Math.pow(k, i);
 
   // Convert to appropriate unit.
-  const j = Math.floor(Math.log(valueInBytes) / Math.log(k));
+  const j = convertTo
+    ? sizes.findIndex((size) => size === convertTo)
+    : Math.floor(Math.log(valueInBytes) / Math.log(k));
   const valueInUnit = parseFloat(
-    (valueInBytes / Math.pow(k, j)).toFixed(precision - 1)
+    (valueInBytes / Math.pow(k, j)).toPrecision(precision)
   );
 
   return {

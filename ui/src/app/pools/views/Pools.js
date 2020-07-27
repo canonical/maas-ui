@@ -16,7 +16,7 @@ import {
   resourcepool as resourcePoolActions,
 } from "app/base/actions";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { filtersToQueryString } from "app/machines/search";
 import { formatErrors } from "app/utils";
 

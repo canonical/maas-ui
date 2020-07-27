@@ -17,17 +17,15 @@ import type { Machine } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Sort, TSFixMe } from "app/base/types";
-import {
-  general as generalSelectors,
-  pod as podSelectors,
-  resourcepool as poolSelectors,
-} from "app/base/selectors";
-import { useTableSort } from "app/base/hooks";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
+import { useTableSort } from "app/base/hooks";
 import CPUColumn from "./CPUColumn";
+import generalSelectors from "app/store/general/selectors";
 import NameColumn from "./NameColumn";
 import OSColumn from "./OSColumn";
+import podSelectors from "app/store/pod/selectors";
 import PoolColumn from "./PoolColumn";
+import poolSelectors from "app/store/resourcepool/selectors";
 import PowerColumn from "./PowerColumn";
 import RAMColumn from "./RAMColumn";
 import StorageColumn from "./StorageColumn";
@@ -238,7 +236,7 @@ const KVMListTable = (): JSX.Element => {
                   onClick={() => updateSort("cpu")}
                   sortKey="cpu"
                 >
-                  CPU
+                  CPU cores
                 </TableHeader>
               ),
             },

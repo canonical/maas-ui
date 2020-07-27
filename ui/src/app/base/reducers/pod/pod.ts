@@ -15,6 +15,10 @@ const initialState = {
 
 export const ACTIONS = [
   {
+    status: "composing",
+    type: "COMPOSE_POD",
+  },
+  {
     status: "deleting",
     type: "DELETE_POD",
   },
@@ -53,16 +57,19 @@ const pod = createNextState((draft, action) => {
       draft.loading = false;
       break;
     case "CREATE_POD_START":
+    case "UPDATE_POD_START":
       draft.saved = false;
       draft.saving = true;
       break;
     case "CREATE_POD_SUCCESS":
+    case "UPDATE_POD_SUCCESS":
       draft.errors = {};
       draft.saved = true;
       draft.saving = false;
       break;
     case "FETCH_POD_ERROR":
     case "CREATE_POD_ERROR":
+    case "UPDATE_POD_ERROR":
       draft.errors = action.error;
       draft.saving = false;
       break;
@@ -79,11 +86,23 @@ const pod = createNextState((draft, action) => {
         draft.statuses[action.payload.id] = DEFAULT_STATUSES;
       }
       break;
+    case "COMPOSE_POD_START":
+      draft.statuses[action.meta.item.id].composing = true;
+      break;
+    case "COMPOSE_POD_SUCCESS":
+      draft.statuses[action.meta.item.id].composing = false;
+      break;
+    case "COMPOSE_POD_ERROR":
+      draft.errors = action.error;
+      draft.statuses[action.meta.item.id].composing = false;
+      break;
     case "DELETE_POD_START":
       draft.statuses[action.meta.item.id].deleting = true;
       break;
     case "DELETE_POD_SUCCESS":
-      draft.statuses[action.meta.item.id].deleting = false;
+      if (draft.statuses[action.meta.item.id]) {
+        draft.statuses[action.meta.item.id].deleting = false;
+      }
       break;
     case "DELETE_POD_ERROR":
       draft.errors = action.error;

@@ -1,4 +1,5 @@
 export { capitaliseFirst } from "./capitaliseFirst";
+export { chunk } from "./chunk";
 export { formatBytes } from "./formatBytes";
 export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";

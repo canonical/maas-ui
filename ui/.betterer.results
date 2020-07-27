@@ -1,190 +1,433 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/base/reducers/pod/pod.test.ts:1930988215": [
-      [144, 20, 2, "Type \'number\' is not assignable to type \'never\'.", "5861160"],
-      [144, 27, 4, "Type \'string\' is not assignable to type \'never\'.", "2087876002"]
+    "src/app/base/actions/pod/pod.test.ts:3307740370": [
+      [61, 15, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"],
+      [77, 15, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"],
+      [90, 15, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
     ],
-    "src/app/base/selectors/pod/pod.ts:361290740": [
-      [66, 23, 17, "No overload matches this call.\\n  Overload 1 of 3, \'(callbackfn: (previousValue: Pod, currentValue: Pod, currentIndex: number, array: Pod[]) => Pod, initialValue: Pod): Pod\', gave the following error.\\n    Argument of type \'(hosts: never[], pod: Pod) => Controller[] | Machine[]\' is not assignable to parameter of type \'(previousValue: Pod, currentValue: Pod, currentIndex: number, array: Pod[]) => Pod\'.\\n      Types of parameters \'hosts\' and \'previousValue\' are incompatible.\\n        Type \'Pod\' is missing the following properties from type \'never[]\': length, pop, push, concat, and 28 more.\\n  Overload 2 of 3, \'(callbackfn: (previousValue: never[], currentValue: Pod, currentIndex: number, array: Pod[]) => never[], initialValue: never[]): never[]\', gave the following error.\\n    Argument of type \'(hosts: never[], pod: Pod) => Controller[] | Machine[]\' is not assignable to parameter of type \'(previousValue: never[], currentValue: Pod, currentIndex: number, array: Pod[]) => never[]\'.\\n      Type \'Controller[] | Machine[]\' is not assignable to type \'never[]\'.\\n        Type \'Controller[]\' is not assignable to type \'never[]\'.\\n          Type \'Controller\' is not assignable to type \'never\'.", "4184440056"]
+    "src/app/base/actions/pod/pod.ts:1950281470": [
+      [5, 4, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"],
+      [5, 15, 6, "Parameter \'params\' implicitly has an \'any\' type.", "1898504825"],
+      [16, 4, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"],
+      [29, 4, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
     ],
-    "src/app/kvm/views/KVM.tsx:2802410770": [
-      [1, 30, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"]
+    "src/app/base/components/ActionForm/ActionForm.test.tsx:1113426617": [
+      [35, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [35, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [49, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [63, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [63, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [74, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [88, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [88, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [99, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
+      [99, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [114, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [114, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:1684615486": [
-      [1, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
-      [2, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [3, 36, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"],
+    "src/app/base/components/ActionForm/ActionForm.tsx:675926404": [
+      [14, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [18, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [21, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [21, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [23, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [127, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+    ],
+    "src/app/base/components/FormikForm/FormikForm.tsx:4136491328": [
+      [70, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    ],
+    "src/app/base/components/SectionHeader/SectionHeader.tsx:2251696534": [
+      [59, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
+    ],
+    "src/app/base/components/Slider/Slider.tsx:753275532": [
+      [0, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"]
+    ],
+    "src/app/base/reducers/pod/pod.test.ts:3577246497": [
+      [45, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Pod[]\' is not assignable to type \'readonly never[]\'.\\n      Type \'Pod\' is not assignable to type \'never\'.", "604104617"],
+      [65, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [85, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [104, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [131, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [157, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [187, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [217, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [246, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [273, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [301, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [333, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [364, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [395, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [426, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
+      [464, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"]
+    ],
+    "src/app/base/reducers/pod/pod.ts:3126101487": [
+      [31, 2, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2764002661"]
+    ],
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3771266495": [
+      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
+      [114, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"],
+      [128, 30, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"]
+    ],
+    "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:3250512818": [
+      [30, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:2470520871": [
+      [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [83, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [100, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [104, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
+      [139, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:1665980971": [
+      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
+      [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [40, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [83, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:2892838463": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [33, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [47, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [56, 24, 5, "Parameter \'props\' implicitly has an \'any\' type.", "187023499"],
-      [65, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [74, 24, 5, "Parameter \'props\' implicitly has an \'any\' type.", "187023499"]
+      [39, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMDetails.tsx:3694518590": [
-      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [1, 22, 11, "Could not find a declaration file for module \'pluralize\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/pluralize/pluralize.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/pluralize\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'pluralize\';\`", "1850933701"],
-      [4, 26, 14, "Could not find a declaration file for module \'react-router\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router\';\`", "1913807490"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:2826559237": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 29, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"],
-      [3, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMDetails/KVMDetailsHeader/KVMDetailsHeader.test.tsx:1760423572": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [23, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [37, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [30, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [44, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [60, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:3132221287": [
-      [0, 24, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"]
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1692999044": [
+      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUColumn.test.tsx:2065549093": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [129, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListActionMenu/KVMListActionMenu.test.tsx:2184902936": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [22, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:2739913947": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [28, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [42, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [58, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [75, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [92, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [108, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:2798411274": [
+      [45, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
+      [65, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | undefined\'.\\n  Type \'null\' is not assignable to type \'Element | undefined\'.", "3453098368"]
+    ],
+    "src/app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUColumn.test.tsx:2263649754": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [44, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUColumn.tsx:1073164979": [
-      [19, 18, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [20, 20, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [21, 17, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [25, 11, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [25, 29, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:1754334357": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 29, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"],
-      [3, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:2374633436": [
       [12, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [110, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [129, 27, 6, "Parameter \'action\' implicitly has an \'any\' type.", "1314712411"],
-      [134, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [153, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [205, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [252, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [303, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [111, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [135, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [146, 6, 88, "Object is possibly \'undefined\'.", "465871270"],
+      [154, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [206, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [253, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [304, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [349, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [363, 6, 98, "Object is possibly \'undefined\'.", "1041189900"],
+      [371, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [385, 6, 98, "Object is possibly \'undefined\'.", "1041189900"],
+      [393, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [418, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:2888575480": [
-      [0, 36, 29, "Could not find a declaration file for module \'@canonical/react-components\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components\';\`", "1034255216"],
-      [71, 15, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"],
-      [125, 57, 16, "Property \'getAllOsReleases\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "3763145524"],
-      [281, 48, 8, "Argument of type \'Pod\' is not assignable to parameter of type \'(Controller | Machine)[]\'.\\n  Type \'Pod\' is missing the following properties from type \'(Controller | Machine)[]\': length, pop, push, concat, and 28 more.", "612212173"]
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:1097583391": [
+      [65, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"],
+      [114, 24, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.test.tsx:1102421723": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 29, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"],
-      [3, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.test.tsx:2529226174": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [26, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [27, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [41, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.tsx:2333705587": [
-      [2, 21, 18, "Could not find a declaration file for module \'react-router-dom\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/react-router-dom/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/react-router-dom\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'react-router-dom\';\`", "578327337"],
-      [18, 26, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [19, 19, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.test.tsx:2642544460": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.test.tsx:2366141448": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [55, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [89, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [68, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [90, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:189060714": [
-      [20, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.", "193426238"],
-      [23, 28, 13, "Property \'getOsReleases\' does not exist on type \'{ get(state: any): any; loading(state: any): any; loaded(state: any): any; errors(state: any): any; }\'.", "1772678613"]
+    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2435825133": [
+      [18, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.test.tsx:2138170176": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:2848158544": [
-      [18, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973346775"],
-      [21, 33, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "2973147829"]
+    "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:2880885888": [
+      [16, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973346775"],
+      [19, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973147829"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.test.tsx:3552592969": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
-      [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [36, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [48, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.test.tsx:1989368010": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [39, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [53, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [71, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:1354181980": [
-      [19, 32, 3, "Argument of type \'Pod | undefined\' is not assignable to parameter of type \'Pod\'.\\n  Type \'undefined\' is not assignable to type \'Pod\'.", "193426238"],
-      [25, 33, 4, "Argument of type \'Controller | Machine | null | undefined\' is not assignable to parameter of type \'Object\'.\\n  Type \'undefined\' is not assignable to type \'Object\'.", "2087793957"]
+    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:259372828": [
+      [17, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:4294840152": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:1892145639": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [44, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+      [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.tsx:1614008088": [
-      [14, 33, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [21, 18, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [23, 17, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 11, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 30, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
-    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.test.tsx:1181964408": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
+    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.test.tsx:2518478478": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [31, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StorageColumn.tsx:2231352096": [
-      [14, 34, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [21, 18, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [23, 17, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [27, 11, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
     "src/app/kvm/views/KVMList/KVMListTable/TypeColumn/TypeColumn.test.tsx:3510081411": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [26, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/TypeColumn/TypeColumn.tsx:1944168975": [
-      [27, 58, 3, "Object is possibly \'undefined\'.", "193426238"]
-    ],
     "src/app/kvm/views/KVMList/KVMListTable/VMsColumn/VMsColumn.test.tsx:1476552216": [
-      [0, 22, 8, "Could not find a declaration file for module \'enzyme\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/enzyme/build/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/enzyme\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'enzyme\';\`", "1025042757"],
-      [2, 27, 18, "Could not find a declaration file for module \'redux-mock-store\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/redux-mock-store/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/redux-mock-store\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'redux-mock-store\';\`", "1001964238"],
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [27, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/VMsColumn/VMsColumn.tsx:1150045171": [
-      [18, 11, 3, "Object is possibly \'undefined\'.", "193426238"],
-      [22, 53, 3, "Object is possibly \'undefined\'.", "193426238"]
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.test.tsx:2715595244": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [61, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [92, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [131, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.tsx:558999798": [
+      [54, 12, 7, "Object is possibly \'undefined\'.", "1060875104"],
+      [55, 26, 7, "Object is possibly \'undefined\'.", "1060875104"],
+      [55, 26, 17, "Argument of type \'string\' is not assignable to parameter of type \'never\'.", "936314937"],
+      [72, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
+      [82, 29, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'(action?: MachineAction | null | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | null | undefined\' is not assignable to type \'MachineAction\'.\\n      Type \'undefined\' is not assignable to type \'MachineAction\'.", "167402512"],
+      [105, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "1699375473"],
+      [119, 36, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.test.tsx:2276870095": [
+      [12, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [122, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [136, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [137, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
+      [188, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [201, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [202, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
+      [237, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [250, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [251, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:1709291737": [
+      [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
+      [68, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
+      [79, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"],
+      [79, 41, 7, "Object is possibly \'undefined\'.", "1060875104"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/DeployFormFields.test.tsx:162052981": [
+      [128, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [148, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [168, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [189, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [220, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [262, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
+      [282, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:2749085546": [
+      [116, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"],
+      [150, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:4246555145": [
+      [19, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
+      [21, 4, 16, "Object is possibly \'null\'.", "4019370437"],
+      [26, 20, 23, "Argument of type \'\\"Reading file aborted.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2851093748"],
+      [30, 20, 21, "Argument of type \'\\"Error reading file.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2974791143"],
+      [53, 18, 6, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "1168132398"],
+      [102, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.test.tsx:3260645888": [
+      [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [30, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [48, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [70, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [112, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [146, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [180, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [208, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [248, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [249, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [250, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [251, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [252, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [256, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.tsx:2770138234": [
+      [35, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
+      [36, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
+      [51, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
+      [52, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
+      [76, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"],
+      [87, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4020685210"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:748968179": [
+      [77, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
+      [121, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
+      [131, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
+    ],
+    "src/app/utils/getCookie.ts:940992619": [
+      [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
+    ],
+    "src/app/utils/someInArray.ts:1012121545": [
+      [8, 4, 68, "Type \'boolean | 0\' is not assignable to type \'boolean\'.\\n  Type \'0\' is not assignable to type \'boolean\'.", "3447795550"]
+    ],
+    "src/app/utils/someNotAll.ts:3892711037": [
+      [7, 2, 71, "Type \'boolean | 0\' is not assignable to type \'boolean\'.\\n  Type \'0\' is not assignable to type \'boolean\'.", "1467649629"]
+    ],
+    "src/testing/factories/notification.ts:2660496186": [
+      [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
+    ],
+    "src/testing/factories/state.ts:2316442371": [
+      [210, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"]
     ]
   }`
 };
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/selectors/pod/pod.ts:361290740": [
-      [2, 45, 8, "RegExp match", "1152173309"],
-      [46, 34, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/base/selectors/resourcepool/resourcepool.ts:2909044297": [
-      [2, 33, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/base/selectors/zone/zone.ts:3222253233": [
-      [2, 19, 8, "RegExp match", "1152173309"],
-      [30, 34, 8, "RegExp match", "1152173309"]
-    ],
     "src/app/base/types.ts:3778456340": [
       [0, 11, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/auth/selectors.ts:1742453516": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [30, 34, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/config/types.ts:1539107873": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [11, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/controller/types.ts:3342242320": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/device/types.ts:2870407164": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/dhcpsnippet/types.ts:2041796238": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [24, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/domain/types.ts:2438698325": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [16, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/general/selectors/utils.ts:4114489802": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [5, 31, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/general/types.ts:3290208731": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [5, 9, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"],
+      [23, 9, 8, "RegExp match", "1152173309"],
+      [32, 9, 8, "RegExp match", "1152173309"],
+      [47, 9, 8, "RegExp match", "1152173309"],
+      [61, 9, 8, "RegExp match", "1152173309"],
+      [72, 9, 8, "RegExp match", "1152173309"],
+      [100, 9, 8, "RegExp match", "1152173309"],
+      [109, 9, 8, "RegExp match", "1152173309"],
+      [143, 9, 8, "RegExp match", "1152173309"],
+      [152, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/licensekeys/types.ts:2257386395": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [11, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/machine/types.ts:2610046885": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [70, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/notification/types.ts:910911970": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/packagerepository/types.ts:3950087859": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [20, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/pod/types.ts:1939554334": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [68, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/resourcepool/types.ts:4045616415": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [15, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scriptresults/selectors.ts:3780812814": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [40, 34, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scriptresults/types.ts:1509395648": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [30, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scripts/types.ts:2264904018": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [15, 14, 8, "RegExp match", "1152173309"],
+      [20, 14, 8, "RegExp match", "1152173309"],
+      [52, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/service/types.ts:3748751936": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [10, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sshkey/types.ts:2805027575": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sslkey/types.ts:518217640": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/status/types.ts:3358556468": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [5, 22, 8, "RegExp match", "1152173309"],
+      [8, 8, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/subnet/types.ts:587705301": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [46, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/tag/types.ts:2533761736": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/token/types.ts:4281996604": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [15, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/user/types.ts:1153084241": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"],
+      [24, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/zone/types.ts:80244761": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"]
     ]
   }`
 };
 
 exports[`migrate js files to ts`] = {
-  value: `688`
+  value: `578`
 };

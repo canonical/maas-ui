@@ -1,14 +1,11 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import Tooltip from "app/base/components/Tooltip";
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import { generateLegacyURL } from "app/utils";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -33,7 +30,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
@@ -66,7 +63,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={zoneLinks}
+      menuLinks={onToggleMenu && zoneLinks}
       menuTitle="Change AZ:"
       onToggleMenu={toggleMenu}
       primary={
@@ -93,7 +90,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
 };
 
 ZoneColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

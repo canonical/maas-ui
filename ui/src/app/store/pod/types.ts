@@ -16,6 +16,15 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
+export type PodStoragePool = Model & {
+  available: number;
+  name: string;
+  path: string;
+  total: number;
+  type: string;
+  used: number;
+};
+
 export type Pod = Model & {
   architectures: string[];
   available: PodHint;
@@ -31,18 +40,29 @@ export type Pod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
+  password?: string;
   permissions: string[];
   pool: number;
   power_address: string;
-  power_pass: string;
+  power_pass?: string;
   owners_count: number;
-  storage_pools: TSFixMe[];
+  storage_pools: PodStoragePool[];
   tags: string[];
   total: PodHint;
   type: string;
   updated: string;
   used: PodHint;
   zone: number;
+};
+
+export type PodStatus = {
+  composing: boolean;
+  deleting: boolean;
+  refreshing: boolean;
+};
+
+export type PodStatuses = {
+  [x: number]: PodStatus;
 };
 
 export type PodState = {
@@ -52,11 +72,6 @@ export type PodState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  selected: number[];
-  statuses: {
-    [x: number]: {
-      deleting: boolean;
-      refreshing: boolean;
-    };
-  };
+  selected: Pod["id"][];
+  statuses: PodStatuses;
 };

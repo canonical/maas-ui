@@ -4,7 +4,7 @@ import React from "react";
 
 import { kebabToCamelCase } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
 // List of machine actions that do not require any extra parameters sent through

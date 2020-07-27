@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import { token as tokenActions } from "app/preferences/actions";
-import { token as tokenSelectors } from "app/preferences/selectors";
+import tokenSelectors from "app/store/token/selectors";
 import APIKeyForm from "../APIKeyForm";
 
 export const APIKeyEdit = () => {

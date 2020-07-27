@@ -8,7 +8,7 @@
   $breakpoint-first: 600px;
   $breakpoint-second: 900px;
   $breakpoint-third: 1030px;
-  $breakpoint-fourth: 1360px;
+  $breakpoint-fourth: 1300px;
 
   @media (max-width: $breakpoint-first - 1px) {
     @if $width-one == 0 {

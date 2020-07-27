@@ -11,7 +11,7 @@ import {
   toggleFilter,
 } from "app/machines/search";
 import { getMachineValue, formatSpeedUnits } from "app/utils";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 
 const filterOrder = [

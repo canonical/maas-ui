@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 
 import { config as configActions } from "app/settings/actions";
 import { general as generalActions } from "app/base/actions";
-import { config as configSelectors } from "app/settings/selectors";
-import { general as generalSelectors } from "app/base/selectors";
 import { useWindowTitle } from "app/base/hooks";
+import generalSelectors from "app/store/general/selectors";
+import configSelectors from "app/store/config/selectors";
 import CommissioningForm from "../CommissioningForm";
 
 const Commissioning = () => {

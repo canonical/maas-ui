@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import React from "react";
 
-import { config as configSelectors } from "app/settings/selectors";
-import { general as generalSelectors } from "app/base/selectors";
+import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
+import generalSelectors from "app/store/general/selectors";
 
 const CommissioningFormFields = () => {
   const formikProps = useFormikContext();

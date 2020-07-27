@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -10,13 +11,6 @@ import {
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  domain as domainSelectors,
-  general as generalSelectors,
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
 import { formatPowerParameters } from "app/utils";
 import {
   useAddMessage,
@@ -25,9 +19,14 @@ import {
   useWindowTitle,
 } from "app/base/hooks";
 import AddMachineFormFields from "../AddMachineFormFields";
+import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 
 const generateMachineSchema = (parametersSchema) =>
   Yup.object().shape({
@@ -55,6 +54,7 @@ const generateMachineSchema = (parametersSchema) =>
 
 export const AddMachineForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const architectures = useSelector(generalSelectors.architectures.get);
   const architecturesLoaded = useSelector(
@@ -156,6 +156,7 @@ export const AddMachineForm = () => {
               pxe_mac: "",
               zone: (zones.length && zones[0].name) || "",
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Machine",

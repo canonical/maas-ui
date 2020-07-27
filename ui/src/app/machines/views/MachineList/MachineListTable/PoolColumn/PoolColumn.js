@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import { machine as machineActions } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  resourcepool as resourcePoolSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
@@ -16,7 +14,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
@@ -48,7 +46,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={poolLinks}
+      menuLinks={onToggleMenu && poolLinks}
       menuTitle="Change pool:"
       onToggleMenu={toggleMenu}
       primary={
@@ -75,7 +73,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
 };
 
 PoolColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

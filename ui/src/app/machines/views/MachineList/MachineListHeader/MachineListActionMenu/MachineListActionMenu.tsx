@@ -1,15 +1,14 @@
+import { Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
-import type { Machine, MachineAction } from "app/store/machine/types";
 import ContextualMenu from "app/base/components/ContextualMenu";
-import Tooltip from "app/base/components/Tooltip";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { MachineAction } from "app/store/general/types";
 
 const getTakeActionLinks = (
   actionOptions: MachineAction[],

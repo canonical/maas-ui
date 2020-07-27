@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import React from "react";
 
-import { resourcepool as resourcePoolSelectors } from "app/base/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
 import FormikField from "app/base/components/FormikField";
 

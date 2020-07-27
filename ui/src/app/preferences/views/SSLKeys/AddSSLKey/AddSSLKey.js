@@ -1,10 +1,11 @@
 import { Col, Row, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import { sslkey as sslkeyActions } from "app/preferences/actions";
-import { sslkey as sslkeySelectors } from "app/preferences/selectors";
+import sslkeySelectors from "app/store/sslkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
@@ -17,10 +18,11 @@ const SSLKeySchema = Yup.object().shape({
 });
 
 export const AddSSLKey = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const saving = useSelector(sslkeySelectors.saving);
   const saved = useSelector(sslkeySelectors.saved);
   const errors = useSelector(sslkeySelectors.errors);
-  const dispatch = useDispatch();
 
   useWindowTitle("Add SSL key");
 
@@ -33,6 +35,7 @@ export const AddSSLKey = () => {
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
+        onCancel={() => history.push({ pathname: "/account/prefs/ssl-keys" })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSL keys preferences",

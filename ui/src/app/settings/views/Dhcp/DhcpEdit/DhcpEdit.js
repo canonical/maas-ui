@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import { dhcpsnippet as dhcpsnippetActions } from "app/base/actions";
-import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import DhcpForm from "../DhcpForm";
 
 export const DhcpEdit = () => {

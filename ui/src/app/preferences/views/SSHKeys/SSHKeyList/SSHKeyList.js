@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
 import { sshkey as sshkeyActions } from "app/preferences/actions";
-import { sshkey as sshkeySelectors } from "app/preferences/selectors";
+import sshkeySelectors from "app/store/sshkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";

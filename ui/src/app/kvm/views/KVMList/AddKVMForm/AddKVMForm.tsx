@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -10,24 +11,22 @@ import {
   zone as zoneActions,
 } from "app/base/actions";
 import {
-  general as generalSelectors,
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
-import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import type { PowerType } from "app/store/general/types";
-import type { TSFixMe } from "app/base/types";
 import { formatErrors, formatPowerParameters } from "app/utils";
 import AddKVMFormFields from "./AddKVMFormFields";
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import podSelectors from "app/store/pod/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { PowerType } from "app/store/general/types";
+import type { TSFixMe } from "app/base/types";
+import zoneSelectors from "app/store/zone/selectors";
 
 const generateAddKVMSchema = (parametersSchema: TSFixMe) =>
   Yup.object().shape({
@@ -42,6 +41,7 @@ export type AddKVMFormValues = { [x: string]: TSFixMe };
 
 export const AddKVMForm = (): JSX.Element => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -53,7 +53,7 @@ export const AddKVMForm = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  const [hostType, setHostType] = useState("");
+  const [hostType, setHostType] = useState<TSFixMe>();
   const [savingPod, setSavingPod] = useState(false);
 
   const allLoaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;
@@ -112,6 +112,7 @@ export const AddKVMForm = (): JSX.Element => {
               type: initialHostType,
               zone: zones.length ? zones[0].id : "",
             }}
+            onCancel={() => history.push({ pathname: "/kvm" })}
             onSaveAnalytics={{
               action: "Save",
               category: "KVM",

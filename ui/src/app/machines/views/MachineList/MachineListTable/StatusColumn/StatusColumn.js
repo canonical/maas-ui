@@ -1,18 +1,15 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
 import { getStatusText } from "app/utils";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
-import Tooltip from "app/base/components/Tooltip";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
@@ -77,7 +74,7 @@ const getStatusIcon = (machine) => {
 
 export const StatusColumn = ({ onToggleMenu, systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const osReleases = useSelector((state) =>
     generalSelectors.osInfo.getOsReleases(state, machine.osystem)
@@ -120,7 +117,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
     <DoubleRow
       icon={getStatusIcon(machine)}
       iconSpace={true}
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -141,7 +138,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
 };
 
 StatusColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
 import { token as tokenActions } from "app/preferences/actions";
-import { token as tokenSelectors } from "app/preferences/selectors";
+import tokenSelectors from "app/store/token/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
