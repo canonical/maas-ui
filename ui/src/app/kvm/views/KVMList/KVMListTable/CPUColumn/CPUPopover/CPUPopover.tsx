@@ -76,7 +76,7 @@ const CPUPopover = ({
                 </div>
                 <div className="cpu-popover__row">
                   <div className="cpu-popover__value">
-                    &times;&nbsp;
+                    &times;&nbsp;&nbsp;
                     <span data-test="overcommit">{overcommit}</span>
                   </div>
                   <div className="cpu-popover__label">Overcommit ratio</div>

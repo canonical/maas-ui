@@ -1,4 +1,12 @@
 @mixin maas-buttons {
+  // Prevent default Vanilla buttons spanning full width on mobile
+  @media only screen and (max-width: $breakpoint-x-small) {
+    button,
+    [class*="p-button"] {
+      width: auto;
+    }
+  }
+
   // Button styles that make it look like a link
   .p-button--link {
     @extend %vf-button-base;

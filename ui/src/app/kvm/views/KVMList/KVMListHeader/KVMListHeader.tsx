@@ -48,7 +48,6 @@ const KVMListHeader = (): JSX.Element => {
         !selectedAction && [
           <Button
             appearance="neutral"
-            className="u-no-margin--bottom"
             data-test="add-kvm"
             disabled={selectedPodIDs.length > 0}
             element={Link}

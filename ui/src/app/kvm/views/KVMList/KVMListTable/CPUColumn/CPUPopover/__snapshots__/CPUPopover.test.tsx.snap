@@ -85,7 +85,7 @@ exports[`CPUPopover renders and matches the snapshot 1`] = `
                   <div
                     class="cpu-popover__value"
                   >
-                    × 
+                    ×  
                     <span
                       data-test="overcommit"
                     >
@@ -195,7 +195,7 @@ exports[`CPUPopover renders and matches the snapshot 1`] = `
               <div
                 className="cpu-popover__value"
               >
-                × 
+                ×  
                 <span
                   data-test="overcommit"
                 >

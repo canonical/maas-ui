@@ -12,7 +12,7 @@
   .cpu-popover {
     @extend %vf-has-box-shadow;
     @extend %vf-has-round-corners;
-    width: 14rem;
+    width: 13.25rem;
     z-index: 10;
   }
 
@@ -33,7 +33,7 @@
   .cpu-popover__value {
     align-items: center;
     display: flex;
-    flex: 0 0 3.5rem;
+    flex: 0 0 2.75rem;
     justify-content: flex-end;
     padding-right: $sph-inner--small;
     text-align: right;

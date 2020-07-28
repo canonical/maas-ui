@@ -35,7 +35,6 @@ const KVMListActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
         ]}
         position="right"
         toggleAppearance="positive"
-        toggleClassName="u-no-margin--bottom"
         toggleDisabled={actionMenuDisabled}
         toggleLabel="Take action"
       />
