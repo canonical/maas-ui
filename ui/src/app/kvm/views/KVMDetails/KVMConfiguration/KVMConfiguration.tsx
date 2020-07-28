@@ -1,13 +1,13 @@
 import { Spinner } from "@canonical/react-components";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
 
 import type { RootState } from "app/store/root/types";
 import type { Pod } from "app/store/pod/types";
+import { actions as podActions } from "app/store/pod";
 import {
-  pod as podActions,
   resourcepool as resourcePoolActions,
   tag as tagActions,
   zone as zoneActions,
@@ -61,6 +61,7 @@ const KVMConfiguration = (): JSX.Element => {
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
   const errors = formatErrors(podErrors);
+  const cleanup = useCallback(() => podActions.cleanup(), []);
 
   useWindowTitle(`KVM ${`${pod?.name} ` || ""} configuration`);
 
@@ -80,7 +81,7 @@ const KVMConfiguration = (): JSX.Element => {
       <FormCard sidebar={false} title="KVM configuration">
         <FormikForm
           buttons={FormCardButtons}
-          cleanup={podActions.cleanup}
+          cleanup={cleanup}
           errors={errors}
           initialValues={{
             cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
