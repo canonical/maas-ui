@@ -122,7 +122,7 @@ describe("KVMListTable", () => {
       "FETCH_CONTROLLER",
       "FETCH_GENERAL_OSINFO",
       "FETCH_MACHINE",
-      "FETCH_POD",
+      "pod/fetch",
       "FETCH_RESOURCEPOOL",
       "FETCH_ZONE",
     ];
@@ -408,9 +408,9 @@ describe("KVMListTable", () => {
       });
 
     expect(
-      store.getActions().find((action) => action.type === "SET_SELECTED_PODS")
+      store.getActions().find((action) => action.type === "pod/setSelected")
     ).toStrictEqual({
-      type: "SET_SELECTED_PODS",
+      type: "pod/setSelected",
       payload: [1],
     });
   });
@@ -434,9 +434,9 @@ describe("KVMListTable", () => {
       });
 
     expect(
-      store.getActions().find((action) => action.type === "SET_SELECTED_PODS")
+      store.getActions().find((action) => action.type === "pod/setSelected")
     ).toStrictEqual({
-      type: "SET_SELECTED_PODS",
+      type: "pod/setSelected",
       payload: [],
     });
   });

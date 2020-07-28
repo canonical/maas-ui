@@ -1,17 +1,6 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/base/actions/pod/pod.test.ts:3307740370": [
-      [61, 15, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"],
-      [77, 15, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"],
-      [90, 15, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
-    ],
-    "src/app/base/actions/pod/pod.ts:1950281470": [
-      [5, 4, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"],
-      [5, 15, 6, "Parameter \'params\' implicitly has an \'any\' type.", "1898504825"],
-      [16, 4, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"],
-      [29, 4, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
-    ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1113426617": [
       [35, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [35, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
@@ -26,16 +15,16 @@ exports[`stricter compilation`] = {
       [114, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [114, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:675926404": [
-      [14, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [18, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [21, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [21, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [23, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [127, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+    "src/app/base/components/ActionForm/ActionForm.tsx:745279568": [
+      [15, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [19, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [22, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [22, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [24, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [128, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:4136491328": [
-      [70, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:344624276": [
+      [71, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/SectionHeader/SectionHeader.tsx:2251696534": [
       [59, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
@@ -43,36 +32,76 @@ exports[`stricter compilation`] = {
     "src/app/base/components/Slider/Slider.tsx:753275532": [
       [0, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"]
     ],
-    "src/app/base/reducers/pod/pod.test.ts:3577246497": [
-      [45, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Pod[]\' is not assignable to type \'readonly never[]\'.\\n      Type \'Pod\' is not assignable to type \'never\'.", "604104617"],
-      [65, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [85, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [104, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [131, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [157, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [187, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [217, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [246, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [273, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [301, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [333, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [364, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [395, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [426, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"],
-      [464, 10, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ readonly errors: {}; readonly items: readonly never[]; readonly loaded: boolean; readonly loading: boolean; readonly saved: boolean; readonly saving: boolean; readonly selected: readonly never[]; readonly statuses: {}; }\'.", "604104617"]
+    "src/app/base/reducers/fabric/fabric.test.ts:2127841951": [
+      [17, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Fabric[]\' is not assignable to type \'never[]\'.\\n      Type \'Fabric\' is not assignable to type \'never\'.", "2722999692"],
+      [32, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [45, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [58, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [71, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [84, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [97, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [110, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [123, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [139, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [150, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [163, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [176, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [189, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [200, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
     ],
-    "src/app/base/reducers/pod/pod.ts:3126101487": [
-      [31, 2, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2764002661"]
+    "src/app/base/reducers/space/space.test.ts:1909159135": [
+      [17, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Space[]\' is not assignable to type \'never[]\'.\\n      Type \'Space\' is not assignable to type \'never\'.", "2722999692"],
+      [32, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [45, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [58, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [71, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [84, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [95, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [108, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [121, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [137, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [148, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [161, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [174, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [187, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [198, 12, 12, "Argument of type \'SpaceState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3771266495": [
+    "src/app/base/reducers/vlan/vlan.test.ts:599827359": [
+      [17, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'VLAN[]\' is not assignable to type \'never[]\'.\\n      Type \'VLAN\' is not assignable to type \'never\'.", "2722999692"],
+      [32, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [43, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [56, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [69, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [82, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [93, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [106, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [119, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [135, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [146, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [159, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [172, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [185, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
+      [196, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
+    ],
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1899258617": [
       [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
-      [114, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"],
-      [128, 30, 7, "Property \'compose\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "3711217613"]
+      [196, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:3250512818": [
-      [30, 30, 7, "Property \'refresh\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1380666520"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:1543066961": [
+      [94, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
+      [112, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [126, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [174, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [195, 6, 95, "Cannot invoke an object which is possibly \'undefined\'.", "4072847487"],
+      [224, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [239, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:2470520871": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:2010784402": [
+      [149, 70, 5, "Argument of type \'Space | undefined\' is not assignable to parameter of type \'Space\'.\\n  Type \'undefined\' is not assignable to type \'Space\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "195174177"],
+      [209, 55, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
+      [239, 8, 7, "Type \'false | \\"There are no available subnets on this KVM\'s attached VLANs.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:1074757847": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -83,7 +112,7 @@ exports[`stricter compilation`] = {
       [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:1665980971": [
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:3331328673": [
       [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
@@ -103,7 +132,7 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1692999044": [
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:4099328306": [
       [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
@@ -124,7 +153,7 @@ exports[`stricter compilation`] = {
       [92, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [108, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:2798411274": [
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:1061354400": [
       [45, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [65, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | undefined\'.\\n  Type \'null\' is not assignable to type \'Element | undefined\'.", "3453098368"]
     ],
@@ -133,7 +162,7 @@ exports[`stricter compilation`] = {
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:2374633436": [
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:1597282604": [
       [12, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [111, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [135, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -149,9 +178,8 @@ exports[`stricter compilation`] = {
       [393, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [418, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:1097583391": [
-      [65, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"],
-      [114, 24, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1023496814"]
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:2043973154": [
+      [65, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.test.tsx:2529226174": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -165,7 +193,7 @@ exports[`stricter compilation`] = {
       [90, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2435825133": [
-      [18, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
+      [18, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.test.tsx:2138170176": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -182,7 +210,7 @@ exports[`stricter compilation`] = {
       [71, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:259372828": [
-      [17, 32, 3, "Argument of type \'Pod | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "193426238"]
+      [17, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMColumn.test.tsx:1892145639": [
       [10, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -228,20 +256,14 @@ exports[`stricter compilation`] = {
       [250, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [251, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:1709291737": [
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:3141624692": [
       [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
-      [68, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
-      [79, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"],
-      [79, 41, 7, "Object is possibly \'undefined\'.", "1060875104"]
+      [87, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
+      [98, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"],
+      [98, 41, 7, "Object is possibly \'undefined\'.", "1060875104"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/DeployFormFields.test.tsx:162052981": [
-      [128, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [148, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [168, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [189, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [220, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [262, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"],
-      [282, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/DeployFormFields.tsx:2829837458": [
+      [52, 45, 4, "Argument of type \'null\' is not assignable to parameter of type \'string\'.", "2087897566"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:2749085546": [
       [116, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"],
@@ -284,6 +306,27 @@ exports[`stricter compilation`] = {
       [121, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [131, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
+    "src/app/store/pod/reducers.test.ts:4270544829": [
+      [54, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Pod[]\' is not assignable to type \'never[]\'.\\n      Type \'Pod\' is not assignable to type \'never\'.\\n        Type \'BasePod\' is not assignable to type \'never\'.", "604104617"],
+      [70, 15, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [86, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [98, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [110, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [121, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [138, 8, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [163, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [184, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [208, 15, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [232, 8, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [254, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [273, 15, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [295, 8, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [320, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [341, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [367, 8, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [393, 8, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
+      [424, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"]
+    ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
     ],
@@ -296,8 +339,8 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:2316442371": [
-      [210, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"]
+    "src/testing/factories/state.ts:3214246520": [
+      [221, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"]
     ]
   }`
 };
@@ -330,6 +373,10 @@ exports[`no TSFixMe types`] = {
     "src/app/store/domain/types.ts:2438698325": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [16, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/fabric/types.ts:1013745005": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [14, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/selectors/utils.ts:4114489802": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -365,9 +412,9 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [20, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/pod/types.ts:1939554334": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [68, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/pod/types.ts:3498449095": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [82, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/resourcepool/types.ts:4045616415": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -390,6 +437,10 @@ exports[`no TSFixMe types`] = {
     "src/app/store/service/types.ts:3748751936": [
       [1, 13, 8, "RegExp match", "1152173309"],
       [10, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/space/types.ts:3394511147": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [13, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/sshkey/types.ts:2805027575": [
       [2, 13, 8, "RegExp match", "1152173309"],
@@ -420,6 +471,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [14, 9, 8, "RegExp match", "1152173309"],
       [24, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/vlan/types.ts:2757450993": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [21, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/zone/types.ts:80244761": [
       [0, 13, 8, "RegExp match", "1152173309"],

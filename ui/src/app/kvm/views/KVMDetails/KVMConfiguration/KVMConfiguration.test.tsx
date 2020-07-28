@@ -53,7 +53,7 @@ describe("KVMConfiguration", () => {
       </Provider>
     );
     const expectedActions = [
-      "FETCH_POD",
+      "pod/fetch",
       "FETCH_RESOURCEPOOL",
       "FETCH_TAG",
       "FETCH_ZONE",
@@ -113,9 +113,9 @@ describe("KVMConfiguration", () => {
         })
     );
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_POD")
+      store.getActions().find((action) => action.type === "pod/update")
     ).toStrictEqual({
-      type: "UPDATE_POD",
+      type: "pod/update",
       meta: {
         method: "update",
         model: "pod",
@@ -169,9 +169,9 @@ describe("KVMConfiguration", () => {
         })
     );
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_POD")
+      store.getActions().find((action) => action.type === "pod/update")
     ).toStrictEqual({
-      type: "UPDATE_POD",
+      type: "pod/update",
       meta: {
         method: "update",
         model: "pod",

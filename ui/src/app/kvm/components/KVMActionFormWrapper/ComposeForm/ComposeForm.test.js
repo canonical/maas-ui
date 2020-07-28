@@ -145,9 +145,9 @@ describe("ComposeForm", () => {
         })
     );
     expect(
-      store.getActions().find((action) => action.type === "COMPOSE_POD")
+      store.getActions().find((action) => action.type === "pod/compose")
     ).toStrictEqual({
-      type: "COMPOSE_POD",
+      type: "pod/compose",
       meta: {
         method: "compose",
         model: "pod",

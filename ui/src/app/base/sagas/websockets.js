@@ -128,10 +128,16 @@ export function watchMessages(socketClient) {
  * the store is only updated once a notify message has been received.
  */
 export function* handleNotifyMessage(response) {
-  const action = response.action.toUpperCase();
-  const name = response.name.toUpperCase();
+  const action = response.action;
+  const name = response.name;
   yield put({
-    type: `${action}_${name}_NOTIFY`,
+    type: `${action.toUpperCase()}_${name.toUpperCase()}_NOTIFY`,
+    payload: response.data,
+  });
+  // Dispatch the action in the format for slice actions. This can
+  // replace the action above once all models have moved to slices.
+  yield put({
+    type: `${name}/${action}Notify`,
     payload: response.data,
   });
 }
@@ -174,9 +180,15 @@ export function* handleBatch({ request_id, result }) {
       // Send the new request.
       yield put(nextBatch);
     } else {
-      // If we didn't receive a full batch then we don't need to request
-      // any more data so dispatch the complete action.
-      yield put({ type: `${batchRequest.type}_COMPLETE` });
+      if (batchRequest.type.includes("/")) {
+        // Dispatch the action in the format for slice actions. This can
+        // replace the action below once all models have moved to slices.
+        yield put({ type: `${batchRequest.type}Complete` });
+      } else {
+        // If we didn't receive a full batch then we don't need to request
+        // any more data so dispatch the complete action.
+        yield put({ type: `${batchRequest.type}_COMPLETE` });
+      }
     }
   }
 }
@@ -252,17 +264,39 @@ export function* handleMessage(socketChannel, socketClient) {
           // https://bugs.launchpad.net/maas/+bug/1840887
           error = response.error;
         }
-        yield put({
-          meta: { item },
-          type: `${action.type}_ERROR`,
-          error,
-        });
+        if (action.type.includes("/")) {
+          // Dispatch the action in the format for slice actions. This can
+          // replace the action below once all models have moved to slices.
+          yield put({
+            meta: { item },
+            type: `${action.type}Error`,
+            error: true,
+            payload: error,
+          });
+        } else {
+          yield put({
+            meta: { item },
+            type: `${action.type}_ERROR`,
+            // TODO: retrun the error in the payload.
+            error,
+          });
+        }
       } else {
-        yield put({
-          meta: { item },
-          type: `${action.type}_SUCCESS`,
-          payload: response.result,
-        });
+        if (action.type.includes("/")) {
+          // Dispatch the action in the format for slice actions. This can
+          // replace the action below once all models have moved to slices.
+          yield put({
+            meta: { item },
+            type: `${action.type}Success`,
+            payload: response.result,
+          });
+        } else {
+          yield put({
+            meta: { item },
+            type: `${action.type}_SUCCESS`,
+            payload: response.result,
+          });
+        }
         // Handle batching, if required.
         yield call(handleBatch, response);
         // Handle dispatching next actions, if required.
@@ -311,8 +345,13 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     }
     setLoaded(model);
   }
-
-  yield put({ meta: { item: params || payload }, type: `${type}_START` });
+  if (type.includes("/")) {
+    // Dispatch the action in the format for slice actions. This can
+    // replace the action below once all models have moved to slices.
+    yield put({ meta: { item: params || payload }, type: `${type}Start` });
+  } else {
+    yield put({ meta: { item: params || payload }, type: `${type}_START` });
+  }
   let requestIDs = [];
   try {
     if (params && Array.isArray(params)) {
@@ -346,11 +385,23 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     // Queue batching, if required.
     yield call(queueBatch, action, requestIDs);
   } catch (error) {
-    yield put({
-      meta: { item: params || payload },
-      type: `${type}_ERROR`,
-      error,
-    });
+    if (type.includes("/")) {
+      // Dispatch the action in the format for slice actions. This can
+      // replace the action above once all models have moved to slices.
+      yield put({
+        meta: { item: params || payload },
+        type: `${type}Error`,
+        error: true,
+        payload: error,
+      });
+    } else {
+      yield put({
+        meta: { item: params || payload },
+        // TODO: retrun the error in the payload.
+        type: `${type}_ERROR`,
+        error,
+      });
+    }
   }
 }
 

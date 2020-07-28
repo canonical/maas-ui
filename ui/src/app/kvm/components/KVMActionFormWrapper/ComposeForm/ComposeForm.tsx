@@ -1,5 +1,5 @@
 import { Spinner, Strip } from "@canonical/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
@@ -7,12 +7,12 @@ import * as Yup from "yup";
 import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
+import { actions as podActions } from "app/store/pod";
 import {
   domain as domainActions,
   fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
-  pod as podActions,
   resourcepool as resourcePoolActions,
   space as spaceActions,
   subnet as subnetActions,
@@ -117,6 +117,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const [machineName, setMachineName] = useState("");
+  const cleanup = useCallback(() => podActions.cleanup(), []);
 
   useEffect(() => {
     dispatch(domainActions.fetch());
@@ -179,7 +180,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
       <ActionForm
         actionName="compose"
         allowUnchanged
-        cleanup={podActions.cleanup}
+        cleanup={cleanup}
         clearSelectedAction={() => setSelectedAction(null)}
         errors={errors}
         initialValues={{
@@ -196,7 +197,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         modelName="machine"
         onSubmit={(values: ComposeFormValues) => {
           // Remove any errors before dispatching compose action.
-          dispatch(podActions.cleanup());
+          dispatch(cleanup());
 
           const params = {
             architecture: values.architecture,

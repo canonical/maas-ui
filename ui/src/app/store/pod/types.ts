@@ -1,5 +1,5 @@
-import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
+import type { TSFixMe } from "app/base/types";
 
 export type PodHint = {
   cores: number;
