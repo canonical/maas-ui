@@ -15,7 +15,6 @@ import {
   messages,
   notification,
   packagerepository,
-  pod,
   resourcepool,
   scriptresults,
   scripts,
@@ -30,6 +29,7 @@ import {
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { initialState as userInitialState } from "./app/base/reducers/user/user";
+import pod from "app/store/pod";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>

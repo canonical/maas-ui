@@ -48,10 +48,10 @@ describe("RefreshForm", () => {
 
     act(() => wrapper.find("Formik").prop("onSubmit")());
     expect(
-      store.getActions().filter((action) => action.type === "REFRESH_POD")
+      store.getActions().filter((action) => action.type === "pod/refresh")
     ).toStrictEqual([
       {
-        type: "REFRESH_POD",
+        type: "pod/refresh",
         meta: {
           model: "pod",
           method: "refresh",
@@ -63,7 +63,7 @@ describe("RefreshForm", () => {
         },
       },
       {
-        type: "REFRESH_POD",
+        type: "pod/refresh",
         meta: {
           model: "pod",
           method: "refresh",
