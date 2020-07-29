@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationGroup renders 1`] = `
+<NotificationGroup
+  notifications={
+    Array [
+      Object {
+        "admins": true,
+        "category": "warning",
+        "created": "Wed, 08 Jul. 2020 05:35:4",
+        "dismissable": true,
+        "id": 22,
+        "ident": null,
+        "message": "Testing notification",
+        "updated": "Wed, 08 Jul. 2020 05:35:4",
+        "user": Object {
+          "completed_intro": true,
+          "email": "email12@example.com",
+          "global_permissions": Array [
+            "machine_create",
+          ],
+          "id": 23,
+          "is_superuser": true,
+          "last_name": "Full Name jr.",
+          "sshkeys_count": 3,
+          "username": "user12",
+        },
+        "users": true,
+      },
+      Object {
+        "admins": true,
+        "category": "warning",
+        "created": "Wed, 08 Jul. 2020 05:35:4",
+        "dismissable": true,
+        "id": 24,
+        "ident": null,
+        "message": "Testing notification",
+        "updated": "Wed, 08 Jul. 2020 05:35:4",
+        "user": Object {
+          "completed_intro": true,
+          "email": "email13@example.com",
+          "global_permissions": Array [
+            "machine_create",
+          ],
+          "id": 25,
+          "is_superuser": true,
+          "last_name": "Full Name jr.",
+          "sshkeys_count": 3,
+          "username": "user13",
+        },
+        "users": true,
+      },
+    ]
+  }
+  type="negative"
+>
+  <div
+    className="p-notification--group"
+  >
+    <Notification
+      type="negative"
+    >
+      <div
+        className="p-notification--negative"
+      >
+        <p
+          className="p-notification__response"
+        >
+          <Button
+            appearance="link"
+            aria-label="2 negative, click to open messages."
+            onClick={[Function]}
+          >
+            <button
+              aria-label="2 negative, click to open messages."
+              className="p-button--link"
+              onClick={[Function]}
+            >
+              <span
+                className="p-notification__status"
+                data-test="notification-count"
+              >
+                2 Warnings
+              </span>
+              <small>
+                <i
+                  className="p-icon--expand"
+                />
+              </small>
+            </button>
+          </Button>
+          <Button
+            appearance="link"
+            className="p-notification__action u-nudge-right"
+            onClick={[Function]}
+          >
+            <button
+              className="p-button--link p-notification__action u-nudge-right"
+              onClick={[Function]}
+            >
+              Dismiss all
+            </button>
+          </Button>
+        </p>
+      </div>
+    </Notification>
+  </div>
+</NotificationGroup>
+`;

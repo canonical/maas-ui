@@ -3,22 +3,25 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  notification as notificationFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
+
 import NotificationGroup from "./NotificationGroup";
 
 const mockStore = configureStore();
 
 describe("NotificationGroup", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {};
+    state = rootStateFactory();
   });
 
   it("renders", () => {
     const store = mockStore(state);
-    const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" },
-    ];
+    const notifications = [notificationFactory(), notificationFactory()];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -31,9 +34,7 @@ describe("NotificationGroup", () => {
 
   it("displays a single notification by default", () => {
     const store = mockStore(state);
-    const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-    ];
+    const notifications = [notificationFactory()];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -43,15 +44,12 @@ describe("NotificationGroup", () => {
 
     expect(
       wrapper.find("span[data-test='notification-message']").text()
-    ).toEqual("an error occurred");
+    ).toEqual("Testing notification");
   });
 
   it("hides multiple notifications by default", () => {
     const store = mockStore(state);
-    const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" },
-    ];
+    const notifications = [notificationFactory(), notificationFactory()];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -66,10 +64,7 @@ describe("NotificationGroup", () => {
 
   it("displays a count for multiple notifications", () => {
     const store = mockStore(state);
-    const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" },
-    ];
+    const notifications = [notificationFactory(), notificationFactory()];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -78,25 +73,15 @@ describe("NotificationGroup", () => {
     );
 
     expect(wrapper.find("span[data-test='notification-count']").text()).toEqual(
-      "2 Errors"
+      "2 Warnings"
     );
   });
 
   it("can dismiss multiple notifications", () => {
     const store = mockStore(state);
     const notifications = [
-      {
-        id: 1,
-        category: "error",
-        message: "an error occurred",
-        dismissable: true,
-      },
-      {
-        id: 2,
-        category: "error",
-        message: "an error occurred",
-        dismissable: true,
-      },
+      notificationFactory({ dismissable: true }),
+      notificationFactory({ dismissable: true }),
     ];
 
     const wrapper = mount(
@@ -115,18 +100,8 @@ describe("NotificationGroup", () => {
   it("does not dismiss undismissable notifications when dismissing a group", () => {
     const store = mockStore(state);
     const notifications = [
-      {
-        id: 1,
-        category: "warning",
-        message: "dismissable warning",
-        dismissable: true,
-      },
-      {
-        id: 2,
-        category: "warning",
-        message: "undismissable warning",
-        dismissable: false,
-      },
+      notificationFactory({ dismissable: true }),
+      notificationFactory({ dismissable: false }),
     ];
 
     const wrapper = mount(
@@ -143,14 +118,7 @@ describe("NotificationGroup", () => {
 
   it("can dismiss a single notification", () => {
     const store = mockStore(state);
-    const notifications = [
-      {
-        id: 1,
-        category: "error",
-        message: "an error occurred",
-        dismissable: true,
-      },
-    ];
+    const notifications = [notificationFactory({ dismissable: true })];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -158,7 +126,7 @@ describe("NotificationGroup", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='action-link']").simulate("click");
+    wrapper.find("button.p-icon--close").simulate("click");
 
     expect(store.getActions().length).toEqual(1);
     expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
@@ -166,14 +134,7 @@ describe("NotificationGroup", () => {
 
   it("does not show a dismiss action if notification is not dismissable", () => {
     const store = mockStore(state);
-    const notifications = [
-      {
-        id: 1,
-        category: "error",
-        message: "an error occurred",
-        dismissable: false,
-      },
-    ];
+    const notifications = [notificationFactory({ dismissable: false })];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -181,17 +142,15 @@ describe("NotificationGroup", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='action-link']").exists()).toBe(
-      false
-    );
+    expect(wrapper.find("button.p-icon--close").exists()).toBe(false);
   });
 
   it("can toggle multiple notifications", () => {
     const store = mockStore(state);
     const notifications = [
-      { id: 1, category: "error", message: "an error occurred" },
-      { id: 2, category: "error", message: "an error occurred" },
-      { id: 3, category: "error", message: "an error occurred" },
+      notificationFactory(),
+      notificationFactory(),
+      notificationFactory(),
     ];
 
     const wrapper = mount(
@@ -200,10 +159,10 @@ describe("NotificationGroup", () => {
       </Provider>
     );
 
-    expect(wrapper.find("NotificationGroupMessage").length).toEqual(0);
+    expect(wrapper.find("Notification").length).toEqual(1);
 
     wrapper.find("Button").at(0).simulate("click");
 
-    expect(wrapper.find("NotificationGroupMessage").length).toEqual(3);
+    expect(wrapper.find("Notification").length).toEqual(4);
   });
 });
