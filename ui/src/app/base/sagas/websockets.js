@@ -127,18 +127,17 @@ export function watchMessages(socketClient) {
  * Although we receive a corresponding response for each websocket requests,
  * the store is only updated once a notify message has been received.
  */
-export function* handleNotifyMessage(response) {
-  const action = response.action;
-  const name = response.name;
+export function* handleNotifyMessage({ action, name, data }) {
   yield put({
     type: `${action.toUpperCase()}_${name.toUpperCase()}_NOTIFY`,
-    payload: response.data,
+    payload: data,
   });
   // Dispatch the action in the format for slice actions. This can
   // replace the action above once all models have moved to slices.
+  // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
   yield put({
     type: `${name}/${action}Notify`,
-    payload: response.data,
+    payload: data,
   });
 }
 
@@ -183,6 +182,7 @@ export function* handleBatch({ request_id, result }) {
       if (batchRequest.type.includes("/")) {
         // Dispatch the action in the format for slice actions. This can
         // replace the action below once all models have moved to slices.
+        // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
         yield put({ type: `${batchRequest.type}Complete` });
       } else {
         // If we didn't receive a full batch then we don't need to request
@@ -267,6 +267,7 @@ export function* handleMessage(socketChannel, socketClient) {
         if (action.type.includes("/")) {
           // Dispatch the action in the format for slice actions. This can
           // replace the action below once all models have moved to slices.
+          // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
           yield put({
             meta: { item },
             type: `${action.type}Error`,
@@ -285,6 +286,7 @@ export function* handleMessage(socketChannel, socketClient) {
         if (action.type.includes("/")) {
           // Dispatch the action in the format for slice actions. This can
           // replace the action below once all models have moved to slices.
+          // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
           yield put({
             meta: { item },
             type: `${action.type}Success`,
@@ -348,6 +350,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
   if (type.includes("/")) {
     // Dispatch the action in the format for slice actions. This can
     // replace the action below once all models have moved to slices.
+    // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
     yield put({ meta: { item: params || payload }, type: `${type}Start` });
   } else {
     yield put({ meta: { item: params || payload }, type: `${type}_START` });
@@ -388,6 +391,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     if (type.includes("/")) {
       // Dispatch the action in the format for slice actions. This can
       // replace the action above once all models have moved to slices.
+      // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
       yield put({
         meta: { item: params || payload },
         type: `${type}Error`,
