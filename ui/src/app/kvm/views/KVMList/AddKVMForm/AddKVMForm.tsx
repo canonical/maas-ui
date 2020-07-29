@@ -28,7 +28,9 @@ import type { PowerType } from "app/store/general/types";
 import type { TSFixMe } from "app/base/types";
 import zoneSelectors from "app/store/zone/selectors";
 
-const generateAddKVMSchema = (parametersSchema: TSFixMe) =>
+const generateAddKVMSchema = (
+  parametersSchema: Yup.ObjectSchemaDefinition<TSFixMe>
+) =>
   Yup.object().shape({
     name: Yup.string(),
     pool: Yup.string().required("Resource pool required"),
