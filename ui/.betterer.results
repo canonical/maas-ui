@@ -30,7 +30,7 @@ exports[`stricter compilation`] = {
       [59, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
     ],
     "src/app/base/components/Slider/Slider.tsx:753275532": [
-      [0, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"]
+      [0, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"]
     ],
     "src/app/base/reducers/fabric/fabric.test.ts:2127841951": [
       [17, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Fabric[]\' is not assignable to type \'never[]\'.\\n      Type \'Fabric\' is not assignable to type \'never\'.", "2722999692"],
@@ -83,9 +83,8 @@ exports[`stricter compilation`] = {
       [185, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
       [196, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1899258617": [
-      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
-      [196, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1896286351": [
+      [199, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:1543066961": [
       [94, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
@@ -112,9 +111,6 @@ exports[`stricter compilation`] = {
       [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:3331328673": [
-      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
-    ],
     "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
       [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [40, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -131,9 +127,6 @@ exports[`stricter compilation`] = {
       [60, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:4099328306": [
-      [4, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -257,7 +250,6 @@ exports[`stricter compilation`] = {
       [251, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.tsx:3141624692": [
-      [1, 21, 5, "Could not find a declaration file for module \'yup\'. \'/home/multipass/code/maas-ui/node_modules/yup/lib/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/yup\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'yup\';\`", "95899385"],
       [87, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
       [98, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[any?], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<...>; cleanup: Acti...\'.", "1121484462"],
       [98, 41, 7, "Object is possibly \'undefined\'.", "1060875104"]
@@ -306,7 +298,7 @@ exports[`stricter compilation`] = {
       [121, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [131, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/store/pod/reducers.test.ts:4270544829": [
+    "src/app/store/pod/reducers.test.ts:1055396807": [
       [54, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.\\n  Types of property \'items\' are incompatible.\\n    Type \'Pod[]\' is not assignable to type \'never[]\'.\\n      Type \'Pod\' is not assignable to type \'never\'.\\n        Type \'BasePod\' is not assignable to type \'never\'.", "604104617"],
       [70, 15, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
       [86, 20, 8, "Argument of type \'PodState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; selected: never[]; statuses: {}; }\'.", "604104617"],
