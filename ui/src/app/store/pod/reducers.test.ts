@@ -7,7 +7,7 @@ import {
 import reducers, { actions, DEFAULT_STATUSES } from "./slice";
 
 describe("pod reducer", () => {
-  it("should return the initial state", () => {
+  it("returns the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       errors: {},
       items: [],
@@ -20,7 +20,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce fetch", () => {
+  it("reduces fetch", () => {
     expect(reducers(undefined, actions.fetch())).toEqual({
       errors: {},
       items: [],
@@ -33,7 +33,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce fetchStart", () => {
+  it("reduces fetchStart", () => {
     expect(reducers(undefined, actions.fetchStart())).toEqual({
       errors: {},
       items: [],
@@ -46,7 +46,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce fetchSuccess", () => {
+  it("reduces fetchSuccess", () => {
     const pods = [podFactory()];
     const podState = podStateFactory({
       items: [],
@@ -64,7 +64,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce fetchError", () => {
+  it("reduces fetchError", () => {
     const podState = podStateFactory();
 
     expect(
@@ -81,7 +81,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce getStart", () => {
+  it("reduces getStart", () => {
     const podState = podStateFactory({ items: [], loading: false });
 
     expect(reducers(podState, actions.getStart())).toEqual(
@@ -89,7 +89,7 @@ describe("pod reducer", () => {
     );
   });
 
-  it("should correctly reduce getSuccess", () => {
+  it("reduces getSuccess", () => {
     const newPod = podDetailsFactory();
     const podState = podStateFactory({
       items: [],
@@ -105,7 +105,7 @@ describe("pod reducer", () => {
     );
   });
 
-  it("should correctly reduce getError", () => {
+  it("reduces getError", () => {
     const podState = podStateFactory({ loading: true });
 
     expect(reducers(podState, actions.getError("Could not get pod"))).toEqual(
@@ -116,7 +116,7 @@ describe("pod reducer", () => {
     );
   });
 
-  it("should correctly reduce createStart", () => {
+  it("reduces createStart", () => {
     const podState = podStateFactory({ saved: true });
 
     expect(reducers(podState, actions.createStart())).toEqual({
@@ -131,7 +131,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce createError", () => {
+  it("reduces createError", () => {
     const podState = podStateFactory();
 
     expect(
@@ -173,7 +173,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce composeStart", () => {
+  it("reduces composeStart", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -196,7 +196,7 @@ describe("pod reducer", () => {
     );
   });
 
-  it("should correctly reduce composeSuccess", () => {
+  it("reduces composeSuccess", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -219,7 +219,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce composeError", () => {
+  it("reduces composeError", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -245,7 +245,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce deleteStart", () => {
+  it("reduces deleteStart", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -264,7 +264,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce deleteSuccess", () => {
+  it("reduces deleteSuccess", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -284,7 +284,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce deleteError", () => {
+  it("reduces deleteError", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -308,7 +308,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce deleteNotify", () => {
+  it("reduces deleteNotify", () => {
     const pods = [podFactory({ id: 1 }), podFactory({ id: 2 })];
     const podState = podStateFactory({
       items: pods,
@@ -330,7 +330,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce refreshStart", () => {
+  it("reduces refreshStart", () => {
     const pods = [podFactory({ id: 1 })];
     const podState = podStateFactory({
       items: pods,
@@ -353,7 +353,7 @@ describe("pod reducer", () => {
     );
   });
 
-  it("should correctly reduce refreshSuccess", () => {
+  it("reduces refreshSuccess", () => {
     const pods = [podFactory({ id: 1, cpu_speed: 100 })];
     const updatedPod = podFactory({ id: 1, cpu_speed: 100 });
     const podState = podStateFactory({
@@ -380,7 +380,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce refreshError", () => {
+  it("reduces refreshError", () => {
     const pods = [podFactory({ id: 1, cpu_speed: 100 })];
     const podState = podStateFactory({
       items: pods,
@@ -406,7 +406,7 @@ describe("pod reducer", () => {
     });
   });
 
-  it("should correctly reduce setSelected", () => {
+  it("reduces setSelected", () => {
     const pods = [
       podFactory({ id: 1 }),
       podFactory({ id: 2 }),
