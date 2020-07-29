@@ -4,14 +4,12 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import { formatMacAddress } from "app/utils";
-import {
-  domain as domainSelectors,
-  general as generalSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import domainSelectors from "app/store/domain/selectors";
 import FormikField from "app/base/components/FormikField";
+import generalSelectors from "app/store/general/selectors";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 
 export const AddMachineFormFields = ({ saved }) => {
   const architectures = useSelector(generalSelectors.architectures.get);

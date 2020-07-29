@@ -1,0 +1,7 @@
+@mixin maas-cards {
+  // Button styles that make it look like a link
+  .p-card--transparent {
+    @extend %vf-card;
+    background-color: transparent;
+  }
+}

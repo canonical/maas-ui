@@ -270,7 +270,7 @@ describe("websocket sagas", () => {
       },
     };
     saga.next(response);
-    saga.next("TEST_ACTION");
+    saga.next({ type: "TEST_ACTION" });
     expect(saga.next().value).toEqual(call(handleBatch, response));
   });
 

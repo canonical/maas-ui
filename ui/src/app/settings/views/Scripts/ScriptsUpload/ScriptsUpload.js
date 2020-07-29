@@ -12,7 +12,7 @@ import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import { scripts as scriptActions } from "app/base/actions";
-import { scripts as scriptSelectors } from "app/base/selectors";
+import scriptSelectors from "app/store/scripts/selectors";
 
 const ScriptsUpload = ({ type }) => {
   const MAX_SIZE_BYTES = 2000000; // 2MB

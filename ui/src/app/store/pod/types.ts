@@ -1,5 +1,5 @@
-import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
+import type { TSFixMe } from "app/base/types";
 
 export type PodHint = {
   cores: number;
@@ -16,7 +16,19 @@ export type PodHintExtras = {
   local_disks: number;
 };
 
-export type Pod = Model & {
+export type PodStoragePool = Model & {
+  available: number;
+  name: string;
+  path: string;
+  total: number;
+  type: string;
+  used: number;
+};
+
+// BasePod is returned from the server when using "pod.list", and is used in the
+// pod list pages. This type is missing some properties due to an optimisation
+// on the backend to reduce the amount of database queries on list pages.
+export type BasePod = Model & {
   architectures: string[];
   available: PodHint;
   capabilities: string[];
@@ -31,18 +43,40 @@ export type Pod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
+  password?: string;
   permissions: string[];
   pool: number;
   power_address: string;
-  power_pass: string;
+  power_pass?: string;
   owners_count: number;
-  storage_pools: TSFixMe[];
+  storage_pools: PodStoragePool[];
   tags: string[];
   total: PodHint;
   type: string;
   updated: string;
   used: PodHint;
   zone: number;
+};
+
+// PodDetails is returned from the server when using "pod.get", and is used in the
+// pod details pages. This type contains all possible properties of a pod model.
+export type PodDetails = BasePod & {
+  attached_vlans: number[];
+  boot_vlans: number[];
+};
+
+// Depending on where the user has navigated in the app, pods in state can
+// either be of type Pod or PodDetails.
+export type Pod = BasePod | PodDetails;
+
+export type PodStatus = {
+  composing: boolean;
+  deleting: boolean;
+  refreshing: boolean;
+};
+
+export type PodStatuses = {
+  [x: number]: PodStatus;
 };
 
 export type PodState = {
@@ -52,11 +86,6 @@ export type PodState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  selected: number[];
-  statuses: {
-    [x: number]: {
-      deleting: boolean;
-      refreshing: boolean;
-    };
-  };
+  selected: Pod["id"][];
+  statuses: PodStatuses;
 };

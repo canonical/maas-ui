@@ -1,0 +1,77 @@
+@mixin KVMComposeInterfacesTable {
+  .kvm-compose-interfaces-table {
+    td,
+    th {
+      // Name
+      &:nth-child(1) {
+        width: 11%;
+      }
+
+      // IP address
+      &:nth-child(2) {
+        width: 24%;
+      }
+
+      // Space
+      &:nth-child(3) {
+        width: 15%;
+      }
+
+      // Subnet
+      &:nth-child(4) {
+        width: 20%;
+      }
+
+      // Fabric
+      &:nth-child(5) {
+        width: 15%;
+      }
+
+      // VLAN
+      &:nth-child(6) {
+        width: 15%;
+      }
+
+      // PXE
+      &:nth-child(7) {
+        width: 2.5rem;
+      }
+
+      // Actions
+      &:nth-child(8) {
+        width: 4.5rem;
+      }
+    }
+
+    input,
+    select {
+      margin-bottom: 0;
+      min-width: 0;
+    }
+
+    .p-form-validation__message {
+      margin-top: 0;
+    }
+
+    @media screen and (max-width: $breakpoint-medium) {
+      tr {
+        padding: calc(#{$spv-inner--small} - 1px) $sph-inner;
+        width: 100%;
+      }
+
+      td {
+        align-items: center;
+        padding-left: calc(33% + #{$sph-inner--small});
+
+        .p-form__group {
+          flex: 1;
+        }
+
+        &[aria-label="Actions"] > * {
+          left: calc(-#{$sph-inner--small} - 1px);
+          position: relative;
+        }
+      }
+    }
+  }
+}

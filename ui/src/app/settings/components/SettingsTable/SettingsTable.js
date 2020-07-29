@@ -1,3 +1,4 @@
+import { Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -9,7 +10,6 @@ import {
   MainTable,
   SearchBox,
 } from "@canonical/react-components";
-import Tooltip from "app/base/components/Tooltip";
 
 export const SettingsTable = ({
   buttons,

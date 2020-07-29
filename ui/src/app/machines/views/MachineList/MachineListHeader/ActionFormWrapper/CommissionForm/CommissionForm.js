@@ -7,10 +7,8 @@ import {
   machine as machineActions,
   scripts as scriptActions,
 } from "app/base/actions";
-import {
-  machine as machineSelectors,
-  scripts as scriptSelectors,
-} from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import scriptSelectors from "app/store/scripts/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import CommissionFormFields from "./CommissionFormFields";
 
@@ -29,16 +27,13 @@ const CommissionFormSchema = Yup.object().shape({
       description: Yup.string(),
     })
   ),
-  testingScripts: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required(),
-        displayName: Yup.string(),
-        description: Yup.string(),
-      })
-    )
-    .min(1, "You must select at least one script.")
-    .required(),
+  testingScripts: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required(),
+      displayName: Yup.string(),
+      description: Yup.string(),
+    })
+  ),
 });
 
 export const CommissionForm = ({ setSelectedAction }) => {

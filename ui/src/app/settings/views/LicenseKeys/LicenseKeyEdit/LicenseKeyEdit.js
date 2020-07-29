@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
-import { licensekeys as licenseKeysSelectors } from "app/base/selectors";
+import licenseKeysSelectors from "app/store/licensekeys/selectors";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 

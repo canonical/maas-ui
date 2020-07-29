@@ -194,9 +194,9 @@ describe("AddKVMForm", () => {
     );
 
     expect(
-      store.getActions().find((action) => action.type === "CREATE_POD")
+      store.getActions().find((action) => action.type === "pod/create")
     ).toStrictEqual({
-      type: "CREATE_POD",
+      type: "pod/create",
       meta: {
         method: "create",
         model: "pod",

@@ -2,7 +2,7 @@ import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import React from "react";
 
-import { status as statusSelectors } from "app/base/selectors";
+import statusSelectors from "app/store/status/selectors";
 import UserForm from "../UserForm";
 
 export const UserAdd = () => {

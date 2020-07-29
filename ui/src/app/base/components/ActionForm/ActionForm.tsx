@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import React, { useState } from "react";
 
-import { useProcessing } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
+import { useProcessing } from "app/base/hooks";
 import { formatErrors } from "app/utils";
 import FormikForm from "app/base/components/FormikForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -35,6 +36,8 @@ const getLabel = (
       return `${
         processing ? "Starting" : "Start"
       } commissioning for ${modelString}`;
+    case "compose":
+      return `${processing ? "Composing" : "Compose"} ${modelString}`;
     case "delete":
       return `${processing ? "Deleting" : "Delete"} ${modelString}`;
     case "deploy":
@@ -85,7 +88,7 @@ const getLabel = (
 type Props = {
   actionName?: string;
   allowUnchanged?: boolean;
-  children?: JSX.Element;
+  children?: ReactNode;
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
   disabled?: boolean;
@@ -94,6 +97,7 @@ type Props = {
   loading?: boolean;
   modelName: string;
   onSubmit: (...args: unknown[]) => void;
+  onSuccess?: () => void;
   processingCount?: number;
   selectedCount?: number;
   submitAppearance?: string;
@@ -112,6 +116,7 @@ const ActionForm = ({
   loading,
   modelName,
   onSubmit,
+  onSuccess,
   processingCount,
   selectedCount,
   submitAppearance = "positive",
@@ -124,6 +129,7 @@ const ActionForm = ({
     processingCount,
     () => {
       setProcessing(false);
+      onSuccess && onSuccess();
       clearSelectedAction && clearSelectedAction();
     },
     Object.keys(errors).length > 0,

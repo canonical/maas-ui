@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -11,7 +11,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 export const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
@@ -35,7 +35,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
 
   return (
     <DoubleRow
-      menuLinks={menuLinks}
+      menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
@@ -58,7 +58,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
 };
 
 OwnerColumn.propTypes = {
-  onToggleMenu: PropTypes.func.isRequired,
+  onToggleMenu: PropTypes.func,
   systemId: PropTypes.string.isRequired,
 };
 

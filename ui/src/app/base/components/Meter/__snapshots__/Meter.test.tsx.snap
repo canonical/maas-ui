@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Meter renders 1`] = `
+<div
+  className="p-meter"
+>
+  <div
+    className="p-meter__bar"
+    style={
+      Object {
+        "backgroundColor": "#D3E4ED",
+        "width": undefined,
+      }
+    }
+  >
+    <div
+      className="p-meter__filled"
+      key="datum-1-bar"
+      style={
+        Object {
+          "backgroundColor": "#0066CC",
+          "borderRight": "1px solid #F7F7F7",
+          "left": "0%",
+          "width": "25%",
+        }
+      }
+    />
+    <div
+      className="p-meter__filled"
+      key="datum-2-bar"
+      style={
+        Object {
+          "backgroundColor": "#0E8420",
+          "borderRight": undefined,
+          "left": "25%",
+          "width": "75%",
+        }
+      }
+    />
+  </div>
+</div>
+`;

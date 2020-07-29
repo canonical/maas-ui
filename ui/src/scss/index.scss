@@ -21,11 +21,13 @@
 
 // Import and include MAAS global styles
 @import "./patterns_buttons";
+@import "./patterns_cards";
 @import "./patterns_double-row";
 @import "./patterns_footer";
 @import "./patterns_forms";
 @import "./patterns_icons";
 @import "./patterns_links";
+@import "./patterns_lists";
 @import "./patterns_navigation";
 @import "./patterns_notifications";
 @import "./patterns_table-actions";
@@ -33,11 +35,13 @@
 @import "./patterns_tabs";
 @import "./utilities";
 @include maas-buttons;
+@include maas-cards;
 @include maas-double-row;
 @include maas-footer;
 @include maas-forms;
 @include maas-icons;
 @include maas-links;
+@include maas-lists;
 @include maas-navigation;
 @include maas-notifications;
 @include maas-table-actions;
@@ -63,8 +67,12 @@
 @include TagSelector;
 
 // kvm
+@import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
+@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
+@include CPUPopover;
 @include KVMListTable;
+@include KVMComposeInterfacesTable;
 
 // machines
 @import "~app/machines/views/MachineList";

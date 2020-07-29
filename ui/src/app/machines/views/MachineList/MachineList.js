@@ -6,7 +6,7 @@ import React from "react";
 
 import { formatErrors } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";

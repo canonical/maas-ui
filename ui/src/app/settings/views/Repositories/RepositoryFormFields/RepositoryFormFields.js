@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import React from "react";
 
-import { general as generalSelectors } from "app/base/selectors";
+import generalSelectors from "app/store/general/selectors";
 import FormikField from "app/base/components/FormikField";
 
 const generateCheckboxGroup = (key, fields, formikProps) => {

@@ -2,13 +2,6 @@ import type { BaseNode, TestStatus } from "app/store/types/node";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
-export type MachineAction = {
-  name: string;
-  sentence: string;
-  title: string;
-  type: string;
-};
-
 type IpAddresses = {
   ip: string;
   is_boot: boolean;
@@ -43,8 +36,35 @@ export type Machine = BaseNode & {
   storage: number;
   subnets: string[];
   testing_status: TestStatus;
-  vlan: Vlan;
+  vlan: Vlan | null;
   zone: ModelRef;
+};
+
+export type MachineStatus = {
+  aborting: boolean;
+  acquiring: boolean;
+  checkingPower: boolean;
+  commissioning: boolean;
+  deleting: boolean;
+  deploying: boolean;
+  enteringRescueMode: boolean;
+  exitingRescueMode: boolean;
+  locking: boolean;
+  markingBroken: boolean;
+  markingFixed: boolean;
+  overridingFailedTesting: boolean;
+  releasing: boolean;
+  settingPool: boolean;
+  settingZone: boolean;
+  tagging: boolean;
+  testing: boolean;
+  turningOff: boolean;
+  turningOn: boolean;
+  unlocking: boolean;
+};
+
+export type MachineStatuses = {
+  [x: string]: MachineStatus;
 };
 
 export type MachineState = {
@@ -54,5 +74,6 @@ export type MachineState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  selected: string[];
+  selected: Machine["system_id"][];
+  statuses: MachineStatuses;
 };

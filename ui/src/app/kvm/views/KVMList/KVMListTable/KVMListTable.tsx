@@ -3,12 +3,12 @@ import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { actions as podActions } from "app/store/pod";
 import { getStatusText } from "app/utils";
 import {
   controller as controllerActions,
   general as generalActions,
   machine as machineActions,
-  pod as podActions,
   resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
@@ -17,17 +17,15 @@ import type { Machine } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Sort, TSFixMe } from "app/base/types";
-import {
-  general as generalSelectors,
-  pod as podSelectors,
-  resourcepool as poolSelectors,
-} from "app/base/selectors";
-import { useTableSort } from "app/base/hooks";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
+import { useTableSort } from "app/base/hooks";
 import CPUColumn from "./CPUColumn";
+import generalSelectors from "app/store/general/selectors";
 import NameColumn from "./NameColumn";
 import OSColumn from "./OSColumn";
+import podSelectors from "app/store/pod/selectors";
 import PoolColumn from "./PoolColumn";
+import poolSelectors from "app/store/resourcepool/selectors";
 import PowerColumn from "./PowerColumn";
 import RAMColumn from "./RAMColumn";
 import StorageColumn from "./StorageColumn";
@@ -110,12 +108,9 @@ const KVMListTable = (): JSX.Element => {
     key: "name",
     direction: "descending",
   });
-  const {
-    handleGroupCheckbox,
-    handleRowCheckbox,
-  } = generateCheckboxHandlers((podIDs) =>
-    dispatch(podActions.setSelected(podIDs))
-  );
+  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
+    Pod["id"]
+  >((ids) => dispatch(podActions.setSelected(ids)));
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
@@ -238,7 +233,7 @@ const KVMListTable = (): JSX.Element => {
                   onClick={() => updateSort("cpu")}
                   sortKey="cpu"
                 >
-                  CPU
+                  CPU cores
                 </TableHeader>
               ),
             },

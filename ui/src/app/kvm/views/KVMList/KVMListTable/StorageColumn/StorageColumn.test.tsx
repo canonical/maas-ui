@@ -28,7 +28,7 @@ describe("StorageColumn", () => {
     };
   });
 
-  it("can display total storage", () => {
+  it("can display correct storage information", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -36,8 +36,8 @@ describe("StorageColumn", () => {
         <StorageColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__labels").text()).toBe(
-      "100 GB"
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "0.1 of 1 TB assigned"
     );
     expect(wrapper.find("Meter").props().max).toBe(1000000000000);
   });

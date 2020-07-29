@@ -4,47 +4,47 @@
     th {
       // FQDN
       &:nth-child(1) {
-        @include breakpoint-widths(60%, 30%, 20%, 11%);
+        @include breakpoint-widths(60%, 30%, 20%, 24%);
       }
 
       // Power
       &:nth-child(2) {
-        @include breakpoint-widths(0, 20%, 20%, 11%);
+        @include breakpoint-widths(0, 20%, 20%, 15%);
       }
 
       // KVM host type
       &:nth-child(3) {
-        @include breakpoint-widths(40%, 20%, 15%, 8%);
+        @include breakpoint-widths(40%, 20%, 15%, 15%);
       }
 
       // VMs / Owners
       &:nth-child(4) {
-        @include breakpoint-widths(0, 0, 0%, 7%);
+        @include breakpoint-widths(0, 0, 0%, 9%);
       }
 
       // OS
       &:nth-child(5) {
-        @include breakpoint-widths(0, 30%, 25%, 15%);
+        @include breakpoint-widths(0, 30%, 25%, 21%);
       }
 
       // Resource pool / AZ
       &:nth-child(6) {
-        @include breakpoint-widths(0, 0, 20%, 12%);
+        @include breakpoint-widths(0, 0, 20%, 16%);
       }
 
       // CPU
       &:nth-child(7) {
-        @include breakpoint-widths(0, 0, 0, 12%);
+        @include breakpoint-widths(0, 0, 0, 0, 9rem);
       }
 
       // RAM
       &:nth-child(8) {
-        @include breakpoint-widths(0, 0, 0, 12%);
+        @include breakpoint-widths(0, 0, 0, 0, 11rem);
       }
 
       // Storage
       &:nth-child(9) {
-        @include breakpoint-widths(0, 0, 0, 12%);
+        @include breakpoint-widths(0, 0, 0, 0, 11rem);
       }
     }
 

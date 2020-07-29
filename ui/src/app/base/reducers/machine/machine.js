@@ -98,7 +98,12 @@ const machine = createNextState(
           draft.statuses[action.meta.item.system_id][status] = true;
           break;
         case `${type}_SUCCESS`:
-          draft.statuses[action.meta.item.system_id][status] = false;
+          if (status !== "deleting") {
+            // Sometimes the server will respond with "DELETE_MACHINE_NOTIFY"
+            // before "DELETE_MACHINE_SUCCESS", which removes the machine
+            // system_id from statuses.
+            draft.statuses[action.meta.item.system_id][status] = false;
+          }
           break;
         case `${type}_ERROR`:
           draft.statuses[action.meta.item.system_id][status] = false;

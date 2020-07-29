@@ -7,13 +7,11 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import {
-  general as generalSelectors,
-  machine as machineSelectors,
-} from "app/base/selectors";
-import type { Machine, MachineAction } from "app/store/machine/types";
 import ActionForm from "app/base/components/ActionForm";
 import DeployFormFields from "./DeployFormFields";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
+import type { MachineAction } from "app/store/general/types";
 
 const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),
@@ -32,7 +30,10 @@ export type DeployFormValues = {
 };
 
 type Props = {
-  setSelectedAction: (action?: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: (
+    action?: MachineAction | null,
+    deselect?: boolean
+  ) => void;
 };
 
 export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
@@ -42,10 +43,10 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
-  const osInfo = useSelector(generalSelectors.osInfo.get);
-  const deployingSelected: Machine["system_id"][] = useSelector(
-    machineSelectors.deployingSelected
+  const { default_osystem, default_release, osystems, releases } = useSelector(
+    generalSelectors.osInfo.get
   );
+  const deployingSelected = useSelector(machineSelectors.deployingSelected);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -53,16 +54,33 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
+  // Default OS+release is set in the backend even if the image has not yet been
+  // downloaded. The following conditionals check whether the OS+release actually
+  // exist in state before setting initial values in the form.
+  let initialOS = "";
+  let initialRelease = "";
+  if (osystems.some((osChoice) => osChoice[0] === default_osystem)) {
+    initialOS = default_osystem;
+  }
+  if (
+    releases.some((releaseChoice) => {
+      const split = releaseChoice[0].split("/");
+      return split.length > 1 && split[1] === default_release;
+    })
+  ) {
+    initialRelease = default_release;
+  }
+
   return (
     <ActionForm
       actionName="deploy"
-      allowUnchanged
+      allowUnchanged={osystems.length !== 0 && releases.length !== 0}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
       initialValues={{
-        oSystem: osInfo.default_osystem,
-        release: osInfo.default_release,
+        oSystem: initialOS,
+        release: initialRelease,
         kernel: defaultMinHweKernel || "",
         installKVM: false,
       }}

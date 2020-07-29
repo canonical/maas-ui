@@ -1,7 +1,8 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import {
   controller as controllerActions,
@@ -10,7 +11,7 @@ import {
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";
-import { dhcpsnippet as dhcpsnippetSelectors } from "app/base/selectors";
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import { DhcpSnippetShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
@@ -35,12 +36,13 @@ const DhcpSchema = Yup.object().shape({
 });
 
 export const DhcpForm = ({ dhcpSnippet }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [savingDhcp, setSaving] = useState();
   const [name, setName] = useState();
   const errors = useSelector(dhcpsnippetSelectors.errors);
   const saved = useSelector(dhcpsnippetSelectors.saved);
   const saving = useSelector(dhcpsnippetSelectors.saving);
-  const dispatch = useDispatch();
   const editing = !!dhcpSnippet;
   const { loading, loaded, type } = useDhcpTarget(
     editing ? dhcpSnippet.node : null,
@@ -85,9 +87,10 @@ export const DhcpForm = ({ dhcpSnippet }) => {
             ? dhcpSnippet.node || dhcpSnippet.subnet || ""
             : "",
           name: dhcpSnippet ? dhcpSnippet.name : "",
-          type: dhcpSnippet ? type : "",
+          type: (dhcpSnippet && type) || "",
           value: dhcpSnippet ? dhcpSnippet.value : "",
         }}
+        onCancel={() => history.push({ pathname: "/settings/dhcp" })}
         onSaveAnalytics={{
           action: "Saved",
           category: "DHCP snippet settings",

@@ -1,10 +1,9 @@
-import { Button } from "@canonical/react-components";
+import { Button, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
 
 import CopyButton from "app/base/components/CopyButton";
-import Tooltip from "app/base/components/Tooltip";
 
 const TableActions = ({
   copyValue,
@@ -39,6 +38,7 @@ const TableActions = ({
           disabled={deleteDisabled}
           hasIcon
           onClick={() => onDelete()}
+          type="button"
         >
           <i className="p-icon--delete">Delete</i>
         </Button>

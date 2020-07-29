@@ -1,18 +1,17 @@
 import { Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import { actions as podActions } from "app/store/pod";
 import {
-  pod as podActions,
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
-import {
-  pod as podSelectors,
-  resourcepool as resourcePoolSelectors,
-  zone as zoneSelectors,
-} from "app/base/selectors";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import podSelectors from "app/store/pod/selectors";
+import zoneSelectors from "app/store/zone/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import AddRSDFormFields from "../AddRSDFormFields";
 import FormCard from "app/base/components/FormCard";
@@ -30,6 +29,7 @@ const AddRSDSchema = Yup.object().shape({
 
 export const AddRSDForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -90,6 +90,7 @@ export const AddRSDForm = () => {
               power_user: "",
               zone: (zones.length && zones[0].id) || 0,
             }}
+            onCancel={() => history.push({ pathname: "/machines" })}
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Pod",

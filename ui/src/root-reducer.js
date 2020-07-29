@@ -8,25 +8,28 @@ import {
   device,
   dhcpsnippet,
   domain,
+  fabric,
   general,
   licensekeys,
   machine,
   messages,
   notification,
   packagerepository,
-  pod,
   resourcepool,
-  scripts,
   scriptresults,
+  scripts,
   service,
+  space,
   status,
   subnet,
   tag,
   user,
+  vlan,
   zone,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { initialState as userInitialState } from "./app/base/reducers/user/user";
+import pod from "app/store/pod";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>
@@ -36,6 +39,7 @@ const createAppReducer = (history) =>
     device,
     dhcpsnippet,
     domain,
+    fabric,
     general,
     licensekeys,
     machine,
@@ -45,9 +49,10 @@ const createAppReducer = (history) =>
     pod,
     resourcepool,
     router: connectRouter(history),
-    scripts,
     scriptresults,
+    scripts,
     service,
+    space,
     sshkey,
     sslkey,
     status,
@@ -55,6 +60,7 @@ const createAppReducer = (history) =>
     tag,
     token,
     user: reduceReducers(user, auth),
+    vlan,
     zone,
   });
 

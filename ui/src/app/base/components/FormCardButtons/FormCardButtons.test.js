@@ -67,4 +67,14 @@ describe("FormCardButtons ", () => {
       "Be patient!"
     );
   });
+
+  it("does not show cancel button if no onCancel prop", () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+        <FormCardButtons onCancel={undefined} submitLabel="Save" />
+      </MemoryRouter>
+    );
+
+    expect(wrapper.find('[data-test="cancel-action"]').exists()).toBe(false);
+  });
 });

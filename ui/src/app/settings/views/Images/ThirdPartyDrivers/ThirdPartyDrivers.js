@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
 import { config as configActions } from "app/settings/actions";
-import { config as configSelectors } from "app/settings/selectors";
+import configSelectors from "app/store/config/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import ThirdPartyDriversForm from "../ThirdPartyDriversForm";
 

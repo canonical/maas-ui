@@ -1,9 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 import { resourcepool as poolActions } from "app/base/actions";
-import { resourcepool as poolSelectors } from "app/base/selectors";
+import poolSelectors from "app/store/resourcepool/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
@@ -18,6 +19,7 @@ const PoolSchema = Yup.object().shape({
 
 export const PoolForm = ({ pool }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const saved = useSelector(poolSelectors.saved);
   const saving = useSelector(poolSelectors.saving);
   const errors = useSelector(poolSelectors.errors);
@@ -52,10 +54,10 @@ export const PoolForm = ({ pool }) => {
     <FormCard sidebar={false} title={title}>
       <FormikForm
         buttons={FormCardButtons}
-        errors={errors}
         cleanup={poolActions.cleanup}
+        errors={errors}
         initialValues={initialValues}
-        submitLabel="Save pool"
+        onCancel={() => history.push({ pathname: "/pools" })}
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",
@@ -71,9 +73,10 @@ export const PoolForm = ({ pool }) => {
           }
           setSaving(values.name);
         }}
-        saving={saving}
         saved={saved}
         savedRedirect="/pools"
+        saving={saving}
+        submitLabel="Save pool"
         validationSchema={PoolSchema}
       >
         <FormikField type="text" name="name" label="Name (required)" />

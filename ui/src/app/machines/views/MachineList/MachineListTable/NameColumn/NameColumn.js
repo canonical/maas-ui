@@ -1,12 +1,12 @@
+import { Tooltip } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 
 import { generateLegacyURL } from "app/utils";
-import { machine as machineSelectors } from "app/base/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
-import Tooltip from "app/base/components/Tooltip";
 
 const generateFQDN = (machine, machineURL) => {
   return (
@@ -112,7 +112,7 @@ const generateMAC = (machine, machineURL) => {
 
 export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
   const machine = useSelector((state) =>
-    machineSelectors.getBySystemId(state, systemId)
+    machineSelectors.getById(state, systemId)
   );
   const machineURL = generateLegacyURL(
     `/${machine.link_type}/${machine.system_id}`
@@ -126,19 +126,23 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
     <DoubleRow
       data-test="name-column"
       primary={
-        <Input
-          checked={selected}
-          className="has-inline-label keep-label-opacity"
-          id={systemId}
-          label={primaryRow}
-          onChange={handleCheckbox}
-          type="checkbox"
-          wrapperClassName="u-no-margin--bottom machine-list--inline-input"
-        />
+        handleCheckbox ? (
+          <Input
+            checked={selected}
+            className="has-inline-label keep-label-opacity"
+            id={systemId}
+            label={primaryRow}
+            onChange={handleCheckbox}
+            type="checkbox"
+            wrapperClassName="u-no-margin--bottom machine-list--inline-input"
+          />
+        ) : (
+          primaryRow
+        )
       }
-      primaryTextClassName="u-nudge--checkbox"
+      primaryTextClassName={handleCheckbox && "u-nudge--checkbox"}
       secondary={secondaryRow}
-      secondaryClassName="u-nudge--secondary-row"
+      secondaryClassName={handleCheckbox && "u-nudge--secondary-row"}
     />
   );
 };

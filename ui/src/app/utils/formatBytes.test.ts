@@ -21,7 +21,7 @@ describe("formatBytes", () => {
       unit: "KB",
     });
     expect(formatBytes(123, "B", { precision: 1 })).toStrictEqual({
-      value: 123,
+      value: 100,
       unit: "B",
     });
   });
@@ -31,7 +31,9 @@ describe("formatBytes", () => {
       value: 0,
       unit: "B",
     });
-    expect(formatBytes(1023, "MiB", { binary: true })).toStrictEqual({
+    expect(
+      formatBytes(1023, "MiB", { binary: true, precision: 4 })
+    ).toStrictEqual({
       value: 1023,
       unit: "MiB",
     });
@@ -57,6 +59,29 @@ describe("formatBytes", () => {
     expect(formatBytes(-1024, "MiB", { binary: true })).toStrictEqual({
       value: -1,
       unit: "GiB",
+    });
+  });
+
+  it("can convert to a specific unit", () => {
+    expect(formatBytes(1000000, "B", { convertTo: "B" })).toStrictEqual({
+      value: 1000000,
+      unit: "B",
+    });
+    expect(formatBytes(1000000, "B", { convertTo: "KB" })).toStrictEqual({
+      value: 1000,
+      unit: "KB",
+    });
+    expect(formatBytes(1000000, "B", { convertTo: "MB" })).toStrictEqual({
+      value: 1,
+      unit: "MB",
+    });
+    expect(formatBytes(1000000, "B", { convertTo: "GB" })).toStrictEqual({
+      value: 0.001,
+      unit: "GB",
+    });
+    expect(formatBytes(1000000, "B", { convertTo: "TB" })).toStrictEqual({
+      value: 0.000001,
+      unit: "TB",
     });
   });
 });
