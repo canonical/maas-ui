@@ -69,8 +69,10 @@
 // kvm
 @import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
+@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @include CPUPopover;
 @include KVMListTable;
+@include KVMComposeInterfacesTable;
 
 // machines
 @import "~app/machines/views/MachineList";

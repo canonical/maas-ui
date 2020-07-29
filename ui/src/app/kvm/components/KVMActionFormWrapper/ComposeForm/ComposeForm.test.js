@@ -9,19 +9,21 @@ import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
-  pod as podFactory,
+  podDetails as podDetailsFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  space as spaceFactory,
   spaceState as spaceStateFactory,
+  subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
-import ComposeForm from "./ComposeForm";
+import ComposeForm, { createInterfaceConstraints } from "./ComposeForm";
 
 const mockStore = configureStore();
 
@@ -40,7 +42,7 @@ describe("ComposeForm", () => {
         powerTypes: powerTypesStateFactory({ loaded: true }),
       }),
       pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
+        items: [podDetailsFactory({ id: 1 })],
         loaded: true,
         statuses: { 1: podStatusFactory() },
       }),
@@ -76,12 +78,12 @@ describe("ComposeForm", () => {
       "FETCH_DOMAIN",
       "FETCH_FABRIC",
       "FETCH_GENERAL_POWER_TYPES",
-      "FETCH_POD",
       "FETCH_RESOURCEPOOL",
       "FETCH_SPACE",
       "FETCH_SUBNET",
       "FETCH_VLAN",
       "FETCH_ZONE",
+      "GET_POD",
     ];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {
@@ -104,7 +106,11 @@ describe("ComposeForm", () => {
   });
 
   it("can handle composing a machine", () => {
+    const space = spaceFactory({ id: 1, name: "outer" });
+    const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
     const state = { ...initialState };
+    state.space.items = [space];
+    state.subnet.items = [subnet];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -115,21 +121,33 @@ describe("ComposeForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        architecture: "amd64/generic",
-        cores: 5,
-        domain: "0",
-        hostname: "mean-bean-machine",
-        id: "1",
-        memory: 4096,
-        pool: "2",
-        zone: "3",
-      })
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          architecture: "amd64/generic",
+          cores: 5,
+          domain: "0",
+          hostname: "mean-bean-machine",
+          id: "1",
+          interfaces: [
+            {
+              id: 1,
+              ipAddress: "192.168.1.1",
+              name: "eth0",
+              space: "1",
+              subnet: "10",
+            },
+          ],
+          memory: 4096,
+          pool: "2",
+          zone: "3",
+        })
     );
     expect(
-      store.getActions().find((action) => action.type === "COMPOSE_POD")
+      store.getActions().find((action) => action.type === "pod/compose")
     ).toStrictEqual({
-      type: "COMPOSE_POD",
+      type: "pod/compose",
       meta: {
         method: "compose",
         model: "pod",
@@ -141,13 +159,84 @@ describe("ComposeForm", () => {
           domain: 0,
           hostname: "mean-bean-machine",
           id: 1,
-          interfaces: undefined,
+          interfaces:
+            "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
           memory: 4096,
           pool: 2,
           storage: undefined,
           zone: 3,
         },
       },
+    });
+  });
+
+  describe("createInterfacesConstraint", () => {
+    it("returns an empty string if no interfaces are given", () => {
+      const interfaceFields = [];
+      expect(createInterfaceConstraints(interfaceFields, [], [])).toEqual("");
+    });
+
+    it("returns an empty string if no constraints are given", () => {
+      const interfaceFields = [
+        {
+          id: 1,
+          ipAddress: "",
+          name: "eth0",
+          space: "",
+          subnet: "",
+        },
+      ];
+      expect(createInterfaceConstraints(interfaceFields, [], [])).toEqual("");
+    });
+
+    it("can create a single interface constraint", () => {
+      const space = spaceFactory();
+      const subnet = subnetFactory();
+      const interfaceFields = [
+        {
+          id: 1,
+          ipAddress: "192.168.1.1",
+          name: "eth0",
+          space: `${space.id}`,
+          subnet: `${subnet.id}`,
+        },
+      ];
+      expect(
+        createInterfaceConstraints(interfaceFields, [space], [subnet])
+      ).toEqual(
+        `eth0:ip=${interfaceFields[0].ipAddress},space=${space.name},subnet_cidr=${subnet.cidr}`
+      );
+    });
+
+    it("can create multiple interface constraints", () => {
+      const [space1, space2] = [spaceFactory(), spaceFactory()];
+      const [subnet1, subnet2] = [subnetFactory(), subnetFactory()];
+      const [interface1, interface2] = [
+        {
+          id: 1,
+          ipAddress: "192.168.1.1",
+          name: "eth0",
+          space: `${space1.id}`,
+          subnet: `${subnet1.id}`,
+        },
+        {
+          id: 2,
+          ipAddress: "192.168.1.2",
+          name: "eth1",
+          space: `${space2.id}`,
+          subnet: `${subnet2.id}`,
+        },
+      ];
+      expect(
+        createInterfaceConstraints(
+          [interface1, interface2],
+          [space1, space2],
+          [subnet1, subnet2]
+        )
+      ).toEqual(
+        `eth0:ip=${interface1.ipAddress},space=${space1.name},subnet_cidr=${subnet1.cidr};` +
+          `eth1:ip=${interface2.ipAddress},space=${space2.name},subnet_cidr=${subnet2.cidr}`
+      );
     });
   });
 });

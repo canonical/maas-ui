@@ -713,12 +713,22 @@
         <div class="page-header__section col-12 ng-hide" data-ng-show="tabs.controllers.addController">
             <hr />
             <h4 class="page-header__dropdown-title">Add rack controller</h4>
-            <pre><code># To add a new rack controller, SSH into the rack controller.
-# Install the maas-rack-controller package.
-sudo apt install maas-rack-controller
-# Register the rack controller with this MAAS. If the rack controller (and machines)
-# don't have access to the URL, use a different IP address to allow connection.
-sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}</code></pre>
+            <pre>
+                <code>
+                    # To add a new rack controller, SSH into the rack controller.
+                    # Install the maas-rack-controller package.
+                    # Confirm that the MAAS version is the same as the main rack controller.
+                    sudo apt install maas-rack-controller
+                    # Or if you use snap
+                    sudo snap install maas
+
+                    # Register the rack controller with this MAAS. If the rack controller (and machines)
+                    # don't have access to the URL, use a different IP address to allow connection.
+                    sudo maas-rack register --url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}
+                    # Or if you use snap
+                    sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ tabs.controllers.registerSecret $}
+                </code>
+            </pre>
         </div>
         <div class="u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
                 <a href="" class="p-button--neutral"

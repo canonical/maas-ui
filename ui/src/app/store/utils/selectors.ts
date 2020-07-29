@@ -3,29 +3,21 @@ import {
   OutputParametricSelector,
   Selector,
 } from "@reduxjs/toolkit";
-import type { Host } from "app/store/types/host";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
-/**
- * Type guard to determine if host is a machine.
- * @param {Host} host - a machine or controller.
- */
-export const isMachine = (host: Host): host is Machine =>
-  (host as Machine).link_type === "machine";
+import type { RootState } from "app/store/root/types";
 
 // Get the models that follow the generic shape. The following models are excluded:
 // - 'messages' and 'status' are not models from the API.
 // - 'general' has a collection of sub-models that form a different shape.
 // - 'config' contains a collection of children without IDs.
 // - 'scriptresults' returns an object of data rather than an array.
-type CommonStates = Omit<
+export type CommonStates = Omit<
   RootState,
   "messages" | "general" | "status" | "scriptresults" | "config"
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".
-type CommonStateTypes = CommonStates[keyof CommonStates];
+export type CommonStateTypes = CommonStates[keyof CommonStates];
 
 /**
  * @template I - A model item type e.g. DHCPSnippet

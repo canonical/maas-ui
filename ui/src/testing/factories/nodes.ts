@@ -5,6 +5,7 @@ import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
 import type {
   Pod,
+  PodDetails,
   PodHint,
   PodHintExtras,
   PodStoragePool,
@@ -182,4 +183,9 @@ export const pod = extend<Model, Pod>(model, {
   updated: "Fri, 03 Jul. 2020 02:44:12",
   used: podHint,
   zone: 1,
+});
+
+export const podDetails = extend<Pod, PodDetails>(pod, {
+  attached_vlans: () => [],
+  boot_vlans: () => [],
 });

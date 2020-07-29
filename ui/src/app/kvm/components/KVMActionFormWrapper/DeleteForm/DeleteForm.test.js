@@ -48,10 +48,10 @@ describe("DeleteForm", () => {
 
     act(() => wrapper.find("Formik").prop("onSubmit")());
     expect(
-      store.getActions().filter((action) => action.type === "DELETE_POD")
+      store.getActions().filter((action) => action.type === "pod/delete")
     ).toStrictEqual([
       {
-        type: "DELETE_POD",
+        type: "pod/delete",
         meta: {
           model: "pod",
           method: "delete",
@@ -63,7 +63,7 @@ describe("DeleteForm", () => {
         },
       },
       {
-        type: "DELETE_POD",
+        type: "pod/delete",
         meta: {
           model: "pod",
           method: "delete",

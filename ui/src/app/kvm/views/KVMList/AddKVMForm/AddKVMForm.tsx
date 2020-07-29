@@ -1,12 +1,12 @@
 import { Spinner } from "@canonical/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import { actions as podActions } from "app/store/pod";
 import {
   general as generalActions,
-  pod as podActions,
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
@@ -59,6 +59,8 @@ export const AddKVMForm = (): JSX.Element => {
   const allLoaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;
   const initialHostType = "virsh";
 
+  const cleanup = useCallback(() => podActions.cleanup(), []);
+
   // Fetch all data required for the form.
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());
@@ -81,7 +83,7 @@ export const AddKVMForm = (): JSX.Element => {
 
   useAddMessage(
     podSaved,
-    podActions.cleanup,
+    cleanup,
     `${savingPod} added successfully.`,
     setSavingPod
   );
@@ -103,7 +105,7 @@ export const AddKVMForm = (): JSX.Element => {
         <FormCard sidebar={false} title="Add KVM">
           <FormikForm
             buttons={FormCardButtons}
-            cleanup={podActions.cleanup}
+            cleanup={cleanup}
             errors={errors}
             initialValues={{
               name: "",

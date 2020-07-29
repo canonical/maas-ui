@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import { Redirect } from "react-router";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import type { ReactNode } from "react";
 import React, { useEffect } from "react";
 
 import { useSendAnalytics } from "app/base/hooks";
@@ -14,7 +15,7 @@ type Props = {
   Buttons?: JSX.Element;
   buttonsBordered?: boolean;
   cleanup?: () => void;
-  children?: JSX.Element;
+  children?: ReactNode;
   errors?: TSFixMe;
   initialValues: TSFixMe;
   loading?: boolean;

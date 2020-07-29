@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import { actions as podActions } from "app/store/pod";
 import {
-  pod as podActions,
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";

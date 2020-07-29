@@ -1,20 +1,18 @@
 import { someInArray } from "./someInArray";
 
-type CheckboxHandlers = {
+type CheckboxHandlers<ID> = {
   handleGroupCheckbox: (ids: ID[], selectedIDs: ID[]) => void;
   handleRowCheckbox: (rowID: ID, selectedIDs: ID[]) => void;
 };
-
-type ID = number | string;
 
 /**
  * Generate checkbox handlers for use in tables.
  * @param {(newSelectedIDs: ID[]) => void} onChange - the function to run with the new list of IDs
  * @returns {CheckboxHandlers} Checkbox handlers object
  */
-export const generateCheckboxHandlers = (
+export const generateCheckboxHandlers = <ID>(
   onChange: (newSelectedIDs: ID[]) => void
-): CheckboxHandlers => ({
+): CheckboxHandlers<ID> => ({
   // Handler to update a group of checkboxes (including all items in a table).
   handleGroupCheckbox: (ids, selectedIDs) => {
     // If some items in a group are already selected, remove all items in that group.

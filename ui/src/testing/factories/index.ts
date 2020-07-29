@@ -51,6 +51,7 @@ export {
   machine,
   controller,
   pod,
+  podDetails,
   podHint,
   podStoragePool,
 } from "./nodes";

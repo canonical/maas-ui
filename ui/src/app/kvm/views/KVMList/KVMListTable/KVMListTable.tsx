@@ -3,12 +3,12 @@ import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { actions as podActions } from "app/store/pod";
 import { getStatusText } from "app/utils";
 import {
   controller as controllerActions,
   general as generalActions,
   machine as machineActions,
-  pod as podActions,
   resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
@@ -108,12 +108,9 @@ const KVMListTable = (): JSX.Element => {
     key: "name",
     direction: "descending",
   });
-  const {
-    handleGroupCheckbox,
-    handleRowCheckbox,
-  } = generateCheckboxHandlers((podIDs) =>
-    dispatch(podActions.setSelected(podIDs))
-  );
+  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
+    Pod["id"]
+  >((ids) => dispatch(podActions.setSelected(ids)));
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
