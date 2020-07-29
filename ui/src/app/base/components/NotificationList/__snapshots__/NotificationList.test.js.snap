@@ -16,42 +16,30 @@ exports[`NotificationList renders a list of messages 1`] = `
     type="negative"
   >
     <div
-      className="row p-notification--group"
+      className="p-notification--group"
     >
-      <div
-        className="p-notification--negative"
+      <Notification
+        close={null}
+        key="1"
+        type="negative"
       >
         <div
-          className="p-notification__toggle"
+          className="p-notification--negative"
         >
-          <NotificationGroupMessage
-            actionHandler={[Function]}
-            id={1}
-            message="an error"
+          <p
+            className="p-notification__response"
           >
-            <div
-              className="p-notification__response u-no-max-width"
-            >
-              <ul
-                className="p-inline-list u-no-margin--bottom"
-              >
-                <li
-                  className="p-inline-list__item"
-                >
-                  <span
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "an error",
-                      }
-                    }
-                    data-test="notification-message"
-                  />
-                </li>
-              </ul>
-            </div>
-          </NotificationGroupMessage>
+            <span
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "an error",
+                }
+              }
+              data-test="notification-message"
+            />
+          </p>
         </div>
-      </div>
+      </Notification>
     </div>
   </NotificationGroup>
   <Notification

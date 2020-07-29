@@ -42,7 +42,7 @@ describe("NotificationList", () => {
         <NotificationList title="Settings">content</NotificationList>
       </Provider>
     );
-    wrapper.find("Notification").props().close();
+    wrapper.find("Notification").at(1).props().close();
 
     expect(
       store.getActions().find((action) => action.type === "REMOVE_MESSAGE")

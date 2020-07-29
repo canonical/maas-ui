@@ -1,11 +1,36 @@
 @mixin maas-notifications {
   .p-notification--group {
-    > [class^="p-notification"] {
-      flex-direction: column;
+    @extend %vf-has-box-shadow;
+    @extend %vf-has-round-corners;
+    @extend %vf-card;
+    padding: 0;
+
+    [class^="p-notification"] {
+      box-shadow: none;
     }
 
-    .p-list--divided {
+    [class^="p-notification"]:first-child {
+      margin-bottom: 0;
+    }
+
+    [class^="p-notification"] + [class^="p-notification"] {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
       border-top: $border;
+      margin-bottom: 0;
+      margin-top: 0;
+
+      &:before {
+        display: none;
+      }
+
+      .p-notification__response {
+        padding-top: $spv-inner--x-small--scaleable;
+      }
+
+      .p-icon--close {
+        margin-top: $spv-inner--small;
+      }
     }
   }
 }
