@@ -64,16 +64,6 @@ exports[`Footer renders 1`] = `
             Legal information
           </a>
         </li>
-        <li
-          className="p-inline-list__item"
-        >
-          <a
-            href=""
-            onClick={[Function]}
-          >
-            Give feedback
-          </a>
-        </li>
       </ul>
       <p
         className="u-remove-max-width"
