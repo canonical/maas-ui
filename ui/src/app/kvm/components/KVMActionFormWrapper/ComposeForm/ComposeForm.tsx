@@ -154,7 +154,8 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
 
     const ComposeFormSchema = Yup.object().shape({
       architecture: Yup.string(),
-      cores: Yup.number("Cores must be a positive number.")
+      cores: Yup.number()
+        .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
         .max(available.cores, `Only ${available.cores} cores available.`),
       domain: Yup.string(),
@@ -168,7 +169,8 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element | null => {
           subnet: Yup.string(),
         })
       ),
-      memory: Yup.number("RAM must be a positive number.")
+      memory: Yup.number()
+        .positive("RAM must be a positive number.")
         .min(1024, "At least 1024 MiB is required.")
         .max(available.memory, `Only ${available.memory} MiB available.`),
       pool: Yup.string(),
