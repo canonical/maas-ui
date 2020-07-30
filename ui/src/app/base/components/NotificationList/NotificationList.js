@@ -14,6 +14,7 @@ const generateMessages = (messages, dispatch) =>
   messages.map(({ id, message, status, temporary, type }) => (
     <Notification
       close={() => dispatch(messageActions.remove(id))}
+      data-test="message"
       key={id}
       status={status}
       timeout={temporary && 5000}
