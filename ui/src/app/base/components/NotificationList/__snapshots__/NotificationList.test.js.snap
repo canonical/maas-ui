@@ -44,10 +44,12 @@ exports[`NotificationList renders a list of messages 1`] = `
   </NotificationGroup>
   <Notification
     close={[Function]}
+    data-test="message"
     key="1"
   >
     <div
       className="p-notification"
+      data-test="message"
     >
       <p
         className="p-notification__response"

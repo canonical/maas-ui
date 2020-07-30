@@ -23,8 +23,6 @@ context("User add", () => {
     cy.get("input[name='password']").type(password);
     cy.get("input[name='passwordConfirm']").type(password);
     cy.get("button[type='submit']").click();
-    cy.get("p.p-notification__response").contains(
-      `${username} added successfully.`
-    );
+    cy.get(`[data-test='message']:contains(${username} added successfully.)`);
   });
 });
