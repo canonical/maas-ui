@@ -10,13 +10,7 @@ import { capitaliseFirst } from "app/utils";
 import { useVisible } from "app/base/hooks";
 import { notification as notificationActions } from "app/base/actions";
 import type { Notification as NotificationType } from "app/store/notification/types";
-
-export const notificationTypes = {
-  CAUTION: "caution",
-  INFORMATION: "information",
-  NEGATIVE: "negative",
-  POSITIVE: "positive",
-};
+import type { MessageType } from "app/store/message/types";
 
 const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
   notifications.forEach((notification) => {
@@ -32,7 +26,7 @@ const dismiss = (id: NotificationType["id"], dispatch: Dispatch) => {
 
 type Props = {
   notifications: NotificationType[];
-  type: "caution" | "negative" | "positive" | "information";
+  type: MessageType;
 };
 
 const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
