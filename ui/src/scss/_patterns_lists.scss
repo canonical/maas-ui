@@ -3,6 +3,7 @@
     display: grid;
     grid-column-gap: $sph-inner;
     grid-template-columns: min-content auto;
+    grid-template-rows: min-content;
   }
 
   .p-grid-list__label {
