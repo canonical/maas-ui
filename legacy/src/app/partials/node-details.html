@@ -886,7 +886,7 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                     aria-describedby="not-connected-tooltip">
                                                     <i class="p-icon--disconnected"></i>
@@ -903,7 +903,7 @@
                                             </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                             </span>
                                         </div>
@@ -1206,7 +1206,7 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                     aria-describedby="not-connected-tooltip">
                                                     <i class="p-icon--disconnected"></i>
@@ -1223,7 +1223,7 @@
                                             </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                             </span>
                                         </div>
@@ -1338,7 +1338,7 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                     aria-describedby="not-connected-tooltip">
                                                     <i class="p-icon--disconnected"></i>
@@ -1355,7 +1355,7 @@
                                             </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                             </span>
                                         </div>
@@ -1473,7 +1473,7 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                     aria-describedby="not-connected-tooltip">
                                                     <i class="p-icon--error"></i>
@@ -1492,7 +1492,7 @@
                                                 </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                             </span>
                                         </div>
@@ -2192,7 +2192,7 @@
                                     </td>
                                     <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                         <div class="p-double-row__icon-container">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                     aria-describedby="not-connected-tooltip">
                                                     <i class="p-icon--error"></i>
@@ -2211,7 +2211,7 @@
                                             </span>
                                         </div>
                                         <div class="p-double-row__rows-container--icon">
-                                            <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                            <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                                 {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                             </span>
                                         </div>
@@ -2630,7 +2630,7 @@
                                 </td>
                                 <td class="p-table__col--status p-double-row" aria-label="Link and interface speed">
                                     <div class="p-double-row__icon-container">
-                                        <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                        <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                             <span class="p-tooltip--top-left" data-ng-if="!interface.link_connected"
                                                 aria-describedby="not-connected-tooltip">
                                                 <i class="p-icon--disconnected"></i>
@@ -2647,7 +2647,7 @@
                                         </span>
                                     </div>
                                     <div class="p-double-row__rows-container--icon">
-                                        <span ng-if="!isBond(interface) && !isBridge(interface)">
+                                        <span ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)">
                                             {$ formatSpeedUnits(interface.link_speed) $}/{$ formatSpeedUnits(interface.interface_speed) $}
                                         </span>
                                     </div>
