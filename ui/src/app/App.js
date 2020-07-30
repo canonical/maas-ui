@@ -176,7 +176,14 @@ export const App = () => {
         version={version}
       />
       {content}
-      {maasName && version && <Footer maasName={maasName} version={version} />}
+      {maasName && version && (
+        <Footer
+          debug={debug}
+          enableAnalytics={analyticsEnabled}
+          maasName={maasName}
+          version={version}
+        />
+      )}
     </div>
   );
 };

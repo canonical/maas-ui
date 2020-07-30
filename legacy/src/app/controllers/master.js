@@ -72,6 +72,8 @@ function MasterController(
     }
     ReactDOM.render(
       <Footer
+        debug={debug}
+        enableAnalytics={$window.CONFIG.enable_analytics}
         maasName={$window.CONFIG.maas_name}
         version={$window.CONFIG.version}
       />,
