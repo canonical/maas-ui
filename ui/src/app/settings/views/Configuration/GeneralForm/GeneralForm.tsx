@@ -15,7 +15,7 @@ const GeneralSchema = Yup.object().shape({
   enable_analytics: Yup.boolean(),
 });
 
-const GeneralForm = () => {
+const GeneralForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
@@ -46,11 +46,14 @@ const GeneralForm = () => {
         label: "General form",
       }}
       onSubmit={(values, { resetForm }) => {
-        sendAnalyticsEvent(
-          "General configuration settings",
-          values.enable_analytics ? "Turned on" : "Turned off",
-          "Enable Google Analytics"
-        );
+        if (values.enable_analytics !== previousEnableAnalytics) {
+          // Only send the analytics event if the value changes.
+          sendAnalyticsEvent(
+            "General configuration settings",
+            values.enable_analytics ? "Turned on" : "Turned off",
+            "Enable Google Analytics"
+          );
+        }
         dispatch(configActions.update(values));
         resetForm({ values });
       }}
@@ -79,6 +82,14 @@ const GeneralForm = () => {
             </Link>
           </>
         }
+        wrapperClassName="u-sv3"
+      />
+      <h5 className="u-sv1">Notifications</h5>
+      <FormikField
+        label="Enable new release notifications"
+        type="checkbox"
+        name="release_notifications"
+        help="This applies to all users of MAAS. "
         wrapperClassName="u-sv3"
       />
     </FormikForm>
