@@ -7,6 +7,7 @@ import { Button, Notification } from "@canonical/react-components";
 import type { Dispatch } from "redux";
 
 import { capitaliseFirst } from "app/utils";
+import { isReleaseNotification } from "app/store/utils";
 import { useVisible } from "app/base/hooks";
 import { notification as notificationActions } from "app/base/actions";
 import type { Notification as NotificationType } from "app/store/notification/types";
@@ -76,18 +77,32 @@ const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
       ) : null}
       {((groupOpen && notifications.length > 1) ||
         notifications.length === 1) &&
-        notifications.map(({ dismissable, id, message }) => (
-          <Notification
-            close={dismissable ? () => dismiss(id, dispatch) : null}
-            key={id}
-            type={type}
-          >
-            <span
-              data-test="notification-message"
-              dangerouslySetInnerHTML={{ __html: message }}
-            ></span>
-          </Notification>
-        ))}
+        notifications.map((notification) => {
+          const { dismissable, id, message } = notification;
+          const showMenu = isReleaseNotification(notification);
+          return (
+            <Notification
+              className={showMenu ? "p-notification--has-menu" : null}
+              close={dismissable ? () => dismiss(id, dispatch) : null}
+              key={id}
+              type={type}
+            >
+              <span
+                data-test="notification-message"
+                dangerouslySetInnerHTML={{ __html: message }}
+              ></span>
+              {showMenu && (
+                <Button
+                  appearance="base"
+                  className="p-notification__menu-button p-icon--contextual-menu"
+                  hasIcon={true}
+                >
+                  Menu
+                </Button>
+              )}
+            </Notification>
+          );
+        })}
     </div>
   );
 };

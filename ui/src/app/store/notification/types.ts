@@ -2,6 +2,10 @@ import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 import type { User } from "app/store/user/types";
 
+export enum NotificationIdent {
+  release = "release_notification",
+}
+
 export type NotificationCategory = "error" | "warning" | "success" | "info";
 
 export type Notification = Model & {
