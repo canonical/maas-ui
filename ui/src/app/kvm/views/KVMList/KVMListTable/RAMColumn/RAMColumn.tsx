@@ -5,6 +5,7 @@ import { formatBytes } from "app/utils";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import Meter from "app/base/components/Meter";
+import RAMPopover from "./RAMPopover";
 
 type Props = { id: number };
 
@@ -25,23 +26,29 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
     });
 
     return (
-      <Meter
-        className="u-no-margin--bottom"
-        data={[
-          {
-            key: `${pod.name}-memory-meter`,
-            value: pod.used.memory,
-          },
-        ]}
-        label={
-          <small className="u-text--light">
-            {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} assigned`}
-          </small>
-        }
-        labelClassName="u-align--right"
-        max={pod.total.memory * pod.memory_over_commit_ratio}
-        small
-      />
+      <RAMPopover
+        assigned={pod.used.memory}
+        overcommit={pod.memory_over_commit_ratio}
+        physical={pod.total.memory}
+      >
+        <Meter
+          className="u-no-margin--bottom"
+          data={[
+            {
+              key: `${pod.name}-memory-meter`,
+              value: pod.used.memory,
+            },
+          ]}
+          label={
+            <small className="u-text--light">
+              {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} assigned`}
+            </small>
+          }
+          labelClassName="u-align--right"
+          max={pod.total.memory * pod.memory_over_commit_ratio}
+          small
+        />
+      </RAMPopover>
     );
   }
   return null;

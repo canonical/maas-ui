@@ -4,6 +4,21 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  controllerState as controllerStateFactory,
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  pod as podFactory,
+  podState as podStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 import { nodeStatus } from "app/base/enum";
 import KVMListTable from "./KVMListTable";
 
@@ -12,100 +27,35 @@ const mockStore = configureStore();
 describe("KVMListTable", () => {
   let initialState;
   beforeEach(() => {
-    initialState = {
-      controller: {
-        loaded: true,
-        loading: false,
-        items: [],
-      },
-      general: {
-        osInfo: {
+    const pods = [
+      podFactory({ pool: 1, zone: 1 }),
+      podFactory({ pool: 2, zone: 2 }),
+    ];
+    initialState = rootStateFactory({
+      controller: controllerStateFactory({ loaded: true }),
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
-          loading: false,
-          data: {
-            osystems: [
-              ["centos", "CentOS"],
-              ["ubuntu", "Ubuntu"],
-            ],
-            releases: [
-              ["centos/centos66", "CentOS 6"],
-              ["centos/centos70", "CentOS 7"],
-              ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
-              ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"'],
-            ],
-          },
-        },
-      },
-      machine: {
+          data: osInfoFactory(),
+        }),
+      }),
+      machine: machineStateFactory({ loaded: true }),
+      pod: podStateFactory({ items: pods, loaded: true }),
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
-        loading: false,
-        items: [],
-      },
-      pod: {
         items: [
-          {
-            cpu_over_commit_ratio: 1,
-            composed_machines_count: 10,
-            id: 1,
-            memory_over_commit_ratio: 1,
-            name: "pod-1",
-            owners_count: 5,
-            pool: 1,
-            total: {
-              cores: 8,
-              local_storage: 1000000000000,
-              memory: 8192,
-            },
-            type: "virsh",
-            used: {
-              cores: 4,
-              local_storage: 100000000000,
-              memory: 2048,
-            },
-            zone: 1,
-          },
-          {
-            cpu_over_commit_ratio: 1,
-            composed_machines_count: 5,
-            host: null,
-            id: 2,
-            memory_over_commit_ratio: 1,
-            name: "pod-2",
-            owners_count: 5,
-            pool: 2,
-            total: {
-              cores: 16,
-              local_storage: 2000000000000,
-              memory: 16384,
-            },
-            type: "lxd",
-            used: {
-              cores: 8,
-              local_storage: 200000000000,
-              memory: 4068,
-            },
-            zone: 1,
-          },
+          resourcePoolFactory({ id: pods[0].pool }),
+          resourcePoolFactory({ id: pods[1].pool }),
         ],
-        selected: [],
-      },
-      resourcepool: {
+      }),
+      zone: zoneStateFactory({
+        loaded: true,
         items: [
-          {
-            id: 1,
-            name: "swimming-pool",
-          },
+          zoneFactory({ id: pods[0].zone }),
+          zoneFactory({ id: pods[1].zone }),
         ],
-      },
-      zone: {
-        items: [
-          {
-            id: 1,
-            name: "alone-zone",
-          },
-        ],
-      },
-    };
+      }),
+    });
   });
 
   it("correctly fetches the necessary data", () => {
@@ -204,19 +154,22 @@ describe("KVMListTable", () => {
   });
 
   it("can sort by power state of pod hosts", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      {
+    const machines = [
+      machineFactory({
         power_state: "on",
         system_id: "abc123",
-      },
-      {
+      }),
+      machineFactory({
         power_state: "error",
         system_id: "def456",
-      },
+      }),
     ];
-    state.pod.items[0].host = "abc123";
-    state.pod.items[1].host = "def456";
+    const state = { ...initialState };
+    state.machine.items = machines;
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+    firstPod.host = machines[0].system_id;
+    secondPod.host = machines[1].system_id;
+
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -225,7 +178,6 @@ describe("KVMListTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
 
     // Sort pods by descending power state.
     wrapper.find('[data-test="power-header"]').find("button").simulate("click");
@@ -251,23 +203,37 @@ describe("KVMListTable", () => {
   });
 
   it("can sort by OS of pod hosts", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      {
+    const machines = [
+      machineFactory({
         distro_series: "bionic",
         osystem: "ubuntu",
         status_code: nodeStatus.DEPLOYED,
         system_id: "abc123",
-      },
-      {
+      }),
+      machineFactory({
         distro_series: "centos70",
         osystem: "centos",
         status_code: nodeStatus.DEPLOYED,
         system_id: "def456",
-      },
+      }),
     ];
-    state.pod.items[0].host = "abc123";
-    state.pod.items[1].host = "def456";
+    const state = { ...initialState };
+    state.machine.items = machines;
+    state.general.osInfo.data = osInfoFactory({
+      osystems: [
+        ["centos", "CentOS"],
+        ["ubuntu", "Ubuntu"],
+      ],
+      releases: [
+        ["centos/centos66", "CentOS 6"],
+        ["centos/centos70", "CentOS 7"],
+        ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
+        ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"'],
+      ],
+    });
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+    firstPod.host = machines[0].system_id;
+    secondPod.host = machines[1].system_id;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -276,7 +242,6 @@ describe("KVMListTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
 
     // Sort pods by descending OS.
     wrapper.find('[data-test="os-header"]').find("button").simulate("click");
@@ -302,19 +267,21 @@ describe("KVMListTable", () => {
   });
 
   it("can sort by pod resource pool", () => {
-    const state = { ...initialState };
-    state.resourcepool.items = [
-      {
+    const pools = [
+      resourcePoolFactory({
         id: 1,
         name: "first-pool",
-      },
-      {
+      }),
+      resourcePoolFactory({
         id: 2,
         name: "second-pool",
-      },
+      }),
     ];
-    state.pod.items[0].pool = 1;
-    state.pod.items[1].pool = 2;
+    const state = { ...initialState };
+    state.resourcepool.items = pools;
+    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+    firstPod.pool = pools[0].id;
+    secondPod.pool = pools[1].id;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -323,7 +290,6 @@ describe("KVMListTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
 
     // Sort pods by descending pool.
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
@@ -348,7 +314,7 @@ describe("KVMListTable", () => {
 
   it("shows a checked checkbox in header row if all pods are selected", () => {
     const state = { ...initialState };
-    state.pod.selected = [1, 2];
+    state.pod.selected = [state.pod.items[0].id, state.pod.items[1].id];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -370,7 +336,7 @@ describe("KVMListTable", () => {
 
   it("shows a mixed checkbox in header row if only some pods are selected", () => {
     const state = { ...initialState };
-    state.pod.selected = [1];
+    state.pod.selected = [state.pod.items[0].id];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -411,13 +377,13 @@ describe("KVMListTable", () => {
       store.getActions().find((action) => action.type === "pod/setSelected")
     ).toStrictEqual({
       type: "pod/setSelected",
-      payload: [1],
+      payload: [state.pod.items[0].id],
     });
   });
 
   it("correctly dispatches action when checked pod checkbox clicked", () => {
     const state = { ...initialState };
-    state.pod.selected = [1];
+    state.pod.selected = [state.pod.items[0].id];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

@@ -3,33 +3,34 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  pod as podFactory,
+  podHint as podHintFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import StorageColumn from "./StorageColumn";
 
 const mockStore = configureStore();
 
 describe("StorageColumn", () => {
-  let initialState;
-  beforeEach(() => {
-    initialState = {
-      pod: {
+  it("displays correct storage information", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
+          podFactory({
             id: 1,
             name: "pod-1",
-            total: {
+            total: podHintFactory({
               local_storage: 1000000000000,
-            },
-            used: {
+            }),
+            used: podHintFactory({
               local_storage: 100000000000,
-            },
-          },
+            }),
+          }),
         ],
-      },
-    };
-  });
-
-  it("can display correct storage information", () => {
-    const state = { ...initialState };
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
