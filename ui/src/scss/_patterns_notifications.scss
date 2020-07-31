@@ -33,4 +33,22 @@
       }
     }
   }
+
+  .p-notification--has-menu {
+    .p-notification__response {
+      display: flex;
+      flex: 1;
+    }
+
+    .p-notification__menu-button {
+      border: 0;
+      flex: 0;
+      margin: $spv-inner--x-small 0 auto auto;
+      padding: $spv-inner--small;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
 }

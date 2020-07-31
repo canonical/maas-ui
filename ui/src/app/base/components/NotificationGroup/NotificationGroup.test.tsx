@@ -7,6 +7,7 @@ import {
   notification as notificationFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { NotificationIdent } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 
 import NotificationGroup from "./NotificationGroup";
@@ -164,5 +165,19 @@ describe("NotificationGroup", () => {
     wrapper.find("Button").at(0).simulate("click");
 
     expect(wrapper.find("Notification").length).toEqual(4);
+  });
+
+  it("shows a menu button for release notifications", () => {
+    const store = mockStore(state);
+    const notifications = [
+      notificationFactory({ ident: NotificationIdent.release }),
+    ];
+    const wrapper = mount(
+      <Provider store={store}>
+        <NotificationGroup notifications={notifications} type="negative" />
+      </Provider>
+    );
+    expect(wrapper.find(".p-notification__menu-button").exists()).toBe(true);
+    expect(wrapper.find(".p-notification--has-menu").exists()).toBe(true);
   });
 });

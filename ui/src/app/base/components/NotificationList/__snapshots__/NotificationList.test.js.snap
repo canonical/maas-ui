@@ -19,6 +19,7 @@ exports[`NotificationList renders a list of messages 1`] = `
       className="p-notification--group"
     >
       <Notification
+        className={null}
         close={null}
         key="1"
         type="negative"
