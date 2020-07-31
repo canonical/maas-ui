@@ -1,30 +1,30 @@
-@mixin CPUPopover {
-  %cpu-popover-grid {
+@mixin RAMPopover {
+  %ram-popover-grid {
     display: grid;
-    grid-template-columns: 2.75rem auto;
+    grid-template-columns: 6rem auto;
     padding: $spv-inner--small $spv-outer--medium;
   }
 
-  .cpu-popover {
-    width: 13.25rem;
+  .ram-popover {
+    width: 16.5rem;
   }
 
-  .cpu-popover__primary {
-    @extend %cpu-popover-grid;
+  .ram-popover__primary {
+    @extend %ram-popover-grid;
   }
 
-  .cpu-popover__secondary {
-    @extend %cpu-popover-grid;
+  .ram-popover__secondary {
+    @extend %ram-popover-grid;
     background: $color-light;
   }
 
-  .cpu-popover__separator {
+  .ram-popover__separator {
     grid-column-start: 1;
     grid-column-end: 3;
     margin-top: $spv-outer--small;
   }
 
-  .cpu-popover__value {
+  .ram-popover__value {
     align-items: center;
     display: flex;
     justify-content: flex-end;

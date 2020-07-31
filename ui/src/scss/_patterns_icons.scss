@@ -26,7 +26,21 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='16' width='12'%3E%3Cpath d='M6 0C3.793 0 2 1.793 2 4v3H0v9h12V7h-2V4c0-2.207-1.793-4-4-4zm0 1c1.67 0 3 1.33 3 3v3H3V4c0-1.67 1.33-3 3-3zm1 8.5V14H5v-4l2-.5z' fill='"+ vf-url-friendly-color($color) + "' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
+@mixin maas-icon-circle($color) {
+  @extend %icon;
+  @include vf-icon-size(0.5rem);
+  background-color: $color;
+  border-radius: 100%;
+}
+
 @mixin maas-icons {
+  $color-assigned: $color-link;
+  $color-unassigned: #d3e4ed;
+
+  .p-icon--assigned {
+    @include maas-icon-circle($color-assigned);
+  }
+
   .p-icon--edit {
     @extend %icon;
     @include maas-icon-edit($color-mid-dark);
@@ -70,6 +84,10 @@
   .p-icon--timed-out {
     @extend %icon;
     background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' height='16px' width='16px' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3E%3C!-- Generator: Sketch 42 %2836781%29 - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Etimed out%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='Page-1' fill-rule='evenodd' fill='none'%3E%3Cg id='smoke-testing-status' transform='translate%28-62 -206%29'%3E%3Cg id='timed-out' transform='translate%2850 191%29'%3E%3Cg transform='translate%2812 15%29'%3E%3Crect id='rect4970' y='0.00002' x='0' height='16' width='16'/%3E%3Ccircle id='circle4972' stroke-width='1.5' cy='8' stroke='%23E95420' cx='8' r='7.25'/%3E%3Cpolyline id='path839' stroke='%23E95420' stroke-width='2' points='11.8 11.8 7.9999 8 7.9999 3'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+  }
+
+  .p-icon--unassigned {
+    @include maas-icon-circle($color-unassigned);
   }
 
   [class*="p-icon--"].is-inline {

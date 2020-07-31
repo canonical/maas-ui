@@ -1,4 +1,4 @@
-import { define, extend, random, sequence } from "cooky-cutter";
+import { define, extend, random } from "cooky-cutter";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
@@ -148,12 +148,12 @@ const podHintExtras = define<PodHintExtras>({
 
 export const podStoragePool = define<PodStoragePool>({
   available: 700000000000,
-  total: 1000000000000,
-  used: 300000000000,
-  name: () => `storage-pool-${random()}`,
+  id: () => `pool-id-${random()}`,
+  name: () => `pool-name-${random()}`,
   path: () => `/path/to/${random()}`,
-  id: sequence,
+  total: 1000000000000,
   type: "lvm",
+  used: 300000000000,
 });
 
 export const pod = extend<Model, Pod>(model, {

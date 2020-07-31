@@ -15809,6 +15809,11 @@ vanilla-framework@2.14.1:
   resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.14.1.tgz#33fd21f3e546e1905f5c59c2dc5d04ae456d3e20"
   integrity sha512-AHqqvbixiCKW6pHxsYh2WXPNMWvpiE0BNPxpFLP+mNigISGKghv+TB/OzJFhozfz2Zub+uGrlPjN2ysPON9G9w==
 
+vanilla-framework@2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.15.0.tgz#be22c92cda0a22108daa35eb76d096add0cebbe7"
+  integrity sha512-PrNwDwAHUCVnJQz0hIufFm5GHpeDds+uiK9GHtXD/mgyDoFeQLrARSqIb9cA0FtYqoCOw3vJPmk1HD08eKTNnA==
+
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
