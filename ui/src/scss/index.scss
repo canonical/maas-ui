@@ -55,6 +55,7 @@
 @import "~app/base/components/FormCard";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
+@import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
@@ -62,15 +63,20 @@
 @include FormCard;
 @include Login;
 @include Meter;
+@include Popover;
 @include Section;
 @include TableMenu;
 @include TagSelector;
 
 // kvm
 @import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
+@import "~app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMPopover";
+@import "~app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @include CPUPopover;
+@include RAMPopover;
+@include StoragePopover;
 @include KVMListTable;
 @include KVMComposeInterfacesTable;
 

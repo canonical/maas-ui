@@ -25,7 +25,6 @@ const KVMDetailsActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
       ]}
       position="right"
       toggleAppearance="positive"
-      toggleClassName="u-no-margin--bottom"
       toggleLabel="Take action"
     />
   );

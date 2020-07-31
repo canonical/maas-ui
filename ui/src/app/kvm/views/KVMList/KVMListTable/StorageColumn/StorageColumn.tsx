@@ -5,6 +5,7 @@ import { formatBytes } from "app/utils";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import Meter from "app/base/components/Meter";
+import StoragePopover from "./StoragePopover";
 
 type Props = { id: number };
 
@@ -20,23 +21,25 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
     });
 
     return (
-      <Meter
-        className="u-no-margin--bottom"
-        data={[
-          {
-            key: `${pod.name}-storage-meter`,
-            value: pod.used.local_storage,
-          },
-        ]}
-        label={
-          <small className="u-text--light">
-            {`${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`}
-          </small>
-        }
-        labelClassName="u-align--right"
-        max={pod.total.local_storage}
-        small
-      />
+      <StoragePopover pools={pod.storage_pools}>
+        <Meter
+          className="u-no-margin--bottom"
+          data={[
+            {
+              key: `${pod.name}-storage-meter`,
+              value: pod.used.local_storage,
+            },
+          ]}
+          label={
+            <small className="u-text--light">
+              {`${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`}
+            </small>
+          }
+          labelClassName="u-align--right"
+          max={pod.total.local_storage}
+          small
+        />
+      </StoragePopover>
     );
   }
   return null;
