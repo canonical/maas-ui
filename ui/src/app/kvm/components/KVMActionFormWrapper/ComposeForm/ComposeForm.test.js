@@ -12,6 +12,7 @@ import {
   podDetails as podDetailsFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
+  podStoragePool as podStoragePoolFactory,
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -23,7 +24,10 @@ import {
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
-import ComposeForm, { createInterfaceConstraints } from "./ComposeForm";
+import ComposeForm, {
+  createInterfaceConstraints,
+  createStorageConstraints,
+} from "./ComposeForm";
 
 const mockStore = configureStore();
 
@@ -105,10 +109,18 @@ describe("ComposeForm", () => {
     expect(wrapper.find("Spinner").length).toBe(1);
   });
 
-  it("can handle composing a machine", () => {
+  it("composes a machine", () => {
+    const pod = podDetailsFactory({
+      id: 1,
+      storage_pools: [
+        podStoragePoolFactory({ name: "pool-1" }),
+        podStoragePoolFactory({ name: "pool-2 " }),
+      ],
+    });
     const space = spaceFactory({ id: 1, name: "outer" });
     const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
     const state = { ...initialState };
+    state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
     const store = mockStore(state);
@@ -126,7 +138,22 @@ describe("ComposeForm", () => {
         .props()
         .onSubmit({
           architecture: "amd64/generic",
+          bootDisk: 2,
           cores: 5,
+          disks: [
+            {
+              id: 1,
+              location: "pool-1",
+              size: 16,
+              tags: ["tag1", "tag2"],
+            },
+            {
+              id: 2,
+              location: "pool-2",
+              size: 32,
+              tags: ["tag3"],
+            },
+          ],
           domain: "0",
           hostname: "mean-bean-machine",
           id: "1",
@@ -163,7 +190,7 @@ describe("ComposeForm", () => {
             "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
           memory: 4096,
           pool: 2,
-          storage: undefined,
+          storage: "2:32(pool-2,tag3),1:16(pool-1,tag1,tag2)",
           zone: 3,
         },
       },
@@ -236,6 +263,34 @@ describe("ComposeForm", () => {
       ).toEqual(
         `eth0:ip=${interface1.ipAddress},space=${space1.name},subnet_cidr=${subnet1.cidr};` +
           `eth1:ip=${interface2.ipAddress},space=${space2.name},subnet_cidr=${subnet2.cidr}`
+      );
+    });
+  });
+
+  describe("createStorageConstraints", () => {
+    it("returns an empty string if no disks are given", () => {
+      expect(createStorageConstraints()).toEqual("");
+      expect(createStorageConstraints([])).toEqual("");
+    });
+
+    it("correctly returns storage constraint for pod compose action", () => {
+      const [pool1, pool2] = [
+        podStoragePoolFactory({ name: "pool-1" }),
+        podStoragePoolFactory({ name: "pool-2" }),
+      ];
+      const [bootDisk, otherDisk] = [
+        { id: 1, location: pool1.name, size: 16, tags: ["tag1", "tag2"] },
+        { id: 2, location: pool2.name, size: 32, tags: ["tag3"] },
+      ];
+
+      expect(
+        createStorageConstraints([otherDisk, bootDisk], bootDisk.id)
+      ).toEqual(
+        `${bootDisk.id}:${bootDisk.size}(${
+          bootDisk.location
+        },${bootDisk.tags.join(",")}),${otherDisk.id}:${otherDisk.size}(${
+          otherDisk.location
+        },${otherDisk.tags.join(",")})`
       );
     });
   });

@@ -18,21 +18,18 @@
 
 // 03-02-2020 Caleb: Cannot give label a className when using Input component.
 // https://github.com/canonical-web-and-design/react-components/issues/67
-input[type="checkbox"],
-input[type="radio"] {
-  &.has-inline-label + label {
-    display: inline;
-    padding-top: 0;
+input[type="checkbox"].has-inline-label + label {
+  display: inline;
+  padding-top: 0;
 
-    &::before {
-      left: 0rem;
-      top: 0.125rem;
-    }
+  &::before {
+    left: 0rem;
+    top: 0.125rem;
+  }
 
-    &::after {
-      left: 0.1875rem;
-      top: 0.375rem;
-    }
+  &::after {
+    left: 0.1875rem;
+    top: 0.375rem;
   }
 }
 

@@ -42,36 +42,5 @@
         width: 4.5rem;
       }
     }
-
-    input,
-    select {
-      margin-bottom: 0;
-      min-width: 0;
-    }
-
-    .p-form-validation__message {
-      margin-top: 0;
-    }
-
-    @media screen and (max-width: $breakpoint-medium) {
-      tr {
-        padding: calc(#{$spv-inner--small} - 1px) $sph-inner;
-        width: 100%;
-      }
-
-      td {
-        align-items: center;
-        padding-left: calc(33% + #{$sph-inner--small});
-
-        .p-form__group {
-          flex: 1;
-        }
-
-        &[aria-label="Actions"] > * {
-          left: calc(-#{$sph-inner--small} - 1px);
-          position: relative;
-        }
-      }
-    }
   }
 }
