@@ -351,6 +351,7 @@ export function NodeNetworkingController(
   $scope.isBond = (item) => item && item.type === "bond";
   $scope.isBridge = (item) => item && item.type === "bridge";
   $scope.isInterface = (item) => item && item.type === "physical";
+  $scope.isVLAN = (item) => item && item.type === "vlan";
 
   // Sets loaded to true if both the node has been loaded at the
   // other required managers for this scope have been loaded.
