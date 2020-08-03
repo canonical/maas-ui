@@ -74,11 +74,13 @@
 @import "~app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
+@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
 @include CPUPopover;
 @include RAMPopover;
 @include StoragePopover;
 @include KVMListTable;
 @include KVMComposeInterfacesTable;
+@include KVMComposeStorageTable;
 
 // machines
 @import "~app/machines/views/MachineList";

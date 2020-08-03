@@ -78,9 +78,5 @@
 
   .tag-selector__selected-button {
     padding: 0 $sph-inner--small 0 0 !important;
-
-    .p-icon--close {
-      @include vf-icon-size(0.875rem);
-    }
   }
 }

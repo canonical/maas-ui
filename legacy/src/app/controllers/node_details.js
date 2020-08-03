@@ -358,7 +358,8 @@ function NodeDetailsController(
 
   // Update the available action options for the node.
   function updateAvailableActionOptions() {
-    if (!angular.isObject($scope.node)) {
+    if (!angular.isObject($scope.node) || $scope.node.node_type === undefined) {
+      // Don't continue if the node isn't fully loaded.
       return;
     }
     const actionTypeForNodeType = {
