@@ -444,4 +444,17 @@ describe("config selectors", () => {
       expect(config.completedIntro(state)).toBe(true);
     });
   });
+
+  describe("releaseNotifications", () => {
+    it("returns MAAS config for completed intro", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({ name: "release_notifications", value: true }),
+          ],
+        }),
+      });
+      expect(config.releaseNotifications(state)).toBe(true);
+    });
+  });
 });

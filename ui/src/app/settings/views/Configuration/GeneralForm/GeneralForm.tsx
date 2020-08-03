@@ -19,6 +19,9 @@ const GeneralForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
+  const releaseNotifications = useSelector(
+    configSelectors.releaseNotifications
+  );
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
@@ -39,6 +42,7 @@ const GeneralForm = (): JSX.Element => {
       initialValues={{
         maas_name: maasName,
         enable_analytics: analyticsEnabled,
+        release_notifications: releaseNotifications,
       }}
       onSaveAnalytics={{
         action: "Saved",
