@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import podSelectors from "app/store/pod/selectors";
 import { chunk, formatBytes } from "app/utils";
 import Meter from "app/base/components/Meter";
-import podSelectors from "app/store/pod/selectors";
 
 type Props = { id: Pod["id"] };
 

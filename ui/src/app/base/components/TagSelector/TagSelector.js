@@ -38,10 +38,11 @@ const generateDropdownItems = ({
   if (
     allowNewTags &&
     filter &&
-    !tags.some((tag) => (tag.displayName || tag.name) === filter)
+    !tags.some((tag) => (tag.displayName || tag.name) === filter) &&
+    !selectedTags.some((tag) => (tag.displayName || tag.name) === filter)
   ) {
-    // Insert an extra item for creating a new tag if allowed, filter is present
-    // is not an already existing tag
+    // Insert an extra item for creating a new tag if allowed and filter is not
+    // an already existing tag
     const newTagItem = (
       <li className="tag-selector__dropdown-item" key={filter}>
         <Button
@@ -88,8 +89,8 @@ const generateDropdownItems = ({
         </Button>
       </li>
     ));
-  dropdownItems.push(existingTagItems);
-  return dropdownItems;
+
+  return dropdownItems.concat(existingTagItems);
 };
 
 const generateSelectedItems = ({ selectedTags, updateTags }) =>
@@ -107,6 +108,7 @@ const generateSelectedItems = ({ selectedTags, updateTags }) =>
             false
           )
         }
+        type="button"
       >
         <span>{tag.name}</span>
         <i className="p-icon--close" />
@@ -124,7 +126,7 @@ export const TagSelector = ({
   onTagsUpdate,
   placeholder = "Tags",
   required,
-  tags,
+  tags = [],
 }) => {
   const wrapperRef = useRef(null);
 
@@ -158,14 +160,24 @@ export const TagSelector = ({
     };
   }, []);
 
+  const dropdownItems = generateDropdownItems({
+    allowNewTags,
+    filter,
+    selectedTags,
+    tags,
+    updateTags,
+  });
+
   return (
     <Field
       error={error}
       help={help}
       label={
-        <span onClick={() => setDropdownOpen(true)} ref={wrapperRef}>
-          {label}
-        </span>
+        label ? (
+          <span onClick={() => setDropdownOpen(true)} ref={wrapperRef}>
+            {label}
+          </span>
+        ) : undefined
       }
     >
       <div className="tag-selector">
@@ -194,17 +206,9 @@ export const TagSelector = ({
           type="text"
           value={filter}
         />
-        {dropdownOpen && (
+        {dropdownOpen && dropdownItems.length >= 1 && (
           <div className="tag-selector__dropdown">
-            <ul className="tag-selector__dropdown-list">
-              {generateDropdownItems({
-                allowNewTags,
-                filter,
-                selectedTags,
-                tags,
-                updateTags,
-              })}
-            </ul>
+            <ul className="tag-selector__dropdown-list">{dropdownItems}</ul>
           </div>
         )}
       </div>

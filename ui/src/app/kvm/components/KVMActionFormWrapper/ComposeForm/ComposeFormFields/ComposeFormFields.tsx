@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import type { Pod } from "app/store/pod/types";
+import type { ComposeFormDefaults } from "../ComposeForm";
 import FormikField from "app/base/components/FormikField";
 import domainSelectors from "app/store/domain/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -14,10 +15,7 @@ type Props = {
     cores: number;
     memory: number; // MiB
   };
-  defaults: {
-    cores: number;
-    memory: number; // MiB
-  };
+  defaults: ComposeFormDefaults;
 };
 
 export const ComposeFormFields = ({
