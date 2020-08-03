@@ -9,16 +9,16 @@ function macAddress() {
   return {
     restrict: "A",
     require: "ngModel",
-    link: function(scope, ele, attr, ngModelCtrl) {
+    link: function (scope, ele, attr, ngModelCtrl) {
       if (!ngModelCtrl) {
         return;
       }
 
-      var macAddressParse = function(value) {
+      var macAddressParse = function (value) {
         return value.toUpperCase();
       };
 
-      var macAddressFormat = function(value) {
+      var macAddressFormat = function (value) {
         if (!value) {
           return undefined;
         }
@@ -33,7 +33,7 @@ function macAddress() {
       ngModelCtrl.$parsers.push(macAddressParse);
       ngModelCtrl.$formatters.push(macAddressFormat);
 
-      ele.on("input", function() {
+      ele.on("input", function () {
         var value = macAddressFormat(ele.val());
 
         if (angular.isDefined(value)) {
@@ -42,7 +42,7 @@ function macAddress() {
         }
         scope.$apply();
       });
-    }
+    },
   };
 }
 

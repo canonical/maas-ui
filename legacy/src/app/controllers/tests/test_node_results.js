@@ -9,7 +9,7 @@ import {
   makeFakeResponse,
   makeInteger,
   makeName,
-  pickItem
+  pickItem,
 } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
@@ -25,22 +25,22 @@ const ScriptStatus = {
   DEGRADED: 6,
   INSTALLING: 7,
   FAILED_INSTALLING: 8,
-  SKIPPED: 9
+  SKIPPED: 9,
 };
 
-describe("NodeResultsController", function() {
+describe("NodeResultsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $location, $rootScope, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
     $scope = $rootScope.$new();
     $scope.section = {
-      area: pickItem(["testing", "commissioning", "summary"])
+      area: pickItem(["testing", "commissioning", "summary"]),
     };
     $q = $injector.get("$q");
   }));
@@ -49,7 +49,7 @@ describe("NodeResultsController", function() {
   // mock the websocket connection.
   var MachinesManager, ControllersManager, NodeResultsManagerFactory;
   var ManagerHelperService, ErrorService, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
     ControllersManager = $injector.get("ControllersManager");
     NodeResultsManagerFactory = $injector.get("NodeResultsManagerFactory");
@@ -66,7 +66,7 @@ describe("NodeResultsController", function() {
   function makeNode() {
     var node = {
       system_id: makeName("system_id"),
-      disks: []
+      disks: [],
     };
     MachinesManager._items.push(node);
     ControllersManager._items.push(node);
@@ -90,15 +90,15 @@ describe("NodeResultsController", function() {
       history_list: [
         {
           id: id,
-          status: status
-        }
-      ]
+          status: status,
+        },
+      ],
     };
     var i;
     for (i = 0; i < 3; i++) {
       result.history_list.push({
         id: makeInteger(0, 1000),
-        status: makeInteger(0, 8)
+        status: makeInteger(0, 8),
       });
     }
     return result;
@@ -123,20 +123,20 @@ describe("NodeResultsController", function() {
       ControllersManager: ControllersManager,
       NodeResultsManagerFactory: NodeResultsManagerFactory,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
   }
 
   // Create the node that will be used and set the stateParams.
   var node, $stateParams;
-  beforeEach(function() {
+  beforeEach(function () {
     node = makeNode();
     $stateParams = {
-      system_id: node.system_id
+      system_id: node.system_id,
     };
   });
 
-  it("sets the initial $scope values", function() {
+  it("sets the initial $scope values", function () {
     makeController();
     expect($scope.commissioning_results).toBeNull();
     expect($scope.testing_results).toBeNull();
@@ -151,7 +151,7 @@ describe("NodeResultsController", function() {
     expect($scope.nodesManager).toBe(MachinesManager);
   });
 
-  it("sets the initial $scope values when controller", function() {
+  it("sets the initial $scope values when controller", function () {
     $location.path("/controller");
     makeController();
     expect($scope.commissioning_results).toBeNull();
@@ -167,7 +167,7 @@ describe("NodeResultsController", function() {
     expect($scope.nodesManager).toBe(ControllersManager);
   });
 
-  it("calls loadManager with MachinesManager", function() {
+  it("calls loadManager with MachinesManager", function () {
     makeController();
     expect(ManagerHelperService.loadManager).toHaveBeenCalledWith(
       $scope,
@@ -175,7 +175,7 @@ describe("NodeResultsController", function() {
     );
   });
 
-  it("doesnt call setActiveItem if node already loaded", function() {
+  it("doesnt call setActiveItem if node already loaded", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -188,7 +188,7 @@ describe("NodeResultsController", function() {
     expect(MachinesManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if node not loaded", function() {
+  it("calls setActiveItem if node not loaded", function () {
     var defer = $q.defer();
     makeController(defer);
     var setActiveDefer = $q.defer();
@@ -206,7 +206,7 @@ describe("NodeResultsController", function() {
     expect(MachinesManager.setActiveItem).toHaveBeenCalledWith(node.system_id);
   });
 
-  it("calls raiseError if setActiveItem is rejected", function() {
+  it("calls raiseError if setActiveItem is rejected", function () {
     var defer = $q.defer();
     makeController(defer);
     var setActiveDefer = $q.defer();
@@ -225,7 +225,7 @@ describe("NodeResultsController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalledWith(error);
   });
 
-  it("calls loadItems on the results manager", function() {
+  it("calls loadItems on the results manager", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -237,7 +237,7 @@ describe("NodeResultsController", function() {
     expect(manager.loadItems).toHaveBeenCalled();
   });
 
-  it("sets eventsLoaded once events manager loadItems resolves", function() {
+  it("sets eventsLoaded once events manager loadItems resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -252,7 +252,7 @@ describe("NodeResultsController", function() {
     expect($scope.resultsLoaded).toBe(true);
   });
 
-  it("sets results once events manager loadItems resolves", function() {
+  it("sets results once events manager loadItems resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -267,8 +267,8 @@ describe("NodeResultsController", function() {
     expect($scope.resultsLoaded).toBe(true);
   });
 
-  describe("updateLogs", function() {
-    it("only runs on logs page", function() {
+  describe("updateLogs", function () {
+    it("only runs on logs page", function () {
       var defer = $q.defer();
       makeController(defer);
       MachinesManager._activeItem = node;
@@ -281,7 +281,7 @@ describe("NodeResultsController", function() {
       expect($scope.logs.availableOptions).toEqual([]);
     });
 
-    it("loads summary", function() {
+    it("loads summary", function () {
       var defer = $q.defer();
       makeController(defer);
       $scope.section = { area: "logs" };
@@ -290,21 +290,21 @@ describe("NodeResultsController", function() {
       defer.resolve();
       $rootScope.$digest();
       var expectFunc;
-      expectFunc = function() {
+      expectFunc = function () {
         if ($scope.resultsLoaded) {
           expect($scope.logs.availableOptions).toEqual([
             {
               title: "Machine output (YAML)",
-              id: "summary_yaml"
+              id: "summary_yaml",
             },
             {
               title: "Machine output (XML)",
-              id: "summary_xml"
-            }
+              id: "summary_xml",
+            },
           ]);
           expect($scope.logs.option).toEqual({
             title: "Machine output (YAML)",
-            id: "summary_yaml"
+            id: "summary_yaml",
           });
         } else {
           setTimeout(expectFunc);
@@ -314,14 +314,14 @@ describe("NodeResultsController", function() {
     });
   });
 
-  describe("updateLogOutput", function() {
-    it("sets to loading when no node", function() {
+  describe("updateLogOutput", function () {
+    it("sets to loading when no node", function () {
       makeController();
       $scope.updateLogOutput();
       expect($scope.logOutput).toEqual("Loading...");
     });
 
-    it("sets summary xml", function() {
+    it("sets summary xml", function () {
       var defer = $q.defer();
       makeController(defer);
       MachinesManager._activeItem = node;
@@ -340,7 +340,7 @@ describe("NodeResultsController", function() {
       expect(MachinesManager.getSummaryXML).toHaveBeenCalledWith(node);
     });
 
-    it("sets summary yaml", function() {
+    it("sets summary yaml", function () {
       var defer = $q.defer();
       makeController(defer);
       MachinesManager._activeItem = node;
@@ -359,7 +359,7 @@ describe("NodeResultsController", function() {
       expect(MachinesManager.getSummaryYAML).toHaveBeenCalledWith(node);
     });
 
-    it("sets system booting", function() {
+    it("sets system booting", function () {
       makeController();
       var installation_result = makeResult(1, 0);
       $scope.installation_results = [installation_result];
@@ -370,7 +370,7 @@ describe("NodeResultsController", function() {
       expect($scope.logOutput).toEqual("System is booting...");
     });
 
-    it("sets installation has begun", function() {
+    it("sets installation has begun", function () {
       makeController();
       var installation_result = makeResult(1, 1);
       $scope.installation_results = [installation_result];
@@ -381,7 +381,7 @@ describe("NodeResultsController", function() {
       expect($scope.logOutput).toEqual("Installation has begun!");
     });
 
-    it("sets installation output succeeded", function() {
+    it("sets installation output succeeded", function () {
       var defer = $q.defer();
       makeController(defer);
       var installation_result = makeResult(1, 2);
@@ -404,7 +404,7 @@ describe("NodeResultsController", function() {
       );
     });
 
-    it("sets installation output failed", function() {
+    it("sets installation output failed", function () {
       var defer = $q.defer();
       makeController(defer);
       var installation_result = makeResult(1, 3);
@@ -427,7 +427,7 @@ describe("NodeResultsController", function() {
       );
     });
 
-    it("sets timed out", function() {
+    it("sets timed out", function () {
       makeController();
       var installation_result = makeResult(1, 4);
       $scope.installation_results = [installation_result];
@@ -438,7 +438,7 @@ describe("NodeResultsController", function() {
       expect($scope.logOutput).toEqual("Installation failed after 40 minutes.");
     });
 
-    it("sets installation aborted", function() {
+    it("sets installation aborted", function () {
       makeController();
       var installation_result = makeResult(1, 5);
       $scope.installation_results = [installation_result];
@@ -449,7 +449,7 @@ describe("NodeResultsController", function() {
       expect($scope.logOutput).toEqual("Installation was aborted.");
     });
 
-    it("sets unknown status", function() {
+    it("sets unknown status", function () {
       makeController();
       var installation_result = makeResult(1, makeInteger(6, 100));
       $scope.installation_results = [installation_result];
@@ -462,7 +462,7 @@ describe("NodeResultsController", function() {
       );
     });
 
-    it("sets no installation log", function() {
+    it("sets no installation log", function () {
       makeController();
       $scope.installation_results = [];
       $scope.node = node;
@@ -472,7 +472,7 @@ describe("NodeResultsController", function() {
       expect($scope.logOutput).toEqual("BUG: No installation result found.");
     });
 
-    it("sets install id to ScriptResult /tmp/install.log", function() {
+    it("sets install id to ScriptResult /tmp/install.log", function () {
       var defer = $q.defer();
       var loadItems_defer = $q.defer();
       makeController(loadItems_defer);
@@ -492,7 +492,7 @@ describe("NodeResultsController", function() {
       loadItems_defer.resolve();
       $rootScope.$digest();
       var expectFunc;
-      expectFunc = function() {
+      expectFunc = function () {
         if ($scope.resultsLoaded) {
           expect($scope.logs.availableOptions[0].id).toBe(
             installation_result.id
@@ -505,17 +505,17 @@ describe("NodeResultsController", function() {
     });
   });
 
-  describe("loadHistory", function() {
-    it("loads results", function() {
+  describe("loadHistory", function () {
+    it("loads results", function () {
       var defer = $q.defer();
       makeController();
       var result = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var history_list = [
         { id: makeInteger(0, 100) },
         { id: makeInteger(0, 100) },
-        { id: makeInteger(0, 100) }
+        { id: makeInteger(0, 100) },
       ];
       $scope.node = node;
       $scope.nodeResultsManager = NodeResultsManagerFactory.getManager(
@@ -534,11 +534,11 @@ describe("NodeResultsController", function() {
       expect(result.showing_history).toBe(true);
     });
 
-    it("doesnt reload", function() {
+    it("doesnt reload", function () {
       makeController();
       var result = {
         id: makeInteger(0, 100),
-        history_list: [{ id: makeInteger(0, 100) }]
+        history_list: [{ id: makeInteger(0, 100) }],
       };
       $scope.node = node;
       $scope.nodeResultsManager = NodeResultsManagerFactory.getManager(
@@ -563,16 +563,16 @@ describe("NodeResultsController", function() {
           results: {
             subtype: [
               ...Array.from(Array(3)).map(() => makeResult(1)),
-              suppressedResult
-            ]
-          }
+              suppressedResult,
+            ],
+          },
         },
         {
           hardware_type: 2,
           results: {
-            subtype: Array.from(Array(3)).map(() => makeResult(2))
-          }
-        }
+            subtype: Array.from(Array(3)).map(() => makeResult(2)),
+          },
+        },
       ];
 
       expect($scope.hasSuppressedTests()).toEqual(false);
@@ -590,7 +590,7 @@ describe("NodeResultsController", function() {
         makeResult(0, ScriptStatus.FAILED),
         makeResult(0, ScriptStatus.FAILED_INSTALLING),
         makeResult(0, ScriptStatus.TIMEDOUT),
-        makeResult(0, ScriptStatus.PASSED)
+        makeResult(0, ScriptStatus.PASSED),
       ];
 
       expect($scope.isSuppressible(results[0])).toBe(true);
@@ -621,15 +621,15 @@ describe("NodeResultsController", function() {
         {
           hardware_type: 1,
           results: {
-            subtype: results1
-          }
+            subtype: results1,
+          },
         },
         {
           hardware_type: 2,
           results: {
-            subtype: results2
-          }
-        }
+            subtype: results2,
+          },
+        },
       ];
 
       expect($scope.getSuppressedCount()).toEqual(6);
@@ -646,9 +646,9 @@ describe("NodeResultsController", function() {
         {
           hardware_type: 1,
           results: {
-            subtype: results
-          }
-        }
+            subtype: results,
+          },
+        },
       ];
 
       expect($scope.getSuppressedCount()).toEqual("All");
@@ -664,10 +664,9 @@ describe("NodeResultsController", function() {
 
       $scope.toggleSuppressed(result);
 
-      expect($scope.nodesManager.suppressTests).toHaveBeenCalledWith(
-        $scope.node,
-        [result]
-      );
+      expect(
+        $scope.nodesManager.suppressTests
+      ).toHaveBeenCalledWith($scope.node, [result]);
     });
 
     it("calls unsuppressTests manager method if test suppressed", () => {
@@ -679,10 +678,9 @@ describe("NodeResultsController", function() {
 
       $scope.toggleSuppressed(result);
 
-      expect($scope.nodesManager.unsuppressTests).toHaveBeenCalledWith(
-        $scope.node,
-        [result]
-      );
+      expect(
+        $scope.nodesManager.unsuppressTests
+      ).toHaveBeenCalledWith($scope.node, [result]);
     });
   });
 });

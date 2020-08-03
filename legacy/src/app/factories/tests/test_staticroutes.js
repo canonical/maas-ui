@@ -5,17 +5,17 @@
  */
 import angular from "angular";
 
-describe("StaticRoutesManager", function() {
+describe("StaticRoutesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the StaticRoutesManager.
   var StaticRoutesManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     StaticRoutesManager = $injector.get("StaticRoutesManager");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(StaticRoutesManager._pk).toBe("id");
     expect(StaticRoutesManager._handler).toBe("staticroute");
   });

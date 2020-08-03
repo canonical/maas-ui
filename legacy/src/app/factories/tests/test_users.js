@@ -7,20 +7,20 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("UsersManager", function() {
+describe("UsersManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $q, $rootScope;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $q = $injector.get("$q");
     $rootScope = $injector.get("$rootScope");
   }));
 
   // Load the UsersManager, RegionConnection, and ErrorService.
   var UsersManager, RegionConnection, ErrorService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     UsersManager = $injector.get("UsersManager");
     RegionConnection = $injector.get("RegionConnection");
     ErrorService = $injector.get("ErrorService");
@@ -35,27 +35,27 @@ describe("UsersManager", function() {
       first_name: makeName("first_name"),
       last_name: makeName("last_name"),
       email: makeName("email"),
-      is_superuser: false
+      is_superuser: false,
     };
   }
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(UsersManager._pk).toBe("id");
     expect(UsersManager._handler).toBe("user");
     expect(UsersManager._batchSize).toBe(200);
     expect(UsersManager._authUser).toBeNull();
   });
 
-  describe("getAuthUser", function() {
-    it("returns _authUser", function() {
+  describe("getAuthUser", function () {
+    it("returns _authUser", function () {
       var user = {};
       UsersManager._authUser = user;
       expect(UsersManager.getAuthUser()).toBe(user);
     });
   });
 
-  describe("_loadAuthUser", function() {
-    it("calls callMethod with user.auth_user", function() {
+  describe("_loadAuthUser", function () {
+    it("calls callMethod with user.auth_user", function () {
       spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
       UsersManager._loadAuthUser();
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -64,7 +64,7 @@ describe("UsersManager", function() {
       );
     });
 
-    it("sets _authUser to resolved user", function() {
+    it("sets _authUser to resolved user", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
       UsersManager._loadAuthUser();
@@ -76,7 +76,7 @@ describe("UsersManager", function() {
       expect(UsersManager._authUser).toBe(user);
     });
 
-    it("doesnt change _authUser reference when user resolved", function() {
+    it("doesnt change _authUser reference when user resolved", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
       UsersManager._loadAuthUser();
@@ -92,7 +92,7 @@ describe("UsersManager", function() {
       expect(UsersManager._authUser).toEqual(secondUser);
     });
 
-    it("raises error on error", function() {
+    it("raises error on error", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
       spyOn(ErrorService, "raiseError");
@@ -106,8 +106,8 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("_replaceItem", function() {
-    it("replaces the _authUser without changing reference", function() {
+  describe("_replaceItem", function () {
+    it("replaces the _authUser without changing reference", function () {
       var firstUser = makeUser();
       UsersManager._authUser = firstUser;
 
@@ -120,8 +120,8 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("loadItems", function() {
-    it("calls _loadAuthUser", function() {
+  describe("loadItems", function () {
+    it("calls _loadAuthUser", function () {
       spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
       spyOn(UsersManager, "_loadAuthUser");
       UsersManager.loadItems();
@@ -129,8 +129,8 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("reloadItems", function() {
-    it("calls _loadAuthUser", function() {
+  describe("reloadItems", function () {
+    it("calls _loadAuthUser", function () {
       spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
       spyOn(UsersManager, "_loadAuthUser");
       UsersManager.reloadItems();
@@ -138,8 +138,8 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("createAuthorisationToken", function() {
-    it("calls user.create_authorisation_token", function() {
+  describe("createAuthorisationToken", function () {
+    it("calls user.create_authorisation_token", function () {
       spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
       UsersManager.createAuthorisationToken();
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -148,7 +148,7 @@ describe("UsersManager", function() {
       );
     });
 
-    it("raises error on error", function() {
+    it("raises error on error", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
       spyOn(ErrorService, "raiseError");
@@ -162,19 +162,18 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("deleteAuthorisationToken", function() {
-    it("calls user.delete_authorisation_token", function() {
+  describe("deleteAuthorisationToken", function () {
+    it("calls user.delete_authorisation_token", function () {
       spyOn(RegionConnection, "callMethod").and.returnValue($q.defer().promise);
 
       var key = makeName("key");
       UsersManager.deleteAuthorisationToken(key);
-      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "user.delete_authorisation_token",
-        { key: key }
-      );
+      expect(
+        RegionConnection.callMethod
+      ).toHaveBeenCalledWith("user.delete_authorisation_token", { key: key });
     });
 
-    it("raises error on error", function() {
+    it("raises error on error", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
       spyOn(ErrorService, "raiseError");
@@ -190,24 +189,24 @@ describe("UsersManager", function() {
     });
   });
 
-  describe("hasGlobalPermission", function() {
-    it("returns true if auth user has permission", function() {
+  describe("hasGlobalPermission", function () {
+    it("returns true if auth user has permission", function () {
       var user = {
-        global_permissions: ["create_machine"]
+        global_permissions: ["create_machine"],
       };
       UsersManager._authUser = user;
       expect(UsersManager.hasGlobalPermission("create_machine")).toBe(true);
     });
 
-    it("returns false if auth user doesn't have permission", function() {
+    it("returns false if auth user doesn't have permission", function () {
       var user = {
-        global_permissions: ["create_machine"]
+        global_permissions: ["create_machine"],
       };
       UsersManager._authUser = user;
       expect(UsersManager.hasGlobalPermission("create_device")).toBe(false);
     });
 
-    it("returns false if auth user no global_permissions", function() {
+    it("returns false if auth user no global_permissions", function () {
       var user = {};
       UsersManager._authUser = user;
       expect(UsersManager.hasGlobalPermission("create_device")).toBe(false);

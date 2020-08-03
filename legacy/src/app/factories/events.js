@@ -23,15 +23,15 @@ function EventsManagerFactory(RegionConnection, Manager) {
 
   // Return the initial batch parameters with the id of the node
   // and the maximum number of days to load.
-  EventsManager.prototype._initBatchLoadParameters = function() {
+  EventsManager.prototype._initBatchLoadParameters = function () {
     return {
       node_id: this._nodeId,
-      max_days: this._maxDays
+      max_days: this._maxDays,
     };
   };
 
   // Destroys its self. Removes self from the EventsManagerFactory.
-  EventsManager.prototype.destroy = function() {
+  EventsManager.prototype.destroy = function () {
     this._factory.destroyManager(this);
 
     // If this manager has ever loaded then the region is sending
@@ -39,20 +39,20 @@ function EventsManagerFactory(RegionConnection, Manager) {
     // stop sending notification for events from this node.
     if (this.isLoaded()) {
       RegionConnection.callMethod("event.clear", {
-        node_id: this._nodeId
+        node_id: this._nodeId,
       });
     }
   };
 
   // Get the maximum number of days the manager will load.
-  EventsManager.prototype.getMaximumDays = function() {
+  EventsManager.prototype.getMaximumDays = function () {
     return this._maxDays;
   };
 
   // Changes the maximum number of days to load and loads the items.
-  EventsManager.prototype.loadMaximumDays = function(days) {
+  EventsManager.prototype.loadMaximumDays = function (days) {
     var self = this;
-    var setMaximumDays = function() {
+    var setMaximumDays = function () {
       self._maxDays = days;
       self.loadItems();
     };
@@ -60,7 +60,7 @@ function EventsManagerFactory(RegionConnection, Manager) {
     if (this.isLoading()) {
       // Call loadItems to get an extra defer to know when
       // the loading is done.
-      this.loadItems().then(function() {
+      this.loadItems().then(function () {
         setMaximumDays();
       });
     } else {
@@ -75,13 +75,13 @@ function EventsManagerFactory(RegionConnection, Manager) {
 
     // Listen for notify events for the event object.
     var self = this;
-    RegionConnection.registerNotifier("event", function(action, data) {
+    RegionConnection.registerNotifier("event", function (action, data) {
       self.onNotify(action, data);
     });
   }
 
   // Gets the EventManager for the nodes with node_id.
-  EventsManagerFactory.prototype._getManager = function(nodeId) {
+  EventsManagerFactory.prototype._getManager = function (nodeId) {
     var i;
     for (i = 0; i < this._managers.length; i++) {
       if (this._managers[i]._nodeId === nodeId) {
@@ -93,7 +93,7 @@ function EventsManagerFactory(RegionConnection, Manager) {
 
   // Gets the EventManager for the nodes node_id. Creates a new manager
   // if one does not exist.
-  EventsManagerFactory.prototype.getManager = function(nodeId) {
+  EventsManagerFactory.prototype.getManager = function (nodeId) {
     var manager = this._getManager(nodeId);
     if (!angular.isObject(manager)) {
       // Not created so create it.
@@ -105,7 +105,7 @@ function EventsManagerFactory(RegionConnection, Manager) {
   };
 
   // Destroy the EventManager.
-  EventsManagerFactory.prototype.destroyManager = function(manager) {
+  EventsManagerFactory.prototype.destroyManager = function (manager) {
     var idx = this._managers.indexOf(manager);
     if (idx >= 0) {
       this._managers.splice(idx, 1);
@@ -113,11 +113,11 @@ function EventsManagerFactory(RegionConnection, Manager) {
   };
 
   // Called when the RegionConnection gets a notification for an event.
-  EventsManagerFactory.prototype.onNotify = function(action, data) {
+  EventsManagerFactory.prototype.onNotify = function (action, data) {
     if (action === "delete") {
       // Send all delete actions to all managers. Only one will
       // remove the event with the given id.
-      angular.forEach(this._managers, function(manager) {
+      angular.forEach(this._managers, function (manager) {
         manager.onNotify(action, data);
       });
     } else if (action === "create" || action === "update") {

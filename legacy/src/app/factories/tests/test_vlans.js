@@ -7,24 +7,24 @@ import angular from "angular";
 
 import { makeInteger } from "testing/utils";
 
-describe("VLANsManager", function() {
+describe("VLANsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the VLANsManager.
   var VLANsManager, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     VLANsManager = $injector.get("VLANsManager");
     RegionConnection = $injector.get("RegionConnection");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(VLANsManager._pk).toBe("id");
     expect(VLANsManager._handler).toBe("vlan");
   });
 
-  describe("configureDHCP", function() {
-    it("calls the region with expected parameters", function() {
+  describe("configureDHCP", function () {
+    it("calls the region with expected parameters", function () {
       var obj = { id: makeInteger(1, 1000) };
       var result = {};
       var controllers = ["a", "b"];
@@ -40,15 +40,15 @@ describe("VLANsManager", function() {
           id: obj.id,
           controllers: controllers,
           extra: extra,
-          relay_vlan: relay
+          relay_vlan: relay,
         },
         true
       );
     });
   });
 
-  describe("disableDHCP", function() {
-    it("calls the region with expected parameters", function() {
+  describe("disableDHCP", function () {
+    it("calls the region with expected parameters", function () {
       var obj = { id: makeInteger(1, 1000) };
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);
@@ -58,15 +58,15 @@ describe("VLANsManager", function() {
         {
           id: obj.id,
           controllers: [],
-          relay_vlan: null
+          relay_vlan: null,
         },
         true
       );
     });
   });
 
-  describe("create", function() {
-    it("calls the region with expected parameters", function() {
+  describe("create", function () {
+    it("calls the region with expected parameters", function () {
       var obj = {};
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);
@@ -78,8 +78,8 @@ describe("VLANsManager", function() {
     });
   });
 
-  describe("delete", function() {
-    it("calls the region with expected parameters", function() {
+  describe("delete", function () {
+    it("calls the region with expected parameters", function () {
       var obj = { id: "whatever" };
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);

@@ -1,55 +1,55 @@
 @mixin maas-table-subnets {
-    .p-table--subnets {
+  .p-table--subnets {
+    .p-table__cell--fabric {
+      width: 13%;
+    }
+
+    .p-table__cell--space {
+      width: 14%;
+    }
+
+    .p-table__cell--vlan {
+      width: 13%;
+    }
+
+    .p-table__cell--subnet {
+      width: 28%;
+    }
+
+    .p-table__cell--ips {
+      width: 12%;
+    }
+
+    .p-table__cell--dhcp {
+      width: 20%;
+    }
+
+    @media only screen and (max-width: $breakpoint-large) {
       .p-table__cell--fabric {
-        width: 13%;
-      }
-
-      .p-table__cell--space {
-        width: 14%;
-      }
-
-      .p-table__cell--vlan {
-        width: 13%;
-      }
-
-      .p-table__cell--subnet {
-        width: 28%;
-      }
-
-      .p-table__cell--ips {
-        width: 12%;
-      }
-
-      .p-table__cell--dhcp {
         width: 20%;
       }
 
-      @media only screen and (max-width: $breakpoint-large) {
-        .p-table__cell--fabric {
-          width: 20%;
-        }
+      .p-table__cell--space {
+        width: 20%;
+      }
 
-        .p-table__cell--space {
-          width: 20%;
-        }
+      .p-table__cell--vlan {
+        width: 20%;
+      }
 
-        .p-table__cell--vlan {
-          width: 20%;
-        }
+      .p-table__cell--subnet {
+        width: 40%;
+      }
 
-        .p-table__cell--subnet {
-          width: 40%;
-        }
+      .p-table__cell--ips {
+        display: none !important;
+        width: 0;
+      }
 
-        .p-table__cell--ips {
-          display: none !important;
-          width: 0;
-        }
-
-        .p-table__cell--dhcp {
-          display: none !important;
-          width: 0;
-        }
+      .p-table__cell--dhcp {
+        display: none !important;
+        width: 0;
       }
     }
   }
+}

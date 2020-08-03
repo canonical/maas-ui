@@ -7,10 +7,10 @@
 import bakery from "macaroon-bakery";
 
 export function getBakery() {
-  return function(visitPage) {
+  return function (visitPage) {
     return new bakery.Bakery({
       storage: new bakery.BakeryStorage(localStorage, {}),
-      visitPage: visitPage
+      visitPage: visitPage,
     });
   };
 }
@@ -30,9 +30,9 @@ export function externalLogin($window, getBakery) {
       '    ng-if="errorMessage">',
       "  <strong>Error getting login link:</strong><br>",
       "  {{ errorMessage }}",
-      "</div>"
+      "</div>",
     ].join(""),
-    controller: ExternalLoginController
+    controller: ExternalLoginController,
   };
 
   /* @ngInject */
@@ -41,8 +41,8 @@ export function externalLogin($window, getBakery) {
     $scope.loginURL = "#";
     $scope.externalAuthURL = $element.attr("auth-url");
 
-    const visitPage = function(error) {
-      $scope.$apply(function() {
+    const visitPage = function (error) {
+      $scope.$apply(function () {
         $scope.loginURL = error.Info.VisitURL;
         $scope.errorMessage = "";
       });
@@ -53,11 +53,11 @@ export function externalLogin($window, getBakery) {
       `${process.env.BASENAME}/accounts/discharge-request/`,
       {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      function(error, response) {
+      function (error, response) {
         if (response.currentTarget.status != 200) {
-          $scope.$apply(function() {
+          $scope.$apply(function () {
             $scope.errorMessage = response.currentTarget.responseText;
           });
           localStorage.clear();

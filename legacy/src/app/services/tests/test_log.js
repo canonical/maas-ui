@@ -7,8 +7,8 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("LogService", function() {
-  beforeEach(function() {
+describe("LogService", function () {
+  beforeEach(function () {
     spyOn(console, "debug");
     spyOn(console, "log");
     spyOn(console, "info");
@@ -22,7 +22,7 @@ describe("LogService", function() {
   // Get the $injector so the test can grab the LogService.
   var $injector;
   var LogService;
-  beforeEach(inject(function(_$injector_) {
+  beforeEach(inject(function (_$injector_) {
     $injector = _$injector_;
     LogService = $injector.get("LogService");
   }));
@@ -31,35 +31,35 @@ describe("LogService", function() {
     {
       it: "console.error",
       logLevel: 1,
-      func: "error"
+      func: "error",
     },
     {
       it: "console.warn",
       logLevel: 2,
-      func: "warn"
+      func: "warn",
     },
     {
       it: "console.info",
       logLevel: 3,
-      func: "info"
+      func: "info",
     },
     {
       it: "console.log",
       logLevel: 4,
-      func: "log"
+      func: "log",
     },
     {
       it: "console.debug",
       logLevel: 5,
-      func: "debug"
-    }
+      func: "debug",
+    },
   ];
 
   // Do positive tests for appropriate log levels.
-  angular.forEach(scenarios, function(scenario) {
+  angular.forEach(scenarios, function (scenario) {
     it(
       "calls " + scenario.it + " for logLevel=" + scenario.logLevel,
-      function() {
+      function () {
         LogService.logging = true;
         LogService.logLevel = scenario.logLevel;
         var logFunction = LogService[scenario.func];
@@ -72,13 +72,13 @@ describe("LogService", function() {
   });
 
   // Do negative tests for log levels that do not include the level.
-  angular.forEach(scenarios, function(scenario) {
+  angular.forEach(scenarios, function (scenario) {
     it(
       "doesn't call " +
         scenario.it +
         " for logLevel=" +
         (scenario.logLevel - 1),
-      function() {
+      function () {
         LogService.logging = true;
         LogService.logLevel = scenario.logLevel - 1;
         var logFunction = LogService[scenario.func];
@@ -90,28 +90,28 @@ describe("LogService", function() {
     );
   });
 
-  describe("formatMilliseconds", function() {
-    it("formats milliseconds into equivalent decimal seconds", function() {
+  describe("formatMilliseconds", function () {
+    it("formats milliseconds into equivalent decimal seconds", function () {
       var result = LogService.formatMilliseconds(1234);
       expect(result).toEqual("1.234");
     });
 
-    it("zero-pads values", function() {
+    it("zero-pads values", function () {
       var result = LogService.formatMilliseconds(1000);
       expect(result).toEqual("1.000");
     });
   });
 
-  describe("__log", function() {
-    it("appends timestamp to the beginning of the log", function() {
+  describe("__log", function () {
+    it("appends timestamp to the beginning of the log", function () {
       LogService.logging = true;
       var message = makeName();
       var outMessage = null;
-      LogService.now = function() {
+      LogService.now = function () {
         return 0;
       };
       LogService.__log(
-        function() {
+        function () {
           // __log() will call the destination log function after
           // appending the formatted time to the beginning.
           outMessage = [arguments[0], arguments[1]];

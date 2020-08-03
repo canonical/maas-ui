@@ -7,20 +7,20 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasErrorOverlay", function() {
+describe("maasErrorOverlay", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get required angular pieces and create a new scope before each test.
   var $scope, $timeout;
-  beforeEach(inject(function($rootScope, $injector) {
+  beforeEach(inject(function ($rootScope, $injector) {
     $scope = $rootScope.$new();
     $timeout = $injector.get("$timeout");
   }));
 
   // Load the RegionConnection and ErrorService.
   var ErrorService, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     ErrorService = $injector.get("ErrorService");
   }));
@@ -34,7 +34,7 @@ describe("maasErrorOverlay", function() {
       "</div></div>";
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -43,19 +43,19 @@ describe("maasErrorOverlay", function() {
     return directive.find("span");
   }
 
-  it("sets connected to value of isConnected", function() {
+  it("sets connected to value of isConnected", function () {
     spyOn(RegionConnection, "isConnected").and.returnValue(true);
     var directive = compileDirective();
     expect(directive.scope().connected).toBe(true);
   });
 
-  it("sets wasConnected to true once connected", function() {
+  it("sets wasConnected to true once connected", function () {
     spyOn(RegionConnection, "isConnected").and.returnValue(true);
     var directive = compileDirective();
     expect(directive.scope().wasConnected).toBe(true);
   });
 
-  it("keeps wasConnected to true if becomes disconnected", function() {
+  it("keeps wasConnected to true if becomes disconnected", function () {
     var spy = spyOn(RegionConnection, "isConnected");
     spy.and.returnValue(true);
     var directive = compileDirective();
@@ -64,20 +64,20 @@ describe("maasErrorOverlay", function() {
     expect(directive.scope().wasConnected).toBe(true);
   });
 
-  it("keeps clientError to true if error in ErrorService", function() {
+  it("keeps clientError to true if error in ErrorService", function () {
     ErrorService._error = makeName("error");
     var directive = compileDirective();
     expect(directive.scope().clientError).toBe(true);
   });
 
-  it("sets error to error in ErrorService", function() {
+  it("sets error to error in ErrorService", function () {
     var error = makeName("error");
     ErrorService._error = error;
     var directive = compileDirective();
     expect(directive.scope().error).toBe(error);
   });
 
-  it("sets error to error in RegionConnection", function() {
+  it("sets error to error in RegionConnection", function () {
     var error = makeName("error");
     RegionConnection.error = error;
     var directive = compileDirective();
@@ -87,7 +87,7 @@ describe("maasErrorOverlay", function() {
   it(
     "doesnt sets error to error in RegionConnection if already error in " +
       "ErrorService",
-    function() {
+    function () {
       var error = makeName("error");
       ErrorService._error = error;
       RegionConnection.error = makeName("error");
@@ -96,26 +96,26 @@ describe("maasErrorOverlay", function() {
     }
   );
 
-  describe("show", function() {
-    it("returns true if not connected", function() {
+  describe("show", function () {
+    it("returns true if not connected", function () {
       spyOn(RegionConnection, "isConnected").and.returnValue(false);
       var directive = compileDirective();
       expect(directive.scope().show()).toBe(true);
     });
 
-    it("returns true if error in ErrorService", function() {
+    it("returns true if error in ErrorService", function () {
       ErrorService._error = makeName("error");
       var directive = compileDirective();
       expect(directive.scope().show()).toBe(true);
     });
 
-    it("returns false if connected and no error", function() {
+    it("returns false if connected and no error", function () {
       spyOn(RegionConnection, "isConnected").and.returnValue(true);
       var directive = compileDirective();
       expect(directive.scope().show()).toBe(false);
     });
 
-    it("returns false if disconnected less than 1/2 second", function() {
+    it("returns false if disconnected less than 1/2 second", function () {
       var spy = spyOn(RegionConnection, "isConnected");
       spy.and.returnValue(true);
       var directive = compileDirective();
@@ -124,7 +124,7 @@ describe("maasErrorOverlay", function() {
       expect(directive.scope().show()).toBe(false);
     });
 
-    it("returns true if disconnected more than 1/2 second", function() {
+    it("returns true if disconnected more than 1/2 second", function () {
       var spy = spyOn(RegionConnection, "isConnected");
       spy.and.returnValue(true);
       var directive = compileDirective();
@@ -135,14 +135,14 @@ describe("maasErrorOverlay", function() {
     });
   });
 
-  describe("getTitle", function() {
-    it("returns error title", function() {
+  describe("getTitle", function () {
+    it("returns error title", function () {
       ErrorService._error = makeName("error");
       var directive = compileDirective();
       expect(directive.scope().getTitle()).toBe("Error occurred");
     });
 
-    it("returns connection lost error", function() {
+    it("returns connection lost error", function () {
       var spy = spyOn(RegionConnection, "isConnected");
       spy.and.returnValue(true);
       var directive = compileDirective();
@@ -153,7 +153,7 @@ describe("maasErrorOverlay", function() {
       );
     });
 
-    it("returns connecting", function() {
+    it("returns connecting", function () {
       spyOn(RegionConnection, "isConnected").and.returnValue(false);
       var directive = compileDirective();
       expect(directive.scope().getTitle()).toBe("Connecting...");

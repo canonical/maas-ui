@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeFakeResponse, makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("PodsManager", function() {
+describe("PodsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the PodsManager.
   var PodsManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     PodsManager = $injector.get("PodsManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -24,7 +24,7 @@ describe("PodsManager", function() {
   }));
 
   // Open the connection to the region before each test.
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     RegionConnection.connect(() => done());
   });
 
@@ -32,20 +32,20 @@ describe("PodsManager", function() {
   function makePod() {
     return {
       id: makeInteger(0, 5000),
-      name: makeName("pod")
+      name: makeName("pod"),
     };
   }
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(PodsManager._pk).toBe("id");
     expect(PodsManager._handler).toBe("pod");
   });
 
-  describe("refresh", function() {
-    it("calls pod.refresh with params", function(done) {
+  describe("refresh", function () {
+    it("calls pod.refresh with params", function (done) {
       var pod = makePod();
       webSocket.returnData.push(makeFakeResponse("created"));
-      PodsManager.refresh(pod).then(function() {
+      PodsManager.refresh(pod).then(function () {
         var sentObject = angular.fromJson(webSocket.sentData[0]);
         expect(sentObject.method).toBe("pod.refresh");
         expect(sentObject.params.id).toBe(pod.id);
@@ -55,15 +55,15 @@ describe("PodsManager", function() {
     });
   });
 
-  describe("compose", function() {
-    it("calls pod.compose with params", function(done) {
+  describe("compose", function () {
+    it("calls pod.compose with params", function (done) {
       var pod = makePod();
       var params = {
         id: pod.id,
-        cores: makeInteger(0, 10)
+        cores: makeInteger(0, 10),
       };
       webSocket.returnData.push(makeFakeResponse("created"));
-      PodsManager.compose(params).then(function() {
+      PodsManager.compose(params).then(function () {
         var sentObject = angular.fromJson(webSocket.sentData[0]);
         expect(sentObject.method).toBe("pod.compose");
         expect(sentObject.params.id).toBe(params.id);

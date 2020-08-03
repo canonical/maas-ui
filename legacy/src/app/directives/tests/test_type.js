@@ -7,13 +7,13 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("ngType", function() {
+describe("ngType", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -23,10 +23,10 @@ describe("ngType", function() {
     var html = [
       "<div>",
       '<input data-ng-type="' + ngType + '" />',
-      "</div>"
+      "</div>",
     ].join("");
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
     // Perform the digest cycle to finish the compile.
@@ -34,14 +34,14 @@ describe("ngType", function() {
     return directive.find("input");
   }
 
-  it("sets type attribute on input", function() {
+  it("sets type attribute on input", function () {
     var type = "text";
     $scope.type = type;
     var directive = compileDirective("type");
     expect(directive[0].type).toEqual(type);
   });
 
-  it("sets type attribute on input when changed", function() {
+  it("sets type attribute on input when changed", function () {
     var type = "text";
     $scope.type = type;
     var directive = compileDirective("type");
@@ -52,14 +52,14 @@ describe("ngType", function() {
     expect(directive[0].type).toEqual(type);
   });
 
-  it("rejects invalid input type", function() {
+  it("rejects invalid input type", function () {
     var type = "text";
     $scope.type = type;
     compileDirective("type");
     // Change the type to something invalid.
     type = makeName("type");
     $scope.type = type;
-    expect(function() {
+    expect(function () {
       $scope.$digest();
     }).toThrow(new Error("Invalid input type: " + type));
   });

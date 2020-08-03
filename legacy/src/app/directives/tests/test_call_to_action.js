@@ -7,7 +7,7 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasCta", function() {
+describe("maasCta", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -17,7 +17,7 @@ describe("maasCta", function() {
     var items = [];
     for (i = 0; i < 5; i++) {
       items.push({
-        title: makeName("option")
+        title: makeName("option"),
       });
     }
     return items;
@@ -25,7 +25,7 @@ describe("maasCta", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
     $scope.items = makeItems();
     $scope.active = null;
@@ -56,7 +56,7 @@ describe("maasCta", function() {
       '"></div></div>';
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -65,41 +65,43 @@ describe("maasCta", function() {
     return directive.find("div");
   }
 
-  it("default shown is false", function() {
+  it("default shown is false", function () {
     var directive = compileDirective("items", "active");
     expect(directive.isolateScope().shown).toBe(false);
   });
 
-  it("default secondary is false", function() {
+  it("default secondary is false", function () {
     var directive = compileDirective("items", "active");
     expect(directive.isolateScope().secondary).toBe(false);
   });
 
-  it("sets default title to 'Take action'", function() {
+  it("sets default title to 'Take action'", function () {
     var directive = compileDirective("items", "active");
-    expect(directive.find("button.p-contextual-menu__toggle").text().trim()).toBe("Take action");
+    expect(
+      directive.find("button.p-contextual-menu__toggle").text().trim()
+    ).toBe("Take action");
   });
 
-  it("sets default title to another name", function() {
+  it("sets default title to another name", function () {
     var name = makeName("title");
     var directive = compileDirective("items", "active", null, null, name);
     var selector = "button.p-contextual-menu__toggle";
     expect(directive.find(selector).text().trim()).toBe(name);
   });
 
-  it("click link sets shown to true", function() {
+  it("click link sets shown to true", function () {
     var directive = compileDirective("items", "active");
     directive.find("button.p-contextual-menu__toggle").click();
     expect(directive.isolateScope().shown).toBe(true);
   });
 
-  it("dropdown hidden when shown is false", function() {
+  it("dropdown hidden when shown is false", function () {
     var directive = compileDirective("items", "active");
     var dropdown = directive.find("div.p-contextual-menu__dropdown");
     expect(dropdown.hasClass("ng-hide")).toBe(true);
   });
 
-  it("dropdown shown when shown is true", function() {
+  it("dropdown shown when shown is true", function () {
     var directive = compileDirective("items", "active");
     directive.isolateScope().shown = true;
     $scope.$digest();
@@ -108,7 +110,7 @@ describe("maasCta", function() {
     expect(dropdown.hasClass("ng-hide")).toBe(false);
   });
 
-  it("dropdown secondary when secondary is true", function() {
+  it("dropdown secondary when secondary is true", function () {
     var directive = compileDirective("items", "active");
     directive.isolateScope().secondary = true;
     $scope.$digest();
@@ -116,23 +118,23 @@ describe("maasCta", function() {
     expect(directive.hasClass("secondary")).toBe(false);
   });
 
-  it("dropdown list options", function() {
+  it("dropdown list options", function () {
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
 
     var listItems = [];
-    angular.forEach(links, function(ele, i) {
+    angular.forEach(links, function (ele, i) {
       listItems.push(angular.element(ele).text().trim());
     });
 
     var expectTitles = [];
-    angular.forEach($scope.items, function(item) {
+    angular.forEach($scope.items, function (item) {
       expectTitles.push(item.title);
     });
     expect(expectTitles).toEqual(listItems);
   });
 
-  it("dropdown select sets shown to false", function() {
+  it("dropdown select sets shown to false", function () {
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
 
@@ -145,7 +147,7 @@ describe("maasCta", function() {
     expect(directive.isolateScope().shown).toBe(false);
   });
 
-  it("dropdown select sets model", function() {
+  it("dropdown select sets model", function () {
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
 
@@ -153,7 +155,7 @@ describe("maasCta", function() {
     expect(directive.scope().active).toBe($scope.items[0]);
   });
 
-  it("dropdown select sets title", function() {
+  it("dropdown select sets title", function () {
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
 
@@ -162,7 +164,7 @@ describe("maasCta", function() {
     expect(title.trim()).toBe($scope.items[0].title);
   });
 
-  it("dropdown select sets secondary", function() {
+  it("dropdown select sets secondary", function () {
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
 
@@ -170,7 +172,7 @@ describe("maasCta", function() {
     expect(directive.isolateScope().secondary).toBe(true);
   });
 
-  it("dropdown select sets selectedTitle", function() {
+  it("dropdown select sets selectedTitle", function () {
     $scope.items[0].selectedTitle = "Different if Selected";
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
@@ -181,7 +183,7 @@ describe("maasCta", function() {
     expect(iscope.getTitle()).toBe("Different if Selected");
   });
 
-  it("dropdown select sets other options' selectedTitle", function() {
+  it("dropdown select sets other options' selectedTitle", function () {
     $scope.items[1].selectedTitle = "Different if Selected";
     var directive = compileDirective("items", "active");
     var links = directive.find("button.p-contextual-menu__link");
@@ -189,14 +191,11 @@ describe("maasCta", function() {
     var iscope = directive.isolateScope();
     expect(iscope.getTitle()).toBe("Take action");
     angular.element(links[0]).click();
-    var linkOneText = angular
-      .element(links[1])
-      .text()
-      .trim();
+    var linkOneText = angular.element(links[1]).text().trim();
     expect(linkOneText).toBe("Different if Selected");
   });
 
-  it("clicking body will set shown to false", function() {
+  it("clicking body will set shown to false", function () {
     var directive = compileDirective("items", "active");
     // Open the dropdown.
     directive.find("button.p-contextual-menu__toggle").click();
@@ -204,7 +203,7 @@ describe("maasCta", function() {
 
     // Click the body.
     var $document;
-    inject(function($injector) {
+    inject(function ($injector) {
       $document = $injector.get("$document");
     });
     angular.element($document.find("body")).click();
@@ -212,7 +211,7 @@ describe("maasCta", function() {
     expect(directive.isolateScope().shown).toBe(false);
   });
 
-  it("clicking button will fire ng-click", function() {
+  it("clicking button will fire ng-click", function () {
     $scope.clicked = jasmine.createSpy("clicked");
     var directive = compileDirective("items", "active", null, "clicked()");
     // Open the dropdown.

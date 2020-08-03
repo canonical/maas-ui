@@ -44,22 +44,22 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   }
 
   // Return the data.
-  BootResourcesManager.prototype.getData = function() {
+  BootResourcesManager.prototype.getData = function () {
     return this._data;
   };
 
   // Return true when data has been loaded.
-  BootResourcesManager.prototype.isLoaded = function() {
+  BootResourcesManager.prototype.isLoaded = function () {
     return this._loaded;
   };
 
   // Returns true when currently polling.
-  BootResourcesManager.prototype.isPolling = function() {
+  BootResourcesManager.prototype.isPolling = function () {
     return this._polling;
   };
 
   // Starts the polling for data.
-  BootResourcesManager.prototype.startPolling = function() {
+  BootResourcesManager.prototype.startPolling = function () {
     if (!this._polling) {
       this._polling = true;
       return this._poll();
@@ -69,7 +69,7 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Stops the polling for data.
-  BootResourcesManager.prototype.stopPolling = function() {
+  BootResourcesManager.prototype.stopPolling = function () {
     this._polling = false;
     if (angular.isObject(this._nextPromise)) {
       $timeout.cancel(this._nextPromise);
@@ -78,16 +78,16 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Load the data from the region.
-  BootResourcesManager.prototype._loadData = function(raiseError) {
+  BootResourcesManager.prototype._loadData = function (raiseError) {
     raiseError = raiseError || false;
     var self = this;
     return RegionConnection.callMethod("bootresource.poll").then(
-      function(newData) {
+      function (newData) {
         angular.copy(angular.fromJson(newData), self._data);
         self._loaded = true;
         return self._data;
       },
-      function(error) {
+      function (error) {
         if (raiseError) {
           ErrorService.raiseError(error);
         }
@@ -96,16 +96,16 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Registers the next polling attempt.
-  BootResourcesManager.prototype._pollAgain = function(timeout) {
+  BootResourcesManager.prototype._pollAgain = function (timeout) {
     var self = this;
-    this._nextPromise = $timeout(function() {
+    this._nextPromise = $timeout(function () {
       self._poll();
     }, timeout);
     return this._nextPromise;
   };
 
   // Polls for the data from the region.
-  BootResourcesManager.prototype._poll = function() {
+  BootResourcesManager.prototype._poll = function () {
     var self = this;
 
     // Can only poll if connected.
@@ -114,7 +114,7 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
     }
 
     return this._loadData(false).then(
-      function(newData) {
+      function (newData) {
         var pollTimeout = self._pollTimeout;
         if (
           !angular.isObject(newData) ||
@@ -127,7 +127,7 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
         self._pollAgain(pollTimeout);
         return newData;
       },
-      function(error) {
+      function (error) {
         // Don't raise the error, just log it and try again.
         console.log(error); // eslint-disable-line no-console
         self._pollAgain(self._pollErrorTimeout);
@@ -137,9 +137,9 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
 
   // Loads the resources. This implemented so the ManagerHelperService
   // can work on this manager just like all the rest.
-  BootResourcesManager.prototype.loadItems = function() {
+  BootResourcesManager.prototype.loadItems = function () {
     var defer = $q.defer();
-    this._loadData(true).then(function() {
+    this._loadData(true).then(function () {
       defer.resolve();
     });
     return defer.promise;
@@ -147,13 +147,13 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
 
   // Does nothing. This implemented so the ManagerHelperService
   // can work on this manager just like all the rest.
-  BootResourcesManager.prototype.enableAutoReload = function() {};
+  BootResourcesManager.prototype.enableAutoReload = function () {};
 
   // Stop the running image import process.
-  BootResourcesManager.prototype.stopImport = function(params) {
+  BootResourcesManager.prototype.stopImport = function (params) {
     var self = this;
     return RegionConnection.callMethod("bootresource.stop_import", params).then(
-      function(newData) {
+      function (newData) {
         angular.copy(angular.fromJson(newData), self._data);
         self._loaded = true;
         return self._data;
@@ -162,10 +162,10 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Save the ubuntu options and start the import process.
-  BootResourcesManager.prototype.saveUbuntu = function(params) {
+  BootResourcesManager.prototype.saveUbuntu = function (params) {
     var self = this;
     return RegionConnection.callMethod("bootresource.save_ubuntu", params).then(
-      function(newData) {
+      function (newData) {
         angular.copy(angular.fromJson(newData), self._data);
         self._loaded = true;
         return self._data;
@@ -174,12 +174,12 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Save the Ubuntu Core images and start the import process.
-  BootResourcesManager.prototype.saveUbuntuCore = function(params) {
+  BootResourcesManager.prototype.saveUbuntuCore = function (params) {
     var self = this;
     return RegionConnection.callMethod(
       "bootresource.save_ubuntu_core",
       params
-    ).then(function(newData) {
+    ).then(function (newData) {
       angular.copy(angular.fromJson(newData), self._data);
       self._loaded = true;
       return self._data;
@@ -187,10 +187,10 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Save the other images and start the import process.
-  BootResourcesManager.prototype.saveOther = function(params) {
+  BootResourcesManager.prototype.saveOther = function (params) {
     var self = this;
     return RegionConnection.callMethod("bootresource.save_other", params).then(
-      function(newData) {
+      function (newData) {
         angular.copy(angular.fromJson(newData), self._data);
         self._loaded = true;
         return self._data;
@@ -199,17 +199,17 @@ function BootResourcesManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Fetch the releases and arches from the provided source.
-  BootResourcesManager.prototype.fetch = function(source) {
+  BootResourcesManager.prototype.fetch = function (source) {
     return RegionConnection.callMethod("bootresource.fetch", source);
   };
 
   // Delete an image.
-  BootResourcesManager.prototype.deleteImage = function(params) {
+  BootResourcesManager.prototype.deleteImage = function (params) {
     var self = this;
     return RegionConnection.callMethod(
       "bootresource.delete_image",
       params
-    ).then(function(newData) {
+    ).then(function (newData) {
       angular.copy(angular.fromJson(newData), self._data);
       self._loaded = true;
       return self._data;
@@ -223,7 +223,7 @@ BootResourcesManager.$inject = [
   "$q",
   "$timeout",
   "RegionConnection",
-  "ErrorService"
+  "ErrorService",
 ];
 
 export default BootResourcesManager;

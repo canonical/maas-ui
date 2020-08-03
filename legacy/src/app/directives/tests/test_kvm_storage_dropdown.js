@@ -12,7 +12,7 @@ describe("kvmStorageDropdown", () => {
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   let $templateCache;
-  beforeEach(inject($injector => {
+  beforeEach(inject(($injector) => {
     $templateCache = $injector.get("$templateCache");
     $templateCache.put(
       "static/partials/pod-details/kvm-storage-dropdown.html",
@@ -22,13 +22,13 @@ describe("kvmStorageDropdown", () => {
 
   // Create a new scope before each test.
   let $scope;
-  beforeEach(inject($rootScope => {
+  beforeEach(inject(($rootScope) => {
     $scope = $rootScope.$new();
     $scope.compose = {
       action: {
         name: "compose",
         title: "Compose",
-        sentence: "compose"
+        sentence: "compose",
       },
       obj: {
         storage: [
@@ -37,12 +37,12 @@ describe("kvmStorageDropdown", () => {
             size: 8,
             tags: [],
             pool: {},
-            boot: true
-          }
+            boot: true,
+          },
         ],
         requests: [],
-        interfaces: [$scope.defaultInterface]
-      }
+        interfaces: [$scope.defaultInterface],
+      },
     };
     $scope.dropdownOpen = false;
     $scope.pod = null;
@@ -60,11 +60,11 @@ describe("kvmStorageDropdown", () => {
       "storage='storage' ",
       "update-requests='updateRequests' ",
       "></kvm-storage-dropdown>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject($compile => {
+    inject(($compile) => {
       directive = $compile(html)($scope);
     });
 
@@ -108,33 +108,33 @@ describe("kvmStorageDropdown", () => {
         storage_pools: [
           {
             id: 1,
-            available: 10000000000 // bytes
-          }
-        ]
+            available: 10000000000, // bytes
+          },
+        ],
       };
       const storage = {
         pool: {
-          id: 1
-        }
+          id: 1,
+        },
       };
       scope.compose = {
         obj: {
           requests: [
             {
               poolId: 1,
-              size: 1 // gigabytes
-            }
-          ]
+              size: 1, // gigabytes
+            },
+          ],
         },
-        storage: [storage]
+        storage: [storage],
       };
       expect(scope.poolOverCapacity(storage)).toEqual(false);
 
       scope.compose.obj.requests = [
         {
           poolId: 1,
-          size: 1000 // gigabytes
-        }
+          size: 1000, // gigabytes
+        },
       ];
       expect(scope.poolOverCapacity(storage)).toEqual(true);
     });
@@ -146,7 +146,7 @@ describe("kvmStorageDropdown", () => {
       const scope = directive.isolateScope();
       const pool = {
         used: 1,
-        total: 10
+        total: 10,
       };
       const thisRequest = 2;
       const otherRequests = 3;
@@ -164,27 +164,27 @@ describe("kvmStorageDropdown", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
       const pool = {
-        id: 1
+        id: 1,
       };
       const storage = {
         pool: {
-          id: 1
+          id: 1,
         },
-        size: 2
+        size: 2,
       };
       scope.compose = {
         obj: {
           requests: [
             {
               poolId: 1,
-              size: 3
+              size: 3,
             },
             {
               poolId: 2,
-              size: 1
-            }
-          ]
-        }
+              size: 1,
+            },
+          ],
+        },
       };
 
       expect(scope.getOtherRequests(pool, storage)).toEqual(1);

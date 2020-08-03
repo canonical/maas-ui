@@ -32,12 +32,12 @@ function IntroController(
 
   // Set the skip function on the rootScope to allow skipping the
   // intro view.
-  $rootScope.skip = function() {
+  $rootScope.skip = function () {
     $scope.clickContinue(true);
   };
 
   // Return true if the welcome section is not in error.
-  $scope.welcomeInError = function() {
+  $scope.welcomeInError = function () {
     var form = $scope.maasName.$maasForm;
     if (angular.isObject(form)) {
       return form.hasErrors();
@@ -47,15 +47,15 @@ function IntroController(
   };
 
   // Return true if the network section is in error.
-  $scope.networkInError = function() {
+  $scope.networkInError = function () {
     var inError = false;
     var objs = [
       $scope.upstreamDNS,
       $scope.mainArchive,
       $scope.portsArchive,
-      $scope.httpProxy
+      $scope.httpProxy,
     ];
-    angular.forEach(objs, function(obj) {
+    angular.forEach(objs, function (obj) {
       var form = obj.$maasForm;
       if (angular.isObject(form) && form.hasErrors()) {
         inError = true;
@@ -65,22 +65,22 @@ function IntroController(
   };
 
   // Return true if continue can be clicked.
-  $scope.canContinue = function() {
+  $scope.canContinue = function () {
     return (
       !$scope.welcomeInError() && !$scope.networkInError() && $scope.hasImages
     );
   };
 
   // Called when continue button is clicked.
-  $scope.clickContinue = function(force) {
+  $scope.clickContinue = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
     if (force || $scope.canContinue()) {
       ConfigsManager.updateItem({
         name: "completed_intro",
-        value: true
-      }).then(function() {
+        value: true,
+      }).then(function () {
         // Reload the whole page so that the CONFIG will be
         // set to the new value.
         $window.location.reload();
@@ -94,18 +94,18 @@ function IntroController(
   } else {
     // Load the required managers.
     var managers = [ConfigsManager, PackageRepositoriesManager];
-    ManagerHelperService.loadManagers($scope, managers).then(function() {
+    ManagerHelperService.loadManagers($scope, managers).then(function () {
       $scope.loading = false;
       $scope.maasName = ConfigsManager.getItemFromList("maas_name");
       $scope.upstreamDNS = ConfigsManager.getItemFromList("upstream_dns");
       $scope.httpProxy = ConfigsManager.getItemFromList("http_proxy");
       $scope.mainArchive = PackageRepositoriesManager.getItems().filter(
-        function(repo) {
+        function (repo) {
           return repo["default"] && repo.name === "main_archive";
         }
       )[0];
       $scope.portsArchive = PackageRepositoriesManager.getItems().filter(
-        function(repo) {
+        function (repo) {
           return repo["default"] && repo.name === "ports_archive";
         }
       )[0];
@@ -114,7 +114,7 @@ function IntroController(
     // Don't load the boot resources as the boot-images directive
     // performs that action. Just watch and make sure that
     // at least one resource exists before continuing.
-    $scope.$watch("bootResources.resources", function() {
+    $scope.$watch("bootResources.resources", function () {
       if (
         angular.isArray($scope.bootResources.resources) &&
         $scope.bootResources.resources.length > 0

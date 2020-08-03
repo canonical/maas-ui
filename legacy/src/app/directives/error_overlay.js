@@ -22,7 +22,7 @@ export function maasErrorOverlay(
     transclude: true,
     scope: true,
     template: errorOverlayTmpl,
-    link: function(scope) {
+    link: function (scope) {
       scope.connected = false;
       scope.showDisconnected = false;
       scope.clientError = false;
@@ -33,7 +33,7 @@ export function maasErrorOverlay(
       var markDisconnected;
 
       // Returns true when the overlay should be shown.
-      scope.show = function() {
+      scope.show = function () {
         // Always show if clientError.
         if (scope.clientError) {
           return true;
@@ -51,7 +51,7 @@ export function maasErrorOverlay(
       };
 
       // Returns the title for the header.
-      scope.getTitle = function() {
+      scope.getTitle = function () {
         if (scope.clientError) {
           return "Error occurred";
         } else if (scope.wasConnected) {
@@ -62,13 +62,13 @@ export function maasErrorOverlay(
       };
 
       // Called to reload the page.
-      scope.reload = function() {
+      scope.reload = function () {
         $window.location.reload();
       };
 
       // Called to when the connection status of the region
       // changes. Updates the scope connected and error values.
-      var watchConnection = function() {
+      var watchConnection = function () {
         // Do nothing if already a client error.
         if (scope.clientError) {
           return;
@@ -84,7 +84,7 @@ export function maasErrorOverlay(
             // Show disconnected after 1/2 second. This removes
             // the flicker that can occur, if it disconnecets
             // and reconnected quickly.
-            markDisconnected = $timeout(function() {
+            markDisconnected = $timeout(function () {
               scope.showDisconnected = true;
               markDisconnected = undefined;
             }, 500);
@@ -101,15 +101,15 @@ export function maasErrorOverlay(
 
       // Watch the isConnected and error value on the
       // RegionConnection.
-      scope.$watch(function() {
+      scope.$watch(function () {
         return RegionConnection.isConnected();
       }, watchConnection);
-      scope.$watch(function() {
+      scope.$watch(function () {
         return RegionConnection.error;
       }, watchConnection);
 
       // Called then the error value on the ErrorService changes.
-      var watchError = function() {
+      var watchError = function () {
         var error = ErrorService._error;
         if (angular.isString(error)) {
           scope.clientError = true;
@@ -120,16 +120,16 @@ export function maasErrorOverlay(
       };
 
       // Watch _error on the ErrorService.
-      scope.$watch(function() {
+      scope.$watch(function () {
         return ErrorService._error;
       }, watchError);
 
       // Cancel the timeout on scope destroy.
-      scope.$on("$destroy", function() {
+      scope.$on("$destroy", function () {
         if (angular.isDefined(markDisconnected)) {
           $timeout.cancel(markDisconnected);
         }
       });
-    }
+    },
   };
 }

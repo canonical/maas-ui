@@ -15,7 +15,7 @@ function ResourcePoolsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the resource pool object.
     var self = this;
-    RegionConnection.registerNotifier("resourcepool", function(action, data) {
+    RegionConnection.registerNotifier("resourcepool", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -23,7 +23,7 @@ function ResourcePoolsManager(RegionConnection, Manager) {
   ResourcePoolsManager.prototype = new Manager();
 
   // Return the default pool.
-  ResourcePoolsManager.prototype.getDefaultPool = function() {
+  ResourcePoolsManager.prototype.getDefaultPool = function () {
     var i;
     for (i = 0; i < this._items.length; i++) {
       if (this._items[i].id === 0) {

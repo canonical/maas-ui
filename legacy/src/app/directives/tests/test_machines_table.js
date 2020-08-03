@@ -8,14 +8,14 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import "angular-mocks";
 
-describe("maasMachinesTable", function() {
+describe("maasMachinesTable", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   var $q, $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $q = $injector.get("$q");
     $templateCache = $injector.get("$templateCache");
     $templateCache.put("static/partials/machines-table.html?v=undefined", "");
@@ -23,7 +23,7 @@ describe("maasMachinesTable", function() {
 
   // Load the required managers.
   var MachinesManager, GeneralManager, NotificationsManager, UsersManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
     NotificationsManager = $injector.get("NotificationsManager");
     UsersManager = $injector.get("UsersManager");
@@ -32,7 +32,7 @@ describe("maasMachinesTable", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -44,7 +44,7 @@ describe("maasMachinesTable", function() {
       hostname: makeName("name"),
       $selected: false,
       testing_status: { status: -1 },
-      other_test_status: { status: -1 }
+      other_test_status: { status: -1 },
     };
     MachinesManager._items.push(machine);
     return machine;
@@ -72,11 +72,11 @@ describe("maasMachinesTable", function() {
       'on-listing-change="onListingChange($machines)" ',
       'on-check-all="onCheckAll()" ',
       'on-check="onCheck($machine)"></maas-machines-table>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -85,7 +85,7 @@ describe("maasMachinesTable", function() {
     return directive.find("maas-machines-table");
   }
 
-  it("sets initial variables", function() {
+  it("sets initial variables", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.table).toEqual({
@@ -96,13 +96,13 @@ describe("maasMachinesTable", function() {
       machines: MachinesManager.getItems(),
       filteredMachines: MachinesManager.getItems(),
       osinfo: GeneralManager.getData("osinfo"),
-      machineActions: GeneralManager.getData("machine_actions")
+      machineActions: GeneralManager.getData("machine_actions"),
     });
     expect(scope.table.machines).toBe(MachinesManager.getItems());
   });
 
-  describe("updateAllChecked", function() {
-    it("sets allViewableChecked to false when no machines", function() {
+  describe("updateAllChecked", function () {
+    it("sets allViewableChecked to false when no machines", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.allViewableChecked = true;
@@ -111,40 +111,40 @@ describe("maasMachinesTable", function() {
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("sets allViewableChecked to false when one not selected", function() {
+    it("sets allViewableChecked to false when one not selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.allViewableChecked = true;
       scope.table.filteredMachines = [
         {
-          $selected: true
+          $selected: true,
         },
         {
-          $selected: false
-        }
+          $selected: false,
+        },
       ];
       scope.updateAllChecked();
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("sets allViewableChecked to false when one not selected", function() {
+    it("sets allViewableChecked to false when one not selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.filteredMachines = [
         {
-          $selected: true
+          $selected: true,
         },
         {
-          $selected: true
-        }
+          $selected: true,
+        },
       ];
       scope.updateAllChecked();
       expect(scope.table.allViewableChecked).toBe(true);
     });
   });
 
-  describe("toggleCheckAll", function() {
-    it("unselected all selected machines", function() {
+  describe("toggleCheckAll", function () {
+    it("unselected all selected machines", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = makeMachine();
@@ -156,7 +156,7 @@ describe("maasMachinesTable", function() {
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("selects all unselected machines", function() {
+    it("selects all unselected machines", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = makeMachine();
@@ -167,7 +167,7 @@ describe("maasMachinesTable", function() {
       expect(scope.table.allViewableChecked).toBe(true);
     });
 
-    it("calls onCheckAll", function() {
+    it("calls onCheckAll", function () {
       $scope.onCheckAll = jasmine.createSpy("onCheckAll");
       var directive = compileDirective();
       var scope = directive.isolateScope();
@@ -188,7 +188,7 @@ describe("maasMachinesTable", function() {
       scope.table.filteredMachines = machines;
       scope.groupedMachines = [
         { label: "New", machines: [machines[0], machines[2]] },
-        { label: "Broken", machines: [machines[1]] }
+        { label: "Broken", machines: [machines[1]] },
       ];
       scope.toggleCheckGroup("New");
 
@@ -211,7 +211,7 @@ describe("maasMachinesTable", function() {
       scope.table.filteredMachines = machines;
       scope.groupedMachines = [
         { label: "New", machines: [machines[0], machines[2]] },
-        { label: "Broken", machines: [machines[1]] }
+        { label: "Broken", machines: [machines[1]] },
       ];
       scope.toggleCheckGroup("New");
 
@@ -221,8 +221,8 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("toggleChecked", function() {
-    it("selects machine", function() {
+  describe("toggleChecked", function () {
+    it("selects machine", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = makeMachine();
@@ -232,7 +232,7 @@ describe("maasMachinesTable", function() {
       expect(scope.table.allViewableChecked).toBe(true);
     });
 
-    it("unselects machine", function() {
+    it("unselects machine", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = makeMachine();
@@ -264,8 +264,8 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("sortTable", function() {
-    it("sets predicate", function() {
+  describe("sortTable", function () {
+    it("sets predicate", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var predicate = makeName("predicate");
@@ -273,7 +273,7 @@ describe("maasMachinesTable", function() {
       expect(scope.table.predicate).toBe(predicate);
     });
 
-    it("reverses reverse", function() {
+    it("reverses reverse", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.reverse = true;
@@ -282,8 +282,8 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("selectColumnOrSort", function() {
-    it("sets column if different", function() {
+  describe("selectColumnOrSort", function () {
+    it("sets column if different", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var column = makeName("column");
@@ -291,7 +291,7 @@ describe("maasMachinesTable", function() {
       expect(scope.table.column).toBe(column);
     });
 
-    it("calls sortTable if column already set", function() {
+    it("calls sortTable if column already set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var column = makeName("column");
@@ -302,15 +302,15 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("showSpinner", function() {
-    it("returns false/true based on status codes", function() {
+  describe("showSpinner", function () {
+    it("returns false/true based on status codes", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var STATUSES = [1, 9, 12, 14, 17, 19];
       var i;
       for (i = 0; i < 20; i++) {
         var machine = {
-          status_code: i
+          status_code: i,
         };
         var expected = false;
         if (STATUSES.indexOf(i) > -1) {
@@ -321,43 +321,43 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("showFailedTestWarning", function() {
+  describe("showFailedTestWarning", function () {
     var spinner_statuses = [0, 1, 2, 21, 22];
     var testing_statuses = [-1, 2];
 
-    it("returns false when showing spinner", function() {
+    it("returns false when showing spinner", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(true);
       expect(scope.showFailedTestWarning({})).toBe(false);
     });
 
-    it("returns false when testing or commissioning", function() {
+    it("returns false when testing or commissioning", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
-      angular.forEach(spinner_statuses, function(status) {
+      angular.forEach(spinner_statuses, function (status) {
         var machine = {
-          status_code: status
+          status_code: status,
         };
         expect(scope.showFailedTestWarning(machine)).toBe(false);
       });
     });
 
-    it("returns false when testing_status is passed/unknown", function() {
+    it("returns false when testing_status is passed/unknown", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
-      angular.forEach(testing_statuses, function(testing_status) {
+      angular.forEach(testing_statuses, function (testing_status) {
         var machine = {
           status_code: 4, // READY
-          testing_status: { status: testing_status }
+          testing_status: { status: testing_status },
         };
         expect(scope.showFailedTestWarning(machine)).toBe(false);
       });
     });
 
-    it("returns true otherwise", function() {
+    it("returns true otherwise", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
@@ -370,7 +370,7 @@ describe("maasMachinesTable", function() {
             if (testing_statuses.indexOf(j) === -1) {
               var machine = {
                 status_code: i,
-                testing_status: { status: j }
+                testing_status: { status: j },
               };
               expect(scope.showFailedTestWarning(machine)).toBe(true);
             }
@@ -380,72 +380,72 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("showNodeStatus", function() {
-    it("returns false when showing spinner", function() {
+  describe("showNodeStatus", function () {
+    it("returns false when showing spinner", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(true);
       spyOn(scope, "showFailedTestWarning").and.returnValue(false);
       var machine = {
-        other_test_status: { status: 3 }
+        other_test_status: { status: 3 },
       };
       expect(scope.showNodeStatus(machine)).toBe(false);
     });
 
-    it("returns false when showing failed test warning", function() {
+    it("returns false when showing failed test warning", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
       spyOn(scope, "showFailedTestWarning").and.returnValue(true);
       var machine = {
-        other_test_status: { status: 3 }
+        other_test_status: { status: 3 },
       };
       expect(scope.showNodeStatus(machine)).toBe(false);
     });
 
-    it("returns false when other_test_status is passed", function() {
+    it("returns false when other_test_status is passed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
       spyOn(scope, "showFailedTestWarning").and.returnValue(false);
       var machine = {
-        other_test_status: { status: 2 }
+        other_test_status: { status: 2 },
       };
       expect(scope.showNodeStatus(machine)).toBe(false);
     });
 
-    it("returns true otherwise", function() {
+    it("returns true otherwise", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "showSpinner").and.returnValue(false);
       spyOn(scope, "showFailedTestWarning").and.returnValue(false);
       var machine = {
-        other_test_status: { status: 3 }
+        other_test_status: { status: 3 },
       };
       expect(scope.showNodeStatus(machine)).toBe(true);
     });
   });
 
-  describe("getReleaseTitle", function() {
-    it("returns release title from osinfo", function() {
+  describe("getReleaseTitle", function () {
+    it("returns release title from osinfo", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getReleaseTitle("ubuntu/xenial")).toBe("Ubuntu Xenial");
     });
 
-    it("returns release name when not in osinfo", function() {
+    it("returns release name when not in osinfo", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {
-        releases: []
+        releases: [],
       };
       expect(scope.getReleaseTitle("ubuntu/xenial")).toBe("ubuntu/xenial");
     });
 
-    it("returns release name when osinfo.releases undefined", function() {
+    it("returns release name when osinfo.releases undefined", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {};
@@ -453,88 +453,88 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("getStatusText", function() {
-    it("returns status text when not deployed or deploying", function() {
+  describe("getStatusText", function () {
+    it("returns status text when not deployed or deploying", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = {
-        status: makeName("status")
+        status: makeName("status"),
       };
 
       expect(scope.getStatusText(machine)).toBe(machine.status);
     });
 
-    it("returns status with release title when deploying", function() {
+    it("returns status with release title when deploying", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = {
         status: "Deploying",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getStatusText(machine)).toBe("Deploying Ubuntu Xenial");
     });
 
-    it("returns release title when deployed", function() {
+    it("returns release title when deployed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = {
         status: "Deployed",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getStatusText(machine)).toBe("Ubuntu Xenial");
     });
 
-    it("returns release title without codename when deployed", function() {
+    it("returns release title without codename when deployed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = {
         status: "Deployed",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"']]
+        releases: [["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"']],
       };
       expect(scope.getStatusText(machine)).toBe("Ubuntu 16.04 LTS");
     });
   });
 
-  describe("getStatusMessage", function() {
-    angular.forEach([1, 9, 12, 14, 17, 19, 21], function(code) {
-      it("returns status message when status code: " + code, function() {
+  describe("getStatusMessage", function () {
+    angular.forEach([1, 9, 12, 14, 17, 19, 21], function (code) {
+      it("returns status message when status code: " + code, function () {
         var directive = compileDirective();
         var scope = directive.isolateScope();
         var machine = {
           status_code: code,
-          status_message: makeName("message")
+          status_message: makeName("message"),
         };
 
         expect(scope.getStatusMessage(machine)).toBe(machine.status_message);
       });
     });
 
-    it("returns blank when status code not in above list", function() {
+    it("returns blank when status code not in above list", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var machine = {
         status_code: 2,
-        status_message: makeName("message")
+        status_message: makeName("message"),
       };
 
       expect(scope.getStatusMessage(machine)).toBe("");
     });
   });
 
-  describe("onListingChange", function() {
-    it("called when filteredMachines changes", function() {
+  describe("onListingChange", function () {
+    it("called when filteredMachines changes", function () {
       $scope.onListingChange = jasmine.createSpy("onListingChange");
       var directive = compileDirective();
       var scope = directive.isolateScope();
@@ -547,8 +547,8 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("formatMemoryUnit", function() {
-    it("returns unit and value separately", function() {
+  describe("formatMemoryUnit", function () {
+    it("returns unit and value separately", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var memory = Math.floor(Math.random() * 10) + 1;
@@ -559,7 +559,7 @@ describe("maasMachinesTable", function() {
       expect(actual).toEqual(expected);
     });
 
-    it("removes leading zeroes and converts to string", function() {
+    it("removes leading zeroes and converts to string", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var rand = Math.floor(Math.random() * 10) + 1;
@@ -571,8 +571,8 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("formatStorageUnit", function() {
-    it("returns unit and value separately", function() {
+  describe("formatStorageUnit", function () {
+    it("returns unit and value separately", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var storage = Math.random().toFixed(1) * 100;
@@ -583,7 +583,7 @@ describe("maasMachinesTable", function() {
       expect(actual).toEqual(expected);
     });
 
-    it("displays three significant figures", function() {
+    it("displays three significant figures", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var storage = Math.random() * 10;
@@ -593,7 +593,7 @@ describe("maasMachinesTable", function() {
       expect(actual).toEqual(expected);
     });
 
-    it("converts unit to TB at or above 1000 GB", function() {
+    it("converts unit to TB at or above 1000 GB", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var storage = 1000.0;
@@ -601,25 +601,25 @@ describe("maasMachinesTable", function() {
       var actual = scope.formatStorageUnit(storage);
       var expected = {
         unit: "TB",
-        value: "1"
+        value: "1",
       };
       expect(actual).toEqual(expected);
     });
   });
 
-  describe("getBootIp", function() {
-    it("returns the machine's boot IP address if it exists", function() {
+  describe("getBootIp", function () {
+    it("returns the machine's boot IP address if it exists", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var ipAddresses = [
         {
           ip: "172.168.1.1",
-          is_boot: false
+          is_boot: false,
         },
         {
           ip: "172.168.1.2",
-          is_boot: true
-        }
+          is_boot: true,
+        },
       ];
 
       var actual = scope.getBootIp(ipAddresses);
@@ -628,45 +628,45 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("removeDuplicates", function() {
-    it("returns a unique IP object with a duplicate", function() {
+  describe("removeDuplicates", function () {
+    it("returns a unique IP object with a duplicate", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var ipAddresses = [
         {
           ip: "172.168.1.1",
-          is_boot: false
+          is_boot: false,
         },
         {
           ip: "172.168.1.2",
-          is_boot: true
+          is_boot: true,
         },
         {
           ip: "172.168.1.2",
-          is_boot: true
-        }
+          is_boot: true,
+        },
       ];
 
       var actual = scope.removeDuplicates(ipAddresses, "ip");
       expect(actual.length).toEqual(2);
     });
 
-    it("returns a unique IP object without a duplicate", function() {
+    it("returns a unique IP object without a duplicate", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var ipAddresses = [
         {
           ip: "172.168.1.1",
-          is_boot: false
+          is_boot: false,
         },
         {
           ip: "172.168.1.2",
-          is_boot: true
+          is_boot: true,
         },
         {
           ip: "172.168.1.3",
-          is_boot: true
-        }
+          is_boot: true,
+        },
       ];
 
       var actual = scope.removeDuplicates(ipAddresses, "ip");
@@ -674,7 +674,7 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("changePowerState", function() {
+  describe("changePowerState", function () {
     it(`executes MachinesManager.checkPowerState
             if action param is "check"`, () => {
       const directive = compileDirective();
@@ -707,7 +707,7 @@ describe("maasMachinesTable", function() {
       expect(NotificationsManager.createItem).toHaveBeenCalledWith({
         message: `Unable to check power state of ${machine.hostname}: ${errorMsg}`,
         category: "error",
-        user: user.id
+        user: user.id,
       });
     });
 
@@ -741,12 +741,12 @@ describe("maasMachinesTable", function() {
       expect(NotificationsManager.createItem).toHaveBeenCalledWith({
         message: `Unable to power on ${machine.hostname}: ${errorMsg}`,
         category: "error",
-        user: user.id
+        user: user.id,
       });
     });
   });
 
-  describe("performAction", function() {
+  describe("performAction", function () {
     it("closes any open menus when run", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
@@ -789,7 +789,7 @@ describe("maasMachinesTable", function() {
     });
   });
 
-  describe("toggleMenu", function() {
+  describe("toggleMenu", function () {
     it("opens menu if none are currently open", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
@@ -814,8 +814,8 @@ describe("maasMachinesTable", function() {
       scope.table = {
         machineActions: [
           { title: "this action title", name: "this_action" },
-          { title: "other action title", name: "other_action" }
-        ]
+          { title: "other action title", name: "other_action" },
+        ],
       };
 
       expect(scope.getActionTitle(scope.table.machineActions[0].name)).toEqual(
@@ -829,7 +829,7 @@ describe("maasMachinesTable", function() {
       const [defaultOS, otherOS] = [makeOS(), makeOS()];
       const [defaultRelease, otherRelease] = [
         makeRelease(defaultOS),
-        makeRelease(otherOS)
+        makeRelease(otherOS),
       ];
 
       scope.table = {
@@ -837,9 +837,9 @@ describe("maasMachinesTable", function() {
           default_osystem: defaultOS[0],
           default_release: defaultRelease[0].split("/")[1],
           osystems: [defaultOS, otherOS],
-          releases: [defaultRelease, otherRelease]
+          releases: [defaultRelease, otherRelease],
         },
-        machineActions: [{ title: "Deploy...", name: "deploy" }]
+        machineActions: [{ title: "Deploy...", name: "deploy" }],
       };
 
       expect(scope.getActionTitle("deploy")).toEqual(
@@ -894,13 +894,13 @@ describe("maasMachinesTable", function() {
       const items = [
         { id: 1, type: "a" },
         { id: 2, type: "a" },
-        { id: 3, type: "b" }
+        { id: 3, type: "b" },
       ];
-      const grouped = scope.groupBy(items, item => item.type);
+      const grouped = scope.groupBy(items, (item) => item.type);
 
       expect(grouped.get("a")).toEqual([
         { id: 1, type: "a" },
-        { id: 2, type: "a" }
+        { id: 2, type: "a" },
       ]);
       expect(grouped.get("b")).toEqual([{ id: 3, type: "b" }]);
     });
@@ -944,8 +944,8 @@ describe("maasMachinesTable", function() {
             machines[15],
             machines[18],
             machines[20],
-            machines[22]
-          ]
+            machines[22],
+          ],
         },
         { label: "New", machines: [machines[0]] },
         { label: "Commissioning", machines: [machines[1]] },
@@ -956,11 +956,11 @@ describe("maasMachinesTable", function() {
         { label: "Deployed", machines: [machines[6]] },
         {
           label: "Rescue mode",
-          machines: [machines[16], machines[17], machines[19]]
+          machines: [machines[16], machines[17], machines[19]],
         },
         { label: "Releasing", machines: [machines[12], machines[14]] },
         { label: "Broken", machines: [machines[8]] },
-        { label: "Other", machines: [machines[7], machines[3], machines[5]] }
+        { label: "Other", machines: [machines[7], machines[3], machines[5]] },
       ]);
     });
 
@@ -976,7 +976,7 @@ describe("maasMachinesTable", function() {
 
       expect(scope.groupedMachines).toEqual([
         { label: "admin", machines: [machines[0]] },
-        { label: "user1", machines: [machines[1]] }
+        { label: "user1", machines: [machines[1]] },
       ]);
     });
   });
@@ -993,7 +993,7 @@ describe("maasMachinesTable", function() {
       machines[1].$selected = true;
       scope.table.filteredMachines = machines;
       scope.groupedMachines = [
-        { label: "New", machines: [machines[0], machines[1]] }
+        { label: "New", machines: [machines[0], machines[1]] },
       ];
       scope.getGroupSelectedState("New");
 
@@ -1010,7 +1010,7 @@ describe("maasMachinesTable", function() {
       machines[1].status = "New";
       scope.table.filteredMachines = machines;
       scope.groupedMachines = [
-        { label: "New", machines: [machines[0], machines[1]] }
+        { label: "New", machines: [machines[0], machines[1]] },
       ];
       scope.getGroupSelectedState("New");
 
@@ -1030,7 +1030,7 @@ describe("maasMachinesTable", function() {
       scope.groupedMachines = [
         { label: "New", machines: [machines[0], machines[1]] },
         { label: "Ready", machines: [machines[2], machines[3]] },
-        { label: "Failed", machines: [machines[4], machines[5]] }
+        { label: "Failed", machines: [machines[4], machines[5]] },
       ];
 
       expect(scope.getGroupCountString("New")).toBe("2 machines selected");
@@ -1064,7 +1064,7 @@ barbaz`); // Has to be formatted this way for tooltip
       machines[2].$selected = true;
       scope.table = {
         machines: machines,
-        filteredMachines: machines
+        filteredMachines: machines,
       };
       scope.search = "in:(Selected)";
       scope.updateFilteredMachines();
@@ -1095,7 +1095,7 @@ barbaz`); // Has to be formatted this way for tooltip
       scope.groupByLabel = "status";
       const group = {
         label: "Allocated",
-        machines: []
+        machines: [],
       };
       scope.$digest();
 
@@ -1109,7 +1109,7 @@ barbaz`); // Has to be formatted this way for tooltip
       scope.groupByLabel = "status";
       const group = {
         label: "New",
-        machines: []
+        machines: [],
       };
       scope.loadAll(group);
 

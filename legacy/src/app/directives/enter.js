@@ -5,16 +5,16 @@
 function maasEnter() {
   return {
     restrict: "A",
-    link: function(scope, element, attrs) {
-      element.bind("keydown keypress", function(evt) {
+    link: function (scope, element, attrs) {
+      element.bind("keydown keypress", function (evt) {
         if (evt.which === 13) {
-          scope.$apply(function() {
+          scope.$apply(function () {
             scope.$eval(attrs.maasEnter);
           });
           evt.preventDefault();
         }
       });
-    }
+    },
   };
 }
 

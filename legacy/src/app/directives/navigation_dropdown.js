@@ -10,22 +10,16 @@
 function maasNavigationDropdown($document) {
   return {
     restrict: "A",
-    link: function(scope, element, attrs) {
-      element.on("click", function(e) {
+    link: function (scope, element, attrs) {
+      element.on("click", function (e) {
         e.stopPropagation();
-        element
-          .parent()
-          .find(".p-dropdown__menu")
-          .toggleClass("u-hide");
+        element.parent().find(".p-dropdown__menu").toggleClass("u-hide");
       });
 
-      $document.on("click", function() {
-        element
-          .parent()
-          .find(".p-dropdown__menu")
-          .addClass("u-hide");
+      $document.on("click", function () {
+        element.parent().find(".p-dropdown__menu").addClass("u-hide");
       });
-    }
+    },
   };
 }
 

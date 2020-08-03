@@ -42,33 +42,33 @@ function SettingsController(
   $scope.deleteRepository = null;
 
   // Called when the enabled toggle is changed.
-  $scope.repositoryEnabledToggle = function(repository) {
+  $scope.repositoryEnabledToggle = function (repository) {
     PackageRepositoriesManager.updateItem(repository);
   };
 
   // Called to enter remove mode for a repository.
-  $scope.repositoryEnterRemove = function(repository) {
+  $scope.repositoryEnterRemove = function (repository) {
     $scope.newRepository = null;
     $scope.editRepository = null;
     $scope.deleteRepository = repository;
   };
 
   // Called to exit remove mode for a repository.
-  $scope.repositoryExitRemove = function() {
+  $scope.repositoryExitRemove = function () {
     $scope.deleteRepository = null;
   };
 
   // Called to confirm the removal of a repository.
-  $scope.repositoryConfirmRemove = function() {
+  $scope.repositoryConfirmRemove = function () {
     PackageRepositoriesManager.deleteItem($scope.deleteRepository).then(
-      function() {
+      function () {
         $scope.repositoryExitRemove();
       }
     );
   };
 
   // Return true if the repository is a PPA.
-  $scope.isPPA = function(data) {
+  $scope.isPPA = function (data) {
     if (!angular.isObject(data)) {
       return false;
     }
@@ -82,7 +82,7 @@ function SettingsController(
   };
 
   // Return true if the repository is a mirror.
-  $scope.isMirror = function(data) {
+  $scope.isMirror = function (data) {
     if (!angular.isObject(data)) {
       return false;
     }
@@ -93,19 +93,19 @@ function SettingsController(
   };
 
   // Called to enter edit mode for a repository.
-  $scope.repositoryEnterEdit = function(repository) {
+  $scope.repositoryEnterEdit = function (repository) {
     $scope.newRepository = null;
     $scope.deleteRepository = null;
     $scope.editRepository = repository;
   };
 
   // Called to exit edit mode for a repository.
-  $scope.repositoryExitEdit = function() {
+  $scope.repositoryExitEdit = function () {
     $scope.editRepository = null;
   };
 
   // Called to start adding a new repository.
-  $scope.repositoryAdd = function(isPPA) {
+  $scope.repositoryAdd = function (isPPA) {
     var repo = {
       name: "",
       enabled: true,
@@ -113,7 +113,7 @@ function SettingsController(
       key: "",
       arches: ["i386", "amd64"],
       distributions: [],
-      components: []
+      components: [],
     };
     if (isPPA) {
       repo.url = "ppa:";
@@ -122,7 +122,7 @@ function SettingsController(
   };
 
   // Called to cancel addind a new repository.
-  $scope.repositoryAddCancel = function() {
+  $scope.repositoryAddCancel = function () {
     $scope.newRepository = null;
   };
 
@@ -143,14 +143,14 @@ function SettingsController(
     DevicesManager,
     ControllersManager,
     SubnetsManager,
-    GeneralManager
-  ]).then(function() {
+    GeneralManager,
+  ]).then(function () {
     $scope.loading = false;
 
     // Set flag for RSD navigation item.
     if (!$rootScope.showRSDLink) {
       GeneralManager.getNavigationOptions().then(
-        res => ($rootScope.showRSDLink = res.rsd)
+        (res) => ($rootScope.showRSDLink = res.rsd)
       );
     }
   });

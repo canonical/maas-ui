@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasmacAddress", function() {
+describe("maasmacAddress", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope;
 
-  beforeEach(inject(function($rootScope, _$window_, _$document_) {
+  beforeEach(inject(function ($rootScope, _$window_, _$document_) {
     $scope = $rootScope.$new();
   }));
 
@@ -29,14 +29,14 @@ describe("maasmacAddress", function() {
       'data-ng-model="mac"',
       'data-ng-pattern="macAddressRegex"',
       "mac-address>",
-      "</form>"
+      "</form>",
     ].join("");
 
     $scope.mac = "";
     $scope.macAddressRegex = /^([0-9A-F]{2}[::]){5}([0-9A-F]{2})$/gim;
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -45,7 +45,7 @@ describe("maasmacAddress", function() {
     return directive.find("form");
   }
 
-  it("MAC address formatting to be valid", function() {
+  it("MAC address formatting to be valid", function () {
     compileDirective();
     // set an invalid value
     $scope.TestForm.mac.$setViewValue("00:00:00:00:00:00");
@@ -53,7 +53,7 @@ describe("maasmacAddress", function() {
     expect($scope.TestForm.mac.$valid).toBe(true);
   });
 
-  it("MAC address formatting to be invalid", function() {
+  it("MAC address formatting to be invalid", function () {
     compileDirective();
     // set an invalid value
     $scope.TestForm.mac.$setViewValue('!"#$%^&*(!"#")"');

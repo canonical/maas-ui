@@ -37,7 +37,7 @@ function NodesListController(
   var DEVICE_IP_ASSIGNMENT = {
     external: "External",
     dynamic: "Dynamic",
-    static: "Static"
+    static: "Static",
   };
 
   // Set title and page.
@@ -61,17 +61,17 @@ function NodesListController(
   $scope.failedActionSentence = "Action cannot be performed.";
 
   // Called for autocomplete when the user is typing a tag name.
-  $scope.tagsAutocomplete = function(query) {
+  $scope.tagsAutocomplete = function (query) {
     return TagsManager.autocomplete(query);
   };
 
   $scope.tabs = {};
-  $scope.pluralize = function(tab) {
+  $scope.pluralize = function (tab) {
     var singulars = {
       machines: "machine",
       switches: "switch",
       devices: "device",
-      controllers: "controller"
+      controllers: "controller",
     };
     var verb = singulars[tab];
     if ($scope.tabs[tab].selectedItems.length > 1) {
@@ -100,12 +100,12 @@ function NodesListController(
     showing_confirmation: false,
     confirmation_message: "",
     confirmation_details: [],
-    affected_nodes: 0
+    affected_nodes: 0,
   };
   $scope.tabs.machines.osSelection = {
     osystem: null,
     release: null,
-    hwe_kernel: null
+    hwe_kernel: null,
   };
   $scope.tabs.machines.zoneSelection = null;
   $scope.tabs.machines.poolSelection = null;
@@ -117,10 +117,10 @@ function NodesListController(
     skipNetworking: false,
     skipStorage: false,
     updateFirmware: false,
-    configureHBA: false
+    configureHBA: false,
   };
   $scope.tabs.machines.deployOptions = {
-    installKVM: false
+    installKVM: false,
   };
   $scope.tabs.machines.releaseOptions = {};
   $scope.tabs.machines.commissioningSelection = [];
@@ -142,7 +142,7 @@ function NodesListController(
     "zone",
     "numa_nodes_count",
     "sriov_support",
-    "link_speeds"
+    "link_speeds",
   ];
 
   // Pools tab.
@@ -153,17 +153,17 @@ function NodesListController(
   $scope.tabs.pools.manager = ResourcePoolsManager;
   $scope.tabs.pools.actionOption = false;
   $scope.tabs.pools.newPool = { name: null, description: null };
-  $scope.tabs.pools.addPool = function() {
+  $scope.tabs.pools.addPool = function () {
     $scope.tabs.pools.actionOption = true;
   };
-  $scope.tabs.pools.cancelAddPool = function() {
+  $scope.tabs.pools.cancelAddPool = function () {
     $scope.tabs.pools.actionOption = false;
     $scope.tabs.pools.newPool = {};
   };
   $scope.tabs.pools.activeTarget = null;
   $scope.tabs.pools.activeTargetAction = null;
   $scope.tabs.pools.actionErrorMessage = null;
-  $scope.tabs.pools.initiatePoolAction = function(pool, action) {
+  $scope.tabs.pools.initiatePoolAction = function (pool, action) {
     let tab = $scope.tabs.pools;
     // reset state in case of switching between deletes
     tab.cancelPoolAction();
@@ -171,13 +171,13 @@ function NodesListController(
     tab.activeTarget = pool;
     tab.editingPool = pool; // used by maas-obj-form for editing
   };
-  $scope.tabs.pools.cancelPoolAction = function() {
+  $scope.tabs.pools.cancelPoolAction = function () {
     let tab = $scope.tabs.pools;
     tab.activeTargetAction = null;
     tab.activeTarget = null;
     tab.actionErrorMessage = null;
   };
-  $scope.tabs.pools.isPoolAction = function(pool, action) {
+  $scope.tabs.pools.isPoolAction = function (pool, action) {
     let tab = $scope.tabs.pools;
     return (
       (angular.isUndefined(action) || tab.activeTargetAction === action) &&
@@ -185,25 +185,25 @@ function NodesListController(
       tab.activeTarget.id === pool.id
     );
   };
-  $scope.tabs.pools.actionConfirmEditPool = function() {
+  $scope.tabs.pools.actionConfirmEditPool = function () {
     $scope.tabs.pools.cancelPoolAction();
   };
-  $scope.tabs.pools.actionConfirmDeletePool = function() {
+  $scope.tabs.pools.actionConfirmDeletePool = function () {
     let tab = $scope.tabs.pools;
     tab.manager
       .deleteItem(tab.activeTarget)
-      .then(tab.cancelPoolAction, function(error) {
+      .then(tab.cancelPoolAction, function (error) {
         $scope.tabs.pools.actionErrorMessage = error;
       });
   };
-  $scope.tabs.pools.goToPoolMachines = function(pool) {
+  $scope.tabs.pools.goToPoolMachines = function (pool) {
     $scope.clearSearch("machines");
     $scope.toggleFilter("pool", pool.name, "machines");
     $scope.toggleTab("machines");
     // update the location URL otherwise to match the tab
     $rootScope.navigateToNew("/machines");
   };
-  $scope.tabs.pools.isDefaultPool = function(pool) {
+  $scope.tabs.pools.isDefaultPool = function (pool) {
     return pool.id === 0;
   };
 
@@ -234,7 +234,7 @@ function NodesListController(
     showing_confirmation: false,
     confirmation_message: "",
     confirmation_details: [],
-    affected_nodes: 0
+    affected_nodes: 0,
   };
   $scope.tabs.devices.zoneSelection = null;
   $scope.tabs.devices.poolSelection = null;
@@ -268,7 +268,7 @@ function NodesListController(
     showing_confirmation: false,
     confirmation_message: "",
     confirmation_details: [],
-    affected_nodes: 0
+    affected_nodes: 0,
   };
   $scope.tabs.controllers.zoneSelection = null;
   $scope.tabs.controllers.poolSelection = null;
@@ -303,12 +303,12 @@ function NodesListController(
     showing_confirmation: false,
     confirmation_message: "",
     confirmation_details: [],
-    affected_nodes: 0
+    affected_nodes: 0,
   };
   $scope.tabs.switches.osSelection = {
     osystem: null,
     release: null,
-    hwe_kernel: null
+    hwe_kernel: null,
   };
   $scope.tabs.switches.zoneSelection = null;
   $scope.tabs.switches.poolSelection = null;
@@ -321,10 +321,10 @@ function NodesListController(
     skipNetworking: false,
     skipStorage: false,
     updateFirmware: false,
-    configureHBA: false
+    configureHBA: false,
   };
   $scope.tabs.switches.deployOptions = {
-    installKVM: false
+    installKVM: false,
   };
   $scope.tabs.switches.releaseOptions = {};
   $scope.disableTestButton = false;
@@ -334,16 +334,16 @@ function NodesListController(
   $scope.addHardwareOptions = [
     {
       name: "machine",
-      title: "Machine"
+      title: "Machine",
     },
     {
       name: "chassis",
-      title: "Chassis"
+      title: "Chassis",
     },
     {
       name: "rsd",
-      title: "RSD"
-    }
+      title: "RSD",
+    },
   ];
 
   // This will hold the AddHardwareController once it is initialized.
@@ -358,7 +358,7 @@ function NodesListController(
 
   // When the addHardwareScope is hidden it will emit this event. We
   // clear the call to action button, so it can be used again.
-  $scope.$on("addHardwareHidden", function() {
+  $scope.$on("addHardwareHidden", function () {
     $scope.addHardwareOption = null;
   });
 
@@ -491,7 +491,7 @@ function NodesListController(
       NotificationsManager.createItem({
         message: `Unable to perform action on ${name}: ${error}`,
         category: "error",
-        user: authUser.id
+        user: authUser.id,
       });
     } else {
       $log.error(error);
@@ -518,17 +518,17 @@ function NodesListController(
       }
       return;
     }
-    angular.forEach($scope.tabs[tab].manager.getItems(), function(node) {
+    angular.forEach($scope.tabs[tab].manager.getItems(), function (node) {
       if (node.action_failed === false) {
         $scope.tabs[tab].manager.unselectItem(node.system_id);
       }
     });
   }
 
-  $scope.setDefaultValues = parameters => {
+  $scope.setDefaultValues = (parameters) => {
     const keys = Object.keys(parameters);
 
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (parameters[key].default) {
         parameters[key].value = parameters[key].default;
       }
@@ -539,7 +539,7 @@ function NodesListController(
 
   $scope.checkTestParameterValues = () => {
     let disableButton = false;
-    $scope.tabs.machines.testSelection.forEach(test => {
+    $scope.tabs.machines.testSelection.forEach((test) => {
       const params = test.parameters;
       for (let key in params) {
         const isTypeOfUrl = params[key].type === "url";
@@ -562,7 +562,7 @@ function NodesListController(
   };
 
   // Toggles between the current tab.
-  $scope.toggleTab = function(tab) {
+  $scope.toggleTab = function (tab) {
     $rootScope.title = $scope.tabs[tab].pagetitle;
     $rootScope.page = tab;
     $scope.currentpage = tab;
@@ -594,13 +594,13 @@ function NodesListController(
   };
 
   // Clear the search bar.
-  $scope.clearSearch = function(tab) {
+  $scope.clearSearch = function (tab) {
     $scope.tabs[tab].search = "";
     $scope.updateFilters(tab);
   };
 
   // Mark a node as selected or unselected.
-  $scope.toggleChecked = function(node, tab) {
+  $scope.toggleChecked = function (node, tab) {
     if (tab !== "machines" && tab !== "switches") {
       if ($scope.tabs[tab].manager.isSelected(node.system_id)) {
         $scope.tabs[tab].manager.unselectItem(node.system_id);
@@ -615,14 +615,14 @@ function NodesListController(
   };
 
   // Select all viewable nodes or deselect all viewable nodes.
-  $scope.toggleCheckAll = function(tab) {
+  $scope.toggleCheckAll = function (tab) {
     if (tab !== "machines" && tab !== "switches") {
       if ($scope.tabs[tab].allViewableChecked) {
-        angular.forEach($scope.tabs[tab].filtered_items, function(node) {
+        angular.forEach($scope.tabs[tab].filtered_items, function (node) {
           $scope.tabs[tab].manager.unselectItem(node.system_id);
         });
       } else {
-        angular.forEach($scope.tabs[tab].filtered_items, function(node) {
+        angular.forEach($scope.tabs[tab].filtered_items, function (node) {
           $scope.tabs[tab].manager.selectItem(node.system_id);
         });
       }
@@ -632,13 +632,13 @@ function NodesListController(
     shouldClearAction(tab);
   };
 
-  $scope.updateAvailableActions = function(tab) {
+  $scope.updateAvailableActions = function (tab) {
     var selectedNodes = $scope.tabs[tab].selectedItems;
     var actionOptions = $scope.tabs[tab].takeActionOptions;
 
-    actionOptions.forEach(function(action) {
+    actionOptions.forEach(function (action) {
       var count = 0;
-      selectedNodes.forEach(function(node) {
+      selectedNodes.forEach(function (node) {
         if (node.actions.indexOf(action.name) > -1) {
           count += 1;
         }
@@ -647,7 +647,7 @@ function NodesListController(
     });
   };
 
-  $scope.unselectImpossibleNodes = tab => {
+  $scope.unselectImpossibleNodes = (tab) => {
     const { actionOption, manager, selectedItems } = $scope.tabs[tab];
 
     const nodesToUnselect = selectedItems.reduce((acc, node) => {
@@ -657,7 +657,7 @@ function NodesListController(
       return acc;
     }, []);
 
-    nodesToUnselect.forEach(node => {
+    nodesToUnselect.forEach((node) => {
       manager.unselectItem(node.system_id);
     });
 
@@ -666,7 +666,7 @@ function NodesListController(
     $scope.tabs[tab].search = "in:(selected)";
   };
 
-  $scope.onNodeListingChanged = function(nodes, tab) {
+  $scope.onNodeListingChanged = function (nodes, tab) {
     if (
       nodes.length === 0 &&
       $scope.tabs[tab].search !== "" &&
@@ -679,23 +679,23 @@ function NodesListController(
 
   // When the filtered nodes change update if all check buttons
   // should be checked or not.
-  $scope.$watchCollection("tabs.devices.filtered_items", function() {
+  $scope.$watchCollection("tabs.devices.filtered_items", function () {
     updateAllViewableChecked("devices");
     removeEmptyFilter("devices");
   });
-  $scope.$watchCollection("tabs.controllers.filtered_items", function() {
+  $scope.$watchCollection("tabs.controllers.filtered_items", function () {
     updateAllViewableChecked("controllers");
     removeEmptyFilter("controllers");
   });
 
   // Shows the current selection.
-  $scope.showSelected = function(tab) {
+  $scope.showSelected = function (tab) {
     enterViewSelected(tab);
     $scope.updateFilters(tab);
   };
 
   // Adds or removes a filter to the search.
-  $scope.toggleFilter = function(type, value, tab) {
+  $scope.toggleFilter = function (type, value, tab) {
     // Don't allow a filter to be changed when an action is
     // in progress.
     if (angular.isObject($scope.tabs[tab].actionOption)) {
@@ -713,7 +713,7 @@ function NodesListController(
   };
 
   // Return True if the filter is active.
-  $scope.isFilterActive = function(type, value, tab) {
+  $scope.isFilterActive = function (type, value, tab) {
     return SearchService.isFilterActive(
       $scope.tabs[tab].filters,
       type,
@@ -723,7 +723,7 @@ function NodesListController(
   };
 
   // Update the filters object when the search bar is updated.
-  $scope.updateFilters = function(tab) {
+  $scope.updateFilters = function (tab) {
     var filters = SearchService.getCurrentFilters($scope.tabs[tab].search);
     if (filters === null) {
       $scope.tabs[tab].filters = SearchService.getEmptyFilter();
@@ -736,13 +736,13 @@ function NodesListController(
   };
 
   // Sorts the table by predicate.
-  $scope.sortTable = function(predicate, tab) {
+  $scope.sortTable = function (predicate, tab) {
     $scope.tabs[tab].predicate = predicate;
     $scope.tabs[tab].reverse = !$scope.tabs[tab].reverse;
   };
 
   // Sets the viewable column or sorts.
-  $scope.selectColumnOrSort = function(predicate, tab) {
+  $scope.selectColumnOrSort = function (predicate, tab) {
     if ($scope.tabs[tab].column !== predicate) {
       $scope.tabs[tab].column = predicate;
     } else {
@@ -751,30 +751,30 @@ function NodesListController(
   };
 
   // Return True if the node supports the action.
-  $scope.supportsAction = function(node, tab) {
+  $scope.supportsAction = function (node, tab) {
     if (!$scope.tabs[tab].actionOption) {
       return true;
     }
     return node.actions.indexOf($scope.tabs[tab].actionOption.name) >= 0;
   };
 
-  $scope.getFailedTests = tabName => {
+  $scope.getFailedTests = (tabName) => {
     const tab = $scope.tabs[tabName];
     const nodes = tab.selectedItems;
     tab.failedTests = [];
     tab.loadingFailedTests = true;
     MachinesManager.getLatestFailedTests(nodes).then(
-      tests => {
+      (tests) => {
         tab.failedTests = tests;
         tab.loadingFailedTests = false;
       },
-      error => {
+      (error) => {
         const authUser = UsersManager.getAuthUser();
         if (angular.isObject(authUser)) {
           NotificationsManager.createItem({
             message: `Unable to load tests: ${error}`,
             category: "error",
-            user: authUser.id
+            user: authUser.id,
           });
         } else {
           $log.error(error);
@@ -783,7 +783,7 @@ function NodesListController(
     );
   };
 
-  $scope.getFailedTestCount = tabName => {
+  $scope.getFailedTestCount = (tabName) => {
     const tab = $scope.tabs[tabName];
     const nodes = tab.selectedItems;
     const tests = tab.failedTests;
@@ -796,7 +796,7 @@ function NodesListController(
   };
 
   // Called when the action option gets changed.
-  $scope.actionOptionSelected = function(tab) {
+  $scope.actionOptionSelected = function (tab) {
     updateActionErrorCount(tab);
     enterViewSelected(tab);
 
@@ -820,7 +820,7 @@ function NodesListController(
   };
 
   // Return True if there is an action error.
-  $scope.isActionError = function(tab) {
+  $scope.isActionError = function (tab) {
     if (
       angular.isObject($scope.tabs[tab].actionOption) &&
       $scope.tabs[tab].actionOption.name === "deploy" &&
@@ -833,7 +833,7 @@ function NodesListController(
   };
 
   // Return True if unable to deploy because of missing images.
-  $scope.isDeployError = function(tab) {
+  $scope.isDeployError = function (tab) {
     if ($scope.tabs[tab].actionErrorCount !== 0) {
       return false;
     }
@@ -848,7 +848,7 @@ function NodesListController(
   };
 
   // Return True if deploy warning should be shown because of missing ssh keys.
-  $scope.isSSHKeyWarning = function(tab) {
+  $scope.isSSHKeyWarning = function (tab) {
     if ($scope.tabs[tab].actionErrorCount !== 0) {
       return false;
     }
@@ -863,18 +863,18 @@ function NodesListController(
   };
 
   // Called when the current action is cancelled.
-  $scope.actionCancel = function(tab) {
+  $scope.actionCancel = function (tab) {
     resetActionProgress(tab);
     leaveViewSelected(tab);
     $scope.tabs[tab].actionOption = null;
     $scope.tabs[tab].suppressFailedTestsChecked = false;
-    $scope.tabs[tab].testSelection.forEach(script => {
+    $scope.tabs[tab].testSelection.forEach((script) => {
       script.parameters = $scope.setDefaultValues(script.parameters);
     });
   };
 
   // Perform the action on all nodes.
-  $scope.actionGo = function(tabName) {
+  $scope.actionGo = function (tabName) {
     var tab = $scope.tabs[tabName];
     var extra = {};
     let scriptInput = {};
@@ -930,8 +930,8 @@ function NodesListController(
         // Create the pool and set the action options with
         // the new pool id.
         preAction = ResourcePoolsManager.createItem({
-          name: tab.newPool.name
-        }).then(function(newPool) {
+          name: tab.newPool.name,
+        }).then(function (newPool) {
           extra.pool_id = newPool.id;
         });
       } else if (angular.isNumber(tab.poolSelection.id)) {
@@ -997,7 +997,7 @@ function NodesListController(
         // Tell the region not to run any tests.
         extra.testing_scripts.push("none");
       }
-      const testingScriptsWithUrlParam = tab.testSelection.filter(test => {
+      const testingScriptsWithUrlParam = tab.testSelection.filter((test) => {
         const paramsWithUrl = [];
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -1007,7 +1007,7 @@ function NodesListController(
         return paramsWithUrl.length;
       });
 
-      testingScriptsWithUrlParam.forEach(test => {
+      testingScriptsWithUrlParam.forEach((test) => {
         let urlValue;
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -1017,7 +1017,7 @@ function NodesListController(
           }
         }
         scriptInput[test.name] = {
-          url: urlValue
+          url: urlValue,
         };
       });
 
@@ -1066,7 +1066,7 @@ function NodesListController(
         return;
       }
     } else if (tab.actionOption.name === "tag") {
-      extra.tags = $scope.tags.map(function(tag) {
+      extra.tags = $scope.tags.map(function (tag) {
         return tag.text;
       });
 
@@ -1077,7 +1077,7 @@ function NodesListController(
     ) {
       const nodes = tab.selectedItems;
       const tests = tab.failedTests;
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         if (tests[node.system_id]) {
           tab.manager.suppressTests(node, tests[node.system_id]);
         }
@@ -1086,53 +1086,53 @@ function NodesListController(
     }
 
     preAction.then(
-      function() {
+      function () {
         // Setup actionProgress.
         resetActionProgress(tabName);
         tab.actionProgress.total = tab.selectedItems.length;
         // Perform the action on all selected items.
-        angular.forEach(tab.selectedItems, function(node) {
+        angular.forEach(tab.selectedItems, function (node) {
           tab.manager
             .performAction(node, tab.actionOption.name, extra)
             .then(
-              function() {
+              function () {
                 tab.actionProgress.completed += 1;
                 node.action_failed = false;
               },
-              function(error) {
+              function (error) {
                 addErrorToActionProgress(tabName, error, node);
                 node.action_failed = true;
-                tab.testSelection.forEach(script => {
+                tab.testSelection.forEach((script) => {
                   script.parameters = $scope.setDefaultValues(
                     script.parameters
                   );
                 });
               }
             )
-            .finally(function() {
+            .finally(function () {
               updateSelectedItems(tabName);
             });
         });
       },
-      function(error) {
+      function (error) {
         addErrorToActionProgress(tabName, error);
       }
     );
   };
 
   // Returns true when actions are being performed.
-  $scope.hasActionsInProgress = function(tab) {
+  $scope.hasActionsInProgress = function (tab) {
     var progress = $scope.tabs[tab].actionProgress;
     return progress.total > 0 && progress.completed !== progress.total;
   };
 
   // Returns true if any of the actions have failed.
-  $scope.hasActionsFailed = function(tab) {
+  $scope.hasActionsFailed = function (tab) {
     return Object.keys($scope.tabs[tab].actionProgress.errors).length > 0;
   };
 
   // Called to when the addHardwareOption has changed.
-  $scope.addHardwareOptionChanged = function() {
+  $scope.addHardwareOptionChanged = function () {
     if ($scope.addHardwareOption) {
       if ($scope.addHardwareOption.name === "rsd") {
         $rootScope.navigateToLegacy("/rsd");
@@ -1145,37 +1145,37 @@ function NodesListController(
   };
 
   // Called when the add device button is pressed.
-  $scope.addDevice = function() {
+  $scope.addDevice = function () {
     $scope.addDeviceScope.show();
   };
 
   // Called when the cancel add device button is pressed.
-  $scope.cancelAddDevice = function() {
+  $scope.cancelAddDevice = function () {
     $scope.addDeviceScope.cancel();
   };
 
   // Get the display text for device ip assignment type.
-  $scope.getDeviceIPAssignment = function(ipAssignment) {
+  $scope.getDeviceIPAssignment = function (ipAssignment) {
     return DEVICE_IP_ASSIGNMENT[ipAssignment];
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if the user can create a resource pool.
-  $scope.canAddMachine = function() {
+  $scope.canAddMachine = function () {
     return UsersManager.hasGlobalPermission("machine_create");
   };
 
   // Return true if the user can create a resource pool.
-  $scope.canCreateResourcePool = function() {
+  $scope.canCreateResourcePool = function () {
     return UsersManager.hasGlobalPermission("resource_pool_create");
   };
 
   // Return true if the actions column should be shown.
-  $scope.showResourcePoolActions = function() {
+  $scope.showResourcePoolActions = function () {
     for (var i = 0; i < $scope.pools.length; i++) {
       if (
         $scope.pools[i].permissions &&
@@ -1188,7 +1188,7 @@ function NodesListController(
   };
 
   // Return true if user can edit resource pool.
-  $scope.canEditResourcePool = function(pool) {
+  $scope.canEditResourcePool = function (pool) {
     if (pool.permissions && pool.permissions.indexOf("edit") !== -1) {
       return true;
     }
@@ -1196,12 +1196,12 @@ function NodesListController(
   };
 
   // Return true if user can delete resource pool.
-  $scope.canDeleteResourcePool = function() {
+  $scope.canDeleteResourcePool = function () {
     return UsersManager.hasGlobalPermission("resource_pool_delete");
   };
 
   // Return true if custom commissioning scripts exist.
-  $scope.hasCustomCommissioningScripts = function() {
+  $scope.hasCustomCommissioningScripts = function () {
     var i;
     for (i = 0; i < $scope.scripts.length; i++) {
       if ($scope.scripts[i].script_type === 0) {
@@ -1211,7 +1211,7 @@ function NodesListController(
     return false;
   };
 
-  $scope.updateFailedActionSentence = tab => {
+  $scope.updateFailedActionSentence = (tab) => {
     const { actionOption, actionErrorCount } = $scope.tabs[tab];
 
     // e.g. "5 machines" or "1 controller"
@@ -1252,7 +1252,7 @@ function NodesListController(
     $scope.failedActionSentence = sentence;
   };
 
-  $scope.getHardwareTestErrorText = function(error, tab) {
+  $scope.getHardwareTestErrorText = function (error, tab) {
     var selectedItemsCount = $scope.tabs[tab].selectedItems.length;
 
     if (error === "Unable to run destructive test while deployed!") {
@@ -1281,14 +1281,14 @@ function NodesListController(
   };
 
   // Reload osinfo when the page reloads
-  $scope.$on("$routeUpdate", function() {
+  $scope.$on("$routeUpdate", function () {
     GeneralManager.loadItems(["osinfo"]);
   });
 
   // Switch to the specified tab, if specified.
   angular.forEach(
     ["machines", "pools", "devices", "controllers", "switches"],
-    function(node_type) {
+    function (node_type) {
       if ($location.path().indexOf("/" + node_type) !== -1) {
         $scope.toggleTab(node_type);
       }
@@ -1323,21 +1323,21 @@ function NodesListController(
       UsersManager,
       ResourcePoolsManager,
       ServicesManager,
-      TagsManager
+      TagsManager,
     ])
-  ).then(function() {
+  ).then(function () {
     $scope.loading = false;
 
     // Set flag for RSD navigation item.
     if (!$rootScope.showRSDLink) {
       GeneralManager.getNavigationOptions().then(
-        res => ($rootScope.showRSDLink = res.rsd)
+        (res) => ($rootScope.showRSDLink = res.rsd)
       );
     }
   });
 
   // Stop polling and save the current filter when the scope is destroyed.
-  $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function () {
     $interval.cancel($scope.statusPoll);
     SearchService.storeFilters("machines", $scope.tabs.machines.filters);
     SearchService.storeFilters("devices", $scope.tabs.devices.filters);

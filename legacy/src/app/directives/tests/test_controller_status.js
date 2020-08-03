@@ -7,7 +7,7 @@ import angular from "angular";
 
 import { makeName, pickItem } from "testing/utils";
 
-describe("maasControllerStatus", function() {
+describe("maasControllerStatus", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -21,7 +21,7 @@ describe("maasControllerStatus", function() {
     return {
       id: _nextId++,
       name: name,
-      status: status
+      status: status,
     };
   }
 
@@ -29,24 +29,24 @@ describe("maasControllerStatus", function() {
   function makeController(services) {
     var service_ids = [];
     if (angular.isArray(services)) {
-      angular.forEach(services, function(service) {
+      angular.forEach(services, function (service) {
         service_ids.push(service.id);
       });
     }
     return {
-      service_ids: service_ids
+      service_ids: service_ids,
     };
   }
 
   // Get the required managers.
   var ServicesManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ServicesManager = $injector.get("ServicesManager");
   }));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -57,7 +57,7 @@ describe("maasControllerStatus", function() {
       '<div><div data-maas-controller-status="controller">' + "</div></div>";
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -66,7 +66,7 @@ describe("maasControllerStatus", function() {
     return directive.find("div");
   }
 
-  it("sets serviceClass in the class for element", function() {
+  it("sets serviceClass in the class for element", function () {
     var directive = compileDirective();
     var serviceClass = makeName("serviceClass");
     directive.isolateScope().serviceClass = serviceClass;
@@ -76,12 +76,12 @@ describe("maasControllerStatus", function() {
     );
   });
 
-  it("services is ServicesManager.getItems()", function() {
+  it("services is ServicesManager.getItems()", function () {
     var directive = compileDirective();
     expect(directive.isolateScope().services).toBe(ServicesManager.getItems());
   });
 
-  it("serviceClass updated when services change on controller", function() {
+  it("serviceClass updated when services change on controller", function () {
     var service = makeService("running");
     ServicesManager._items.push(service);
     $scope.controller = makeController();
@@ -91,7 +91,7 @@ describe("maasControllerStatus", function() {
     expect(directive.isolateScope().serviceClass).toBe("success");
   });
 
-  it("serviceClass updated when services change in manager", function() {
+  it("serviceClass updated when services change in manager", function () {
     var service = makeService("running");
     ServicesManager._items.push(service);
     $scope.controller = makeController([service]);
@@ -104,13 +104,13 @@ describe("maasControllerStatus", function() {
     expect(directive.isolateScope().serviceClass).toBe("power-error");
   });
 
-  it("any dead is error", function() {
+  it("any dead is error", function () {
     var services = [
       makeService("dead"),
       makeService("degraded"),
       makeService("running"),
       makeService("unknown"),
-      makeService("off")
+      makeService("off"),
     ];
     ServicesManager._items.push.apply(ServicesManager._items, services);
     $scope.controller = makeController(services);
@@ -118,12 +118,12 @@ describe("maasControllerStatus", function() {
     expect(directive.isolateScope().serviceClass).toBe("power-error");
   });
 
-  it("any degraded without error is warning", function() {
+  it("any degraded without error is warning", function () {
     var services = [
       makeService("degraded"),
       makeService("running"),
       makeService("unknown"),
-      makeService("off")
+      makeService("off"),
     ];
     ServicesManager._items.push.apply(ServicesManager._items, services);
     $scope.controller = makeController(services);
@@ -131,11 +131,11 @@ describe("maasControllerStatus", function() {
     expect(directive.isolateScope().serviceClass).toBe("warning");
   });
 
-  it("any running without error or degraded is success", function() {
+  it("any running without error or degraded is success", function () {
     var services = [
       makeService("running"),
       makeService("unknown"),
-      makeService("off")
+      makeService("off"),
     ];
     ServicesManager._items.push.apply(ServicesManager._items, services);
     $scope.controller = makeController(services);
@@ -143,7 +143,7 @@ describe("maasControllerStatus", function() {
     expect(directive.isolateScope().serviceClass).toBe("success");
   });
 
-  it("update service status updates service class", function() {
+  it("update service status updates service class", function () {
     var services = [makeService("dead")];
     ServicesManager._items.push.apply(ServicesManager._items, services);
     $scope.controller = makeController(services);

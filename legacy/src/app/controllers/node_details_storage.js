@@ -9,7 +9,7 @@ import angular from "angular";
 // disks from the list if being used in the availableNew.
 
 export function removeAvailableByNew() {
-  return function(disks, availableNew) {
+  return function (disks, availableNew) {
     if (
       !angular.isObject(availableNew) ||
       (!angular.isObject(availableNew.device) &&
@@ -23,7 +23,7 @@ export function removeAvailableByNew() {
     if (angular.isArray(availableNew.devices)) {
       single = false;
     }
-    angular.forEach(disks, function(disk) {
+    angular.forEach(disks, function (disk) {
       if (single) {
         if (disk !== availableNew.device) {
           filtered.push(disk);
@@ -47,8 +47,8 @@ export function removeAvailableByNew() {
 }
 
 export function datastoresOnly() {
-  return function(filesystems) {
-    return filesystems.filter(filesystem => {
+  return function (filesystems) {
+    return filesystems.filter((filesystem) => {
       return filesystem.parent_type == "vmfs6";
     });
   };
@@ -89,7 +89,7 @@ export function NodeStorageController(
     BCACHE: "bcache",
     RAID: "raid",
     VOLUME_GROUP: "volume-group",
-    LOGICAL_VOLUME: "logical-volume"
+    LOGICAL_VOLUME: "logical-volume",
   };
 
   // Different available raid modes.
@@ -99,46 +99,46 @@ export function NodeStorageController(
       title: "RAID 0",
       min_disks: 2,
       allows_spares: false,
-      calculateSize: function(minSize, numDisks) {
+      calculateSize: function (minSize, numDisks) {
         return minSize * numDisks;
-      }
+      },
     },
     {
       level: "raid-1",
       title: "RAID 1",
       min_disks: 2,
       allows_spares: true,
-      calculateSize: function(minSize) {
+      calculateSize: function (minSize) {
         return minSize;
-      }
+      },
     },
     {
       level: "raid-5",
       title: "RAID 5",
       min_disks: 3,
       allows_spares: true,
-      calculateSize: function(minSize, numDisks) {
+      calculateSize: function (minSize, numDisks) {
         return minSize * (numDisks - 1);
-      }
+      },
     },
     {
       level: "raid-6",
       title: "RAID 6",
       min_disks: 4,
       allows_spares: true,
-      calculateSize: function(minSize, numDisks) {
+      calculateSize: function (minSize, numDisks) {
         return minSize * (numDisks - 2);
-      }
+      },
     },
     {
       level: "raid-10",
       title: "RAID 10",
       min_disks: 3,
       allows_spares: true,
-      calculateSize: function(minSize, numDisks) {
+      calculateSize: function (minSize, numDisks) {
         return (minSize * numDisks) / 2;
-      }
-    }
+      },
+    },
   ];
 
   var datastoreOnly = $filter("datastoresOnly");
@@ -167,7 +167,7 @@ export function NodeStorageController(
   $scope.addToExistingDatastore = false;
   $scope.datastores = {
     new: {},
-    old: {}
+    old: {},
   };
   $scope.selectedAvailableDatastores = [];
   $scope.creatingDatastore = false;
@@ -187,35 +187,35 @@ export function NodeStorageController(
       layouts: [
         {
           id: "flat",
-          name: "Flat"
+          name: "Flat",
         },
         {
           id: "lvm",
-          name: "LVM"
+          name: "LVM",
         },
         {
           id: "bcache",
-          name: "bcache"
+          name: "bcache",
         },
         {
           id: "vmfs6",
-          name: "VMFS6 (VMware ESXI)"
+          name: "VMFS6 (VMware ESXI)",
         },
         {
           id: "blank",
-          name: "No storage (blank) layout"
-        }
-      ]
-    }
+          name: "No storage (blank) layout",
+        },
+      ],
+    },
   ];
 
   $scope.osFamily = $scope.osFamilies[0];
-  $scope.storageLayout = $scope.osFamily.layouts.find(layout => {
+  $scope.storageLayout = $scope.osFamily.layouts.find((layout) => {
     return layout.id === $scope.node.detected_storage_layout;
   });
 
-  $scope.openStorageLayoutConfirm = function(selectedLayout) {
-    $scope.osFamily.layouts.forEach(layout => {
+  $scope.openStorageLayoutConfirm = function (selectedLayout) {
+    $scope.osFamily.layouts.forEach((layout) => {
       if (layout.id === selectedLayout) {
         $scope.newLayout = layout;
       }
@@ -223,29 +223,29 @@ export function NodeStorageController(
     $scope.confirmStorageLayout = true;
   };
 
-  $scope.closeStorageLayoutConfirm = function() {
+  $scope.closeStorageLayoutConfirm = function () {
     $scope.confirmStorageLayout = false;
   };
 
-  $scope.updateStorageLayout = function(storageLayout) {
+  $scope.updateStorageLayout = function (storageLayout) {
     storageLayout = $scope.storageLayout = $scope.newLayout;
 
     var params = {
       system_id: $scope.node.system_id,
-      storage_layout: storageLayout.id
+      storage_layout: storageLayout.id,
     };
 
     $scope.updatingStorageLayout = true;
 
     MachinesManager.applyStorageLayout(params)
-      .then(function() {
-        $timeout(function() {
+      .then(function () {
+        $timeout(function () {
           $scope.updatingStorageLayout = false;
         }, 0);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         $log.error(error);
-        $timeout(function() {
+        $timeout(function () {
           $scope.updatingStorageLayout = false;
         }, 0);
       });
@@ -253,7 +253,7 @@ export function NodeStorageController(
     $scope.closeStorageLayoutConfirm();
   };
 
-  $scope.openNewDatastorePanel = function() {
+  $scope.openNewDatastorePanel = function () {
     $scope.createNewDatastore = true;
     var selectedDisks = $scope.getSelectedAvailable();
     $scope.datastores.new = {
@@ -261,35 +261,35 @@ export function NodeStorageController(
       name: "",
       mountpoint: selectedDisks[0].mount_point,
       filesystem: "VMFS6",
-      size: selectedDisks[0].size_human
+      size: selectedDisks[0].size_human,
     };
   };
 
-  $scope.closeNewDatastorePanel = function() {
+  $scope.closeNewDatastorePanel = function () {
     $scope.createNewDatastore = false;
     $scope.datastores.new = {};
   };
 
-  $scope.openAddToExistingDatastorePanel = function() {
+  $scope.openAddToExistingDatastorePanel = function () {
     $scope.addToExistingDatastore = true;
     $scope.selectedAvailableDatastores = $scope.getSelectedAvailable();
     $scope.datastores.old = datastoreOnly($scope.node.disks)[0];
   };
 
-  $scope.closeAddToExistingDatastorePanel = function() {
+  $scope.closeAddToExistingDatastorePanel = function () {
     $scope.addToExistingDatastore = false;
     $scope.datastores.new = {};
   };
 
-  $scope.canPerformActionOnDatastoreSet = function() {
+  $scope.canPerformActionOnDatastoreSet = function () {
     var editing = $scope.addToExistingDatastore || $scope.createNewDatastore;
     var selected = $scope.selectedAvailableDatastores.length > 0;
     var vmfs6 = $scope.storageLayout && $scope.storageLayout.id === "vmfs6";
     return !editing && selected && vmfs6;
   };
 
-  $scope.canAddToDatastore = function() {
-    var datastores = $scope.node.disks.filter(function(disk) {
+  $scope.canAddToDatastore = function () {
+    var datastores = $scope.node.disks.filter(function (disk) {
       return disk.parent_type === "vmfs6";
     });
 
@@ -300,14 +300,14 @@ export function NodeStorageController(
     return false;
   };
 
-  $scope.createDatastore = function() {
+  $scope.createDatastore = function () {
     $scope.createNewDatastore = true;
 
     var selectedAvailable = $scope.getSelectedAvailable();
     var blockDeviceIDs = [];
     var partitionIDs = [];
 
-    selectedAvailable.forEach(function(item) {
+    selectedAvailable.forEach(function (item) {
       if (item.type === "partition") {
         partitionIDs.push(item.partition_id);
       } else {
@@ -319,34 +319,34 @@ export function NodeStorageController(
       system_id: $scope.node.system_id,
       block_devices: blockDeviceIDs,
       partitions: partitionIDs,
-      name: $scope.datastores.new.name
+      name: $scope.datastores.new.name,
     };
 
     $scope.creatingDatastore = true;
 
     MachinesManager.createDatastore(params)
-      .then(function() {
-        $timeout(function() {
+      .then(function () {
+        $timeout(function () {
           $scope.creatingDatastore = false;
         }, 0);
         $scope.closeNewDatastorePanel();
         $scope.selectedAvailableDatastores = [];
       })
-      .catch(function(error) {
+      .catch(function (error) {
         $log.error(error);
-        $timeout(function() {
+        $timeout(function () {
           $scope.creatingDatastore = false;
         }, 0);
       });
   };
 
-  $scope.checkAddToDatastoreValid = function() {
+  $scope.checkAddToDatastoreValid = function () {
     var selectedAvailable = $scope.getSelectedAvailable();
     var valid = true;
     if (selectedAvailable.length < 1) {
       valid = false;
     }
-    selectedAvailable.forEach(function(item) {
+    selectedAvailable.forEach(function (item) {
       if (item.has_partitions) {
         valid = false;
       }
@@ -354,12 +354,12 @@ export function NodeStorageController(
     $scope.addToDatastoreValid = valid;
   };
 
-  $scope.addToDatastore = function() {
+  $scope.addToDatastore = function () {
     var selectedAvailable = $scope.getSelectedAvailable();
     var blockDeviceIDs = [];
     var partitionIDs = [];
 
-    selectedAvailable.forEach(function(item) {
+    selectedAvailable.forEach(function (item) {
       if (item.type === "partition") {
         partitionIDs.push(item.partition_id);
       } else {
@@ -372,36 +372,36 @@ export function NodeStorageController(
       add_block_devices: blockDeviceIDs,
       add_partitions: partitionIDs,
       name: $scope.datastores.old.name,
-      vmfs_datastore_id: $scope.datastores.old.id
+      vmfs_datastore_id: $scope.datastores.old.id,
     };
 
     $scope.updatingDatastore = true;
 
     MachinesManager.updateDatastore(params)
-      .then(function() {
-        $timeout(function() {
+      .then(function () {
+        $timeout(function () {
           $scope.updatingDatastore = false;
         }, 0);
         $scope.closeAddToExistingDatastorePanel();
         $scope.selectedAvailableDatastores = [];
       })
-      .catch(function(error) {
+      .catch(function (error) {
         $log.error(error);
-        $timeout(function() {
+        $timeout(function () {
           $scope.updatingDatastore = false;
         }, 0);
       });
   };
 
-  $scope.storageLayoutIsReadOnly = function(layouts) {
+  $scope.storageLayoutIsReadOnly = function (layouts) {
     return layouts.length <= 1;
   };
 
-  $scope.storageLayoutIsDisabled = function(layouts) {
+  $scope.storageLayoutIsDisabled = function (layouts) {
     return !layouts.length;
   };
 
-  $scope.hasStorageLayout = function(storageLayout) {
+  $scope.hasStorageLayout = function (storageLayout) {
     return storageLayout ? true : false;
   };
 
@@ -456,7 +456,7 @@ export function NodeStorageController(
   // Return the tags formatted for ngTagInput.
   function getTags(disk) {
     var tags = [];
-    angular.forEach(disk.tags, function(tag) {
+    angular.forEach(disk.tags, function (tag) {
       tags.push({ text: tag });
     });
     return tags;
@@ -480,7 +480,7 @@ export function NodeStorageController(
   function updateFilesystems() {
     // Create the new list of filesystems.
     var filesystems = [];
-    angular.forEach($scope.node.disks, function(disk) {
+    angular.forEach($scope.node.disks, function (disk) {
       if (hasMountedFilesystem(disk)) {
         var data = {
           type: "filesystem",
@@ -493,14 +493,14 @@ export function NodeStorageController(
           partition_id: null,
           filesystem_id: disk.filesystem.id,
           original_type: disk.type,
-          original: disk
+          original: disk,
         };
         if (disk.type === "virtual") {
           disk.parent_type = disk.parent.type;
         }
         filesystems.push(data);
       }
-      angular.forEach(disk.partitions, function(partition) {
+      angular.forEach(disk.partitions, function (partition) {
         if (hasMountedFilesystem(partition)) {
           filesystems.push({
             type: "filesystem",
@@ -513,7 +513,7 @@ export function NodeStorageController(
             partition_id: partition.id,
             filesystem_id: partition.filesystem.id,
             original_type: "partition",
-            original: partition
+            original: partition,
           });
         }
       });
@@ -522,7 +522,7 @@ export function NodeStorageController(
     // Add special filesystems to the filesystem list. A special
     // filesystem cannot exist unless mounted, so we don't need
     // to check.
-    angular.forEach($scope.node.special_filesystems, function(filesystem) {
+    angular.forEach($scope.node.special_filesystems, function (filesystem) {
       filesystems.push({
         type: "filesystem",
         name: "\u2014",
@@ -532,13 +532,13 @@ export function NodeStorageController(
         mount_options: filesystem.mount_options,
         block_id: null,
         partition_id: null,
-        original_type: "special"
+        original_type: "special",
       });
     });
 
     // Update the selected filesystems with the currently selected
     // filesystems.
-    angular.forEach(filesystems, function(filesystem) {
+    angular.forEach(filesystems, function (filesystem) {
       var key = getUniqueKey(filesystem);
       var oldFilesystem = $scope.filesystemsMap[key];
       if (angular.isObject(oldFilesystem)) {
@@ -551,7 +551,7 @@ export function NodeStorageController(
     // Update the filesystems and filesystemsMap on the scope.
     $scope.filesystems = filesystems;
     $scope.filesystemsMap = {};
-    angular.forEach(filesystems, function(filesystem) {
+    angular.forEach(filesystems, function (filesystem) {
       $scope.filesystemsMap[getUniqueKey(filesystem)] = filesystem;
     });
 
@@ -563,21 +563,21 @@ export function NodeStorageController(
   function updateCacheSets() {
     // Create the new list of cache sets.
     var cachesets = [];
-    angular.forEach($scope.node.disks, function(disk) {
+    angular.forEach($scope.node.disks, function (disk) {
       if (disk.type === "cache-set") {
         cachesets.push({
           type: "cache-set",
           name: disk.name,
           size_human: disk.size_human,
           cache_set_id: disk.id,
-          used_by: disk.used_for
+          used_by: disk.used_for,
         });
       }
     });
 
     // Update the selected cache sets with the currently selected
     // cache sets.
-    angular.forEach(cachesets, function(cacheset) {
+    angular.forEach(cachesets, function (cacheset) {
       var key = getUniqueKey(cacheset);
       var oldCacheSet = $scope.cachesetsMap[key];
       if (angular.isObject(oldCacheSet)) {
@@ -590,7 +590,7 @@ export function NodeStorageController(
     // Update the cachesets and cachesetsMap on the scope.
     $scope.cachesets = cachesets;
     $scope.cachesetsMap = {};
-    angular.forEach(cachesets, function(cacheset) {
+    angular.forEach(cachesets, function (cacheset) {
       $scope.cachesetsMap[getUniqueKey(cacheset)] = cacheset;
     });
 
@@ -601,7 +601,7 @@ export function NodeStorageController(
   // Update list of all available disks.
   function updateAvailable() {
     var available = [];
-    angular.forEach($scope.node.disks, function(disk) {
+    angular.forEach($scope.node.disks, function (disk) {
       if (!isInUse(disk)) {
         var has_partitions = false;
         if (angular.isArray(disk.partitions) && disk.partitions.length > 0) {
@@ -627,14 +627,14 @@ export function NodeStorageController(
           original: disk,
           test_status: disk.test_status,
           firmware_version: disk.firmware_version,
-          numa_node: disk.numa_node
+          numa_node: disk.numa_node,
         };
         if (disk.type === "virtual") {
           data.parent_type = disk.parent.type;
         }
         available.push(data);
       }
-      angular.forEach(disk.partitions, function(partition) {
+      angular.forEach(disk.partitions, function (partition) {
         if (!isInUse(partition)) {
           available.push({
             name: partition.name,
@@ -653,7 +653,7 @@ export function NodeStorageController(
             partition_id: partition.id,
             has_partitions: false,
             is_boot: false,
-            original: partition
+            original: partition,
           });
         }
       });
@@ -662,7 +662,7 @@ export function NodeStorageController(
     // Update the selected available disks with the currently selected
     // available disks. Also copy the $options so they are not lost
     // for the current action.
-    angular.forEach(available, function(disk) {
+    angular.forEach(available, function (disk) {
       var key = getUniqueKey(disk);
       var oldDisk = $scope.availableMap[key];
       if (angular.isObject(oldDisk)) {
@@ -677,7 +677,7 @@ export function NodeStorageController(
     // Update available and availableMap on the scope.
     $scope.available = available;
     $scope.availableMap = {};
-    angular.forEach(available, function(disk) {
+    angular.forEach(available, function (disk) {
       $scope.availableMap[getUniqueKey(disk)] = disk;
     });
 
@@ -691,7 +691,7 @@ export function NodeStorageController(
         // Update devices.
       } else if (angular.isArray($scope.availableNew.devices)) {
         var newDevices = [];
-        angular.forEach($scope.availableNew.devices, function(device) {
+        angular.forEach($scope.availableNew.devices, function (device) {
           var key = getUniqueKey(device);
           var newDevice = $scope.availableMap[key];
           if (angular.isObject(newDevice)) {
@@ -709,7 +709,7 @@ export function NodeStorageController(
   // Update list of all used disks.
   function updateUsed() {
     var used = [];
-    angular.forEach($scope.node.disks, function(disk) {
+    angular.forEach($scope.node.disks, function (disk) {
       if (isInUse(disk) && disk.type !== "cache-set") {
         var has_partitions = false;
         if (angular.isArray(disk.partitions) && disk.partitions.length > 0) {
@@ -727,14 +727,14 @@ export function NodeStorageController(
           has_partitions: has_partitions,
           test_status: disk.test_status,
           firmware_version: disk.firmware_version,
-          numa_node: disk.numa_node
+          numa_node: disk.numa_node,
         };
         if (disk.type === "virtual") {
           data.parent_type = disk.parent.type;
         }
         used.push(data);
       }
-      angular.forEach(disk.partitions, function(partition) {
+      angular.forEach(disk.partitions, function (partition) {
         if (isInUse(partition) && partition.type !== "cache-set") {
           used.push({
             name: partition.name,
@@ -744,7 +744,7 @@ export function NodeStorageController(
             size_human: partition.size_human,
             tags: [],
             used_for: partition.used_for,
-            is_boot: false
+            is_boot: false,
           });
         }
       });
@@ -781,7 +781,7 @@ export function NodeStorageController(
 
   // Deselect all items in the array.
   function deselectAll(items) {
-    angular.forEach(items, function(item) {
+    angular.forEach(items, function (item) {
       item.$selected = false;
     });
   }
@@ -809,12 +809,12 @@ export function NodeStorageController(
   // Get the next device name based on prefix.
   function getNextName(prefix) {
     var idx = -1;
-    angular.forEach($scope.node.disks, function(disk) {
+    angular.forEach($scope.node.disks, function (disk) {
       var dIdx = getIndexFromName(prefix, disk.name);
       if (angular.isNumber(dIdx)) {
         idx = Math.max(idx, dIdx);
       }
-      angular.forEach(disk.partitions, function(partition) {
+      angular.forEach(disk.partitions, function (partition) {
         dIdx = getIndexFromName(prefix, partition.name);
         if (angular.isNumber(dIdx)) {
           idx = Math.max(idx, dIdx);
@@ -866,12 +866,12 @@ export function NodeStorageController(
   }
 
   // Called by $parent when the node has been loaded.
-  $scope.nodeLoaded = function() {
+  $scope.nodeLoaded = function () {
     $scope.$watch("node.disks", updateDisks);
   };
 
   // Return true if the item can be a boot disk.
-  $scope.isBootDiskDisabled = function(item, section) {
+  $scope.isBootDiskDisabled = function (item, section) {
     // Only superusers can change the boot disk.
     if (!$scope.canEdit()) {
       return true;
@@ -902,7 +902,7 @@ export function NodeStorageController(
   };
 
   // Called to change the disk to a boot disk.
-  $scope.setAsBootDisk = function(item) {
+  $scope.setAsBootDisk = function (item) {
     // Do nothing if already the boot disk.
     if (item.is_boot) {
       return;
@@ -916,9 +916,9 @@ export function NodeStorageController(
   };
 
   // Return array of selected filesystems.
-  $scope.getSelectedFilesystems = function() {
+  $scope.getSelectedFilesystems = function () {
     var filesystems = [];
-    angular.forEach($scope.filesystems, function(filesystem) {
+    angular.forEach($scope.filesystems, function (filesystem) {
       if (filesystem.$selected) {
         filesystems.push(filesystem);
       }
@@ -928,7 +928,7 @@ export function NodeStorageController(
 
   // Update the currect mode for the filesystem section and the all
   // selected value.
-  $scope.updateFilesystemSelection = function(force) {
+  $scope.updateFilesystemSelection = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
@@ -951,14 +951,14 @@ export function NodeStorageController(
   };
 
   // Toggle the selection of the filesystem.
-  $scope.toggleFilesystemSelect = function(filesystem) {
+  $scope.toggleFilesystemSelect = function (filesystem) {
     filesystem.$selected = !filesystem.$selected;
     $scope.updateFilesystemSelection(true);
   };
 
   // Toggle the selection of all filesystems.
-  $scope.toggleFilesystemAllSelect = function() {
-    angular.forEach($scope.filesystems, function(filesystem) {
+  $scope.toggleFilesystemAllSelect = function () {
+    angular.forEach($scope.filesystems, function (filesystem) {
       if ($scope.filesystemAllSelected) {
         filesystem.$selected = false;
       } else {
@@ -970,7 +970,7 @@ export function NodeStorageController(
 
   // Return true if checkboxes in the filesystem section should be
   // disabled.
-  $scope.isFilesystemsDisabled = function() {
+  $scope.isFilesystemsDisabled = function () {
     return (
       ($scope.filesystemMode !== SELECTION_MODE.NONE &&
         $scope.filesystemMode !== SELECTION_MODE.SINGLE &&
@@ -980,18 +980,18 @@ export function NodeStorageController(
   };
 
   // Cancel the current filesystem operation.
-  $scope.filesystemCancel = function() {
+  $scope.filesystemCancel = function () {
     deselectAll($scope.filesystems);
     $scope.updateFilesystemSelection(true);
   };
 
   // Enter unmount mode.
-  $scope.filesystemUnmount = function() {
+  $scope.filesystemUnmount = function () {
     $scope.filesystemMode = SELECTION_MODE.UNMOUNT;
   };
 
   // Quickly enter unmount by selecting the filesystem first.
-  $scope.quickFilesystemUnmount = function(filesystem) {
+  $scope.quickFilesystemUnmount = function (filesystem) {
     deselectAll($scope.filesystems);
     filesystem.$selected = true;
     $scope.updateFilesystemSelection(true);
@@ -999,7 +999,7 @@ export function NodeStorageController(
   };
 
   // Confirm the unmount action for filesystem.
-  $scope.filesystemConfirmUnmount = function(filesystem) {
+  $scope.filesystemConfirmUnmount = function (filesystem) {
     MachinesManager.updateFilesystem(
       $scope.node,
       filesystem.block_id,
@@ -1015,12 +1015,12 @@ export function NodeStorageController(
   };
 
   // Enter delete mode.
-  $scope.filesystemDelete = function() {
+  $scope.filesystemDelete = function () {
     $scope.filesystemMode = SELECTION_MODE.DELETE;
   };
 
   // Quickly enter delete by selecting the filesystem first.
-  $scope.quickFilesystemDelete = function(filesystem) {
+  $scope.quickFilesystemDelete = function (filesystem) {
     deselectAll($scope.filesystems);
     filesystem.$selected = true;
     $scope.updateFilesystemSelection(true);
@@ -1028,7 +1028,7 @@ export function NodeStorageController(
   };
 
   // Confirm the delete action for filesystem.
-  $scope.filesystemConfirmDelete = function(filesystem) {
+  $scope.filesystemConfirmDelete = function (filesystem) {
     if (filesystem.original_type === "special") {
       // Delete the special filesystem.
       MachinesManager.unmountSpecialFilesystem(
@@ -1057,7 +1057,7 @@ export function NodeStorageController(
   };
 
   // Return true if the disk has an unmouted filesystem.
-  $scope.hasUnmountedFilesystem = function(disk) {
+  $scope.hasUnmountedFilesystem = function (disk) {
     if (angular.isString(disk.fstype) && disk.fstype !== "") {
       if (!angular.isString(disk.mount_point) || disk.mount_point === "") {
         return true;
@@ -1067,7 +1067,7 @@ export function NodeStorageController(
   };
 
   // Return true if the free space label should be shown.
-  $scope.showFreeSpace = function(disk) {
+  $scope.showFreeSpace = function (disk) {
     if (disk.type === "lvm-vg") {
       return true;
     } else if (disk.type === "physical" || disk.type === "virtual") {
@@ -1078,7 +1078,7 @@ export function NodeStorageController(
   };
 
   // Return the device type for the disk.
-  $scope.getDeviceType = function(disk) {
+  $scope.getDeviceType = function (disk) {
     if (angular.isUndefined(disk)) {
       return "";
     }
@@ -1099,15 +1099,15 @@ export function NodeStorageController(
   };
 
   // Return the device type for the disk in lower case.
-  $scope.getDeviceTypeLower = function(disk) {
+  $scope.getDeviceTypeLower = function (disk) {
     const type = $scope.getDeviceType(disk);
     return type.toLowerCase();
   };
 
   // Return array of selected available disks.
-  $scope.getSelectedAvailable = function() {
+  $scope.getSelectedAvailable = function () {
     var available = [];
-    angular.forEach($scope.available, function(disk) {
+    angular.forEach($scope.available, function (disk) {
       if (disk.$selected) {
         available.push(disk);
       }
@@ -1117,7 +1117,7 @@ export function NodeStorageController(
 
   // Update the current mode for the available section and the all
   // selected value.
-  $scope.updateAvailableSelection = function(force) {
+  $scope.updateAvailableSelection = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
@@ -1140,7 +1140,7 @@ export function NodeStorageController(
   };
 
   // Toggle the selection of the available disk.
-  $scope.toggleAvailableSelect = function(disk) {
+  $scope.toggleAvailableSelect = function (disk) {
     disk.$selected = !disk.$selected;
     $scope.updateAvailableSelection(true);
     $scope.selectedAvailableDatastores = $scope.getSelectedAvailable();
@@ -1148,8 +1148,8 @@ export function NodeStorageController(
   };
 
   // Toggle the selection of all available disks.
-  $scope.toggleAvailableAllSelect = function() {
-    angular.forEach($scope.available, function(disk) {
+  $scope.toggleAvailableAllSelect = function () {
+    angular.forEach($scope.available, function (disk) {
       if (!$scope.availableAllSelected) {
         disk.$selected = true;
       } else {
@@ -1161,7 +1161,7 @@ export function NodeStorageController(
 
   // Return true if checkboxes in the avaiable section should be
   // disabled.
-  $scope.isAvailableDisabled = function() {
+  $scope.isAvailableDisabled = function () {
     return (
       ($scope.availableMode !== SELECTION_MODE.NONE &&
         $scope.availableMode !== SELECTION_MODE.SINGLE &&
@@ -1171,7 +1171,7 @@ export function NodeStorageController(
   };
 
   // Return true if the disk can be formatted and mounted.
-  $scope.canFormatAndMount = function(disk) {
+  $scope.canFormatAndMount = function (disk) {
     if ($scope.isAllStorageDisabled()) {
       return false;
     } else if (disk.type === "lvm-vg" || disk.has_partitions) {
@@ -1184,7 +1184,7 @@ export function NodeStorageController(
   };
 
   // Return the text for the partition button.
-  $scope.getPartitionButtonText = function(disk) {
+  $scope.getPartitionButtonText = function (disk) {
     if (disk.has_partitions) {
       return "Add partition";
     } else {
@@ -1192,7 +1192,7 @@ export function NodeStorageController(
     }
   };
 
-  $scope.availablePartitionSpace = function(disk) {
+  $scope.availablePartitionSpace = function (disk) {
     var space_to_reserve = 0;
     if (
       !angular.isString(disk.original.partition_table_type) ||
@@ -1213,7 +1213,7 @@ export function NodeStorageController(
   };
 
   // Return true if a partition can be added to disk.
-  $scope.canAddPartition = function(disk) {
+  $scope.canAddPartition = function (disk) {
     if (!$scope.canEdit() || $scope.isAllStorageDisabled()) {
       return false;
     } else if (disk.type === "partition" || disk.type === "lvm-vg") {
@@ -1231,7 +1231,7 @@ export function NodeStorageController(
   };
 
   // Return true if the name is invalid.
-  $scope.isNameInvalid = function(disk) {
+  $scope.isNameInvalid = function (disk) {
     if (disk.name === "") {
       return false;
     } else if (isNameAlreadyInUse(disk.name, disk)) {
@@ -1242,7 +1242,7 @@ export function NodeStorageController(
   };
 
   // Prevent logical volumes from changing the volume group prefix.
-  $scope.nameHasChanged = function(disk) {
+  $scope.nameHasChanged = function (disk) {
     if (isLogicalVolume(disk)) {
       var parentName = disk.original.name.split("-")[0] + "-";
       var startsWith = disk.name.indexOf(parentName);
@@ -1253,24 +1253,24 @@ export function NodeStorageController(
   };
 
   // Cancel the current available operation.
-  $scope.availableCancel = function() {
+  $scope.availableCancel = function () {
     $scope.updateAvailableSelection(true);
     $scope.availableNew = {};
   };
 
   // Return true if the filesystem can be mounted at a directory.
-  $scope.usesMountPoint = function(fstype) {
+  $scope.usesMountPoint = function (fstype) {
     return angular.isString(fstype) && fstype !== "swap";
   };
 
   // Return true if the filesystem uses storage (partition or
   // block device).
-  $scope.usesStorage = function(fstype) {
+  $scope.usesStorage = function (fstype) {
     return angular.isString(fstype) && fstype !== "tmpfs" && fstype !== "ramfs";
   };
 
   // Return true if the mount point is invalid.
-  $scope.isMountPointInvalid = function(mountPoint) {
+  $scope.isMountPointInvalid = function (mountPoint) {
     if (angular.isUndefined(mountPoint) || mountPoint === "") {
       return false;
     } else if (mountPoint === "none") {
@@ -1287,7 +1287,7 @@ export function NodeStorageController(
   };
 
   // Return true if the disk can be deleted.
-  $scope.canDelete = function(disk) {
+  $scope.canDelete = function (disk) {
     if (!$scope.canEdit() || $scope.isAllStorageDisabled()) {
       return false;
     } else if (disk.type === "lvm-vg") {
@@ -1298,7 +1298,7 @@ export function NodeStorageController(
   };
 
   // Return true if the filesystem can be deleted.
-  $scope.canDeleteFilesystem = function(filesystem) {
+  $scope.canDeleteFilesystem = function (filesystem) {
     if (filesystem.original_type === "special") {
       return true;
     }
@@ -1306,12 +1306,12 @@ export function NodeStorageController(
   };
 
   // Enter delete mode.
-  $scope.availableDelete = function() {
+  $scope.availableDelete = function () {
     $scope.availableMode = SELECTION_MODE.DELETE;
   };
 
   // Quickly enter delete mode.
-  $scope.availableQuickDelete = function(disk) {
+  $scope.availableQuickDelete = function (disk) {
     deselectAll($scope.available);
     disk.$selected = true;
     $scope.updateAvailableSelection(true);
@@ -1319,7 +1319,7 @@ export function NodeStorageController(
   };
 
   // Return true if it can be edited.
-  $scope.canEdit = function(item) {
+  $scope.canEdit = function (item) {
     if ($scope.isAllStorageDisabled()) {
       return false;
     }
@@ -1333,26 +1333,26 @@ export function NodeStorageController(
   };
 
   // Enter Edit mode, disable certain fields based on disk type
-  $scope.availableEdit = function(disk) {
+  $scope.availableEdit = function (disk) {
     $scope.availableMode = SELECTION_MODE.EDIT;
 
     if (disk.type === "lvm-vg") {
       disk.$options = {
         editingTags: false,
-        editingFilesystem: false
+        editingFilesystem: false,
       };
     } else if (disk.type === "partition") {
       disk.$options = {
         editingTags: false,
         editingFilesystem: true,
-        fstype: disk.fstype
+        fstype: disk.fstype,
       };
     } else {
       disk.$options = {
         editingFilesystem: true,
         editingTags: true,
         tags: angular.copy(disk.tags),
-        fstype: disk.fstype
+        fstype: disk.fstype,
       };
       if (!$scope.canFormatAndMount(disk)) {
         disk.$options.editingFilesystem = false;
@@ -1361,7 +1361,7 @@ export function NodeStorageController(
   };
 
   // Quickly enter Edit mode
-  $scope.availableQuickEdit = function(disk) {
+  $scope.availableQuickEdit = function (disk) {
     deselectAll($scope.available);
     disk.$selected = true;
     $scope.updateAvailableSelection(true);
@@ -1369,9 +1369,9 @@ export function NodeStorageController(
   };
 
   // Save the disk which is in Edit mode
-  $scope.availableConfirmEdit = function(disk) {
+  $scope.availableConfirmEdit = function (disk) {
     var params = {
-      name: disk.name
+      name: disk.name,
     };
 
     // Do nothing if not valid.
@@ -1402,7 +1402,7 @@ export function NodeStorageController(
 
     // Update the tags for the disk.
     if (angular.isArray(disk.$options.tags)) {
-      params.tags = disk.$options.tags.map(function(tag) {
+      params.tags = disk.$options.tags.map(function (tag) {
         return tag.text;
       });
     }
@@ -1440,7 +1440,7 @@ export function NodeStorageController(
         mount_point: disk.mount_point,
         mount_options: disk.mount_options,
         block_id: disk.block_id,
-        partition_id: disk.partition_id
+        partition_id: disk.partition_id,
       });
 
       // Remove the selected disk from available.
@@ -1456,7 +1456,7 @@ export function NodeStorageController(
   };
 
   // Return the text for remove confirmation message.
-  $scope.getRemoveTypeText = function(disk) {
+  $scope.getRemoveTypeText = function (disk) {
     if (disk.type === "filesystem") {
       if (angular.isObject(disk.original)) {
         disk = disk.original;
@@ -1483,7 +1483,7 @@ export function NodeStorageController(
   };
 
   // Delete the disk, partition, or volume group.
-  $scope.availableConfirmDelete = function(disk) {
+  $scope.availableConfirmDelete = function (disk) {
     if (disk.type === "lvm-vg") {
       // Delete the volume group.
       MachinesManager.deleteVolumeGroup($scope.node, disk.block_id);
@@ -1502,7 +1502,7 @@ export function NodeStorageController(
   };
 
   // Enter partition mode.
-  $scope.availablePartition = function(disk) {
+  $scope.availablePartition = function (disk) {
     $scope.availableMode = SELECTION_MODE.PARTITION;
     // Set starting size to the maximum available space.
     var size_and_units = disk.available_size_human.split(" ");
@@ -1511,12 +1511,12 @@ export function NodeStorageController(
       sizeUnits: size_and_units[1],
       fstype: null,
       mountPoint: "",
-      mountOptions: ""
+      mountOptions: "",
     };
   };
 
   // Quickly enter partition mode.
-  $scope.availableQuickPartition = function(disk) {
+  $scope.availableQuickPartition = function (disk) {
     deselectAll($scope.available);
     disk.$selected = true;
     $scope.updateAvailableSelection(true);
@@ -1524,7 +1524,7 @@ export function NodeStorageController(
   };
 
   // Get the new name of the partition.
-  $scope.getAddPartitionName = function(disk) {
+  $scope.getAddPartitionName = function (disk) {
     var length,
       partitions = disk.original.partitions;
     if (angular.isArray(partitions)) {
@@ -1547,7 +1547,7 @@ export function NodeStorageController(
   };
 
   // Return true if the size is invalid.
-  $scope.isAddPartitionSizeInvalid = function(disk) {
+  $scope.isAddPartitionSizeInvalid = function (disk) {
     let size = disk.$options.size;
     // blr 2018-07-23: special cased as isAddLogicalVolumeSizeInvalid
     // calls this but has not yet migrated to maas-obj-form.
@@ -1582,7 +1582,7 @@ export function NodeStorageController(
   };
 
   // Confirm the partition creation.
-  $scope.availableConfirmPartition = function(disk) {
+  $scope.availableConfirmPartition = function (disk) {
     const form = $scope.newPartition.$maasForm;
     const size = form.getValue("size");
     const mountPoint = form.getValue("mount_point");
@@ -1642,9 +1642,9 @@ export function NodeStorageController(
   };
 
   // Return array of selected cache sets.
-  $scope.getSelectedCacheSets = function() {
+  $scope.getSelectedCacheSets = function () {
     var cachesets = [];
-    angular.forEach($scope.cachesets, function(cacheset) {
+    angular.forEach($scope.cachesets, function (cacheset) {
       if (cacheset.$selected) {
         cachesets.push(cacheset);
       }
@@ -1654,7 +1654,7 @@ export function NodeStorageController(
 
   // Update the currect mode for the cache sets section and the all
   // selected value.
-  $scope.updateCacheSetsSelection = function(force) {
+  $scope.updateCacheSetsSelection = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
@@ -1677,14 +1677,14 @@ export function NodeStorageController(
   };
 
   // Toggle the selection of the filesystem.
-  $scope.toggleCacheSetSelect = function(cacheset) {
+  $scope.toggleCacheSetSelect = function (cacheset) {
     cacheset.$selected = !cacheset.$selected;
     $scope.updateCacheSetsSelection(true);
   };
 
   // Toggle the selection of all filesystems.
-  $scope.toggleCacheSetAllSelect = function() {
-    angular.forEach($scope.cachesets, function(cacheset) {
+  $scope.toggleCacheSetAllSelect = function () {
+    angular.forEach($scope.cachesets, function (cacheset) {
       if ($scope.cachesetsAllSelected) {
         cacheset.$selected = false;
       } else {
@@ -1696,7 +1696,7 @@ export function NodeStorageController(
 
   // Return true if checkboxes in the cache sets section should be
   // disabled.
-  $scope.isCacheSetsDisabled = function() {
+  $scope.isCacheSetsDisabled = function () {
     return (
       ($scope.isAllStorageDisabled() && !$scope.canEdit()) ||
       ($scope.cachesetsMode !== SELECTION_MODE.NONE &&
@@ -1706,13 +1706,13 @@ export function NodeStorageController(
   };
 
   // Cancel the current cache set operation.
-  $scope.cacheSetCancel = function() {
+  $scope.cacheSetCancel = function () {
     deselectAll($scope.cachesets);
     $scope.updateCacheSetsSelection(true);
   };
 
   // Can delete the cache set.
-  $scope.canDeleteCacheSet = function(cacheset) {
+  $scope.canDeleteCacheSet = function (cacheset) {
     return (
       cacheset.used_by === "" &&
       !$scope.isAllStorageDisabled() &&
@@ -1721,12 +1721,12 @@ export function NodeStorageController(
   };
 
   // Enter delete mode.
-  $scope.cacheSetDelete = function() {
+  $scope.cacheSetDelete = function () {
     $scope.cachesetsMode = SELECTION_MODE.DELETE;
   };
 
   // Quickly enter delete by selecting the cache set first.
-  $scope.quickCacheSetDelete = function(cacheset) {
+  $scope.quickCacheSetDelete = function (cacheset) {
     deselectAll($scope.cachesets);
     cacheset.$selected = true;
     $scope.updateCacheSetsSelection(true);
@@ -1734,7 +1734,7 @@ export function NodeStorageController(
   };
 
   // Confirm the delete action for cache set.
-  $scope.cacheSetConfirmDelete = function(cacheset) {
+  $scope.cacheSetConfirmDelete = function (cacheset) {
     MachinesManager.deleteCacheSet($scope.node, cacheset.cache_set_id);
 
     var idx = $scope.cachesets.indexOf(cacheset);
@@ -1743,7 +1743,7 @@ export function NodeStorageController(
   };
 
   // Return true if a cache set can be created.
-  $scope.canCreateCacheSet = function() {
+  $scope.canCreateCacheSet = function () {
     if ($scope.isAvailableDisabled() || !$scope.canEdit()) {
       return false;
     }
@@ -1760,7 +1760,7 @@ export function NodeStorageController(
   };
 
   // Called to create a cache set.
-  $scope.createCacheSet = function() {
+  $scope.createCacheSet = function () {
     if (!$scope.canCreateCacheSet()) {
       return;
     }
@@ -1779,7 +1779,7 @@ export function NodeStorageController(
   };
 
   // Return the reason a bcache device cannot be created.
-  $scope.getCannotCreateBcacheMsg = function() {
+  $scope.getCannotCreateBcacheMsg = function () {
     if ($scope.cachesets.length === 0) {
       return "Create at least one cache set to create bcache";
     } else {
@@ -1811,12 +1811,14 @@ export function NodeStorageController(
   };
 
   // Return true if a bcache can be created.
-  $scope.canCreateBcache = function() {
+  $scope.canCreateBcache = function () {
     if ($scope.isAvailableDisabled() || !$scope.canEdit()) {
       return false;
     }
 
-    var selectedBache = $scope.selectedAvailableDatastores.filter(function(ds) {
+    var selectedBache = $scope.selectedAvailableDatastores.filter(function (
+      ds
+    ) {
       return ds.parent_type === "bcache";
     });
 
@@ -1833,7 +1835,7 @@ export function NodeStorageController(
   };
 
   // Enter bcache mode.
-  $scope.createBcache = function() {
+  $scope.createBcache = function () {
     if (!$scope.canCreateBcache()) {
       return;
     }
@@ -1846,12 +1848,12 @@ export function NodeStorageController(
       fstype: null,
       mountPoint: "",
       mountOptions: "",
-      tags: []
+      tags: [],
     };
   };
 
   // Clear mount point when the fstype is changed.
-  $scope.fstypeChanged = function(options) {
+  $scope.fstypeChanged = function (options) {
     if (options.fstype === null) {
       options.mountPoint = "";
       options.mountOptions = "";
@@ -1869,7 +1871,7 @@ export function NodeStorageController(
   };
 
   // Return true when the name of the new disk is invalid.
-  $scope.isNewDiskNameInvalid = function(newDiskName) {
+  $scope.isNewDiskNameInvalid = function (newDiskName) {
     if (!angular.isObject($scope.node) || !angular.isArray($scope.node.disks)) {
       return true;
     }
@@ -1897,7 +1899,7 @@ export function NodeStorageController(
   };
 
   // Return true if bcache can be saved.
-  $scope.createBcacheCanSave = function() {
+  $scope.createBcacheCanSave = function () {
     return (
       !$scope.isNewDiskNameInvalid($scope.availableNew.name) &&
       !$scope.isMountPointInvalid($scope.availableNew.mountPoint)
@@ -1905,7 +1907,7 @@ export function NodeStorageController(
   };
 
   // Confirm and create the bcache device.
-  $scope.availableConfirmCreateBcache = function() {
+  $scope.availableConfirmCreateBcache = function () {
     if (!$scope.createBcacheCanSave()) {
       return;
     }
@@ -1914,7 +1916,7 @@ export function NodeStorageController(
     var params = {
       name: $scope.availableNew.name,
       cache_set: $scope.availableNew.cacheset.cache_set_id,
-      cache_mode: $scope.availableNew.cacheMode
+      cache_mode: $scope.availableNew.cacheMode,
     };
     if ($scope.availableNew.device.type === "partition") {
       params.partition_id = $scope.availableNew.device.partition_id;
@@ -1940,7 +1942,7 @@ export function NodeStorageController(
       angular.isArray($scope.availableNew.tags) &&
       $scope.availableNew.tags.length > 0
     ) {
-      params.tags = $scope.availableNew.tags.map(function(tag) {
+      params.tags = $scope.availableNew.tags.map(function (tag) {
         return tag.text;
       });
     }
@@ -1956,7 +1958,7 @@ export function NodeStorageController(
   };
 
   // Return true if a RAID can be created.
-  $scope.canCreateRAID = function() {
+  $scope.canCreateRAID = function () {
     if ($scope.isAvailableDisabled() || !$scope.canEdit()) {
       return false;
     }
@@ -1977,7 +1979,7 @@ export function NodeStorageController(
   };
 
   // Called to create a RAID.
-  $scope.createRAID = function() {
+  $scope.createRAID = function () {
     if (!$scope.canCreateRAID()) {
       return;
     }
@@ -1990,13 +1992,13 @@ export function NodeStorageController(
       fstype: null,
       mountPoint: "",
       mountOptions: "",
-      tags: []
+      tags: [],
     };
     $scope.availableNew.mode = $scope.getAvailableRAIDModes()[0];
   };
 
   // Get the available RAID modes.
-  $scope.getAvailableRAIDModes = function() {
+  $scope.getAvailableRAIDModes = function () {
     if (
       !angular.isObject($scope.availableNew) ||
       !angular.isArray($scope.availableNew.devices)
@@ -2005,7 +2007,7 @@ export function NodeStorageController(
     }
 
     var modes = [];
-    angular.forEach(RAID_MODES, function(mode) {
+    angular.forEach(RAID_MODES, function (mode) {
       if ($scope.availableNew.devices.length >= mode.min_disks) {
         modes.push(mode);
       }
@@ -2014,7 +2016,7 @@ export function NodeStorageController(
   };
 
   // Return the total number of available spares for the current mode.
-  $scope.getTotalNumberOfAvailableSpares = function() {
+  $scope.getTotalNumberOfAvailableSpares = function () {
     var mode = $scope.availableNew.mode;
     if (angular.isUndefined(mode) || !mode.allows_spares) {
       return 0;
@@ -2028,7 +2030,7 @@ export function NodeStorageController(
   };
 
   // Return the number of remaining spares that can be selected.
-  $scope.getNumberOfRemainingSpares = function() {
+  $scope.getNumberOfRemainingSpares = function () {
     var allowed = $scope.getTotalNumberOfAvailableSpares();
     if (allowed <= 0) {
       return 0;
@@ -2038,17 +2040,17 @@ export function NodeStorageController(
   };
 
   // Return true if the spares column should be shown.
-  $scope.showSparesColumn = function() {
+  $scope.showSparesColumn = function () {
     return $scope.getTotalNumberOfAvailableSpares() > 0;
   };
 
   // Called when the RAID mode is changed to reset the selected spares.
-  $scope.RAIDModeChanged = function() {
+  $scope.RAIDModeChanged = function () {
     $scope.availableNew.spares = [];
   };
 
   // Return true if the disk is an active RAID member.
-  $scope.isActiveRAIDMember = function(disk) {
+  $scope.isActiveRAIDMember = function (disk) {
     if (!angular.isArray($scope.availableNew.spares)) {
       return true;
     } else {
@@ -2058,12 +2060,12 @@ export function NodeStorageController(
   };
 
   // Return true if the disk is a spare RAID member.
-  $scope.isSpareRAIDMember = function(disk) {
+  $scope.isSpareRAIDMember = function (disk) {
     return !$scope.isActiveRAIDMember(disk);
   };
 
   // Set the disk as an active RAID member.
-  $scope.setAsActiveRAIDMember = function(disk) {
+  $scope.setAsActiveRAIDMember = function (disk) {
     var idx = $scope.availableNew.spares.indexOf(getUniqueKey(disk));
     if (idx > -1) {
       $scope.availableNew.spares.splice(idx, 1);
@@ -2071,7 +2073,7 @@ export function NodeStorageController(
   };
 
   // Set the disk as a spare RAID member.
-  $scope.setAsSpareRAIDMember = function(disk) {
+  $scope.setAsSpareRAIDMember = function (disk) {
     var key = getUniqueKey(disk);
     var idx = $scope.availableNew.spares.indexOf(key);
     if (idx === -1) {
@@ -2080,7 +2082,7 @@ export function NodeStorageController(
   };
 
   // Return the size of the new RAID device.
-  $scope.getNewRAIDSize = function() {
+  $scope.getNewRAIDSize = function () {
     if (angular.isUndefined($scope.availableNew.mode)) {
       return "";
     }
@@ -2093,7 +2095,7 @@ export function NodeStorageController(
     var numDisks =
       $scope.availableNew.devices.length - $scope.availableNew.spares.length;
     var minSize = Number.MAX_VALUE;
-    angular.forEach($scope.availableNew.devices, function(device) {
+    angular.forEach($scope.availableNew.devices, function (device) {
       // Get the size of the device. For a block device it will be
       // at available_size and for a partition it will be at size.
       var deviceSize = device.original.available_size || device.original.size;
@@ -2106,7 +2108,7 @@ export function NodeStorageController(
   };
 
   // Return true if RAID can be saved.
-  $scope.createRAIDCanSave = function() {
+  $scope.createRAIDCanSave = function () {
     return (
       !$scope.isNewDiskNameInvalid($scope.availableNew.name) &&
       !$scope.isMountPointInvalid($scope.availableNew.mountPoint)
@@ -2114,7 +2116,7 @@ export function NodeStorageController(
   };
 
   // Confirm and create the RAID device.
-  $scope.availableConfirmCreateRAID = function() {
+  $scope.availableConfirmCreateRAID = function () {
     if (!$scope.createRAIDCanSave()) {
       return;
     }
@@ -2126,9 +2128,9 @@ export function NodeStorageController(
       block_devices: [],
       partitions: [],
       spare_devices: [],
-      spare_partitions: []
+      spare_partitions: [],
     };
-    angular.forEach($scope.availableNew.devices, function(device) {
+    angular.forEach($scope.availableNew.devices, function (device) {
       if ($scope.isActiveRAIDMember(device)) {
         if (device.type === "partition") {
           params.partitions.push(device.partition_id);
@@ -2157,14 +2159,14 @@ export function NodeStorageController(
       angular.isArray($scope.availableNew.tags) &&
       $scope.availableNew.tags.length > 0
     ) {
-      params.tags = $scope.availableNew.tags.map(function(tag) {
+      params.tags = $scope.availableNew.tags.map(function (tag) {
         return tag.text;
       });
     }
     MachinesManager.createRAID($scope.node, params);
 
     // Remove devices from available.
-    angular.forEach($scope.availableNew.devices, function() {
+    angular.forEach($scope.availableNew.devices, function () {
       var idx = $scope.available.indexOf($scope.availableNew.device);
       $scope.available.splice(idx, 1);
     });
@@ -2175,7 +2177,7 @@ export function NodeStorageController(
   };
 
   // Return true if a volume group can be created.
-  $scope.canCreateVolumeGroup = function() {
+  $scope.canCreateVolumeGroup = function () {
     if ($scope.isAvailableDisabled() || !$scope.canEdit()) {
       return false;
     }
@@ -2198,21 +2200,21 @@ export function NodeStorageController(
   };
 
   // Called to create a volume group.
-  $scope.createVolumeGroup = function() {
+  $scope.createVolumeGroup = function () {
     if (!$scope.canCreateVolumeGroup()) {
       return;
     }
     $scope.availableMode = SELECTION_MODE.VOLUME_GROUP;
     $scope.availableNew = {
       name: getNextName("vg"),
-      devices: $scope.getSelectedAvailable()
+      devices: $scope.getSelectedAvailable(),
     };
   };
 
   // Return the size of the new volume group.
-  $scope.getNewVolumeGroupSize = function() {
+  $scope.getNewVolumeGroupSize = function () {
     var total = 0;
-    angular.forEach($scope.availableNew.devices, function(device) {
+    angular.forEach($scope.availableNew.devices, function (device) {
       // Add available_size or size if available_size is not set.
       total += device.original.available_size || device.original.size;
     });
@@ -2220,12 +2222,12 @@ export function NodeStorageController(
   };
 
   // Return true if volume group can be saved.
-  $scope.createVolumeGroupCanSave = function() {
+  $scope.createVolumeGroupCanSave = function () {
     return !$scope.isNewDiskNameInvalid($scope.availableNew.name);
   };
 
   // Confirm and create the volume group device.
-  $scope.availableConfirmCreateVolumeGroup = function() {
+  $scope.availableConfirmCreateVolumeGroup = function () {
     if (!$scope.createVolumeGroupCanSave()) {
       return;
     }
@@ -2234,9 +2236,9 @@ export function NodeStorageController(
     var params = {
       name: $scope.availableNew.name,
       block_devices: [],
-      partitions: []
+      partitions: [],
     };
-    angular.forEach($scope.availableNew.devices, function(device) {
+    angular.forEach($scope.availableNew.devices, function (device) {
       if (device.type === "partition") {
         params.partitions.push(device.partition_id);
       } else {
@@ -2246,7 +2248,7 @@ export function NodeStorageController(
     MachinesManager.createVolumeGroup($scope.node, params);
 
     // Remove devices from available.
-    angular.forEach($scope.availableNew.devices, function() {
+    angular.forEach($scope.availableNew.devices, function () {
       var idx = $scope.available.indexOf($scope.availableNew.device);
       $scope.available.splice(idx, 1);
     });
@@ -2257,7 +2259,7 @@ export function NodeStorageController(
   };
 
   // Return true if a logical volume can be added to disk.
-  $scope.canAddLogicalVolume = function(disk) {
+  $scope.canAddLogicalVolume = function (disk) {
     if (disk.type !== "lvm-vg") {
       return false;
     } else if (disk.original.available_size < MIN_PARTITION_SIZE) {
@@ -2268,7 +2270,7 @@ export function NodeStorageController(
   };
 
   // Enter logical volume mode.
-  $scope.availableLogicalVolume = function(disk) {
+  $scope.availableLogicalVolume = function (disk) {
     $scope.availableMode = SELECTION_MODE.LOGICAL_VOLUME;
     disk.$selected = true;
     // Set starting size to the maximum available space.
@@ -2279,12 +2281,12 @@ export function NodeStorageController(
       size: size_and_units[0],
       sizeUnits: size_and_units[1],
       fstype: null,
-      tags: []
+      tags: [],
     };
   };
 
   // Return true if the name of the logical volume is invalid.
-  $scope.isLogicalVolumeNameInvalid = function(disk) {
+  $scope.isLogicalVolumeNameInvalid = function (disk) {
     if (!angular.isString(disk.$options.name)) {
       return false;
     }
@@ -2298,7 +2300,7 @@ export function NodeStorageController(
 
   // Don't allow the name of the logical volume to remove the volume
   // group name.
-  $scope.newLogicalVolumeNameChanged = function(disk) {
+  $scope.newLogicalVolumeNameChanged = function (disk) {
     if (!angular.isString(disk.$options.name)) {
       return;
     }
@@ -2309,13 +2311,13 @@ export function NodeStorageController(
   };
 
   // Return true if the logical volume size is invalid.
-  $scope.isAddLogicalVolumeSizeInvalid = function(disk) {
+  $scope.isAddLogicalVolumeSizeInvalid = function (disk) {
     // Uses the same logic as the partition size checked.
     return $scope.isAddPartitionSizeInvalid(disk);
   };
 
   // Confirm the logical volume creation.
-  $scope.availableConfirmLogicalVolume = function(disk) {
+  $scope.availableConfirmLogicalVolume = function (disk) {
     // Do nothing if not valid.
     if (
       $scope.isLogicalVolumeNameInvalid(disk) ||
@@ -2364,7 +2366,7 @@ export function NodeStorageController(
       }
     }
     if (angular.isArray(disk.$options.tags) && disk.$options.tags.length > 0) {
-      params.tags = disk.$options.tags.map(function(tag) {
+      params.tags = disk.$options.tags.map(function (tag) {
         return tag.text;
       });
     }
@@ -2387,7 +2389,7 @@ export function NodeStorageController(
   // Returns true if storage cannot be edited.
   // (it can't be changed when the node is in any state other
   //  than Ready or Allocated)
-  $scope.isAllStorageDisabled = function() {
+  $scope.isAllStorageDisabled = function () {
     var authUser = UsersManager.getAuthUser();
     if (
       !angular.isObject(authUser) ||
@@ -2408,7 +2410,7 @@ export function NodeStorageController(
   };
 
   // Returns true if there are storage layout errors
-  $scope.hasStorageLayoutIssues = function() {
+  $scope.hasStorageLayoutIssues = function () {
     if (
       angular.isObject($scope.node) &&
       angular.isArray($scope.node.storage_layout_issues)
@@ -2419,8 +2421,8 @@ export function NodeStorageController(
   };
 
   // Returns warning text based on number of datastores
-  $scope.getRemoveDatastoreWarningText = function(disks) {
-    var datastores = disks.filter(function(disk) {
+  $scope.getRemoveDatastoreWarningText = function (disks) {
+    var datastores = disks.filter(function (disk) {
       return disk.parent_type === "vmfs6";
     });
     var warningText = "Are you sure you want to remove this datastore?";
@@ -2432,17 +2434,17 @@ export function NodeStorageController(
     return warningText;
   };
 
-  $scope.getTotalDiskSize = function(disks) {
+  $scope.getTotalDiskSize = function (disks) {
     var totalSize = 0;
 
-    angular.forEach(disks, function(disk) {
+    angular.forEach(disks, function (disk) {
       totalSize = totalSize + disk.size;
     });
 
     return totalSize;
   };
 
-  $scope.getFormattedTotalDiskSize = function(disks) {
+  $scope.getFormattedTotalDiskSize = function (disks) {
     var totalDiskSize = $scope.getTotalDiskSize(disks);
     return formatBytes(totalDiskSize);
   };

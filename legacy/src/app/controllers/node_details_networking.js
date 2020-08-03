@@ -11,13 +11,13 @@ import { HardwareType } from "../enum";
 // Filter that is specific to the NodeNetworkingController. Filters the
 // list of VLANs to be only those that are unused by the interface.
 export function filterByUnusedForInterface() {
-  return function(vlans, nic, originalInterfaces) {
+  return function (vlans, nic, originalInterfaces) {
     var filtered = [];
     if (!angular.isObject(nic) || !angular.isObject(originalInterfaces)) {
       return filtered;
     }
     var usedVLANs = [];
-    angular.forEach(originalInterfaces, function(inter) {
+    angular.forEach(originalInterfaces, function (inter) {
       if (inter.type === "vlan") {
         var parent = inter.parents[0];
         if (parent === nic.id) {
@@ -25,7 +25,7 @@ export function filterByUnusedForInterface() {
         }
       }
     });
-    angular.forEach(vlans, function(vlan) {
+    angular.forEach(vlans, function (vlan) {
       var idx = usedVLANs.indexOf(vlan.id);
       if (idx === -1) {
         filtered.push(vlan);
@@ -39,7 +39,7 @@ export function filterByUnusedForInterface() {
 // list of interfaces to not include the current parent interfaces being
 // bonded together.
 export function removeInterfaceParents() {
-  return function(interfaces, childInterface, skip) {
+  return function (interfaces, childInterface, skip) {
     if (
       skip ||
       !angular.isObject(childInterface) ||
@@ -48,7 +48,7 @@ export function removeInterfaceParents() {
       return interfaces;
     }
     var filtered = [];
-    angular.forEach(interfaces, function(nic) {
+    angular.forEach(interfaces, function (nic) {
       var i,
         parent,
         found = false;
@@ -70,12 +70,12 @@ export function removeInterfaceParents() {
 // Filter that is specific to the NodeNetworkingController. Remove the default
 // VLAN if the interface is a VLAN interface.
 export function removeDefaultVLANIfVLAN() {
-  return function(vlans, interfaceType) {
+  return function (vlans, interfaceType) {
     if (!angular.isString(interfaceType)) {
       return vlans;
     }
     var filtered = [];
-    angular.forEach(vlans, function(vlan) {
+    angular.forEach(vlans, function (vlan) {
       if (interfaceType !== "vlan") {
         filtered.push(vlan);
       } else if (vlan.vid !== 0) {
@@ -89,12 +89,12 @@ export function removeDefaultVLANIfVLAN() {
 // Filter that is specific to the NodeNetworkingController. Remove
 // VLANs that are no part of current fabric.
 export function filterVLANNotOnFabric() {
-  return function(items, VLANsInFabric) {
+  return function (items, VLANsInFabric) {
     if (!angular.isArray(VLANsInFabric)) {
       return items;
     }
 
-    return items.filter(function(item) {
+    return items.filter(function (item) {
       var index = VLANsInFabric.indexOf(item.id);
       return index !== -1;
     });
@@ -120,12 +120,12 @@ function isOnSameVLAN(item, bondInterface) {
 // Filter that is specific to the NodeNetworkingController. Remove
 // editInterface from list.
 export function filterEditInterface() {
-  return function(items, editInterface) {
+  return function (items, editInterface) {
     if (!angular.isObject(editInterface)) {
       return items;
     }
 
-    var results = items.filter(function(item) {
+    var results = items.filter(function (item) {
       return (
         item.id !== editInterface.id &&
         isOnSameFabric(item, editInterface) &&
@@ -140,7 +140,7 @@ export function filterEditInterface() {
 // Filter that is specific to the NodeNetworkingController. Remove the
 // selected interfaces
 export function filterSelectedInterfaces() {
-  return function(items, selectedInterfaces, newBondInterface) {
+  return function (items, selectedInterfaces, newBondInterface) {
     if (!angular.isArray(selectedInterfaces)) {
       return items;
     }
@@ -149,7 +149,7 @@ export function filterSelectedInterfaces() {
       return items;
     }
 
-    return items.filter(function(item) {
+    return items.filter(function (item) {
       var itemKey = item.id + "/" + item.link_id;
 
       return (
@@ -168,7 +168,7 @@ export function filterSelectedInterfaces() {
 // Filter that is specific to the NodeNetworkingController. Only provide the
 // available modes for that interface type.
 export function filterLinkModes() {
-  return function(modes, nic) {
+  return function (modes, nic) {
     if (!angular.isObject(nic)) {
       return modes;
     }
@@ -178,7 +178,7 @@ export function filterLinkModes() {
     // We need to use getValue() to access attributes, because each
     // type of maas-obj-form gets to define how values come out.
     if (!angular.isFunction(nic.getValue)) {
-      nic.getValue = function(name) {
+      nic.getValue = function (name) {
         return this[name];
       };
     }
@@ -186,7 +186,7 @@ export function filterLinkModes() {
     if (!angular.isObject(nic.getValue("subnet"))) {
       // No subnet is configure so the only allowed mode
       // is 'link_up'.
-      angular.forEach(modes, function(mode) {
+      angular.forEach(modes, function (mode) {
         if (mode.mode === "link_up") {
           filtered.push(mode);
         }
@@ -198,7 +198,7 @@ export function filterLinkModes() {
       var nicType = nic.getValue("type");
       var allowLinkUp =
         (angular.isObject(links) && links.length > 1) || nicType === "alias";
-      angular.forEach(modes, function(mode) {
+      angular.forEach(modes, function (mode) {
         if (allowLinkUp && mode.mode === "link_up") {
           return;
         }
@@ -238,7 +238,7 @@ export function NodeNetworkingController(
     BOND: "bond",
     BRIDGE: "bridge",
     VLAN: "vlan",
-    ALIAS: "alias"
+    ALIAS: "alias",
   };
   var INTERFACE_TYPE_TEXTS = {
     physical: "Physical",
@@ -246,7 +246,7 @@ export function NodeNetworkingController(
     bridge: "Bridge",
     vlan: "VLAN",
     alias: "Alias",
-    ovs: "Open vSwitch"
+    ovs: "Open vSwitch",
   };
 
   // Different link modes for an interface.
@@ -254,13 +254,13 @@ export function NodeNetworkingController(
     AUTO: "auto",
     STATIC: "static",
     DHCP: "dhcp",
-    LINK_UP: "link_up"
+    LINK_UP: "link_up",
   };
   var LINK_MODE_TEXTS = {
     auto: "Auto assign",
     static: "Static assign",
     dhcp: "DHCP",
-    link_up: "Unconfigured"
+    link_up: "Unconfigured",
   };
 
   // Different selection modes.
@@ -273,33 +273,33 @@ export function NodeNetworkingController(
     CREATE_BOND: "create-bond",
     CREATE_BRIDGE: "create-bridge",
     CREATE_PHYSICAL: "create-physical",
-    EDIT: "edit"
+    EDIT: "edit",
   };
 
   var IP_ASSIGNMENT = {
     DYNAMIC: "dynamic",
     EXTERNAL: "external",
-    STATIC: "static"
+    STATIC: "static",
   };
 
   // Device ip assignment options.
   $scope.ipAssignments = [
     {
       name: IP_ASSIGNMENT.EXTERNAL,
-      text: "External"
+      text: "External",
     },
     {
       name: IP_ASSIGNMENT.DYNAMIC,
-      text: "Dynamic"
+      text: "Dynamic",
     },
     {
       name: IP_ASSIGNMENT.STATIC,
-      text: "Static"
-    }
+      text: "Static",
+    },
   ];
 
   $scope.networkSection = {
-    area: angular.isString($stateParams.area) ? $stateParams.area : "summary"
+    area: angular.isString($stateParams.area) ? $stateParams.area : "summary",
   };
 
   // Set the initial values for this scope.
@@ -332,25 +332,25 @@ export function NodeNetworkingController(
   $scope.modes = [
     {
       mode: LINK_MODE.AUTO,
-      text: LINK_MODE_TEXTS[LINK_MODE.AUTO]
+      text: LINK_MODE_TEXTS[LINK_MODE.AUTO],
     },
     {
       mode: LINK_MODE.STATIC,
-      text: LINK_MODE_TEXTS[LINK_MODE.STATIC]
+      text: LINK_MODE_TEXTS[LINK_MODE.STATIC],
     },
     {
       mode: LINK_MODE.DHCP,
-      text: LINK_MODE_TEXTS[LINK_MODE.DHCP]
+      text: LINK_MODE_TEXTS[LINK_MODE.DHCP],
     },
     {
       mode: LINK_MODE.LINK_UP,
-      text: LINK_MODE_TEXTS[LINK_MODE.LINK_UP]
-    }
+      text: LINK_MODE_TEXTS[LINK_MODE.LINK_UP],
+    },
   ];
 
-  $scope.isBond = item => item && item.type === "bond";
-  $scope.isBridge = item => item && item.type === "bridge";
-  $scope.isInterface = item => item && item.type === "physical";
+  $scope.isBond = (item) => item && item.type === "bond";
+  $scope.isBridge = (item) => item && item.type === "bridge";
+  $scope.isInterface = (item) => item && item.type === "physical";
 
   // Sets loaded to true if both the node has been loaded at the
   // other required managers for this scope have been loaded.
@@ -366,7 +366,7 @@ export function NodeNetworkingController(
   // in a data-ng-repeat easier.
   function updateInterfaces() {
     $scope.originalInterfaces = {};
-    angular.forEach($scope.node.interfaces, function(nic) {
+    angular.forEach($scope.node.interfaces, function (nic) {
       $scope.originalInterfaces[nic.id] = nic;
     });
 
@@ -377,7 +377,7 @@ export function NodeNetworkingController(
     // Keep track of VLAN IDs we've processed.
     var addedVlans = {};
 
-    angular.forEach($scope.node.interfaces, function(nic) {
+    angular.forEach($scope.node.interfaces, function (nic) {
       // When a interface has a child that is a bond or bridge.
       // Then that interface is not included in the interface list.
       // Parent interface with a bond or bridge child can only have
@@ -411,7 +411,7 @@ export function NodeNetworkingController(
         nic.type === INTERFACE_TYPE.BRIDGE
       ) {
         nic.members = [];
-        angular.forEach(nic.parents, function(parent) {
+        angular.forEach(nic.parents, function (parent) {
           nic.members.push(angular.copy($scope.originalInterfaces[parent]));
         });
       }
@@ -443,7 +443,7 @@ export function NodeNetworkingController(
                 true
               ),
               primary_rack: null,
-              secondary_rack: null
+              secondary_rack: null,
             };
 
             if (angular.isObject(nic.fabric)) {
@@ -463,7 +463,7 @@ export function NodeNetworkingController(
             vlanTable.push(vlanRecord);
           }
           // Sort the table by (VLANText, fabric.name).
-          vlanTable.sort(function(a, b) {
+          vlanTable.sort(function (a, b) {
             return a.sort_key.localeCompare(b.sort_key);
           });
         }
@@ -482,7 +482,7 @@ export function NodeNetworkingController(
         interfaces.push(nic);
       } else {
         var idx = 0;
-        angular.forEach(nic.links, function(link) {
+        angular.forEach(nic.links, function (link) {
           var nic_copy = angular.copy(nic);
           nic_copy.link_id = link.id;
           nic_copy.subnet = SubnetsManager.getItemFromList(link.subnet_id);
@@ -511,7 +511,7 @@ export function NodeNetworkingController(
     $scope.interfaces = interfaces;
     $scope.vlanTable = vlanTable;
 
-    $scope.snippets.forEach(snippet => {
+    $scope.snippets.forEach((snippet) => {
       let subnet = SubnetsManager.getItemFromList(snippet.subnet);
 
       if (subnet) {
@@ -521,19 +521,19 @@ export function NodeNetworkingController(
 
     let subnetIPs = [];
 
-    $scope.interfaces.forEach(item => {
+    $scope.interfaces.forEach((item) => {
       if (item.subnet) {
         subnetIPs.push(item.subnet.cidr);
       }
     });
 
-    $scope.filteredSnippets = $scope.snippets.filter(snippet => {
+    $scope.filteredSnippets = $scope.snippets.filter((snippet) => {
       return snippet.node === $scope.node.system_id;
     });
 
     // Update the scope interface links mapping.
     $scope.interfaceLinksMap = {};
-    angular.forEach($scope.interfaces, function(nic) {
+    angular.forEach($scope.interfaces, function (nic) {
       var linkMaps = $scope.interfaceLinksMap[nic.id];
       if (angular.isUndefined(linkMaps)) {
         linkMaps = {};
@@ -652,7 +652,7 @@ export function NodeNetworkingController(
     if (angular.isUndefined(ignoreVLANs)) {
       ignoreVLANs = [];
     }
-    angular.forEach(ignoreVLANs, function(vlan) {
+    angular.forEach(ignoreVLANs, function (vlan) {
       var i;
       for (i = 0; i < vlans.length; i++) {
         if (vlans[i].id === vlan.id) {
@@ -667,7 +667,7 @@ export function NodeNetworkingController(
   // Return the currently selected interface objects.
   function getSelectedInterfaces() {
     var interfaces = [];
-    angular.forEach($scope.selectedInterfaces, function(key) {
+    angular.forEach($scope.selectedInterfaces, function (key) {
       var splitKey = key.split("/");
       var links = $scope.interfaceLinksMap[splitKey[0]];
       if (angular.isObject(links)) {
@@ -683,7 +683,7 @@ export function NodeNetworkingController(
   // Get the next available name.
   function getNextName(prefix) {
     var idx = 0;
-    angular.forEach($scope.originalInterfaces, function(nic) {
+    angular.forEach($scope.originalInterfaces, function (nic) {
       if (nic.name === prefix + idx) {
         idx++;
       }
@@ -694,14 +694,14 @@ export function NodeNetworkingController(
   // Return the tags formatted for ngTagInput.
   function formatTags(tags) {
     var formatted = [];
-    angular.forEach(tags, function(tag) {
+    angular.forEach(tags, function (tag) {
       formatted.push({ text: tag });
     });
     return formatted;
   }
 
   // Called by $parent when the node has been loaded.
-  $scope.nodeLoaded = function() {
+  $scope.nodeLoaded = function () {
     $scope.$watch("node.interfaces", updateInterfaces);
     // Watch subnets for the served VLANs section.
     if ($scope.$parent.isController) {
@@ -715,7 +715,7 @@ export function NodeNetworkingController(
     $scope.nodeResultsManager.loadItems().then(() => {
       const testingResults = $scope.nodeResultsManager.testing_results;
       $scope.networkTestingResults = testingResults.find(
-        res => res.hardware_type === HardwareType.NETWORK
+        (res) => res.hardware_type === HardwareType.NETWORK
       ).results;
     });
 
@@ -725,7 +725,7 @@ export function NodeNetworkingController(
 
   // Return true if only the name or mac address of an interface can
   // be edited.
-  $scope.isLimitedEditingAllowed = function(nic) {
+  $scope.isLimitedEditingAllowed = function (nic) {
     if (!$scope.canEdit()) {
       // If the user is not the superuser, pretend it's not Ready.
       return false;
@@ -744,7 +744,7 @@ export function NodeNetworkingController(
   // Return true if the networking information cannot be edited.
   // (it can't be changed when the node is in any state other
   // than Ready or Broken and the user is not a superuser)
-  $scope.isAllNetworkingDisabled = function() {
+  $scope.isAllNetworkingDisabled = function () {
     if (!$scope.canEdit() && !$scope.$parent.isDevice) {
       // If the user is not a superuser and not looking at a
       // device, disable the networking panel.
@@ -772,7 +772,7 @@ export function NodeNetworkingController(
 
   // Return true if the interface is the boot interface or has a parent
   // that is the boot interface.
-  $scope.isBootInterface = function(nic) {
+  $scope.isBootInterface = function (nic) {
     if (!angular.isObject(nic)) {
       return false;
     }
@@ -821,7 +821,7 @@ export function NodeNetworkingController(
   };
 
   // Get the text for the link mode of the interface.
-  $scope.getLinkModeText = function(nic) {
+  $scope.getLinkModeText = function (nic) {
     var text = LINK_MODE_TEXTS[nic.mode];
     if (angular.isDefined(text)) {
       return text;
@@ -831,7 +831,7 @@ export function NodeNetworkingController(
   };
 
   // Get the text to display in the VLAN dropdown.
-  $scope.getVLANText = function(vlan) {
+  $scope.getVLANText = function (vlan) {
     if (!angular.isObject(vlan)) {
       return "";
     }
@@ -846,7 +846,7 @@ export function NodeNetworkingController(
   };
 
   // Get the text to display in the subnet dropdown.
-  $scope.getSubnetText = function(subnet) {
+  $scope.getSubnetText = function (subnet) {
     if (!angular.isObject(subnet)) {
       return "Unconfigured";
     } else if (
@@ -861,12 +861,12 @@ export function NodeNetworkingController(
   };
 
   // Get the subnet from its ID.
-  $scope.getSubnet = function(subnetId) {
+  $scope.getSubnet = function (subnetId) {
     return SubnetsManager.getItemFromList(subnetId);
   };
 
   // Show button for editing interfaces
-  $scope.showEditButton = function(item, interfaces) {
+  $scope.showEditButton = function (item, interfaces) {
     if (item.type !== "bond") {
       return false;
     }
@@ -883,7 +883,7 @@ export function NodeNetworkingController(
     return true;
   };
 
-  $scope.showCreateEditButton = function() {
+  $scope.showCreateEditButton = function () {
     var items = $filter("filterSelectedInterfaces")(
       $scope.interfaces,
       $scope.selectedInterfaces,
@@ -898,7 +898,7 @@ export function NodeNetworkingController(
   };
 
   // Return True if the interface name that the user typed is invalid.
-  $scope.isInterfaceNameInvalid = function(nic) {
+  $scope.isInterfaceNameInvalid = function (nic) {
     if (
       !angular.isObject(nic) ||
       // eslint-disable-next-line no-prototype-builtins
@@ -919,7 +919,7 @@ export function NodeNetworkingController(
   };
 
   // Return True if the link mode select should be disabled.
-  $scope.isLinkModeDisabled = function(nic) {
+  $scope.isLinkModeDisabled = function (nic) {
     // This is only disabled when a subnet has not been selected.
     if (angular.isFunction(nic.getValue)) {
       return !angular.isObject(nic.getValue("subnet"));
@@ -929,7 +929,7 @@ export function NodeNetworkingController(
   };
 
   // Return the interface errors.
-  $scope.getInterfaceError = function(nic) {
+  $scope.getInterfaceError = function (nic) {
     if (angular.isDefined(nic.link_id) && nic.link_id >= 0) {
       return $scope.interfaceErrorsByLinkId[nic.link_id];
     }
@@ -938,7 +938,7 @@ export function NodeNetworkingController(
 
   // Return True if the interface IP address that the user typed is
   // invalid.
-  $scope.isIPAddressInvalid = function(nic) {
+  $scope.isIPAddressInvalid = function (nic) {
     if (angular.isString(nic.ip_address) && nic.mode === "static") {
       return (
         !ValidationService.validateIP(nic.ip_address) ||
@@ -950,12 +950,12 @@ export function NodeNetworkingController(
   };
 
   // Return unique key for the interface.
-  $scope.getUniqueKey = function(nic) {
+  $scope.getUniqueKey = function (nic) {
     return nic.id + "/" + nic.link_id;
   };
 
   // Toggle selection of the interface.
-  $scope.toggleInterfaceSelect = function(nic) {
+  $scope.toggleInterfaceSelect = function (nic) {
     var key = $scope.getUniqueKey(nic);
     var idx = $scope.selectedInterfaces.indexOf(key);
 
@@ -974,14 +974,14 @@ export function NodeNetworkingController(
     }
 
     function removeCurrentItem(currentItem, items) {
-      return items.filter(function(item) {
+      return items.filter(function (item) {
         var itemId = angular.isObject(item) ? item.id : item;
         return itemId !== currentItem.id;
       });
     }
 
     function getCurrentItem(currentItem, items) {
-      return items.filter(function(item) {
+      return items.filter(function (item) {
         var itemId = angular.isObject(item) ? item.id : item;
         return itemId === currentItem.id;
       });
@@ -1024,7 +1024,7 @@ export function NodeNetworkingController(
     }
   };
 
-  $scope.toggleEditInterfaceSelect = function(nic) {
+  $scope.toggleEditInterfaceSelect = function (nic) {
     var key = $scope.getUniqueKey(nic);
     var keyIndex = $scope.selectedInterfaces.indexOf(key);
 
@@ -1034,7 +1034,7 @@ export function NodeNetworkingController(
 
       // Add to members
       if (
-        !$scope.editInterface.members.find(function(item) {
+        !$scope.editInterface.members.find(function (item) {
           return item.id === nic.id;
         })
       ) {
@@ -1043,7 +1043,7 @@ export function NodeNetworkingController(
 
       // Add to parents
       if (
-        !$scope.editInterface.parents.find(function(item) {
+        !$scope.editInterface.parents.find(function (item) {
           return item === nic.id;
         })
       ) {
@@ -1051,7 +1051,7 @@ export function NodeNetworkingController(
       }
 
       // Remove from unselected rows
-      var selectedInterface = $scope.interfaces.find(function(item) {
+      var selectedInterface = $scope.interfaces.find(function (item) {
         return item.id === nic.id;
       });
 
@@ -1066,7 +1066,7 @@ export function NodeNetworkingController(
 
       // Add to unselected rows
       if (
-        !$scope.interfaces.find(function(item) {
+        !$scope.interfaces.find(function (item) {
           return item.id === nic.id;
         })
       ) {
@@ -1076,7 +1076,7 @@ export function NodeNetworkingController(
       }
 
       // Remove from members
-      var member = $scope.editInterface.members.find(function(item) {
+      var member = $scope.editInterface.members.find(function (item) {
         return item.id === nic.id;
       });
 
@@ -1110,12 +1110,12 @@ export function NodeNetworkingController(
   };
 
   // Return true when the interface is selected.
-  $scope.isInterfaceSelected = function(nic) {
+  $scope.isInterfaceSelected = function (nic) {
     return $scope.selectedInterfaces.indexOf($scope.getUniqueKey(nic)) > -1;
   };
 
   // Returns true if the interface is not selected
-  $scope.cannotEditInterface = function(nic) {
+  $scope.cannotEditInterface = function (nic) {
     if ($scope.selectedMode === SELECTION_MODE.NONE) {
       return false;
     } else if (
@@ -1129,7 +1129,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if in editing mode for the interface.
-  $scope.isEditing = function(nic) {
+  $scope.isEditing = function (nic) {
     if ($scope.selectedMode !== SELECTION_MODE.EDIT) {
       return false;
     } else {
@@ -1138,7 +1138,7 @@ export function NodeNetworkingController(
   };
 
   // Start editing this interface.
-  $scope.edit = function(nic) {
+  $scope.edit = function (nic) {
     $scope.isShowingInterfaces = false;
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.selectedMode = SELECTION_MODE.EDIT;
@@ -1147,7 +1147,7 @@ export function NodeNetworkingController(
         id: nic.id,
         name: nic.name,
         mac_address: nic.mac_address,
-        tags: nic.tags.map(function(tag) {
+        tags: nic.tags.map(function (tag) {
           return tag.text;
         }),
         subnet: nic.subnet,
@@ -1166,7 +1166,7 @@ export function NodeNetworkingController(
         bond_lacp_rate: nic.params.bond_lacp_rate,
         bond_downdelay: nic.params.bond_downdelay,
         bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon
+        bond_miimon: nic.params.bond_miimon,
       };
       $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
       if (angular.isDefined(nic.subnet) && nic.subnet !== null) {
@@ -1179,7 +1179,7 @@ export function NodeNetworkingController(
         id: nic.id,
         name: nic.name,
         mac_address: nic.mac_address,
-        tags: nic.tags.map(function(tag) {
+        tags: nic.tags.map(function (tag) {
           return tag.text;
         }),
         fabric: nic.fabric,
@@ -1202,7 +1202,7 @@ export function NodeNetworkingController(
         bond_lacp_rate: nic.params.bond_lacp_rate,
         bond_downdelay: nic.params.bond_downdelay,
         bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon
+        bond_miimon: nic.params.bond_miimon,
       };
       $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
       $scope.editInterface.parents = nic.parents;
@@ -1214,7 +1214,7 @@ export function NodeNetworkingController(
       }
 
       if (nic.members) {
-        nic.members.forEach(function(member) {
+        nic.members.forEach(function (member) {
           $scope.selectedInterfaces.push($scope.getUniqueKey(member));
         });
       }
@@ -1222,7 +1222,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the fabric is changed.
-  $scope.fabricChanged = function(nic) {
+  $scope.fabricChanged = function (nic) {
     // Update the VLAN on the node to be the default VLAN for that
     // fabric. The first VLAN for the fabric is the default.
     if (nic.fabric !== null) {
@@ -1234,7 +1234,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the fabric is changed in a maas-obj-form.
-  $scope.fabricChangedForm = function(key, value, form) {
+  $scope.fabricChangedForm = function (key, value, form) {
     var vlan;
     if (value !== null) {
       vlan = getDefaultVLAN(value);
@@ -1246,19 +1246,19 @@ export function NodeNetworkingController(
   };
 
   // Called when the VLAN is changed.
-  $scope.vlanChanged = function(nic) {
+  $scope.vlanChanged = function (nic) {
     nic.subnet = null;
     $scope.subnetChanged(nic);
   };
 
   // Called when the VLAN is changed on a maas-obj-form
-  $scope.vlanChangedForm = function(key, value, form) {
+  $scope.vlanChangedForm = function (key, value, form) {
     form.updateValue("subnet", null);
     $scope.subnetChangedForm("subnet", null, form);
   };
 
   // Called when the subnet is changed.
-  $scope.subnetChanged = function(nic) {
+  $scope.subnetChanged = function (nic) {
     if (!angular.isObject(nic.subnet)) {
       // Set to 'Unconfigured' so the link mode should be set to
       // 'link_up'.
@@ -1271,7 +1271,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the subnet is changed.
-  $scope.subnetChangedForm = function(key, value, form) {
+  $scope.subnetChangedForm = function (key, value, form) {
     if (!angular.isObject(value)) {
       // Set to 'Unconfigured' so the link mode should be set to
       // 'link_up'.
@@ -1283,7 +1283,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the mode is changed.
-  $scope.modeChanged = function(nic) {
+  $scope.modeChanged = function (nic) {
     // Clear the IP address when the mode is changed.
     nic.ip_address = "";
     if (nic.mode === "static") {
@@ -1301,7 +1301,7 @@ export function NodeNetworkingController(
   };
 
   // Update VLAN when fabric changed
-  $scope.updateVLAN = function(nic) {
+  $scope.updateVLAN = function (nic) {
     var vlans = $filter("filterVLANNotOnFabric")(
       $scope.vlans,
       nic.fabric.vlan_ids
@@ -1310,7 +1310,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the mode is changed on a maas-obj-form.
-  $scope.modeChangedForm = function(key, value, form) {
+  $scope.modeChangedForm = function (key, value, form) {
     // Clear the IP address when the mode is changed.
     form.updateValue("ip_address", "");
     if (value === "static") {
@@ -1329,7 +1329,7 @@ export function NodeNetworkingController(
   };
 
   // Called to cancel edit mode.
-  $scope.editCancel = function() {
+  $scope.editCancel = function () {
     $scope.isShowingInterfaces = false;
     $scope.selectedInterfaces = [];
     $scope.selectedMode = SELECTION_MODE.NONE;
@@ -1338,7 +1338,7 @@ export function NodeNetworkingController(
   };
 
   // Preprocess things for updateInterfaceForm.
-  $scope.preProcessInterface = function(nic) {
+  $scope.preProcessInterface = function (nic) {
     var params = angular.copy(nic);
     $scope.isSaving = true;
 
@@ -1389,7 +1389,7 @@ export function NodeNetworkingController(
       delete params.ip_address;
     }
     if (nic.tags) {
-      params.tags = nic.tags.map(tag => tag.text);
+      params.tags = nic.tags.map((tag) => tag.text);
     }
     if (parseInt(nic.formatted_link_speed) >= 0) {
       params.link_speed = parseInt(nic.formatted_link_speed) * 1000;
@@ -1401,23 +1401,23 @@ export function NodeNetworkingController(
   };
 
   // Save the following interface on the node.
-  $scope.saveInterface = function(nic) {
+  $scope.saveInterface = function (nic) {
     var params;
     if ($scope.$parent.isDevice) {
       params = {
         name: nic.name,
         mac_address: nic.mac_address,
         ip_assignment: nic.ip_assignment,
-        ip_address: nic.ip_address
+        ip_address: nic.ip_address,
       };
     } else {
       params = {
         name: nic.name,
         mac_address: nic.mac_address,
         mode: nic.mode,
-        tags: nic.tags.map(function(tag) {
+        tags: nic.tags.map(function (tag) {
           return tag.text;
-        })
+        }),
       };
     }
     if (angular.isDefined(nic.fabric) && nic.fabric !== null) {
@@ -1444,7 +1444,7 @@ export function NodeNetworkingController(
     }
     return $scope.$parent.nodesManager
       .updateInterface($scope.node, nic.id, params)
-      .then(null, function(error) {
+      .then(null, function (error) {
         // XXX blake_r: Just log the error in the console, but
         // we need to expose this as a better message to the
         // user.
@@ -1457,9 +1457,9 @@ export function NodeNetworkingController(
   };
 
   // Save the following link on the node.
-  $scope.saveInterfaceLink = function(nic) {
+  $scope.saveInterfaceLink = function (nic) {
     var params = {
-      mode: nic.mode
+      mode: nic.mode,
     };
     if ($scope.$parent.isDevice) {
       params.ip_assignment = nic.ip_assignment;
@@ -1480,7 +1480,7 @@ export function NodeNetworkingController(
     }
     return $scope.$parent.nodesManager
       .linkSubnet($scope.node, nic.id, params)
-      .then(null, function(error) {
+      .then(null, function (error) {
         $log.info(error);
         if (angular.isDefined(nic.link_id) && nic.link_id >= 0) {
           $scope.interfaceErrorsByLinkId[nic.link_id] = error;
@@ -1493,24 +1493,24 @@ export function NodeNetworkingController(
   };
 
   // Called to save the interface.
-  $scope.editSave = function(editInterface) {
+  $scope.editSave = function (editInterface) {
     $scope.isSaving = false;
     $scope.editCancel();
     return editInterface;
   };
 
   // Return true if the interface delete confirm is being shown.
-  $scope.isShowingDeleteConfirm = function() {
+  $scope.isShowingDeleteConfirm = function () {
     return $scope.selectedMode === SELECTION_MODE.DELETE;
   };
 
   // Return true if the interface add interface is being shown.
-  $scope.isShowingAdd = function() {
+  $scope.isShowingAdd = function () {
     return $scope.selectedMode === SELECTION_MODE.ADD;
   };
 
   // Return true if either an alias or VLAN can be added.
-  $scope.canAddAliasOrVLAN = function(nic) {
+  $scope.canAddAliasOrVLAN = function (nic) {
     if ($scope.$parent.isController) {
       return false;
     } else if ($scope.isAllNetworkingDisabled()) {
@@ -1521,7 +1521,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if the alias can be added to interface.
-  $scope.canAddAlias = function(nic) {
+  $scope.canAddAlias = function (nic) {
     if (!angular.isObject(nic)) {
       return false;
     } else if (nic.type === INTERFACE_TYPE.ALIAS) {
@@ -1537,7 +1537,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if the VLAN can be added to interface.
-  $scope.canAddVLAN = function(nic) {
+  $scope.canAddVLAN = function (nic) {
     if (!angular.isObject(nic)) {
       return false;
     } else if (
@@ -1552,7 +1552,7 @@ export function NodeNetworkingController(
 
   // Return true if another VLAN can be added to this already being
   // added interface.
-  $scope.canAddAnotherVLAN = function(nic) {
+  $scope.canAddAnotherVLAN = function (nic) {
     if (!$scope.canAddVLAN(nic)) {
       return false;
     }
@@ -1561,7 +1561,7 @@ export function NodeNetworkingController(
   };
 
   // Return the text to use for the remove link and message.
-  $scope.getRemoveTypeText = function(nic) {
+  $scope.getRemoveTypeText = function (nic) {
     if (nic.type === INTERFACE_TYPE.PHYSICAL) {
       return "interface";
     } else if (nic.type === INTERFACE_TYPE.VLAN) {
@@ -1572,23 +1572,23 @@ export function NodeNetworkingController(
   };
 
   // Return true if the interface can be removed.
-  $scope.canBeRemoved = function() {
+  $scope.canBeRemoved = function () {
     return !$scope.$parent.isController && !$scope.isAllNetworkingDisabled();
   };
 
   // Enter remove mode.
-  $scope.remove = function() {
+  $scope.remove = function () {
     $scope.selectedMode = SELECTION_MODE.DELETE;
   };
 
   // Quickly enter remove by selecting the node first.
-  $scope.quickRemove = function(nic) {
+  $scope.quickRemove = function (nic) {
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.remove();
   };
 
   // Cancel the current mode go back to sinle selection mode.
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $scope.isShowingInterfaces = false;
     $scope.newInterface = {};
     $scope.newBondInterface = {};
@@ -1606,7 +1606,7 @@ export function NodeNetworkingController(
   };
 
   // Confirm the removal of interface.
-  $scope.confirmRemove = function(nic) {
+  $scope.confirmRemove = function (nic) {
     $scope.selectedMode = SELECTION_MODE.NONE;
     $scope.selectedInterfaces = [];
     if (nic.type !== INTERFACE_TYPE.ALIAS) {
@@ -1627,7 +1627,7 @@ export function NodeNetworkingController(
   };
 
   // Enter add mode.
-  $scope.add = function(type, nic) {
+  $scope.add = function (type, nic) {
     // When this is called right after another VLAN was just added, we
     // remove its used VLAN from the available list.
     var ignoreVLANs = [];
@@ -1662,13 +1662,13 @@ export function NodeNetworkingController(
       subnet: defaultSubnet,
       mode: defaultMode,
       parent: nic,
-      tags: []
+      tags: [],
     };
     $scope.selectedMode = SELECTION_MODE.ADD;
   };
 
   // Quickly enter add by selecting the node first.
-  $scope.quickAdd = function(nic) {
+  $scope.quickAdd = function (nic) {
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     var type = "alias";
     if (!$scope.canAddAlias(nic)) {
@@ -1678,7 +1678,7 @@ export function NodeNetworkingController(
   };
 
   // Return the name of the interface being added.
-  $scope.getAddName = function() {
+  $scope.getAddName = function () {
     if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
       var aliasIdx = $scope.newInterface.parent.links.length;
       return $scope.newInterface.parent.name + ":" + aliasIdx;
@@ -1690,7 +1690,7 @@ export function NodeNetworkingController(
   };
 
   // Called when the type of interface is changed.
-  $scope.addTypeChanged = function() {
+  $scope.addTypeChanged = function () {
     if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
       $scope.newInterface.vlan = $scope.newInterface.parent.vlan;
       $scope.newInterface.subnet = $filter("filter")(
@@ -1711,17 +1711,17 @@ export function NodeNetworkingController(
   };
 
   // Perform the add action over the websocket.
-  $scope.addInterface = function(type) {
+  $scope.addInterface = function (type) {
     var nic;
     if ($scope.$parent.isDevice) {
       nic = {
         id: $scope.newInterface.parent.id,
-        tags: $scope.newInterface.tags.map(function(tag) {
+        tags: $scope.newInterface.tags.map(function (tag) {
           return tag.text;
         }),
         ip_assignment: $scope.newInterface.ip_assignment,
         subnet: $scope.newInterface.subnet,
-        ip_address: $scope.newInterface.ip_address
+        ip_address: $scope.newInterface.ip_address,
       };
       $scope.saveInterfaceLink(nic);
     } else if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
@@ -1730,7 +1730,7 @@ export function NodeNetworkingController(
         id: $scope.newInterface.parent.id,
         mode: $scope.newInterface.mode,
         subnet: $scope.newInterface.subnet,
-        ip_address: $scope.newInterface.ip_address
+        ip_address: $scope.newInterface.ip_address,
       };
       $scope.saveInterfaceLink(nic);
     } else if ($scope.newInterface.type === INTERFACE_TYPE.VLAN) {
@@ -1738,9 +1738,9 @@ export function NodeNetworkingController(
         parent: $scope.newInterface.parent.id,
         vlan: $scope.newInterface.vlan.id,
         mode: $scope.newInterface.mode,
-        tags: $scope.newInterface.tags.map(function(tag) {
+        tags: $scope.newInterface.tags.map(function (tag) {
           return tag.text;
-        })
+        }),
       };
       if (angular.isObject($scope.newInterface.subnet)) {
         params.subnet = $scope.newInterface.subnet.id;
@@ -1748,7 +1748,7 @@ export function NodeNetworkingController(
       }
       $scope.$parent.nodesManager
         .createVLANInterface($scope.node, params)
-        .then(null, function(error) {
+        .then(null, function (error) {
           // Should do something better but for now just log
           // the error.
           $log.error(error);
@@ -1768,7 +1768,7 @@ export function NodeNetworkingController(
   // Return true if the networking information cannot be edited
   // or if this interface should be disabled in the list. Only
   // returns true when in create bond mode.
-  $scope.isDisabled = function() {
+  $scope.isDisabled = function () {
     if ($scope.isAllNetworkingDisabled()) {
       return true;
     } else {
@@ -1783,7 +1783,7 @@ export function NodeNetworkingController(
   // Return true when a bond can be created based on the current
   // selection. Only can be done if no aliases are selected and all
   // selected interfaces are on the same VLAN.
-  $scope.canCreateBond = function() {
+  $scope.canCreateBond = function () {
     if ($scope.selectedMode !== SELECTION_MODE.MULTI) {
       return false;
     }
@@ -1806,12 +1806,12 @@ export function NodeNetworkingController(
   };
 
   // Return true when the create bond view is being shown.
-  $scope.isShowingCreateBond = function() {
+  $scope.isShowingCreateBond = function () {
     return $scope.selectedMode === SELECTION_MODE.CREATE_BOND;
   };
 
   // Show the create bond view.
-  $scope.showCreateBond = function() {
+  $scope.showCreateBond = function () {
     $scope.clearCreateBondError();
     if (
       $scope.selectedMode === SELECTION_MODE.MULTI &&
@@ -1857,7 +1857,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if the interface has a parent that is a boot interface.
-  $scope.hasBootInterface = function(nic) {
+  $scope.hasBootInterface = function (nic) {
     if (!angular.isArray(nic.parents)) {
       return false;
     }
@@ -1872,7 +1872,7 @@ export function NodeNetworkingController(
 
   // Return the MAC address that should be shown as a placeholder. This
   // this is the MAC address of the primary interface.
-  $scope.getInterfacePlaceholderMACAddress = function(nic) {
+  $scope.getInterfacePlaceholderMACAddress = function (nic) {
     if (!angular.isObject(nic.primary)) {
       return "";
     } else {
@@ -1882,7 +1882,7 @@ export function NodeNetworkingController(
 
   // Return true if the user has inputed a value in the MAC address field
   // but it is invalid.
-  $scope.isMACAddressInvalid = function(mac_address, invalidEmpty) {
+  $scope.isMACAddressInvalid = function (mac_address, invalidEmpty) {
     if (angular.isUndefined(invalidEmpty)) {
       invalidEmpty = false;
     }
@@ -1893,7 +1893,7 @@ export function NodeNetworkingController(
   };
 
   // Return true when the LACR rate selection should be shown.
-  $scope.showLACPRate = function() {
+  $scope.showLACPRate = function () {
     if ($scope.editInterface) {
       return $scope.editInterface.bond_mode === "802.3ad";
     } else {
@@ -1902,7 +1902,7 @@ export function NodeNetworkingController(
   };
 
   // Return true when hash policy is not fully 802.3ad compliant.
-  $scope.modeAndPolicyCompliant = function() {
+  $scope.modeAndPolicyCompliant = function () {
     if ($scope.editInterface) {
       return (
         $scope.editInterface.bond_mode === "802.3ad" &&
@@ -1919,7 +1919,7 @@ export function NodeNetworkingController(
   };
 
   // Return true when the XMIT hash policy should be shown.
-  $scope.showXMITHashPolicy = function() {
+  $scope.showXMITHashPolicy = function () {
     if ($scope.editInterface) {
       return (
         $scope.editInterface.bond_mode === "balance-xor" ||
@@ -1936,7 +1936,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if cannot add the bond.
-  $scope.cannotAddBond = function() {
+  $scope.cannotAddBond = function () {
     return (
       $scope.isInterfaceNameInvalid($scope.newBondInterface) ||
       $scope.isMACAddressInvalid($scope.newBondInterface.mac_address)
@@ -1944,7 +1944,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if cannot edit the bond.
-  $scope.cannotEditBond = function(nic) {
+  $scope.cannotEditBond = function (nic) {
     return (
       $scope.isInterfaceNameInvalid(nic) ||
       $scope.isIPAddressInvalid(nic) ||
@@ -1954,14 +1954,14 @@ export function NodeNetworkingController(
   };
 
   // Actually add the bond.
-  $scope.addBond = function() {
+  $scope.addBond = function () {
     if ($scope.cannotAddBond()) {
       return;
     }
 
     $scope.isSaving = true;
 
-    var parents = $scope.newBondInterface.parents.map(function(nic) {
+    var parents = $scope.newBondInterface.parents.map(function (nic) {
       return nic.id;
     });
     var mac_address = $scope.newBondInterface.mac_address;
@@ -1988,7 +1988,7 @@ export function NodeNetworkingController(
     var params = {
       name: $scope.newBondInterface.name,
       mac_address: mac_address,
-      tags: $scope.newBondInterface.tags.map(function(tag) {
+      tags: $scope.newBondInterface.tags.map(function (tag) {
         return tag.text;
       }),
       parents: parents,
@@ -2001,15 +2001,15 @@ export function NodeNetworkingController(
       ip_address: $scope.newBondInterface.ip_address,
       bond_miimon: $scope.newBondInterface.bond_miimon,
       bond_updelay: $scope.newBondInterface.bond_updelay,
-      bond_downdelay: $scope.newBondInterface.bond_downdelay
+      bond_downdelay: $scope.newBondInterface.bond_downdelay,
     };
     $scope.$parent.nodesManager
       .createBondInterface($scope.node, params)
-      .then(function() {
+      .then(function () {
         // Remove the parent interfaces so that they don't show up
         // in the listing unti the new bond appears.
         var parents = $scope.newBondInterface.parents;
-        angular.forEach(parents, function(parent) {
+        angular.forEach(parents, function (parent) {
           var idx = $scope.interfaces.indexOf(parent);
           if (idx > -1) {
             $scope.interfaces.splice(idx, 1);
@@ -2017,7 +2017,7 @@ export function NodeNetworkingController(
         });
         $scope.isSaving = false;
       })
-      .catch(function(error) {
+      .catch(function (error) {
         var parsedError = angular.fromJson(error);
         $scope.createBondError = parsedError[Object.keys(parsedError)[0]][0];
         $scope.isSaving = false;
@@ -2029,7 +2029,7 @@ export function NodeNetworkingController(
     $scope.selectedMode = SELECTION_MODE.NONE;
   };
 
-  $scope.clearCreateBondError = function() {
+  $scope.clearCreateBondError = function () {
     $scope.createBondError = null;
   };
 
@@ -2049,23 +2049,23 @@ export function NodeNetworkingController(
   };
 
   // Return true when the create bridge view is being shown.
-  $scope.isShowingCreateBridge = function() {
+  $scope.isShowingCreateBridge = function () {
     return $scope.selectedMode === SELECTION_MODE.CREATE_BRIDGE;
   };
 
   // Return true when the edit bridge view is being shown.
-  $scope.isShowingEdit = function() {
+  $scope.isShowingEdit = function () {
     return $scope.selectedMode === SELECTION_MODE.EDIT;
   };
 
   // Toogle interfaces in edit table
-  $scope.toggleInterfaces = function() {
+  $scope.toggleInterfaces = function () {
     $scope.isShowingInterfaces = !$scope.isShowingInterfaces;
   };
 
   // Checks if row is correct type and id
-  $scope.isCorrectInterfaceType = function(bondInterface, parents) {
-    var parentIds = parents.map(function(parent) {
+  $scope.isCorrectInterfaceType = function (bondInterface, parents) {
+    var parentIds = parents.map(function (parent) {
       return parent.id;
     });
 
@@ -2084,7 +2084,7 @@ export function NodeNetworkingController(
   };
 
   // Show the create bridge view.
-  $scope.showCreateBridge = function() {
+  $scope.showCreateBridge = function () {
     if (
       $scope.selectedMode === SELECTION_MODE.SINGLE &&
       $scope.canCreateBridge()
@@ -2115,13 +2115,13 @@ export function NodeNetworkingController(
         vlan: vlan,
         bridge_stp: false,
         bridge_fd: 15,
-        bridge_type: "standard"
+        bridge_type: "standard",
       };
     }
   };
 
   // Return true if cannot add the bridge.
-  $scope.cannotAddBridge = function() {
+  $scope.cannotAddBridge = function () {
     return (
       $scope.isInterfaceNameInvalid($scope.newBridgeInterface) ||
       $scope.isMACAddressInvalid($scope.newBridgeInterface.mac_address)
@@ -2129,7 +2129,7 @@ export function NodeNetworkingController(
   };
 
   // Actually add the bridge.
-  $scope.addBridge = function() {
+  $scope.addBridge = function () {
     if ($scope.cannotAddBridge()) {
       return;
     }
@@ -2161,7 +2161,7 @@ export function NodeNetworkingController(
     var params = {
       name: $scope.newBridgeInterface.name,
       mac_address: mac_address,
-      tags: $scope.newBridgeInterface.tags.map(function(tag) {
+      tags: $scope.newBridgeInterface.tags.map(function (tag) {
         return tag.text;
       }),
       parents: parents,
@@ -2171,11 +2171,11 @@ export function NodeNetworkingController(
       vlan: vlan_id,
       subnet: subnet_id,
       mode: $scope.newBridgeInterface.mode,
-      ip_address: $scope.newBridgeInterface.ip_address
+      ip_address: $scope.newBridgeInterface.ip_address,
     };
     $scope.$parent.nodesManager
       .createBridgeInterface($scope.node, params)
-      .then(null, function(error) {
+      .then(null, function (error) {
         // Should do something better but for now just log
         // the error.
         $log.error(error);
@@ -2195,12 +2195,12 @@ export function NodeNetworkingController(
   };
 
   // Return true when the create physical interface view is being shown.
-  $scope.isShowingCreatePhysical = function() {
+  $scope.isShowingCreatePhysical = function () {
     return $scope.selectedMode === SELECTION_MODE.CREATE_PHYSICAL;
   };
 
   // Show the create interface view.
-  $scope.showCreatePhysical = function() {
+  $scope.showCreatePhysical = function () {
     if ($scope.selectedMode === SELECTION_MODE.NONE) {
       $scope.selectedMode = SELECTION_MODE.CREATE_PHYSICAL;
       if ($scope.$parent.isDevice) {
@@ -2211,7 +2211,7 @@ export function NodeNetworkingController(
           tags: [],
           errorMsg: null,
           subnet: null,
-          ip_assignment: IP_ASSIGNMENT.DYNAMIC
+          ip_assignment: IP_ASSIGNMENT.DYNAMIC,
         };
       } else {
         $scope.newInterface = {
@@ -2223,7 +2223,7 @@ export function NodeNetworkingController(
           fabric: $scope.fabrics[0],
           vlan: getDefaultVLAN($scope.fabrics[0]),
           subnet: null,
-          mode: LINK_MODE.LINK_UP
+          mode: LINK_MODE.LINK_UP,
         };
       }
     }
@@ -2235,7 +2235,7 @@ export function NodeNetworkingController(
   };
 
   // Return true if cannot add the interface.
-  $scope.cannotAddPhysicalInterface = function() {
+  $scope.cannotAddPhysicalInterface = function () {
     return (
       $scope.isInterfaceNameInvalid($scope.newInterface) ||
       $scope.isMACAddressInvalid($scope.newInterface.mac_address, true)
@@ -2243,7 +2243,7 @@ export function NodeNetworkingController(
   };
 
   // Actually add the new physical interface.
-  $scope.addPhysicalInterface = function() {
+  $scope.addPhysicalInterface = function () {
     if ($scope.cannotAddPhysicalInterface()) {
       return;
     }
@@ -2253,22 +2253,22 @@ export function NodeNetworkingController(
       params = {
         name: $scope.newInterface.name,
         mac_address: $scope.newInterface.mac_address,
-        tags: $scope.newInterface.tags.map(function(tag) {
+        tags: $scope.newInterface.tags.map(function (tag) {
           return tag.text;
         }),
         ip_assignment: $scope.newInterface.ip_assignment,
-        ip_address: $scope.newInterface.ip_address
+        ip_address: $scope.newInterface.ip_address,
       };
     } else {
       params = {
         name: $scope.newInterface.name,
-        tags: $scope.newInterface.tags.map(function(tag) {
+        tags: $scope.newInterface.tags.map(function (tag) {
           return tag.text;
         }),
         mac_address: $scope.newInterface.mac_address,
         vlan: $scope.newInterface.vlan.id,
         mode: $scope.newInterface.mode,
-        ip_address: $scope.newInterface.ip_address
+        ip_address: $scope.newInterface.ip_address,
       };
     }
     if (angular.isObject($scope.newInterface.subnet)) {
@@ -2279,12 +2279,12 @@ export function NodeNetworkingController(
     $scope.$parent.nodesManager
       .createPhysicalInterface($scope.node, params)
       .then(
-        function() {
+        function () {
           // Clear the interface and reset the mode.
           $scope.newInterface = {};
           $scope.selectedMode = SELECTION_MODE.NONE;
         },
-        function(errorStr) {
+        function (errorStr) {
           const error = JSONService.tryParse(errorStr);
           if (!angular.isObject(error)) {
             // Was not a JSON error. This is wrong here as it
@@ -2335,13 +2335,13 @@ export function NodeNetworkingController(
 
   $scope.isChangingConnectionStatus = false;
 
-  $scope.changeConnectionStatus = nic => {
+  $scope.changeConnectionStatus = (nic) => {
     $scope.isChangingConnectionStatus = true;
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.showEditWarning = false;
   };
 
-  $scope.saveConnectionStatus = nic => {
+  $scope.saveConnectionStatus = (nic) => {
     const params = $scope.preProcessInterface(angular.copy(nic));
     params.link_connected = !nic.link_connected;
 
@@ -2352,11 +2352,11 @@ export function NodeNetworkingController(
         $scope.selectedInterfaces = [];
         $scope.isSaving = false;
       })
-      .catch(err => $log.error(err));
+      .catch((err) => $log.error(err));
   };
 
   $scope.showEditWarning = false;
-  $scope.handleEdit = nic => {
+  $scope.handleEdit = (nic) => {
     if (!$scope.isInterface(nic)) {
       $scope.edit(nic);
       return;
@@ -2400,14 +2400,14 @@ export function NodeNetworkingController(
     }
   };
 
-  $scope.getNetworkTestingStatus = nic => {
+  $scope.getNetworkTestingStatus = (nic) => {
     const results = $scope.networkTestingResults;
     const resultKey = `${nic.name} (${nic.mac_address})`;
     let failedTests = [];
 
     if (results && results[resultKey]) {
       failedTests = results[resultKey].filter(
-        res => res.status_name === "Failed"
+        (res) => res.status_name === "Failed"
       );
     }
 
@@ -2422,7 +2422,7 @@ export function NodeNetworkingController(
     return;
   };
 
-  $scope.getInterfaceNumaNodes = iface => {
+  $scope.getInterfaceNumaNodes = (iface) => {
     if (iface.parents && iface.parents.length) {
       const { originalInterfaces } = $scope;
 
@@ -2442,7 +2442,7 @@ export function NodeNetworkingController(
     return [iface.numa_node];
   };
 
-  $scope.canMarkAsConnected = nic => {
+  $scope.canMarkAsConnected = (nic) => {
     return (
       !$scope.cannotEditInterface(nic) &&
       !nic.link_connected &&
@@ -2450,7 +2450,7 @@ export function NodeNetworkingController(
     );
   };
 
-  $scope.canMarkAsDisconnected = nic => {
+  $scope.canMarkAsDisconnected = (nic) => {
     return (
       !$scope.cannotEditInterface(nic) &&
       nic.link_connected &&
@@ -2463,13 +2463,13 @@ export function NodeNetworkingController(
       return;
     }
 
-    if (nic.type === 'alias' && nic.members && nic.members.length) {
+    if (nic.type === "alias" && nic.members && nic.members.length) {
       return nic.members.some((member) => member.link_connected);
     }
     return nic.link_connected;
   };
 
-  $scope.formatSpeedUnits = speedInMbytes => {
+  $scope.formatSpeedUnits = (speedInMbytes) => {
     const megabytesInGigabyte = 1000;
     const gigabytesInTerabyte = 1000;
 
@@ -2503,8 +2503,8 @@ export function NodeNetworkingController(
     SubnetsManager,
     UsersManager,
     ControllersManager,
-    DHCPSnippetsManager
-  ]).then(function() {
+    DHCPSnippetsManager,
+  ]).then(function () {
     // GeneralManager is loaded by the parent scope however
     // bond_options may not have been loaded. If it hasn't been
     // loaded, load it.

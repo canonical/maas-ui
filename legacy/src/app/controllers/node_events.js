@@ -40,18 +40,18 @@ function NodeEventsController(
     eventsManager = EventsManagerFactory.getManager(node.id);
     $scope.events = eventsManager.getItems();
     $scope.days = eventsManager.getMaximumDays();
-    eventsManager.loadItems().then(function() {
+    eventsManager.loadItems().then(function () {
       $scope.eventsLoaded = true;
     });
 
     // Update the title when the fqdn of the node changes.
-    $scope.$watch("node.fqdn", function() {
+    $scope.$watch("node.fqdn", function () {
       $rootScope.title = $scope.node.fqdn + " - events";
     });
   }
 
   // Return the nice text for the given event.
-  $scope.getEventText = function(event) {
+  $scope.getEventText = function (event) {
     var text = event.type.description;
     if (angular.isString(event.description) && event.description.length > 0) {
       text += " - " + event.description;
@@ -60,7 +60,7 @@ function NodeEventsController(
   };
 
   // Called to load more events.
-  $scope.loadMore = function() {
+  $scope.loadMore = function () {
     $scope.days += 1;
     eventsManager.loadMaximumDays($scope.days);
   };
@@ -76,7 +76,7 @@ function NodeEventsController(
   }
   // Load nodes manager.
   ManagerHelperService.loadManager($scope, $scope.nodesManager).then(
-    function() {
+    function () {
       // If redirected from the NodeDetailsController then the node
       // will already be active. No need to set it active again.
       var activeNode = $scope.nodesManager.getActiveItem();
@@ -87,17 +87,17 @@ function NodeEventsController(
         nodeLoaded(activeNode);
       } else {
         $scope.nodesManager.setActiveItem($stateParams.system_id).then(
-          function(node) {
+          function (node) {
             nodeLoaded(node);
 
             // Set flag for RSD navigation item.
             if (!$rootScope.showRSDLink) {
               GeneralManager.getNavigationOptions().then(
-                res => ($rootScope.showRSDLink = res.rsd)
+                (res) => ($rootScope.showRSDLink = res.rsd)
               );
             }
           },
-          function(error) {
+          function (error) {
             ErrorService.raiseError(error);
           }
         );
@@ -108,7 +108,7 @@ function NodeEventsController(
   // Destroy the events manager when the scope is destroyed. This is so
   // the client will not recieve any more notifications about events
   // for this node.
-  $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function () {
     if (angular.isObject(eventsManager)) {
       eventsManager.destroy();
     }

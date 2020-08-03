@@ -54,7 +54,7 @@ function SpaceDetailsController(
     var rows = [];
     angular.forEach(
       $filter("filter")($scope.subnets, { space: $scope.space.id }, true),
-      function(subnet) {
+      function (subnet) {
         var vlan = VLANsManager.getItemFromList(subnet.vlan);
         var fabric = FabricsManager.getItemFromList(vlan.fabric);
         var row = {
@@ -63,7 +63,7 @@ function SpaceDetailsController(
           subnet: subnet,
           subnet_name: SubnetsManager.getName(subnet),
           fabric: fabric,
-          fabric_name: fabric.name
+          fabric_name: fabric.name,
         };
         rows.push(row);
       }
@@ -72,22 +72,22 @@ function SpaceDetailsController(
   }
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Called when the "edit" button is cliked in the space summary
-  $scope.enterEditSummary = function() {
+  $scope.enterEditSummary = function () {
     $scope.editSummary = true;
   };
 
   // Called when the "cancel" button is cliked in the space summary
-  $scope.exitEditSummary = function() {
+  $scope.exitEditSummary = function () {
     $scope.editSummary = false;
   };
 
   // Return true if this is the default Space
-  $scope.isDefaultSpace = function() {
+  $scope.isDefaultSpace = function () {
     if (!angular.isObject($scope.space)) {
       return false;
     }
@@ -95,7 +95,7 @@ function SpaceDetailsController(
   };
 
   // Called to check if the space can be deleted.
-  $scope.canBeDeleted = function() {
+  $scope.canBeDeleted = function () {
     if (angular.isObject($scope.space)) {
       return $scope.space.subnet_ids.length === 0;
     }
@@ -103,24 +103,24 @@ function SpaceDetailsController(
   };
 
   // Called when the delete space button is pressed.
-  $scope.deleteButton = function() {
+  $scope.deleteButton = function () {
     $scope.error = null;
     $scope.confirmingDelete = true;
   };
 
   // Called when the cancel delete space button is pressed.
-  $scope.cancelDeleteButton = function() {
+  $scope.cancelDeleteButton = function () {
     $scope.confirmingDelete = false;
   };
 
   // Called when the confirm delete space button is pressed.
-  $scope.deleteConfirmButton = function() {
+  $scope.deleteConfirmButton = function () {
     SpacesManager.deleteSpace($scope.space).then(
-      function() {
+      function () {
         $scope.confirmingDelete = false;
         $rootScope.navigateToLegacy("/networks");
       },
-      function(error) {
+      function (error) {
         $scope.error = ManagerHelperService.parseValidationError(error);
       }
     );
@@ -132,8 +132,8 @@ function SpaceDetailsController(
     SubnetsManager,
     VLANsManager,
     FabricsManager,
-    UsersManager
-  ]).then(function() {
+    UsersManager,
+  ]).then(function () {
     // Possibly redirected from another controller that already had
     // this space set to active. Only call setActiveItem if not
     // already the activeItem.
@@ -148,10 +148,10 @@ function SpaceDetailsController(
       spaceLoaded(activeSpace);
     } else {
       SpacesManager.setActiveItem(requestedSpace).then(
-        function(space) {
+        function (space) {
           spaceLoaded(space);
         },
-        function(error) {
+        function (error) {
           ErrorService.raiseError(error);
         }
       );

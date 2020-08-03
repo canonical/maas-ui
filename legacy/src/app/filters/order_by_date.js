@@ -6,9 +6,9 @@
 import angular from "angular";
 
 function orderByDate() {
-  return function(items, field, field2) {
+  return function (items, field, field2) {
     let sorted = items.slice();
-    sorted.sort(function(a, b) {
+    sorted.sort(function (a, b) {
       const aDate = new Date(a[field]);
       const bDate = new Date(b[field]);
 

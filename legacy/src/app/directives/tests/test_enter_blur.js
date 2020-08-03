@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasEnterBlur", function() {
+describe("maasEnterBlur", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test. Not used in this test, but
   // required to compile the directive.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -22,11 +22,11 @@ describe("maasEnterBlur", function() {
     var html = [
       "<div>",
       '<input type="text" data-maas-enter-blur>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -40,11 +40,11 @@ describe("maasEnterBlur", function() {
 
   // Compile the directive.
   var directive;
-  beforeEach(function() {
+  beforeEach(function () {
     directive = compileDirective();
   });
 
-  it("removes focus on enter keydown", function() {
+  it("removes focus on enter keydown", function () {
     directive.focus();
     expect(document.activeElement).toBe(directive[0]);
 
@@ -56,7 +56,7 @@ describe("maasEnterBlur", function() {
     expect(document.activeElement).not.toBe(directive[0]);
   });
 
-  it("removes focus on enter keypress", function() {
+  it("removes focus on enter keypress", function () {
     directive.focus();
     expect(document.activeElement).toBe(directive[0]);
 

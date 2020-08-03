@@ -5,7 +5,7 @@
  */
 
 function range() {
-  return function(n) {
+  return function (n) {
     var res = [];
     if (typeof n != "number") {
       return res;

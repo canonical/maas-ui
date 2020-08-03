@@ -5,24 +5,24 @@
  */
 import angular from "angular";
 
-describe("SpacesManager", function() {
+describe("SpacesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the SpacesManager.
   var SpacesManager, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SpacesManager = $injector.get("SpacesManager");
     RegionConnection = $injector.get("RegionConnection");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(SpacesManager._pk).toBe("id");
     expect(SpacesManager._handler).toBe("space");
   });
 
-  describe("create", function() {
-    it("calls the region with expected parameters", function() {
+  describe("create", function () {
+    it("calls the region with expected parameters", function () {
       var obj = {};
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);
@@ -34,8 +34,8 @@ describe("SpacesManager", function() {
     });
   });
 
-  describe("delete", function() {
-    it("calls the region with expected parameters", function() {
+  describe("delete", function () {
+    it("calls the region with expected parameters", function () {
       var obj = {};
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);

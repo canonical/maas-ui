@@ -24,9 +24,9 @@ function NotificationsManager(RegionConnection, Manager) {
   }
 
   NotificationsManager.prototype = new Manager();
-  NotificationsManager.prototype.dismiss = function(notification) {
+  NotificationsManager.prototype.dismiss = function (notification) {
     return RegionConnection.callMethod("notification.dismiss", {
-      id: notification.id
+      id: notification.id,
     });
   };
 

@@ -27,14 +27,14 @@ const displayNames = new Map([
   ["tags", "Tags"],
   ["vlan", "VLAN"],
   ["zone", "Zone"],
-  ["link_speeds", "Link speed"]
+  ["link_speeds", "Link speed"],
 ]);
 
 // Map of metadata names that use a different name for filtering
 const metadataNames = new Map([
   ["fabric", "fabric_name"],
   ["rack", "observer_hostname"],
-  ["subnet", "subnet_cidr"]
+  ["subnet", "subnet_cidr"],
 ]);
 
 function formatSpeedUnits(speedInMbytes) {
@@ -67,11 +67,11 @@ function nodesListFilter($document, $window, $filter) {
       isFilterActive: "<",
       options: "<",
       order: "<",
-      toggleFilter: "<"
+      toggleFilter: "<",
     },
     template: nodesListFilterTmpl,
-    link: function(scope, element) {
-      scope.clickHandler = event => {
+    link: function (scope, element) {
+      scope.clickHandler = (event) => {
         const clickedInsideElement = element.find(event.target).length > 0;
 
         if (clickedInsideElement) {
@@ -93,7 +93,7 @@ function nodesListFilter($document, $window, $filter) {
 
       scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
     },
-    controller: NodesListFilterController
+    controller: NodesListFilterController,
   };
 }
 
@@ -107,17 +107,17 @@ function NodesListFilterController($scope) {
     $scope.openFilter = !$scope.openFilter;
   };
 
-  $scope.toggleOpenOption = option => {
+  $scope.toggleOpenOption = (option) => {
     $scope.openOption = $scope.openOption === option ? "" : option;
   };
 
   $scope.orderOptions = () => {
     const { options, order } = $scope;
     // Convert metadata object into array and order
-    return order.map(key => ({
+    return order.map((key) => ({
       name: metadataNames.get(key) || key,
       displayName: displayNames.get(key) || key,
-      entries: options[key] || []
+      entries: options[key] || [],
     }));
   };
 

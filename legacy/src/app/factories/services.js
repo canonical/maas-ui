@@ -16,7 +16,7 @@ function ServicesManager(RegionConnection, Manager) {
 
     // Listen for notify events for the service object.
     var self = this;
-    RegionConnection.registerNotifier("service", function(action, data) {
+    RegionConnection.registerNotifier("service", function (action, data) {
       self.onNotify(action, data);
     });
   }

@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeFakeResponse, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("ControllersManager", function() {
+describe("ControllersManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the ControllersManager and RegionConnection factory.
   var ControllersManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ControllersManager = $injector.get("ControllersManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -24,7 +24,7 @@ describe("ControllersManager", function() {
   }));
 
   // Open the connection to the region before each test.
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     RegionConnection.connect(() => done());
   });
 
@@ -34,7 +34,7 @@ describe("ControllersManager", function() {
       system_id: makeName("system_id"),
       name: makeName("name"),
       status: makeName("status"),
-      owner: makeName("owner")
+      owner: makeName("owner"),
     };
     if (angular.isDefined(selected)) {
       controller.$selected = selected;
@@ -42,17 +42,17 @@ describe("ControllersManager", function() {
     return controller;
   }
 
-  it("sanity check", function() {
+  it("sanity check", function () {
     expect(ControllersManager._pk).toBe("system_id");
     expect(ControllersManager._handler).toBe("controller");
   });
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(Object.keys(ControllersManager._metadataAttributes)).toEqual([]);
   });
 
-  describe("checkImageStates", function() {
-    it("calls controller.check_images with system_ids", function(done) {
+  describe("checkImageStates", function () {
+    it("calls controller.check_images with system_ids", function (done) {
       var controllers = [makecontroller(), makecontroller()];
       var states = [makeName("state"), makeName("state")];
       let response = {};
@@ -60,7 +60,7 @@ describe("ControllersManager", function() {
       response[controllers[1].system_id] = states[1];
       webSocket.returnData.push(makeFakeResponse(response));
 
-      ControllersManager.checkImageStates(controllers).then(function(retval) {
+      ControllersManager.checkImageStates(controllers).then(function (retval) {
         var sentObject = angular.fromJson(webSocket.sentData[0]);
         expect(sentObject.method).toBe("controller.check_images");
         expect(sentObject.params).toEqual(controllers);

@@ -5,7 +5,7 @@
  */
 
 function formatStorageType() {
-  return function(storageType) {
+  return function (storageType) {
     if (!storageType) {
       return "";
     }

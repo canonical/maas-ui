@@ -6,9 +6,9 @@
 import angular from "angular";
 
 function removeDefaultVLAN() {
-  return function(vlans) {
+  return function (vlans) {
     var filtered = [];
-    angular.forEach(vlans, function(vlan) {
+    angular.forEach(vlans, function (vlan) {
       if (vlan.vid !== 0) {
         filtered.push(vlan);
       }

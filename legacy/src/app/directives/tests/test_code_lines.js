@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasCodeLines", function() {
+describe("maasCodeLines", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope;
 
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -22,11 +22,11 @@ describe("maasCodeLines", function() {
     var html = [
       "<div>",
       '<pre maas-code-lines="' + maasCodeLines + '"></pre>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -35,8 +35,8 @@ describe("maasCodeLines", function() {
     return directive.find("pre");
   }
 
-  it("code should have the class line", function() {
-    $scope.getText = function() {
+  it("code should have the class line", function () {
+    $scope.getText = function () {
       return "codetext";
     };
 

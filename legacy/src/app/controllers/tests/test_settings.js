@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("SettingsController", function() {
+describe("SettingsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $q = $injector.get("$q");
@@ -26,7 +26,7 @@ describe("SettingsController", function() {
   var DHCPSnippetsManager, SubnetsManager, MachinesManager, GeneralManager;
   var DevicesManager, ControllersManager, ManagerHelperService;
   var PackageRepositoriesManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     PackageRepositoriesManager = $injector.get("PackageRepositoriesManager");
     DHCPSnippetsManager = $injector.get("DHCPSnippetsManager");
     SubnetsManager = $injector.get("SubnetsManager");
@@ -45,7 +45,7 @@ describe("SettingsController", function() {
 
   // Setup the stateParams.
   var $stateParams;
-  beforeEach(function() {
+  beforeEach(function () {
     $stateParams = {};
   });
 
@@ -60,7 +60,7 @@ describe("SettingsController", function() {
       key: makeName("key"),
       arches: [makeName("arch"), makeName("arch")],
       distributions: [makeName("dist"), makeName("dist")],
-      components: [makeName("comp"), makeName("comp")]
+      components: [makeName("comp"), makeName("comp")],
     };
   }
 
@@ -84,17 +84,17 @@ describe("SettingsController", function() {
       DevicesManager: DevicesManager,
       ControllersManager: ControllersManager,
       GeneralManager: GeneralManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
   }
 
-  it("sets title to loading and page to settings", function() {
+  it("sets title to loading and page to settings", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("settings");
   });
 
-  it("sets initial values", function() {
+  it("sets initial values", function () {
     makeController();
     expect($scope.loading).toBe(true);
     expect($scope.loading).toBe(true);
@@ -119,21 +119,21 @@ describe("SettingsController", function() {
     expect($scope.deleteRepository).toBeNull();
   });
 
-  it("sets the values for 'dhcp' section", function() {
+  it("sets the values for 'dhcp' section", function () {
     $stateParams.section = "dhcp";
     makeController();
     expect($scope.title).toBe("DHCP snippets");
     expect($scope.currentpage).toBe("dhcp");
   });
 
-  it("sets the values for 'repositories' section", function() {
+  it("sets the values for 'repositories' section", function () {
     $stateParams.section = "repositories";
     makeController();
     expect($scope.title).toBe("Package repositories");
     expect($scope.currentpage).toBe("repositories");
   });
 
-  it("calls loadManagers with all needed managers", function() {
+  it("calls loadManagers with all needed managers", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       PackageRepositoriesManager,
@@ -142,11 +142,11 @@ describe("SettingsController", function() {
       DevicesManager,
       ControllersManager,
       SubnetsManager,
-      GeneralManager
+      GeneralManager,
     ]);
   });
 
-  it("sets loading to false", function() {
+  it("sets loading to false", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -154,8 +154,8 @@ describe("SettingsController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  describe("repositoryEnabledToggle", function() {
-    it("calls updateItem", function() {
+  describe("repositoryEnabledToggle", function () {
+    it("calls updateItem", function () {
       makeController();
       var repository = makeRepo();
       spyOn(PackageRepositoriesManager, "updateItem");
@@ -166,8 +166,8 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("repositoryEnterRemove", function() {
-    it("clears new and edit and sets delete", function() {
+  describe("repositoryEnterRemove", function () {
+    it("clears new and edit and sets delete", function () {
       makeController();
       var repository = makeRepo();
       $scope.newRepository = {};
@@ -179,8 +179,8 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("repositoryExitRemove", function() {
-    it("clears deleteRepository", function() {
+  describe("repositoryExitRemove", function () {
+    it("clears deleteRepository", function () {
       makeController();
       $scope.deleteRepository = {};
       $scope.repositoryExitRemove();
@@ -188,8 +188,8 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("repositoryConfirmRemove", function() {
-    it("calls deleteItem and then repositoryExitRemove", function() {
+  describe("repositoryConfirmRemove", function () {
+    it("calls deleteItem and then repositoryExitRemove", function () {
       makeController();
       var repository = makeRepo();
       var defer = $q.defer();
@@ -208,76 +208,76 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("isPPA", function() {
-    it("false when not object", function() {
+  describe("isPPA", function () {
+    it("false when not object", function () {
       makeController();
       expect($scope.isPPA(null)).toBe(false);
     });
 
-    it("false when no url", function() {
+    it("false when no url", function () {
       makeController();
       expect(
         $scope.isPPA({
-          url: null
+          url: null,
         })
       ).toBe(false);
     });
 
-    it("true when url startswith", function() {
+    it("true when url startswith", function () {
       makeController();
       expect(
         $scope.isPPA({
-          url: "ppa:"
+          url: "ppa:",
         })
       ).toBe(true);
     });
 
-    it("true when url contains ppa.launchpad.net", function() {
+    it("true when url contains ppa.launchpad.net", function () {
       makeController();
       expect(
         $scope.isPPA({
-          url: "http://ppa.launchpad.net/"
+          url: "http://ppa.launchpad.net/",
         })
       ).toBe(true);
     });
   });
 
-  describe("isMirror", function() {
-    it("false when not object", function() {
+  describe("isMirror", function () {
+    it("false when not object", function () {
       makeController();
       expect($scope.isMirror(null)).toBe(false);
     });
 
-    it("false when no name", function() {
+    it("false when no name", function () {
       makeController();
       expect(
         $scope.isMirror({
-          name: null
+          name: null,
         })
       ).toBe(false);
     });
 
-    it("true when name is 'main_archive'", function() {
+    it("true when name is 'main_archive'", function () {
       makeController();
       expect(
         $scope.isMirror({
-          name: "main_archive"
+          name: "main_archive",
         })
       ).toBe(true);
     });
 
-    it("true when name is 'ports_archive'", function() {
+    it("true when name is 'ports_archive'", function () {
       makeController();
       expect(
         $scope.isMirror({
-          name: "ports_archive"
+          name: "ports_archive",
         })
       ).toBe(true);
     });
   });
 
-  describe("repositoryEnterEdit", function() {
-    it("clears new and delete and sets edit", function() {
+  describe("repositoryEnterEdit", function () {
+    it("clears new and delete and sets edit", function () {
       makeController();
       var repository = makeRepo();
       $scope.newRepository = {};
@@ -289,8 +289,8 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("repositoryExitEdit", function() {
-    it("clears edit", function() {
+  describe("repositoryExitEdit", function () {
+    it("clears edit", function () {
       makeController();
       $scope.editRepository = {};
       $scope.repositoryExitEdit();
@@ -298,8 +298,8 @@ describe("SettingsController", function() {
     });
   });
 
-  describe("repositoryAdd", function() {
-    it("sets newRepository for ppa", function() {
+  describe("repositoryAdd", function () {
+    it("sets newRepository for ppa", function () {
       makeController();
       $scope.repositoryAdd(true);
       expect($scope.newRepository).toEqual({
@@ -309,11 +309,11 @@ describe("SettingsController", function() {
         key: "",
         arches: ["i386", "amd64"],
         distributions: [],
-        components: []
+        components: [],
       });
     });
 
-    it("sets newRepository not for ppa", function() {
+    it("sets newRepository not for ppa", function () {
       makeController();
       $scope.repositoryAdd(false);
       expect($scope.newRepository).toEqual({
@@ -323,13 +323,13 @@ describe("SettingsController", function() {
         key: "",
         arches: ["i386", "amd64"],
         distributions: [],
-        components: []
+        components: [],
       });
     });
   });
 
-  describe("repositoryAddCancel", function() {
-    it("newRepository gets cleared", function() {
+  describe("repositoryAddCancel", function () {
+    it("newRepository gets cleared", function () {
       makeController();
       $scope.newRepository = {};
       $scope.repositoryAddCancel();

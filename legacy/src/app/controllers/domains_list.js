@@ -33,43 +33,43 @@ function DomainsListController(
   $scope.addDomainScope = null;
 
   // Called when the add domain button is pressed.
-  $scope.addDomain = function() {
+  $scope.addDomain = function () {
     $scope.addDomainScope.show();
   };
 
   // Called when the cancel add domain button is pressed.
-  $scope.cancelAddDomain = function() {
+  $scope.cancelAddDomain = function () {
     $scope.addDomainScope.cancel();
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
-  $scope.confirmSetDefault = function(domain) {
+  $scope.confirmSetDefault = function (domain) {
     $scope.confirmSetDefaultRow = domain;
   };
 
-  $scope.cancelSetDefault = function() {
+  $scope.cancelSetDefault = function () {
     $scope.confirmSetDefaultRow = null;
   };
 
-  $scope.setDefault = function(domain) {
+  $scope.setDefault = function (domain) {
     DomainsManager.setDefault(domain);
     $scope.confirmSetDefaultRow = null;
   };
 
   ManagerHelperService.loadManagers($scope, [
     DomainsManager,
-    UsersManager
-  ]).then(function() {
+    UsersManager,
+  ]).then(function () {
     $scope.loading = false;
 
     // Set flag for RSD navigation item.
     if (!$rootScope.showRSDLink) {
       GeneralManager.getNavigationOptions().then(
-        res => ($rootScope.showRSDLink = res.rsd)
+        (res) => ($rootScope.showRSDLink = res.rsd)
       );
     }
   });

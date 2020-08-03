@@ -7,13 +7,13 @@ import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 
-describe("maasPodParameters", function() {
+describe("maasPodParameters", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get managers before the test.
   var GeneralManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     GeneralManager = $injector.get("GeneralManager");
     // Mock buildSocket so an actual connection is not made.
     let RegionConnection = $injector.get("RegionConnection");
@@ -23,7 +23,7 @@ describe("maasPodParameters", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
     $scope.obj = {};
   }));
@@ -38,11 +38,11 @@ describe("maasPodParameters", function() {
       '<maas-pod-parameters hide-slider="' + slider + '">',
       "</maas-pod-parameters>",
       "</maas-obj-form>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -51,14 +51,14 @@ describe("maasPodParameters", function() {
     return angular.element(directive.find("maas-pod-parameters"));
   }
 
-  it("add type field to maasForm", function() {
+  it("add type field to maasForm", function () {
     compileDirective("true");
     expect($scope.obj.$maasForm.fields.type).toBeDefined();
   });
 
-  describe("with powerTypes", function() {
+  describe("with powerTypes", function () {
     var podTypes, powerTypes;
-    beforeEach(function() {
+    beforeEach(function () {
       powerTypes = [
         {
           name: "virsh",
@@ -68,14 +68,14 @@ describe("maasPodParameters", function() {
             {
               name: "power_address",
               label: "Pod address",
-              scope: "bmc"
+              scope: "bmc",
             },
             {
               name: "power_id",
               label: "Power ID",
-              scope: "node"
-            }
-          ]
+              scope: "node",
+            },
+          ],
         },
         {
           name: "rsd",
@@ -85,14 +85,14 @@ describe("maasPodParameters", function() {
             {
               name: "rsd_address",
               label: "Pod address",
-              scope: "bmc"
+              scope: "bmc",
             },
             {
               name: "rsd_id",
               label: "Power ID",
-              scope: "node"
-            }
-          ]
+              scope: "node",
+            },
+          ],
         },
         {
           name: "lxd",
@@ -102,29 +102,29 @@ describe("maasPodParameters", function() {
             {
               name: "power_address",
               label: "Power address",
-              scope: "bmc"
+              scope: "bmc",
             },
-          ]
+          ],
         },
         {
           name: "ipmi",
           description: "IPMI",
           driver_type: "power",
-          fields: []
-        }
+          fields: [],
+        },
       ];
       podTypes = [powerTypes[0], powerTypes[1]];
       GeneralManager._data.power_types.data = powerTypes;
     });
 
-    it("sets podTypes", function() {
+    it("sets podTypes", function () {
       var directive = compileDirective("true");
       var scope = directive.isolateScope();
       podTypes = [powerTypes[0], powerTypes[1], powerTypes[2]];
       expect(scope.podTypes).toEqual(podTypes);
     });
 
-    it("renders fields when type set", function() {
+    it("renders fields when type set", function () {
       compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "virsh");
       $scope.$digest();
@@ -137,7 +137,7 @@ describe("maasPodParameters", function() {
       ).toBeDefined();
     });
 
-    it("switches fields when type changed", function() {
+    it("switches fields when type changed", function () {
       compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "virsh");
       $scope.$digest();
@@ -154,7 +154,7 @@ describe("maasPodParameters", function() {
       expect($scope.obj.$maasForm.fields.rsd_id).toBeUndefined();
     });
 
-    it("switches fields back when type changed again", function() {
+    it("switches fields back when type changed again", function () {
       compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "rsd");
       $scope.$digest();
@@ -171,7 +171,7 @@ describe("maasPodParameters", function() {
       expect($scope.obj.$maasForm.fields.rsd_id).toBeUndefined();
     });
 
-    it("creates maas-obj-field with type='slider' and pod type='virsh'", function() {
+    it("creates maas-obj-field with type='slider' and pod type='virsh'", function () {
       var directive = compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "virsh");
       $scope.$digest();
@@ -182,7 +182,7 @@ describe("maasPodParameters", function() {
       expect(sliders.length).toBe(2);
     });
 
-    it("creates maas-obj-field with type='slider' and pod type='lxd'", function() {
+    it("creates maas-obj-field with type='slider' and pod type='lxd'", function () {
       var directive = compileDirective("false");
       $scope.obj.$maasForm.updateValue("type", "lxd");
       $scope.$digest();
@@ -193,7 +193,7 @@ describe("maasPodParameters", function() {
       expect(sliders.length).toBe(2);
     });
 
-    it("does not create maas-obj-field with type='slider'", function() {
+    it("does not create maas-obj-field with type='slider'", function () {
       var directive = compileDirective("true");
       $scope.obj.$maasForm.updateValue("type", "virsh");
       $scope.$digest();

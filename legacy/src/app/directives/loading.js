@@ -1,5 +1,5 @@
 const Loading = () => {
-  return function(scope, el) {
+  return function (scope, el) {
     el.remove();
   };
 };

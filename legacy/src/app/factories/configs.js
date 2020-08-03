@@ -16,7 +16,7 @@ function ConfigsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the config object.
     var self = this;
-    RegionConnection.registerNotifier("config", function(action, data) {
+    RegionConnection.registerNotifier("config", function (action, data) {
       self.onNotify(action, data);
     });
   }

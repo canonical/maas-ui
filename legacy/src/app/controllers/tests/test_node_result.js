@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeFakeResponse, makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("NodeResultController", function() {
+describe("NodeResultController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
@@ -27,7 +27,7 @@ describe("NodeResultController", function() {
   var MachinesManager, ControllersManager, RegionConnection;
   var NodeResultsManagerFactory, ManagerHelperService;
   var ErrorService, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
     ControllersManager = $injector.get("ControllersManager");
     RegionConnection = $injector.get("RegionConnection");
@@ -45,7 +45,7 @@ describe("NodeResultController", function() {
   function makeResult() {
     return {
       id: makeInteger(0, 1000),
-      name: makeName("name")
+      name: makeName("name"),
     };
   }
 
@@ -53,7 +53,7 @@ describe("NodeResultController", function() {
   function makeNode() {
     var node = {
       system_id: makeName("system_id"),
-      fqdn: makeName("fqdn")
+      fqdn: makeName("fqdn"),
     };
     MachinesManager._items.push(node);
     ControllersManager._items.push(node);
@@ -62,12 +62,12 @@ describe("NodeResultController", function() {
 
   // Create the node that will be used and set the stateParams.
   var node, $stateParams, script_result;
-  beforeEach(function() {
+  beforeEach(function () {
     node = makeNode();
     script_result = makeResult();
     $stateParams = {
       id: script_result.id,
-      system_id: node.system_id
+      system_id: node.system_id,
     };
   });
 
@@ -93,16 +93,16 @@ describe("NodeResultController", function() {
       ControllersManager: ControllersManager,
       NodeResultsManagerFactory: NodeResultsManagerFactory,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
   }
 
-  it("sets title to loading and page to nodes", function() {
+  it("sets title to loading and page to nodes", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
   });
 
-  it("sets the initial $scope values", function() {
+  it("sets the initial $scope values", function () {
     makeController();
     expect($scope.loaded).toBe(false);
     expect($scope.resultLoaded).toBe(false);
@@ -113,7 +113,7 @@ describe("NodeResultController", function() {
     expect($scope.type_name).toBe("machine");
   });
 
-  it("sets the initial $scope values when controller", function() {
+  it("sets the initial $scope values when controller", function () {
     $location.path("/controller");
     makeController();
     expect($scope.loaded).toBe(false);
@@ -125,7 +125,7 @@ describe("NodeResultController", function() {
     expect($scope.type_name).toBe("controller");
   });
 
-  it("calls loadManager with MachinesManager", function() {
+  it("calls loadManager with MachinesManager", function () {
     makeController();
     expect(ManagerHelperService.loadManager).toHaveBeenCalledWith(
       $scope,
@@ -133,7 +133,7 @@ describe("NodeResultController", function() {
     );
   });
 
-  it("doesnt call setActiveItem if node already loaded", function() {
+  it("doesnt call setActiveItem if node already loaded", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -147,7 +147,7 @@ describe("NodeResultController", function() {
     expect(MachinesManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if node not loaded", function() {
+  it("calls setActiveItem if node not loaded", function () {
     var defer = $q.defer();
     makeController(defer);
     var setActiveDefer = $q.defer();
@@ -167,7 +167,7 @@ describe("NodeResultController", function() {
   });
 
   // eslint-disable-next-line no-undef
-  xit("loads result on load", function(done) {
+  xit("loads result on load", function (done) {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -180,7 +180,7 @@ describe("NodeResultController", function() {
     expect($scope.node).toBe(node);
     expect($scope.loaded).toBe(true);
     var expectFunc;
-    expectFunc = function() {
+    expectFunc = function () {
       if ($scope.resultLoaded) {
         expect($scope.result.id).toBe(script_result.id);
         done();
@@ -191,7 +191,7 @@ describe("NodeResultController", function() {
     setTimeout(expectFunc);
   });
 
-  it("calls raiseError if setActiveItem is rejected", function() {
+  it("calls raiseError if setActiveItem is rejected", function () {
     var defer = $q.defer();
     makeController(defer);
     var setActiveDefer = $q.defer();
@@ -210,7 +210,7 @@ describe("NodeResultController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalledWith(error);
   });
 
-  it("watches node.fqdn updates $rootScope.title", function() {
+  it("watches node.fqdn updates $rootScope.title", function () {
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
@@ -224,8 +224,8 @@ describe("NodeResultController", function() {
     expect($rootScope.title).toBe(node.fqdn + " - " + script_result.name);
   });
 
-  describe("get_result_data", function() {
-    it("sets initial variables", function() {
+  describe("get_result_data", function () {
+    it("sets initial variables", function () {
       var defer = $q.defer();
       makeController(defer);
       var output = makeName("output");
@@ -240,7 +240,7 @@ describe("NodeResultController", function() {
       expect($scope.data).toBe("Loading...");
     });
 
-    it("returns result", function() {
+    it("returns result", function () {
       var defer = $q.defer();
       makeController();
       var output = makeName("output");
@@ -262,7 +262,7 @@ describe("NodeResultController", function() {
       expect($scope.data).toBe(data);
     });
 
-    it("returns empty file when empty", function() {
+    it("returns empty file when empty", function () {
       var defer = $q.defer();
       makeController();
       var output = makeName("output");

@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("MachinesManager", function() {
+describe("MachinesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the MachinesManager and RegionConnection factory.
   var MachinesManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -24,17 +24,17 @@ describe("MachinesManager", function() {
   }));
 
   // Open the connection to the region before each test.
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     RegionConnection.connect(() => done());
   });
 
-  it("sanity check", function() {
+  it("sanity check", function () {
     expect(MachinesManager._pk).toBe("system_id");
     expect(MachinesManager._handler).toBe("machine");
     expect(MachinesManager._batchSize).toBe(25);
   });
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(Object.keys(MachinesManager._metadataAttributes)).toEqual([
       "architecture",
       "status",
@@ -50,18 +50,18 @@ describe("MachinesManager", function() {
       "release",
       "numa_nodes_count",
       "sriov_support",
-      "link_speeds"
+      "link_speeds",
     ]);
   });
 
-  describe("mountSpecialFilesystem", function() {
-    it("calls mount_special", function() {
+  describe("mountSpecialFilesystem", function () {
+    it("calls mount_special", function () {
       spyOn(RegionConnection, "callMethod");
       var obj = {
         system_id: makeName("system-id"),
         fstype: makeName("fstype"),
         mount_point: makeName("/dir"),
-        mount_options: makeName("options")
+        mount_options: makeName("options"),
       };
       MachinesManager.mountSpecialFilesystem(obj);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -70,14 +70,14 @@ describe("MachinesManager", function() {
           system_id: obj.system_id,
           fstype: obj.fstype,
           mount_point: obj.mount_point,
-          mount_options: obj.mount_options
+          mount_options: obj.mount_options,
         }
       );
     });
   });
 
-  describe("unmountSpecialFilesystem", function() {
-    it("calls unmount_special", function() {
+  describe("unmountSpecialFilesystem", function () {
+    it("calls unmount_special", function () {
       spyOn(RegionConnection, "callMethod");
       var machine = { system_id: makeName("system-id") };
       var mount_point = makeName("/dir");
@@ -86,18 +86,18 @@ describe("MachinesManager", function() {
         "machine.unmount_special",
         {
           system_id: machine.system_id,
-          mount_point: mount_point
+          mount_point: mount_point,
         }
       );
     });
   });
 
-  describe("applyStorageLayout", function() {
-    it("calls apply_storage_layout", function() {
+  describe("applyStorageLayout", function () {
+    it("calls apply_storage_layout", function () {
       spyOn(RegionConnection, "callMethod");
       var params = {
         system_id: makeName("system-id"),
-        mount_point: makeName("/dir")
+        mount_point: makeName("/dir"),
       };
       MachinesManager.applyStorageLayout(params);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -107,14 +107,14 @@ describe("MachinesManager", function() {
     });
   });
 
-  describe("createDatastore", function() {
-    it("calls create_vmfs_datastore", function() {
+  describe("createDatastore", function () {
+    it("calls create_vmfs_datastore", function () {
       spyOn(RegionConnection, "callMethod");
       var params = {
         system_id: makeName("system-id"),
         block_devices: [1, 2, 3, 5],
         partitions: [5, 6, 7, 8],
-        name: "New datastore"
+        name: "New datastore",
       };
       MachinesManager.createDatastore(params);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -124,8 +124,8 @@ describe("MachinesManager", function() {
     });
   });
 
-  describe("updateDatastore", function() {
-    it("calls update_vmfs_datastore", function() {
+  describe("updateDatastore", function () {
+    it("calls update_vmfs_datastore", function () {
       spyOn(RegionConnection, "callMethod");
       var params = {
         system_id: makeName("system-id"),
@@ -134,7 +134,7 @@ describe("MachinesManager", function() {
         remove_partitions: [],
         remove_block_devices: [],
         name: "New datastore",
-        vmfs_datastore_id: 1
+        vmfs_datastore_id: 1,
       };
       MachinesManager.updateDatastore(params);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(

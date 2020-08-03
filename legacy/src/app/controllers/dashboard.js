@@ -28,7 +28,7 @@ function DashboardController(
   var deviceIPOptions = [
     ["static", "Static"],
     ["dynamic", "Dynamic"],
-    ["external", "External"]
+    ["external", "External"],
   ];
   let notificationId = 0;
 
@@ -62,16 +62,16 @@ function DashboardController(
   $scope.tempNotifications = [];
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
 
-  $scope.changeTab = tabName => {
+  $scope.changeTab = (tabName) => {
     $scope.currentTab = tabName;
   };
 
-  $scope.clearSearch = function() {
+  $scope.clearSearch = function () {
     $scope.search = "";
     $scope.updateFilters();
   };
 
-  $scope.updateFilters = function() {
+  $scope.updateFilters = function () {
     var searchQuery = $scope.search;
     var filters = SearchService.getCurrentFilters(searchQuery);
     if (filters === null) {
@@ -83,11 +83,11 @@ function DashboardController(
     }
   };
 
-  $scope.dedupeMetadata = function(prop) {
-    return $scope.discoveredDevices.filter(function(item, pos, arr) {
+  $scope.dedupeMetadata = function (prop) {
+    return $scope.discoveredDevices.filter(function (item, pos, arr) {
       return (
         arr
-          .map(function(obj) {
+          .map(function (obj) {
             return obj[prop];
           })
           .indexOf(item[prop]) === pos
@@ -95,38 +95,38 @@ function DashboardController(
     });
   };
 
-  $scope.getCount = function(prop, value) {
-    return $scope.discoveredDevices.filter(function(item) {
+  $scope.getCount = function (prop, value) {
+    return $scope.discoveredDevices.filter(function (item) {
       return item[prop] === value;
     }).length;
   };
 
-  $scope.setMetadata = function() {
-    var fabrics = $scope.dedupeMetadata("fabric_name").map(function(item) {
+  $scope.setMetadata = function () {
+    var fabrics = $scope.dedupeMetadata("fabric_name").map(function (item) {
       return {
         name: item.fabric_name,
-        count: $scope.getCount("fabric_name", item.fabric_name)
+        count: $scope.getCount("fabric_name", item.fabric_name),
       };
     });
 
-    var vlans = $scope.dedupeMetadata("vlan").map(function(item) {
+    var vlans = $scope.dedupeMetadata("vlan").map(function (item) {
       return {
         name: item.vlan,
-        count: $scope.getCount("vlan", item.vlan)
+        count: $scope.getCount("vlan", item.vlan),
       };
     });
 
-    var racks = $scope.dedupeMetadata("observer_hostname").map(function(item) {
+    var racks = $scope.dedupeMetadata("observer_hostname").map(function (item) {
       return {
         name: item.observer_hostname,
-        count: $scope.getCount("observer_hostname", item.observer_hostname)
+        count: $scope.getCount("observer_hostname", item.observer_hostname),
       };
     });
 
-    var subnets = $scope.dedupeMetadata("subnet_cidr").map(function(item) {
+    var subnets = $scope.dedupeMetadata("subnet_cidr").map(function (item) {
       return {
         name: item.subnet_cidr,
-        count: $scope.getCount("subnet_cidr", item.subnet_cidr)
+        count: $scope.getCount("subnet_cidr", item.subnet_cidr),
       };
     });
 
@@ -134,12 +134,12 @@ function DashboardController(
       fabric: fabrics,
       vlan: vlans,
       rack: racks,
-      subnet: subnets
+      subnet: subnets,
     };
   };
 
   // Adds or removes a filter to the search.
-  $scope.toggleFilter = function(type, value) {
+  $scope.toggleFilter = function (type, value) {
     $scope.filters = SearchService.toggleFilter(
       $scope.filters,
       type,
@@ -150,11 +150,11 @@ function DashboardController(
   };
 
   // Return True if the filter is active.
-  $scope.isFilterActive = function(type, value) {
+  $scope.isFilterActive = function (type, value) {
     return SearchService.isFilterActive($scope.filters, type, value, true);
   };
 
-  $scope.formatMAASVersionNumber = function() {
+  $scope.formatMAASVersionNumber = function () {
     if (window.CONFIG.version) {
       var versionWithPoint = window.CONFIG.version.split(" ")[0];
 
@@ -178,17 +178,17 @@ function DashboardController(
   $scope.predicate = $scope.last_seen;
 
   // Open clear devices panel
-  $scope.openClearDiscoveriesPanel = function() {
+  $scope.openClearDiscoveriesPanel = function () {
     $scope.showClearDiscoveriesPanel = true;
   };
 
   // Close clear devices panel
-  $scope.closeClearDiscoveriesPanel = function() {
+  $scope.closeClearDiscoveriesPanel = function () {
     $scope.showClearDiscoveriesPanel = false;
   };
 
   // Sorts the table by predicate.
-  $scope.sortTable = function(predicate) {
+  $scope.sortTable = function (predicate) {
     $scope.predicate = predicate;
     $scope.reverse = !$scope.reverse;
   };
@@ -196,7 +196,7 @@ function DashboardController(
   // Proxy manager that the maas-obj-form directive uses to call the
   // correct method based on current type.
   $scope.proxyManager = {
-    updateItem: function(params) {
+    updateItem: function (params) {
       if ($scope.convertTo.type === "device") {
         return DevicesManager.createItem(params);
       } else if ($scope.convertTo.type === "interface") {
@@ -204,11 +204,11 @@ function DashboardController(
       } else {
         throw new Error("Unknown type: " + $scope.convertTo.type);
       }
-    }
+    },
   };
 
   // Return the name name for the Discovery.
-  $scope.getDiscoveryName = function(discovery) {
+  $scope.getDiscoveryName = function (discovery) {
     if (discovery.hostname === null) {
       return "unknown";
     } else {
@@ -217,33 +217,35 @@ function DashboardController(
   };
 
   // Get the name of the subnet from its ID.
-  $scope.getSubnetName = function(subnetId) {
+  $scope.getSubnetName = function (subnetId) {
     var subnet = SubnetsManager.getItemFromList(subnetId);
     return SubnetsManager.getName(subnet);
   };
 
   // Get the name of the VLAN from its ID.
-  $scope.getVLANName = function(vlanId) {
+  $scope.getVLANName = function (vlanId) {
     var vlan = VLANsManager.getItemFromList(vlanId);
     return VLANsManager.getName(vlan);
   };
 
   // Remove device
-  $scope.removeDevice = function(device) {
+  $scope.removeDevice = function (device) {
     device.isBeingRemoved = true;
     DiscoveriesManager.removeDevice(device);
   };
 
   // Remove all devices
-  $scope.removeAllDevices = function() {
+  $scope.removeAllDevices = function () {
     $scope.removingDevices = true;
-    DiscoveriesManager.removeDevices($scope.discoveredDevices).then(function() {
-      $scope.discoveredDevices = DiscoveriesManager.getItems();
-    });
+    DiscoveriesManager.removeDevices($scope.discoveredDevices).then(
+      function () {
+        $scope.discoveredDevices = DiscoveriesManager.getItems();
+      }
+    );
   };
 
   // Sets selected device
-  $scope.toggleSelected = function(deviceId) {
+  $scope.toggleSelected = function (deviceId) {
     if ($scope.selectedDevice === deviceId) {
       $scope.selectedDevice = null;
     } else {
@@ -272,7 +274,7 @@ function DashboardController(
         ip_assignment: "dynamic",
         goTo: false,
         saved: false,
-        deviceIPOptions: deviceIPOptions.filter(function(option) {
+        deviceIPOptions: deviceIPOptions.filter(function (option) {
           // Filter the options to not include static if
           // a subnet is not defined for this discovered
           // item.
@@ -281,7 +283,7 @@ function DashboardController(
           } else {
             return true;
           }
-        })
+        }),
       };
       $scope.selectedDevice = deviceId;
     }
@@ -289,7 +291,7 @@ function DashboardController(
 
   // Called before the createItem is called to adjust the values
   // passed over the call.
-  $scope.preProcess = function(item) {
+  $scope.preProcess = function (item) {
     var discovered = DiscoveriesManager.getItemFromList($scope.selectedDevice);
     item = angular.copy(item);
     if ($scope.convertTo.type === "device") {
@@ -300,8 +302,8 @@ function DashboardController(
           mac: discovered.mac_address,
           ip_assignment: item.ip_assignment,
           ip_address: discovered.ip,
-          subnet: discovered.subnet
-        }
+          subnet: discovered.subnet,
+        },
       ];
     } else if ($scope.convertTo.type === "interface") {
       item.mac_address = discovered.mac_address;
@@ -312,7 +314,7 @@ function DashboardController(
   };
 
   // Called after the createItem has been successful.
-  $scope.afterSave = function(obj) {
+  $scope.afterSave = function (obj) {
     DiscoveriesManager._removeItem($scope.selectedDevice);
     $scope.selectedDevice = null;
     $scope.convertTo.hostname = obj.hostname;
@@ -327,26 +329,26 @@ function DashboardController(
     }
   };
 
-  $scope.getSubnetFabric = subnet => {
+  $scope.getSubnetFabric = (subnet) => {
     const vlan = VLANsManager.getItemFromList(subnet.vlan) || {};
     const fabricID = vlan.fabric;
     const fabric = FabricsManager.getItemFromList(fabricID) || {};
     return fabric;
   };
 
-  $scope.closeTempNotification = id => {
+  $scope.closeTempNotification = (id) => {
     const notifications = $scope.tempNotifications.filter(
-      notification => notification.id !== id
+      (notification) => notification.id !== id
     );
     $scope.tempNotifications = notifications;
   };
 
-  $scope.createSubnetNotification = subnet => {
+  $scope.createSubnetNotification = (subnet) => {
     const fabric = $scope.getSubnetFabric(subnet);
     const status = subnet.active_discovery ? "enabled" : "disabled";
     const notification = {
       id: notificationId,
-      text: `Active discovery ${status} on ${subnet.cidr} on ${fabric.name}.`
+      text: `Active discovery ${status} on ${subnet.cidr} on ${fabric.name}.`,
     };
     $scope.tempNotifications.push(notification);
     notificationId += 1;
@@ -362,14 +364,14 @@ function DashboardController(
     SubnetsManager,
     FabricsManager,
     VLANsManager,
-    ConfigsManager
-  ]).then(function() {
+    ConfigsManager,
+  ]).then(function () {
     $scope.loaded = true;
 
     // Set flag for RSD navigation item.
     if (!$rootScope.showRSDLink) {
       GeneralManager.getNavigationOptions().then(
-        res => ($rootScope.showRSDLink = res.rsd)
+        (res) => ($rootScope.showRSDLink = res.rsd)
       );
     }
 
@@ -382,7 +384,7 @@ function DashboardController(
 
     $scope.setMetadata();
 
-    $scope.discoveredDevices.forEach(function(device) {
+    $scope.discoveredDevices.forEach(function (device) {
       var date = new Date(device.last_seen);
       device.last_seen_timestamp = date.getTime();
     });
@@ -395,7 +397,7 @@ function DashboardController(
       );
     });
 
-    $scope.$watchCollection("discoveredDevices", function() {
+    $scope.$watchCollection("discoveredDevices", function () {
       $scope.removingDevices = false;
       $scope.closeClearDiscoveriesPanel();
     });

@@ -17,7 +17,7 @@ function IPRangesManager(RegionConnection, Manager) {
 
     // Listen for notify events for the iprange object.
     var self = this;
-    RegionConnection.registerNotifier("iprange", function(action, data) {
+    RegionConnection.registerNotifier("iprange", function (action, data) {
       self.onNotify(action, data);
     });
   }

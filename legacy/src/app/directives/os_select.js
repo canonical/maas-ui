@@ -38,7 +38,7 @@ export function cacheOsSelect($templateCache) {
       'in hwe_kernels">',
       '<option value="">Default kernel</option>',
       "</select>",
-      "</div>"
+      "</div>",
     ].join("")
   );
 }
@@ -71,7 +71,7 @@ const osSelectTmpl = [
   'in hwe_kernels">',
   '<option value="">Default kernel</option>',
   "</select>",
-  "</div>"
+  "</div>",
 ].join("");
 
 /* @ngInject */
@@ -81,10 +81,10 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
     require: "ngModel",
     scope: {
       maasOsSelect: "=",
-      ngModel: "="
+      ngModel: "=",
     },
     template: osSelectTmpl,
-    controller: OsSelectController
+    controller: OsSelectController,
   };
 
   /* @ngInject */
@@ -202,7 +202,7 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
       $scope.ngModel = {
         osystem: null,
         release: null,
-        hwe_kernel: null
+        hwe_kernel: null,
       };
     }
     $scope.releases = getSelectableReleases();
@@ -210,7 +210,7 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
 
     // Add the reset function to ngModel, allowing users to call
     // this function to reset the defaults.
-    $scope.ngModel.$reset = function() {
+    $scope.ngModel.$reset = function () {
       $scope.ngModel.osystem = null;
       $scope.ngModel.release = null;
       $scope.ngModel.hwe_kernel = null;
@@ -219,20 +219,20 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
 
     // If the available os change update the available releases and
     // set the default.
-    $scope.$watch("maasOsSelect.releases", function() {
+    $scope.$watch("maasOsSelect.releases", function () {
       $scope.releases = getSelectableReleases();
       setDefault();
     });
 
     // If the available release change update the available kernels and
     // set the default.
-    $scope.$watch("maasOsSelect.kernels", function() {
+    $scope.$watch("maasOsSelect.kernels", function () {
       $scope.hwe_kernels = getSelectableKernels();
       setDefault();
     });
 
     // Updates the default and selectable releases.
-    $scope.selectedOSChanged = function() {
+    $scope.selectedOSChanged = function () {
       $scope.releases = getSelectableReleases();
       $scope.ngModel.release = null;
       $scope.ngModel.hwe_kernel = null;
@@ -245,12 +245,12 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
     };
 
     // Updates the default and selectable kernels.
-    $scope.selectedReleaseChanged = function() {
+    $scope.selectedReleaseChanged = function () {
       $scope.hwe_kernels = getSelectableKernels();
       $scope.ngModel.hwe_kernel = null;
     };
 
-    $scope.osOutdated = function(release) {
+    $scope.osOutdated = function (release) {
       if (
         $scope.$parent.$parent.deployOptions &&
         $scope.$parent.$parent.deployOptions.installKVM
@@ -277,7 +277,7 @@ export function maasOsSelect(KVMDeployOSBlacklist) {
       return false;
     };
 
-    $scope.installKVMSelectedAndNotUbuntu = function(os) {
+    $scope.installKVMSelectedAndNotUbuntu = function (os) {
       if (
         $scope.$parent.$parent.deployOptions &&
         $scope.$parent.$parent.deployOptions.installKVM

@@ -18,7 +18,7 @@ function ConverterService() {
   var TERABYTE = 1000.0 * 1000.0 * 1000.0 * 1000.0;
 
   // Convert the bytes to a unit.
-  this.bytesToUnits = function(bytes) {
+  this.bytesToUnits = function (bytes) {
     // Support string being passed.
     if (angular.isString(bytes)) {
       bytes = parseInt(bytes, 10);
@@ -38,7 +38,7 @@ function ConverterService() {
           original: bytes,
           converted: converted,
           units: unit,
-          string: string
+          string: string,
         };
       }
       converted /= 1000.0;
@@ -46,7 +46,7 @@ function ConverterService() {
   };
 
   // Convert the data based on the unit to bytes.
-  this.unitsToBytes = function(data, unit) {
+  this.unitsToBytes = function (data, unit) {
     // Support string being passed.
     if (angular.isString(data)) {
       data = parseFloat(data);
@@ -66,7 +66,7 @@ function ConverterService() {
 
   // Convert the data based on unit down to the lowest tolerance to still
   // be the same value in that unit.
-  this.roundUnits = function(data, unit) {
+  this.roundUnits = function (data, unit) {
     // Support string being passed.
     if (angular.isString(data)) {
       data = parseFloat(data);
@@ -85,22 +85,22 @@ function ConverterService() {
   };
 
   // Round the bytes down to size based on the block size.
-  this.roundByBlockSize = function(bytes, block_size) {
+  this.roundByBlockSize = function (bytes, block_size) {
     return block_size * Math.floor(bytes / block_size);
   };
 
   // Convert string ipv4 address into octets array.
-  this.ipv4ToOctets = function(ipAddress) {
+  this.ipv4ToOctets = function (ipAddress) {
     var parts = ipAddress.split(".");
     var octets = [];
-    angular.forEach(parts, function(part) {
+    angular.forEach(parts, function (part) {
       octets.push(parseInt(part, 10));
     });
     return octets;
   };
 
   // Convert string ipv4 address into integer.
-  this.ipv4ToInteger = function(ipAddress) {
+  this.ipv4ToInteger = function (ipAddress) {
     var octets = this.ipv4ToOctets(ipAddress);
     return (
       octets[0] * Math.pow(256, 3) +
@@ -112,7 +112,7 @@ function ConverterService() {
 
   // Convert ipv6 address to a full ipv6 address, removing the
   // '::' shortcut and padding each group with zeros.
-  this.ipv6Expand = function(ipAddress) {
+  this.ipv6Expand = function (ipAddress) {
     var i,
       expandedAddress = ipAddress;
     if (expandedAddress.indexOf("::") !== -1) {
@@ -132,17 +132,17 @@ function ConverterService() {
     // Pad the output of each part with zeros.
     var output = [],
       parts = expandedAddress.split(":");
-    angular.forEach(parts, function(part) {
+    angular.forEach(parts, function (part) {
       output.push("0000".substr(part.length) + part);
     });
     return output.join(":");
   };
 
   // Convert string ipv6 into groups array.
-  this.ipv6ToGroups = function(ipAddress) {
+  this.ipv6ToGroups = function (ipAddress) {
     var groups = [];
     var parts = this.ipv6Expand(ipAddress).split(":");
-    angular.forEach(parts, function(part) {
+    angular.forEach(parts, function (part) {
       groups.push(parseInt(part, 16));
     });
     return groups;

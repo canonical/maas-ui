@@ -8,8 +8,8 @@ import angular from "angular";
 import addScriptsTmpl from "../partials/add-scripts.html";
 
 function filterScriptsByParam(scripts, param) {
-  return scripts.filter(script => {
-    const hasParam = Object.keys(script.parameters).filter(key => {
+  return scripts.filter((script) => {
+    const hasParam = Object.keys(script.parameters).filter((key) => {
       script.paramName = key;
       return script.parameters[key].type === param;
     });
@@ -26,7 +26,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
       ngModel: "=",
       scriptType: "=",
       setDefaultValues: "=",
-      checkTestParameterValues: "="
+      checkTestParameterValues: "=",
     },
     template: addScriptsTmpl,
     link: ($scope, element) => {
@@ -36,17 +36,17 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
       $scope.currentScript = {};
       $scope.onParameterChange = $scope.checkTestParameterValues;
 
-      $scope.getScripts = query => {
+      $scope.getScripts = (query) => {
         $scope.scripts.length = 0;
 
-        angular.forEach($scope.allScripts, script => {
+        angular.forEach($scope.allScripts, (script) => {
           if (
             script.script_type === $scope.scriptType &&
             script.name.indexOf(query) >= 0
           ) {
             script.tags_string = "";
 
-            angular.forEach(script.tags, tag => {
+            angular.forEach(script.tags, (tag) => {
               if (script.tags_string === "") {
                 script.tags_string = "(" + tag;
               } else {
@@ -62,11 +62,11 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
           }
         });
         return {
-          data: $scope.scripts
+          data: $scope.scripts,
         };
       };
 
-      $scope.onTagAdding = tag => {
+      $scope.onTagAdding = (tag) => {
         tag.parameters = $scope.setDefaultValues(tag.parameters);
         return tag.id !== undefined;
       };
@@ -82,7 +82,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
 
       $scope.$on("validate", (e, action, testSelection) => {
         $scope.ngModel = testSelection;
-        $scope.ngModel.forEach(script => {
+        $scope.ngModel.forEach((script) => {
           $scope.setDefaultValues(script.parameters);
         });
         $scope.scriptsWithUrlParam = filterScriptsByParam(
@@ -119,7 +119,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
       ManagerHelperService.loadManager($scope, ScriptsManager).then(() => {
         $scope.ngModel.length = 0;
 
-        angular.forEach($scope.allScripts, script => {
+        angular.forEach($scope.allScripts, (script) => {
           if (
             script.script_type === $scope.scriptType &&
             script.for_hardware.length === 0
@@ -145,10 +145,10 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
           "url"
         );
 
-        $scope.scriptsWithUrlParam.forEach(script => {
+        $scope.scriptsWithUrlParam.forEach((script) => {
           script.parameters = $scope.setDefaultValues(script.parameters);
         });
       });
-    }
+    },
   };
 }

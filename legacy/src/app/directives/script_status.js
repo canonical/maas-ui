@@ -9,10 +9,10 @@ export function maasScriptStatus() {
     restrict: "A",
     require: "scriptStatus",
     scope: {
-      scriptStatus: "="
+      scriptStatus: "=",
     },
     template: '<span data-ng-class="icon" data-ng-show="show"></span>',
-    controller: ScriptStatusController
+    controller: ScriptStatusController,
   };
 
   /* @ngInject */
@@ -68,7 +68,7 @@ export function maasScriptStatus() {
 
     getIcon();
 
-    $scope.$watch("scriptStatus", function() {
+    $scope.$watch("scriptStatus", function () {
       getIcon();
     });
   }

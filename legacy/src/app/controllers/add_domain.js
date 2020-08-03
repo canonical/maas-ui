@@ -25,7 +25,7 @@ function AddDomainController(
   function makeDomain() {
     return {
       name: "",
-      authoritative: true
+      authoritative: true,
     };
   }
 
@@ -41,7 +41,7 @@ function AddDomainController(
   }
 
   // Called by the parent scope when this controller is viewable.
-  $scope.show = function() {
+  $scope.show = function () {
     // Exit early if already viewable.
     if ($scope.viewable) {
       return;
@@ -51,7 +51,7 @@ function AddDomainController(
   };
 
   // Called by the parent scope when this controller is hidden.
-  $scope.hide = function() {
+  $scope.hide = function () {
     $scope.viewable = false;
 
     // Emit the hidden event.
@@ -59,7 +59,7 @@ function AddDomainController(
   };
 
   // Returns true if the name is in error.
-  $scope.nameHasError = function() {
+  $scope.nameHasError = function () {
     // If the name is empty don't show error.
     if ($scope.domain.name.length === 0) {
       return false;
@@ -69,7 +69,7 @@ function AddDomainController(
 
   // Return true when the domain is missing information or invalid
   // information.
-  $scope.domainHasError = function() {
+  $scope.domainHasError = function () {
     if ($scope.domain.name === "" || $scope.nameHasError()) {
       return true;
     }
@@ -78,14 +78,14 @@ function AddDomainController(
   };
 
   // Called when cancel clicked.
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $scope.error = null;
     $scope.domain = makeDomain();
     $scope.hide();
   };
 
   // Called when save is clicked.
-  $scope.save = function(addAnother) {
+  $scope.save = function (addAnother) {
     // Do nothing if domain in error.
     if ($scope.domainHasError()) {
       return;
@@ -98,14 +98,14 @@ function AddDomainController(
     // Create the domain.
     var domain = convertDomainToProtocol($scope.domain);
     DomainsManager.create(domain).then(
-      function() {
+      function () {
         $scope.domain = makeDomain();
         if (!addAnother) {
           // Hide the scope if not adding another.
           $scope.hide();
         }
       },
-      function(error) {
+      function (error) {
         $scope.error = ManagerHelperService.parseValidationError(error);
       }
     );

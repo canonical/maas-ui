@@ -11,7 +11,7 @@ describe("sendAnalyticsEvent", () => {
 
   // Load the sendAnalyticsEvent.
   var sendAnalyticsEvent;
-  beforeEach(inject($filter => {
+  beforeEach(inject(($filter) => {
     sendAnalyticsEvent = $filter("sendAnalyticsEvent");
   }));
 

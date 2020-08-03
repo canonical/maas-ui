@@ -5,30 +5,30 @@
  */
 import angular from "angular";
 
-describe("filterByVLAN", function() {
+describe("filterByVLAN", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the filterByVLAN.
   var filterByVLAN;
-  beforeEach(inject(function($filter) {
+  beforeEach(inject(function ($filter) {
     filterByVLAN = $filter("filterByVLAN");
   }));
 
-  it("returns empty if undefined space", function() {
+  it("returns empty if undefined space", function () {
     var i,
       subnet,
       subnets = [];
     for (i = 0; i < 3; i++) {
       subnet = {
-        vlan: 0
+        vlan: 0,
       };
       subnets.push(subnet);
     }
     expect(filterByVLAN(subnets)).toEqual([]);
   });
 
-  it("only returns subnets with vlan by object", function() {
+  it("only returns subnets with vlan by object", function () {
     var i,
       subnet,
       vlan_id = 1,
@@ -38,25 +38,25 @@ describe("filterByVLAN", function() {
       all_subnets = [];
     for (i = 0; i < 3; i++) {
       subnet = {
-        vlan: vlan_id
+        vlan: vlan_id,
       };
       subnet_vlans.push(subnet);
       all_subnets.push(subnet);
     }
     for (i = 0; i < 3; i++) {
       subnet = {
-        vlan: other_vlan_id
+        vlan: other_vlan_id,
       };
       other_subnet_vlans.push(subnet);
       all_subnets.push(subnet);
     }
     var vlan = {
-      id: vlan_id
+      id: vlan_id,
     };
     expect(filterByVLAN(all_subnets, vlan)).toEqual(subnet_vlans);
   });
 
-  it("only returns subnets with vlan by id", function() {
+  it("only returns subnets with vlan by id", function () {
     var i,
       subnet,
       vlan_id = 1,
@@ -66,14 +66,14 @@ describe("filterByVLAN", function() {
       all_subnets = [];
     for (i = 0; i < 3; i++) {
       subnet = {
-        vlan: vlan_id
+        vlan: vlan_id,
       };
       subnet_vlans.push(subnet);
       all_subnets.push(subnet);
     }
     for (i = 0; i < 3; i++) {
       subnet = {
-        vlan: other_vlan_id
+        vlan: other_vlan_id,
       };
       other_subnet_vlans.push(subnet);
       all_subnets.push(subnet);

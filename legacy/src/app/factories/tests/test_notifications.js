@@ -5,25 +5,25 @@
  */
 import angular from "angular";
 
-describe("NotificationsManager", function() {
+describe("NotificationsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the NotificationsManager and RegionConnection.
   var NotificationsManager;
   var RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     spyOn(RegionConnection, "registerNotifier");
     NotificationsManager = $injector.get("NotificationsManager");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(NotificationsManager._pk).toBe("id");
     expect(NotificationsManager._handler).toBe("notification");
   });
 
-  it("listens for updates", function() {
+  it("listens for updates", function () {
     expect(RegionConnection.registerNotifier).toHaveBeenCalled();
   });
 });

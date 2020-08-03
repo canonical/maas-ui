@@ -8,31 +8,31 @@
 
 angular.module("MAAS").run([
   "LogService",
-  function(LogService) {
+  function (LogService) {
     // Silence logging by default in the tests.
     LogService.logging = false;
 
     // Make our own monotonic clock for testing, since the unit test suite
     // won't have $window.performance.
     var time = 0;
-    LogService.now = function() {
+    LogService.now = function () {
       return time++;
     };
-  }
+  },
 ]);
 
-beforeEach(function() {
+beforeEach(function () {
   window.CONFIG = {
     current_user: {
       is_superuser: true,
-      completed_intro: true
+      completed_intro: true,
     },
     enable_analytics: false,
-    version: '2.7.0'
+    version: "2.7.0",
   };
 });
 
 // Mock the sentry client module
-beforeEach(() => angular.module('ngSentry', []));
+beforeEach(() => angular.module("ngSentry", []));
 
 window.DEBUG = true;

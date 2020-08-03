@@ -28,13 +28,13 @@ function NodeResultController(
   $scope.output = "combined";
   $scope.result = null;
 
-  $scope.get_result_data = function(output) {
+  $scope.get_result_data = function (output) {
     $scope.output = output;
     $scope.data = "Loading...";
     var nodeResultsManager = NodeResultsManagerFactory.getManager($scope.node);
     nodeResultsManager
       .get_result_data($scope.result.id, $scope.output)
-      .then(function(data) {
+      .then(function (data) {
         if (data === "") {
           $scope.data = "Empty file.";
         } else {
@@ -51,7 +51,7 @@ function NodeResultController(
     // Get the NodeResultsManager and load it.
     var nodeResultsManager = NodeResultsManagerFactory.getManager($scope.node);
     var requestedResult = parseInt($stateParams.id, 10);
-    nodeResultsManager.getItem(requestedResult).then(function(result) {
+    nodeResultsManager.getItem(requestedResult).then(function (result) {
       $scope.result = result;
       $scope.get_result_data($scope.output);
       $scope.resultLoaded = true;
@@ -60,7 +60,7 @@ function NodeResultController(
   }
 
   // Update the title when the fqdn of the node changes.
-  $scope.$watch("node.fqdn", function() {
+  $scope.$watch("node.fqdn", function () {
     if (angular.isObject($scope.node) && angular.isObject($scope.result)) {
       $rootScope.title = $scope.node.fqdn + " - " + $scope.result.name;
     }
@@ -77,7 +77,7 @@ function NodeResultController(
   }
   // Load nodes manager.
   ManagerHelperService.loadManager($scope, $scope.nodesManager).then(
-    function() {
+    function () {
       // If redirected from the NodeDetailsController then the node
       // will already be active. No need to set it active again.
       var activeNode = $scope.nodesManager.getActiveItem();
@@ -88,17 +88,17 @@ function NodeResultController(
         nodeLoaded(activeNode);
       } else {
         $scope.nodesManager.setActiveItem($stateParams.system_id).then(
-          function(node) {
+          function (node) {
             nodeLoaded(node);
 
             // Set flag for RSD navigation item.
             if (!$rootScope.showRSDLink) {
               GeneralManager.getNavigationOptions().then(
-                res => ($rootScope.showRSDLink = res.rsd)
+                (res) => ($rootScope.showRSDLink = res.rsd)
               );
             }
           },
-          function(error) {
+          function (error) {
             ErrorService.raiseError(error);
           }
         );
@@ -109,7 +109,7 @@ function NodeResultController(
   // Destroy the NodeResultsManager when the scope is destroyed. This is
   // so the client will not recieve any more notifications about results
   // from this node.
-  $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function () {
     var nodeResultsManager = NodeResultsManagerFactory.getManager($scope.node);
     if (angular.isObject(nodeResultsManager)) {
       nodeResultsManager.destroy();

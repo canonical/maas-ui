@@ -17,7 +17,7 @@ function ZonesManager(RegionConnection, Manager) {
 
     // Listen for notify events for the zone object.
     var self = this;
-    RegionConnection.registerNotifier("zone", function(action, data) {
+    RegionConnection.registerNotifier("zone", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -25,7 +25,7 @@ function ZonesManager(RegionConnection, Manager) {
   ZonesManager.prototype = new Manager();
 
   // Return the default zone.
-  ZonesManager.prototype.getDefaultZone = function(pod) {
+  ZonesManager.prototype.getDefaultZone = function (pod) {
     var zoneId = 0;
     var i;
     var itemsLength = this._items.length;

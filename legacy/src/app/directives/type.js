@@ -8,10 +8,10 @@ function ngType() {
   return {
     restrict: "A",
     scope: {
-      ngType: "="
+      ngType: "=",
     },
-    link: function(scope, element) {
-      scope.$watch("ngType", function() {
+    link: function (scope, element) {
+      scope.$watch("ngType", function () {
         let valid_types = [
           "button",
           "checkbox",
@@ -35,7 +35,7 @@ function ngType() {
           "text",
           "time ",
           "url",
-          "week"
+          "week",
         ];
         if (valid_types.indexOf(scope.ngType) !== -1) {
           element[0].type = scope.ngType;
@@ -43,7 +43,7 @@ function ngType() {
           throw new Error("Invalid input type: " + scope.ngType);
         }
       });
-    }
+    },
   };
 }
 

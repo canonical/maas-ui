@@ -26,33 +26,33 @@ function ZonesListController(
   $scope.loading = true;
   $scope.action = {
     open: false,
-    obj: {}
+    obj: {},
   };
 
   // Open add zone view.
-  $scope.addZone = function() {
+  $scope.addZone = function () {
     $scope.action.open = true;
   };
 
   // Saving has completed.
-  $scope.closeZone = function() {
+  $scope.closeZone = function () {
     $scope.action.open = false;
     $scope.action.obj = {};
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   ManagerHelperService.loadManagers($scope, [ZonesManager, UsersManager]).then(
-    function() {
+    function () {
       $scope.loading = false;
 
       // Set flag for RSD navigation item.
       if (!$rootScope.showRSDLink) {
         GeneralManager.getNavigationOptions().then(
-          res => ($rootScope.showRSDLink = res.rsd)
+          (res) => ($rootScope.showRSDLink = res.rsd)
         );
       }
     }

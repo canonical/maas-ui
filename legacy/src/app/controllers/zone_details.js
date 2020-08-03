@@ -45,22 +45,22 @@ function ZoneDetailsController(
   }
 
   // Called when the "edit" button is cliked in the zone summary
-  $scope.enterEditSummary = function() {
+  $scope.enterEditSummary = function () {
     $scope.editSummary = true;
   };
 
   // Called when the "cancel" button is cliked in the zone summary
-  $scope.exitEditSummary = function() {
+  $scope.exitEditSummary = function () {
     $scope.editSummary = false;
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if this is the default zone.
-  $scope.isDefaultZone = function() {
+  $scope.isDefaultZone = function () {
     if (angular.isObject($scope.zone)) {
       return $scope.zone.id === 1;
     }
@@ -68,7 +68,7 @@ function ZoneDetailsController(
   };
 
   // Called to check if the zone can be deleted.
-  $scope.canBeDeleted = function() {
+  $scope.canBeDeleted = function () {
     if (angular.isObject($scope.zone)) {
       return $scope.zone.id !== 0;
     }
@@ -76,24 +76,24 @@ function ZoneDetailsController(
   };
 
   // Called when the delete zone button is pressed.
-  $scope.deleteButton = function() {
+  $scope.deleteButton = function () {
     $scope.error = null;
     $scope.confirmingDelete = true;
   };
 
   // Called when the cancel delete zone button is pressed.
-  $scope.cancelDeleteButton = function() {
+  $scope.cancelDeleteButton = function () {
     $scope.confirmingDelete = false;
   };
 
   // Called when the confirm delete space button is pressed.
-  $scope.deleteConfirmButton = function() {
+  $scope.deleteConfirmButton = function () {
     ZonesManager.deleteItem($scope.zone).then(
-      function() {
+      function () {
         $scope.confirmingDelete = false;
         $rootScope.navigateToLegacy("/zones");
       },
-      function(error) {
+      function (error) {
         $scope.error = ManagerHelperService.parseValidationError(error);
       }
     );
@@ -101,7 +101,7 @@ function ZoneDetailsController(
 
   // Load all the required managers.
   ManagerHelperService.loadManagers($scope, [ZonesManager, UsersManager]).then(
-    function() {
+    function () {
       // Possibly redirected from another controller that already had
       // this zone set to active. Only call setActiveItem if not
       // already the activeItem.
@@ -116,17 +116,17 @@ function ZoneDetailsController(
         zoneLoaded(activeZone);
       } else {
         ZonesManager.setActiveItem(requestedZone).then(
-          function(zone) {
+          function (zone) {
             zoneLoaded(zone);
 
             // Set flag for RSD navigation item.
             if (!$rootScope.showRSDLink) {
               GeneralManager.getNavigationOptions().then(
-                res => ($rootScope.showRSDLink = res.rsd)
+                (res) => ($rootScope.showRSDLink = res.rsd)
               );
             }
           },
-          function(error) {
+          function (error) {
             ErrorService.raiseError(error);
           }
         );

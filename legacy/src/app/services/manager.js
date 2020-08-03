@@ -15,7 +15,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   var METADATA_ACTIONS = {
     CREATE: "create",
     UPDATE: "update",
-    DELETE: "delete"
+    DELETE: "delete",
   };
 
   // Constructor
@@ -99,7 +99,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   }
 
   // Return index of the item in the given array.
-  Manager.prototype._getIndexOfItem = function(array, pk_value) {
+  Manager.prototype._getIndexOfItem = function (array, pk_value) {
     var i;
     var len;
     for (i = 0, len = array.length; i < len; i++) {
@@ -111,7 +111,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Replace the item in the array at the same index.
-  Manager.prototype._replaceItemInArray = function(array, item) {
+  Manager.prototype._replaceItemInArray = function (array, item) {
     var idx = this._getIndexOfItem(array, item[this._pk]);
     if (idx >= 0) {
       // Keep the current selection on the item.
@@ -121,7 +121,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Remove the item from the array.
-  Manager.prototype._removeItemByIdFromArray = function(array, pk_value) {
+  Manager.prototype._removeItemByIdFromArray = function (array, pk_value) {
     var idx = this._getIndexOfItem(array, pk_value);
     if (idx >= 0) {
       array.splice(idx, 1);
@@ -132,12 +132,12 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   // request. Should be used by subclass that want to add extra
   // parameters to the batch request. By default it returns an empty
   // object.
-  Manager.prototype._initBatchLoadParameters = function() {
+  Manager.prototype._initBatchLoadParameters = function () {
     return {};
   };
 
   // Batch load items from the region in groups of _batchSize.
-  Manager.prototype._batchLoadItems = function(array, extra_func) {
+  Manager.prototype._batchLoadItems = function (array, extra_func) {
     var self = this;
     var defer = $q.defer();
     var method = this._handler + ".list";
@@ -150,10 +150,10 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       if (array.length > 0) {
         params.start = array[array.length - 1][self._batchKey];
       }
-      RegionConnection.callMethod(method, params).then(function(items) {
+      RegionConnection.callMethod(method, params).then(function (items) {
         // Pass each item to extra_func function if given.
         if (angular.isFunction(extra_func)) {
-          angular.forEach(items, function(item) {
+          angular.forEach(items, function (item) {
             extra_func(item);
           });
         }
@@ -172,26 +172,26 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Resolves array of defers with item.
-  Manager.prototype._resolveDefers = function(defersArray, item) {
-    angular.forEach(defersArray, function(defer) {
+  Manager.prototype._resolveDefers = function (defersArray, item) {
+    angular.forEach(defersArray, function (defer) {
       defer.resolve(item);
     });
   };
 
   // Rejects array of defers with error.
-  Manager.prototype._rejectDefers = function(defersArray, error) {
-    angular.forEach(defersArray, function(defer) {
+  Manager.prototype._rejectDefers = function (defersArray, error) {
+    angular.forEach(defersArray, function (defer) {
       defer.reject(error);
     });
   };
 
   // Return list of items.
-  Manager.prototype.getItems = function() {
+  Manager.prototype.getItems = function () {
     return this._items;
   };
 
   // Clears the current state of the manager.
-  Manager.prototype.clear = function() {
+  Manager.prototype.clear = function () {
     this._loaded = false;
     this._items.length = 0;
     this._actionQueue.length = 0;
@@ -202,7 +202,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Clears the current state of the manager.
-  Manager.prototype.clearItems = function() {
+  Manager.prototype.clearItems = function () {
     this._loaded = false;
     this._items.length = 0;
     this._selectedItems.length = 0;
@@ -210,7 +210,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Load all the items.
-  Manager.prototype.loadItems = function() {
+  Manager.prototype.loadItems = function () {
     // If the items have already been loaded then, we need to
     // reload the items list not load the initial list.
     if (this._loaded) {
@@ -227,12 +227,12 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
     var self = this;
     this._isLoading = true;
-    return this._batchLoadItems(this._items, function(item) {
+    return this._batchLoadItems(this._items, function (item) {
       item.$selected = false;
       self._updateMetadata(item, METADATA_ACTIONS.CREATE);
       self._processItem(item);
     }).then(
-      function() {
+      function () {
         self._loaded = true;
         self._isLoading = false;
         self.processActions();
@@ -240,7 +240,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
         self._extraLoadDefers = [];
         return self._items;
       },
-      function(error) {
+      function (error) {
         self._rejectDefers(self._extraLoadDefers, error);
         self._extraLoadDefers = [];
         return $q.reject(error);
@@ -249,7 +249,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Reload the items list.
-  Manager.prototype.reloadItems = function() {
+  Manager.prototype.reloadItems = function () {
     // If the items have not been loaded then, we need to
     // load the initial list.
     if (!this._loaded) {
@@ -287,7 +287,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       }
 
       // The remain items in items array are the new items.
-      angular.forEach(items, function(item) {
+      angular.forEach(items, function (item) {
         self._items.push(item);
         self._processItem(item);
       });
@@ -301,7 +301,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
     // Start the reload process and once complete call updateItems.
     self._isLoading = true;
     return this._batchLoadItems(currentItems).then(
-      function(items) {
+      function (items) {
         updateItems(items);
         self._isLoading = false;
         self.processActions();
@@ -316,7 +316,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
         self._extraReloadDefers = [];
         return self._items;
       },
-      function(error) {
+      function (error) {
         self._rejectDefers(self._extraReloadDefers, error);
         self._extraReloadDefers = [];
         return $q.reject(error);
@@ -325,11 +325,11 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Enables auto reloading of the item list on connection to region.
-  Manager.prototype.enableAutoReload = function() {
+  Manager.prototype.enableAutoReload = function () {
     if (!this._autoReload) {
       this._autoReload = true;
       var self = this;
-      this._reloadFunc = function() {
+      this._reloadFunc = function () {
         self.reloadItems();
       };
       RegionConnection.registerHandler("open", this._reloadFunc);
@@ -337,7 +337,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Disable auto reloading of the item list on connection to region.
-  Manager.prototype.disableAutoReload = function() {
+  Manager.prototype.disableAutoReload = function () {
     if (this._autoReload) {
       RegionConnection.unregisterHandler("open", this._reloadFunc);
       this._reloadFunc = null;
@@ -346,26 +346,26 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // True when the initial item list has finished loading.
-  Manager.prototype.isLoaded = function() {
+  Manager.prototype.isLoaded = function () {
     return this._loaded;
   };
 
   // True when the item list is currently being loaded or reloaded.
-  Manager.prototype.isLoading = function() {
+  Manager.prototype.isLoading = function () {
     return this._isLoading;
   };
 
   // Allow for extra processing of items as they are added or updated.
-  Manager.prototype._processItem = function(item) {};
+  Manager.prototype._processItem = function (item) {};
 
   // Replace item in the items and selectedItems list.
-  Manager.prototype._replaceItem = function(item) {
+  Manager.prototype._replaceItem = function (item) {
     this._updateMetadata(item, METADATA_ACTIONS.UPDATE);
     this._replaceItemInArray(this._items, item);
   };
 
   // Remove item in the items and selectedItems list.
-  Manager.prototype._removeItem = function(pk_value) {
+  Manager.prototype._removeItem = function (pk_value) {
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx >= 0) {
       this._updateMetadata(this._items[idx], METADATA_ACTIONS.DELETE);
@@ -376,7 +376,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
   // Get the item from the list. Does not make a get request to the
   // region to load more data.
-  Manager.prototype.getItemFromList = function(pk_value) {
+  Manager.prototype.getItemFromList = function (pk_value) {
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx >= 0) {
       return this._items[idx];
@@ -386,59 +386,59 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Get the item from the region.
-  Manager.prototype.getItem = function(pk_value) {
+  Manager.prototype.getItem = function (pk_value) {
     var self = this;
     var method = this._handler + ".get";
     var params = {};
     params[this._pk] = pk_value;
-    return RegionConnection.callMethod(method, params).then(function(item) {
+    return RegionConnection.callMethod(method, params).then(function (item) {
       self._replaceItem(item);
       return item;
     });
   };
 
   // Send the create information to the region.
-  Manager.prototype.createItem = function(item) {
+  Manager.prototype.createItem = function (item) {
     var self = this;
     var method = this._handler + ".create";
     item = angular.copy(item);
     delete item.$selected;
-    return RegionConnection.callMethod(method, item).then(function(item) {
+    return RegionConnection.callMethod(method, item).then(function (item) {
       self._replaceItem(item);
       return item;
     });
   };
 
   // Send the update information to the region.
-  Manager.prototype.updateItem = function(item) {
+  Manager.prototype.updateItem = function (item) {
     var self = this;
     var method = this._handler + ".update";
     item = angular.copy(item);
     delete item.$selected;
-    return RegionConnection.callMethod(method, item).then(function(item) {
+    return RegionConnection.callMethod(method, item).then(function (item) {
       self._replaceItem(item);
       return item;
     });
   };
 
   // Send the delete call for item to the region.
-  Manager.prototype.deleteItem = function(item) {
+  Manager.prototype.deleteItem = function (item) {
     var self = this;
     var method = this._handler + ".delete";
     var params = {};
     params[this._pk] = item[this._pk];
-    return RegionConnection.callMethod(method, params).then(function() {
+    return RegionConnection.callMethod(method, params).then(function () {
       self._removeItem(item[self._pk]);
     });
   };
 
   // Return the active item.
-  Manager.prototype.getActiveItem = function() {
+  Manager.prototype.getActiveItem = function () {
     return this._activeItem;
   };
 
   // Set the active item.
-  Manager.prototype.setActiveItem = function(pk_value) {
+  Manager.prototype.setActiveItem = function (pk_value) {
     if (!this._loaded) {
       throw new Error("Cannot set active item unless the manager is loaded.");
     }
@@ -448,7 +448,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       // Item with pk_value does not exists. Reject the returned
       // deferred.
       var defer = $q.defer();
-      $timeout(function() {
+      $timeout(function () {
         defer.reject("No item with pk: " + pk_value);
       });
       return defer.promise;
@@ -462,7 +462,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       var method = this._handler + ".set_active";
       var params = {};
       params[this._pk] = pk_value;
-      return RegionConnection.callMethod(method, params).then(function(item) {
+      return RegionConnection.callMethod(method, params).then(function (item) {
         self._replaceItem(item);
         return self._activeItem;
       });
@@ -470,21 +470,21 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Clears the active item.
-  Manager.prototype.clearActiveItem = function() {
+  Manager.prototype.clearActiveItem = function () {
     this._activeItem = null;
   };
 
   // True when the item list is stable and not being loaded or reloaded.
-  Manager.prototype.canProcessActions = function() {
+  Manager.prototype.canProcessActions = function () {
     return !this._isLoading;
   };
 
   // Handle notify from RegionConnection about an item.
-  Manager.prototype.onNotify = function(action, data) {
+  Manager.prototype.onNotify = function (action, data) {
     // Place the notification in the action queue.
     this._actionQueue.push({
       action: action,
-      data: data
+      data: data,
     });
     // Processing incoming actions is enabled. Otherwise they
     // will be queued until processActions is called.
@@ -494,7 +494,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Process all actions to keep the item information up-to-date.
-  Manager.prototype.processActions = function() {
+  Manager.prototype.processActions = function () {
     while (this._actionQueue.length > 0) {
       var action = this._actionQueue.shift();
       if (action.action === "create") {
@@ -522,12 +522,12 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Return list of selected items.
-  Manager.prototype.getSelectedItems = function() {
+  Manager.prototype.getSelectedItems = function () {
     return this._selectedItems;
   };
 
   // Mark the given item as selected.
-  Manager.prototype.selectItem = function(pk_value) {
+  Manager.prototype.selectItem = function (pk_value) {
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx === -1) {
       // eslint-disable-next-line no-console
@@ -551,7 +551,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Mark the given item as unselected.
-  Manager.prototype.unselectItem = function(pk_value) {
+  Manager.prototype.unselectItem = function (pk_value) {
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx === -1) {
       // eslint-disable-next-line no-console
@@ -576,7 +576,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Determine if a item is selected.
-  Manager.prototype.isSelected = function(pk_value) {
+  Manager.prototype.isSelected = function (pk_value) {
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx === -1) {
       // eslint-disable-next-line no-console
@@ -595,7 +595,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Return the metadata object value from `metadatas` matching `name`.
-  Manager.prototype._getMetadataValue = function(metadatas, name) {
+  Manager.prototype._getMetadataValue = function (metadatas, name) {
     var i;
     for (i = 0; i < metadatas.length; i++) {
       if (metadatas[i].name === name) {
@@ -607,21 +607,21 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
   // Add new value to metadatas if it doesn't exists or increment the
   // count if it already does.
-  Manager.prototype._addMetadataValue = function(metadatas, value) {
+  Manager.prototype._addMetadataValue = function (metadatas, value) {
     var metadata = this._getMetadataValue(metadatas, value);
     if (metadata) {
       metadata.count += 1;
     } else {
       metadata = {
         name: value,
-        count: 1
+        count: 1,
       };
       metadatas.push(metadata);
     }
   };
 
   // Remove value from metadatas.
-  Manager.prototype._removeMetadataValue = function(metadatas, value) {
+  Manager.prototype._removeMetadataValue = function (metadatas, value) {
     var metadata = this._getMetadataValue(metadatas, value);
     if (metadata) {
       metadata.count -= 1;
@@ -633,7 +633,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
   // Update the metadata entry in `metadatas` for the array value and
   // based on the action.
-  Manager.prototype._updateMetadataArrayEntry = function(
+  Manager.prototype._updateMetadataArrayEntry = function (
     metadatas,
     newValue,
     action,
@@ -642,7 +642,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
     var self = this;
 
     if (action === METADATA_ACTIONS.CREATE) {
-      angular.forEach(newValue, function(value) {
+      angular.forEach(newValue, function (value) {
         // On create ignore empty values.
         if (value === "") {
           return;
@@ -650,7 +650,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
         self._addMetadataValue(metadatas, value);
       });
     } else if (action === METADATA_ACTIONS.DELETE) {
-      angular.forEach(newValue, function(value) {
+      angular.forEach(newValue, function (value) {
         self._removeMetadataValue(metadatas, value);
       });
     } else if (
@@ -661,7 +661,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       // in oldArray have been removed.
       var added = [];
       var oldArray = angular.copy(oldValue);
-      angular.forEach(newValue, function(value) {
+      angular.forEach(newValue, function (value) {
         var idx = oldArray.indexOf(value);
         if (idx === -1) {
           // Value not in oldArray so it has been added.
@@ -673,12 +673,12 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
       });
 
       // Add the new values.
-      angular.forEach(added, function(value) {
+      angular.forEach(added, function (value) {
         self._addMetadataValue(metadatas, value);
       });
 
       // Remove the old values.
-      angular.forEach(oldArray, function(value) {
+      angular.forEach(oldArray, function (value) {
         self._removeMetadataValue(metadatas, value);
       });
     }
@@ -687,7 +687,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   // Update the metadata entry in `metadatas` for the newValue and based
   // on the action. Method does not work with array values, use
   // _updateMetadataArrayEntry for values that are arrays.
-  Manager.prototype._updateMetadataValueEntry = function(
+  Manager.prototype._updateMetadataValueEntry = function (
     metadatas,
     newValue,
     action,
@@ -726,7 +726,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   // Update the metadata entry in `metadatas` with the newValue and based
   // on the action. Update action will use the oldValue to remove it from
   // the metadata.
-  Manager.prototype._updateMetadataEntry = function(
+  Manager.prototype._updateMetadataEntry = function (
     metadatas,
     newValue,
     action,
@@ -740,12 +740,12 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Return the metadata object.
-  Manager.prototype.getMetadata = function() {
+  Manager.prototype.getMetadata = function () {
     return this._metadata;
   };
 
   // Update the metadata objects based on the given item and action.
-  Manager.prototype._updateMetadata = function(item, action) {
+  Manager.prototype._updateMetadata = function (item, action) {
     var self = this;
     var oldItem, idx;
     if (action === METADATA_ACTIONS.UPDATE) {
@@ -756,7 +756,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
         oldItem = this._items[idx];
       }
     }
-    angular.forEach(this._metadataAttributes, function(func, attr) {
+    angular.forEach(this._metadataAttributes, function (func, attr) {
       if (angular.isUndefined(self._metadata[attr])) {
         self._metadata[attr] = [];
       }
@@ -782,7 +782,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
   };
 
   // Format maas version number
-  Manager.prototype.formatMAASVersionNumber = function() {
+  Manager.prototype.formatMAASVersionNumber = function () {
     if (window.CONFIG.version) {
       var versionWithPoint = window.CONFIG.version.split(" ")[0];
 
@@ -802,7 +802,7 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
   // Default implementation of getName(): returns the default name for
   // this object, if it exists.
-  Manager.prototype.getName = function(obj) {
+  Manager.prototype.getName = function (obj) {
     if (!angular.isObject(obj)) {
       return;
     }

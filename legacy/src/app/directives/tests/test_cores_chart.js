@@ -11,7 +11,7 @@ describe("maasCoresChart", () => {
 
   // Create a new scope before each test.
   let $scope;
-  beforeEach(inject($rootScope => {
+  beforeEach(inject(($rootScope) => {
     $scope = $rootScope.$new();
   }));
 
@@ -26,11 +26,11 @@ describe("maasCoresChart", () => {
       "overcommit='" + scope.overcommit + "'",
       ">",
       "</maas-cores-chart>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject($compile => {
+    inject(($compile) => {
       directive = $compile(html)($scope);
     });
 

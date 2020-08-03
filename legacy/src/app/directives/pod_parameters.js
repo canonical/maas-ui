@@ -17,10 +17,10 @@ export function maasPodParameters(
     restrict: "E",
     require: "^^maasObjForm",
     scope: {
-      hideType: "="
+      hideType: "=",
     },
     template: podParametersTmpl,
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       scope.powerTypes = GeneralManager.getData("power_types");
       scope.podTypes = [];
       scope.type = null;
@@ -29,7 +29,7 @@ export function maasPodParameters(
         fieldsElement = angular.element(element.find("div[pod-fields]"));
 
       // Function to update the editable fields.
-      var updateFields = function(podType) {
+      var updateFields = function (podType) {
         var type = null;
         var i;
         for (i = 0; i < scope.podTypes.length; i++) {
@@ -44,7 +44,7 @@ export function maasPodParameters(
         }
         if (angular.isObject(type)) {
           var html = "";
-          angular.forEach(type.fields, function(field) {
+          angular.forEach(type.fields, function (field) {
             if (field.scope === "bmc") {
               if (field.name === "power_pass" || field.name === "password") {
                 html += '<maas-obj-field type="password" key="';
@@ -61,7 +61,10 @@ export function maasPodParameters(
             }
           });
 
-          if ((type.name === "virsh" || type.name === "lxd") && attrs.hideSlider !== "true") {
+          if (
+            (type.name === "virsh" || type.name === "lxd") &&
+            attrs.hideSlider !== "true"
+          ) {
             html +=
               '<maas-obj-field type="slider" key="' +
               'cpu_over_commit_ratio" label="CPU overcommit" ' +
@@ -86,7 +89,7 @@ export function maasPodParameters(
       };
 
       // Return the selected type.
-      var getType = function() {
+      var getType = function () {
         if (scope.hideType) {
           return controller.obj.type;
         } else {
@@ -98,9 +101,9 @@ export function maasPodParameters(
       scope.$watch(getType, updateFields);
 
       // Update the pod types when the power types is updated.
-      scope.$watchCollection("powerTypes", function() {
+      scope.$watchCollection("powerTypes", function () {
         scope.podTypes.length = 0;
-        angular.forEach(scope.powerTypes, function(type) {
+        angular.forEach(scope.powerTypes, function (type) {
           if (type.driver_type === "pod") {
             scope.podTypes.push(type);
           }
@@ -110,6 +113,6 @@ export function maasPodParameters(
 
       // Load the general manager.
       ManagerHelperService.loadManager(scope, GeneralManager);
-    }
+    },
   };
 }

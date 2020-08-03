@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeInteger } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("NetworksListController", function() {
+describe("NetworksListController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q, $stateParams, $location;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
@@ -26,7 +26,7 @@ describe("NetworksListController", function() {
   // Load the managers and services.
   var SubnetsManager, FabricsManager, SpacesManager, VLANsManager;
   var UsersManager, ManagerHelperService, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SubnetsManager = $injector.get("SubnetsManager");
     FabricsManager = $injector.get("FabricsManager");
     SpacesManager = $injector.get("SpacesManager");
@@ -61,19 +61,19 @@ describe("NetworksListController", function() {
       SpacesManager: SpacesManager,
       VLANsManager: VLANsManager,
       UsersManager: UsersManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Subnets");
     expect($rootScope.page).toBe("networks");
   });
 
-  it("sets initial values on $scope", function() {
+  it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
     expect($scope.subnets).toBe(SubnetsManager.getItems());
@@ -83,18 +83,18 @@ describe("NetworksListController", function() {
     expect($scope.loading).toBe(true);
   });
 
-  it("calls loadManagers with expected managers", function() {
+  it("calls loadManagers with expected managers", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       SubnetsManager,
       FabricsManager,
       SpacesManager,
       VLANsManager,
-      UsersManager
+      UsersManager,
     ]);
   });
 
-  it("sets loading to false with loadManagers resolves", function() {
+  it("sets loading to false with loadManagers resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -102,7 +102,7 @@ describe("NetworksListController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  it("populates actions when loadManagers resolves", function() {
+  it("populates actions when loadManagers resolves", function () {
     UsersManager._authUser = { is_superuser: true };
     var defer = $q.defer();
     makeController(defer);
@@ -114,7 +114,7 @@ describe("NetworksListController", function() {
   it(
     "creates empty actions array when loadManagers resolves " +
       "if not superuser",
-    function() {
+    function () {
       UsersManager._authUser = { is_superuser: false };
       var defer = $q.defer();
       makeController(defer);
@@ -124,7 +124,7 @@ describe("NetworksListController", function() {
     }
   );
 
-  describe("watchers and resolved managers", function() {
+  describe("watchers and resolved managers", function () {
     function setupController(fabrics, spaces, vlans, subnets) {
       var defer = $q.defer();
       var controller = makeController(defer);
@@ -153,25 +153,25 @@ describe("NetworksListController", function() {
       $rootScope.$digest();
     }
 
-    it("selects fabric groupBy by default", function() {
+    it("selects fabric groupBy by default", function () {
       setupController([], [], [], []);
       expect($scope.groupBy).toBe("fabric");
     });
 
-    it("selects space groupBy with search string", function() {
+    it("selects space groupBy with search string", function () {
       $location.search("by", "space");
       setupController([], [], [], []);
       expect($scope.groupBy).toBe("space");
     });
 
-    it("updates groupBy when location changes", function() {
+    it("updates groupBy when location changes", function () {
       setupController([], [], [], []);
       $location.search("by", "space");
       $rootScope.$broadcast("$routeUpdate");
       expect($scope.groupBy).toBe("space");
     });
 
-    it("updates location when groupBy changes", function() {
+    it("updates location when groupBy changes", function () {
       setupController([], [], [], []);
       expect($location.search()).toEqual({ by: "fabric" });
       $scope.groupBy = "space";
@@ -179,13 +179,13 @@ describe("NetworksListController", function() {
       expect($location.search()).toEqual({ by: "space" });
     });
 
-    it("initial update populates fabrics", function() {
+    it("initial update populates fabrics", function () {
       $location.search("by", "fabric");
       var fabrics = [{ id: 0, name: "fabric 0" }];
       var spaces = [{ id: 0, name: "space 0" }];
       var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: 0 }];
       var subnets = [
-        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
       ];
       setupController(fabrics, spaces, vlans, subnets);
       var rows = $scope.group.fabrics.rows;
@@ -200,13 +200,13 @@ describe("NetworksListController", function() {
       expect(rows[0].vlan_name).toBe("4 (vlan4)");
     });
 
-    it("initial update populates spaces", function() {
+    it("initial update populates spaces", function () {
       $location.search("by", "space");
       var fabrics = [{ id: 0, name: "fabric 0" }];
       var spaces = [{ id: 0, name: "space 0" }];
       var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: 0 }];
       var subnets = [
-        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
       ];
       setupController(fabrics, spaces, vlans, subnets);
       var rows = $scope.group.spaces.rows;
@@ -221,12 +221,12 @@ describe("NetworksListController", function() {
       expect(rows[0].vlan_name).toBe("4 (vlan4)");
     });
 
-    it("adding fabric updates lists", function() {
+    it("adding fabric updates lists", function () {
       var fabrics = [{ id: 0, name: "fabric-0" }];
       var spaces = [{ id: 0, name: "space-0" }];
       var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: 0 }];
       var subnets = [
-        { id: 0, name: "subnet-0", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+        { id: 0, name: "subnet-0", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
       ];
 
       var controller = setupController(fabrics, spaces, vlans, subnets);
@@ -245,7 +245,7 @@ describe("NetworksListController", function() {
         name: "subnet 1",
         vlan: 2,
         space: 0,
-        cidr: "10.21.0.0/16"
+        cidr: "10.21.0.0/16",
       });
       spaces.push({ id: 1, name: "space-1" });
       doUpdates(controller, fabrics, spaces, vlans, subnets);
@@ -254,12 +254,12 @@ describe("NetworksListController", function() {
       expect($scope.group.spaces.rows.length).toBe(3);
     });
 
-    it("adding space updates lists", function() {
+    it("adding space updates lists", function () {
       var fabrics = [{ id: 0, name: "fabric 0" }];
       var spaces = [{ id: 0, name: "space 0" }];
       var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: 0 }];
       var subnets = [
-        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
       ];
       var controller = setupController(fabrics, spaces, vlans, subnets);
       expect($scope.group.fabrics.rows.length).toBe(1);
@@ -269,7 +269,7 @@ describe("NetworksListController", function() {
         name: "subnet 1",
         vlan: 1,
         space: 1,
-        cidr: "10.20.0.0/16"
+        cidr: "10.20.0.0/16",
       });
       doUpdates(controller, fabrics, spaces, vlans, subnets);
       expect($scope.group.fabrics.rows.length).toBe(2);
@@ -284,7 +284,7 @@ describe("NetworksListController", function() {
       expect($scope.group.spaces.rows[1].space_name).toBe("");
     });
 
-    it("adding vlan updates lists appropriately", function() {
+    it("adding vlan updates lists appropriately", function () {
       var fabrics = [{ id: 0, name: "default" }];
       var spaces = [{ id: 0, name: "space-0" }];
       var vlans = [
@@ -293,8 +293,8 @@ describe("NetworksListController", function() {
           name: "vlan4",
           space: 0,
           vid: 4,
-          fabric: 0
-        }
+          fabric: 0,
+        },
       ];
       var subnets = [
         {
@@ -302,8 +302,8 @@ describe("NetworksListController", function() {
           name: "subnet 0",
           vlan: 1,
           cidr: "10.20.0.0/16",
-          space: 0
-        }
+          space: 0,
+        },
       ];
       var controller = setupController(fabrics, spaces, vlans, subnets);
       expect($scope.group.fabrics.rows.length).toBe(1);
@@ -312,14 +312,14 @@ describe("NetworksListController", function() {
         name: "vlan2",
         vid: 2,
         fabric: 0,
-        space: null
+        space: null,
       });
       subnets.push({
         id: 1,
         name: "subnet 1",
         vlan: 2,
         cidr: "10.21.0.0/16",
-        space: null
+        space: null,
       });
       doUpdates(controller, fabrics, spaces, vlans, subnets);
       // Fabric should have blank name
@@ -332,12 +332,12 @@ describe("NetworksListController", function() {
       expect($scope.group.spaces.orphanVLANs.length).toBe(1);
     });
 
-    it("adding subnet updates lists", function() {
+    it("adding subnet updates lists", function () {
       var fabrics = [{ id: 0, name: "fabric 0" }];
       var spaces = [{ id: 0, name: "space 0" }];
       var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: 0 }];
       var subnets = [
-        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+        { id: 0, name: "subnet 0", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
       ];
       var controller = setupController(fabrics, spaces, vlans, subnets);
       expect($scope.group.fabrics.rows.length).toBe(1);
@@ -346,7 +346,7 @@ describe("NetworksListController", function() {
         name: "subnet 1",
         vlan: 1,
         space: 0,
-        cidr: "10.99.34.0/24"
+        cidr: "10.99.34.0/24",
       });
       doUpdates(controller, fabrics, spaces, vlans, subnets);
       expect($scope.group.fabrics.rows.length).toBe(2);
@@ -359,54 +359,54 @@ describe("NetworksListController", function() {
     });
   });
 
-  describe("actionChanged", function() {
-    it("initializes newObject for fabric", function() {
+  describe("actionChanged", function () {
+    it("initializes newObject for fabric", function () {
       makeController();
       $scope.actionOption = {
         name: "add_fabric",
-        objectName: "fabric"
+        objectName: "fabric",
       };
       $scope.actionChanged();
       expect($scope.newObject).toEqual({});
     });
 
-    it("initializes newObject for vlan", function() {
+    it("initializes newObject for vlan", function () {
       makeController();
       var fabric = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.fabrics = [fabric];
       $scope.actionOption = {
         name: "add_vlan",
-        objectName: "vlan"
+        objectName: "vlan",
       };
       $scope.actionChanged();
       expect($scope.newObject).toEqual({
-        fabric: fabric.id
+        fabric: fabric.id,
       });
     });
 
-    it("initializes newObject for space", function() {
+    it("initializes newObject for space", function () {
       makeController();
       $scope.actionOption = {
         name: "add_space",
-        objectName: "space"
+        objectName: "space",
       };
       $scope.actionChanged();
       expect($scope.newObject).toEqual({});
     });
 
-    it("initializes newObject for subnet", function() {
+    it("initializes newObject for subnet", function () {
       makeController();
       var space = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var fabric = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var vlan = {
         id: makeInteger(0, 100),
-        fabric: fabric.id
+        fabric: fabric.id,
       };
       fabric.vlan_ids = [vlan.id];
       $scope.fabrics = [fabric];
@@ -414,17 +414,17 @@ describe("NetworksListController", function() {
       $scope.spaces = [space];
       $scope.actionOption = {
         name: "add_subnet",
-        objectName: "subnet"
+        objectName: "subnet",
       };
       $scope.actionChanged();
       expect($scope.newObject).toEqual({
-        vlan: vlan.id
+        vlan: vlan.id,
       });
     });
   });
 
-  describe("cancelAction", function() {
-    it("clears actionOption and newObject", function() {
+  describe("cancelAction", function () {
+    it("clears actionOption and newObject", function () {
       makeController();
       $scope.actionOption = {};
       $scope.newObject = {};
@@ -434,23 +434,23 @@ describe("NetworksListController", function() {
     });
   });
 
-  describe("actionSubnetPreSave", function() {
-    it("sets fabric to fabric ID for selected VLAN", function() {
+  describe("actionSubnetPreSave", function () {
+    it("sets fabric to fabric ID for selected VLAN", function () {
       makeController();
       var fabric = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var vlan = {
         id: makeInteger(0, 100),
-        fabric: fabric.id
+        fabric: fabric.id,
       };
       VLANsManager._items = [vlan];
       var updated = $scope.actionSubnetPreSave({
-        vlan: vlan.id
+        vlan: vlan.id,
       });
       expect(updated).toEqual({
         vlan: vlan.id,
-        fabric: fabric.id
+        fabric: fabric.id,
       });
     });
   });
@@ -477,10 +477,15 @@ describe("NetworksListController", function() {
     it("returns correct text if DHCP is relayed", () => {
       makeController();
       const fabrics = [{ id: 1, name: "fabric-1" }];
-      const vlans = [{ id: 2, vid: "vlan-1", relay_vlan: 3}, { fabric: 1, id: 3, vid: "vlan-2"}];
+      const vlans = [
+        { id: 2, vid: "vlan-1", relay_vlan: 3 },
+        { fabric: 1, id: 3, vid: "vlan-2" },
+      ];
       FabricsManager._items = fabrics;
       VLANsManager._items = vlans;
-      expect($scope.getDHCPStatus(vlans[0])).toEqual("Relayed via fabric-1.vlan-2");
+      expect($scope.getDHCPStatus(vlans[0])).toEqual(
+        "Relayed via fabric-1.vlan-2"
+      );
     });
   });
 });

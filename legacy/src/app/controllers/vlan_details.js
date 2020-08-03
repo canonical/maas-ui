@@ -6,9 +6,9 @@
 import angular from "angular";
 
 export function ignoreSelf() {
-  return function(objects, self) {
+  return function (objects, self) {
     var filtered = [];
-    angular.forEach(objects, function(obj) {
+    angular.forEach(objects, function (obj) {
       if (obj !== self) {
         filtered.push(obj);
       }
@@ -18,9 +18,9 @@ export function ignoreSelf() {
 }
 
 export function removeNoDHCP() {
-  return function(objects) {
+  return function (objects) {
     var filtered = [];
-    angular.forEach(objects, function(obj) {
+    angular.forEach(objects, function (obj) {
       if (obj.dhcp_on) {
         filtered.push(obj);
       }
@@ -62,7 +62,7 @@ export function VLANDetailsController(
 
   vm.DELETE_ACTION = {
     name: "delete",
-    title: "Delete"
+    title: "Delete",
   };
 
   vm.ipranges = IPRangesManager.getItems();
@@ -101,22 +101,22 @@ export function VLANDetailsController(
   vm.filteredSnippets = [];
 
   // Return true if the authenticated user is super user.
-  vm.isSuperUser = function() {
+  vm.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Called when the "edit" button is cliked in the vlan summary
-  vm.enterEditSummary = function() {
+  vm.enterEditSummary = function () {
     vm.editSummary = true;
   };
 
   // Called when the "cancel" button is cliked in the vlan summary
-  vm.exitEditSummary = function() {
+  vm.exitEditSummary = function () {
     vm.editSummary = false;
   };
 
   // Get the space name for the VLAN.
-  vm.getSpaceName = function() {
+  vm.getSpaceName = function () {
     var space = SpacesManager.getItemFromList(vm.vlan.space);
     if (space) {
       return space.name;
@@ -126,7 +126,7 @@ export function VLANDetailsController(
   };
 
   // Get the aciton structure for the action with the specified name.
-  vm.getActionByName = function(name) {
+  vm.getActionByName = function (name) {
     var i;
     for (i = 0; i < vm.actionOptions.length; i++) {
       if (vm.actionOptions[i].name === name) {
@@ -137,7 +137,7 @@ export function VLANDetailsController(
   };
 
   // Get the title for the DHCP panel
-  vm.getDHCPPanelTitle = function() {
+  vm.getDHCPPanelTitle = function () {
     var DHCPStatus = vm.getDHCPStatus();
 
     if (vm.vlan && vm.vlan.external_dhcp) {
@@ -152,7 +152,7 @@ export function VLANDetailsController(
   };
 
   // Set DHCP action
-  vm.setDHCPAction = function(action) {
+  vm.setDHCPAction = function (action) {
     if (action === "relayVLAN") {
       vm.relayVLAN = true;
       vm.provideDHCP = false;
@@ -165,14 +165,14 @@ export function VLANDetailsController(
   };
 
   // Toggle state of `MAASProvidesDHCP`
-  vm.toggleMAASProvidesDHCP = function() {
+  vm.toggleMAASProvidesDHCP = function () {
     vm.MAASProvidesDHCP = !vm.MAASProvidesDHCP;
   };
 
   // Initialize the provideDHCPAction structure with the current primary
   // and secondary rack, plus an indication regarding whether or not
   // adding a dynamic IP range is required.
-  vm.initProvideDHCP = function(forRelay) {
+  vm.initProvideDHCP = function (forRelay) {
     vm.provideDHCPAction = {};
     var dhcp = vm.provideDHCPAction;
     dhcp.subnet = null;
@@ -246,7 +246,7 @@ export function VLANDetailsController(
   };
 
   // Called when the actionOption has changed.
-  vm.actionOptionChanged = function() {
+  vm.actionOptionChanged = function () {
     if (vm.actionOption.name === "enable_dhcp") {
       vm.initProvideDHCP(false);
     } else if (vm.actionOption.name === "relay_dhcp") {
@@ -257,7 +257,7 @@ export function VLANDetailsController(
   };
 
   // Cancel the action.
-  vm.actionCancel = function() {
+  vm.actionCancel = function () {
     // When the user wants to cancel an action, we need to clear out
     // both the actionOption (so that the action screen will not be
     // presented again) and the actionError (so that the error screen
@@ -267,7 +267,7 @@ export function VLANDetailsController(
   };
 
   // Called from the Provide DHCP form when the primary rack changes.
-  vm.updatePrimaryRack = function() {
+  vm.updatePrimaryRack = function () {
     var dhcp = vm.provideDHCPAction;
     // If the user selects the secondary controller to be the primary,
     // then the primary controller needs to be cleared out.
@@ -287,7 +287,7 @@ export function VLANDetailsController(
   };
 
   // Called from the Provide DHCP form when the secondary rack changes.
-  vm.updateSecondaryRack = function() {
+  vm.updateSecondaryRack = function () {
     var dhcp = vm.provideDHCPAction;
     // This should no longer be possible due to the filters on the
     // drop-down boxes, but just in case.
@@ -299,13 +299,13 @@ export function VLANDetailsController(
 
   // Called from the view to exclude the primary rack when selecting
   // the secondary rack controller.
-  vm.filterPrimaryRack = function(rack) {
+  vm.filterPrimaryRack = function (rack) {
     var dhcp = vm.provideDHCPAction;
     return rack.system_id !== dhcp.primaryRack;
   };
 
   // Called from the Provide DHCP form when the subnet selection changes.
-  vm.updateSubnet = function(forRelay) {
+  vm.updateSubnet = function (forRelay) {
     var dhcp = vm.provideDHCPAction;
     var subnet = SubnetsManager.getItemFromList(dhcp.subnet);
     if (angular.isObject(subnet)) {
@@ -369,7 +369,7 @@ export function VLANDetailsController(
     }
   };
 
-  vm.actionRetry = function() {
+  vm.actionRetry = function () {
     // When we clear actionError, the HTML will be re-rendered to
     // hide the error message (and the user will be taken back to
     // the previous action they were performing, since we reset
@@ -378,7 +378,7 @@ export function VLANDetailsController(
   };
 
   // Return True if the current action can be performed.
-  vm.canPerformAction = function() {
+  vm.canPerformAction = function () {
     if (vm.actionOption.name === "delete") {
       return true;
     } else if (vm.provideDHCP) {
@@ -391,7 +391,7 @@ export function VLANDetailsController(
   };
 
   // Perform the action.
-  vm.actionGo = function() {
+  vm.actionGo = function () {
     // Do nothing if action cannot be performed.
     if (!vm.canPerformAction()) {
       return;
@@ -399,12 +399,12 @@ export function VLANDetailsController(
 
     if (vm.actionOption.name === "delete") {
       VLANsManager.deleteVLAN(vm.vlan).then(
-        function() {
+        function () {
           $rootScope.navigateToLegacy("/networks");
           vm.actionOption = null;
           vm.actionError = null;
         },
-        function(result) {
+        function (result) {
           vm.actionError = result.error;
           vm.actionOption = vm.DELETE_ACTION;
         }
@@ -413,24 +413,24 @@ export function VLANDetailsController(
   };
 
   // Delete VLAN
-  vm.deleteVLAN = function() {
+  vm.deleteVLAN = function () {
     vm.actionOption = vm.DELETE_ACTION;
   };
 
   // Return true if there is an action error.
-  vm.isActionError = function() {
+  vm.isActionError = function () {
     return vm.actionError !== null;
   };
 
   // Return the name of the VLAN.
-  vm.getFullVLANName = function(vlan_id) {
+  vm.getFullVLANName = function (vlan_id) {
     var vlan = VLANsManager.getItemFromList(vlan_id);
     var fabric = FabricsManager.getItemFromList(vlan.fabric);
     return FabricsManager.getName(fabric) + "." + VLANsManager.getName(vlan);
   };
 
   // Return the current DHCP status.
-  vm.getDHCPStatus = function() {
+  vm.getDHCPStatus = function () {
     if (vm.vlan) {
       if (vm.vlan.dhcp_on) {
         return "Enabled";
@@ -444,26 +444,26 @@ export function VLANDetailsController(
     }
   };
 
-  vm.getAvailableVLANS = function() {
-    var availableVLANS = vm.vlans.filter(function(vlan) {
+  vm.getAvailableVLANS = function () {
+    var availableVLANS = vm.vlans.filter(function (vlan) {
       return vlan !== vm.vlan && vlan.dhcp_on;
     });
     return availableVLANS.length;
   };
 
   // Sets suggested IP range
-  vm.setSuggestedRange = function() {
+  vm.setSuggestedRange = function () {
     vm.filteredRelatedSubnets = vm.relatedSubnets;
 
-    vm.filteredRelatedSubnets.forEach(function(subnet) {
+    vm.filteredRelatedSubnets.forEach(function (subnet) {
       subnet.subnet.statistics.ranges = subnet.subnet.statistics.ranges.filter(
-        function(range) {
+        function (range) {
           return range.num_addresses > 1 && range.purpose[0] === "unused";
         }
       );
     });
 
-    vm.iprangesInVLAN = vm.ipranges.filter(function(iprange) {
+    vm.iprangesInVLAN = vm.ipranges.filter(function (iprange) {
       return iprange.vlan === vm.vlan.id;
     });
 
@@ -478,7 +478,7 @@ export function VLANDetailsController(
         subnet: vm.selectedSubnet.subnet.id,
         gateway_ip:
           vm.selectedSubnet.subnet.gateway_ip ||
-          vm.selectedSubnet.subnet.statistics.suggested_gateway
+          vm.selectedSubnet.subnet.statistics.suggested_gateway,
       };
 
       if (vm.relayVLAN) {
@@ -494,7 +494,7 @@ export function VLANDetailsController(
   };
 
   // Enables DHCP
-  vm.enableDHCP = function() {
+  vm.enableDHCP = function () {
     vm.isProvidingDHCP = true;
     vm.DHCPError = null;
     var dhcp = vm.provideDHCPAction;
@@ -519,11 +519,11 @@ export function VLANDetailsController(
       return;
     }
     VLANsManager.configureDHCP(vm.vlan, controllers, extra).then(
-      function() {
+      function () {
         vm.DHCPError = null;
         vm.closeDHCPPanel();
       },
-      function(result) {
+      function (result) {
         vm.DHCPError = result.error;
         vm.isProvidingDHCP = false;
       }
@@ -531,7 +531,7 @@ export function VLANDetailsController(
   };
 
   // Relays DHCP
-  vm.relayDHCP = function() {
+  vm.relayDHCP = function () {
     vm.isProvidingDHCP = true;
     vm.DHCPError = null;
     // These will be undefined if they don't exist, and the region
@@ -548,10 +548,10 @@ export function VLANDetailsController(
     var relay = vm.provideDHCPAction.relayVLAN.id;
 
     VLANsManager.configureDHCP(vm.vlan, [], extraDHCP, relay).then(
-      function() {
+      function () {
         vm.closeDHCPPanel();
       },
-      function(result) {
+      function (result) {
         vm.DHCPError = result.error;
         vm.isProvidingDHCP = false;
       }
@@ -559,20 +559,20 @@ export function VLANDetailsController(
   };
 
   // Disables DHCP
-  vm.disableDHCP = function() {
+  vm.disableDHCP = function () {
     vm.isProvidingDHCP = true;
     VLANsManager.disableDHCP(vm.vlan).then(
-      function() {
+      function () {
         vm.closeDHCPPanel();
       },
-      function(result) {
+      function (result) {
         vm.DHCPError = result.error;
       }
     );
   };
 
   // Opens DHCP panel
-  vm.openDHCPPanel = function() {
+  vm.openDHCPPanel = function () {
     vm.showDHCPPanel = true;
     vm.initProvideDHCP(false);
 
@@ -584,7 +584,7 @@ export function VLANDetailsController(
   };
 
   // Closes DHCP Panel
-  vm.closeDHCPPanel = function() {
+  vm.closeDHCPPanel = function () {
     vm.showDHCPPanel = false;
     vm.suggestedRange = null;
     vm.isProvidingDHCP = false;
@@ -593,7 +593,7 @@ export function VLANDetailsController(
   };
 
   // Get button text for DHCP button
-  vm.getDHCPButtonText = function() {
+  vm.getDHCPButtonText = function () {
     if (vm.vlan) {
       if (vm.vlan.dhcp_on && !vm.vlan.relay_vlan) {
         return "Reconfigure DHCP";
@@ -606,8 +606,8 @@ export function VLANDetailsController(
   };
 
   // Checks if gateway col should be present in DHCP table
-  vm.showGatewayCol = function() {
-    var subnetsWithNoGateway = vm.relatedSubnets.filter(function(subnet) {
+  vm.showGatewayCol = function () {
+    var subnetsWithNoGateway = vm.relatedSubnets.filter(function (subnet) {
       return !subnet.subnet.gateway_ip;
     });
 
@@ -615,7 +615,7 @@ export function VLANDetailsController(
   };
 
   // Dismiss high availability notification
-  vm.dismissHighAvailabilityNotification = function() {
+  vm.dismissHighAvailabilityNotification = function () {
     vm.hideHighAvailabilityNotification = true;
     localStorage.setItem(
       `hideHighAvailabilityNotification-${vm.vlan.id}`,
@@ -623,7 +623,7 @@ export function VLANDetailsController(
     );
   };
 
-  vm.showHighAvailabilityNotification = function() {
+  vm.showHighAvailabilityNotification = function () {
     if (
       vm.vlan.dhcp_on &&
       !vm.provideDHCPAction.secondaryRack &&
@@ -682,7 +682,7 @@ export function VLANDetailsController(
       return;
     }
     var racks = [];
-    angular.forEach(vlan.rack_sids, function(rack_sid) {
+    angular.forEach(vlan.rack_sids, function (rack_sid) {
       var rack = ControllersManager.getItemFromList(rack_sid);
       if (angular.isObject(rack)) {
         racks.push(rack);
@@ -699,22 +699,22 @@ export function VLANDetailsController(
       return;
     }
     var subnets = [];
-    angular.forEach(filterByVLAN(vm.subnets, vlan), function(subnet) {
+    angular.forEach(filterByVLAN(vm.subnets, vlan), function (subnet) {
       var space = SpacesManager.getItemFromList(subnet.space);
       if (!angular.isObject(space)) {
         space = { name: "(undefined)" };
       }
       var row = {
         subnet: subnet,
-        space: space
+        space: space,
       };
       subnets.push(row);
     });
     vm.relatedSubnets = subnets;
 
-    let subnetIPs = subnets.map(subnet => subnet.subnet.cidr);
+    let subnetIPs = subnets.map((subnet) => subnet.subnet.cidr);
 
-    vm.snippets.forEach(snippet => {
+    vm.snippets.forEach((snippet) => {
       let subnet = SubnetsManager.getItemFromList(snippet.subnet);
 
       if (subnet) {
@@ -751,7 +751,7 @@ export function VLANDetailsController(
     if ($stateParams.provide_dhcp) {
       // Put this at the end of event loop otherwise
       // it doesn't have the data it needs
-      $timeout(function() {
+      $timeout(function () {
         vm.openDHCPPanel();
       }, 0);
     }
@@ -783,8 +783,8 @@ export function VLANDetailsController(
     FabricsManager,
     ControllersManager,
     UsersManager,
-    DHCPSnippetsManager
-  ]).then(function() {
+    DHCPSnippetsManager,
+  ]).then(function () {
     // Possibly redirected from another controller that already had
     // this vlan set to active. Only call setActiveItem if not
     // already the activeItem.
@@ -800,17 +800,17 @@ export function VLANDetailsController(
       vlanLoaded(activeVLAN);
     } else {
       VLANsManager.setActiveItem(requestedVLAN).then(
-        function(vlan) {
+        function (vlan) {
           vlanLoaded(vlan);
 
           // Set flag for RSD navigation item.
           if (!$rootScope.showRSDLink) {
             GeneralManager.getNavigationOptions().then(
-              res => ($rootScope.showRSDLink = res.rsd)
+              (res) => ($rootScope.showRSDLink = res.rsd)
             );
           }
         },
-        function(error) {
+        function (error) {
           ErrorService.raiseError(error);
         }
       );

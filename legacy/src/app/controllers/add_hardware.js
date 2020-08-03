@@ -55,7 +55,7 @@ function AddHardwareController(
       field_type: "string",
       default: "", // Using "default" to make lint happy.
       choices: [],
-      required: true
+      required: true,
     },
     {
       name: "password",
@@ -63,7 +63,7 @@ function AddHardwareController(
       field_type: "string",
       default: "",
       choices: [],
-      required: false
+      required: false,
     },
     {
       name: "prefix_filter",
@@ -71,8 +71,8 @@ function AddHardwareController(
       field_type: "string",
       default: "",
       choices: [],
-      required: false
-    }
+      required: false,
+    },
   ];
   $scope.chassisPowerTypes = [
     {
@@ -85,7 +85,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "username",
@@ -93,7 +93,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "password",
@@ -101,14 +101,14 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     },
     {
       name: "powerkvm",
       description: "PowerKVM",
-      fields: virshFields
+      fields: virshFields,
     },
     {
       name: "recs_box",
@@ -120,7 +120,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "port",
@@ -128,7 +128,7 @@ function AddHardwareController(
           field_type: "string",
           default: "80",
           choices: [],
-          required: false
+          required: false,
         },
         {
           name: "username",
@@ -136,7 +136,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "password",
@@ -144,9 +144,9 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     },
     {
       name: "seamicro15k",
@@ -158,7 +158,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "username",
@@ -166,7 +166,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "password",
@@ -174,7 +174,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "power_control",
@@ -184,11 +184,11 @@ function AddHardwareController(
           choices: [
             ["restapi2", "REST API V2.0"],
             ["restapi", "REST API V0.9"],
-            ["ipmi", "IPMI"]
+            ["ipmi", "IPMI"],
           ],
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     },
     {
       name: "ucsm",
@@ -200,7 +200,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "username",
@@ -208,7 +208,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "password",
@@ -216,14 +216,14 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     },
     {
       name: "virsh",
       description: "Virsh (virtual systems)",
-      fields: virshFields
+      fields: virshFields,
     },
     {
       name: "vmware",
@@ -235,7 +235,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "username",
@@ -243,7 +243,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "password",
@@ -251,7 +251,7 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: true
+          required: true,
         },
         {
           name: "prefix_filter",
@@ -259,10 +259,10 @@ function AddHardwareController(
           field_type: "string",
           default: "",
           choices: [],
-          required: false
-        }
-      ]
-    }
+          required: false,
+        },
+      ],
+    },
   ];
 
   // Get the default zone from the loaded zones.
@@ -303,7 +303,7 @@ function AddHardwareController(
   function newMAC() {
     return {
       mac: "",
-      error: false
+      error: false,
     };
   }
 
@@ -323,8 +323,8 @@ function AddHardwareController(
         min_hwe_kernel: cloneMachine.min_hwe_kernel,
         power: {
           type: cloneMachine.power.type,
-          parameters: {}
-        }
+          parameters: {},
+        },
       };
     }
 
@@ -339,8 +339,8 @@ function AddHardwareController(
       min_hwe_kernel: $scope.default_min_hwe_kernel.text,
       power: {
         type: null,
-        parameters: {}
-      }
+        parameters: {},
+      },
     };
   }
 
@@ -354,16 +354,16 @@ function AddHardwareController(
         domain: cloneChassis.domain,
         power: {
           type: null,
-          parameters: {}
-        }
+          parameters: {},
+        },
       };
     } else {
       return {
         domain: DomainsManager.getDefaultDomain(),
         power: {
           type: null,
-          parameters: {}
-        }
+          parameters: {},
+        },
       };
     }
   }
@@ -372,7 +372,7 @@ function AddHardwareController(
   function powerParametersHasError(power) {
     const { parameters, type } = power;
     const fields = type.fields || [];
-    return fields.some(field => {
+    return fields.some((field) => {
       if (field.required) {
         return !parameters[field.name];
       }
@@ -381,7 +381,7 @@ function AddHardwareController(
   }
 
   // Called by the parent scope when this controller is viewable.
-  $scope.show = function(mode) {
+  $scope.show = function (mode) {
     $scope.mode = mode;
 
     // Exit early if already viewable.
@@ -392,7 +392,7 @@ function AddHardwareController(
     var loadedItems = false,
       loadedManagers = false;
     var defer = $q.defer();
-    defer.promise.then(function() {
+    defer.promise.then(function () {
       // Add the first machine and chassis.
       $scope.machine = newMachine($scope.machine);
       $scope.chassis = newChassis($scope.chassis);
@@ -418,8 +418,8 @@ function AddHardwareController(
     GeneralManager.loadItems([
       "architectures",
       "hwe_kernels",
-      "default_min_hwe_kernel"
-    ]).then(function() {
+      "default_min_hwe_kernel",
+    ]).then(function () {
       loadedItems = true;
       if (loadedManagers) {
         defer.resolve();
@@ -427,8 +427,8 @@ function AddHardwareController(
     });
     ManagerHelperService.loadManagers($scope, [
       ZonesManager,
-      DomainsManager
-    ]).then(function() {
+      DomainsManager,
+    ]).then(function () {
       loadedManagers = true;
       if (loadedItems) {
         defer.resolve();
@@ -437,7 +437,7 @@ function AddHardwareController(
   };
 
   // Called by the parent scope when this controller is hidden.
-  $scope.hide = function() {
+  $scope.hide = function () {
     $scope.viewable = false;
 
     ManagerHelperService.unloadManagers($scope, [ZonesManager, DomainsManager]);
@@ -447,7 +447,7 @@ function AddHardwareController(
   };
 
   // Return True when architectures loaded and in machine mode.
-  $scope.showMachine = function() {
+  $scope.showMachine = function () {
     if ($scope.architectures.length === 0) {
       return false;
     }
@@ -455,7 +455,7 @@ function AddHardwareController(
   };
 
   // Return True when architectures loaded and in chassis mode.
-  $scope.showChassis = function() {
+  $scope.showChassis = function () {
     if ($scope.architectures.length === 0) {
       return false;
     }
@@ -463,12 +463,12 @@ function AddHardwareController(
   };
 
   // Add a new MAC address to the machine.
-  $scope.addMac = function() {
+  $scope.addMac = function () {
     $scope.machine.macs.push(newMAC());
   };
 
   // Remove a MAC address to the machine.
-  $scope.removeMac = function(mac) {
+  $scope.removeMac = function (mac) {
     var idx = $scope.machine.macs.indexOf(mac);
     if (idx > -1) {
       $scope.machine.macs.splice(idx, 1);
@@ -476,7 +476,7 @@ function AddHardwareController(
   };
 
   // Return true if the machine name is invalid.
-  $scope.invalidName = function() {
+  $scope.invalidName = function () {
     // Not invalid if empty.
     if ($scope.machine.name.length === 0) {
       return false;
@@ -485,7 +485,7 @@ function AddHardwareController(
   };
 
   // Validate that the mac address is valid.
-  $scope.validateMac = function(mac) {
+  $scope.validateMac = function (mac) {
     if (mac.mac === "") {
       mac.error = false;
     } else {
@@ -495,7 +495,7 @@ function AddHardwareController(
 
   // Return true when the machine is missing information or invalid
   // information.
-  $scope.machineHasError = function() {
+  $scope.machineHasError = function () {
     // Early-out for errors.
     let in_error =
       $scope.machine === null ||
@@ -535,7 +535,7 @@ function AddHardwareController(
   };
 
   // Return true if the chassis has errors.
-  $scope.chassisHasErrors = function() {
+  $scope.chassisHasErrors = function () {
     // Early-out for errors.
     let in_error =
       $scope.chassis === null || $scope.chassis.power.type === null;
@@ -546,7 +546,7 @@ function AddHardwareController(
   };
 
   // Called when the cancel button is pressed.
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $scope.machine = newMachine();
     $scope.chassis = newChassis();
 
@@ -562,7 +562,7 @@ function AddHardwareController(
     // Convert the mac addresses.
     var macs = angular.copy(machine.macs);
     var pxe_mac = macs.shift().mac;
-    var extra_macs = macs.map(function(mac) {
+    var extra_macs = macs.map(function (mac) {
       return mac.mac;
     });
 
@@ -578,18 +578,18 @@ function AddHardwareController(
       power_parameters: angular.copy(machine.power.parameters),
       zone: {
         id: machine.zone.id,
-        name: machine.zone.name
+        name: machine.zone.name,
       },
       pool: {
         id: machine.pool.id,
-        name: machine.pool.name
-      }
+        name: machine.pool.name,
+      },
     };
   }
 
   // Called to update maas-obj-form state with protocol
   // for macs and power.
-  $scope.saveMachine = function(addAnother) {
+  $scope.saveMachine = function (addAnother) {
     $scope.addAnother = addAnother;
     $scope.showErrors = true;
 
@@ -601,7 +601,7 @@ function AddHardwareController(
   };
 
   // maas-obj-form after-save callback
-  $scope.afterSaveMachine = function() {
+  $scope.afterSaveMachine = function () {
     if ($scope.addAnother) {
       $scope.machine = newMachine($scope.machine);
     } else {
@@ -613,7 +613,7 @@ function AddHardwareController(
   };
 
   // Called to perform the saving of the chassis.
-  $scope.saveChassis = function(addAnother) {
+  $scope.saveChassis = function (addAnother) {
     // Does nothing if error exists.
     if ($scope.chassisHasErrors()) {
       return;
@@ -644,10 +644,10 @@ function AddHardwareController(
       url: "api/2.0/machines/?op=add_chassis",
       data: urlParams.toString(),
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     }).then(
-      function() {
+      function () {
         if (addAnother) {
           $scope.chassis = newChassis($scope.chassis);
         } else {
@@ -656,7 +656,7 @@ function AddHardwareController(
           $scope.hide();
         }
       },
-      function(error) {
+      function (error) {
         $scope.error = ManagerHelperService.parseValidationError(error.data);
       }
     );

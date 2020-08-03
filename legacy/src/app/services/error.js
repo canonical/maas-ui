@@ -10,7 +10,7 @@ function ErrorService() {
   this._error = null;
 
   // Raise this error in the UI.
-  this.raiseError = function(error) {
+  this.raiseError = function (error) {
     // Possible that this method is called more than once.
     // Only take the first error.
     if (!angular.isString(this._error)) {
@@ -19,7 +19,7 @@ function ErrorService() {
   };
 
   // Clear the current error.
-  this.clearError = function() {
+  this.clearError = function () {
     this._error = null;
   };
 }

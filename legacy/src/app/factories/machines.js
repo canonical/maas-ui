@@ -24,27 +24,27 @@ function MachinesManager(RegionConnection, NodesManager) {
       status: null,
       owner: null,
       tags: null,
-      pod: function(machine) {
+      pod: function (machine) {
         return machine.pod === undefined ? "" : machine.pod.name;
       },
-      pool: function(machine) {
+      pool: function (machine) {
         return machine.pool.name;
       },
-      zone: function(machine) {
+      zone: function (machine) {
         return machine.zone.name;
       },
       subnets: null,
       fabrics: null,
       spaces: null,
       storage_tags: null,
-      release: function(machine) {
+      release: function (machine) {
         if (machine.status_code === 6 || machine.status_code === 9) {
           return machine.osystem + "/" + machine.distro_series;
         } else {
           return "";
         }
       },
-      numa_nodes_count: machine => {
+      numa_nodes_count: (machine) => {
         let count;
         if (machine.numa_nodes_count) {
           count = machine.numa_nodes_count;
@@ -53,62 +53,62 @@ function MachinesManager(RegionConnection, NodesManager) {
         }
         return `${count} node${count !== 1 ? "s" : ""}`;
       },
-      sriov_support: machine => {
+      sriov_support: (machine) => {
         let supported;
         if (machine.sriov_support) {
           supported = machine.sriov_support;
         } else {
           supported =
             machine.interfaces &&
-            machine.interfaces.some(iface => iface.sriov_max_vf >= 1);
+            machine.interfaces.some((iface) => iface.sriov_max_vf >= 1);
         }
         return supported ? "Supported" : "Not supported";
       },
-      link_speeds: machine => machine.link_speeds.sort()
+      link_speeds: (machine) => machine.link_speeds.sort(),
     };
 
     // Listen for notify events for the machine object.
     var self = this;
-    RegionConnection.registerNotifier("machine", function(action, data) {
+    RegionConnection.registerNotifier("machine", function (action, data) {
       self.onNotify(action, data);
     });
   }
   MachinesManager.prototype = new NodesManager();
 
-  MachinesManager.prototype.mountSpecialFilesystem = function(obj) {
+  MachinesManager.prototype.mountSpecialFilesystem = function (obj) {
     var method = this._handler + ".mount_special";
     var params = {
       system_id: obj.system_id,
       fstype: obj.fstype,
       mount_point: obj.mount_point,
-      mount_options: obj.mount_options
+      mount_options: obj.mount_options,
     };
     return RegionConnection.callMethod(method, params);
   };
 
-  MachinesManager.prototype.unmountSpecialFilesystem = function(
+  MachinesManager.prototype.unmountSpecialFilesystem = function (
     machine,
     mount_point
   ) {
     var method = this._handler + ".unmount_special";
     var params = {
       system_id: machine.system_id,
-      mount_point: mount_point
+      mount_point: mount_point,
     };
     return RegionConnection.callMethod(method, params);
   };
 
-  MachinesManager.prototype.applyStorageLayout = function(params) {
+  MachinesManager.prototype.applyStorageLayout = function (params) {
     var method = this._handler + ".apply_storage_layout";
     return RegionConnection.callMethod(method, params);
   };
 
-  MachinesManager.prototype.createDatastore = function(params) {
+  MachinesManager.prototype.createDatastore = function (params) {
     var method = this._handler + ".create_vmfs_datastore";
     return RegionConnection.callMethod(method, params);
   };
 
-  MachinesManager.prototype.updateDatastore = function(params) {
+  MachinesManager.prototype.updateDatastore = function (params) {
     var method = this._handler + ".update_vmfs_datastore";
     return RegionConnection.callMethod(method, params);
   };

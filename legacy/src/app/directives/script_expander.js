@@ -9,16 +9,16 @@
 function pScriptExpander() {
   return {
     restrict: "C",
-    link: function($scope, $element, $attrs) {
+    link: function ($scope, $element, $attrs) {
       var link = $element.find(".p-script-expander__trigger");
       var target = $element.find(".p-script-expander__content");
       target.addClass("u-hide");
 
-      link.on("click", function(evt) {
+      link.on("click", function (evt) {
         evt.preventDefault();
         target.toggleClass("u-hide");
       });
-    }
+    },
   };
 }
 

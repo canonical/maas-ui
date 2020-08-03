@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasAccordion", function() {
+describe("maasAccordion", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test. Not used in this test, but
   // required to compile the directive.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -26,11 +26,11 @@ describe("maasAccordion", function() {
       '<h4 class="maas-accordion-tab">Two</h4>',
       '<h4 class="maas-accordion-tab">Three</h4>',
       "</div>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -41,12 +41,12 @@ describe("maasAccordion", function() {
 
   // Compile the directive and get the tabs.
   var directive, tabs;
-  beforeEach(function() {
+  beforeEach(function () {
     directive = compileDirective();
     tabs = directive.find(".maas-accordion-tab");
   });
 
-  it("sets a new selected and leaves others open", function() {
+  it("sets a new selected and leaves others open", function () {
     angular.element(tabs[1]).click();
     expect(angular.element(tabs[0]).hasClass("is-selected")).toBe(true);
     expect(angular.element(tabs[1]).hasClass("is-selected")).toBe(true);
@@ -58,7 +58,7 @@ describe("maasAccordion", function() {
     expect(angular.element(tabs[2]).hasClass("is-selected")).toBe(true);
   });
 
-  it("closes a section when clicked and open", function() {
+  it("closes a section when clicked and open", function () {
     angular.element(tabs[1]).click();
     expect(angular.element(tabs[0]).hasClass("is-selected")).toBe(true);
     expect(angular.element(tabs[1]).hasClass("is-selected")).toBe(true);
@@ -70,9 +70,9 @@ describe("maasAccordion", function() {
     expect(angular.element(tabs[2]).hasClass("is-selected")).toBe(false);
   });
 
-  it("removes all click handlers on $destroy", function() {
+  it("removes all click handlers on $destroy", function () {
     directive.scope().$destroy();
-    angular.forEach(tabs, function(tab) {
+    angular.forEach(tabs, function (tab) {
       expect($._data(angular.element(tab)[0], "events")).toBeUndefined();
     });
   });

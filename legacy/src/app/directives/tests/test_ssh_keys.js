@@ -8,14 +8,14 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("maasSshKeys", function() {
+describe("maasSshKeys", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   var $sce, $q, $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $sce = $injector.get("$sce");
     $q = $injector.get("$q");
     $templateCache = $injector.get("$templateCache");
@@ -24,7 +24,7 @@ describe("maasSshKeys", function() {
 
   // Load the required managers.
   var SSHKeysManager, ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SSHKeysManager = $injector.get("SSHKeysManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
     // Mock buildSocket so an actual connection is not made.
@@ -35,7 +35,7 @@ describe("maasSshKeys", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -45,7 +45,7 @@ describe("maasSshKeys", function() {
     var html = ["<div>", "<maas-ssh-keys></maas-ssh-keys>", "</div>"].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -54,7 +54,7 @@ describe("maasSshKeys", function() {
     return directive.find("maas-ssh-keys");
   }
 
-  it("sets initial variables", function() {
+  it("sets initial variables", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.loading).toBe(true);
@@ -65,19 +65,19 @@ describe("maasSshKeys", function() {
       authId: "",
       key: "",
       error: null,
-      saving: false
+      saving: false,
     });
     expect(scope.sourceTitles).toEqual({
       lp: "Launchpad",
       gh: "Github",
-      upload: "Upload"
+      upload: "Upload",
     });
     expect(scope.openRow).toBeNull();
     expect(scope.rowMode).toBeNull();
     expect(scope.trustAsHtml).toBe($sce.trustAsHtml);
   });
 
-  it("clears loading once user manager loaded", function() {
+  it("clears loading once user manager loaded", function () {
     var defer = $q.defer();
     spyOn(ManagerHelperService, "loadManager").and.returnValue(defer.promise);
     var directive = compileDirective();
@@ -88,60 +88,60 @@ describe("maasSshKeys", function() {
     expect(scope.loading).toBe(false);
   });
 
-  it("updates groupedKeys when keys change", function() {
+  it("updates groupedKeys when keys change", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     var lpMAAS1 = {
       keysource: {
         protocol: "lp",
-        auth_id: "maas"
+        auth_id: "maas",
       },
-      key: "1"
+      key: "1",
     };
     var lpMAAS2 = {
       keysource: {
         protocol: "lp",
-        auth_id: "maas"
+        auth_id: "maas",
       },
-      key: "2"
+      key: "2",
     };
     var lpMAAS3 = {
       keysource: {
         protocol: "lp",
-        auth_id: "maas"
+        auth_id: "maas",
       },
-      key: "3"
+      key: "3",
     };
     var lpBlake1 = {
       keysource: {
         protocol: "lp",
-        auth_id: "blake"
+        auth_id: "blake",
       },
-      key: "1"
+      key: "1",
     };
     var lpBlake2 = {
       keysource: {
         protocol: "lp",
-        auth_id: "blake"
+        auth_id: "blake",
       },
-      key: "2"
+      key: "2",
     };
     var ghBlake1 = {
       keysource: {
         protocol: "gh",
-        auth_id: "blake"
+        auth_id: "blake",
       },
-      key: "1"
+      key: "1",
     };
     var uploaded1 = {
       id: 1,
       keysource: null,
-      key: "1"
+      key: "1",
     };
     var uploaded2 = {
       id: 2,
       keysource: null,
-      key: "2"
+      key: "2",
     };
     var keys = [
       lpMAAS1,
@@ -151,7 +151,7 @@ describe("maasSshKeys", function() {
       lpBlake2,
       ghBlake1,
       uploaded1,
-      uploaded2
+      uploaded2,
     ];
     scope.keys.push.apply(scope.keys, keys);
     $scope.$digest();
@@ -161,41 +161,41 @@ describe("maasSshKeys", function() {
         id: "lp/maas",
         source: "lp",
         authId: "maas",
-        keys: [lpMAAS1, lpMAAS2, lpMAAS3]
+        keys: [lpMAAS1, lpMAAS2, lpMAAS3],
       },
       {
         id: "lp/blake",
         source: "lp",
         authId: "blake",
-        keys: [lpBlake1, lpBlake2]
+        keys: [lpBlake1, lpBlake2],
       },
       {
         id: "gh/blake",
         source: "gh",
         authId: "blake",
-        keys: [ghBlake1]
+        keys: [ghBlake1],
       },
       {
         id: "upload/1",
         source: "upload",
         authId: "",
-        keys: [uploaded1]
+        keys: [uploaded1],
       },
       {
         id: "upload/2",
         source: "upload",
         authId: "",
-        keys: [uploaded2]
-      }
+        keys: [uploaded2],
+      },
     ]);
   });
 
-  describe("open", function() {
-    it("sets openRow and rowMode", function() {
+  describe("open", function () {
+    it("sets openRow and rowMode", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var obj = {
-        id: makeName("id")
+        id: makeName("id"),
       };
       var mode = makeName("mode");
       scope.open(obj, mode);
@@ -204,8 +204,8 @@ describe("maasSshKeys", function() {
     });
   });
 
-  describe("close", function() {
-    it("clears openRow", function() {
+  describe("close", function () {
+    it("clears openRow", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.openRow = {};
@@ -214,15 +214,15 @@ describe("maasSshKeys", function() {
     });
   });
 
-  describe("canImportKeys", function() {
-    it("returns false if saving", function() {
+  describe("canImportKeys", function () {
+    it("returns false if saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = true;
       expect(scope.canImportKeys()).toBe(false);
     });
 
-    it("returns false if lp source and no authId", function() {
+    it("returns false if lp source and no authId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -231,7 +231,7 @@ describe("maasSshKeys", function() {
       expect(scope.canImportKeys()).toBe(false);
     });
 
-    it("returns true if lp source and authId", function() {
+    it("returns true if lp source and authId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -240,7 +240,7 @@ describe("maasSshKeys", function() {
       expect(scope.canImportKeys()).toBe(true);
     });
 
-    it("returns false if gh source and no authId", function() {
+    it("returns false if gh source and no authId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -249,7 +249,7 @@ describe("maasSshKeys", function() {
       expect(scope.canImportKeys()).toBe(false);
     });
 
-    it("returns true if gh source and authId", function() {
+    it("returns true if gh source and authId", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -258,7 +258,7 @@ describe("maasSshKeys", function() {
       expect(scope.canImportKeys()).toBe(true);
     });
 
-    it("returns false if uploaded without key", function() {
+    it("returns false if uploaded without key", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -267,7 +267,7 @@ describe("maasSshKeys", function() {
       expect(scope.canImportKeys()).toBe(false);
     });
 
-    it("returns true if uploaded with key", function() {
+    it("returns true if uploaded with key", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.add.saving = false;
@@ -277,8 +277,8 @@ describe("maasSshKeys", function() {
     });
   });
 
-  describe("importKeys", function() {
-    it("does nothing if cannot import keys", function() {
+  describe("importKeys", function () {
+    it("does nothing if cannot import keys", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       spyOn(scope, "canImportKeys").and.returnValue(false);
@@ -288,7 +288,7 @@ describe("maasSshKeys", function() {
       expect(SSHKeysManager.importKeys).not.toHaveBeenCalled();
     });
 
-    it("clears error and sets saving", function() {
+    it("clears error and sets saving", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -303,11 +303,11 @@ describe("maasSshKeys", function() {
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.importKeys).toHaveBeenCalledWith({
         protocol: "lp",
-        auth_id: scope.add.authId
+        auth_id: scope.add.authId,
       });
     });
 
-    it("import - clears saving on resolve", function() {
+    it("import - clears saving on resolve", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -321,7 +321,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.importKeys).toHaveBeenCalledWith({
         protocol: "lp",
-        auth_id: scope.add.authId
+        auth_id: scope.add.authId,
       });
       defer.resolve();
       $scope.$digest();
@@ -332,7 +332,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.key).toBe("");
     });
 
-    it("import - sets error on reject", function() {
+    it("import - sets error on reject", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -346,7 +346,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.importKeys).toHaveBeenCalledWith({
         protocol: "lp",
-        auth_id: scope.add.authId
+        auth_id: scope.add.authId,
       });
       var error = makeName("error");
       defer.reject(error);
@@ -356,7 +356,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.error).toBe(error);
     });
 
-    it("import - handles __all__ in error on reject", function() {
+    it("import - handles __all__ in error on reject", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -370,10 +370,10 @@ describe("maasSshKeys", function() {
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.importKeys).toHaveBeenCalledWith({
         protocol: "lp",
-        auth_id: scope.add.authId
+        auth_id: scope.add.authId,
       });
       var error = {
-        __all__: [makeName("error")]
+        __all__: [makeName("error")],
       };
       defer.reject(angular.toJson(error));
       $scope.$digest();
@@ -382,7 +382,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.error).toBe(error.__all__[0]);
     });
 
-    it("create - clears saving on resolve", function() {
+    it("create - clears saving on resolve", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -395,7 +395,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.error).toBeNull();
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.createItem).toHaveBeenCalledWith({
-        key: scope.add.key
+        key: scope.add.key,
       });
       defer.resolve();
       $scope.$digest();
@@ -406,7 +406,7 @@ describe("maasSshKeys", function() {
       expect(scope.add.key).toBe("");
     });
 
-    it("create - sets error on reject", function() {
+    it("create - sets error on reject", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var defer = $q.defer();
@@ -419,10 +419,10 @@ describe("maasSshKeys", function() {
       expect(scope.add.error).toBeNull();
       expect(scope.add.saving).toBe(true);
       expect(SSHKeysManager.createItem).toHaveBeenCalledWith({
-        key: scope.add.key
+        key: scope.add.key,
       });
       var error = {
-        key: [makeName("error")]
+        key: [makeName("error")],
       };
       defer.reject(angular.toJson(error));
       $scope.$digest();
@@ -432,12 +432,12 @@ describe("maasSshKeys", function() {
     });
   });
 
-  describe("importKeys", function() {
-    it("calls deleteItem on all keys", function() {
+  describe("importKeys", function () {
+    it("calls deleteItem on all keys", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var obj = {
-        keys: [{}, {}]
+        keys: [{}, {}],
       };
       spyOn(SSHKeysManager, "deleteItem");
       scope.confirmDelete(obj);

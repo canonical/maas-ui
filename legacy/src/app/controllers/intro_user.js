@@ -22,27 +22,27 @@ function IntroUserController(
 
   // Set the skip function on the rootScope to allow skipping the
   // intro view.
-  $rootScope.skip = function() {
+  $rootScope.skip = function () {
     $scope.clickContinue(true);
   };
 
   // Return true if super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if continue can be clicked.
-  $scope.canContinue = function() {
+  $scope.canContinue = function () {
     return $scope.user.sshkeys_count > 0;
   };
 
   // Called when continue button is clicked.
-  $scope.clickContinue = function(force) {
+  $scope.clickContinue = function (force) {
     if (angular.isUndefined(force)) {
       force = false;
     }
     if (force || $scope.canContinue()) {
-      UsersManager.markIntroComplete().then(function() {
+      UsersManager.markIntroComplete().then(function () {
         // Reload the whole page so that CONFIG will
         // be set to the new value.
         $window.location.reload();
@@ -55,7 +55,7 @@ function IntroUserController(
     $rootScope.navigateToNew("/machines");
   } else {
     // Load the required managers.
-    ManagerHelperService.loadManager($scope, UsersManager).then(function() {
+    ManagerHelperService.loadManager($scope, UsersManager).then(function () {
       $scope.loading = false;
       $scope.user = UsersManager.getAuthUser();
     });

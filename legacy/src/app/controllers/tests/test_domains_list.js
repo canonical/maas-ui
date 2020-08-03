@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeInteger } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("DomainsListController", function() {
+describe("DomainsListController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q, $stateParams;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
@@ -25,7 +25,7 @@ describe("DomainsListController", function() {
   // Load the managers and services.
   var DomainsManager, UsersManager;
   var ManagerHelperService, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     DomainsManager = $injector.get("DomainsManager");
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
@@ -52,34 +52,34 @@ describe("DomainsListController", function() {
       $rootScope: $rootScope,
       $stateParams: $stateParams,
       DomainsManager: DomainsManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("DNS");
     expect($rootScope.page).toBe("domains");
   });
 
-  it("sets initial values on $scope", function() {
+  it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
     expect($scope.domains).toBe(DomainsManager.getItems());
     expect($scope.loading).toBe(true);
   });
 
-  it("calls loadManagers with [DomainsManager, UsersManager]", function() {
+  it("calls loadManagers with [DomainsManager, UsersManager]", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       DomainsManager,
-      UsersManager
+      UsersManager,
     ]);
   });
 
-  it("sets loading to false when loadManagers resolves", function() {
+  it("sets loading to false when loadManagers resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -87,44 +87,44 @@ describe("DomainsListController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  describe("addDomain", function() {
-    it("calls show in addDomainScope", function() {
+  describe("addDomain", function () {
+    it("calls show in addDomainScope", function () {
       makeController();
       $scope.addDomainScope = {
-        show: jasmine.createSpy("show")
+        show: jasmine.createSpy("show"),
       };
       $scope.addDomain();
       expect($scope.addDomainScope.show).toHaveBeenCalled();
     });
   });
 
-  describe("cancelAddDomain", function() {
-    it("calls cancel in addDomainScope", function() {
+  describe("cancelAddDomain", function () {
+    it("calls cancel in addDomainScope", function () {
       makeController();
       $scope.addDomainScope = {
-        cancel: jasmine.createSpy("cancel")
+        cancel: jasmine.createSpy("cancel"),
       };
       $scope.cancelAddDomain();
       expect($scope.addDomainScope.cancel).toHaveBeenCalled();
     });
   });
 
-  describe("confirmSetDefault", function() {
-    it("sets confirmSetDefaultRow to the specified row", function() {
+  describe("confirmSetDefault", function () {
+    it("sets confirmSetDefaultRow to the specified row", function () {
       makeController();
       var obj = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.confirmSetDefault(obj);
       expect($scope.confirmSetDefaultRow).toBe(obj);
     });
   });
 
-  describe("cancelSetDefault", function() {
-    it("sets confirmSetDefaultRow to the specified row", function() {
+  describe("cancelSetDefault", function () {
+    it("sets confirmSetDefaultRow to the specified row", function () {
       makeController();
       var obj = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.confirmSetDefaultRow = obj;
       $scope.cancelSetDefault();
@@ -132,12 +132,12 @@ describe("DomainsListController", function() {
     });
   });
 
-  describe("setDefault", function() {
-    it("calls DomainsManager.setDefault and clears selection", function() {
+  describe("setDefault", function () {
+    it("calls DomainsManager.setDefault and clears selection", function () {
       makeController();
       spyOn(DomainsManager, "setDefault");
       var obj = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.confirmSetDefaultRow = obj;
       $scope.setDefault(obj);

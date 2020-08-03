@@ -7,13 +7,13 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasReleaseName", function() {
+describe("maasReleaseName", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -23,11 +23,11 @@ describe("maasReleaseName", function() {
     var html = [
       "<div>",
       '<span data-maas-release-name="release"></span>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -36,18 +36,18 @@ describe("maasReleaseName", function() {
     return directive.find("span");
   }
 
-  it("set blank when doesn't exist on scope", function() {
+  it("set blank when doesn't exist on scope", function () {
     var directive = compileDirective();
     expect(directive.text()).toBe("");
   });
 
-  it("sets passed release value when no osinfo", function() {
+  it("sets passed release value when no osinfo", function () {
     $scope.release = makeName("release");
     var directive = compileDirective();
     expect(directive.text()).toBe($scope.release);
   });
 
-  it("sets to title from osinfo", function() {
+  it("sets to title from osinfo", function () {
     var os = makeName("os");
     var release = makeName("release");
     var title = makeName("title");

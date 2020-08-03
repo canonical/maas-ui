@@ -15,13 +15,13 @@ import angular from "angular";
 function windowWidth($window) {
   return {
     restrict: "A",
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       scope.windowWidth = $window.innerWidth;
       function onResize() {
         // uncomment for only fire when $window.innerWidth change
         if (scope.windowWidth !== $window.innerWidth) {
           scope.windowWidth = $window.innerWidth;
-          scope.$apply(function() {
+          scope.$apply(function () {
             scope.message = "Timeout called!";
           });
         }
@@ -33,7 +33,7 @@ function windowWidth($window) {
 
       angular.element($window).on("resize", onResize);
       scope.$on("$destroy", cleanUp);
-    }
+    },
   };
 }
 

@@ -7,7 +7,7 @@ import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 
-describe("maasNotifications", function() {
+describe("maasNotifications", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -48,7 +48,7 @@ describe("maasNotifications", function() {
       created: "Fri, 27 Jan. 2017 12:19:52",
       updated: "Fri, 27 Jan. 2017 12:19:52",
       dismissable: true,
-    }
+    },
   ];
   var exampleAdditionalNotification = {
     id: 4,
@@ -60,7 +60,7 @@ describe("maasNotifications", function() {
     admins: true,
     created: "Thu, 16 Feb. 2017 16:39:36",
     updated: "Thu, 16 Feb. 2017 16:39:36",
-    dismissable: false
+    dismissable: false,
   };
 
   // Load the NotificationsManager and
@@ -68,7 +68,7 @@ describe("maasNotifications", function() {
   var theNotificationsManager;
   var $scope;
 
-  beforeEach(inject(function($rootScope, NotificationsManager, $injector) {
+  beforeEach(inject(function ($rootScope, NotificationsManager, $injector) {
     theNotificationsManager = NotificationsManager;
     $scope = $rootScope.$new();
     // Mock buildSocket so an actual connection is not made.
@@ -77,14 +77,14 @@ describe("maasNotifications", function() {
     spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
-  describe("maas-notifications", function() {
+  describe("maas-notifications", function () {
     // Return the compiled directive.
     function compileDirective() {
       var directive;
       var html = "<maas-notifications></maas-notifications>";
 
       // Compile the directive.
-      inject(function($compile) {
+      inject(function ($compile) {
         directive = $compile(html)($scope);
       });
 
@@ -93,7 +93,7 @@ describe("maasNotifications", function() {
       return directive;
     }
 
-    it("renders notifications", function() {
+    it("renders notifications", function () {
       theNotificationsManager._items = exampleNotifications;
       var directive = compileDirective();
       // The directive renders an outer div for each notification.
@@ -104,18 +104,18 @@ describe("maasNotifications", function() {
       // Messages are rendered in the nested tree.
       var messages = directive
         .find("div > span > ul > li > p > span:nth-child(1)")
-        .map(function() {
+        .map(function () {
           return $(this).text();
         })
         .get();
       expect(messages).toEqual(
-        exampleNotifications.map(function(notification) {
+        exampleNotifications.map(function (notification) {
           return notification.message;
         })
       );
     });
 
-    it("dismisses when dismiss link is clicked", function() {
+    it("dismisses when dismiss link is clicked", function () {
       var notification = exampleNotifications[0];
       theNotificationsManager._items = [notification];
       var dismiss = spyOn(theNotificationsManager, "dismiss");
@@ -128,7 +128,7 @@ describe("maasNotifications", function() {
       notification is not dismissable`, () => {
       const notifications = [
         ...exampleNotifications,
-        exampleAdditionalNotification
+        exampleAdditionalNotification,
       ];
       theNotificationsManager._items = notifications;
       const dismiss = spyOn(theNotificationsManager, "dismiss");
@@ -138,18 +138,18 @@ describe("maasNotifications", function() {
       expect(dismiss).not.toHaveBeenCalledWith(notifications[3]);
     });
 
-    it("adjusts class according to category", function() {
+    it("adjusts class according to category", function () {
       theNotificationsManager._items = exampleNotifications;
       var directive = compileDirective();
       var classes = directive
         .find("div > span > ul > li")
-        .map(function() {
+        .map(function () {
           return $(this).attr("class");
         })
         .get();
       expect(classes.length).toBe(3);
       var p_classes = [];
-      angular.forEach(classes, function(cls) {
+      angular.forEach(classes, function (cls) {
         // Find classes that begin with 'p-'.
         var matches = cls.match(/\bp-.+\b/);
         p_classes = p_classes.concat(matches);
@@ -157,7 +157,7 @@ describe("maasNotifications", function() {
       expect(p_classes).toEqual([
         "p-notification ng-scope p-notification--negative",
         "p-notification ng-scope p-notification--caution",
-        "p-notification ng-scope"
+        "p-notification ng-scope",
       ]);
     });
 
@@ -175,7 +175,7 @@ describe("maasNotifications", function() {
       ).toBe(1);
     });
 
-    it("sanitizes messages", function() {
+    it("sanitizes messages", function () {
       var harmfulNotification = angular.copy(exampleNotifications[0]);
       harmfulNotification.message =
         "Hello <script>alert('Gotcha');</script><em>World</em>!";

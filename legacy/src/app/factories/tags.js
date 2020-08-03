@@ -18,7 +18,7 @@ function TagsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the tag object.
     var self = this;
-    RegionConnection.registerNotifier("tag", function(action, data) {
+    RegionConnection.registerNotifier("tag", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -27,10 +27,10 @@ function TagsManager(RegionConnection, Manager) {
 
   // Helper for autocomplete that will return a string of tags that
   // contain the query text.
-  TagsManager.prototype.autocomplete = function(query) {
+  TagsManager.prototype.autocomplete = function (query) {
     var matching = [];
     // Sort results alphabetically
-    this._items.sort(function(a, b) {
+    this._items.sort(function (a, b) {
       var firstValue = a.name;
       var secondValue = b.name;
 
@@ -45,7 +45,7 @@ function TagsManager(RegionConnection, Manager) {
       return 0;
     });
 
-    angular.forEach(this._items, function(item) {
+    angular.forEach(this._items, function (item) {
       if (item.name.indexOf(query) > -1) {
         matching.push(item.name);
       }

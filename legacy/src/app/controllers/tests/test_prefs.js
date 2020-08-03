@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("PreferencesController", function() {
+describe("PreferencesController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
@@ -20,7 +20,7 @@ describe("PreferencesController", function() {
 
   // Load any injected managers and services.
   var UsersManager, ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
   }));
@@ -38,13 +38,13 @@ describe("PreferencesController", function() {
     var controller = $controller("PreferencesController", {
       $scope: $scope,
       UsersManager: UsersManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("calls loadManager with correct managers", function() {
+  it("calls loadManager with correct managers", function () {
     makeController();
     expect(ManagerHelperService.loadManager).toHaveBeenCalledWith(
       $scope,
@@ -52,12 +52,12 @@ describe("PreferencesController", function() {
     );
   });
 
-  it("sets initial $scope", function() {
+  it("sets initial $scope", function () {
     makeController();
     expect($scope.loading).toBe(true);
   });
 
-  it("clears loading", function() {
+  it("clears loading", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();

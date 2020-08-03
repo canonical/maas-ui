@@ -4,7 +4,7 @@ function addMachine() {
   return {
     restrict: "E",
     scope: true,
-    template: addMachineTmpl
+    template: addMachineTmpl,
   };
 }
 

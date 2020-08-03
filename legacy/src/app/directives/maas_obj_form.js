@@ -30,14 +30,14 @@ export function maasObjForm(JSONService) {
     }
 
     var self = this;
-    $scope.$watch("obj", function() {
+    $scope.$watch("obj", function () {
       // Update the object when it changes.
       self.obj = $scope.obj;
       if (angular.isObject(self.obj)) {
         self.obj.$maasForm = self;
       }
     });
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
       // Remove the $maasForm from the object when directive is
       // deleted.
       if (angular.isObject(self.obj)) {
@@ -47,7 +47,7 @@ export function maasObjForm(JSONService) {
   }
 
   // Get the current value for a field in the form.
-  MAASFormController.prototype.getValue = function(key) {
+  MAASFormController.prototype.getValue = function (key) {
     var field = this.fields[key];
     if (angular.isObject(field) && angular.isObject(field.scope)) {
       return field.scope.getValue();
@@ -55,7 +55,7 @@ export function maasObjForm(JSONService) {
   };
 
   // Update the current value for a field in the form.
-  MAASFormController.prototype.updateValue = function(key, value) {
+  MAASFormController.prototype.updateValue = function (key, value) {
     var field = this.fields[key];
     if (angular.isObject(field) && angular.isObject(field.scope)) {
       return field.scope.updateValue(value);
@@ -64,7 +64,7 @@ export function maasObjForm(JSONService) {
 
   // Clone the current object for this form without the $maasForm
   // property set.
-  MAASFormController.prototype.cloneObject = function() {
+  MAASFormController.prototype.cloneObject = function () {
     if (!angular.isObject(this.obj)) {
       return this.obj;
     } else {
@@ -76,7 +76,7 @@ export function maasObjForm(JSONService) {
   };
 
   // Return true if table form.
-  MAASFormController.prototype.isTableForm = function() {
+  MAASFormController.prototype.isTableForm = function () {
     if (angular.isUndefined(this.scope.tableForm)) {
       // Default is not a table form.
       return false;
@@ -86,7 +86,7 @@ export function maasObjForm(JSONService) {
   };
 
   // Return true if the form should be saved on blur.
-  MAASFormController.prototype.saveOnBlur = function() {
+  MAASFormController.prototype.saveOnBlur = function () {
     if (angular.isUndefined(this.scope.saveOnBlur)) {
       // Default is save on blur.
       return true;
@@ -96,20 +96,20 @@ export function maasObjForm(JSONService) {
   };
 
   // Return true if the form is saving this field.
-  MAASFormController.prototype.isSaving = function(key) {
+  MAASFormController.prototype.isSaving = function (key) {
     return this.scope.saving && this.scope.savingKeys.indexOf(key) >= 0;
   };
 
   // Return true if the input should show the saving spinner. This is
   // only show on inputs in forms that are using save on blur.
-  MAASFormController.prototype.showInputSaving = function(key) {
+  MAASFormController.prototype.showInputSaving = function (key) {
     return this.saveOnBlur() && this.isSaving(key);
   };
 
   // Return true if any field in the form as an error.
-  MAASFormController.prototype.hasErrors = function() {
+  MAASFormController.prototype.hasErrors = function () {
     var hasErrors = false;
-    angular.forEach(this.fields, function(field) {
+    angular.forEach(this.fields, function (field) {
       if (field.scope.hasErrors()) {
         hasErrors = true;
       }
@@ -123,16 +123,16 @@ export function maasObjForm(JSONService) {
   };
 
   // Called by maas-obj-field to register it as a editable field.
-  MAASFormController.prototype.registerField = function(key, scope) {
+  MAASFormController.prototype.registerField = function (key, scope) {
     // Store the state of the field and its scope.
     this.fields[key] = {
       editing: false,
-      scope: scope
+      scope: scope,
     };
 
     // Watch for changes on the value of the object.
     var self = this;
-    this.scope.$watch("obj." + key, function() {
+    this.scope.$watch("obj." + key, function () {
       if (
         angular.isObject(self.obj) &&
         angular.isObject(self.fields[key]) &&
@@ -151,17 +151,17 @@ export function maasObjForm(JSONService) {
   };
 
   // Called by maas-obj-field to unregister it as a editable field.
-  MAASFormController.prototype.unregisterField = function(key) {
+  MAASFormController.prototype.unregisterField = function (key) {
     delete this.fields[key];
   };
 
   // Called by maas-obj-field to place field in edit mode.
-  MAASFormController.prototype.startEditingField = function(key) {
+  MAASFormController.prototype.startEditingField = function (key) {
     this.fields[key].editing = true;
   };
 
   // Called by maas-obj-field to end edit mode for the field.
-  MAASFormController.prototype.stopEditingField = function(key, value) {
+  MAASFormController.prototype.stopEditingField = function (key, value) {
     var field = this.fields[key];
 
     // Do nothing if not save on blur.
@@ -189,7 +189,7 @@ export function maasObjForm(JSONService) {
   };
 
   // Update the item using the manager.
-  MAASFormController.prototype.updateItem = function(updatedObj, keys) {
+  MAASFormController.prototype.updateItem = function (updatedObj, keys) {
     var key = keys[0];
     var field = this.fields[key];
     var self = this;
@@ -201,7 +201,7 @@ export function maasObjForm(JSONService) {
 
     // Update the item with the manager.
     return this.manager[this.managerMethod](updatedObj).then(
-      function(newObj) {
+      function (newObj) {
         // Update the value of the element.
         field.editing = false;
         field.scope.updateValue(newObj[key]);
@@ -212,11 +212,11 @@ export function maasObjForm(JSONService) {
         }
         return newObj;
       },
-      function(error) {
+      function (error) {
         var errorJson = JSONService.tryParse(error);
         if (angular.isObject(errorJson)) {
           // Add the error to each field it matches.
-          angular.forEach(errorJson, function(value, key) {
+          angular.forEach(errorJson, function (value, key) {
             var errorField = self.fields[key];
             if (!angular.isArray(value)) {
               value = [value];
@@ -231,7 +231,7 @@ export function maasObjForm(JSONService) {
               // the error on the editing field. Prefixing
               // the error with the field.
               if (key !== "__all__") {
-                value = value.map(function(v) {
+                value = value.map(function (v) {
                   return key + ": " + v;
                 });
               }
@@ -250,10 +250,10 @@ export function maasObjForm(JSONService) {
   };
 
   // Called when saveOnBlur is false to save the whole form.
-  MAASFormController.prototype.saveForm = function() {
+  MAASFormController.prototype.saveForm = function () {
     var keys = [];
     var updatedObj = this.cloneObject();
-    angular.forEach(this.fields, function(value, key) {
+    angular.forEach(this.fields, function (value, key) {
       value.scope.clearErrors();
       var newValue = value.scope.getValue();
       if (angular.isDefined(newValue) && updatedObj[key] !== newValue) {
@@ -276,7 +276,7 @@ export function maasObjForm(JSONService) {
     this.scope.saving = true;
     this.scope.savingKeys = keys;
     return this.manager[this.managerMethod](updatedObj).then(
-      function(newObj) {
+      function (newObj) {
         self.scope.saving = false;
         self.scope.savingKeys = [];
         if (angular.isFunction(self.scope.afterSave)) {
@@ -284,11 +284,11 @@ export function maasObjForm(JSONService) {
         }
         return newObj;
       },
-      function(error) {
+      function (error) {
         var errorJson = JSONService.tryParse(error);
         if (angular.isObject(errorJson)) {
           // Add the error to each field it matches.
-          angular.forEach(errorJson, function(value, key) {
+          angular.forEach(errorJson, function (value, key) {
             var errorField = self.fields[key];
             if (!angular.isArray(value)) {
               value = [value];
@@ -300,7 +300,7 @@ export function maasObjForm(JSONService) {
               errorField.scope.setErrors(value);
             } else {
               if (key !== "__all__") {
-                value = value.map(function(v) {
+                value = value.map(function (v) {
                   return key + ": " + v;
                 });
               }
@@ -341,7 +341,7 @@ export function maasObjForm(JSONService) {
       tableForm: "=",
       saveOnBlur: "=",
       inline: "=",
-      ngDisabled: "&"
+      ngDisabled: "&",
     },
     transclude: true,
     template:
@@ -349,7 +349,7 @@ export function maasObjForm(JSONService) {
       "'p-form--inline': inline, " +
       "'p-form--stacked': tableForm}\" " +
       "ng-transclude></form>",
-    controller: MAASFormController
+    controller: MAASFormController,
   };
 }
 
@@ -363,9 +363,9 @@ export function maasObjFieldGroup() {
     this.timeout = $timeout;
 
     var self = this;
-    this.scope.isEditing = function() {
+    this.scope.isEditing = function () {
       var editing = false;
-      angular.forEach(self.fields, function(value) {
+      angular.forEach(self.fields, function (value) {
         if (!editing) {
           editing = value.editing;
         }
@@ -375,57 +375,57 @@ export function maasObjFieldGroup() {
   }
 
   // Return true if table form.
-  MAASGroupController.prototype.isTableForm = function() {
+  MAASGroupController.prototype.isTableForm = function () {
     return this.formController.isTableForm();
   };
 
   // Return true if should save on blur.
-  MAASGroupController.prototype.saveOnBlur = function() {
+  MAASGroupController.prototype.saveOnBlur = function () {
     return this.formController.saveOnBlur();
   };
 
   // Return true if group is saving.
-  MAASGroupController.prototype.isSaving = function(key) {
+  MAASGroupController.prototype.isSaving = function (key) {
     return this.scope.saving && this.scope.savingKeys.indexOf(key) >= 0;
   };
 
   // Return true if the input should show the saving spinner. This is
   // only show on inputs in forms that are using save on blur.
-  MAASGroupController.prototype.showInputSaving = function(key) {
+  MAASGroupController.prototype.showInputSaving = function (key) {
     // In a group we say the entire group is saving, not just that
     // one key in the field is being saved.
     return this.saveOnBlur() && this.scope.saving;
   };
 
   // Called by maas-obj-field to register it as a editable field.
-  MAASGroupController.prototype.registerField = function(key, scope) {
+  MAASGroupController.prototype.registerField = function (key, scope) {
     // Store the state of the field and its scope.
     this.fields[key] = {
       editing: false,
-      scope: scope
+      scope: scope,
     };
     return this.formController.registerField(key, scope);
   };
 
   // Called by maas-obj-field to unregister it as a editable field.
-  MAASGroupController.prototype.unregisterField = function(key) {
+  MAASGroupController.prototype.unregisterField = function (key) {
     delete this.fields[key];
     this.formController.unregisterField(key);
   };
 
   // Called by maas-obj-field to place field in edit mode.
-  MAASGroupController.prototype.startEditingField = function(key) {
+  MAASGroupController.prototype.startEditingField = function (key) {
     this.fields[key].editing = true;
 
     // Set all fields in the group as editing in the formController.
     var self = this;
-    angular.forEach(this.fields, function(value, key) {
+    angular.forEach(this.fields, function (value, key) {
       self.formController.startEditingField(key);
     });
   };
 
   // Called by maas-obj-field to exit edit mode for the field.
-  MAASGroupController.prototype.stopEditingField = function(key, value) {
+  MAASGroupController.prototype.stopEditingField = function (key, value) {
     var field = this.fields[key];
     field.editing = false;
 
@@ -437,10 +437,10 @@ export function maasObjFieldGroup() {
     // Delay the handling of stop to make sure start is not called on
     // the next field in the group.
     var self = this;
-    this.timeout(function() {
+    this.timeout(function () {
       // If any other fields are in edit mode then nothing to do.
       var editing = false;
-      angular.forEach(self.fields, function(value) {
+      angular.forEach(self.fields, function (value) {
         if (!editing) {
           editing = value.editing;
         }
@@ -453,7 +453,7 @@ export function maasObjFieldGroup() {
       var keys = [];
       var changed = false;
       var updatedObj = self.formController.cloneObject();
-      angular.forEach(self.fields, function(value, key) {
+      angular.forEach(self.fields, function (value, key) {
         value.scope.clearErrors();
         var newValue = value.scope.getValue();
         if (angular.isDefined(newValue) && updatedObj[key] !== newValue) {
@@ -477,12 +477,12 @@ export function maasObjFieldGroup() {
       self.scope.saving = true;
       self.scope.savingKeys = keys;
       self.formController.updateItem(updatedObj, keys).then(
-        function(obj) {
+        function (obj) {
           self.scope.saving = false;
           self.scope.savingKeys = [];
           return obj;
         },
-        function(error) {
+        function (error) {
           self.scope.saving = false;
           self.scope.savingKeys = [];
           return error;
@@ -502,7 +502,7 @@ export function maasObjFieldGroup() {
       "data-ng-transclude></div>",
     controller: MAASGroupController,
     link: {
-      pre: function(scope, element, attrs, controllers) {
+      pre: function (scope, element, attrs, controllers) {
         // Set formController on the MAASGroupController to
         // point to its parent MAASFormController. This is done in
         // pre-link so the controller has the formController before
@@ -513,11 +513,11 @@ export function maasObjFieldGroup() {
         scope.ngDisabled = controllers[0].scope.ngDisabled;
 
         // Set the object to always be the same on the scope.
-        controllers[0].scope.$watch("obj", function(obj) {
+        controllers[0].scope.$watch("obj", function (obj) {
           scope.obj = obj;
         });
-      }
-    }
+      },
+    },
   };
 }
 
@@ -528,11 +528,11 @@ export function maasObjField($compile) {
     require: ["^^maasObjForm", "?^^maasObjFieldGroup"],
     scope: {
       onChange: "=",
-      subtleText: "@"
+      subtleText: "@",
     },
     transclude: true,
     template: "<div data-ng-transclude></div>",
-    link: function(scope, element, attrs, controllers) {
+    link: function (scope, element, attrs, controllers) {
       // Select the controller based on which is available.
       var controller = controllers[1];
       if (!angular.isObject(controller)) {
@@ -566,7 +566,7 @@ export function maasObjField($compile) {
         );
       }
       if (angular.isString(attrs.disabled)) {
-        scope.ngDisabled = function() {
+        scope.ngDisabled = function () {
           return true;
         };
       }
@@ -622,7 +622,7 @@ export function maasObjField($compile) {
           labelElement.append(infoWrapper);
 
           // prevents the icon from being clickable
-          infoIcon.bind("click", function(evt) {
+          infoIcon.bind("click", function (evt) {
             evt.preventDefault();
           });
         }
@@ -682,7 +682,7 @@ export function maasObjField($compile) {
 
         // Allow enter on blur, by default.
         if (attrs.blurOnEnter) {
-          inputElement.bind("keydown keypress", function(evt) {
+          inputElement.bind("keydown keypress", function (evt) {
             if (evt.which === 13) {
               inputElement.blur();
               evt.preventDefault();
@@ -691,7 +691,7 @@ export function maasObjField($compile) {
         }
 
         // Revert value on esc.
-        inputElement.bind("keydown keypress", function(evt) {
+        inputElement.bind("keydown keypress", function (evt) {
           if (evt.which === 27) {
             inputElement.val(controller.scope.obj[attrs.key]);
             inputElement.blur();
@@ -701,7 +701,7 @@ export function maasObjField($compile) {
 
         // Set input value if 'value' attr provided
         if (attrs.value) {
-          scope.$applyAsync(function() {
+          scope.$applyAsync(function () {
             inputElement.val(attrs.value);
           });
         }
@@ -712,26 +712,26 @@ export function maasObjField($compile) {
         inputElement.val(currentValue);
 
         // When element is in focus then editing is on.
-        inputElement.on("focus", function() {
-          scope.$apply(function() {
+        inputElement.on("focus", function () {
+          scope.$apply(function () {
             controller.startEditingField(attrs.key);
           });
         });
 
         // When element is not in focus then editing is done.
-        inputElement.on("blur", function() {
-          scope.$apply(function() {
+        inputElement.on("blur", function () {
+          scope.$apply(function () {
             controller.stopEditingField(attrs.key, inputElement.val());
           });
         });
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
+        scope.updateValue = function (newValue) {
           inputElement.val(newValue);
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
+        scope.getValue = function () {
           return inputElement.val();
         };
       } else if (attrs.type === "options") {
@@ -760,7 +760,7 @@ export function maasObjField($compile) {
         var childScope = scope.$parent.$new();
         childScope._ngDisabled = scope.ngDisabled;
         childScope._selectValue = controller.registerField(attrs.key, scope);
-        childScope._selectNgChange = function() {
+        childScope._selectNgChange = function () {
           scope._change();
           controller.stopEditingField(attrs.key, childScope._selectValue);
         };
@@ -784,12 +784,12 @@ export function maasObjField($compile) {
         )(childScope);
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
+        scope.updateValue = function (newValue) {
           childScope._selectValue = newValue;
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
+        scope.getValue = function () {
           return childScope._selectValue;
         };
       } else if (attrs.type === "checkboxes") {
@@ -808,10 +808,10 @@ export function maasObjField($compile) {
         // values can come from the parent scope.
         var checkScope = scope.$parent.$new();
         checkScope._selectedValues = controller.registerField(attrs.key, scope);
-        checkScope._checked = function(val) {
+        checkScope._checked = function (val) {
           return checkScope._selectedValues.indexOf(val) > -1;
         };
-        checkScope._toggleChecked = function(val) {
+        checkScope._toggleChecked = function (val) {
           var idx = checkScope._selectedValues.indexOf(val);
           if (idx > -1) {
             // Uncheck.
@@ -836,24 +836,24 @@ export function maasObjField($compile) {
             '<label for="' + attrs.key + "_",
             "{$ val $}" + '" ',
             'class="checkbox-label">{$ val $}</label>',
-            "</div>"
+            "</div>",
           ].join("")
         );
         inputElement = $compile(inputElement)(checkScope);
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
+        scope.updateValue = function (newValue) {
           checkScope._selectedValues = newValue;
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
+        scope.getValue = function () {
           return checkScope._selectedValues;
         };
       } else if (attrs.type === "tags") {
         var tagsScope = scope.$new();
         var tags = controller.registerField(attrs.key, scope);
-        tagsScope._tags = tags.map(function(val) {
+        tagsScope._tags = tags.map(function (val) {
           return { text: val };
         });
 
@@ -868,21 +868,21 @@ export function maasObjField($compile) {
             'data-ng-if="!ngDisabled()" ',
             'placeholder="' + placeholder + '" ',
             'data-ng-change="_change()" ',
-            'allow-tags-pattern="[\\w-]+"></tags-input>'
+            'allow-tags-pattern="[\\w-]+"></tags-input>',
           ].join("")
         );
         inputElement = $compile(inputElement)(tagsScope);
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
-          tagsScope._tags = newValue.map(function(val) {
+        scope.updateValue = function (newValue) {
+          tagsScope._tags = newValue.map(function (val) {
             return { text: val };
           });
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
-          return tagsScope._tags.map(function(val) {
+        scope.getValue = function () {
+          return tagsScope._tags.map(function (val) {
             return val.text;
           });
         };
@@ -894,20 +894,20 @@ export function maasObjField($compile) {
             '<input type="hidden" name="' + attrs.key + '" ',
             'id="' + attrs.key + '" ',
             'value="' + attrs.value + '">',
-            "</input>"
+            "</input>",
           ].join("")
         );
         inputElement = $compile(inputElement)(hiddenScope);
-        scope.getValue = function() {
+        scope.getValue = function () {
           return attrs.value;
         };
-        scope.updateValue = function() {
+        scope.updateValue = function () {
           return null;
         };
       } else if (attrs.type === "onoffswitch") {
         var switchScope = scope.$new();
         switchScope._toggle = controller.registerField(attrs.key, scope);
-        switchScope._changed = function() {
+        switchScope._changed = function () {
           scope._change();
           controller.startEditingField(attrs.key);
           controller.stopEditingField(attrs.key, switchScope.getValue());
@@ -924,13 +924,13 @@ export function maasObjField($compile) {
             'data-ng-model="_toggle" ',
             'data-ng-change="_changed()">',
             '<div class="maas-p-switch--mask"></div>',
-            "</div>"
+            "</div>",
           ].join("")
         );
         inputElement = $compile(inputElement)(switchScope);
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
+        scope.updateValue = function (newValue) {
           // WARNING: This code is difficult to unit test, since
           // we could not figure out how to get the
           // isolateScope() from the transcluded element. Be sure
@@ -948,7 +948,7 @@ export function maasObjField($compile) {
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
+        scope.getValue = function () {
           // WARNING: This code is difficult to unit test, since
           // we could not figure out how to get the
           // isolateScope() from the transcluded element. Be sure
@@ -988,18 +988,18 @@ export function maasObjField($compile) {
             '<input class="p-slider__input" type="text" ',
             'maxlength="3" id="' + attrs.key + '-input" ',
             'data-ng-model="_slider" disabled="disabled" ',
-            "></div>"
+            "></div>",
           ].join("")
         );
         inputElement = $compile(inputElement)(sliderScope);
 
         // Called by controller to update the value.
-        scope.updateValue = function(newValue) {
+        scope.updateValue = function (newValue) {
           sliderScope._slider = newValue;
         };
 
         // Called by controller to get the value.
-        scope.getValue = function() {
+        scope.getValue = function () {
           return sliderScope._slider;
         };
       } else {
@@ -1007,7 +1007,7 @@ export function maasObjField($compile) {
       }
 
       // Called on change.
-      scope._change = function() {
+      scope._change = function () {
         if (angular.isFunction(scope.onChange)) {
           scope.onChange(attrs.key, controller.getValue(attrs.key), controller);
         }
@@ -1036,7 +1036,7 @@ export function maasObjField($compile) {
       }
 
       // Called by controller to clear all errors.
-      scope.clearErrors = function() {
+      scope.clearErrors = function () {
         inputElement.removeClass("ng-dirty");
         inputElement.removeClass("p-form-validation__input");
         inputWrapper.removeClass("p-form-validation");
@@ -1046,14 +1046,14 @@ export function maasObjField($compile) {
       };
 
       // Called by controller to set errors.
-      scope.setErrors = function(errors) {
+      scope.setErrors = function (errors) {
         if (errors.length > 0) {
           inputWrapper.addClass("p-form-validation");
           inputWrapper.addClass("is-error");
           inputWrapper.addClass("u-no-margin--top");
           inputElement.addClass("ng-dirty");
           inputElement.addClass("p-form-validation__input");
-          angular.forEach(errors, function(error) {
+          angular.forEach(errors, function (error) {
             errorsElement.append(
               '<li class="p-form-validation__message">' +
                 "<strong>Error:</strong> " +
@@ -1065,7 +1065,7 @@ export function maasObjField($compile) {
       };
 
       // Called by controller to see if error is set on field.
-      scope.hasErrors = function() {
+      scope.hasErrors = function () {
         return inputWrapper.hasClass("is-error");
       };
 
@@ -1083,10 +1083,10 @@ export function maasObjField($compile) {
       // Watch the showing of saving spinner. Update the elements
       // correctly to show the saving.
       scope.$watch(
-        function() {
+        function () {
           return controller.showInputSaving(attrs.key);
         },
-        function(value) {
+        function (value) {
           if (value) {
             inputWrapper.children(":first").addClass("u-border--information");
             if (!attrs.disableLabel && !attrs.disableSpinner) {
@@ -1115,10 +1115,10 @@ export function maasObjField($compile) {
       );
 
       // Called when the scope is destroyed.
-      scope.$on("$destroy", function() {
+      scope.$on("$destroy", function () {
         controller.unregisterField(attrs.key);
       });
-    }
+    },
   };
 }
 
@@ -1127,7 +1127,7 @@ export function maasObjSave() {
     restrict: "A",
     require: ["^^maasObjForm"],
     scope: {},
-    link: function(scope, element, attrs, controllers) {
+    link: function (scope, element, attrs, controllers) {
       // Only allow maas-obj-save when saveOnBlur is false.
       var controller = controllers[0];
       if (controller.saveOnBlur()) {
@@ -1137,12 +1137,12 @@ export function maasObjSave() {
         );
       }
 
-      element.on("click", function() {
-        scope.$apply(function() {
+      element.on("click", function () {
+        scope.$apply(function () {
           controller.saveForm();
         });
       });
-    }
+    },
   };
 }
 
@@ -1153,18 +1153,18 @@ export function maasObjErrors($compile) {
     require: ["^^maasObjForm"],
     scope: {},
     template: '<ul class="p-list u-no-margin--bottom"></ul>',
-    link: function(scope, element, attrs, controllers) {
+    link: function (scope, element, attrs, controllers) {
       // Set on the controller the global error handler.
       controllers[0].errorScope = scope;
       var ul = element.find("ul");
 
       // Called by controller to clear all errors.
-      scope.clearErrors = function() {
+      scope.clearErrors = function () {
         ul.empty();
       };
 
       // Called by controller to set errors.
-      scope.setErrors = function(errors) {
+      scope.setErrors = function (errors) {
         if (errors.length > 0) {
           scope.errors = errors;
           for (var i = 0; i < scope.errors.length; i++) {
@@ -1172,11 +1172,13 @@ export function maasObjErrors($compile) {
               $compile(
                 '<li class="p-list__item">' +
                   '<div class="p-notification--negative">' +
-                    '<p class="p-notification__response">' +
-                      '<span ng-bind="errors[' + i + ']"></span>' +
-                    '</p>' +
-                  '</div>' +
-                '</li>'
+                  '<p class="p-notification__response">' +
+                  '<span ng-bind="errors[' +
+                  i +
+                  ']"></span>' +
+                  "</p>" +
+                  "</div>" +
+                  "</li>"
               )(scope)
             );
           }
@@ -1184,10 +1186,10 @@ export function maasObjErrors($compile) {
       };
 
       // Called by controller to see if error is set on field.
-      scope.hasErrors = function() {
+      scope.hasErrors = function () {
         return ul.children().length > 0;
       };
-    }
+    },
   };
 }
 
@@ -1201,19 +1203,19 @@ export function maasObjSaving() {
       '<span data-ng-if="saving">',
       '<i class="p-icon--loading u-animation--spin"></i>',
       "<span data-ng-transclude></span>",
-      "</span>"
+      "</span>",
     ].join(""),
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       scope.saving = false;
       scope.$watch(
-        function() {
+        function () {
           return controller.scope.saving;
         },
-        function(value) {
+        function (value) {
           scope.saving = value;
         }
       );
-    }
+    },
   };
 }
 
@@ -1221,12 +1223,12 @@ export function maasObjShowSaving() {
   return {
     restrict: "A",
     require: "^^maasObjForm",
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       scope.$watch(
-        function() {
+        function () {
           return controller.scope.saving;
         },
-        function(value) {
+        function (value) {
           if (value) {
             element.removeClass("ng-hide");
           } else {
@@ -1234,7 +1236,7 @@ export function maasObjShowSaving() {
           }
         }
       );
-    }
+    },
   };
 }
 
@@ -1242,12 +1244,12 @@ export function maasObjHideSaving() {
   return {
     restrict: "A",
     require: "^^maasObjForm",
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       scope.$watch(
-        function() {
+        function () {
           return controller.scope.saving;
         },
-        function(value) {
+        function (value) {
           if (value) {
             element.addClass("ng-hide");
           } else {
@@ -1255,6 +1257,6 @@ export function maasObjHideSaving() {
           }
         }
       );
-    }
+    },
   };
 }

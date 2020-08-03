@@ -7,39 +7,39 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasPrefKeys", function() {
+describe("maasPrefKeys", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Inject a fake RegionConnection.
   var RegionConnection;
-  beforeEach(function() {
+  beforeEach(function () {
     RegionConnection = {
-      defaultConnect: jasmine.createSpy("defaultConnect")
+      defaultConnect: jasmine.createSpy("defaultConnect"),
     };
 
     // Inject the fake RegionConnection into the provider so
     // when the directive is created if will use this
     // RegionConnection object instead of the one provided by
     // angular.
-    angular.mock.module(function($provide) {
+    angular.mock.module(function ($provide) {
       $provide.value("RegionConnection", RegionConnection);
     });
   });
 
   // Inject a fake UsersManager.
   var UsersManager;
-  beforeEach(function() {
+  beforeEach(function () {
     UsersManager = {
       createAuthorisationToken: jasmine.createSpy("createAuthorisationToken"),
-      deleteAuthorisationToken: jasmine.createSpy("deleteAuthorisationToken")
+      deleteAuthorisationToken: jasmine.createSpy("deleteAuthorisationToken"),
     };
 
     // Inject the fake UsersManager into the provider so
     // when the directive is created if will use this
     // UsersManager object instead of the one provided by
     // angular.
-    angular.mock.module(function($provide) {
+    angular.mock.module(function ($provide) {
       $provide.value("UsersManager", UsersManager);
     });
   });
@@ -55,14 +55,14 @@ describe("maasPrefKeys", function() {
       secret: secret,
       customer: {
         key: customerKey,
-        name: customerName
-      }
+        name: customerName,
+      },
     };
   }
 
   // Grab the needed angular pieces.
   var $rootScope, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $rootScope = $injector.get("$rootScope");
     $q = $injector.get("$q");
     $scope = $rootScope.$new();
@@ -70,7 +70,7 @@ describe("maasPrefKeys", function() {
 
   // Create a default connection.
   var connectDefer;
-  beforeEach(function() {
+  beforeEach(function () {
     connectDefer = $q.defer();
     RegionConnection.defaultConnect.and.returnValue(connectDefer.promise);
   });
@@ -95,11 +95,11 @@ describe("maasPrefKeys", function() {
       "</li>",
       "</script>",
       "<div>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -108,8 +108,8 @@ describe("maasPrefKeys", function() {
     return angular.element(directive.find("div[maas-pref-keys]"));
   }
 
-  describe("integration", function() {
-    it("add/remove token", function() {
+  describe("integration", function () {
+    it("add/remove token", function () {
       var token = makeToken();
       var createDefer = $q.defer();
       var deleteDefer = $q.defer();

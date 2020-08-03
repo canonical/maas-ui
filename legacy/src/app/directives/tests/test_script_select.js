@@ -10,13 +10,13 @@ import MockWebSocket from "testing/websocket";
 
 import template from "../../partials/add-scripts.html";
 
-describe("maasScriptSelect", function() {
+describe("maasScriptSelect", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $rootScope, $scope, $q, $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
@@ -25,14 +25,14 @@ describe("maasScriptSelect", function() {
   }));
 
   var ScriptsManager, ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ScriptsManager = $injector.get("ScriptsManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
   }));
 
   // Mock the websocket connection to the region
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
@@ -46,7 +46,7 @@ describe("maasScriptSelect", function() {
       description: makeName("description"),
       script_type: script_type,
       tags: tags,
-      for_hardware: for_hardware
+      for_hardware: for_hardware,
     };
     ScriptsManager._items.push(script);
     return script;
@@ -64,7 +64,7 @@ describe("maasScriptSelect", function() {
       '"></span></div>';
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -73,7 +73,7 @@ describe("maasScriptSelect", function() {
     return directive.find("[data-maas-script-select]");
   }
 
-  it("creates entry for commissioning scripts", function() {
+  it("creates entry for commissioning scripts", function () {
     // Create a commissioning script to be displayed.
     var script = makeScript(0, [], []);
     // Create a commissiong script which uses the for_hardware field
@@ -99,7 +99,7 @@ describe("maasScriptSelect", function() {
     expect(isolateScope.scripts).toEqual([script, for_hardware_script]);
   });
 
-  it("creates entry for testing scripts", function() {
+  it("creates entry for testing scripts", function () {
     // Create a test script for user selection.
     var script = makeScript(2, [], []);
     // Create a test script which uses the for_hardware field
@@ -132,7 +132,7 @@ describe("maasScriptSelect", function() {
     expect(isolateScope.scripts).toEqual([
       script,
       for_hardware_script,
-      selected_script
+      selected_script,
     ]);
   });
 });

@@ -40,12 +40,12 @@ function PollingManager($q, $timeout, Manager) {
   PollingManager.prototype = new Manager();
 
   // Returns true when currently polling.
-  PollingManager.prototype.isPolling = function() {
+  PollingManager.prototype.isPolling = function () {
     return this._polling;
   };
 
   // Starts the polling.
-  PollingManager.prototype.startPolling = function() {
+  PollingManager.prototype.startPolling = function () {
     if (!this._polling) {
       this._polling = true;
       return this._poll();
@@ -55,7 +55,7 @@ function PollingManager($q, $timeout, Manager) {
   };
 
   // Stops the polling.
-  PollingManager.prototype.stopPolling = function() {
+  PollingManager.prototype.stopPolling = function () {
     this._polling = false;
     if (angular.isObject(this._nextPromise)) {
       $timeout.cancel(this._nextPromise);
@@ -64,33 +64,35 @@ function PollingManager($q, $timeout, Manager) {
   };
 
   // Registers the next polling attempt.
-  PollingManager.prototype._pollAgain = function(timeout) {
+  PollingManager.prototype._pollAgain = function (timeout) {
     var self = this;
-    this._nextPromise = $timeout(function() {
+    this._nextPromise = $timeout(function () {
       self._poll();
     }, timeout);
     return this._nextPromise;
   };
 
   // Polls for the data from the region.
-  PollingManager.prototype._poll = function() {
+  PollingManager.prototype._poll = function () {
     var self = this;
-    return this.reloadItems().then(
-      function(items) {
-        var pollTimeout = self._pollTimeout;
-        if (items.length === 0) {
-          pollTimeout = self._pollEmptyTimeout;
+    return this.reloadItems()
+      .then(
+        function (items) {
+          var pollTimeout = self._pollTimeout;
+          if (items.length === 0) {
+            pollTimeout = self._pollEmptyTimeout;
+          }
+          self._pollAgain(pollTimeout);
+          return items;
+        },
+        function (error) {
+          self._pollAgain(self._pollErrorTimeout);
+          return $q.reject(error);
         }
-        self._pollAgain(pollTimeout);
-        return items;
-      },
-      function(error) {
-        self._pollAgain(self._pollErrorTimeout);
-        return $q.reject(error);
-      }
-    ).catch(function (err) {
-      console.error(err); // eslint-disable-line no-console
-    });
+      )
+      .catch(function (err) {
+        console.error(err); // eslint-disable-line no-console
+      });
   };
 
   return PollingManager;

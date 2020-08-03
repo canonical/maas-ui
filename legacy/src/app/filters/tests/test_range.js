@@ -5,22 +5,22 @@
  */
 import angular from "angular";
 
-describe("filterRange", function() {
+describe("filterRange", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the filterRange.
   var filterRange;
-  beforeEach(inject(function($filter) {
+  beforeEach(inject(function ($filter) {
     filterRange = $filter("range");
   }));
 
-  it("returns empty if invalid range", function() {
+  it("returns empty if invalid range", function () {
     var array = undefined;
     expect(filterRange(array)).toEqual([]);
   });
 
-  it("returns correct length array", function() {
+  it("returns correct length array", function () {
     var i = 3;
     var len = filterRange(i).length;
     expect(len).toEqual(i);

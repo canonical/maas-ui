@@ -8,7 +8,7 @@ const actionBtnTmpl = [
   '<button data-ng-transclude class="p-action-button" ',
   "data-ng-class=\"{ 'is-indeterminate': indeterminateState, ",
   "'is-done': doneState }\">",
-  "</button>"
+  "</button>",
 ].join("");
 
 export function maasActionButton() {
@@ -18,8 +18,8 @@ export function maasActionButton() {
     transclude: true,
     scope: {
       doneState: "<",
-      indeterminateState: "<"
+      indeterminateState: "<",
     },
-    template: actionBtnTmpl
+    template: actionBtnTmpl,
   };
 }

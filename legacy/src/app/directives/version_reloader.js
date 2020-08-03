@@ -16,7 +16,7 @@ function maasVersionReloader(
 ) {
   return {
     restrict: "A",
-    controller: VersionReloaderController
+    controller: VersionReloaderController,
   };
 
   /* @ngInject */

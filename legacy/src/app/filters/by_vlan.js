@@ -6,7 +6,7 @@
 import angular from "angular";
 
 export function filterByVLAN() {
-  return function(subnets, vlan) {
+  return function (subnets, vlan) {
     var filtered = [];
     var id;
     if (angular.isObject(vlan)) {
@@ -16,7 +16,7 @@ export function filterByVLAN() {
     } else {
       return filtered;
     }
-    angular.forEach(subnets, function(subnet) {
+    angular.forEach(subnets, function (subnet) {
       if (subnet.vlan === id) {
         filtered.push(subnet);
       }
@@ -26,12 +26,12 @@ export function filterByVLAN() {
 }
 
 export function filterControllersByVLAN() {
-  return function(controllers, vlan) {
+  return function (controllers, vlan) {
     var filtered = [];
     if (!angular.isObject(vlan)) {
       return filtered;
     }
-    angular.forEach(controllers, function(controller) {
+    angular.forEach(controllers, function (controller) {
       // XXX mpontillo disable VLAN check until VLAN is populated
       // on the rack controller's interfaces.
       // if(controller.vlan_ids.indexOf(vlan.id) != -1) {

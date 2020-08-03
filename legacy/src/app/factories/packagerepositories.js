@@ -17,7 +17,7 @@ function PackageRepositoriesManager(RegionConnection, Manager) {
 
     // Listen for notify events for the PackageRepository object.
     var self = this;
-    RegionConnection.registerNotifier("packagerepository", function(
+    RegionConnection.registerNotifier("packagerepository", function (
       action,
       data
     ) {
@@ -28,7 +28,7 @@ function PackageRepositoriesManager(RegionConnection, Manager) {
   PackageRepositoriesManager.prototype = new Manager();
 
   // Create the repository.
-  PackageRepositoriesManager.prototype.create = function(repository) {
+  PackageRepositoriesManager.prototype.create = function (repository) {
     return RegionConnection.callMethod(
       this._handler + ".create",
       repository,

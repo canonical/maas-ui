@@ -7,14 +7,14 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasControllerImageStatus", function() {
+describe("maasControllerImageStatus", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get the manager and the directive service.
   var $timeout, $interval, $q;
   var ControllersManager, ControllerImageStatusService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $timeout = $injector.get("$timeout");
     $interval = $injector.get("$interval");
     $q = $injector.get("$q");
@@ -26,7 +26,7 @@ describe("maasControllerImageStatus", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -37,11 +37,11 @@ describe("maasControllerImageStatus", function() {
       "<div>",
       '<maas-controller-image-status system-id="system_id">',
       "</maas-controller-image-status>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -50,14 +50,14 @@ describe("maasControllerImageStatus", function() {
     return directive.find("maas-controller-image-status");
   }
 
-  describe("service", function() {
+  describe("service", function () {
     var service;
-    beforeEach(function() {
+    beforeEach(function () {
       service = ControllerImageStatusService;
     });
 
-    describe("updateStatuses", function() {
-      it("calls checkImageStates with controllers", function() {
+    describe("updateStatuses", function () {
+      it("calls checkImageStates with controllers", function () {
         service.controllers = [makeName("systemId"), makeName("systemId")];
         spyOn(ControllersManager, "checkImageStates").and.returnValue(
           $q.defer().promise
@@ -66,16 +66,16 @@ describe("maasControllerImageStatus", function() {
 
         expect(ControllersManager.checkImageStates).toHaveBeenCalledWith([
           { system_id: service.controllers[0] },
-          { system_id: service.controllers[1] }
+          { system_id: service.controllers[1] },
         ]);
       });
 
-      it("sets statuses with result", function() {
+      it("sets statuses with result", function () {
         var defer = $q.defer();
         service.controllers = [
           makeName("systemId"),
           makeName("systemId"),
-          makeName("systemId")
+          makeName("systemId"),
         ];
         spyOn(ControllersManager, "checkImageStates").and.returnValue(
           defer.promise
@@ -96,8 +96,8 @@ describe("maasControllerImageStatus", function() {
       });
     });
 
-    describe("register", function() {
-      it("added to controllers and starts timer", function() {
+    describe("register", function () {
+      it("added to controllers and starts timer", function () {
         var systemId = makeName("systemId");
         service.register(systemId);
 
@@ -106,7 +106,7 @@ describe("maasControllerImageStatus", function() {
         $timeout.cancel(service.startTimeout);
       });
 
-      it("added multiple and restarts timer", function() {
+      it("added multiple and restarts timer", function () {
         var systemId1 = makeName("systemId");
         var systemId2 = makeName("systemId");
 
@@ -121,7 +121,7 @@ describe("maasControllerImageStatus", function() {
         $timeout.cancel(secondTimeout);
       });
 
-      it("starts interval after 100ms", function() {
+      it("starts interval after 100ms", function () {
         var systemId = makeName("systemId");
         spyOn(service, "updateStatuses");
 
@@ -131,7 +131,7 @@ describe("maasControllerImageStatus", function() {
         expect(service.runningInterval).toBeDefined();
       });
 
-      it("cancels running interval on new controller", function() {
+      it("cancels running interval on new controller", function () {
         var systemId = makeName("systemId");
 
         var interval = (service.runningInterval = {});
@@ -146,8 +146,8 @@ describe("maasControllerImageStatus", function() {
       });
     });
 
-    describe("unregister", function() {
-      it("removes controller", function() {
+    describe("unregister", function () {
+      it("removes controller", function () {
         var systemId = makeName("systemId");
         service.controllers.push(systemId);
         service.unregister(systemId);
@@ -155,7 +155,7 @@ describe("maasControllerImageStatus", function() {
         expect(service.controllers.length).toBe(0);
       });
 
-      it("stops timeout and interval", function() {
+      it("stops timeout and interval", function () {
         var systemId = makeName("systemId");
         service.controllers.push(systemId);
 
@@ -172,20 +172,20 @@ describe("maasControllerImageStatus", function() {
       });
     });
 
-    describe("showSpinner", function() {
-      it("returns false if set and not syncing", function() {
+    describe("showSpinner", function () {
+      it("returns false if set and not syncing", function () {
         var systemId = makeName("systemId");
         var status = "out-of-sync";
         service.statuses[systemId] = status;
         expect(service.showSpinner(systemId)).toBe(false);
       });
 
-      it("returns true if not set", function() {
+      it("returns true if not set", function () {
         var systemId = makeName("systemId");
         expect(service.showSpinner(systemId)).toBe(true);
       });
 
-      it("returns true if set and syncing", function() {
+      it("returns true if set and syncing", function () {
         var systemId = makeName("systemId");
         var status = "Syncing";
         service.statuses[systemId] = status;
@@ -193,23 +193,23 @@ describe("maasControllerImageStatus", function() {
       });
     });
 
-    describe("getImageStatus", function() {
-      it("returns status if set", function() {
+    describe("getImageStatus", function () {
+      it("returns status if set", function () {
         var systemId = makeName("systemId");
         var status = "out-of-sync";
         service.statuses[systemId] = status;
         expect(service.getImageStatus(systemId)).toBe(status);
       });
 
-      it("returns asking", function() {
+      it("returns asking", function () {
         var systemId = makeName("systemId");
         expect(service.getImageStatus(systemId)).toBe("Asking for status...");
       });
     });
   });
 
-  describe("directive", function() {
-    it("registers when systemId is set", function() {
+  describe("directive", function () {
+    it("registers when systemId is set", function () {
       spyOn(ControllerImageStatusService, "register");
       compileDirective();
 
@@ -222,7 +222,7 @@ describe("maasControllerImageStatus", function() {
       );
     });
 
-    it("unregisters when destroyed", function() {
+    it("unregisters when destroyed", function () {
       spyOn(ControllerImageStatusService, "register");
       spyOn(ControllerImageStatusService, "unregister");
       var directive = compileDirective();

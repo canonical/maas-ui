@@ -97,9 +97,9 @@ export function maasPowerInput($compile) {
     require: "ngModel",
     scope: {
       field: "=",
-      ngModel: "="
+      ngModel: "=",
     },
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       var type = scope.field.field_type;
       var req = scope.field.required ? 'required="required" ' : "";
       var html = "";
@@ -172,7 +172,7 @@ export function maasPowerInput($compile) {
       // element as if it was in the parent scope, not the scope that
       // is defined in this directive.
       element.replaceWith($compile(html)(scope.$parent));
-    }
+    },
   };
 }
 
@@ -183,8 +183,8 @@ export function maasPowerParameters() {
     scope: {
       maasPowerParameters: "=",
       ngModel: "=",
-      ngDisabled: "="
+      ngDisabled: "=",
     },
-    template: powerParametersTmpl
+    template: powerParametersTmpl,
   };
 }

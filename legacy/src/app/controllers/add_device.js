@@ -3,7 +3,7 @@
  *
  * MAAS Add Device Controller
  */
- import angular from "angular";
+import angular from "angular";
 
 /* @ngInject */
 function AddDeviceController(
@@ -29,16 +29,16 @@ function AddDeviceController(
   $scope.ipAssignments = [
     {
       name: "external",
-      title: "External"
+      title: "External",
     },
     {
       name: "dynamic",
-      title: "Dynamic"
+      title: "Dynamic",
     },
     {
       name: "static",
-      title: "Static"
-    }
+      title: "Static",
+    },
   ];
 
   // Makes a new interface.
@@ -47,7 +47,7 @@ function AddDeviceController(
       mac: "",
       ipAssignment: null,
       subnetId: null,
-      ipAddress: ""
+      ipAddress: "",
     };
   }
 
@@ -57,13 +57,13 @@ function AddDeviceController(
       return {
         name: "",
         domain: cloneDevice.domain,
-        interfaces: [makeInterface()]
+        interfaces: [makeInterface()],
       };
     } else {
       return {
         name: "",
         domain: DomainsManager.getDefaultDomain(),
-        interfaces: [makeInterface()]
+        interfaces: [makeInterface()],
       };
     }
   }
@@ -80,25 +80,25 @@ function AddDeviceController(
       domain: device.domain,
       primary_mac: device.interfaces[0].mac,
       extra_macs: [],
-      interfaces: []
+      interfaces: [],
     };
     var i;
     for (i = 1; i < device.interfaces.length; i++) {
       convertedDevice.extra_macs.push(device.interfaces[i].mac);
     }
-    angular.forEach(device.interfaces, function(nic) {
+    angular.forEach(device.interfaces, function (nic) {
       convertedDevice.interfaces.push({
         mac: nic.mac,
         ip_assignment: nic.ipAssignment.name,
         ip_address: nic.ipAddress,
-        subnet: nic.subnetId
+        subnet: nic.subnetId,
       });
     });
     return convertedDevice;
   }
 
   // Called by the parent scope when this controller is viewable.
-  $scope.show = function() {
+  $scope.show = function () {
     // Exit early if already viewable.
     if ($scope.viewable) {
       return;
@@ -106,27 +106,27 @@ function AddDeviceController(
     // Load subnets to get the available subnets.
     ManagerHelperService.loadManagers($scope, [
       SubnetsManager,
-      DomainsManager
-    ]).then(function() {
+      DomainsManager,
+    ]).then(function () {
       $scope.device = newDevice($scope.device);
       $scope.viewable = true;
     });
   };
 
   // Called by the parent scope when this controller is hidden.
-  $scope.hide = function() {
+  $scope.hide = function () {
     $scope.viewable = false;
 
     ManagerHelperService.unloadManagers($scope, [
       SubnetsManager,
-      DomainsManager
+      DomainsManager,
     ]);
     // Emit the hidden event.
     $scope.$emit("addDeviceHidden");
   };
 
   // Returns true if the name is in error.
-  $scope.nameHasError = function() {
+  $scope.nameHasError = function () {
     // If the name is empty don't show error.
     if ($scope.device === null || $scope.device.name.length === 0) {
       return false;
@@ -135,7 +135,7 @@ function AddDeviceController(
   };
 
   // Returns true if the MAC is in error.
-  $scope.macHasError = function(deviceInterface) {
+  $scope.macHasError = function (deviceInterface) {
     // If the MAC is empty don't show error.
     if (deviceInterface.mac.length === 0) {
       return false;
@@ -156,7 +156,7 @@ function AddDeviceController(
   };
 
   // Returns true if the IP address is in error.
-  $scope.ipHasError = function(deviceInterface) {
+  $scope.ipHasError = function (deviceInterface) {
     // If the IP is empty don't show error.
     if (deviceInterface.ipAddress.length === 0) {
       return false;
@@ -198,7 +198,7 @@ function AddDeviceController(
 
   // Return true when the device is missing information or invalid
   // information.
-  $scope.deviceHasError = function() {
+  $scope.deviceHasError = function () {
     if (
       $scope.device === null ||
       $scope.device.name === "" ||
@@ -233,17 +233,17 @@ function AddDeviceController(
   };
 
   // Adds new interface to device.
-  $scope.addInterface = function() {
+  $scope.addInterface = function () {
     $scope.device.interfaces.push(makeInterface());
   };
 
   // Returns true if the first interface in the device interfaces array.
-  $scope.isPrimaryInterface = function(deviceInterface) {
+  $scope.isPrimaryInterface = function (deviceInterface) {
     return $scope.device.interfaces.indexOf(deviceInterface) === 0;
   };
 
   // Removes the interface from the devices interfaces array.
-  $scope.deleteInterface = function(deviceInterface) {
+  $scope.deleteInterface = function (deviceInterface) {
     // Don't remove the primary.
     if ($scope.isPrimaryInterface(deviceInterface)) {
       return;
@@ -255,14 +255,14 @@ function AddDeviceController(
   };
 
   // Called when cancel clicked.
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $scope.error = null;
     $scope.device = newDevice();
     $scope.hide();
   };
 
   // Called when save is clicked.
-  $scope.save = function(addAnother) {
+  $scope.save = function (addAnother) {
     // Do nothing if device in error.
     if ($scope.deviceHasError()) {
       return;
@@ -275,7 +275,7 @@ function AddDeviceController(
     // Create the device.
     var device = convertDeviceToProtocol($scope.device);
     DevicesManager.create(device).then(
-      function(device) {
+      function (device) {
         if (addAnother) {
           $scope.device = newDevice($scope.device);
         } else {
@@ -284,7 +284,7 @@ function AddDeviceController(
           $scope.hide();
         }
       },
-      function(error) {
+      function (error) {
         $scope.error = ManagerHelperService.parseValidationError(error);
       }
     );

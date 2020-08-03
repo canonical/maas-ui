@@ -5,7 +5,7 @@
  */
 import angular from "angular";
 
-describe("maasWindowWidth", function() {
+describe("maasWindowWidth", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -13,7 +13,7 @@ describe("maasWindowWidth", function() {
   var $scope;
   var $window;
 
-  beforeEach(inject(function($rootScope, _$window_) {
+  beforeEach(inject(function ($rootScope, _$window_) {
     $window = _$window_;
     $scope = $rootScope.$new();
   }));
@@ -24,7 +24,7 @@ describe("maasWindowWidth", function() {
     var html = ["<div>", "<div window-width></div>", "</div>"].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -33,13 +33,13 @@ describe("maasWindowWidth", function() {
     return directive.find("div[window-width]");
   }
 
-  it("windowWidth set to initial value", function() {
+  it("windowWidth set to initial value", function () {
     $window.innerWidth = 1026;
     compileDirective();
     expect($scope.windowWidth).toEqual($window.innerWidth);
   });
 
-  it("windowWidth set on resize", function() {
+  it("windowWidth set on resize", function () {
     $window.innerWidth = 1026;
     compileDirective();
     $window.innerWidth = 800;

@@ -14,56 +14,56 @@ function nodesFilter($filter, SearchService) {
   // Helpers that convert the pseudo field on node to an actual
   // value from the node.
   var mappings = {
-    cpu: function(node) {
+    cpu: function (node) {
       return node.cpu_count;
     },
-    cores: function(node) {
+    cores: function (node) {
       return node.cpu_count;
     },
-    ram: function(node) {
+    ram: function (node) {
       return node.memory;
     },
-    mac: function(node) {
+    mac: function (node) {
       let macs = [];
       macs.push(node.pxe_mac);
       macs.push.apply(macs, node.extra_macs);
       return macs;
     },
-    zone: function(node) {
+    zone: function (node) {
       return node.zone.name;
     },
-    pool: function(node) {
+    pool: function (node) {
       return node.pool.name;
     },
-    pod: function(node) {
+    pod: function (node) {
       return node.pod === undefined ? undefined : node.pod.name;
     },
-    "pod-id": function(node) {
+    "pod-id": function (node) {
       return node.pod === undefined ? undefined : node.pod.id;
     },
-    power: function(node) {
+    power: function (node) {
       return node.power_state;
     },
-    release: function(node) {
+    release: function (node) {
       if (node.status_code === 6 || node.status_code === 9) {
         return node.osystem + "/" + node.distro_series;
       } else {
         return "";
       }
     },
-    hostname: function(node) {
+    hostname: function (node) {
       return node.hostname;
     },
-    vlan: function(node) {
+    vlan: function (node) {
       return node.vlan;
     },
-    rack: function(node) {
+    rack: function (node) {
       return node.observer_hostname;
     },
-    subnet: function(node) {
+    subnet: function (node) {
       return node.subnet_cidr;
     },
-    numa_nodes_count: node => {
+    numa_nodes_count: (node) => {
       let count;
       if (node.numa_nodes_count) {
         count = node.numa_nodes_count;
@@ -72,17 +72,17 @@ function nodesFilter($filter, SearchService) {
       }
       return `${count} node${count !== 1 ? "s" : ""}`;
     },
-    sriov_support: node => {
+    sriov_support: (node) => {
       let supported;
       if (node.sriov_support) {
         supported = node.sriov_support;
       } else {
         supported =
           node.interfaces &&
-          node.interfaces.some(iface => iface.sriov_max_vf >= 1);
+          node.interfaces.some((iface) => iface.sriov_max_vf >= 1);
       }
       return supported ? "Supported" : "Not supported";
-    }
+    },
   };
 
   // Return true when value is an integer.
@@ -129,7 +129,7 @@ function nodesFilter($filter, SearchService) {
     return match;
   }
 
-  return function(nodes, search) {
+  return function (nodes, search) {
     if (
       angular.isUndefined(nodes) ||
       angular.isUndefined(search) ||
@@ -140,19 +140,19 @@ function nodesFilter($filter, SearchService) {
 
     var filtered = nodes;
     var filters = SearchService.getCurrentFilters(search);
-    angular.forEach(filters, function(terms, attr) {
+    angular.forEach(filters, function (terms, attr) {
       if (attr === "_") {
         // Use the standard filter on terms that do not specify
         // an attribute.
-        angular.forEach(terms, function(term) {
+        angular.forEach(terms, function (term) {
           filtered = standardFilter(filtered, term);
         });
       } else if (attr === "in") {
         // "in:" is used to filter the nodes by those that are
         // currently selected.
-        angular.forEach(terms, function(term) {
+        angular.forEach(terms, function (term) {
           var matched = [];
-          angular.forEach(filtered, function(node) {
+          angular.forEach(filtered, function (node) {
             if (node.$selected && term.toLowerCase() === "selected") {
               matched.push(node);
             } else if (!node.$selected && term.toLowerCase() === "!selected") {
@@ -167,7 +167,7 @@ function nodesFilter($filter, SearchService) {
 
         // Loop through each item and only select the matching.
         var matched = [];
-        angular.forEach(filtered, function(node) {
+        angular.forEach(filtered, function (node) {
           var value;
           if (angular.isFunction(mapFunc)) {
             value = mapFunc(node);

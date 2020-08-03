@@ -20,14 +20,14 @@ function SwitchesManager(RegionConnection, NodesManager) {
       owner: null,
       subnets: null,
       tags: null,
-      zone: function(device) {
+      zone: function (device) {
         return device.zone.name;
-      }
+      },
     };
 
     // Listen for notify events for the switch object.
     var self = this;
-    RegionConnection.registerNotifier("switch", function(action, data) {
+    RegionConnection.registerNotifier("switch", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -35,7 +35,7 @@ function SwitchesManager(RegionConnection, NodesManager) {
   SwitchesManager.prototype = new NodesManager();
 
   // Create a switch.
-  SwitchesManager.prototype.create = function(node) {
+  SwitchesManager.prototype.create = function (node) {
     // We don't add the item to the list because a NOTIFY event will
     // add the device to the list. Adding it here will cause angular to
     // complain because the same object exist in the list.
@@ -43,14 +43,14 @@ function SwitchesManager(RegionConnection, NodesManager) {
   };
 
   // Perform the action on the switch.
-  SwitchesManager.prototype.performAction = function(device, action, extra) {
+  SwitchesManager.prototype.performAction = function (device, action, extra) {
     if (!angular.isObject(extra)) {
       extra = {};
     }
     return RegionConnection.callMethod("switch.action", {
       system_id: device.system_id,
       action: action,
-      extra: extra
+      extra: extra,
     });
   };
 

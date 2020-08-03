@@ -5,7 +5,7 @@
  */
 import angular from "angular";
 
-describe("maastoggleCtrl", function() {
+describe("maastoggleCtrl", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -13,7 +13,7 @@ describe("maastoggleCtrl", function() {
   var $scope;
   var $document;
 
-  beforeEach(inject(function($rootScope, _$window_, _$document_) {
+  beforeEach(inject(function ($rootScope, _$window_, _$document_) {
     $document = _$document_;
     $scope = $rootScope.$new();
   }));
@@ -27,11 +27,11 @@ describe("maastoggleCtrl", function() {
       '<button data-ng-click="toggleMenu()">View actions</button>',
       '<div role="menu" data-ng-show="isToggled"></div>',
       "</div>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -40,13 +40,13 @@ describe("maastoggleCtrl", function() {
     return directive.find("div");
   }
 
-  it("click link sets isToggled to true", function() {
+  it("click link sets isToggled to true", function () {
     var directive = compileDirective();
     directive.find("button[data-ng-click]").click();
     expect($scope.isToggled).toBe(true);
   });
 
-  it("click div sets isToggled to true", function() {
+  it("click div sets isToggled to true", function () {
     var directive = compileDirective();
     directive.find("button[data-ng-click]").click();
     expect($scope.isToggled).toBe(true);

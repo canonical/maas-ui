@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasEnter", function() {
+describe("maasEnter", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test. Not used in this test, but
   // required to compile the directive.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -22,7 +22,7 @@ describe("maasEnter", function() {
     var html = '<div><button maas-enter="' + ng_enter + '"></button></div>';
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -31,7 +31,7 @@ describe("maasEnter", function() {
     return directive.find("button");
   }
 
-  it("Enter keydown on button will fire ng-enter", function() {
+  it("Enter keydown on button will fire ng-enter", function () {
     $scope.enter = jasmine.createSpy("enter");
     var directive = compileDirective("enter()");
     var evt = angular.element.Event("keydown");
@@ -41,7 +41,7 @@ describe("maasEnter", function() {
     expect($scope.enter).toHaveBeenCalled();
   });
 
-  it("Space keydown on button will not fire ng-enter", function() {
+  it("Space keydown on button will not fire ng-enter", function () {
     $scope.enter = jasmine.createSpy("enter");
     var directive = compileDirective("enter()");
     var evt = angular.element.Event("keydown");

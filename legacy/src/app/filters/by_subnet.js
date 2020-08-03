@@ -6,7 +6,7 @@
 import angular from "angular";
 
 export function filterBySubnet() {
-  return function(foreign_objects, subnet, key) {
+  return function (foreign_objects, subnet, key) {
     var filtered = [];
     var id;
     if (angular.isObject(subnet)) {
@@ -19,7 +19,7 @@ export function filterBySubnet() {
     if (angular.isUndefined(key)) {
       key = "subnet";
     }
-    angular.forEach(foreign_objects, function(obj) {
+    angular.forEach(foreign_objects, function (obj) {
       if (obj[key] === id) {
         filtered.push(obj);
       }
@@ -31,7 +31,7 @@ export function filterBySubnet() {
 // Filters by subnet, unless the subnet is not defined. If the subnet is not
 // defined, filters by VLAN.
 export function filterBySubnetOrVlan() {
-  return function(foreign_objects, subnet, vlan) {
+  return function (foreign_objects, subnet, vlan) {
     var filtered = [];
     var id;
     var key = null;
@@ -52,7 +52,7 @@ export function filterBySubnetOrVlan() {
     } else {
       return filtered;
     }
-    angular.forEach(foreign_objects, function(obj) {
+    angular.forEach(foreign_objects, function (obj) {
       if (obj[key] === id) {
         filtered.push(obj);
       }

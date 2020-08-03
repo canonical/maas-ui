@@ -8,7 +8,7 @@ import angular from "angular";
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("FabricDetailsController", function() {
+describe("FabricDetailsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -16,7 +16,7 @@ describe("FabricDetailsController", function() {
   function makeFabric() {
     var fabric = {
       id: makeInteger(1, 10000),
-      name: makeName("fabric")
+      name: makeName("fabric"),
     };
     FabricsManager._items.push(fabric);
     return fabric;
@@ -24,7 +24,7 @@ describe("FabricDetailsController", function() {
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $stateParams;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $rootScope.navigateToLegacy = jest.fn();
@@ -38,7 +38,7 @@ describe("FabricDetailsController", function() {
   var FabricsManager, VLANsManager, SubnetsManager, SpacesManager;
   var ControllersManager, UsersManager, ManagerHelperService, ErrorService;
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     FabricsManager = $injector.get("FabricsManager");
     VLANsManager = $injector.get("VLANsManager");
     SubnetsManager = $injector.get("SubnetsManager");
@@ -56,7 +56,7 @@ describe("FabricDetailsController", function() {
   }));
 
   var fabric;
-  beforeEach(function() {
+  beforeEach(function () {
     fabric = makeFabric();
   });
 
@@ -82,7 +82,7 @@ describe("FabricDetailsController", function() {
       ControllersManager: ControllersManager,
       UsersManager: UsersManager,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
     return controller;
   }
@@ -107,13 +107,13 @@ describe("FabricDetailsController", function() {
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("networks");
   });
 
-  it("raises error if fabric identifier is invalid", function() {
+  it("raises error if fabric identifier is invalid", function () {
     spyOn(FabricsManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
@@ -129,7 +129,7 @@ describe("FabricDetailsController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalled();
   });
 
-  it("doesn't call setActiveItem if fabric is loaded", function() {
+  it("doesn't call setActiveItem if fabric is loaded", function () {
     spyOn(FabricsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -144,7 +144,7 @@ describe("FabricDetailsController", function() {
     expect(FabricsManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if fabric is not active", function() {
+  it("calls setActiveItem if fabric is not active", function () {
     spyOn(FabricsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -156,28 +156,28 @@ describe("FabricDetailsController", function() {
     expect(FabricsManager.setActiveItem).toHaveBeenCalledWith(fabric.id);
   });
 
-  it("sets fabric and loaded once setActiveItem resolves", function() {
+  it("sets fabric and loaded once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($scope.fabric).toBe(fabric);
     expect($scope.loaded).toBe(true);
   });
 
-  it("title is updated once setActiveItem resolves", function() {
+  it("title is updated once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($rootScope.title).toBe(fabric.name);
   });
 
-  it("default fabric title is not special", function() {
+  it("default fabric title is not special", function () {
     fabric.id = 0;
     makeControllerResolveSetActiveItem();
     expect($rootScope.title).toBe(fabric.name);
   });
 
-  it("updates $scope.rows with VLANs containing subnet(s)", function() {
+  it("updates $scope.rows with VLANs containing subnet(s)", function () {
     var spaces = [{ id: 0, name: "space-0" }];
     var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: fabric.id }];
     var subnets = [
-      { id: 0, name: "subnet1", vlan: 1, space: 0, cidr: "10.20.0.0/16" }
+      { id: 0, name: "subnet1", vlan: 1, space: 0, cidr: "10.20.0.0/16" },
     ];
     fabric.vlan_ids = [1];
     fabric.default_vlan_id = 1;
@@ -194,7 +194,7 @@ describe("FabricDetailsController", function() {
     expect(rows[0].space_name).toEqual("space-0");
   });
 
-  it("updates $scope.rows with VLANs containing no subnet(s)", function() {
+  it("updates $scope.rows with VLANs containing no subnet(s)", function () {
     var vlans = [{ id: 1, name: "vlan4", vid: 4, fabric: fabric.id }];
     fabric.vlan_ids = [1];
     fabric.default_vlan_id = 1;
@@ -207,8 +207,8 @@ describe("FabricDetailsController", function() {
     expect(rows[0].space_name).toBe(null);
   });
 
-  describe("editSubnetSummary", function() {
-    it("enters edit mode for summary", function() {
+  describe("editSubnetSummary", function () {
+    it("enters edit mode for summary", function () {
       makeController();
       $scope.editSummary = false;
       $scope.enterEditSummary();
@@ -216,8 +216,8 @@ describe("FabricDetailsController", function() {
     });
   });
 
-  describe("exitEditSubnetSummary", function() {
-    it("enters edit mode for summary", function() {
+  describe("exitEditSubnetSummary", function () {
+    it("enters edit mode for summary", function () {
       makeController();
       $scope.editSummary = true;
       $scope.exitEditSummary();
@@ -225,34 +225,34 @@ describe("FabricDetailsController", function() {
     });
   });
 
-  describe("canBeDeleted", function() {
-    it("returns false if fabric is null", function() {
+  describe("canBeDeleted", function () {
+    it("returns false if fabric is null", function () {
       makeControllerResolveSetActiveItem();
       $scope.fabric = null;
       expect($scope.canBeDeleted()).toBe(false);
     });
 
-    it("returns false if fabric is default fabric", function() {
+    it("returns false if fabric is default fabric", function () {
       makeControllerResolveSetActiveItem();
       $scope.fabric.id = 0;
       expect($scope.canBeDeleted()).toBe(false);
     });
 
-    it("returns true if fabric is not default fabric", function() {
+    it("returns true if fabric is not default fabric", function () {
       makeControllerResolveSetActiveItem();
       $scope.fabric.id = 1;
       expect($scope.canBeDeleted()).toBe(true);
     });
   });
 
-  describe("deleteButton", function() {
-    it("confirms delete", function() {
+  describe("deleteButton", function () {
+    it("confirms delete", function () {
       makeControllerResolveSetActiveItem();
       $scope.deleteButton();
       expect($scope.confirmingDelete).toBe(true);
     });
 
-    it("clears error", function() {
+    it("clears error", function () {
       makeControllerResolveSetActiveItem();
       $scope.error = makeName("error");
       $scope.deleteButton();
@@ -260,8 +260,8 @@ describe("FabricDetailsController", function() {
     });
   });
 
-  describe("cancelDeleteButton", function() {
-    it("cancels delete", function() {
+  describe("cancelDeleteButton", function () {
+    it("cancels delete", function () {
       makeControllerResolveSetActiveItem();
       $scope.deleteButton();
       $scope.cancelDeleteButton();
@@ -269,8 +269,8 @@ describe("FabricDetailsController", function() {
     });
   });
 
-  describe("deleteFabric", function() {
-    it("calls deleteFabric and redirects to network list", function() {
+  describe("deleteFabric", function () {
+    it("calls deleteFabric and redirects to network list", function () {
       makeController();
       var deleteFabric = spyOn(FabricsManager, "deleteFabric");
       var defer = $q.defer();

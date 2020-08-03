@@ -54,12 +54,12 @@ export function NodeFilesystemsController($scope) {
   $scope.dropdown = null;
 
   // Select the "special" drop-down.
-  $scope.addSpecialFilesystem = function() {
+  $scope.addSpecialFilesystem = function () {
     $scope.dropdown = "special";
   };
 
   // Deselect the "special" drop-down.
-  $scope.addSpecialFilesystemFinished = function() {
+  $scope.addSpecialFilesystemFinished = function () {
     if ($scope.dropdown === "special") {
       $scope.dropdown = null;
     }
@@ -71,7 +71,7 @@ export function NodeAddSpecialFilesystemController($scope, MachinesManager) {
   $scope.machineManager = MachinesManager;
   $scope.specialFilesystemTypes = ["tmpfs", "ramfs"];
   $scope.newFilesystem = {
-    system_id: $scope.node.system_id
+    system_id: $scope.node.system_id,
   };
   $scope.filesystem = new SpecialFilesystem();
   $scope.description = null; // Updated by watch.
@@ -79,15 +79,15 @@ export function NodeAddSpecialFilesystemController($scope, MachinesManager) {
   const watches = {
     fstype: "fstype",
     mountPoint: "mount_point",
-    mountOptions: "mount_options"
+    mountOptions: "mount_options",
   };
 
   for (let k in watches) {
     $scope.$watch(
-      function() {
+      function () {
         return $scope.newFilesystem.$maasForm.getValue(watches[k]);
       },
-      function(result) {
+      function (result) {
         $scope.filesystem[k] = result;
       }
     );
@@ -95,7 +95,7 @@ export function NodeAddSpecialFilesystemController($scope, MachinesManager) {
 
   $scope.$watch(
     "filesystem",
-    function() {
+    function () {
       if ($scope.filesystem) {
         $scope.description = $scope.filesystem.describe();
       }
@@ -103,11 +103,11 @@ export function NodeAddSpecialFilesystemController($scope, MachinesManager) {
     true
   );
 
-  $scope.canMount = function() {
+  $scope.canMount = function () {
     return $scope.filesystem.isValid();
   };
 
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $scope.filesystem = new SpecialFilesystem();
     $scope.addSpecialFilesystemFinished();
   };

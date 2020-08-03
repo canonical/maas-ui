@@ -5,30 +5,30 @@
  */
 import angular from "angular";
 
-describe("filterByFabric", function() {
+describe("filterByFabric", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the filterByFabric.
   var filterByFabric;
-  beforeEach(inject(function($filter) {
+  beforeEach(inject(function ($filter) {
     filterByFabric = $filter("filterByFabric");
   }));
 
-  it("returns empty if undefined fabric", function() {
+  it("returns empty if undefined fabric", function () {
     var i,
       vlan,
       vlans = [];
     for (i = 0; i < 3; i++) {
       vlan = {
-        fabric: 0
+        fabric: 0,
       };
       vlans.push(vlan);
     }
     expect(filterByFabric(vlans)).toEqual([]);
   });
 
-  it("only returns vlans with fabric by object", function() {
+  it("only returns vlans with fabric by object", function () {
     var i,
       vlan,
       fabric_id = 1,
@@ -38,25 +38,25 @@ describe("filterByFabric", function() {
       all_vlans = [];
     for (i = 0; i < 3; i++) {
       vlan = {
-        fabric: fabric_id
+        fabric: fabric_id,
       };
       fabric_vlans.push(vlan);
       all_vlans.push(vlan);
     }
     for (i = 0; i < 3; i++) {
       vlan = {
-        fabric: other_fabric_id
+        fabric: other_fabric_id,
       };
       other_fabric_vlans.push(vlan);
       all_vlans.push(vlan);
     }
     var fabric = {
-      id: fabric_id
+      id: fabric_id,
     };
     expect(filterByFabric(all_vlans, fabric)).toEqual(fabric_vlans);
   });
 
-  it("only returns vlans with fabric by id", function() {
+  it("only returns vlans with fabric by id", function () {
     var i,
       vlan,
       fabric_id = 1,
@@ -66,14 +66,14 @@ describe("filterByFabric", function() {
       all_vlans = [];
     for (i = 0; i < 3; i++) {
       vlan = {
-        fabric: fabric_id
+        fabric: fabric_id,
       };
       fabric_vlans.push(vlan);
       all_vlans.push(vlan);
     }
     for (i = 0; i < 3; i++) {
       vlan = {
-        fabric: other_fabric_id
+        fabric: other_fabric_id,
       };
       other_fabric_vlans.push(vlan);
       all_vlans.push(vlan);

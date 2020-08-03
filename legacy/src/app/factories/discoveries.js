@@ -28,19 +28,19 @@ function DiscoveriesManager($q, RegionConnection, PollingManager) {
 
   DiscoveriesManager.prototype = new PollingManager();
 
-  DiscoveriesManager.prototype.removeDevice = function(device) {
+  DiscoveriesManager.prototype.removeDevice = function (device) {
     return RegionConnection.callMethod("discovery.delete_by_mac_and_ip", {
       ip: device.ip,
-      mac: device.mac_address
+      mac: device.mac_address,
     });
   };
 
-  DiscoveriesManager.prototype.removeDevices = function(devices) {
+  DiscoveriesManager.prototype.removeDevices = function (devices) {
     return $q.all(
-      devices.map(function(device) {
+      devices.map(function (device) {
         return RegionConnection.callMethod("discovery.delete_by_mac_and_ip", {
           ip: device.ip,
-          mac: device.mac_address
+          mac: device.mac_address,
         });
       })
     );

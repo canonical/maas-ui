@@ -8,7 +8,7 @@
 
 function JSONService() {
   // Return the JSON for the string or null if it cannot be parsed.
-  this.tryParse = function(jsonString) {
+  this.tryParse = function (jsonString) {
     try {
       var obj = JSON.parse(jsonString);
       // JSON.parse(false) or JSON.parse(1234) will throw errors, but
