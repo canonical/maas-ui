@@ -1019,6 +1019,12 @@ function NodeDetailsController(
           );
         }
       }
+
+      // remove duplicates
+      $scope.action.confirmation_details = [
+        ...new Set($scope.action.confirmation_details),
+      ];
+
       if ($scope.action.confirmation_details.length > 0) {
         $scope.action.confirmation_message +=
           $scope.type_name_title + " will be deleted.";

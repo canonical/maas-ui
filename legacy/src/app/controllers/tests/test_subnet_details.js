@@ -218,6 +218,29 @@ describe("SubnetDetailsController", function () {
     expect($rootScope.title).toBe(subnet.cidr + " (" + subnet.name + ")");
   });
 
+  describe("removeDuplicates", () => {
+    it("returns a unique IP object with a duplicate", () => {
+      makeControllerResolveSetActiveItem();
+      const ipAddresses = [
+        {
+          ip: "172.168.1.1",
+          is_boot: false,
+        },
+        {
+          ip: "172.168.1.2",
+          is_boot: true,
+        },
+        {
+          ip: "172.168.1.2",
+          is_boot: true,
+        },
+      ];
+
+      const actual = $scope.removeDuplicates(ipAddresses, "ip");
+      expect(actual.length).toEqual(2);
+    });
+  });
+
   describe("ipSort", function () {
     it("calls ipv4ToInteger when ipVersion == 4", function () {
       makeControllerResolveSetActiveItem();

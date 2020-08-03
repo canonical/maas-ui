@@ -8,6 +8,7 @@
 import angular from "angular";
 
 import { NodeStatus } from "../enum";
+import removeDuplicates from "../filters/remove_duplicates";
 import machinesTableTmpl from "../partials/machines-table.html";
 
 /* @ngInject */
@@ -649,15 +650,8 @@ function maasMachinesTable(
       return false;
     };
 
-    $scope.removeDuplicates = function (ipArray, prop) {
-      if (!angular.isArray(ipArray)) {
-        return;
-      }
-
-      return ipArray.filter((obj, pos, arr) => {
-        return arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos;
-      });
-    };
+    // Remove duplicate IPs
+    $scope.removeDuplicates = removeDuplicates;
 
     $scope.changePowerState = (machine, action) => {
       $scope.closeMenu();
