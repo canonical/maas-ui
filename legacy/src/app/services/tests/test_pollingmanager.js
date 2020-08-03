@@ -10,7 +10,7 @@ import "angular-mocks";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("PollingManager", function() {
+describe("PollingManager", function () {
   beforeAll(() => {
     jest.spyOn(console, "error").mockImplementation(() => {});
   });
@@ -20,7 +20,7 @@ describe("PollingManager", function() {
 
   // Grab the needed angular pieces.
   var $rootScope, $timeout, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $rootScope = $injector.get("$rootScope");
     $timeout = $injector.get("$timeout");
     $q = $injector.get("$q");
@@ -28,7 +28,7 @@ describe("PollingManager", function() {
 
   // Load the PollingManager and RegionConnection factory.
   let TestManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     var PollingManager = $injector.get("PollingManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -47,7 +47,7 @@ describe("PollingManager", function() {
   }));
 
   // Open the connection to the region before each test.
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     RegionConnection.connect(() => done());
   });
 
@@ -55,7 +55,7 @@ describe("PollingManager", function() {
     console.log.mockRestore(); // eslint-disable-line no-console
   });
 
-  it("sets initial values", function() {
+  it("sets initial values", function () {
     expect(TestManager._type).toBe("poll");
     expect(TestManager._polling).toBe(false);
     expect(TestManager._nextPromise).toBeNull();
@@ -64,23 +64,23 @@ describe("PollingManager", function() {
     expect(TestManager._pollEmptyTimeout).toBe(3000);
   });
 
-  describe("isPolling", function() {
-    it("returns _polling", function() {
+  describe("isPolling", function () {
+    it("returns _polling", function () {
       var sentinel = {};
       TestManager._polling = sentinel;
       expect(TestManager.isPolling()).toBe(sentinel);
     });
   });
 
-  describe("startPolling", function() {
-    it("calls _poll and sets polling", function() {
+  describe("startPolling", function () {
+    it("calls _poll and sets polling", function () {
       var sentinel = {};
       spyOn(TestManager, "_poll").and.returnValue(sentinel);
       expect(TestManager.startPolling()).toBe(sentinel);
       expect(TestManager._polling).toBe(true);
     });
 
-    it("returns _nextPromise if already polling", function() {
+    it("returns _nextPromise if already polling", function () {
       var sentinel = {};
       TestManager._polling = true;
       TestManager._nextPromise = sentinel;
@@ -90,8 +90,8 @@ describe("PollingManager", function() {
     });
   });
 
-  describe("stopPolling", function() {
-    it("clears _polling and cancels _nextPromise", function() {
+  describe("stopPolling", function () {
+    it("clears _polling and cancels _nextPromise", function () {
       var sentinel = {};
       TestManager._polling = true;
       TestManager._nextPromise = sentinel;
@@ -103,8 +103,8 @@ describe("PollingManager", function() {
     });
   });
 
-  describe("_pollAgain", function() {
-    it("sets _nextPromise and calls _poll after timeout", function() {
+  describe("_pollAgain", function () {
+    it("sets _nextPromise and calls _poll after timeout", function () {
       spyOn(TestManager, "_poll");
       TestManager._pollAgain(1);
 
@@ -114,15 +114,15 @@ describe("PollingManager", function() {
     });
   });
 
-  describe("_poll", function() {
-    it("calls reloadItems", function() {
+  describe("_poll", function () {
+    it("calls reloadItems", function () {
       var defer = $q.defer();
       spyOn(TestManager, "reloadItems").and.returnValue(defer.promise);
       TestManager._poll();
       expect(TestManager.reloadItems).toHaveBeenCalled();
     });
 
-    it("calls _pollAgain with timeout", function() {
+    it("calls _pollAgain with timeout", function () {
       var defer = $q.defer();
       spyOn(TestManager, "_pollAgain");
       spyOn(TestManager, "reloadItems").and.returnValue(defer.promise);
@@ -134,7 +134,7 @@ describe("PollingManager", function() {
       );
     });
 
-    it("calls _pollAgain with empty timeout", function() {
+    it("calls _pollAgain with empty timeout", function () {
       var defer = $q.defer();
       spyOn(TestManager, "_pollAgain");
       spyOn(TestManager, "reloadItems").and.returnValue(defer.promise);
@@ -146,7 +146,7 @@ describe("PollingManager", function() {
       );
     });
 
-    it("calls _pollAgain with error timeout", function() {
+    it("calls _pollAgain with error timeout", function () {
       var defer = $q.defer();
       spyOn(TestManager, "_pollAgain");
       spyOn(TestManager, "reloadItems").and.returnValue(defer.promise);

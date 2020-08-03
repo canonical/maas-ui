@@ -3,7 +3,7 @@ import podDetailsSummaryTmpl from "../../partials/pod-details/pod-details-summar
 function podDetailsSummary() {
   return {
     restrict: "E",
-    template: podDetailsSummaryTmpl
+    template: podDetailsSummaryTmpl,
   };
 }
 

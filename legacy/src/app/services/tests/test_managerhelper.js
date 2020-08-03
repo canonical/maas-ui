@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("ManagerHelperService", function() {
+describe("ManagerHelperService", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $rootScope, $scope, $timeout, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $rootScope = $injector.get("$rootScope");
     $timeout = $injector.get("$timeout");
     $q = $injector.get("$q");
@@ -20,7 +20,7 @@ describe("ManagerHelperService", function() {
 
   // Load the ManagerHelperService.
   var ManagerHelperService, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ManagerHelperService = $injector.get("ManagerHelperService");
     RegionConnection = $injector.get("RegionConnection");
   }));
@@ -38,15 +38,15 @@ describe("ManagerHelperService", function() {
       enableAutoReload: jasmine.createSpy(),
       isPolling: jasmine.createSpy(),
       startPolling: jasmine.createSpy(),
-      stopPolling: jasmine.createSpy()
+      stopPolling: jasmine.createSpy(),
     };
     manager.isLoaded.and.returnValue(false);
     manager.loadItems.and.returnValue($q.defer().promise);
     return manager;
   }
 
-  describe("loadManager - notify", function() {
-    it("calls RegionConnection.defaultConnect", function() {
+  describe("loadManager - notify", function () {
+    it("calls RegionConnection.defaultConnect", function () {
       spyOn(RegionConnection, "defaultConnect").and.returnValue(
         $q.defer().promise
       );
@@ -55,12 +55,12 @@ describe("ManagerHelperService", function() {
       expect(RegionConnection.defaultConnect).toHaveBeenCalled();
     });
 
-    it("doesn't call loadItems if manager already loaded", function(done) {
+    it("doesn't call loadItems if manager already loaded", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
       manager.isLoaded.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.loadItems).not.toHaveBeenCalled();
         done();
       });
@@ -68,12 +68,12 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("adds scope if manager already loaded", function(done) {
+    it("adds scope if manager already loaded", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
       manager.isLoaded.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager._scopes).toEqual([$scope]);
         done();
       });
@@ -81,13 +81,13 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("calls loadItems if manager not loaded", function(done) {
+    it("calls loadItems if manager not loaded", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
       var loadItemsDefer = $q.defer();
       manager.loadItems.and.returnValue(loadItemsDefer.promise);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.loadItems).toHaveBeenCalled();
         done();
       });
@@ -97,19 +97,19 @@ describe("ManagerHelperService", function() {
       $rootScope.$digest();
     });
 
-    it("adds scope once loadItems resolves", function(done) {
+    it("adds scope once loadItems resolves", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
       var loadItemsDefer = $q.defer();
       manager.loadItems.and.returnValue(loadItemsDefer.promise);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.loadItems).toHaveBeenCalled();
       });
       defer.resolve();
       $rootScope.$digest();
 
-      loadItemsDefer.promise.then(function() {
+      loadItemsDefer.promise.then(function () {
         expect(manager._scopes).toEqual([$scope]);
         done();
       });
@@ -117,12 +117,12 @@ describe("ManagerHelperService", function() {
       $rootScope.$digest();
     });
 
-    it("calls enableAutoReload", function(done) {
+    it("calls enableAutoReload", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
       manager.isLoaded.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.enableAutoReload).toHaveBeenCalled();
         done();
       });
@@ -130,7 +130,7 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("on $destroy scope is removed from manager", function() {
+    it("on $destroy scope is removed from manager", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("notify");
@@ -146,8 +146,8 @@ describe("ManagerHelperService", function() {
     });
   });
 
-  describe("loadManager - poll", function() {
-    it("calls RegionConnection.defaultConnect", function() {
+  describe("loadManager - poll", function () {
+    it("calls RegionConnection.defaultConnect", function () {
       spyOn(RegionConnection, "defaultConnect").and.returnValue(
         $q.defer().promise
       );
@@ -156,12 +156,12 @@ describe("ManagerHelperService", function() {
       expect(RegionConnection.defaultConnect).toHaveBeenCalled();
     });
 
-    it("doesn't call startPolling if already polling", function(done) {
+    it("doesn't call startPolling if already polling", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
       manager.isPolling.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.startPolling).not.toHaveBeenCalled();
         done();
       });
@@ -169,12 +169,12 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("adds scope if manager already loaded", function(done) {
+    it("adds scope if manager already loaded", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
       manager.isPolling.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager._scopes).toEqual([$scope]);
         done();
       });
@@ -182,13 +182,13 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("calls startPolling if manager not polling", function(done) {
+    it("calls startPolling if manager not polling", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
       var startPollingDefer = $q.defer();
       manager.startPolling.and.returnValue(startPollingDefer.promise);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.startPolling).toHaveBeenCalled();
         done();
       });
@@ -198,19 +198,19 @@ describe("ManagerHelperService", function() {
       $rootScope.$digest();
     });
 
-    it("adds scope once startPolling resolves", function(done) {
+    it("adds scope once startPolling resolves", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
       var startPollingDefer = $q.defer();
       manager.startPolling.and.returnValue(startPollingDefer.promise);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.startPolling).toHaveBeenCalled();
       });
       defer.resolve();
       $rootScope.$digest();
 
-      startPollingDefer.promise.then(function() {
+      startPollingDefer.promise.then(function () {
         expect(manager._scopes).toEqual([$scope]);
         done();
       });
@@ -218,12 +218,12 @@ describe("ManagerHelperService", function() {
       $rootScope.$digest();
     });
 
-    it("doesn't call enableAutoReload", function(done) {
+    it("doesn't call enableAutoReload", function (done) {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
       manager.isPolling.and.returnValue(true);
-      ManagerHelperService.loadManager($scope, manager).then(function() {
+      ManagerHelperService.loadManager($scope, manager).then(function () {
         expect(manager.enableAutoReload).not.toHaveBeenCalled();
         done();
       });
@@ -231,7 +231,7 @@ describe("ManagerHelperService", function() {
       $timeout.flush();
     });
 
-    it("on $destroy stopPolling is called", function() {
+    it("on $destroy stopPolling is called", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
@@ -247,7 +247,7 @@ describe("ManagerHelperService", function() {
       expect(manager.stopPolling).toHaveBeenCalled();
     });
 
-    it("on $destroy stopPolling not called if loaded twice", function() {
+    it("on $destroy stopPolling not called if loaded twice", function () {
       var defer = $q.defer();
       spyOn(RegionConnection, "defaultConnect").and.returnValue(defer.promise);
       var manager = makeManager("poll");
@@ -266,19 +266,19 @@ describe("ManagerHelperService", function() {
     });
   });
 
-  describe("loadManagers", function() {
-    it("calls loadManager for all managers", function(done) {
+  describe("loadManagers", function () {
+    it("calls loadManager for all managers", function (done) {
       var managers = [makeManager(), makeManager()];
       var defers = [$q.defer(), $q.defer()];
       var i = 0;
-      spyOn(ManagerHelperService, "loadManager").and.callFake(function(
+      spyOn(ManagerHelperService, "loadManager").and.callFake(function (
         scope,
         manager
       ) {
         expect(manager).toBe(managers[i]);
         return defers[i++].promise;
       });
-      ManagerHelperService.loadManagers($scope, managers).then(function(
+      ManagerHelperService.loadManagers($scope, managers).then(function (
         loadedManagers
       ) {
         expect(loadedManagers).toBe(managers);
@@ -291,46 +291,46 @@ describe("ManagerHelperService", function() {
     });
   });
 
-  describe("tryParsingJSON", function() {
+  describe("tryParsingJSON", function () {
     // Note: we're putting a lot of trust in JSON.parse(), so one simple
     // test should be enough.
-    it("converts a JSON string into a JSON object", function() {
+    it("converts a JSON string into a JSON object", function () {
       var result = ManagerHelperService.tryParsingJSON('{ "a": "b" }');
       expect(result).toEqual({ a: "b" });
     });
 
-    it("converts a non-JSON string into a string", function() {
+    it("converts a non-JSON string into a string", function () {
       var result = ManagerHelperService.tryParsingJSON("Not a JSON string.");
       expect(result).toEqual("Not a JSON string.");
     });
   });
 
-  describe("getPrintableString", function() {
-    it("converts a flat dictionary to a printable string", function() {
+  describe("getPrintableString", function () {
+    it("converts a flat dictionary to a printable string", function () {
       var result = ManagerHelperService.getPrintableString(
         {
           a: "bc",
-          d: 1
+          d: 1,
         },
         true
       );
       expect(result).toEqual("a: bc\nd: 1");
     });
 
-    it("converts a dictionary of lists to a string with labels", function() {
+    it("converts a dictionary of lists to a string with labels", function () {
       var result = ManagerHelperService.getPrintableString(
         {
-          a: ["b", "cd"]
+          a: ["b", "cd"],
         },
         true
       );
       expect(result).toEqual("a: b  cd");
     });
 
-    it("converts a dictionary of lists to a string without labels", function() {
+    it("converts a dictionary of lists to a string without labels", function () {
       var result = ManagerHelperService.getPrintableString(
         {
-          a: ["b", "c"]
+          a: ["b", "c"],
         },
         false
       );
@@ -338,11 +338,11 @@ describe("ManagerHelperService", function() {
     });
 
     it(`converts multiple key dictionary to
-        multi-line string with labels`, function() {
+        multi-line string with labels`, function () {
       var result = ManagerHelperService.getPrintableString(
         {
           a: ["b", "cx"],
-          d: ["e", "f"]
+          d: ["e", "f"],
         },
         true
       );
@@ -350,15 +350,15 @@ describe("ManagerHelperService", function() {
     });
   });
 
-  describe("parseValidationError", function() {
-    it("returns a flat error for a flat string", function() {
+  describe("parseValidationError", function () {
+    it("returns a flat error for a flat string", function () {
       var result = ManagerHelperService.parseValidationError(
         "This is an error."
       );
       expect(result).toEqual("This is an error.");
     });
 
-    it("returns a formatted error for a JSON string without names", function() {
+    it("returns a formatted error for a JSON string without names", function () {
       var result = ManagerHelperService.parseValidationError(
         '{"This": "is an error on JSON."}',
         false
@@ -366,7 +366,7 @@ describe("ManagerHelperService", function() {
       expect(result).toEqual("is an error on JSON.");
     });
 
-    it("returns a formatted error for a JSON string with names", function() {
+    it("returns a formatted error for a JSON string with names", function () {
       var result = ManagerHelperService.parseValidationError(
         '{"This": "is an error on JSON."}',
         true

@@ -29,7 +29,7 @@ function NodeResultsController(
   // List of logs available.
   $scope.logs = {
     option: null,
-    availableOptions: []
+    availableOptions: [],
   };
   // Log content being displayed.
   $scope.logOutput = "Loading...";
@@ -60,7 +60,7 @@ function NodeResultsController(
         if ($scope.installation_results[i].name === "/tmp/install.log") {
           $scope.logs.availableOptions.push({
             title: "Installation output",
-            id: $scope.installation_results[i].id
+            id: $scope.installation_results[i].id,
           });
           break;
         }
@@ -68,11 +68,11 @@ function NodeResultsController(
     }
     $scope.logs.availableOptions.push({
       title: "Machine output (YAML)",
-      id: "summary_yaml"
+      id: "summary_yaml",
     });
     $scope.logs.availableOptions.push({
       title: "Machine output (XML)",
-      id: "summary_xml"
+      id: "summary_xml",
     });
     if (!had_installation && $scope.logs.availableOptions.length === 3) {
       // A new installation log has appeared, show it.
@@ -95,7 +95,7 @@ function NodeResultsController(
       node,
       $scope.section.area
     );
-    $scope.nodeResultsManager.loadItems().then(function() {
+    $scope.nodeResultsManager.loadItems().then(function () {
       $scope.commissioning_results =
         $scope.nodeResultsManager.commissioning_results;
       $scope.testing_results = $scope.nodeResultsManager.testing_results;
@@ -119,7 +119,7 @@ function NodeResultsController(
   }
   // Load nodes manager.
   ManagerHelperService.loadManager($scope, $scope.nodesManager).then(
-    function() {
+    function () {
       // If redirected from the NodeDetailsController then the node
       // will already be active. No need to set it active again.
       var activeNode = $scope.nodesManager.getActiveItem();
@@ -130,10 +130,10 @@ function NodeResultsController(
         nodeLoaded(activeNode);
       } else {
         $scope.nodesManager.setActiveItem($stateParams.system_id).then(
-          function(node) {
+          function (node) {
             nodeLoaded(node);
           },
-          function(error) {
+          function (error) {
             ErrorService.raiseError(error);
           }
         );
@@ -141,16 +141,16 @@ function NodeResultsController(
     }
   );
 
-  $scope.updateLogOutput = function() {
+  $scope.updateLogOutput = function () {
     $scope.logOutput = "Loading...";
     if (!$scope.node) {
       return;
     } else if ($scope.logs.option.id === "summary_xml") {
-      $scope.nodesManager.getSummaryXML($scope.node).then(function(output) {
+      $scope.nodesManager.getSummaryXML($scope.node).then(function (output) {
         $scope.logOutput = output;
       });
     } else if ($scope.logs.option.id === "summary_yaml") {
-      $scope.nodesManager.getSummaryYAML($scope.node).then(function(output) {
+      $scope.nodesManager.getSummaryYAML($scope.node).then(function (output) {
         $scope.logOutput = output;
       });
     } else {
@@ -177,7 +177,7 @@ function NodeResultsController(
         case 2:
           $scope.nodeResultsManager
             .get_result_data(result.id, "combined")
-            .then(function(output) {
+            .then(function (output) {
               if (output === "") {
                 $scope.logOutput =
                   "Installation has succeeded but " + "no output was given.";
@@ -189,7 +189,7 @@ function NodeResultsController(
         case 3:
           $scope.nodeResultsManager
             .get_result_data(result.id, "combined")
-            .then(function(output) {
+            .then(function (output) {
               if (output === "") {
                 $scope.logOutput =
                   "Installation has failed and no " + "output was given.";
@@ -211,7 +211,7 @@ function NodeResultsController(
     }
   };
 
-  $scope.loadHistory = function(result) {
+  $scope.loadHistory = function (result) {
     result.showing_results = false;
     // History has already been loaded, no need to request it.
     if (angular.isArray(result.history_list)) {
@@ -219,7 +219,7 @@ function NodeResultsController(
       return;
     }
     result.loading_history = true;
-    $scope.nodeResultsManager.get_history(result.id).then(function(history) {
+    $scope.nodeResultsManager.get_history(result.id).then(function (history) {
       result.history_list = history;
       result.loading_history = false;
       result.showing_history = true;
@@ -227,13 +227,15 @@ function NodeResultsController(
   };
 
   $scope.hasSuppressedTests = () => {
-    return $scope.results.some(type => {
+    return $scope.results.some((type) => {
       const entries = Object.entries(type.results);
-      return entries.some(entry => entry[1].some(result => result.suppressed));
+      return entries.some((entry) =>
+        entry[1].some((result) => result.suppressed)
+      );
     });
   };
 
-  $scope.isSuppressible = result =>
+  $scope.isSuppressible = (result) =>
     result.status === ScriptStatus.FAILED ||
     result.status === ScriptStatus.FAILED_INSTALLING ||
     result.status === ScriptStatus.TIMEDOUT ||
@@ -242,8 +244,8 @@ function NodeResultsController(
   $scope.getSuppressedCount = () => {
     const suppressibleTests = $scope.results.reduce((acc, type) => {
       const entries = Object.entries(type.results);
-      entries.forEach(entry => {
-        entry[1].forEach(result => {
+      entries.forEach((entry) => {
+        entry[1].forEach((result) => {
           if ($scope.isSuppressible(result)) {
             acc.push(result);
           }
@@ -251,7 +253,7 @@ function NodeResultsController(
       });
       return acc;
     }, []);
-    const suppressedTests = suppressibleTests.filter(test => test.suppressed);
+    const suppressedTests = suppressibleTests.filter((test) => test.suppressed);
 
     if (suppressibleTests.length === suppressedTests.length) {
       return "All";
@@ -259,7 +261,7 @@ function NodeResultsController(
     return suppressedTests.length;
   };
 
-  $scope.toggleSuppressed = result => {
+  $scope.toggleSuppressed = (result) => {
     if (result.suppressed) {
       $scope.nodesManager.unsuppressTests($scope.node, [result]);
     } else {
@@ -270,7 +272,7 @@ function NodeResultsController(
   // Destroy the NodeResultsManager when the scope is destroyed. This is
   // so the client will not recieve any more notifications about results
   // from this node.
-  $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function () {
     if (angular.isObject($scope.nodeResultsManager)) {
       $scope.nodeResultsManager.destroy();
     }

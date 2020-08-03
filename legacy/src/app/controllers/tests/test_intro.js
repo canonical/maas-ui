@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("IntroController", function() {
+describe("IntroController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $window;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $rootScope.navigateToNew = jest.fn();
@@ -20,18 +20,18 @@ describe("IntroController", function() {
     $q = $injector.get("$q");
     $window = {
       location: {
-        reload: jasmine.createSpy("reload")
+        reload: jasmine.createSpy("reload"),
       },
       CONFIG: {
-        completed_intro: false
-      }
+        completed_intro: false,
+      },
     };
   }));
 
   // Load any injected managers and services.
   var ConfigsManager, PackageRepositoriesManager, BootResourcesManager;
   var ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ConfigsManager = $injector.get("ConfigsManager");
     PackageRepositoriesManager = $injector.get("PackageRepositoriesManager");
     BootResourcesManager = $injector.get("BootResourcesManager");
@@ -39,7 +39,7 @@ describe("IntroController", function() {
   }));
 
   // After each test mark it as complete.
-  afterEach(function() {
+  afterEach(function () {
     $window.CONFIG.completed_intro = true;
   });
 
@@ -61,27 +61,27 @@ describe("IntroController", function() {
       ConfigsManager: ConfigsManager,
       PackageRepositoriesManager: PackageRepositoriesManager,
       BootResourcesManager: BootResourcesManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Welcome");
     expect($rootScope.page).toBe("intro");
   });
 
-  it("calls loadManagers with correct managers", function() {
+  it("calls loadManagers with correct managers", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       ConfigsManager,
-      PackageRepositoriesManager
+      PackageRepositoriesManager,
     ]);
   });
 
-  it("sets initial $scope", function() {
+  it("sets initial $scope", function () {
     makeController();
     expect($scope.loading).toBe(true);
     expect($scope.configManager).toBe(ConfigsManager);
@@ -95,7 +95,7 @@ describe("IntroController", function() {
     expect($scope.httpProxy).toBeNull();
   });
 
-  it("clears loading", function() {
+  it("clears loading", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -103,13 +103,13 @@ describe("IntroController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  it("redirects to machine list if already completed", function() {
+  it("redirects to machine list if already completed", function () {
     $window.CONFIG.completed_intro = true;
     makeController();
     expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
   });
 
-  it("sets required objects on resolve", function() {
+  it("sets required objects on resolve", function () {
     var defer = $q.defer();
     makeController(defer);
     var maasName = { name: "maas_name" };
@@ -117,11 +117,11 @@ describe("IntroController", function() {
     var httpProxy = { name: "http_proxy" };
     var mainArchive = {
       default: true,
-      name: "main_archive"
+      name: "main_archive",
     };
     var portsArchive = {
       default: true,
-      name: "ports_archive"
+      name: "ports_archive",
     };
     ConfigsManager._items = [maasName, upstreamDNS, httpProxy, mainArchive];
     PackageRepositoriesManager._items = [mainArchive, portsArchive];
@@ -135,8 +135,8 @@ describe("IntroController", function() {
     expect($scope.portsArchive).toBe(portsArchive);
   });
 
-  describe("$rootScope.skip", function() {
-    it("calls updateItem and reloads", function() {
+  describe("$rootScope.skip", function () {
+    it("calls updateItem and reloads", function () {
       makeController();
       var defer = $q.defer();
       spyOn(ConfigsManager, "updateItem").and.returnValue(defer.promise);
@@ -144,7 +144,7 @@ describe("IntroController", function() {
 
       expect(ConfigsManager.updateItem).toHaveBeenCalledWith({
         name: "completed_intro",
-        value: true
+        value: true,
       });
       defer.resolve();
       $scope.$digest();
@@ -152,29 +152,29 @@ describe("IntroController", function() {
     });
   });
 
-  describe("welcomeInError", function() {
-    it("returns false without form", function() {
+  describe("welcomeInError", function () {
+    it("returns false without form", function () {
       makeController();
       $scope.maasName = {};
       expect($scope.welcomeInError()).toBe(false);
     });
 
-    it("returns hasErrors from form", function() {
+    it("returns hasErrors from form", function () {
       makeController();
       var sentinel = {};
       var hasErrors = jasmine.createSpy("hasErrors");
       hasErrors.and.returnValue(sentinel);
       $scope.maasName = {
         $maasForm: {
-          hasErrors: hasErrors
-        }
+          hasErrors: hasErrors,
+        },
       };
       expect($scope.welcomeInError()).toBe(sentinel);
     });
   });
 
-  describe("networkInError", function() {
-    it("returns false when no forms", function() {
+  describe("networkInError", function () {
+    it("returns false when no forms", function () {
       makeController();
       $scope.upstreamDNS = {};
       $scope.mainArchive = {};
@@ -183,14 +183,14 @@ describe("IntroController", function() {
       expect($scope.networkInError()).toBe(false);
     });
 
-    it("returns false when none have errors", function() {
+    it("returns false when none have errors", function () {
       makeController();
       var hasErrors = jasmine.createSpy("hasErrors");
       hasErrors.and.returnValue(false);
       var obj = {
         $maasForm: {
-          hasErrors: hasErrors
-        }
+          hasErrors: hasErrors,
+        },
       };
       $scope.upstreamDNS = obj;
       $scope.mainArchive = obj;
@@ -199,21 +199,21 @@ describe("IntroController", function() {
       expect($scope.networkInError()).toBe(false);
     });
 
-    it("returns true when one has error", function() {
+    it("returns true when one has error", function () {
       makeController();
       var hasErrorsFalse = jasmine.createSpy("hasErrors");
       hasErrorsFalse.and.returnValue(false);
       var objFalse = {
         $maasForm: {
-          hasErrors: hasErrorsFalse
-        }
+          hasErrors: hasErrorsFalse,
+        },
       };
       var hasErrorsTrue = jasmine.createSpy("hasErrors");
       hasErrorsTrue.and.returnValue(true);
       var objTrue = {
         $maasForm: {
-          hasErrors: hasErrorsTrue
-        }
+          hasErrors: hasErrorsTrue,
+        },
       };
       $scope.upstreamDNS = objTrue;
       $scope.mainArchive = objFalse;
@@ -223,21 +223,21 @@ describe("IntroController", function() {
     });
   });
 
-  describe("canContinue", function() {
-    it("returns false when welcome has error", function() {
+  describe("canContinue", function () {
+    it("returns false when welcome has error", function () {
       makeController();
       spyOn($scope, "welcomeInError").and.returnValue(true);
       expect($scope.canContinue()).toBe(false);
     });
 
-    it("returns false when network has error", function() {
+    it("returns false when network has error", function () {
       makeController();
       spyOn($scope, "welcomeInError").and.returnValue(false);
       spyOn($scope, "networkInError").and.returnValue(true);
       expect($scope.canContinue()).toBe(false);
     });
 
-    it("returns false when no images", function() {
+    it("returns false when no images", function () {
       makeController();
       spyOn($scope, "welcomeInError").and.returnValue(false);
       spyOn($scope, "networkInError").and.returnValue(false);
@@ -245,7 +245,7 @@ describe("IntroController", function() {
       expect($scope.canContinue()).toBe(false);
     });
 
-    it("returns true", function() {
+    it("returns true", function () {
       makeController();
       spyOn($scope, "welcomeInError").and.returnValue(false);
       spyOn($scope, "networkInError").and.returnValue(false);
@@ -254,8 +254,8 @@ describe("IntroController", function() {
     });
   });
 
-  describe("clickContinue", function() {
-    it("does nothing if cannot continue", function() {
+  describe("clickContinue", function () {
+    it("does nothing if cannot continue", function () {
       makeController();
       spyOn($scope, "canContinue").and.returnValue(false);
       spyOn(ConfigsManager, "updateItem");
@@ -263,18 +263,18 @@ describe("IntroController", function() {
       expect(ConfigsManager.updateItem).not.toHaveBeenCalled();
     });
 
-    it("forces ignores canContinue", function() {
+    it("forces ignores canContinue", function () {
       makeController();
       spyOn($scope, "canContinue").and.returnValue(false);
       spyOn(ConfigsManager, "updateItem").and.returnValue($q.defer().promise);
       $scope.clickContinue(true);
       expect(ConfigsManager.updateItem).toHaveBeenCalledWith({
         name: "completed_intro",
-        value: true
+        value: true,
       });
     });
 
-    it("calls updateItem and reloads", function() {
+    it("calls updateItem and reloads", function () {
       makeController();
       var defer = $q.defer();
       spyOn(ConfigsManager, "updateItem").and.returnValue(defer.promise);
@@ -282,7 +282,7 @@ describe("IntroController", function() {
 
       expect(ConfigsManager.updateItem).toHaveBeenCalledWith({
         name: "completed_intro",
-        value: true
+        value: true,
       });
       defer.resolve();
       $scope.$digest();

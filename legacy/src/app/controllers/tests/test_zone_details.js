@@ -8,7 +8,7 @@ import angular from "angular";
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("ZoneDetailsController", function() {
+describe("ZoneDetailsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -16,7 +16,7 @@ describe("ZoneDetailsController", function() {
   function makeZone() {
     var zone = {
       id: makeInteger(1, 10000),
-      name: makeName("zone")
+      name: makeName("zone"),
     };
     ZonesManager._items.push(zone);
     return zone;
@@ -24,7 +24,7 @@ describe("ZoneDetailsController", function() {
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $stateParams;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
@@ -36,7 +36,7 @@ describe("ZoneDetailsController", function() {
   // Load any injected managers and services.
   var ZonesManager, UsersManager, ManagerHelperService, ErrorService;
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ZonesManager = $injector.get("ZonesManager");
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
@@ -50,7 +50,7 @@ describe("ZoneDetailsController", function() {
   }));
 
   var zone;
-  beforeEach(function() {
+  beforeEach(function () {
     zone = makeZone();
   });
 
@@ -73,7 +73,7 @@ describe("ZoneDetailsController", function() {
       ZonesManager: ZonesManager,
       UsersManager: UsersManager,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
 
     return controller;
@@ -97,13 +97,13 @@ describe("ZoneDetailsController", function() {
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("zones");
   });
 
-  it("raises error if zone identifier is invalid", function() {
+  it("raises error if zone identifier is invalid", function () {
     spyOn(ZonesManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
@@ -119,7 +119,7 @@ describe("ZoneDetailsController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalled();
   });
 
-  it("doesn't call setActiveItem if zone is loaded", function() {
+  it("doesn't call setActiveItem if zone is loaded", function () {
     spyOn(ZonesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -134,7 +134,7 @@ describe("ZoneDetailsController", function() {
     expect(ZonesManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if zone is not active", function() {
+  it("calls setActiveItem if zone is not active", function () {
     spyOn(ZonesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -146,45 +146,45 @@ describe("ZoneDetailsController", function() {
     expect(ZonesManager.setActiveItem).toHaveBeenCalledWith(zone.id);
   });
 
-  it("sets zone and loaded once setActiveItem resolves", function() {
+  it("sets zone and loaded once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($scope.zone).toBe(zone);
     expect($scope.loaded).toBe(true);
   });
 
-  it("title is updated once setActiveItem resolves", function() {
+  it("title is updated once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($rootScope.title).toBe(zone.name);
   });
 
-  describe("canBeDeleted", function() {
-    it("returns false if zone is null", function() {
+  describe("canBeDeleted", function () {
+    it("returns false if zone is null", function () {
       makeControllerResolveSetActiveItem();
       $scope.zone = null;
       expect($scope.canBeDeleted()).toBe(false);
     });
 
-    it("returns false if zone id is 0", function() {
+    it("returns false if zone id is 0", function () {
       makeControllerResolveSetActiveItem();
       $scope.zone.id = 0;
       expect($scope.canBeDeleted()).toBe(false);
     });
 
-    it("returns true if zone id > 0", function() {
+    it("returns true if zone id > 0", function () {
       makeControllerResolveSetActiveItem();
       $scope.zone.id = 1;
       expect($scope.canBeDeleted()).toBe(true);
     });
   });
 
-  describe("deleteButton", function() {
-    it("confirms delete", function() {
+  describe("deleteButton", function () {
+    it("confirms delete", function () {
       makeControllerResolveSetActiveItem();
       $scope.deleteButton();
       expect($scope.confirmingDelete).toBe(true);
     });
 
-    it("clears error", function() {
+    it("clears error", function () {
       makeControllerResolveSetActiveItem();
       $scope.error = makeName("error");
       $scope.deleteButton();
@@ -192,8 +192,8 @@ describe("ZoneDetailsController", function() {
     });
   });
 
-  describe("cancelDeleteButton", function() {
-    it("cancels delete", function() {
+  describe("cancelDeleteButton", function () {
+    it("cancels delete", function () {
       makeControllerResolveSetActiveItem();
       $scope.deleteButton();
       $scope.cancelDeleteButton();
@@ -201,8 +201,8 @@ describe("ZoneDetailsController", function() {
     });
   });
 
-  describe("deleteZone", function() {
-    it("calls deleteItem", function() {
+  describe("deleteZone", function () {
+    it("calls deleteItem", function () {
       makeController();
       var deleteItem = spyOn(ZonesManager, "deleteItem");
       var defer = $q.defer();

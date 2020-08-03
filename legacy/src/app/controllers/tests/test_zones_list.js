@@ -7,13 +7,13 @@ import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 
-describe("ZonesListController", function() {
+describe("ZonesListController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q, $stateParams;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
@@ -24,7 +24,7 @@ describe("ZonesListController", function() {
   // Load the managers and services.
   var ZonesManager, UsersManager;
   var ManagerHelperService, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ZonesManager = $injector.get("ZonesManager");
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
@@ -51,34 +51,34 @@ describe("ZonesListController", function() {
       $rootScope: $rootScope,
       $stateParams: $stateParams,
       ZonesManager: ZonesManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Zones");
     expect($rootScope.page).toBe("zones");
   });
 
-  it("sets initial values on $scope", function() {
+  it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
     expect($scope.zones).toBe(ZonesManager.getItems());
     expect($scope.loading).toBe(true);
   });
 
-  it("calls loadManagers with [ZonesManager, UsersManager]", function() {
+  it("calls loadManagers with [ZonesManager, UsersManager]", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       ZonesManager,
-      UsersManager
+      UsersManager,
     ]);
   });
 
-  it("sets loading to false when loadManagers resolves", function() {
+  it("sets loading to false when loadManagers resolves", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -86,16 +86,16 @@ describe("ZonesListController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  describe("addZone", function() {
-    it("sets action.open to true", function() {
+  describe("addZone", function () {
+    it("sets action.open to true", function () {
       makeController();
       $scope.addZone();
       expect($scope.action.open).toBe(true);
     });
   });
 
-  describe("closeZone", function() {
-    it("set action.open to false and clears action.obj", function() {
+  describe("closeZone", function () {
+    it("set action.open to false and clears action.obj", function () {
       makeController();
       var obj = {};
       $scope.action.obj = obj;

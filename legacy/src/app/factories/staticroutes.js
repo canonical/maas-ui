@@ -17,7 +17,7 @@ function StaticRoutesManager(RegionConnection, Manager) {
 
     // Listen for notify events for the staticroute object.
     var self = this;
-    RegionConnection.registerNotifier("staticroute", function(action, data) {
+    RegionConnection.registerNotifier("staticroute", function (action, data) {
       self.onNotify(action, data);
     });
   }

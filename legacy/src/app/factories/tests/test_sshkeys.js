@@ -5,24 +5,24 @@
  */
 import angular from "angular";
 
-describe("SSHKeysManager", function() {
+describe("SSHKeysManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the SSHKeysManager.
   var SSHKeysManager, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SSHKeysManager = $injector.get("SSHKeysManager");
     RegionConnection = $injector.get("RegionConnection");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(SSHKeysManager._pk).toBe("id");
     expect(SSHKeysManager._handler).toBe("sshkey");
   });
 
-  describe("importKeys", function() {
-    it("calls the region", function() {
+  describe("importKeys", function () {
+    it("calls the region", function () {
       var obj = {};
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);

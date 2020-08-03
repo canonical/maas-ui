@@ -18,7 +18,7 @@ function FabricsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the fabric object.
     var self = this;
-    RegionConnection.registerNotifier("fabric", function(action, data) {
+    RegionConnection.registerNotifier("fabric", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -26,7 +26,7 @@ function FabricsManager(RegionConnection, Manager) {
   FabricsManager.prototype = new Manager();
 
   // Given a Fabric object, returns its display name.
-  FabricsManager.prototype.getName = function(fabric) {
+  FabricsManager.prototype.getName = function (fabric) {
     if (!angular.isObject(fabric)) {
       return;
     }
@@ -38,7 +38,7 @@ function FabricsManager(RegionConnection, Manager) {
   };
 
   // Delete the Fabric.
-  FabricsManager.prototype.deleteFabric = function(fabric) {
+  FabricsManager.prototype.deleteFabric = function (fabric) {
     return RegionConnection.callMethod(
       "fabric.delete",
       { id: fabric.id },
@@ -47,7 +47,7 @@ function FabricsManager(RegionConnection, Manager) {
   };
 
   // Create a Fabric.
-  FabricsManager.prototype.create = function(fabric) {
+  FabricsManager.prototype.create = function (fabric) {
     // We don't add the item to the list because a NOTIFY event will
     // add the domain to the list. Adding it here will cause angular to
     // complain because the same object exist in the list.

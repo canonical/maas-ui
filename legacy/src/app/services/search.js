@@ -10,7 +10,7 @@ function SearchService() {
   var emptyFilter = { _: [] };
 
   // Return a new empty filter;
-  this.getEmptyFilter = function() {
+  this.getEmptyFilter = function () {
     return angular.copy(emptyFilter);
   };
 
@@ -20,11 +20,11 @@ function SearchService() {
   // XXX blake_r 28-01-15: This could be improved with a regex, but was
   // unable to come up with one that would allow me to validate the end
   // ')' in the string.
-  this.getSplitSearch = function(search) {
+  this.getSplitSearch = function (search) {
     var terms = search.split(" ");
     var fixedTerms = [];
     var spanningParentheses = false;
-    angular.forEach(terms, function(term) {
+    angular.forEach(terms, function (term) {
       if (spanningParentheses) {
         // Previous term had an opening '(' but not a ')'. This
         // term should join that previous term.
@@ -57,7 +57,7 @@ function SearchService() {
   };
 
   // Return all of the currently active filters for the given search.
-  this.getCurrentFilters = function(search) {
+  this.getCurrentFilters = function (search) {
     var filters = this.getEmptyFilter();
     if (search.length === 0) {
       return filters;
@@ -66,7 +66,7 @@ function SearchService() {
     if (!searchTerms) {
       return null;
     }
-    angular.forEach(searchTerms, function(terms) {
+    angular.forEach(searchTerms, function (terms) {
       terms = terms.split(":");
       if (terms.length === 1) {
         // Search term is not specifying a specific field. Gets
@@ -94,7 +94,7 @@ function SearchService() {
         if (angular.isUndefined(filters[field])) {
           filters[field] = [];
         }
-        angular.forEach(values, function(value) {
+        angular.forEach(values, function (value) {
           if (filters[field].indexOf(value) === -1) {
             filters[field].push(value);
           }
@@ -105,9 +105,9 @@ function SearchService() {
   };
 
   // Convert "filters" into a search string.
-  this.filtersToString = function(filters) {
+  this.filtersToString = function (filters) {
     var search = "";
-    angular.forEach(filters, function(terms, type) {
+    angular.forEach(filters, function (terms, type) {
       // Skip empty and skip "_" as it gets appended at the
       // beginning of the search.
       if (terms.length === 0 || type === "_") {
@@ -122,19 +122,19 @@ function SearchService() {
   };
 
   // Return the index of the value in the type for the filter.
-  this._getFilterValueIndex = function(filters, type, value) {
+  this._getFilterValueIndex = function (filters, type, value) {
     var values = filters[type];
     if (angular.isUndefined(values)) {
       return -1;
     }
-    var lowerValues = values.map(function(value) {
+    var lowerValues = values.map(function (value) {
       return value.toLowerCase();
     });
     return lowerValues.indexOf(value.toLowerCase());
   };
 
   // Return true if the type and value are in the filters.
-  this.isFilterActive = function(filters, type, value, exact) {
+  this.isFilterActive = function (filters, type, value, exact) {
     var values = filters[type];
     if (angular.isUndefined(values)) {
       return false;
@@ -149,7 +149,7 @@ function SearchService() {
   };
 
   // Toggles a filter on or off based on type and value.
-  this.toggleFilter = function(filters, type, value, exact) {
+  this.toggleFilter = function (filters, type, value, exact) {
     if (angular.isUndefined(filters[type])) {
       filters[type] = [];
     }
@@ -169,12 +169,12 @@ function SearchService() {
   var storedFilters = {};
 
   // Store a filter for later.
-  this.storeFilters = function(name, filters) {
+  this.storeFilters = function (name, filters) {
     storedFilters[name] = filters;
   };
 
   // Retrieve a stored filter.
-  this.retrieveFilters = function(name) {
+  this.retrieveFilters = function (name) {
     return storedFilters[name];
   };
 }

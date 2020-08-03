@@ -5,35 +5,35 @@
  */
 import angular from "angular";
 
-describe("formatBytes", function() {
+describe("formatBytes", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the formatBytes.
   var formatBytes;
-  beforeEach(inject(function($filter) {
+  beforeEach(inject(function ($filter) {
     formatBytes = $filter("formatBytes");
   }));
 
-  it("returns zero if undefined or zero bytes", function() {
+  it("returns zero if undefined or zero bytes", function () {
     expect(formatBytes()).toEqual("0 B");
     expect(formatBytes(0)).toEqual("0 B");
   });
 
-  it("returns value in bytes if less than a kilobyte", function() {
+  it("returns value in bytes if less than a kilobyte", function () {
     expect(formatBytes(456)).toEqual("456 B");
   });
 
-  it("returns value in kilobytes if less than a megabyte", function() {
+  it("returns value in kilobytes if less than a megabyte", function () {
     expect(formatBytes(568000000)).toEqual("568 MB");
   });
 
-  it("returns value in gigabytes if less than a terabyte", function() {
+  it("returns value in gigabytes if less than a terabyte", function () {
     expect(formatBytes(382000000000)).toEqual("382 GB");
   });
 
   it(`returns value in terabytes if greater than
-      or equal to 1 terabyte, to 3 significant figures`, function() {
+      or equal to 1 terabyte, to 3 significant figures`, function () {
     expect(formatBytes(2000000000000)).toEqual("2 TB");
   });
 });

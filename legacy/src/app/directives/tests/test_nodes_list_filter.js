@@ -12,14 +12,14 @@ describe("nodesListFilter", () => {
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   let $templateCache;
-  beforeEach(inject($injector => {
+  beforeEach(inject(($injector) => {
     $templateCache = $injector.get("$templateCache");
     $templateCache.put("static/partials/nodelist/nodes-list-filter.html", "");
   }));
 
   // Create a new scope before each test.
   let $scope;
-  beforeEach(inject($rootScope => {
+  beforeEach(inject(($rootScope) => {
     $scope = $rootScope.$new();
     $scope.currentPage = "machines";
     $scope.options = {};
@@ -40,11 +40,11 @@ describe("nodesListFilter", () => {
       "toggle-filter='toggleFilter'",
       "is-filter-active='isFilterActive'",
       "></nodes-list-filter>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject($compile => {
+    inject(($compile) => {
       directive = $compile(html)($scope);
     });
 
@@ -86,9 +86,9 @@ describe("nodesListFilter", () => {
       scope.options = {
         architecture: [
           { name: "arch1", count: 1 },
-          { name: "arch2", count: 2 }
+          { name: "arch2", count: 2 },
         ],
-        status: [{ name: "status1", count: 3 }]
+        status: [{ name: "status1", count: 3 }],
       };
       scope.order = ["status", "architecture"];
       const orderedOptions = scope.orderOptions();

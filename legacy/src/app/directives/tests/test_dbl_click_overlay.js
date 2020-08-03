@@ -5,19 +5,19 @@
  */
 import angular from "angular";
 
-describe("maasDblClickOverlay", function() {
+describe("maasDblClickOverlay", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get the BrowserService before each test.
   var BrowserService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     BrowserService = $injector.get("BrowserService");
   }));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -37,7 +37,7 @@ describe("maasDblClickOverlay", function() {
     html += "</div></div>";
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -46,39 +46,39 @@ describe("maasDblClickOverlay", function() {
     return directive.find("div[maas-dbl-click-overlay]");
   }
 
-  it("creates directive with class maas-dbl-overlay", function() {
+  it("creates directive with class maas-dbl-overlay", function () {
     var directive = compileDirective("select", "");
     expect(directive.hasClass("maas-dbl-overlay")).toBe(true);
   });
 
-  it("creates directive with overlay element", function() {
+  it("creates directive with overlay element", function () {
     var directive = compileDirective("select", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     expect(overlay.length).toBe(1);
   });
 
-  it("sets overlay cursor to pointer for select element", function() {
+  it("sets overlay cursor to pointer for select element", function () {
     var directive = compileDirective("select", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     expect(overlay.css("cursor")).toBe("pointer");
   });
 
-  it("sets overlay cursor to text for input element", function() {
+  it("sets overlay cursor to text for input element", function () {
     var directive = compileDirective("input", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     expect(overlay.css("cursor")).toBe("text");
   });
 
-  it("doesnt sets overlay cursor for div element", function() {
+  it("doesnt sets overlay cursor for div element", function () {
     var directive = compileDirective("div", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     expect(overlay.css("cursor")).toBe("");
   });
 
-  it("triggers mousedown on select when overlay clicked", function(done) {
+  it("triggers mousedown on select when overlay clicked", function (done) {
     var directive = compileDirective("select", "");
     var select = directive.find("select#test-element");
-    select.mousedown(function() {
+    select.mousedown(function () {
       // Test will timeout if this handler is not called.
       done();
     });
@@ -86,10 +86,10 @@ describe("maasDblClickOverlay", function() {
     overlay.triggerHandler("click");
   });
 
-  it("sets focus on input when overlay clicked", function(done) {
+  it("sets focus on input when overlay clicked", function (done) {
     var directive = compileDirective("input", "");
     var input = directive.find("input#test-element");
-    input.focus(function() {
+    input.focus(function () {
       // Test will timeout if this handler is not called.
       done();
     });
@@ -97,10 +97,10 @@ describe("maasDblClickOverlay", function() {
     overlay.triggerHandler("click");
   });
 
-  it("triggers click on div when overlay clicked", function(done) {
+  it("triggers click on div when overlay clicked", function (done) {
     var directive = compileDirective("div", "");
     var div = directive.find("div#test-element");
-    div.click(function() {
+    div.click(function () {
       // Test will timeout if this handler is not called.
       done();
     });
@@ -109,8 +109,8 @@ describe("maasDblClickOverlay", function() {
   });
 
   it(`calls double click handler when
-      the overlay is double clicked`, function(done) {
-    $scope.doubleClick = function() {
+      the overlay is double clicked`, function (done) {
+    $scope.doubleClick = function () {
       // Test will timeout if this handler is not called.
       done();
     };
@@ -119,21 +119,21 @@ describe("maasDblClickOverlay", function() {
     overlay.triggerHandler("dblclick");
   });
 
-  it("removes all click handlers on $destroy", function() {
+  it("removes all click handlers on $destroy", function () {
     var directive = compileDirective("div", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     directive.scope().$destroy();
     expect($._data(angular.element(overlay)[0], "events")).toBeUndefined();
   });
 
-  it("hides overlay if on firefox", function() {
+  it("hides overlay if on firefox", function () {
     BrowserService.browser = "firefox";
     var directive = compileDirective("div", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");
     expect(overlay.hasClass("ng-hide")).toBe(true);
   });
 
-  it("doesnt hide overlay if on firefox", function() {
+  it("doesnt hide overlay if on firefox", function () {
     BrowserService.browser = "chrome";
     var directive = compileDirective("div", "");
     var overlay = directive.find("div.maas-dbl-overlay--overlay");

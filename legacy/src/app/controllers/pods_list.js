@@ -31,7 +31,7 @@ function PodsListController(
   ManagerHelperService,
   ResourcePoolsManager,
   MachinesManager,
-  ControllersManager,
+  ControllersManager
 ) {
   // Checks if on RSD page
   $scope.onRSDSection = PodsManager.onRSDSection;
@@ -62,27 +62,27 @@ function PodsListController(
         name: "refresh",
         title: "Refresh",
         sentence: "refresh",
-        operation: angular.bind(PodsManager, PodsManager.refresh)
+        operation: angular.bind(PodsManager, PodsManager.refresh),
       },
       {
         name: "delete",
         title: "Delete",
         sentence: "delete",
-        operation: angular.bind(PodsManager, PodsManager.deleteItem)
-      }
+        operation: angular.bind(PodsManager, PodsManager.deleteItem),
+      },
     ],
     progress: {
       total: 0,
       completed: 0,
-      errors: 0
-    }
+      errors: 0,
+    },
   };
   $scope.add = {
     open: false,
     obj: {
       cpu_over_commit_ratio: 1,
-      memory_over_commit_ratio: 1
-    }
+      memory_over_commit_ratio: 1,
+    },
   };
   $scope.osInfo = GeneralManager.getData("osinfo");
   $scope.powerTypes = GeneralManager.getData("power_types");
@@ -133,7 +133,7 @@ function PodsListController(
   function resetActionProgress() {
     var progress = $scope.action.progress;
     progress.completed = progress.total = progress.errors = 0;
-    angular.forEach($scope.pods, function(pod) {
+    angular.forEach($scope.pods, function (pod) {
       delete pod.action_failed;
     });
   }
@@ -148,7 +148,7 @@ function PodsListController(
       }
       return;
     }
-    angular.forEach($scope.pods, function(pod) {
+    angular.forEach($scope.pods, function (pod) {
       if (pod.action_failed === false) {
         PodsManager.unselectItem(pod.id);
       }
@@ -157,7 +157,7 @@ function PodsListController(
   }
 
   // Mark a pod as selected or unselected.
-  $scope.toggleChecked = function(pod) {
+  $scope.toggleChecked = function (pod) {
     if (PodsManager.isSelected(pod.id)) {
       PodsManager.unselectItem(pod.id);
     } else {
@@ -168,15 +168,15 @@ function PodsListController(
   };
 
   // Select all viewable pods or deselect all viewable pods.
-  $scope.toggleCheckAll = function() {
+  $scope.toggleCheckAll = function () {
     const pods = $scope.filterPods($scope.pods);
 
     if ($scope.allViewableChecked) {
-      angular.forEach(pods, function(pod) {
+      angular.forEach(pods, function (pod) {
         PodsManager.unselectItem(pod.id);
       });
     } else {
-      angular.forEach(pods, function(pod) {
+      angular.forEach(pods, function (pod) {
         PodsManager.selectItem(pod.id);
       });
     }
@@ -186,19 +186,19 @@ function PodsListController(
 
   // When the pods change update if all check buttons should be
   // checked or not.
-  $scope.$watchCollection("pods", function() {
+  $scope.$watchCollection("pods", function () {
     updateAllViewableChecked();
     $scope.loadDetails();
   });
 
   // Sorts the table by predicate.
-  $scope.sortTable = function(predicate) {
+  $scope.sortTable = function (predicate) {
     $scope.predicate = predicate;
     $scope.reverse = !$scope.reverse;
   };
 
   // Called when the current action is cancelled.
-  $scope.actionCancel = function() {
+  $scope.actionCancel = function () {
     resetActionProgress();
     $scope.action.option = null;
   };
@@ -214,7 +214,7 @@ function PodsListController(
         pod.action_failed = false;
         updateSelectedItems();
       })
-      .catch(error => {
+      .catch((error) => {
         $scope.action.progress.errors += 1;
         pod.action_error = error;
         pod.action_failed = true;
@@ -239,14 +239,14 @@ function PodsListController(
     if (podToAction) {
       $scope.performAction(podToAction, operation);
     } else {
-      $scope.selectedItems.forEach(pod => {
+      $scope.selectedItems.forEach((pod) => {
         $scope.performAction(pod, operation);
       });
     }
   };
 
   // Returns true when actions are being performed.
-  $scope.hasActionsInProgress = function() {
+  $scope.hasActionsInProgress = function () {
     var progress = $scope.action.progress;
     return (
       progress.total > 0 &&
@@ -255,13 +255,13 @@ function PodsListController(
   };
 
   // Returns true if any of the actions have failed.
-  $scope.hasActionsFailed = function() {
+  $scope.hasActionsFailed = function () {
     var progress = $scope.action.progress;
     return progress.errors > 0;
   };
 
   // Called when the add pod button is pressed.
-  $scope.addPod = function() {
+  $scope.addPod = function () {
     $scope.add.open = true;
     $scope.add.obj.zone = ZonesManager.getDefaultZone().id;
     $scope.add.obj.default_pool = ResourcePoolsManager.getDefaultPool().id;
@@ -276,20 +276,20 @@ function PodsListController(
   };
 
   // Called when the cancel add pod button is pressed.
-  $scope.cancelAddPod = function() {
+  $scope.cancelAddPod = function () {
     $scope.add.open = false;
     $scope.add.obj = {};
   };
 
   // Return true if at least a rack controller is connected to the
   // region controller.
-  $scope.isRackControllerConnected = function() {
+  $scope.isRackControllerConnected = function () {
     // If powerTypes exist then a rack controller is connected.
     return $scope.powerTypes.length > 0;
   };
 
   // Return true when the add pod buttons can be clicked.
-  $scope.canAddPod = function() {
+  $scope.canAddPod = function () {
     return (
       $scope.isRackControllerConnected() &&
       UsersManager.hasGlobalPermission("pod_create")
@@ -297,7 +297,7 @@ function PodsListController(
   };
 
   // Return true if the actions should be shown.
-  $scope.showActions = function() {
+  $scope.showActions = function () {
     for (var i = 0; i < $scope.pods.length; i++) {
       if (
         $scope.pods[i].permissions &&
@@ -326,8 +326,8 @@ function PodsListController(
   };
 
   // Filter pods depending on if page is rsd
-  $scope.filterPods = function(pods) {
-    return pods.filter(function(pod) {
+  $scope.filterPods = function (pods) {
+    return pods.filter(function (pod) {
       if ($scope.onRSDSection()) {
         return pod.type === "rsd";
       } else {
@@ -337,7 +337,7 @@ function PodsListController(
   };
 
   // Get page heading
-  $scope.getPageHeading = function() {
+  $scope.getPageHeading = function () {
     if ($scope.onRSDSection()) {
       return "RSD";
     } else {
@@ -346,7 +346,7 @@ function PodsListController(
   };
 
   // Get route for details page
-  $scope.getDetailsRoute = function() {
+  $scope.getDetailsRoute = function () {
     if ($scope.onRSDSection()) {
       return "rsd";
     } else {
@@ -355,7 +355,7 @@ function PodsListController(
   };
 
   // Get default pool data
-  $scope.getDefaultPoolData = function(pod) {
+  $scope.getDefaultPoolData = function (pod) {
     if (angular.isUndefined(pod) || !angular.isObject(pod)) {
       return;
     }
@@ -364,13 +364,13 @@ function PodsListController(
       return;
     }
 
-    return pod.storage_pools.find(function(pool) {
+    return pod.storage_pools.find(function (pool) {
       return pool.id === pod.default_storage_pool;
     });
   };
 
   // Get total network disk size
-  $scope.getTotalNetworkDiskSize = function(pod) {
+  $scope.getTotalNetworkDiskSize = function (pod) {
     if (angular.isUndefined(pod) || !angular.isObject(pod)) {
       return;
     }
@@ -380,18 +380,18 @@ function PodsListController(
     }
 
     var totalNetworkSize = 0;
-    var networkPools = pod.storage_pools.filter(function(pool) {
+    var networkPools = pod.storage_pools.filter(function (pool) {
       return pool.id !== pod.default_storage_pool;
     });
 
-    networkPools.forEach(function(pool) {
+    networkPools.forEach(function (pool) {
       totalNetworkSize += pool.total;
     });
 
     return totalNetworkSize;
   };
 
-  $scope.getMeterValue = function(total, value) {
+  $scope.getMeterValue = function (total, value) {
     if (
       !angular.isNumber(total) ||
       angular.isUndefined(total) ||
@@ -421,7 +421,7 @@ function PodsListController(
       return;
     }
 
-    let action = $scope.action.options.find(option => option.name === type);
+    let action = $scope.action.options.find((option) => option.name === type);
     action.isSingle = true;
 
     $scope.podToAction = pod;
@@ -438,7 +438,7 @@ function PodsListController(
     ) {
       return;
     }
-    const item = items.find(item => item.id === itemId);
+    const item = items.find((item) => item.id === itemId);
     return item && item.name;
   };
 
@@ -506,7 +506,7 @@ function PodsListController(
 
   $scope.loadDetails = () => {
     $scope.pods.forEach((pod) => {
-      $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod))
+      $scope.defaultPoolMap.set(pod.id, $scope.getDefaultPoolData(pod));
       $scope.hostMap.set(pod.id, $scope.getPodHost(pod));
     });
   };
@@ -520,12 +520,12 @@ function PodsListController(
     GeneralManager,
     ZonesManager,
     ResourcePoolsManager,
-  ]).then(function() {
+  ]).then(function () {
     // Deselct all pods/rsd on route change
     // otherwise you can perform actions on pods from rsd page
     // or actions on rsd from pods page
     $rootScope.$on("$routeChangeStart", () => {
-      angular.forEach($scope.pods, pod => PodsManager.unselectItem(pod.id));
+      angular.forEach($scope.pods, (pod) => PodsManager.unselectItem(pod.id));
       $scope.allViewableChecked = false;
     });
 
@@ -542,7 +542,7 @@ function PodsListController(
     // Set flag for RSD navigation item.
     if (!$rootScope.showRSDLink) {
       GeneralManager.getNavigationOptions().then(
-        res => ($rootScope.showRSDLink = res.rsd)
+        (res) => ($rootScope.showRSDLink = res.rsd)
       );
     }
   });

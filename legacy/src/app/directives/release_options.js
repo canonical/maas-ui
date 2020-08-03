@@ -10,10 +10,10 @@ export function maasReleaseOptions(ConfigsManager, ManagerHelperService) {
   return {
     restrict: "E",
     scope: {
-      localOptions: "="
+      localOptions: "=",
     },
     template: releaseOptionsTmpl,
-    controller: releaseOptionsController
+    controller: releaseOptionsController,
   };
 
   /* @ngInject */
@@ -23,7 +23,7 @@ export function maasReleaseOptions(ConfigsManager, ManagerHelperService) {
     $scope.localOptions = {
       enableDiskErasing: false,
       quickErase: false,
-      secureErase: false
+      secureErase: false,
     };
 
     // If disk erase is enabled, set other values to global defaults.
@@ -50,7 +50,7 @@ export function maasReleaseOptions(ConfigsManager, ManagerHelperService) {
         ).value,
         secureErase: ConfigsManager.getItemFromList(
           "disk_erase_with_secure_erase"
-        ).value
+        ).value,
       };
 
       // Set default values in release form

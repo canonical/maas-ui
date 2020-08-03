@@ -9,16 +9,13 @@
 function maasNavigationMobile() {
   return {
     restrict: "A",
-    link: function(scope, element, attrs) {
-      element.on("click", function(e) {
+    link: function (scope, element, attrs) {
+      element.on("click", function (e) {
         e.stopPropagation();
-        var mobileNavMenu = element
-          .parent()
-          .parent()
-          .find("#mobile-nav-menu");
+        var mobileNavMenu = element.parent().parent().find("#mobile-nav-menu");
         mobileNavMenu.toggleClass("u-show");
       });
-    }
+    },
   };
 }
 

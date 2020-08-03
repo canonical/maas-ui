@@ -10,7 +10,7 @@ const controllerStatusTmpl = [
   '<span class="p-icon--{$ serviceClass $}" data-ng-if="!textOnly">',
   "</span>",
   '<span data-ng-if="textOnly" data-ng-bind="serviceText"></span>',
-  "</span>"
+  "</span>",
 ].join("");
 
 /* @ngInject */
@@ -20,10 +20,10 @@ export function maasControllerStatus(ControllersManager, ServicesManager) {
     restrict: "A",
     scope: {
       controller: "=maasControllerStatus",
-      textOnly: "=?maasTextOnly"
+      textOnly: "=?maasTextOnly",
     },
     template: controllerStatusTmpl,
-    controller: maasControllerStatusController
+    controller: maasControllerStatusController,
   };
 
   /* @ngInject */
@@ -53,7 +53,7 @@ export function maasControllerStatus(ControllersManager, ServicesManager) {
     // Return the number of times class is displayed.
     function countClass(classes, class_name) {
       var counter = 0;
-      angular.forEach(classes, function(name) {
+      angular.forEach(classes, function (name) {
         if (name === class_name) {
           counter++;
         }

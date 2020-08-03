@@ -1,7 +1,7 @@
 @mixin maas-table-sortable {
   %heading-icon {
     @include vf-icon-chevron;
-    @include vf-icon-size(.875rem);
+    @include vf-icon-size(0.875rem);
     $vertical-offset: 1px;
 
     background: {
@@ -9,10 +9,12 @@
       size: 100%;
     }
 
-    content: '';
+    content: "";
     display: inline-block;
     margin-left: $sp-x-small;
-    vertical-align: calc(#{$vertical-offset} + #{0.5 * $cap-height} - #{0.5 * $default-icon-size});
+    vertical-align: calc(
+      #{$vertical-offset} + #{0.5 * $cap-height} - #{0.5 * $default-icon-size}
+    );
   }
 
   .p-table--sortable [role="columnheader"] {

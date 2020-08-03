@@ -7,19 +7,19 @@ import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 
-describe("ResourcePoolsManager", function() {
+describe("ResourcePoolsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the ResourcePoolsManager.
   var ResourcePoolsManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ResourcePoolsManager = $injector.get("ResourcePoolsManager");
   }));
 
   function makeResourcePool(id) {
     var pool = {
-      name: makeName("name")
+      name: makeName("name"),
     };
     if (angular.isDefined(id)) {
       pool.id = id;
@@ -29,12 +29,12 @@ describe("ResourcePoolsManager", function() {
     return pool;
   }
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(ResourcePoolsManager._pk).toBe("id");
     expect(ResourcePoolsManager._handler).toBe("resourcepool");
   });
 
-  it("getDefaultPool returns pool with id = 0", function() {
+  it("getDefaultPool returns pool with id = 0", function () {
     var defaultPool = makeResourcePool(0);
     ResourcePoolsManager._items.push(makeResourcePool());
     ResourcePoolsManager._items.push(defaultPool);

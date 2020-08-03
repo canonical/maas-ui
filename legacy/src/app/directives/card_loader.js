@@ -8,11 +8,11 @@
 function maasCardLoader($compile) {
   return {
     restrict: "A",
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       const card = require(`../partials/cards/${attrs.maasCardLoader}.html`);
       const content = $compile(card)(scope);
       element.replaceWith(content);
-    }
+    },
   };
 }
 

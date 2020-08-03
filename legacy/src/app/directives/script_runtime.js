@@ -14,10 +14,10 @@ export function maasScriptRunTime() {
       startTime: "=",
       runTime: "@",
       estimatedRunTime: "@",
-      scriptStatus: "="
+      scriptStatus: "=",
     },
     template: scriptRuntimeTmpl,
-    controller: ScriptRunTimeController
+    controller: ScriptRunTimeController,
   };
 
   /* @ngInject */
@@ -66,7 +66,7 @@ export function maasScriptRunTime() {
     // the directive is destroyed.
     incrementCounter();
     var promise = $interval(incrementCounter, 1000);
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
       $interval.cancel(promise);
     });
   }

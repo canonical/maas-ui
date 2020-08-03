@@ -5,17 +5,17 @@
  */
 import angular from "angular";
 
-describe("removeDefaultVLAN", function() {
+describe("removeDefaultVLAN", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the removeDefaultVLAN.
   var removeDefaultVLAN;
-  beforeEach(inject(function($filter) {
+  beforeEach(inject(function ($filter) {
     removeDefaultVLAN = $filter("removeDefaultVLAN");
   }));
 
-  it("only returns vlans without vid 0", function() {
+  it("only returns vlans without vid 0", function () {
     var i,
       vlan,
       vlans = [];
@@ -23,7 +23,7 @@ describe("removeDefaultVLAN", function() {
       vlan = {
         id: i,
         vid: i,
-        fabric: 0
+        fabric: 0,
       };
       vlans.push(vlan);
     }

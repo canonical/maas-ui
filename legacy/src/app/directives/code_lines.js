@@ -13,9 +13,9 @@ function maasCodeLines() {
   return {
     restrict: "A",
     scope: {
-      maasCodeLines: "&"
+      maasCodeLines: "&",
     },
-    link: function(scope, element) {
+    link: function (scope, element) {
       function insertContent() {
         // Empty the element contents and include again, this assures
         // its the most up-to-date content
@@ -36,7 +36,7 @@ function maasCodeLines() {
         // its appropriate line number
         insert += "<code>";
         lines.forEach(
-          line =>
+          (line) =>
             (insert +=
               newLine +
               '<span class="p-code-numbered__line">' +
@@ -73,7 +73,7 @@ function maasCodeLines() {
           .find(".p-code-numbered__copy-button")
           .off("click", scope.copyToClipboard);
       });
-    }
+    },
   };
 }
 

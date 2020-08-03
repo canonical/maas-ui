@@ -7,7 +7,7 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasPowerParameters", function() {
+describe("maasPowerParameters", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -31,7 +31,7 @@ describe("maasPowerParameters", function() {
       field_type: type,
       required: required,
       default: defaultValue,
-      choices: choices
+      choices: choices,
     };
   }
 
@@ -43,17 +43,17 @@ describe("maasPowerParameters", function() {
     return {
       name: name,
       description: description,
-      fields: fields
+      fields: fields,
     };
   }
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
-  describe("maas-power-input", function() {
+  describe("maas-power-input", function () {
     // Return the compiled directive with the items from the scope.
     function compileDirective(maas_power_input, ng_model, ng_disabled) {
       var directive;
@@ -69,7 +69,7 @@ describe("maasPowerParameters", function() {
         '"></div>';
 
       // Compile the directive.
-      inject(function($compile) {
+      inject(function ($compile) {
         directive = $compile(html)($scope);
       });
 
@@ -78,7 +78,7 @@ describe("maasPowerParameters", function() {
       return directive;
     }
 
-    it("creates input for field_type of string", function() {
+    it("creates input for field_type of string", function () {
       $scope.field = makeField("test", "string");
       var directive = compileDirective("field", "value");
       var input = directive.find("input");
@@ -87,14 +87,14 @@ describe("maasPowerParameters", function() {
       expect(input.attr("data-ng-model")).toBe("value");
     });
 
-    it("creates input with required", function() {
+    it("creates input with required", function () {
       $scope.field = makeField("test", "string", true);
       var directive = compileDirective("field", "value");
       var input = directive.find("input");
       expect(input.attr("required")).toBe("required");
     });
 
-    it("creates input and sets defaultValue on ng-model", function() {
+    it("creates input and sets defaultValue on ng-model", function () {
       var defaultValue = makeName("default");
       $scope.field = makeField("test", "string", false, defaultValue);
       var directive = compileDirective("field", "value");
@@ -103,7 +103,7 @@ describe("maasPowerParameters", function() {
       expect($scope.value).toBe(defaultValue);
     });
 
-    it("creates input with ng-pattern for mac address", function() {
+    it("creates input with ng-pattern for mac address", function () {
       $scope.field = makeField("test", "mac_address");
       var directive = compileDirective("field", "value");
       var input = directive.find("input");
@@ -112,7 +112,7 @@ describe("maasPowerParameters", function() {
       );
     });
 
-    it("creates select for field_type of choice", function() {
+    it("creates select for field_type of choice", function () {
       $scope.field = makeField("test", "choice");
       var directive = compileDirective("field", "value");
       var select = directive.find("select");
@@ -123,14 +123,14 @@ describe("maasPowerParameters", function() {
       );
     });
 
-    it("creates select with required", function() {
+    it("creates select with required", function () {
       $scope.field = makeField("test", "choice", true);
       var directive = compileDirective("field", "value");
       var select = directive.find("select");
       expect(select.attr("required")).toBe("required");
     });
 
-    it("creates select and sets defaultValue on ng-model", function() {
+    it("creates select and sets defaultValue on ng-model", function () {
       var choice1 = ["name1", "title1"];
       var choice2 = ["name2", "title2"];
       var choices = [choice1, choice2];
@@ -141,7 +141,7 @@ describe("maasPowerParameters", function() {
       expect($scope.value).toBe("name2");
     });
 
-    it("creates input with ng-disabled", function() {
+    it("creates input with ng-disabled", function () {
       $scope.field = makeField("test", "string");
       $scope.disabled = true;
       var directive = compileDirective("field", "value", "disabled");
@@ -149,7 +149,7 @@ describe("maasPowerParameters", function() {
       expect(input.attr("data-ng-disabled")).toBe("disabled");
     });
 
-    it("creates select with ng-disabled", function() {
+    it("creates select with ng-disabled", function () {
       $scope.field = makeField("test", "choice");
       $scope.disabled = true;
       var directive = compileDirective("field", "value", "disabled");
@@ -157,7 +157,7 @@ describe("maasPowerParameters", function() {
       expect(select.attr("data-ng-disabled")).toBe("disabled");
     });
 
-    it("creates password for field_type of password", function() {
+    it("creates password for field_type of password", function () {
       $scope.field = makeField("test", "password");
       var directive = compileDirective("field", "value");
       var input = directive.find("input");
@@ -169,7 +169,7 @@ describe("maasPowerParameters", function() {
     });
   });
 
-  describe("maas-power-parameters", function() {
+  describe("maas-power-parameters", function () {
     // Return the compiled directive with the items from the scope.
     function compileDirective(maas_power_parameters, ng_model, ng_disabled) {
       var directive;
@@ -186,7 +186,7 @@ describe("maasPowerParameters", function() {
         '"></fieldset></div>';
 
       // Compile the directive.
-      inject(function($compile) {
+      inject(function ($compile) {
         directive = $compile(html)($scope);
       });
 
@@ -195,7 +195,7 @@ describe("maasPowerParameters", function() {
       return directive;
     }
 
-    it("creates select with ng-model, ng-options and ng-disabled", function() {
+    it("creates select with ng-model, ng-options and ng-disabled", function () {
       var fields = [makeField("test1"), makeField("test2")];
       var powerType = makePowerType("test", "Test Title", fields);
       $scope.powerTypes = [powerType];
@@ -211,7 +211,7 @@ describe("maasPowerParameters", function() {
       );
     });
 
-    it("creates option with description", function() {
+    it("creates option with description", function () {
       var fields = [makeField("test1"), makeField("test2")];
       var powerType = makePowerType("test", "Test Title", fields);
       $scope.powerTypes = [powerType];
@@ -221,7 +221,7 @@ describe("maasPowerParameters", function() {
       expect(option.text()).toBe("Test Title");
     });
 
-    it("creates fields on power type select", function() {
+    it("creates fields on power type select", function () {
       var fields = [makeField("test1"), makeField("test2")];
       var powerType = makePowerType("test", "Test Title", fields);
       $scope.powerTypes = [powerType];

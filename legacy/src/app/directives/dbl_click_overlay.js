@@ -43,10 +43,10 @@ export function maasDblClickOverlay(BrowserService) {
     transclude: true,
     replace: true,
     scope: {
-      maasDblClickOverlay: "&"
+      maasDblClickOverlay: "&",
     },
     template: dblClickOverlayTmpl,
-    link: function(scope, element) {
+    link: function (scope, element) {
       // Create the click function that will be called when the
       // overlay is clicked. This changes based on the element that
       // is transcluded into this directive.
@@ -54,7 +54,7 @@ export function maasDblClickOverlay(BrowserService) {
       var transclude = element.find("span[data-ng-transclude]").children()[0];
       var clickElement;
       if (transclude.tagName === "SELECT") {
-        clickElement = function() {
+        clickElement = function () {
           // Have to create a custom mousedown event for the
           // select click to be handled. Using 'click()' or
           //'focus()' will not work.
@@ -82,7 +82,7 @@ export function maasDblClickOverlay(BrowserService) {
         // Selects use a pointer for the cursor.
         overlay.css({ cursor: "pointer" });
       } else if (transclude.tagName === "INPUT") {
-        clickElement = function() {
+        clickElement = function () {
           // An input will become in focus when clicked.
           angular.element(transclude).triggerHandler("focus");
         };
@@ -90,7 +90,7 @@ export function maasDblClickOverlay(BrowserService) {
         // Inputs use a text for the cursor.
         overlay.css({ cursor: "text" });
       } else {
-        clickElement = function() {
+        clickElement = function () {
           // Standard element just call click on that element.
           angular.element(transclude).triggerHandler("click");
         };
@@ -99,12 +99,12 @@ export function maasDblClickOverlay(BrowserService) {
       }
 
       // Add the click and double click handlers.
-      var overlayClick = function(evt) {
+      var overlayClick = function (evt) {
         clickElement();
         evt.preventDefault();
         evt.stopPropagation();
       };
-      var overlayDblClick = function(evt) {
+      var overlayDblClick = function (evt) {
         // Call the double click handler with in the scope.
         scope.$apply(scope.maasDblClickOverlay);
         evt.preventDefault();
@@ -122,10 +122,10 @@ export function maasDblClickOverlay(BrowserService) {
       }
 
       // Remove the handlers when the scope is destroyed.
-      scope.$on("$destroy", function() {
+      scope.$on("$destroy", function () {
         overlay.off("click", overlayClick);
         overlay.off("dblclick", overlayDblClick);
       });
-    }
+    },
   };
 }

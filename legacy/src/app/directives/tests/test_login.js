@@ -5,7 +5,7 @@
  */
 import angular from "angular";
 
-describe("maasExternalLogin", function() {
+describe("maasExternalLogin", function () {
   var $rootScope,
     $scope,
     $compile,
@@ -16,30 +16,30 @@ describe("maasExternalLogin", function() {
   beforeEach(angular.mock.module("MAAS"));
 
   beforeEach(
-    angular.mock.module(function($provide) {
+    angular.mock.module(function ($provide) {
       $provide.value("$window", {
         location: {
-          replace: function(url) {
+          replace: function (url) {
             redirectUrl = url;
-          }
+          },
         },
         CONFIG: {
           current_user: {
-            is_superuser: true
+            is_superuser: true,
           },
-          version: "2.7.0"
-        }
+          version: "2.7.0",
+        },
       });
 
       // mock Bakery, since we can't use the real one.
       dischargeResponse = { status: 200 };
-      $provide.factory("getBakery", function() {
-        return function(visitPage) {
+      $provide.factory("getBakery", function () {
+        return function (visitPage) {
           visitPageFunc = visitPage;
           return {
-            get: function(url, headers, callback) {
+            get: function (url, headers, callback) {
               callback(null, { currentTarget: dischargeResponse });
-            }
+            },
           };
         };
       });
@@ -47,7 +47,7 @@ describe("maasExternalLogin", function() {
   );
 
   // Create a new scope before each test.
-  beforeEach(inject(function($injector, _$window_) {
+  beforeEach(inject(function ($injector, _$window_) {
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
     $compile = $injector.get("$compile");
@@ -62,13 +62,13 @@ describe("maasExternalLogin", function() {
     return directive;
   }
 
-  it("sets the externalAuthURL", function() {
+  it("sets the externalAuthURL", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.externalAuthURL).toBe("http://auth.example.com/");
   });
 
-  it("sets the login button URL", function() {
+  it("sets the login button URL", function () {
     var directive = compileDirective();
     // simulate login URL response
     visitPageFunc({ Info: { VisitURL: "http://auth.example.com/login" } });
@@ -81,12 +81,12 @@ describe("maasExternalLogin", function() {
     expect(directive.find("#login-error").length).toBe(0);
   });
 
-  it("redirects after login", function() {
+  it("redirects after login", function () {
     compileDirective();
     expect(redirectUrl).toBe("/somepage");
   });
 
-  it("shows an error message if getting the visit URL fails", function() {
+  it("shows an error message if getting the visit URL fails", function () {
     dischargeResponse = { status: 500, responseText: "something broke!" };
     var directive = compileDirective();
     var error = directive.find("#login-error");

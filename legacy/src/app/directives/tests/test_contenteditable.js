@@ -7,13 +7,13 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("contenteditable", function() {
+describe("contenteditable", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -31,7 +31,7 @@ describe("contenteditable", function() {
       '"></span></div>';
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -40,14 +40,14 @@ describe("contenteditable", function() {
     return directive.find("span");
   }
 
-  it("sets the content of span to the value of model", function() {
+  it("sets the content of span to the value of model", function () {
     var name = makeName("name");
     $scope.name = name;
     var directive = compileDirective("name");
     expect(directive.text()).toBe(name);
   });
 
-  it("change event on the span will change the value", function() {
+  it("change event on the span will change the value", function () {
     var name = makeName("name");
     $scope.name = makeName("name");
     var directive = compileDirective("name");
@@ -57,7 +57,7 @@ describe("contenteditable", function() {
     expect($scope.name).toBe(name);
   });
 
-  it("blur event on the span will change the value", function() {
+  it("blur event on the span will change the value", function () {
     var name = makeName("name");
     $scope.name = makeName("name");
     var directive = compileDirective("name");
@@ -67,7 +67,7 @@ describe("contenteditable", function() {
     expect($scope.name).toBe(name);
   });
 
-  it("keyup event on the span will change the value", function() {
+  it("keyup event on the span will change the value", function () {
     var name = makeName("name");
     $scope.name = makeName("name");
     var directive = compileDirective("name");
@@ -77,9 +77,9 @@ describe("contenteditable", function() {
     expect($scope.name).toBe(name);
   });
 
-  it("cannot gain focus if disabled", function() {
+  it("cannot gain focus if disabled", function () {
     $scope.name = makeName("name");
-    $scope.disabled = function() {
+    $scope.disabled = function () {
       return true;
     };
     var directive = compileDirective("name", "disabled()");
@@ -88,9 +88,9 @@ describe("contenteditable", function() {
     expect(directive.is(":focus")).toBe(false);
   });
 
-  it("calls maasEditing on focus if enabled", function() {
+  it("calls maasEditing on focus if enabled", function () {
     $scope.name = makeName("name");
-    $scope.disabled = function() {
+    $scope.disabled = function () {
       return false;
     };
     $scope.nowEditing = jasmine.createSpy("nowEditing");

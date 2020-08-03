@@ -9,7 +9,7 @@ import scriptResultsListTmpl from "../partials/script-results-list.html";
 
 function maasScriptResultsList() {
   return {
-    template: scriptResultsListTmpl
+    template: scriptResultsListTmpl,
   };
 }
 

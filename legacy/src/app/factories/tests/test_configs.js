@@ -5,17 +5,17 @@
  */
 import angular from "angular";
 
-describe("ConfigsManager", function() {
+describe("ConfigsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the ConfigsManager.
   var ConfigsManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ConfigsManager = $injector.get("ConfigsManager");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(ConfigsManager._pk).toBe("name");
     expect(ConfigsManager._handler).toBe("config");
   });

@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("pScriptExpander", function() {
+describe("pScriptExpander", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get required angular pieces and create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope, $injector) {
+  beforeEach(inject(function ($rootScope, $injector) {
     $scope = $rootScope.$new();
   }));
 
@@ -24,11 +24,11 @@ describe("pScriptExpander", function() {
       '<a href="#" class="p-script-expander__trigger">Link</a>',
       '<div class="p-script-expander__content">Target</div>',
       "</div>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -37,13 +37,13 @@ describe("pScriptExpander", function() {
     return directive.find(".p-script-expander");
   }
 
-  it("sets u-hide initially", function() {
+  it("sets u-hide initially", function () {
     var directive = compileDirective();
     var content = directive.find(".p-script-expander__content");
     expect(content.hasClass("u-hide")).toBe(true);
   });
 
-  it("toggles u-hide on click", function() {
+  it("toggles u-hide on click", function () {
     var directive = compileDirective();
     var link = directive.find(".p-script-expander__trigger");
     var content = directive.find(".p-script-expander__content");

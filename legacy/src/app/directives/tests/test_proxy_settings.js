@@ -7,7 +7,7 @@ import angular from "angular";
 
 import template from "../../partials/proxy-settings.html";
 
-describe("maasProxySettings", function() {
+describe("maasProxySettings", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -18,7 +18,7 @@ describe("maasProxySettings", function() {
     $templateCache,
     ConfigsManager,
     ManagerHelperService;
-  beforeEach(inject(function($rootScope, $injector) {
+  beforeEach(inject(function ($rootScope, $injector) {
     $scope = $rootScope.$new();
     $compile = $injector.get("$compile");
     $q = $injector.get("$q");
@@ -30,18 +30,18 @@ describe("maasProxySettings", function() {
 
   // Create the config options.
   var httpProxy, enableHttpProxy, usePeerProxy;
-  beforeEach(function() {
+  beforeEach(function () {
     httpProxy = {
       name: "http_proxy",
-      value: ""
+      value: "",
     };
     enableHttpProxy = {
       name: "enable_http_proxy",
-      value: true
+      value: true,
     };
     usePeerProxy = {
       name: "use_peer_proxy",
-      value: false
+      value: false,
     };
     ConfigsManager._items = [httpProxy, enableHttpProxy, usePeerProxy];
   });
@@ -62,7 +62,7 @@ describe("maasProxySettings", function() {
     return angular.element(directive.find("maas-proxy-settings"));
   }
 
-  it("no-proxy without http proxy", function() {
+  it("no-proxy without http proxy", function () {
     enableHttpProxy.value = false;
     usePeerProxy.value = false;
     httpProxy.value = "";
@@ -85,7 +85,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("no-proxy with http_proxy set", function() {
+  it("no-proxy with http_proxy set", function () {
     enableHttpProxy.value = false;
     usePeerProxy.value = false;
     httpProxy.value = "http://proxy.example.com/";
@@ -108,7 +108,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("no-proxy with use_peer_proxy set", function() {
+  it("no-proxy with use_peer_proxy set", function () {
     enableHttpProxy.value = false;
     usePeerProxy.value = true;
     httpProxy.value = "http://peer-proxy.example.com/";
@@ -131,7 +131,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("builtin-proxy", function() {
+  it("builtin-proxy", function () {
     enableHttpProxy.value = true;
     usePeerProxy.value = false;
     httpProxy.value = "";
@@ -154,7 +154,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("builtin-proxy with use_peer_proxy set", function() {
+  it("builtin-proxy with use_peer_proxy set", function () {
     enableHttpProxy.value = true;
     usePeerProxy.value = true;
     httpProxy.value = "";
@@ -177,7 +177,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("external-proxy set", function() {
+  it("external-proxy set", function () {
     enableHttpProxy.value = true;
     usePeerProxy.value = false;
     httpProxy.value = "http://proxy.example.com/";
@@ -200,7 +200,7 @@ describe("maasProxySettings", function() {
     expect(usePeerProxyField.attr("value")).toBe("False");
   });
 
-  it("peer-proxy set", function() {
+  it("peer-proxy set", function () {
     enableHttpProxy.value = true;
     usePeerProxy.value = true;
     httpProxy.value = "http://proxy.example.com/";

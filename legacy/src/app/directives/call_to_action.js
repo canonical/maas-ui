@@ -16,11 +16,11 @@ export function maasCta() {
       maasCta: "=",
       ngModel: "=",
       selectedItems: "=",
-      disabled: "<"
+      disabled: "<",
     },
     template: ctaTmpl,
     link: link,
-    controller: CtaController
+    controller: CtaController,
   };
 
   /* @ngInject */
@@ -35,13 +35,13 @@ export function maasCta() {
 
     // When an item is selected in the list set the title, hide the
     // dropdown, and set the value to the given model.
-    scope.selectItem = function(action) {
+    scope.selectItem = function (action) {
       scope.shown = false;
       ngModelCtrl.$setViewValue(action);
     };
 
     // Return the title of the dropdown button.
-    scope.getTitle = function() {
+    scope.getTitle = function () {
       if (angular.isObject(ngModelCtrl.$modelValue)) {
         let option = ngModelCtrl.$modelValue;
         scope.secondary = true;
@@ -64,7 +64,7 @@ export function maasCta() {
 
     // Called to get the title for each option. (Sometimes the title
     // of an option is different when it is selected.)
-    scope.getOptionTitle = function(option) {
+    scope.getOptionTitle = function (option) {
       if (!scope.secondary) {
         return option.title;
       } else {
@@ -76,10 +76,10 @@ export function maasCta() {
       }
     };
 
-    scope.getActionTypes = function() {
+    scope.getActionTypes = function () {
       var actions = scope.maasCta || [];
       var types = [];
-      actions.forEach(function(action) {
+      actions.forEach(function (action) {
         if (types.indexOf(action.type) === -1) {
           types.push(action.type);
         }
@@ -88,7 +88,7 @@ export function maasCta() {
       return types;
     };
 
-    scope.showAction = function(action) {
+    scope.showAction = function (action) {
       return !(
         scope.selectedItems &&
         action.available === 0 &&
@@ -96,14 +96,14 @@ export function maasCta() {
       );
     };
 
-    scope.showCount = function(action) {
+    scope.showCount = function (action) {
       return scope.selectedItems > 1 && action.available > 0;
     };
 
     // When the model changes in the above selectItem function this
     // function will be called causing the ngChange directive to be
     // fired.
-    ngModelCtrl.$viewChangeListeners.push(function() {
+    ngModelCtrl.$viewChangeListeners.push(function () {
       scope.$eval(attrs.ngChange);
     });
   }
@@ -116,12 +116,12 @@ export function maasCta() {
 
     // Don't propagate the element click. This stops the click event
     // from firing on the body element.
-    $element.bind("click", function(evt) {
+    $element.bind("click", function (evt) {
       evt.stopPropagation();
     });
 
     // If a click makes it to the body element then hide the dropdown.
-    $document.find("body").bind("click", function() {
+    $document.find("body").bind("click", function () {
       // Use $apply because this function will be called outside
       // of the digest cycle.
       $rootScope.$apply(($scope.shown = false));

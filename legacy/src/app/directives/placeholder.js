@@ -10,13 +10,13 @@ function ngPlaceholder() {
   return {
     restrict: "A",
     scope: {
-      ngPlaceholder: "="
+      ngPlaceholder: "=",
     },
-    link: function(scope, element) {
-      scope.$watch("ngPlaceholder", function() {
+    link: function (scope, element) {
+      scope.$watch("ngPlaceholder", function () {
         element[0].placeholder = scope.ngPlaceholder;
       });
-    }
+    },
   };
 }
 

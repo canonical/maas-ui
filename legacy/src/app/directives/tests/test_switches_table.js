@@ -7,28 +7,28 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasSwitchesTable", function() {
+describe("maasSwitchesTable", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   var $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $templateCache = $injector.get("$templateCache");
     $templateCache.put("static/partials/switches-table.html?v=undefined", "");
   }));
 
   // Load the required managers.
   var SwitchesManager, GeneralManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SwitchesManager = $injector.get("SwitchesManager");
     GeneralManager = $injector.get("GeneralManager");
   }));
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -36,7 +36,7 @@ describe("maasSwitchesTable", function() {
   function makeSwitch() {
     var switch_ = {
       system_id: makeName("system_id"),
-      $selected: false
+      $selected: false,
     };
     SwitchesManager._items.push(switch_);
     return switch_;
@@ -51,11 +51,11 @@ describe("maasSwitchesTable", function() {
       'on-listing-change="onListingChange($switches)" ',
       'on-check-all="onCheckAll()" ',
       'on-check="onCheck($switch_)"></maas-switches-table>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -64,7 +64,7 @@ describe("maasSwitchesTable", function() {
     return directive.find("maas-switches-table");
   }
 
-  it("sets initial variables", function() {
+  it("sets initial variables", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.table).toEqual({
@@ -74,13 +74,13 @@ describe("maasSwitchesTable", function() {
       allViewableChecked: false,
       switches: SwitchesManager.getItems(),
       filteredSwitches: [],
-      osinfo: GeneralManager.getData("osinfo")
+      osinfo: GeneralManager.getData("osinfo"),
     });
     expect(scope.table.switches).toBe(SwitchesManager.getItems());
   });
 
-  describe("updateAllChecked", function() {
-    it("sets allViewableChecked to false when no switches", function() {
+  describe("updateAllChecked", function () {
+    it("sets allViewableChecked to false when no switches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.allViewableChecked = true;
@@ -89,40 +89,40 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("sets allViewableChecked to false when one not selected", function() {
+    it("sets allViewableChecked to false when one not selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.allViewableChecked = true;
       scope.table.filteredSwitches = [
         {
-          $selected: true
+          $selected: true,
         },
         {
-          $selected: false
-        }
+          $selected: false,
+        },
       ];
       scope.updateAllChecked();
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("sets allViewableChecked to false when one not selected", function() {
+    it("sets allViewableChecked to false when one not selected", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.filteredSwitches = [
         {
-          $selected: true
+          $selected: true,
         },
         {
-          $selected: true
-        }
+          $selected: true,
+        },
       ];
       scope.updateAllChecked();
       expect(scope.table.allViewableChecked).toBe(true);
     });
   });
 
-  describe("toggleCheckAll", function() {
-    it("unselected all selected switches", function() {
+  describe("toggleCheckAll", function () {
+    it("unselected all selected switches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = makeSwitch();
@@ -134,7 +134,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("selects all unselected switches", function() {
+    it("selects all unselected switches", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = makeSwitch();
@@ -145,7 +145,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.allViewableChecked).toBe(true);
     });
 
-    it("calls onCheckAll", function() {
+    it("calls onCheckAll", function () {
       $scope.onCheckAll = jasmine.createSpy("onCheckAll");
       var directive = compileDirective();
       var scope = directive.isolateScope();
@@ -154,8 +154,8 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("toggleChecked", function() {
-    it("selects switch", function() {
+  describe("toggleChecked", function () {
+    it("selects switch", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = makeSwitch();
@@ -165,7 +165,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.allViewableChecked).toBe(true);
     });
 
-    it("unselects switch", function() {
+    it("unselects switch", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = makeSwitch();
@@ -176,7 +176,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.allViewableChecked).toBe(false);
     });
 
-    it("calls onCheck", function() {
+    it("calls onCheck", function () {
       $scope.onCheck = jasmine.createSpy("onCheck");
       var directive = compileDirective();
       var scope = directive.isolateScope();
@@ -186,8 +186,8 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("sortTable", function() {
-    it("sets predicate", function() {
+  describe("sortTable", function () {
+    it("sets predicate", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var predicate = makeName("predicate");
@@ -195,7 +195,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.predicate).toBe(predicate);
     });
 
-    it("reverses reverse", function() {
+    it("reverses reverse", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.reverse = true;
@@ -204,8 +204,8 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("selectColumnOrSort", function() {
-    it("sets column if different", function() {
+  describe("selectColumnOrSort", function () {
+    it("sets column if different", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var column = makeName("column");
@@ -213,7 +213,7 @@ describe("maasSwitchesTable", function() {
       expect(scope.table.column).toBe(column);
     });
 
-    it("calls sortTable if column already set", function() {
+    it("calls sortTable if column already set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var column = makeName("column");
@@ -224,15 +224,15 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("showSpinner", function() {
-    it("returns false/true based on status codes", function() {
+  describe("showSpinner", function () {
+    it("returns false/true based on status codes", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var STATUSES = [1, 9, 12, 14, 17, 19];
       var i;
       for (i = 0; i < 20; i++) {
         var switch_ = {
-          status_code: i
+          status_code: i,
         };
         var expected = false;
         if (STATUSES.indexOf(i) > -1) {
@@ -243,26 +243,26 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("getReleaseTitle", function() {
-    it("returns release title from osinfo", function() {
+  describe("getReleaseTitle", function () {
+    it("returns release title from osinfo", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getReleaseTitle("ubuntu/xenial")).toBe("Ubuntu Xenial");
     });
 
-    it("returns release name when not in osinfo", function() {
+    it("returns release name when not in osinfo", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {
-        releases: []
+        releases: [],
       };
       expect(scope.getReleaseTitle("ubuntu/xenial")).toBe("ubuntu/xenial");
     });
 
-    it("returns release name when osinfo.releases undefined", function() {
+    it("returns release name when osinfo.releases undefined", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.table.osinfo = {};
@@ -270,62 +270,62 @@ describe("maasSwitchesTable", function() {
     });
   });
 
-  describe("getStatusText", function() {
-    it("returns status text when not deployed or deploying", function() {
+  describe("getStatusText", function () {
+    it("returns status text when not deployed or deploying", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = {
-        status: makeName("status")
+        status: makeName("status"),
       };
 
       expect(scope.getStatusText(switch_)).toBe(switch_.status);
     });
 
-    it("returns status with release title when deploying", function() {
+    it("returns status with release title when deploying", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = {
         status: "Deploying",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getStatusText(switch_)).toBe("Deploying Ubuntu Xenial");
     });
 
-    it("returns release title when deployed", function() {
+    it("returns release title when deployed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = {
         status: "Deployed",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", "Ubuntu Xenial"]]
+        releases: [["ubuntu/xenial", "Ubuntu Xenial"]],
       };
       expect(scope.getStatusText(switch_)).toBe("Ubuntu Xenial");
     });
 
-    it("returns release title without codename when deployed", function() {
+    it("returns release title without codename when deployed", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var switch_ = {
         status: "Deployed",
         osystem: "ubuntu",
-        distro_series: "xenial"
+        distro_series: "xenial",
       };
       scope.table.osinfo = {
-        releases: [["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"']]
+        releases: [["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"']],
       };
       expect(scope.getStatusText(switch_)).toBe("Ubuntu 16.04 LTS");
     });
   });
 
-  describe("onListingChange", function() {
-    it("called when filteredSwitches changes", function() {
+  describe("onListingChange", function () {
+    it("called when filteredSwitches changes", function () {
       $scope.onListingChange = jasmine.createSpy("onListingChange");
       var directive = compileDirective();
       var scope = directive.isolateScope();

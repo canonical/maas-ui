@@ -17,7 +17,7 @@ function ScriptsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the Script object.
     var self = this;
-    RegionConnection.registerNotifier("script", function(action, data) {
+    RegionConnection.registerNotifier("script", function (action, data) {
       self.onNotify(action, data);
     });
   }

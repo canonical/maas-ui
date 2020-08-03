@@ -7,13 +7,13 @@ import angular from "angular";
 
 import MockWebSocket from "testing/websocket";
 
-describe("ImagesController", function() {
+describe("ImagesController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $scope = $rootScope.$new();
@@ -23,7 +23,7 @@ describe("ImagesController", function() {
   // Load any injected managers and services.
   var BootResourcesManager, ConfigsManager, UsersManager;
   var ManagerHelperService, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     BootResourcesManager = $injector.get("BootResourcesManager");
     ConfigsManager = $injector.get("ConfigsManager");
     UsersManager = $injector.get("UsersManager");
@@ -51,27 +51,27 @@ describe("ImagesController", function() {
       $rootScope: $rootScope,
       BootResourcesManager: BootResourcesManager,
       ConfigsManager: ConfigsManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("images");
   });
 
-  it("calls loadManagers with correct managers", function() {
+  it("calls loadManagers with correct managers", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       ConfigsManager,
-      UsersManager
+      UsersManager,
     ]);
   });
 
-  it("sets initial $scope", function() {
+  it("sets initial $scope", function () {
     makeController();
     expect($scope.loading).toBe(true);
     expect($scope.bootResources).toBe(BootResourcesManager.getData());
@@ -79,7 +79,7 @@ describe("ImagesController", function() {
     expect($scope.autoImport).toBeNull();
   });
 
-  it("clears loading and sets title", function() {
+  it("clears loading and sets title", function () {
     makeController();
     BootResourcesManager._data.resources = [];
     $scope.$digest();
@@ -87,12 +87,12 @@ describe("ImagesController", function() {
     expect($scope.title).toBe("Images");
   });
 
-  it("sets autoImport object", function() {
+  it("sets autoImport object", function () {
     var defer = $q.defer();
     makeController(defer);
     var autoImport = {
       name: "boot_images_auto_import",
-      value: true
+      value: true,
     };
     ConfigsManager._items = [autoImport];
     defer.resolve();
@@ -100,8 +100,8 @@ describe("ImagesController", function() {
     expect($scope.autoImport).toBe(autoImport);
   });
 
-  describe("isSuperUser", function() {
-    it("returns isSuperUser from UsersManager", function() {
+  describe("isSuperUser", function () {
+    it("returns isSuperUser from UsersManager", function () {
       makeController();
       var sentinel = {};
       spyOn(UsersManager, "isSuperUser").and.returnValue(sentinel);

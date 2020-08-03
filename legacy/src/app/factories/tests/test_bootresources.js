@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("BootResourcesManager", function() {
+describe("BootResourcesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $rootScope, $timeout, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $rootScope = $injector.get("$rootScope");
     $timeout = $injector.get("$timeout");
     $q = $injector.get("$q");
@@ -22,7 +22,7 @@ describe("BootResourcesManager", function() {
 
   // Load the needed services.
   var BootResourcesManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     BootResourcesManager = $injector.get("BootResourcesManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -31,7 +31,7 @@ describe("BootResourcesManager", function() {
     spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
-  it("sets initial values", function() {
+  it("sets initial values", function () {
     expect(BootResourcesManager._loaded).toBe(false);
     expect(BootResourcesManager._data).toEqual({});
     expect(BootResourcesManager._polling).toBe(false);
@@ -41,37 +41,37 @@ describe("BootResourcesManager", function() {
     expect(BootResourcesManager._pollEmptyTimeout).toBe(3000);
   });
 
-  describe("getData", function() {
-    it("returns _data", function() {
+  describe("getData", function () {
+    it("returns _data", function () {
       expect(BootResourcesManager.getData()).toBe(BootResourcesManager._data);
     });
   });
 
-  describe("isLoaded", function() {
-    it("returns _loaded", function() {
+  describe("isLoaded", function () {
+    it("returns _loaded", function () {
       var sentinel = {};
       BootResourcesManager._loaded = sentinel;
       expect(BootResourcesManager.isLoaded()).toBe(sentinel);
     });
   });
 
-  describe("isPolling", function() {
-    it("returns _polling", function() {
+  describe("isPolling", function () {
+    it("returns _polling", function () {
       var sentinel = {};
       BootResourcesManager._polling = sentinel;
       expect(BootResourcesManager.isPolling()).toBe(sentinel);
     });
   });
 
-  describe("startPolling", function() {
-    it("calls _poll and sets polling", function() {
+  describe("startPolling", function () {
+    it("calls _poll and sets polling", function () {
       var sentinel = {};
       spyOn(BootResourcesManager, "_poll").and.returnValue(sentinel);
       expect(BootResourcesManager.startPolling()).toBe(sentinel);
       expect(BootResourcesManager._polling).toBe(true);
     });
 
-    it("returns _nextPromise if already polling", function() {
+    it("returns _nextPromise if already polling", function () {
       var sentinel = {};
       BootResourcesManager._polling = true;
       BootResourcesManager._nextPromise = sentinel;
@@ -81,8 +81,8 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("stopPolling", function() {
-    it("clears _polling and cancels _nextPromise", function() {
+  describe("stopPolling", function () {
+    it("clears _polling and cancels _nextPromise", function () {
       var sentinel = {};
       BootResourcesManager._polling = true;
       BootResourcesManager._nextPromise = sentinel;
@@ -94,16 +94,16 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("_loadData", function() {
-    it("calls bootresource.poll and sets _data", function(done) {
+  describe("_loadData", function () {
+    it("calls bootresource.poll and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
-      BootResourcesManager._loadData().then(function(passedData) {
+      BootResourcesManager._loadData().then(function (passedData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(passedData);
@@ -119,17 +119,17 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("stopImport", function() {
-    it("calls bootresource.stop_import and sets _data", function(done) {
+  describe("stopImport", function () {
+    it("calls bootresource.stop_import and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
       var sentinel = {};
-      BootResourcesManager.stopImport(sentinel).then(function(pData) {
+      BootResourcesManager.stopImport(sentinel).then(function (pData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(pData);
@@ -146,17 +146,17 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("saveUbuntu", function() {
-    it("calls bootresource.save_ubuntu and sets _data", function(done) {
+  describe("saveUbuntu", function () {
+    it("calls bootresource.save_ubuntu and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
       var sentinel = {};
-      BootResourcesManager.saveUbuntu(sentinel).then(function(pData) {
+      BootResourcesManager.saveUbuntu(sentinel).then(function (pData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(pData);
@@ -173,17 +173,17 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("saveUbuntuCore", function() {
-    it("calls bootresource.save_ubuntu_core and sets _data", function(done) {
+  describe("saveUbuntuCore", function () {
+    it("calls bootresource.save_ubuntu_core and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
       var sentinel = {};
-      BootResourcesManager.saveUbuntuCore(sentinel).then(function(pData) {
+      BootResourcesManager.saveUbuntuCore(sentinel).then(function (pData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(pData);
@@ -200,17 +200,17 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("saveOther", function() {
-    it("calls bootresource.save_other and sets _data", function(done) {
+  describe("saveOther", function () {
+    it("calls bootresource.save_other and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
       var sentinel = {};
-      BootResourcesManager.saveOther(sentinel).then(function(pData) {
+      BootResourcesManager.saveOther(sentinel).then(function (pData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(pData);
@@ -227,8 +227,8 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("fetch", function() {
-    it("calls bootresource.fetch", function() {
+  describe("fetch", function () {
+    it("calls bootresource.fetch", function () {
       var returnSentinel = {};
       var sourceSentinel = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(returnSentinel);
@@ -240,17 +240,17 @@ describe("BootResourcesManager", function() {
     });
   });
 
-  describe("deleteImage", function() {
-    it("calls bootresource.delete_image and sets _data", function(done) {
+  describe("deleteImage", function () {
+    it("calls bootresource.delete_image and sets _data", function (done) {
       var data = BootResourcesManager._data;
       var defer = $q.defer();
       spyOn(RegionConnection, "callMethod").and.returnValue(defer.promise);
 
       var newData = {
-        key: makeName("value")
+        key: makeName("value"),
       };
       var sentinel = {};
-      BootResourcesManager.deleteImage(sentinel).then(function(pData) {
+      BootResourcesManager.deleteImage(sentinel).then(function (pData) {
         expect(BootResourcesManager._loaded).toBe(true);
         expect(BootResourcesManager._data).toBe(data);
         expect(BootResourcesManager._data).toBe(pData);

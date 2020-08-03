@@ -7,13 +7,13 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("SearchService", function() {
+describe("SearchService", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the SearchService.
   var SearchService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SearchService = $injector.get("SearchService");
   }));
 
@@ -22,70 +22,70 @@ describe("SearchService", function() {
       input: "",
       split: [""],
       filters: {
-        _: []
-      }
+        _: [],
+      },
     },
     {
       input: "moon",
       split: ["moon"],
       filters: {
-        _: ["moon"]
-      }
+        _: ["moon"],
+      },
     },
     {
       input: "moon status:(new)",
       split: ["moon", "status:(new)"],
       filters: {
         _: ["moon"],
-        status: ["new"]
-      }
+        status: ["new"],
+      },
     },
     {
       input: "moon status:(deployed)",
       split: ["moon", "status:(deployed)"],
       filters: {
         _: ["moon"],
-        status: ["deployed"]
-      }
+        status: ["deployed"],
+      },
     },
     {
       input: "moon status:(new,deployed)",
       split: ["moon", "status:(new,deployed)"],
       filters: {
         _: ["moon"],
-        status: ["new", "deployed"]
-      }
+        status: ["new", "deployed"],
+      },
     },
     {
       input: "moon status:(new,failed disk erasing)",
       split: ["moon", "status:(new,failed disk erasing)"],
       filters: {
         _: ["moon"],
-        status: ["new", "failed disk erasing"]
-      }
+        status: ["new", "failed disk erasing"],
+      },
     },
     {
       input: "moon status:(new,failed disk erasing",
       split: null,
-      filters: null
-    }
+      filters: null,
+    },
   ];
 
-  angular.forEach(scenarios, function(scenario) {
-    describe("input:" + scenario.input, function() {
-      it("getSplitSearch", function() {
+  angular.forEach(scenarios, function (scenario) {
+    describe("input:" + scenario.input, function () {
+      it("getSplitSearch", function () {
         expect(SearchService.getSplitSearch(scenario.input)).toEqual(
           scenario.split
         );
       });
 
-      it("getCurrentFilters", function() {
+      it("getCurrentFilters", function () {
         expect(SearchService.getCurrentFilters(scenario.input)).toEqual(
           scenario.filters
         );
       });
 
-      it("filtersToString", function() {
+      it("filtersToString", function () {
         // Skip the ones with filters equal to null.
         if (!scenario.filters) {
           return;
@@ -98,16 +98,16 @@ describe("SearchService", function() {
     });
   });
 
-  describe("isFilterActive", function() {
-    it("returns false if type not in filter", function() {
+  describe("isFilterActive", function () {
+    it("returns false if type not in filter", function () {
       expect(SearchService.isFilterActive({}, "type", "invalid")).toBe(false);
     });
 
-    it("returns false if value not in type", function() {
+    it("returns false if value not in type", function () {
       expect(
         SearchService.isFilterActive(
           {
-            type: ["not"]
+            type: ["not"],
           },
           "type",
           "invalid"
@@ -115,11 +115,11 @@ describe("SearchService", function() {
       ).toBe(false);
     });
 
-    it("returns true if value in type", function() {
+    it("returns true if value in type", function () {
       expect(
         SearchService.isFilterActive(
           {
-            type: ["valid"]
+            type: ["valid"],
           },
           "type",
           "valid"
@@ -127,11 +127,11 @@ describe("SearchService", function() {
       ).toBe(true);
     });
 
-    it("returns false if exact value not in type", function() {
+    it("returns false if exact value not in type", function () {
       expect(
         SearchService.isFilterActive(
           {
-            type: ["valid"]
+            type: ["valid"],
           },
           "type",
           "valid",
@@ -140,11 +140,11 @@ describe("SearchService", function() {
       ).toBe(false);
     });
 
-    it("returns true if exact value in type", function() {
+    it("returns true if exact value in type", function () {
       expect(
         SearchService.isFilterActive(
           {
-            type: ["=valid"]
+            type: ["=valid"],
           },
           "type",
           "valid",
@@ -153,11 +153,11 @@ describe("SearchService", function() {
       ).toBe(true);
     });
 
-    it("returns true if lowercase value in type", function() {
+    it("returns true if lowercase value in type", function () {
       expect(
         SearchService.isFilterActive(
           {
-            type: ["=Valid"]
+            type: ["=Valid"],
           },
           "type",
           "valid",
@@ -167,79 +167,79 @@ describe("SearchService", function() {
     });
   });
 
-  describe("toggleFilter", function() {
-    it("adds type to filters", function() {
+  describe("toggleFilter", function () {
+    it("adds type to filters", function () {
       expect(SearchService.toggleFilter({}, "type", "value")).toEqual({
-        type: ["value"]
+        type: ["value"],
       });
     });
 
-    it("adds value to type in filters", function() {
+    it("adds value to type in filters", function () {
       var filters = {
-        type: ["exists"]
+        type: ["exists"],
       };
       expect(SearchService.toggleFilter(filters, "type", "value")).toEqual({
-        type: ["exists", "value"]
+        type: ["exists", "value"],
       });
     });
 
-    it("removes value to type in filters", function() {
+    it("removes value to type in filters", function () {
       var filters = {
-        type: ["exists", "value"]
+        type: ["exists", "value"],
       };
       expect(SearchService.toggleFilter(filters, "type", "value")).toEqual({
-        type: ["exists"]
+        type: ["exists"],
       });
     });
 
-    it("adds exact value to type in filters", function() {
+    it("adds exact value to type in filters", function () {
       var filters = {
-        type: ["exists"]
+        type: ["exists"],
       };
       expect(
         SearchService.toggleFilter(filters, "type", "value", true)
       ).toEqual({
-        type: ["exists", "=value"]
+        type: ["exists", "=value"],
       });
     });
 
-    it("removes exact value to type in filters", function() {
+    it("removes exact value to type in filters", function () {
       var filters = {
-        type: ["exists", "value", "=value"]
+        type: ["exists", "value", "=value"],
       };
       expect(
         SearchService.toggleFilter(filters, "type", "value", true)
       ).toEqual({
-        type: ["exists", "value"]
+        type: ["exists", "value"],
       });
     });
 
-    it("removes lowercase value to type in filters", function() {
+    it("removes lowercase value to type in filters", function () {
       var filters = {
-        type: ["exists", "=Value"]
+        type: ["exists", "=Value"],
       };
       expect(
         SearchService.toggleFilter(filters, "type", "value", true)
       ).toEqual({
-        type: ["exists"]
+        type: ["exists"],
       });
     });
   });
 
-  describe("getEmptyFilter", function() {
-    it("includes _ empty list", function() {
+  describe("getEmptyFilter", function () {
+    it("includes _ empty list", function () {
       expect(SearchService.getEmptyFilter()).toEqual({ _: [] });
     });
 
-    it("returns different object on each call", function() {
+    it("returns different object on each call", function () {
       var one = SearchService.getEmptyFilter();
       var two = SearchService.getEmptyFilter();
       expect(one).not.toBe(two);
     });
   });
 
-  describe("storeFilters/retrieveFilters", function() {
-    it("stores and retrieves the same object", function() {
+  describe("storeFilters/retrieveFilters", function () {
+    it("stores and retrieves the same object", function () {
       var i,
         names = [],
         objects = [];
@@ -247,10 +247,10 @@ describe("SearchService", function() {
         names.push(makeName("name"));
         objects.push({});
       }
-      angular.forEach(names, function(name, idx) {
+      angular.forEach(names, function (name, idx) {
         SearchService.storeFilters(name, objects[idx]);
       });
-      angular.forEach(names, function(name, idx) {
+      angular.forEach(names, function (name, idx) {
         expect(SearchService.retrieveFilters(name)).toBe(objects[idx]);
       });
     });

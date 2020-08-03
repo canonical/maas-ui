@@ -5,17 +5,17 @@
  */
 import angular from "angular";
 
-describe("DiscoveriesManager", function() {
+describe("DiscoveriesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the DiscoveriesManager.
   var DiscoveriesManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     DiscoveriesManager = $injector.get("DiscoveriesManager");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(DiscoveriesManager._pk).toBe("first_seen");
     expect(DiscoveriesManager._batchKey).toBe("first_seen");
     expect(DiscoveriesManager._handler).toBe("discovery");

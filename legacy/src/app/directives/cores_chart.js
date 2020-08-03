@@ -93,13 +93,13 @@ function createChart(totalCores, usedCores, overcommitRatio) {
   let totalCoresClasses = {
     row: ["p-cores-row"],
     core: ["p-core", "p-core--total"],
-    bar: ["p-cores-chart__total-bar"]
+    bar: ["p-cores-chart__total-bar"],
   };
 
   let usedCoresClasses = {
     row: ["p-cores-row--used"],
     core: ["p-core", "p-core--used"],
-    bar: ["p-cores-chart__used-bar"]
+    bar: ["p-cores-chart__used-bar"],
   };
 
   let totalCoresRows = buildRows(
@@ -107,7 +107,7 @@ function createChart(totalCores, usedCores, overcommitRatio) {
       cores: coresDisplayCount,
       totalCores: coresDisplayCount,
       maxCores: maxCores,
-      maxCoresPerRow: maxCoresPerRow
+      maxCoresPerRow: maxCoresPerRow,
     },
     totalCoresClasses
   );
@@ -117,16 +117,16 @@ function createChart(totalCores, usedCores, overcommitRatio) {
       cores: usedCores,
       totalCores: coresDisplayCount,
       maxCores: maxCores,
-      maxCoresPerRow: maxCoresPerRow
+      maxCoresPerRow: maxCoresPerRow,
     },
     usedCoresClasses
   );
 
-  totalCoresRows.forEach(row => {
+  totalCoresRows.forEach((row) => {
     totalCoresWrapper.appendChild(row);
   });
 
-  usedCoresRows.forEach(row => {
+  usedCoresRows.forEach((row) => {
     usedCoresWrapper.appendChild(row);
   });
 
@@ -151,7 +151,7 @@ function createChart(totalCores, usedCores, overcommitRatio) {
 
   if (overcommitRatio > 1) {
     let chartBorderOvercommit = createElement("div", [
-      "p-cores-chart__border--overcommit"
+      "p-cores-chart__border--overcommit",
     ]);
 
     chartBorderOvercommit.style.width =
@@ -176,11 +176,11 @@ export function maasCoresChart() {
     scope: {
       total: "=",
       used: "=",
-      overcommit: "="
+      overcommit: "=",
     },
-    link: function(scope, element) {
+    link: function (scope, element) {
       let el = createChart(scope.total, scope.used, scope.overcommit);
       element.html(el);
-    }
+    },
   };
 }

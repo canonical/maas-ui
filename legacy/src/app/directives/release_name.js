@@ -12,13 +12,13 @@ function maasReleaseName(GeneralManager) {
   return {
     restrict: "A",
     scope: {
-      releaseName: "=maasReleaseName"
+      releaseName: "=maasReleaseName",
     },
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       scope.osinfo = GeneralManager.getData("osinfo");
 
       // Gets the release name.
-      var getName = function() {
+      var getName = function () {
         if (angular.isArray(scope.osinfo.releases)) {
           for (let i = 0; i < scope.osinfo.releases.length; i++) {
             var release = scope.osinfo.releases[i];
@@ -31,18 +31,18 @@ function maasReleaseName(GeneralManager) {
       };
 
       // Sets the text inside the element.
-      var setText = function() {
+      var setText = function () {
         element.text(getName());
       };
 
       // Update the text when the release name or osinfo changes.
-      scope.$watch("releaseName", function() {
+      scope.$watch("releaseName", function () {
         setText();
       });
-      scope.$watchCollection("osinfo.releases", function() {
+      scope.$watchCollection("osinfo.releases", function () {
         setText();
       });
-    }
+    },
   };
 }
 

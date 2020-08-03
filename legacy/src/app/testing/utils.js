@@ -30,13 +30,13 @@ export function makeFakeResponse(data, error) {
     return angular.toJson({
       type: 1,
       rtype: 1,
-      error: data
+      error: data,
     });
   } else {
     return angular.toJson({
       type: 1,
       rtype: 0,
-      result: data
+      result: data,
     });
   }
 }

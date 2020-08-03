@@ -28,7 +28,7 @@ function LogService($window) {
   self.logLevel = 5;
 
   // Returns a monotonic time (in milliseconds) since page load.
-  self.now = function() {
+  self.now = function () {
     return $window.performance ? $window.performance.now() : 0;
   };
 
@@ -42,13 +42,13 @@ function LogService($window) {
   /* eslint-enable no-console */
 
   // Formats the specified time (in milliseconds) in seconds.
-  this.formatMilliseconds = function(milliseconds) {
+  this.formatMilliseconds = function (milliseconds) {
     return parseFloat(milliseconds / 1000.0).toFixed(3);
   };
 
   // Internal function to log using the specified destination, with the
   // specified list of arguments.
-  this.__log = function(destination, args) {
+  this.__log = function (destination, args) {
     if (self.logging === true) {
       // Add time index to the beginning of the log.
       Array.prototype.unshift.call(
@@ -60,35 +60,35 @@ function LogService($window) {
   };
 
   // Wrapper to check the log level and then call self._debug().
-  this.debug = function() {
+  this.debug = function () {
     if (self.logLevel >= 5) {
       self.__log(self._debug, arguments);
     }
   };
 
   // Wrapper to check the log level and then call self._log().
-  this.log = function() {
+  this.log = function () {
     if (self.logLevel >= 4) {
       self.__log(self._log, arguments);
     }
   };
 
   // Wrapper to check the log level and then call self._info().
-  this.info = function() {
+  this.info = function () {
     if (self.logLevel >= 3) {
       self.__log(self._info, arguments);
     }
   };
 
   // Wrapper to check the log level and then call self._warn().
-  this.warn = function() {
+  this.warn = function () {
     if (self.logLevel >= 2) {
       self.__log(self._warn, arguments);
     }
   };
 
   // Wrapper to check the log level and then call self._err().
-  this.error = function() {
+  this.error = function () {
     if (self.logLevel >= 1) {
       self.__log(self._error, arguments);
     }

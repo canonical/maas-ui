@@ -5,17 +5,17 @@
  */
 import angular from "angular";
 
-describe("ScriptsManager", function() {
+describe("ScriptsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the ScriptsManager.
   var ScriptsManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ScriptsManager = $injector.get("ScriptsManager");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(ScriptsManager._pk).toBe("id");
     expect(ScriptsManager._handler).toBe("script");
   });

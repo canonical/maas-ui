@@ -7,7 +7,7 @@
 /* @ngInject */
 function PreferencesController($scope, UsersManager, ManagerHelperService) {
   $scope.loading = true;
-  ManagerHelperService.loadManager($scope, UsersManager).then(function() {
+  ManagerHelperService.loadManager($scope, UsersManager).then(function () {
     $scope.loading = false;
   });
 }

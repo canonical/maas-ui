@@ -5,48 +5,48 @@
  */
 import angular from "angular";
 
-describe("JSONService", function() {
+describe("JSONService", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the JSONService.
   var JSONService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     JSONService = $injector.get("JSONService");
   }));
 
-  describe("tryParse", function() {
+  describe("tryParse", function () {
     var scenarios = [
       {
         input: null,
-        output: null
+        output: null,
       },
       {
         input: false,
-        output: null
+        output: null,
       },
       {
         input: 123,
-        output: null
+        output: null,
       },
       {
         input: undefined,
-        output: null
+        output: null,
       },
       {
         input: "string",
-        output: null
+        output: null,
       },
       {
         input: angular.toJson({ data: "string" }),
         output: {
-          data: "string"
-        }
-      }
+          data: "string",
+        },
+      },
     ];
 
-    angular.forEach(scenarios, function(scenario) {
-      it("parses: " + scenario.input, function() {
+    angular.forEach(scenarios, function (scenario) {
+      it("parses: " + scenario.input, function () {
         var result = JSONService.tryParse(scenario.input);
         expect(result).toEqual(scenario.output);
       });

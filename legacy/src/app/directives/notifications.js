@@ -12,7 +12,7 @@ export function maasNotifications(NotificationsManager, ManagerHelperService) {
   return {
     restrict: "E",
     template: NotificationsTmpl,
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       ManagerHelperService.loadManager(scope, NotificationsManager);
       scope.notifications = NotificationsManager.getItems();
       scope.dismiss = angular.bind(
@@ -25,40 +25,40 @@ export function maasNotifications(NotificationsManager, ManagerHelperService) {
         error: "Errors",
         warning: "Warnings",
         success: "Successes",
-        info: "Other messages"
+        info: "Other messages",
       };
       scope.categoryClasses = {
         error: "p-notification--negative",
         warning: "p-notification--caution",
         success: "p-notification--positive",
-        info: "p-notification" // No suffix.
+        info: "p-notification", // No suffix.
       };
       scope.categoryNotifications = {
         error: [],
         warning: [],
         success: [],
-        info: []
+        info: [],
       };
 
-      scope.dismissCategory = category => {
+      scope.dismissCategory = (category) => {
         const categoryNotifications = scope.notifications.filter(
           (notification) =>
             notification.category === category && notification.dismissable
         );
-        categoryNotifications.forEach(notification => {
+        categoryNotifications.forEach((notification) => {
           scope.dismiss(notification);
         });
       };
 
-      scope.$watchCollection("notifications", function() {
+      scope.$watchCollection("notifications", function () {
         var cns = scope.categoryNotifications;
-        angular.forEach(scope.categories, function(category) {
+        angular.forEach(scope.categories, function (category) {
           cns[category].length = 0;
         });
-        angular.forEach(scope.notifications, function(notification) {
+        angular.forEach(scope.notifications, function (notification) {
           cns[notification.category].push(notification);
         });
       });
-    }
+    },
   };
 }

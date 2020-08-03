@@ -3,17 +3,17 @@
  *
  * Unit tests for action button directive.
  */
- import angular from "angular";
- import "angular-mocks";
+import angular from "angular";
+import "angular-mocks";
 
-describe("maasActionButton", function() {
+describe("maasActionButton", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test. Not used in this test, but
   // required to compile the directive.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -27,11 +27,11 @@ describe("maasActionButton", function() {
       "done-state=" + scope.doneState + ">",
       "Action",
       "</maas-action-button>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -40,21 +40,21 @@ describe("maasActionButton", function() {
     return directive.find(".p-action-button");
   }
 
-  it("does not have any state classes by default", function() {
+  it("does not have any state classes by default", function () {
     var directive = compileDirective($scope);
 
     expect(directive.hasClass("is-indeterminate")).toBe(false);
     expect(directive.hasClass("is-done")).toBe(false);
   });
 
-  it("has 'is-indeterminate' class if given indeterminateState", function() {
+  it("has 'is-indeterminate' class if given indeterminateState", function () {
     $scope.indeterminateState = true;
     var directive = compileDirective($scope);
 
     expect(directive.hasClass("is-indeterminate")).toBe(true);
   });
 
-  it("has 'is-done' class if given doneState", function() {
+  it("has 'is-done' class if given doneState", function () {
     $scope.doneState = true;
     var directive = compileDirective($scope);
 

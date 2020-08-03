@@ -25,15 +25,15 @@ export function ControllerImageStatusService(
   this.statuses = {};
 
   // Interval function that is called to update the statuses.
-  this.updateStatuses = function() {
+  this.updateStatuses = function () {
     var controllerIds = [];
-    angular.forEach(self.controllers, function(system_id) {
+    angular.forEach(self.controllers, function (system_id) {
       controllerIds.push({ system_id: system_id });
     });
 
     // Check the image states.
-    ControllersManager.checkImageStates(controllerIds).then(function(results) {
-      angular.forEach(controllerIds, function(controller) {
+    ControllersManager.checkImageStates(controllerIds).then(function (results) {
+      angular.forEach(controllerIds, function (controller) {
         var status = results[controller.system_id];
         if (status) {
           self.statuses[controller.system_id] = status;
@@ -45,7 +45,7 @@ export function ControllerImageStatusService(
   };
 
   // Register this controller system_id.
-  this.register = function(system_id) {
+  this.register = function (system_id) {
     var known = self.controllers.indexOf(system_id) >= 0;
     if (!known) {
       self.controllers.push(system_id);
@@ -69,9 +69,9 @@ export function ControllerImageStatusService(
     if (angular.isDefined(self.startTimeout)) {
       $timeout.cancel(self.startTimeout);
     }
-    self.startTimeout = $timeout(function() {
+    self.startTimeout = $timeout(function () {
       self.startTimeout = undefined;
-      self.runningInterval = $interval(function() {
+      self.runningInterval = $interval(function () {
         self.updateStatuses();
       }, CHECK_INTERVAL * 1000);
       self.updateStatuses();
@@ -79,7 +79,7 @@ export function ControllerImageStatusService(
   };
 
   // Unregister the controller.
-  this.unregister = function(system_id) {
+  this.unregister = function (system_id) {
     var idx = self.controllers.indexOf(system_id);
     if (idx > -1) {
       self.controllers.splice(idx, 1);
@@ -99,7 +99,7 @@ export function ControllerImageStatusService(
   };
 
   // Return true if the spinner should be shown.
-  this.showSpinner = function(system_id) {
+  this.showSpinner = function (system_id) {
     var status = self.statuses[system_id];
     if (angular.isString(status) && status !== "Syncing") {
       return false;
@@ -109,7 +109,7 @@ export function ControllerImageStatusService(
   };
 
   // Get the image status.
-  this.getImageStatus = function(system_id) {
+  this.getImageStatus = function (system_id) {
     var status = self.statuses[system_id];
     if (angular.isString(status)) {
       return status;
@@ -124,18 +124,18 @@ export function maasControllerImageStatus(ControllerImageStatusService) {
   return {
     restrict: "E",
     scope: {
-      systemId: "="
+      systemId: "=",
     },
     template: [
       '<i class="p-icon--loading u-animation--spin"',
       'data-ng-if="showSpinner()"></i> ',
-      "{$ getImageStatus() $}"
+      "{$ getImageStatus() $}",
     ].join(""),
-    link: function(scope) {
+    link: function (scope) {
       // Don't register until the systemId is set.
       var unwatch,
         registered = false;
-      unwatch = scope.$watch("systemId", function() {
+      unwatch = scope.$watch("systemId", function () {
         if (angular.isDefined(scope.systemId) && !registered) {
           ControllerImageStatusService.register(scope.systemId);
           registered = true;
@@ -143,19 +143,19 @@ export function maasControllerImageStatus(ControllerImageStatusService) {
         }
       });
 
-      scope.showSpinner = function() {
+      scope.showSpinner = function () {
         return ControllerImageStatusService.showSpinner(scope.systemId);
       };
-      scope.getImageStatus = function() {
+      scope.getImageStatus = function () {
         return ControllerImageStatusService.getImageStatus(scope.systemId);
       };
 
       // Unregister when destroyed.
-      scope.$on("$destroy", function() {
+      scope.$on("$destroy", function () {
         if (registered) {
           ControllerImageStatusService.unregister(scope.systemId);
         }
       });
-    }
+    },
   };
 }

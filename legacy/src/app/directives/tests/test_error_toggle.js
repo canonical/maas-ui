@@ -7,20 +7,20 @@ import angular from "angular";
 
 import { makeName } from "testing/utils";
 
-describe("maasErrorToggle", function() {
+describe("maasErrorToggle", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Get required angular pieces and create a new scope before each test.
   var $scope, $timeout;
-  beforeEach(inject(function($rootScope, $injector) {
+  beforeEach(inject(function ($rootScope, $injector) {
     $scope = $rootScope.$new();
     $timeout = $injector.get("$timeout");
   }));
 
   // Load the RegionConnection and ErrorService.
   var ErrorService, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     ErrorService = $injector.get("ErrorService");
   }));
@@ -31,7 +31,7 @@ describe("maasErrorToggle", function() {
     var html = "<div><span data-maas-error-toggle></span></div>";
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -40,32 +40,32 @@ describe("maasErrorToggle", function() {
     return directive.find("span");
   }
 
-  it("doesnt hide element instantly if region not connected", function() {
+  it("doesnt hide element instantly if region not connected", function () {
     spyOn(RegionConnection, "isConnected").and.returnValue(false);
     var directive = compileDirective();
     expect(directive.hasClass("ng-hide")).toBe(false);
   });
 
-  it("hides element if region not connected after 1/2 second", function() {
+  it("hides element if region not connected after 1/2 second", function () {
     spyOn(RegionConnection, "isConnected").and.returnValue(false);
     var directive = compileDirective();
     $timeout.flush(500);
     expect(directive.hasClass("ng-hide")).toBe(true);
   });
 
-  it("hides element if error in ErrorService", function() {
+  it("hides element if error in ErrorService", function () {
     ErrorService._error = makeName("error");
     var directive = compileDirective();
     expect(directive.hasClass("ng-hide")).toBe(true);
   });
 
-  it("shows element if connected and no error", function() {
+  it("shows element if connected and no error", function () {
     spyOn(RegionConnection, "isConnected").and.returnValue(true);
     var directive = compileDirective();
     expect(directive.hasClass("ng-hide")).toBe(false);
   });
 
-  it("shows element if becomes connected", function() {
+  it("shows element if becomes connected", function () {
     var spy = spyOn(RegionConnection, "isConnected");
     spy.and.returnValue(false);
     var directive = compileDirective();

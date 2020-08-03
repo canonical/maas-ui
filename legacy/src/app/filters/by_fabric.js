@@ -6,7 +6,7 @@
 import angular from "angular";
 
 function filterByFabric() {
-  return function(vlans, fabric) {
+  return function (vlans, fabric) {
     var filtered = [];
     var id;
     if (angular.isObject(fabric)) {
@@ -16,7 +16,7 @@ function filterByFabric() {
     } else {
       return filtered;
     }
-    angular.forEach(vlans, function(vlan) {
+    angular.forEach(vlans, function (vlan) {
       if (vlan.fabric === id) {
         filtered.push(vlan);
       }

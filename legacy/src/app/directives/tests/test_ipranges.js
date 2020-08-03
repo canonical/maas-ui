@@ -8,14 +8,14 @@ import angular from "angular";
 import { makeInteger } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("maasIPRanges", function() {
+describe("maasIPRanges", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Preload the $templateCache with empty contents. We only test the
   // controller of the directive, not the template.
   var $q, $templateCache;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $q = $injector.get("$q");
     $templateCache = $injector.get("$templateCache");
     $templateCache.put("static/partials/ipranges.html?v=undefined", "");
@@ -23,7 +23,7 @@ describe("maasIPRanges", function() {
 
   // Load the required managers.
   var IPRangesManager, UsersManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     IPRangesManager = $injector.get("IPRangesManager");
     UsersManager = $injector.get("UsersManager");
     // Mock buildSocket so an actual connection is not made.
@@ -34,7 +34,7 @@ describe("maasIPRanges", function() {
 
   // Create a new scope before each test.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -47,11 +47,11 @@ describe("maasIPRanges", function() {
     var html = [
       "<div>",
       '<maas-ip-ranges obj="' + obj + '"></maas-ip-ranges>',
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -60,7 +60,7 @@ describe("maasIPRanges", function() {
     return directive.find("maas-ip-ranges");
   }
 
-  it("sets initial variables", function() {
+  it("sets initial variables", function () {
     var directive = compileDirective();
     var scope = directive.isolateScope();
     expect(scope.loading).toBe(true);
@@ -71,8 +71,8 @@ describe("maasIPRanges", function() {
     expect(scope.deleteIPRange).toBeNull();
   });
 
-  describe("isSuperUser", function() {
-    it("returns UsersManager.isSuperUser", function() {
+  describe("isSuperUser", function () {
+    it("returns UsersManager.isSuperUser", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
 
@@ -82,12 +82,12 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("addRange with subnet", function() {
-    it("reserved", function() {
+  describe("addRange with subnet", function () {
+    it("reserved", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.subnet = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       scope.addRange("reserved");
       expect(scope.newRange).toEqual({
@@ -95,15 +95,15 @@ describe("maasIPRanges", function() {
         subnet: scope.subnet.id,
         start_ip: "",
         end_ip: "",
-        comment: ""
+        comment: "",
       });
     });
 
-    it("dynamic", function() {
+    it("dynamic", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.subnet = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       scope.addRange("dynamic");
       expect(scope.newRange).toEqual({
@@ -111,17 +111,17 @@ describe("maasIPRanges", function() {
         subnet: scope.subnet.id,
         start_ip: "",
         end_ip: "",
-        comment: "Dynamic"
+        comment: "Dynamic",
       });
     });
   });
 
-  describe("addRange with vlan", function() {
-    it("reserved", function() {
+  describe("addRange with vlan", function () {
+    it("reserved", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.vlan = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       scope.addRange("reserved");
       expect(scope.newRange).toEqual({
@@ -129,15 +129,15 @@ describe("maasIPRanges", function() {
         vlan: scope.vlan.id,
         start_ip: "",
         end_ip: "",
-        comment: ""
+        comment: "",
       });
     });
 
-    it("dynamic", function() {
+    it("dynamic", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.vlan = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       scope.addRange("dynamic");
       expect(scope.newRange).toEqual({
@@ -145,13 +145,13 @@ describe("maasIPRanges", function() {
         vlan: scope.vlan.id,
         start_ip: "",
         end_ip: "",
-        comment: "Dynamic"
+        comment: "Dynamic",
       });
     });
   });
 
-  describe("cancelAddRange", function() {
-    it("clears newRange", function() {
+  describe("cancelAddRange", function () {
+    it("clears newRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.newRange = {};
@@ -160,51 +160,51 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeCanBeModified", function() {
-    it("returns true for super user", function() {
+  describe("ipRangeCanBeModified", function () {
+    it("returns true for super user", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {
-        type: "dynamic"
+        type: "dynamic",
       };
       spyOn(scope, "isSuperUser").and.returnValue(true);
       expect(scope.ipRangeCanBeModified(range)).toBe(true);
     });
 
-    it("returns false for standard user and dynamic", function() {
+    it("returns false for standard user and dynamic", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {
-        type: "dynamic"
+        type: "dynamic",
       };
       spyOn(scope, "isSuperUser").and.returnValue(false);
       expect(scope.ipRangeCanBeModified(range)).toBe(false);
     });
 
-    it("returns false for standard user who is not owner", function() {
+    it("returns false for standard user who is not owner", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var user = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var range = {
         type: "reserved",
-        user: makeInteger(101, 200)
+        user: makeInteger(101, 200),
       };
       spyOn(UsersManager, "getAuthUser").and.returnValue(user);
       spyOn(scope, "isSuperUser").and.returnValue(false);
       expect(scope.ipRangeCanBeModified(range)).toBe(false);
     });
 
-    it("returns true for standard user who is owner", function() {
+    it("returns true for standard user who is owner", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var user = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var range = {
         type: "reserved",
-        user: user.id
+        user: user.id,
       };
       spyOn(UsersManager, "getAuthUser").and.returnValue(user);
       spyOn(scope, "isSuperUser").and.returnValue(false);
@@ -212,8 +212,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("isIPRangeInEditMode", function() {
-    it("returns true when editIPRange", function() {
+  describe("isIPRangeInEditMode", function () {
+    it("returns true when editIPRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -221,7 +221,7 @@ describe("maasIPRanges", function() {
       expect(scope.isIPRangeInEditMode(range)).toBe(true);
     });
 
-    it("returns false when editIPRange", function() {
+    it("returns false when editIPRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -230,8 +230,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeToggleEditMode", function() {
-    it("clears deleteIPRange", function() {
+  describe("ipRangeToggleEditMode", function () {
+    it("clears deleteIPRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.deleteIPRange = {};
@@ -239,7 +239,7 @@ describe("maasIPRanges", function() {
       expect(scope.deleteIPRange).toBeNull();
     });
 
-    it("clears editIPRange when already set", function() {
+    it("clears editIPRange when already set", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -248,7 +248,7 @@ describe("maasIPRanges", function() {
       expect(scope.editIPRange).toBeNull();
     });
 
-    it("sets editIPRange when different range", function() {
+    it("sets editIPRange when different range", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -259,8 +259,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("isIPRangeInDeleteMode", function() {
-    it("return true when deleteIPRange is same", function() {
+  describe("isIPRangeInDeleteMode", function () {
+    it("return true when deleteIPRange is same", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -268,7 +268,7 @@ describe("maasIPRanges", function() {
       expect(scope.isIPRangeInDeleteMode(range)).toBe(true);
     });
 
-    it("return false when deleteIPRange is different", function() {
+    it("return false when deleteIPRange is different", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -277,8 +277,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeEnterDeleteMode", function() {
-    it("clears editIPRange and sets deleteIPRange", function() {
+  describe("ipRangeEnterDeleteMode", function () {
+    it("clears editIPRange and sets deleteIPRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -289,8 +289,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeCancelDelete", function() {
-    it("clears deleteIPRange", function() {
+  describe("ipRangeCancelDelete", function () {
+    it("clears deleteIPRange", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       scope.deleteIPRange = {};
@@ -299,8 +299,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeConfirmDelete", function() {
-    it("calls deleteItem and clears deleteIPRange on resolve", function() {
+  describe("ipRangeConfirmDelete", function () {
+    it("calls deleteItem and clears deleteIPRange on resolve", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var range = {};
@@ -318,8 +318,8 @@ describe("maasIPRanges", function() {
     });
   });
 
-  describe("ipRangeSort", function() {
-    it("returns sortable numeric IPv4 value", function() {
+  describe("ipRangeSort", function () {
+    it("returns sortable numeric IPv4 value", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var smaller = scope.ipRangeSort({ start_ip: "10.0.0.21" });
@@ -327,7 +327,7 @@ describe("maasIPRanges", function() {
       expect(smaller < larger).toBe(true);
     });
 
-    it("returns sortable numeric IPv6 value", function() {
+    it("returns sortable numeric IPv6 value", function () {
       var directive = compileDirective();
       var scope = directive.isolateScope();
       var smaller = scope.ipRangeSort({ start_ip: "2001::21" });

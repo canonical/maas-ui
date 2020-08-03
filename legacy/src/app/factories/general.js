@@ -24,7 +24,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       device_actions: {
         method: "general.device_actions",
@@ -32,7 +32,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         request: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       region_controller_actions: {
         method: "general.region_controller_actions",
@@ -40,7 +40,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       rack_controller_actions: {
         method: "general.rack_controller_actions",
@@ -48,7 +48,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       region_and_rack_controller_actions: {
         method: "general.region_and_rack_controller_actions",
@@ -56,7 +56,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       architectures: {
         method: "general.architectures",
@@ -64,7 +64,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       known_architectures: {
         method: "general.known_architectures",
@@ -72,7 +72,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       pockets_to_disable: {
         method: "general.pockets_to_disable",
@@ -80,7 +80,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       components_to_disable: {
         method: "general.components_to_disable",
@@ -88,7 +88,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       hwe_kernels: {
         method: "general.hwe_kernels",
@@ -96,7 +96,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       min_hwe_kernels: {
         method: "general.min_hwe_kernels",
@@ -104,7 +104,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         requested: false,
         loaded: false,
         polling: [],
-        nextPromise: null
+        nextPromise: null,
       },
       default_min_hwe_kernel: {
         method: "general.default_min_hwe_kernel",
@@ -113,9 +113,9 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           oldData.text = newData;
-        }
+        },
       },
       osinfo: {
         method: "general.osinfo",
@@ -124,13 +124,13 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        isEmpty: function(data) {
+        isEmpty: function (data) {
           var osystems = data.osystems;
           return angular.isUndefined(osystems) || osystems.length === 0;
         },
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           angular.copy(newData, oldData);
-        }
+        },
       },
       bond_options: {
         method: "general.bond_options",
@@ -139,9 +139,9 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           angular.copy(newData, oldData);
-        }
+        },
       },
       version: {
         method: "general.version",
@@ -150,9 +150,9 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           oldData.text = newData;
-        }
+        },
       },
       power_types: {
         method: "general.power_types",
@@ -161,7 +161,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           // Add new power types.
           var i, j, newPowerType, oldPowerType;
           for (i = 0; i < newData.length; i++) {
@@ -201,7 +201,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
               oldData.splice(i, 1);
             }
           }
-        }
+        },
       },
       release_options: {
         method: "general.release_options",
@@ -210,10 +210,10 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         loaded: false,
         polling: [],
         nextPromise: null,
-        replaceData: function(oldData, newData) {
+        replaceData: function (oldData, newData) {
           angular.copy(newData, oldData);
-        }
-      }
+        },
+      },
     };
 
     // Amount of time in milliseconds the manager should wait to poll
@@ -239,7 +239,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
     this._scopes = [];
   }
 
-  GeneralManager.prototype._getInternalData = function(name) {
+  GeneralManager.prototype._getInternalData = function (name) {
     var data = this._data[name];
     if (angular.isUndefined(data)) {
       throw new Error("Unknown data: " + name);
@@ -248,16 +248,16 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Return loaded data.
-  GeneralManager.prototype.getData = function(name) {
+  GeneralManager.prototype.getData = function (name) {
     var d = this._getInternalData(name);
     d.requested = true;
     return d.data;
   };
 
   // Return true when all data has been loaded.
-  GeneralManager.prototype.isLoaded = function() {
+  GeneralManager.prototype.isLoaded = function () {
     var loaded = true;
-    angular.forEach(this._data, function(data) {
+    angular.forEach(this._data, function (data) {
       if (!data.loaded) {
         loaded = false;
       }
@@ -266,14 +266,14 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Return true when data has been loaded.
-  GeneralManager.prototype.isDataLoaded = function(name) {
+  GeneralManager.prototype.isDataLoaded = function (name) {
     return this._getInternalData(name).loaded;
   };
 
   // Returns true when the manager is currently polling.
-  GeneralManager.prototype.isPolling = function() {
+  GeneralManager.prototype.isPolling = function () {
     var polling = false;
-    angular.forEach(this._data, function(data) {
+    angular.forEach(this._data, function (data) {
       if (data.polling.length > 0) {
         polling = true;
       }
@@ -282,12 +282,12 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Returns true when the manager is currently polling for that data.
-  GeneralManager.prototype.isDataPolling = function(name) {
+  GeneralManager.prototype.isDataPolling = function (name) {
     return this._getInternalData(name).polling;
   };
 
   // Starts the manager polling for data.
-  GeneralManager.prototype.startPolling = function(scope, name) {
+  GeneralManager.prototype.startPolling = function (scope, name) {
     var data = this._getInternalData(name);
     var idx = data.polling.indexOf(scope);
     if (idx === -1) {
@@ -301,7 +301,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Stops the manager polling for data.
-  GeneralManager.prototype.stopPolling = function(scope, name) {
+  GeneralManager.prototype.stopPolling = function (scope, name) {
     var data = this._getInternalData(name);
     var idx = data.polling.indexOf(scope);
     if (idx >= 0) {
@@ -314,26 +314,26 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Load the data from the region.
-  GeneralManager.prototype._loadData = function(data, raiseError) {
+  GeneralManager.prototype._loadData = function (data, raiseError) {
     var replaceData = data.replaceData;
     raiseError = raiseError || false;
 
     // Set default replaceData function if data doesn't provide its
     // own function.
     if (angular.isUndefined(replaceData)) {
-      replaceData = function(oldData, newData) {
+      replaceData = function (oldData, newData) {
         oldData.length = 0;
         oldData.push.apply(oldData, newData);
       };
     }
 
     return RegionConnection.callMethod(data.method).then(
-      function(newData) {
+      function (newData) {
         replaceData(data.data, newData);
         data.loaded = true;
         return data.data;
       },
-      function(error) {
+      function (error) {
         if (raiseError) {
           ErrorService.raiseError(error);
         }
@@ -342,22 +342,22 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
     );
   };
 
-  GeneralManager.prototype._pollAgain = function(data, timeout) {
+  GeneralManager.prototype._pollAgain = function (data, timeout) {
     var self = this;
-    data.nextPromise = $timeout(function() {
+    data.nextPromise = $timeout(function () {
       self._poll(data);
     }, timeout);
   };
 
   // Polls for the data from the region.
-  GeneralManager.prototype._poll = function(data) {
+  GeneralManager.prototype._poll = function (data) {
     var self = this;
     var isEmpty = data.isEmpty;
 
     // Set default isEmpty function if data doesn't provide its
     // own function.
     if (angular.isUndefined(isEmpty)) {
-      isEmpty = function(data) {
+      isEmpty = function (data) {
         return data.length === 0;
       };
     }
@@ -369,7 +369,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
     }
 
     return this._loadData(data, false).then(
-      function(newData) {
+      function (newData) {
         var pollTimeout = self._pollTimeout;
         if (isEmpty(data.data)) {
           pollTimeout = self._pollEmptyTimeout;
@@ -377,7 +377,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         self._pollAgain(data, pollTimeout);
         return newData;
       },
-      function(error) {
+      function (error) {
         // Don't raise the error, just log it and try again.
         console.log(error); // eslint-disable-line no-console
         self._pollAgain(data, self._pollErrorTimeout);
@@ -388,32 +388,32 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   // Loads all the items. This implemented so the ManagerHelperService
   // can work on this manager just like all the rest. Optionally pass a
   // list of specific items to load. Useful when reloading data.
-  GeneralManager.prototype.loadItems = function(items) {
+  GeneralManager.prototype.loadItems = function (items) {
     var self = this;
     var defer = $q.defer();
     var waitingCount = 0;
     if (angular.isArray(items)) {
       waitingCount = items.length;
     } else {
-      angular.forEach(this._data, function(data) {
+      angular.forEach(this._data, function (data) {
         if (data.requested) {
           waitingCount++;
         }
       });
     }
-    var done = function() {
+    var done = function () {
       waitingCount -= 1;
       if (waitingCount === 0) {
         defer.resolve();
       }
     };
 
-    angular.forEach(this._data, function(data, name) {
+    angular.forEach(this._data, function (data, name) {
       if (
         (angular.isArray(items) && items.indexOf(name) !== -1) ||
         (!angular.isArray(items) && data.requested)
       ) {
-        self._loadData(data, true).then(function() {
+        self._loadData(data, true).then(function () {
           done();
         });
       }
@@ -423,11 +423,11 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Enables auto reloading of the item list on connection to region.
-  GeneralManager.prototype.enableAutoReload = function() {
+  GeneralManager.prototype.enableAutoReload = function () {
     if (!this._autoReload) {
       this._autoReload = true;
       var self = this;
-      this._reloadFunc = function() {
+      this._reloadFunc = function () {
         self.loadItems();
       };
       RegionConnection.registerHandler("open", this._reloadFunc);
@@ -435,7 +435,7 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
   };
 
   // Disable auto reloading of the item list on connection to region.
-  GeneralManager.prototype.disableAutoReload = function() {
+  GeneralManager.prototype.disableAutoReload = function () {
     if (this._autoReload) {
       RegionConnection.unregisterHandler("open", this._reloadFunc);
       this._reloadFunc = null;

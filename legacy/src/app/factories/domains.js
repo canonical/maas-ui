@@ -17,7 +17,7 @@ function DomainsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the domain object.
     var self = this;
-    RegionConnection.registerNotifier("domain", function(action, data) {
+    RegionConnection.registerNotifier("domain", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -25,7 +25,7 @@ function DomainsManager(RegionConnection, Manager) {
   DomainsManager.prototype = new Manager();
 
   // Create a domain.
-  DomainsManager.prototype.create = function(domain) {
+  DomainsManager.prototype.create = function (domain) {
     // We don't add the item to the list because a NOTIFY event will
     // add the domain to the list. Adding it here will cause angular to
     // complain because the same object exist in the list.
@@ -33,12 +33,12 @@ function DomainsManager(RegionConnection, Manager) {
   };
 
   // Delete the domain.
-  DomainsManager.prototype.deleteDomain = function(domain) {
+  DomainsManager.prototype.deleteDomain = function (domain) {
     return RegionConnection.callMethod("domain.delete", domain);
   };
 
   // Create a DNS record.
-  DomainsManager.prototype.createDNSRecord = function(record) {
+  DomainsManager.prototype.createDNSRecord = function (record) {
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
       return RegionConnection.callMethod(
@@ -51,7 +51,7 @@ function DomainsManager(RegionConnection, Manager) {
   };
 
   // Update a DNS record.
-  DomainsManager.prototype.updateDNSRecord = function(record) {
+  DomainsManager.prototype.updateDNSRecord = function (record) {
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
       return RegionConnection.callMethod(
@@ -64,7 +64,7 @@ function DomainsManager(RegionConnection, Manager) {
   };
 
   // Delete a DNS record.
-  DomainsManager.prototype.deleteDNSRecord = function(record) {
+  DomainsManager.prototype.deleteDNSRecord = function (record) {
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
       return RegionConnection.callMethod("domain.delete_dnsresource", record);
@@ -74,11 +74,11 @@ function DomainsManager(RegionConnection, Manager) {
   };
 
   // Set the specified domain as the default.
-  DomainsManager.prototype.setDefault = function(domain) {
+  DomainsManager.prototype.setDefault = function (domain) {
     var promise = RegionConnection.callMethod("domain.set_default", {
-      domain: domain.id
+      domain: domain.id,
     });
-    promise.then(function() {
+    promise.then(function () {
       // Reload the domains, so that the new default will be
       // reflected everywhere, and record counts will be properly
       // updated.
@@ -86,7 +86,7 @@ function DomainsManager(RegionConnection, Manager) {
     });
   };
 
-  DomainsManager.prototype.getDefaultDomain = function() {
+  DomainsManager.prototype.getDefaultDomain = function () {
     if (this._items.length === 0) {
       return null;
     } else {
@@ -100,7 +100,7 @@ function DomainsManager(RegionConnection, Manager) {
     return this._items[0];
   };
 
-  DomainsManager.prototype.getDomainByName = function(name) {
+  DomainsManager.prototype.getDomainByName = function (name) {
     if (this._items.length > 0) {
       var i;
       for (i = 0; i < this._items.length; i++) {

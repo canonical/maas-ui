@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("maasScriptRunTime", function() {
+describe("maasScriptRunTime", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test.
   var $scope, $interval;
-  beforeEach(inject(function($rootScope, $injector) {
+  beforeEach(inject(function ($rootScope, $injector) {
     $interval = $injector.get("$interval");
     $scope = $rootScope.$new();
     $scope.startTime = null;
@@ -20,11 +20,11 @@ describe("maasScriptRunTime", function() {
     $scope.scriptStatus = null;
   }));
 
-  beforeEach(function() {
+  beforeEach(function () {
     // The directive uses Date.now() to determine how long the script has
     // run for already.
     var now = Date.now();
-    spyOn(Date, "now").and.callFake(function() {
+    spyOn(Date, "now").and.callFake(function () {
       return now;
     });
   });
@@ -50,7 +50,7 @@ describe("maasScriptRunTime", function() {
       '"></span>';
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -59,7 +59,7 @@ describe("maasScriptRunTime", function() {
     return directive;
   }
 
-  it("should have span element", function() {
+  it("should have span element", function () {
     var startTime = Date.now() / 1000;
     var runTime = "0:00:30";
     var estimatedRunTime = "0:00:35";
@@ -75,7 +75,7 @@ describe("maasScriptRunTime", function() {
     expect(spanElement.text()).toEqual("0:00:00 of ~" + estimatedRunTime);
   });
 
-  it("should have applied template", function() {
+  it("should have applied template", function () {
     var startTime = Date.now() / 1000;
     var runTime = "0:00:30";
     var estimatedRunTime = "0:00:35";
@@ -89,7 +89,7 @@ describe("maasScriptRunTime", function() {
     expect(directive.html()).not.toEqual("");
   });
 
-  it("should counter based on passed time", function() {
+  it("should counter based on passed time", function () {
     var startTime = Date.now() / 1000 - 5; // 5 seconds
     var runTime = "0:00:30";
     var estimatedRunTime = "0:00:35";
@@ -105,7 +105,7 @@ describe("maasScriptRunTime", function() {
     expect(spanElement.text()).toEqual("0:00:05 of ~" + estimatedRunTime);
   });
 
-  it("counter updated based on passed time not $interval", function() {
+  it("counter updated based on passed time not $interval", function () {
     var startTime = Date.now() / 1000 - 5; // 5 seconds
     var runTime = "0:00:30";
     var estimatedRunTime = "0:00:35";
@@ -123,7 +123,7 @@ describe("maasScriptRunTime", function() {
     expect(spanElement.text()).toEqual("0:00:05 of ~" + estimatedRunTime);
   });
 
-  it("shows day when over 24 hours", function() {
+  it("shows day when over 24 hours", function () {
     // Regression test for LP:1733015
     var startTime = Date.now() / 1000 - 2 * 24 * 60 * 60; // 2 days ago
     var estimatedRunTime = "1 day, 0:00:35";
@@ -143,7 +143,7 @@ describe("maasScriptRunTime", function() {
     );
   });
 
-  it("regression test for LP:1757153", function() {
+  it("regression test for LP:1757153", function () {
     var startTime = Date.now() / 1000 - 1;
     var estimatedRunTime = "0:00:54";
     var scriptStatus = 1;

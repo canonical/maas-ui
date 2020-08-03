@@ -10,18 +10,18 @@ function maasDefaultOsSelect() {
     restrict: "A",
     scope: {
       osInput: "@maasDefaultOsSelect",
-      seriesInput: "@maasDefaultSeriesSelect"
+      seriesInput: "@maasDefaultSeriesSelect",
     },
-    link: function(scope, element) {
+    link: function (scope, element) {
       var osElement = angular.element(element.find(scope.osInput));
       var seriesElement = angular.element(element.find(scope.seriesInput));
       if (!osElement || !seriesElement) {
         throw new Error("Unable to find os or series elements");
       }
 
-      var selectVisableOption = function(options) {
+      var selectVisableOption = function (options) {
         var first_option = null;
-        angular.forEach(options, function(option) {
+        angular.forEach(options, function (option) {
           option = angular.element(option);
           if (!option.hasClass("u-hide")) {
             if (first_option === null) {
@@ -34,7 +34,7 @@ function maasDefaultOsSelect() {
         }
       };
 
-      var modifyOption = function(option, newOSValue, initialSkip) {
+      var modifyOption = function (option, newOSValue, initialSkip) {
         var selected = false;
         var value = option.val();
         var split_value = value.split("/");
@@ -62,10 +62,10 @@ function maasDefaultOsSelect() {
         return selected;
       };
 
-      var switchTo = function(newOSValue, initialSkip) {
+      var switchTo = function (newOSValue, initialSkip) {
         var options = seriesElement.find("option");
         var selected = false;
-        angular.forEach(options, function(option) {
+        angular.forEach(options, function (option) {
           var sel = modifyOption(
             angular.element(option),
             newOSValue,
@@ -92,13 +92,13 @@ function maasDefaultOsSelect() {
       };
 
       // Call switchTo any time the os changes.
-      osElement.on("change", function() {
+      osElement.on("change", function () {
         switchTo(osElement.val(), false);
       });
 
       // Initialize the options.
       switchTo(osElement.val(), true);
-    }
+    },
   };
 }
 

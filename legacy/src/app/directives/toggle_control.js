@@ -8,26 +8,26 @@
 function toggleCtrl($document) {
   return {
     restrict: "A",
-    link: function($scope, $element, $attr) {
+    link: function ($scope, $element, $attr) {
       $scope.isToggled = false;
-      $scope.toggleMenu = function() {
+      $scope.toggleMenu = function () {
         $scope.isToggled = !$scope.isToggled;
       };
 
-      var clickHandler = function(event) {
+      var clickHandler = function (event) {
         if ($element.find(event.target).length > 0) {
           return;
         }
-        $scope.$apply(function() {
+        $scope.$apply(function () {
           $scope.isToggled = false;
         });
       };
 
       $document.on("click", clickHandler);
-      $scope.$on("$destroy", function() {
+      $scope.$on("$destroy", function () {
         $document.off("click", clickHandler);
       });
-    }
+    },
   };
 }
 

@@ -7,45 +7,45 @@ import angular from "angular";
 
 import { makeInteger } from "testing/utils";
 
-describe("FabricsManager", function() {
+describe("FabricsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the FabricsManager.
   var FabricsManager, RegionConnection;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     FabricsManager = $injector.get("FabricsManager");
     RegionConnection = $injector.get("RegionConnection");
   }));
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(FabricsManager._pk).toBe("id");
     expect(FabricsManager._handler).toBe("fabric");
   });
 
-  describe("getName", function() {
-    it("returns undefined if no object is passed in", function() {
+  describe("getName", function () {
+    it("returns undefined if no object is passed in", function () {
       expect(FabricsManager.getName()).toBe(undefined);
     });
 
-    it("returns name if name exists", function() {
+    it("returns name if name exists", function () {
       var fabric = {
-        name: "jury-rigged"
+        name: "jury-rigged",
       };
       expect(FabricsManager.getName(fabric)).toBe("jury-rigged");
     });
 
-    it("returns name if name is null", function() {
+    it("returns name if name is null", function () {
       var fabric = {
         id: makeInteger(0, 1000),
-        name: null
+        name: null,
       };
       expect(FabricsManager.getName(fabric)).toBe("fabric-" + fabric.id);
     });
   });
 
-  describe("create", function() {
-    it("calls the region with expected parameters", function() {
+  describe("create", function () {
+    it("calls the region with expected parameters", function () {
       var obj = {};
       var result = {};
       spyOn(RegionConnection, "callMethod").and.returnValue(result);

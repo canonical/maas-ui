@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("PodDetailsController", function() {
+describe("PodDetailsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $rootScope.navigateToLegacy = jest.fn();
@@ -28,7 +28,7 @@ describe("PodDetailsController", function() {
   var ZonesManager, ManagerHelperService, ErrorService;
   var SubnetsManager, VLANsManager, FabricsManager, SpacesManager;
   var ResourcePoolsManager, MachinesManager;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     PodsManager = $injector.get("PodsManager");
     UsersManager = $injector.get("UsersManager");
     GeneralManager = $injector.get("GeneralManager");
@@ -46,7 +46,7 @@ describe("PodDetailsController", function() {
 
   // Mock the websocket connection to the region
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     RegionConnection = $injector.get("RegionConnection");
     // Mock buildSocket so an actual connection is not made.
     webSocket = new MockWebSocket();
@@ -85,13 +85,13 @@ describe("PodDetailsController", function() {
 
   // Create the pod that will be used and set the stateParams.
   var pod, $stateParams;
-  beforeEach(function() {
+  beforeEach(function () {
     pod = makePod();
     const domain = { id: 0 };
     DomainsManager._items.push(domain);
     ZonesManager._items.push(domain);
     $stateParams = {
-      id: pod.id
+      id: pod.id,
     };
   });
 
@@ -125,7 +125,7 @@ describe("PodDetailsController", function() {
       VLANsManager: VLANsManager,
       FabricsManager: FabricsManager,
       SpacesManager: SpacesManager,
-      ResourcePoolsManager: ResourcePoolsManager
+      ResourcePoolsManager: ResourcePoolsManager,
     });
 
     return controller;
@@ -146,22 +146,22 @@ describe("PodDetailsController", function() {
     return controller;
   }
 
-  it("sets title and page to kvm on $rootScope if on kvm page", function() {
+  it("sets title and page to kvm on $rootScope if on kvm page", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("kvm");
   });
 
-  it("sets title and page to rsd on $rootScope if on rsd page", function() {
+  it("sets title and page to rsd on $rootScope if on rsd page", function () {
     makeController();
     $location.path("/rsd");
-    $scope.$on("$routeChangeSuccess", function() {
+    $scope.$on("$routeChangeSuccess", function () {
       expect($rootScope.title).toBe("Loading...");
       expect($rootScope.page).toBe("rsd");
     });
   });
 
-  it("sets initial values on $scope", function() {
+  it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
     expect($scope.pod).toBeNull();
@@ -173,7 +173,7 @@ describe("PodDetailsController", function() {
       action: {
         name: "compose",
         title: "Compose",
-        sentence: "compose"
+        sentence: "compose",
       },
       obj: {
         cores: "",
@@ -184,16 +184,16 @@ describe("PodDetailsController", function() {
             size: "",
             tags: [],
             pool: {},
-            boot: true
-          }
+            boot: true,
+          },
         ],
         interfaces: [
           {
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        requests: []
-      }
+        requests: [],
+      },
     });
     expect($scope.power_types).toBe(GeneralManager.getData("power_types"));
     expect($scope.domains).toBe(DomainsManager.getItems());
@@ -204,7 +204,7 @@ describe("PodDetailsController", function() {
 
   it("calls loadManagers with PodsManager, UsersManager, GeneralManager, \
         DomainsManager, ZonesManager, SubnetsManager, VLANsManager, \
-        FabricsManager, SpacesManager, MachinesManager", function() {
+        FabricsManager, SpacesManager, MachinesManager", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       PodsManager,
@@ -217,50 +217,50 @@ describe("PodDetailsController", function() {
       SubnetsManager,
       VLANsManager,
       FabricsManager,
-      SpacesManager
+      SpacesManager,
     ]);
   });
 
-  it("sets loaded and title when loadManagers resolves", function() {
+  it("sets loaded and title when loadManagers resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($scope.loaded).toBe(true);
     expect($scope.title).toBe("Pod " + pod.name);
   });
 
-  describe("stripTrailingZero", function() {
-    it("removes decimal point if zero", function() {
+  describe("stripTrailingZero", function () {
+    it("removes decimal point if zero", function () {
       makeController();
       expect($scope.stripTrailingZero(41.0)).toBe("41");
     });
 
-    it("doesn't strip decimal point if not zero", function() {
+    it("doesn't strip decimal point if not zero", function () {
       makeController();
       expect($scope.stripTrailingZero(42.2)).toBe("42.2");
     });
   });
 
-  describe("isRackControllerConnected", function() {
-    it("returns false no power_types", function() {
+  describe("isRackControllerConnected", function () {
+    it("returns false no power_types", function () {
       makeController();
       $scope.power_types = [];
       expect($scope.isRackControllerConnected()).toBe(false);
     });
 
-    it("returns true if power_types", function() {
+    it("returns true if power_types", function () {
       makeController();
       $scope.power_types = [{}];
       expect($scope.isRackControllerConnected()).toBe(true);
     });
   });
 
-  describe("canEdit", function() {
-    it("returns false if no pod", function() {
+  describe("canEdit", function () {
+    it("returns false if no pod", function () {
       makeController();
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
       expect($scope.canEdit()).toBe(false);
     });
 
-    it("returns false if no pod permissions", function() {
+    it("returns false if no pod permissions", function () {
       makeController();
       $scope.pod = makePod();
       delete $scope.pod.permissions;
@@ -268,14 +268,14 @@ describe("PodDetailsController", function() {
       expect($scope.canEdit()).toBe(false);
     });
 
-    it("returns false if no edit permission", function() {
+    it("returns false if no edit permission", function () {
       makeController();
       $scope.pod = makePod();
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
       expect($scope.canEdit()).toBe(false);
     });
 
-    it("returns false if rack disconnected", function() {
+    it("returns false if rack disconnected", function () {
       makeController();
       $scope.pod = makePod();
       $scope.pod.permissions.push("edit");
@@ -283,7 +283,7 @@ describe("PodDetailsController", function() {
       expect($scope.canEdit()).toBe(false);
     });
 
-    it("returns true if super user, rack connected", function() {
+    it("returns true if super user, rack connected", function () {
       makeController();
       $scope.pod = makePod();
       $scope.pod.permissions.push("edit");
@@ -292,8 +292,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("editName", function() {
-    it("doesnt set editing true", function() {
+  describe("editName", function () {
+    it("doesnt set editing true", function () {
       makeController();
       spyOn($scope, "canEdit").and.returnValue(false);
       $scope.name.editing = false;
@@ -301,7 +301,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.editing).toBe(false);
     });
 
-    it("sets editing to true", function() {
+    it("sets editing to true", function () {
       makeController();
       $scope.pod = pod;
       spyOn($scope, "canEdit").and.returnValue(true);
@@ -310,7 +310,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.editing).toBe(true);
     });
 
-    it("sets name.value to pod name", function() {
+    it("sets name.value to pod name", function () {
       makeController();
       $scope.pod = pod;
       spyOn($scope, "canEdit").and.returnValue(true);
@@ -318,7 +318,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.value).toBe(pod.name);
     });
 
-    it("doesnt reset name.value on multiple calls", function() {
+    it("doesnt reset name.value on multiple calls", function () {
       makeController();
       $scope.pod = pod;
       spyOn($scope, "canEdit").and.returnValue(true);
@@ -330,44 +330,44 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("editNameInvalid", function() {
-    it("returns false if not editing", function() {
+  describe("editNameInvalid", function () {
+    it("returns false if not editing", function () {
       makeController();
       $scope.name.editing = false;
       $scope.name.value = "abc_invalid.local";
       expect($scope.editNameInvalid()).toBe(false);
     });
 
-    it("returns true for bad values", function() {
+    it("returns true for bad values", function () {
       makeController();
       $scope.name.editing = true;
       var values = [
         {
           input: "aB0-z",
-          output: false
+          output: false,
         },
         {
           input: "abc_alpha",
-          output: true
+          output: true,
         },
         {
           input: "ab^&c",
-          output: true
+          output: true,
         },
         {
           input: "abc.local",
-          output: true
-        }
+          output: true,
+        },
       ];
-      angular.forEach(values, function(value) {
+      angular.forEach(values, function (value) {
         $scope.name.value = value.input;
         expect($scope.editNameInvalid()).toBe(value.output);
       });
     });
   });
 
-  describe("cancelEditName", function() {
-    it("sets editing to false for name section", function() {
+  describe("cancelEditName", function () {
+    it("sets editing to false for name section", function () {
       makeController();
       $scope.pod = pod;
       $scope.name.editing = true;
@@ -375,7 +375,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.editing).toBe(false);
     });
 
-    it("sets name.value back to original", function() {
+    it("sets name.value back to original", function () {
       makeController();
       $scope.pod = pod;
       $scope.name.editing = true;
@@ -385,8 +385,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("saveEditName", function() {
-    it("does nothing if value is invalid", function() {
+  describe("saveEditName", function () {
+    it("does nothing if value is invalid", function () {
       makeController();
       $scope.pod = pod;
       spyOn($scope, "editNameInvalid").and.returnValue(true);
@@ -396,7 +396,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.editing).toBe(sentinel);
     });
 
-    it("sets editing to false", function() {
+    it("sets editing to false", function () {
       makeController();
       spyOn(PodsManager, "updateItem").and.returnValue($q.defer().promise);
       spyOn($scope, "editNameInvalid").and.returnValue(false);
@@ -409,7 +409,7 @@ describe("PodDetailsController", function() {
       expect($scope.name.editing).toBe(false);
     });
 
-    it("calls updateItem with copy of pod", function() {
+    it("calls updateItem with copy of pod", function () {
       makeController();
       spyOn(PodsManager, "updateItem").and.returnValue($q.defer().promise);
       spyOn($scope, "editNameInvalid").and.returnValue(false);
@@ -423,7 +423,7 @@ describe("PodDetailsController", function() {
       expect(calledWithPod).not.toBe(pod);
     });
 
-    it("calls updateItem with new name on pod", function() {
+    it("calls updateItem with new name on pod", function () {
       makeController();
       spyOn(PodsManager, "updateItem").and.returnValue($q.defer().promise);
       spyOn($scope, "editNameInvalid").and.returnValue(false);
@@ -438,7 +438,7 @@ describe("PodDetailsController", function() {
       expect(calledWithPod.name).toBe(newName);
     });
 
-    it("calls updateName once updateItem resolves", function() {
+    it("calls updateName once updateItem resolves", function () {
       makeController();
       var defer = $q.defer();
       spyOn(PodsManager, "updateItem").and.returnValue(defer.promise);
@@ -458,8 +458,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("editPodConfiguration", function() {
-    it("sets editing to true if can edit", function() {
+  describe("editPodConfiguration", function () {
+    it("sets editing to true if can edit", function () {
       makeController();
       spyOn($scope, "canEdit").and.returnValue(true);
       $scope.editing = false;
@@ -467,7 +467,7 @@ describe("PodDetailsController", function() {
       expect($scope.editing).toBe(true);
     });
 
-    it("doesnt set editing to true if cannot", function() {
+    it("doesnt set editing to true if cannot", function () {
       makeController();
       spyOn($scope, "canEdit").and.returnValue(false);
       $scope.editing = false;
@@ -476,8 +476,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("exitEditPodConfiguration", function() {
-    it("sets editing to false on exiting pod configuration", function() {
+  describe("exitEditPodConfiguration", function () {
+    it("sets editing to false on exiting pod configuration", function () {
       makeController();
       $scope.editing = true;
       $scope.exitEditPodConfiguration();
@@ -485,21 +485,21 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("isActionError", function() {
-    it("returns false if not action error", function() {
+  describe("isActionError", function () {
+    it("returns false if not action error", function () {
       makeController();
       expect($scope.isActionError()).toBe(false);
     });
 
-    it("returns true if action error", function() {
+    it("returns true if action error", function () {
       makeController();
       $scope.action.error = makeName("error");
       expect($scope.isActionError()).toBe(true);
     });
   });
 
-  describe("actionOptionChanged", function() {
-    it("clears action error", function() {
+  describe("actionOptionChanged", function () {
+    it("clears action error", function () {
       makeController();
       $scope.action.error = makeName("error");
       $scope.actionOptionChanged();
@@ -507,8 +507,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("actionCancel", function() {
-    it("clears action error and option", function() {
+  describe("actionCancel", function () {
+    it("clears action error and option", function () {
       makeController();
       $scope.action.error = makeName("error");
       $scope.action.option = {};
@@ -518,14 +518,14 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("actionGo", function() {
-    it("performs action and sets and clears inProgress", function() {
+  describe("actionGo", function () {
+    it("performs action and sets and clears inProgress", function () {
       makeControllerResolveSetActiveItem();
       var defer = $q.defer();
       var refresh = jasmine.createSpy("refresh");
       refresh.and.returnValue(defer.promise);
       $scope.action.option = {
-        operation: refresh
+        operation: refresh,
       };
       $scope.action.error = makeName("error");
       $scope.actionGo();
@@ -539,13 +539,13 @@ describe("PodDetailsController", function() {
       expect($scope.action.error).toBeNull();
     });
 
-    it("performs action and sets error", function() {
+    it("performs action and sets error", function () {
       makeControllerResolveSetActiveItem();
       var defer = $q.defer();
       var refresh = jasmine.createSpy("refresh");
       refresh.and.returnValue(defer.promise);
       $scope.action.option = {
-        operation: refresh
+        operation: refresh,
       };
       $scope.actionGo();
       expect($scope.action.inProgress).toBe(true);
@@ -559,14 +559,14 @@ describe("PodDetailsController", function() {
       expect($scope.action.error).toBe(error);
     });
 
-    it("changes path to kvm listing on delete", function() {
+    it("changes path to kvm listing on delete", function () {
       makeControllerResolveSetActiveItem();
       var defer = $q.defer();
       var refresh = jasmine.createSpy("refresh");
       refresh.and.returnValue(defer.promise);
       $scope.action.option = {
         name: "delete",
-        operation: refresh
+        operation: refresh,
       };
 
       $scope.actionGo();
@@ -680,24 +680,24 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("canCompose", function() {
-    it("returns false when no pod", function() {
+  describe("canCompose", function () {
+    it("returns false when no pod", function () {
       makeController();
       expect($scope.canCompose()).toBe(false);
     });
 
-    it("returns false when no compose permission", function() {
+    it("returns false when no compose permission", function () {
       makeControllerResolveSetActiveItem();
       expect($scope.canCompose()).toBe(false);
     });
 
-    it("returns false when not composable", function() {
+    it("returns false when not composable", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.permissions.push("compose");
       expect($scope.canCompose()).toBe(false);
     });
 
-    it("returns true when composable", function() {
+    it("returns true when composable", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.permissions.push("compose");
       $scope.pod.capabilities.push("composable");
@@ -705,14 +705,14 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("composeMachine", function() {
-    it("sets action.options to compose.action", function() {
+  describe("composeMachine", function () {
+    it("sets action.options to compose.action", function () {
       makeController();
       $scope.composeMachine();
       expect($scope.action.option).toBe($scope.compose.action);
     });
 
-    it("sets action.options to compose.action", function() {
+    it("sets action.options to compose.action", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.default_pool = 42;
       $scope.composeMachine();
@@ -721,14 +721,14 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("composePreProcess", function() {
-    it("sets id to pod id", function() {
+  describe("composePreProcess", function () {
+    it("sets id to pod id", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.type = "rsd";
       expect($scope.composePreProcess({}).id).toEqual($scope.pod.id);
     });
 
-    it("sets rsd storage based on compose.obj.storage", function() {
+    it("sets rsd storage based on compose.obj.storage", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.type = "rsd";
       $scope.compose.obj.storage = [
@@ -737,169 +737,169 @@ describe("PodDetailsController", function() {
           size: 20,
           tags: [
             {
-              text: "one"
+              text: "one",
             },
             {
-              text: "two"
-            }
+              text: "two",
+            },
           ],
-          boot: false
+          boot: false,
         },
         {
           type: "local",
           size: 50,
           tags: [
             {
-              text: "happy"
+              text: "happy",
             },
             {
-              text: "days"
-            }
+              text: "days",
+            },
           ],
-          boot: true
+          boot: true,
         },
         {
           type: "local",
           size: 60,
           tags: [
             {
-              text: "other"
-            }
+              text: "other",
+            },
           ],
-          boot: false
-        }
+          boot: false,
+        },
       ];
       expect($scope.composePreProcess({}).storage).toEqual(
         "0:50(local,happy,days)," + "1:20(iscsi,one,two),2:60(local,other)"
       );
     });
 
-    it("correctly sets the interface constraints", function() {
+    it("correctly sets the interface constraints", function () {
       makeControllerResolveSetActiveItem();
       $scope.compose.obj.interfaces = [
         {
           name: "eth0",
           ipaddress: "172.16.4.2",
-          subnet: { cidr: "172.16.4.0/24" }
+          subnet: { cidr: "172.16.4.0/24" },
         },
         {
           name: "eth1",
           ipaddress: "192.168.1.5",
-          subnet: { cidr: "192.168.1.0/24" }
+          subnet: { cidr: "192.168.1.0/24" },
         },
         {
           name: "eth2",
-          subnet: { cidr: "192.168.2.0/24" }
-        }
+          subnet: { cidr: "192.168.2.0/24" },
+        },
       ];
       var expectedInterfaces = [
         "eth0:ip=172.16.4.2,subnet_cidr=172.16.4.0/24",
         "eth1:ip=192.168.1.5,subnet_cidr=192.168.1.0/24",
-        "eth2:subnet_cidr=192.168.2.0/24"
+        "eth2:subnet_cidr=192.168.2.0/24",
       ].join(";");
       expect($scope.composePreProcess({}).interfaces).toEqual(
         expectedInterfaces
       );
     });
 
-    it("sets virsh storage based on compose.obj.storage", function() {
+    it("sets virsh storage based on compose.obj.storage", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.type = "virsh";
       $scope.compose.obj.storage = [
         {
           size: 20,
           pool: {
-            name: "pool1"
+            name: "pool1",
           },
           tags: [
             {
-              text: "one"
+              text: "one",
             },
             {
-              text: "two"
-            }
+              text: "two",
+            },
           ],
-          boot: false
+          boot: false,
         },
         {
           size: 50,
           pool: {
-            name: "pool2"
+            name: "pool2",
           },
           tags: [
             {
-              text: "happy"
+              text: "happy",
             },
             {
-              text: "days"
-            }
+              text: "days",
+            },
           ],
-          boot: true
+          boot: true,
         },
         {
           size: 60,
           pool: {
-            name: "pool3"
+            name: "pool3",
           },
           tags: [
             {
-              text: "other"
-            }
+              text: "other",
+            },
           ],
-          boot: false
-        }
+          boot: false,
+        },
       ];
       expect($scope.composePreProcess({}).storage).toEqual(
         "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)"
       );
     });
 
-    it("sets virsh storage based on compose.obj.storage", function() {
+    it("sets virsh storage based on compose.obj.storage", function () {
       makeControllerResolveSetActiveItem();
       $scope.pod.type = "virsh";
       $scope.compose.obj.storage = [
         {
           size: 20,
           pool: {
-            name: "pool1"
+            name: "pool1",
           },
           tags: [
             {
-              text: "one"
+              text: "one",
             },
             {
-              text: "two"
-            }
+              text: "two",
+            },
           ],
-          boot: false
+          boot: false,
         },
         {
           size: 50,
           pool: {
-            name: "pool2"
+            name: "pool2",
           },
           tags: [
             {
-              text: "happy"
+              text: "happy",
             },
             {
-              text: "days"
-            }
+              text: "days",
+            },
           ],
-          boot: true
+          boot: true,
         },
         {
           size: 60,
           pool: {
-            name: "pool3"
+            name: "pool3",
           },
           tags: [
             {
-              text: "other"
-            }
+              text: "other",
+            },
           ],
-          boot: false
-        }
+          boot: false,
+        },
       ];
       expect($scope.composePreProcess({}).storage).toEqual(
         "0:50(pool2,happy,days)," + "1:20(pool1,one,two),2:60(pool3,other)"
@@ -907,8 +907,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("cancelCompose", function() {
-    it("resets obj and action.option", function() {
+  describe("cancelCompose", function () {
+    it("resets obj and action.option", function () {
       makeControllerResolveSetActiveItem();
       var otherObj = {};
       $scope.compose.obj = otherObj;
@@ -924,22 +924,22 @@ describe("PodDetailsController", function() {
             size: "",
             tags: [],
             pool: {},
-            boot: true
-          }
+            boot: true,
+          },
         ],
         interfaces: [
           {
-            name: "default"
-          }
+            name: "default",
+          },
         ],
-        requests: []
+        requests: [],
       });
       expect($scope.action.option).toBeNull();
     });
   });
 
-  describe("composeAddStorage", function() {
-    it("adds a new local storage item", function() {
+  describe("composeAddStorage", function () {
+    it("adds a new local storage item", function () {
       makeControllerResolveSetActiveItem();
       expect($scope.compose.obj.storage.length).toBe(1);
       $scope.composeAddStorage();
@@ -949,11 +949,11 @@ describe("PodDetailsController", function() {
         size: "",
         tags: [],
         pool: {},
-        boot: false
+        boot: false,
       });
     });
 
-    it("adds a new iscsi storage item", function() {
+    it("adds a new iscsi storage item", function () {
       makeControllerResolveSetActiveItem();
       $scope.power_types = defaultPowerTypes();
       $scope.pod.capabilities.push("iscsi_storage");
@@ -965,13 +965,13 @@ describe("PodDetailsController", function() {
         size: 8,
         tags: [],
         pool: {},
-        boot: false
+        boot: false,
       });
     });
   });
 
-  describe("composeSetBootDisk", function() {
-    it("sets a new boot disk", function() {
+  describe("composeSetBootDisk", function () {
+    it("sets a new boot disk", function () {
       makeControllerResolveSetActiveItem();
       $scope.composeAddStorage();
       $scope.composeAddStorage();
@@ -983,8 +983,8 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("composeRemoveDisk", function() {
-    it("removes disk from storage", function() {
+  describe("composeRemoveDisk", function () {
+    it("removes disk from storage", function () {
       makeControllerResolveSetActiveItem();
       $scope.composeAddStorage();
       $scope.composeAddStorage();
@@ -995,35 +995,35 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("composeAddInterface", function() {
-    it("adds a new interface item and removes the default", function() {
+  describe("composeAddInterface", function () {
+    it("adds a new interface item and removes the default", function () {
       makeControllerResolveSetActiveItem();
       expect($scope.compose.obj.interfaces.length).toBe(1);
       expect($scope.compose.obj.interfaces[0]).toEqual({
-        name: "default"
+        name: "default",
       });
       $scope.composeAddInterface();
       expect($scope.compose.obj.interfaces.length).toBe(1);
       expect($scope.compose.obj.interfaces[0]).toEqual({
-        name: "eth0"
+        name: "eth0",
       });
     });
 
-    it("increments the default interface name", function() {
+    it("increments the default interface name", function () {
       makeControllerResolveSetActiveItem();
       $scope.composeAddInterface();
       $scope.composeAddInterface();
       expect($scope.compose.obj.interfaces[0]).toEqual({
-        name: "eth0"
+        name: "eth0",
       });
       expect($scope.compose.obj.interfaces[1]).toEqual({
-        name: "eth1"
+        name: "eth1",
       });
     });
   });
 
-  describe("composeRemoveInterface", function() {
-    it("removes interface from interfaces table", function() {
+  describe("composeRemoveInterface", function () {
+    it("removes interface from interfaces table", function () {
       makeControllerResolveSetActiveItem();
       $scope.composeAddInterface();
       $scope.composeAddInterface();
@@ -1035,17 +1035,17 @@ describe("PodDetailsController", function() {
     });
   });
 
-  describe("onRSDSection", function() {
-    it("returns true if URL is 'rsd'", function() {
+  describe("onRSDSection", function () {
+    it("returns true if URL is 'rsd'", function () {
       makeControllerResolveSetActiveItem();
       var pod = makePod();
       $location.path("/rsd/" + pod.id);
-      $scope.$on("$routeChangeSuccess", function() {
+      $scope.$on("$routeChangeSuccess", function () {
         expect($scope.onRSDSection()).toBe(true);
       });
     });
 
-    it("returns false if URL is 'kvm'", function() {
+    it("returns false if URL is 'kvm'", function () {
       makeControllerResolveSetActiveItem();
       $location.path("/kvm");
       expect($scope.onRSDSection()).toBe(false);

@@ -44,12 +44,12 @@ function FabricDetailsController(
   }
 
   // Called when the "edit" button is cliked in the fabric summary
-  $scope.enterEditSummary = function() {
+  $scope.enterEditSummary = function () {
     $scope.editSummary = true;
   };
 
   // Called when the "cancel" button is cliked in the fabric summary
-  $scope.exitEditSummary = function() {
+  $scope.exitEditSummary = function () {
     $scope.editSummary = false;
   };
 
@@ -73,14 +73,14 @@ function FabricDetailsController(
     var racks = {};
     angular.forEach(
       $filter("filter")($scope.vlans, { fabric: $scope.fabric.id }, true),
-      function(vlan) {
+      function (vlan) {
         var subnets = $filter("filter")(
           $scope.subnets,
           { vlan: vlan.id },
           true
         );
         if (subnets.length > 0) {
-          angular.forEach(subnets, function(subnet) {
+          angular.forEach(subnets, function (subnet) {
             var space = SpacesManager.getItemFromList(subnet.space);
             var space_name = space === null ? "(undefined)" : space.name;
             var row = {
@@ -89,7 +89,7 @@ function FabricDetailsController(
               subnet: subnet,
               subnet_name: SubnetsManager.getName(subnet),
               space: space,
-              space_name: space_name
+              space_name: space_name,
             };
             rows.push(row);
           });
@@ -102,12 +102,12 @@ function FabricDetailsController(
             subnet: null,
             subnet_name: null,
             space: null,
-            space_name: null
+            space_name: null,
           };
           rows.push(row);
         }
         // Enumerate racks for vlan.
-        angular.forEach(vlan.rack_sids, function(rack_sid) {
+        angular.forEach(vlan.rack_sids, function (rack_sid) {
           var rack = ControllersManager.getItemFromList(rack_sid);
           if (angular.isObject(rack)) {
             racks[rack.system_id] = rack;
@@ -116,18 +116,18 @@ function FabricDetailsController(
       }
     );
     $scope.rows = rows;
-    $scope.racks = Object.keys(racks).map(function(key) {
+    $scope.racks = Object.keys(racks).map(function (key) {
       return racks[key];
     });
   }
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if this is the default Fabric
-  $scope.isDefaultFabric = function() {
+  $scope.isDefaultFabric = function () {
     if (!angular.isObject($scope.fabric)) {
       return false;
     }
@@ -135,7 +135,7 @@ function FabricDetailsController(
   };
 
   // Called to check if the space can be deleted.
-  $scope.canBeDeleted = function() {
+  $scope.canBeDeleted = function () {
     if (angular.isObject($scope.fabric)) {
       return $scope.fabric.id !== 0;
     }
@@ -143,24 +143,24 @@ function FabricDetailsController(
   };
 
   // Called when the delete fabric button is pressed.
-  $scope.deleteButton = function() {
+  $scope.deleteButton = function () {
     $scope.error = null;
     $scope.confirmingDelete = true;
   };
 
   // Called when the cancel delete fabric button is pressed.
-  $scope.cancelDeleteButton = function() {
+  $scope.cancelDeleteButton = function () {
     $scope.confirmingDelete = false;
   };
 
   // Called when the confirm delete fabric button is pressed.
-  $scope.deleteConfirmButton = function() {
+  $scope.deleteConfirmButton = function () {
     FabricsManager.deleteFabric($scope.fabric).then(
-      function() {
+      function () {
         $scope.confirmingDelete = false;
         $rootScope.navigateToLegacy("/networks");
       },
-      function(reply) {
+      function (reply) {
         $scope.error = ManagerHelperService.parseValidationError(reply.error);
       }
     );
@@ -173,8 +173,8 @@ function FabricDetailsController(
     SubnetsManager,
     SpacesManager,
     ControllersManager,
-    UsersManager
-  ]).then(function() {
+    UsersManager,
+  ]).then(function () {
     // Possibly redirected from another controller that already had
     // this fabric set to active. Only call setActiveItem if not
     // already the activeItem.
@@ -192,15 +192,15 @@ function FabricDetailsController(
       // Set flag for RSD navigation item.
       if (!$rootScope.showRSDLink) {
         GeneralManager.getNavigationOptions().then(
-          res => ($rootScope.showRSDLink = res.rsd)
+          (res) => ($rootScope.showRSDLink = res.rsd)
         );
       }
     } else {
       FabricsManager.setActiveItem(requestedFabric).then(
-        function(fabric) {
+        function (fabric) {
           fabricLoaded(fabric);
         },
-        function(error) {
+        function (error) {
           ErrorService.raiseError(error);
         }
       );

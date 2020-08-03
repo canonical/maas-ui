@@ -25,7 +25,7 @@ function makeUser() {
 
 describe("NodeDetailsController", function () {
   // Load the MAAS module.
-  const locationMock = jest.fn()
+  const locationMock = jest.fn();
   beforeEach(() => {
     angular.mock.module("MAAS");
     window.location.replace = locationMock;
@@ -33,7 +33,7 @@ describe("NodeDetailsController", function () {
 
   afterEach(() => {
     locationMock.mockClear();
-  })
+  });
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $log;
@@ -426,7 +426,7 @@ describe("NodeDetailsController", function () {
     expect($scope.type_name_title).toBe("Machine");
   });
 
-  it("fetches pod details if node has a pod", function() {
+  it("fetches pod details if node has a pod", function () {
     node.pod = { id: 1 };
     MachinesManager._activeItem = node;
     spyOn(PodsManager, "getItem").and.returnValue($q.defer().promise);
@@ -438,7 +438,7 @@ describe("NodeDetailsController", function () {
     expect(PodsManager.getItem).toHaveBeenCalledWith(node.pod.id);
   });
 
-  it("sets controller values on load", function() {
+  it("sets controller values on load", function () {
     $location.path("/controller");
     spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ControllersManager, "setActiveItem").and.returnValue(
@@ -2866,20 +2866,25 @@ describe("NodeDetailsController", function () {
 
     it("returns correct text if DHCP is relayed", () => {
       makeController();
-      $scope.vlans = [{ id: 1, relay_vlan: 2 }]
+      $scope.vlans = [{ id: 1, relay_vlan: 2 }];
       const iface = { vlan_id: 1 };
       expect($scope.getDHCPStatus(iface)).toEqual("Relayed");
     });
 
     it("returns correct text if DHCP is relayed and full name required", () => {
       makeController();
-      const vlans = [{ id: 2, vid: "vlan-1", relay_vlan: 3}, { fabric: 1, id: 3, vid: "vlan-2"}];
+      const vlans = [
+        { id: 2, vid: "vlan-1", relay_vlan: 3 },
+        { fabric: 1, id: 3, vid: "vlan-2" },
+      ];
       const fabrics = [{ id: 1, name: "fabric-1" }];
       const iface = { vlan_id: 2 };
       $scope.vlans = vlans;
       FabricsManager._items = fabrics;
       VLANsManager._items = vlans;
-      expect($scope.getDHCPStatus(iface, true)).toEqual("Relayed via fabric-1.vlan-2");
+      expect($scope.getDHCPStatus(iface, true)).toEqual(
+        "Relayed via fabric-1.vlan-2"
+      );
     });
   });
 

@@ -8,13 +8,13 @@ import angular from "angular";
 import { makeFakeResponse, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("PackageRepositoriesManager", function() {
+describe("PackageRepositoriesManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the PackageRepositoriesManager and RegionConnection factory.
   var PackageRepositoriesManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     PackageRepositoriesManager = $injector.get("PackageRepositoriesManager");
     RegionConnection = $injector.get("RegionConnection");
 
@@ -24,7 +24,7 @@ describe("PackageRepositoriesManager", function() {
   }));
 
   // Open the connection to the region before each test.
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     RegionConnection.connect(() => done());
   });
 
@@ -33,20 +33,20 @@ describe("PackageRepositoriesManager", function() {
     return {
       name: makeName("name"),
       enabled: true,
-      url: makeName("url")
+      url: makeName("url"),
     };
   }
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(PackageRepositoriesManager._pk).toBe("id");
     expect(PackageRepositoriesManager._handler).toBe("packagerepository");
   });
 
-  describe("create", function() {
-    it("calls packagerepository.create with params", function(done) {
+  describe("create", function () {
+    it("calls packagerepository.create with params", function (done) {
       var obj = makePackageRepository();
       webSocket.returnData.push(makeFakeResponse(obj));
-      PackageRepositoriesManager.create(obj).then(function() {
+      PackageRepositoriesManager.create(obj).then(function () {
         var sentObject = angular.fromJson(webSocket.sentData[0]);
         expect(sentObject.method).toBe("packagerepository.create");
         expect(sentObject.params).toEqual(obj);

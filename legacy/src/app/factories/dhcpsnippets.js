@@ -18,7 +18,7 @@ function DHCPSnippetsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the DHCPSnippet object.
     var self = this;
-    RegionConnection.registerNotifier("dhcpsnippet", function(action, data) {
+    RegionConnection.registerNotifier("dhcpsnippet", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -26,7 +26,7 @@ function DHCPSnippetsManager(RegionConnection, Manager) {
   DHCPSnippetsManager.prototype = new Manager();
 
   // Create the snippet.
-  DHCPSnippetsManager.prototype.create = function(snippet) {
+  DHCPSnippetsManager.prototype.create = function (snippet) {
     return RegionConnection.callMethod(
       this._handler + ".create",
       snippet,
@@ -47,7 +47,7 @@ function DHCPSnippetsManager(RegionConnection, Manager) {
       return [];
     }
 
-    const filteredSubnets = snippets.filter(snippet => {
+    const filteredSubnets = snippets.filter((snippet) => {
       return subnets.indexOf(snippet.subnet_cidr) !== -1;
     });
 

@@ -5,8 +5,12 @@
  */
 
 export function sendAnalyticsEvent() {
-  window.ga = window.ga || function() { return false; };
-  return function(eventCategory, eventAction, eventLabel) {
+  window.ga =
+    window.ga ||
+    function () {
+      return false;
+    };
+  return function (eventCategory, eventAction, eventLabel) {
     if (eventCategory && eventAction && eventLabel) {
       window.ga("send", "event", eventCategory, eventAction, eventLabel);
     }

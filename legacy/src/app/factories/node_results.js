@@ -25,55 +25,55 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
       {
         title: null,
         hardware_type: HardwareType.NODE,
-        results: {}
+        results: {},
       },
       {
         title: "CPU",
         hardware_type: HardwareType.CPU,
-        results: {}
+        results: {},
       },
       {
         title: "Memory",
         hardware_type: HardwareType.MEMORY,
-        results: {}
+        results: {},
       },
       {
         title: "Storage",
         hardware_type: HardwareType.STORAGE,
-        results: {}
+        results: {},
       },
       {
         title: "Network",
         hardware_type: HardwareType.NETWORK,
-        results: {}
-      }
+        results: {},
+      },
     ];
     this.testing_results = [
       {
         title: "CPU",
         hardware_type: HardwareType.CPU,
-        results: {}
+        results: {},
       },
       {
         title: "Memory",
         hardware_type: HardwareType.MEMORY,
-        results: {}
+        results: {},
       },
       {
         title: "Storage",
         hardware_type: HardwareType.STORAGE,
-        results: {}
+        results: {},
       },
       {
         title: "Other Results",
         hardware_type: HardwareType.NODE,
-        results: {}
+        results: {},
       },
       {
         title: "Network",
         hardware_type: HardwareType.NETWORK,
-        results: {}
-      }
+        results: {},
+      },
     ];
     this.installation_results = [];
 
@@ -81,14 +81,14 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     // This is noderesult instead of scriptresult because the
     // class name is NodeResultHandler.
     var self = this;
-    RegionConnection.registerNotifier("noderesult", function(action, data) {
+    RegionConnection.registerNotifier("noderesult", function (action, data) {
       self.onNotify(action, data);
     });
   }
 
   NodeResultsManager.prototype = new Manager();
 
-  NodeResultsManager.prototype._getStorageSubtext = function(disk) {
+  NodeResultsManager.prototype._getStorageSubtext = function (disk) {
     var deviceinfo = "";
     if (disk.model !== "") {
       deviceinfo += "Model: " + disk.model;
@@ -106,8 +106,8 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     }
   };
 
-  NodeResultsManager.prototype._updateObject = function(existing, updated) {
-    angular.forEach(updated, function(value, key) {
+  NodeResultsManager.prototype._updateObject = function (existing, updated) {
+    angular.forEach(updated, function (value, key) {
       if (
         existing[key] !== value &&
         key !== "showing_results" &&
@@ -120,7 +120,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     });
   };
 
-  NodeResultsManager.prototype._addOrReplace = function(results, result) {
+  NodeResultsManager.prototype._addOrReplace = function (results, result) {
     for (let i = 0; i < results.length; i++) {
       if (results[i].name === result.name) {
         // Object already exists, update fields.
@@ -142,7 +142,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     results.push(result);
   };
 
-  NodeResultsManager.prototype._processItem = function(result) {
+  NodeResultsManager.prototype._processItem = function (result) {
     var results;
     result.showing_results = false;
     result.showing_history = false;
@@ -198,7 +198,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
       this._node.interfaces
     ) {
       const nic = this._node.interfaces.find(
-        item => item.id === result.interface
+        (item) => item.id === result.interface
       );
 
       let resultTitle = "";
@@ -222,7 +222,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     }
   };
 
-  NodeResultsManager.prototype._removeItem = function(result) {
+  NodeResultsManager.prototype._removeItem = function (result) {
     var idx = this._getIndexOfItem(this._items, result.id);
     if (idx >= 0) {
       this._updateMetadata(this._items[idx], "delete");
@@ -231,16 +231,16 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     this._removeItemByIdFromArray(this._selectedItems, result.id);
 
     var self = this;
-    angular.forEach(this.commissioning_results, function(hw_type) {
-      angular.forEach(hw_type.results, function(results, subtext) {
+    angular.forEach(this.commissioning_results, function (hw_type) {
+      angular.forEach(hw_type.results, function (results, subtext) {
         self._removeItemByIdFromArray(results, result.id);
         if (results.length === 0) {
           delete hw_type.results[subtext];
         }
       });
     });
-    angular.forEach(this.testing_results, function(hw_type) {
-      angular.forEach(hw_type.results, function(results, subtext) {
+    angular.forEach(this.testing_results, function (hw_type) {
+      angular.forEach(hw_type.results, function (results, subtext) {
         self._removeItemByIdFromArray(results, result.id);
         if (results.length === 0) {
           delete hw_type.results[subtext];
@@ -252,9 +252,9 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
 
   // Return the list of ScriptResults for the given node when retrieving
   // the initial list.
-  NodeResultsManager.prototype._initBatchLoadParameters = function() {
+  NodeResultsManager.prototype._initBatchLoadParameters = function () {
     var ret = {
-      system_id: this._node.system_id
+      system_id: this._node.system_id,
     };
     // Limit the results returned to what can be viewed.
     if (this._area === "summary") {
@@ -271,7 +271,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
   };
 
   // Destroys itself. Removes self from the NodeResultsManagerFactory.
-  NodeResultsManager.prototype.destroy = function() {
+  NodeResultsManager.prototype.destroy = function () {
     this._factory.destroyManager(this);
 
     // If this manager has ever loaded then the region is sending
@@ -279,29 +279,29 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
     if (this.isLoaded()) {
       var method = this._handler + ".clear";
       RegionConnection.callMethod(method, {
-        system_id: this._node.system_id
+        system_id: this._node.system_id,
       });
     }
   };
 
   // Get result data.
-  NodeResultsManager.prototype.get_result_data = function(
+  NodeResultsManager.prototype.get_result_data = function (
     script_id,
     data_type
   ) {
     var method = this._handler + ".get_result_data";
     var params = {
       id: script_id,
-      data_type: data_type
+      data_type: data_type,
     };
     return RegionConnection.callMethod(method, params);
   };
 
   // Get historic data.
-  NodeResultsManager.prototype.get_history = function(script_id) {
+  NodeResultsManager.prototype.get_history = function (script_id) {
     var method = this._handler + ".get_history";
     var params = {
-      id: script_id
+      id: script_id,
     };
     return RegionConnection.callMethod(method, params);
   };
@@ -313,7 +313,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
   }
 
   // Gets the NodeResultsManager for the nodes with node_system_id.
-  NodeResultsManagerFactory.prototype._getManager = function(node) {
+  NodeResultsManagerFactory.prototype._getManager = function (node) {
     for (let i = 0; i < this._managers.length; i++) {
       if (this._managers[i]._node.system_id === node.system_id) {
         return this._managers[i];
@@ -324,7 +324,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
 
   // Gets the NodeResultsManager for the nodes system_id. Creates a new
   // manager if one does not exist.
-  NodeResultsManagerFactory.prototype.getManager = function(node, area) {
+  NodeResultsManagerFactory.prototype.getManager = function (node, area) {
     var manager = this._getManager(node);
     if (!angular.isObject(manager)) {
       // Not created so create it.
@@ -343,7 +343,7 @@ function NodeResultsManagerFactory(RegionConnection, Manager) {
   };
 
   // Destroy the NodeResultsManager.
-  NodeResultsManagerFactory.prototype.destroyManager = function(manager) {
+  NodeResultsManagerFactory.prototype.destroyManager = function (manager) {
     var idx = this._managers.indexOf(manager);
     if (idx >= 0) {
       this._managers.splice(idx, 1);

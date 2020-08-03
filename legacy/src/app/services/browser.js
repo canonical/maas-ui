@@ -20,27 +20,27 @@ function BrowserService($window) {
   var BROWSERS = [
     {
       name: "chrome",
-      regex: /chrome/i
+      regex: /chrome/i,
     },
     {
       name: "safari",
-      regex: /safari/i
+      regex: /safari/i,
     },
     {
       name: "firefox",
-      regex: /firefox/i
+      regex: /firefox/i,
     },
     {
       name: "ie",
-      regex: /MSIE/
-    }
+      regex: /MSIE/,
+    },
   ];
 
   this.browser = "other";
 
   // Set the browser if a regex matches. The first to match wins.
   var self = this;
-  angular.forEach(BROWSERS, function(matcher) {
+  angular.forEach(BROWSERS, function (matcher) {
     if (
       matcher.regex.test($window.navigator.userAgent) &&
       self.browser === "other"

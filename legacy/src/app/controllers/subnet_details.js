@@ -6,9 +6,9 @@
 import angular from "angular";
 
 export function filterSource() {
-  return function(subnets, source) {
+  return function (subnets, source) {
     var filtered = [];
-    angular.forEach(subnets, function(subnet) {
+    angular.forEach(subnets, function (subnet) {
       if (subnet.id !== source.id && subnet.version === source.version) {
         filtered.push(subnet);
       }
@@ -67,11 +67,11 @@ export function SubnetDetailsController(
 
   $scope.MAP_SUBNET_ACTION = {
     name: "map_subnet",
-    title: "Map subnet"
+    title: "Map subnet",
   };
   $scope.DELETE_ACTION = {
     name: "delete",
-    title: "Delete"
+    title: "Delete",
   };
 
   // Alloc type mapping.
@@ -80,7 +80,7 @@ export function SubnetDetailsController(
     1: "Static",
     4: "User reserved",
     5: "DHCP",
-    6: "Observed"
+    6: "Observed",
   };
 
   // Node type mapping.
@@ -91,7 +91,7 @@ export function SubnetDetailsController(
     3: "Region controller",
     4: "Rack and region controller",
     5: "Chassis",
-    6: "Storage"
+    6: "Storage",
   };
 
   // Updates the page title.
@@ -116,7 +116,7 @@ export function SubnetDetailsController(
   }
 
   // Sort for IP address.
-  $scope.ipSort = function(ipAddress) {
+  $scope.ipSort = function (ipAddress) {
     if ($scope.ipVersion === 4) {
       return ConverterService.ipv4ToInteger(ipAddress.ip);
     } else {
@@ -128,7 +128,7 @@ export function SubnetDetailsController(
   $scope.predicate = $scope.ipSort;
 
   // Return the name of the allocation type.
-  $scope.getAllocType = function(allocType) {
+  $scope.getAllocType = function (allocType) {
     var str = ALLOC_TYPES[allocType];
     if (angular.isString(str)) {
       return str;
@@ -137,17 +137,17 @@ export function SubnetDetailsController(
     }
   };
 
-  $scope.getSubnetCIDR = function(destId) {
+  $scope.getSubnetCIDR = function (destId) {
     return SubnetsManager.getItemFromList(destId).cidr;
   };
 
   // Sort based on the name of the allocation type.
-  $scope.allocTypeSort = function(ipAddress) {
+  $scope.allocTypeSort = function (ipAddress) {
     return $scope.getAllocType(ipAddress.alloc_type);
   };
 
   // Return the name of the node type for the given IP.
-  $scope.getUsageForIP = function(ip) {
+  $scope.getUsageForIP = function (ip) {
     if (angular.isObject(ip.node_summary)) {
       var isContainer = ip.node_summary.is_container;
       var nodeType = ip.node_summary.node_type;
@@ -170,12 +170,12 @@ export function SubnetDetailsController(
   };
 
   // Sort based on the node type string.
-  $scope.nodeTypeSort = function(ipAddress) {
+  $scope.nodeTypeSort = function (ipAddress) {
     return $scope.getUsageForIP(ipAddress);
   };
 
   // Sort based on the owner name.
-  $scope.ownerSort = function(ipAddress) {
+  $scope.ownerSort = function (ipAddress) {
     var owner = ipAddress.user;
     if (angular.isString(owner) && owner.length > 0) {
       return owner;
@@ -185,22 +185,22 @@ export function SubnetDetailsController(
   };
 
   // Called to change the sort order of the IP table.
-  $scope.sortIPTable = function(predicate) {
+  $scope.sortIPTable = function (predicate) {
     $scope.predicate = predicate;
     $scope.reverse = !$scope.reverse;
   };
 
   // Return the name of the VLAN.
-  $scope.getVLANName = function(vlan) {
+  $scope.getVLANName = function (vlan) {
     return VLANsManager.getName(vlan);
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
-  $scope.actionRetry = function() {
+  $scope.actionRetry = function () {
     // When we clear actionError, the HTML will be re-rendered to
     // hide the error message (and the user will be taken back to
     // the previous action they were performing, since we reset
@@ -209,10 +209,10 @@ export function SubnetDetailsController(
   };
 
   // Perform the action.
-  $scope.actionGo = function() {
+  $scope.actionGo = function () {
     if ($scope.actionOption.name === "map_subnet") {
       SubnetsManager.scanSubnet($scope.subnet).then(
-        function(result) {
+        function (result) {
           if (result && result.scan_started_on.length === 0) {
             $scope.actionError = ManagerHelperService.parseValidationError(
               result.result
@@ -222,18 +222,18 @@ export function SubnetDetailsController(
             $scope.actionError = null;
           }
         },
-        function(error) {
+        function (error) {
           $scope.actionError = ManagerHelperService.parseValidationError(error);
         }
       );
     } else if ($scope.actionOption.name === "delete") {
       SubnetsManager.deleteSubnet($scope.subnet).then(
-        function(result) {
+        function (result) {
           $scope.actionOption = null;
           $scope.actionError = null;
           $rootScope.navigateToLegacy("/networks");
         },
-        function(error) {
+        function (error) {
           $scope.actionError = ManagerHelperService.parseValidationError(error);
         }
       );
@@ -241,19 +241,19 @@ export function SubnetDetailsController(
   };
 
   // Called when a action is selected.
-  $scope.actionChanged = function() {
+  $scope.actionChanged = function () {
     $scope.actionError = null;
   };
 
   // Called when the "Cancel" button is pressed.
-  $scope.cancelAction = function() {
+  $scope.cancelAction = function () {
     $scope.actionOption = null;
     $scope.actionError = null;
   };
 
   // Called when the managers load to populate the actions the user
   // is allowed to perform.
-  $scope.updateActions = function() {
+  $scope.updateActions = function () {
     if (UsersManager.isSuperUser()) {
       $scope.actionOptions = [$scope.MAP_SUBNET_ACTION, $scope.DELETE_ACTION];
     } else {
@@ -262,18 +262,18 @@ export function SubnetDetailsController(
   };
 
   // Called when the "edit" button is cliked in the subnet summary
-  $scope.enterEditSummary = function() {
+  $scope.enterEditSummary = function () {
     $scope.editSummary = true;
   };
 
   // Called when the "cancel" button is cliked in the subnet summary
-  $scope.exitEditSummary = function() {
+  $scope.exitEditSummary = function () {
     $scope.editSummary = false;
   };
 
   // Called by maas-obj-form before it saves the subnet. The passed
   // subnet is the object right before its sent over the websocket.
-  $scope.subnetPreSave = function(subnet, changedFields) {
+  $scope.subnetPreSave = function (subnet, changedFields) {
     // Adjust the subnet object if the fabric changed.
     if (changedFields.indexOf("fabric") !== -1) {
       // Fabric changed, the websocket expects VLAN to be updated, so
@@ -286,29 +286,29 @@ export function SubnetDetailsController(
   };
 
   // Called to start adding a new static route.
-  $scope.addStaticRoute = function() {
+  $scope.addStaticRoute = function () {
     $scope.editStaticRoute = null;
     $scope.deleteStaticRoute = null;
     $scope.newStaticRoute = {
       source: $scope.subnet.id,
       gateway_ip: "",
       destination: null,
-      metric: 0
+      metric: 0,
     };
   };
 
   // Cancel adding the new static route.
-  $scope.cancelAddStaticRoute = function() {
+  $scope.cancelAddStaticRoute = function () {
     $scope.newStaticRoute = null;
   };
 
   // Return true if the static route is in edit mode.
-  $scope.isStaticRouteInEditMode = function(route) {
+  $scope.isStaticRouteInEditMode = function (route) {
     return $scope.editStaticRoute === route;
   };
 
   // Toggle edit mode for the static route.
-  $scope.staticRouteToggleEditMode = function(route) {
+  $scope.staticRouteToggleEditMode = function (route) {
     $scope.newStaticRoute = null;
     $scope.deleteStaticRoute = null;
     if ($scope.isStaticRouteInEditMode(route)) {
@@ -319,40 +319,40 @@ export function SubnetDetailsController(
   };
 
   // Return true if the static route is in delete mode.
-  $scope.isStaticRouteInDeleteMode = function(route) {
+  $scope.isStaticRouteInDeleteMode = function (route) {
     return $scope.deleteStaticRoute === route;
   };
 
   // Enter delete mode for the static route.
-  $scope.staticRouteEnterDeleteMode = function(route) {
+  $scope.staticRouteEnterDeleteMode = function (route) {
     $scope.newStaticRoute = null;
     $scope.editStaticRoute = null;
     $scope.deleteStaticRoute = route;
   };
 
   // Exit delete mode for the statc route.
-  $scope.staticRouteCancelDelete = function() {
+  $scope.staticRouteCancelDelete = function () {
     $scope.deleteStaticRoute = null;
   };
 
   // Perform the delete operation on the static route.
-  $scope.staticRouteConfirmDelete = function() {
-    StaticRoutesManager.deleteItem($scope.deleteStaticRoute).then(function() {
+  $scope.staticRouteConfirmDelete = function () {
+    StaticRoutesManager.deleteItem($scope.deleteStaticRoute).then(function () {
       $scope.deleteStaticRoute = null;
     });
   };
 
-  $scope.getVLANOnSubnet = function(subnet, vlans) {
+  $scope.getVLANOnSubnet = function (subnet, vlans) {
     if (!angular.isObject(subnet) && !angular.isArray(vlans)) {
       return;
     }
 
-    return vlans.find(function(vlan) {
+    return vlans.find(function (vlan) {
       return vlan.id === subnet.vlan;
     });
   };
 
-  $scope.DHCPEnabled = function(subnet, vlans) {
+  $scope.DHCPEnabled = function (subnet, vlans) {
     if (!angular.isObject(subnet) || !angular.isArray(vlans)) {
       return;
     }
@@ -360,7 +360,7 @@ export function SubnetDetailsController(
     return vlanOnSubnet.dhcp_on;
   };
 
-  $scope.hasIPAddresses = function(IPAddresses) {
+  $scope.hasIPAddresses = function (IPAddresses) {
     if (!angular.isArray(IPAddresses)) {
       return;
     }
@@ -379,7 +379,7 @@ export function SubnetDetailsController(
     // we make sure that the fabric is updated. It is possible that
     // fabric is removed from the subnet since it is injected from this
     // controller, so when it is removed we add it back.
-    var updateFabric = function() {
+    var updateFabric = function () {
       $scope.subnet.fabric = VLANsManager.getItemFromList(
         $scope.subnet.vlan
       ).fabric;
@@ -387,15 +387,15 @@ export function SubnetDetailsController(
         subnet.fabric
       ).name;
     };
-    var updateSpace = function() {
+    var updateSpace = function () {
       $scope.space = SpacesManager.getItemFromList($scope.subnet.space);
     };
-    var updateVlan = function() {
+    var updateVlan = function () {
       var vlan = VLANsManager.getItemFromList($scope.subnet.vlan);
       $scope.subnet.vlan_name = VLANsManager.getName(vlan);
     };
 
-    $scope.snippets.forEach(snippet => {
+    $scope.snippets.forEach((snippet) => {
       let subnet = SubnetsManager.getItemFromList(snippet.subnet);
 
       if (subnet) {
@@ -425,14 +425,14 @@ export function SubnetDetailsController(
     UsersManager,
     FabricsManager,
     StaticRoutesManager,
-    DHCPSnippetsManager
-  ]).then(function() {
+    DHCPSnippetsManager,
+  ]).then(function () {
     $scope.updateActions();
     $scope.active_discovery_data = ConfigsManager.getItemFromList(
       "active_discovery_interval"
     );
     // Find active discovery interval
-    angular.forEach($scope.active_discovery_data.choices, function(choice) {
+    angular.forEach($scope.active_discovery_data.choices, function (choice) {
       if (choice[0] === $scope.active_discovery_data.value) {
         $scope.active_discovery_interval = choice[1];
       }
@@ -452,17 +452,17 @@ export function SubnetDetailsController(
       subnetLoaded(activeSubnet);
     } else {
       SubnetsManager.setActiveItem(requestedSubnet).then(
-        function(subnet) {
+        function (subnet) {
           subnetLoaded(subnet);
 
           // Set flag for RSD navigation item.
           if (!$rootScope.showRSDLink) {
             GeneralManager.getNavigationOptions().then(
-              res => ($rootScope.showRSDLink = res.rsd)
+              (res) => ($rootScope.showRSDLink = res.rsd)
             );
           }
         },
-        function(error) {
+        function (error) {
           ErrorService.raiseError(error);
         }
       );

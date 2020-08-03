@@ -17,7 +17,7 @@ describe("maasDhcpSnippetsTable", () => {
   let $q;
   let $log;
 
-  beforeEach(inject($injector => {
+  beforeEach(inject(($injector) => {
     $templateCache = $injector.get("$templateCache");
     $q = $injector.get("$q");
     $log = $injector.get("$log");
@@ -34,7 +34,7 @@ describe("maasDhcpSnippetsTable", () => {
   let ControllersManager;
   let DHCPSnippetsManager;
 
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     SubnetsManager = $injector.get("SubnetsManager");
     MachinesManager = $injector.get("MachinesManager");
     DevicesManager = $injector.get("DevicesManager");
@@ -45,7 +45,7 @@ describe("maasDhcpSnippetsTable", () => {
   // Create a new scope before each test.
   let $scope;
 
-  beforeEach(inject($rootScope => {
+  beforeEach(inject(($rootScope) => {
     $scope = $rootScope.$new();
   }));
 
@@ -55,11 +55,11 @@ describe("maasDhcpSnippetsTable", () => {
     let html = [
       "<div>",
       "<maas-dhcp-snippets-table></maas-dhcp-snippets-table>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject($compile => {
+    inject(($compile) => {
       directive = $compile(html)($scope);
     });
 
@@ -76,7 +76,7 @@ describe("maasDhcpSnippetsTable", () => {
       id: _nextId++,
       name: makeName("snippet"),
       enabled: true,
-      value: makeName("value")
+      value: makeName("value"),
     };
   }
 
@@ -127,7 +127,7 @@ describe("maasDhcpSnippetsTable", () => {
       const fqdn = makeName("fqdn");
       let node = {
         system_id: system_id,
-        fqdn: fqdn
+        fqdn: fqdn,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -142,7 +142,7 @@ describe("maasDhcpSnippetsTable", () => {
       const fqdn = makeName("fqdn");
       let device = {
         system_id: system_id,
-        fqdn: fqdn
+        fqdn: fqdn,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -157,7 +157,7 @@ describe("maasDhcpSnippetsTable", () => {
       const fqdn = makeName("fqdn");
       let controller = {
         system_id: system_id,
-        fqdn: fqdn
+        fqdn: fqdn,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -172,7 +172,7 @@ describe("maasDhcpSnippetsTable", () => {
       const cidr = makeName("cidr");
       let subnet = {
         id: subnet_id,
-        cidr: cidr
+        cidr: cidr,
       };
       let snippet = makeSnippet();
       snippet.subnet = subnet_id;
@@ -187,7 +187,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let node = {
-        system_id: system_id
+        system_id: system_id,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -200,7 +200,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let device = {
-        system_id: system_id
+        system_id: system_id,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -213,7 +213,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let controller = {
-        system_id: system_id
+        system_id: system_id,
       };
       let snippet = makeSnippet();
       snippet.node = system_id;
@@ -226,7 +226,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       let subnet_id = makeInteger(0, 100);
       let subnet = {
-        id: subnet_id
+        id: subnet_id,
       };
       let snippet = makeSnippet();
       snippet.subnet = subnet_id;
@@ -241,7 +241,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let node = {
-        system_id: system_id
+        system_id: system_id,
       };
       MachinesManager._items = [node];
       expect(scope.getNode(system_id)).toBe(node);
@@ -252,7 +252,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let node = {
-        system_id: system_id
+        system_id: system_id,
       };
       DevicesManager._items = [node];
       expect(scope.getNode(system_id)).toBe(node);
@@ -263,7 +263,7 @@ describe("maasDhcpSnippetsTable", () => {
       const scope = directive.isolateScope();
       const system_id = makeName("system_id");
       let node = {
-        system_id: system_id
+        system_id: system_id,
       };
       ControllersManager._items = [node];
       expect(scope.getNode(system_id)).toBe(node);
@@ -397,7 +397,7 @@ describe("maasDhcpSnippetsTable", () => {
       expect(scope.newSnippet).toEqual({
         name: "",
         type: "Global",
-        enabled: true
+        enabled: true,
       });
       expect(scope.editSnippet).toBeNull();
       expect(scope.deleteSnippet).toBeNull();

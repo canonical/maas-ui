@@ -26,7 +26,7 @@ function ValidationService(ConverterService) {
       "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.",
       "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.",
       "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.",
-      "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+      "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
     ].join("")
   );
 
@@ -52,7 +52,7 @@ function ValidationService(ConverterService) {
   }
 
   // Return true if the domainname is valid, false otherwise.
-  this.validateDomainName = function(domainname) {
+  this.validateDomainName = function (domainname) {
     // Invalid if the domain is not a string, empty, or more than
     // 253 characters.
     if (
@@ -66,7 +66,7 @@ function ValidationService(ConverterService) {
   };
 
   // Return true if the hostname is valid, false otherwise.
-  this.validateHostname = function(hostname) {
+  this.validateHostname = function (hostname) {
     // Invalid if the hostname is not a string, empty, or more than
     // 63 characters.
     if (
@@ -80,7 +80,7 @@ function ValidationService(ConverterService) {
   };
 
   // Return true if the MAC is valid, false otherwise.
-  this.validateMAC = function(macAddress) {
+  this.validateMAC = function (macAddress) {
     // Invalid if the macAddress is not a string.
     if (!angular.isString(macAddress)) {
       return false;
@@ -89,7 +89,7 @@ function ValidationService(ConverterService) {
   };
 
   // Return true if the IP is valid IPv4 address, false otherwise.
-  this.validateIPv4 = function(ipAddress) {
+  this.validateIPv4 = function (ipAddress) {
     // Invalid if the ipAddress is not a string or empty.
     if (!angular.isString(ipAddress) || ipAddress.length === 0) {
       return false;
@@ -98,7 +98,7 @@ function ValidationService(ConverterService) {
   };
 
   // Return true if the IP is valid IPv6 address, false otherwise.
-  this.validateIPv6 = function(ipAddress) {
+  this.validateIPv6 = function (ipAddress) {
     // Invalid if the ipAddress is not a string, empty, or missing
     // at least one ':'.
     if (
@@ -132,12 +132,12 @@ function ValidationService(ConverterService) {
   };
 
   // Return true if the IP is valid, false otherwise.
-  this.validateIP = function(ipAddress) {
+  this.validateIP = function (ipAddress) {
     return this.validateIPv4(ipAddress) || this.validateIPv6(ipAddress);
   };
 
   // Return true if the ipAddress is in the network.
-  this.validateIPInNetwork = function(ipAddress, network) {
+  this.validateIPInNetwork = function (ipAddress, network) {
     var networkSplit = network.split("/");
     var networkAddress = networkSplit[0];
     var cidrBits = parseInt(networkSplit[1], 10);
@@ -165,7 +165,7 @@ function ValidationService(ConverterService) {
 
   // Return true if the ipAddress is in the network and between the
   // lowAddress and highAddress inclusive.
-  this.validateIPInRange = function(
+  this.validateIPInRange = function (
     ipAddress,
     network,
     lowAddress,

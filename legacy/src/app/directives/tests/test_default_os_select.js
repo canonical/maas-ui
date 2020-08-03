@@ -5,14 +5,14 @@
  */
 import angular from "angular";
 
-describe("maasDefaultOSSelect", function() {
+describe("maasDefaultOSSelect", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Create a new scope before each test. Not used in this test, but
   // required to compile the directive.
   var $scope;
-  beforeEach(inject(function($rootScope) {
+  beforeEach(inject(function ($rootScope) {
     $scope = $rootScope.$new();
   }));
 
@@ -36,11 +36,11 @@ describe("maasDefaultOSSelect", function() {
       '<option value="centos/centos6">CentOS 6</option>',
       '<option value="centos/centos7">CentOS 7</option>',
       "</select>",
-      "</div>"
+      "</div>",
     ].join("");
 
     // Compile the directive.
-    inject(function($compile) {
+    inject(function ($compile) {
       directive = $compile(html)($scope);
     });
 
@@ -54,15 +54,15 @@ describe("maasDefaultOSSelect", function() {
 
   // Compile the directive.
   var directive;
-  beforeEach(function() {
+  beforeEach(function () {
     directive = compileDirective();
   });
 
   // Return the values of the visible options.
-  var getVisibleOptions = function(directive) {
+  var getVisibleOptions = function (directive) {
     var options = directive.find("#series-select > option");
     var visible = [];
-    angular.forEach(options, function(option) {
+    angular.forEach(options, function (option) {
       option = angular.element(option);
       if (!option.hasClass("u-hide")) {
         visible.push(option.val());
@@ -71,13 +71,13 @@ describe("maasDefaultOSSelect", function() {
     return visible.sort();
   };
 
-  it("hides other series on load", function() {
+  it("hides other series on load", function () {
     var expected = ["ubuntu/bionic", "ubuntu/trusty", "ubuntu/xenial"];
     var visible = getVisibleOptions(directive);
     expect(expected).toEqual(visible);
   });
 
-  it("hide other series on change", function() {
+  it("hide other series on change", function () {
     var osSelect = directive.find("#os-select");
     osSelect.val("centos").trigger("change");
 
@@ -86,7 +86,7 @@ describe("maasDefaultOSSelect", function() {
     expect(expected).toEqual(visible);
   });
 
-  it("sets first series on change", function() {
+  it("sets first series on change", function () {
     var osSelect = directive.find("#os-select");
     osSelect.val("centos").trigger("change");
 

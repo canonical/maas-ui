@@ -14,11 +14,11 @@ function kvmStorageDropdown($document) {
       compose: "<",
       pod: "<",
       storage: "<",
-      updateRequests: "<"
+      updateRequests: "<",
     },
     template: kvmStorageDropdownTmpl,
     link: (scope, element) => {
-      scope.clickHandler = event => {
+      scope.clickHandler = (event) => {
         const closestRow = element.closest("tr");
         const clickedInsideRow = closestRow.find(event.target).length > 0;
 
@@ -31,7 +31,7 @@ function kvmStorageDropdown($document) {
       $document.on("click", scope.clickHandler);
       scope.$on("$destroy", () => $document.off("click", scope.clickHandler));
     },
-    controller: KVMStorageDropdownController
+    controller: KVMStorageDropdownController,
   };
 }
 
@@ -47,15 +47,15 @@ function KVMStorageDropdownController($scope, $filter) {
     $scope.dropdownOpen = !$scope.dropdownOpen;
   };
 
-  $scope.poolOverCapacity = storage => {
+  $scope.poolOverCapacity = (storage) => {
     const { compose, pod } = $scope;
 
     if (compose && compose.obj && pod && pod.storage_pools) {
       const storagePool = pod.storage_pools.find(
-        pool => pool.id === storage.pool.id
+        (pool) => pool.id === storage.pool.id
       );
       const request = compose.obj.requests.find(
-        req => storagePool.id === req.poolId
+        (req) => storagePool.id === req.poolId
       );
       const requestSize = request ? request.size : 0;
 
@@ -82,7 +82,7 @@ function KVMStorageDropdownController($scope, $filter) {
 
   $scope.getOtherRequests = (storagePool, storage) => {
     const request = $scope.compose.obj.requests.find(
-      req => storagePool.id === req.poolId
+      (req) => storagePool.id === req.poolId
     );
     let requestSize = request ? request.size : 0;
 

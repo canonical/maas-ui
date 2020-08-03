@@ -5,13 +5,13 @@
  */
 import angular from "angular";
 
-describe("IntroUserController", function() {
+describe("IntroUserController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $window;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $rootScope.navigateToNew = jest.fn();
@@ -20,25 +20,25 @@ describe("IntroUserController", function() {
     $q = $injector.get("$q");
     $window = {
       location: {
-        reload: jasmine.createSpy("reload")
+        reload: jasmine.createSpy("reload"),
       },
       CONFIG: {
         current_user: {
-          completed_intro: false
-        }
-      }
+          completed_intro: false,
+        },
+      },
     };
   }));
 
   // Load any injected managers and services.
   var UsersManager, ManagerHelperService;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     UsersManager = $injector.get("UsersManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
   }));
 
   // after each test mark it as complete.
-  afterEach(function() {
+  afterEach(function () {
     $window.CONFIG.current_user.completed_intro = true;
   });
 
@@ -58,19 +58,19 @@ describe("IntroUserController", function() {
       $window: $window,
       $location: $location,
       UsersManager: UsersManager,
-      ManagerHelperService: ManagerHelperService
+      ManagerHelperService: ManagerHelperService,
     });
 
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Welcome");
     expect($rootScope.page).toBe("intro");
   });
 
-  it("calls loadManager with correct managers", function() {
+  it("calls loadManager with correct managers", function () {
     makeController();
     expect(ManagerHelperService.loadManager).toHaveBeenCalledWith(
       $scope,
@@ -78,13 +78,13 @@ describe("IntroUserController", function() {
     );
   });
 
-  it("sets initial $scope", function() {
+  it("sets initial $scope", function () {
     makeController();
     expect($scope.loading).toBe(true);
     expect($scope.user).toBeNull();
   });
 
-  it("clears loading", function() {
+  it("clears loading", function () {
     var defer = $q.defer();
     makeController(defer);
     defer.resolve();
@@ -92,13 +92,13 @@ describe("IntroUserController", function() {
     expect($scope.loading).toBe(false);
   });
 
-  it("redirects to machine list if already completed", function() {
+  it("redirects to machine list if already completed", function () {
     $window.CONFIG.current_user.completed_intro = true;
     makeController();
     expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
   });
 
-  it("sets user on resolve", function() {
+  it("sets user on resolve", function () {
     var defer = $q.defer();
     makeController(defer);
     var user = {};
@@ -109,8 +109,8 @@ describe("IntroUserController", function() {
     expect($scope.user).toBe(user);
   });
 
-  describe("$rootScope.skip", function() {
-    it("calls markIntroComplete and reloads", function() {
+  describe("$rootScope.skip", function () {
+    it("calls markIntroComplete and reloads", function () {
       makeController();
       var defer = $q.defer();
       spyOn(UsersManager, "markIntroComplete").and.returnValue(defer.promise);
@@ -123,26 +123,26 @@ describe("IntroUserController", function() {
     });
   });
 
-  describe("canContinue", function() {
-    it("returns false when no sshkeys", function() {
+  describe("canContinue", function () {
+    it("returns false when no sshkeys", function () {
       makeController();
       $scope.user = {
-        sshkeys_count: 0
+        sshkeys_count: 0,
       };
       expect($scope.canContinue()).toBe(false);
     });
 
-    it("returns true when sshkeys", function() {
+    it("returns true when sshkeys", function () {
       makeController();
       $scope.user = {
-        sshkeys_count: 1
+        sshkeys_count: 1,
       };
       expect($scope.canContinue()).toBe(true);
     });
   });
 
-  describe("clickContinue", function() {
-    it("does nothing if cannot continue", function() {
+  describe("clickContinue", function () {
+    it("does nothing if cannot continue", function () {
       makeController();
       spyOn($scope, "canContinue").and.returnValue(false);
       spyOn(UsersManager, "markIntroComplete");
@@ -150,7 +150,7 @@ describe("IntroUserController", function() {
       expect(UsersManager.markIntroComplete).not.toHaveBeenCalled();
     });
 
-    it("forces ignores canContinue", function() {
+    it("forces ignores canContinue", function () {
       makeController();
       spyOn($scope, "canContinue").and.returnValue(false);
       spyOn(UsersManager, "markIntroComplete").and.returnValue(
@@ -160,7 +160,7 @@ describe("IntroUserController", function() {
       expect(UsersManager.markIntroComplete).toHaveBeenCalled();
     });
 
-    it("calls updateItem and reloads", function() {
+    it("calls updateItem and reloads", function () {
       makeController();
       var defer = $q.defer();
       spyOn(UsersManager, "markIntroComplete").and.returnValue(defer.promise);

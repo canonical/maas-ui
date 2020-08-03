@@ -18,15 +18,15 @@ function ControllersManager(RegionConnection, NodesManager, ServicesManager) {
 
     // Listen for notify events for the controller object.
     var self = this;
-    RegionConnection.registerNotifier("controller", function(action, data) {
+    RegionConnection.registerNotifier("controller", function (action, data) {
       self.onNotify(action, data);
     });
   }
   ControllersManager.prototype = new NodesManager();
 
-  ControllersManager.prototype.getServices = function(controller) {
+  ControllersManager.prototype.getServices = function (controller) {
     var services = [];
-    angular.forEach(controller.service_ids, function(service_id) {
+    angular.forEach(controller.service_ids, function (service_id) {
       var service = ServicesManager.getItemFromList(service_id);
       if (angular.isObject(service)) {
         services.push(service);
@@ -36,7 +36,7 @@ function ControllersManager(RegionConnection, NodesManager, ServicesManager) {
   };
 
   // Check the boot image import status.
-  ControllersManager.prototype.checkImageStates = function(controllers) {
+  ControllersManager.prototype.checkImageStates = function (controllers) {
     return RegionConnection.callMethod(
       this._handler + ".check_images",
       controllers
@@ -49,7 +49,7 @@ function ControllersManager(RegionConnection, NodesManager, ServicesManager) {
 ControllersManager.$inject = [
   "RegionConnection",
   "NodesManager",
-  "ServicesManager"
+  "ServicesManager",
 ];
 
 export default ControllersManager;

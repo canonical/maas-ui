@@ -24,15 +24,15 @@ function ImagesController(
   $scope.autoImport = null;
 
   // Return true if the user is a super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Load the required managers.
   ManagerHelperService.loadManagers($scope, [
     ConfigsManager,
-    UsersManager
-  ]).then(function() {
+    UsersManager,
+  ]).then(function () {
     $scope.autoImport = ConfigsManager.getItemFromList(
       "boot_images_auto_import"
     );
@@ -41,7 +41,7 @@ function ImagesController(
   // The boot-images directive will load the bootResources manager,
   // we just watch until resources is set. That means the page is
   // loaded.
-  $scope.$watch("bootResources.resources", function() {
+  $scope.$watch("bootResources.resources", function () {
     if (angular.isArray($scope.bootResources.resources)) {
       $scope.loading = false;
       $rootScope.title = "Images";
@@ -49,7 +49,7 @@ function ImagesController(
       // Set flag for RSD navigation item.
       if (!$rootScope.showRSDLink) {
         GeneralManager.getNavigationOptions().then(
-          res => ($rootScope.showRSDLink = res.rsd)
+          (res) => ($rootScope.showRSDLink = res.rsd)
         );
       }
     }

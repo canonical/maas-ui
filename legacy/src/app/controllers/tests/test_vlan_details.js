@@ -8,7 +8,7 @@ import angular from "angular";
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("VLANDetailsController", function() {
+describe("VLANDetailsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -25,7 +25,7 @@ describe("VLANDetailsController", function() {
       space_ids: [2001],
       primary_rack: primaryController.system_id,
       secondary_rack: secondaryController.system_id,
-      rack_sids: []
+      rack_sids: [],
     };
     VLANsManager._items.push(vlan);
     return vlan;
@@ -39,7 +39,7 @@ describe("VLANDetailsController", function() {
     var fabric = {
       id: id,
       name: "fabric-" + id,
-      default_vlan_id: 5000
+      default_vlan_id: 5000,
     };
     FabricsManager._items.push(fabric);
     return fabric;
@@ -52,7 +52,7 @@ describe("VLANDetailsController", function() {
     }
     var space = {
       id: id,
-      name: "space-" + id
+      name: "space-" + id,
     };
     SpacesManager._items.push(space);
     return space;
@@ -72,7 +72,7 @@ describe("VLANDetailsController", function() {
       cidr: "192.168.0.1/24",
       space: spaceId,
       vlan: VLAN_ID,
-      statistics: { ranges: [] }
+      statistics: { ranges: [] },
     };
     SubnetsManager._items.push(subnet);
     return subnet;
@@ -86,7 +86,7 @@ describe("VLANDetailsController", function() {
       hostname: name,
       node_type: 2,
       default_vlan_id: VLAN_ID,
-      vlan_ids: [VLAN_ID]
+      vlan_ids: [VLAN_ID],
     };
     ControllersManager._items.push(rack);
     if (angular.isObject(vlan)) {
@@ -97,7 +97,7 @@ describe("VLANDetailsController", function() {
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $filter, $location, $scope, $q;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $rootScope.navigateToLegacy = jest.fn();
@@ -111,7 +111,7 @@ describe("VLANDetailsController", function() {
   var VLANsManager, SubnetsManager, SpacesManager, FabricsManager;
   var ControllersManager, UsersManager, ManagerHelperService, ErrorService;
   var DHCPSnippetsManager, RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     VLANsManager = $injector.get("VLANsManager");
     SubnetsManager = $injector.get("SubnetsManager");
     SpacesManager = $injector.get("SpacesManager");
@@ -131,7 +131,7 @@ describe("VLANDetailsController", function() {
 
   var vlan, fabric, fabric2, primaryController, secondaryController;
   var subnet, $stateParams;
-  beforeEach(function() {
+  beforeEach(function () {
     primaryController = makeRackController(1, "primary", "p1");
     secondaryController = makeRackController(2, "secondary", "p2");
     vlan = makeVLAN();
@@ -142,7 +142,7 @@ describe("VLANDetailsController", function() {
     makeSpace();
     subnet = makeSubnet();
     $stateParams = {
-      vlan_id: vlan.id
+      vlan_id: vlan.id,
     };
   });
 
@@ -168,7 +168,7 @@ describe("VLANDetailsController", function() {
       ControllersManager: ControllersManager,
       UsersManager: UsersManager,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
 
     return controller;
@@ -191,13 +191,13 @@ describe("VLANDetailsController", function() {
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("networks");
   });
 
-  it("calls loadManagers with required managers", function() {
+  it("calls loadManagers with required managers", function () {
     makeController();
     expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
       VLANsManager,
@@ -206,11 +206,11 @@ describe("VLANDetailsController", function() {
       FabricsManager,
       ControllersManager,
       UsersManager,
-      DHCPSnippetsManager
+      DHCPSnippetsManager,
     ]);
   });
 
-  it("raises error if vlan identifier is invalid", function() {
+  it("raises error if vlan identifier is invalid", function () {
     spyOn(VLANsManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
@@ -226,7 +226,7 @@ describe("VLANDetailsController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalled();
   });
 
-  it("doesn't call setActiveItem if vlan is loaded", function() {
+  it("doesn't call setActiveItem if vlan is loaded", function () {
     spyOn(VLANsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     var controller = makeController(defer);
@@ -241,7 +241,7 @@ describe("VLANDetailsController", function() {
     expect(VLANsManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if vlan is not active", function() {
+  it("calls setActiveItem if vlan is not active", function () {
     spyOn(VLANsManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -253,30 +253,30 @@ describe("VLANDetailsController", function() {
     expect(VLANsManager.setActiveItem).toHaveBeenCalledWith(vlan.id);
   });
 
-  it("sets vlan and loaded once setActiveItem resolves", function() {
+  it("sets vlan and loaded once setActiveItem resolves", function () {
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.vlan).toBe(vlan);
     expect(controller.loaded).toBe(true);
   });
 
-  it("title is updated once setActiveItem resolves", function() {
+  it("title is updated once setActiveItem resolves", function () {
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("VLAN " + vlan.vid + " in " + fabric.name);
   });
 
-  it("default VLAN title is special", function() {
+  it("default VLAN title is special", function () {
     vlan.vid = 0;
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("Default VLAN in " + fabric.name);
   });
 
-  it("custom VLAN name renders in title", function() {
+  it("custom VLAN name renders in title", function () {
     vlan.name = "Super Awesome VLAN";
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("Super Awesome VLAN in " + fabric.name);
   });
 
-  it("changes title when VLAN name changes", function() {
+  it("changes title when VLAN name changes", function () {
     vlan.vid = 0;
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("Default VLAN in " + fabric.name);
@@ -285,7 +285,7 @@ describe("VLANDetailsController", function() {
     expect(controller.title).toBe("Super Awesome VLAN in " + fabric.name);
   });
 
-  it("changes title when fabric name changes", function() {
+  it("changes title when fabric name changes", function () {
     vlan.name = "Super Awesome VLAN";
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("Super Awesome VLAN in " + fabric.name);
@@ -294,7 +294,7 @@ describe("VLANDetailsController", function() {
     expect(controller.title).toBe("Super Awesome VLAN in space");
   });
 
-  it("updates VLAN when fabric changes", function() {
+  it("updates VLAN when fabric changes", function () {
     vlan.name = "Super Awesome VLAN";
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.title).toBe("Super Awesome VLAN in " + fabric.name);
@@ -304,7 +304,7 @@ describe("VLANDetailsController", function() {
     expect(controller.title).toBe("Super Awesome VLAN in space");
   });
 
-  it("updates primaryRack variable when controller changes", function() {
+  it("updates primaryRack variable when controller changes", function () {
     vlan.primary_rack = 0;
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.primaryRack).toBe(null);
@@ -314,7 +314,7 @@ describe("VLANDetailsController", function() {
     expect(controller.primaryRack).toBe(primaryController);
   });
 
-  it("updates secondaryRack variable when controller changes", function() {
+  it("updates secondaryRack variable when controller changes", function () {
     vlan.secondary_rack = 0;
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.primaryRack).toBe(primaryController);
@@ -324,7 +324,7 @@ describe("VLANDetailsController", function() {
     expect(controller.secondaryRack).toBe(secondaryController);
   });
 
-  it("updates reatedControllers when controllers list changes", function() {
+  it("updates reatedControllers when controllers list changes", function () {
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.controllers.length).toBe(2);
     expect(controller.relatedControllers.length).toBe(2);
@@ -335,7 +335,7 @@ describe("VLANDetailsController", function() {
     expect(controller.relatedControllers.length).toBe(3);
   });
 
-  it("updates relatedSubnets when subnets list changes", function() {
+  it("updates relatedSubnets when subnets list changes", function () {
     var controller = makeControllerResolveSetActiveItem();
     makeSubnet(6002);
     expect(controller.relatedSubnets.length).toBe(1);
@@ -344,7 +344,7 @@ describe("VLANDetailsController", function() {
     expect(controller.relatedSubnets.length).toBe(2);
   });
 
-  it("updates relatedSubnets when spaces list changes", function() {
+  it("updates relatedSubnets when spaces list changes", function () {
     var controller = makeControllerResolveSetActiveItem();
     expect(controller.spaces.length).toBe(1);
     makeSpace(2002);
@@ -354,7 +354,7 @@ describe("VLANDetailsController", function() {
     $scope.$digest();
   });
 
-  it("actionOption cleared on action success and redirects to network list", function() {
+  it("actionOption cleared on action success and redirects to network list", function () {
     var controller = makeControllerResolveSetActiveItem();
     controller.actionOption = controller.DELETE_ACTION;
     var defer = $q.defer();
@@ -370,11 +370,11 @@ describe("VLANDetailsController", function() {
   it(
     "prepares provideDHCPAction on actionOptionChanged " +
       "and populates suggested gateway",
-    function() {
+    function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.subnets[0].gateway_ip = null;
       controller.subnets[0].statistics = {
-        suggested_gateway: "192.168.0.1"
+        suggested_gateway: "192.168.0.1",
       };
       // to avoid side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -394,12 +394,12 @@ describe("VLANDetailsController", function() {
         gatewayPlaceholder: "192.168.0.1",
         needsGatewayIP: true,
         subnetMissingGatewayIP: true,
-        needsDynamicRange: false
+        needsDynamicRange: false,
       });
     }
   );
 
-  it("prevents selection of a duplicate rack controller", function() {
+  it("prevents selection of a duplicate rack controller", function () {
     var controller = makeControllerResolveSetActiveItem();
     // to avoid side effects of calling `openDHCPPanel`
     spyOn(controller, "setSuggestedRange");
@@ -419,8 +419,8 @@ describe("VLANDetailsController", function() {
     expect(controller.provideDHCPAction.secondaryRack).toBe(null);
   });
 
-  describe("filterPrimaryRack", function() {
-    it("filters out the currently-selected primary rack", function() {
+  describe("filterPrimaryRack", function () {
+    it("filters out the currently-selected primary rack", function () {
       var controller = makeControllerResolveSetActiveItem();
       // to avoid side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -433,16 +433,16 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("enterEditSummary", function() {
-    it("sets editSummary", function() {
+  describe("enterEditSummary", function () {
+    it("sets editSummary", function () {
       var controller = makeController();
       controller.enterEditSummary();
       expect(controller.editSummary).toBe(true);
     });
   });
 
-  describe("exitEditSummary", function() {
-    it("sets editSummary", function() {
+  describe("exitEditSummary", function () {
+    it("sets editSummary", function () {
       var controller = makeController();
       controller.enterEditSummary();
       controller.exitEditSummary();
@@ -450,34 +450,34 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("getSpaceName", function() {
-    it("returns space name", function() {
+  describe("getSpaceName", function () {
+    it("returns space name", function () {
       var controller = makeController();
       var spaceName = makeName("space");
       SpacesManager._items = [
         {
           id: 1,
-          name: spaceName
-        }
+          name: spaceName,
+        },
       ];
       controller.vlan = {
-        space: 1
+        space: 1,
       };
       expect(controller.getSpaceName()).toBe(spaceName);
     });
 
-    it("returns space (undefined)", function() {
+    it("returns space (undefined)", function () {
       var controller = makeController();
       controller.vlan = {};
       expect(controller.getSpaceName()).toBe("(undefined)");
     });
   });
 
-  describe("updatePossibleActions", function() {
+  describe("updatePossibleActions", function () {
     // Note: updatePossibleActions() is called indirectly by these tests
     // after all the managers load.
 
-    it("returns an empty actions list for a non-superuser", function() {
+    it("returns an empty actions list for a non-superuser", function () {
       vlan.dhcp_on = true;
       UsersManager._authUser = { is_superuser: false };
       var controller = makeControllerResolveSetActiveItem();
@@ -485,21 +485,21 @@ describe("VLANDetailsController", function() {
       expect(controller.actionOptions).toEqual([]);
     });
 
-    it("returns delete when dhcp is off", function() {
+    it("returns delete when dhcp is off", function () {
       vlan.dhcp_on = false;
       UsersManager._authUser = { is_superuser: true };
       var controller = makeControllerResolveSetActiveItem();
       expect(controller.actionOptions).toEqual([controller.DELETE_ACTION]);
     });
 
-    it("returns delete when dhcp is on", function() {
+    it("returns delete when dhcp is on", function () {
       vlan.dhcp_on = true;
       UsersManager._authUser = { is_superuser: true };
       var controller = makeControllerResolveSetActiveItem();
       expect(controller.actionOptions).toEqual([controller.DELETE_ACTION]);
     });
 
-    it("returns delete when relay_vlan is set", function() {
+    it("returns delete when relay_vlan is set", function () {
       vlan.relay_vlan = 5001;
       UsersManager._authUser = { is_superuser: true };
       var controller = makeControllerResolveSetActiveItem();
@@ -507,8 +507,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("openDHCPPanel", function() {
-    it("opens DHCP panel", function() {
+  describe("openDHCPPanel", function () {
+    it("opens DHCP panel", function () {
       var controller = makeControllerResolveSetActiveItem();
       // to avoid side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -516,7 +516,7 @@ describe("VLANDetailsController", function() {
       expect(controller.showDHCPPanel).toBe(true);
     });
 
-    it("calls `initProvideDHCP` and `setSuggestedRange`", function() {
+    it("calls `initProvideDHCP` and `setSuggestedRange`", function () {
       var controller = makeControllerResolveSetActiveItem();
       spyOn(controller, "initProvideDHCP");
       spyOn(controller, "setSuggestedRange");
@@ -526,15 +526,15 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("closeDHCPPanel", function() {
-    it("closes DHCP Panel", function() {
+  describe("closeDHCPPanel", function () {
+    it("closes DHCP Panel", function () {
       var controller = makeController();
       controller.showDHCPPanel = true;
       controller.closeDHCPPanel();
       expect(controller.showDHCPPanel).toBe(false);
     });
 
-    it("unsets `suggestedRange`", function() {
+    it("unsets `suggestedRange`", function () {
       var controller = makeController();
       controller.suggestedRange = {
         subnet: 1,
@@ -542,27 +542,27 @@ describe("VLANDetailsController", function() {
         comment: "Dynamic",
         start_ip: "127.168.0.1",
         end_ip: "127.168.0.2",
-        gateway_ip: "127.168.0.0"
+        gateway_ip: "127.168.0.0",
       };
       controller.closeDHCPPanel();
       expect(controller.suggestedRange).toBe(null);
     });
 
-    it("unsets `isProvidingDHCP`", function() {
+    it("unsets `isProvidingDHCP`", function () {
       var controller = makeController();
       controller.isProvidingDHCP = true;
       controller.closeDHCPPanel();
       expect(controller.isProvidingDHCP).toBe(false);
     });
 
-    it("unsets `DHCPError`", function() {
+    it("unsets `DHCPError`", function () {
       var controller = makeController();
       controller.DHCPError = "Lorem ipsum dolor sit amet";
       controller.closeDHCPPanel();
       expect(controller.DHCPError).toBe(null);
     });
 
-    it("sets `MAASProvidesDHCP`", function() {
+    it("sets `MAASProvidesDHCP`", function () {
       var controller = makeController();
       controller.MAASProvidesDHCP = false;
       controller.closeDHCPPanel();
@@ -570,49 +570,49 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("getDHCPButtonText", function() {
-    it("reads 'Enable' if status is disabled", function() {
+  describe("getDHCPButtonText", function () {
+    it("reads 'Enable' if status is disabled", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.vlan.dhcp_on = false;
       expect(controller.getDHCPButtonText()).toBe("Enable DHCP");
     });
 
-    it("reads 'Reconfigure' if status is enabled", function() {
+    it("reads 'Reconfigure' if status is enabled", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.vlan.dhcp_on = true;
       expect(controller.getDHCPButtonText()).toBe("Reconfigure DHCP");
     });
 
-    it("reads 'Reconfigure relay' if status is relayed", function() {
+    it("reads 'Reconfigure relay' if status is relayed", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.vlan.relay_vlan = 2;
       expect(controller.getDHCPButtonText()).toBe("Reconfigure DHCP relay");
     });
   });
 
-  describe("showGatewayCol", function() {
-    it("returns `true` if one of more subnets have no gateway", function() {
+  describe("showGatewayCol", function () {
+    it("returns `true` if one of more subnets have no gateway", function () {
       var controller = makeController();
       controller.relatedSubnets = [
         { subnet: { gateway_ip: "127.0.0.1" } },
         { subnet: { gateway_ip: null } },
-        { subnet: { gateway_ip: "127.0.0.2" } }
+        { subnet: { gateway_ip: "127.0.0.2" } },
       ];
       expect(controller.showGatewayCol()).toBe(true);
     });
 
-    it("returns `false` if all subnets have gateway", function() {
+    it("returns `false` if all subnets have gateway", function () {
       var controller = makeController();
       controller.relatedSubnets = [
         { subnet: { gateway_ip: "127.0.0.1" } },
-        { subnet: { gateway_ip: "127.0.0.2" } }
+        { subnet: { gateway_ip: "127.0.0.2" } },
       ];
       expect(controller.showGatewayCol()).toBe(false);
     });
   });
 
-  describe("setSuggestedRange", function() {
-    it("sets a suggested IP range", function() {
+  describe("setSuggestedRange", function () {
+    it("sets a suggested IP range", function () {
       var controller = makeController();
       controller.suggestedRange = null;
       controller.relatedSubnets = [
@@ -626,12 +626,12 @@ describe("VLANDetailsController", function() {
                   num_addresses: 2,
                   purpose: ["unused"],
                   start: "127.168.0.1",
-                  end: "127.168.0.2"
-                }
-              ]
-            }
-          }
-        }
+                  end: "127.168.0.2",
+                },
+              ],
+            },
+          },
+        },
       ];
 
       controller.setSuggestedRange();
@@ -642,11 +642,11 @@ describe("VLANDetailsController", function() {
         start_ip: "127.168.0.1",
         end_ip: "127.168.0.2",
         subnet: 1,
-        gateway_ip: "127.168.0.0"
+        gateway_ip: "127.168.0.0",
       });
     });
 
-    it("sets placeholders if relay VLAN is set", function() {
+    it("sets placeholders if relay VLAN is set", function () {
       var controller = makeController();
       controller.suggestedRange = null;
       controller.relayVLAN = true;
@@ -661,12 +661,12 @@ describe("VLANDetailsController", function() {
                   num_addresses: 2,
                   purpose: ["unused"],
                   start: "127.168.0.1",
-                  end: "127.168.0.2"
-                }
-              ]
-            }
-          }
-        }
+                  end: "127.168.0.2",
+                },
+              ],
+            },
+          },
+        },
       ];
 
       controller.setSuggestedRange();
@@ -679,25 +679,25 @@ describe("VLANDetailsController", function() {
         subnet: 1,
         gateway_ip: "",
         startPlaceholder: "127.168.0.1 (Optional)",
-        endPlaceholder: "127.168.0.2 (Optional)"
+        endPlaceholder: "127.168.0.2 (Optional)",
       });
     });
   });
 
-  describe("getDHCPPanelTitle", function() {
-    it("sets the panel title to 'Configure DHCP'", function() {
+  describe("getDHCPPanelTitle", function () {
+    it("sets the panel title to 'Configure DHCP'", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: false };
       expect(controller.getDHCPPanelTitle()).toBe("Configure DHCP");
     });
 
-    it("sets the panel title to 'Reconfigure DHCP'", function() {
+    it("sets the panel title to 'Reconfigure DHCP'", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: true };
       expect(controller.getDHCPPanelTitle()).toBe("Reconfigure DHCP");
     });
 
-    it("sets the panel title to 'Configure MAAS-managed DHCP", function() {
+    it("sets the panel title to 'Configure MAAS-managed DHCP", function () {
       var controller = makeController();
       var VLAN_ID = makeInteger(5000, 6000);
       var vlan = {
@@ -710,7 +710,7 @@ describe("VLANDetailsController", function() {
         primary_rack: primaryController.system_id,
         secondary_rack: secondaryController.system_id,
         rack_sids: [],
-        external_dhcp: 1
+        external_dhcp: 1,
       };
       VLANsManager._items.push(vlan);
       controller.vlan = { external_dhcp: 1 };
@@ -720,15 +720,15 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("toggleMAASProvidesDHCP", function() {
-    it("sets `MAASProvidesDHCP` to `false`", function() {
+  describe("toggleMAASProvidesDHCP", function () {
+    it("sets `MAASProvidesDHCP` to `false`", function () {
       var controller = makeController();
       controller.MAASProvidesDHCP = true;
       controller.toggleMAASProvidesDHCP();
       expect(controller.MAASProvidesDHCP).toBe(false);
     });
 
-    it("sets `MAASProvidesDHCP` to `true`", function() {
+    it("sets `MAASProvidesDHCP` to `true`", function () {
       var controller = makeController();
       controller.MAASProvidesDHCP = false;
       controller.toggleMAASProvidesDHCP();
@@ -736,8 +736,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("setDHCPAction", function() {
-    it("sets `provideDHCP` to `true`", function() {
+  describe("setDHCPAction", function () {
+    it("sets `provideDHCP` to `true`", function () {
       var controller = makeController();
       // To prevent side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -748,7 +748,7 @@ describe("VLANDetailsController", function() {
       expect(controller.relayVLAN).toBe(false);
     });
 
-    it("sets `relayVLAN` to `false`", function() {
+    it("sets `relayVLAN` to `false`", function () {
       var controller = makeController();
       // To prevent side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -759,14 +759,14 @@ describe("VLANDetailsController", function() {
       expect(controller.provideDHCP).toBe(false);
     });
 
-    it("calls `setSuggestedRange` for DHCP", function() {
+    it("calls `setSuggestedRange` for DHCP", function () {
       var controller = makeControllerResolveSetActiveItem();
       spyOn(controller, "setSuggestedRange");
       controller.setDHCPAction("provideDHCP");
       expect(controller.setSuggestedRange).toHaveBeenCalled();
     });
 
-    it("calls `setSuggestedRange` for relay VLAN", function() {
+    it("calls `setSuggestedRange` for relay VLAN", function () {
       var controller = makeController();
       spyOn(controller, "setSuggestedRange");
       controller.setDHCPAction("relayVLAN");
@@ -774,8 +774,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("enableDHCP", function() {
-    it("DHCPError populated on action failure", function() {
+  describe("enableDHCP", function () {
+    it("DHCPError populated on action failure", function () {
       var controller = makeControllerResolveSetActiveItem();
       // To prevent side effects of calling `openDHCPPanel`
       spyOn(controller, "setSuggestedRange");
@@ -787,16 +787,16 @@ describe("VLANDetailsController", function() {
         error: "errorString",
         request: {
           params: {
-            action: "enable_dhcp"
-          }
-        }
+            action: "enable_dhcp",
+          },
+        },
       };
       defer.reject(result);
       $scope.$digest();
       expect(controller.DHCPError).toBe("errorString");
     });
 
-    it("performAction for enable_dhcp called with all params", function() {
+    it("performAction for enable_dhcp called with all params", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.actionOption = controller.PROVIDE_DHCP_ACTION;
       // This will populate the default values for the racks with
@@ -820,14 +820,14 @@ describe("VLANDetailsController", function() {
           subnet: 1,
           gateway: "192.168.0.1",
           start: "192.168.0.2",
-          end: "192.168.0.254"
+          end: "192.168.0.254",
         }
       );
       expect(controller.DHCPError).toBe(null);
     });
 
     it(`performAction for enable_dhcp not called
-        if racks are missing`, function() {
+        if racks are missing`, function () {
       vlan.primary_rack = 0;
       vlan.secondary_rack = 0;
       var controller = makeControllerResolveSetActiveItem();
@@ -855,8 +855,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("relayDHCP", function() {
-    it("performAction for relay_dhcp called with all params", function() {
+  describe("relayDHCP", function () {
+    it("performAction for relay_dhcp called with all params", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.actionOption = controller.RELAY_DHCP_ACTION;
       // This will populate the default values for the racks with
@@ -872,12 +872,12 @@ describe("VLANDetailsController", function() {
                   num_addresses: 2,
                   purpose: ["unused"],
                   start: "192.168.0.2",
-                  end: "192.168.0.254"
-                }
-              ]
-            }
-          }
-        }
+                  end: "192.168.0.254",
+                },
+              ],
+            },
+          },
+        },
       ];
       controller.openDHCPPanel();
       controller.provideDHCPAction.subnet = 1;
@@ -885,7 +885,7 @@ describe("VLANDetailsController", function() {
       controller.provideDHCPAction.startIP = "192.168.0.2";
       controller.provideDHCPAction.endIP = "192.168.0.254";
       var relay = {
-        id: makeInteger(5001, 6000)
+        id: makeInteger(5001, 6000),
       };
       VLANsManager._items = [relay];
       controller.provideDHCPAction.relayVLAN = relay;
@@ -901,7 +901,7 @@ describe("VLANDetailsController", function() {
           subnet: 1,
           gateway: "192.168.0.1",
           start: "192.168.0.2",
-          end: "192.168.0.254"
+          end: "192.168.0.254",
         },
         relay.id
       );
@@ -909,8 +909,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("disableDHCP", function() {
-    it("performAction for disable_dhcp called with all params", function() {
+  describe("disableDHCP", function () {
+    it("performAction for disable_dhcp called with all params", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.actionOption = controller.DISABLE_DHCP_ACTION;
       // This will populate the default values for the racks with
@@ -928,8 +928,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("dismissHighAvailabilityNotification", function() {
-    it("sets hideHighAvailabilityNotification to true", function() {
+  describe("dismissHighAvailabilityNotification", function () {
+    it("sets hideHighAvailabilityNotification to true", function () {
       var controller = makeController();
       controller.vlan = { id: 5001 };
       controller.hideHighAvailabilityNotification = false;
@@ -938,8 +938,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("showHighAvailabilityNotification", function() {
-    it("returns true if has DHCP, no secondary rack but could", function() {
+  describe("showHighAvailabilityNotification", function () {
+    it("returns true if has DHCP, no secondary rack but could", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: true };
       controller.provideDHCPAction.secondaryRack = null;
@@ -948,7 +948,7 @@ describe("VLANDetailsController", function() {
       expect(controller.showHighAvailabilityNotification()).toBe(true);
     });
 
-    it("returns false if no DHCP", function() {
+    it("returns false if no DHCP", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: false };
       controller.relatedControllers = [{ id: 1 }, { id: 2 }];
@@ -956,21 +956,21 @@ describe("VLANDetailsController", function() {
       expect(controller.showHighAvailabilityNotification()).toBe(false);
     });
 
-    it("returns false if has secondary rack", function() {
+    it("returns false if has secondary rack", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: true };
       controller.hideHighAvailabilityNotification = false;
       expect(controller.showHighAvailabilityNotification()).toBe(false);
     });
 
-    it("returns false if has no available racks", function() {
+    it("returns false if has no available racks", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: true };
       controller.hideHighAvailabilityNotification = false;
       expect(controller.showHighAvailabilityNotification()).toBe(false);
     });
 
-    it("returns false if hideHighAvailabilityNotification if true", function() {
+    it("returns false if hideHighAvailabilityNotification if true", function () {
       var controller = makeController();
       controller.vlan = { dhcp_on: true };
       controller.hideHighAvailabilityNotification = true;
@@ -978,8 +978,8 @@ describe("VLANDetailsController", function() {
     });
   });
 
-  describe("getAvailableVLANS", function() {
-    it("doesn't return current VLAN", function() {
+  describe("getAvailableVLANS", function () {
+    it("doesn't return current VLAN", function () {
       var controller = makeControllerResolveSetActiveItem();
       var vlan = {
         id: 5259,
@@ -991,14 +991,14 @@ describe("VLANDetailsController", function() {
         primary_rack: primaryController.system_id,
         secondary_rack: secondaryController.system_id,
         rack_sids: [],
-        external_dhcp: 1
+        external_dhcp: 1,
       };
       controller.vlans = [vlan];
       controller.vlan = vlan;
       expect(controller.getAvailableVLANS()).toBe(0);
     });
 
-    it("doesn't return vlan with no dhcp", function() {
+    it("doesn't return vlan with no dhcp", function () {
       var controller = makeControllerResolveSetActiveItem();
       var vlan = {
         id: 5259,
@@ -1010,14 +1010,14 @@ describe("VLANDetailsController", function() {
         primary_rack: primaryController.system_id,
         secondary_rack: secondaryController.system_id,
         rack_sids: [],
-        external_dhcp: 1
+        external_dhcp: 1,
       };
       controller.vlans = [vlan];
       controller.vlan = vlan;
       expect(controller.getAvailableVLANS()).toBe(0);
     });
 
-    it("returns if not current vlan and has dhcp", function() {
+    it("returns if not current vlan and has dhcp", function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.vlans = [
         {
@@ -1030,8 +1030,8 @@ describe("VLANDetailsController", function() {
           primary_rack: primaryController.system_id,
           secondary_rack: secondaryController.system_id,
           rack_sids: [],
-          external_dhcp: 1
-        }
+          external_dhcp: 1,
+        },
       ];
       controller.vlan = {
         id: 5239,
@@ -1043,7 +1043,7 @@ describe("VLANDetailsController", function() {
         primary_rack: primaryController.system_id,
         secondary_rack: secondaryController.system_id,
         rack_sids: [],
-        external_dhcp: 1
+        external_dhcp: 1,
       };
       expect(controller.getAvailableVLANS()).toBe(1);
     });

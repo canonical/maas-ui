@@ -18,7 +18,7 @@ function SubnetsManager(RegionConnection, Manager) {
 
     // Listen for notify events for the subnet object.
     var self = this;
-    RegionConnection.registerNotifier("subnet", function(action, data) {
+    RegionConnection.registerNotifier("subnet", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -27,7 +27,7 @@ function SubnetsManager(RegionConnection, Manager) {
 
   // Return the name of the subnet. Will include the name of the subnet
   // in '(', ')' if it exists and not the same as the cidr.
-  SubnetsManager.prototype.getName = function(subnet) {
+  SubnetsManager.prototype.getName = function (subnet) {
     if (!angular.isObject(subnet)) {
       return "";
     }
@@ -43,9 +43,9 @@ function SubnetsManager(RegionConnection, Manager) {
     return name;
   };
 
-  SubnetsManager.prototype.getLargestRange = function(subnet) {
+  SubnetsManager.prototype.getLargestRange = function (subnet) {
     var largest_range = { num_addresses: 0, start: "", end: "" };
-    angular.forEach(subnet.statistics.ranges, function(iprange) {
+    angular.forEach(subnet.statistics.ranges, function (iprange) {
       if (
         angular.equals(iprange.purpose, ["unused"]) &&
         iprange.num_addresses > largest_range.num_addresses
@@ -56,7 +56,7 @@ function SubnetsManager(RegionConnection, Manager) {
     return largest_range;
   };
 
-  SubnetsManager.prototype.hasDynamicRange = function(subnet) {
+  SubnetsManager.prototype.hasDynamicRange = function (subnet) {
     var i;
     for (i = 0; i < subnet.statistics.ranges.length; i++) {
       var iprange = subnet.statistics.ranges[i];
@@ -68,7 +68,7 @@ function SubnetsManager(RegionConnection, Manager) {
   };
 
   // Create a subnet.
-  SubnetsManager.prototype.create = function(subnet) {
+  SubnetsManager.prototype.create = function (subnet) {
     // We don't add the item to the list because a NOTIFY event will
     // add the domain to the list. Adding it here will cause angular to
     // complain because the same object exist in the list.
@@ -76,16 +76,16 @@ function SubnetsManager(RegionConnection, Manager) {
   };
 
   // Delete the subnet.
-  SubnetsManager.prototype.deleteSubnet = function(subnet) {
+  SubnetsManager.prototype.deleteSubnet = function (subnet) {
     return RegionConnection.callMethod("subnet.delete", {
-      id: subnet.id
+      id: subnet.id,
     });
   };
 
   // Perform a neighbour discovery scan on the subnet.
-  SubnetsManager.prototype.scanSubnet = function(subnet) {
+  SubnetsManager.prototype.scanSubnet = function (subnet) {
     return RegionConnection.callMethod("subnet.scan", {
-      id: subnet.id
+      id: subnet.id,
     });
   };
 

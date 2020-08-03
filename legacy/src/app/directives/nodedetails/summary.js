@@ -3,7 +3,7 @@ import nodeDetailsSummaryTmpl from "../../partials/nodedetails/node-details-summ
 function nodeDetailsSummary() {
   return {
     restrict: "E",
-    template: nodeDetailsSummaryTmpl
+    template: nodeDetailsSummaryTmpl,
   };
 }
 

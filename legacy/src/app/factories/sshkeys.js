@@ -17,7 +17,7 @@ function SSHKeysManager(RegionConnection, Manager) {
 
     // Listen for notify events for the sshkey object.
     var self = this;
-    RegionConnection.registerNotifier("sshkey", function(action, data) {
+    RegionConnection.registerNotifier("sshkey", function (action, data) {
       self.onNotify(action, data);
     });
   }
@@ -25,7 +25,7 @@ function SSHKeysManager(RegionConnection, Manager) {
   SSHKeysManager.prototype = new Manager();
 
   // Imports SSH keys from a launchpad and github.
-  SSHKeysManager.prototype.importKeys = function(params) {
+  SSHKeysManager.prototype.importKeys = function (params) {
     // We don't add the results to the list because a NOTIFY event will
     // add the ssh key to the list. Adding it here will cause angular
     // to complain because the same object exist in the list.

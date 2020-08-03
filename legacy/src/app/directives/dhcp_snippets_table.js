@@ -15,14 +15,14 @@ function maasDhcpSnippetsTable($window) {
       snippets: "=",
       allowAddNew: "=",
       allowDelete: "=",
-      hideAllSnippetsLink: "="
+      hideAllSnippetsLink: "=",
     },
     template: dhcpSnippetsTableTmpl,
     controller: DHCPSnippetsTableController,
-    link: scope => {
+    link: (scope) => {
       scope.BASENAME = process.env.BASENAME;
       scope.REACT_BASENAME = process.env.REACT_BASENAME;
-    }
+    },
   };
 }
 
@@ -49,7 +49,7 @@ function DHCPSnippetsTableController(
   $scope.MAAS_VERSION_NUMBER = DHCPSnippetsManager.formatMAASVersionNumber();
 
   // Return the text for the type of snippet.
-  $scope.getSnippetTypeText = snippet => {
+  $scope.getSnippetTypeText = (snippet) => {
     if (angular.isString(snippet.node)) {
       return "Node";
     } else if (angular.isNumber(snippet.subnet)) {
@@ -60,7 +60,7 @@ function DHCPSnippetsTableController(
   };
 
   // Return the node from either the machines, devices, or controllers manager.
-  $scope.getNode = system_id => {
+  $scope.getNode = (system_id) => {
     let node = MachinesManager.getItemFromList(system_id);
     if (angular.isObject(node)) {
       return node;
@@ -76,7 +76,7 @@ function DHCPSnippetsTableController(
   };
 
   // Return the object the snippet applies to.
-  $scope.getSnippetAppliesToObject = snippet => {
+  $scope.getSnippetAppliesToObject = (snippet) => {
     if (angular.isString(snippet.node)) {
       return $scope.getNode(snippet.node);
     } else if (angular.isNumber(snippet.subnet)) {
@@ -85,7 +85,7 @@ function DHCPSnippetsTableController(
   };
 
   // Return the applies to text that is disabled in none edit mode.
-  $scope.getSnippetAppliesToText = snippet => {
+  $scope.getSnippetAppliesToText = (snippet) => {
     let obj = $scope.getSnippetAppliesToObject(snippet);
     if (angular.isString(snippet.node) && angular.isObject(obj)) {
       return obj.fqdn;
@@ -97,8 +97,8 @@ function DHCPSnippetsTableController(
   };
 
   // Called when the active toggle is changed.
-  $scope.snippetToggle = snippet => {
-    DHCPSnippetsManager.updateItem(snippet).then(null, error => {
+  $scope.snippetToggle = (snippet) => {
+    DHCPSnippetsManager.updateItem(snippet).then(null, (error) => {
       // Revert state change and clear toggling.
       snippet.enabled = !snippet.enabled;
       $log.error(error);
@@ -106,7 +106,7 @@ function DHCPSnippetsTableController(
   };
 
   // Called to enter edit mode for a DHCP snippet.
-  $scope.snippetEnterEdit = snippet => {
+  $scope.snippetEnterEdit = (snippet) => {
     $scope.newSnippet = null;
     $scope.deleteSnippet = null;
     $scope.editSnippet = snippet;
@@ -119,7 +119,7 @@ function DHCPSnippetsTableController(
   };
 
   // Return the name of the subnet.
-  $scope.getSubnetName = subnet => {
+  $scope.getSubnetName = (subnet) => {
     return SubnetsManager.getName(subnet);
   };
 
@@ -136,7 +136,7 @@ function DHCPSnippetsTableController(
   };
 
   // Called to enter remove mode for a DHCP snippet.
-  $scope.snippetEnterRemove = snippet => {
+  $scope.snippetEnterRemove = (snippet) => {
     $scope.newSnippet = null;
     $scope.editSnippet = null;
     $scope.deleteSnippet = snippet;
@@ -154,7 +154,7 @@ function DHCPSnippetsTableController(
     $scope.newSnippet = {
       name: "",
       type: "Global",
-      enabled: true
+      enabled: true,
     };
   };
 }
