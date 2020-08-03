@@ -253,7 +253,7 @@ function configureMaas(
   $locationProvider,
   $compileProvider,
   tagsInputConfigProvider,
-  $urlRouterProvider,
+  $urlRouterProvider
 ) {
   // Disable debugInfo unless in a Jest context.
   // Re-enable debugInfo in development by running
@@ -336,6 +336,7 @@ Sentry.init({
 /* @ngInject */
 const configureSentry = ($window) => {
   Sentry.setExtra("maasVersion", $window.CONFIG.version);
+  Sentry.setTag("maas.version", $window.CONFIG.version);
 };
 
 const maasModule = "MAAS";
