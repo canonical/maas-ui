@@ -21,6 +21,7 @@ class ErrorBoundary extends React.Component {
     if (analyticsEnabled) {
       Sentry.withScope((scope) => {
         scope.setExtras({ ...errorInfo, maasVersion });
+        scope.setTag("maas.version", maasVersion);
         const eventId = Sentry.captureException(error);
         this.setState({ eventId });
       });
