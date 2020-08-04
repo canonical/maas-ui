@@ -43,12 +43,27 @@
     .p-notification__menu-button {
       border: 0;
       flex: 0;
-      margin: $spv-inner--x-small 0 auto auto;
-      padding: $spv-inner--small;
+      margin: 0 0 auto auto;
 
-      &:hover {
-        background-color: transparent;
+      [class^="p-button"] {
+        margin: 0;
+        padding: 0 $spv-inner--small;
+
+        &:hover {
+          background-color: transparent;
+        }
       }
+    }
+  }
+
+  .p-contextual-menu__dropdown.p-notification__menu {
+    width: 18rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    .row {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
 }

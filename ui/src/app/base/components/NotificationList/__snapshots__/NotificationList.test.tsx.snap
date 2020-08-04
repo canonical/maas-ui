@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationList renders a list of messages 1`] = `
+<NotificationList>
+  <NotificationGroup
+    key="negative"
+    notifications={
+      Array [
+        Object {
+          "admins": true,
+          "category": "error",
+          "created": "Wed, 08 Jul. 2020 05:35:4",
+          "dismissable": true,
+          "id": 1,
+          "ident": null,
+          "message": "an error",
+          "updated": "Wed, 08 Jul. 2020 05:35:4",
+          "user": Object {
+            "completed_intro": true,
+            "email": "email1@example.com",
+            "global_permissions": Array [
+              "machine_create",
+            ],
+            "id": 2,
+            "is_superuser": true,
+            "last_name": "Full Name jr.",
+            "sshkeys_count": 3,
+            "username": "user1",
+          },
+          "users": true,
+        },
+      ]
+    }
+    type="negative"
+  >
+    <div
+      className="p-notification--group"
+    >
+      <NotificationGroupNotification
+        id={1}
+        key="1"
+        type="negative"
+      >
+        <Notification
+          className={null}
+          close={[Function]}
+          type="negative"
+        >
+          <div
+            className="p-notification--negative"
+          >
+            <p
+              className="p-notification__response"
+            >
+              <span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "an error",
+                  }
+                }
+                data-test="notification-message"
+              />
+            </p>
+            <button
+              aria-label="Close notification"
+              className="p-icon--close"
+              onClick={[Function]}
+            >
+              Close
+            </button>
+          </div>
+        </Notification>
+      </NotificationGroupNotification>
+    </div>
+  </NotificationGroup>
+  <Notification
+    close={[Function]}
+    data-test="message"
+    key="1"
+    timeout={5000}
+    type="caution"
+  >
+    <div
+      className="p-notification--caution"
+      data-test="message"
+    >
+      <p
+        className="p-notification__response"
+      >
+        User deleted
+      </p>
+      <button
+        aria-label="Close notification"
+        className="p-icon--close"
+        onClick={[Function]}
+      >
+        Close
+      </button>
+    </div>
+  </Notification>
+</NotificationList>
+`;
