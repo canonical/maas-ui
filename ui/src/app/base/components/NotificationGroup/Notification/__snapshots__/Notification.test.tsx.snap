@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationGroupNotification renders 1`] = `
+<NotificationGroupNotification
+  id={1}
+  type="negative"
+>
+  <Notification
+    className={null}
+    close={[Function]}
+    type="negative"
+  >
+    <div
+      className="p-notification--negative"
+    >
+      <p
+        className="p-notification__response"
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Testing notification",
+            }
+          }
+          data-test="notification-message"
+        />
+      </p>
+      <button
+        aria-label="Close notification"
+        className="p-icon--close"
+        onClick={[Function]}
+      >
+        Close
+      </button>
+    </div>
+  </Notification>
+</NotificationGroupNotification>
+`;

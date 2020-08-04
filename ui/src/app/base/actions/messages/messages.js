@@ -22,6 +22,8 @@ messages.add = createAction(
   })
 );
 
-messages.remove = createAction("REMOVE_MESSAGE");
+messages.remove = createAction("REMOVE_MESSAGE", (id) => ({
+  payload: id,
+}));
 
 export default messages;
