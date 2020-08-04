@@ -14,27 +14,26 @@ type Props = {
 const getPositionStyle = (
   el: React.MutableRefObject<Element | null>,
   position: Props["position"]
-): React.CSSProperties => {
+) => {
   if (!el?.current) {
     return {};
   }
 
   const dimensions = el.current.getBoundingClientRect();
   const { height, left, right, top } = dimensions;
-  const topPos = top + height + window.scrollY || 0;
+  const styles = {
+    position: "absolute",
+    top: top + height + window.scrollY || 0,
+    left: null,
+    right: null,
+  };
 
   if (position === "left") {
-    return {
-      position: "absolute",
-      top: topPos,
-      left: left + window.scrollX || 0,
-    };
+    styles.left = left + window.scrollX || 0;
+  } else {
+    styles.right = window.innerWidth + window.scrollX - right || 0;
   }
-  return {
-    position: "absolute",
-    right: window.innerWidth + window.scrollX - right || 0,
-    top: topPos,
-  };
+  return styles;
 };
 
 const Popover = ({

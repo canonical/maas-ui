@@ -366,6 +366,10 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
   // Remove item in the items and selectedItems list.
   Manager.prototype._removeItem = function (pk_value) {
+    // If the active item is removed then clear it.
+    if (this._activeItem && this._activeItem[this._pk] === pk_value) {
+      this.clearActiveItem();
+    }
     var idx = this._getIndexOfItem(this._items, pk_value);
     if (idx >= 0) {
       this._updateMetadata(this._items[idx], METADATA_ACTIONS.DELETE);
