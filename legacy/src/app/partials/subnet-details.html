@@ -594,7 +594,7 @@
                         </tr>
                     </thead>
                     <tbody vs-repeat vs-scroll-parent="window">
-                        <tr data-ng-repeat="ip in subnet.ip_addresses | orderBy:predicate:reverse track by ip.ip">
+                        <tr data-ng-repeat="ip in removeDuplicates(subnet.ip_addresses, 'ip') | orderBy:predicate:reverse track by ip.ip">
                             <td aria-label="IP Address" title="{$ ip.ip $}">{$ ip.ip $}</td>
                             <td aria-label="Type" title="{$ getAllocType(ip.alloc_type) $}">{$ getAllocType(ip.alloc_type) $}</td>
                             <td aria-label="Node" data-ng-switch="ip.node_summary.node_type">
