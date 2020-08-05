@@ -1054,6 +1054,12 @@ function NodesListController(
           }
         }
       }
+
+      // remove duplicates
+      tab.actionProgress.confirmation_details = [
+        ...new Set(tab.actionProgress.confirmation_details),
+      ];
+
       if (tab.actionProgress.affected_nodes != 0) {
         if (tab.actionProgress.affected_nodes === 1) {
           tab.actionProgress.confirmation_message =
