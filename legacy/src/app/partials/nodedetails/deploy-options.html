@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-3">
+    <p>Customise options</p>
+  </div>
+  <div class="col-9">
+    <ul class="p-list p-inline-list">
+      <li class="p-inline-list__item">
+        <div
+          class="p-form-group p-form-validation u-sv-1 u-display-inline-block"
+        >
+          <div class="p-form__control u-clearfix">
+            <input
+              id="installKVM"
+              type="checkbox"
+              data-ng-model="deployOptions.installKVM"
+              ng-disabled="!nodesManager.canBeKvmHost(osSelection)"
+            />
+            <label
+              for="installKVM"
+              class="u-float--left"
+              style="width: auto; margin-right: 1rem;"
+            >
+              Register as MAAS KVM host (Ubuntu 18.04 LTS required)
+            </label>
+
+            <p
+              class="u-sv-1 u-no-max-width"
+              ng-if="!nodesManager.canBeKvmHost(osSelection)"
+            >
+              <i class="p-icon--warning"></i>&nbsp;Ubuntu 18.04 is required to
+              create a KVM host.
+            </p>
+          </div>
+        </div>
+      </li>
+      <li class="p-inline-list__item">
+        <a
+          class="p-link--external"
+          href="https://maas.io/docs/kvm-introduction"
+          target="_blank"
+        >
+          Read more
+        </a>
+      </li>
+    </ul>
+
+    <ul class="p-list p-inline-list">
+      <li class="p-inline-list__item">
+        <div
+          class="p-form-group p-form-validation u-sv-1 u-display-inline-block"
+        >
+          <div class="p-form__control u-clearfix">
+            <input
+              id="showCloudInit"
+              type="checkbox"
+              ng-model="showCloudInitChecked"
+            />
+            <label
+              for="showCloudInit"
+              class="u-float--left"
+              style="width: auto; margin-right: 1rem;"
+            >
+              Cloud-init user-data&hellip;
+            </label>
+          </div>
+        </div>
+      </li>
+      <li class="p-inline-list__item">
+        <a
+          class="p-link--external"
+          href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+          target="_blank"
+        >
+          Read more
+        </a>
+      </li>
+    </ul>
+
+    <div data-ng-if="showCloudInitChecked">
+      <textarea
+        class="p-form-validation__input u-sv2"
+        data-ng-model="deployOptions.userData"
+        name="userData"
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        placeholder="Paste script here"
+        spellcheck="false"
+        style="min-height: 15rem;"
+      ></textarea>
+      <input
+        user-data-upload
+        id="userDataFiles"
+        type="file"
+        autocomplete="off"
+        accept="text/*,
+application/x-csh, application/x-sh, application/x-shellscript,
+application/json, application/ld+json, application/x-yaml"
+      />
+    </div>
+  </div>
+</div>

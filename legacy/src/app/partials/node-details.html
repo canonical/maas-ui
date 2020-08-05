@@ -99,23 +99,7 @@
                                             </div>
                                         </div>
                                         <div data-ng-if="isSuperUser()" class="p-strip is-shallow u-no-padding--top">
-                                            <div class="p-form__group">
-                                                <label class="p-form__label u-no-padding--top">Additional installs</label>
-                                                <div class="p-form__control" style="width: 70%">
-                                                    <input id="installKVM" type="checkbox" data-ng-model="deployOptions.installKVM" ng-disabled="!nodesManager.canBeKvmHost(osSelection)">
-                                                    <label for="installKVM" class="u-float--left" style="width: auto; margin-right: 1rem;">
-                                                        Register as MAAS KVM host
-                                                    </label>
-                                                    <p class="u-sv-1 u-no-max-width" ng-if="!nodesManager.canBeKvmHost(osSelection)">
-                                                        <i class="p-icon--warning"></i>&nbsp;Ubuntu 18.04 is required to create a KVM host.
-                                                    </p>
-                                                    <p class="u-no-max-width u-no-margin--bottom">
-                                                        <a class="p-link--external" href="https://maas.io/docs/kvm-introduction" target="_blank">
-                                                            About MAAS KVM hosts
-                                                        </a>
-                                                    </p>
-                                                </div>
-                                            </div>
+<tab>                                       <deploy-options></deploy-options>
                                         </div>
                                     </div>
                                 </div>
