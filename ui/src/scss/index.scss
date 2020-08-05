@@ -22,6 +22,7 @@
 // Import and include MAAS global styles
 @import "./patterns_buttons";
 @import "./patterns_cards";
+@import "./patterns_contextual-menu";
 @import "./patterns_double-row";
 @import "./patterns_footer";
 @import "./patterns_forms";
@@ -36,6 +37,7 @@
 @import "./utilities";
 @include maas-buttons;
 @include maas-cards;
+@include maas-contextual-menu;
 @include maas-double-row;
 @include maas-footer;
 @include maas-forms;
@@ -74,12 +76,14 @@
 @import "~app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/KVMListTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
+@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
 @include CPUPopover;
 @include RAMPopover;
 @include StoragePopover;
 @include KVMListTable;
 @include KVMComposeInterfacesTable;
+@include KVMSubnetSelect;
 @include KVMComposeStorageTable;
 
 // machines

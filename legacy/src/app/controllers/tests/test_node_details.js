@@ -609,6 +609,7 @@ describe("NodeDetailsController", function () {
     }
 
     expect(watches).toEqual([
+      "nodesManager.getActiveItem()",
       "node.fqdn",
       "node.devices",
       "node.actions",

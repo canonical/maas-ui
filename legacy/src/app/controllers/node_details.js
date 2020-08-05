@@ -558,6 +558,13 @@ function NodeDetailsController(
   // Starts the watchers on the scope.
   function startWatching() {
     if (angular.isObject($scope.node)) {
+      $scope.$watch("nodesManager.getActiveItem()", function(activeItem) {
+        if (!activeItem) {
+          // Show an error if the current node is removed.
+          ErrorService.raiseError(`No item with pk: ${$scope.node.system_id}`);
+        }
+      });
+
       // Update the title and name when the node fqdn changes.
       $scope.$watch("node.fqdn", function () {
         updateTitle();
@@ -1019,6 +1026,12 @@ function NodeDetailsController(
           );
         }
       }
+
+      // remove duplicates
+      $scope.action.confirmation_details = [
+        ...new Set($scope.action.confirmation_details),
+      ];
+
       if ($scope.action.confirmation_details.length > 0) {
         $scope.action.confirmation_message +=
           $scope.type_name_title + " will be deleted.";

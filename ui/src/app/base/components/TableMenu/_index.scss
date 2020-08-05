@@ -2,15 +2,6 @@
   $icon-size: map-get($icon-sizes, default);
   $icon-space: $icon-size + $sph-inner--small + $sph-inner;
 
-  .p-table-menu .p-contextual-menu__non-interactive {
-    border-bottom: 1px solid $color-mid-light;
-    color: $color-mid-dark;
-    font-size: 0.75rem;
-    font-weight: 400;
-    padding: $spv-inner--x-small $sph-inner;
-    text-transform: uppercase;
-  }
-
   .p-table-menu--hasIcon .p-contextual-menu__non-interactive {
     padding-left: $icon-space;
   }

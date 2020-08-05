@@ -5,6 +5,8 @@
  */
 import angular from "angular";
 
+import removeDuplicates from "../filters/remove_duplicates";
+
 export function filterSource() {
   return function (subnets, source) {
     var filtered = [];
@@ -114,6 +116,9 @@ export function SubnetDetailsController(
       $scope.ipVersion = 6;
     }
   }
+
+  // Used to remove duplicate IPs
+  $scope.removeDuplicates = removeDuplicates;
 
   // Sort for IP address.
   $scope.ipSort = function (ipAddress) {
@@ -407,6 +412,13 @@ export function SubnetDetailsController(
       $scope.snippets,
       [$scope.subnet.cidr]
     );
+
+    $scope.$watch("subnetManager.getActiveItem()", function(activeItem) {
+      if (!activeItem) {
+        // Show an error if the current subnet is removed.
+        ErrorService.raiseError(`No subnet with pk: ${$scope.subnet.id}`);
+      }
+    });
 
     $scope.$watch("subnet.fabric", updateFabric);
     $scope.$watch("subnet.fabric_name", updateFabric);
