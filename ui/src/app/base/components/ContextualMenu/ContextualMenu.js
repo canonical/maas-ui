@@ -68,6 +68,7 @@ const ContextualMenu = ({
               closePortal(evt);
             }
           }}
+          type="button"
         >
           {toggleLabelFirst ? labelNode : null}
           {hasToggleIcon ? (

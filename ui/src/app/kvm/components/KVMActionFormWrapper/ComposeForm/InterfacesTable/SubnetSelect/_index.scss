@@ -1,0 +1,93 @@
+@import "../index.scss";
+
+$ratio-total: $subnet-col-ratio + $fabric-col-ratio + $vlan-col-ratio;
+$ratio-multiplier: $ratio-total / $subnet-col-ratio;
+$padding-multiplier: 100% + #{2 * $sph-inner--small};
+$pxe-col-compensation: $pxe-col-width - $sph-inner--small;
+
+@mixin KVMSubnetSelect {
+  .kvm-subnet-select {
+    display: block;
+    width: 100%;
+
+    .kvm-subnet-select__dropdown {
+      max-width: none;
+      min-width: 0;
+      width: calc(#{$ratio-multiplier} * (#{$padding-multiplier}) + #{$pxe-col-compensation});
+
+      @media only screen and (max-width: $breakpoint-medium) {
+        width: auto;
+      }
+    }
+
+    .kvm-subnet-select__toggle {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0;
+      padding-left: $sph-inner--small;
+      width: 100%;
+
+      > :nth-child(1) {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      > :nth-child(2) {
+        flex-shrink: 0;
+      }
+    }
+
+    .kvm-subnet-select__subnet {
+      align-items: center;
+      display: flex;
+      width: 100%;
+
+      & > * {
+        overflow: hidden;
+        overflow-wrap: anywhere;
+        white-space: break-spaces;
+
+        // Subnet
+        &:nth-child(1) {
+          width: calc(#{percentage($subnet-col-ratio / $ratio-total)} - #{2 * $sph-inner--small});
+        }
+
+        // Fabric
+        &:nth-child(2) {
+          width: percentage($fabric-col-ratio / $ratio-total);
+        }
+
+        // VLAN
+        &:nth-child(3) {
+          width: percentage($vlan-col-ratio / $ratio-total);
+        }
+
+        // PXE
+        &:nth-child(4) {
+          width: #{$pxe-col-width - #{3 * $sph-inner--small}};
+        }
+
+        &:not(:last-child) {
+          padding-right: $sph-inner--small;
+        }
+
+        @media only screen and (max-width: $breakpoint-medium) {
+          &:nth-child(1) {
+            width: 100%;
+          }
+
+          &:nth-child(2),
+          &:nth-child(3),
+          &:nth-child(4) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .p-contextual-menu__non-interactive {
+      padding-top: $spv-inner--small;
+    }
+  }
+}

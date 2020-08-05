@@ -4,6 +4,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -26,7 +27,7 @@ import ComposeForm from "../ComposeForm";
 const mockStore = configureStore();
 
 describe("ComposeFormFields", () => {
-  let initialState = rootStateFactory();
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({

@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import configureStore, { MockStoreEnhanced } from "redux-mock-store";
 
 import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -43,7 +44,7 @@ const generateWrapper = (store: MockStoreEnhanced, pod: Pod) =>
   );
 
 describe("StorageTable", () => {
-  let initialState = rootStateFactory();
+  let initialState: RootState;
 
   beforeEach(() => {
     const pod = podDetailsFactory({ id: 1 });

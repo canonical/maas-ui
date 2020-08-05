@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import configureStore, { MockStoreEnhanced } from "redux-mock-store";
 
 import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabric as fabricFactory,
@@ -18,7 +19,6 @@ import {
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-  space as spaceFactory,
   spaceState as spaceStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
@@ -46,7 +46,7 @@ const generateWrapper = (store: MockStoreEnhanced, pod: Pod) =>
   );
 
 describe("InterfacesTable", () => {
-  let initialState = rootStateFactory();
+  let initialState: RootState;
 
   beforeEach(() => {
     const pod = podDetailsFactory({ id: 1 });
@@ -193,12 +193,8 @@ describe("InterfacesTable", () => {
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
     await act(async () => {
-      wrapper
-        .find("select[name='interfaces[0].subnet']")
-        .props()
-        .onChange({
-          target: { name: "interfaces[0].subnet", value: `${subnet.id}` },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      const links = wrapper.find("SubnetSelect ContextualMenu").prop("links");
+      links[2].onClick();
     });
     wrapper.update();
     expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(
@@ -208,48 +204,5 @@ describe("InterfacesTable", () => {
     expect(
       wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
     ).toBe("p-icon--success");
-  });
-
-  it("filters subnets by selected space", async () => {
-    const space = spaceFactory();
-    const [subnetInSpace, subnetNotInSpace] = [
-      subnetFactory({ space: space.id, vlan: 1 }),
-      subnetFactory({ space: null, vlan: 1 }),
-    ];
-    const pod = podDetailsFactory({ attached_vlans: [1], id: 1 });
-    const state = { ...initialState };
-    state.pod.items = [pod];
-    state.space.items = [space];
-    state.subnet.items = [subnetInSpace, subnetNotInSpace];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-
-    // Click "Define" button
-    // Both subnets + "Any" option should be available
-    await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(
-      wrapper.find("select[name='interfaces[0].subnet'] option").length
-    ).toBe(3);
-
-    // Choose the space in state from the dropdown
-    // Only the subnet in the selected space + "Any" should be available
-    await act(async () => {
-      wrapper
-        .find("FormikField[name='interfaces[0].space']")
-        .props()
-        .onChange({
-          target: {
-            name: "interfaces[0].space",
-            value: `${space.id}`,
-          },
-        } as React.ChangeEvent<HTMLSelectElement>);
-    });
-    wrapper.update();
-    expect(
-      wrapper.find("select[name='interfaces[0].subnet'] option").length
-    ).toBe(2);
   });
 });

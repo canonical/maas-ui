@@ -15,8 +15,6 @@ import { useParams } from "react-router";
 import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import type { Space } from "app/store/space/types";
-import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
@@ -24,20 +22,8 @@ import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
 import FormikField from "app/base/components/FormikField";
+import SubnetSelect from "./SubnetSelect";
 import TableActions from "app/base/components/TableActions";
-
-/**
- * Filter subnets to those that are in a given space.
- * @param {Subnet[]} subnets - The subnets to filter.
- * @param {Space} space - The space by which to filter subnets.
- * @returns {Subnet[]} Subnets filtered by space.
- */
-const filterSubnetsBySpace = (subnets: Subnet[], space: Space): Subnet[] => {
-  if (!!space) {
-    return subnets.filter((subnet) => subnet.space === space.id);
-  }
-  return subnets;
-};
 
 /**
  * Generate a new InterfaceField with a given id.
@@ -60,7 +46,7 @@ const generateNewInterface = (id: number): InterfaceField => {
  * @param {VLAN} vlan - The VLAN of the interface's selected subnet.
  * @returns {string} The class name of the PXE column icon.
  */
-const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
+export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
   if (!vlan || !pod) {
     return "p-icon--power-unknown";
   }
@@ -137,9 +123,6 @@ export const InterfacesTable = (): JSX.Element => {
         {interfaces.length >= 1 ? (
           <tbody>
             {interfaces.map((iface, i) => {
-              const space = spaces.find(
-                (space) => space.id === parseInt(iface.space)
-              );
               const subnet = podSubnets.find(
                 (subnet) => subnet.id === parseInt(iface.subnet)
               );
@@ -147,7 +130,6 @@ export const InterfacesTable = (): JSX.Element => {
               const fabric = fabrics.find(
                 (fabric) => fabric.id === vlan?.fabric
               );
-              const subnetsBySpace = filterSubnetsBySpace(podSubnets, space);
 
               return (
                 <TableRow key={iface.id}>
@@ -183,21 +165,11 @@ export const InterfacesTable = (): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell aria-label="Subnet">
-                    <FormikField
-                      className="u-no-margin--bottom"
-                      component={Select}
-                      name={`interfaces[${i}].subnet`}
-                      options={[
-                        {
-                          label: "Any",
-                          value: "",
-                        },
-                        ...subnetsBySpace.map((subnet) => ({
-                          key: subnet.id,
-                          label: subnet.name,
-                          value: subnet.id,
-                        })),
-                      ]}
+                    <SubnetSelect
+                      iface={iface}
+                      selectSubnet={(subnetID: number) => {
+                        setFieldValue(`interfaces[${i}].subnet`, subnetID);
+                      }}
                     />
                   </TableCell>
                   <TableCell aria-label="Fabric" className="u-align-non-field">
