@@ -7,7 +7,7 @@
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 
-describe("SubnetDetailsController", function() {
+describe("SubnetDetailsController", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
@@ -15,7 +15,7 @@ describe("SubnetDetailsController", function() {
   function makeFabric() {
     var fabric = {
       id: 0,
-      name: "fabric-0"
+      name: "fabric-0",
     };
     FabricsManager._items.push(fabric);
   }
@@ -24,7 +24,7 @@ describe("SubnetDetailsController", function() {
     var vlan = {
       id: 0,
       fabric: 0,
-      vid: 0
+      vid: 0,
     };
     VLANsManager._items.push(vlan);
   }
@@ -32,7 +32,7 @@ describe("SubnetDetailsController", function() {
   function makeSpace() {
     var space = {
       id: 0,
-      name: "default"
+      name: "default",
     };
     SpacesManager._items.push(space);
   }
@@ -44,7 +44,7 @@ describe("SubnetDetailsController", function() {
       cidr: "169.254.0.0/24",
       name: "Link Local",
       vlan: 0,
-      dns_servers: []
+      dns_servers: [],
     };
     SubnetsManager._items.push(subnet);
     return subnet;
@@ -52,7 +52,7 @@ describe("SubnetDetailsController", function() {
 
   // Grab the needed angular pieces.
   var $controller, $rootScope, $location, $scope, $q, $routeParams;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
     $location = $injector.get("$location");
@@ -67,7 +67,7 @@ describe("SubnetDetailsController", function() {
   var SpacesManager, VLANsManager, FabricsManager;
   var ErrorService, ConverterService, ManagerHelperService;
   var RegionConnection, webSocket;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     ConfigsManager = $injector.get("ConfigsManager");
     SubnetsManager = $injector.get("SubnetsManager");
     IPRangesManager = $injector.get("IPRangesManager");
@@ -87,7 +87,7 @@ describe("SubnetDetailsController", function() {
   }));
 
   var subnet;
-  beforeEach(function() {
+  beforeEach(function () {
     makeFabric();
     makeVLAN();
     makeSpace();
@@ -116,7 +116,7 @@ describe("SubnetDetailsController", function() {
       VLANsManager: VLANsManager,
       FabricsManager: FabricsManager,
       ManagerHelperService: ManagerHelperService,
-      ErrorService: ErrorService
+      ErrorService: ErrorService,
     });
 
     return controller;
@@ -130,7 +130,7 @@ describe("SubnetDetailsController", function() {
     );
     spyOn(ConfigsManager, "getItemFromList").and.returnValue({
       value: "",
-      choices: []
+      choices: [],
     });
     var defer = $q.defer();
     var controller = makeController(defer);
@@ -144,17 +144,17 @@ describe("SubnetDetailsController", function() {
     return controller;
   }
 
-  it("sets title and page on $rootScope", function() {
+  it("sets title and page on $rootScope", function () {
     makeController();
     expect($rootScope.title).toBe("Loading...");
     expect($rootScope.page).toBe("networks");
   });
 
-  it("raises error if subnet identifier is invalid", function() {
+  it("raises error if subnet identifier is invalid", function () {
     spyOn(SubnetsManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ConfigsManager, "getItemFromList").and.returnValue({
       value: "",
-      choices: []
+      choices: [],
     });
     spyOn(ErrorService, "raiseError").and.returnValue($q.defer().promise);
     var defer = $q.defer();
@@ -170,11 +170,11 @@ describe("SubnetDetailsController", function() {
     expect(ErrorService.raiseError).toHaveBeenCalled();
   });
 
-  it("doesn't call setActiveItem if subnet is loaded", function() {
+  it("doesn't call setActiveItem if subnet is loaded", function () {
     spyOn(SubnetsManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ConfigsManager, "getItemFromList").and.returnValue({
       value: "",
-      choices: []
+      choices: [],
     });
     var defer = $q.defer();
     makeController(defer);
@@ -189,11 +189,11 @@ describe("SubnetDetailsController", function() {
     expect(SubnetsManager.setActiveItem).not.toHaveBeenCalled();
   });
 
-  it("calls setActiveItem if subnet is not active", function() {
+  it("calls setActiveItem if subnet is not active", function () {
     spyOn(SubnetsManager, "setActiveItem").and.returnValue($q.defer().promise);
     spyOn(ConfigsManager, "getItemFromList").and.returnValue({
       value: "",
-      choices: []
+      choices: [],
     });
     var defer = $q.defer();
     makeController(defer);
@@ -205,75 +205,98 @@ describe("SubnetDetailsController", function() {
     expect(SubnetsManager.setActiveItem).toHaveBeenCalledWith(subnet.id);
   });
 
-  it("sets subnet and loaded once setActiveItem resolves", function() {
+  it("sets subnet and loaded once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($scope.subnet).toBe(subnet);
     expect($scope.loaded).toBe(true);
   });
 
-  it("title is updated once setActiveItem resolves", function() {
+  it("title is updated once setActiveItem resolves", function () {
     makeControllerResolveSetActiveItem();
     expect($rootScope.title).toBe(subnet.cidr + " (" + subnet.name + ")");
   });
 
-  describe("ipSort", function() {
-    it("calls ipv4ToInteger when ipVersion == 4", function() {
+  describe("removeDuplicates", () => {
+    it("returns a unique IP object with a duplicate", () => {
+      makeControllerResolveSetActiveItem();
+      const ipAddresses = [
+        {
+          ip: "172.168.1.1",
+          is_boot: false,
+        },
+        {
+          ip: "172.168.1.2",
+          is_boot: true,
+        },
+        {
+          ip: "172.168.1.2",
+          is_boot: true,
+        },
+      ];
+
+      const actual = $scope.removeDuplicates(ipAddresses, "ip");
+      expect(actual.length).toEqual(2);
+    });
+  });
+
+  describe("ipSort", function () {
+    it("calls ipv4ToInteger when ipVersion == 4", function () {
       makeControllerResolveSetActiveItem();
       $scope.ipVersion = 4;
       var expected = {};
       spyOn(ConverterService, "ipv4ToInteger").and.returnValue(expected);
       var ipAddress = {
-        ip: {}
+        ip: {},
       };
       var observed = $scope.ipSort(ipAddress);
       expect(ConverterService.ipv4ToInteger).toHaveBeenCalledWith(ipAddress.ip);
       expect(observed).toBe(expected);
     });
 
-    it("calls ipv6Expand when ipVersion == 6", function() {
+    it("calls ipv6Expand when ipVersion == 6", function () {
       makeControllerResolveSetActiveItem();
       $scope.ipVersion = 6;
       var expected = {};
       spyOn(ConverterService, "ipv6Expand").and.returnValue(expected);
       var ipAddress = {
-        ip: {}
+        ip: {},
       };
       var observed = $scope.ipSort(ipAddress);
       expect(ConverterService.ipv6Expand).toHaveBeenCalledWith(ipAddress.ip);
       expect(observed).toBe(expected);
     });
 
-    it("is predicate default", function() {
+    it("is predicate default", function () {
       makeControllerResolveSetActiveItem();
       expect($scope.predicate).toBe($scope.ipSort);
     });
   });
 
-  describe("getAllocType", function() {
+  describe("getAllocType", function () {
     var scenarios = {
       0: "Automatic",
       1: "Static",
       4: "User reserved",
       5: "DHCP",
       6: "Observed",
-      7: "Unknown"
+      7: "Unknown",
     };
 
-    angular.forEach(scenarios, function(expected, allocType) {
-      it("allocType( " + allocType + ") = " + expected, function() {
+    angular.forEach(scenarios, function (expected, allocType) {
+      it("allocType( " + allocType + ") = " + expected, function () {
         makeControllerResolveSetActiveItem();
         expect($scope.getAllocType(allocType)).toBe(expected);
       });
     });
   });
 
-  describe("allocTypeSort", function() {
-    it("calls getAllocType", function() {
+  describe("allocTypeSort", function () {
+    it("calls getAllocType", function () {
       makeControllerResolveSetActiveItem();
       var expected = {};
       spyOn($scope, "getAllocType").and.returnValue(expected);
       var ipAddress = {
-        alloc_type: {}
+        alloc_type: {},
       };
       var observed = $scope.allocTypeSort(ipAddress);
       expect($scope.getAllocType).toHaveBeenCalledWith(ipAddress.alloc_type);
@@ -281,7 +304,7 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("getUsageForIP", function() {
+  describe("getUsageForIP", function () {
     var scenarios = {
       0: "Machine",
       1: "Device",
@@ -290,11 +313,11 @@ describe("SubnetDetailsController", function() {
       4: "Rack and region controller",
       5: "Chassis",
       6: "Storage",
-      7: "Unknown"
+      7: "Unknown",
     };
 
-    angular.forEach(scenarios, function(expected, nodeType) {
-      it("nodeType( " + nodeType + ") = " + expected, function() {
+    angular.forEach(scenarios, function (expected, nodeType) {
+      it("nodeType( " + nodeType + ") = " + expected, function () {
         makeControllerResolveSetActiveItem();
         var ip = {};
         ip.node_summary = {};
@@ -303,15 +326,15 @@ describe("SubnetDetailsController", function() {
       });
     });
 
-    it("handles BMCs", function() {
+    it("handles BMCs", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {
-        bmcs: []
+        bmcs: [],
       };
       expect($scope.getUsageForIP(ipAddress)).toBe("BMC");
     });
 
-    it("handles containers", function() {
+    it("handles containers", function () {
       makeControllerResolveSetActiveItem();
       var ip = {};
       ip.node_summary = {};
@@ -320,30 +343,30 @@ describe("SubnetDetailsController", function() {
       expect($scope.getUsageForIP(ip)).toBe("Container");
     });
 
-    it("handles DNS records", function() {
+    it("handles DNS records", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {
-        dns_records: []
+        dns_records: [],
       };
       expect($scope.getUsageForIP(ipAddress)).toBe("DNS");
     });
 
-    it("handles the unknown", function() {
+    it("handles the unknown", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {};
       expect($scope.getUsageForIP(ipAddress)).toBe("Unknown");
     });
   });
 
-  describe("nodeTypeSort", function() {
-    it("calls getUsageForIP", function() {
+  describe("nodeTypeSort", function () {
+    it("calls getUsageForIP", function () {
       makeControllerResolveSetActiveItem();
       var expected = {};
       spyOn($scope, "getUsageForIP").and.returnValue(expected);
       var ipAddress = {
         node_summary: {
-          node_type: {}
-        }
+          node_type: {},
+        },
       };
       var observed = $scope.nodeTypeSort(ipAddress);
       expect($scope.getUsageForIP).toHaveBeenCalledWith(ipAddress);
@@ -351,37 +374,37 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("ownerSort", function() {
-    it("returns owner", function() {
+  describe("ownerSort", function () {
+    it("returns owner", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {
-        user: makeName("owner")
+        user: makeName("owner"),
       };
       var observed = $scope.ownerSort(ipAddress);
       expect(observed).toBe(ipAddress.user);
     });
 
-    it("returns MAAS for empty string", function() {
+    it("returns MAAS for empty string", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {
-        user: ""
+        user: "",
       };
       var observed = $scope.ownerSort(ipAddress);
       expect(observed).toBe("MAAS");
     });
 
-    it("returns MAAS for null", function() {
+    it("returns MAAS for null", function () {
       makeControllerResolveSetActiveItem();
       var ipAddress = {
-        user: null
+        user: null,
       };
       var observed = $scope.ownerSort(ipAddress);
       expect(observed).toBe("MAAS");
     });
   });
 
-  describe("sortIPTable", function() {
-    it("sets predicate and inverts reverse", function() {
+  describe("sortIPTable", function () {
+    it("sets predicate and inverts reverse", function () {
       makeControllerResolveSetActiveItem();
       $scope.reverse = true;
       var predicate = {};
@@ -393,28 +416,28 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("subnetPreSave", function() {
-    it("updates vlan when fabric changed", function() {
+  describe("subnetPreSave", function () {
+    it("updates vlan when fabric changed", function () {
       makeController();
       var vlan = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       var fabric = {
         id: makeInteger(1, 100),
         default_vlan_id: vlan.id,
-        vlan_ids: [vlan.id]
+        vlan_ids: [vlan.id],
       };
       FabricsManager._items.push(fabric);
       var subnet = {
-        fabric: fabric.id
+        fabric: fabric.id,
       };
       var updatedSubnet = $scope.subnetPreSave(subnet, ["fabric"]);
       expect(updatedSubnet.vlan).toBe(vlan.id);
     });
   });
 
-  describe("editSubnetSummary", function() {
-    it("enters edit mode for summary", function() {
+  describe("editSubnetSummary", function () {
+    it("enters edit mode for summary", function () {
       makeController();
       $scope.editSummary = false;
       $scope.enterEditSummary();
@@ -422,8 +445,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("exitEditSubnetSummary", function() {
-    it("enters edit mode for summary", function() {
+  describe("exitEditSubnetSummary", function () {
+    it("enters edit mode for summary", function () {
       makeController();
       $scope.editSummary = true;
       $scope.exitEditSummary();
@@ -431,35 +454,35 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("addStaticRoute", function() {
-    it("set newStaticRoute", function() {
+  describe("addStaticRoute", function () {
+    it("set newStaticRoute", function () {
       makeController();
       $scope.subnet = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.addStaticRoute();
       expect($scope.newStaticRoute).toEqual({
         source: $scope.subnet.id,
         gateway_ip: "",
         destination: null,
-        metric: 0
+        metric: 0,
       });
     });
 
-    it("clear editStaticRoute", function() {
+    it("clear editStaticRoute", function () {
       makeController();
       $scope.subnet = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.editStaticRoute = {};
       $scope.addStaticRoute();
       expect($scope.editStaticRoute).toBeNull();
     });
 
-    it("clear deleteStaticRoute", function() {
+    it("clear deleteStaticRoute", function () {
       makeController();
       $scope.subnet = {
-        id: makeInteger(0, 100)
+        id: makeInteger(0, 100),
       };
       $scope.deleteStaticRoute = {};
       $scope.addStaticRoute();
@@ -467,8 +490,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("cancelAddStaticRoute", function() {
-    it("clears newStaticRoute", function() {
+  describe("cancelAddStaticRoute", function () {
+    it("clears newStaticRoute", function () {
       makeController();
       $scope.newStaticRoute = {};
       $scope.cancelAddStaticRoute();
@@ -476,15 +499,15 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("isStaticRouteInEditMode", function() {
-    it("returns true when editStaticRoute", function() {
+  describe("isStaticRouteInEditMode", function () {
+    it("returns true when editStaticRoute", function () {
       makeController();
       var route = {};
       $scope.editStaticRoute = route;
       expect($scope.isStaticRouteInEditMode(route)).toBe(true);
     });
 
-    it("returns false when editIPRange", function() {
+    it("returns false when editIPRange", function () {
       makeController();
       var route = {};
       $scope.editStaticRoute = route;
@@ -492,22 +515,22 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("staticRouteToggleEditMode", function() {
-    it("clears newStaticRoute", function() {
+  describe("staticRouteToggleEditMode", function () {
+    it("clears newStaticRoute", function () {
       makeController();
       $scope.newStaticRoute = {};
       $scope.staticRouteToggleEditMode({});
       expect($scope.newStaticRoute).toBeNull();
     });
 
-    it("clears deleteStaticRoute", function() {
+    it("clears deleteStaticRoute", function () {
       makeController();
       $scope.deleteStaticRoute = {};
       $scope.staticRouteToggleEditMode({});
       expect($scope.deleteStaticRoute).toBeNull();
     });
 
-    it("clears editStaticRoute when already set", function() {
+    it("clears editStaticRoute when already set", function () {
       makeController();
       var route = {};
       $scope.editStaticRoute = route;
@@ -515,7 +538,7 @@ describe("SubnetDetailsController", function() {
       expect($scope.editStaticRoute).toBeNull();
     });
 
-    it("sets editStaticRoute when different range", function() {
+    it("sets editStaticRoute when different range", function () {
       makeController();
       var route = {};
       var otherRoute = {};
@@ -525,15 +548,15 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("isStaticRouteInDeleteMode", function() {
-    it("return true when deleteStaticRoute is same", function() {
+  describe("isStaticRouteInDeleteMode", function () {
+    it("return true when deleteStaticRoute is same", function () {
       makeController();
       var route = {};
       $scope.deleteStaticRoute = route;
       expect($scope.isStaticRouteInDeleteMode(route)).toBe(true);
     });
 
-    it("return false when deleteIPRange is different", function() {
+    it("return false when deleteIPRange is different", function () {
       makeController();
       var route = {};
       $scope.deleteStaticRoute = route;
@@ -541,8 +564,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("staticRouteEnterDeleteMode", function() {
-    it("clears edit and new and sets deleteStaticRoute", function() {
+  describe("staticRouteEnterDeleteMode", function () {
+    it("clears edit and new and sets deleteStaticRoute", function () {
       makeController();
       var route = {};
       $scope.newStaticRoute = {};
@@ -554,8 +577,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("staticRouteCancelDelete", function() {
-    it("clears deleteStaticRoute", function() {
+  describe("staticRouteCancelDelete", function () {
+    it("clears deleteStaticRoute", function () {
       makeController();
       $scope.deleteStaticRoute = {};
       $scope.staticRouteCancelDelete();
@@ -563,8 +586,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("staticRouteConfirmDelete", function() {
-    it("calls deleteItem and clears deleteStaticRoute on resolve", function() {
+  describe("staticRouteConfirmDelete", function () {
+    it("calls deleteItem and clears deleteStaticRoute on resolve", function () {
       makeController();
       var route = {};
       $scope.deleteStaticRoute = route;
@@ -581,8 +604,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("actionRetry", function() {
-    it("clears actionError", function() {
+  describe("actionRetry", function () {
+    it("clears actionError", function () {
       makeController();
       $scope.actionError = {};
       $scope.actionRetry();
@@ -590,19 +613,19 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("actionGo", function() {
-    it("map_subnet action calls scanSubnet", function() {
+  describe("actionGo", function () {
+    it("map_subnet action calls scanSubnet", function () {
       makeControllerResolveSetActiveItem();
       var scanSubnet = spyOn(SubnetsManager, "scanSubnet");
       var defer = $q.defer();
       const result = {
         result: "Error message from scan.",
-        scan_started_on: ["not empty"]
+        scan_started_on: ["not empty"],
       };
       scanSubnet.and.returnValue(defer.promise);
       $scope.actionOption = {
         name: "map_subnet",
-        title: "Map subnet"
+        title: "Map subnet",
       };
       $scope.actionGo();
       defer.resolve(result);
@@ -612,18 +635,18 @@ describe("SubnetDetailsController", function() {
       expect($scope.actionError).toBeNull();
     });
 
-    it("actionError populated on scans not started", function() {
+    it("actionError populated on scans not started", function () {
       makeControllerResolveSetActiveItem();
       var scanSubnet = spyOn(SubnetsManager, "scanSubnet");
       var defer = $q.defer();
       const result = {
         result: "Error message from scan.",
-        scan_started_on: []
+        scan_started_on: [],
       };
       scanSubnet.and.returnValue(defer.promise);
       $scope.actionOption = {
         name: "map_subnet",
-        title: "Map subnet"
+        title: "Map subnet",
       };
       $scope.actionGo();
       defer.resolve(result);
@@ -632,11 +655,11 @@ describe("SubnetDetailsController", function() {
       expect($scope.actionError).toBe("Error message from scan.");
     });
 
-    it("actionError populated on map_subnet action failure", function() {
+    it("actionError populated on map_subnet action failure", function () {
       makeControllerResolveSetActiveItem();
       $scope.actionOption = {
         name: "map_subnet",
-        title: "Map subnet"
+        title: "Map subnet",
       };
       var defer = $q.defer();
       spyOn(SubnetsManager, "scanSubnet").and.returnValue(defer.promise);
@@ -648,7 +671,7 @@ describe("SubnetDetailsController", function() {
       expect($scope.actionError).toBe(error);
     });
 
-    it("delete action calls deleteSubnet", function() {
+    it("delete action calls deleteSubnet", function () {
       $location.path = jasmine.createSpy("path");
       makeControllerResolveSetActiveItem();
       var deleteSubnet = spyOn(SubnetsManager, "deleteSubnet");
@@ -656,7 +679,7 @@ describe("SubnetDetailsController", function() {
       deleteSubnet.and.returnValue(defer.promise);
       $scope.actionOption = {
         name: "delete",
-        title: "Delete"
+        title: "Delete",
       };
       $scope.actionGo();
       defer.resolve();
@@ -667,11 +690,11 @@ describe("SubnetDetailsController", function() {
       expect($scope.actionError).toBeNull();
     });
 
-    it("actionError populated on delete action failure", function() {
+    it("actionError populated on delete action failure", function () {
       makeControllerResolveSetActiveItem();
       $scope.actionOption = {
         name: "delete",
-        title: "Delete"
+        title: "Delete",
       };
       var defer = $q.defer();
       spyOn(SubnetsManager, "deleteSubnet").and.returnValue(defer.promise);
@@ -684,8 +707,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("actionChanged", function() {
-    it("clears actionError", function() {
+  describe("actionChanged", function () {
+    it("clears actionError", function () {
       makeController();
       $scope.actionError = {};
       $scope.actionChanged();
@@ -693,8 +716,8 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("cancelAction", function() {
-    it("clears actionOption and actionError", function() {
+  describe("cancelAction", function () {
+    it("clears actionOption and actionError", function () {
       makeController();
       $scope.actionOption = {};
       $scope.actionError = {};
@@ -704,40 +727,40 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("DHCPEnabled", function() {
-    it("returns undefined if no arguments provided", function() {
+  describe("DHCPEnabled", function () {
+    it("returns undefined if no arguments provided", function () {
       makeController();
       expect($scope.DHCPEnabled()).toBeUndefined();
     });
 
-    it("returns undefined if no subnet provided", function() {
+    it("returns undefined if no subnet provided", function () {
       makeController();
       expect($scope.DHCPEnabled(null, [])).toBeUndefined();
     });
 
-    it("returns undefined if subnet is not an object", function() {
+    it("returns undefined if subnet is not an object", function () {
       makeController();
       expect($scope.DHCPEnabled("foo", [])).toBeUndefined();
     });
 
-    it("returns undefined if no vlans are provided", function() {
+    it("returns undefined if no vlans are provided", function () {
       makeController();
       expect($scope.DHCPEnabled({}, null)).toBeUndefined();
     });
 
-    it("returns undefined if vlan is not an array", function() {
+    it("returns undefined if vlan is not an array", function () {
       makeController();
       expect($scope.DHCPEnabled({}, "foo")).toBeUndefined();
     });
 
-    it("returns true if DHCP enabled on VLAN", function() {
+    it("returns true if DHCP enabled on VLAN", function () {
       makeController();
       var subnet = { vlan: 5001 };
       var vlans = [{ id: 5001, dhcp_on: true }];
       expect($scope.DHCPEnabled(subnet, vlans)).toBe(true);
     });
 
-    it("returns false if DHCP is not enabled on VLAN", function() {
+    it("returns false if DHCP is not enabled on VLAN", function () {
       makeController();
       var subnet = { vlan: 5001 };
       var vlans = [{ id: 5001, dhcp_on: false }];
@@ -745,15 +768,15 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("getVLANOnSubnet", function() {
-    it("returns vlan from subnet", function() {
+  describe("getVLANOnSubnet", function () {
+    it("returns vlan from subnet", function () {
       makeController();
       var subnet = { vlan: 5001 };
       var vlans = [{ id: 5001 }, { id: 5002 }];
       expect($scope.getVLANOnSubnet(subnet, vlans)).toEqual(vlans[0]);
     });
 
-    it("returns undefined if no vlan", function() {
+    it("returns undefined if no vlan", function () {
       makeController();
       var subnet = { vlan: 5001 };
       var vlans = [{ id: 5002 }];
@@ -761,24 +784,24 @@ describe("SubnetDetailsController", function() {
     });
   });
 
-  describe("hasIPAddresses", function() {
-    it("returns undefined if no argument provided", function() {
+  describe("hasIPAddresses", function () {
+    it("returns undefined if no argument provided", function () {
       makeController();
       expect($scope.hasIPAddresses()).toBeUndefined();
     });
 
-    it("returns undefined if argument is not an array", function() {
+    it("returns undefined if argument is not an array", function () {
       makeController();
       expect($scope.hasIPAddresses("foo")).toBeUndefined();
     });
 
-    it("returns true if argument has IP addresses", function() {
+    it("returns true if argument has IP addresses", function () {
       makeController();
       var IPAddresses = [{ ip: "172.16.4.14" }];
       expect($scope.hasIPAddresses(IPAddresses)).toBe(true);
     });
 
-    it("returns false if argument has no IP addresses", function() {
+    it("returns false if argument has no IP addresses", function () {
       makeController();
       expect($scope.hasIPAddresses([])).toBe(false);
     });

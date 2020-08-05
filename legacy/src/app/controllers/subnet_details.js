@@ -4,6 +4,8 @@
  * MAAS Subnet Details Controller
  */
 
+import removeDuplicates from "../filters/remove_duplicates";
+
 export function filterSource() {
   return function(subnets, source) {
     var filtered = [];
@@ -113,6 +115,9 @@ export function SubnetDetailsController(
       $scope.ipVersion = 6;
     }
   }
+
+  // Used to remove duplicate IPs
+  $scope.removeDuplicates = removeDuplicates;
 
   // Sort for IP address.
   $scope.ipSort = function(ipAddress) {
