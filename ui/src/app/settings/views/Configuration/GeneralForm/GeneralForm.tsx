@@ -1,6 +1,6 @@
 import { Link } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
@@ -10,9 +10,16 @@ import { usePrevious } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
+declare global {
+  interface Window {
+    usabilla_live: (type: string, trigger: string) => void;
+  }
+}
+
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
   enable_analytics: Yup.boolean(),
+  release_notifications: Yup.boolean(),
 });
 
 const GeneralForm = (): JSX.Element => {
@@ -24,7 +31,7 @@ const GeneralForm = (): JSX.Element => {
   );
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
-
+  const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
 
   useEffect(() => {
@@ -58,6 +65,17 @@ const GeneralForm = (): JSX.Element => {
             "Enable Google Analytics"
           );
         }
+        // Show the Usabilla form if the notifications have been turned off and
+        // analytics has been enabled and Usabilla as been instantiated.
+        if (
+          !values.release_notifications &&
+          previousReleaseNotifications.current &&
+          values.enable_analytics &&
+          window.usabilla_live
+        ) {
+          window.usabilla_live("trigger", "release_notifications_off");
+        }
+        previousReleaseNotifications.current = values.release_notifications;
         dispatch(configActions.update(values));
         resetForm({ values });
       }}

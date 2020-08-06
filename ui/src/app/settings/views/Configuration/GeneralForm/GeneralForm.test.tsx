@@ -9,11 +9,12 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import GeneralForm from "./GeneralForm";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("GeneralForm", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
@@ -74,5 +75,23 @@ describe("GeneralForm", () => {
     expect(
       wrapper.find("input[name='release_notifications']").props().value
     ).toBe(true);
+  });
+
+  it("can trigger usabilla when the notifications are turned off", () => {
+    const store = mockStore(state);
+    window.usabilla_live = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    wrapper.find("Formik").props().onSubmit(
+      {
+        enable_analytics: true,
+        release_notifications: false,
+      },
+      { resetForm: jest.fn() }
+    );
+    expect(window.usabilla_live).toHaveBeenCalled();
   });
 });
