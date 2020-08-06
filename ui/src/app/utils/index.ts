@@ -8,7 +8,6 @@ export { formatSpeedUnits } from "./formatSpeedUnits";
 export { getCookie } from "./getCookie";
 export { getMachineValue } from "./search";
 export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
-export { generateLegacyURL } from "./generateLegacyURL";
 export { getPowerIcon } from "./getPowerIcon";
 export { getStatusText } from "./getStatusText";
 export { groupAsMap } from "./groupAsMap";

@@ -183,12 +183,12 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       element="a"
       href="/MAAS/l/machine/abc123?area=logs"
       key="0"
-      onClick={null}
+      onClick={[Function]}
     >
       <a
         className="p-button--neutral p-contextual-menu__link"
         href="/MAAS/l/machine/abc123?area=logs"
-        onClick={null}
+        onClick={[Function]}
       >
         See logs
       </a>
@@ -198,12 +198,12 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       element="a"
       href="/MAAS/l/machine/abc123?area=events"
       key="1"
-      onClick={null}
+      onClick={[Function]}
     >
       <a
         className="p-button--neutral p-contextual-menu__link"
         href="/MAAS/l/machine/abc123?area=events"
-        onClick={null}
+        onClick={[Function]}
       >
         See events
       </a>
@@ -228,11 +228,13 @@ exports[`StatusColumn renders 1`] = `
             "children": "See logs",
             "element": "a",
             "href": "/MAAS/l/machine/abc123?area=logs",
+            "onClick": [Function],
           },
           Object {
             "children": "See events",
             "element": "a",
             "href": "/MAAS/l/machine/abc123?area=events",
+            "onClick": [Function],
           },
         ],
       ]
@@ -291,11 +293,13 @@ exports[`StatusColumn renders 1`] = `
                     "children": "See logs",
                     "element": "a",
                     "href": "/MAAS/l/machine/abc123?area=logs",
+                    "onClick": [Function],
                   },
                   Object {
                     "children": "See events",
                     "element": "a",
                     "href": "/MAAS/l/machine/abc123?area=events",
+                    "onClick": [Function],
                   },
                 ],
               ]
@@ -348,11 +352,13 @@ exports[`StatusColumn renders 1`] = `
                       "children": "See logs",
                       "element": "a",
                       "href": "/MAAS/l/machine/abc123?area=logs",
+                      "onClick": [Function],
                     },
                     Object {
                       "children": "See events",
                       "element": "a",
                       "href": "/MAAS/l/machine/abc123?area=events",
+                      "onClick": [Function],
                     },
                   ],
                 ]

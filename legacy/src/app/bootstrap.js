@@ -1,5 +1,7 @@
 import Cookies from "js-cookie";
 
+import { BASENAME } from "@maas-ui/maas-ui-shared";
+
 const buildUrl = () => {
   const host = process.env.MAAS_WEBSOCKET_HOST
     ? process.env.MAAS_WEBSOCKET_HOST
@@ -7,9 +9,7 @@ const buildUrl = () => {
   let port = process.env.MAAS_WEBSOCKET_PORT
     ? process.env.MAAS_WEBSOCKET_PORT
     : window.location.port;
-  let path = process.env.BASENAME
-    ? process.env.BASENAME
-    : window.location.pathname;
+  let path = BASENAME ? BASENAME : window.location.pathname;
   let proto = "ws";
   if (window.location.protocol === "https:") {
     proto = "wss";

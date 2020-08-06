@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
 import zoneSelectors from "app/store/zone/selectors";
-import { generateLegacyURL } from "app/utils";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
+import LegacyLink from "app/base/components/LegacyLink";
 
 const getSpaces = (machine) => {
   if (machine.spaces.length > 1) {
@@ -59,8 +59,6 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
     }
   }, [updating, machine.zone.id]);
 
-  const zoneURL = generateLegacyURL(`/zone/${machine.zone.id}`);
-
   return (
     <DoubleRow
       menuLinks={onToggleMenu && zoneLinks}
@@ -71,16 +69,12 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
           {updating !== null ? (
             <Spinner className="u-no-margin u-no-padding--left" inline />
           ) : null}
-          <a
+          <LegacyLink
             className="p-link--soft"
-            href={zoneURL}
-            onClick={(evt) => {
-              evt.preventDefault();
-              window.history.pushState(null, null, zoneURL);
-            }}
+            route={`/zone/${machine.zone.id}`}
           >
             {machine.zone.name}
-          </a>
+          </LegacyLink>
         </span>
       }
       primaryTitle={machine.zone.name}

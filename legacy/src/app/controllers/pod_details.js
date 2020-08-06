@@ -5,6 +5,8 @@
  */
 import angular from "angular";
 
+import { BASENAME, LEGACY_BASENAME } from "@maas-ui/maas-ui-shared";
+
 /* @ngInject */
 function PodDetailsController(
   $scope,
@@ -99,8 +101,8 @@ function PodDetailsController(
   };
   $scope.machinesSearch = "pod-id:=invalid";
   $scope.editing = false;
-  $scope.BASENAME = process.env.BASENAME;
-  $scope.ANGULAR_BASENAME = process.env.ANGULAR_BASENAME;
+  $scope.BASENAME = BASENAME;
+  $scope.LEGACY_BASENAME = LEGACY_BASENAME;
 
   // Pod name section.
   $scope.name = {
