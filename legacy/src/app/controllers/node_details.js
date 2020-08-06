@@ -899,6 +899,12 @@ function NodeDetailsController(
         extra.distro_series = "bionic";
       }
       extra.install_kvm = installKVM;
+
+      // cloud-config
+      const userData = $scope.deployOptions.userData;
+      if (userData) {
+        extra.user_data = userData;
+      }
     } else if ($scope.action.option.name === "commission") {
       extra.enable_ssh = $scope.commissionOptions.enableSSH;
       extra.skip_bmc_config = $scope.commissionOptions.skipBMCConfig;

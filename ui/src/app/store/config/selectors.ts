@@ -427,6 +427,15 @@ const completedIntro = createSelector([all], (configs) =>
   getValueFromName(configs, "completed_intro")
 );
 
+/**
+ * Returns the MAAS config for whether the release notifications are enabled.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Whether the release notifications are enabled.
+ */
+const releaseNotifications = createSelector([all], (configs) =>
+  getValueFromName(configs, "release_notifications")
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
@@ -457,6 +466,7 @@ const config = {
   ntpExternalOnly,
   ntpServers,
   proxyType,
+  releaseNotifications,
   remoteSyslog,
   saved,
   saving,
