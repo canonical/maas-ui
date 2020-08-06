@@ -3,33 +3,30 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import GeneralForm from "./GeneralForm";
 
 const mockStore = configureStore();
 
 describe("GeneralForm", () => {
-  let initialState;
+  let state;
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    state = rootStateFactory({
+      config: configStateFactory({
         items: [
-          {
-            name: "maas_name",
-            value: "bionic-maas",
-          },
-          {
-            name: "enable_analytics",
-            value: true,
-          },
+          configFactory({ name: "maas_name", value: "bionic-maas" }),
+          configFactory({ name: "enable_analytics", value: true }),
+          configFactory({ name: "release_notifications", value: true }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = shallow(
@@ -41,7 +38,6 @@ describe("GeneralForm", () => {
   });
 
   it("sets maas_name value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -55,7 +51,6 @@ describe("GeneralForm", () => {
   });
 
   it("sets enable_analytics value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -66,5 +61,18 @@ describe("GeneralForm", () => {
     expect(wrapper.find("input[name='enable_analytics']").props().value).toBe(
       true
     );
+  });
+
+  it("sets release_notifications value", () => {
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <GeneralForm />
+      </Provider>
+    );
+    expect(
+      wrapper.find("input[name='release_notifications']").props().value
+    ).toBe(true);
   });
 });
