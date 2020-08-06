@@ -5,12 +5,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { generateLegacyURL } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
 import scriptresultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
+import LegacyLink from "app/base/components/LegacyLink";
 
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
@@ -20,19 +20,12 @@ const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
       numFailedTests
     )}.`;
     if (singleMachine) {
-      const url = generateLegacyURL(`/machine/${singleMachine.system_id}`);
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <a
-            href={url}
-            onClick={(evt) => {
-              evt.preventDefault();
-              window.history.pushState(null, null, url);
-            }}
-          >
+          <LegacyLink route={`/machine/${singleMachine.system_id}`}>
             {numFailedTestsString}
-          </a>
+          </LegacyLink>
         </span>
       );
     }
@@ -141,23 +134,11 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
                       remain visible in
                       <br />
                       {selectedMachines.length === 1 ? (
-                        <a
-                          href={generateLegacyURL(
-                            `/machine/${selectedMachines[0].system_id}`
-                          )}
-                          onClick={(evt) => {
-                            evt.preventDefault();
-                            window.history.pushState(
-                              null,
-                              null,
-                              generateLegacyURL(
-                                `/machine/${selectedMachines[0].system_id}`
-                              )
-                            );
-                          }}
+                        <LegacyLink
+                          route={`/machine/${selectedMachines[0].system_id}`}
                         >
                           Machine &gt; Hardware tests
-                        </a>
+                        </LegacyLink>
                       ) : (
                         "Machine > Hardware tests"
                       )}

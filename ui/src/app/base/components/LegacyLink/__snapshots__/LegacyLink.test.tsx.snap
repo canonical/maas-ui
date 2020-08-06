@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LegacyLink renders 1`] = `
+<Link
+  href="/MAAS/l/machines"
+  onClick={[Function]}
+>
+  Machines
+</Link>
+`;

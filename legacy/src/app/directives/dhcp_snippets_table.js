@@ -5,6 +5,7 @@
  */
 import angular from "angular";
 
+import { BASENAME, REACT_BASENAME } from "@maas-ui/maas-ui-shared";
 import dhcpSnippetsTableTmpl from "../partials/dhcp-snippets-table.html";
 
 /* @ngInject */
@@ -20,8 +21,8 @@ function maasDhcpSnippetsTable($window) {
     template: dhcpSnippetsTableTmpl,
     controller: DHCPSnippetsTableController,
     link: (scope) => {
-      scope.BASENAME = process.env.BASENAME;
-      scope.REACT_BASENAME = process.env.REACT_BASENAME;
+      scope.BASENAME = BASENAME;
+      scope.REACT_BASENAME = REACT_BASENAME;
     },
   };
 }

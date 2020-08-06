@@ -13,7 +13,13 @@ import {
 import { getCookie } from "app/utils";
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import { Footer, Header } from "@maas-ui/maas-ui-shared";
+import {
+  REACT_BASENAME,
+  Footer,
+  Header,
+  navigateToLegacy,
+  navigateToNew,
+} from "@maas-ui/maas-ui-shared";
 import { status as statusActions } from "app/base/actions";
 import { websocket } from "./base/actions";
 import authSelectors from "app/store/auth/selectors";
@@ -40,7 +46,6 @@ export const App = () => {
   const uuid = useSelector(configSelectors.uuid);
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
-  const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {
@@ -53,8 +58,7 @@ export const App = () => {
       window.addEventListener("popstate", (evt) => {
         if (evt.singleSpa) {
           const reactRoute =
-            window.location.pathname.split("/")[2] ===
-            process.env.REACT_APP_REACT_BASENAME.substr(1);
+            window.location.pathname.split("/")[2] === REACT_BASENAME.substr(1);
           if (reactRoute) {
             // Get path without basename, react basename
             const newRoute = window.location.pathname.split("/").slice(3);
@@ -98,17 +102,9 @@ export const App = () => {
     // Explicitly check that completedIntro is false so that it doesn't redirect
     // if the config isn't defined yet.
     if (completedIntro === false) {
-      window.history.pushState(
-        null,
-        null,
-        `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro`
-      );
+      navigateToLegacy("/intro");
     } else if (authUser && !authUser.completed_intro) {
-      window.history.pushState(
-        null,
-        null,
-        `${basename}${process.env.REACT_APP_ANGULAR_BASENAME}/intro/user`
-      );
+      navigateToNew("/intro/user");
     }
   }
 
@@ -152,8 +148,8 @@ export const App = () => {
   return (
     <div id="maas-ui">
       <Header
+        appendNewBase={false}
         authUser={authUser}
-        basename={process.env.REACT_APP_BASENAME}
         completedIntro={completedIntro && authUser && authUser.completed_intro}
         debug={debug}
         enableAnalytics={analyticsEnabled}

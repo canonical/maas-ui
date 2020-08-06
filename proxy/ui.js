@@ -2,25 +2,29 @@ require("dotenv-flow").config();
 const path = require("path");
 var express = require("express");
 var { createProxyMiddleware } = require("http-proxy-middleware");
+const { BASENAME, REACT_BASENAME } = require("@maas-ui/maas-ui-shared");
 
 var app = express();
 
 const PROXY_PORT = 8400;
 const UI_PORT = 8401;
 
+app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
+app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
+app.get(`${BASENAME}/`, (req, res) =>
+  res.redirect(`${BASENAME}${REACT_BASENAME}`)
+);
+
 // Proxy API endpoints to the MAAS.
 app.use(
-  createProxyMiddleware(
-    [`${process.env.BASENAME}/api`, `${process.env.BASENAME}/accounts`],
-    {
-      target: process.env.MAAS_URL,
-    }
-  )
+  createProxyMiddleware([`${BASENAME}/api`, `${BASENAME}/accounts`], {
+    target: process.env.MAAS_URL,
+  })
 );
 
 // Proxy the WebSocket API endpoint to the MAAS.
 app.use(
-  createProxyMiddleware(`${process.env.BASENAME}/ws`, {
+  createProxyMiddleware(`${BASENAME}/ws`, {
     target: process.env.MAAS_URL,
     ws: true,
   })
@@ -40,11 +44,6 @@ app.use(
     target: `http://localhost:${UI_PORT}/`,
   })
 );
-
-app.get(process.env.BASENAME, (req, res) =>
-  res.redirect(`${process.env.BASENAME}/`)
-);
-app.get("/", (req, res) => res.redirect(`${process.env.BASENAME}/`));
 
 app.listen(PROXY_PORT);
 

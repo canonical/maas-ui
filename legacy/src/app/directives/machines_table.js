@@ -7,6 +7,7 @@
  */
 import angular from "angular";
 
+import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { NodeStatus } from "../enum";
 import removeDuplicates from "../filters/remove_duplicates";
 import machinesTableTmpl from "../partials/machines-table.html";
@@ -84,7 +85,7 @@ function maasMachinesTable(
     const machines = MachinesManager.getItems();
 
     // Scope variables.
-    $scope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
+    $scope.legacyURLBase = generateLegacyURL();
     $scope.table = {
       column: "fqdn",
       predicate: $scope.defaultSort || "fqdn",

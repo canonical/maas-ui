@@ -6,6 +6,8 @@
 
 import bakery from "macaroon-bakery";
 
+import { BASENAME } from "@maas-ui/maas-ui-shared";
+
 export function getBakery() {
   return function (visitPage) {
     return new bakery.Bakery({
@@ -50,7 +52,7 @@ export function externalLogin($window, getBakery) {
     const bakery = getBakery(visitPage);
     const nextPath = $element.attr("next-path");
     bakery.get(
-      `${process.env.BASENAME}/accounts/discharge-request/`,
+      `${BASENAME}/accounts/discharge-request/`,
       {
         Accept: "application/json",
         "Content-Type": "application/json",

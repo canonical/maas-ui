@@ -17,13 +17,12 @@ exports[`FabricColumn renders 1`] = `
         }
         tooltipPosition="top-left"
       >
-        <a
+        <LegacyLink
           className="p-link--soft"
-          href="/MAAS/l/fabric/0"
-          onClick={[Function]}
+          route="/fabric/0"
         >
           fabric-0
-        </a>
+        </LegacyLink>
       </ScriptStatus>
     }
     primaryAriaLabel="Fabric"
@@ -66,13 +65,24 @@ exports[`FabricColumn renders 1`] = `
               <i
                 className="p-icon--running is-inline"
               />
-              <a
+              <LegacyLink
                 className="p-link--soft"
-                href="/MAAS/l/fabric/0"
-                onClick={[Function]}
+                route="/fabric/0"
               >
-                fabric-0
-              </a>
+                <Link
+                  className="p-link--soft"
+                  href="/MAAS/l/fabric/0"
+                  onClick={[Function]}
+                >
+                  <a
+                    className="p-link--soft"
+                    href="/MAAS/l/fabric/0"
+                    onClick={[Function]}
+                  >
+                    fabric-0
+                  </a>
+                </Link>
+              </LegacyLink>
             </ScriptStatus>
           </div>
         </div>

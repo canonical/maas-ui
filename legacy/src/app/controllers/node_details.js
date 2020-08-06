@@ -5,6 +5,7 @@
  */
 import angular from "angular";
 
+import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { HardwareType, NodeTypes } from "../enum";
 
 // Convert MiB to GiB value if over 1024 and round to 4 significant figures.
@@ -77,7 +78,7 @@ function NodeDetailsController(
   $rootScope.title = "Loading...";
 
   // Initial values.
-  $scope.legacyUrlBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
+  $scope.legacyUrlBase = generateLegacyURL();
   $scope.loaded = false;
   $scope.node = null;
   $scope.action = {
@@ -558,7 +559,7 @@ function NodeDetailsController(
   // Starts the watchers on the scope.
   function startWatching() {
     if (angular.isObject($scope.node)) {
-      $scope.$watch("nodesManager.getActiveItem()", function(activeItem) {
+      $scope.$watch("nodesManager.getActiveItem()", function (activeItem) {
         if (!activeItem) {
           // Show an error if the current node is removed.
           ErrorService.raiseError(`No item with pk: ${$scope.node.system_id}`);

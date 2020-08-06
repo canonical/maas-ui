@@ -1,7 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Footer, Header } from "@maas-ui/maas-ui-shared";
+import {
+  Footer,
+  generateBaseURL,
+  generateLegacyURL,
+  generateNewURL,
+  Header,
+  navigateToLegacy,
+  navigateToNew,
+} from "@maas-ui/maas-ui-shared";
 
 /* @ngInject */
 function MasterController(
@@ -12,15 +20,11 @@ function MasterController(
   ErrorService
 ) {
   const debug = process.env.NODE_ENV === "development";
-  const LOGOUT_API = `${process.env.BASENAME}/accounts/logout/`;
-  $rootScope.legacyURLBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
-  $rootScope.newURLBase = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
-  $rootScope.navigateToLegacy = (route) => {
-    window.history.pushState(null, null, `${$rootScope.legacyURLBase}${route}`);
-  };
-  $rootScope.navigateToNew = (route) => {
-    window.history.pushState(null, null, `${$rootScope.newURLBase}${route}`);
-  };
+  const LOGOUT_API = generateBaseURL("/accounts/logout/");
+  $rootScope.legacyURLBase = generateLegacyURL();
+  $rootScope.newURLBase = generateNewURL();
+  $rootScope.navigateToLegacy = navigateToLegacy;
+  $rootScope.navigateToNew = navigateToNew;
 
   const renderHeader = () => {
     const headerNode = document.querySelector("#header");
@@ -37,7 +41,6 @@ function MasterController(
     ReactDOM.render(
       <Header
         authUser={current_user}
-        basename={process.env.BASENAME}
         completedIntro={
           completed_intro && current_user && current_user.completed_intro
         }
@@ -47,10 +50,9 @@ function MasterController(
         logout={() => {
           localStorage.clear();
           $http.post(LOGOUT_API).then(() => {
-            window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+            window.location = generateNewURL();
           });
         }}
-        newURLPrefix={process.env.REACT_BASENAME}
         onSkip={() => {
           // Call skip inside this function because skip won't exist when the
           // header is first rendered.

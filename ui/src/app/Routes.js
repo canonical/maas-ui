@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import KVM from "app/kvm/views/KVM";
@@ -10,14 +10,9 @@ import Settings from "app/settings/views/Settings";
 
 const Routes = () => (
   <Switch>
-    <Route
-      exact
-      path="/"
-      component={() => {
-        window.location.href = `${process.env.REACT_APP_BASENAME}/r/machines`;
-        return null;
-      }}
-    />
+    <Route exact path="/">
+      <Redirect to="/machines" />
+    </Route>
     <Route
       path="/account/prefs"
       render={() => (

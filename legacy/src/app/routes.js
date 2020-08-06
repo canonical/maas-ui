@@ -1,3 +1,9 @@
+import {
+  generateLegacyURL,
+  navigateToNew,
+  navigateToLegacy,
+} from "@maas-ui/maas-ui-shared";
+
 import layoutTmpl from "./partials/layout.html";
 import dashboardTmpl from "./partials/dashboard.html";
 import domainDetailsTmpl from "./partials/domain-details.html";
@@ -19,9 +25,6 @@ import vlanDetailsTmpl from "./partials/vlan-details.html";
 import zoneDetailsTmpl from "./partials/zone-details.html";
 import zonesListTmpl from "./partials/zones-list.html";
 
-export const prefixRoute = (route) =>
-  `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}${route}`;
-
 /* @ngInject */
 const configureRoutes = ($stateProvider, $urlRouterProvider) => {
   $stateProvider
@@ -31,205 +34,205 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
       controller: "MasterController",
     })
     .state("master.intro", {
-      url: prefixRoute("/intro"),
+      url: generateLegacyURL("/intro"),
       template: introTmpl,
       controller: "IntroController",
     })
     .state("master.introUser", {
-      url: prefixRoute("/intro/user"),
+      url: generateLegacyURL("/intro/user"),
       template: introUserTmpl,
       controller: "IntroUserController",
     })
     .state("master.machineResultDetails", {
-      url: prefixRoute("/machine/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/machine/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.machineEvents", {
-      url: prefixRoute("/machine/:system_id/events"),
+      url: generateLegacyURL("/machine/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.machineDetails", {
-      url: prefixRoute("/machine/:system_id"),
+      url: generateLegacyURL("/machine/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("master.devices", {
-      url: prefixRoute("/devices"),
+      url: generateLegacyURL("/devices"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.deviceResultDetails", {
-      url: prefixRoute("/device/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/device/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.deviceEvents", {
-      url: prefixRoute("/device/:system_id/events"),
+      url: generateLegacyURL("/device/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.deviceDetails", {
-      url: prefixRoute("/device/:system_id"),
+      url: generateLegacyURL("/device/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("master.controllers", {
-      url: prefixRoute("/controllers"),
+      url: generateLegacyURL("/controllers"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.controllerResultDetails", {
-      url: prefixRoute("/controller/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/controller/:system_id/:result_type/:id"),
       template: nodeResultTmpl,
       controller: "NodeResultController",
     })
     .state("master.controllerEvents", {
-      url: prefixRoute("/controller/:system_id/events"),
+      url: generateLegacyURL("/controller/:system_id/events"),
       template: nodeEventsTmpl,
       controller: "NodeEventsController",
     })
     .state("master.controllerDetails", {
-      url: prefixRoute("/controller/:system_id"),
+      url: generateLegacyURL("/controller/:system_id"),
       template: nodeDetailsTmpl,
       controller: "NodeDetailsController",
       reloadOnSearch: false,
     })
     .state("nodes", {
-      url: prefixRoute("/nodes"),
-      redirectTo: prefixRoute("/machines"),
+      url: generateLegacyURL("/nodes"),
+      redirectTo: generateLegacyURL("/machines"),
     })
     .state("nodeDetails", {
-      url: prefixRoute("/node/machine/:system_id"),
-      redirectTo: prefixRoute("/machine/:system_id"),
+      url: generateLegacyURL("/node/machine/:system_id"),
+      redirectTo: generateLegacyURL("/machine/:system_id"),
     })
     .state("nodeResultDetails", {
-      url: prefixRoute("/node/machine/:system_id/:result_type/:id"),
-      redirectTo: prefixRoute("/machine/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/node/machine/:system_id/:result_type/:id"),
+      redirectTo: generateLegacyURL("/machine/:system_id/:result_type/:id"),
     })
     .state("nodeEvents", {
-      url: prefixRoute("/node/machine/:system_id/events"),
-      redirectTo: prefixRoute("/machine/:system_id/events"),
+      url: generateLegacyURL("/node/machine/:system_id/events"),
+      redirectTo: generateLegacyURL("/machine/:system_id/events"),
     })
     .state("nodeDeviceDetails", {
-      url: prefixRoute("/node/device/:system_id"),
-      redirectTo: prefixRoute("/device/:system_id"),
+      url: generateLegacyURL("/node/device/:system_id"),
+      redirectTo: generateLegacyURL("/device/:system_id"),
     })
     .state("nodeDeviceResultDetail", {
-      url: prefixRoute("/node/device/:system_id/:result_type/:id"),
-      redirectTo: prefixRoute("/device/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/node/device/:system_id/:result_type/:id"),
+      redirectTo: generateLegacyURL("/device/:system_id/:result_type/:id"),
     })
     .state("nodeDeviceEvents", {
-      url: prefixRoute("/node/device/:system_id/events"),
-      redirectTo: prefixRoute("/device/:system_id/events"),
+      url: generateLegacyURL("/node/device/:system_id/events"),
+      redirectTo: generateLegacyURL("/device/:system_id/events"),
     })
     .state("nodeControllerDetails", {
-      url: prefixRoute("/node/controller/:system_id"),
-      redirectTo: prefixRoute("/controller/:system_id"),
+      url: generateLegacyURL("/node/controller/:system_id"),
+      redirectTo: generateLegacyURL("/controller/:system_id"),
     })
     .state("nodeControllerResultDetails", {
-      url: prefixRoute("/node/controller/:system_id/:result_type/:id"),
-      redirectTo: prefixRoute("/controller/:system_id/:result_type/:id"),
+      url: generateLegacyURL("/node/controller/:system_id/:result_type/:id"),
+      redirectTo: generateLegacyURL("/controller/:system_id/:result_type/:id"),
     })
     .state("nodeControllerEvents", {
-      url: prefixRoute("/node/controller/:system_id/events"),
-      redirectTo: prefixRoute("/controller/:system_id/events"),
+      url: generateLegacyURL("/node/controller/:system_id/events"),
+      redirectTo: generateLegacyURL("/controller/:system_id/events"),
     })
     .state("master.kvm", {
-      url: prefixRoute("/kvm"),
+      url: generateLegacyURL("/kvm"),
       template: podsListTmpl,
       controller: "PodsListController",
     })
     .state("master.kvmDetails", {
-      url: prefixRoute("/kvm/:id"),
+      url: generateLegacyURL("/kvm/:id"),
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
     .state("pods", {
-      url: prefixRoute("/pods"),
-      redirectTo: prefixRoute("/kvm"),
+      url: generateLegacyURL("/pods"),
+      redirectTo: generateLegacyURL("/kvm"),
     })
     .state("podDetails", {
-      url: prefixRoute("/pod/:id"),
-      redirectTo: prefixRoute("/kvm/:id"),
+      url: generateLegacyURL("/pod/:id"),
+      redirectTo: generateLegacyURL("/kvm/:id"),
     })
     .state("master.rsd", {
-      url: prefixRoute("/rsd"),
+      url: generateLegacyURL("/rsd"),
       template: podsListTmpl,
       controller: "PodsListController",
     })
     .state("master.rsdDetails", {
-      url: prefixRoute("/rsd/:id"),
+      url: generateLegacyURL("/rsd/:id"),
       template: podDetailsTmpl,
       controller: "PodDetailsController",
     })
     .state("master.images", {
-      url: prefixRoute("/images"),
+      url: generateLegacyURL("/images"),
       template: imagesTmpl,
       controller: "ImagesController",
     })
     .state("master.domains", {
-      url: prefixRoute("/domains"),
+      url: generateLegacyURL("/domains"),
       template: domainsListTmpl,
       controller: "DomainsListController",
     })
     .state("master.domainDetails", {
-      url: prefixRoute("/domain/:domain_id"),
+      url: generateLegacyURL("/domain/:domain_id"),
       template: domainDetailsTmpl,
       controller: "DomainDetailsController",
     })
     .state("master.spaceDetails", {
-      url: prefixRoute("/space/:space_id"),
+      url: generateLegacyURL("/space/:space_id"),
       template: spaceDetailsTmpl,
       controller: "SpaceDetailsController",
     })
     .state("master.fabricDetails", {
-      url: prefixRoute("/fabric/:fabric_id"),
+      url: generateLegacyURL("/fabric/:fabric_id"),
       template: fabricDetailsTmpl,
       controller: "FabricDetailsController",
     })
     .state("master.subnets", {
-      url: prefixRoute("/subnets"),
+      url: generateLegacyURL("/subnets"),
       redirectTo: "/networks?by=fabric",
     })
     .state("master.network", {
-      url: prefixRoute("/networks"),
+      url: generateLegacyURL("/networks"),
       template: networksListTmpl,
       controller: "NetworksListController",
       reloadOnSearch: false,
     })
     .state("master.subnetDetails", {
-      url: prefixRoute("/subnet/:subnet_id"),
+      url: generateLegacyURL("/subnet/:subnet_id"),
       template: subnetDetailsTmpl,
       controller: "SubnetDetailsController",
     })
     .state("master.vlanDetails", {
-      url: prefixRoute("/vlan/:vlan_id"),
+      url: generateLegacyURL("/vlan/:vlan_id"),
       template: vlanDetailsTmpl,
       controller: "VLANDetailsController",
       controllerAs: "vlanDetails",
     })
     .state("master.zoneDetails", {
-      url: prefixRoute("/zone/:zone_id"),
+      url: generateLegacyURL("/zone/:zone_id"),
       template: zoneDetailsTmpl,
       controller: "ZoneDetailsController",
     })
     .state("master.zones", {
-      url: prefixRoute("/zones"),
+      url: generateLegacyURL("/zones"),
       template: zonesListTmpl,
       controller: "ZonesListController",
       reloadOnSearch: false,
     })
     .state("master.pools", {
-      url: prefixRoute("/pools"),
+      url: generateLegacyURL("/pools"),
       template: nodesListTmpl,
       controller: "NodesListController",
     })
     .state("master.dashboard", {
-      url: prefixRoute("/dashboard"),
+      url: generateLegacyURL("/dashboard"),
       template: dashboardTmpl,
       controller: "DashboardController",
     });
@@ -237,20 +240,10 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise(($injector, $location) => {
     // Redirect old hash routes to new routes
     if ($location.hash()) {
-      window.history.pushState(
-        null,
-        null,
-        `${process.env.BASENAME}${
-          process.env.ANGULAR_BASENAME
-        }${$location.hash()}`
-      );
+      navigateToLegacy($location.hash());
     } else {
       // fallthrough redirect machine listing
-      window.history.pushState(
-        null,
-        null,
-        `${process.env.BASENAME}${process.env.REACT_BASENAME}/machines`
-      );
+      navigateToNew("/machines");
     }
   });
 };
