@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Notification, Row } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 import { isReleaseNotification } from "app/store/utils";
@@ -26,7 +26,7 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
     notificationSelectors.getById(state, id)
   );
   const showMenu =
-    isReleaseNotification(notification) && authUser && authUser.is_superuser;
+    isReleaseNotification(notification) && authUser?.is_superuser;
   return (
     <Notification
       className={showMenu ? "p-notification--has-menu" : null}
@@ -47,19 +47,11 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
           dropdownClassName="p-notification__menu"
           dropdownContent={
             <>
-              <Row>
-                <Col className="u-sv1" size="6">
-                  Enable new release notifications
-                </Col>
-                <Col size="2">
-                  <Switch disabled={true} checked={true} />
-                </Col>
-              </Row>
-              <Row>
-                <Col size="8">
-                  <Link to="/settings/configuration/general">See settings</Link>
-                </Col>
-              </Row>
+              <div className="u-flex--between">
+                <div className="u-sv1">Enable new release notifications</div>
+                <Switch disabled={true} checked={true} />
+              </div>
+              <Link to="/settings/configuration/general">See settings</Link>
             </>
           }
           hasToggleIcon
