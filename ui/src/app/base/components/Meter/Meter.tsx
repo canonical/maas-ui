@@ -3,16 +3,17 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useOnWindowResize } from "app/base/hooks";
+import { COLOURS } from "app/base/constants";
 
 export const DEFAULT_FILLED_COLORS = [
-  "#0066CC",
-  "#0E8420",
-  "#C7162B",
-  "#F99B11",
+  COLOURS.LINK,
+  COLOURS.POSITIVE,
+  COLOURS.NEGATIVE,
+  COLOURS.CAUTION,
 ];
-export const DEFAULT_EMPTY_COLOR = "#D3E4ED";
-export const DEFAULT_OVER_COLOR = "#F99B11";
-export const DEFAULT_SEPARATOR_COLOR = "#F7F7F7";
+export const DEFAULT_EMPTY_COLOR = COLOURS.LINK_FADED;
+export const DEFAULT_OVER_COLOR = COLOURS.CAUTION;
+export const DEFAULT_SEPARATOR_COLOR = COLOURS.LIGHT;
 
 const updateWidths = (
   el: React.MutableRefObject<Element | null>,

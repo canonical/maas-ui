@@ -1,4 +1,11 @@
 @mixin maas-utilities {
+  .u-default-text {
+    color: $color-dark !important;
+    font-size: 1rem !important;
+    font-weight: 300 !important;
+    text-transform: none !important;
+  }
+
   .u-display-inline {
     display: inline;
   }
