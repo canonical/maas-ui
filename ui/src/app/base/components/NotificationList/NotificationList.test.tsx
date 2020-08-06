@@ -4,10 +4,12 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
-  notification as notificationFactory,
-  notificationState as notificationStateFactory,
+  config as configFactory,
+  configState as configStateFactory,
   message as messageFactory,
   messageState as messageStateFactory,
+  notification as notificationFactory,
+  notificationState as notificationStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import NotificationList from "./NotificationList";
@@ -29,6 +31,9 @@ describe("NotificationList", () => {
       }),
     ];
     state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "release_notifications", value: false })],
+      }),
       messages: messageStateFactory({
         items: [messageFactory({ id: 1, message: "User deleted" })],
       }),
