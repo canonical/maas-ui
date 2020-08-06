@@ -113,7 +113,7 @@ describe("maasOsSelect", function () {
     var directive = compileDirective("osinfo", "selected");
     var select = directive.find('select[name="release"]');
     expect(select.attr("data-ng-options")).toBe(
-      "release[0] as release[1] disable when osOutdated(release," +
+      "release[0] as release[1] disable when osOutdated(release, " +
         "deployOptions) for release in releases"
     );
   });
