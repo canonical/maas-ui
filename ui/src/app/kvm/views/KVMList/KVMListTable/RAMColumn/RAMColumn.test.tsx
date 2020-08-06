@@ -38,7 +38,7 @@ describe("RAMColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "2 of 8 GiB assigned"
+      "2 of 8 GiB allocated"
     );
     expect(wrapper.find("Meter").props().max).toBe(8192);
   });
@@ -53,7 +53,7 @@ describe("RAMColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "2 of 16 GiB assigned"
+      "2 of 16 GiB allocated"
     );
     expect(wrapper.find("Meter").props().max).toBe(16384);
   });
