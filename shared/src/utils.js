@@ -12,7 +12,7 @@ export const generateBaseURL = (route) => `${BASENAME}${route || ""}`;
 
 const pushRoute = (route) => window.history.pushState(null, null, route);
 
-export const navigate = (route, evt) => {
+const navigate = (route, evt) => {
   if (evt) {
     // Handle ctrl/command/middle clicking etc. the links to open in a new tab.
     // Inspired by how this is handled in react-router:
