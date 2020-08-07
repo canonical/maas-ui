@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
+import { config as configActions } from "app/settings/actions";
 import { isReleaseNotification } from "app/store/utils";
 import { MessageType } from "app/store/message/types";
 import { notification as notificationActions } from "app/base/actions";
 import authSelectors from "app/store/auth/selectors";
+import configSelectors from "app/store/config/selectors";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import notificationSelectors from "app/store/notification/selectors";
 import Switch from "app/base/components/Switch";
@@ -24,6 +26,9 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
   const authUser = useSelector(authSelectors.get);
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
+  );
+  const releaseNotifications = useSelector(
+    configSelectors.releaseNotifications
   );
   const showMenu =
     isReleaseNotification(notification) && authUser?.is_superuser;
@@ -49,7 +54,16 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
             <>
               <div className="u-flex--between">
                 <div className="u-sv1">Enable new release notifications</div>
-                <Switch disabled={true} checked={true} />
+                <Switch
+                  defaultChecked={Boolean(releaseNotifications)}
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                    dispatch(
+                      configActions.update({
+                        release_notifications: evt.target.checked,
+                      })
+                    );
+                  }}
+                />
               </div>
               <Link to="/settings/configuration/general">See settings</Link>
             </>

@@ -9,14 +9,14 @@ type Props = {
 
 const Switch = ({ className, ...inputProps }: Props): JSX.Element => {
   return (
-    <span>
+    <label>
       <input
         className={classNames("p-switch", className)}
         type="checkbox"
         {...inputProps}
       />
       <div className="p-switch__slider"></div>
-    </span>
+    </label>
   );
 };
 
