@@ -2,7 +2,7 @@
 
 exports[`NotificationGroupNotification renders 1`] = `
 <NotificationGroupNotification
-  id={1}
+  id={7}
   type="negative"
 >
   <Notification

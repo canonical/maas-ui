@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Switch renders 1`] = `
-<span>
+<label>
   <input
     className="p-switch"
     type="checkbox"
@@ -9,5 +9,5 @@ exports[`Switch renders 1`] = `
   <div
     className="p-switch__slider"
   />
-</span>
+</label>
 `;
