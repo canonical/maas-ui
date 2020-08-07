@@ -17,29 +17,23 @@ describe("StoragePopover", () => {
       podStoragePoolFactory({
         name: "poolio",
         path: "/the/way",
-        total: 1000,
+        total: 15000,
         type: "o-negative",
-        used: 500,
+        used: 5000,
       }),
     ];
-    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
+    const wrapper = mount(
+      <StoragePopover defaultPoolID={pools[0].id} pools={pools}>
+        Child
+      </StoragePopover>
+    );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='pool-name']").text()).toBe("poolio");
+    expect(wrapper.find("[data-test='pool-name']").text()).toBe(
+      "poolio (default)"
+    );
     expect(wrapper.find("[data-test='pool-path']").text()).toBe("/the/way");
     expect(wrapper.find("[data-test='pool-type']").text()).toBe("o-negative");
-    expect(wrapper.find("[data-test='pool-space']").text()).toBe(
-      "0.5 of 1 KB assigned"
-    );
-  });
-
-  it("adds horizontal rules between pools", () => {
-    const pools = [
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-    ];
-    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("hr").length).toBe(pools.length - 1);
+    expect(wrapper.find("[data-test='pool-allocated']").text()).toBe("5KB");
+    expect(wrapper.find("[data-test='pool-free']").text()).toBe("10KB");
   });
 });

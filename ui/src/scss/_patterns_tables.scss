@@ -32,4 +32,13 @@
       padding-bottom: 0;
     }
   }
+
+  .p-table__header {
+    @extend %table-header-label;
+    border-bottom: 1px solid $color-mid-light;
+    margin-bottom: 0;
+    padding-bottom: $spv-inner--medium;
+    padding-top: $spv-inner--medium;
+    text-transform: uppercase;
+  }
 }

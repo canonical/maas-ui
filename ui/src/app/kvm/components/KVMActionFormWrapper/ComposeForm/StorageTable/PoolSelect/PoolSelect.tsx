@@ -37,13 +37,13 @@ const generateDropdownContent = (
 
   return (
     <>
-      <div className="kvm-pool-select__grid p-contextual-menu__non-interactive">
+      <div className="kvm-pool-select__header p-table__header">
         <div></div>
         <div>Storage</div>
         <div className="u-align--right">Type</div>
         <ul className="p-inline-list u-default-text u-no-margin--bottom">
           <li className="p-inline-list__item">
-            <i className="p-icon--assigned is-inline"></i>
+            <i className="p-icon--allocated is-inline"></i>
             Allocated
           </li>
           <li className="p-inline-list__item">
@@ -51,7 +51,7 @@ const generateDropdownContent = (
             Requested
           </li>
           <li className="p-inline-list__item">
-            <i className="p-icon--unassigned is-inline"></i>
+            <i className="p-icon--free is-inline"></i>
             Free
           </li>
         </ul>
@@ -70,13 +70,13 @@ const generateDropdownContent = (
 
         return (
           <button
-            className="kvm-pool-select__pool p-button--base"
+            className="kvm-pool-select__button p-button--base"
             disabled={free < 0}
             key={`${disk.id}-${pool.id}`}
             onClick={() => selectPool(pool.name)}
             type="button"
           >
-            <div className="kvm-pool-select__grid">
+            <div className="kvm-pool-select__row">
               <div>{isSelected && <i className="p-icon--tick"></i>}</div>
               <div>
                 <strong>
@@ -118,7 +118,7 @@ const generateDropdownContent = (
                   free >= 0 ? (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li className="p-inline-list__item" data-test="allocated">
-                        <i className="p-icon--assigned is-inline"></i>
+                        <i className="p-icon--allocated is-inline"></i>
                         {`${allocated}GB`}
                       </li>
                       {requested !== 0 && (
@@ -131,7 +131,7 @@ const generateDropdownContent = (
                         </li>
                       )}
                       <li className="p-inline-list__item" data-test="free">
-                        <i className="p-icon--unassigned is-inline"></i>
+                        <i className="p-icon--free is-inline"></i>
                         {`${available - requested}GB`}
                       </li>
                     </ul>

@@ -144,14 +144,14 @@ describe("PoolSelect", () => {
     // defaultPool should be selected by default
     expect(
       wrapper
-        .find(".kvm-pool-select__pool")
+        .find(".kvm-pool-select__button")
         .at(0)
         .find(".p-icon--tick")
         .exists()
     ).toBe(true);
     expect(
       wrapper
-        .find(".kvm-pool-select__pool")
+        .find(".kvm-pool-select__button")
         .at(1)
         .find(".p-icon--tick")
         .exists()
@@ -159,21 +159,21 @@ describe("PoolSelect", () => {
 
     // Select other pool
     await act(async () => {
-      wrapper.find("button.kvm-pool-select__pool").at(1).simulate("click");
+      wrapper.find("button.kvm-pool-select__button").at(1).simulate("click");
     });
     wrapper.update();
 
     // otherPool should now be selected
     expect(
       wrapper
-        .find(".kvm-pool-select__pool")
+        .find(".kvm-pool-select__button")
         .at(0)
         .find(".p-icon--tick")
         .exists()
     ).toBe(false);
     expect(
       wrapper
-        .find(".kvm-pool-select__pool")
+        .find(".kvm-pool-select__button")
         .at(1)
         .find(".p-icon--tick")
         .exists()
@@ -208,15 +208,15 @@ describe("PoolSelect", () => {
     wrapper.update();
 
     // poolWithSpace should not be disabled, but poolWithoutSpace should be
-    expect(wrapper.find(".kvm-pool-select__pool").at(0).prop("disabled")).toBe(
-      false
-    );
-    expect(wrapper.find(".kvm-pool-select__pool").at(1).prop("disabled")).toBe(
-      true
-    );
+    expect(
+      wrapper.find(".kvm-pool-select__button").at(0).prop("disabled")
+    ).toBe(false);
+    expect(
+      wrapper.find(".kvm-pool-select__button").at(1).prop("disabled")
+    ).toBe(true);
     expect(
       wrapper
-        .find(".kvm-pool-select__pool")
+        .find(".kvm-pool-select__button")
         .at(1)
         .find(".p-icon--warning")
         .exists()
