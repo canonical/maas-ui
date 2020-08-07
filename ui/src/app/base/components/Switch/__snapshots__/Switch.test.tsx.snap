@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch renders 1`] = `
+<span>
+  <input
+    className="p-switch"
+    type="checkbox"
+  />
+  <div
+    className="p-switch__slider"
+  />
+</span>
+`;
