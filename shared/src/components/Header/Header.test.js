@@ -15,7 +15,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         completedIntro={true}
         location={{
           pathname: "/",
@@ -30,7 +29,6 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={null}
-        basename="/MAAS"
         location={{
           pathname: "/",
         }}
@@ -48,7 +46,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         location={{
           pathname: "/",
         }}
@@ -69,7 +66,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         completedIntro={false}
         location={{
           pathname: "/",
@@ -92,10 +88,9 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         completedIntro={true}
         location={{
-          pathname: "/settings",
+          pathname: "/MAAS/r/settings",
         }}
         logout={jest.fn()}
       />
@@ -112,7 +107,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         completedIntro={true}
         location={{
           pathname: "/MAAS/l/devices",
@@ -132,7 +126,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        basename="/MAAS"
         completedIntro={true}
         location={{
           search: "?by=fabric",

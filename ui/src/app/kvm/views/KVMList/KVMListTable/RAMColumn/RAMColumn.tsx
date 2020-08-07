@@ -27,7 +27,7 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
 
     return (
       <RAMPopover
-        assigned={pod.used.memory}
+        allocated={pod.used.memory}
         overcommit={pod.memory_over_commit_ratio}
         physical={pod.total.memory}
       >
@@ -41,7 +41,7 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
           ]}
           label={
             <small className="u-text--light">
-              {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} assigned`}
+              {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} allocated`}
             </small>
           }
           labelClassName="u-align--right"

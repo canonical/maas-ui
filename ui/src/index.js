@@ -6,6 +6,7 @@ import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import createSagaMiddleware from "redux-saga";
 
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import rootSaga from "./root-saga";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
@@ -13,7 +14,7 @@ import createRootReducer from "./root-reducer";
 import WebSocketClient from "./websocket-client";
 
 export const history = createBrowserHistory({
-  basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`,
+  basename: generateNewURL(),
 });
 const reducer = createRootReducer(history);
 

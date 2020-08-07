@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import HardwareMenu from "./HardwareMenu";
+import {
+  generateLegacyURL,
+  generateNewURL,
+  navigateToLegacy,
+  navigateToNew,
+} from "../../utils";
 
 const useVisible = (initialValue) => {
   const [value, setValue] = useState(initialValue);
@@ -16,15 +22,14 @@ const useVisible = (initialValue) => {
 };
 
 export const Header = ({
+  appendNewBase = true,
   authUser,
-  basename,
   completedIntro,
   debug,
   enableAnalytics,
   generateLocalLink,
   location,
   logout,
-  newURLPrefix,
   onSkip,
   rootScope,
   showRSD,
@@ -145,13 +150,11 @@ export const Header = ({
     // Remove the hidden items.
     .filter(({ hidden }) => !hidden);
 
-  const generateLegacyURL = (url) => `${basename}/l${url}`;
-  const generateNewURL = (url) => `${basename}${newURLPrefix}${url}`;
   const generateURL = (url, isLegacy) => {
     if (isLegacy) {
       return generateLegacyURL(url);
-    } else if (newURLPrefix) {
-      return generateNewURL(url);
+    } else if (appendNewBase) {
+      return generateNewURL(url, appendNewBase);
     }
     return url;
   };
@@ -167,8 +170,11 @@ export const Header = ({
         className={linkClass}
         href={linkURL}
         onClick={(evt) => {
-          evt.preventDefault();
-          window.history.pushState(null, null, linkURL);
+          if (isLegacy) {
+            navigateToLegacy(url, evt);
+          } else {
+            navigateToNew(url, evt);
+          }
         }}
       >
         {label}
@@ -322,12 +328,12 @@ export const Header = ({
 };
 
 Header.propTypes = {
+  appendNewBase: PropTypes.bool,
   authUser: PropTypes.shape({
     id: PropTypes.number,
     is_superuser: PropTypes.bool,
     username: PropTypes.string,
   }),
-  basename: PropTypes.string.isRequired,
   completedIntro: PropTypes.bool,
   debug: PropTypes.bool,
   enableAnalytics: PropTypes.bool,
@@ -337,7 +343,6 @@ Header.propTypes = {
     pathname: PropTypes.string.isRequired,
   }).isRequired,
   logout: PropTypes.func.isRequired,
-  newURLPrefix: PropTypes.string,
   onSkip: PropTypes.func,
   rootScope: PropTypes.object,
   showRSD: PropTypes.bool,

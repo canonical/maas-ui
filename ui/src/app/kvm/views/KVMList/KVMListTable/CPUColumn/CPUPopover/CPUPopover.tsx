@@ -4,52 +4,60 @@ import React from "react";
 import Popover from "app/base/components/Popover";
 
 type Props = {
-  assigned: number;
+  allocated: number;
   children: JSX.Element | string;
   physical: number;
   overcommit: number;
 };
 
 const CPUPopover = ({
-  assigned,
+  allocated,
   children,
   physical,
   overcommit,
 }: Props): JSX.Element => {
   const total = physical * overcommit;
-  const unassigned = total - assigned;
+  const free = total - allocated;
 
   return (
     <Popover
       className="cpu-popover"
       content={
         <>
+          <div className="cpu-popover__header p-table__header">CPU cores</div>
           <div className="cpu-popover__primary">
-            <div className="cpu-popover__value" data-test="assigned">
-              <i className="p-icon--assigned is-inline"></i>
-              {assigned}
+            <div className="u-align--right" data-test="allocated">
+              {allocated}
             </div>
-            <div>Assigned</div>
-            <div className="cpu-popover__value" data-test="unassigned">
-              <i className="p-icon--unassigned is-inline"></i>
-              {unassigned}
+            <div className="u-vertically-center">
+              <i className="p-icon--allocated"></i>
             </div>
-            <div>Unassigned</div>
+            <div>Allocated</div>
+            <div className="u-align--right" data-test="free">
+              {free}
+            </div>
+            <div className="u-vertically-center">
+              <i className="p-icon--free"></i>
+            </div>
+            <div>Free</div>
           </div>
           <div className="cpu-popover__secondary">
-            <div className="cpu-popover__value" data-test="physical">
+            <div className="u-align--right" data-test="physical">
               {physical}
             </div>
+            <div />
             <div>{`Physical core${physical === 1 ? "" : "s"}`}</div>
-            <div className="cpu-popover__value">
-              &times;&nbsp;&nbsp;
+            <div className="u-align--right">
+              &times;&nbsp;
               <span data-test="overcommit">{overcommit}</span>
             </div>
+            <div />
             <div>Overcommit ratio</div>
             <hr className="cpu-popover__separator" />
-            <div className="cpu-popover__value" data-test="total">
+            <div className="u-align--right" data-test="total">
               {total}
             </div>
+            <div />
             <div>Total</div>
           </div>
         </>
@@ -61,7 +69,7 @@ const CPUPopover = ({
 };
 
 CPUPopover.propTypes = {
-  assigned: PropTypes.number.isRequired,
+  allocated: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
   physical: PropTypes.number.isRequired,
   overcommit: PropTypes.number.isRequired,

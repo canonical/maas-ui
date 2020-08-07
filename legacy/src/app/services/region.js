@@ -8,6 +8,8 @@
  */
 import angular from "angular";
 
+import { BASENAME } from "@maas-ui/maas-ui-shared";
+
 // Message types
 const MSG_TYPE = {
   REQUEST: 0,
@@ -310,9 +312,7 @@ class RegionConnection {
     let port = process.env.MAAS_WEBSOCKET_PORT
       ? process.env.MAAS_WEBSOCKET_PORT
       : this.$window.location.port;
-    let path = process.env.BASENAME
-      ? process.env.BASENAME
-      : this.$window.location.pathname;
+    let path = BASENAME;
     let proto = "ws";
     if (this._getProtocol() === "https:") {
       proto = "wss";

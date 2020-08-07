@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import PropTypes from "prop-types";
 
+import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import { getStatusText } from "app/utils";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
@@ -103,12 +104,18 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
       {
         children: "See logs",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${systemId}?area=logs`,
+        href: generateLegacyURL(`/machine/${systemId}?area=logs`),
+        onClick: (evt) => {
+          navigateToLegacy(`/machine/${systemId}?area=logs`, evt);
+        },
       },
       {
         children: "See events",
         element: "a",
-        href: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_ANGULAR_BASENAME}/machine/${systemId}?area=events`,
+        href: generateLegacyURL(`/machine/${systemId}?area=events`),
+        onClick: (evt) => {
+          navigateToLegacy(`/machine/${systemId}?area=events`, evt);
+        },
       },
     ],
   ];

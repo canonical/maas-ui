@@ -1,4 +1,4 @@
-type Byte = { value: number; unit: string };
+export type Byte = { value: number; unit: string };
 
 type FormatBytesConfig = {
   binary?: boolean;

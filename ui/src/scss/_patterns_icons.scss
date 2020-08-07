@@ -38,17 +38,21 @@
 }
 
 @mixin maas-icons {
-  $color-assigned: $color-link;
+  $color-allocated: $color-link;
+  $color-free: #d3e4ed;
   $color-requested: $color-positive;
-  $color-unassigned: #d3e4ed;
 
-  .p-icon--assigned {
-    @include maas-icon-circle($color-assigned);
+  .p-icon--allocated {
+    @include maas-icon-circle($color-allocated);
   }
 
   .p-icon--edit {
     @extend %icon;
     @include maas-icon-edit($color-mid-dark);
+  }
+
+  .p-icon--free {
+    @include maas-icon-circle($color-free);
   }
 
   .p-icon--locked {
@@ -98,10 +102,6 @@
   .p-icon--timed-out {
     @extend %icon;
     background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' height='16px' width='16px' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3E%3C!-- Generator: Sketch 42 %2836781%29 - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Etimed out%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='Page-1' fill-rule='evenodd' fill='none'%3E%3Cg id='smoke-testing-status' transform='translate%28-62 -206%29'%3E%3Cg id='timed-out' transform='translate%2850 191%29'%3E%3Cg transform='translate%2812 15%29'%3E%3Crect id='rect4970' y='0.00002' x='0' height='16' width='16'/%3E%3Ccircle id='circle4972' stroke-width='1.5' cy='8' stroke='%23E95420' cx='8' r='7.25'/%3E%3Cpolyline id='path839' stroke='%23E95420' stroke-width='2' points='11.8 11.8 7.9999 8 7.9999 3'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-
-  .p-icon--unassigned {
-    @include maas-icon-circle($color-unassigned);
   }
 
   [class*="p-icon--"].is-inline {

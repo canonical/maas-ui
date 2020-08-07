@@ -1,3 +1,4 @@
+import { BASENAME } from "@maas-ui/maas-ui-shared";
 import { getCookie } from "app/utils";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
@@ -21,7 +22,7 @@ class WebSocketClient {
     }
     const { hostname, port } = window.location;
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${hostname}:${port}${process.env.REACT_APP_BASENAME}/ws?csrftoken=${csrftoken}`;
+    return `${protocol}//${hostname}:${port}${BASENAME}/ws?csrftoken=${csrftoken}`;
   }
 
   /**

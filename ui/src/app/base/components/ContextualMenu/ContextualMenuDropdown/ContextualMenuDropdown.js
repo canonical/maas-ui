@@ -61,9 +61,9 @@ const generateLink = (
     key={key}
     onClick={
       onClick
-        ? () => {
+        ? (evt) => {
             closePortal();
-            onClick();
+            onClick(evt);
           }
         : null
     }
