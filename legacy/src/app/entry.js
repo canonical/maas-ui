@@ -154,6 +154,8 @@ import ZonesListController from "./controllers/zones_list";
 // directives
 // prettier-ignore
 import loading from "./directives/loading";
+import deployOptions from "./directives/nodedetails/deploy_options";
+import userDataUpload from "./directives/nodedetails/user_data_upload";
 import storageDisksPartitions from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
@@ -465,6 +467,8 @@ MAAS.config(configureMaas)
   .controller("ZonesListController", ZonesListController)
   // directives
   .directive("ngLoading", loading)
+  .directive("deployOptions", deployOptions)
+  .directive("userDataUpload", userDataUpload)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)

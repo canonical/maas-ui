@@ -78,6 +78,7 @@
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
+@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect";
 @include CPUPopover;
 @include RAMPopover;
 @include StoragePopover;
@@ -85,6 +86,7 @@
 @include KVMComposeInterfacesTable;
 @include KVMSubnetSelect;
 @include KVMComposeStorageTable;
+@include KVMPoolSelect;
 
 // machines
 @import "~app/machines/views/MachineList";
