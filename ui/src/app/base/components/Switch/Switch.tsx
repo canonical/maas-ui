@@ -4,6 +4,7 @@ import React from "react";
 
 type Props = {
   className?: string;
+  // TODO: Investigate why this won't work with React.HTMLProps<HTMLInputElement>.
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
 
 const Switch = ({ className, ...inputProps }: Props): JSX.Element => {
