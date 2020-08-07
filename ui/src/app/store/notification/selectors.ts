@@ -15,9 +15,9 @@ const defaultSelectors = generateBaseSelectors<
 >("notification", "id");
 
 /**
- * Returns notifications of type 'warning'
+ * Returns notifications that haven't been disabled.
  * @param {RootState} state - The redux state.
- * @returns {Notification[]} Warning notifications.
+ * @returns {Notification[]} Notifications that can be shown to the user.
  */
 const allEnabled = createSelector(
   [defaultSelectors.all, configSelectors.releaseNotifications],
