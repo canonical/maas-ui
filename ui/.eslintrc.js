@@ -20,6 +20,9 @@ module.exports = {
       version: "detect",
     },
   },
+  globals: {
+    usabilla_live: false,
+  },
   overrides: [
     {
       files: ["**/*.ts?(x)"],

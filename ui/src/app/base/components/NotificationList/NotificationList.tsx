@@ -9,14 +9,15 @@ import {
 import NotificationGroup from "app/base/components/NotificationGroup";
 import messageSelectors from "app/store/message/selectors";
 import notificationSelectors from "app/store/notification/selectors";
+import type { Dispatch } from "redux";
+import type { Message } from "app/store/message/types";
 
-const generateMessages = (messages, dispatch) =>
-  messages.map(({ id, message, status, temporary, type }) => (
+const generateMessages = (messages: Message[], dispatch: Dispatch) =>
+  messages.map(({ id, message, temporary, type }) => (
     <Notification
       close={() => dispatch(messageActions.remove(id))}
       data-test="message"
       key={id}
-      status={status}
       timeout={temporary && 5000}
       type={type}
     >
@@ -24,7 +25,7 @@ const generateMessages = (messages, dispatch) =>
     </Notification>
   ));
 
-const NotificationList = () => {
+const NotificationList = (): JSX.Element => {
   const messages = useSelector(messageSelectors.all);
 
   const notifications = {

@@ -3,26 +3,44 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  message as messageFactory,
+  messageState as messageStateFactory,
+  notification as notificationFactory,
+  notificationState as notificationStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import NotificationList from "./NotificationList";
+import type { Notification } from "app/store/notification/types";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("NotificationList", () => {
-  let state;
+  let state: RootState;
+  let notifications: Notification[];
 
   beforeEach(() => {
-    state = {
-      messages: { items: [{ id: 1, message: "User deleted" }] },
-      notification: {
-        items: [
-          {
-            id: 1,
-            category: "error",
-            message: "an error",
-          },
-        ],
-      },
-    };
+    notifications = [
+      notificationFactory({
+        id: 1,
+        category: "error",
+        message: "an error",
+      }),
+    ];
+    state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "release_notifications", value: false })],
+      }),
+      messages: messageStateFactory({
+        items: [messageFactory({ id: 1, message: "User deleted" })],
+      }),
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
   });
 
   it("renders a list of messages", () => {
@@ -39,7 +57,7 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationList title="Settings">content</NotificationList>
+        <NotificationList />
       </Provider>
     );
     wrapper.find("Notification").at(1).props().close();
@@ -56,7 +74,7 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <NotificationList title="Settings">content</NotificationList>
+        <NotificationList />
       </Provider>
     );
 
@@ -69,7 +87,7 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationList title="Settings">content</NotificationList>
+        <NotificationList />
       </Provider>
     );
 
@@ -78,7 +96,7 @@ describe("NotificationList", () => {
     expect(notificationGroup.exists()).toBe(true);
     expect(notificationGroup.props()).toEqual({
       type: "negative",
-      notifications: [{ id: 1, category: "error", message: "an error" }],
+      notifications,
     });
   });
 });

@@ -5,25 +5,24 @@ import React from "react";
 
 import {
   notification as notificationFactory,
+  notificationState as notificationStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { NotificationIdent } from "app/store/notification/types";
-import type { RootState } from "app/store/root/types";
 
 import NotificationGroup from "./NotificationGroup";
 
 const mockStore = configureStore();
 
 describe("NotificationGroup", () => {
-  let state: RootState;
-  beforeEach(() => {
-    state = rootStateFactory();
-  });
-
   it("renders", () => {
-    const store = mockStore(state);
     const notifications = [notificationFactory(), notificationFactory()];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -34,9 +33,14 @@ describe("NotificationGroup", () => {
   });
 
   it("displays a single notification by default", () => {
-    const store = mockStore(state);
     const notifications = [notificationFactory()];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -49,9 +53,14 @@ describe("NotificationGroup", () => {
   });
 
   it("hides multiple notifications by default", () => {
-    const store = mockStore(state);
     const notifications = [notificationFactory(), notificationFactory()];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -64,9 +73,14 @@ describe("NotificationGroup", () => {
   });
 
   it("displays a count for multiple notifications", () => {
-    const store = mockStore(state);
     const notifications = [notificationFactory(), notificationFactory()];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -79,12 +93,17 @@ describe("NotificationGroup", () => {
   });
 
   it("can dismiss multiple notifications", () => {
-    const store = mockStore(state);
     const notifications = [
       notificationFactory({ dismissable: true }),
       notificationFactory({ dismissable: true }),
     ];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -99,12 +118,17 @@ describe("NotificationGroup", () => {
   });
 
   it("does not dismiss undismissable notifications when dismissing a group", () => {
-    const store = mockStore(state);
     const notifications = [
       notificationFactory({ dismissable: true }),
       notificationFactory({ dismissable: false }),
     ];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="caution" />
@@ -117,43 +141,19 @@ describe("NotificationGroup", () => {
     expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
   });
 
-  it("can dismiss a single notification", () => {
-    const store = mockStore(state);
-    const notifications = [notificationFactory({ dismissable: true })];
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
-      </Provider>
-    );
-
-    wrapper.find("button.p-icon--close").simulate("click");
-
-    expect(store.getActions().length).toEqual(1);
-    expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
-  });
-
-  it("does not show a dismiss action if notification is not dismissable", () => {
-    const store = mockStore(state);
-    const notifications = [notificationFactory({ dismissable: false })];
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
-      </Provider>
-    );
-
-    expect(wrapper.find("button.p-icon--close").exists()).toBe(false);
-  });
-
   it("can toggle multiple notifications", () => {
-    const store = mockStore(state);
     const notifications = [
       notificationFactory(),
       notificationFactory(),
       notificationFactory(),
     ];
 
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <NotificationGroup notifications={notifications} type="negative" />
@@ -165,19 +165,5 @@ describe("NotificationGroup", () => {
     wrapper.find("Button").at(0).simulate("click");
 
     expect(wrapper.find("Notification").length).toEqual(4);
-  });
-
-  it("shows a menu button for release notifications", () => {
-    const store = mockStore(state);
-    const notifications = [
-      notificationFactory({ ident: NotificationIdent.release }),
-    ];
-    const wrapper = mount(
-      <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
-      </Provider>
-    );
-    expect(wrapper.find(".p-notification__menu-button").exists()).toBe(true);
-    expect(wrapper.find(".p-notification--has-menu").exists()).toBe(true);
   });
 });

@@ -1,8 +1,11 @@
 import {
+  config as configFactory,
+  configState as configStateFactory,
   notification as notificationFactory,
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { NotificationIdent } from "app/store/notification/types";
 import notification from "./selectors";
 
 describe("notification selectors", () => {
@@ -13,6 +16,23 @@ describe("notification selectors", () => {
       }),
     });
     const items = notification.all(state);
+    expect(items.length).toEqual(1);
+    expect(items[0].message).toEqual("Test message");
+  });
+
+  it("can get all enabled items", () => {
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "release_notifications", value: false })],
+      }),
+      notification: notificationStateFactory({
+        items: [
+          notificationFactory({ message: "Test message" }),
+          notificationFactory({ ident: NotificationIdent.release }),
+        ],
+      }),
+    });
+    const items = notification.allEnabled(state);
     expect(items.length).toEqual(1);
     expect(items[0].message).toEqual("Test message");
   });
