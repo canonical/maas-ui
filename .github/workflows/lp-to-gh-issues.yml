@@ -1,0 +1,19 @@
+name: LP to GH issue migator
+on:
+  schedule:
+    - cron:  '0 22 * * *'
+
+jobs:
+  lp-to-gh-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install deps
+        run: pip install launchpadlib PyGithub
+      - name: Running script
+        run: GITHUB_TOKEN=${{ secrets.LP_TO_GH_BUGS_MIGRATOR }} python scripts/lp-bugs-to-gh-issues.py
