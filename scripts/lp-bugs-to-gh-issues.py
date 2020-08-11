@@ -3,8 +3,7 @@
 from launchpadlib.launchpad import Launchpad
 from github import Github
 
-github_token = Github(os.getenv("GITHUB_TOKEN"))
-github = Github(github_token)
+github = Github(os.getenv("GITHUB_TOKEN"))
 github_repo = github.get_repo("canonical-web-and-design/maas-ui")
 launchpad = Launchpad.login_with("Canonical web team stats", "production")
 project = launchpad.projects["maas"]
