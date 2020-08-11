@@ -37,7 +37,7 @@ describe("NotificationGroupNotification", () => {
   });
 
   it("renders", () => {
-    const notification = notificationFactory();
+    const notification = notificationFactory({ id: 1 });
     const state = rootStateFactory({
       config,
       notification: notificationStateFactory({
