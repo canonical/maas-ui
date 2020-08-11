@@ -27,6 +27,7 @@ module.exports = merge(common, {
     disableHostCheck: true,
     historyApiFallback: true,
     open: true,
+    openPage: "MAAS/r/machines",
     public: "0.0.0.0:8400",
     writeToDisk: true,
   },

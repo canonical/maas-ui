@@ -5,14 +5,14 @@ import { formatBytes } from "app/utils";
 import Popover from "app/base/components/Popover";
 
 type Props = {
-  assigned: number;
+  allocated: number;
   children: JSX.Element | string;
   physical: number;
   overcommit: number;
 };
 
 const RAMPopover = ({
-  assigned,
+  allocated,
   children,
   physical,
   overcommit,
@@ -23,48 +23,52 @@ const RAMPopover = ({
   const physicalMemory = formatBytes(physical, "MiB", {
     binary: true,
   });
-  const assignedMemory = formatBytes(assigned, "MiB", {
+  const allocatedMemory = formatBytes(allocated, "MiB", {
     binary: true,
   });
-  const unassignedMemory = formatBytes(
-    physical * overcommit - assigned,
-    "MiB",
-    {
-      binary: true,
-    }
-  );
+  const freeMemory = formatBytes(physical * overcommit - allocated, "MiB", {
+    binary: true,
+  });
 
   return (
     <Popover
       className="ram-popover"
       content={
         <>
+          <div className="ram-popover__header p-table__header">RAM</div>
           <div className="ram-popover__primary">
-            <div className="ram-popover__value" data-test="assigned">
-              <i className="p-icon--assigned is-inline"></i>
-              {`${assignedMemory.value} ${assignedMemory.unit}`}
+            <div className="u-align--right" data-test="allocated">
+              {`${allocatedMemory.value} ${allocatedMemory.unit}`}
             </div>
-            <div>Assigned</div>
-            <div className="ram-popover__value" data-test="unassigned">
-              <i className="p-icon--unassigned is-inline"></i>
-              {`${unassignedMemory.value} ${unassignedMemory.unit}`}
+            <div className="u-vertically-center">
+              <i className="p-icon--allocated"></i>
             </div>
-            <div>Unassigned</div>
+            <div>Allocated</div>
+            <div className="u-align--right" data-test="free">
+              {`${freeMemory.value} ${freeMemory.unit}`}
+            </div>
+            <div className="u-vertically-center">
+              <i className="p-icon--free"></i>
+            </div>
+            <div>Free</div>
           </div>
           <div className="ram-popover__secondary">
-            <div className="ram-popover__value" data-test="physical">
+            <div className="u-align--right" data-test="physical">
               {`${physicalMemory.value} ${physicalMemory.unit}`}
             </div>
+            <div />
             <div>Physical RAM</div>
-            <div className="ram-popover__value">
-              &times;&nbsp;&nbsp;
+            <div className="u-align--right">
+              &times;&nbsp;
               <span data-test="overcommit">{overcommit}</span>
             </div>
+            <div />
             <div>Overcommit ratio</div>
             <hr className="ram-popover__separator" />
-            <div className="ram-popover__value" data-test="total">
+            <div className="u-align--right" data-test="total">
               {`${totalMemory.value} ${totalMemory.unit}`}
             </div>
+            <div />
             <div>Total</div>
           </div>
         </>
@@ -76,7 +80,7 @@ const RAMPopover = ({
 };
 
 RAMPopover.propTypes = {
-  assigned: PropTypes.number.isRequired,
+  allocated: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
   physical: PropTypes.number.isRequired,
   overcommit: PropTypes.number.isRequired,

@@ -1,11 +1,12 @@
+import { BASENAME, REACT_BASENAME } from "@maas-ui/maas-ui-shared";
 import disksPartitionsTmpl from "../../partials/nodedetails/storage/disks-partitions.html";
 
 const storageDisksPartitions = () => ({
   restrict: "E",
   template: disksPartitionsTmpl,
   link: (scope) => {
-    scope.BASENAME = process.env.BASENAME;
-    scope.REACT_BASENAME = process.env.REACT_BASENAME;
+    scope.BASENAME = BASENAME;
+    scope.REACT_BASENAME = REACT_BASENAME;
   },
 });
 

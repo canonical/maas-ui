@@ -1,3 +1,4 @@
+import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 import { registerApplication, start } from "single-spa";
 import { name as appName, version as appVersion } from "../../ui/package.json";
 
@@ -39,9 +40,8 @@ registerApplication({
     return import("@maas-ui/maas-ui-legacy");
   },
   activeWhen: (location) =>
-    location.pathname.startsWith(
-      `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`
-    ) || location.hash.startsWith("#"),
+    location.pathname.startsWith(generateLegacyURL()) ||
+    location.hash.startsWith("#"),
 });
 
 registerApplication({
@@ -51,9 +51,8 @@ registerApplication({
     return import("@maas-ui/maas-ui");
   },
   activeWhen: (location) =>
-    location.pathname.startsWith(
-      `${process.env.BASENAME}${process.env.REACT_BASENAME}`
-    ) && !location.hash.startsWith("#"),
+    location.pathname.startsWith(generateNewURL()) &&
+    !location.hash.startsWith("#"),
 });
 
 start();

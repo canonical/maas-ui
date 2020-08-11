@@ -92,7 +92,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/machines"
+              href="/MAAS/r/machines"
               onClick={[Function]}
             >
               Machines
@@ -128,7 +128,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/kvm"
+              href="/MAAS/r/kvm"
               onClick={[Function]}
             >
               KVM
@@ -188,7 +188,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/settings"
+              href="/MAAS/r/settings"
               onClick={[Function]}
             >
               Settings
@@ -204,7 +204,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/account/prefs"
+              href="/MAAS/r/account/prefs"
               onClick={[Function]}
             >
               koala

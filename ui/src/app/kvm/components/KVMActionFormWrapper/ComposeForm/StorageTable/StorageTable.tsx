@@ -1,6 +1,5 @@
 import {
   Button,
-  Select,
   Spinner,
   Table,
   TableCell,
@@ -17,6 +16,7 @@ import type { Disk, ComposeFormValues } from "../ComposeForm";
 import type { RootState } from "app/store/root/types";
 import podSelectors from "app/store/pod/selectors";
 import FormikField from "app/base/components/FormikField";
+import PoolSelect from "./PoolSelect";
 import TableActions from "app/base/components/TableActions";
 import TagSelector from "app/base/components/TagSelector";
 
@@ -100,25 +100,22 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                       min="1"
                       name={`disks[${i}].size`}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleChange(e);
-                        setFieldTouched(`disks[${i}].size`, true, true);
-                        setFieldValue(`disks[${i}].size`, e.target.value);
+                        const value = parseFloat(e.target.value) || "";
+                        if (value === "" || value >= 0) {
+                          handleChange(e);
+                          setFieldTouched(`disks[${i}].size`, true, true);
+                          setFieldValue(`disks[${i}].size`, value);
+                        }
                       }}
                       type="number"
                     />
                   </TableCell>
                   <TableCell aria-label="Location">
-                    <FormikField
-                      component={Select}
-                      name={`disks[${i}].location`}
-                      options={[
-                        { label: "Select location", value: "", disabled: true },
-                        ...pod.storage_pools.map((pool) => ({
-                          key: pool.id,
-                          label: pool.name,
-                          value: pool.name,
-                        })),
-                      ]}
+                    <PoolSelect
+                      disk={disk}
+                      selectPool={(poolName: string) => {
+                        setFieldValue(`disks[${i}].location`, poolName);
+                      }}
                     />
                   </TableCell>
                   <TableCell aria-label="Tags">

@@ -4,20 +4,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { generateLegacyURL } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
+import LegacyLink from "app/base/components/LegacyLink";
 
 const generateFQDN = (machine, machineURL) => {
   return (
-    <a
-      href={machineURL}
-      onClick={(evt) => {
-        evt.preventDefault();
-        window.history.pushState(null, null, machineURL);
-      }}
-      title={machine.fqdn}
-    >
+    <LegacyLink route={machineURL} title={machine.fqdn}>
       <strong data-test="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
@@ -27,7 +20,7 @@ const generateFQDN = (machine, machineURL) => {
         {machine.hostname}
       </strong>
       <small>.{machine.domain.name}</small>
-    </a>
+    </LegacyLink>
   );
 };
 
@@ -84,27 +77,14 @@ const generateIPAddresses = (machine) => {
 const generateMAC = (machine, machineURL) => {
   return (
     <>
-      <a
-        href={machineURL}
-        onClick={(evt) => {
-          evt.preventDefault();
-          window.history.pushState(null, null, machineURL);
-        }}
-        title={machine.pxe_mac_vendor}
-      >
+      <LegacyLink route={machineURL} title={machine.pxe_mac_vendor}>
         {machine.pxe_mac}
-      </a>
+      </LegacyLink>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (
-        <a
-          href={machineURL}
-          onClick={(evt) => {
-            evt.preventDefault();
-            window.history.pushState(null, null, machineURL);
-          }}
-        >
+        <LegacyLink route={machineURL}>
           {" "}
           (+{machine.extra_macs.length})
-        </a>
+        </LegacyLink>
       ) : null}
     </>
   );
@@ -114,9 +94,7 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
   const machine = useSelector((state) =>
     machineSelectors.getById(state, systemId)
   );
-  const machineURL = generateLegacyURL(
-    `/${machine.link_type}/${machine.system_id}`
-  );
+  const machineURL = `/${machine.link_type}/${machine.system_id}`;
   const primaryRow = showMAC
     ? generateMAC(machine, machineURL)
     : generateFQDN(machine, machineURL);

@@ -12,12 +12,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { DeployFormValues } from "../DeployForm";
-import { generateLegacyURL } from "app/utils";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 import generalSelectors from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
+import LegacyLink from "app/base/components/LegacyLink";
 import UserDataField from "./UserDataField";
 
 export const DeployFormFields = (): JSX.Element => {
@@ -37,7 +37,6 @@ export const DeployFormFields = (): JSX.Element => {
   );
   const canBeKVMHost =
     values.oSystem === "ubuntu" && values.release === "bionic";
-  const imagesURL = generateLegacyURL("/images");
   const noImages = osystems.length === 0 || releases.length === 0;
 
   return (
@@ -46,16 +45,7 @@ export const DeployFormFields = (): JSX.Element => {
         <Notification data-test="images-error" type="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
-          <a
-            href={imagesURL}
-            onClick={(evt) => {
-              evt.preventDefault();
-              window.history.pushState(null, null, imagesURL);
-            }}
-          >
-            images page
-          </a>
-          .
+          <LegacyLink route="/images">images page</LegacyLink>.
         </Notification>
       )}
       <div className="u-sv2">

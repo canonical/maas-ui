@@ -17,7 +17,7 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
     const availableCores = pod.total.cores * pod.cpu_over_commit_ratio;
     return (
       <CPUPopover
-        assigned={pod.used.cores}
+        allocated={pod.used.cores}
         physical={pod.total.cores}
         overcommit={pod.cpu_over_commit_ratio}
       >
@@ -31,7 +31,7 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
           ]}
           label={
             <small className="u-text--light">
-              {`${pod.used.cores} of ${availableCores} assigned`}
+              {`${pod.used.cores} of ${availableCores} allocated`}
             </small>
           }
           labelClassName="u-align--right"

@@ -16,12 +16,15 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
 
   if (pod) {
     const availableStorage = formatBytes(pod.total.local_storage, "B");
-    const assignedStorage = formatBytes(pod.used.local_storage, "B", {
+    const allocatedStorage = formatBytes(pod.used.local_storage, "B", {
       convertTo: availableStorage.unit,
     });
 
     return (
-      <StoragePopover pools={pod.storage_pools}>
+      <StoragePopover
+        defaultPoolID={pod.default_storage_pool}
+        pools={pod.storage_pools}
+      >
         <Meter
           className="u-no-margin--bottom"
           data={[
@@ -32,7 +35,7 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
           ]}
           label={
             <small className="u-text--light">
-              {`${assignedStorage.value} of ${availableStorage.value} ${availableStorage.unit} assigned`}
+              {`${allocatedStorage.value} of ${availableStorage.value} ${availableStorage.unit} allocated`}
             </small>
           }
           labelClassName="u-align--right"

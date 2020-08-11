@@ -385,17 +385,6 @@ describe("RegionConnection", function () {
   });
 
   describe("_buildUrl", function () {
-    it("returns url from $window.location", function () {
-      expect(RegionConnection._buildUrl()).toBe(
-        "ws://" +
-          $window.location.hostname +
-          ":" +
-          $window.location.port +
-          $window.location.pathname +
-          "ws"
-      );
-    });
-
     it("uses wss connection if https protocol", function () {
       spyOn(RegionConnection, "_getProtocol").and.returnValue("https:");
       expect(RegionConnection._buildUrl()).toBe(
@@ -403,8 +392,7 @@ describe("RegionConnection", function () {
           $window.location.hostname +
           ":" +
           $window.location.port +
-          $window.location.pathname +
-          "ws"
+          "/MAAS/ws"
       );
     });
 
@@ -449,12 +437,7 @@ describe("RegionConnection", function () {
       spyOn(angular, "element").and.returnValue(fakeElement);
 
       expect(RegionConnection._buildUrl()).toBe(
-        "ws://" +
-          $window.location.hostname +
-          ":" +
-          port +
-          $window.location.pathname +
-          "ws"
+        "ws://" + $window.location.hostname + ":" + port + "/MAAS/ws"
       );
 
       // Reset angular.element so the test will complete successfully as
@@ -472,8 +455,7 @@ describe("RegionConnection", function () {
             $window.location.hostname +
             ":" +
             $window.location.port +
-            $window.location.pathname +
-            "ws"
+            "/MAAS/ws"
         );
       } else {
         expect(RegionConnection._buildUrl()).toBe(
@@ -496,8 +478,7 @@ describe("RegionConnection", function () {
           $window.location.hostname +
           ":" +
           $window.location.port +
-          $window.location.pathname +
-          "ws" +
+          "/MAAS/ws" +
           "?csrftoken=" +
           csrftoken
       );

@@ -1,0 +1,71 @@
+@mixin KVMPoolSelect {
+  %kvm-pool-select__grid {
+    display: grid;
+    grid-column-gap: $sph-inner;
+    grid-template-columns: #{$sph-inner * 0.75} 2fr 1fr 3fr;
+    word-break: break-word;
+
+    @media only screen and (max-width: $breakpoint-large) {
+      grid-template-columns: #{$sph-inner * 0.75} 1fr;
+
+      > :nth-child(3),
+      > :nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  .kvm-pool-select {
+    display: block;
+    width: 100%;
+
+    .kvm-pool-select__dropdown {
+      max-width: none;
+      min-width: 0;
+      width: calc(200% + #{2 * $sph-inner--small});
+
+      @media only screen and (max-width: $breakpoint-large) {
+        width: auto;
+      }
+    }
+
+    .kvm-pool-select__header {
+      @extend %kvm-pool-select__grid;
+      padding-left: $sph-inner;
+      padding-right: $sph-inner;
+    }
+
+    .kvm-pool-select__toggle {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0;
+      padding-left: $sph-inner--small;
+      width: 100%;
+
+      > :nth-child(1) {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      > :nth-child(2) {
+        flex-shrink: 0;
+      }
+    }
+
+    .kvm-pool-select__button {
+      margin-bottom: 0;
+      padding: $spv-inner--small $sph-inner;
+      text-align: left;
+      width: 100%;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $color-mid-light;
+      }
+    }
+
+    .kvm-pool-select__row {
+      @extend %kvm-pool-select__grid;
+    }
+  }
+}

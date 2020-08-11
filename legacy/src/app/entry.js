@@ -22,7 +22,13 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import configureRoutes, { prefixRoute } from "./routes";
+import {
+  generateBaseURL,
+  generateNewURL,
+  navigateToNew,
+  navigateToLegacy,
+} from "@maas-ui/maas-ui-shared";
+import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
 
 // filters
@@ -232,7 +238,7 @@ import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
-const ROOT_API = `${process.env.BASENAME}/api/2.0/`;
+const ROOT_API = generateBaseURL("/api/2.0/");
 const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
 
 const checkAuthenticated = () => {
@@ -240,7 +246,7 @@ const checkAuthenticated = () => {
   // login form.
   fetch(LOGIN_CANARY_API).then((response) => {
     if (!response.ok) {
-      window.location = `${process.env.BASENAME}${process.env.REACT_BASENAME}`;
+      window.location = generateNewURL();
     }
   });
 };
@@ -294,11 +300,11 @@ function introRedirect($rootScope, $window) {
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
     if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
-        window.history.pushState(null, null, prefixRoute("/intro"));
+        navigateToLegacy("/intro");
       }
     } else if ($window.CONFIG && !$window.CONFIG.current_user.completed_intro) {
       if (next.controller !== "IntroUserController") {
-        window.history.pushState(null, null, prefixRoute("/intro/user"));
+        navigateToLegacy("/intro/user");
       }
     }
   });
@@ -310,7 +316,7 @@ function dashboardRedirect($rootScope, $window) {
     // Only superusers currently have access to the dashboard
     if ($window.CONFIG && !$window.CONFIG.current_user.is_superuser) {
       if (next.controller == "DashboardController") {
-        window.history.pushState(null, null, "/machines");
+        navigateToNew("/machines");
       }
     }
   });

@@ -17,4 +17,14 @@ export const COL_SIZES = {
   TOTAL: 12,
 };
 
+export const COLOURS = {
+  CAUTION: "#F99B11",
+  LIGHT: "#F7F7F7",
+  LINK_FADED: "#D3E4ED",
+  LINK: "#0066CC",
+  NEGATIVE: "#C7162B",
+  POSITIVE_FADED: "#B7CCB9",
+  POSITIVE: "#0E8420",
+};
+
 export default MESSAGE_TYPES;

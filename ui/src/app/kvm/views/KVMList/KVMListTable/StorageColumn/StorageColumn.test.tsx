@@ -38,7 +38,7 @@ describe("StorageColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "0.1 of 1 TB assigned"
+      "0.1 of 1 TB allocated"
     );
     expect(wrapper.find("Meter").props().max).toBe(1000000000000);
   });
