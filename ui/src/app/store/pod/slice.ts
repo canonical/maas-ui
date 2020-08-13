@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 
+import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import { Pod, PodState } from "./types";
 
 export const DEFAULT_STATUSES = {
@@ -8,43 +9,57 @@ export const DEFAULT_STATUSES = {
   refreshing: false,
 };
 
-const podSlice = createSlice({
-  initialState: {
-    errors: {},
-    items: [],
-    loaded: false,
-    loading: false,
-    saved: false,
-    saving: false,
-    selected: [],
-    statuses: {},
-  },
-  name: "pod",
-  reducers: {
-    fetch: {
-      prepare: (params?) => ({
-        meta: {
-          model: "pod",
-          method: "list",
-        },
-        payload: params && {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
+const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
+  "pod",
+  "id",
+  [
+    {
+      status: "compose",
+      statusKey: "composing",
+      prepare: (id) => id,
+    },
+    {
+      status: "delete",
+      statusKey: "deleting",
+      prepare: (id) => ({ id }),
+    },
+    {
+      status: "refresh",
+      statusKey: "refreshing",
+      prepare: (id) => ({ id }),
+      success: (state, action) => {
+        for (const i in state.items) {
+          if (state.items[i].id === action.payload.id) {
+            state.items[i] = action.payload;
+            return;
+          }
+        }
       },
     },
-    fetchStart: (state: PodState) => {
-      state.loading = true;
-    },
-    fetchError: (
-      state: PodState,
-      action: PayloadAction<PodState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-    },
+  ]
+);
+
+const podSlice = generateSlice({
+  initialState: {
+    selected: [],
+    statuses: {},
+  } as PodState,
+  name: "pod",
+  reducers: {
+    // Explicitly assign generated status handlers so that the dynamically
+    // generated names exist on the reducers object.
+    refresh: statusHandlers.refresh,
+    refreshStart: statusHandlers.refreshStart,
+    refreshSuccess: statusHandlers.refreshSuccess,
+    refreshError: statusHandlers.refreshError,
+    delete: statusHandlers.delete,
+    deleteStart: statusHandlers.deleteStart,
+    deleteSuccess: statusHandlers.deleteSuccess,
+    deleteError: statusHandlers.deleteError,
+    compose: statusHandlers.compose,
+    composeStart: statusHandlers.composeStart,
+    composeSuccess: statusHandlers.composeSuccess,
+    composeError: statusHandlers.composeError,
     fetchSuccess: (state: PodState, action) => {
       state.loading = false;
       state.loaded = true;
@@ -101,36 +116,6 @@ const podSlice = createSlice({
       }
       state.loading = false;
     },
-    create: {
-      prepare: (params) => ({
-        meta: {
-          model: "pod",
-          method: "create",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    createStart: (state: PodState, _action: PayloadAction<undefined>) => {
-      state.saved = false;
-      state.saving = true;
-    },
-    createError: (
-      state: PodState,
-      action: PayloadAction<PodState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.saving = false;
-    },
-    createSuccess: (state: PodState) => {
-      state.errors = {};
-      state.saved = true;
-      state.saving = false;
-    },
     createNotify: (state: PodState, action) => {
       // In the event that the server erroneously attempts to create an existing machine,
       // due to a race condition etc., ensure we update instead of creating duplicates.
@@ -144,43 +129,6 @@ const podSlice = createSlice({
         state.statuses[action.payload.id] = DEFAULT_STATUSES;
       }
     },
-    update: {
-      prepare: (params) => ({
-        meta: {
-          model: "pod",
-          method: "update",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    updateStart: (state: PodState) => {
-      state.saved = false;
-      state.saving = true;
-    },
-    updateError: (
-      state: PodState,
-      action: PayloadAction<PodState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.saving = false;
-    },
-    updateSuccess: (state: PodState) => {
-      state.errors = {};
-      state.saved = true;
-      state.saving = false;
-    },
-    updateNotify: (state: PodState, action: PayloadAction<Pod>) => {
-      for (const i in state.items) {
-        if (state.items[i].id === action.payload.id) {
-          state.items[i] = action.payload;
-        }
-      }
-    },
     deleteNotify: (state: PodState, action) => {
       const index = state.items.findIndex(
         (item: Pod) => item.id === action.payload
@@ -192,194 +140,12 @@ const podSlice = createSlice({
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
-    cleanup: (state: PodState) => {
-      state.errors = {};
-      state.saved = false;
-      state.saving = false;
-    },
     setSelected: {
       prepare: (podIDs: Pod["id"][]) => ({
         payload: podIDs,
       }),
       reducer: (state: PodState, action: PayloadAction<Pod["id"][]>) => {
         state.selected = action.payload;
-      },
-    },
-    compose: {
-      prepare: (params) => ({
-        meta: {
-          model: "pod",
-          method: "compose",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    composeStart: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].composing = true;
-      },
-    },
-    composeSuccess: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].composing = false;
-      },
-    },
-    composeError: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.errors = action.payload;
-        state.statuses[action.meta.item["id"]].composing = false;
-      },
-    },
-    delete: {
-      prepare: (podID: Pod["id"]) => ({
-        meta: {
-          model: "pod",
-          method: "delete",
-        },
-        payload: {
-          params: { id: podID },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteStart: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].deleting = true;
-      },
-    },
-    deleteSuccess: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].deleting = false;
-      },
-    },
-    deleteError: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.errors = action.payload;
-        state.statuses[action.meta.item["id"]].deleting = false;
-      },
-    },
-    refresh: {
-      prepare: (podID: Pod["id"]) => ({
-        meta: {
-          model: "pod",
-          method: "refresh",
-        },
-        payload: {
-          params: { id: podID },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    refreshStart: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].refreshing = true;
-      },
-    },
-    refreshSuccess: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.statuses[action.meta.item["id"]].refreshing = false;
-        for (const i in state.items) {
-          if (state.items[i].id === action.payload.id) {
-            state.items[i] = action.payload;
-            return;
-          }
-        }
-      },
-    },
-    refreshError: {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: PodState,
-        action: PayloadAction<Pod, string, { item: Pod }>
-      ) => {
-        state.errors = action.payload;
-        state.statuses[action.meta.item["id"]].refreshing = false;
       },
     },
   },
