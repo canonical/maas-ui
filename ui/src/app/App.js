@@ -18,7 +18,6 @@ import {
   Footer,
   Header,
   navigateToLegacy,
-  navigateToNew,
 } from "@maas-ui/maas-ui-shared";
 import { status as statusActions } from "app/base/actions";
 import { websocket } from "./base/actions";
@@ -104,7 +103,7 @@ export const App = () => {
     if (completedIntro === false) {
       navigateToLegacy("/intro");
     } else if (authUser && !authUser.completed_intro) {
-      navigateToNew("/intro/user");
+      navigateToLegacy("/intro/user");
     }
   }
 
