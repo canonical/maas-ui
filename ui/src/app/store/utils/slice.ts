@@ -52,13 +52,13 @@ export const generateSlice = <
   E extends CommonStateTypes["errors"],
   R extends SliceCaseReducers<GenericState<I, E>>
 >({
-  name = "",
+  name,
   initialState,
   reducers,
 }: {
-  name: string;
-  initialState: GenericState<I, E>;
-  reducers: ValidateSliceCaseReducers<GenericState<I, E>, R>;
+  name: keyof CommonStates;
+  initialState?: GenericState<I, E>;
+  reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
 }) => {
   // The base reducers are common for all models.
   const baseReducers = {
