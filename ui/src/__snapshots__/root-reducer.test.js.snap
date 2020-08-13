@@ -154,7 +154,7 @@ Object {
     "saving": false,
   },
   "pod": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,
