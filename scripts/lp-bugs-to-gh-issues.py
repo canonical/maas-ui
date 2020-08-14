@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 
 from launchpadlib.launchpad import Launchpad
 from github import Github
