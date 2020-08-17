@@ -14,7 +14,8 @@ function KVMDeployOSBlacklist() {
     "ubuntu/artful",
     "ubuntu/cosmic",
     "ubuntu/disco",
-    "ubuntu/eoan"
+    "ubuntu/eoan",
+    "ubuntu/focal",
   ];
 }
 
