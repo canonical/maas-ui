@@ -27,7 +27,7 @@ module.exports = {
     spyOn: false,
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: "module",
   },
   plugins: ["react"],
