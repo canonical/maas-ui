@@ -17,10 +17,11 @@ type GenericItemMeta<I> = {
 };
 
 // Get the models that follow the generic shape. The following models are excluded:
-// - 'messages' and 'status' are not models from the API.
+// - 'messages' not an API model.
 // - 'general' has a collection of sub-models that form a different shape.
 // - 'config' contains a collection of children without IDs.
 // - 'scriptresults' returns an object of data rather than an array.
+// - 'status' not an API model.
 export type CommonStates = Omit<
   RootState,
   "messages" | "general" | "status" | "scriptresults" | "config"
@@ -229,6 +230,27 @@ export const generateSlice = <
 };
 
 /**
+ * The handlers for a status.
+ * @template S - A model that includes status e.g. Machine.
+ * @template I - A model that is used as an an array of items on the provided
+ *               state e.g. DHCPSnippet
+ */
+type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
+  status: string;
+  statusKey: string;
+  // A method to convert the args for the inital action into payload params.
+  prepare: (...args: unknown[]) => unknown;
+  // The handler for when there is an error.
+  error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+  // The initial handler.
+  init?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+  // The handler for when the action has started.
+  start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+  // The handler for when the action has successfully completed.
+  success?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+};
+
+/**
  * A utility to generate reducers and actions to append to a slice.
  * @template S - A model that includes status e.g. Machine.
  * @template I - A model that is used as an an array of items on the provided
@@ -237,7 +259,7 @@ export const generateSlice = <
  * @param {string} name - The name of the model that matches the name in MAAS.
  * @param {string} indexKey - The key used to index a model e.g. "id"
  *                            or "system_id".
- * @param {array} handlers - A collection of status handlers.
+ * @param {StatusHandlers[]} handlers - A collection of status handlers.
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const generateStatusHandlers = <
@@ -248,20 +270,7 @@ export const generateStatusHandlers = <
 >(
   modelName: string,
   indexKey: K,
-  handlers: {
-    status: string;
-    statusKey: string;
-    // A method to convert the args for the inital action into payload params.
-    prepare: (...args: unknown[]) => unknown;
-    // The handler for when there is an error.
-    error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
-    // The initial handler.
-    init?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
-    // The handler for when the action has started.
-    start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
-    // The handler for when the action has successfully completed.
-    success?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
-  }[]
+  handlers: StatusHandlers<S, I>[]
 ) =>
   handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
     // The initial handler.
