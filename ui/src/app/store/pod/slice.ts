@@ -1,7 +1,12 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import type {
+  CaseReducer,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
-import { Pod, PodState } from "./types";
+import type { GenericSlice } from "app/store/utils";
+import type { Pod, PodState } from "./types";
 
 export const DEFAULT_STATUSES = {
   composing: false,
@@ -39,7 +44,14 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
   ]
 );
 
-const podSlice = generateSlice({
+type PodReducers = SliceCaseReducers<PodState> & {
+  // Overrides for reducers that don't take a payload.
+  getStart: CaseReducer<PodState, PayloadAction<null>>;
+};
+
+export type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
+
+const podSlice = generateSlice<Pod, PodState["errors"], PodReducers>({
   initialState: {
     selected: [],
     statuses: {},
@@ -149,7 +161,7 @@ const podSlice = generateSlice({
       },
     },
   },
-});
+}) as PodSlice;
 
 export const { actions } = podSlice;
 
