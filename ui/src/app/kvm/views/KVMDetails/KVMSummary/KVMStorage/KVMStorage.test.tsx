@@ -10,11 +10,11 @@ import {
   podStoragePool as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import KVMSummaryStorage from "./KVMSummaryStorage";
+import KVMStorage from "./KVMStorage";
 
 const mockStore = configureStore();
 
-describe("KVMSummaryStorage", () => {
+describe("KVMStorage", () => {
   it("correctly chunks KVM storage pools into rows of 3", () => {
     const pod = podFactory({
       storage_pools: Array.from(Array(4)).map(() => podStoragePoolFactory()),
@@ -24,7 +24,7 @@ describe("KVMSummaryStorage", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/2", key: "testKey" }]}>
-          <KVMSummaryStorage id={pod.id} />
+          <KVMStorage id={pod.id} />
         </MemoryRouter>
       </Provider>
     );
