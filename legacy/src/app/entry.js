@@ -22,12 +22,7 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import {
-  generateBaseURL,
-  generateNewURL,
-  navigateToNew,
-  navigateToLegacy,
-} from "@maas-ui/maas-ui-shared";
+import { navigateToNew, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
 
@@ -237,21 +232,6 @@ import toggleCtrl from "./directives/toggle_control";
 import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
-
-const ROOT_API = generateBaseURL("/api/2.0/");
-const LOGIN_CANARY_API = `${ROOT_API}account/?op=list_authorisation_tokens`;
-
-const checkAuthenticated = () => {
-  // Check that the user is authenticated, otherwise redirect to the React
-  // login form.
-  fetch(LOGIN_CANARY_API).then((response) => {
-    if (!response.ok) {
-      window.location = generateNewURL();
-    }
-  });
-};
-
-checkAuthenticated();
 
 /* @ngInject */
 function configureMaas(
@@ -550,5 +530,17 @@ const lifecycles = singleSpaAngularJS({
 });
 
 export const bootstrap = [setupWebsocket, lifecycles.bootstrap];
-export const mount = lifecycles.mount;
+export const mount = (opts, mountedInstances, props) => {
+  // If the config doesn't exist it probably means the application was
+  // bootstrapped when logged out.
+  if (!window.CONFIG) {
+    // Bootstrap the application before mounting it.
+    return setupWebsocket().then(() => {
+      lifecycles.mount(opts, mountedInstances, props);
+    });
+  } else {
+    // The application has already been bootstrapped so mount it.
+    return lifecycles.mount(opts, mountedInstances, props);
+  }
+};
 export const unmount = lifecycles.unmount;
