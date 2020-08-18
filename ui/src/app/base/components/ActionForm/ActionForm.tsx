@@ -111,7 +111,7 @@ const ActionForm = ({
   cleanup,
   clearSelectedAction,
   disabled,
-  errors = {},
+  errors,
   initialValues = {},
   loading,
   modelName,
@@ -132,7 +132,7 @@ const ActionForm = ({
       onSuccess && onSuccess();
       clearSelectedAction && clearSelectedAction();
     },
-    Object.keys(errors).length > 0,
+    errors && Object.keys(errors).length > 0,
     () => setProcessing(false)
   );
 
