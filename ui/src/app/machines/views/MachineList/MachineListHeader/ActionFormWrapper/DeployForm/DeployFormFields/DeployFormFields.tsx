@@ -1,10 +1,4 @@
-import {
-  Col,
-  List,
-  Notification,
-  Row,
-  Select,
-} from "@canonical/react-components";
+import { Col, Notification, Row, Select } from "@canonical/react-components";
 import classNames from "classnames";
 import React, { useState } from "react";
 import { useFormikContext } from "formik";
@@ -106,47 +100,45 @@ export const DeployFormFields = (): JSX.Element => {
             <p>Customise options</p>
           </Col>
           <Col size="9">
-            <List
-              items={[
-                <FormikField
-                  disabled={!canBeKVMHost || noImages}
-                  label="Register as MAAS KVM host (Ubuntu 18.04 LTS required)."
-                  name="installKVM"
-                  type="checkbox"
-                  wrapperClassName="u-sv-1 u-display-inline-block"
-                />,
-                <a
-                  className="p-link--external"
-                  href="https://maas.io/docs/kvm-introduction"
-                >
-                  Read more
-                </a>,
-              ]}
-              inline
+            <FormikField
+              disabled={!canBeKVMHost || noImages}
+              label={
+                <>
+                  Register as MAAS KVM host (Ubuntu 18.04 LTS required).{" "}
+                  <a
+                    className="p-link--external"
+                    href="https://maas.io/docs/kvm-introduction"
+                  >
+                    Read more
+                  </a>
+                </>
+              }
+              name="installKVM"
+              type="checkbox"
+              wrapperClassName="u-display-inline-block"
             />
-            <List
-              items={[
-                <FormikField
-                  disabled={noImages}
-                  label="Cloud-init user-data&hellip;"
-                  name="includeUserData"
-                  type="checkbox"
-                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                    handleChange(evt);
-                    setUserDataVisible(evt.target.checked);
-                  }}
-                  wrapperClassName={classNames("u-display-inline-block", {
-                    "u-sv2 u-display-inline-block": userDataVisible,
-                  })}
-                />,
-                <a
-                  className="p-link--external"
-                  href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
-                >
-                  Read more
-                </a>,
-              ]}
-              inline
+            <FormikField
+              disabled={noImages}
+              label={
+                <>
+                  Cloud-init user-data&hellip;{" "}
+                  <a
+                    className="p-link--external"
+                    href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+                  >
+                    Read more
+                  </a>
+                </>
+              }
+              name="includeUserData"
+              type="checkbox"
+              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                handleChange(evt);
+                setUserDataVisible(evt.target.checked);
+              }}
+              wrapperClassName={classNames("u-display-inline-block", {
+                "u-sv2 u-display-inline-block": userDataVisible,
+              })}
             />
             {userDataVisible && <UserDataField />}
           </Col>
