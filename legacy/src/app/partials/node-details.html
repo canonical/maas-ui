@@ -162,17 +162,31 @@
                     </form>
                 </div>
             </div>
-            <div class="row ng-hide" data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'" data-ng-if="hasCustomCommissioningScripts()">
-                <div class="page-header__section">
-                    <form class="p-form row">
-                        <div class="col-8">
-                            <div class="p-form__group">
-                                <label for="commissioning-scripts">Additional commissioning scripts</label>
-                                <span id="commissioning-scripts" data-maas-script-select="script" data-script-type="0" data-ng-model="commissioningSelection" class="tags--inline"></span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="row ng-hide"
+        data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'"
+        data-ng-if="hasCustomCommissioningScripts()"
+      >
+        <div class="page-header__section">
+          <form class="p-form row">
+            <div class="col-8">
+              <div class="p-form__group">
+                <label for="commissioning-scripts"
+                  >Additional commissioning scripts</label
+                >
+                <span
+                  id="commissioning-scripts"
+                  data-maas-script-select="script"
+                  data-script-type="0"
+                  data-ng-model="commissioningSelection"
+                  class="tags--inline"
+                  check-test-parameter-values="checkTestParameterValues"
+                  set-default-values="setDefaultValues"
+                ></span>
+              </div>
             </div>
             <div class="row u-no-margin--top ng-hide" data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || (action.option.name !== 'commission' && action.option.name !== 'test')">
                 <hr />
