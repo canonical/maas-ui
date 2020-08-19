@@ -4,9 +4,7 @@
     <p>Customise options</p>
   </div>
   <div class="col-9">
-    <div
-      class="p-form-group p-form-validation"
-    >
+    <div class="p-form-group p-form-validation">
       <div class="p-form__control u-clearfix">
         <input
           id="installKVM"
@@ -28,19 +26,9 @@
             Read more
           </a>
         </label>
-
-        <p
-          class="u-sv-1 u-no-max-width"
-          ng-if="!nodesManager.canBeKvmHost(osSelection)"
-        >
-          <i class="p-icon--warning"></i>&nbsp;Ubuntu 18.04 is required to
-          create a KVM host.
-        </p>
       </div>
     </div>
-    <div
-      class="p-form-group p-form-validation u-sv2"
-    >
+    <div class="p-form-group p-form-validation u-sv2">
       <div class="p-form__control u-clearfix">
         <input
           id="showCloudInit"
