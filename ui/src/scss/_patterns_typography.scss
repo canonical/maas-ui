@@ -2,6 +2,7 @@
   .p-heading--small {
     @extend %table-header-label;
     color: $color-dark;
+    margin-bottom: $sp-unit * 0.25;
     text-transform: uppercase;
   }
 

@@ -15,7 +15,7 @@ exports[`Meter renders 1`] = `
   >
     <div
       className="p-meter__filled"
-      key="datum-1-bar"
+      key="meter-0"
       style={
         Object {
           "backgroundColor": "#0066CC",
@@ -27,7 +27,7 @@ exports[`Meter renders 1`] = `
     />
     <div
       className="p-meter__filled"
-      key="datum-2-bar"
+      key="meter-1"
       style={
         Object {
           "backgroundColor": "#0E8420",

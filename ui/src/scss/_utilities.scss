@@ -42,6 +42,14 @@
     text-transform: none !important;
   }
 
+  .u-nudge-left {
+    padding-right: $sph-inner !important;
+  }
+
+  .u-nudge-left--small {
+    padding-left: $sph-inner--small !important;
+  }
+
   .u-nudge-right {
     padding-left: $sph-inner !important;
   }
