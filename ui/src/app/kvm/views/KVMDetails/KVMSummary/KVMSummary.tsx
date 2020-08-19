@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Code, Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -76,8 +76,18 @@ const KVMSummary = (): JSX.Element => {
   }, [dispatch]);
 
   if (!!pod) {
+    // Fetch the IP address that is contained in the power_address. This is the
+    // only place the IP address is exposed.
+    const ip_address = pod.power_address.match(/[\d.]+/)[0];
     return (
       <>
+        <div className="u-flex">
+          <p className="u-nudge-left">LXD URL:</p>
+          <Code copyable className="u-flex--grow">
+            {ip_address}
+          </Code>
+        </div>
+        <hr className="u-sv1" />
         <div className="u-flex--between">
           <h4 className="u-sv1">Resources</h4>
           <Switch

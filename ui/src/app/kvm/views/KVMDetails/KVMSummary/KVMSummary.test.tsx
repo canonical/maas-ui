@@ -47,4 +47,27 @@ describe("KVMSummary", () => {
     expect(wrapper.find("KVMAggregateResources").exists()).toBe(false);
     expect(wrapper.find("KVMNumaResources").exists()).toBe(true);
   });
+
+  it("can display the ip address", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            id: 1,
+            power_address: "qemu+ssh://ubuntu@171.16.4.28/system",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route exact path="/kvm/:id" component={() => <KVMSummary />} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Code").exists()).toBe(true);
+    expect(wrapper.find("Code input").prop("value")).toBe("171.16.4.28");
+  });
 });
