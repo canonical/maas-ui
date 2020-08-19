@@ -65,4 +65,13 @@
   .p-button--link:not(:last-of-type):not(:only-of-type) {
     margin-right: 0;
   }
+
+  button.is-thin {
+    padding-left: $sph-inner--small;
+    padding-right: $sph-inner--small;
+
+    &.has-icon {
+      padding-left: $sph-inner--small * 0.5;
+    }
+  }
 }

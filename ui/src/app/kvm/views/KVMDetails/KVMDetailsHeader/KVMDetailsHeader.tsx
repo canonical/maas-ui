@@ -61,7 +61,7 @@ const KVMDetailsHeader = (): JSX.Element => {
       tabLinks={[
         {
           active: location.pathname.endsWith(`/kvm/${id}`),
-          label: "KVM summary",
+          label: "Resources",
           path: `/kvm/${id}`,
         },
         {
