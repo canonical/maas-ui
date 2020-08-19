@@ -82,7 +82,9 @@ const KVMSummary = (): JSX.Element => {
     return (
       <>
         <div className="u-flex">
-          <p className="u-nudge-left">LXD URL:</p>
+          <p className="u-nudge-left">
+            {pod.type === "virsh" ? "Virsh:" : "LXD URL:"}
+          </p>
           <Code copyable className="u-flex--grow">
             {ip_address}
           </Code>
