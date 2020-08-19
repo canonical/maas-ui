@@ -172,7 +172,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
     dispatch(domainActions.fetch());
     dispatch(fabricActions.fetch());
     dispatch(generalActions.fetchPowerTypes());
-    dispatch(podActions.get(id));
+    dispatch(podActions.get(Number(id)));
     dispatch(resourcePoolActions.fetch());
     dispatch(spaceActions.fetch());
     dispatch(subnetActions.fetch());

@@ -9,7 +9,7 @@ import reducers, { actions, DEFAULT_STATUSES } from "./slice";
 describe("pod reducer", () => {
   it("returns the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
-      errors: {},
+      errors: null,
       items: [],
       loaded: false,
       loading: false,
@@ -22,7 +22,7 @@ describe("pod reducer", () => {
 
   it("reduces fetch", () => {
     expect(reducers(undefined, actions.fetch())).toEqual({
-      errors: {},
+      errors: null,
       items: [],
       loaded: false,
       loading: false,
@@ -35,7 +35,7 @@ describe("pod reducer", () => {
 
   it("reduces fetchStart", () => {
     expect(reducers(undefined, actions.fetchStart())).toEqual({
-      errors: {},
+      errors: null,
       items: [],
       loaded: false,
       loading: true,
@@ -53,7 +53,7 @@ describe("pod reducer", () => {
       loading: true,
     });
     expect(reducers(podState, actions.fetchSuccess(pods))).toEqual({
-      errors: {},
+      errors: null,
       loading: false,
       loaded: true,
       saved: false,
@@ -120,7 +120,7 @@ describe("pod reducer", () => {
     const podState = podStateFactory({ saved: true });
 
     expect(reducers(podState, actions.createStart())).toEqual({
-      errors: {},
+      errors: null,
       items: [],
       loaded: false,
       loading: false,
@@ -162,7 +162,7 @@ describe("pod reducer", () => {
     });
 
     expect(reducers(podState, actions.createNotify(newPod))).toEqual({
-      errors: {},
+      errors: null,
       items: [...pods, newPod],
       loaded: false,
       loading: false,
@@ -184,7 +184,7 @@ describe("pod reducer", () => {
 
     expect(reducers(podState, actions.composeStart({ item: pods[0] }))).toEqual(
       {
-        errors: {},
+        errors: null,
         items: pods,
         loaded: false,
         loading: false,
@@ -208,7 +208,7 @@ describe("pod reducer", () => {
     expect(
       reducers(podState, actions.composeSuccess({ item: pods[0] }))
     ).toEqual({
-      errors: {},
+      errors: null,
       items: pods,
       loaded: false,
       loading: false,
@@ -253,7 +253,7 @@ describe("pod reducer", () => {
     });
 
     expect(reducers(podState, actions.deleteStart({ item: pods[0] }))).toEqual({
-      errors: {},
+      errors: null,
       items: pods,
       loaded: false,
       loading: false,
@@ -273,7 +273,7 @@ describe("pod reducer", () => {
     expect(
       reducers(podState, actions.deleteSuccess({ item: pods[0] }))
     ).toEqual({
-      errors: {},
+      errors: null,
       items: pods,
       loaded: false,
       loading: false,
@@ -319,7 +319,7 @@ describe("pod reducer", () => {
     });
 
     expect(reducers(podState, actions.deleteNotify(1))).toEqual({
-      errors: {},
+      errors: null,
       items: [pods[1]],
       loaded: false,
       loading: false,
@@ -341,7 +341,7 @@ describe("pod reducer", () => {
 
     expect(reducers(podState, actions.refreshStart({ item: pods[0] }))).toEqual(
       {
-        errors: {},
+        errors: null,
         items: pods,
         loaded: false,
         loading: false,
@@ -369,7 +369,7 @@ describe("pod reducer", () => {
         actions.refreshSuccess({ item: pods[0], payload: updatedPod })
       )
     ).toEqual({
-      errors: {},
+      errors: null,
       items: [updatedPod],
       loaded: false,
       loading: false,
@@ -423,7 +423,7 @@ describe("pod reducer", () => {
     });
 
     expect(reducers(podState, actions.setSelected([1, 2]))).toEqual({
-      errors: {},
+      errors: null,
       items: pods,
       loaded: false,
       loading: false,

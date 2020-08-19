@@ -5,19 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
-
-// Get the models that follow the generic shape. The following models are excluded:
-// - 'messages' and 'status' are not models from the API.
-// - 'general' has a collection of sub-models that form a different shape.
-// - 'config' contains a collection of children without IDs.
-// - 'scriptresults' returns an object of data rather than an array.
-export type CommonStates = Omit<
-  RootState,
-  "messages" | "general" | "status" | "scriptresults" | "config"
->;
-
-// Get the types of the common models. e.g. "DHCPSnippetState".
-export type CommonStateTypes = CommonStates[keyof CommonStates];
+import type { CommonStates, CommonStateTypes } from "app/store/utils";
 
 /**
  * @template I - A model item type e.g. DHCPSnippet

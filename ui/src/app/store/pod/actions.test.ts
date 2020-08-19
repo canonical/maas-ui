@@ -8,6 +8,7 @@ describe("pod actions", () => {
         model: "pod",
         method: "list",
       },
+      payload: null,
     });
   });
 

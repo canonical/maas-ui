@@ -1,4 +1,5 @@
 import type { Model } from "app/store/types/model";
+import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 
 export type PodHint = {
@@ -81,12 +82,6 @@ export type PodStatuses = {
 };
 
 export type PodState = {
-  errors: TSFixMe;
-  items: Pod[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
   selected: Pod["id"][];
   statuses: PodStatuses;
-};
+} & GenericState<Pod, TSFixMe>;

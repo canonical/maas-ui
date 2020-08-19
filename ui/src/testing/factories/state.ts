@@ -173,6 +173,7 @@ export const podStatuses = define<PodStatuses>({
 
 export const podState = define<PodState>({
   ...defaultState,
+  errors: null,
   selected: () => [],
   statuses: () => ({}),
 });
