@@ -10,7 +10,7 @@ import Meter from "app/base/components/Meter";
 
 type Props = { id: Pod["id"] };
 
-const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
+const KVMStorage = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -20,6 +20,7 @@ const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
 
     return (
       <>
+        <h4 className="u-sv1">Storage</h4>
         {chunkedPools.map((pools, i) => (
           <Row key={`pool-chunk-${i}`}>
             {pools.map((pool) => {
@@ -28,7 +29,7 @@ const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
 
               return (
                 <Col key={`storage-card-${pool.id}`} size="4">
-                  <Card className="p-card--transparent">
+                  <Card>
                     <div className="p-grid-list">
                       <div className="p-grid-list__label">Name</div>
                       <div className="p-grid-list__value">{pool.name}</div>
@@ -74,4 +75,4 @@ const KVMSummaryStorage = ({ id }: Props): JSX.Element | null => {
   return <Spinner text="Loading" />;
 };
 
-export default KVMSummaryStorage;
+export default KVMStorage;
