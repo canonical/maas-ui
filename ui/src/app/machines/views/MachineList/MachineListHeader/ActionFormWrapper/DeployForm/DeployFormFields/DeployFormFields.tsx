@@ -115,7 +115,6 @@ export const DeployFormFields = (): JSX.Element => {
               }
               name="installKVM"
               type="checkbox"
-              wrapperClassName="u-display-inline-block"
             />
             <FormikField
               disabled={noImages}
@@ -136,8 +135,8 @@ export const DeployFormFields = (): JSX.Element => {
                 handleChange(evt);
                 setUserDataVisible(evt.target.checked);
               }}
-              wrapperClassName={classNames("u-display-inline-block", {
-                "u-sv2 u-display-inline-block": userDataVisible,
+              wrapperClassName={classNames({
+                "u-sv2": userDataVisible,
               })}
             />
             {userDataVisible && <UserDataField />}
