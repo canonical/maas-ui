@@ -1,5 +1,5 @@
-import { Spinner, Strip } from "@canonical/react-components";
-import React, { useEffect } from "react";
+import { Spinner } from "@canonical/react-components";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
@@ -7,8 +7,10 @@ import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import MachineListTable from "app/machines/views/MachineList/MachineListTable";
-import KVMSummaryStorage from "./KVMSummaryStorage";
+import KVMAggregateResources from "./KVMAggregateResources";
+import KVMNumaResources from "./KVMNumaResources";
+import KVMStorage from "./KVMStorage";
+import Switch from "app/base/components/Switch";
 
 const KVMSummary = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -16,6 +18,7 @@ const KVMSummary = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
+  const [viewByNuma, setViewByNuma] = useState(false);
 
   useWindowTitle(`KVM ${`${pod?.name} ` || ""} details`);
 
@@ -26,15 +29,20 @@ const KVMSummary = (): JSX.Element => {
   if (!!pod) {
     return (
       <>
-        <h4>Storage</h4>
-        <Strip className="u-sv3" shallow>
-          <KVMSummaryStorage id={pod.id} />
-        </Strip>
-        <hr />
-        <h4>Machines</h4>
-        <Strip shallow>
-          <MachineListTable filter={`pod-id:=${pod.id}`} showActions={false} />
-        </Strip>
+        <div className="u-flex--between">
+          <h4 className="u-sv1">Resources</h4>
+          <Switch
+            checked={viewByNuma}
+            className="p-switch--inline-label"
+            data-test="numa-switch"
+            label="View by NUMA node"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              setViewByNuma(evt.target.checked);
+            }}
+          />
+        </div>
+        {viewByNuma ? <KVMNumaResources /> : <KVMAggregateResources />}
+        <KVMStorage id={pod.id} />
       </>
     );
   }

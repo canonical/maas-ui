@@ -26,14 +26,17 @@
 @import "./patterns_double-row";
 @import "./patterns_footer";
 @import "./patterns_forms";
+@import "./patterns_grids";
 @import "./patterns_icons";
 @import "./patterns_links";
 @import "./patterns_lists";
 @import "./patterns_navigation";
 @import "./patterns_notifications";
+@import "./patterns_switches";
 @import "./patterns_table-actions";
 @import "./patterns_tables";
 @import "./patterns_tabs";
+@import "./patterns_typography";
 @import "./utilities";
 @include maas-buttons;
 @include maas-cards;
@@ -41,14 +44,17 @@
 @include maas-double-row;
 @include maas-footer;
 @include maas-forms;
+@include maas-grids;
 @include maas-icons;
 @include maas-links;
 @include maas-lists;
 @include maas-navigation;
 @include maas-notifications;
+@include maas-switches;
 @include maas-table-actions;
 @include maas-tables;
 @include maas-tabs;
+@include maas-typography;
 @include maas-utilities;
 
 // Import and include MAAS component styles
@@ -71,6 +77,7 @@
 @include TagSelector;
 
 // kvm
+@import "~app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources";
 @import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMPopover";
 @import "~app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover";
@@ -79,14 +86,17 @@
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect";
+@import "~app/kvm/components/KVMResourcesCard";
 @include CPUPopover;
+@include KVMComposeInterfacesTable;
+@include KVMComposeStorageTable;
+@include KVMListTable;
+@include KVMNumaResources;
+@include KVMPoolSelect;
+@include KVMSubnetSelect;
+@include KVMResourcesCard;
 @include RAMPopover;
 @include StoragePopover;
-@include KVMListTable;
-@include KVMComposeInterfacesTable;
-@include KVMSubnetSelect;
-@include KVMComposeStorageTable;
-@include KVMPoolSelect;
 
 // machines
 @import "~app/machines/views/MachineList";
