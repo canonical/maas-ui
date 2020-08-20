@@ -1,0 +1,11 @@
+@mixin KVMMeter {
+  .kvm-meter {
+    display: grid;
+    grid-column-gap: $sph-inner;
+    grid-template-areas:
+      "total allocated free"
+      "meter meter meter";
+    grid-template-columns: repeat(3, minmax(1fr, max-content));
+    grid-template-rows: min-content;
+  }
+}

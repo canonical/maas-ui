@@ -78,6 +78,7 @@
 
 // kvm
 @import "~app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources";
+@import "~app/kvm/views/KVMDetails/KVMSummary/KVMStorage";
 @import "~app/kvm/views/KVMList/KVMListTable/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/KVMListTable/RAMColumn/RAMPopover";
 @import "~app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover";
@@ -86,15 +87,18 @@
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect";
+@import "~app/kvm/components/KVMMeter";
 @import "~app/kvm/components/KVMResourcesCard";
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
 @include KVMListTable;
+@include KVMMeter;
 @include KVMNumaResources;
 @include KVMPoolSelect;
-@include KVMSubnetSelect;
 @include KVMResourcesCard;
+@include KVMStorage;
+@include KVMSubnetSelect;
 @include RAMPopover;
 @include StoragePopover;
 

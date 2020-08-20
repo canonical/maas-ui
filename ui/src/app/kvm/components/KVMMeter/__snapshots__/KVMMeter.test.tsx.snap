@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KVMMeter renders 1`] = `
+<div
+  className="kvm-meter"
+>
+  <div>
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Total
+    </p>
+    <div>
+      3GB
+    </div>
+  </div>
+  <div
+    className="u-align--right"
+  >
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Allocated
+      <span
+        className="u-nudge-left--small"
+      >
+        <i
+          className="p-icon--allocated"
+        />
+      </span>
+    </p>
+    <div
+      className="u-nudge-left"
+    >
+      2GB
+    </div>
+  </div>
+  <div
+    className="u-align--right"
+  >
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Free
+      <span
+        className="u-nudge-left--small"
+      >
+        <i
+          className="p-icon--free"
+        />
+      </span>
+    </p>
+    <div
+      className="u-nudge-left"
+    >
+      1GB
+    </div>
+  </div>
+  <div
+    style={
+      Object {
+        "gridArea": "meter",
+      }
+    }
+  >
+    <Meter
+      className="u-no-margin--bottom"
+      data={
+        Array [
+          Object {
+            "value": 2,
+          },
+        ]
+      }
+      max={3}
+      segmented={false}
+      small={true}
+    />
+  </div>
+</div>
+`;

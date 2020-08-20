@@ -1,12 +1,12 @@
-import { Card, Col, Row, Spinner } from "@canonical/react-components";
+import { Card, Spinner } from "@canonical/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
 
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import podSelectors from "app/store/pod/selectors";
-import { chunk, formatBytes } from "app/utils";
-import Meter from "app/base/components/Meter";
+import { formatBytes } from "app/utils";
+import KVMMeter from "app/kvm/components/KVMMeter";
 
 type Props = { id: Pod["id"] };
 
@@ -16,59 +16,60 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
   );
 
   if (!!pod) {
-    const chunkedPools = chunk(pod.storage_pools, 3);
+    const sortedPools = [...pod.storage_pools].sort((a, b) => {
+      if (a.id === pod.default_storage_pool || b.id > a.id) {
+        return -1;
+      }
+      if (b.id === pod.default_storage_pool || a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
 
     return (
       <>
-        <h4 className="u-sv1">Storage</h4>
-        {chunkedPools.map((pools, i) => (
-          <Row key={`pool-chunk-${i}`}>
-            {pools.map((pool) => {
-              const available = formatBytes(pool.total - pool.used, "B");
-              const used = formatBytes(pool.used, "B");
+        <h4 className="u-sv1">
+          Storage&nbsp;
+          <span className="p-text--paragraph u-text--light">
+            (Sorted by id, default first)
+          </span>
+        </h4>
+        <div className="kvm-storage-grid">
+          {sortedPools.map((pool) => {
+            const total = formatBytes(pool.total, "B");
+            const allocated = formatBytes(pool.used, "B", {
+              convertTo: total.unit,
+            });
+            const free = formatBytes(pool.total - pool.used, "B", {
+              convertTo: total.unit,
+            });
 
-              return (
-                <Col key={`storage-card-${pool.id}`} size="4">
-                  <Card>
-                    <div className="p-grid-list">
-                      <div className="p-grid-list__label">Name</div>
-                      <div className="p-grid-list__value">{pool.name}</div>
-                      <div className="p-grid-list__label">Mount</div>
-                      <div className="p-grid-list__value">{pool.path}</div>
-                      <div className="p-grid-list__label">Type</div>
-                      <div className="p-grid-list__value">{pool.type}</div>
-                      <div className="p-grid-list__label">Space</div>
-                      <div className="p-grid-list__value">
-                        <Meter
-                          className="u-no-margin--bottom"
-                          data={[
-                            {
-                              key: `pool-${pool.id}-meter`,
-                              value: pool.used,
-                            },
-                          ]}
-                          label={
-                            <>
-                              <div>
-                                <div>{`${used.value} ${used.unit}`}</div>
-                                <div className="u-text--light">Used</div>
-                              </div>
-                              <div className="u-align--right">
-                                <div>{`${available.value} ${available.unit}`}</div>
-                                <div className="u-text--light">Available</div>
-                              </div>
-                            </>
-                          }
-                          max={pool.total}
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
-        ))}
+            return (
+              <Card key={pool.id}>
+                <h5>
+                  <span data-test="pool-name">{pool.name}</span>
+                  <br />
+                  <span className="p-text--paragraph u-text--light">
+                    {pool.path}
+                  </span>
+                </h5>
+                <hr />
+                <div className="kvm-storage-meter-grid">
+                  <div>
+                    <p className="p-heading--small u-text--light">Type</p>
+                    <div>{pool.type}</div>
+                  </div>
+                  <KVMMeter
+                    allocated={allocated.value}
+                    free={free.value}
+                    total={total.value}
+                    unit={total.unit}
+                  />
+                </div>
+              </Card>
+            );
+          })}
+        </div>
       </>
     );
   }

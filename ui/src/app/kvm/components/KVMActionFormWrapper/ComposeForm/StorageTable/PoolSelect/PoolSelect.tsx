@@ -95,22 +95,18 @@ const generateDropdownContent = (
                 data={[
                   {
                     color: COLOURS.LINK,
-                    key: `pool-${pool.id}-allocated`,
                     value: allocated,
                   },
                   {
                     color: COLOURS.POSITIVE,
-                    key: `pool-${pool.id}-requested`,
                     value: requested,
                   },
                   {
                     color: COLOURS.POSITIVE_FADED,
-                    key: `pool-${pool.id}-pending-request`,
                     value: pendingRequest,
                   },
                   {
                     color: COLOURS.LINK_FADED,
-                    key: `pool-${pool.id}-free`,
                     value: free >= 0 ? free : 0,
                   },
                 ]}

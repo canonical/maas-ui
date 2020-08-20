@@ -71,7 +71,6 @@ const StoragePopover = ({
                     className="u-no-margin--bottom"
                     data={[
                       {
-                        key: `${pool.id}-storage-popover-meter`,
                         value: allocated.value,
                       },
                     ]}
