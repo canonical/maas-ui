@@ -3,13 +3,20 @@ import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
+type Tag = {
+  id: number;
+  name: string;
+  displayName: string;
+  description: string;
+};
+
 /**
  * Highlights a portion of given text that matches substring.
- * @param {String} text - Text to search for substring.
- * @param {String} match - Substring to highlight.
- * @returns {Object} JSX with emphasised text.
+ * @param text - Text to search for substring.
+ * @param match - Substring to highlight.
+ * @returns JSX with emphasised text.
  */
-const highlightMatch = (text, match) => {
+const highlightMatch = (text: string, match: string): JSX.Element => {
   const textArray = text.split(match);
   return (
     <span>
@@ -23,7 +30,7 @@ const highlightMatch = (text, match) => {
   );
 };
 
-const sanitiseFilter = (filterText) => ({
+const sanitiseFilter = (filterText: string) => ({
   name: filterText.replace(/ /g, "-"),
 });
 
@@ -33,7 +40,7 @@ const generateDropdownItems = ({
   selectedTags,
   tags,
   updateTags,
-}) => {
+}): JSX.Element[] => {
   const dropdownItems = [];
   if (
     allowNewTags &&
@@ -93,28 +100,53 @@ const generateDropdownItems = ({
   return dropdownItems.concat(existingTagItems);
 };
 
-const generateSelectedItems = ({ selectedTags, updateTags }) =>
-  selectedTags.map((tag) => (
-    <li className="tag-selector__selected-item" key={tag.name}>
-      <Button
-        appearance="base"
-        className="tag-selector__selected-button"
-        data-test="selected-tag"
-        dense
-        hasIcon
-        onClick={() =>
-          updateTags(
-            selectedTags.filter((item) => item !== tag),
-            false
-          )
-        }
-        type="button"
-      >
-        <span>{tag.name}</span>
-        <i className="p-icon--close" />
-      </Button>
-    </li>
-  ));
+const generateSelectedItems = (
+  selectedTags: Tag[],
+  updateTags,
+  disabledTags: Tag[]
+) =>
+  selectedTags.map((tag) => {
+    const isDisabled = disabledTags?.some(
+      (disabledTag) => disabledTag.id === tag.id
+    );
+
+    return (
+      <li className="tag-selector__selected-item" key={tag.name}>
+        <Button
+          appearance="base"
+          className="tag-selector__selected-button"
+          data-test="selected-tag"
+          disabled={isDisabled}
+          dense
+          hasIcon
+          onClick={() =>
+            updateTags(
+              selectedTags.filter((item) => item !== tag),
+              false
+            )
+          }
+          type="button"
+        >
+          <span>{tag.name}</span>
+          {!isDisabled && <i className="p-icon--close" />}
+        </Button>
+      </li>
+    );
+  });
+
+type Props = {
+  allowNewTags?: boolean;
+  disabled?: boolean;
+  error?: string;
+  help?: string;
+  initialSelected?: Tag[];
+  label?: string;
+  onTagsUpdate?: (tags: Tag[]) => void;
+  placeholder: string;
+  required?: boolean;
+  tags: Tag[];
+  disabledTags?: Tag[];
+};
 
 export const TagSelector = ({
   allowNewTags = false,
@@ -125,9 +157,10 @@ export const TagSelector = ({
   label,
   onTagsUpdate,
   placeholder = "Tags",
-  required,
+  required = false,
   tags = [],
-}) => {
+  disabledTags = [],
+}: Props): JSX.Element => {
   const wrapperRef = useRef(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -183,7 +216,7 @@ export const TagSelector = ({
       <div className="tag-selector">
         {selectedTags.length > 0 && (
           <ul className="tag-selector__selected-list">
-            {generateSelectedItems({ selectedTags, updateTags })}
+            {generateSelectedItems(selectedTags, updateTags, disabledTags)}
           </ul>
         )}
         <Input

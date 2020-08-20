@@ -32,5 +32,5 @@ export const scripts = extend<Model, Scripts>(model, {
   timeout: "00:30:00",
   title: "test title",
   type_name: "Commissioning script",
-  type: random,
+  type: 0,
 });

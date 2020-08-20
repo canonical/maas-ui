@@ -41,6 +41,9 @@ export const CommissionForm = ({ setSelectedAction }) => {
   const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const defaultCommissioningScripts = useSelector(
+    scriptSelectors.defaultCommissioning
+  );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
   const commissioningSelected = useSelector(
@@ -125,7 +128,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
     >
       <CommissionFormFields
         preselectedTesting={preselectedTestingScripts}
-        preselectedCommissioning={commissioningScripts}
+        preselectedCommissioning={defaultCommissioningScripts}
         commissioningScripts={formattedCommissioningScripts}
         testingScripts={formattedTestingScripts}
       />

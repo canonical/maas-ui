@@ -58,6 +58,23 @@ describe("scripts selectors", () => {
     });
   });
 
+  describe("defaultCommissioning", () => {
+    it("returns all default commissioning scripts", () => {
+      const items = [
+        scriptsFactory({ type: 0, default: true }),
+        scriptsFactory({ type: 0, default: false }),
+        scriptsFactory({ type: 0, tags: ["noauto"] }),
+      ];
+      const state = rootStateFactory({
+        scripts: scriptsStateFactory({
+          items,
+        }),
+      });
+
+      expect(scripts.defaultCommissioning(state)).toEqual([items[0]]);
+    });
+  });
+
   describe("testing", () => {
     it("returns all testing scripts", () => {
       const items = [
@@ -72,6 +89,23 @@ describe("scripts selectors", () => {
       });
 
       expect(scripts.testing(state)).toEqual([items[1], items[2]]);
+    });
+  });
+
+  describe("defaultTesting", () => {
+    it("returns all default testing scripts", () => {
+      const items = [
+        scriptsFactory({ type: 2, default: true }),
+        scriptsFactory({ type: 2, default: false }),
+        scriptsFactory({ type: 2, tags: ["noauto"] }),
+      ];
+      const state = rootStateFactory({
+        scripts: scriptsStateFactory({
+          items,
+        }),
+      });
+
+      expect(scripts.defaultTesting(state)).toEqual([items[0]]);
     });
   });
 
