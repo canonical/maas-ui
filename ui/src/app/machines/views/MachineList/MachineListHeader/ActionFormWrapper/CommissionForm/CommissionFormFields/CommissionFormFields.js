@@ -5,7 +5,6 @@ import { useFormikContext } from "formik";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
 import { useEffect } from "react";
-import { useState } from "react";
 
 export const CommissionFormFields = ({
   preselectedTesting,
@@ -22,20 +21,6 @@ export const CommissionFormFields = ({
     setFieldValue("commissioningScripts", preselectedCommissioning);
     setFieldValue("testingScripts", preselectedTesting);
   }, [preselectedCommissioning, preselectedTesting, setFieldValue]);
-
-  useEffect(() => {
-    setDisabledScripts(
-      commissioningScripts.filter((script) => script.default === true)
-    );
-  }, [commissioningScripts]);
-
-  const [
-    showCommissioningPlaceholder,
-    setShowCommissioningPlaceholder,
-  ] = useState(true);
-
-  const [showTestingPlaceholder, setShowTestingPlaceholder] = useState(true);
-  const [disabledScripts, setDisabledScripts] = useState([]);
 
   return (
     <Row>
@@ -66,16 +51,13 @@ export const CommissionFormFields = ({
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts) => {
             setFieldValue("commissioningScripts", selectedScripts);
-            setShowCommissioningPlaceholder(
-              selectedScripts.length !== commissioningScripts.length
-            );
           }}
-          placeholder={
-            showCommissioningPlaceholder ? "Select additional scripts" : null
-          }
+          placeholder="Select additional scripts"
           required
           tags={commissioningScripts}
-          disabledTags={disabledScripts}
+          disabledTags={commissioningScripts.filter(
+            (script) => script.default === true
+          )}
         />
         <FormikField
           component={TagSelector}
@@ -86,13 +68,8 @@ export const CommissionFormFields = ({
           name="tests"
           onTagsUpdate={(selectedScripts) => {
             setFieldValue("testingScripts", selectedScripts);
-            setShowTestingPlaceholder(
-              selectedScripts.length !== testingScripts.length
-            );
           }}
-          placeholder={
-            showTestingPlaceholder ? "Select additional scripts" : null
-          }
+          placeholder="Select additional scripts"
           required
           tags={testingScripts}
         />
