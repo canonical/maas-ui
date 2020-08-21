@@ -32,11 +32,11 @@ const StoragePopover = ({
             <div className="u-align--right">Type</div>
             <ul className="p-inline-list u-default-text u-no-margin--bottom">
               <li className="p-inline-list__item">
-                <i className="p-icon--allocated is-inline"></i>
+                <i className="p-circle--link is-inline"></i>
                 Allocated
               </li>
               <li className="p-inline-list__item">
-                <i className="p-icon--free is-inline"></i>
+                <i className="p-circle--link-faded is-inline"></i>
                 Free
               </li>
             </ul>
@@ -71,7 +71,6 @@ const StoragePopover = ({
                     className="u-no-margin--bottom"
                     data={[
                       {
-                        key: `${pool.id}-storage-popover-meter`,
                         value: allocated.value,
                       },
                     ]}
@@ -81,14 +80,14 @@ const StoragePopover = ({
                           className="p-inline-list__item"
                           data-test="pool-allocated"
                         >
-                          <i className="p-icon--allocated is-inline"></i>
+                          <i className="p-circle--link is-inline"></i>
                           {`${allocated.value}${allocated.unit}`}
                         </li>
                         <li
                           className="p-inline-list__item"
                           data-test="pool-free"
                         >
-                          <i className="p-icon--free is-inline"></i>
+                          <i className="p-circle--link-faded is-inline"></i>
                           {`${free.value}${free.unit}`}
                         </li>
                       </ul>

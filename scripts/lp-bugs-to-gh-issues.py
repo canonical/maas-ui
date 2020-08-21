@@ -1,12 +1,22 @@
 #!/usr/bin/python3
 import os
+import tempfile
 
 from launchpadlib.launchpad import Launchpad
 from github import Github
 
 github = Github(os.getenv("GITHUB_TOKEN"))
 github_repo = github.get_repo("canonical-web-and-design/maas-ui")
-launchpad = Launchpad.login_with("Canonical web team stats", "production")
+
+with tempfile.NamedTemporaryFile(mode="w") as f:
+    f.write(os.getenv("LAUNCHPAD_CREDENTIALS"))
+    f.flush()
+    launchpad = Launchpad.login_with(
+        service_root="production",
+        credentials_file=f.name,
+        application_name="prod-design-maas-ui-lp-bot",
+    )
+
 project = launchpad.projects["maas"]
 ui_project = launchpad.projects["maas-ui"]
 

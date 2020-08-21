@@ -30,14 +30,7 @@ const mockClientRect = ({
 
 describe("Meter", () => {
   it("renders", () => {
-    const wrapper = shallow(
-      <Meter
-        data={[
-          { key: "datum-1", value: 1 },
-          { key: "datum-2", value: 3 },
-        ]}
-      />
-    );
+    const wrapper = shallow(<Meter data={[{ value: 1 }, { value: 3 }]} />);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -48,13 +41,7 @@ describe("Meter", () => {
 
   it("can be given a label", () => {
     const wrapper = shallow(
-      <Meter
-        data={[
-          { key: "datum-1", value: 1 },
-          { key: "datum-2", value: 3 },
-        ]}
-        label="Meter label"
-      />
+      <Meter data={[{ value: 1 }, { value: 3 }]} label="Meter label" />
     );
     expect(wrapper.find(".p-meter__label").at(0).text()).toBe("Meter label");
   });
@@ -70,9 +57,9 @@ describe("Meter", () => {
     const wrapper = shallow(
       <Meter
         data={[
-          { color: "#AAA", key: "aaa", value: 1 },
-          { color: "#BBB", key: "bbb", value: 2 },
-          { color: "#CCC", key: "ccc", value: 3 },
+          { color: "#AAA", value: 1 },
+          { color: "#BBB", value: 2 },
+          { color: "#CCC", value: 3 },
         ]}
       />
     );
@@ -89,11 +76,7 @@ describe("Meter", () => {
 
   it("changes colour if values exceed given maximum value", () => {
     const wrapper = shallow(
-      <Meter
-        data={[{ color: "#ABC", key: "key", value: 100 }]}
-        max={10}
-        overColor="#DEF"
-      />
+      <Meter data={[{ color: "#ABC", value: 100 }]} max={10} overColor="#DEF" />
     );
     expect(
       wrapper.find(".p-meter__filled").props().style?.backgroundColor
@@ -104,10 +87,10 @@ describe("Meter", () => {
     const wrapper = shallow(
       <Meter
         data={[
-          { key: "ten", value: 10 }, // 10/100 = 10%
-          { key: "twenty", value: 20 }, // 20/100 = 20%
-          { key: "thirty", value: 30 }, // 30/100 = 30%
-          { key: "forty", value: 40 }, // 40/100 = 40%
+          { value: 10 }, // 10/100 = 10%
+          { value: 20 }, // 20/100 = 20%
+          { value: 30 }, // 30/100 = 30%
+          { value: 40 }, // 40/100 = 40%
         ]}
       />
     );
@@ -129,10 +112,10 @@ describe("Meter", () => {
     const wrapper = shallow(
       <Meter
         data={[
-          { key: "ten", value: 10 }, // 1st = 0%
-          { key: "twenty", value: 20 }, // 2nd = 1st width = 10%
-          { key: "thirty", value: 30 }, // 3rd = 1st + 2nd width = 30%
-          { key: "forty", value: 40 }, // 4th = 1st + 2nd + 3rd width = 60%
+          { value: 10 }, // 1st = 0%
+          { value: 20 }, // 2nd = 1st width = 10%
+          { value: 30 }, // 3rd = 1st + 2nd width = 30%
+          { value: 40 }, // 4th = 1st + 2nd + 3rd width = 60%
         ]}
       />
     );
@@ -151,16 +134,14 @@ describe("Meter", () => {
   });
 
   it("can be made segmented", () => {
-    const wrapper = mount(
-      <Meter data={[{ key: "filled", value: 2 }]} max={10} segmented />
-    );
+    const wrapper = mount(<Meter data={[{ value: 2 }]} max={10} segmented />);
     expect(wrapper.find(".p-meter__separators").exists()).toBe(true);
   });
 
   it("can set the segment separator color", () => {
     const wrapper = mount(
       <Meter
-        data={[{ key: "filled", value: 2 }]}
+        data={[{ value: 2 }]}
         max={10}
         segmented
         separatorColor="#abc123"
@@ -177,9 +158,7 @@ describe("Meter", () => {
     Element.prototype.getBoundingClientRect = mockClientRect({
       width: 128,
     });
-    const wrapper = mount(
-      <Meter data={[{ key: "filled", value: 10 }]} segmented max={100} />
-    );
+    const wrapper = mount(<Meter data={[{ value: 10 }]} segmented max={100} />);
 
     const backgroundStyle = wrapper.find(".p-meter__separators").props().style
       ?.background as string;
@@ -194,9 +173,7 @@ describe("Meter", () => {
     Element.prototype.getBoundingClientRect = mockClientRect({
       width: 200,
     });
-    const wrapper = mount(
-      <Meter data={[{ key: "filled", value: 10 }]} segmented max={100} />
-    );
+    const wrapper = mount(<Meter data={[{ value: 10 }]} segmented max={100} />);
 
     const barWidth = wrapper.find(".p-meter__bar").props().style?.width;
     expect(barWidth).toBe(128);

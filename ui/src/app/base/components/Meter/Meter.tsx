@@ -35,7 +35,6 @@ const updateWidths = (
 
 type MeterDatum = {
   color?: string;
-  key: string;
   value: number;
 };
 
@@ -104,7 +103,7 @@ const Meter = ({
           data.map((datum, i) => (
             <div
               className="p-meter__filled"
-              key={`${datum.key}-bar`}
+              key={`meter-${i}`}
               style={{
                 backgroundColor:
                   datum.color ||
@@ -151,7 +150,6 @@ Meter.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       color: PropTypes.string,
-      key: PropTypes.string.isRequired,
       value: PropTypes.number,
     })
   ).isRequired,

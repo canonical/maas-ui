@@ -35,7 +35,6 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
           className="u-no-margin--bottom"
           data={[
             {
-              key: `${pod.name}-memory-meter`,
               value: pod.used.memory,
             },
           ]}

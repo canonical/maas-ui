@@ -29,7 +29,6 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
           className="u-no-margin--bottom"
           data={[
             {
-              key: `${pod.name}-storage-meter`,
               value: pod.used.local_storage,
             },
           ]}

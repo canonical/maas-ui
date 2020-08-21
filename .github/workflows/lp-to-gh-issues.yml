@@ -16,4 +16,4 @@ jobs:
       - name: Install deps
         run: pip install launchpadlib PyGithub
       - name: Running script
-        run: GITHUB_TOKEN=${{ secrets.LP_TO_GH_BUGS_MIGRATOR }} python scripts/lp-bugs-to-gh-issues.py
+        run: LAUNCHPAD_CREDENTIALS=${{ secrets.LAUNCHPAD_CREDENTIALS }} GITHUB_TOKEN=${{ secrets.LP_TO_GH_BUGS_MIGRATOR }} python scripts/lp-bugs-to-gh-issues.py
