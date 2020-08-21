@@ -6,8 +6,8 @@ import React, { useEffect, useRef, useState } from "react";
 type Tag = {
   id: number;
   name: string;
-  displayName: string;
-  description: string;
+  displayName?: string;
+  description?: string;
 };
 
 /**
