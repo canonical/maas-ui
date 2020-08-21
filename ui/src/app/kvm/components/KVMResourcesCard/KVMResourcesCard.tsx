@@ -26,24 +26,54 @@ const KVMResourcesCard = ({ className, title }: Props): JSX.Element => {
       )}
       <div className="kvm-resources-card__section kvm-resources-card__ram">
         <h4 className="p-heading--small">RAM</h4>
-        <table className="u-no-margin--bottom">
+        <table className="kvm-resources-card__ram-table">
           <thead>
             <tr>
               <th></th>
-              <th>Allocated</th>
-              <th>Free</th>
+              <th className="u-align--right">
+                <span className="u-nudge-left">Allocated</span>
+              </th>
+              <th className="u-align--right">
+                <span className="u-nudge-left">Free</span>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>General</td>
-              <td>64GB</td>
-              <td>96GB</td>
+              <td className="u-align--right">
+                64GB
+                <span className="u-nudge-left--small">
+                  <i className="p-circle--link"></i>
+                </span>
+              </td>
+              <td className="u-align--right">
+                96GB
+                <span className="u-nudge-left--small">
+                  <i className="p-circle--link-faded"></i>
+                </span>
+              </td>
             </tr>
             <tr>
-              <td>Hugepage</td>
-              <td>32GB</td>
-              <td>64GB</td>
+              <td>
+                Hugepage
+                <br />
+                <strong className="p-text--x-small u-text--light">
+                  (Size: 2048KB)
+                </strong>
+              </td>
+              <td className="u-align--right">
+                32GB
+                <span className="u-nudge-left--small">
+                  <i className="p-circle--positive"></i>
+                </span>
+              </td>
+              <td className="u-align--right">
+                64GB
+                <span className="u-nudge-left--small">
+                  <i className="p-circle--positive-faded"></i>
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>

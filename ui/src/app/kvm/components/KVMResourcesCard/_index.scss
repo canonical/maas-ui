@@ -1,4 +1,25 @@
 @mixin KVMResourcesCard {
+  .kvm-resources-card__ram-table {
+    margin-bottom: 0;
+
+    td {
+      padding-bottom: $spv-inner--small;
+      padding-top: calc(#{$spv-inner--small} - 1px);
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      margin-top: -$spv-inner--small;
+    }
+  }
+
   // Base KVM resources card styling.
   .kvm-resources-card__section {
     @extend %base-grid;

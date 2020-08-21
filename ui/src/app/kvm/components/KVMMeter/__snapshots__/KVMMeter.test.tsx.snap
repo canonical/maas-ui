@@ -25,7 +25,7 @@ exports[`KVMMeter renders 1`] = `
         className="u-nudge-left--small"
       >
         <i
-          className="p-icon--allocated"
+          className="p-circle--link"
         />
       </span>
     </p>
@@ -46,7 +46,7 @@ exports[`KVMMeter renders 1`] = `
         className="u-nudge-left--small"
       >
         <i
-          className="p-icon--free"
+          className="p-circle--link-faded"
         />
       </span>
     </p>

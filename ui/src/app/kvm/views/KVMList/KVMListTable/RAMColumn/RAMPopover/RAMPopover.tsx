@@ -41,14 +41,14 @@ const RAMPopover = ({
               {`${allocatedMemory.value} ${allocatedMemory.unit}`}
             </div>
             <div className="u-vertically-center">
-              <i className="p-icon--allocated"></i>
+              <i className="p-circle--link"></i>
             </div>
             <div>Allocated</div>
             <div className="u-align--right" data-test="free">
               {`${freeMemory.value} ${freeMemory.unit}`}
             </div>
             <div className="u-vertically-center">
-              <i className="p-icon--free"></i>
+              <i className="p-circle--link-faded"></i>
             </div>
             <div>Free</div>
           </div>
