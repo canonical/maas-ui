@@ -4,7 +4,6 @@ import { useFormikContext } from "formik";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
-import { useEffect } from "react";
 
 export const CommissionFormFields = ({
   preselectedTesting,
@@ -16,11 +15,6 @@ export const CommissionFormFields = ({
   const urlScriptsSelected = values.testingScripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );
-
-  useEffect(() => {
-    setFieldValue("commissioningScripts", preselectedCommissioning);
-    setFieldValue("testingScripts", preselectedTesting);
-  }, [preselectedCommissioning, preselectedTesting, setFieldValue]);
 
   return (
     <Row>
@@ -47,6 +41,7 @@ export const CommissionFormFields = ({
             values.commissioningScripts.length === commissioningScripts.length
           }
           initialSelected={preselectedCommissioning}
+          initialValues={preselectedCommissioning}
           label="Commissioning scripts"
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts) => {
