@@ -12,9 +12,13 @@ import KVMNumaResources from "./KVMNumaResources";
 import KVMStorage from "./KVMStorage";
 import Switch from "app/base/components/Switch";
 
+type RouteParams = {
+  id: string;
+};
+
 const KVMSummary = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
