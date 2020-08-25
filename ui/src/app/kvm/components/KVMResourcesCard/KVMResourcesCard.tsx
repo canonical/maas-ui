@@ -3,14 +3,35 @@ import classNames from "classnames";
 import React from "react";
 
 import ContextualMenu from "app/base/components/ContextualMenu";
-import Meter from "app/base/components/Meter";
+import KVMMeter from "app/kvm/components/KVMMeter";
+
+type ChartValues = {
+  allocated: number;
+  free: number;
+  total: number;
+  unit?: string;
+};
 
 type Props = {
   className?: string;
+  cores: ChartValues;
+  nics: string[];
+  ram: {
+    general: ChartValues;
+    hugepage?: ChartValues & { pagesize: number };
+  };
   title?: string;
+  vfs: ChartValues;
 };
 
-const KVMResourcesCard = ({ className, title }: Props): JSX.Element => {
+const KVMResourcesCard = ({
+  className,
+  cores,
+  nics,
+  ram,
+  title,
+  vfs,
+}: Props): JSX.Element => {
   return (
     <Card className={classNames("kvm-resources-card", className)}>
       {title && (
@@ -42,55 +63,76 @@ const KVMResourcesCard = ({ className, title }: Props): JSX.Element => {
             <tr>
               <td>General</td>
               <td className="u-align--right">
-                64GB
+                <span data-test="ram-general-allocated">
+                  {ram.general.allocated}
+                  {ram.general.unit}
+                </span>
                 <span className="u-nudge-left--small">
                   <i className="p-circle--link"></i>
                 </span>
               </td>
               <td className="u-align--right">
-                96GB
+                <span data-test="ram-general-free">
+                  {ram.general.free}
+                  {ram.general.unit}
+                </span>
                 <span className="u-nudge-left--small">
                   <i className="p-circle--link-faded"></i>
                 </span>
               </td>
             </tr>
-            <tr>
-              <td>
-                Hugepage
-                <br />
-                <strong className="p-text--x-small u-text--light">
-                  (Size: 2048KB)
-                </strong>
-              </td>
-              <td className="u-align--right">
-                32GB
-                <span className="u-nudge-left--small">
-                  <i className="p-circle--positive"></i>
-                </span>
-              </td>
-              <td className="u-align--right">
-                64GB
-                <span className="u-nudge-left--small">
-                  <i className="p-circle--positive-faded"></i>
-                </span>
-              </td>
-            </tr>
+            {ram.hugepage && (
+              <tr>
+                <td>
+                  Hugepage
+                  <br />
+                  <strong className="p-text--x-small u-text--light">
+                    {`(Size: ${ram.hugepage.pagesize}KB)`}
+                  </strong>
+                </td>
+                <td className="u-align--right">
+                  {ram.hugepage.allocated}
+                  {ram.hugepage.unit}
+                  <span className="u-nudge-left--small">
+                    <i className="p-circle--positive"></i>
+                  </span>
+                </td>
+                <td className="u-align--right">
+                  {ram.hugepage.free}
+                  {ram.hugepage.unit}
+                  <span className="u-nudge-left--small">
+                    <i className="p-circle--positive-faded"></i>
+                  </span>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
       <div className="kvm-resources-card__section kvm-resources-card__cpu">
-        <h4 className="p-heading--small">CPU cores</h4>
-        <Meter data={[]} />
+        <h4 className="p-heading--small u-sv1">CPU cores</h4>
+        <KVMMeter
+          allocated={cores.allocated}
+          data-test="cpu-meter"
+          free={cores.free}
+          segmented
+          total={cores.total}
+        />
       </div>
       <div className="kvm-resources-card__section kvm-resources-card__vfs">
-        <h4 className="p-heading--small">Virtual functions</h4>
+        <h4 className="p-heading--small u-sv1">Virtual functions</h4>
         <div>
-          <Meter data={[]} />
+          <KVMMeter
+            allocated={vfs.allocated}
+            data-test="vfs-meter"
+            free={vfs.free}
+            total={vfs.total}
+          />
           <hr />
           <div className="p-heading--small u-text--light">
             Network interfaces
           </div>
-          <span>eth0, eth1, eth2, eth3</span>
+          <span>{nics.join(", ")}</span>
         </div>
       </div>
       <div className="kvm-resources-card__section kvm-resources-card__vms">

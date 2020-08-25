@@ -41,7 +41,11 @@ const KVMSummary = (): JSX.Element => {
             }}
           />
         </div>
-        {viewByNuma ? <KVMNumaResources /> : <KVMAggregateResources />}
+        {viewByNuma ? (
+          <KVMNumaResources />
+        ) : (
+          <KVMAggregateResources id={pod.id} />
+        )}
         <KVMStorage id={pod.id} />
       </>
     );
