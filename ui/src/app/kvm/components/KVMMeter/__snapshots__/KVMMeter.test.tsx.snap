@@ -10,7 +10,9 @@ exports[`KVMMeter renders 1`] = `
     >
       Total
     </p>
-    <div>
+    <div
+      data-test="total"
+    >
       3GB
     </div>
   </div>
@@ -25,12 +27,13 @@ exports[`KVMMeter renders 1`] = `
         className="u-nudge-left--small"
       >
         <i
-          className="p-circle--link"
+          className="p-circle--link u-no-margin--top"
         />
       </span>
     </p>
     <div
       className="u-nudge-left"
+      data-test="allocated"
     >
       2GB
     </div>
@@ -46,12 +49,13 @@ exports[`KVMMeter renders 1`] = `
         className="u-nudge-left--small"
       >
         <i
-          className="p-circle--link-faded"
+          className="p-circle--link-faded u-no-margin--top"
         />
       </span>
     </p>
     <div
       className="u-nudge-left"
+      data-test="free"
     >
       1GB
     </div>
@@ -64,7 +68,6 @@ exports[`KVMMeter renders 1`] = `
     }
   >
     <Meter
-      className="u-no-margin--bottom"
       data={
         Array [
           Object {

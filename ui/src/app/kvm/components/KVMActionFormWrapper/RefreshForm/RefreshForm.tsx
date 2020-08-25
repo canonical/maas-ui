@@ -10,9 +10,13 @@ type Props = {
   setSelectedAction: (action: string | null) => void;
 };
 
+type RouteParams = {
+  id: string;
+};
+
 const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const errors = useSelector(podSelectors.errors);
   const selectedPodIDs = useSelector(podSelectors.selectedIDs);
   const refreshing = useSelector(podSelectors.refreshing);

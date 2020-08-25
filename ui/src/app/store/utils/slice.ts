@@ -37,17 +37,51 @@ type StatusStates = Pick<RootState, "machine" | "pod">;
 type StatusStateTypes = StatusStates[keyof StatusStates];
 
 /**
- * A utility to generate a slice for a model.
- * @template I - A model that is used as an an array of items on the provided
+ * The type of the generic reducers.
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template E - The type of the errors for a model's state.
+ */
+type GenericReducers<I, E> = SliceCaseReducers<GenericState<I, E>> & {
+  // Overrides for reducers that don't take a payload. This is required for
+  // reducers where the types can't be correctly inferred and so use the default
+  // CaseReducer which requires a payload.
+  fetchStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+  createStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+  updateStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+  cleanup: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+  fetch: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+};
+
+/**
+ * The type of the generic slice.
+ * @template S - The model state type e.g. DHCPSnippetState.
+ * @template I - A model that is used as an array of items on the provided
+ *               state e.g. DHCPSnippet
+ * @template R - The type of the model's reducers.
+ */
+export type GenericSlice<
+  S extends CommonStateTypes,
+  I extends S["items"][0],
+  R
+> = Slice<
+  GenericState<I, S["errors"]>,
+  R & GenericReducers<I, S["errors"]>,
+  string
+>;
+
+/**
+ * A utility to generate a slice for a model.
+ * @template I - A model that is used as an array of items on the provided
+ *               state e.g. DHCPSnippet
+ * @template E - The type of the errors for a model's state.
+ * @template R - The type of the model's reducers.
  * @param {string} name - The name of the model that matches the name in MAAS.
  * @param {object} initialState - Any additional initial state that doesn't
  *                                exist on all models.
  * @param {object} reducers - Additional reducers or overrides for
  *                            base reducers.
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const generateSlice = <
   I extends CommonStateTypes["items"][0],
   E extends CommonStateTypes["errors"],
@@ -60,7 +94,7 @@ export const generateSlice = <
   name: keyof CommonStates;
   initialState?: GenericState<I, E>;
   reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
-}) => {
+}): Slice<GenericState<I, E>, R, typeof name> => {
   // The base reducers are common for all models.
   const baseReducers = {
     fetch: {
@@ -224,15 +258,13 @@ export const generateSlice = <
       ...baseReducers,
       ...reducers,
     },
-    // Due to types being lost we need to cast to the slice type.
-    // See: https://github.com/reduxjs/redux-toolkit/issues/580
-  }) as Slice<GenericState<I, E>, R & typeof baseReducers, typeof name>;
+  });
 };
 
 /**
  * The handlers for a status.
  * @template S - A model that includes status e.g. Machine.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  */
 type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
@@ -253,7 +285,7 @@ type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
 /**
  * A utility to generate reducers and actions to append to a slice.
  * @template S - A model that includes status e.g. Machine.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template K - A model key e.g. "id"
  * @param {string} name - The name of the model that matches the name in MAAS.
@@ -261,7 +293,6 @@ type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
  *                            or "system_id".
  * @param {StatusHandlers[]} handlers - A collection of status handlers.
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const generateStatusHandlers = <
   S extends StatusStateTypes,
   I extends S["items"][0],
@@ -271,7 +302,7 @@ export const generateStatusHandlers = <
   modelName: string,
   indexKey: K,
   handlers: StatusHandlers<S, I>[]
-) =>
+): SliceCaseReducers<S> =>
   handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
     // The initial handler.
     collection[status.status] = {

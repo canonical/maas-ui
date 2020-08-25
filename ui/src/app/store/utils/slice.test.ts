@@ -1,4 +1,8 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import {
+  CaseReducerWithPrepare,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import {
   token as tokenFactory,
@@ -8,19 +12,20 @@ import {
   podStatus as podStatusFactory,
 } from "testing/factories";
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
+import type { GenericSlice } from "app/store/utils";
 import type { Pod, PodState } from "app/store/pod/types";
-import type { TokenState } from "app/store/token/types";
-import type { TSFixMe } from "app/base/types";
+import type { Token, TokenState } from "app/store/token/types";
 
 describe("slice", () => {
   describe("base reducers", () => {
-    let slice: TSFixMe;
+    let slice: GenericSlice<TokenState, Token, SliceCaseReducers<TokenState>>;
 
     beforeEach(() => {
       slice = generateSlice({
         name: "token",
       });
     });
+
     it("returns the initial state", () => {
       expect(slice.reducer(undefined, { type: "" })).toEqual({
         errors: null,
@@ -293,7 +298,7 @@ describe("slice", () => {
   });
 
   describe("base actions", () => {
-    let slice: TSFixMe;
+    let slice: GenericSlice<TokenState, Token, SliceCaseReducers<TokenState>>;
 
     beforeEach(() => {
       slice = generateSlice({
@@ -365,7 +370,14 @@ describe("slice", () => {
   });
 
   describe("status reducers", () => {
-    let slice: TSFixMe;
+    type PodReducers = SliceCaseReducers<PodState> & {
+      refresh: CaseReducerWithPrepare<PodState, PayloadAction<void>>;
+      refreshStart: CaseReducerWithPrepare<PodState, PayloadAction<void>>;
+      refreshSuccess: CaseReducerWithPrepare<PodState, PayloadAction<void>>;
+      refreshError: CaseReducerWithPrepare<PodState, PayloadAction<void>>;
+    };
+    type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
+    let slice: PodSlice;
 
     beforeEach(() => {
       const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
@@ -395,7 +407,7 @@ describe("slice", () => {
           refreshSuccess: statusHandlers.refreshSuccess,
           refreshError: statusHandlers.refreshError,
         },
-      });
+      }) as PodSlice;
     });
 
     it("can create an initial action", () => {
