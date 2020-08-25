@@ -104,7 +104,7 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers>({
         // No state changes need to be handled for this action.
       },
     },
-    getStart: (state: PodState, _action: PayloadAction<undefined>) => {
+    getStart: (state: PodState, _action: PayloadAction<null>) => {
       state.loading = true;
     },
     getError: (state: PodState, action: PayloadAction<PodState["errors"]>) => {

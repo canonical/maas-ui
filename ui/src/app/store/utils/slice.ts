@@ -38,7 +38,7 @@ type StatusStateTypes = StatusStates[keyof StatusStates];
 
 /**
  * The type of the generic reducers.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template E - The type of the errors for a model's state.
  */
@@ -56,7 +56,7 @@ type GenericReducers<I, E> = SliceCaseReducers<GenericState<I, E>> & {
 /**
  * The type of the generic slice.
  * @template S - The model state type e.g. DHCPSnippetState.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template R - The type of the model's reducers.
  */
@@ -72,7 +72,7 @@ export type GenericSlice<
 
 /**
  * A utility to generate a slice for a model.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template E - The type of the errors for a model's state.
  * @template R - The type of the model's reducers.
@@ -264,7 +264,7 @@ export const generateSlice = <
 /**
  * The handlers for a status.
  * @template S - A model that includes status e.g. Machine.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  */
 type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
@@ -285,7 +285,7 @@ type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
 /**
  * A utility to generate reducers and actions to append to a slice.
  * @template S - A model that includes status e.g. Machine.
- * @template I - A model that is used as an an array of items on the provided
+ * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template K - A model key e.g. "id"
  * @param {string} name - The name of the model that matches the name in MAAS.
