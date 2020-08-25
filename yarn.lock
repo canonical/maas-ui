@@ -2228,20 +2228,19 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.8.1.tgz#bcee20de656ef815fe7f63b628c9e0dcb42a8955"
-  integrity sha512-DSpjeDEEJF+zSh+nJWdji8a8inUx8KlFrqBykJniBLQGW7BXOy5FmzN9W2As77YeShYGF7TKmuuEhgPKoZonMA==
+"@canonical/react-components@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.9.0.tgz#818348036a5830a9b2f6feca01a790c789b22c17"
+  integrity sha512-V+s/XlbEEwO1BLXmNVtget3C2iV4c7tgc7hMo/Dpbw+zFcC1pU2SjfxQkMnWo+E88l+Y0IiMIAqijfQPYNTKrg==
   dependencies:
-    "@types/jest" "26.0.4"
-    "@types/node" "14.0.23"
-    "@types/react" "16.9.43"
+    "@types/jest" "26.0.10"
+    "@types/node" "14.6.0"
+    "@types/react" "16.9.46"
     "@types/react-dom" "16.9.8"
     classnames "2.2.6"
     prop-types "15.7.2"
     react-useportal "1.0.13"
-    typescript "3.9.6"
-    vanilla-framework "2.14.1"
+    vanilla-framework "2.16.0"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -3188,14 +3187,6 @@
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
 
-"@types/jest@26.0.4":
-  version "26.0.4"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.4.tgz#d2e513e85aca16992816f192582b5e67b0b15efb"
-  integrity sha512-4fQNItvelbNA9+sFgU+fhJo8ZFF+AS4Egk3GWwCW2jFtViukXbnztccafAdLhzE/0EiCogljtQQXP8aQ9J7sFg==
-  dependencies:
-    jest-diff "^25.2.1"
-    pretty-format "^25.2.1"
-
 "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4":
   version "7.0.5"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.5.tgz#dcce4430e64b443ba8945f0290fb564ad5bac6dd"
@@ -3220,11 +3211,6 @@
   version "14.0.13"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.13.tgz#ee1128e881b874c371374c1f72201893616417c9"
   integrity sha512-rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==
-
-"@types/node@14.0.23":
-  version "14.0.23"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.23.tgz#676fa0883450ed9da0bb24156213636290892806"
-  integrity sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
 
 "@types/node@14.6.0":
   version "14.6.0"
@@ -3295,7 +3281,7 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-router@^5.1.8":
+"@types/react-router@5.1.8":
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.8.tgz#4614e5ba7559657438e17766bb95ef6ed6acc3fa"
   integrity sha512-HzOyJb+wFmyEhyfp4D4NYrumi+LQgQL/68HvJO+q6XtuHSDvw6Aqov7sCAhjbNq3bUPgPqbdvjXC5HeB2oEAPg==
@@ -3307,14 +3293,6 @@
   version "16.9.36"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.36.tgz#ade589ff51e2a903e34ee4669e05dbfa0c1ce849"
   integrity sha512-mGgUb/Rk/vGx4NCvquRuSH0GHBQKb1OqpGS9cT9lFxlTLHZgkksgI60TuIxubmn7JuCb+sENHhQciqa0npm0AQ==
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^2.2.0"
-
-"@types/react@16.9.43":
-  version "16.9.43"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.43.tgz#c287f23f6189666ee3bebc2eb8d0f84bcb6cdb6b"
-  integrity sha512-PxshAFcnJqIWYpJbLPriClH53Z2WlJcVZE+NP2etUtWQs2s7yIMj3/LDKZT/5CHJ/F62iyjVCDu2H3jHEXIxSg==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -15916,11 +15894,6 @@ typescript-tuple@^2.2.1:
   dependencies:
     typescript-compare "^0.0.2"
 
-typescript@3.9.6:
-  version "3.9.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
-  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
-
 typescript@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.2.tgz#7ea7c88777c723c681e33bf7988be5d008d05ac2"
@@ -16177,11 +16150,6 @@ value-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
-
-vanilla-framework@2.14.1:
-  version "2.14.1"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.14.1.tgz#33fd21f3e546e1905f5c59c2dc5d04ae456d3e20"
-  integrity sha512-AHqqvbixiCKW6pHxsYh2WXPNMWvpiE0BNPxpFLP+mNigISGKghv+TB/OzJFhozfz2Zub+uGrlPjN2ysPON9G9w==
 
 vanilla-framework@2.16.0:
   version "2.16.0"
