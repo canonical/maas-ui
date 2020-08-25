@@ -5,41 +5,49 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import { sendAnalyticsEvent } from "analytics";
 import DeployForm from "./DeployForm";
+import type { RootState } from "app/store/root/types";
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+} from "testing/factories";
+
+jest.mock("analytics", () => ({
+  sendAnalyticsEvent: jest.fn(),
+}));
 
 const mockStore = configureStore();
 
 describe("DeployForm", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
-          {
+          configFactory({
             name: "default_osystem",
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
               ["ubuntu", "Ubuntu"],
             ],
-          },
+          }),
+          configFactory({
+            name: "enable_analytics",
+            value: true,
+          }),
         ],
-        errors: {},
-        loaded: true,
-        loading: false,
-      },
-      general: {
-        defaultMinHweKernel: {
-          data: "",
-          errors: {},
-          loaded: true,
-          loading: false,
-        },
-
-        machineActions: {
-          data: [{ name: "deploy", sentence: "deploy" }],
-        },
-        osInfo: {
+      }),
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           data: {
             osystems: [
               ["centos", "CentOS"],
@@ -73,50 +81,23 @@ describe("DeployForm", () => {
             default_osystem: "ubuntu",
             default_release: "bionic",
           },
-          errors: {},
-          loaded: true,
-          loading: false,
-        },
-      },
-      machine: {
-        errors: {},
-        loading: false,
-        loaded: true,
+        }),
+      }),
+      machine: machineStateFactory({
         items: [
-          {
-            system_id: "abc123",
-          },
-          {
-            system_id: "def456",
-          },
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
         ],
-        selected: [],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
-      },
-      user: {
-        auth: {
-          saved: false,
-          user: {
-            email: "test@example.com",
-            global_permissions: ["machine_create"],
-            id: 1,
-            is_superuser: true,
-            last_name: "",
-            sshkeys_count: 1,
-            username: "admin",
-          },
-        },
-        errors: {},
-        items: [],
-        loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-    };
+      }),
+    });
+  });
+
+  afterEach(() => {
+    sendAnalyticsEvent.mockClear();
   });
 
   it("correctly dispatches actions to deploy selected machines", () => {
@@ -280,5 +261,31 @@ describe("DeployForm", () => {
         },
       },
     ]);
+  });
+
+  it("sends an event if cloud-init is set", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        includeUserData: true,
+        installKVM: false,
+        kernel: "",
+        oSystem: "ubuntu",
+        release: "bionic",
+        userData: "test script",
+      })
+    );
+    expect(sendAnalyticsEvent).toHaveBeenCalled();
   });
 });
