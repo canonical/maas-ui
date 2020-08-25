@@ -80,8 +80,12 @@ const generateLinks = (
     };
   });
 
+type RouteParams = {
+  id: string;
+};
+
 export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   ) as PodDetails;
