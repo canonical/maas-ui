@@ -41,20 +41,19 @@ export const CommissionForm = ({ setSelectedAction }) => {
   const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const preselectedCommissioningScripts = useSelector(
+    scriptSelectors.defaultCommissioning
+  );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
   const commissioningSelected = useSelector(
     machineSelectors.commissioningSelected
   );
 
-  const formattedCommissioningScripts = formatScripts(commissioningScripts);
-  const formattedTestingScripts = formatScripts(testingScripts);
-
   const preselectedTestingScripts = [
-    formattedTestingScripts.find(
-      (script) => script.name === "smartctl-validate"
-    ),
+    testingScripts.find((script) => script.name === "smartctl-validate"),
   ].filter(Boolean);
+
   const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
     if (
       !(script.name in scriptInputs) &&
@@ -84,8 +83,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
         skipStorage: false,
         updateFirmware: false,
         configureHBA: false,
-        commissioningScripts:
-          commissioningScripts.length > 0 ? formattedCommissioningScripts : [],
+        commissioningScripts: preselectedCommissioningScripts,
         testingScripts: preselectedTestingScripts,
         scriptInputs: initialScriptInputs,
       }}
@@ -124,10 +122,12 @@ export const CommissionForm = ({ setSelectedAction }) => {
       validationSchema={CommissionFormSchema}
     >
       <CommissionFormFields
-        preselectedTesting={preselectedTestingScripts}
-        preselectedCommissioning={commissioningScripts}
-        commissioningScripts={formattedCommissioningScripts}
-        testingScripts={formattedTestingScripts}
+        preselectedTesting={formatScripts(preselectedTestingScripts)}
+        preselectedCommissioning={formatScripts(
+          preselectedCommissioningScripts
+        )}
+        commissioningScripts={formatScripts(commissioningScripts)}
+        testingScripts={formatScripts(testingScripts)}
       />
     </ActionForm>
   );

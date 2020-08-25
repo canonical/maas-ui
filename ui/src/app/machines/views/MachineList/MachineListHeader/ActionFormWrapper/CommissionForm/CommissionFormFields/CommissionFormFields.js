@@ -41,26 +41,30 @@ export const CommissionFormFields = ({
             values.commissioningScripts.length === commissioningScripts.length
           }
           initialSelected={preselectedCommissioning}
-          label="Additional commissioning scripts"
+          initialValues={preselectedCommissioning}
+          label="Commissioning scripts"
           name="commissioningScripts"
-          onTagsUpdate={(selectedScripts) =>
-            setFieldValue("commissioningScripts", selectedScripts)
-          }
-          placeholder="Select commissioning scripts"
+          onTagsUpdate={(selectedScripts) => {
+            setFieldValue("commissioningScripts", selectedScripts);
+          }}
+          placeholder="Select additional scripts"
           required
           tags={commissioningScripts}
+          disabledTags={commissioningScripts.filter(
+            (script) => script.default === true
+          )}
         />
         <FormikField
           component={TagSelector}
           data-test="testing-scripts-selector"
           disabled={values.testingScripts.length === testingScripts.length}
           initialSelected={preselectedTesting}
-          label="Tests"
+          label="Testing scripts"
           name="tests"
-          onTagsUpdate={(selectedScripts) =>
-            setFieldValue("testingScripts", selectedScripts)
-          }
-          placeholder="Select testing scripts"
+          onTagsUpdate={(selectedScripts) => {
+            setFieldValue("testingScripts", selectedScripts);
+          }}
+          placeholder="Select additional scripts"
           required
           tags={testingScripts}
         />
