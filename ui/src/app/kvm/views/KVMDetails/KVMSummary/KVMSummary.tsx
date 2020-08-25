@@ -37,6 +37,7 @@ export const fakeNumas = [
       },
     },
     vfs: { allocated: 13, free: 1, total: 14 },
+    vms: ["machine1", "machine2", "machine3"],
   },
   {
     cores: { allocated: 200, free: 100, total: 300 },
@@ -57,7 +58,21 @@ export const fakeNumas = [
         unit: "GiB",
       },
     },
-    vfs: { allocated: 18, free: 226, total: 242 },
+    vms: ["machine4"],
+  },
+  {
+    cores: { allocated: 5, free: 5, total: 10 },
+    index: 2,
+    nics: [],
+    ram: {
+      general: {
+        allocated: 5,
+        free: 2,
+        total: 7,
+        unit: "GiB",
+      },
+    },
+    vms: [],
   },
 ];
 

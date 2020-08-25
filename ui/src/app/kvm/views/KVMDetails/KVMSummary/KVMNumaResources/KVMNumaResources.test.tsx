@@ -25,4 +25,18 @@ describe("KVMNumaResources", () => {
     ).toBe("Show less NUMA nodes");
     expect(wrapper.find("KVMResourcesCard").length).toBe(numaNodes.length);
   });
+
+  it("shows wide cards if the pod has less than or equal to 2 NUMA nodes", () => {
+    const numaNodes = [fakeNumas[0]];
+    const wrapper = shallow(<KVMNumaResources numaNodes={numaNodes} />);
+
+    expect(wrapper.find(".numa-resources-grid.is-wide").exists()).toBe(true);
+    expect(wrapper.find("KVMResourcesCard").length).toBe(1);
+    expect(
+      wrapper
+        .find("KVMResourcesCard")
+        .prop("className")
+        .includes("kvm-resources-card--wide")
+    ).toBe(true);
+  });
 });
