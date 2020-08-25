@@ -11,9 +11,13 @@ import KVMConfiguration from "./KVMConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
 import KVMSummary from "./KVMSummary";
 
+type RouteParams = {
+  id: string;
+};
+
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
 
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
@@ -21,7 +25,7 @@ const KVMDetails = (): JSX.Element => {
   const podsLoaded = useSelector(podSelectors.loaded);
 
   useEffect(() => {
-    dispatch(podActions.get(id));
+    dispatch(podActions.get(Number(id)));
   }, [dispatch, id]);
 
   // If KVM has been deleted, redirect to KVM list.

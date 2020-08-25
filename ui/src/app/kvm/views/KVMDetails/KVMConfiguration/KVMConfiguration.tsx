@@ -47,9 +47,13 @@ export type KVMConfigurationValues = {
   zone: Pod["zone"];
 };
 
+type RouteParams = {
+  id: string;
+};
+
 const KVMConfiguration = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
