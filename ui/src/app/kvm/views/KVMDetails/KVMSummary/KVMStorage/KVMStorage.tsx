@@ -1,5 +1,6 @@
-import { Card, Spinner } from "@canonical/react-components";
-import React from "react";
+import { Button, Card, Spinner } from "@canonical/react-components";
+import pluralize from "pluralize";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import type { Pod } from "app/store/pod/types";
@@ -8,12 +9,15 @@ import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
 import KVMMeter from "app/kvm/components/KVMMeter";
 
+export const TRUNCATION_POINT = 3;
+
 type Props = { id: Pod["id"] };
 
 const KVMStorage = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
+  const [expanded, setExpanded] = useState(false);
 
   if (!!pod) {
     const sortedPools = [...pod.storage_pools].sort((a, b) => {
@@ -25,6 +29,11 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
       }
       return 0;
     });
+    const canBeTruncated = sortedPools.length > TRUNCATION_POINT;
+    const shownPools =
+      canBeTruncated && !expanded
+        ? sortedPools.slice(0, TRUNCATION_POINT)
+        : sortedPools;
 
     return (
       <>
@@ -35,7 +44,7 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
           </span>
         </h4>
         <div className="kvm-storage-grid">
-          {sortedPools.map((pool) => {
+          {shownPools.map((pool) => {
             const total = formatBytes(pool.total, "B");
             const allocated = formatBytes(pool.used, "B", {
               convertTo: total.unit,
@@ -70,6 +79,34 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
             );
           })}
         </div>
+        {canBeTruncated && (
+          <div className="u-align--center">
+            <Button
+              appearance="base"
+              data-test="show-more-pools"
+              hasIcon
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? (
+                <>
+                  <span>Show less storage pools</span>
+                  <i className="p-icon--contextual-menu u-mirror--y"></i>
+                </>
+              ) : (
+                <>
+                  <span>
+                    {pluralize(
+                      "more storage pool",
+                      sortedPools.length - TRUNCATION_POINT,
+                      true
+                    )}
+                  </span>
+                  <i className="p-icon--contextual-menu"></i>
+                </>
+              )}
+            </Button>
+          </div>
+        )}
       </>
     );
   }
