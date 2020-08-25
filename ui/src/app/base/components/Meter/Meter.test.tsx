@@ -167,15 +167,4 @@ describe("Meter", () => {
       `repeating-linear-gradient( to right, transparent 0, transparent 1px, ${DEFAULT_SEPARATOR_COLOR} 1px, ${DEFAULT_SEPARATOR_COLOR} 2px )`
     );
   });
-
-  it("snaps to floor base 2 width if segmented", () => {
-    // Width of container is 200px, so floor base 2 number (e.g 2, 4, 8, 16, etc) is 128
-    Element.prototype.getBoundingClientRect = mockClientRect({
-      width: 200,
-    });
-    const wrapper = mount(<Meter data={[{ value: 10 }]} segmented max={100} />);
-
-    const barWidth = wrapper.find(".p-meter__bar").props().style?.width;
-    expect(barWidth).toBe(128);
-  });
 });

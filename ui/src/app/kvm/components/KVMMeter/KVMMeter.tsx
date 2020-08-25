@@ -21,29 +21,31 @@ const KVMMeter = ({
     <div className="kvm-meter">
       <div>
         <p className="p-heading--small u-text--light">Total</p>
-        <div>{`${total}${unit}`}</div>
+        <div data-test="total">{`${total}${unit}`}</div>
       </div>
       <div className="u-align--right">
         <p className="p-heading--small u-text--light">
           Allocated
           <span className="u-nudge-left--small">
-            <i className="p-circle--link"></i>
+            <i className="p-circle--link u-no-margin--top"></i>
           </span>
         </p>
-        <div className="u-nudge-left">{`${allocated}${unit}`}</div>
+        <div
+          className="u-nudge-left"
+          data-test="allocated"
+        >{`${allocated}${unit}`}</div>
       </div>
       <div className="u-align--right">
         <p className="p-heading--small u-text--light">
           Free
           <span className="u-nudge-left--small">
-            <i className="p-circle--link-faded"></i>
+            <i className="p-circle--link-faded u-no-margin--top"></i>
           </span>
         </p>
-        <div className="u-nudge-left">{`${free}${unit}`}</div>
+        <div className="u-nudge-left" data-test="free">{`${free}${unit}`}</div>
       </div>
       <div style={{ gridArea: "meter" }}>
         <Meter
-          className="u-no-margin--bottom"
           data={[
             {
               value: allocated,

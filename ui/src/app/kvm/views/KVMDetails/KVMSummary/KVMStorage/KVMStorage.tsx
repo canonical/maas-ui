@@ -45,7 +45,7 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
             });
 
             return (
-              <Card key={pool.id}>
+              <Card className="u-no-padding--bottom" key={pool.id}>
                 <h5>
                   <span data-test="pool-name">{pool.name}</span>
                   <br />
