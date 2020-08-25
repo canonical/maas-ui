@@ -17,6 +17,7 @@
     "copy-legacy-assets": "cp -R legacy/dist/assets build/",
     "copy-root": "cp -R root/dist/* build/",
     "copy-ui-css": "cp ui/dist/static/css/* build/assets/css/",
+    "commit": "git-cz",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
     "start": "yarn serve",
@@ -57,5 +58,13 @@
       "**/jest",
       "**/webpack**"
     ]
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "3.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

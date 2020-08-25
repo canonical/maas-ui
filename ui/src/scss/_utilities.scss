@@ -42,6 +42,14 @@
     text-transform: none !important;
   }
 
+  .u-nudge-left {
+    padding-right: $sph-inner !important;
+  }
+
+  .u-nudge-left--small {
+    padding-left: $sph-inner--small !important;
+  }
+
   .u-nudge-right {
     padding-left: $sph-inner !important;
   }
@@ -51,7 +59,7 @@
   }
 
   .u-text--light {
-    color: $color-mid-dark;
+    color: $color-mid-dark !important;
   }
 
   .u-upper-case--first:first-letter {

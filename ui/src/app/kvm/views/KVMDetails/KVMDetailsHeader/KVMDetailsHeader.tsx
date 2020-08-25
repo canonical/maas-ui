@@ -11,10 +11,14 @@ import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import KVMDetailsActionMenu from "./KVMDetailsActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 
+type RouteParams = {
+  id: string;
+};
+
 const KVMDetailsHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -61,7 +65,7 @@ const KVMDetailsHeader = (): JSX.Element => {
       tabLinks={[
         {
           active: location.pathname.endsWith(`/kvm/${id}`),
-          label: "KVM summary",
+          label: "Resources",
           path: `/kvm/${id}`,
         },
         {

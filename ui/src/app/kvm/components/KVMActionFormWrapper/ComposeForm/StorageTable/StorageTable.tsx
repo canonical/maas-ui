@@ -22,8 +22,12 @@ import TagSelector from "app/base/components/TagSelector";
 
 type Props = { defaultDisk: Disk };
 
+type RouteParams = {
+  id: string;
+};
+
 export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );

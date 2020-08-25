@@ -1,6 +1,7 @@
 ## MAAS UI
 
 [![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master) ![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 - [About](#about)
 - [Contributing](#contributing)
@@ -35,6 +36,8 @@ Community contributions are most welcome, and there are a number of ways to part
 - [Assist with code review](https://github.com/canonical-web-and-design/maas-ui/pulls)
 - [Submit bugs for the MAAS website](https://github.com/canonical-web-and-design/maas.io)
 - [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
+
+When submitting a PR, please take note that MAAS UI uses the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can run `yarn commit` instead of `git commit` for an interactive prompt.
 
 Please see [HACKING](HACKING.md) for details on setting up a MAAS UI development environment.
 

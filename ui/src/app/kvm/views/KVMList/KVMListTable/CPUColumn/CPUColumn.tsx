@@ -25,7 +25,6 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
           className="u-flex--column-align-end u-no-margin--bottom"
           data={[
             {
-              key: `${pod.name}-cpu-meter`,
               value: pod.used.cores,
             },
           ]}

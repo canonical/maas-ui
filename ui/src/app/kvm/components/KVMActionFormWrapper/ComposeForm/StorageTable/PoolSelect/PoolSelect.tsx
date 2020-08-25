@@ -43,15 +43,15 @@ const generateDropdownContent = (
         <div className="u-align--right">Type</div>
         <ul className="p-inline-list u-default-text u-no-margin--bottom">
           <li className="p-inline-list__item">
-            <i className="p-icon--allocated is-inline"></i>
+            <i className="p-circle--link is-inline"></i>
             Allocated
           </li>
           <li className="p-inline-list__item">
-            <i className="p-icon--requested is-inline"></i>
+            <i className="p-circle--positive is-inline"></i>
             Requested
           </li>
           <li className="p-inline-list__item">
-            <i className="p-icon--free is-inline"></i>
+            <i className="p-circle--link-faded is-inline"></i>
             Free
           </li>
         </ul>
@@ -95,22 +95,18 @@ const generateDropdownContent = (
                 data={[
                   {
                     color: COLOURS.LINK,
-                    key: `pool-${pool.id}-allocated`,
                     value: allocated,
                   },
                   {
                     color: COLOURS.POSITIVE,
-                    key: `pool-${pool.id}-requested`,
                     value: requested,
                   },
                   {
                     color: COLOURS.POSITIVE_FADED,
-                    key: `pool-${pool.id}-pending-request`,
                     value: pendingRequest,
                   },
                   {
                     color: COLOURS.LINK_FADED,
-                    key: `pool-${pool.id}-free`,
                     value: free >= 0 ? free : 0,
                   },
                 ]}
@@ -118,7 +114,7 @@ const generateDropdownContent = (
                   free >= 0 ? (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li className="p-inline-list__item" data-test="allocated">
-                        <i className="p-icon--allocated is-inline"></i>
+                        <i className="p-circle--link is-inline"></i>
                         {`${allocated}GB`}
                       </li>
                       {requested !== 0 && (
@@ -126,12 +122,12 @@ const generateDropdownContent = (
                           className="p-inline-list__item"
                           data-test="requested"
                         >
-                          <i className="p-icon--requested is-inline"></i>
+                          <i className="p-circle--positive is-inline"></i>
                           {`${requested}GB`}
                         </li>
                       )}
                       <li className="p-inline-list__item" data-test="free">
-                        <i className="p-icon--free is-inline"></i>
+                        <i className="p-circle--link-faded is-inline"></i>
                         {`${available - requested}GB`}
                       </li>
                     </ul>
@@ -152,8 +148,12 @@ const generateDropdownContent = (
   );
 };
 
+type RouteParams = {
+  id: string;
+};
+
 export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   ) as PodDetails;

@@ -1,0 +1,14 @@
+@mixin maas-typography {
+  .p-heading--small {
+    @extend %table-header-label;
+    color: $color-dark;
+    margin-bottom: $sp-unit * 0.25;
+    text-transform: uppercase;
+  }
+
+  .p-text--paragraph {
+    @extend %paragraph;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+}

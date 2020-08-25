@@ -55,8 +55,12 @@ export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
     : "p-icon--error";
 };
 
+type RouteParams = {
+  id: string;
+};
+
 export const InterfacesTable = (): JSX.Element => {
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   ) as PodDetails;

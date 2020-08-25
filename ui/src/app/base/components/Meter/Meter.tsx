@@ -14,6 +14,8 @@ export const DEFAULT_FILLED_COLORS = [
 export const DEFAULT_EMPTY_COLOR = COLOURS.LINK_FADED;
 export const DEFAULT_OVER_COLOR = COLOURS.CAUTION;
 export const DEFAULT_SEPARATOR_COLOR = COLOURS.LIGHT;
+const MINIMUM_SEGMENT_WIDTH = 2;
+const SEPARATOR_WIDTH = 1;
 
 const updateWidths = (
   el: React.MutableRefObject<Element | null>,
@@ -22,20 +24,16 @@ const updateWidths = (
   setSegmentWidth: (size: number) => void
 ) => {
   const boundingWidth = el?.current?.getBoundingClientRect()?.width || 0;
-  // Because we're dealing with single pixel separators, we set the bar width to
-  // the nearest floor base 2 number to help with anti-aliasing.
-  const base2Width = Math.pow(
-    2,
-    Math.floor(Math.log(boundingWidth) / Math.log(2))
-  );
-  const segmentWidth = base2Width > maximum * 2 ? base2Width / maximum : 2;
-  setBarWidth(base2Width);
+  const segmentWidth =
+    boundingWidth > maximum * MINIMUM_SEGMENT_WIDTH
+      ? boundingWidth / maximum
+      : MINIMUM_SEGMENT_WIDTH;
+  setBarWidth(boundingWidth);
   setSegmentWidth(segmentWidth);
 };
 
 type MeterDatum = {
   color?: string;
-  key: string;
   value: number;
 };
 
@@ -104,7 +102,7 @@ const Meter = ({
           data.map((datum, i) => (
             <div
               className="p-meter__filled"
-              key={`${datum.key}-bar`}
+              key={`meter-${i}`}
               style={{
                 backgroundColor:
                   datum.color ||
@@ -129,8 +127,8 @@ const Meter = ({
               background: `repeating-linear-gradient(
                 to right,
                 transparent 0,
-                transparent ${segmentWidth - 1}px,
-                ${separatorColor} ${segmentWidth - 1}px,
+                transparent ${segmentWidth - SEPARATOR_WIDTH}px,
+                ${separatorColor} ${segmentWidth - SEPARATOR_WIDTH}px,
                 ${separatorColor} ${segmentWidth}px
               )`,
             }}
@@ -151,7 +149,6 @@ Meter.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       color: PropTypes.string,
-      key: PropTypes.string.isRequired,
       value: PropTypes.number,
     })
   ).isRequired,
