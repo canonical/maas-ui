@@ -95,6 +95,7 @@ export const Login = () => {
                     name="username"
                     label="Username"
                     required={true}
+                    takeFocus
                     type="text"
                   />
                   <FormikField
