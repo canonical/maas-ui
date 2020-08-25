@@ -205,4 +205,25 @@ describe("TagSelector", () => {
       component.find('[data-test="existing-tag"] > span em').at(1).text()
     ).toBe("the");
   });
+
+  it("can disabled tags", () => {
+    const tags = [
+      { id: 1, name: "enabledTag" },
+      { id: 2, name: "disabledTag" },
+    ];
+    const component = shallow(
+      <TagSelector
+        disabledTags={[{ id: 2, name: "disabledTag" }]}
+        initialSelected={tags}
+        tags={tags}
+      />
+    );
+
+    expect(
+      component.find('[data-test="selected-tag"]').at(0).prop("disabled")
+    ).toBe(false);
+    expect(
+      component.find('[data-test="selected-tag"]').at(1).prop("disabled")
+    ).toBe(true);
+  });
 });

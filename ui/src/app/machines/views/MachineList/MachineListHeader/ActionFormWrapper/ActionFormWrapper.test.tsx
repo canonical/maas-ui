@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -89,7 +90,7 @@ describe("ActionFormWrapper", () => {
   });
 
   it(`does not display a warning when processing and not all selected machines
-    can perform selected action`, () => {
+    can perform selected action`, async () => {
     const state = { ...initialState };
     state.machine.items = [
       { system_id: "a", actions: ["commission"] },
@@ -123,9 +124,12 @@ describe("ActionFormWrapper", () => {
       </Provider>,
       { context: store }
     );
-    expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
-      false
-    );
+
+    await act(async () => {
+      expect(
+        wrapper.find("[data-test='machine-action-warning']").exists()
+      ).toBe(false);
+    });
   });
 
   it("can set selected machines to those that can perform action", () => {

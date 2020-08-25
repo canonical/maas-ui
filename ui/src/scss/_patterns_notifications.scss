@@ -33,31 +33,4 @@
       }
     }
   }
-
-  .p-notification--has-menu {
-    .p-notification__response {
-      display: flex;
-      flex: 1;
-    }
-
-    .p-notification__menu-button {
-      border: 0;
-      flex: 0;
-      margin: 0 0 auto auto;
-
-      [class^="p-button"] {
-        margin: 0;
-        padding: 0 $spv-inner--small;
-
-        &:hover {
-          background-color: transparent;
-        }
-      }
-    }
-  }
-
-  .p-contextual-menu__dropdown.p-notification__menu {
-    width: 18rem;
-    padding: $spv-inner--large;
-  }
 }

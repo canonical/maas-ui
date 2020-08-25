@@ -6,7 +6,6 @@ exports[`NotificationGroupNotification renders 1`] = `
   type="negative"
 >
   <Notification
-    className={null}
     close={[Function]}
     type="negative"
   >

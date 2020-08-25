@@ -42,7 +42,6 @@ exports[`NotificationList renders a list of messages 1`] = `
         type="negative"
       >
         <Notification
-          className={null}
           close={[Function]}
           type="negative"
         >

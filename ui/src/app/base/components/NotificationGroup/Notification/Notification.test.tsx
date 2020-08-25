@@ -89,7 +89,7 @@ describe("NotificationGroupNotification", () => {
     expect(wrapper.find("button.p-icon--close").exists()).toBe(false);
   });
 
-  it("shows a menu button for release notifications", () => {
+  it("shows a settings link for release notifications", () => {
     const notification = notificationFactory({
       ident: NotificationIdent.release,
     });
@@ -103,11 +103,14 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification id={notification.id} type="negative" />
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <NotificationGroupNotification id={notification.id} type="negative" />
+        </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".p-notification__menu-button").exists()).toBe(true);
-    expect(wrapper.find(".p-notification--has-menu").exists()).toBe(true);
+    expect(
+      wrapper.find("Link[to='/settings/configuration/general']").exists()
+    ).toBe(true);
   });
 
   it("does not show the release notification menu to non-admins", () => {
@@ -121,54 +124,22 @@ describe("NotificationGroupNotification", () => {
       }),
       user: userStateFactory({
         auth: authStateFactory({
-          user: userFactory(),
+          user: userFactory({
+            is_superuser: false,
+          }),
         }),
       }),
     });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification id={notification.id} type="negative" />
-      </Provider>
-    );
-    expect(wrapper.find(".p-notification__menu-button").exists()).toBe(true);
-    expect(wrapper.find(".p-notification--has-menu").exists()).toBe(true);
-  });
-
-  it("can disable release notifications", () => {
-    const notification = notificationFactory({
-      ident: NotificationIdent.release,
-    });
-    const state = rootStateFactory({
-      config,
-      notification: notificationStateFactory({
-        items: [notification],
-      }),
-      user,
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
           <NotificationGroupNotification id={notification.id} type="negative" />
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("ContextualMenu Button").simulate("click");
-    wrapper
-      .find("Switch input")
-      .simulate("change", { target: { checked: false } });
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_CONFIG")
-    ).toStrictEqual({
-      type: "UPDATE_CONFIG",
-      payload: {
-        params: [{ name: "release_notifications", value: false }],
-      },
-      meta: {
-        model: "config",
-        method: "update",
-      },
-    });
+      wrapper.find("Link[to='/settings/configuration/general']").exists()
+    ).toBe(false);
   });
 });

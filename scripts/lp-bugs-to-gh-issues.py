@@ -22,7 +22,7 @@ ui_project = launchpad.projects["maas-ui"]
 
 
 def generate_open_bugs():
-    for task in project.searchTasks(status=["New"], tags=["ui"]):
+    for task in project.searchTasks(status=["New", "Confirmed", "Triaged"], tags=["ui"]):
         has_ui_task = any(t.target == ui_project for t in task.related_tasks)
         if not has_ui_task:
             yield task.bug

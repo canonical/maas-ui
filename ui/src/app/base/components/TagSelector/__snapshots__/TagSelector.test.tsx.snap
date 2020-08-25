@@ -19,6 +19,7 @@ exports[`TagSelector renders and matches the snapshot when closed 1`] = `
       onFocus={[Function]}
       onKeyPress={[Function]}
       placeholder="Select or create tags"
+      required={false}
       type="text"
       value=""
     />
@@ -79,11 +80,13 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
             onFocus={[Function]}
             onKeyPress={[Function]}
             placeholder="Select or create tags"
+            required={false}
             type="text"
             value=""
           >
             <Field
               labelFirst={true}
+              required={false}
             >
               <div
                 className="p-form__group p-form-validation"
@@ -166,11 +169,13 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
             onFocus={[Function]}
             onKeyPress={[Function]}
             placeholder="Select or create tags"
+            required={false}
             type="text"
             value=""
           >
             <Field
               labelFirst={true}
+              required={false}
             >
               <div
                 className="p-form__group p-form-validation"
