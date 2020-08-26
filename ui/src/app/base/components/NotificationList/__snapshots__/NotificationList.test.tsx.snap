@@ -42,6 +42,7 @@ exports[`NotificationList renders a list of messages 1`] = `
         type="negative"
       >
         <Notification
+          className={null}
           close={[Function]}
           type="negative"
         >
@@ -52,6 +53,7 @@ exports[`NotificationList renders a list of messages 1`] = `
               className="p-notification__response"
             >
               <span
+                className="p-notification__message"
                 dangerouslySetInnerHTML={
                   Object {
                     "__html": "an error",
