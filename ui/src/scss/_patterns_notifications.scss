@@ -5,15 +5,15 @@
     @extend %vf-card;
     padding: 0;
 
-    [class^="p-notification"] {
+    [class^="p-notification--"] {
       box-shadow: none;
     }
 
-    [class^="p-notification"]:first-child {
+    [class^="p-notification--"]:first-child {
       margin-bottom: 0;
     }
 
-    [class^="p-notification"] + [class^="p-notification"] {
+    [class^="p-notification--"] + [class^="p-notification--"] {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       border-top: $border;
@@ -31,6 +31,23 @@
       .p-icon--close {
         margin-top: $spv-inner--small;
       }
+    }
+  }
+
+  .p-notification--has-action {
+    .p-notification__response {
+      display: flex;
+      flex: 1;
+    }
+
+    .p-notification__message {
+      flex: 1;
+    }
+
+    .p-notification__action {
+      flex: 0;
+      white-space: nowrap;
+      margin-left: $spv-outer--small;
     }
   }
 }

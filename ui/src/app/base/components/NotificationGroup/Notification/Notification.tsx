@@ -27,6 +27,7 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
     isReleaseNotification(notification) && authUser?.is_superuser;
   return (
     <Notification
+      className={showSettings ? "p-notification--has-action" : null}
       close={
         notification.dismissable
           ? () => dispatch(notificationActions.delete(id))
@@ -35,13 +36,19 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
       type={type}
     >
       <span
+        className="p-notification__message"
         data-test="notification-message"
         dangerouslySetInnerHTML={{ __html: notification.message }}
       ></span>
       {showSettings ? (
         <>
           {" "}
-          <Link to="/settings/configuration/general">See settings</Link>
+          <Link
+            to="/settings/configuration/general"
+            className="p-notification__action"
+          >
+            See settings
+          </Link>
         </>
       ) : null}
     </Notification>
