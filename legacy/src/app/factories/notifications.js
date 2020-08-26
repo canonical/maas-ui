@@ -29,6 +29,9 @@ function NotificationsManager(RegionConnection, Manager) {
       id: notification.id,
     });
   };
+  NotificationsManager.prototype.getItems = function () {
+    return this._items.filter(({ ident }) => ident !== "release_notification");
+  };
 
   return new NotificationsManager();
 }

@@ -26,4 +26,26 @@ describe("NotificationsManager", function () {
   it("listens for updates", function () {
     expect(RegionConnection.registerNotifier).toHaveBeenCalled();
   });
+
+  it("filters out release notifications", function () {
+    const notifications = [
+      {
+        id: 1,
+        ident: null,
+      },
+      {
+        id: 2,
+        ident: "release_notification",
+      },
+      {
+        id: 3,
+        ident: null,
+      },
+    ];
+    NotificationsManager._items = notifications;
+    expect(NotificationsManager.getItems()).toStrictEqual([
+      notifications[0],
+      notifications[2],
+    ]);
+  });
 });
