@@ -2,11 +2,15 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { generateBaseSelectors } from "app/store/utils";
 import configSelectors from "app/store/config/selectors";
-import { NotificationIdent } from "app/store/notification/types";
+import {
+  NotificationIdent,
+  ReleaseNotificationPaths,
+} from "app/store/notification/types";
 import type {
   Notification,
   NotificationState,
 } from "app/store/notification/types";
+import type { RootState } from "app/store/root/types";
 
 const defaultSelectors = generateBaseSelectors<
   NotificationState,
@@ -15,14 +19,42 @@ const defaultSelectors = generateBaseSelectors<
 >("notification", "id");
 
 /**
+ * Returns the pathname from the router state.
+ * @param state - The redux state.
+ * @returns Notifications that can be shown to the user.
+ */
+const pathname = (state: RootState) => state.router.location.pathname;
+
+/**
+ * Whether to show the release notification for the current path.
+ * @return Whether to show the notification.
+ */
+const matchesReleaseNotificationPath = createSelector(
+  [pathname],
+  (pathname) =>
+    // Check if the current path matches one of the allowed notification paths.
+    !!Object.values(ReleaseNotificationPaths).find((path) =>
+      pathname.startsWith(path)
+    )
+);
+
+/**
  * Returns notifications that haven't been disabled.
  * @param {RootState} state - The redux state.
  * @returns {Notification[]} Notifications that can be shown to the user.
  */
 const allEnabled = createSelector(
-  [defaultSelectors.all, configSelectors.releaseNotifications],
-  (notifications, releaseNotificationsEnabled) => {
-    if (!releaseNotificationsEnabled) {
+  [
+    defaultSelectors.all,
+    matchesReleaseNotificationPath,
+    configSelectors.releaseNotifications,
+  ],
+  (
+    notifications,
+    matchesReleaseNotificationPath,
+    releaseNotificationsEnabled
+  ) => {
+    if (!releaseNotificationsEnabled || !matchesReleaseNotificationPath) {
       return notifications.filter(
         (notification: Notification) =>
           notification.ident !== NotificationIdent.release
