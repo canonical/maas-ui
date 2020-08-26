@@ -1,23 +1,53 @@
 @mixin KVMResourcesCard {
+  $donut-size: 6.5rem;
+  $donut-width: 14px;
+
+  .kvm-resources-card__ram-chart {
+    align-items: center;
+    border-radius: 50%;
+    border: $donut-width solid $color-mid-x-light;
+    display: flex;
+    height: $donut-size;
+    justify-content: center;
+    margin: $spv-outer--small auto $spv-outer--medium auto;
+    width: $donut-size;
+  }
+
   .kvm-resources-card__ram-table {
     margin-bottom: 0;
+
+    th,
+    td {
+      &:nth-child(1) {
+        padding-left: 0;
+        width: 30%;
+      }
+
+      &:nth-child(2) {
+        width: 35%;
+      }
+
+      &:nth-child(3) {
+        padding-right: 0;
+        width: 35%;
+      }
+    }
 
     td {
       padding-bottom: $spv-inner--small;
       padding-top: calc(#{$spv-inner--small} - 1px);
-
-      &:first-of-type {
-        padding-left: 0;
-      }
-
-      &:last-of-type {
-        padding-right: 0;
-      }
     }
 
     @media only screen and (min-width: $breakpoint-medium) {
       margin-top: -$spv-inner--small;
     }
+  }
+
+  .kvm-resources-card__vms-button {
+    line-height: 1;
+    margin: 0;
+    padding-left: $sph-inner--small * 0.5;
+    padding-right: $sph-inner--small;
   }
 
   // Base KVM resources card styling.
@@ -53,9 +83,17 @@
     }
 
     @media only screen and (min-width: $breakpoint-medium) {
+      .kvm-resources-card--wide & {
+        grid:
+          [row1-start] "header content content content" min-content [row1-end]
+          / minmax($donut-size, 1fr) 1fr 1fr 1fr;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-x-large - 1px) {
       grid:
         [row1-start] "header content content content" min-content [row1-end]
-        / 1fr 1fr 1fr 1fr;
+        / minmax($donut-size, 1fr) 1fr 1fr 1fr;
     }
   }
 
@@ -88,8 +126,9 @@
 
         .kvm-resources-card__ram {
           grid-area: ram;
-          grid-template-areas: "header content content content content";
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          grid-column-gap: $sph-inner;
+          grid-template-areas: "header content";
+          grid-template-columns: minmax($donut-size, 1fr) 3fr;
         }
 
         .kvm-resources-card__cpu {
@@ -120,11 +159,6 @@
 
       @media only screen and (min-width: $breakpoint-x-large) {
         grid-template-areas: "ram ram ram ram cpu cpu cpu vfs vfs vfs vms vms";
-
-        .kvm-resources-card__ram {
-          grid-template-areas: "header content content content";
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
 
         .kvm-resources-card__vms {
           grid-template-areas: "header content";

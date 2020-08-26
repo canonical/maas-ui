@@ -1,11 +1,12 @@
 import { Button } from "@canonical/react-components";
+import classNames from "classnames";
 import pluralize from "pluralize";
 import React, { useState } from "react";
 
 import type { TSFixMe } from "app/base/types";
 import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
 
-export const TRUNCATION_POINT = 3;
+export const TRUNCATION_POINT = 4;
 
 type Props = { numaNodes: TSFixMe[] };
 
@@ -16,18 +17,25 @@ const KVMNumaResources = ({ numaNodes }: Props): JSX.Element => {
     canBeTruncated && !expanded
       ? numaNodes.slice(0, TRUNCATION_POINT)
       : numaNodes;
+  const showWideCards = numaNodes.length <= 2;
 
   return (
     <>
-      <div className="numa-resources-grid">
+      <div
+        className={classNames("numa-resources-grid", {
+          "is-wide": showWideCards,
+        })}
+      >
         {shownNumaNodes.map((numa) => (
           <KVMResourcesCard
+            className={showWideCards ? "kvm-resources-card--wide" : undefined}
             cores={numa.cores}
             key={numa.index}
             nics={numa.nics}
             ram={numa.ram}
             title={`NUMA node ${numa.index}`}
             vfs={numa.vfs}
+            vms={numa.vms}
           />
         ))}
       </div>

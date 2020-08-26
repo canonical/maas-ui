@@ -24,7 +24,7 @@ exports[`KVMMeter renders 1`] = `
     >
       Allocated
       <span
-        className="u-nudge-left--small"
+        className="u-nudge-right--small"
       >
         <i
           className="p-circle--link u-no-margin--top"
@@ -46,7 +46,7 @@ exports[`KVMMeter renders 1`] = `
     >
       Free
       <span
-        className="u-nudge-left--small"
+        className="u-nudge-right--small"
       >
         <i
           className="p-circle--link-faded u-no-margin--top"

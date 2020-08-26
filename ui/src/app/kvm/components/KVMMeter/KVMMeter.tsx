@@ -26,7 +26,7 @@ const KVMMeter = ({
       <div className="u-align--right">
         <p className="p-heading--small u-text--light">
           Allocated
-          <span className="u-nudge-left--small">
+          <span className="u-nudge-right--small">
             <i className="p-circle--link u-no-margin--top"></i>
           </span>
         </p>
@@ -38,7 +38,7 @@ const KVMMeter = ({
       <div className="u-align--right">
         <p className="p-heading--small u-text--light">
           Free
-          <span className="u-nudge-left--small">
+          <span className="u-nudge-right--small">
             <i className="p-circle--link-faded u-no-margin--top"></i>
           </span>
         </p>
