@@ -2,6 +2,16 @@
   $donut-size: 6.5rem;
   $donut-width: 14px;
 
+  .kvm-machine-list-modal {
+    max-width: none;
+    min-width: 0;
+    width: 35rem;
+
+    @media only screen and (max-width: $breakpoint-small) {
+      width: auto;
+    }
+  }
+
   .kvm-resources-card__ram-chart {
     align-items: center;
     border-radius: 50%;
