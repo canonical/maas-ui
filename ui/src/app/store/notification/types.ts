@@ -6,6 +6,11 @@ export enum NotificationIdent {
   release = "release_notification",
 }
 
+export enum ReleaseNotificationPaths {
+  machines = "/machines",
+  settings = "/settings",
+}
+
 export type NotificationCategory = "error" | "warning" | "success" | "info";
 
 export type Notification = Model & {
