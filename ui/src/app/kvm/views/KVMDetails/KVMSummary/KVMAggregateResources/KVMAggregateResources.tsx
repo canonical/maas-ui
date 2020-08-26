@@ -21,6 +21,7 @@ const fakeVFs = {
   free: 224,
   total: 256,
 };
+const fakeVMs = ["machine1", "machine2", "machine3", "machine4"];
 
 type Props = { id: number };
 
@@ -68,6 +69,7 @@ const KVMAggregateResources = ({ id }: Props): JSX.Element => {
           hugepage: fakeHugepageRAM,
         }}
         vfs={fakeVFs}
+        vms={fakeVMs}
       />
     );
   }
