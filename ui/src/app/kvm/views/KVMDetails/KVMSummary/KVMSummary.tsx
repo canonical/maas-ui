@@ -76,9 +76,6 @@ const KVMSummary = (): JSX.Element => {
   }, [dispatch]);
 
   if (!!pod) {
-    // Fetch the IP address that is contained in the power_address. This is the
-    // only place the IP address is exposed.
-    const ip_address = pod.power_address.match(/[\d.]+/)[0];
     return (
       <>
         <div className="u-flex">
@@ -86,7 +83,7 @@ const KVMSummary = (): JSX.Element => {
             {pod.type === "virsh" ? "Virsh:" : "LXD URL:"}
           </p>
           <Code copyable className="u-flex--grow">
-            {ip_address}
+            {pod.power_address}
           </Code>
         </div>
         <hr className="u-sv1" />
