@@ -1,66 +1,74 @@
-import React from "react";
+import { Button } from "@canonical/react-components";
+import classNames from "classnames";
+import pluralize from "pluralize";
+import React, { useState } from "react";
 
+import type { TSFixMe } from "app/base/types";
 import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
 
-const fakeNumas = [
-  {
-    cores: { allocated: 1, free: 2, total: 3 },
-    index: 0,
-    nics: ["eth0", "eth2"],
-    ram: {
-      general: {
-        allocated: 12,
-        free: 12,
-        total: 24,
-        unit: "GiB",
-      },
-      hugepage: {
-        allocated: 540,
-        free: 420,
-        pagesize: 4068,
-        total: 960,
-        unit: "MiB",
-      },
-    },
-    vfs: { allocated: 13, free: 1, total: 14 },
-  },
-  {
-    cores: { allocated: 200, free: 100, total: 300 },
-    index: 1,
-    nics: ["eth1", "eth3"],
-    ram: {
-      general: {
-        allocated: 3,
-        free: 1,
-        total: 4,
-        unit: "GiB",
-      },
-      hugepage: {
-        allocated: 1,
-        free: 1,
-        pagesize: 2048,
-        total: 2,
-        unit: "GiB",
-      },
-    },
-    vfs: { allocated: 18, free: 226, total: 242 },
-  },
-];
+export const TRUNCATION_POINT = 4;
 
-const KVMNumaResources = (): JSX.Element => {
+type Props = { numaNodes: TSFixMe[] };
+
+const KVMNumaResources = ({ numaNodes }: Props): JSX.Element => {
+  const [expanded, setExpanded] = useState(false);
+  const canBeTruncated = numaNodes.length > TRUNCATION_POINT;
+  const shownNumaNodes =
+    canBeTruncated && !expanded
+      ? numaNodes.slice(0, TRUNCATION_POINT)
+      : numaNodes;
+  const showWideCards = numaNodes.length <= 2;
+
   return (
-    <div className="numa-resources-grid">
-      {fakeNumas.map((numa) => (
-        <KVMResourcesCard
-          cores={numa.cores}
-          key={numa.index}
-          nics={numa.nics}
-          ram={numa.ram}
-          title={`NUMA node ${numa.index}`}
-          vfs={numa.vfs}
-        />
-      ))}
-    </div>
+    <>
+      <div
+        className={classNames("numa-resources-grid", {
+          "is-wide": showWideCards,
+        })}
+      >
+        {shownNumaNodes.map((numa) => (
+          <KVMResourcesCard
+            className={showWideCards ? "kvm-resources-card--wide" : undefined}
+            cores={numa.cores}
+            key={numa.index}
+            nics={numa.nics}
+            ram={numa.ram}
+            title={`NUMA node ${numa.index}`}
+            vfs={numa.vfs}
+            vms={numa.vms}
+          />
+        ))}
+      </div>
+      {canBeTruncated && (
+        <div className="u-align--center">
+          <Button
+            appearance="base"
+            data-test="show-more-numas"
+            hasIcon
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? (
+              <>
+                <span>Show less NUMA nodes</span>
+                <i className="p-icon--contextual-menu u-mirror--y"></i>
+              </>
+            ) : (
+              <>
+                <span>
+                  {pluralize(
+                    "more NUMA node",
+                    numaNodes.length - TRUNCATION_POINT,
+                    true
+                  )}
+                </span>
+                <i className="p-icon--contextual-menu"></i>
+              </>
+            )}
+          </Button>
+          <hr />
+        </div>
+      )}
+    </>
   );
 };
 

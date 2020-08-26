@@ -5,15 +5,15 @@
     @extend %vf-card;
     padding: 0;
 
-    [class^="p-notification"] {
+    [class^="p-notification--"] {
       box-shadow: none;
     }
 
-    [class^="p-notification"]:first-child {
+    [class^="p-notification--"]:first-child {
       margin-bottom: 0;
     }
 
-    [class^="p-notification"] + [class^="p-notification"] {
+    [class^="p-notification--"] + [class^="p-notification--"] {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       border-top: $border;
@@ -34,30 +34,20 @@
     }
   }
 
-  .p-notification--has-menu {
+  .p-notification--has-action {
     .p-notification__response {
       display: flex;
       flex: 1;
     }
 
-    .p-notification__menu-button {
-      border: 0;
-      flex: 0;
-      margin: 0 0 auto auto;
-
-      [class^="p-button"] {
-        margin: 0;
-        padding: 0 $spv-inner--small;
-
-        &:hover {
-          background-color: transparent;
-        }
-      }
+    .p-notification__message {
+      flex: 1;
     }
-  }
 
-  .p-contextual-menu__dropdown.p-notification__menu {
-    width: 18rem;
-    padding: $spv-inner--large;
+    .p-notification__action {
+      flex: 0;
+      white-space: nowrap;
+      margin-left: $spv-outer--small;
+    }
   }
 }

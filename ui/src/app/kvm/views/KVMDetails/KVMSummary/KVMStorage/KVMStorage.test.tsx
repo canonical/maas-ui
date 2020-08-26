@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
@@ -10,7 +11,7 @@ import {
   podStoragePool as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import KVMStorage from "./KVMStorage";
+import KVMStorage, { TRUNCATION_POINT } from "./KVMStorage";
 
 const mockStore = configureStore();
 
@@ -45,5 +46,44 @@ describe("KVMStorage", () => {
     expect(wrapper.find("[data-test='pool-name']").at(2).text()).toBe(
       pool2.name
     );
+  });
+
+  it("can expand truncated pools if above truncation point", () => {
+    const pools = [
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+    ];
+    const pod = podFactory({
+      default_storage_pool: pools[0].id,
+      id: 1,
+      storage_pools: pools,
+    });
+    const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMStorage id={pod.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Button[data-test='show-more-pools']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Card").length).toBe(TRUNCATION_POINT);
+
+    act(() => {
+      wrapper.find("Button[data-test='show-more-pools']").simulate("click");
+    });
+    wrapper.update();
+
+    expect(
+      wrapper.find("Button[data-test='show-more-pools'] span").text()
+    ).toBe("Show less storage pools");
+    expect(wrapper.find("Card").length).toBe(pools.length);
   });
 });

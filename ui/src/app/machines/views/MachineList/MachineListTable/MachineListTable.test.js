@@ -918,4 +918,61 @@ describe("MachineListTable", () => {
       false
     );
   });
+
+  describe("hiddenColumns", () => {
+    it("can hide columns", () => {
+      const state = { ...initialState };
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <MachineListTable hiddenColumns={["power", "zone"]} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(wrapper.find('[data-test="status-header"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="status-column"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="power-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-test="power-column"]').exists()).toBe(false);
+      expect(wrapper.find('[data-test="zone-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-test="zone-column"]').exists()).toBe(false);
+    });
+
+    it("still displays fqdn if showActions is true", () => {
+      const state = { ...initialState };
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <MachineListTable hiddenColumns={["fqdn"]} showActions />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(wrapper.find('[data-test="fqdn-header"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="fqdn-column"]').exists()).toBe(true);
+    });
+
+    it("hides fqdn if if showActions is false", () => {
+      const state = { ...initialState };
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <MachineListTable hiddenColumns={["fqdn"]} showActions={false} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(wrapper.find('[data-test="fqdn-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-test="fqdn-column"]').exists()).toBe(false);
+    });
+  });
 });

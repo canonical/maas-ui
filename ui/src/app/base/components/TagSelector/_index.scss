@@ -11,6 +11,7 @@
 
   .tag-selector__input {
     position: relative;
+    cursor: pointer;
 
     &.tags-selected {
       border-top: 0;

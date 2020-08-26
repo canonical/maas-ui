@@ -4,15 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Notification } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
-import { config as configActions } from "app/settings/actions";
 import { isReleaseNotification } from "app/store/utils";
 import { MessageType } from "app/store/message/types";
 import { notification as notificationActions } from "app/base/actions";
 import authSelectors from "app/store/auth/selectors";
-import configSelectors from "app/store/config/selectors";
-import ContextualMenu from "app/base/components/ContextualMenu";
 import notificationSelectors from "app/store/notification/selectors";
-import Switch from "app/base/components/Switch";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 
@@ -27,14 +23,11 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
-  const releaseNotifications = useSelector(
-    configSelectors.releaseNotifications
-  );
-  const showMenu =
+  const showSettings =
     isReleaseNotification(notification) && authUser?.is_superuser;
   return (
     <Notification
-      className={showMenu ? "p-notification--has-menu" : null}
+      className={showSettings ? "p-notification--has-action" : null}
       close={
         notification.dismissable
           ? () => dispatch(notificationActions.delete(id))
@@ -43,36 +36,21 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
       type={type}
     >
       <span
+        className="p-notification__message"
         data-test="notification-message"
         dangerouslySetInnerHTML={{ __html: notification.message }}
       ></span>
-      {showMenu && (
-        <ContextualMenu
-          className="p-notification__menu-button"
-          dropdownClassName="p-notification__menu"
-          dropdownContent={
-            <>
-              <div className="u-flex--between">
-                <div className="u-sv1">Enable new release notifications</div>
-                <Switch
-                  defaultChecked={Boolean(releaseNotifications)}
-                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                    dispatch(
-                      configActions.update({
-                        release_notifications: evt.target.checked,
-                      })
-                    );
-                  }}
-                />
-              </div>
-              <Link to="/settings/configuration/general">See settings</Link>
-            </>
-          }
-          hasToggleIcon
-          position="right"
-          toggleAppearance="base"
-        />
-      )}
+      {showSettings ? (
+        <>
+          {" "}
+          <Link
+            to="/settings/configuration/general"
+            className="p-notification__action"
+          >
+            See settings
+          </Link>
+        </>
+      ) : null}
     </Notification>
   );
 };

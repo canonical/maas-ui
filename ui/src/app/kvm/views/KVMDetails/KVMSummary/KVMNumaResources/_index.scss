@@ -8,7 +8,9 @@
     }
 
     @media only screen and (min-width: $breakpoint-x-large) {
-      grid-template-columns: 1fr 1fr 1fr;
+      &:not(.is-wide) {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
     }
   }
 }

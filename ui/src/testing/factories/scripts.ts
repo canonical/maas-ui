@@ -4,6 +4,11 @@ import { model } from "./model";
 import type { Model } from "app/store/types/model";
 import type { Scripts, ScriptsHistory } from "app/store/scripts/types";
 
+export enum ScriptType {
+  Commissioning = 0,
+  Testing = 2,
+}
+
 export const scriptsHistory = extend<Model, ScriptsHistory>(model, {
   comment: null,
   created: "Wed, 08 Jul. 2020 05:35:4",
@@ -30,7 +35,7 @@ export const scripts = extend<Model, Scripts>(model, {
   results: () => ({}),
   tags: () => [],
   timeout: "00:30:00",
-  title: "test title",
+  title: "commissioning script",
   type_name: "Commissioning script",
-  type: random,
+  type: ScriptType.Commissioning,
 });

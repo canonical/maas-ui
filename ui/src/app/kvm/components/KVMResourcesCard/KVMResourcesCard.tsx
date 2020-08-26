@@ -1,5 +1,6 @@
 import { Card } from "@canonical/react-components";
 import classNames from "classnames";
+import pluralize from "pluralize";
 import React from "react";
 
 import ContextualMenu from "app/base/components/ContextualMenu";
@@ -21,7 +22,8 @@ type Props = {
     hugepage?: ChartValues & { pagesize: number };
   };
   title?: string;
-  vfs: ChartValues;
+  vfs?: ChartValues;
+  vms: string[];
 };
 
 const KVMResourcesCard = ({
@@ -31,22 +33,34 @@ const KVMResourcesCard = ({
   ram,
   title,
   vfs,
+  vms,
 }: Props): JSX.Element => {
   return (
     <Card className={classNames("kvm-resources-card", className)}>
       {title && (
         <>
-          <h5
-            className="p-text--paragraph"
-            data-test="kvm-resources-card-title"
-          >
-            {title}
+          <h5 className="p-text--paragraph u-flex--between u-no-max-width">
+            <span data-test="kvm-resources-card-title">{title}</span>
+            <ContextualMenu
+              dropdownContent={<></>}
+              hasToggleIcon
+              toggleAppearance="base"
+              toggleClassName="kvm-resources-card__vms-button is-dense"
+              toggleDisabled={vms.length === 0}
+              toggleLabel={pluralize("machine", vms.length, true)}
+            />
           </h5>
           <hr />
         </>
       )}
       <div className="kvm-resources-card__section kvm-resources-card__ram">
-        <h4 className="p-heading--small">RAM</h4>
+        <div>
+          <h4 className="p-heading--small">RAM</h4>
+          <div className="kvm-resources-card__ram-chart">
+            {ram.general.total}
+            {ram.general.unit}
+          </div>
+        </div>
         <table className="kvm-resources-card__ram-table">
           <thead>
             <tr>
@@ -67,7 +81,7 @@ const KVMResourcesCard = ({
                   {ram.general.allocated}
                   {ram.general.unit}
                 </span>
-                <span className="u-nudge-left--small">
+                <span className="u-nudge-right--small">
                   <i className="p-circle--link"></i>
                 </span>
               </td>
@@ -76,13 +90,13 @@ const KVMResourcesCard = ({
                   {ram.general.free}
                   {ram.general.unit}
                 </span>
-                <span className="u-nudge-left--small">
+                <span className="u-nudge-right--small">
                   <i className="p-circle--link-faded"></i>
                 </span>
               </td>
             </tr>
             {ram.hugepage && (
-              <tr>
+              <tr data-test="hugepage-ram">
                 <td>
                   Hugepage
                   <br />
@@ -93,14 +107,14 @@ const KVMResourcesCard = ({
                 <td className="u-align--right">
                   {ram.hugepage.allocated}
                   {ram.hugepage.unit}
-                  <span className="u-nudge-left--small">
+                  <span className="u-nudge-right--small">
                     <i className="p-circle--positive"></i>
                   </span>
                 </td>
                 <td className="u-align--right">
                   {ram.hugepage.free}
                   {ram.hugepage.unit}
-                  <span className="u-nudge-left--small">
+                  <span className="u-nudge-right--small">
                     <i className="p-circle--positive-faded"></i>
                   </span>
                 </td>
@@ -120,31 +134,45 @@ const KVMResourcesCard = ({
         />
       </div>
       <div className="kvm-resources-card__section kvm-resources-card__vfs">
-        <h4 className="p-heading--small u-sv1">Virtual functions</h4>
-        <div>
-          <KVMMeter
-            allocated={vfs.allocated}
-            data-test="vfs-meter"
-            free={vfs.free}
-            total={vfs.total}
+        {vfs ? (
+          <>
+            <h4 className="p-heading--small u-sv1">Virtual functions</h4>
+            <div>
+              <KVMMeter
+                allocated={vfs.allocated}
+                data-test="vfs-meter"
+                free={vfs.free}
+                total={vfs.total}
+              />
+              <hr />
+              <div className="p-heading--small u-text--light">
+                Network interfaces
+              </div>
+              <span>{nics.length >= 1 ? nics.join(", ") : <em>None</em>}</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <h4 className="p-heading--small u-sv1">Network interfaces</h4>
+            <span>{nics.length >= 1 ? nics.join(", ") : <em>None</em>}</span>
+          </>
+        )}
+      </div>
+      {!title && (
+        <div
+          className="kvm-resources-card__section kvm-resources-card__vms"
+          data-test="vms-button-no-title"
+        >
+          <h4 className="p-heading--small">Total VMs</h4>
+          <ContextualMenu
+            dropdownContent={<></>}
+            hasToggleIcon
+            toggleAppearance="base"
+            toggleClassName="kvm-resources-card__vms-button is-dense"
+            toggleLabel={`${vms.length}`}
           />
-          <hr />
-          <div className="p-heading--small u-text--light">
-            Network interfaces
-          </div>
-          <span>{nics.join(", ")}</span>
         </div>
-      </div>
-      <div className="kvm-resources-card__section kvm-resources-card__vms">
-        <h4 className="p-heading--small">Total VMs</h4>
-        <ContextualMenu
-          dropdownContent={<></>}
-          hasToggleIcon
-          toggleAppearance="base"
-          toggleClassName="is-dense is-thin"
-          toggleLabel="4"
-        />
-      </div>
+      )}
     </Card>
   );
 };

@@ -38,12 +38,40 @@ const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
 );
 
 /**
+ * Returns all default commissioning scripts
+ * @param {RootState} state - Redux state
+ * @returns scripts - Commissioning scripts
+ *
+ */
+const defaultCommissioning = createSelector(
+  [commissioning],
+  (commissioningItems: Scripts[]): Scripts[] =>
+    commissioningItems.filter(
+      (item) => item.default === true && !item.tags.includes("noauto")
+    )
+);
+
+/**
  * Returns all testing scripts
  * @param {RootState} state - Redux state
  * @returns {Scripts[]} Testing scripts
  */
 const testing = createSelector([defaultSelectors.all], (scriptItems) =>
   scriptItems.filter((item: Scripts) => item.type === SCRIPT_TYPES.TESTING)
+);
+
+/**
+ * Returns all default testing scripts
+ * @param {RootState} state - Redux state
+ * @returns scripts - Testing scripts
+ *
+ */
+const defaultTesting = createSelector(
+  [testing],
+  (testingItems: Scripts[]): Scripts[] =>
+    testingItems.filter(
+      (item) => item.default === true && !item.tags.includes("noauto")
+    )
 );
 
 /**
@@ -87,9 +115,11 @@ const search = createSelector(
 const scripts = {
   ...defaultSelectors,
   commissioning,
+  defaultCommissioning,
   hasErrors,
   search,
   testing,
+  defaultTesting,
   testingWithUrl,
 };
 
