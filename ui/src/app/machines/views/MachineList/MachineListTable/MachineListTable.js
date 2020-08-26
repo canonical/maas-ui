@@ -86,10 +86,11 @@ const getGroupSecondaryString = (machineIDs, selectedIDs) => {
 /**
  * Filters columns by hiddenColumns.
  *
- * If showActions is true, the "fqdn" column will not be filtered.
+ * If showActions is true, the "fqdn" column will not be filtered as action checkboxes
+ * share the "fqdn" column.
  * @param {Array} columns - headers or rows
  * @param {string[]} hiddenColumns - columns to hide, e.g. ["zone"]
- * @param {bool} showActions
+ * @param {bool} showActions - whether actions and associated checkboxes are displayed
  */
 const filterColumns = (columns, hiddenColumns, showActions) => {
   if (hiddenColumns.length === 0) {
@@ -97,7 +98,7 @@ const filterColumns = (columns, hiddenColumns, showActions) => {
   }
   return columns.filter(
     (column) =>
-      !hiddenColumns.includes(column.key) |
+      !hiddenColumns.includes(column.key) ||
       (column.key === "fqdn" && showActions)
   );
 };
@@ -783,6 +784,7 @@ MachineListTable.propTypes = {
   setHiddenGroups: PropTypes.func,
   setSearchFilter: PropTypes.func,
   showActions: PropTypes.bool,
+  hiddenColumns: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default React.memo(MachineListTable);
