@@ -1,11 +1,13 @@
 import { Code, Spinner } from "@canonical/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { useStorageState } from "react-storage-hooks";
 
 import { sendAnalyticsEvent } from "analytics";
 import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
+import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import KVMAggregateResources from "./KVMAggregateResources";
@@ -83,7 +85,12 @@ const KVMSummary = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
-  const [viewByNuma, setViewByNuma] = useState(false);
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
+  const [viewByNuma, setViewByNuma] = useStorageState(
+    localStorage,
+    `viewPod${id}ByNuma`,
+    false
+  );
 
   useWindowTitle(`KVM ${`${pod?.name} ` || ""} details`);
 
@@ -113,11 +120,13 @@ const KVMSummary = (): JSX.Element => {
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               const checked = evt.target.checked;
               setViewByNuma(checked);
-              sendAnalyticsEvent(
-                "KVM details",
-                "Toggle NUMA view",
-                checked ? "View by NUMA node" : "View aggregate"
-              );
+              if (analyticsEnabled) {
+                sendAnalyticsEvent(
+                  "KVM details",
+                  "Toggle NUMA view",
+                  checked ? "View by NUMA node" : "View aggregate"
+                );
+              }
             }}
           />
         </div>

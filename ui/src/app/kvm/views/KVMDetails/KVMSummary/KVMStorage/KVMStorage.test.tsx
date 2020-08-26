@@ -5,13 +5,20 @@ import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
+import { sendAnalyticsEvent } from "analytics";
 import {
+  config as configFactory,
+  configState as configStateFactory,
   pod as podFactory,
   podState as podStateFactory,
   podStoragePool as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import KVMStorage, { TRUNCATION_POINT } from "./KVMStorage";
+
+jest.mock("analytics", () => ({
+  sendAnalyticsEvent: jest.fn(),
+}));
 
 const mockStore = configureStore();
 
@@ -85,5 +92,46 @@ describe("KVMStorage", () => {
       wrapper.find("Button[data-test='show-more-pools'] span").text()
     ).toBe("Show less storage pools");
     expect(wrapper.find("Card").length).toBe(pools.length);
+  });
+
+  it("can send an analytics event when expanding pools if analytics enabled", () => {
+    const pools = [
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+      podStoragePoolFactory(),
+    ];
+    const pod = podFactory({
+      default_storage_pool: pools[0].id,
+      id: 1,
+      storage_pools: pools,
+    });
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "enable_analytics",
+            value: true,
+          }),
+        ],
+      }),
+      pod: podStateFactory({ items: [pod] }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMStorage id={pod.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() => {
+      wrapper.find("Button[data-test='show-more-pools']").simulate("click");
+    });
+    wrapper.update();
+
+    expect(sendAnalyticsEvent).toHaveBeenCalled();
   });
 });
