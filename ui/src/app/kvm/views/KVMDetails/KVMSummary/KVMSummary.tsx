@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Code, Spinner } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -78,6 +78,15 @@ const KVMSummary = (): JSX.Element => {
   if (!!pod) {
     return (
       <>
+        <div className="u-flex">
+          <p className="u-nudge-left">
+            {pod.type === "virsh" ? "Virsh:" : "LXD URL:"}
+          </p>
+          <Code copyable className="u-flex--grow">
+            {pod.power_address}
+          </Code>
+        </div>
+        <hr className="u-sv1" />
         <div className="u-flex--between">
           <h4 className="u-sv1">Resources</h4>
           <Switch

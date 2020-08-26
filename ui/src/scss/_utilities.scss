@@ -18,6 +18,10 @@
     display: flex;
   }
 
+  .u-flex--grow {
+    flex: 1;
+  }
+
   .u-flex--between {
     display: flex;
     justify-content: space-between;
@@ -54,8 +58,16 @@
     padding-left: $sph-inner !important;
   }
 
+  .u-nudge-left {
+    padding-right: $sph-inner !important;
+  }
+
   .u-nudge-right--small {
     padding-left: $sph-inner--small !important;
+  }
+
+  .u-nudge-left--small {
+    padding-right: $sph-inner--small !important;
   }
 
   .u-text--light {
