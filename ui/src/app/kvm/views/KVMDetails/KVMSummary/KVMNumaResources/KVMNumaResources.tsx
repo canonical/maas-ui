@@ -3,6 +3,7 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React, { useState } from "react";
 
+import { sendAnalyticsEvent } from "analytics";
 import type { TSFixMe } from "app/base/types";
 import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
 
@@ -45,7 +46,14 @@ const KVMNumaResources = ({ numaNodes }: Props): JSX.Element => {
             appearance="base"
             data-test="show-more-numas"
             hasIcon
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => {
+              setExpanded(!expanded);
+              sendAnalyticsEvent(
+                "KVM details",
+                "Toggle expanded NUMA nodes",
+                expanded ? "Show less NUMA nodes" : "Show more NUMA nodes"
+              );
+            }}
           >
             {expanded ? (
               <>

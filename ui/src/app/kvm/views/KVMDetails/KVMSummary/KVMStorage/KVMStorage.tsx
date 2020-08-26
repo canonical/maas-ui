@@ -3,6 +3,7 @@ import pluralize from "pluralize";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+import { sendAnalyticsEvent } from "analytics";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import podSelectors from "app/store/pod/selectors";
@@ -85,7 +86,16 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
               appearance="base"
               data-test="show-more-pools"
               hasIcon
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => {
+                setExpanded(!expanded);
+                sendAnalyticsEvent(
+                  "KVM details",
+                  "Toggle expanded storage pools",
+                  expanded
+                    ? "Show less storage pools"
+                    : "Show more storage pools"
+                );
+              }}
             >
               {expanded ? (
                 <>

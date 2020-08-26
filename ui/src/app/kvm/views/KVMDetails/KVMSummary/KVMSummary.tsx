@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import { sendAnalyticsEvent } from "analytics";
 import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -110,7 +111,13 @@ const KVMSummary = (): JSX.Element => {
             data-test="numa-switch"
             label="View by NUMA node"
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-              setViewByNuma(evt.target.checked);
+              const checked = evt.target.checked;
+              setViewByNuma(checked);
+              sendAnalyticsEvent(
+                "KVM details",
+                "Toggle NUMA view",
+                checked ? "View by NUMA node" : "View aggregate"
+              );
             }}
           />
         </div>
