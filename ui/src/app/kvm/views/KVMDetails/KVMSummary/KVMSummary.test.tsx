@@ -48,7 +48,7 @@ describe("KVMSummary", () => {
     expect(wrapper.find("KVMNumaResources").exists()).toBe(true);
   });
 
-  it("can display the ip address", () => {
+  it("can display the power address", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
@@ -68,6 +68,8 @@ describe("KVMSummary", () => {
       </Provider>
     );
     expect(wrapper.find("Code").exists()).toBe(true);
-    expect(wrapper.find("Code input").prop("value")).toBe("171.16.4.28");
+    expect(wrapper.find("Code input").prop("value")).toBe(
+      "qemu+ssh://ubuntu@171.16.4.28/system"
+    );
   });
 });
