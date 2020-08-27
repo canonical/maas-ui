@@ -3,8 +3,10 @@ import pluralize from "pluralize";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+import { sendAnalyticsEvent } from "analytics";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
 import KVMMeter from "app/kvm/components/KVMMeter";
@@ -17,6 +19,7 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const [expanded, setExpanded] = useState(false);
 
   if (!!pod) {
@@ -85,7 +88,18 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
               appearance="base"
               data-test="show-more-pools"
               hasIcon
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => {
+                setExpanded(!expanded);
+                if (analyticsEnabled) {
+                  sendAnalyticsEvent(
+                    "KVM details",
+                    "Toggle expanded storage pools",
+                    expanded
+                      ? "Show less storage pools"
+                      : "Show more storage pools"
+                  );
+                }
+              }}
             >
               {expanded ? (
                 <>
