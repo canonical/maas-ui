@@ -2,17 +2,6 @@
   $donut-size: 6.5rem;
   $donut-width: 14px;
 
-  .kvm-resources-card__ram-chart {
-    align-items: center;
-    border-radius: 50%;
-    border: $donut-width solid $color-mid-x-light;
-    display: flex;
-    height: $donut-size;
-    justify-content: center;
-    margin: $spv-outer--small auto $spv-outer--medium auto;
-    width: $donut-size;
-  }
-
   .kvm-resources-card__ram-table {
     margin-bottom: 0;
 

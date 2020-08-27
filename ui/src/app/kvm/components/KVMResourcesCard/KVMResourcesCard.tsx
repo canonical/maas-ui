@@ -4,6 +4,7 @@ import pluralize from "pluralize";
 import React from "react";
 
 import ContextualMenu from "app/base/components/ContextualMenu";
+import DoughnutChart from "app/base/components/DoughnutChart";
 import KVMMeter from "app/kvm/components/KVMMeter";
 
 type ChartValues = {
@@ -56,10 +57,40 @@ const KVMResourcesCard = ({
       <div className="kvm-resources-card__section kvm-resources-card__ram">
         <div>
           <h4 className="p-heading--small">RAM</h4>
-          <div className="kvm-resources-card__ram-chart">
-            {ram.general.total}
-            {ram.general.unit}
-          </div>
+          <DoughnutChart
+            label={`${ram.general.total + (ram.hugepage?.total || 0)}${
+              ram.general.unit
+            }`}
+            segmentHoverWidth={20}
+            segmentWidth={15}
+            segments={[
+              {
+                color: "#06C",
+                tooltip: `General allocated ${ram.general.allocated}`,
+                value: ram.general.allocated,
+              },
+              ...(ram.hugepage
+                ? [
+                    {
+                      color: "#0E8420",
+                      tooltip: `Hugepage allocated ${ram.hugepage.allocated}`,
+                      value: ram.hugepage.allocated,
+                    },
+                    {
+                      color: "#56a863",
+                      tooltip: `Hugepage free ${ram.hugepage.free}`,
+                      value: ram.hugepage.free,
+                    },
+                  ]
+                : []),
+              {
+                color: "#cce0f5",
+                tooltip: `General free ${ram.general.free}`,
+                value: ram.general.free,
+              },
+            ]}
+            size={96}
+          />
         </div>
         <table className="kvm-resources-card__ram-table">
           <thead>

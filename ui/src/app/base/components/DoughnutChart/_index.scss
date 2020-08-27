@@ -1,0 +1,22 @@
+@mixin DoughnutChart {
+  .doughnut-chart {
+    // Restrict hover areas to the strokes.
+    pointer-events: stroke;
+  }
+
+  .doughnut-chart__label {
+    // Center the text in the circle.
+    dominant-baseline: middle;
+    text-anchor: middle;
+  }
+
+  .doughnut-chart__segment {
+    fill: transparent;
+    // Animate stroke size changes on hover.
+    transition: stroke-width 0.3s ease;
+  }
+
+  .doughnut-chart__tooltip {
+    position: absolute;
+  }
+}
