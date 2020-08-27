@@ -1,5 +1,6 @@
 import { nanoid } from "@reduxjs/toolkit";
 import React, { useRef, useEffect, useState } from "react";
+import classNames from "classnames";
 
 type Segment = {
   /**
@@ -22,6 +23,10 @@ type Props = {
    */
   label?: string;
   /**
+   * An optional class name applied to the wrapping element.
+   */
+  className?: string;
+  /**
    * The width of the segments when hovered.
    */
   segmentHoverWidth: number;
@@ -40,6 +45,7 @@ type Props = {
 };
 
 export const DoughnutChart = ({
+  className,
   label,
   segmentHoverWidth,
   segmentWidth,
@@ -62,8 +68,10 @@ export const DoughnutChart = ({
   );
 
   const id = `doughnut-chart-${nanoid()}`;
+  const hoverIncrease = segmentHoverWidth - segmentWidth;
+  const adjustedHoverWidth = segmentHoverWidth + hoverIncrease;
   // The canvas needs enough space so that the hover state does not get cut off.
-  const canvasSize = size + segmentHoverWidth - segmentWidth;
+  const canvasSize = size + adjustedHoverWidth - segmentWidth;
   const diameter = size - segmentWidth;
   const radius = diameter / 2;
   const circumference = Math.round(diameter * Math.PI);
@@ -85,8 +93,8 @@ export const DoughnutChart = ({
     return (
       <circle
         className="doughnut-chart__segment"
-        cx={radius}
-        cy={radius}
+        cx={radius - segmentWidth / 2 - hoverIncrease}
+        cy={radius + segmentWidth / 2 + hoverIncrease}
         key={i}
         onMouseOver={
           tooltip
@@ -154,11 +162,19 @@ export const DoughnutChart = ({
     );
   });
   return (
-    <div className="p-tooltip--right">
+    <div
+      className={classNames("p-tooltip--right", className)}
+      style={{
+        // Set the size of this wrapping div so that the tooltips won't
+        // be affected by changes in container.
+        height: `${canvasSize}px`,
+        width: `${canvasSize}px`,
+      }}
+    >
       <style>
         {/* Set the hover width of the segments. */}
         {`#${id} .doughnut-chart__segment:hover {
-          stroke-width: ${segmentHoverWidth} !important;
+          stroke-width: ${adjustedHoverWidth} !important;
         }`}
       </style>
       <svg
@@ -167,19 +183,49 @@ export const DoughnutChart = ({
         className="doughnut-chart"
         id={id}
       >
-        {/* Move the chart on the canvas to leave enough space so that the hovered segments don't get cut off. */}
-        <g
-          transform={`translate(${segmentHoverWidth / 2}, ${
-            segmentHoverWidth / 2
-          })`}
-        >
-          {segmentNodes}
-          {label ? (
-            <text x={radius} y={radius}>
-              <tspan className="doughnut-chart__label">{label}</tspan>
-            </text>
-          ) : null}
+        <mask id="myMask">
+          {/* Cover the canvas, this will be the visible area. */}
+          <rect
+            x="0"
+            y="0"
+            width={canvasSize}
+            height={canvasSize}
+            fill="white"
+          />
+          {/* Cut out the center circle so that the hover state doesn't grow inwards. */}
+          <circle
+            r={radius - segmentWidth / 2}
+            cx={canvasSize / 2}
+            cy={canvasSize / 2}
+            fill="black"
+          />
+        </mask>
+        <g mask="url(#myMask)">
+          {/* Force the group to cover the full size of the canvas, otherwise it will only mask the children (in their non-hovered state) */}
+          <rect
+            x="0"
+            y="0"
+            width={canvasSize}
+            height={canvasSize}
+            fill="transparent"
+          />
+          {/* Move the chart on the canvas to leave enough space so that the hovered segments don't get cut off. */}
+          <g
+            transform={`xtranslate(${adjustedHoverWidth / 2}, ${
+              adjustedHoverWidth / 2
+            })`}
+          >
+            {segmentNodes}
+          </g>
         </g>
+        {label ? (
+          <text
+            x={radius + adjustedHoverWidth / 2}
+            y={radius + adjustedHoverWidth / 2}
+          >
+            <tspan className="doughnut-chart__label">{label}</tspan>
+          </text>
+        ) : null}
       </svg>
       {showTooltip ? (
         <div className="doughnut-chart__tooltip" style={tooltipStyle}>

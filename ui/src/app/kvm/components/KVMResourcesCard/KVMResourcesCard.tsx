@@ -3,6 +3,7 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
 
+import { COLOURS } from "app/base/constants";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import DoughnutChart from "app/base/components/DoughnutChart";
 import KVMMeter from "app/kvm/components/KVMMeter";
@@ -58,34 +59,35 @@ const KVMResourcesCard = ({
         <div>
           <h4 className="p-heading--small">RAM</h4>
           <DoughnutChart
+            className="kvm-resources-card__ram-chart"
             label={`${ram.general.total + (ram.hugepage?.total || 0)}${
               ram.general.unit
             }`}
-            segmentHoverWidth={20}
+            segmentHoverWidth={18}
             segmentWidth={15}
             segments={[
               {
-                color: "#06C",
-                tooltip: `General allocated ${ram.general.allocated}`,
+                color: COLOURS.LINK,
+                tooltip: `General allocated ${ram.general.allocated}${ram.general.unit}`,
                 value: ram.general.allocated,
               },
               ...(ram.hugepage
                 ? [
                     {
-                      color: "#0E8420",
-                      tooltip: `Hugepage allocated ${ram.hugepage.allocated}`,
+                      color: COLOURS.POSITIVE,
+                      tooltip: `Hugepage allocated ${ram.hugepage.allocated}${ram.hugepage.unit}`,
                       value: ram.hugepage.allocated,
                     },
                     {
-                      color: "#56a863",
-                      tooltip: `Hugepage free ${ram.hugepage.free}`,
+                      color: COLOURS.POSITIVE_MID,
+                      tooltip: `Hugepage free ${ram.hugepage.free}${ram.hugepage.unit}`,
                       value: ram.hugepage.free,
                     },
                   ]
                 : []),
               {
-                color: "#cce0f5",
-                tooltip: `General free ${ram.general.free}`,
+                color: COLOURS.LINK_FADED,
+                tooltip: `General free ${ram.general.free}${ram.general.unit}`,
                 value: ram.general.free,
               },
             ]}
