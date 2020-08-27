@@ -1,6 +1,7 @@
 ## MAAS UI
 
-[![CircleCI](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master.svg?style=svg)](https://circleci.com/gh/canonical-web-and-design/maas-ui/tree/master) ![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
+![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
+![Cypress](https://github.com/canonical-web-and-design/maas-ui/workflows/Cypress/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 - [About](#about)
