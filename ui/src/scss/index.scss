@@ -60,6 +60,7 @@
 // Import and include MAAS component styles
 // base
 @import "~app/base/components/ColumnToggle";
+@import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
@@ -68,6 +69,7 @@
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
 @include ColumnToggle;
+@include DoughnutChart;
 @include FormCard;
 @include Login;
 @include Meter;

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoughnutChart renders 1`] = `
+<div
+  className="p-tooltip--right"
+>
+  <style>
+    #doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ .doughnut-chart__segment:hover {
+          stroke-width: 20 !important;
+        }
+  </style>
+  <svg
+    className="doughnut-chart"
+    height={101}
+    id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ"
+    width={101}
+  >
+    <g
+      transform="translate(10, 10)"
+    >
+      <circle
+        className="doughnut-chart__segment"
+        cx={40.5}
+        cy={40.5}
+        key="0"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+        r={40.5}
+        style={
+          Object {
+            "stroke": "#06C",
+            "strokeDasharray": "0 0.00 203.20 50.80",
+            "strokeWidth": 15,
+          }
+        }
+        transform="rotate(-90 40.5,40.5)"
+      />
+      <circle
+        className="doughnut-chart__segment"
+        cx={40.5}
+        cy={40.5}
+        key="1"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+        r={40.5}
+        style={
+          Object {
+            "stroke": "#cce0f5",
+            "strokeDasharray": "0 203.20 50.80 -0.00",
+            "strokeWidth": 15,
+          }
+        }
+        transform="rotate(-90 40.5,40.5)"
+      />
+      <text
+        x={40.5}
+        y={40.5}
+      >
+        <tspan
+          className="doughnut-chart__label"
+        >
+          200GB
+        </tspan>
+      </text>
+    </g>
+  </svg>
+</div>
+`;
