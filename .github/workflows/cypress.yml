@@ -1,0 +1,38 @@
+name: Cypress
+on: [push]
+jobs:
+  cypress:
+    name: Cypress
+    runs-on: ubuntu-20.04
+    env:
+      MAAS_URL: http://localhost:5240
+    steps:
+      - uses: actions/checkout@main
+      - name: Install MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas --channel=latest/edge
+          sudo snap install maas-test-db --channel=latest/edge
+      - name: Initialise MAAS
+        run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Build shared
+        run: |
+          sudo apt install yarn
+          yarn build-shared
+      - uses: cypress-io/github-action@master
+        with:
+          working-directory: proxy
+          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
+          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
