@@ -48,7 +48,7 @@ export const DoughnutChart = ({
 }: Props): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(null);
   const [tooltipStyle, setTooltipStyle] = useState(null);
-  const removeListener = useRef(() => {});
+  const removeListener = useRef<() => void>(null);
 
   useEffect(
     () => () => {
