@@ -128,6 +128,7 @@ function NodeDetailsController(
   $scope.expandedNumas = [];
   $scope.groupedInterfaces = [];
   $scope.isVM = false;
+  $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
 
   // Node header section.
   $scope.header = {
@@ -905,6 +906,11 @@ function NodeDetailsController(
       const userData = $scope.deployOptions.userData;
       if (userData) {
         extra.user_data = userData;
+        $scope.sendAnalyticsEvent(
+          "Machine details deploy form",
+          "Has cloud-init config",
+          "Cloud-init user data"
+        );
       }
     } else if ($scope.action.option.name === "commission") {
       extra.enable_ssh = $scope.commissionOptions.enableSSH;

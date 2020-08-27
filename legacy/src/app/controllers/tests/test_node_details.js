@@ -1230,6 +1230,57 @@ describe("NodeDetailsController", function () {
       );
     });
 
+    it("calls performAction with cloud-init userData", () => {
+      makeController();
+      spyOn(MachinesManager, "performAction").and.returnValue(
+        $q.defer().promise
+      );
+      $scope.node = node;
+      $scope.action.option = {
+        name: "deploy",
+      };
+      $scope.osSelection.osystem = "ubuntu";
+      $scope.osSelection.release = "ubuntu/xenial";
+      $scope.osSelection.hwe_kernel = "ga-16.04";
+      $scope.deployOptions.userData = "cloud-config";
+
+      $scope.actionGo();
+
+      expect(MachinesManager.performAction).toHaveBeenCalledWith(
+        node,
+        "deploy",
+        {
+          distro_series: "xenial",
+          hwe_kernel: "ga-16.04",
+          install_kvm: false,
+          osystem: "ubuntu",
+          user_data: "cloud-config",
+        }
+      );
+    });
+
+    it("sends a GA event with cloud-init userData", () => {
+      makeController();
+      spyOn($scope, "sendAnalyticsEvent");
+
+      $scope.node = node;
+      $scope.action.option = {
+        name: "deploy",
+      };
+      $scope.osSelection.osystem = "ubuntu";
+      $scope.osSelection.release = "ubuntu/xenial";
+      $scope.osSelection.hwe_kernel = "ga-16.04";
+      $scope.deployOptions.userData = "cloud-config";
+
+      $scope.actionGo();
+
+      expect($scope.sendAnalyticsEvent).toHaveBeenCalledWith(
+        "Machine details deploy form",
+        "Has cloud-init config",
+        "Cloud-init user data"
+      );
+    });
+
     it("calls performAction with commissionOptions", function () {
       makeController();
       spyOn(MachinesManager, "performAction").and.returnValue(
