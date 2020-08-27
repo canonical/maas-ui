@@ -2,6 +2,11 @@
   $donut-size: 6.5rem;
   $donut-width: 14px;
 
+  .kvm-resources-card__ram-chart {
+    // Centre the chart in its container.
+    margin: 0 auto;
+  }
+
   .kvm-resources-card__ram-table {
     margin-bottom: 0;
 
