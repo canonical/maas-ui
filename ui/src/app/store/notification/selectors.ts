@@ -21,7 +21,7 @@ const defaultSelectors = generateBaseSelectors<
 /**
  * Returns the pathname from the router state.
  * @param state - The redux state.
- * @returns Notifications that can be shown to the user.
+ * @returns The current path name.
  */
 const pathname = (state: RootState) => state.router.location.pathname;
 
