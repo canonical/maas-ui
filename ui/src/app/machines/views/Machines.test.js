@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import { routerState as routerStateFactory } from "testing/factories";
 import Machines from "./Machines";
 
 const mockStore = configureStore();
@@ -188,6 +189,7 @@ describe("Machines", () => {
           },
         ],
       },
+      router: routerStateFactory(),
       zone: {
         items: [],
       },

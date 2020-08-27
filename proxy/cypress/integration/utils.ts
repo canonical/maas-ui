@@ -24,7 +24,5 @@ export const generateMac = () =>
 export const generateEmail = () => `${nanoid()}@example.com`;
 
 export const makeUIURL = (path: string) => {
-  return [`${BASENAME}${REACT_BASENAME}`, path].join(
-    path.startsWith("/") ? "" : "/"
-  );
+  return [BASENAME, REACT_BASENAME, path].join(path.startsWith("/") ? "" : "/");
 };

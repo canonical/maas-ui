@@ -163,13 +163,12 @@ describe("maasNotifications", function () {
 
     it("groups messages if there are two in the same category", () => {
       theNotificationsManager._items = exampleNotifications;
-      const directive = compileDirective();
+      let directive = compileDirective();
       expect(
         directive.find('[data-test="multiple-notifications"]').length
       ).toBe(0);
-
       theNotificationsManager._items.push(exampleAdditionalNotification);
-      $scope.$digest();
+      directive = compileDirective();
       expect(
         directive.find('[data-test="multiple-notifications"]').length
       ).toBe(1);
