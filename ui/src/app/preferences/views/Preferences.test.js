@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import { routerState as routerStateFactory } from "testing/factories";
 import Preferences from "./Preferences";
 
 const mockStore = configureStore();
@@ -20,6 +21,7 @@ describe("Preferences", () => {
       notification: {
         items: [],
       },
+      router: routerStateFactory(),
     });
     const wrapper = mount(
       <Provider store={store}>

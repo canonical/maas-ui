@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
 
+import { routerState as routerStateFactory } from "testing/factories";
 import Settings from "./Settings";
 
 const mockStore = configureStore();
@@ -24,6 +25,7 @@ describe("Settings", () => {
       notification: {
         items: [],
       },
+      router: routerStateFactory(),
       status: {},
       user: {
         auth: {

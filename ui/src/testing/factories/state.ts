@@ -1,4 +1,6 @@
 import { array, define } from "cooky-cutter";
+import type { RouterState } from "connected-react-router";
+import { Location } from "history";
 
 import { message } from "./message";
 import { notification } from "./notification";
@@ -295,6 +297,18 @@ export const zoneState = define<ZoneState>({
   ...defaultState,
 });
 
+export const locationState = define<Location>({
+  pathname: "/",
+  search: null,
+  state: null,
+  hash: null,
+});
+
+export const routerState = define<RouterState>({
+  location: locationState,
+  action: null,
+});
+
 export const rootState = define<RootState>({
   config: configState,
   controller: controllerState,
@@ -310,6 +324,7 @@ export const rootState = define<RootState>({
   packagerepository: packageRepositoryState,
   pod: podState,
   resourcepool: resourcePoolState,
+  router: routerState,
   scriptresults: scriptResultsState,
   scripts: scriptsState,
   service: serviceState,
