@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { App } from "./App";
+import { routerState as routerStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -96,6 +97,7 @@ describe("App", () => {
       notification: {
         items: [],
       },
+      router: routerStateFactory(),
       status: {},
       user: {
         auth: {

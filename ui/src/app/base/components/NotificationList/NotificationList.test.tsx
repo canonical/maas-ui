@@ -1,3 +1,4 @@
+import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -6,12 +7,15 @@ import React from "react";
 import {
   config as configFactory,
   configState as configStateFactory,
+  locationState as locationStateFactory,
   message as messageFactory,
   messageState as messageStateFactory,
   notification as notificationFactory,
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
+  routerState as routerStateFactory,
 } from "testing/factories";
+import { NotificationIdent } from "app/store/notification/types";
 import NotificationList from "./NotificationList";
 import type { Notification } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
@@ -47,7 +51,9 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationList />
+        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+          <NotificationList />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("NotificationList")).toMatchSnapshot();
@@ -57,7 +63,9 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationList />
+        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+          <NotificationList />
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("Notification").at(1).props().close();
@@ -74,7 +82,9 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <NotificationList />
+        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+          <NotificationList />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -87,7 +97,9 @@ describe("NotificationList", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationList />
+        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+          <NotificationList />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -98,5 +110,64 @@ describe("NotificationList", () => {
       type: "negative",
       notifications,
     });
+  });
+
+  it("can display a release notification", () => {
+    state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "release_notifications", value: true })],
+      }),
+      notification: notificationStateFactory({
+        items: [
+          notificationFactory({
+            category: "info",
+            ident: NotificationIdent.release,
+          }),
+        ],
+      }),
+      router: routerStateFactory({
+        location: locationStateFactory({
+          pathname: "/machines",
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings/general" }]}>
+          <NotificationList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("NotificationGroup").exists()).toBe(true);
+  });
+
+  it("does not display a release notification for some urls", () => {
+    state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "release_notifications", value: true })],
+      }),
+      notification: notificationStateFactory({
+        items: [
+          notificationFactory({
+            ident: NotificationIdent.release,
+          }),
+        ],
+      }),
+      router: routerStateFactory({
+        location: locationStateFactory({
+          pathname: "/kvm",
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm" }]}>
+          <NotificationList />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("NotificationGroup").exists()).toBe(false);
   });
 });

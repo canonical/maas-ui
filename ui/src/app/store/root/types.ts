@@ -1,3 +1,5 @@
+import type { RouterState } from "connected-react-router";
+
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
@@ -41,6 +43,7 @@ export type RootState = {
   packagerepository: PackageRepositoryState;
   pod: PodState;
   resourcepool: ResourcePoolState;
+  router?: RouterState;
   scriptresults: ScriptResultsState;
   scripts: ScriptsState;
   service: ServiceState;

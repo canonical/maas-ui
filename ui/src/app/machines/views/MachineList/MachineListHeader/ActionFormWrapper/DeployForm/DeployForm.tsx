@@ -7,7 +7,9 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
+import { sendAnalyticsEvent } from "analytics";
 import ActionForm from "app/base/components/ActionForm";
+import configSelectors from "app/store/config/selectors";
 import DeployFormFields from "./DeployFormFields";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -17,6 +19,7 @@ const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),
   release: Yup.string().required("Release is required"),
   kernel: Yup.string(),
+  includeUserData: Yup.boolean(),
   installKVM: Yup.boolean(),
 });
 
@@ -47,6 +50,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     generalSelectors.osInfo.get
   );
   const deployingSelected = useSelector(machineSelectors.deployingSelected);
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -82,19 +86,27 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
         oSystem: initialOS,
         release: initialRelease,
         kernel: defaultMinHweKernel || "",
+        includeUserData: false,
         installKVM: false,
       }}
       modelName="machine"
       onSubmit={(values: DeployFormValues) => {
+        const hasUserData =
+          values.includeUserData && values.userData && values.userData !== "";
         const extra = {
           osystem: values.oSystem,
           distro_series: values.release,
           install_kvm: values.installKVM,
           hwe_kernel: values.kernel,
-          ...(values.includeUserData &&
-            values.userData &&
-            values.userData !== "" && { user_data: values.userData }),
+          ...(hasUserData && { user_data: values.userData }),
         };
+        if (analyticsEnabled && hasUserData) {
+          sendAnalyticsEvent(
+            "Machine list deploy form",
+            "Has cloud-init config",
+            "Cloud-init user data"
+          );
+        }
         selectedMachines.forEach((machine) => {
           dispatch(machineActions.deploy(machine.system_id, extra));
         });
