@@ -24,6 +24,7 @@ export const COLOURS = {
   LINK: "#0066CC",
   NEGATIVE: "#C7162B",
   POSITIVE_FADED: "#B7CCB9",
+  POSITIVE_MID: "#4DAB4D",
   POSITIVE: "#0E8420",
 };
 

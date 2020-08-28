@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoughnutChart renders 1`] = `
+<div
+  className="p-tooltip--right"
+  style={
+    Object {
+      "height": "106px",
+      "width": "106px",
+    }
+  }
+>
+  <style>
+    #doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ .doughnut-chart__segment:hover {
+          stroke-width: 25 !important;
+        }
+  </style>
+  <svg
+    className="doughnut-chart"
+    height={106}
+    id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ"
+    width={106}
+  >
+    <mask
+      id="myMask"
+    >
+      <rect
+        fill="white"
+        height={106}
+        width={106}
+        x="0"
+        y="0"
+      />
+      <circle
+        cx={53}
+        cy={53}
+        fill="black"
+        r={33}
+      />
+    </mask>
+    <g
+      mask="url(#myMask)"
+    >
+      <rect
+        fill="transparent"
+        height={106}
+        width={106}
+        x="0"
+        y="0"
+      />
+      <g
+        transform="xtranslate(12.5, 12.5)"
+      >
+        <circle
+          className="doughnut-chart__segment"
+          cx={28}
+          cy={53}
+          key="0"
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+          r={40.5}
+          style={
+            Object {
+              "stroke": "#06C",
+              "strokeDasharray": "0 0.00 203.20 50.80",
+              "strokeWidth": 15,
+            }
+          }
+          transform="rotate(-90 40.5,40.5)"
+        />
+        <circle
+          className="doughnut-chart__segment"
+          cx={28}
+          cy={53}
+          key="1"
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+          r={40.5}
+          style={
+            Object {
+              "stroke": "#cce0f5",
+              "strokeDasharray": "0 203.20 50.80 -0.00",
+              "strokeWidth": 15,
+            }
+          }
+          transform="rotate(-90 40.5,40.5)"
+        />
+      </g>
+    </g>
+    <text
+      x={53}
+      y={53}
+    >
+      <tspan
+        className="doughnut-chart__label"
+      >
+        200GB
+      </tspan>
+    </text>
+  </svg>
+</div>
+`;
