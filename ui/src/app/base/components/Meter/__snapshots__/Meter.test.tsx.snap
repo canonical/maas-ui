@@ -9,7 +9,6 @@ exports[`Meter renders 1`] = `
     style={
       Object {
         "backgroundColor": "#D3E4ED",
-        "width": undefined,
       }
     }
   >
