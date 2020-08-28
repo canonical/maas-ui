@@ -20,7 +20,6 @@ const SEPARATOR_WIDTH = 1;
 const updateWidths = (
   el: React.MutableRefObject<Element | null>,
   maximum: number,
-  setBarWidth: (size: number) => void,
   setSegmentWidth: (size: number) => void
 ) => {
   const boundingWidth = el?.current?.getBoundingClientRect()?.width || 0;
@@ -28,7 +27,6 @@ const updateWidths = (
     boundingWidth > maximum * MINIMUM_SEGMENT_WIDTH
       ? boundingWidth / maximum
       : MINIMUM_SEGMENT_WIDTH;
-  setBarWidth(boundingWidth);
   setSegmentWidth(segmentWidth);
 };
 
@@ -67,17 +65,16 @@ const Meter = ({
   const maximum = max || valueSum;
   const datumWidths = data.map((datum) => (datum.value / maximum) * 100);
   const [segmentWidth, setSegmentWidth] = useState(0);
-  const [barWidth, setBarWidth] = useState(0);
 
   useEffect(() => {
     if (segmented) {
-      updateWidths(el, maximum, setBarWidth, setSegmentWidth);
+      updateWidths(el, maximum, setSegmentWidth);
     }
   }, [maximum, segmented]);
 
   useOnWindowResize(() => {
     if (segmented) {
-      updateWidths(el, maximum, setBarWidth, setSegmentWidth);
+      updateWidths(el, maximum, setSegmentWidth);
     }
   });
 
@@ -86,10 +83,7 @@ const Meter = ({
       className={classNames(small ? "p-meter--small" : "p-meter", className)}
       ref={el}
     >
-      <div
-        className="p-meter__bar"
-        style={{ backgroundColor: emptyColor, width: barWidth || undefined }}
-      >
+      <div className="p-meter__bar" style={{ backgroundColor: emptyColor }}>
         {valueSum > maximum ? (
           <div
             className="p-meter__filled"
