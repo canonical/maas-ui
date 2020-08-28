@@ -133,13 +133,15 @@ export const MachineListHeader = ({
       tabLinks={[
         {
           active: location.pathname.startsWith("/machines"),
+          component: Link,
           label: `${pluralize("Machine", machines.length, true)}`,
-          path: "/machines",
+          to: "/machines",
         },
         {
           active: location.pathname.startsWith("/pool"),
+          component: Link,
           label: `${pluralize("Resource pool", resourcePools.length, true)}`,
-          path: "/pools",
+          to: "/pools",
         },
       ]}
       title="Machines"

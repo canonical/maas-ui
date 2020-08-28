@@ -2,7 +2,7 @@ import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
@@ -65,13 +65,15 @@ const KVMDetailsHeader = (): JSX.Element => {
       tabLinks={[
         {
           active: location.pathname.endsWith(`/kvm/${id}`),
+          component: Link,
           label: "Resources",
-          path: `/kvm/${id}`,
+          to: `/kvm/${id}`,
         },
         {
           active: location.pathname.endsWith(`/kvm/${id}/edit`),
+          component: Link,
           label: "Configuration",
-          path: `/kvm/${id}/edit`,
+          to: `/kvm/${id}/edit`,
         },
       ]}
       title={pod?.name || ""}
