@@ -13,8 +13,26 @@ exports[`KVMResourcesCard renders 1`] = `
       Title
     </span>
     <ContextualMenu
-      dropdownContent={<React.Fragment />}
+      dropdownClassName="kvm-machine-list-modal"
+      dropdownContent={
+        <MachineListTable
+          hiddenColumns={
+            Array [
+              "power",
+              "owner",
+              "pool",
+              "zone",
+              "fabric",
+              "disks",
+              "storage",
+            ]
+          }
+          paginateLimit={5}
+          showActions={false}
+        />
+      }
       hasToggleIcon={true}
+      position="left"
       toggleAppearance="base"
       toggleClassName="kvm-resources-card__vms-button is-dense"
       toggleDisabled={false}
