@@ -9,7 +9,7 @@ describe("KVMResourcesCard", () => {
       <KVMResourcesCard
         cores={{ allocated: 1, free: 2, total: 3 }}
         nics={[]}
-        ram={{ general: { allocated: 2, free: 3, total: 5 } }}
+        ram={{ general: { allocated: 2, free: 3, total: 5, unit: "MB" } }}
         vms={["abc123"]}
         title="Title"
       />

@@ -31,11 +31,27 @@ exports[`KVMResourcesCard renders 1`] = `
       >
         RAM
       </h4>
-      <div
+      <DoughnutChart
         className="kvm-resources-card__ram-chart"
-      >
-        5
-      </div>
+        label="5MB"
+        segmentHoverWidth={18}
+        segmentWidth={15}
+        segments={
+          Array [
+            Object {
+              "color": "#0066CC",
+              "tooltip": "General allocated 2MB",
+              "value": 2,
+            },
+            Object {
+              "color": "#D3E4ED",
+              "tooltip": "General free 3MB",
+              "value": 3,
+            },
+          ]
+        }
+        size={96}
+      />
     </div>
     <table
       className="kvm-resources-card__ram-table"
@@ -75,6 +91,7 @@ exports[`KVMResourcesCard renders 1`] = `
               data-test="ram-general-allocated"
             >
               2
+              MB
             </span>
             <span
               className="u-nudge-right--small"
@@ -91,6 +108,7 @@ exports[`KVMResourcesCard renders 1`] = `
               data-test="ram-general-free"
             >
               3
+              MB
             </span>
             <span
               className="u-nudge-right--small"

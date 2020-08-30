@@ -3,7 +3,9 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
 
+import { COLOURS } from "app/base/constants";
 import ContextualMenu from "app/base/components/ContextualMenu";
+import DoughnutChart from "app/base/components/DoughnutChart";
 import KVMMeter from "app/kvm/components/KVMMeter";
 
 type ChartValues = {
@@ -56,10 +58,41 @@ const KVMResourcesCard = ({
       <div className="kvm-resources-card__section kvm-resources-card__ram">
         <div>
           <h4 className="p-heading--small">RAM</h4>
-          <div className="kvm-resources-card__ram-chart">
-            {ram.general.total}
-            {ram.general.unit}
-          </div>
+          <DoughnutChart
+            className="kvm-resources-card__ram-chart"
+            label={`${ram.general.total + (ram.hugepage?.total || 0)}${
+              ram.general.unit
+            }`}
+            segmentHoverWidth={18}
+            segmentWidth={15}
+            segments={[
+              {
+                color: COLOURS.LINK,
+                tooltip: `General allocated ${ram.general.allocated}${ram.general.unit}`,
+                value: ram.general.allocated,
+              },
+              ...(ram.hugepage
+                ? [
+                    {
+                      color: COLOURS.POSITIVE,
+                      tooltip: `Hugepage allocated ${ram.hugepage.allocated}${ram.hugepage.unit}`,
+                      value: ram.hugepage.allocated,
+                    },
+                    {
+                      color: COLOURS.POSITIVE_MID,
+                      tooltip: `Hugepage free ${ram.hugepage.free}${ram.hugepage.unit}`,
+                      value: ram.hugepage.free,
+                    },
+                  ]
+                : []),
+              {
+                color: COLOURS.LINK_FADED,
+                tooltip: `General free ${ram.general.free}${ram.general.unit}`,
+                value: ram.general.free,
+              },
+            ]}
+            size={96}
+          />
         </div>
         <table className="kvm-resources-card__ram-table">
           <thead>
