@@ -463,6 +463,7 @@ export const MachineListTable = ({
   setSearchFilter,
   showActions = true,
   hiddenColumns = [],
+  paginateLimit = 50,
 }) => {
   const dispatch = useDispatch();
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
@@ -747,7 +748,7 @@ export const MachineListTable = ({
             "machine-list--grouped": grouping !== "none",
           })}
           headers={filterColumns(headers, hiddenColumns, showActions)}
-          paginate={50}
+          paginate={paginateLimit}
           rows={
             grouping === "none"
               ? generateRows({
@@ -785,6 +786,7 @@ MachineListTable.propTypes = {
   setSearchFilter: PropTypes.func,
   showActions: PropTypes.bool,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
+  paginateLimit: PropTypes.number,
 };
 
 export default React.memo(MachineListTable);
