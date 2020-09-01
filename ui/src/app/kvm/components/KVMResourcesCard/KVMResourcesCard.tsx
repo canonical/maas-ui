@@ -7,6 +7,7 @@ import { COLOURS } from "app/base/constants";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import DoughnutChart from "app/base/components/DoughnutChart";
 import KVMMeter from "app/kvm/components/KVMMeter";
+import { MachineListTable } from "app/machines/views/MachineList/MachineListTable/MachineListTable";
 
 type ChartValues = {
   allocated: number;
@@ -44,12 +45,28 @@ const KVMResourcesCard = ({
           <h5 className="p-text--paragraph u-flex--between u-no-max-width">
             <span data-test="kvm-resources-card-title">{title}</span>
             <ContextualMenu
-              dropdownContent={<></>}
+              dropdownClassName="kvm-machine-list-modal"
+              dropdownContent={
+                <MachineListTable
+                  hiddenColumns={[
+                    "power",
+                    "owner",
+                    "pool",
+                    "zone",
+                    "fabric",
+                    "disks",
+                    "storage",
+                  ]}
+                  showActions={false}
+                  paginateLimit={5}
+                ></MachineListTable>
+              }
               hasToggleIcon
               toggleAppearance="base"
               toggleClassName="kvm-resources-card__vms-button is-dense"
               toggleDisabled={vms.length === 0}
               toggleLabel={pluralize("machine", vms.length, true)}
+              position="left"
             />
           </h5>
           <hr />
@@ -198,11 +215,27 @@ const KVMResourcesCard = ({
         >
           <h4 className="p-heading--small">Total VMs</h4>
           <ContextualMenu
-            dropdownContent={<></>}
+            dropdownClassName="kvm-machine-list-modal"
+            dropdownContent={
+              <MachineListTable
+                hiddenColumns={[
+                  "power",
+                  "owner",
+                  "pool",
+                  "zone",
+                  "fabric",
+                  "disks",
+                  "storage",
+                ]}
+                showActions={false}
+                paginateLimit={5}
+              ></MachineListTable>
+            }
             hasToggleIcon
             toggleAppearance="base"
             toggleClassName="kvm-resources-card__vms-button is-dense"
             toggleLabel={`${vms.length}`}
+            position="right"
           />
         </div>
       )}
