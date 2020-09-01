@@ -23,7 +23,7 @@ jobs:
           yarn build-shared
       - uses: cypress-io/github-action@master
         with:
-          working-directory: proxy
+          working-directory: integration
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - uses: actions/upload-artifact@v1

@@ -1,0 +1,30 @@
+{
+  "name": "@maas-ui/maas-ui-integration",
+  "private": true,
+  "version": "1.3.1",
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "cypress-test": "yarn --cwd ../shared build && start-server-and-test serve-frontends '8401|8402' serve-base 'tcp:8400|8404' cypress-run",
+    "serve-frontends": "yarn --cwd ../proxy serve-frontends",
+    "serve-base": "yarn --cwd ../proxy serve-base",
+    "cypress-run": "yarn cypress run -c baseUrl=http://0.0.0.0:8400",
+    "cypress-open": "yarn cypress open -c baseUrl=http://0.0.0.0:8400"
+  },
+  "devDependencies": {
+    "@maas-ui/maas-ui-shared": "1.3.1",
+    "concurrently": "5.3.0",
+    "cypress": "5.0.0",
+    "dotenv-flow": "3.2.0",
+    "nanoid": "3.1.12",
+    "npm-package-json-lint": "5.1.0",
+    "start-server-and-test": "1.11.3"
+  },
+  "npmpackagejsonlint": {
+    "rules": {
+      "prefer-absolute-version-dependencies": "error",
+      "prefer-absolute-version-devDependencies": "error",
+      "prefer-alphabetical-dependencies": "error",
+      "prefer-alphabetical-devDependencies": "error"
+    }
+  }
+}
