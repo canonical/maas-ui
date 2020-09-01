@@ -1,9 +1,8 @@
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
 import classNames from "classnames";
 import React from "react";
 
 import type { TSFixMe } from "app/base/types";
-import Tabs from "app/base/components/Tabs";
 
 type Props = {
   buttons?: JSX.Element[];
@@ -78,9 +77,9 @@ const SectionHeader = ({
           <Col size="12">
             <hr className="u-no-margin--bottom" />
             <Tabs
+              className="no-border"
               links={tabLinks}
               listClassName="u-no-margin--bottom"
-              noBorder
             />
           </Col>
         </Row>
