@@ -11,8 +11,8 @@
     "build-legacy": "cd legacy && yarn install && yarn build",
     "build-root": "cd root && yarn install && yarn build",
     "build-ui": "cd ui && yarn install && yarn build",
-    "cypress-open": "cd proxy && yarn cypress-open",
-    "cypress-run": "cd proxy && yarn cypress-run",
+    "cypress-open": "yarn --cwd integration cypress-open",
+    "cypress-run": "yarn --cwd integration cypress-run",
     "copy-build": "mkdir -p build && yarn copy-root && yarn copy-legacy-assets && yarn copy-ui-css",
     "copy-legacy-assets": "cp -R legacy/dist/assets build/",
     "copy-root": "cp -R root/dist/* build/",
@@ -36,7 +36,7 @@
     "lint-shared": "cd shared && yarn run lint",
     "lint-root": "cd root && yarn run lint",
     "lint": "yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root",
-    "test-cypress": "cd proxy && yarn run cypress-ci",
+    "test-cypress": "yarn --cwd integration run cypress-test",
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
     "test-shared": "cd shared && yarn run test",
@@ -45,6 +45,7 @@
   },
   "workspaces": {
     "packages": [
+      "integration",
       "legacy",
       "proxy",
       "shared",
@@ -60,7 +61,7 @@
     ]
   },
   "devDependencies": {
-    "cz-conventional-changelog": "3.2.0"
+    "cz-conventional-changelog": "3.3.0"
   },
   "config": {
     "commitizen": {
