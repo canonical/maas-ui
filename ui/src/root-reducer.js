@@ -7,7 +7,6 @@ import {
   controller,
   device,
   dhcpsnippet,
-  domain,
   fabric,
   general,
   licensekeys,
@@ -29,6 +28,7 @@ import {
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { initialState as userInitialState } from "./app/base/reducers/user/user";
+import domain from "app/store/domain";
 import pod from "app/store/pod";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 

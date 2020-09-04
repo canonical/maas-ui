@@ -9,7 +9,6 @@ import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
 import { actions as podActions } from "app/store/pod";
 import {
-  domain as domainActions,
   fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
@@ -19,6 +18,7 @@ import {
   vlan as vlanActions,
   zone as zoneActions,
 } from "app/base/actions";
+import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import fabricSelectors from "app/store/fabric/selectors";
 import generalSelectors from "app/store/general/selectors";

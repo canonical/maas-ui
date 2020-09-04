@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
-  domain as domainActions,
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
@@ -15,6 +14,7 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
+import { actions as domainActions } from "app/store/domain";
 import { formatPowerParameters } from "app/utils";
 import AddChassisFormFields from "../AddChassisFormFields";
 import domainSelectors from "app/store/domain/selectors";
