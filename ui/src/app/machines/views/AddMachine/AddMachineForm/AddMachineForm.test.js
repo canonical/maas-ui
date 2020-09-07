@@ -113,7 +113,7 @@ describe("AddMachine", () => {
       "FETCH_GENERAL_HWE_KERNELS",
       "FETCH_GENERAL_POWER_TYPES",
       "resourcepool/fetch",
-      "FETCH_ZONE",
+      "zone/fetch",
     ];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {

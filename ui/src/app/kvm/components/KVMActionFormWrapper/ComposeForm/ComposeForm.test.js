@@ -86,7 +86,7 @@ describe("ComposeForm", () => {
       "FETCH_SPACE",
       "FETCH_SUBNET",
       "FETCH_VLAN",
-      "FETCH_ZONE",
+      "zone/fetch",
       "GET_POD",
     ];
     const actions = store.getActions();

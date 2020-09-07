@@ -3,35 +3,39 @@ import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { actions as podActions } from "app/store/pod";
-import { actions as poolActions } from "app/store/resourcepool";
-import { getStatusText } from "app/utils";
+import CPUColumn from "./CPUColumn";
+import NameColumn from "./NameColumn";
+import OSColumn from "./OSColumn";
+import PoolColumn from "./PoolColumn";
+import PowerColumn from "./PowerColumn";
+import RAMColumn from "./RAMColumn";
+import StorageColumn from "./StorageColumn";
+import TypeColumn from "./TypeColumn";
+import VMsColumn from "./VMsColumn";
 import {
   controller as controllerActions,
   general as generalActions,
   machine as machineActions,
-  zone as zoneActions,
 } from "app/base/actions";
-import type { Controller } from "app/store/controller/types";
-import type { Machine } from "app/store/machine/types";
-import type { Pod } from "app/store/pod/types";
-import type { ResourcePool } from "app/store/resourcepool/types";
-import type { Sort, TSFixMe } from "app/base/types";
-import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
-import { useTableSort } from "app/base/hooks";
-import CPUColumn from "./CPUColumn";
-import generalSelectors from "app/store/general/selectors";
-import NameColumn from "./NameColumn";
-import OSColumn from "./OSColumn";
-import podSelectors from "app/store/pod/selectors";
-import PoolColumn from "./PoolColumn";
-import poolSelectors from "app/store/resourcepool/selectors";
-import PowerColumn from "./PowerColumn";
-import RAMColumn from "./RAMColumn";
-import StorageColumn from "./StorageColumn";
 import TableHeader from "app/base/components/TableHeader";
-import TypeColumn from "./TypeColumn";
-import VMsColumn from "./VMsColumn";
+import { useTableSort } from "app/base/hooks";
+import type { Sort, TSFixMe } from "app/base/types";
+import type { Controller } from "app/store/controller/types";
+import generalSelectors from "app/store/general/selectors";
+import type { Machine } from "app/store/machine/types";
+import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import { actions as podActions } from "app/store/pod";
+import { actions as poolActions } from "app/store/resourcepool";
+import poolSelectors from "app/store/resourcepool/selectors";
+import type { ResourcePool } from "app/store/resourcepool/types";
+import { actions as zoneActions } from "app/store/zone";
+import {
+  generateCheckboxHandlers,
+  getStatusText,
+  someInArray,
+  someNotAll,
+} from "app/utils";
 
 const getSortValue = (
   sortKey: Sort["key"],

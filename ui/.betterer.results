@@ -152,14 +152,11 @@ exports[`stricter compilation`] = {
       [185, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
       [196, 11, 12, "Argument of type \'VLANState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:4034110619": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:2179311570": [
       [136, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [136, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [136, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [136, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [172, 47, 9, "Expected 1 arguments, but got 0.", "2918969540"],
-      [175, 27, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [179, 33, 7, "Expected 1 arguments, but got 0.", "1651057816"],
       [202, 8, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
       [252, 34, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
       [261, 19, 5, "Variable \'error\' is used before being assigned.", "165548477"],
@@ -225,13 +222,7 @@ exports[`stricter compilation`] = {
       [119, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
       [172, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/DeleteForm/DeleteForm.tsx:2232846218": [
-      [23, 47, 9, "Expected 1 arguments, but got 0.", "2918969540"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/RefreshForm/RefreshForm.tsx:1242355216": [
-      [24, 47, 9, "Expected 1 arguments, but got 0.", "2918969540"]
-    ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:1839374375": [
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:691502615": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -241,11 +232,6 @@ exports[`stricter compilation`] = {
       [139, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
-    ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:73859939": [
-      [64, 47, 9, "Expected 1 arguments, but got 0.", "2918969540"],
-      [69, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [70, 33, 7, "Expected 1 arguments, but got 0.", "1651057816"]
     ],
     "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
       [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -264,25 +250,12 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMDetailsHeader/KVMDetailsHeader.tsx:2430806318": [
-      [27, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"]
-    ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMAggregateResources/KVMAggregateResources.tsx:1264552498": [
-      [34, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"]
-    ],
     "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:4202796969": [
       [70, 6, 68, "Object is possibly \'undefined\'.", "2449301754"]
     ],
     "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:2072800584": [
       [46, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
       [74, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
-    ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.tsx:3086760186": [
-      [97, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:1682583226": [
-      [63, 47, 9, "Expected 1 arguments, but got 0.", "2918969540"],
-      [68, 33, 7, "Expected 1 arguments, but got 0.", "1651057816"]
     ],
     "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:475451368": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -303,7 +276,6 @@ exports[`stricter compilation`] = {
       [108, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:3822975195": [
-      [33, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"],
       [45, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [64, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | undefined\'.\\n  Type \'null\' is not assignable to type \'Element | undefined\'.", "3453098368"]
     ],
@@ -312,7 +284,7 @@ exports[`stricter compilation`] = {
       [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:3856529477": [
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:3198528693": [
       [27, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [61, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [85, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -328,10 +300,8 @@ exports[`stricter compilation`] = {
       [359, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [384, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:1231075979": [
-      [65, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"],
-      [118, 24, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [119, 25, 7, "Expected 1 arguments, but got 0.", "1651057816"]
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:123307725": [
+      [69, 13, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'Pod\'.\\n  No index signature with a parameter of type \'string\' was found on type \'Pod\'.", "2363910037"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/NameColumn/NameColumn.test.tsx:2529226174": [
       [11, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -458,7 +428,6 @@ exports[`stricter compilation`] = {
       [87, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4020685210"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:3604363126": [
-      [70, 33, 7, "Expected 1 arguments, but got 0.", "1651057816"],
       [75, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
       [119, 6, 7, "Type \'Element[] | null\' is not assignable to type \'Element[] | undefined\'.\\n  Type \'null\' is not assignable to type \'Element[] | undefined\'.", "2807267104"],
       [129, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
@@ -467,57 +436,29 @@ exports[`stricter compilation`] = {
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
     ],
-    "src/app/store/domain/actions.test.ts:59833380": [
-      [4, 19, 7, "Expected 1 arguments, but got 0.", "1651057816"]
-    ],
-    "src/app/store/domain/reducer.test.ts:2483916499": [
-      [19, 39, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [30, 39, 12, "Expected 1 arguments, but got 0.", "632006456"],
-      [74, 41, 13, "Expected 1 arguments, but got 0.", "964375008"]
-    ],
     "src/app/store/notification/selectors.ts:3467721382": [
       [25, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
     ],
-    "src/app/store/pod/actions.test.ts:1026580347": [
-      [4, 19, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [113, 19, 9, "Expected 1 arguments, but got 0.", "2918969540"]
-    ],
     "src/app/store/pod/reducers.test.ts:2501434279": [
-      [23, 39, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [36, 39, 12, "Expected 1 arguments, but got 0.", "632006456"],
-      [86, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"],
-      [121, 38, 13, "Expected 1 arguments, but got 0.", "964375008"]
+      [86, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"]
     ],
     "src/app/store/pod/slice.ts:2649223777": [
       [53, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'{ errors: any; items: ({ id: number; architectures: string[]; available: { cores: number; local_storage: number; local_storage_gb: string; memory: number; memory_gb: string; }; capabilities: string[]; ... 23 more ...; zone: number; } | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is missing the following properties from type \'{ selected: number[]; statuses: { [x: number]: { composing: boolean; deleting: boolean; refreshing: boolean; }; }; errors: any; items: ({ id: number; architectures: string[]; available: { cores: number; local_storage: number; local_storage_gb: string; memory: number; memory_gb: string; }; ... 24 more ...; zone: numb...\': selected, statuses", "1022550047"],
       [54, 16, 53, "Conversion of type \'{ selected: never[]; statuses: {}; }\' to type \'PodState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Pod, any>\': errors, items, loaded, loading, and 2 more.", "3866517660"]
     ],
     "src/app/store/resourcepool/actions.test.ts:9201512": [
-      [4, 19, 7, "Expected 1 arguments, but got 0.", "1651057816"],
-      [64, 19, 9, "Expected 1 arguments, but got 0.", "2918969540"],
       [71, 52, 24, "Expected 1 arguments, but got 2.", "3295119724"]
     ],
-    "src/app/store/resourcepool/reducers.test.ts:4270088267": [
-      [21, 41, 12, "Expected 1 arguments, but got 0.", "632006456"],
-      [70, 49, 13, "Expected 1 arguments, but got 0.", "964375008"],
-      [121, 49, 13, "Expected 1 arguments, but got 0.", "685105461"],
-      [136, 49, 15, "Expected 1 arguments, but got 0.", "1109659350"],
-      [287, 18, 9, "Expected 1 arguments, but got 0.", "2918969540"]
-    ],
     "src/app/store/utils/slice.test.ts:902888491": [
-      [40, 52, 12, "Expected 1 arguments, but got 0.", "632006456"],
-      [87, 53, 13, "Expected 1 arguments, but got 0.", "964375008"],
-      [135, 53, 13, "Expected 1 arguments, but got 0.", "685105461"],
       [260, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Machine | User | Notification | Controller | Device | Subnet | DHCPSnippet | Domain | ... 12 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Machine | User | Notification | Controller | Device | Subnet | DHCPSnippet | Domain | Fabric | ... 11 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'{ errors: unknown; items: ({ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; } | ... 19 more ... | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'({ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; } | { id: number; ... 26 more ...; zone: number; } | ... 18 more ... | { ...; })[]\' is not assignable to type \'Token[]\'.\\n            Type \'{ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; } | { id: number; ... 26 more ...; zone: number; } | ... 18 more ... | { ...; }\' is not assignable to type \'Token\'.\\n              Type \'{ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; }\' is not assignable to type \'Token\'.\\n                Type \'{ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; }\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
       [266, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
       [280, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Machine | User | Notification | Controller | Device | Subnet | DHCPSnippet | Domain | ... 12 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Machine | User | Notification | Controller | Device | Subnet | DHCPSnippet | Domain | Fabric | ... 11 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'{ errors: unknown; items: ({ id: number; created: string; description: string; is_default: boolean; machine_ready_count: number; machine_total_count: number; name: string; permissions: string[]; updated: string; } | ... 19 more ... | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'TokenState\'.", "3510326721"],
-      [309, 27, 7, "Expected 1 arguments, but got 0.", "1651057816"],
       [404, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
       [405, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "662888088"],
       [406, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "368191931"],
       [407, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "678288096"]
     ],
-    "src/app/store/utils/slice.ts:933072387": [
+    "src/app/store/utils/slice.ts:3806736547": [
       [150, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
       [190, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
       [228, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
@@ -676,7 +617,7 @@ exports[`no TSFixMe types`] = {
       [14, 9, 8, "RegExp match", "1152173309"],
       [24, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/utils/slice.ts:933072387": [
+    "src/app/store/utils/slice.ts:3806736547": [
       [12, 13, 8, "RegExp match", "1152173309"],
       [128, 23, 8, "RegExp match", "1152173309"],
       [168, 23, 8, "RegExp match", "1152173309"]
@@ -693,5 +634,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `551`
+  value: `548`
 };
