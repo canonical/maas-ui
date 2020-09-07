@@ -11,12 +11,10 @@ import { Link } from "react-router-dom";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import {
-  machine as machineActions,
-  resourcepool as resourcePoolActions,
-} from "app/base/actions";
+import { machine as machineActions } from "app/base/actions";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { filtersToQueryString } from "app/machines/search";
 import { formatErrors } from "app/utils";
 

@@ -156,7 +156,7 @@ describe("Pools", () => {
     wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
 
     expect(store.getActions()[2]).toEqual({
-      type: "DELETE_RESOURCEPOOL",
+      type: "resourcepool/delete",
       payload: {
         params: {
           id: 2,

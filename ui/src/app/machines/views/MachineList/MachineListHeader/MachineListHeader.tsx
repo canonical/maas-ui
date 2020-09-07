@@ -10,12 +10,10 @@ import {
   getCurrentFilters,
   toggleFilter,
 } from "app/machines/search";
-import {
-  machine as machineActions,
-  resourcepool as resourcePoolActions,
-} from "app/base/actions";
+import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import ActionFormWrapper from "./ActionFormWrapper";

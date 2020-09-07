@@ -56,7 +56,7 @@ describe("AddRSDForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const expectedActions = ["FETCH_RESOURCEPOOL", "FETCH_ZONE"];
+    const expectedActions = ["resourcepool/fetch", "FETCH_ZONE"];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(actions.some((action) => action.type === expectedAction));

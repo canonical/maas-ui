@@ -82,7 +82,7 @@ describe("ComposeForm", () => {
       "FETCH_DOMAIN",
       "FETCH_FABRIC",
       "FETCH_GENERAL_POWER_TYPES",
-      "FETCH_RESOURCEPOOL",
+      "resourcepool/fetch",
       "FETCH_SPACE",
       "FETCH_SUBNET",
       "FETCH_VLAN",

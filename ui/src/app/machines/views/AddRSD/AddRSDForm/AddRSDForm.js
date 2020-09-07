@@ -5,10 +5,8 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { actions as podActions } from "app/store/pod";
-import {
-  resourcepool as resourcePoolActions,
-  zone as zoneActions,
-} from "app/base/actions";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { zone as zoneActions } from "app/base/actions";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import podSelectors from "app/store/pod/selectors";
 import zoneSelectors from "app/store/zone/selectors";

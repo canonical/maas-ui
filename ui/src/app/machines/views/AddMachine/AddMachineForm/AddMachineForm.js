@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import {
   general as generalActions,
   machine as machineActions,
-  resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
 import { actions as domainActions } from "app/store/domain";

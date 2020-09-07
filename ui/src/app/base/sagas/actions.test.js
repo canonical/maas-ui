@@ -1,6 +1,7 @@
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import {
   createPoolWithMachines,
   generateMachinePoolActionCreators,
@@ -22,16 +23,7 @@ describe("websocket sagas", () => {
       .call(
         sendMessage,
         socketClient,
-        {
-          type: "CREATE_RESOURCEPOOL",
-          payload: {
-            params: pool,
-          },
-          meta: {
-            model: "resourcepool",
-            method: "create",
-          },
-        },
+        resourcePoolActions.create(pool),
         actionCreators
       )
       .run();

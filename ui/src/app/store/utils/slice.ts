@@ -50,6 +50,7 @@ type GenericReducers<I, E> = SliceCaseReducers<GenericState<I, E>> & {
   fetchStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
   createStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
   updateStart: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
+  updateSuccess: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
   cleanup: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
   fetch: CaseReducer<GenericState<I, E>, PayloadAction<null>>;
 };
