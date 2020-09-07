@@ -19,7 +19,7 @@ Object {
     "saving": false,
   },
   "device": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

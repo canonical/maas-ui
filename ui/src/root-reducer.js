@@ -5,7 +5,6 @@ import { connectRouter } from "connected-react-router";
 import {
   auth,
   controller,
-  device,
   dhcpsnippet,
   fabric,
   general,
@@ -26,6 +25,7 @@ import {
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { initialState as userInitialState } from "./app/base/reducers/user/user";
+import device from "app/store/device";
 import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";

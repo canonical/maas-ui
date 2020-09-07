@@ -1,9 +1,10 @@
-import device from "./device";
+import { device as deviceFactory } from "testing/factories";
+import reducers, { actions } from "./";
 
 describe("device reducer", () => {
   it("should return the initial state", () => {
-    expect(device(undefined, {})).toEqual({
-      errors: {},
+    expect(reducers(undefined, { type: "" })).toEqual({
+      errors: null,
       items: [],
       loaded: false,
       loading: false,
@@ -12,13 +13,9 @@ describe("device reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_DEVICE_START", () => {
-    expect(
-      device(undefined, {
-        type: "FETCH_DEVICE_START",
-      })
-    ).toEqual({
-      errors: {},
+  it("reduces fetchStart", () => {
+    expect(reducers(undefined, actions.fetchStart())).toEqual({
+      errors: null,
       items: [],
       loaded: false,
       loading: true,
@@ -27,9 +24,10 @@ describe("device reducer", () => {
     });
   });
 
-  it("should correctly reduce FETCH_DEVICE_SUCCESS", () => {
+  it("reduces fetchSuccess", () => {
+    const devices = [deviceFactory(), deviceFactory()];
     expect(
-      device(
+      reducers(
         {
           errors: {},
           items: [],
@@ -38,22 +36,13 @@ describe("device reducer", () => {
           saved: false,
           saving: false,
         },
-        {
-          type: "FETCH_DEVICE_SUCCESS",
-          payload: [
-            { id: 1, hostname: "test1" },
-            { id: 2, hostname: "test2" },
-          ],
-        }
+        actions.fetchSuccess(devices)
       )
     ).toEqual({
       errors: {},
       loading: false,
       loaded: true,
-      items: [
-        { id: 1, hostname: "test1" },
-        { id: 2, hostname: "test2" },
-      ],
+      items: devices,
       saved: false,
       saving: false,
     });

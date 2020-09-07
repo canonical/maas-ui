@@ -6,7 +6,6 @@ import * as Yup from "yup";
 
 import {
   controller as controllerActions,
-  device as deviceActions,
   dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
   subnet as subnetActions,
@@ -20,6 +19,7 @@ import DhcpFormFields from "../DhcpFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import { actions as deviceActions } from "app/store/device";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),

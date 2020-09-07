@@ -6,12 +6,12 @@ import React, { useEffect, useState } from "react";
 
 import {
   controller as controllerActions,
-  device as deviceActions,
   dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";
 import controllerSelectors from "app/store/controller/selectors";
+import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import subnetSelectors from "app/store/subnet/selectors";

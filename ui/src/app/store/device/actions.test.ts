@@ -1,13 +1,14 @@
-import device from "./device";
+import { actions } from "./";
 
 describe("device actions", () => {
   it("should handle fetching devices", () => {
-    expect(device.fetch()).toEqual({
-      type: "FETCH_DEVICE",
+    expect(actions.fetch()).toEqual({
+      type: "device/fetch",
       meta: {
         model: "device",
         method: "list",
       },
+      payload: null,
     });
   });
 });
