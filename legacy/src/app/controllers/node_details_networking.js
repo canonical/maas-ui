@@ -799,7 +799,7 @@ export function NodeNetworkingController(
     let text;
     let type = nic.type;
 
-    if (nic.params && nic.params.bridge_type === "ovs") {
+    if (nic?.params?.bridge_type === "ovs") {
       type = nic.params.bridge_type;
     }
 
