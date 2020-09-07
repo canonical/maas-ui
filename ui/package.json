@@ -17,8 +17,8 @@
     "@sentry/browser": "5.22.3",
     "@types/classnames": "2.2.10",
     "@types/enzyme": "3.10.5",
-    "@types/jest": "26.0.12",
-    "@types/node": "14.6.2",
+    "@types/jest": "26.0.13",
+    "@types/node": "14.6.4",
     "@types/pluralize": "0.0.29",
     "@types/react": "16.9.49",
     "@types/react-dom": "16.9.8",
@@ -42,7 +42,7 @@
     "react-dropzone": "11.0.3",
     "react-redux": "7.2.1",
     "react-router-dom": "5.2.0",
-    "react-router-prop-types": "1.0.4",
+    "react-router-prop-types": "1.0.5",
     "react-scripts": "3.4.3",
     "react-storage-hooks": "4.0.1",
     "react-useportal": "1.0.13",
@@ -113,7 +113,7 @@
     "react-app-rewired": "2.1.6",
     "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.0-rc.3",
-    "sass-loader": "10.0.1",
+    "sass-loader": "10.0.2",
     "style-loader": "1.2.1"
   },
   "jest": {
