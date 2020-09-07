@@ -5,12 +5,12 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
-  domain as domainActions,
   general as generalActions,
   machine as machineActions,
   resourcepool as resourcePoolActions,
   zone as zoneActions,
 } from "app/base/actions";
+import { actions as domainActions } from "app/store/domain";
 import { formatPowerParameters } from "app/utils";
 import {
   useAddMessage,
