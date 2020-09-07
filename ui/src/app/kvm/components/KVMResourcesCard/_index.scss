@@ -5,10 +5,35 @@
   .kvm-machine-list-modal {
     max-width: none;
     min-width: 0;
-    width: 35rem;
+    // Subtract small screen gutter width and card inner padding to center dropdown.
+    width: calc(100vw - #{(map-get($grid-gutter-widths, small) + $sph-inner) * 2});
 
-    @media only screen and (max-width: $breakpoint-small) {
-      width: auto;
+    .fqdn-col,
+    .status-col {
+      width: 50%;
+    }
+
+    .power-col {
+      width: 0;
+    }
+
+    .cores-col,
+    .ram-col {
+      width: 5rem;
+    }
+
+    @media only screen and (min-width: $breakpoint-x-small) {
+      .power-col {
+        width: 7rem;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-small) {
+      width: 35rem;
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      width: 40rem;
     }
   }
 

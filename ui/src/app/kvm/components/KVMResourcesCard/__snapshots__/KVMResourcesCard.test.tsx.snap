@@ -18,7 +18,6 @@ exports[`KVMResourcesCard renders 1`] = `
         <MachineListTable
           hiddenColumns={
             Array [
-              "power",
               "owner",
               "pool",
               "zone",
@@ -32,7 +31,7 @@ exports[`KVMResourcesCard renders 1`] = `
         />
       }
       hasToggleIcon={true}
-      position="left"
+      position="auto"
       toggleAppearance="base"
       toggleClassName="kvm-resources-card__vms-button is-dense"
       toggleDisabled={false}

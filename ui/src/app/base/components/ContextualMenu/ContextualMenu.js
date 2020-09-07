@@ -8,6 +8,18 @@ import usePortal from "react-useportal";
 import ContextualMenuDropdown from "./ContextualMenuDropdown";
 import { usePrevious } from "app/base/hooks";
 
+export const getDropdownPosition = (wrapper) => {
+  if (!wrapper?.current?.getBoundingClientRect) {
+    return "right";
+  }
+  const { left, width } = wrapper.current.getBoundingClientRect();
+
+  if (left + width / 2 < window.innerWidth / 2) {
+    return "left";
+  }
+  return "right";
+};
+
 const ContextualMenu = ({
   className,
   constrainPanelWidth,
@@ -32,9 +44,14 @@ const ContextualMenu = ({
   });
   const previousIsOpen = usePrevious(isOpen);
   const labelNode = toggleLabel ? <span>{toggleLabel}</span> : null;
+  const dropdownPosition =
+    position === "auto" ? getDropdownPosition(wrapper) : position;
   const wrapperClass = classNames(
     className,
-    ["p-contextual-menu", position === "right" ? null : position]
+    [
+      "p-contextual-menu",
+      dropdownPosition === "right" ? null : dropdownPosition,
+    ]
       .filter(Boolean)
       .join("--")
   );
@@ -96,7 +113,7 @@ const ContextualMenu = ({
             id={id.current}
             isOpen={isOpen}
             links={links}
-            position={position}
+            position={dropdownPosition}
             positionNode={positionNode ? positionNode.current : null}
             wrapper={wrapper.current}
             wrapperClass={wrapperClass}
@@ -122,7 +139,7 @@ ContextualMenu.propTypes = {
   ),
   onToggleMenu: PropTypes.func,
   positionNode: PropTypes.object,
-  position: PropTypes.oneOf(["left", "center", "right"]),
+  position: PropTypes.oneOf(["auto", "left", "center", "right"]),
   toggleAppearance: PropTypes.string,
   toggleClassName: PropTypes.string,
   toggleDisabled: PropTypes.bool,

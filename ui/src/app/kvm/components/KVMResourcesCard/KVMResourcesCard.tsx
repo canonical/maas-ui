@@ -49,7 +49,6 @@ const KVMResourcesCard = ({
               dropdownContent={
                 <MachineListTable
                   hiddenColumns={[
-                    "power",
                     "owner",
                     "pool",
                     "zone",
@@ -66,7 +65,7 @@ const KVMResourcesCard = ({
               toggleClassName="kvm-resources-card__vms-button is-dense"
               toggleDisabled={vms.length === 0}
               toggleLabel={pluralize("machine", vms.length, true)}
-              position="left"
+              position="auto"
             />
           </h5>
           <hr />
@@ -219,7 +218,6 @@ const KVMResourcesCard = ({
             dropdownContent={
               <MachineListTable
                 hiddenColumns={[
-                  "power",
                   "owner",
                   "pool",
                   "zone",
@@ -235,7 +233,7 @@ const KVMResourcesCard = ({
             toggleAppearance="base"
             toggleClassName="kvm-resources-card__vms-button is-dense"
             toggleLabel={`${vms.length}`}
-            position="right"
+            position="auto"
           />
         </div>
       )}

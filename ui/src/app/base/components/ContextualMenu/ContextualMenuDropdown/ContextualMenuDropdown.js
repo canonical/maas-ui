@@ -152,7 +152,7 @@ ContextualMenuDropdown.propTypes = {
       PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
     ])
   ),
-  position: PropTypes.oneOf(["left", "center", "right"]),
+  position: PropTypes.oneOf(["auto", "left", "center", "right"]),
   positionNode: PropTypes.object,
   wrapper: PropTypes.object,
   wrapperClass: PropTypes.string,
