@@ -4,29 +4,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as resourcePoolActions } from "app/store/resourcepool";
+import AddMachineFormFields from "../AddMachineFormFields";
 import {
   general as generalActions,
   machine as machineActions,
-  zone as zoneActions,
 } from "app/base/actions";
-import { actions as domainActions } from "app/store/domain";
-import { formatPowerParameters } from "app/utils";
+import FormCard from "app/base/components/FormCard";
+import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
 import {
   useAddMessage,
   useAllPowerParameters,
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
-import AddMachineFormFields from "../AddMachineFormFields";
+import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
-import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
-import FormikForm from "app/base/components/FormikForm";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
+import { formatPowerParameters } from "app/utils";
 
 const generateMachineSchema = (parametersSchema) =>
   Yup.object().shape({

@@ -74,7 +74,7 @@ describe("KVMListTable", () => {
       "FETCH_MACHINE",
       "pod/fetch",
       "resourcepool/fetch",
-      "FETCH_ZONE",
+      "zone/fetch",
     ];
     const actualActions = store.getActions();
     expect(

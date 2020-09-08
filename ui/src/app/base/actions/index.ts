@@ -18,4 +18,3 @@ export { default as tag } from "./tag";
 export { default as user } from "./user";
 export { default as vlan } from "./vlan";
 export { default as websocket } from "./websocket";
-export { default as zone } from "./zone";

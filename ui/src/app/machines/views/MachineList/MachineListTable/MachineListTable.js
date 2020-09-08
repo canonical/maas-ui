@@ -12,34 +12,8 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
-import {
-  filtersToString,
-  getCurrentFilters,
-  toggleFilter,
-} from "app/machines/search";
-import {
-  general as generalActions,
-  machine as machineActions,
-  scripts as scriptActions,
-  service as serviceActions,
-  tag as tagActions,
-  user as userActions,
-  zone as zoneActions,
-} from "app/base/actions";
-import {
-  generateCheckboxHandlers,
-  groupAsMap,
-  simpleSortByKey,
-  someInArray,
-  someNotAll,
-} from "app/utils";
-import machineSelectors from "app/store/machine/selectors";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import { nodeStatus } from "app/base/enum";
-import { useTableSort } from "app/base/hooks";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
-import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -48,8 +22,34 @@ import PowerColumn from "./PowerColumn";
 import RamColumn from "./RamColumn";
 import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
-import TableHeader from "app/base/components/TableHeader";
 import ZoneColumn from "./ZoneColumn";
+import {
+  general as generalActions,
+  machine as machineActions,
+  scripts as scriptActions,
+  service as serviceActions,
+  tag as tagActions,
+  user as userActions,
+} from "app/base/actions";
+import {
+  generateCheckboxHandlers,
+  groupAsMap,
+  simpleSortByKey,
+  someInArray,
+  someNotAll,
+} from "app/utils";
+import DoubleRow from "app/base/components/DoubleRow";
+import TableHeader from "app/base/components/TableHeader";
+import { nodeStatus } from "app/base/enum";
+import { useTableSort } from "app/base/hooks";
+import {
+  filtersToString,
+  getCurrentFilters,
+  toggleFilter,
+} from "app/machines/search";
+import machineSelectors from "app/store/machine/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { actions as zoneActions } from "app/store/zone";
 
 const getSortValue = (sortKey, machine) => {
   switch (sortKey) {
