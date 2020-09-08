@@ -59,52 +59,48 @@
     justify-content: flex-end;
   }
 
-  .machine-list td,
-  .machine-list th {
-    // FQDN/MAC
-    &:nth-child(1) {
-      @include breakpoint-widths(45%, 35%, 26%, 24%, 20%);
-    }
-    // Power
-    &:nth-child(2) {
-      @include breakpoint-widths(25%, 17%, 14%, 12%, 10%);
-    }
-    // Status
-    &:nth-child(3) {
-      @include breakpoint-widths(30%, 28%, 18%, 18%, 15%);
-    }
-    // Owner
-    &:nth-child(4) {
-      @include breakpoint-widths(0, 20%, 8%, 9%, 9%);
-    }
-    // Pool
-    &:nth-child(5) {
-      @include breakpoint-widths(0, 0, 0, 0, 7%);
-    }
-    // Zone
-    &:nth-child(6) {
-      @include breakpoint-widths(0, 0, 0, 9%, 7%);
-    }
-    // Fabric
-    &:nth-child(7) {
-      @include breakpoint-widths(0, 0, 0, 0, 7%);
-    }
-    // Cores
-    &:nth-child(8) {
-      @include breakpoint-widths(0, 0, 8%, 6%, 6%);
-    }
-    // RAM
-    &:nth-child(9) {
-      @include breakpoint-widths(0, 0, 9%, 8%, 7%);
-    }
-    // Disks
-    &:nth-child(10) {
-      @include breakpoint-widths(0, 0, 8%, 6%, 6%);
-    }
-    // Storage
-    &:nth-child(11) {
-      @include breakpoint-widths(0, 0, 9%, 8%, 6%);
-    }
+  .fqdn-col {
+    @include breakpoint-widths(45%, 35%, 26%, 24%, 20%);
+  }
+
+  .power-col {
+    @include breakpoint-widths(25%, 17%, 14%, 12%, 10%);
+  }
+
+  .status-col {
+    @include breakpoint-widths(30%, 28%, 18%, 18%, 15%);
+  }
+
+  .owner-col {
+    @include breakpoint-widths(0, 20%, 8%, 9%, 9%);
+  }
+
+  .pool-col {
+    @include breakpoint-widths(0, 0, 0, 0, 7%);
+  }
+
+  .zone-col {
+    @include breakpoint-widths(0, 0, 0, 9%, 7%);
+  }
+
+  .fabric-col {
+    @include breakpoint-widths(0, 0, 0, 0, 7%);
+  }
+
+  .cores-col {
+    @include breakpoint-widths(0, 0, 8%, 6%, 6%);
+  }
+
+  .ram-col {
+    @include breakpoint-widths(0, 0, 9%, 8%, 7%);
+  }
+
+  .disks-col {
+    @include breakpoint-widths(0, 0, 8%, 6%, 6%);
+  }
+
+  .storage-col {
+    @include breakpoint-widths(0, 0, 9%, 8%, 6%);
   }
 
   .u-nudge--checkbox {

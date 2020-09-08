@@ -1,9 +1,13 @@
 import { mount } from "enzyme";
 import React from "react";
 
-import ContextualMenu from "./ContextualMenu";
+import ContextualMenu, { getDropdownPosition } from "./ContextualMenu";
 
 describe("ContextualMenu ", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("renders", () => {
     const wrapper = mount(<ContextualMenu links={[]} />);
     expect(wrapper.find("ContextualMenu")).toMatchSnapshot();
@@ -186,5 +190,28 @@ describe("ContextualMenu ", () => {
     expect(
       wrapper.find("button.p-contextual-menu__toggle").prop("aria-expanded")
     ).toBe("false");
+  });
+
+  it("can dynamically calculate position, defaulting to right", () => {
+    expect(getDropdownPosition()).toBe("right");
+
+    global.innerWidth = 1000;
+    const leftWrapper = {
+      current: {
+        // Middle of toggle is to the left of the viewport center
+        // 300 + 200 / 2 = 400, less than 500
+        getBoundingClientRect: () => ({ left: 300, width: 200 }),
+      },
+    };
+    expect(getDropdownPosition(leftWrapper)).toBe("left");
+
+    const rightWrapper = {
+      current: {
+        // Middle of toggle is to the right of the viewport center
+        // 200 + 800 / 2 = 600, more than 500
+        getBoundingClientRect: () => ({ left: 200, width: 800 }),
+      },
+    };
+    expect(getDropdownPosition(rightWrapper)).toBe("right");
   });
 });

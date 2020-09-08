@@ -122,6 +122,7 @@ const generateRows = ({
     const columns = [
       {
         key: "fqdn",
+        className: "fqdn-col",
         content: (
           <NameColumn
             data-test="fqdn-column"
@@ -138,6 +139,7 @@ const generateRows = ({
       },
       {
         key: "power",
+        className: "power-col",
         content: (
           <PowerColumn
             data-test="power-column"
@@ -148,6 +150,7 @@ const generateRows = ({
       },
       {
         key: "status",
+        className: "status-col",
         content: (
           <StatusColumn
             data-test="status-column"
@@ -158,6 +161,7 @@ const generateRows = ({
       },
       {
         key: "owner",
+        className: "owner-col",
         content: (
           <OwnerColumn
             data-test="owner-column"
@@ -168,6 +172,7 @@ const generateRows = ({
       },
       {
         key: "pool",
+        className: "pool-col",
         content: (
           <PoolColumn
             data-test="pool-column"
@@ -178,6 +183,7 @@ const generateRows = ({
       },
       {
         key: "zone",
+        className: "zone-col",
         content: (
           <ZoneColumn
             data-test="zone-column"
@@ -188,30 +194,35 @@ const generateRows = ({
       },
       {
         key: "fabric",
+        className: "fabric-col",
         content: (
           <FabricColumn data-test="fabric-column" systemId={row.system_id} />
         ),
       },
       {
         key: "cpu",
+        className: "cores-col",
         content: (
           <CoresColumn data-test="cpu-column" systemId={row.system_id} />
         ),
       },
       {
         key: "memory",
+        className: "ram-col",
         content: (
           <RamColumn data-test="memory-column" systemId={row.system_id} />
         ),
       },
       {
         key: "disks",
+        className: "disks-col",
         content: (
           <DisksColumn data-test="disks-column" systemId={row.system_id} />
         ),
       },
       {
         key: "storage",
+        className: "storage-col",
         content: (
           <StorageColumn data-test="storage-column" systemId={row.system_id} />
         ),
@@ -537,6 +548,7 @@ export const MachineListTable = ({
   const headers = [
     {
       key: "fqdn",
+      className: "fqdn-col",
       content: (
         <div
           className={classNames("u-flex", {
@@ -589,6 +601,7 @@ export const MachineListTable = ({
     },
     {
       key: "power",
+      className: "power-col",
       content: (
         <TableHeader
           className="p-double-row__header-spacer"
@@ -603,6 +616,7 @@ export const MachineListTable = ({
     },
     {
       key: "status",
+      className: "status-col",
       content: (
         <TableHeader
           className="p-double-row__header-spacer"
@@ -617,6 +631,7 @@ export const MachineListTable = ({
     },
     {
       key: "owner",
+      className: "owner-col",
       content: (
         <>
           <TableHeader
@@ -633,6 +648,7 @@ export const MachineListTable = ({
     },
     {
       key: "pool",
+      className: "pool-col",
       content: (
         <>
           <TableHeader
@@ -649,6 +665,7 @@ export const MachineListTable = ({
     },
     {
       key: "zone",
+      className: "zone-col",
       content: (
         <>
           <TableHeader
@@ -665,6 +682,7 @@ export const MachineListTable = ({
     },
     {
       key: "fabric",
+      className: "fabric-col",
       content: (
         <>
           <TableHeader
@@ -681,6 +699,7 @@ export const MachineListTable = ({
     },
     {
       key: "cpu",
+      className: "cores-col u-align--right",
       content: (
         <>
           <TableHeader
@@ -694,10 +713,10 @@ export const MachineListTable = ({
           <TableHeader>Arch</TableHeader>
         </>
       ),
-      className: "u-align--right",
     },
     {
       key: "memory",
+      className: "ram-col u-align--right",
       content: (
         <TableHeader
           currentSort={currentSort}
@@ -708,10 +727,10 @@ export const MachineListTable = ({
           RAM
         </TableHeader>
       ),
-      className: "u-align--right",
     },
     {
       key: "disks",
+      className: "disks-col u-align--right",
       content: (
         <TableHeader
           currentSort={currentSort}
@@ -722,10 +741,10 @@ export const MachineListTable = ({
           Disks
         </TableHeader>
       ),
-      className: "u-align--right",
     },
     {
       key: "storage",
+      className: "storage-col u-align--right",
       content: (
         <TableHeader
           currentSort={currentSort}
@@ -736,7 +755,6 @@ export const MachineListTable = ({
           Storage
         </TableHeader>
       ),
-      className: "u-align--right",
     },
   ];
 
