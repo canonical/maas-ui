@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { tag as tagActions } from "app/base/actions";
+import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";

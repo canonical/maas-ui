@@ -14,6 +14,7 @@ import pluralize from "pluralize";
 
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
+import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -28,17 +29,8 @@ import {
   machine as machineActions,
   scripts as scriptActions,
   service as serviceActions,
-  tag as tagActions,
   user as userActions,
 } from "app/base/actions";
-import {
-  generateCheckboxHandlers,
-  groupAsMap,
-  simpleSortByKey,
-  someInArray,
-  someNotAll,
-} from "app/utils";
-import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
 import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
@@ -49,7 +41,15 @@ import {
 } from "app/machines/search";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { actions as tagActions } from "app/store/tag";
 import { actions as zoneActions } from "app/store/zone";
+import {
+  generateCheckboxHandlers,
+  groupAsMap,
+  simpleSortByKey,
+  someInArray,
+  someNotAll,
+} from "app/utils";
 
 const getSortValue = (sortKey, machine) => {
   switch (sortKey) {

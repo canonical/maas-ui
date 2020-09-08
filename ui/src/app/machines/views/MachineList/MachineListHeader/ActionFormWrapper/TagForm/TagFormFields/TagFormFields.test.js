@@ -45,7 +45,7 @@ describe("TagFormFields", () => {
       </Provider>
     );
     expect(
-      store.getActions().some((action) => action.type === "FETCH_TAG")
+      store.getActions().some((action) => action.type === "tag/fetch")
     ).toEqual(true);
   });
 });
