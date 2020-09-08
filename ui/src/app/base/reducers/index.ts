@@ -1,6 +1,5 @@
 export { default as auth } from "./auth";
 export { default as controller } from "./controller";
-export { default as device } from "./device";
 export { default as dhcpsnippet } from "./dhcpsnippet";
 export { default as fabric } from "./fabric";
 export { default as general } from "./general";

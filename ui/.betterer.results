@@ -634,5 +634,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `548`
+  value: `542`
 };

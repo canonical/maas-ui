@@ -184,7 +184,7 @@ describe("DhcpForm", () => {
     expect(actions.some((action) => action.type === "FETCH_MACHINE")).toBe(
       true
     );
-    expect(actions.some((action) => action.type === "FETCH_DEVICE")).toBe(true);
+    expect(actions.some((action) => action.type === "device/fetch")).toBe(true);
     expect(actions.some((action) => action.type === "FETCH_SUBNET")).toBe(true);
     expect(actions.some((action) => action.type === "FETCH_CONTROLLER")).toBe(
       true
