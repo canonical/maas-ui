@@ -141,7 +141,7 @@ describe("AddKVMForm", () => {
     );
     const expectedActions = [
       "FETCH_GENERAL_POWER_TYPES",
-      "FETCH_RESOURCEPOOL",
+      "resourcepool/fetch",
       "FETCH_ZONE",
     ];
     const actions = store.getActions();

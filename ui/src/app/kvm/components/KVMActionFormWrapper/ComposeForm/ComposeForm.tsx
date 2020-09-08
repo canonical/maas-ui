@@ -8,11 +8,11 @@ import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
 import { actions as podActions } from "app/store/pod";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import {
   fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
-  resourcepool as resourcePoolActions,
   space as spaceActions,
   subnet as subnetActions,
   vlan as vlanActions,

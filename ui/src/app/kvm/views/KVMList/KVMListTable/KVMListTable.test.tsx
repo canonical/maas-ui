@@ -73,7 +73,7 @@ describe("KVMListTable", () => {
       "FETCH_GENERAL_OSINFO",
       "FETCH_MACHINE",
       "pod/fetch",
-      "FETCH_RESOURCEPOOL",
+      "resourcepool/fetch",
       "FETCH_ZONE",
     ];
     const actualActions = store.getActions();

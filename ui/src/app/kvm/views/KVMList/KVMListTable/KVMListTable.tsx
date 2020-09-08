@@ -4,12 +4,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { actions as podActions } from "app/store/pod";
+import { actions as poolActions } from "app/store/resourcepool";
 import { getStatusText } from "app/utils";
 import {
   controller as controllerActions,
   general as generalActions,
   machine as machineActions,
-  resourcepool as poolActions,
   zone as zoneActions,
 } from "app/base/actions";
 import type { Controller } from "app/store/controller/types";

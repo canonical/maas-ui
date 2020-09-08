@@ -20,7 +20,6 @@ import {
 import {
   general as generalActions,
   machine as machineActions,
-  resourcepool as resourcePoolActions,
   scripts as scriptActions,
   service as serviceActions,
   tag as tagActions,
@@ -35,6 +34,7 @@ import {
   someNotAll,
 } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
 import CoresColumn from "./CoresColumn";

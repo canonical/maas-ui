@@ -1,9 +1,7 @@
 import { call } from "redux-saga/effects";
 
-import {
-  machine as machineActions,
-  resourcepool as resourcePoolActions,
-} from "app/base/actions";
+import { machine as machineActions } from "app/base/actions";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 
 /**
  * Generate functions that will use the response to create the dispatchable
@@ -44,7 +42,7 @@ export function* createPoolWithMachines(
 // Sagas to be handled by the websocket channel.
 export default [
   {
-    action: "CREATE_RESOURCEPOOL_WITH_MACHINES",
+    action: "resourcepool/createWithMachines",
     method: createPoolWithMachines,
   },
 ];

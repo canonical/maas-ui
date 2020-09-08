@@ -112,7 +112,7 @@ describe("AddMachine", () => {
       "FETCH_GENERAL_DEFAULT_MIN_HWE_KERNEL",
       "FETCH_GENERAL_HWE_KERNELS",
       "FETCH_GENERAL_POWER_TYPES",
-      "FETCH_RESOURCEPOOL",
+      "resourcepool/fetch",
       "FETCH_ZONE",
     ];
     const actions = store.getActions();

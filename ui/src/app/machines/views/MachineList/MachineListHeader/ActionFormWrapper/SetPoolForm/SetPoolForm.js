@@ -3,11 +3,9 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import {
-  machine as machineActions,
-  resourcepool as resourcePoolActions,
-} from "app/base/actions";
+import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import SetPoolFormFields from "./SetPoolFormFields";

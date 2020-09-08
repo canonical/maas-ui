@@ -7,14 +7,11 @@ import * as Yup from "yup";
 import type { RootState } from "app/store/root/types";
 import type { Pod } from "app/store/pod/types";
 import { actions as podActions } from "app/store/pod";
-import {
-  resourcepool as resourcePoolActions,
-  tag as tagActions,
-  zone as zoneActions,
-} from "app/base/actions";
+import { tag as tagActions, zone as zoneActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
 import { formatErrors } from "app/utils";
 import podSelectors from "app/store/pod/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import tagSelectors from "app/store/tag/selectors";
 import zoneSelectors from "app/store/zone/selectors";
