@@ -15,6 +15,19 @@ machine.fetch = () => {
   };
 };
 
+machine.get = (system_id) => {
+  return {
+    type: "GET_MACHINE",
+    meta: {
+      model: "machine",
+      method: "get",
+    },
+    payload: {
+      params: { system_id },
+    },
+  };
+};
+
 machine.create = (params) => {
   return {
     type: "CREATE_MACHINE",

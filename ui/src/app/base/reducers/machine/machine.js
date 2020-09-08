@@ -115,6 +115,7 @@ const machine = createNextState(
     });
     switch (action.type) {
       case "FETCH_MACHINE_START":
+      case "GET_MACHINE_START":
         draft.loading = true;
         break;
       case "FETCH_MACHINE_COMPLETE":
@@ -150,8 +151,10 @@ const machine = createNextState(
         break;
       case "ADD_MACHINE_CHASSIS_ERROR":
       case "FETCH_MACHINE_ERROR":
+      case "GET_MACHINE_ERROR":
       case "CREATE_MACHINE_ERROR":
         draft.errors = action.error;
+        draft.loading = false;
         draft.saving = false;
         break;
       case "CREATE_MACHINE_NOTIFY":
@@ -184,6 +187,22 @@ const machine = createNextState(
             break;
           }
         }
+        break;
+      case "GET_MACHINE_SUCCESS":
+        const machine = action.payload;
+        // If the item already exists, update it, otherwise
+        // add it to the store.
+        const i = draft.items.findIndex(
+          (draftItem) => draftItem.system_id === machine.system_id
+        );
+        if (i !== -1) {
+          draft.items[i] = machine;
+        } else {
+          draft.items.push(machine);
+          // Set up the statuses for this machine.
+          draft.statuses[machine.system_id] = DEFAULT_STATUSES;
+        }
+        draft.loading = false;
         break;
       case "SET_SELECTED_MACHINES":
         draft.selected = action.payload;

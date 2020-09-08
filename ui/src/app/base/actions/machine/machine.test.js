@@ -14,6 +14,19 @@ describe("machine actions", () => {
     });
   });
 
+  it("can get machines", () => {
+    expect(machine.get("abc123")).toEqual({
+      type: "GET_MACHINE",
+      meta: {
+        model: "machine",
+        method: "get",
+      },
+      payload: {
+        params: { system_id: "abc123" },
+      },
+    });
+  });
+
   it("can handle creating machines", () => {
     expect(
       machine.create({ name: "machine1", description: "a machine" })
