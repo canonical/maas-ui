@@ -12,8 +12,8 @@ exports[`NameColumn renders 1`] = `
         className="has-inline-label keep-label-opacity"
         id="abc123"
         label={
-          <LegacyLink
-            route="/undefined/abc123"
+          <ForwardRef
+            to="/undefined/abc123"
           >
             <strong
               data-test="hostname"
@@ -24,7 +24,7 @@ exports[`NameColumn renders 1`] = `
               .
               example
             </small>
-          </LegacyLink>
+          </ForwardRef>
         }
         onChange={[MockFunction]}
         type="checkbox"
@@ -51,8 +51,8 @@ exports[`NameColumn renders 1`] = `
               className="has-inline-label keep-label-opacity"
               id="abc123"
               label={
-                <LegacyLink
-                  route="/undefined/abc123"
+                <ForwardRef
+                  to="/undefined/abc123"
                 >
                   <strong
                     data-test="hostname"
@@ -63,7 +63,7 @@ exports[`NameColumn renders 1`] = `
                     .
                     example
                   </small>
-                </LegacyLink>
+                </ForwardRef>
               }
               onChange={[MockFunction]}
               type="checkbox"
@@ -73,8 +73,8 @@ exports[`NameColumn renders 1`] = `
                 className="u-no-margin--bottom machine-list--inline-input"
                 forId="abc123"
                 label={
-                  <LegacyLink
-                    route="/undefined/abc123"
+                  <ForwardRef
+                    to="/undefined/abc123"
                   >
                     <strong
                       data-test="hostname"
@@ -85,7 +85,7 @@ exports[`NameColumn renders 1`] = `
                       .
                       example
                     </small>
-                  </LegacyLink>
+                  </ForwardRef>
                 }
                 labelFirst={false}
               >
@@ -108,16 +108,15 @@ exports[`NameColumn renders 1`] = `
                         className="p-form__label"
                         htmlFor="abc123"
                       >
-                        <LegacyLink
-                          route="/undefined/abc123"
+                        <Link
+                          to="/undefined/abc123"
                         >
-                          <Link
-                            href="/MAAS/l/undefined/abc123"
-                            onClick={[Function]}
+                          <LinkAnchor
+                            href="/undefined/abc123"
+                            navigate={[Function]}
                           >
                             <a
-                              className=""
-                              href="/MAAS/l/undefined/abc123"
+                              href="/undefined/abc123"
                               onClick={[Function]}
                             >
                               <strong
@@ -130,8 +129,8 @@ exports[`NameColumn renders 1`] = `
                                 example
                               </small>
                             </a>
-                          </Link>
-                        </LegacyLink>
+                          </LinkAnchor>
+                        </Link>
                       </label>
                     </Label>
                   </div>

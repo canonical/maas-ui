@@ -1,16 +1,16 @@
 import { Tooltip } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 
 import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
 
 const generateFQDN = (machine, machineURL) => {
   return (
-    <LegacyLink route={machineURL} title={machine.fqdn}>
+    <Link to={machineURL} title={machine.fqdn}>
       <strong data-test="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
@@ -20,7 +20,7 @@ const generateFQDN = (machine, machineURL) => {
         {machine.hostname}
       </strong>
       <small>.{machine.domain.name}</small>
-    </LegacyLink>
+    </Link>
   );
 };
 
@@ -77,14 +77,11 @@ const generateIPAddresses = (machine) => {
 const generateMAC = (machine, machineURL) => {
   return (
     <>
-      <LegacyLink route={machineURL} title={machine.pxe_mac_vendor}>
+      <Link to={machineURL} title={machine.pxe_mac_vendor}>
         {machine.pxe_mac}
-      </LegacyLink>
+      </Link>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (
-        <LegacyLink route={machineURL}>
-          {" "}
-          (+{machine.extra_macs.length})
-        </LegacyLink>
+        <Link to={machineURL}> (+{machine.extra_macs.length})</Link>
       ) : null}
     </>
   );

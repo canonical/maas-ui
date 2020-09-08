@@ -2,19 +2,22 @@
 
 exports[`DhcpTarget can display a node link 1`] = `
 <Link
-  href="/MAAS/l/machine/xyz"
-  onClick={[Function]}
+  to="/machine/xyz"
 >
-  <a
-    className=""
-    href="/MAAS/l/machine/xyz"
-    onClick={[Function]}
+  <LinkAnchor
+    href="/machine/xyz"
+    navigate={[Function]}
   >
-    machine1
-    <small>
-      .
-      test
-    </small>
-  </a>
+    <a
+      href="/machine/xyz"
+      onClick={[Function]}
+    >
+      machine1
+      <small>
+        .
+        test
+      </small>
+    </a>
+  </LinkAnchor>
 </Link>
 `;
