@@ -40,7 +40,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn betterer |& tee results.txt
+      - name: Pipe betterer results to results.txt
+        run: |
+          set -o pipefail
+          yarn betterer |& tee results.txt
+          set +o pipefail
         env:
           CI: true
       - name: Upload betterer results
