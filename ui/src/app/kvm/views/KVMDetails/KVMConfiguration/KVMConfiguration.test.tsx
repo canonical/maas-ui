@@ -55,7 +55,7 @@ describe("KVMConfiguration", () => {
     const expectedActions = [
       "pod/fetch",
       "resourcepool/fetch",
-      "FETCH_TAG",
+      "tag/fetch",
       "zone/fetch",
     ];
     const actions = store.getActions();

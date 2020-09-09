@@ -234,7 +234,7 @@ Object {
     "saving": false,
   },
   "tag": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

@@ -19,7 +19,6 @@ import {
   space,
   status,
   subnet,
-  tag,
   user,
   vlan,
 } from "./app/base/reducers";
@@ -30,6 +29,7 @@ import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import zone from "app/store/zone";
+import tag from "app/store/tag";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>
