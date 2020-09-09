@@ -1,11 +1,13 @@
 import type {
+  Action,
   CaseReducer,
+  CaseReducerWithPrepare,
   PayloadAction,
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
-import type { GenericSlice } from "app/store/utils";
+import type { GenericItemMeta, GenericSlice } from "app/store/utils";
 import type { Pod, PodState } from "./types";
 
 export const DEFAULT_STATUSES = {
@@ -47,6 +49,7 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
 type PodReducers = SliceCaseReducers<PodState> & {
   // Overrides for reducers that don't take a payload.
   getStart: CaseReducer<PodState, PayloadAction<null>>;
+  deleteStart: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
 };
 
 export type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
