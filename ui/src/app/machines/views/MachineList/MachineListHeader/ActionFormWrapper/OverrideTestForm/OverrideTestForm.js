@@ -1,5 +1,4 @@
 import { Col, Row, Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
@@ -11,6 +10,7 @@ import machineSelectors from "app/store/machine/selectors";
 import scriptresultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
+import LegacyLink from "app/base/components/LegacyLink";
 
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
@@ -23,9 +23,9 @@ const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <Link to={`/machine/${singleMachine.system_id}`}>
+          <LegacyLink route={`/machine/${singleMachine.system_id}`}>
             {numFailedTestsString}
-          </Link>
+          </LegacyLink>
         </span>
       );
     }
@@ -134,9 +134,11 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
                       remain visible in
                       <br />
                       {selectedMachines.length === 1 ? (
-                        <Link to={`/machine/${selectedMachines[0].system_id}`}>
+                        <LegacyLink
+                          route={`/machine/${selectedMachines[0].system_id}`}
+                        >
                           Machine &gt; Hardware tests
-                        </Link>
+                        </LegacyLink>
                       ) : (
                         "Machine > Hardware tests"
                       )}

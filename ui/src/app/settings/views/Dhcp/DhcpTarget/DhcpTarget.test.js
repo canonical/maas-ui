@@ -91,7 +91,7 @@ describe("DhcpTarget", () => {
       </Provider>
     );
     const link = wrapper.find("Link");
-    expect(link.prop("to")).toBe("/machine/xyz");
+    expect(link.prop("href").includes("/machine/xyz")).toBe(true);
     expect(link).toMatchSnapshot();
   });
 });

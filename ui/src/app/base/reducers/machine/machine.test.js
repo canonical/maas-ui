@@ -150,128 +150,6 @@ describe("machine reducer", () => {
     });
   });
 
-  it("should correctly reduce GET_MACHINE_START", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: true,
-          saving: false,
-          selected: [],
-        },
-        {
-          type: "GET_MACHINE_START",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [],
-      loaded: false,
-      loading: true,
-      saved: true,
-      saving: false,
-      selected: [],
-    });
-  });
-
-  it("should correctly reduce GET_MACHINE_ERROR", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true,
-          selected: [],
-        },
-        {
-          error: { system_id: "id was not supplied" },
-          type: "GET_MACHINE_ERROR",
-        }
-      )
-    ).toEqual({
-      errors: { system_id: "id was not supplied" },
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-    });
-  });
-
-  it("should update if machine exists on GET_MACHINE_SUCCESS", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1", system_id: "abc" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { abc: STATUSES },
-        },
-        {
-          payload: { id: 1, name: "machine1-newname", system_id: "abc" },
-          type: "GET_MACHINE_SUCCESS",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [{ id: 1, name: "machine1-newname", system_id: "abc" }],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {
-        abc: STATUSES,
-      },
-    });
-  });
-
-  it("should correctly reduce GET_MACHINE_SUCCESS", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          payload: { id: 2, name: "machine2", system_id: "abc" },
-          type: "GET_MACHINE_SUCCESS",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [
-        { id: 1, name: "machine1" },
-        { id: 2, name: "machine2", system_id: "abc" },
-      ],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {
-        abc: STATUSES,
-      },
-    });
-  });
-
   it("should correctly reduce CREATE_MACHINE_START", () => {
     expect(
       machine(
@@ -358,7 +236,6 @@ describe("machine reducer", () => {
       },
     });
   });
-
   it("should correctly reduce CREATE_MACHINE_NOTIFY", () => {
     expect(
       machine(
