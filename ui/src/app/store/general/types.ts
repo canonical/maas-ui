@@ -126,6 +126,7 @@ export type PowerField = {
 };
 
 export type PowerType = {
+  can_probe: boolean;
   chassis: boolean;
   defaults?: {
     cores: number;

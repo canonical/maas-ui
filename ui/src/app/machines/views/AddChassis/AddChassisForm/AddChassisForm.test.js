@@ -32,7 +32,7 @@ describe("AddChassisForm", () => {
               name: "manual",
               description: "Manual",
               fields: [],
-              chassis: true,
+              can_probe: false,
             },
             {
               name: "dummy",
@@ -48,7 +48,7 @@ describe("AddChassisForm", () => {
                   scope: "bmc",
                 },
               ],
-              chassis: true,
+              can_probe: true,
             },
             {
               driver_type: "power",
@@ -120,7 +120,7 @@ describe("AddChassisForm", () => {
                 },
               ],
               missing_packages: [],
-              chassis: true,
+              can_probe: true,
               queryable: true,
             },
           ],

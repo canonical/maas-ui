@@ -32,7 +32,7 @@ describe("AddChassisFormFields", () => {
               name: "manual",
               description: "Manual",
               fields: [],
-              chassis: true,
+              can_probe: false,
             },
           ],
           loaded: true,
@@ -97,7 +97,7 @@ describe("AddChassisFormFields", () => {
           scope: "node", // Should not show
         },
       ],
-      chassis: true,
+      can_probe: true,
     });
     const store = mockStore(state);
     const wrapper = mount(
