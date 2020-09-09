@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import OverrideTestForm from "./OverrideTestForm";
 
 const mockStore = configureStore();
