@@ -35,7 +35,7 @@ const generateChassisSchema = (parametersSchema) =>
 export const AddChassisForm = () => {
   const dispatch = useDispatch();
 
-  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.chassis);
+  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const machineErrors = useSelector(machineSelectors.errors);
