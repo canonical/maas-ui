@@ -4,7 +4,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import KVM from "app/kvm/views/KVM";
 import Machines from "app/machines/views/Machines";
-import MachineDetails from "app/machines/views/MachineDetails";
 import NotFound from "app/base/views/NotFound";
 import Preferences from "app/preferences/views/Preferences";
 import Settings from "app/settings/views/Settings";
@@ -35,15 +34,6 @@ const Routes = () => (
       render={() => (
         <ErrorBoundary>
           <Machines />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      exact
-      path={["/machine/:id"]}
-      render={() => (
-        <ErrorBoundary>
-          <MachineDetails />
         </ErrorBoundary>
       )}
     />
