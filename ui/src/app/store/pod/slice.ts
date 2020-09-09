@@ -1,5 +1,4 @@
 import type {
-  Action,
   CaseReducer,
   CaseReducerWithPrepare,
   PayloadAction,
@@ -14,6 +13,13 @@ export const DEFAULT_STATUSES = {
   composing: false,
   deleting: false,
   refreshing: false,
+};
+
+type PodReducers = SliceCaseReducers<PodState> & {
+  // Overrides for reducers that don't take a payload.
+  getStart: CaseReducer<PodState, PayloadAction<null>>;
+  deleteStart: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
+  deleteSuccess: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
 };
 
 const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
@@ -44,13 +50,7 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
       },
     },
   ]
-);
-
-type PodReducers = SliceCaseReducers<PodState> & {
-  // Overrides for reducers that don't take a payload.
-  getStart: CaseReducer<PodState, PayloadAction<null>>;
-  deleteStart: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
-};
+) as PodReducers;
 
 export type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
 

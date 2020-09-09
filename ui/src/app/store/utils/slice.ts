@@ -1,6 +1,7 @@
 import {
   createSlice,
   CaseReducer,
+  CaseReducerWithPrepare,
   Draft,
   PayloadAction,
   Slice,
@@ -71,7 +72,7 @@ export type GenericSlice<
   R
 > = Slice<
   GenericState<I, S["errors"]>,
-  R & GenericReducers<I, S["errors"]>,
+  GenericReducers<I, S["errors"]> & R,
   string
 >;
 
