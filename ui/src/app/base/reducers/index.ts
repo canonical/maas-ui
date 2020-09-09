@@ -15,4 +15,3 @@ export { default as space } from "./space";
 export { default as status } from "./status";
 export { default as subnet } from "./subnet";
 export { default as user } from "./user";
-export { default as vlan } from "./vlan";

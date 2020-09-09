@@ -252,7 +252,7 @@ describe("pod reducer", () => {
       statuses: { 1: podStatusFactory() },
     });
 
-    expect(reducers(podState, actions.deleteStart({ item: pods[0] }))).toEqual({
+    expect(reducers(podState, actions.deleteStart())).toEqual({
       errors: null,
       items: pods,
       loaded: false,
@@ -270,9 +270,7 @@ describe("pod reducer", () => {
       items: pods,
       statuses: { 1: podStatusFactory({ deleting: true }) },
     });
-    expect(
-      reducers(podState, actions.deleteSuccess({ item: pods[0] }))
-    ).toEqual({
+    expect(reducers(podState, actions.deleteSuccess())).toEqual({
       errors: null,
       items: pods,
       loaded: false,

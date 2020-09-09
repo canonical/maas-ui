@@ -123,9 +123,7 @@ describe("domain reducer", () => {
       items: domains,
     });
 
-    expect(
-      reducers(domainState, actions.deleteStart({ item: domains[0] }))
-    ).toEqual({
+    expect(reducers(domainState, actions.deleteStart())).toEqual({
       errors: {},
       items: domains,
       loaded: false,
@@ -140,9 +138,7 @@ describe("domain reducer", () => {
     const domainState = domainStateFactory({
       items: domains,
     });
-    expect(
-      reducers(domainState, actions.deleteSuccess({ item: domains[0] }))
-    ).toEqual({
+    expect(reducers(domainState, actions.deleteSuccess())).toEqual({
       errors: null,
       items: domains,
       loaded: false,
