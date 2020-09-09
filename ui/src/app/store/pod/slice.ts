@@ -1,6 +1,5 @@
 import type {
   CaseReducer,
-  CaseReducerWithPrepare,
   PayloadAction,
   SliceCaseReducers,
 } from "@reduxjs/toolkit";

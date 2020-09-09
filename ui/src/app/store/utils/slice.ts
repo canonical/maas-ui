@@ -1,7 +1,6 @@
 import {
   createSlice,
   CaseReducer,
-  CaseReducerWithPrepare,
   Draft,
   PayloadAction,
   Slice,
