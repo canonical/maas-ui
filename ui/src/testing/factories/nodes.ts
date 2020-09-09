@@ -8,6 +8,7 @@ import type {
   PodDetails,
   PodHint,
   PodHintExtras,
+  PodNumaNode,
   PodStoragePool,
 } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
@@ -156,6 +157,23 @@ export const podStoragePool = define<PodStoragePool>({
   used: 300000000000,
 });
 
+export const podNumaNode = define<PodNumaNode>({
+  cores: () => ({
+    allocated: [0, 2, 4, 6],
+    free: [1, 3],
+  }),
+  interfaces: () => [],
+  memory: () => ({
+    general: {
+      allocated: 10240,
+      free: 4068,
+    },
+    hugepages: [],
+  }),
+  node_id: () => random(),
+  vms: () => [],
+});
+
 export const pod = extend<Model, Pod>(model, {
   architectures,
   available: podHint,
@@ -171,6 +189,7 @@ export const pod = extend<Model, Pod>(model, {
   ip_address: (i: number) => `192.168.1.${i}`,
   memory_over_commit_ratio: 8,
   name: (i: number) => `pod${i}`,
+  numa_pinning: () => [podNumaNode()],
   permissions,
   pool: 1,
   power_address: "qemu+ssh://ubuntu@127.0.0.1/system",

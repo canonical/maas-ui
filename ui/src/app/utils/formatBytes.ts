@@ -41,9 +41,12 @@ export const formatBytes = (
   const j = convertTo
     ? sizes.findIndex((size) => size === convertTo)
     : Math.floor(Math.log(valueInBytes) / Math.log(k));
-  const valueInUnit = parseFloat(
-    (valueInBytes / Math.pow(k, j)).toPrecision(precision)
-  );
+  let valueInUnit = valueInBytes / Math.pow(k, j);
+
+  // Only truncate value if converting to a higher unit, e.g. "KB" => "MB"
+  if (j > i) {
+    valueInUnit = parseFloat(valueInUnit.toPrecision(precision));
+  }
 
   return {
     value: negative ? -valueInUnit : valueInUnit,

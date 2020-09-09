@@ -5,9 +5,7 @@ import KVMMeter from "./KVMMeter";
 
 describe("KVMMeter", () => {
   it("renders", () => {
-    const wrapper = shallow(
-      <KVMMeter allocated={2} free={1} total={3} unit="GB" />
-    );
+    const wrapper = shallow(<KVMMeter allocated={2} free={1} unit="GB" />);
 
     expect(wrapper).toMatchSnapshot();
   });
