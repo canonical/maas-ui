@@ -93,7 +93,9 @@ function NodeDetailsController(
   $scope.power_types = GeneralManager.getData("power_types");
   $scope.osinfo = GeneralManager.getData("osinfo");
   $scope.section = {
-    area: angular.isString($stateParams.area) ? $stateParams.area : "summary",
+    area: angular.isString($location.search().area)
+      ? $location.search().area
+      : "summary",
   };
   $scope.osSelection = {
     osystem: null,
