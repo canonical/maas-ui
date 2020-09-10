@@ -196,12 +196,7 @@ describe("resourcePool reducer", () => {
         items: resourcePools,
       });
 
-      expect(
-        reducers(
-          resourcePoolState,
-          actions.deleteStart({ item: resourcePools[0] })
-        )
-      ).toEqual({
+      expect(reducers(resourcePoolState, actions.deleteStart())).toEqual({
         errors: {},
         items: resourcePools,
         loaded: false,
@@ -217,12 +212,7 @@ describe("resourcePool reducer", () => {
         items: resourcePools,
       });
 
-      expect(
-        reducers(
-          resourcePoolState,
-          actions.deleteSuccess({ item: resourcePools[0] })
-        )
-      ).toEqual({
+      expect(reducers(resourcePoolState, actions.deleteSuccess())).toEqual({
         errors: null,
         items: resourcePools,
         loaded: false,

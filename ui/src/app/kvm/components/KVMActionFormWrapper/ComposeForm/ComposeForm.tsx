@@ -15,9 +15,9 @@ import {
   messages as messagesActions,
   space as spaceActions,
   subnet as subnetActions,
-  vlan as vlanActions,
 } from "app/base/actions";
 import { actions as domainActions } from "app/store/domain";
+import { actions as vlanActions } from "app/store/vlan";
 import { actions as zoneActions } from "app/store/zone";
 import domainSelectors from "app/store/domain/selectors";
 import fabricSelectors from "app/store/fabric/selectors";

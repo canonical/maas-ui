@@ -182,12 +182,7 @@ describe("slice", () => {
       const tokenState = tokenStateFactory({
         items: tokens,
       });
-      expect(
-        slice.reducer(
-          tokenState,
-          slice.actions.deleteStart({ item: tokens[0] })
-        )
-      ).toEqual({
+      expect(slice.reducer(tokenState, slice.actions.deleteStart())).toEqual({
         errors: null,
         items: tokens,
         loaded: false,
@@ -202,12 +197,7 @@ describe("slice", () => {
       const tokenState = tokenStateFactory({
         items: tokens,
       });
-      expect(
-        slice.reducer(
-          tokenState,
-          slice.actions.deleteSuccess({ item: tokens[0] })
-        )
-      ).toEqual({
+      expect(slice.reducer(tokenState, slice.actions.deleteSuccess())).toEqual({
         errors: null,
         items: tokens,
         loaded: false,

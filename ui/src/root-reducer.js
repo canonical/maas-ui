@@ -20,7 +20,6 @@ import {
   status,
   subnet,
   user,
-  vlan,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { initialState as userInitialState } from "./app/base/reducers/user/user";
@@ -28,8 +27,9 @@ import device from "app/store/device";
 import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
-import zone from "app/store/zone";
 import tag from "app/store/tag";
+import vlan from "app/store/vlan";
+import zone from "app/store/zone";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>

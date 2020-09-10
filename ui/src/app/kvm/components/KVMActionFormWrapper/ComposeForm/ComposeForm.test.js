@@ -85,7 +85,7 @@ describe("ComposeForm", () => {
       "resourcepool/fetch",
       "FETCH_SPACE",
       "FETCH_SUBNET",
-      "FETCH_VLAN",
+      "vlan/fetch",
       "zone/fetch",
       "GET_POD",
     ];

@@ -259,7 +259,7 @@ Object {
     "saving": false,
   },
   "vlan": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,
