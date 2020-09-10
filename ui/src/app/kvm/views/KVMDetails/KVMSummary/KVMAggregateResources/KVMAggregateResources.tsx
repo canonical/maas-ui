@@ -8,21 +8,6 @@ import podSelectors from "app/store/pod/selectors";
 import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
 import { formatBytes } from "app/utils";
 
-const fakeHugepageRAM = {
-  allocated: 10,
-  free: 2,
-  total: 12,
-  pagesize: 2048,
-  unit: "GiB",
-};
-const fakeNICs = ["eth0", "eth1", "eth2", "eth3"];
-const fakeVFs = {
-  allocated: 32,
-  free: 224,
-  total: 256,
-};
-const fakeVMs = ["machine1", "machine2", "machine3", "machine4"];
-
 type Props = { id: number };
 
 const KVMAggregateResources = ({ id }: Props): JSX.Element => {
@@ -37,11 +22,6 @@ const KVMAggregateResources = ({ id }: Props): JSX.Element => {
 
   if (!!pod) {
     const totalCores = pod.total.cores * pod.cpu_over_commit_ratio;
-    const totalGeneralRAM = formatBytes(
-      pod.total.memory * pod.memory_over_commit_ratio,
-      "MiB",
-      { binary: true }
-    );
 
     return (
       <KVMResourcesCard
@@ -49,27 +29,21 @@ const KVMAggregateResources = ({ id }: Props): JSX.Element => {
         cores={{
           allocated: pod.used.cores,
           free: totalCores - pod.used.cores,
-          total: totalCores,
         }}
-        nics={fakeNICs}
         ram={{
           general: {
             allocated: formatBytes(pod.used.memory, "MiB", {
               binary: true,
-              convertTo: totalGeneralRAM.unit,
+              convertTo: "B",
             }).value,
             free: formatBytes(
               pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory,
               "MiB",
-              { binary: true, convertTo: totalGeneralRAM.unit }
+              { binary: true, convertTo: "B" }
             ).value,
-            total: totalGeneralRAM.value,
-            unit: totalGeneralRAM.unit,
           },
-          hugepage: fakeHugepageRAM,
         }}
-        vfs={fakeVFs}
-        vms={fakeVMs}
+        vms={[]}
       />
     );
   }

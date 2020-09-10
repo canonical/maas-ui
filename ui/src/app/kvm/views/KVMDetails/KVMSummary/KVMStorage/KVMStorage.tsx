@@ -74,7 +74,6 @@ const KVMStorage = ({ id }: Props): JSX.Element | null => {
                   <KVMMeter
                     allocated={allocated.value}
                     free={free.value}
-                    total={total.value}
                     unit={total.unit}
                   />
                 </div>

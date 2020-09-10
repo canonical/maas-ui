@@ -3,6 +3,7 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
 
+import { formatBytes } from "app/utils";
 import { COLOURS } from "app/base/constants";
 import ContextualMenu from "app/base/components/ContextualMenu";
 import DoughnutChart from "app/base/components/DoughnutChart";
@@ -12,32 +13,54 @@ import { MachineListTable } from "app/machines/views/MachineList/MachineListTabl
 type ChartValues = {
   allocated: number;
   free: number;
-  total: number;
-  unit?: string;
 };
 
-type Props = {
+export type Props = {
   className?: string;
   cores: ChartValues;
-  nics: string[];
+  interfaces?: { name: string; virtualFunctions?: ChartValues }[];
   ram: {
+    // All values in B
     general: ChartValues;
-    hugepage?: ChartValues & { pagesize: number };
+    hugepages?: (ChartValues & { pageSize: number })[];
   };
   title?: string;
-  vfs?: ChartValues;
   vms: string[];
+};
+
+/**
+ * Returns a string with the formatted byte value and unit, e.g 1024 => "1KiB"
+ *
+ * @param memory - the memory in bytes
+ * @returns {string}
+ */
+const memoryWithUnit = (memory: number): string => {
+  const formatted = formatBytes(memory, "B", { binary: true });
+  return `${formatted.value}${formatted.unit}`;
 };
 
 const KVMResourcesCard = ({
   className,
   cores,
-  nics,
+  interfaces,
   ram,
   title,
-  vfs,
   vms,
 }: Props): JSX.Element => {
+  const ifaceNames = interfaces?.map((iface) => iface.name).join(", ") || (
+    <em>None</em>
+  );
+  const [vfsAllocated, vfsFree] = interfaces?.reduce(
+    ([allocated, free], iface) => {
+      if (iface.virtualFunctions) {
+        allocated += iface.virtualFunctions.allocated;
+        free += iface.virtualFunctions.free;
+      }
+      return [allocated, free];
+    },
+    [0, 0]
+  ) || [0, 0];
+
   return (
     <Card className={classNames("kvm-resources-card", className)}>
       {title && (
@@ -76,34 +99,36 @@ const KVMResourcesCard = ({
           <h4 className="p-heading--small">RAM</h4>
           <DoughnutChart
             className="kvm-resources-card__ram-chart"
-            label={`${ram.general.total + (ram.hugepage?.total || 0)}${
-              ram.general.unit
-            }`}
+            label={memoryWithUnit(ram.general.allocated + ram.general.free)}
             segmentHoverWidth={18}
             segmentWidth={15}
             segments={[
               {
                 color: COLOURS.LINK,
-                tooltip: `General allocated ${ram.general.allocated}${ram.general.unit}`,
+                tooltip: `General allocated ${memoryWithUnit(
+                  ram.general.allocated
+                )}`,
                 value: ram.general.allocated,
               },
-              ...(ram.hugepage
-                ? [
-                    {
-                      color: COLOURS.POSITIVE,
-                      tooltip: `Hugepage allocated ${ram.hugepage.allocated}${ram.hugepage.unit}`,
-                      value: ram.hugepage.allocated,
-                    },
-                    {
-                      color: COLOURS.POSITIVE_MID,
-                      tooltip: `Hugepage free ${ram.hugepage.free}${ram.hugepage.unit}`,
-                      value: ram.hugepage.free,
-                    },
-                  ]
-                : []),
+              ...(ram.hugepages || [])
+                .map((hugepage) => [
+                  {
+                    color: COLOURS.POSITIVE,
+                    tooltip: `Hugepage allocated ${memoryWithUnit(
+                      hugepage.allocated
+                    )}`,
+                    value: hugepage.allocated,
+                  },
+                  {
+                    color: COLOURS.POSITIVE_MID,
+                    tooltip: `Hugepage free ${memoryWithUnit(hugepage.free)}`,
+                    value: hugepage.free,
+                  },
+                ])
+                .flat(),
               {
                 color: COLOURS.LINK_FADED,
-                tooltip: `General free ${ram.general.free}${ram.general.unit}`,
+                tooltip: `General free ${memoryWithUnit(ram.general.free)}`,
                 value: ram.general.free,
               },
             ]}
@@ -127,8 +152,7 @@ const KVMResourcesCard = ({
               <td>General</td>
               <td className="u-align--right">
                 <span data-test="ram-general-allocated">
-                  {ram.general.allocated}
-                  {ram.general.unit}
+                  {memoryWithUnit(ram.general.allocated)}
                 </span>
                 <span className="u-nudge-right--small">
                   <i className="p-circle--link"></i>
@@ -136,39 +160,36 @@ const KVMResourcesCard = ({
               </td>
               <td className="u-align--right">
                 <span data-test="ram-general-free">
-                  {ram.general.free}
-                  {ram.general.unit}
+                  {memoryWithUnit(ram.general.free)}
                 </span>
                 <span className="u-nudge-right--small">
                   <i className="p-circle--link-faded"></i>
                 </span>
               </td>
             </tr>
-            {ram.hugepage && (
-              <tr data-test="hugepage-ram">
+            {ram.hugepages?.map((hugepage, i) => (
+              <tr data-test="hugepage-ram" key={i}>
                 <td>
                   Hugepage
                   <br />
                   <strong className="p-text--x-small u-text--light">
-                    {`(Size: ${ram.hugepage.pagesize}KB)`}
+                    {`(Size: ${memoryWithUnit(hugepage.pageSize)})`}
                   </strong>
                 </td>
                 <td className="u-align--right">
-                  {ram.hugepage.allocated}
-                  {ram.hugepage.unit}
+                  {memoryWithUnit(hugepage.allocated)}
                   <span className="u-nudge-right--small">
                     <i className="p-circle--positive"></i>
                   </span>
                 </td>
                 <td className="u-align--right">
-                  {ram.hugepage.free}
-                  {ram.hugepage.unit}
+                  {memoryWithUnit(hugepage.free)}
                   <span className="u-nudge-right--small">
                     <i className="p-circle--positive-faded"></i>
                   </span>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
@@ -179,31 +200,29 @@ const KVMResourcesCard = ({
           data-test="cpu-meter"
           free={cores.free}
           segmented
-          total={cores.total}
         />
       </div>
       <div className="kvm-resources-card__section kvm-resources-card__vfs">
-        {vfs ? (
+        {vfsAllocated + vfsFree > 0 ? (
           <>
             <h4 className="p-heading--small u-sv1">Virtual functions</h4>
             <div>
               <KVMMeter
-                allocated={vfs.allocated}
+                allocated={vfsAllocated}
                 data-test="vfs-meter"
-                free={vfs.free}
-                total={vfs.total}
+                free={vfsFree}
               />
               <hr />
               <div className="p-heading--small u-text--light">
                 Network interfaces
               </div>
-              <span>{nics.length >= 1 ? nics.join(", ") : <em>None</em>}</span>
+              <span>{ifaceNames}</span>
             </div>
           </>
         ) : (
           <>
             <h4 className="p-heading--small u-sv1">Network interfaces</h4>
-            <span>{nics.length >= 1 ? nics.join(", ") : <em>None</em>}</span>
+            <span>{ifaceNames}</span>
           </>
         )}
       </div>
@@ -232,6 +251,7 @@ const KVMResourcesCard = ({
             hasToggleIcon
             toggleAppearance="base"
             toggleClassName="kvm-resources-card__vms-button is-dense"
+            toggleDisabled={vms.length === 0}
             toggleLabel={`${vms.length}`}
             position="auto"
           />

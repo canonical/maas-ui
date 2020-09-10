@@ -6,7 +6,6 @@ type Props = {
   allocated: number;
   free: number;
   segmented?: boolean;
-  total: number;
   unit?: string;
 };
 
@@ -14,9 +13,10 @@ const KVMMeter = ({
   allocated,
   free,
   segmented = false,
-  total,
   unit = "",
 }: Props): JSX.Element | null => {
+  const total = allocated + free;
+
   return (
     <div className="kvm-meter">
       <div>

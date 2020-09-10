@@ -7,9 +7,8 @@ describe("KVMResourcesCard", () => {
   it("renders", () => {
     const wrapper = shallow(
       <KVMResourcesCard
-        cores={{ allocated: 1, free: 2, total: 3 }}
-        nics={[]}
-        ram={{ general: { allocated: 2, free: 3, total: 5, unit: "MB" } }}
+        cores={{ allocated: 1, free: 2 }}
+        ram={{ general: { allocated: 2048, free: 3072 } }}
         vms={["abc123"]}
         title="Title"
       />
@@ -21,9 +20,8 @@ describe("KVMResourcesCard", () => {
   it("can be given a title", () => {
     const wrapper = shallow(
       <KVMResourcesCard
-        cores={{ allocated: 1, free: 2, total: 3 }}
-        nics={[]}
-        ram={{ general: { allocated: 2, free: 3, total: 5 } }}
+        cores={{ allocated: 1, free: 2 }}
+        ram={{ general: { allocated: 2, free: 3 } }}
         vms={["abc123"]}
         title="Title"
       />
@@ -37,13 +35,11 @@ describe("KVMResourcesCard", () => {
   it("shows hugepage RAM details if provided", () => {
     const wrapper = shallow(
       <KVMResourcesCard
-        cores={{ allocated: 1, free: 2, total: 3 }}
-        nics={[]}
+        cores={{ allocated: 1, free: 2 }}
         ram={{
-          general: { allocated: 2, free: 3, total: 5 },
-          hugepage: { allocated: 1, free: 1, total: 2, pagesize: 1024 },
+          general: { allocated: 2, free: 3 },
+          hugepages: [{ allocated: 1, free: 1, pageSize: 1024 }],
         }}
-        vfs={{ allocated: 100, free: 156, total: 256 }}
         vms={["abc123"]}
       />
     );
@@ -51,15 +47,16 @@ describe("KVMResourcesCard", () => {
     expect(wrapper.find("[data-test='hugepage-ram']").exists()).toBe(true);
   });
 
-  it("shows virtual function details if provided", () => {
+  it("shows virtual function details if any provided interfaces use virtual functions", () => {
     const wrapper = shallow(
       <KVMResourcesCard
-        cores={{ allocated: 1, free: 2, total: 3 }}
-        nics={[]}
+        cores={{ allocated: 1, free: 2 }}
+        interfaces={[
+          { name: "eth0", virtualFunctions: { allocated: 100, free: 20 } },
+        ]}
         ram={{
-          general: { allocated: 2, free: 3, total: 5 },
+          general: { allocated: 2, free: 3 },
         }}
-        vfs={{ allocated: 100, free: 156, total: 256 }}
         vms={["abc123"]}
       />
     );
@@ -70,9 +67,8 @@ describe("KVMResourcesCard", () => {
   it("shows VMs button at bottom of container if no title provided", () => {
     const wrapper = shallow(
       <KVMResourcesCard
-        cores={{ allocated: 1, free: 2, total: 3 }}
-        nics={[]}
-        ram={{ general: { allocated: 2, free: 3, total: 5 } }}
+        cores={{ allocated: 1, free: 2 }}
+        ram={{ general: { allocated: 2, free: 3 } }}
         vms={["abc123"]}
       />
     );
