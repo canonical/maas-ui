@@ -63,21 +63,21 @@ describe("powerTypes selectors", () => {
     });
   });
 
-  describe("chassis", () => {
-    it("returns chassis powerTypes", () => {
-      const chassisPowerTypes = [
-        powerTypeFactory({ chassis: true }),
-        powerTypeFactory({ chassis: true }),
+  describe("canProbe", () => {
+    it("returns powerTypes that can be used with add_chassis", () => {
+      const probePowerTypes = [
+        powerTypeFactory({ can_probe: true }),
+        powerTypeFactory({ can_probe: true }),
       ];
-      const nonChassisPowerType = powerTypeFactory({ chassis: false });
+      const nonProbePowerType = powerTypeFactory({ can_probe: false });
       const state = rootStateFactory({
         general: generalStateFactory({
           powerTypes: powerTypesStateFactory({
-            data: [...chassisPowerTypes, nonChassisPowerType],
+            data: [...probePowerTypes, nonProbePowerType],
           }),
         }),
       });
-      expect(powerTypes.chassis(state)).toStrictEqual(chassisPowerTypes);
+      expect(powerTypes.canProbe(state)).toStrictEqual(probePowerTypes);
     });
   });
 });

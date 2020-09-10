@@ -70,6 +70,7 @@ export const powerField = define<PowerField>({
 });
 
 export const powerType = define<PowerType>({
+  can_probe: false,
   chassis: false,
   description: "test description",
   driver_type: "power",

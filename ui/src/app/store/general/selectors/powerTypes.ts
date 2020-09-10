@@ -9,17 +9,18 @@ import { generateGeneralSelector } from "./utils";
 const generalSelectors = generateGeneralSelector<"powerTypes">("powerTypes");
 
 /**
- * Returns power types that can be used when adding chassis.
+ * Returns power drivers that can probe and enlist machines that it manages,
+ * i.e. can be used with the `add_chassis` API method.
  * @param {RootState} state - The redux state.
  * @returns {PowerType[]} Chassis power types.
  */
-const chassis = createSelector([generalSelectors.get], (powerTypes) =>
-  powerTypes.filter((type) => type.chassis)
+const canProbe = createSelector([generalSelectors.get], (powerTypes) =>
+  powerTypes.filter((type) => type.can_probe)
 );
 
 const powerTypes = {
   ...generalSelectors,
-  chassis,
+  canProbe,
 };
 
 export default powerTypes;
