@@ -18,7 +18,7 @@ type ChartValues = {
 export type Props = {
   className?: string;
   cores: ChartValues;
-  interfaces?: { name: string; virtualFunctions?: ChartValues }[];
+  interfaces?: { id: number; name: string; virtualFunctions?: ChartValues }[];
   ram: {
     // All values in B
     general: ChartValues;
@@ -47,9 +47,10 @@ const KVMResourcesCard = ({
   title,
   vms,
 }: Props): JSX.Element => {
-  const ifaceNames = interfaces?.map((iface) => iface.name).join(", ") || (
-    <em>None</em>
-  );
+  const ifaceNames = interfaces
+    ?.map((iface) => iface.name)
+    .sort()
+    .join(", ") || <em>N/A</em>;
   const [vfsAllocated, vfsFree] = interfaces?.reduce(
     ([allocated, free], iface) => {
       if (iface.virtualFunctions) {
@@ -60,6 +61,11 @@ const KVMResourcesCard = ({
     },
     [0, 0]
   ) || [0, 0];
+  const hugepageTotal =
+    ram.hugepages?.reduce(
+      (sum, hugepage) => sum + hugepage.allocated + hugepage.free,
+      0
+    ) || 0;
 
   return (
     <Card className={classNames("kvm-resources-card", className)}>
@@ -99,7 +105,9 @@ const KVMResourcesCard = ({
           <h4 className="p-heading--small">RAM</h4>
           <DoughnutChart
             className="kvm-resources-card__ram-chart"
-            label={memoryWithUnit(ram.general.allocated + ram.general.free)}
+            label={memoryWithUnit(
+              ram.general.allocated + ram.general.free + hugepageTotal
+            )}
             segmentHoverWidth={18}
             segmentWidth={15}
             segments={[
@@ -172,18 +180,25 @@ const KVMResourcesCard = ({
                 <td>
                   Hugepage
                   <br />
-                  <strong className="p-text--x-small u-text--light">
+                  <strong
+                    className="p-text--x-small u-text--light"
+                    data-test="hugepage-size"
+                  >
                     {`(Size: ${memoryWithUnit(hugepage.pageSize)})`}
                   </strong>
                 </td>
                 <td className="u-align--right">
-                  {memoryWithUnit(hugepage.allocated)}
+                  <span data-test="hugepage-allocated">
+                    {memoryWithUnit(hugepage.allocated)}
+                  </span>
                   <span className="u-nudge-right--small">
                     <i className="p-circle--positive"></i>
                   </span>
                 </td>
                 <td className="u-align--right">
-                  {memoryWithUnit(hugepage.free)}
+                  <span data-test="hugepage-free">
+                    {memoryWithUnit(hugepage.free)}
+                  </span>
                   <span className="u-nudge-right--small">
                     <i className="p-circle--positive-faded"></i>
                   </span>
