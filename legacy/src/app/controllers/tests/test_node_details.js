@@ -320,10 +320,11 @@ describe("NodeDetailsController", function () {
     });
   });
 
-  it("sets initial area to stateParams value", function () {
-    $stateParams.area = makeName("area");
+  it("sets initial area to query param value", function () {
+    const area = makeName("area");
+    $location.search("area", area);
     makeController();
-    expect($scope.section.area).toEqual($stateParams.area);
+    expect($scope.section.area).toEqual(area);
   });
 
   it("calls loadManagers for machine", function () {
