@@ -12,7 +12,7 @@ import type { RootState } from "app/store/root/types";
 import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 
-type GenericItemMeta<I> = {
+export type GenericItemMeta<I> = {
   item: I;
 };
 
@@ -47,12 +47,15 @@ type GenericReducers<I, E> = SliceCaseReducers<GenericState<I, E>> & {
   // Overrides for reducers that don't take a payload. This is required for
   // reducers where the types can't be correctly inferred and so use the default
   // CaseReducer which requires a payload.
+  fetch: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
   fetchStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
   createStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
+  createSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
+  deleteStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
+  deleteSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
   updateStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
   updateSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
   cleanup: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  fetch: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
 };
 
 /**
@@ -68,7 +71,7 @@ export type GenericSlice<
   R
 > = Slice<
   GenericState<I, S["errors"]>,
-  R & GenericReducers<I, S["errors"]>,
+  GenericReducers<I, S["errors"]> & R,
   string
 >;
 
