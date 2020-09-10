@@ -12,6 +12,10 @@ describe("formatBytes", () => {
   });
 
   it("returns the value to the correct precision", () => {
+    expect(formatBytes(1234, "B", { precision: 1 })).toStrictEqual({
+      value: 1,
+      unit: "KB",
+    });
     expect(formatBytes(1234, "B", { precision: 2 })).toStrictEqual({
       value: 1.2,
       unit: "KB",
@@ -21,7 +25,11 @@ describe("formatBytes", () => {
       unit: "KB",
     });
     expect(formatBytes(123, "B", { precision: 1 })).toStrictEqual({
-      value: 100,
+      value: 123,
+      unit: "B",
+    });
+    expect(formatBytes(0.123, "KB", { precision: 1 })).toStrictEqual({
+      value: 123,
       unit: "B",
     });
   });

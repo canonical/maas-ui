@@ -55,6 +55,7 @@ export {
   pod,
   podDetails,
   podHint,
+  podNumaNode,
   podStoragePool,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";

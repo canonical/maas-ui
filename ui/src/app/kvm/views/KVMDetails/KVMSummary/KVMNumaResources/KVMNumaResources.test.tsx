@@ -9,10 +9,12 @@ import { sendAnalyticsEvent } from "analytics";
 import {
   config as configFactory,
   configState as configStateFactory,
+  pod as podFactory,
+  podNumaNode as podNumaNodeFactory,
+  podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import KVMNumaResources, { TRUNCATION_POINT } from "./KVMNumaResources";
-import { fakeNumas } from "../KVMSummary";
 
 jest.mock("analytics", () => ({
   sendAnalyticsEvent: jest.fn(),
@@ -22,17 +24,18 @@ const mockStore = configureStore();
 
 describe("KVMNumaResources", () => {
   it("can expand truncated NUMA nodes if above truncation point", () => {
-    const numaNodes = [
-      ...fakeNumas,
-      { ...fakeNumas[0], index: 3 },
-      { ...fakeNumas[1], index: 4 },
-    ];
-    const state = rootStateFactory();
+    const pod = podFactory({
+      id: 1,
+      numa_pinning: Array.from(Array(TRUNCATION_POINT + 1)).map(() =>
+        podNumaNodeFactory()
+      ),
+    });
+    const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMNumaResources numaNodes={numaNodes} />
+          <KVMNumaResources id={pod.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -50,17 +53,22 @@ describe("KVMNumaResources", () => {
     expect(
       wrapper.find("Button[data-test='show-more-numas'] span").text()
     ).toBe("Show less NUMA nodes");
-    expect(wrapper.find("KVMResourcesCard").length).toBe(numaNodes.length);
+    expect(wrapper.find("KVMResourcesCard").length).toBe(
+      pod.numa_pinning?.length
+    );
   });
 
   it("shows wide cards if the pod has less than or equal to 2 NUMA nodes", () => {
-    const numaNodes = [fakeNumas[0]];
-    const state = rootStateFactory();
+    const pod = podFactory({
+      id: 1,
+      numa_pinning: [podNumaNodeFactory()],
+    });
+    const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMNumaResources numaNodes={numaNodes} />
+          <KVMNumaResources id={pod.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -76,11 +84,12 @@ describe("KVMNumaResources", () => {
   });
 
   it("can send an analytics event when expanding NUMA nodes if analytics enabled", () => {
-    const numaNodes = [
-      ...fakeNumas,
-      { ...fakeNumas[0], index: 3 },
-      { ...fakeNumas[1], index: 4 },
-    ];
+    const pod = podFactory({
+      id: 1,
+      numa_pinning: Array.from(Array(TRUNCATION_POINT + 1)).map(() =>
+        podNumaNodeFactory()
+      ),
+    });
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
@@ -90,12 +99,13 @@ describe("KVMNumaResources", () => {
           }),
         ],
       }),
+      pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMNumaResources numaNodes={numaNodes} />
+          <KVMNumaResources id={pod.id} />
         </MemoryRouter>
       </Provider>
     );

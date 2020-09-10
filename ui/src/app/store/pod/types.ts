@@ -27,6 +27,37 @@ export type PodStoragePool = {
   used: number;
 };
 
+export type NumaResource<T> = {
+  allocated: T;
+  free: T;
+};
+
+export type NumaInterface = {
+  id: number;
+  name: string;
+  virtual_functions?: NumaResource<number>;
+};
+
+export type NumaVM = {
+  networks: {
+    guest_nic_id: number;
+    host_nic_id: number;
+  };
+  pinned_cores: number[];
+  system_id: string;
+};
+
+export type PodNumaNode = {
+  cores: NumaResource<number[]>;
+  interfaces: NumaInterface[];
+  memory: {
+    hugepages: (NumaResource<number> & { page_size: number })[];
+    general: NumaResource<number>;
+  };
+  node_id: number;
+  vms: NumaVM[];
+};
+
 // BasePod is returned from the server when using "pod.list", and is used in the
 // pod list pages. This type is missing some properties due to an optimisation
 // on the backend to reduce the amount of database queries on list pages.
@@ -45,6 +76,7 @@ export type BasePod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
+  numa_pinning?: PodNumaNode[];
   password?: string;
   permissions: string[];
   pool: number;
