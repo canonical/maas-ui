@@ -1,28 +1,16 @@
 import { shallow } from "enzyme";
 import React from "react";
 
+import { machine as machineFactory } from "testing/factories";
 import KVMResourcesCard from "./KVMResourcesCard";
 
 describe("KVMResourcesCard", () => {
-  it("renders", () => {
-    const wrapper = shallow(
-      <KVMResourcesCard
-        cores={{ allocated: 1, free: 2 }}
-        ram={{ general: { allocated: 2048, free: 3072 } }}
-        vms={["abc123"]}
-        title="Title"
-      />
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can be given a title", () => {
     const wrapper = shallow(
       <KVMResourcesCard
         cores={{ allocated: 1, free: 2 }}
         ram={{ general: { allocated: 2, free: 3 } }}
-        vms={["abc123"]}
+        vms={[machineFactory({ system_id: "abc123" })]}
         title="Title"
       />
     );
@@ -40,7 +28,7 @@ describe("KVMResourcesCard", () => {
           general: { allocated: 2, free: 3 },
           hugepages: [{ allocated: 1, free: 1, pageSize: 1024 }],
         }}
-        vms={["abc123"]}
+        vms={[machineFactory({ system_id: "abc123" })]}
       />
     );
 
@@ -61,7 +49,7 @@ describe("KVMResourcesCard", () => {
         ram={{
           general: { allocated: 2, free: 3 },
         }}
-        vms={["abc123"]}
+        vms={[machineFactory({ system_id: "abc123" })]}
       />
     );
 
@@ -73,7 +61,7 @@ describe("KVMResourcesCard", () => {
       <KVMResourcesCard
         cores={{ allocated: 1, free: 2 }}
         ram={{ general: { allocated: 2, free: 3 } }}
-        vms={["abc123"]}
+        vms={[machineFactory({ system_id: "abc123" })]}
       />
     );
 

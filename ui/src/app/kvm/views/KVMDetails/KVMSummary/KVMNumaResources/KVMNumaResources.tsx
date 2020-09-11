@@ -4,11 +4,13 @@ import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import type { Machine } from "app/store/machine/types";
 import type { Pod, PodNumaNode } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { KVMResourcesCardProps } from "app/kvm/components/KVMResourcesCard";
 import { sendAnalyticsEvent } from "analytics";
 import { formatBytes } from "app/utils";
+import { machine as machineActions } from "app/base/actions";
 import { actions as podActions } from "app/store/pod";
 import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
@@ -24,7 +26,10 @@ type Props = { id: Pod["id"] };
  * @param numaNode - the NUMA node to normalise
  * @returns {KVMResourcesCardProps}
  */
-const normaliseNuma = (numaNode: PodNumaNode): KVMResourcesCardProps => {
+const normaliseNuma = (
+  numaNode: PodNumaNode,
+  podVMs: Machine[]
+): KVMResourcesCardProps => {
   const { cores, interfaces, memory, node_id, vms } = numaNode;
   const { general, hugepages } = memory;
 
@@ -40,7 +45,8 @@ const normaliseNuma = (numaNode: PodNumaNode): KVMResourcesCardProps => {
       free: hugepage.free,
       pageSize: hugepage.page_size,
     })) || [];
-  const normalisedVMs = vms?.map((vm) => vm.system_id) || [];
+  const normalisedVMs =
+    podVMs.filter((vm) => vms.some((v) => v.system_id === vm.system_id)) || [];
 
   return {
     cores: {
@@ -70,10 +76,14 @@ const KVMNumaResources = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
+  const podVMs = useSelector((state: RootState) =>
+    podSelectors.getVMs(state, pod)
+  );
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    dispatch(machineActions.fetch());
     dispatch(podActions.fetch());
   }, [dispatch]);
 
@@ -94,7 +104,7 @@ const KVMNumaResources = ({ id }: Props): JSX.Element => {
           })}
         >
           {shownNumaNodes.map((numa) => {
-            const kvmResourcesCardProps = normaliseNuma(numa);
+            const kvmResourcesCardProps = normaliseNuma(numa, podVMs);
             return (
               <KVMResourcesCard
                 className={

@@ -5,6 +5,8 @@ import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
   pod as podFactory,
   podHint as podHintFactory,
   podNumaNode as podNumaNodeFactory,
@@ -67,7 +69,7 @@ describe("KVMAggregateResources", () => {
     expect(wrapper.find("[data-test='ram-general-free']").text()).toBe("3MiB");
   });
 
-  it(`correctly displays RAM information for NUMA-aware pods`, () => {
+  it("correctly displays RAM information for NUMA-aware pods", () => {
     const oneMiB = Math.pow(1024, 2);
     const pod = podFactory({
       memory_over_commit_ratio: 2,
@@ -129,7 +131,7 @@ describe("KVMAggregateResources", () => {
     expect(wrapper.find(".doughnut-chart__label").text()).toBe("16MiB");
   });
 
-  it(`correctly displays interface information for NUMA-aware pods`, () => {
+  it("correctly displays interface information for NUMA-aware pods", () => {
     const pod = podFactory({
       memory_over_commit_ratio: 2,
       id: 1,
@@ -176,5 +178,35 @@ describe("KVMAggregateResources", () => {
     expect(
       wrapper.find("[data-test='vfs-meter'] [data-test='free']").text()
     ).toBe("15");
+  });
+
+  it("correctly filters VMs dropdown to those that belong to the pod", () => {
+    const pod = podFactory({
+      memory_over_commit_ratio: 2,
+      id: 1,
+      total: podHintFactory({ memory: 2 }),
+      used: podHintFactory({ memory: 1 }),
+    });
+    const machinesInPod = [
+      machineFactory({ pod: { id: pod.id, name: pod.name } }),
+      machineFactory({ pod: { id: pod.id, name: pod.name } }),
+    ];
+    const otherMachine = machineFactory();
+    const state = rootStateFactory({
+      machine: machineStateFactory({ items: [otherMachine, ...machinesInPod] }),
+      pod: podStateFactory({ items: [pod] }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMAggregateResources id={pod.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("KVMResourcesCard").prop("vms")).toStrictEqual(
+      machinesInPod
+    );
   });
 });

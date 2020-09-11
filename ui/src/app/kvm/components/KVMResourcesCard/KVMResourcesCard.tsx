@@ -3,6 +3,7 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
 
+import type { Machine } from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 import { COLOURS } from "app/base/constants";
 import ContextualMenu from "app/base/components/ContextualMenu";
@@ -25,7 +26,7 @@ export type Props = {
     hugepages?: (ChartValues & { pageSize: number })[];
   };
   title?: string;
-  vms: string[];
+  vms: Machine[];
 };
 
 /**
@@ -85,6 +86,7 @@ const KVMResourcesCard = ({
                     "disks",
                     "storage",
                   ]}
+                  machines={vms}
                   showActions={false}
                   paginateLimit={5}
                 ></MachineListTable>
@@ -259,6 +261,7 @@ const KVMResourcesCard = ({
                   "disks",
                   "storage",
                 ]}
+                machines={vms}
                 showActions={false}
                 paginateLimit={5}
               ></MachineListTable>

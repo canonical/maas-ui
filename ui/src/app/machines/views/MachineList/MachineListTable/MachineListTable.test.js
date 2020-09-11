@@ -4,6 +4,10 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+} from "testing/factories";
 import { MachineListTable } from "./MachineListTable";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 
@@ -11,7 +15,137 @@ const mockStore = configureStore();
 
 describe("MachineListTable", () => {
   let initialState;
+  let machines = [];
+
   beforeEach(() => {
+    machines = [
+      machineFactory({
+        actions: [],
+        architecture: "amd64/generic",
+        cpu_count: 4,
+        cpu_test_status: {
+          status: scriptStatus.RUNNING,
+        },
+        distro_series: "bionic",
+        domain: {
+          name: "example",
+        },
+        extra_macs: [],
+        fqdn: "koala.example",
+        hostname: "koala",
+        ip_addresses: [],
+        memory: 8,
+        memory_test_status: {
+          status: scriptStatus.PASSED,
+        },
+        network_test_status: {
+          status: scriptStatus.PASSED,
+        },
+        osystem: "ubuntu",
+        owner: "admin",
+        permissions: ["edit", "delete"],
+        physical_disk_count: 1,
+        pool: {},
+        pxe_mac: "00:11:22:33:44:55",
+        spaces: [],
+        status: "Deployed",
+        status_code: nodeStatus.DEPLOYED,
+        status_message: "",
+        storage: 8,
+        storage_test_status: {
+          status: scriptStatus.PASSED,
+        },
+        testing_status: {
+          status: scriptStatus.PASSED,
+        },
+        system_id: "abc123",
+        zone: {},
+      }),
+      machineFactory({
+        actions: [],
+        architecture: "amd64/generic",
+        cpu_count: 2,
+        cpu_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        distro_series: "xenial",
+        domain: {
+          name: "example",
+        },
+        extra_macs: [],
+        fqdn: "other.example",
+        hostname: "other",
+        ip_addresses: [],
+        memory: 6,
+        memory_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        network_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        osystem: "ubuntu",
+        owner: "user",
+        permissions: ["edit", "delete"],
+        physical_disk_count: 2,
+        pool: {},
+        pxe_mac: "66:77:88:99:00:11",
+        spaces: [],
+        status: "Releasing",
+        status_code: nodeStatus.RELEASING,
+        status_message: "",
+        storage: 16,
+        storage_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        testing_status: {
+          status: scriptStatus.FAILED,
+        },
+        system_id: "def456",
+        zone: {},
+      }),
+      machineFactory({
+        actions: [],
+        architecture: "amd64/generic",
+        cpu_count: 2,
+        cpu_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        distro_series: "xenial",
+        domain: {
+          name: "example",
+        },
+        extra_macs: [],
+        fqdn: "other.example",
+        hostname: "other",
+        ip_addresses: [],
+        memory: 6,
+        memory_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        network_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        osystem: "ubuntu",
+        owner: "user",
+        permissions: ["edit", "delete"],
+        physical_disk_count: 2,
+        pool: {},
+        pxe_mac: "66:77:88:99:00:11",
+        spaces: [],
+        status: "Releasing",
+        status_code: nodeStatus.DEPLOYED,
+        status_message: "",
+        storage: 16,
+        storage_test_status: {
+          status: scriptStatus.FAILED,
+        },
+        testing_status: {
+          status: scriptStatus.FAILED,
+        },
+        system_id: "ghi789",
+        zone: {},
+      }),
+    ];
     initialState = {
       general: {
         machineActions: {
@@ -29,140 +163,10 @@ describe("MachineListTable", () => {
           loading: false,
         },
       },
-      machine: {
-        errors: null,
-        loading: false,
+      machine: machineStateFactory({
         loaded: true,
-        items: [
-          {
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 4,
-            cpu_test_status: {
-              status: scriptStatus.RUNNING,
-            },
-            distro_series: "bionic",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            fqdn: "koala.example",
-            hostname: "koala",
-            ip_addresses: [],
-            memory: 8,
-            memory_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            network_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            osystem: "ubuntu",
-            owner: "admin",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 1,
-            pool: {},
-            pxe_mac: "00:11:22:33:44:55",
-            spaces: [],
-            status: "Deployed",
-            status_code: nodeStatus.DEPLOYED,
-            status_message: "",
-            storage: 8,
-            storage_test_status: {
-              status: scriptStatus.PASSED,
-            },
-            testing_status: {
-              status: scriptStatus.PASSED,
-            },
-            system_id: "abc123",
-            zone: {},
-          },
-          {
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 2,
-            cpu_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            distro_series: "xenial",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            fqdn: "other.example",
-            hostname: "other",
-            ip_addresses: [],
-            memory: 6,
-            memory_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            network_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            osystem: "ubuntu",
-            owner: "user",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 2,
-            pool: {},
-            pxe_mac: "66:77:88:99:00:11",
-            spaces: [],
-            status: "Releasing",
-            status_code: nodeStatus.RELEASING,
-            status_message: "",
-            storage: 16,
-            storage_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            testing_status: {
-              status: scriptStatus.FAILED,
-            },
-            system_id: "def456",
-            zone: {},
-          },
-          {
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 2,
-            cpu_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            distro_series: "xenial",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            fqdn: "other.example",
-            hostname: "other",
-            ip_addresses: [],
-            memory: 6,
-            memory_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            network_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            osystem: "ubuntu",
-            owner: "user",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 2,
-            pool: {},
-            pxe_mac: "66:77:88:99:00:11",
-            spaces: [],
-            status: "Releasing",
-            status_code: nodeStatus.DEPLOYED,
-            status_message: "",
-            storage: 16,
-            storage_test_status: {
-              status: scriptStatus.FAILED,
-            },
-            testing_status: {
-              status: scriptStatus.FAILED,
-            },
-            system_id: "ghi789",
-            zone: {},
-          },
-        ],
-        selected: [],
-      },
+        items: machines,
+      }),
       resourcepool: {
         loaded: true,
         items: [
@@ -208,6 +212,7 @@ describe("MachineListTable", () => {
             filter=""
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -235,6 +240,7 @@ describe("MachineListTable", () => {
             filter=""
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -242,7 +248,7 @@ describe("MachineListTable", () => {
       </Provider>
     );
 
-    const firstMachine = state.machine.items[0];
+    const firstMachine = machines[0];
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -275,6 +281,7 @@ describe("MachineListTable", () => {
             filter=""
             grouping="none"
             hiddenGroups={[]}
+            machines={machines}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -282,10 +289,7 @@ describe("MachineListTable", () => {
       </Provider>
     );
     // First machine has more cores than second machine
-    const [firstMachine, secondMachine] = [
-      state.machine.items[0],
-      state.machine.items[1],
-    ];
+    const [firstMachine, secondMachine] = [machines[0], machines[1]];
 
     expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
       false
@@ -325,16 +329,14 @@ describe("MachineListTable", () => {
             filter=""
             grouping="none"
             hiddenGroups={[]}
+            machines={machines}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
-    const [firstMachine, secondMachine] = [
-      state.machine.items[0],
-      state.machine.items[1],
-    ];
+    const [firstMachine, secondMachine] = [machines[0], machines[1]];
 
     // Click the status table header
     wrapper
@@ -393,8 +395,7 @@ describe("MachineListTable", () => {
 
   it("displays correct selected string in group header", () => {
     const state = { ...initialState };
-    state.machine.items[1].status_code = nodeStatus.DEPLOYED;
-    state.machine.selected = [state.machine.items[0].system_id];
+    machines[1].status_code = nodeStatus.DEPLOYED;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -405,6 +406,8 @@ describe("MachineListTable", () => {
             filter=""
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
+            selectedIDs={[machines[0].system_id]}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -422,7 +425,6 @@ describe("MachineListTable", () => {
   describe("Machine selection", () => {
     it("shows a checked checkbox in machine row if it is selected", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -433,6 +435,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -447,7 +451,6 @@ describe("MachineListTable", () => {
     it(`shows a checked checkbox in group row if all machines in the group
       are selected`, () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123", "ghi789"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -458,6 +461,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123", "ghi789"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -478,8 +483,7 @@ describe("MachineListTable", () => {
 
     it("shows a checked checkbox in header row if all machines are selected", () => {
       const state = { ...initialState };
-      state.machine.items[1].status_code = nodeStatus.DEPLOYED;
-      state.machine.selected = ["abc123", "def456", "ghi789"];
+      machines[1].status_code = nodeStatus.DEPLOYED;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -490,6 +494,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123", "def456", "ghi789"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -520,6 +526,7 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -530,7 +537,7 @@ describe("MachineListTable", () => {
         .find("[data-test='name-column'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // Machine not selected => select machine
       expect(
@@ -545,7 +552,6 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when checked machine checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -556,6 +562,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -566,7 +574,7 @@ describe("MachineListTable", () => {
         .find("[data-test='name-column'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // Machine selected => unselect machine
       expect(
@@ -581,7 +589,6 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when unchecked group checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = [];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -592,6 +599,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={[]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -602,7 +611,7 @@ describe("MachineListTable", () => {
         .find("[data-test='group-cell'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // No machines in group selected => select machines in group
       expect(
@@ -617,7 +626,6 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when checked group checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123", "def456", "ghi789"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -628,6 +636,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123", "def456", "ghi789"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -638,7 +648,7 @@ describe("MachineListTable", () => {
         .find("[data-test='group-cell'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // All machines in group selected => unselect machines in group
       expect(
@@ -653,7 +663,6 @@ describe("MachineListTable", () => {
 
     it("shows group checkbox in mixed selection state if some machines selected", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -664,6 +673,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -681,7 +692,6 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when unchecked header checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = [];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -692,6 +702,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={[]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -702,7 +714,7 @@ describe("MachineListTable", () => {
         .find("[data-test='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // No machines selected => select all machines
       expect(
@@ -717,7 +729,6 @@ describe("MachineListTable", () => {
 
     it("correctly dispatches action when checked header checkbox clicked", () => {
       const state = { ...initialState };
-      state.machine.selected = ["abc123", "def456", "ghi789"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -728,6 +739,8 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123", "def456", "ghi789"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -738,7 +751,7 @@ describe("MachineListTable", () => {
         .find("[data-test='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
-          target: { name: state.machine.items[0].system_id },
+          target: { name: machines[0].system_id },
         });
       // All machines already selected => unselect all machines
       expect(
@@ -753,7 +766,6 @@ describe("MachineListTable", () => {
 
     it("disables checkbox in header row if there are no machines", () => {
       const state = { ...initialState };
-      state.machine.items = [];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -764,6 +776,7 @@ describe("MachineListTable", () => {
               filter=""
               grouping="status"
               hiddenGroups={[]}
+              machines={[]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -785,7 +798,6 @@ describe("MachineListTable", () => {
 
   it("shows header checkbox in mixed selection state if some machines selected", () => {
     const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -796,6 +808,8 @@ describe("MachineListTable", () => {
             filter=""
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
+            selectedIDs={["abc123"]}
             setHiddenGroups={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -813,7 +827,6 @@ describe("MachineListTable", () => {
 
   it("remove selected filter when unchecking the only checked machine", () => {
     const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -825,6 +838,8 @@ describe("MachineListTable", () => {
             filter="in:selected"
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
+            selectedIDs={["abc123"]}
             setHiddenGroups={jest.fn()}
             setSearchFilter={setSearchFilter}
           />
@@ -835,14 +850,13 @@ describe("MachineListTable", () => {
       .find("[data-test='name-column'] input")
       .at(0)
       .simulate("change", {
-        target: { name: state.machine.items[0].system_id },
+        target: { name: machines[0].system_id },
       });
     expect(setSearchFilter).toHaveBeenCalledWith("");
   });
 
   it("remove selected filter when unchecking the only checked group", () => {
     const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -854,6 +868,8 @@ describe("MachineListTable", () => {
             filter="in:selected"
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
+            selectedIDs={["abc123"]}
             setHiddenGroups={jest.fn()}
             setSearchFilter={setSearchFilter}
           />
@@ -864,14 +880,13 @@ describe("MachineListTable", () => {
       .find("[data-test='group-cell'] input")
       .at(0)
       .simulate("change", {
-        target: { name: state.machine.items[0].system_id },
+        target: { name: machines[0].system_id },
       });
     expect(setSearchFilter).toHaveBeenCalledWith("");
   });
 
   it("remove selected filter when unchecking the all machines checkbox", () => {
     const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456", "ghi789"];
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -883,6 +898,8 @@ describe("MachineListTable", () => {
             filter="in:selected"
             grouping="status"
             hiddenGroups={[]}
+            machines={machines}
+            selectedIDs={["abc123", "def456", "ghi789"]}
             setHiddenGroups={jest.fn()}
             setSearchFilter={setSearchFilter}
           />
@@ -893,7 +910,7 @@ describe("MachineListTable", () => {
       .find("[data-test='all-machines-checkbox'] input")
       .at(0)
       .simulate("change", {
-        target: { name: state.machine.items[0].system_id },
+        target: { name: machines[0].system_id },
       });
     expect(setSearchFilter).toHaveBeenCalledWith("");
   });
@@ -906,7 +923,7 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable showActions={false} />
+          <MachineListTable machines={machines} showActions={false} />
         </MemoryRouter>
       </Provider>
     );
@@ -928,7 +945,10 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable hiddenColumns={["power", "zone"]} />
+            <MachineListTable
+              hiddenColumns={["power", "zone"]}
+              machines={machines}
+            />
           </MemoryRouter>
         </Provider>
       );
@@ -949,7 +969,11 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable hiddenColumns={["fqdn"]} showActions />
+            <MachineListTable
+              hiddenColumns={["fqdn"]}
+              machines={machines}
+              showActions
+            />
           </MemoryRouter>
         </Provider>
       );
@@ -966,7 +990,11 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable hiddenColumns={["fqdn"]} showActions={false} />
+            <MachineListTable
+              hiddenColumns={["fqdn"]}
+              machines={machines}
+              showActions={false}
+            />
           </MemoryRouter>
         </Provider>
       );
