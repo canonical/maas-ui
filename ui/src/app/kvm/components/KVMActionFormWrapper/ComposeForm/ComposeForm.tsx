@@ -13,10 +13,10 @@ import {
   fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
-  space as spaceActions,
   subnet as subnetActions,
 } from "app/base/actions";
 import { actions as domainActions } from "app/store/domain";
+import { actions as spaceActions } from "app/store/space";
 import { actions as vlanActions } from "app/store/vlan";
 import { actions as zoneActions } from "app/store/zone";
 import domainSelectors from "app/store/domain/selectors";
