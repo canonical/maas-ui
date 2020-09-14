@@ -16,7 +16,7 @@
     <title>MAAS</title>
   </head>
   <body>
-    <div class="root-loading">
+    <div class="root">
       <nav class="p-navigation is-dark">
         <div class="p-navigation__row row">
           <div class="p-navigation__banner">
@@ -48,13 +48,24 @@
           </div>
         </div>
       </nav>
-      <header class="p-strip is-shallow root-loading__header">
+      <header class="p-strip is-shallow root-loading">
         <div class="row">
           <div class="col-12">
             <p class="u-no-margin--bottom">
               <i class="p-icon--spinner u-animation--spin"></i>
               <span style="margin-left: .25rem;">Loading...</span>
             </p>
+          </div>
+        </div>
+      </header>
+      <header class="p-strip is-shallow root-error u-hide">
+        <div class="row">
+          <div class="col-12">
+            <div class="p-notification--negative">
+              <p class="p-notification__response">
+                <span class="p-notification__status">Error:</span> There was an issue loading MAAS. Try checking your network connection and <a href="" class="p-notification__action" onclick="window.location.reload();">refresh</a> this page.
+              </p>
+            </div>
           </div>
         </div>
       </header>
