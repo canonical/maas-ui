@@ -7,7 +7,7 @@ import angular from "angular";
 
 import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
-import { formatNumaMemory, getRanges } from "../node_details";
+import { formatNumaMemory, getPodNumaID, getRanges } from "../node_details";
 
 // Make a fake user.
 var userId = 0;
@@ -3073,6 +3073,25 @@ describe("NodeDetailsController", function () {
 
     it("can handle different types", () => {
       expect(getRanges([3, "1", 2, "0"])).toEqual(["0-3"]);
+    });
+  });
+
+  describe("getPodNumaID", () => {
+    it("correctly returns the NUMA id of the pod that hosts the node, if it exists", () => {
+      const node1 = { pod: { id: 1, name: "pod1" }, system_id: "abc123" };
+      const node2 = { pod: { id: 1, name: "pod1" }, system_id: "def456" };
+      const node3 = { pod: { id: 1, name: "pod1" }, system_id: "ghi789" };
+      const pod = {
+        id: 1,
+        name: "pod1",
+        numa_pinning: [
+          { node_id: 0, vms: [{ system_id: "abc123" }] },
+          { node_id: 2, vms: [{ system_id: "def456" }] },
+        ],
+      };
+      expect(getPodNumaID(node1, pod)).toEqual(0);
+      expect(getPodNumaID(node2, pod)).toEqual(2);
+      expect(getPodNumaID(node3, pod)).toEqual(null);
     });
   });
 });
