@@ -27,6 +27,7 @@
 
     &:hover {
       background-color: inherit;
+      color: $color-link;
       text-decoration: underline;
     }
 
@@ -46,7 +47,7 @@
 
     // Table header sort buttons
     th & {
-      color: $color-mid-dark;
+      color: $color-dark;
       font-weight: 400;
 
       .p-icon--contextual-menu {
