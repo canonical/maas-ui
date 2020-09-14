@@ -147,10 +147,10 @@ const KVMResourcesCard = ({
           <thead>
             <tr>
               <th></th>
-              <th className="u-align--right">
+              <th className="u-align--right u-text--light">
                 <span className="u-nudge-left">Allocated</span>
               </th>
-              <th className="u-align--right">
+              <th className="u-align--right u-text--light">
                 <span className="u-nudge-left">Free</span>
               </th>
             </tr>
