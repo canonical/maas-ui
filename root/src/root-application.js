@@ -1,14 +1,36 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
-import { registerApplication, start } from "single-spa";
+import {
+  addErrorHandler,
+  getAppStatus,
+  registerApplication,
+  start,
+} from "single-spa";
 import { name as appName, version as appVersion } from "../../ui/package.json";
 
 import "./scss/base.scss";
 
-const showLoading = () => {
-  const loadingNode = document.querySelector(".root-loading");
-  if (loadingNode.classList.contains("u-hide")) {
-    loadingNode.classList.remove("u-hide");
+const showElement = (className, show) => {
+  const element = document.querySelector(className);
+  if (show && element.classList.contains("u-hide")) {
+    element.classList.remove("u-hide");
+  } else if (!show && !element.classList.contains("u-hide")) {
+    element.classList.add("u-hide");
   }
+};
+
+const showRoot = (show) => {
+  showElement(".root", show);
+};
+
+const showLoading = (show) => {
+  showRoot(show);
+  showElement(".root-loading", show);
+};
+
+const showError = (show) => {
+  showLoading(false);
+  showRoot(show);
+  showElement(".root-error", show);
 };
 
 console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
@@ -33,10 +55,28 @@ window.addEventListener("single-spa:before-app-change", (evt) => {
   }
 });
 
+window.addEventListener("single-spa:app-change", (evt) => {
+  if (evt.detail.appsByNewStatus.MOUNTED.length > 0) {
+    showLoading(false);
+    showError(false);
+  }
+});
+
+addErrorHandler((err) => {
+  showError(true);
+  console.error(
+    "App",
+    err.appOrParcelName,
+    "failed with status:",
+    getAppStatus(err.appOrParcelName)
+  );
+  console.error(err);
+});
+
 registerApplication({
   name: "legacy",
   app: () => {
-    showLoading();
+    showLoading(true);
     return import("@maas-ui/maas-ui-legacy");
   },
   activeWhen: (location) =>
@@ -47,7 +87,7 @@ registerApplication({
 registerApplication({
   name: "ui",
   app: () => {
-    showLoading();
+    showLoading(true);
     return import("@maas-ui/maas-ui");
   },
   activeWhen: (location) =>
