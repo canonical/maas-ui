@@ -84,10 +84,6 @@ function MasterController(
   };
 
   const displayTemplate = () => {
-    const loadingNode = document.querySelector(".root-loading");
-    if (!loadingNode.classList.contains("u-hide")) {
-      loadingNode.classList.add("u-hide");
-    }
     $rootScope.site = window.CONFIG.maas_name;
     renderHeader();
     renderFooter();
