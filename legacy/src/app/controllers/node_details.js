@@ -5,7 +5,7 @@
  */
 import angular from "angular";
 
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 import { HardwareType, NodeTypes } from "../enum";
 
 // Convert MiB to GiB value if over 1024 and round to 4 significant figures.
@@ -38,6 +38,18 @@ export const getRanges = (array) => {
   }
 
   return ranges;
+};
+
+export const getPodNumaID = (node, pod) => {
+  if (pod.numa_pinning) {
+    const podNuma = pod.numa_pinning.find((numa) =>
+      numa.vms.some((vm) => vm.system_id === node.system_id)
+    );
+    if (podNuma) {
+      return podNuma.node_id;
+    }
+  }
+  return null;
 };
 
 /* @ngInject */
@@ -79,6 +91,7 @@ function NodeDetailsController(
 
   // Initial values.
   $scope.legacyUrlBase = generateLegacyURL();
+  $scope.newUrlBase = generateNewURL();
   $scope.loaded = false;
   $scope.node = null;
   $scope.action = {
@@ -130,6 +143,7 @@ function NodeDetailsController(
   $scope.expandedNumas = [];
   $scope.groupedInterfaces = [];
   $scope.isVM = false;
+  $scope.podNumaID = null;
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
 
   // Node header section.
@@ -627,6 +641,7 @@ function NodeDetailsController(
       PodsManager.getItem(node.pod.id).then((pod) => {
         $scope.isVM = MachinesManager.isVM(node, pod);
         $scope.loaded = true;
+        $scope.podNumaID = getPodNumaID(node, pod);
       });
     } else {
       $scope.isVM = MachinesManager.isVM(node);
