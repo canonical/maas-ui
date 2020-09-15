@@ -44,33 +44,6 @@ export const App = () => {
   const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {
-    // window.history.pushState events from *outside* of react
-    // are not observeable by react-router, which watches the history
-    // object for changes. To compensate for this, we manually push a route
-    // to history when SingleSPA mounts the react app, otherwise react just
-    // renders the last view when the app was unmounted.
-    if (history) {
-      window.addEventListener("popstate", (evt) => {
-        if (evt.singleSpa) {
-          const reactRoute =
-            window.location.pathname.split("/")[2] ===
-            process.env.REACT_APP_REACT_BASENAME.substr(1);
-          if (reactRoute) {
-            // Get path without basename, react basename
-            const newRoute = window.location.pathname.split("/").slice(3);
-            // get subPath e.g. 'settings' in '/MAAS/r/settings/configuration'
-            const newSubpath = newRoute[0];
-            const lastSubpath = history.location.pathname.split("/")[1];
-            if (newSubpath !== lastSubpath) {
-              history.replace(`/${newRoute}`);
-            }
-          }
-        }
-      });
-    }
-  }, [history]);
-
-  useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
   }, [dispatch]);
 
