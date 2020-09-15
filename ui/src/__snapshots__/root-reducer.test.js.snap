@@ -198,7 +198,7 @@ Object {
     "saving": false,
   },
   "space": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,
