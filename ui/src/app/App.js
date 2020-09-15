@@ -13,12 +13,7 @@ import {
 import { getCookie } from "app/utils";
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import {
-  REACT_BASENAME,
-  Footer,
-  Header,
-  navigateToLegacy,
-} from "@maas-ui/maas-ui-shared";
+import { Footer, Header, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import { status as statusActions } from "app/base/actions";
 import { websocket } from "./base/actions";
 import authSelectors from "app/store/auth/selectors";
@@ -46,32 +41,6 @@ export const App = () => {
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
   const debug = process.env.NODE_ENV === "development";
-
-  useEffect(() => {
-    // window.history.pushState events from *outside* of react
-    // are not observeable by react-router, which watches the history
-    // object for changes. To compensate for this, we manually push a route
-    // to history when SingleSPA mounts the react app, otherwise react just
-    // renders the last view when the app was unmounted.
-    if (history) {
-      window.addEventListener("popstate", (evt) => {
-        if (evt.singleSpa) {
-          const reactRoute =
-            window.location.pathname.split("/")[2] === REACT_BASENAME.substr(1);
-          if (reactRoute) {
-            // Get path without basename, react basename
-            const newRoute = window.location.pathname.split("/").slice(3);
-            // get subPath e.g. 'settings' in '/MAAS/r/settings/configuration'
-            const newSubpath = newRoute[0];
-            const lastSubpath = history.location.pathname.split("/")[1];
-            if (newSubpath !== lastSubpath) {
-              history.replace(`/${newRoute}`);
-            }
-          }
-        }
-      });
-    }
-  }, [history]);
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
