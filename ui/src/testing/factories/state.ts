@@ -136,6 +136,7 @@ export const scriptsState = define<ScriptsState>({
 
 export const spaceState = define<SpaceState>({
   ...defaultState,
+  errors: null,
 });
 
 export const sshKeyState = define<SSHKeyState>({
