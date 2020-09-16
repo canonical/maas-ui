@@ -16,7 +16,6 @@ import {
   scriptresults,
   scripts,
   service,
-  space,
   status,
   subnet,
   user,
@@ -27,6 +26,7 @@ import device from "app/store/device";
 import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
+import space from "app/store/space";
 import tag from "app/store/tag";
 import vlan from "app/store/vlan";
 import zone from "app/store/zone";

@@ -1,19 +1,20 @@
-import space from "./space";
+import { actions } from "./";
 
 describe("space actions", () => {
-  it("should handle fetching spaces", () => {
-    expect(space.fetch()).toEqual({
-      type: "FETCH_SPACE",
+  it("returns a fetch action", () => {
+    expect(actions.fetch()).toEqual({
+      type: "space/fetch",
       meta: {
         model: "space",
         method: "list",
       },
+      payload: null,
     });
   });
 
-  it("can handle creating spaces", () => {
-    expect(space.create({ name: "space1", description: "a space" })).toEqual({
-      type: "CREATE_SPACE",
+  it("returns a create action", () => {
+    expect(actions.create({ name: "space1", description: "a space" })).toEqual({
+      type: "space/create",
       meta: {
         model: "space",
         method: "create",
@@ -27,9 +28,9 @@ describe("space actions", () => {
     });
   });
 
-  it("can handle updating spaces", () => {
-    expect(space.update({ name: "space1", description: "a space" })).toEqual({
-      type: "UPDATE_SPACE",
+  it("returns an update action", () => {
+    expect(actions.update({ name: "space1", description: "a space" })).toEqual({
+      type: "space/update",
       meta: {
         model: "space",
         method: "update",
@@ -43,9 +44,9 @@ describe("space actions", () => {
     });
   });
 
-  it("can handle deleting spaces", () => {
-    expect(space.delete(1)).toEqual({
-      type: "DELETE_SPACE",
+  it("returns a delete action", () => {
+    expect(actions.delete(1)).toEqual({
+      type: "space/delete",
       meta: {
         model: "space",
         method: "delete",
@@ -58,9 +59,10 @@ describe("space actions", () => {
     });
   });
 
-  it("can handle cleaning spaces", () => {
-    expect(space.cleanup()).toEqual({
-      type: "CLEANUP_SPACE",
+  it("returns a cleanup action", () => {
+    expect(actions.cleanup()).toEqual({
+      type: "space/cleanup",
+      payload: undefined,
     });
   });
 });

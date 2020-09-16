@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
@@ -41,16 +41,6 @@ let websocketClient = new WebSocketClient();
 sagaMiddleware.run(rootSaga, websocketClient);
 
 const Root = () => {
-  useEffect(() => {
-    const loadingNode = document.querySelector(".root-loading");
-    if (!loadingNode) {
-      return;
-    }
-    if (!loadingNode.classList.contains("u-hide")) {
-      loadingNode.classList.add("u-hide");
-    }
-  }, []);
-
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>

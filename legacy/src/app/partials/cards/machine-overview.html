@@ -168,7 +168,11 @@
     </div>
     <div ng-if="node.pod">
       <div class="p-text--muted">Host</div>
-      <a href="{$ legacyUrlBase $}/kvm/{$ node.pod.id $}">{$ node.pod.name $}&nbsp;&rsaquo;</a>
+      <span>
+        <span ng-if="podNumaID">On NUMA node {$ podNumaID $} of</span>
+        <span ng-if="!podNumaID">Not NUMA-aligned on</span>
+        <a href="{$ newUrlBase $}/kvm/{$ node.pod.id $}">{$ node.pod.name $}&nbsp;&rsaquo;</a>
+      </span>
     </div>
     <div>
       <div>
