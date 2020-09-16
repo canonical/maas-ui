@@ -3,12 +3,6 @@
 exports[`DoughnutChart renders 1`] = `
 <div
   className="p-tooltip--right"
-  style={
-    Object {
-      "height": "106px",
-      "width": "106px",
-    }
-  }
 >
   <style>
     #doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ .doughnut-chart__segment:hover {
@@ -17,9 +11,8 @@ exports[`DoughnutChart renders 1`] = `
   </style>
   <svg
     className="doughnut-chart"
-    height={106}
     id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ"
-    width={106}
+    viewBox="0 0 106 106"
   >
     <mask
       id="myMask"
@@ -48,9 +41,7 @@ exports[`DoughnutChart renders 1`] = `
         x="0"
         y="0"
       />
-      <g
-        transform="xtranslate(12.5, 12.5)"
-      >
+      <g>
         <circle
           className="doughnut-chart__segment"
           cx={28}
