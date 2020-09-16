@@ -67,7 +67,7 @@ export const DoughnutChart = ({
     []
   );
 
-  const id = `doughnut-chart-${nanoid()}`;
+  const id = useRef(`doughnut-chart-${nanoid()}`);
   const hoverIncrease = segmentHoverWidth - segmentWidth;
   const adjustedHoverWidth = segmentHoverWidth + hoverIncrease;
   // The canvas needs enough space so that the hover state does not get cut off.
@@ -162,26 +162,17 @@ export const DoughnutChart = ({
     );
   });
   return (
-    <div
-      className={classNames("p-tooltip--right", className)}
-      style={{
-        // Set the size of this wrapping div so that the tooltips won't
-        // be affected by changes in container.
-        height: `${canvasSize}px`,
-        width: `${canvasSize}px`,
-      }}
-    >
+    <div className={classNames("p-tooltip--right", className)}>
       <style>
         {/* Set the hover width of the segments. */}
-        {`#${id} .doughnut-chart__segment:hover {
+        {`#${id.current} .doughnut-chart__segment:hover {
           stroke-width: ${adjustedHoverWidth} !important;
         }`}
       </style>
       <svg
-        width={canvasSize}
-        height={canvasSize}
         className="doughnut-chart"
-        id={id}
+        id={id.current}
+        viewBox={`0 0 ${canvasSize} ${canvasSize}`}
       >
         <mask id="myMask">
           {/* Cover the canvas, this will be the visible area. */}
@@ -209,14 +200,7 @@ export const DoughnutChart = ({
             height={canvasSize}
             fill="transparent"
           />
-          {/* Move the chart on the canvas to leave enough space so that the hovered segments don't get cut off. */}
-          <g
-            transform={`xtranslate(${adjustedHoverWidth / 2}, ${
-              adjustedHoverWidth / 2
-            })`}
-          >
-            {segmentNodes}
-          </g>
+          <g>{segmentNodes}</g>
         </g>
         {label ? (
           <text
