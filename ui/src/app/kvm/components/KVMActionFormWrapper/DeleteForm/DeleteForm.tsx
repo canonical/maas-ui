@@ -18,9 +18,11 @@ const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const errors = useSelector(podSelectors.errors);
-  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
+    (kvm) => kvm.id
+  );
   const deletingSelected = useSelector(podSelectors.deletingSelected);
-  const podsToDelete = id ? [Number(id)] : selectedPodIDs;
+  const kvmsToDelete = id ? [Number(id)] : selectedKVMIDs;
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
   return (
@@ -31,12 +33,12 @@ const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
       errors={errors}
       modelName="KVM"
       onSubmit={() => {
-        podsToDelete.forEach((podID) => {
-          dispatch(podActions.delete(podID));
+        kvmsToDelete.forEach((kvmID) => {
+          dispatch(podActions.delete(kvmID));
         });
       }}
       processingCount={deletingSelected.length}
-      selectedCount={podsToDelete.length}
+      selectedCount={kvmsToDelete.length}
       submitAppearance="negative"
     />
   );

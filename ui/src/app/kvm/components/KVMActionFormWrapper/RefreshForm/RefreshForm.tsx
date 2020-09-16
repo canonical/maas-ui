@@ -18,10 +18,12 @@ const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const errors = useSelector(podSelectors.errors);
-  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
+    (kvm) => kvm.id
+  );
   const refreshing = useSelector(podSelectors.refreshing);
   const refreshingSelected = useSelector(podSelectors.refreshingSelected);
-  const podsToRefresh = id ? [Number(id)] : selectedPodIDs;
+  const kvmsToRefresh = id ? [Number(id)] : selectedKVMIDs;
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
   return (
@@ -32,12 +34,12 @@ const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
       errors={errors}
       modelName="KVM"
       onSubmit={() => {
-        podsToRefresh.forEach((podID) => {
+        kvmsToRefresh.forEach((podID) => {
           dispatch(podActions.refresh(podID));
         });
       }}
       processingCount={id ? refreshing.length : refreshingSelected.length}
-      selectedCount={podsToRefresh.length}
+      selectedCount={kvmsToRefresh.length}
     >
       <p>
         Refreshing KVMs will cause MAAS to recalculate usage metrics, update
