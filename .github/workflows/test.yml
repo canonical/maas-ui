@@ -9,10 +9,9 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
@@ -33,10 +32,9 @@ jobs:
 
   test:
     name: Test
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
@@ -57,10 +55,9 @@ jobs:
 
   build:
     name: Build
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
@@ -83,10 +80,9 @@ jobs:
 
   betterer:
     name: Betterer
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
