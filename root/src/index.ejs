@@ -69,6 +69,19 @@
           </div>
         </div>
       </header>
+      <noscript>
+        <div class="p-strip">
+          <div class="row">
+            <div class="col-12">
+              <div class="p-notification--negative">
+                <p class="p-notification__response">
+                  <span class="p-notification__status">Error:</span> JavaScript must be enabled in your browser to use MAAS.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </noscript>
     </div>
     <% htmlWebpackPlugin.files.js.forEach(function(file){ %>
       <script src="<%= file %>"></script>
