@@ -6,13 +6,13 @@
 import angular from "angular";
 
 const powerParametersTmpl = `<div class="p-form__group row">
-    <label for="power-type"
+    <label for="power-type-{{::uniqueId}}"
         class="p-form__label col-2 is-required"
         data-ng-class="{'is-disabled': !ngModel.editing }">
         Power type
     </label>
     <div class="p-form__control col-4">
-        <select name="power-type" id="power-type"
+        <select name="power-type" id="power-type-{{::uniqueId}}"
             data-ng-disabled="ngDisabled || ngModel.in_pod"
             data-ng-class="{ invalid: !ngModel.type }"
             data-ng-model="ngModel.type"
@@ -177,6 +177,7 @@ export function maasPowerInput($compile) {
 }
 
 export function maasPowerParameters() {
+  let uniqueId = 1;
   return {
     restrict: "A",
     require: "ngModel",
@@ -186,5 +187,9 @@ export function maasPowerParameters() {
       ngDisabled: "=",
     },
     template: powerParametersTmpl,
+    link: function (scope, elem, attrs) {
+      scope.uniqueId = uniqueId;
+      uniqueId++;
+    },
   };
 }
