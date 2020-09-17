@@ -1759,6 +1759,12 @@ function NodeDetailsController(
     if ($scope.isDevice && activeNode) {
       $scope.ip_assignment = activeNode.ip_assignment;
     }
+    // Handle updating the area when the browser navigates back/forward.
+    $scope.$on("$locationChangeStart", () => {
+      $scope.section.area = angular.isString($location.search().area)
+        ? $location.search().area
+        : "summary";
+    });
   });
 }
 
