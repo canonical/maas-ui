@@ -523,6 +523,7 @@ export function maasObjFieldGroup() {
 
 /* @ngInject */
 export function maasObjField($compile) {
+  let uniqueId = 1;
   return {
     restrict: "E",
     require: ["^^maasObjForm", "?^^maasObjFieldGroup"],
@@ -533,6 +534,8 @@ export function maasObjField($compile) {
     transclude: true,
     template: "<div data-ng-transclude></div>",
     link: function (scope, element, attrs, controllers) {
+      const uniqueKey = `${attrs.key}-${uniqueId}`;
+      uniqueId++;
       // Select the controller based on which is available.
       var controller = controllers[1];
       if (!angular.isObject(controller)) {
@@ -579,7 +582,7 @@ export function maasObjField($compile) {
 
       if (attrs.disableLabel !== "true" && !(attrs.type === "hidden")) {
         var labelElement = angular.element("<label/>");
-        labelElement.attr("for", attrs.key);
+        labelElement.attr("for", uniqueKey);
         labelElement.text(label);
         labelElement.addClass("p-form__label");
         if (attrs.labelWidth) {
@@ -609,12 +612,12 @@ export function maasObjField($compile) {
           } else {
             infoIcon.addClass("p-icon--information");
           }
-          infoIcon.attr("aria-describedby", attrs.key + "-tooptip");
+          infoIcon.attr("aria-describedby", uniqueKey + "-tooltip");
 
           var infoTooltip = angular.element("<p></p>");
           infoTooltip.addClass("p-tooltip__message");
           infoTooltip.text(attrs.labelInfo);
-          infoTooltip.attr("id", attrs.key + "-tooptip");
+          infoTooltip.attr("id", uniqueKey + "-tooltip");
 
           infoWrapper.append(infoIcon);
           infoWrapper.append(infoTooltip);
@@ -653,7 +656,7 @@ export function maasObjField($compile) {
         if (attrs.type === "text") {
           inputElement = $compile(
             '<input type="text" id="' +
-              attrs.key +
+              uniqueKey +
               '" placeholder="' +
               placeholder +
               '"' +
@@ -662,7 +665,7 @@ export function maasObjField($compile) {
         } else if (attrs.type === "textarea") {
           inputElement = $compile(
             '<textarea id="' +
-              attrs.key +
+              uniqueKey +
               '" placeholder="' +
               placeholder +
               '"' +
@@ -672,7 +675,7 @@ export function maasObjField($compile) {
         } else if (attrs.type === "password") {
           inputElement = $compile(
             '<input type="password" id="' +
-              attrs.key +
+              uniqueKey +
               '" placeholder="' +
               placeholder +
               '"' +
@@ -768,7 +771,7 @@ export function maasObjField($compile) {
         // Construct the select.
         inputElement = $compile(
           '<select id="' +
-            attrs.key +
+            uniqueKey +
             '" ' +
             'data-ng-model="_selectValue" ' +
             'data-ng-options="' +
@@ -828,12 +831,12 @@ export function maasObjField($compile) {
             '<div class="p-form__group" ',
             'style="padding-top: .2rem;" ',
             'data-ng-repeat="val in ' + values + '">',
-            '<input id="' + attrs.key + "_" + "{$ val $}",
+            '<input id="' + uniqueKey + "_" + "{$ val $}",
             '" type="checkbox" value="{$ val $}" ',
             'class="checkbox" ',
             'data-ng-checked="_checked(val)" ',
             'data-ng-click="_toggleChecked(val)">',
-            '<label for="' + attrs.key + "_",
+            '<label for="' + uniqueKey + "_",
             "{$ val $}" + '" ',
             'class="checkbox-label">{$ val $}</label>',
             "</div>",
@@ -863,7 +866,7 @@ export function maasObjField($compile) {
             '<span data-ng-if="ngDisabled()" ',
             'data-ng-repeat="tag in _tags">',
             "{$ tag.text $} </span>",
-            '<tags-input id="' + attrs.key + '" ',
+            '<tags-input id="' + uniqueKey + '" ',
             'data-ng-model="_tags" ',
             'data-ng-if="!ngDisabled()" ',
             'placeholder="' + placeholder + '" ',
@@ -892,7 +895,7 @@ export function maasObjField($compile) {
         inputElement = angular.element(
           [
             '<input type="hidden" name="' + attrs.key + '" ',
-            'id="' + attrs.key + '" ',
+            'id="' + uniqueKey + '" ',
             'value="' + attrs.value + '">',
             "</input>",
           ].join("")
@@ -919,7 +922,7 @@ export function maasObjField($compile) {
             '<div class="maas-p-switch">',
             '<input type="checkbox" name="' + attrs.key + '" ',
             'class="maas-p-switch--input" ',
-            'id="' + attrs.key + '" ',
+            'id="' + uniqueKey + '" ',
             'data-ng-disabled="ngDisabled()" ',
             'data-ng-model="_toggle" ',
             'data-ng-change="_changed()">',
@@ -982,11 +985,11 @@ export function maasObjField($compile) {
             '<input class="p-slider" type="range"',
             'min="' + attrs.min + '" max="' + attrs.max + '" ',
             'value="1" step="' + attrs.step + '" ',
-            'id="' + attrs.key + '" ',
+            'id="' + uniqueKey + '" ',
             'data-ng-model="_slider" data-ng-disabled="',
             '_ngDisabled()">',
             '<input class="p-slider__input" type="text" ',
-            'maxlength="3" id="' + attrs.key + '-input" ',
+            'maxlength="3" id="' + uniqueKey + '-input" ',
             'data-ng-model="_slider" disabled="disabled" ',
             "></div>",
           ].join("")
