@@ -3,6 +3,8 @@ import {
   addErrorHandler,
   getAppStatus,
   registerApplication,
+  setBootstrapMaxTime,
+  setMountMaxTime,
   start,
 } from "single-spa";
 import { name as appName, version as appVersion } from "../../ui/package.json";
@@ -61,6 +63,11 @@ window.addEventListener("single-spa:app-change", (evt) => {
     showError(false);
   }
 });
+
+// Don't display an error or warning about slow bootstrap/mount unless it takes
+// more than 30 seconds.
+setBootstrapMaxTime(30000, false, 30000);
+setMountMaxTime(30000, false, 30000);
 
 addErrorHandler((err) => {
   showError(true);
