@@ -30,6 +30,7 @@ const normaliseNuma = (numaNode: PodNumaNode): KVMResourcesCardProps => {
 
   const normalisedInterfaces =
     interfaces?.map((iface) => ({
+      id: iface.id,
       name: iface.name,
       virtualFunctions: iface.virtual_functions,
     })) || [];
