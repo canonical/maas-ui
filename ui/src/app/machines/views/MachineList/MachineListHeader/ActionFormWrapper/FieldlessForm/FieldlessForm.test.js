@@ -35,7 +35,6 @@ describe("FieldlessForm", () => {
             { name: "delete", sentence: "delete" },
             { name: "exit-rescue-mode", sentence: "exit-rescue-mode" },
             { name: "lock", sentence: "lock" },
-            { name: "mark-broken", sentence: "mark-broken" },
             { name: "mark-fixed", sentence: "mark-fixed" },
             { name: "off", sentence: "off" },
             { name: "on", sentence: "on" },
@@ -302,45 +301,6 @@ describe("FieldlessForm", () => {
         payload: {
           params: {
             action: "lock",
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch mark broken action", () => {
-    const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["mark-broken"] }];
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <FieldlessForm
-            selectedAction={{ name: "mark-broken" }}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => wrapper.find("Formik").props().onSubmit());
-    expect(
-      store.getActions().filter(({ type }) => type === "MARK_MACHINE_BROKEN")
-    ).toStrictEqual([
-      {
-        type: "MARK_MACHINE_BROKEN",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: "mark-broken",
             extra: {},
             system_id: "abc123",
           },

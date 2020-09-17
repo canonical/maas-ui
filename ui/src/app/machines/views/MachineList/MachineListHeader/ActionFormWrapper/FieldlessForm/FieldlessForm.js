@@ -43,9 +43,6 @@ const useSelectedProcessing = (actionName) => {
     case "lock":
       selector = machineSelectors.lockingSelected;
       break;
-    case "mark-broken":
-      selector = machineSelectors.markingBrokenSelected;
-      break;
     case "mark-fixed":
       selector = machineSelectors.markingFixedSelected;
       break;

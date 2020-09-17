@@ -183,8 +183,10 @@ machine.exitRescueMode = (systemId) =>
     systemId
   );
 
-machine.markBroken = (systemId) =>
-  generateMachineAction("MARK_MACHINE_BROKEN", "mark-broken", systemId);
+machine.markBroken = (systemId, message) =>
+  generateMachineAction("MARK_MACHINE_BROKEN", "mark-broken", systemId, {
+    message,
+  });
 
 machine.markFixed = (systemId) =>
   generateMachineAction("MARK_MACHINE_FIXED", "mark-fixed", systemId);
