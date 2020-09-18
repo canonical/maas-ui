@@ -7,15 +7,15 @@ import ContextualMenu from "app/base/components/ContextualMenu";
 
 type Props = { setSelectedAction: (action: string) => void };
 
-const KVMListActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
-  const selectedKVMs = useSelector(podSelectors.selectedKVMs);
-  const actionMenuDisabled = selectedKVMs.length === 0;
+const RSDListActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
+  const selectedRSDs = useSelector(podSelectors.selectedRSDs);
+  const actionMenuDisabled = selectedRSDs.length === 0;
 
   return (
     <Tooltip
       message={
         actionMenuDisabled
-          ? "Select KVMs below to perform an action."
+          ? "Select RSDs below to perform an action."
           : undefined
       }
       position="left"
@@ -42,4 +42,4 @@ const KVMListActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   );
 };
 
-export default KVMListActionMenu;
+export default RSDListActionMenu;

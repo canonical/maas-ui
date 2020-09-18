@@ -1,0 +1,36 @@
+@mixin RSDListTable {
+  .rsd-list-table {
+    td,
+    th {
+      // FQDN
+      &:nth-child(1) {
+        @include breakpoint-widths(50%, 50%, 60%);
+      }
+
+      // VMs / Owners
+      &:nth-child(2) {
+        @include breakpoint-widths(5rem);
+      }
+
+      // Resource pool / AZ
+      &:nth-child(3) {
+        @include breakpoint-widths(50%, 50%, 40%);
+      }
+
+      // CPU
+      &:nth-child(4) {
+        @include breakpoint-widths(0, 0, 9rem, 13rem);
+      }
+
+      // RAM
+      &:nth-child(5) {
+        @include breakpoint-widths(0, 0, 9rem, 13rem);
+      }
+
+      // Storage
+      &:nth-child(6) {
+        @include breakpoint-widths(0, 0, 9rem, 13rem);
+      }
+    }
+  }
+}

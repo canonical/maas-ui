@@ -1,25 +1,14 @@
 import { Button } from "@canonical/react-components";
-import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import { getVMHostCount } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import KVMListActionMenu from "./KVMListActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
-
-const getKVMCount = (kvmCount: number, selectedKVMCount: number) => {
-  const kvmCountString = pluralize("VM host", kvmCount, true);
-  if (selectedKVMCount > 0) {
-    if (kvmCount === selectedKVMCount) {
-      return "All VM hosts selected";
-    }
-    return `${selectedKVMCount} of ${kvmCountString} selected`;
-  }
-  return `${kvmCountString} available`;
-};
 
 const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -70,7 +59,7 @@ const KVMListHeader = (): JSX.Element => {
         )
       }
       loading={!podsLoaded}
-      subtitle={getKVMCount(kvms.length, selectedKVMs.length)}
+      subtitle={getVMHostCount(kvms.length, selectedKVMs.length)}
       title="KVM"
     />
   );
