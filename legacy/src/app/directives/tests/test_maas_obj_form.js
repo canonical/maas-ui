@@ -85,13 +85,13 @@ describe("maasObjForm", function () {
     });
 
     it("creates input with type 'text'", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       expect(inputField.prop("nodeName")).toBe("INPUT");
       expect(inputField.attr("type")).toBe("text");
     });
 
     it("sets placeholder", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       expect(inputField.attr("placeholder")).toBe("Placeholder");
     });
 
@@ -108,7 +108,7 @@ describe("maasObjForm", function () {
     });
 
     it("reverts value on esc", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       inputField.triggerHandler("focus");
       inputField.val(makeName("newValue"));
 
@@ -147,12 +147,12 @@ describe("maasObjForm", function () {
     });
 
     it("creates textarea", function () {
-      var textarea = angular.element(directive.find("#key"));
+      var textarea = angular.element(directive.find("#key-1"));
       expect(textarea.prop("nodeName")).toBe("TEXTAREA");
     });
 
     it("sets placeholder", function () {
-      var textarea = angular.element(directive.find("#key"));
+      var textarea = angular.element(directive.find("#key-1"));
       expect(textarea.attr("placeholder")).toBe("Placeholder");
     });
 
@@ -187,13 +187,13 @@ describe("maasObjForm", function () {
     });
 
     it("creates input with type 'password'", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       expect(inputField.prop("nodeName")).toBe("INPUT");
       expect(inputField.attr("type")).toBe("password");
     });
 
     it("sets placeholder", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       expect(inputField.attr("placeholder")).toBe("Placeholder");
     });
 
@@ -210,7 +210,7 @@ describe("maasObjForm", function () {
     });
 
     it("reverts value on esc", function () {
-      var inputField = angular.element(directive.find("#key"));
+      var inputField = angular.element(directive.find("#key-1"));
       inputField.triggerHandler("focus");
       inputField.val(makeName("newValue"));
 
@@ -257,13 +257,13 @@ describe("maasObjForm", function () {
     });
 
     it("creates select", function () {
-      var select = angular.element(directive.find("#key"));
+      var select = angular.element(directive.find("#key-1"));
       expect(select.prop("nodeName")).toBe("SELECT");
       expect(select.attr("data-ng-options")).toBe(options);
     });
 
     it("adds placeholder option", function () {
-      var select = angular.element(directive.find("#key"));
+      var select = angular.element(directive.find("#key-1"));
       var placeholder = angular.element(select.find('option[value=""]'));
       expect(placeholder.attr("disabled")).toBe("disabled");
       expect(placeholder.text()).toBe("Placeholder");
@@ -279,7 +279,7 @@ describe("maasObjForm", function () {
         "</maas-obj-form>",
       ].join("");
       directive = compileDirective(html);
-      var select = angular.element(directive.find("#key"));
+      var select = angular.element(directive.find("#key-1"));
       var placeholder = angular.element(select.find('option[value=""]'));
       expect(placeholder.attr("disabled")).toBeUndefined();
     });
@@ -364,14 +364,14 @@ describe("maasObjForm", function () {
         var div = angular.element(divs[idx]);
         var input = angular.element(div.find("input"));
         var label = angular.element(div.find("label"));
-        expect(input.attr("id")).toBe("key_" + value);
-        expect(label.attr("for")).toBe("key_" + value);
+        expect(input.attr("id")).toBe("key-1_" + value);
+        expect(label.attr("for")).toBe("key-1_" + value);
         expect(label.text()).toBe(value);
       });
     });
 
     it("adds label with width", function () {
-      var labelField = angular.element(directive.find('label[for="key"]'));
+      var labelField = angular.element(directive.find('label[for="key-1"]'));
       expect(labelField.text()).toBe("Key");
       expect(labelField.hasClass("col-2")).toBe(true);
     });
@@ -400,7 +400,7 @@ describe("maasObjForm", function () {
     });
 
     it("adds label with width", function () {
-      var labelField = angular.element(directive.find('label[for="key"]'));
+      var labelField = angular.element(directive.find('label[for="key-1"]'));
       expect(labelField.text()).toBe("Key");
       expect(labelField.hasClass("col-2")).toBe(true);
     });
@@ -429,7 +429,7 @@ describe("maasObjForm", function () {
     });
 
     it("adds label with width", function () {
-      var labelField = angular.element(directive.find('label[for="key"]'));
+      var labelField = angular.element(directive.find('label[for="key-1"]'));
       expect(labelField.text()).toBe("Key");
       expect(labelField.hasClass("col-2")).toBe(true);
     });
@@ -458,7 +458,7 @@ describe("maasObjForm", function () {
     });
 
     it("adds label with width", function () {
-      var labelField = angular.element(directive.find('label[for="key"]'));
+      var labelField = angular.element(directive.find('label[for="key-1"]'));
       expect(labelField.text()).toBe("Key");
       expect(labelField.hasClass("col-2")).toBe(true);
     });
@@ -510,12 +510,12 @@ describe("maasObjForm", function () {
     });
 
     it("sets input to value", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       expect(field.val()).toBe($scope.obj.key);
     });
 
     it("updates input to value when not in focus", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       expect(field.val()).toBe($scope.obj.key);
       $scope.obj.key = makeName("new_key");
       $scope.$digest();
@@ -523,7 +523,7 @@ describe("maasObjForm", function () {
     });
 
     it("doesn't update input to value when in focus", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       expect(field.val()).toBe($scope.obj.key);
       field.triggerHandler("focus");
       $scope.obj.key = makeName("new_key");
@@ -533,14 +533,14 @@ describe("maasObjForm", function () {
 
     it("sets 'saving' class on form when value changed", function () {
       var form = angular.element(directive.find("form"));
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
       expect(form.hasClass("saving")).toBe(true);
     });
 
     it("calls updateItem on form when value changed", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
       expect(updateItemMethod).toHaveBeenCalledWith({
@@ -549,14 +549,14 @@ describe("maasObjForm", function () {
     });
 
     it("doesnt call updateItem on form when no value change", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       changeFieldValue(field, $scope.obj.key);
       expect(updateItemMethod).not.toHaveBeenCalled();
     });
 
     it("removes 'saving' class on form when saved", function () {
       var form = angular.element(directive.find("form"));
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
       expect(form.hasClass("saving")).toBe(true);
@@ -568,7 +568,7 @@ describe("maasObjForm", function () {
 
     it("updates the element to the value resolved", function () {
       var form = angular.element(directive.find("form"));
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       changeFieldValue(field, makeName("new_key"));
       expect(form.hasClass("saving")).toBe(true);
 
@@ -581,7 +581,7 @@ describe("maasObjForm", function () {
     });
 
     it("sets string error on field", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var control = angular.element(directive.find(".p-form__control"));
       changeFieldValue(field, makeName("new_key"));
 
@@ -594,7 +594,7 @@ describe("maasObjForm", function () {
     });
 
     it("sets field error on field", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var control = angular.element(directive.find(".p-form__control"));
       changeFieldValue(field, makeName("new_key"));
 
@@ -612,7 +612,7 @@ describe("maasObjForm", function () {
     });
 
     it("sets field error on another field", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var control = angular.element(directive.find(".p-form__control"));
       changeFieldValue(field, makeName("new_key"));
 
@@ -630,7 +630,7 @@ describe("maasObjForm", function () {
     });
 
     it("sets multiple errors on field", function () {
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var control = angular.element(directive.find(".p-form__control"));
       changeFieldValue(field, makeName("new_key"));
 
@@ -671,7 +671,7 @@ describe("maasObjForm", function () {
         "</maas-obj-form>",
       ].join("");
       var directive = compileDirective(html);
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
       expect(preProcess).toHaveBeenCalled();
@@ -705,9 +705,9 @@ describe("maasObjForm", function () {
     });
 
     it("sets field error on both fields", function () {
-      var field1 = angular.element(directive.find("#key1"));
-      var selector1 = "label[for='key1'] + .p-form__control";
-      var selector2 = "label[for='key2'] + .p-form__control";
+      var field1 = angular.element(directive.find("#key1-1"));
+      var selector1 = "label[for='key1-1'] + .p-form__control";
+      var selector2 = "label[for='key2-2'] + .p-form__control";
       var control1 = angular.element(directive.find(selector1));
       var control2 = angular.element(directive.find(selector2));
       changeFieldValue(field1, makeName("new_key"));
@@ -756,8 +756,8 @@ describe("maasObjForm", function () {
     });
 
     it("doesnt try to save when switching between fields", function () {
-      var field1 = angular.element(directive.find("#key1"));
-      var field2 = angular.element(directive.find("#key2"));
+      var field1 = angular.element(directive.find("#key1-1"));
+      var field2 = angular.element(directive.find("#key2-2"));
       changeFieldValue(field1, makeName("new_key"));
       field2.triggerHandler("focus");
 
@@ -768,8 +768,8 @@ describe("maasObjForm", function () {
     });
 
     it("saves when both fields lose focus", function () {
-      var field1 = angular.element(directive.find("#key1"));
-      var field2 = angular.element(directive.find("#key2"));
+      var field1 = angular.element(directive.find("#key1-1"));
+      var field2 = angular.element(directive.find("#key2-2"));
       var newKey1 = makeName("new_key1");
       var newKey2 = makeName("new_key2");
       changeFieldValue(field1, newKey1);
@@ -796,8 +796,8 @@ describe("maasObjForm", function () {
     });
 
     it("doesn't change field value when one being edited", function () {
-      var field1 = angular.element(directive.find("#key1"));
-      var field2 = angular.element(directive.find("#key2"));
+      var field1 = angular.element(directive.find("#key1-1"));
+      var field2 = angular.element(directive.find("#key2-2"));
 
       // Grab the focus of the first field.
       field1.triggerHandler("focus");
@@ -844,8 +844,8 @@ describe("maasObjForm", function () {
     });
 
     it("both input and select can be disabled", function () {
-      var input = angular.element(directive.find("#key"));
-      var select = angular.element(directive.find("#key2"));
+      var input = angular.element(directive.find("#key-1"));
+      var select = angular.element(directive.find("#key2-2"));
 
       expect(input.prop("disabled")).toBe(false);
       expect(select.prop("disabled")).toBe(false);
@@ -880,7 +880,7 @@ describe("maasObjForm", function () {
         "</maas-obj-form>",
       ].join("");
       var directive = compileDirective(html);
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
 
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
@@ -908,7 +908,7 @@ describe("maasObjForm", function () {
       ].join("");
       var directive = compileDirective(html);
       var group = angular.element(directive.find('maas-obj-field[key="key"]'));
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       expect(group.hasClass("p-form__group")).toBe(true);
       expect(field.parent("div").hasClass("p-form__control")).toBe(true);
     });
@@ -934,7 +934,7 @@ describe("maasObjForm", function () {
         "</maas-obj-form>",
       ].join("");
       var directive = compileDirective(html);
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
 
       var newKey = makeName("new_key");
       changeFieldValue(field, newKey);
@@ -962,7 +962,7 @@ describe("maasObjForm", function () {
         "</maas-obj-form>",
       ].join("");
       var directive = compileDirective(html);
-      var field = angular.element(directive.find("#key"));
+      var field = angular.element(directive.find("#key-1"));
       var button = angular.element(directive.find("button"));
 
       var newKey = makeName("new_key");
