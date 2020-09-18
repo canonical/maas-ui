@@ -48,7 +48,7 @@ describe("AddSSHKey", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some((action) => action.type === "CLEANUP_SSHKEY")
+      store.getActions().some((action) => action.type === "sshkey/cleanup")
     ).toBe(true);
   });
 
@@ -80,9 +80,9 @@ describe("AddSSHKey", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "CREATE_SSHKEY")
+      store.getActions().find((action) => action.type === "sshkey/create")
     ).toStrictEqual({
-      type: "CREATE_SSHKEY",
+      type: "sshkey/create",
       payload: {
         params: {
           key: "ssh-rsa...",
@@ -111,9 +111,9 @@ describe("AddSSHKey", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "IMPORT_SSHKEY")
+      store.getActions().find((action) => action.type === "sshkey/import")
     ).toStrictEqual({
-      type: "IMPORT_SSHKEY",
+      type: "sshkey/import",
       payload: {
         params: {
           auth_id: "wallaroo",
@@ -138,7 +138,7 @@ describe("AddSSHKey", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_SSHKEY")).toBe(
+    expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
     );
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
