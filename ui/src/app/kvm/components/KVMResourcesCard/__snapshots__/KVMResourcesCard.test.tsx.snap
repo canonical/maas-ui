@@ -162,7 +162,7 @@ exports[`KVMResourcesCard renders 1`] = `
     </h4>
     <span>
       <em>
-        None
+        N/A
       </em>
     </span>
   </div>

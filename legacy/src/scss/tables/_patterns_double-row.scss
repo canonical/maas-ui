@@ -41,6 +41,11 @@
 
     .p-double-row__main-row {
       @extend %p-double-row__row;
+
+      &.u-truncate {
+        // Allow the content to be truncated.
+        display: block;
+      }
     }
 
     .p-double-row__muted-row {

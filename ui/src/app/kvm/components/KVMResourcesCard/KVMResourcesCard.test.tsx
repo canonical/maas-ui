@@ -52,7 +52,11 @@ describe("KVMResourcesCard", () => {
       <KVMResourcesCard
         cores={{ allocated: 1, free: 2 }}
         interfaces={[
-          { name: "eth0", virtualFunctions: { allocated: 100, free: 20 } },
+          {
+            id: 1,
+            name: "eth0",
+            virtualFunctions: { allocated: 100, free: 20 },
+          },
         ]}
         ram={{
           general: { allocated: 2, free: 3 },
