@@ -1,9 +1,18 @@
-import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type {
+  CaseReducer,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
-import { generateSlice, GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
+import type { GenericSlice } from "app/store/utils";
 import type { KeySource, SSHKey, SSHKeyState } from "./types";
 
-type SSHKeyReducers = SliceCaseReducers<SSHKeyState>;
+type SSHKeyReducers = SliceCaseReducers<SSHKeyState> & {
+  // Overrides for reducers that don't take a payload.
+  importStart: CaseReducer<SSHKeyState, PayloadAction<void>>;
+  importSuccess: CaseReducer<SSHKeyState, PayloadAction<void>>;
+};
 
 export type SSHKeySlice = GenericSlice<SSHKeyState, SSHKey, SSHKeyReducers>;
 
@@ -28,7 +37,7 @@ const sshKeySlice = generateSlice<
         // No state changes need to be handled for this action.
       },
     },
-    importStart: (state: SSHKeyState, _action: PayloadAction<null>) => {
+    importStart: (state: SSHKeyState, _action: PayloadAction<void>) => {
       state.saved = false;
       state.saving = true;
     },
@@ -39,7 +48,7 @@ const sshKeySlice = generateSlice<
       state.errors = action.payload;
       state.saving = false;
     },
-    importSuccess: (state: SSHKeyState, _action: PayloadAction<null>) => {
+    importSuccess: (state: SSHKeyState, _action: PayloadAction<void>) => {
       state.errors = null;
       state.saved = true;
       state.saving = false;
