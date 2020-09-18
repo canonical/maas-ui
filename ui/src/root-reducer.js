@@ -9,7 +9,6 @@ import {
   licensekeys,
   machine,
   messages,
-  notification,
   scriptresults,
   scripts,
   service,
@@ -22,6 +21,7 @@ import device from "app/store/device";
 import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
 import packagerepository from "app/store/packagerepository";
+import notification from "app/store/notification";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import space from "app/store/space";

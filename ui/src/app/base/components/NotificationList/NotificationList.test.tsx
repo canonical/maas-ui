@@ -89,7 +89,7 @@ describe("NotificationList", () => {
     );
 
     expect(
-      store.getActions().some((action) => action.type === "FETCH_NOTIFICATION")
+      store.getActions().some((action) => action.type === "notification/fetch")
     ).toBe(true);
   });
 

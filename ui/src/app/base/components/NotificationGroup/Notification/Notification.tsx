@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import { isReleaseNotification } from "app/store/utils";
 import { MessageType } from "app/store/message/types";
-import { notification as notificationActions } from "app/base/actions";
+import { actions as notificationActions } from "app/store/notification";
 import authSelectors from "app/store/auth/selectors";
 import notificationSelectors from "app/store/notification/selectors";
 import type { Notification as NotificationType } from "app/store/notification/types";

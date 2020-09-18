@@ -2,10 +2,8 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-import {
-  messages as messageActions,
-  notification as notificationActions,
-} from "app/base/actions";
+import { messages as messageActions } from "app/base/actions";
+import { actions as notificationActions } from "app/store/notification";
 import NotificationGroup from "app/base/components/NotificationGroup";
 import messageSelectors from "app/store/message/selectors";
 import notificationSelectors from "app/store/notification/selectors";

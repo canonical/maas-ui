@@ -113,8 +113,8 @@ describe("NotificationGroup", () => {
     wrapper.find("Button").at(1).simulate("click");
 
     expect(store.getActions().length).toEqual(2);
-    expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
-    expect(store.getActions()[1].type).toEqual("DELETE_NOTIFICATION");
+    expect(store.getActions()[0].type).toEqual("notification/delete");
+    expect(store.getActions()[1].type).toEqual("notification/delete");
   });
 
   it("does not dismiss undismissable notifications when dismissing a group", () => {
@@ -138,7 +138,7 @@ describe("NotificationGroup", () => {
     wrapper.find("Button").at(1).simulate("click");
 
     expect(store.getActions().length).toEqual(1);
-    expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
+    expect(store.getActions()[0].type).toEqual("notification/delete");
   });
 
   it("can toggle multiple notifications", () => {
