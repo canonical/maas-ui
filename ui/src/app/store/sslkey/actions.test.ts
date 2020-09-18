@@ -1,19 +1,20 @@
-import sslkey from "./sslkey";
+import { actions } from "./slice";
 
 describe("sslkey actions", () => {
   it("should handle fetching SSL keys", () => {
-    expect(sslkey.fetch()).toEqual({
-      type: "FETCH_SSLKEY",
+    expect(actions.fetch()).toEqual({
+      type: "sslkey/fetch",
       meta: {
         model: "sslkey",
         method: "list",
       },
+      payload: null,
     });
   });
 
   it("can handle creating SSL keys", () => {
-    expect(sslkey.create({ key: "---begin cert---..." })).toEqual({
-      type: "CREATE_SSLKEY",
+    expect(actions.create({ key: "---begin cert---..." })).toEqual({
+      type: "sslkey/create",
       meta: {
         model: "sslkey",
         method: "create",
@@ -27,8 +28,8 @@ describe("sslkey actions", () => {
   });
 
   it("can handle deleting SSL keys", () => {
-    expect(sslkey.delete(808)).toEqual({
-      type: "DELETE_SSLKEY",
+    expect(actions.delete(808)).toEqual({
+      type: "sslkey/delete",
       meta: {
         model: "sslkey",
         method: "delete",
@@ -42,8 +43,8 @@ describe("sslkey actions", () => {
   });
 
   it("can clean up", () => {
-    expect(sslkey.cleanup()).toEqual({
-      type: "CLEANUP_SSLKEY",
+    expect(actions.cleanup()).toEqual({
+      type: "sslkey/cleanup",
     });
   });
 });

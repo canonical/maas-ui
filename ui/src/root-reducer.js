@@ -26,11 +26,12 @@ import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import space from "app/store/space";
+import sslkey from "app/store/sslkey";
 import tag from "app/store/tag";
 import user from "app/store/user";
 import vlan from "app/store/vlan";
 import zone from "app/store/zone";
-import { token, sshkey, sslkey } from "./app/preferences/reducers";
+import { token, sshkey } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>
   combineReducers({

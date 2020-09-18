@@ -48,7 +48,7 @@ describe("AddSSLKey", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some((action) => action.type === "CLEANUP_SSLKEY")
+      store.getActions().some((action) => action.type === "sslkey/cleanup")
     ).toBe(true);
   });
 
@@ -80,9 +80,9 @@ describe("AddSSLKey", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "CREATE_SSLKEY")
+      store.getActions().find((action) => action.type === "sslkey/create")
     ).toStrictEqual({
-      type: "CREATE_SSLKEY",
+      type: "sslkey/create",
       payload: {
         params: {
           key: "--- begin cert ---...",
@@ -106,7 +106,7 @@ describe("AddSSLKey", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_SSLKEY")).toBe(
+    expect(actions.some((action) => action.type === "sslkey/cleanup")).toBe(
       true
     );
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
