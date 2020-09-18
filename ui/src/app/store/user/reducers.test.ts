@@ -88,9 +88,9 @@ describe("users reducer", () => {
         ...state,
         items: [userFactory()],
       });
-      const newSpace = userFactory();
-      expect(reducers(initialState, actions.createNotify(newSpace))).toEqual(
-        userStateFactory({ ...state, items: [...initialState.items, newSpace] })
+      const newUser = userFactory();
+      expect(reducers(initialState, actions.createNotify(newUser))).toEqual(
+        userStateFactory({ ...state, items: [...initialState.items, newUser] })
       );
     });
 
@@ -136,13 +136,13 @@ describe("users reducer", () => {
         ...state,
         items: [userFactory()],
       });
-      const updatedSpace = userFactory({
+      const updatedUser = userFactory({
         id: initialState.items[0].id,
         name: "updated-reducers",
       });
-      expect(
-        reducers(initialState, actions.updateNotify(updatedSpace))
-      ).toEqual(userStateFactory({ ...state, items: [updatedSpace] }));
+      expect(reducers(initialState, actions.updateNotify(updatedUser))).toEqual(
+        userStateFactory({ ...state, items: [updatedUser] })
+      );
     });
 
     it("reduces updateError", () => {
@@ -183,14 +183,14 @@ describe("users reducer", () => {
     });
 
     it("reduces deleteNotify", () => {
-      const [deleteSpace, keepSpace] = [userFactory(), userFactory()];
+      const [deleteUser, keepUser] = [userFactory(), userFactory()];
       const initialState = userStateFactory({
         ...state,
-        items: [deleteSpace, keepSpace],
+        items: [deleteUser, keepUser],
       });
       expect(
-        reducers(initialState, actions.deleteNotify(deleteSpace.id))
-      ).toEqual(userStateFactory({ ...state, items: [keepSpace] }));
+        reducers(initialState, actions.deleteNotify(deleteUser.id))
+      ).toEqual(userStateFactory({ ...state, items: [keepUser] }));
     });
 
     it("reduces deleteError", () => {
