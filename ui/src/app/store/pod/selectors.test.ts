@@ -230,4 +230,22 @@ describe("pod selectors", () => {
       machineItems[0],
     ]);
   });
+
+  it("can get a pod's VMs", () => {
+    const podWithVMs = podFactory();
+    const machinesInPod = [
+      machineFactory({ pod: { id: podWithVMs.id, name: podWithVMs.name } }),
+      machineFactory({ pod: { id: podWithVMs.id, name: podWithVMs.name } }),
+    ];
+    const otherMachines = [machineFactory(), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [...machinesInPod, ...otherMachines],
+      }),
+      pod: podStateFactory({
+        items: [podWithVMs],
+      }),
+    });
+    expect(pod.getVMs(state, podWithVMs)).toStrictEqual(machinesInPod);
+  });
 });

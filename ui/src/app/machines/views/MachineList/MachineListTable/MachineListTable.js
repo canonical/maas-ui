@@ -7,7 +7,7 @@ import {
   Strip,
 } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
@@ -39,7 +39,6 @@ import {
   getCurrentFilters,
   toggleFilter,
 } from "app/machines/search";
-import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { actions as zoneActions } from "app/store/zone";
@@ -469,18 +468,16 @@ const generateGroupRows = ({
 export const MachineListTable = ({
   filter = "",
   grouping = "none",
+  hiddenColumns = [],
   hiddenGroups = [],
+  machines,
+  paginateLimit = 50,
+  selectedIDs = [],
   setHiddenGroups,
   setSearchFilter,
   showActions = true,
-  hiddenColumns = [],
-  paginateLimit = 50,
 }) => {
   const dispatch = useDispatch();
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const machines = useSelector((state) =>
-    machineSelectors.search(state, filter, selectedIDs)
-  );
   const machineIDs = machines.map((machine) => machine.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "fqdn",
@@ -507,7 +504,6 @@ export const MachineListTable = ({
     dispatch(generalActions.fetchOsInfo());
     dispatch(generalActions.fetchPowerTypes());
     dispatch(generalActions.fetchVersion());
-    dispatch(machineActions.fetch());
     dispatch(resourcePoolActions.fetch());
     dispatch(scriptActions.fetch());
     dispatch(serviceActions.fetch());
@@ -797,14 +793,16 @@ export const MachineListTable = ({
 };
 
 MachineListTable.propTypes = {
-  grouping: PropTypes.string,
-  hiddenGroups: PropTypes.arrayOf(PropTypes.string),
   filter: PropTypes.string,
+  grouping: PropTypes.string,
+  hiddenColumns: PropTypes.arrayOf(PropTypes.string),
+  hiddenGroups: PropTypes.arrayOf(PropTypes.string),
+  machines: PropTypes.arrayOf(PropTypes.object).isRequired,
+  paginateLimit: PropTypes.number,
+  selectedIDs: PropTypes.arrayOf(PropTypes.string),
   setHiddenGroups: PropTypes.func,
   setSearchFilter: PropTypes.func,
   showActions: PropTypes.bool,
-  hiddenColumns: PropTypes.arrayOf(PropTypes.string),
-  paginateLimit: PropTypes.number,
 };
 
 export default React.memo(MachineListTable);

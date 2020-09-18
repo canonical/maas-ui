@@ -15,6 +15,10 @@ const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
+  const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const filteredMachines = useSelector((state) =>
+    machineSelectors.search(state, searchFilter, selectedIDs)
+  );
   const errorMessage = formatErrors(errors);
   const [grouping, setGrouping] = useStorageState(
     localStorage,
@@ -48,8 +52,10 @@ const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
         filter={searchFilter}
         grouping={grouping}
         hiddenGroups={hiddenGroups}
-        setSearchFilter={setSearchFilter}
+        machines={filteredMachines}
+        selectedIDs={selectedIDs}
         setHiddenGroups={setHiddenGroups}
+        setSearchFilter={setSearchFilter}
       />
     </>
   );

@@ -9,6 +9,8 @@ import { sendAnalyticsEvent } from "analytics";
 import {
   config as configFactory,
   configState as configStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
   pod as podFactory,
   podNumaNode as podNumaNodeFactory,
   podState as podStateFactory,
@@ -116,5 +118,63 @@ describe("KVMNumaResources", () => {
     wrapper.update();
 
     expect(sendAnalyticsEvent).toHaveBeenCalled();
+  });
+
+  it("correctly filters VMs dropdown to those that belong to each NUMA node", () => {
+    const podID = 1;
+    const podName = "pod";
+    const machines = [
+      machineFactory({ pod: { id: podID, name: podName } }),
+      machineFactory({ pod: { id: podID, name: podName } }),
+    ];
+    const pod = podFactory({
+      id: podID,
+      name: podName,
+      numa_pinning: [
+        podNumaNodeFactory({
+          vms: [
+            {
+              networks: {
+                guest_nic_id: 0,
+                host_nic_id: 0,
+              },
+              pinned_cores: [],
+              system_id: machines[0].system_id,
+            },
+          ],
+        }),
+        podNumaNodeFactory({
+          vms: [
+            {
+              networks: {
+                guest_nic_id: 1,
+                host_nic_id: 1,
+              },
+              pinned_cores: [],
+              system_id: machines[1].system_id,
+            },
+          ],
+        }),
+      ],
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({ items: machines }),
+      pod: podStateFactory({ items: [pod] }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMNumaResources id={pod.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("KVMResourcesCard").at(0).prop("vms")).toStrictEqual([
+      machines[0],
+    ]);
+    expect(wrapper.find("KVMResourcesCard").at(1).prop("vms")).toStrictEqual([
+      machines[1],
+    ]);
   });
 });

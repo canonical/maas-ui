@@ -52,7 +52,7 @@ const simpleNode = extend<Model, SimpleNode>(model, {
   link_type: "",
   node_type_display: "",
   permissions,
-  system_id: random.toString(),
+  system_id: () => random().toString(),
   tags,
 });
 

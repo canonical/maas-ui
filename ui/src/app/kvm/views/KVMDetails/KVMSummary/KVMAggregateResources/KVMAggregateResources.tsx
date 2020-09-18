@@ -2,9 +2,11 @@ import { Spinner } from "@canonical/react-components";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import type { KVMResourcesCardProps } from "app/kvm/components/KVMResourcesCard";
+import { machine as machineActions } from "app/base/actions";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
@@ -16,7 +18,10 @@ type Props = { id: number };
  * Normalise pod data for use in KVMResourcesCard component.
  * @param pod - the pod whose resources are to be normalised
  */
-const normaliseResources = (pod: Pod): KVMResourcesCardProps => {
+const normaliseResources = (
+  pod: Pod,
+  vms: Machine[]
+): KVMResourcesCardProps => {
   // Start by normalising the resources on the pod object itself.
   const normalisedResources: KVMResourcesCardProps = {
     cores: {
@@ -37,7 +42,7 @@ const normaliseResources = (pod: Pod): KVMResourcesCardProps => {
         ).value,
       },
     },
-    vms: [],
+    vms,
   };
 
   // Add additional data if the pod is NUMA-aware.
@@ -94,13 +99,17 @@ const KVMAggregateResources = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
+  const vms = useSelector((state: RootState) =>
+    podSelectors.getVMs(state, pod)
+  );
 
   useEffect(() => {
+    dispatch(machineActions.fetch());
     dispatch(podActions.fetch());
   }, [dispatch]);
 
   if (!!pod) {
-    const resources = normaliseResources(pod);
+    const resources = normaliseResources(pod, vms);
 
     return (
       <KVMResourcesCard
