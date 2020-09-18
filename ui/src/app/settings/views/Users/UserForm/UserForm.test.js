@@ -54,7 +54,7 @@ describe("UserForm", () => {
     wrapper.unmount();
     expect(store.getActions()).toEqual([
       {
-        type: "CLEANUP_USER",
+        type: "user/cleanup",
       },
     ]);
   });
@@ -107,7 +107,7 @@ describe("UserForm", () => {
     );
     expect(store.getActions()).toEqual([
       {
-        type: "UPDATE_USER",
+        type: "user/update",
         payload: {
           params: {
             isSuperuser: true,
@@ -150,7 +150,7 @@ describe("UserForm", () => {
     );
     expect(store.getActions()).toEqual([
       {
-        type: "CREATE_USER",
+        type: "user/create",
         payload: {
           params: {
             isSuperuser: true,
@@ -180,7 +180,7 @@ describe("UserForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 

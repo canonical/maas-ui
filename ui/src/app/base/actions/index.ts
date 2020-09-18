@@ -12,5 +12,4 @@ export { default as scripts } from "./scripts";
 export { default as service } from "./service";
 export { default as status } from "./status";
 export { default as subnet } from "./subnet";
-export { default as user } from "./user";
 export { default as websocket } from "./websocket";

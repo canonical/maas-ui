@@ -84,7 +84,7 @@ describe("UsersList", () => {
     // Click on the delete confirm button
     wrapper.find("TableRow").at(2).find("Button").at(3).simulate("click");
     expect(store.getActions()[1]).toEqual({
-      type: "DELETE_USER",
+      type: "user/delete",
       payload: {
         params: {
           id: 2,
@@ -142,7 +142,7 @@ describe("UsersList", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
 

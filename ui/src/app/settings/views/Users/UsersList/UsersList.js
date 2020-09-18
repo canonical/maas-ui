@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
 import { useAddMessage } from "app/base/hooks";
-import { user as userActions } from "app/base/actions";
+import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 import statusSelectors from "app/store/status/selectors";
 import { useWindowTitle } from "app/base/hooks";
