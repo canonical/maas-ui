@@ -49,7 +49,7 @@ exports[`KVMResourcesCard renders 1`] = `
         RAM
       </h4>
       <DoughnutChart
-        className="kvm-resources-card__ram-chart"
+        className="u-align--center"
         label="5KiB"
         segmentHoverWidth={18}
         segmentWidth={15}

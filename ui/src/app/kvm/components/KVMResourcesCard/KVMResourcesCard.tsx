@@ -104,7 +104,7 @@ const KVMResourcesCard = ({
         <div>
           <h4 className="p-heading--small">RAM</h4>
           <DoughnutChart
-            className="kvm-resources-card__ram-chart"
+            className="u-align--center"
             label={memoryWithUnit(
               ram.general.allocated + ram.general.free + hugepageTotal
             )}

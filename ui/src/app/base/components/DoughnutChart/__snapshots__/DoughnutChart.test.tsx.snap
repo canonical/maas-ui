@@ -12,6 +12,11 @@ exports[`DoughnutChart renders 1`] = `
   <svg
     className="doughnut-chart"
     id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ"
+    style={
+      Object {
+        "maxWidth": "106px",
+      }
+    }
     viewBox="0 0 106 106"
   >
     <mask
