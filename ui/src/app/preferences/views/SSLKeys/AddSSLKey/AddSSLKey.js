@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { sslkey as sslkeyActions } from "app/preferences/actions";
+import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
