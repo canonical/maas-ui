@@ -150,9 +150,9 @@ describe("SSLKeyList", () => {
       .last()
       .simulate("click");
     expect(
-      store.getActions().find((action) => action.type === "DELETE_SSLKEY")
+      store.getActions().find((action) => action.type === "sslkey/delete")
     ).toEqual({
-      type: "DELETE_SSLKEY",
+      type: "sslkey/delete",
       payload: {
         params: {
           id: 1,
@@ -193,7 +193,7 @@ describe("SSLKeyList", () => {
       .last()
       .simulate("click");
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_SSLKEY")).toBe(
+    expect(actions.some((action) => action.type === "sslkey/cleanup")).toBe(
       true
     );
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
