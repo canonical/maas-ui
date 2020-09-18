@@ -6,28 +6,27 @@ import { Link, useLocation } from "react-router-dom";
 
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import KVMListActionMenu from "./KVMListActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 
-const getPodCount = (pods: Pod[], selectedPodIDs: number[]) => {
-  const podCountString = pluralize("VM host", pods.length, true);
-  if (selectedPodIDs.length) {
-    if (pods.length === selectedPodIDs.length) {
+const getKVMCount = (kvmCount: number, selectedKVMCount: number) => {
+  const kvmCountString = pluralize("VM host", kvmCount, true);
+  if (selectedKVMCount > 0) {
+    if (kvmCount === selectedKVMCount) {
       return "All VM hosts selected";
     }
-    return `${selectedPodIDs.length} of ${podCountString} selected`;
+    return `${selectedKVMCount} of ${kvmCountString} selected`;
   }
-  return `${podCountString} available`;
+  return `${kvmCountString} available`;
 };
 
 const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const pods = useSelector(podSelectors.kvm);
+  const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
-  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
+  const selectedKVMs = useSelector(podSelectors.selectedKVMs);
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,10 +35,10 @@ const KVMListHeader = (): JSX.Element => {
 
   // If path is not exactly "/kvm" or no KVMs are selected, close the form.
   useEffect(() => {
-    if (location.pathname !== "/kvm" || selectedPodIDs.length === 0) {
+    if (location.pathname !== "/kvm" || selectedKVMs.length === 0) {
       setSelectedAction(null);
     }
-  }, [location.pathname, selectedPodIDs, setSelectedAction]);
+  }, [location.pathname, selectedKVMs, setSelectedAction]);
 
   return (
     <SectionHeader
@@ -49,7 +48,7 @@ const KVMListHeader = (): JSX.Element => {
           <Button
             appearance="neutral"
             data-test="add-kvm"
-            disabled={selectedPodIDs.length > 0}
+            disabled={selectedKVMs.length > 0}
             element={Link}
             key="add-kvm"
             to="/kvm/add"
@@ -71,7 +70,7 @@ const KVMListHeader = (): JSX.Element => {
         )
       }
       loading={!podsLoaded}
-      subtitle={getPodCount(pods, selectedPodIDs)}
+      subtitle={getKVMCount(kvms.length, selectedKVMs.length)}
       title="KVM"
     />
   );

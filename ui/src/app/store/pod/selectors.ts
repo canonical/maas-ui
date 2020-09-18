@@ -22,7 +22,7 @@ const defaultSelectors = generateBaseSelectors<PodState, Pod, "id">(
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} A list of all KVMs.
  */
-const kvm = (state: RootState): Pod[] =>
+const kvms = (state: RootState): Pod[] =>
   state.pod.items.filter((pod) => pod.type !== "rsd");
 
 /**
@@ -30,7 +30,7 @@ const kvm = (state: RootState): Pod[] =>
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} A list of all RSDs.
  */
-const rsd = (state: RootState): Pod[] =>
+const rsds = (state: RootState): Pod[] =>
   state.pod.items.filter((pod) => pod.type === "rsd");
 
 /**
@@ -48,7 +48,7 @@ const selectedIDs = (state: RootState): number[] => state.pod.selected;
 const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 
 /**
- * Returns selected pods.
+ * Returns all selected pods.
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Selected pods.
  */
@@ -56,6 +56,24 @@ const selected = createSelector(
   [defaultSelectors.all, selectedIDs],
   (pods, selectedIDs) =>
     selectedIDs.map((id) => pods.find((pod) => id === pod.id))
+);
+
+/**
+ * Returns all selected KVMs.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Selected KVMs.
+ */
+const selectedKVMs = createSelector([kvms, selectedIDs], (kvms, selectedIDs) =>
+  kvms.filter((kvm) => selectedIDs.includes(kvm.id))
+);
+
+/**
+ * Returns all selected RSDs.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod[]} Selected RSDs.
+ */
+const selectedRSDs = createSelector([rsds, selectedIDs], (rsds, selectedIDs) =>
+  rsds.filter((rsd) => selectedIDs.includes(rsd.id))
 );
 
 /**
@@ -179,12 +197,14 @@ const selectors = {
   deletingSelected,
   getAllHosts,
   getHost,
-  kvm,
+  kvms,
   refreshing,
   refreshingSelected,
-  rsd,
+  rsds,
   selected,
   selectedIDs,
+  selectedKVMs,
+  selectedRSDs,
   statuses,
 };
 
