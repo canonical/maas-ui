@@ -19,7 +19,7 @@ import {
 } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
-import type { Sort, TSFixMe } from "app/base/types";
+import type { TSFixMe } from "app/base/types";
 import type { Controller } from "app/store/controller/types";
 import generalSelectors from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -38,75 +38,77 @@ import {
 } from "app/utils";
 
 const getSortValue = (
-  sortKey: Sort["key"],
-  pod: Pod,
-  podHosts: (Controller | Machine)[],
+  sortKey: keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage",
+  kvm: Pod,
+  kvmHosts: (Controller | Machine)[],
   pools: ResourcePool[],
   osReleases: TSFixMe
 ) => {
-  const podHost = podHosts.find((host) => host.system_id === pod.host);
-  const podPool = pools.find((pool) => pod.pool === pool.id);
+  const kvmHost = kvmHosts.find((host) => host.system_id === kvm.host);
+  const kvmPool = pools.find((pool) => kvm.pool === pool.id);
 
   switch (sortKey) {
     case "power":
-      if (podHost && "power_state" in podHost) {
-        return podHost.power_state;
+      if (kvmHost && "power_state" in kvmHost) {
+        return kvmHost.power_state;
       }
       return "unknown";
     case "os":
-      if (podHost && podHost.osystem in osReleases) {
-        return getStatusText(podHost, osReleases[podHost.osystem]);
+      if (kvmHost && kvmHost.osystem in osReleases) {
+        return getStatusText(kvmHost, osReleases[kvmHost.osystem]);
       }
       return "unknown";
     case "pool":
-      return podPool?.name || "unknown";
+      return kvmPool?.name || "unknown";
     case "cpu":
-      return pod.used.cores;
+      return kvm.used.cores;
     case "ram":
-      return pod.used.memory;
+      return kvm.used.memory;
     case "storage":
-      return pod.used.local_storage;
+      return kvm.used.local_storage;
     default:
-      return pod[sortKey];
+      return kvm[sortKey];
   }
 };
 
 const generateRows = (
-  pods: Pod[],
-  selectedPodIDs: Pod["id"][],
-  handleRowCheckbox: (podID: Pod["id"], selectedPodIDs: Pod["id"][]) => void
+  kvms: Pod[],
+  selectedKVMIDs: Pod["id"][],
+  handleRowCheckbox: (kvmID: Pod["id"], selectedKVMIDs: Pod["id"][]) => void
 ) =>
-  pods.map((pod) => ({
-    key: pod.id,
+  kvms.map((kvm) => ({
+    key: kvm.id,
     columns: [
       {
         content: (
           <NameColumn
-            handleCheckbox={() => handleRowCheckbox(pod.id, selectedPodIDs)}
-            id={pod.id}
-            selected={someInArray(pod.id, selectedPodIDs)}
+            handleCheckbox={() => handleRowCheckbox(kvm.id, selectedKVMIDs)}
+            id={kvm.id}
+            selected={someInArray(kvm.id, selectedKVMIDs)}
           />
         ),
       },
-      { content: <PowerColumn id={pod.id} /> },
-      { content: <TypeColumn id={pod.id} /> },
-      { className: "u-align--right", content: <VMsColumn id={pod.id} /> },
-      { content: <OSColumn id={pod.id} /> },
-      { content: <PoolColumn id={pod.id} /> },
-      { content: <CPUColumn id={pod.id} /> },
-      { content: <RAMColumn id={pod.id} /> },
-      { content: <StorageColumn id={pod.id} /> },
+      { content: <PowerColumn id={kvm.id} /> },
+      { content: <TypeColumn id={kvm.id} /> },
+      { className: "u-align--right", content: <VMsColumn id={kvm.id} /> },
+      { content: <OSColumn id={kvm.id} /> },
+      { content: <PoolColumn id={kvm.id} /> },
+      { content: <CPUColumn id={kvm.id} /> },
+      { content: <RAMColumn id={kvm.id} /> },
+      { content: <StorageColumn id={kvm.id} /> },
     ],
   }));
 
 const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
   const osReleases = useSelector(generalSelectors.osInfo.getAllOsReleases);
-  const pods = useSelector(podSelectors.kvm);
-  const podHosts = useSelector(podSelectors.getAllHosts);
+  const kvms = useSelector(podSelectors.kvms);
+  const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
+    (kvm) => kvm.id
+  );
+  const kvmHosts = useSelector(podSelectors.getAllHosts);
   const pools = useSelector(poolSelectors.all);
-  const selectedPodIDs = useSelector(podSelectors.selectedIDs);
-  const podIDs = pods.map((pod) => pod.id);
+  const kvmIDs = kvms.map((kvm) => kvm.id);
 
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
@@ -125,7 +127,7 @@ const KVMListTable = (): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const sortedPods = sortRows(pods, podHosts, pools, osReleases);
+  const sortedKVMs = sortRows(kvms, kvmHosts, pools, osReleases);
 
   return (
     <Row>
@@ -137,15 +139,15 @@ const KVMListTable = (): JSX.Element => {
               content: (
                 <div className="u-flex">
                   <Input
-                    checked={someInArray(podIDs, selectedPodIDs)}
+                    checked={someInArray(kvmIDs, selectedKVMIDs)}
                     className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": someNotAll(podIDs, selectedPodIDs),
+                      "p-checkbox--mixed": someNotAll(kvmIDs, selectedKVMIDs),
                     })}
                     data-test="all-pods-checkbox"
-                    disabled={pods.length === 0}
+                    disabled={kvms.length === 0}
                     id="all-pods-checkbox"
                     label={" "}
-                    onChange={() => handleGroupCheckbox(podIDs, selectedPodIDs)}
+                    onChange={() => handleGroupCheckbox(kvmIDs, selectedKVMIDs)}
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />
@@ -267,7 +269,7 @@ const KVMListTable = (): JSX.Element => {
             },
           ]}
           paginate={50}
-          rows={generateRows(sortedPods, selectedPodIDs, handleRowCheckbox)}
+          rows={generateRows(sortedKVMs, selectedKVMIDs, handleRowCheckbox)}
         />
       </Col>
     </Row>
