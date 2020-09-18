@@ -172,6 +172,7 @@ export const DoughnutChart = ({
       <svg
         className="doughnut-chart"
         id={id.current}
+        style={{ maxWidth: `${canvasSize}px` }}
         viewBox={`0 0 ${canvasSize} ${canvasSize}`}
       >
         <mask id="myMask">

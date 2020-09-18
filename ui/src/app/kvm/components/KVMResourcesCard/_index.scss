@@ -6,7 +6,9 @@
     max-width: none;
     min-width: 0;
     // Subtract small screen gutter width and card inner padding to center dropdown.
-    width: calc(100vw - #{(map-get($grid-gutter-widths, small) + $sph-inner) * 2});
+    width: calc(
+      100vw - #{(map-get($grid-gutter-widths, small) + $sph-inner) * 2}
+    );
 
     .fqdn-col,
     .status-col {
@@ -35,11 +37,6 @@
     @media only screen and (min-width: $breakpoint-medium) {
       width: 40rem;
     }
-  }
-
-  .kvm-resources-card__ram-chart {
-    // Centre the chart in its container.
-    margin: 0 auto;
   }
 
   .kvm-resources-card__ram-table {
