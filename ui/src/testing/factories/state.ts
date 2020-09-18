@@ -161,6 +161,7 @@ export const packageRepositoryState = define<PackageRepositoryState>({
 export const userState = define<UserState>({
   ...defaultState,
   auth: authState,
+  errors: null,
   items: array(user),
 });
 

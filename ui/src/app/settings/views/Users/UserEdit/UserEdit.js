@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 
 import statusSelectors from "app/store/status/selectors";
 import userSelectors from "app/store/user/selectors";
-import { user as userActions } from "app/base/actions";
+import { actions as userActions } from "app/store/user";
 import UserForm from "../UserForm";
 
 export const UserEdit = () => {

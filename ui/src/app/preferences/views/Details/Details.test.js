@@ -64,7 +64,7 @@ describe("Details", () => {
     );
     wrapper.unmount();
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_USER")).toBe(true);
+    expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
     expect(actions.some((action) => action.type === "CLEANUP_AUTH_USER")).toBe(
       true
     );
@@ -103,9 +103,9 @@ describe("Details", () => {
       )
     );
     expect(
-      store.getActions().find(({ type }) => type === "UPDATE_USER")
+      store.getActions().find(({ type }) => type === "user/update")
     ).toEqual({
-      type: "UPDATE_USER",
+      type: "user/update",
       payload: {
         params: {
           isSuperuser: true,

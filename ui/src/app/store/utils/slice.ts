@@ -75,6 +75,15 @@ export type GenericSlice<
   string
 >;
 
+export const genericInitialState = {
+  errors: null,
+  items: [],
+  loaded: false,
+  loading: false,
+  saved: false,
+  saving: false,
+};
+
 /**
  * A utility to generate a slice for a model.
  * @template I - A model that is used as an array of items on the provided
@@ -250,12 +259,7 @@ export const generateSlice = <
   };
   return createSlice({
     initialState: {
-      errors: null,
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
+      ...genericInitialState,
       ...initialState,
     },
     name,

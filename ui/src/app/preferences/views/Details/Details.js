@@ -2,7 +2,8 @@ import { Col, Notification, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 
-import { auth as authActions, user as userActions } from "app/base/actions";
+import { actions as userActions } from "app/store/user";
+import { auth as authActions } from "app/base/actions";
 import authSelectors from "app/store/auth/selectors";
 import userSelectors from "app/store/user/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";

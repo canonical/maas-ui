@@ -12,6 +12,7 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
+import { actions as userActions } from "app/store/user";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -29,7 +30,6 @@ import {
   machine as machineActions,
   scripts as scriptActions,
   service as serviceActions,
-  user as userActions,
 } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { nodeStatus } from "app/base/enum";

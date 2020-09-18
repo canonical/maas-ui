@@ -18,16 +18,16 @@ import {
   service,
   status,
   subnet,
-  user,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
-import { initialState as userInitialState } from "./app/base/reducers/user/user";
+import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import device from "app/store/device";
 import domain from "app/store/domain";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import space from "app/store/space";
 import tag from "app/store/tag";
+import user from "app/store/user";
 import vlan from "app/store/vlan";
 import zone from "app/store/zone";
 import { token, sshkey, sslkey } from "./app/preferences/reducers";
