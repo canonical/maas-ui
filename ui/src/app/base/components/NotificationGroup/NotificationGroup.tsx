@@ -8,7 +8,7 @@ import type { Dispatch } from "redux";
 
 import { capitaliseFirst } from "app/utils";
 import { useVisible } from "app/base/hooks";
-import { notification as notificationActions } from "app/base/actions";
+import { actions as notificationActions } from "app/store/notification";
 import NotificationGroupNotification from "./Notification";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import type { MessageType } from "app/store/message/types";

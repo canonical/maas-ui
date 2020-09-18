@@ -69,7 +69,7 @@ describe("NotificationGroupNotification", () => {
     );
     wrapper.find("button.p-icon--close").simulate("click");
     expect(store.getActions().length).toEqual(1);
-    expect(store.getActions()[0].type).toEqual("DELETE_NOTIFICATION");
+    expect(store.getActions()[0].type).toEqual("notification/delete");
   });
 
   it("does not show a dismiss action if notification is not dismissable", () => {
