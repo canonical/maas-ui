@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { sshkey as sshkeyActions } from "app/preferences/actions";
+import { actions as sshkeyActions } from "app/store/sshkey";
 import sshkeySelectors from "app/store/sshkey/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";

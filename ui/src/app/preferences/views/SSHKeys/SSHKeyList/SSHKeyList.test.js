@@ -196,9 +196,9 @@ describe("SSHKeyList", () => {
       .last()
       .simulate("click");
     expect(
-      store.getActions().find((action) => action.type === "DELETE_SSHKEY")
+      store.getActions().find((action) => action.type === "sshkey/delete")
     ).toEqual({
-      type: "DELETE_SSHKEY",
+      type: "sshkey/delete",
       payload: {
         params: {
           id: 1,
@@ -238,7 +238,7 @@ describe("SSHKeyList", () => {
       .last()
       .simulate("click");
     expect(
-      store.getActions().filter((action) => action.type === "DELETE_SSHKEY")
+      store.getActions().filter((action) => action.type === "sshkey/delete")
         .length
     ).toEqual(2);
   });
@@ -271,7 +271,7 @@ describe("SSHKeyList", () => {
       .last()
       .simulate("click");
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "CLEANUP_SSHKEY")).toBe(
+    expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
     );
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);

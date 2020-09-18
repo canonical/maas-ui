@@ -1,19 +1,20 @@
-import sshkey from "./sshkey";
+import { actions } from "./slice";
 
 describe("sshkey actions", () => {
   it("should handle fetching SSH keys", () => {
-    expect(sshkey.fetch()).toEqual({
-      type: "FETCH_SSHKEY",
+    expect(actions.fetch()).toEqual({
+      type: "sshkey/fetch",
       meta: {
         model: "sshkey",
         method: "list",
       },
+      payload: null,
     });
   });
 
   it("can handle creating SSH keys", () => {
-    expect(sshkey.create({ key: "id-rsa..." })).toEqual({
-      type: "CREATE_SSHKEY",
+    expect(actions.create({ key: "id-rsa..." })).toEqual({
+      type: "sshkey/create",
       meta: {
         model: "sshkey",
         method: "create",
@@ -27,8 +28,8 @@ describe("sshkey actions", () => {
   });
 
   it("can handle importing SSH keys", () => {
-    expect(sshkey.import({ auth_id: "wallaroo", protocol: "lp" })).toEqual({
-      type: "IMPORT_SSHKEY",
+    expect(actions.import({ auth_id: "wallaroo", protocol: "lp" })).toEqual({
+      type: "sshkey/import",
       meta: {
         model: "sshkey",
         method: "import_keys",
@@ -43,8 +44,8 @@ describe("sshkey actions", () => {
   });
 
   it("can handle deleting SSH keys", () => {
-    expect(sshkey.delete(808)).toEqual({
-      type: "DELETE_SSHKEY",
+    expect(actions.delete(808)).toEqual({
+      type: "sshkey/delete",
       meta: {
         model: "sshkey",
         method: "delete",
@@ -58,8 +59,8 @@ describe("sshkey actions", () => {
   });
 
   it("can clean up", () => {
-    expect(sshkey.cleanup()).toEqual({
-      type: "CLEANUP_SSHKEY",
+    expect(actions.cleanup()).toEqual({
+      type: "sshkey/cleanup",
     });
   });
 });
