@@ -190,7 +190,7 @@ Object {
     "loading": false,
   },
   "service": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

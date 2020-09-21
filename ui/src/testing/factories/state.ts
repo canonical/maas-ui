@@ -284,6 +284,7 @@ export const scriptResultsState = define<ScriptResultsState>({
 
 export const serviceState = define<ServiceState>({
   ...defaultState,
+  errors: null,
 });
 
 export const subnetState = define<SubnetState>({

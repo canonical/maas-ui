@@ -11,7 +11,6 @@ import {
   messages,
   scriptresults,
   scripts,
-  service,
   status,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
@@ -24,6 +23,7 @@ import packagerepository from "app/store/packagerepository";
 import notification from "app/store/notification";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
+import service from "app/store/service";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
 import sslkey from "app/store/sslkey";
