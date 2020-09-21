@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import { packagerepository as repositoryActions } from "app/base/actions";
+import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";
 import { getRepoDisplayName } from "../utils";
 import { useAddMessage } from "app/base/hooks";

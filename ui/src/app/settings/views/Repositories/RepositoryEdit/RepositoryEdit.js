@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { packagerepository as repositoryActions } from "app/base/actions";
+import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";
 import RepositoryForm from "../RepositoryForm";
 

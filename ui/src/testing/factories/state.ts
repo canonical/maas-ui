@@ -156,6 +156,7 @@ export const tokenState = define<TokenState>({
 
 export const packageRepositoryState = define<PackageRepositoryState>({
   ...defaultState,
+  errors: null,
 });
 
 export const userState = define<UserState>({

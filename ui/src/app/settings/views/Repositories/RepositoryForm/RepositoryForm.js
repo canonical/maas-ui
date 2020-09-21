@@ -5,10 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import {
-  general as generalActions,
-  packagerepository as repositoryActions,
-} from "app/base/actions";
+import { actions as repositoryActions } from "app/store/packagerepository";
+import { general as generalActions } from "app/base/actions";
 import { getRepoDisplayName } from "../utils";
 import { RepositoryShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";

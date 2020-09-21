@@ -24,7 +24,7 @@ exports[`stricter compilation`] = {
       [125, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
       [128, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
-    "src/app/base/components/DoughnutChart/DoughnutChart.tsx:2628173869": [
+    "src/app/base/components/DoughnutChart/DoughnutChart.tsx:2227983544": [
       [98, 8, 11, "Type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "2109816907"],
       [103, 31, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
       [106, 36, 4, "Object is possibly \'null\'.", "2087820472"],
@@ -33,7 +33,7 @@ exports[`stricter compilation`] = {
       [125, 31, 7, "Cannot assign to \'current\' because it is a read-only property.", "3937726892"],
       [131, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "4228750763"],
       [137, 16, 22, "Cannot invoke an object which is possibly \'null\'.", "2639979546"],
-      [230, 49, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
+      [215, 49, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
     "src/app/base/components/FormikForm/FormikForm.tsx:344624276": [
       [71, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
@@ -216,8 +216,8 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:1975295466": [
-      [78, 6, 68, "Object is possibly \'undefined\'.", "2449301754"]
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:3148800586": [
+      [80, 6, 68, "Object is possibly \'undefined\'.", "2449301754"]
     ],
     "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:2072800584": [
       [46, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
@@ -482,11 +482,11 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:302807201": [
-      [226, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [303, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
-      [305, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
-      [310, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:2556587693": [
+      [227, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
+      [304, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
+      [306, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
+      [311, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -635,5 +635,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `523`
+  value: `507`
 };
