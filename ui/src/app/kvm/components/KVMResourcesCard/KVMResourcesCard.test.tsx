@@ -21,7 +21,7 @@ describe("KVMResourcesCard", () => {
   });
 
   it("shows hugepage RAM details if provided", () => {
-    const wrapper = shallow(
+    const withHugepage = shallow(
       <KVMResourcesCard
         cores={{ allocated: 1, free: 2 }}
         ram={{
@@ -31,8 +31,21 @@ describe("KVMResourcesCard", () => {
         vms={[machineFactory({ system_id: "abc123" })]}
       />
     );
+    const withoutHugepage = shallow(
+      <KVMResourcesCard
+        cores={{ allocated: 1, free: 2 }}
+        ram={{
+          general: { allocated: 2, free: 3 },
+          hugepages: [],
+        }}
+        vms={[machineFactory({ system_id: "abc123" })]}
+      />
+    );
 
-    expect(wrapper.find("[data-test='hugepage-ram']").exists()).toBe(true);
+    expect(withHugepage.find("[data-test='hugepage-ram']").exists()).toBe(true);
+    expect(withoutHugepage.find("[data-test='hugepage-ram']").exists()).toBe(
+      false
+    );
   });
 
   it("shows virtual function details if any provided interfaces use virtual functions", () => {
