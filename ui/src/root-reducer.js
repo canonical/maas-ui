@@ -14,7 +14,6 @@ import {
   scripts,
   service,
   status,
-  subnet,
 } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
@@ -28,6 +27,7 @@ import resourcepool from "app/store/resourcepool";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
 import sslkey from "app/store/sslkey";
+import subnet from "app/store/subnet";
 import tag from "app/store/tag";
 import token from "app/store/token";
 import user from "app/store/user";
