@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { token as tokenActions } from "app/preferences/actions";
+import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import APIKeyForm from "../APIKeyForm";
 

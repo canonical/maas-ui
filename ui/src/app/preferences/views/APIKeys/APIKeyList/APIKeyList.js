@@ -2,7 +2,7 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import { token as tokenActions } from "app/preferences/actions";
+import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
