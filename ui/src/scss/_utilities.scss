@@ -1,4 +1,9 @@
 @mixin maas-utilities {
+  // Vertically align checkboxes in double row table headers
+  .u-align-header-checkbox {
+    top: -$form-tick-box-nudge;
+  }
+
   .u-default-text {
     color: $color-dark !important;
     font-size: 1rem !important;

@@ -6,6 +6,7 @@ import KVM from "app/kvm/views/KVM";
 import Machines from "app/machines/views/Machines";
 import NotFound from "app/base/views/NotFound";
 import Preferences from "app/preferences/views/Preferences";
+import RSD from "app/rsd/views/RSD";
 import Settings from "app/settings/views/Settings";
 
 const Routes = () => (
@@ -42,6 +43,14 @@ const Routes = () => (
       render={() => (
         <ErrorBoundary>
           <Machines />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path="/rsd"
+      render={() => (
+        <ErrorBoundary>
+          <RSD />
         </ErrorBoundary>
       )}
     />

@@ -8,3 +8,17 @@ export const formatHostType = (type: string): string => {
       return type;
   }
 };
+
+export const getVMHostCount = (
+  kvmCount: number,
+  selectedKVMCount: number
+): string => {
+  const kvmCountString = `${kvmCount} VM host${kvmCount === 1 ? "" : "s"}`;
+  if (selectedKVMCount > 0) {
+    if (kvmCount === selectedKVMCount) {
+      return "All VM hosts selected";
+    }
+    return `${selectedKVMCount} of ${kvmCountString} selected`;
+  }
+  return `${kvmCountString} available`;
+};
