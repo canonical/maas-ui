@@ -29,7 +29,6 @@ import {
   general as generalActions,
   machine as machineActions,
   scripts as scriptActions,
-  service as serviceActions,
 } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { nodeStatus } from "app/base/enum";
@@ -40,6 +39,7 @@ import {
   toggleFilter,
 } from "app/machines/search";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { actions as serviceActions } from "app/store/service";
 import { actions as tagActions } from "app/store/tag";
 import { actions as zoneActions } from "app/store/zone";
 import {
