@@ -79,6 +79,7 @@ export const configState = define<ConfigState>({
 
 export const controllerState = define<ControllerState>({
   ...defaultState,
+  errors: null,
 });
 
 export const deviceState = define<DeviceState>({

@@ -13,7 +13,6 @@ import StorageColumn from "./StorageColumn";
 import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
 import {
-  controller as controllerActions,
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
@@ -25,6 +24,7 @@ import generalSelectors from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { actions as controllerActions } from "app/store/controller";
 import { actions as podActions } from "app/store/pod";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
