@@ -192,24 +192,24 @@ describe("notifications reducer", () => {
     });
   });
 
-  describe("delete", () => {
-    it("reduces deleteStart", () => {
+  describe("dismiss", () => {
+    it("reduces dismissStart", () => {
       const initialState = notificationStateFactory({
         ...state,
         saving: false,
       });
-      expect(reducers(initialState, actions.deleteStart())).toEqual(
+      expect(reducers(initialState, actions.dismissStart())).toEqual(
         notificationStateFactory({ ...state, saving: true })
       );
     });
 
-    it("reduces deleteSuccess", () => {
+    it("reduces dismissSuccess", () => {
       const initialState = notificationStateFactory({
         ...state,
         saved: false,
         saving: true,
       });
-      expect(reducers(initialState, actions.deleteSuccess())).toEqual(
+      expect(reducers(initialState, actions.dismissSuccess())).toEqual(
         notificationStateFactory({ ...state, saved: true, saving: false })
       );
     });
@@ -230,7 +230,7 @@ describe("notifications reducer", () => {
       );
     });
 
-    it("reduces deleteError", () => {
+    it("reduces dismissError", () => {
       const initialState = notificationStateFactory({
         ...state,
         errors: "",
@@ -239,12 +239,12 @@ describe("notifications reducer", () => {
       expect(
         reducers(
           initialState,
-          actions.deleteError("Could not delete notification")
+          actions.dismissError("Could not dismiss notification")
         )
       ).toEqual(
         notificationStateFactory({
           ...state,
-          errors: "Could not delete notification",
+          errors: "Could not dismiss notification",
           saving: false,
         })
       );

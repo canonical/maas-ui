@@ -41,7 +41,7 @@ exports[`stricter compilation`] = {
     "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
       [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/multipass/code/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:3232603418": [
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
       [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
       [31, 8, 12, "Object is possibly \'null\'.", "148512008"],
       [40, 43, 12, "Object is possibly \'null\'.", "148512008"]
