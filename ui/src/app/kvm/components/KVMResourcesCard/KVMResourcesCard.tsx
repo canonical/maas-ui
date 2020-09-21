@@ -177,36 +177,37 @@ const KVMResourcesCard = ({
                 </span>
               </td>
             </tr>
-            {ram.hugepages?.map((hugepage, i) => (
-              <tr data-test="hugepage-ram" key={i}>
-                <td>
-                  Hugepage
-                  <br />
-                  <strong
-                    className="p-text--x-small u-text--light"
-                    data-test="hugepage-size"
-                  >
-                    {`(Size: ${memoryWithUnit(hugepage.pageSize)})`}
-                  </strong>
-                </td>
-                <td className="u-align--right">
-                  <span data-test="hugepage-allocated">
-                    {memoryWithUnit(hugepage.allocated)}
-                  </span>
-                  <span className="u-nudge-right--small">
-                    <i className="p-circle--positive"></i>
-                  </span>
-                </td>
-                <td className="u-align--right">
-                  <span data-test="hugepage-free">
-                    {memoryWithUnit(hugepage.free)}
-                  </span>
-                  <span className="u-nudge-right--small">
-                    <i className="p-circle--positive-faded"></i>
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {hugepageTotal > 0 &&
+              ram.hugepages?.map((hugepage, i) => (
+                <tr data-test="hugepage-ram" key={i}>
+                  <td>
+                    Hugepage
+                    <br />
+                    <strong
+                      className="p-text--x-small u-text--light"
+                      data-test="hugepage-size"
+                    >
+                      {`(Size: ${memoryWithUnit(hugepage.pageSize)})`}
+                    </strong>
+                  </td>
+                  <td className="u-align--right">
+                    <span data-test="hugepage-allocated">
+                      {memoryWithUnit(hugepage.allocated)}
+                    </span>
+                    <span className="u-nudge-right--small">
+                      <i className="p-circle--positive"></i>
+                    </span>
+                  </td>
+                  <td className="u-align--right">
+                    <span data-test="hugepage-free">
+                      {memoryWithUnit(hugepage.free)}
+                    </span>
+                    <span className="u-nudge-right--small">
+                      <i className="p-circle--positive-faded"></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
