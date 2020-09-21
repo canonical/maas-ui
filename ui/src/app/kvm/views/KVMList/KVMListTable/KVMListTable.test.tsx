@@ -69,7 +69,7 @@ describe("KVMListTable", () => {
       </Provider>
     );
     const expectedActions = [
-      "FETCH_CONTROLLER",
+      "controller/fetch",
       "FETCH_GENERAL_OSINFO",
       "FETCH_MACHINE",
       "pod/fetch",

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useWindowTitle } from "app/base/hooks";
 import React, { useEffect, useState } from "react";
 
+import { actions as controllerActions } from "app/store/controller";
 import {
-  controller as controllerActions,
   dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
   subnet as subnetActions,
