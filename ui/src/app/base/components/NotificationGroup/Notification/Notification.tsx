@@ -30,7 +30,7 @@ const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {
       className={showSettings ? "p-notification--has-action" : null}
       close={
         notification.dismissable
-          ? () => dispatch(notificationActions.delete(id))
+          ? () => dispatch(notificationActions.dismiss(id))
           : null
       }
       type={type}

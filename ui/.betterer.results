@@ -41,7 +41,7 @@ exports[`stricter compilation`] = {
     "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
       [4, 52, 25, "Cannot find module \'@maas-ui/maas-ui-shared\' or its corresponding type declarations.", "1778274862"]
     ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:3232603418": [
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
       [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
       [31, 8, 12, "Object is possibly \'null\'.", "148512008"],
       [40, 43, 12, "Object is possibly \'null\'.", "148512008"]

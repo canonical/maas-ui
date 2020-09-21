@@ -48,9 +48,9 @@ describe("notification actions", () => {
     });
   });
 
-  it("creates a delete action", () => {
-    expect(actions.delete(2)).toEqual({
-      type: "notification/delete",
+  it("creates a dismiss action", () => {
+    expect(actions.dismiss(2)).toEqual({
+      type: "notification/dismiss",
       payload: {
         params: {
           id: 2,
