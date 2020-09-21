@@ -149,11 +149,9 @@ export function* handleNotifyMessage({ action, name, data }) {
  * this action.
  */
 function queueBatch(action, requestIDs) {
-  const { payload = {} } = action;
-  let { params = {} } = payload;
   // If the action has a limit then it is a batch request. An action can send
   // multiple requests so each one needs to be mapped to the action.
-  if (params.limit) {
+  if (action?.payload?.params?.limit) {
     requestIDs.forEach((id) => {
       setBatchRequest(id, action);
     });
