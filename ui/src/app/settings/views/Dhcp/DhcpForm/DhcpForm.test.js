@@ -69,7 +69,7 @@ describe("DhcpForm", () => {
     );
     wrapper.unmount();
     expect(
-      store.getActions().some((action) => action.type === "CLEANUP_DHCPSNIPPET")
+      store.getActions().some((action) => action.type === "dhcpsnippet/cleanup")
     ).toBe(true);
   });
 
@@ -102,9 +102,9 @@ describe("DhcpForm", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_DHCPSNIPPET")
+      store.getActions().find((action) => action.type === "dhcpsnippet/update")
     ).toStrictEqual({
-      type: "UPDATE_DHCPSNIPPET",
+      type: "dhcpsnippet/update",
       payload: {
         params: {
           description: undefined,
@@ -136,9 +136,9 @@ describe("DhcpForm", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "CREATE_DHCPSNIPPET")
+      store.getActions().find((action) => action.type === "dhcpsnippet/create")
     ).toStrictEqual({
-      type: "CREATE_DHCPSNIPPET",
+      type: "dhcpsnippet/create",
       payload: {
         params: {
           description: undefined,
@@ -166,7 +166,7 @@ describe("DhcpForm", () => {
     );
     const actions = store.getActions();
     expect(
-      actions.some((action) => action.type === "CLEANUP_DHCPSNIPPET")
+      actions.some((action) => action.type === "dhcpsnippet/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });

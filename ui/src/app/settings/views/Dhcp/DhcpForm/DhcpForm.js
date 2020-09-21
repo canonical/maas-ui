@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { actions as controllerActions } from "app/store/controller";
+import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import {
-  dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";

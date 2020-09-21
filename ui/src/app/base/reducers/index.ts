@@ -1,5 +1,4 @@
 export { default as auth } from "./auth";
-export { default as dhcpsnippet } from "./dhcpsnippet";
 export { default as fabric } from "./fabric";
 export { default as general } from "./general";
 export { default as licensekeys } from "./licensekeys";

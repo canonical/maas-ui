@@ -88,6 +88,7 @@ export const deviceState = define<DeviceState>({
 
 export const dhcpSnippetState = define<DHCPSnippetState>({
   ...defaultState,
+  errors: null,
 });
 
 export const fabricState = define<FabricState>({

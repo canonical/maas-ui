@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { dhcpsnippet as dhcpsnippetActions } from "app/base/actions";
+import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import DhcpForm from "../DhcpForm";
 

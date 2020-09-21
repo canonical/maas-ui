@@ -4,7 +4,6 @@ import { connectRouter } from "connected-react-router";
 
 import {
   auth,
-  dhcpsnippet,
   fabric,
   general,
   licensekeys,
@@ -21,6 +20,7 @@ import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import controller from "app/store/controller";
 import device from "app/store/device";
+import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
 import packagerepository from "app/store/packagerepository";
 import pod from "app/store/pod";
