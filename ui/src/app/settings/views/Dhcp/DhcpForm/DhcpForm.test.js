@@ -185,7 +185,7 @@ describe("DhcpForm", () => {
       true
     );
     expect(actions.some((action) => action.type === "device/fetch")).toBe(true);
-    expect(actions.some((action) => action.type === "FETCH_SUBNET")).toBe(true);
+    expect(actions.some((action) => action.type === "subnet/fetch")).toBe(true);
     expect(actions.some((action) => action.type === "controller/fetch")).toBe(
       true
     );

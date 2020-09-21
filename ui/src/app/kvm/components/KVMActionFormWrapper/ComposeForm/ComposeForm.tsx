@@ -9,11 +9,11 @@ import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
 import { actions as podActions } from "app/store/pod";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { actions as subnetActions } from "app/store/subnet";
 import {
   fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
-  subnet as subnetActions,
 } from "app/base/actions";
 import { actions as domainActions } from "app/store/domain";
 import { actions as spaceActions } from "app/store/space";

@@ -288,6 +288,7 @@ export const serviceState = define<ServiceState>({
 
 export const subnetState = define<SubnetState>({
   ...defaultState,
+  errors: null,
 });
 
 export const tagState = define<TagState>({

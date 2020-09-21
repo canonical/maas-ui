@@ -118,7 +118,7 @@ exports[`stricter compilation`] = {
       [189, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"],
       [200, 13, 12, "Argument of type \'FabricState\' is not assignable to parameter of type \'{ errors: {}; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\'.", "2722999692"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3766728562": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:2517085915": [
       [136, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [136, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [136, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -482,11 +482,11 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:1100390381": [
+    "src/testing/factories/state.ts:504783265": [
       [229, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [306, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
-      [308, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
-      [313, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
+      [307, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
+      [309, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
+      [314, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -635,5 +635,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `487`
+  value: `481`
 };

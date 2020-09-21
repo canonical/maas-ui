@@ -226,7 +226,7 @@ Object {
     "authenticating": false,
   },
   "subnet": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

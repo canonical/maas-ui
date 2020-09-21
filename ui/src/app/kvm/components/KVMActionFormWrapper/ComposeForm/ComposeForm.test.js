@@ -84,7 +84,7 @@ describe("ComposeForm", () => {
       "FETCH_GENERAL_POWER_TYPES",
       "resourcepool/fetch",
       "space/fetch",
-      "FETCH_SUBNET",
+      "subnet/fetch",
       "vlan/fetch",
       "zone/fetch",
       "GET_POD",
