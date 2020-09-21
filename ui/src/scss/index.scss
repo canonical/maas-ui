@@ -120,6 +120,10 @@
 @include AddSSLKey;
 @include SSLKeyList;
 
+// rsd
+@import "~app/rsd/views/RSDList/RSDListTable";
+@include RSDListTable;
+
 // settings
 @import "~app/settings/components/SettingsTable";
 @import "~app/settings/views/Dhcp/DhcpList";
