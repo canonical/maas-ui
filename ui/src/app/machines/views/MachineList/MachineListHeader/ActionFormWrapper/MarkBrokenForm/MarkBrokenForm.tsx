@@ -41,6 +41,9 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
+      initialValues={{
+        comment: "",
+      }}
       modelName="machine"
       onSubmit={(values: MarkBrokenFormValues) => {
         selectedMachines.forEach((machine) => {
