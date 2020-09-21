@@ -132,7 +132,7 @@ describe("RepositoriesList", () => {
 
     // 1. Fetch, 2. Cleanup, 3. Delete
     expect(store.getActions()[2]).toEqual({
-      type: "DELETE_PACKAGEREPOSITORY",
+      type: "packagerepository/delete",
       payload: {
         params: {
           id: 3,
@@ -204,7 +204,7 @@ describe("RepositoriesList", () => {
     );
     const actions = store.getActions();
     expect(
-      actions.some((action) => action.type === "CLEANUP_PACKAGEREPOSITORY")
+      actions.some((action) => action.type === "packagerepository/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });

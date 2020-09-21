@@ -1,19 +1,20 @@
-import packagerepository from "./packagerepository";
+import { actions } from "./slice";
 
 describe("packagerepository actions", () => {
   it("should handle fetching repositories", () => {
-    expect(packagerepository.fetch()).toEqual({
-      type: "FETCH_PACKAGEREPOSITORY",
+    expect(actions.fetch()).toEqual({
+      type: "packagerepository/fetch",
       meta: {
         model: "packagerepository",
         method: "list",
       },
+      payload: null,
     });
   });
 
   it("can handle creating repositories", () => {
-    expect(packagerepository.create({ name: "foo" })).toEqual({
-      type: "CREATE_PACKAGEREPOSITORY",
+    expect(actions.create({ name: "foo" })).toEqual({
+      type: "packagerepository/create",
       meta: {
         model: "packagerepository",
         method: "create",
@@ -27,8 +28,8 @@ describe("packagerepository actions", () => {
   });
 
   it("can handle updating repositories", () => {
-    expect(packagerepository.update({ name: "bar" })).toEqual({
-      type: "UPDATE_PACKAGEREPOSITORY",
+    expect(actions.update({ name: "bar" })).toEqual({
+      type: "packagerepository/update",
       meta: {
         model: "packagerepository",
         method: "update",
@@ -42,8 +43,8 @@ describe("packagerepository actions", () => {
   });
 
   it("can handle deleting repositories", () => {
-    expect(packagerepository.delete(911)).toEqual({
-      type: "DELETE_PACKAGEREPOSITORY",
+    expect(actions.delete(911)).toEqual({
+      type: "packagerepository/delete",
       meta: {
         model: "packagerepository",
         method: "delete",
@@ -57,8 +58,8 @@ describe("packagerepository actions", () => {
   });
 
   it("can handle cleaning repositories", () => {
-    expect(packagerepository.cleanup()).toEqual({
-      type: "CLEANUP_PACKAGEREPOSITORY",
+    expect(actions.cleanup()).toEqual({
+      type: "packagerepository/cleanup",
     });
   });
 });

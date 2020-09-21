@@ -34,7 +34,7 @@ describe("RepositoryForm", () => {
         },
       },
       packagerepository: {
-        errors: {},
+        errors: null,
         loading: false,
         loaded: true,
         saving: false,
@@ -100,11 +100,12 @@ describe("RepositoryForm", () => {
         },
       },
       {
-        type: "FETCH_PACKAGEREPOSITORY",
+        type: "packagerepository/fetch",
         meta: {
           model: "packagerepository",
           method: "list",
         },
+        payload: null,
       },
     ]);
   });
@@ -178,7 +179,7 @@ describe("RepositoryForm", () => {
     wrapper.unmount();
     expect(store.getActions()).toEqual([
       {
-        type: "CLEANUP_PACKAGEREPOSITORY",
+        type: "packagerepository/cleanup",
       },
     ]);
   });
@@ -245,9 +246,9 @@ describe("RepositoryForm", () => {
     });
     const action = store
       .getActions()
-      .find((action) => action.type === "UPDATE_PACKAGEREPOSITORY");
+      .find((action) => action.type === "packagerepository/update");
     expect(action).toEqual({
-      type: "UPDATE_PACKAGEREPOSITORY",
+      type: "packagerepository/update",
       payload: {
         params: {
           id: 9,
@@ -301,9 +302,9 @@ describe("RepositoryForm", () => {
     });
     const action = store
       .getActions()
-      .find((action) => action.type === "CREATE_PACKAGEREPOSITORY");
+      .find((action) => action.type === "packagerepository/create");
     expect(action).toEqual({
-      type: "CREATE_PACKAGEREPOSITORY",
+      type: "packagerepository/create",
       payload: {
         params: {
           name: "name",
@@ -339,7 +340,7 @@ describe("RepositoryForm", () => {
     );
     const actions = store.getActions();
     expect(
-      actions.some((action) => action.type === "CLEANUP_PACKAGEREPOSITORY")
+      actions.some((action) => action.type === "packagerepository/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });
