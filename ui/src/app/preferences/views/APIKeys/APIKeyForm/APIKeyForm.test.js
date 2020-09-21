@@ -52,9 +52,9 @@ describe("APIKeyForm", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "CREATE_TOKEN")
+      store.getActions().find((action) => action.type === "token/create")
     ).toStrictEqual({
-      type: "CREATE_TOKEN",
+      type: "token/create",
       payload: {
         params: {
           name: "Token name",
@@ -82,9 +82,9 @@ describe("APIKeyForm", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_TOKEN")
+      store.getActions().find((action) => action.type === "token/update")
     ).toStrictEqual({
-      type: "UPDATE_TOKEN",
+      type: "token/update",
       payload: {
         params: {
           id: 1,

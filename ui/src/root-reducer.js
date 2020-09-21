@@ -29,10 +29,10 @@ import space from "app/store/space";
 import sshkey from "app/store/sshkey";
 import sslkey from "app/store/sslkey";
 import tag from "app/store/tag";
+import token from "app/store/token";
 import user from "app/store/user";
 import vlan from "app/store/vlan";
 import zone from "app/store/zone";
-import { token } from "./app/preferences/reducers";
 
 const createAppReducer = (history) =>
   combineReducers({

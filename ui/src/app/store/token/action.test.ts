@@ -1,19 +1,20 @@
-import token from "./token";
+import { actions } from "./slice";
 
 describe("token actions", () => {
   it("should handle fetching tokens", () => {
-    expect(token.fetch()).toEqual({
-      type: "FETCH_TOKEN",
+    expect(actions.fetch()).toEqual({
+      type: "token/fetch",
       meta: {
         model: "token",
         method: "list",
       },
+      payload: null,
     });
   });
 
   it("can handle creating tokens", () => {
-    expect(token.create({ key: "---begin cert---..." })).toEqual({
-      type: "CREATE_TOKEN",
+    expect(actions.create({ key: "---begin cert---..." })).toEqual({
+      type: "token/create",
       meta: {
         model: "token",
         method: "create",
@@ -27,8 +28,8 @@ describe("token actions", () => {
   });
 
   it("can handle deleting tokens", () => {
-    expect(token.delete(808)).toEqual({
-      type: "DELETE_TOKEN",
+    expect(actions.delete(808)).toEqual({
+      type: "token/delete",
       meta: {
         model: "token",
         method: "delete",
@@ -42,8 +43,8 @@ describe("token actions", () => {
   });
 
   it("can clean up", () => {
-    expect(token.cleanup()).toEqual({
-      type: "CLEANUP_TOKEN",
+    expect(actions.cleanup()).toEqual({
+      type: "token/cleanup",
     });
   });
 });
