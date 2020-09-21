@@ -94,9 +94,9 @@ describe("DhcpList", () => {
       .last()
       .simulate("click");
     expect(
-      store.getActions().find((action) => action.type === "DELETE_DHCPSNIPPET")
+      store.getActions().find((action) => action.type === "dhcpsnippet/delete")
     ).toEqual({
-      type: "DELETE_DHCPSNIPPET",
+      type: "dhcpsnippet/delete",
       payload: {
         params: {
           id: 2,
@@ -134,7 +134,7 @@ describe("DhcpList", () => {
       .simulate("click");
     const actions = store.getActions();
     expect(
-      actions.some((action) => action.type === "CLEANUP_DHCPSNIPPET")
+      actions.some((action) => action.type === "dhcpsnippet/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
   });

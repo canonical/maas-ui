@@ -5,8 +5,8 @@ import { useWindowTitle } from "app/base/hooks";
 import React, { useEffect, useState } from "react";
 
 import { actions as controllerActions } from "app/store/controller";
+import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import {
-  dhcpsnippet as dhcpsnippetActions,
   machine as machineActions,
   subnet as subnetActions,
 } from "app/base/actions";
