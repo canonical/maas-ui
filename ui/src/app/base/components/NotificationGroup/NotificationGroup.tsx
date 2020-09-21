@@ -16,7 +16,7 @@ import type { MessageType } from "app/store/message/types";
 const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
   notifications.forEach((notification) => {
     if (notification.dismissable) {
-      dispatch(notificationActions.delete(notification.id));
+      dispatch(notificationActions.dismiss(notification.id));
     }
   });
 };
