@@ -1,7 +1,8 @@
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import { useWindowTitle } from "app/base/hooks";
+import AddRSDForm from "./AddRSDForm";
 import RSDListHeader from "./RSDListHeader";
 import RSDListTable from "./RSDListTable";
 import Section from "app/base/components/Section";
@@ -16,7 +17,7 @@ const RSDList = (): JSX.Element => {
           <RSDListTable />
         </Route>
         <Route exact path="/rsd/add">
-          <Redirect to="/machines/rsd/add" />
+          <AddRSDForm />
         </Route>
       </Switch>
     </Section>

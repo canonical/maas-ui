@@ -407,6 +407,10 @@ exports[`stricter compilation`] = {
       [91, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [91, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
+    "src/app/rsd/views/RSDList/AddRSDForm/AddRSDForm.test.tsx:2475074294": [
+      [70, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [71, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; power_pass: string; power_user: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "244873512"]
+    ],
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:42858656": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
@@ -647,5 +651,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `476`
+  value: `475`
 };
