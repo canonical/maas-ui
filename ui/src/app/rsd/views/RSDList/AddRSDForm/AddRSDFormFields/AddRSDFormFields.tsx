@@ -28,7 +28,7 @@ export const AddRSDFormFields = (): JSX.Element => {
             ...zones.map((zone) => ({
               key: `zone-${zone.id}`,
               label: zone.name,
-              value: zone.name,
+              value: zone.id,
             })),
           ]}
         />
@@ -41,7 +41,7 @@ export const AddRSDFormFields = (): JSX.Element => {
             ...resourcePools.map((pool) => ({
               key: `pool-${pool.id}`,
               label: pool.name,
-              value: pool.name,
+              value: pool.id,
             })),
           ]}
         />

@@ -70,11 +70,11 @@ describe("AddRSDForm", () => {
     act(() =>
       wrapper.find("Formik").invoke("onSubmit")({
         name: "my-favourite-rsd",
-        pool: "pool-1",
+        pool: 0,
         power_address: "192.68.1.1",
         power_pass: "password",
         power_user: "admin",
-        zone: "zone-1",
+        zone: 1,
       })
     );
 
@@ -89,12 +89,12 @@ describe("AddRSDForm", () => {
       payload: {
         params: {
           name: "my-favourite-rsd",
-          pool: "pool-1",
+          pool: 0,
           power_address: "192.68.1.1",
           power_pass: "password",
           power_user: "admin",
           type: "rsd",
-          zone: "zone-1",
+          zone: 1,
         },
       },
     });

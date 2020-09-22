@@ -20,20 +20,20 @@ import { formatErrors } from "app/utils";
 
 const AddRSDFormSchema = Yup.object().shape({
   name: Yup.string(),
-  pool: Yup.string(),
+  pool: Yup.number(),
   power_address: Yup.string().required("Address required"),
   power_pass: Yup.string().required("Password required"),
   power_user: Yup.string().required("User required"),
-  zone: Yup.string(),
+  zone: Yup.number(),
 });
 
 export type AddRSDFormValues = {
   name: string;
-  pool: string;
+  pool: number;
   power_address: string;
   power_pass: string;
   power_user: string;
-  zone: string;
+  zone: number;
 };
 
 export const AddRSDForm = (): JSX.Element => {
@@ -84,11 +84,11 @@ export const AddRSDForm = (): JSX.Element => {
             errors={errors}
             initialValues={{
               name: "",
-              pool: (resourcePools.length && resourcePools[0].name) || "",
+              pool: (resourcePools.length && resourcePools[0].id) || 0,
               power_address: "",
               power_pass: "",
               power_user: "",
-              zone: (zones.length && zones[0].name) || "",
+              zone: (zones.length && zones[0].id) || 0,
             }}
             onCancel={() => history.push({ pathname: "/rsd" })}
             onSaveAnalytics={{
@@ -99,12 +99,12 @@ export const AddRSDForm = (): JSX.Element => {
             onSubmit={(values: AddRSDFormValues) => {
               const params = {
                 name: values.name,
-                pool: values.pool,
+                pool: Number(values.pool),
                 power_address: values.power_address,
                 power_pass: values.power_pass,
                 power_user: values.power_user,
                 type: "rsd",
-                zone: values.zone,
+                zone: Number(values.zone),
               };
               dispatch(podActions.create(params));
               setSavingRSD(values.name || "RSD");
