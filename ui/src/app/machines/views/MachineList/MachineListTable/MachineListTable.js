@@ -39,7 +39,6 @@ import {
   toggleFilter,
 } from "app/machines/search";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
-import { actions as serviceActions } from "app/store/service";
 import { actions as tagActions } from "app/store/tag";
 import { actions as zoneActions } from "app/store/zone";
 import {
@@ -506,7 +505,6 @@ export const MachineListTable = ({
     dispatch(generalActions.fetchVersion());
     dispatch(resourcePoolActions.fetch());
     dispatch(scriptActions.fetch());
-    dispatch(serviceActions.fetch());
     dispatch(tagActions.fetch());
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
