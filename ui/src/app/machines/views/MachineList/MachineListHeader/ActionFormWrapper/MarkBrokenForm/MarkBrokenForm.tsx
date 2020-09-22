@@ -54,6 +54,7 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
       }}
       selectedCount={selectedMachines.length}
       validationSchema={MarkBrokenSchema}
+      allowAllEmpty
     >
       <MarkBrokenFormFields selectedCount={selectedMachines.length} />
     </ActionForm>

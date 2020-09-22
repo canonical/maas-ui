@@ -101,4 +101,43 @@ describe("MarkBrokenForm", () => {
       },
     ]);
   });
+
+  it("dispatches actions to mark selected machines broken without a message", () => {
+    const store = mockStore(initialState);
+    initialState.machine.selected = ["abc123"];
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MarkBrokenForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        comment: "",
+      })
+    );
+
+    expect(store.getActions()).toStrictEqual([
+      {
+        type: "MARK_MACHINE_BROKEN",
+        meta: {
+          model: "machine",
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: "mark-broken",
+            extra: {
+              message: "",
+            },
+            system_id: "abc123",
+          },
+        },
+      },
+    ]);
+  });
 });
