@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PodMeter renders 1`] = `
+<div
+  className="pod-meter"
+>
+  <div>
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Total
+    </p>
+    <div
+      data-test="total"
+    >
+      3GB
+    </div>
+  </div>
+  <div
+    className="u-align--right"
+  >
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Allocated
+      <span
+        className="u-nudge-right--small"
+      >
+        <i
+          className="p-circle--link u-no-margin--top"
+        />
+      </span>
+    </p>
+    <div
+      className="u-nudge-left"
+      data-test="allocated"
+    >
+      2GB
+    </div>
+  </div>
+  <div
+    className="u-align--right"
+  >
+    <p
+      className="p-heading--small u-text--light"
+    >
+      Free
+      <span
+        className="u-nudge-right--small"
+      >
+        <i
+          className="p-circle--link-faded u-no-margin--top"
+        />
+      </span>
+    </p>
+    <div
+      className="u-nudge-left"
+      data-test="free"
+    >
+      1GB
+    </div>
+  </div>
+  <div
+    style={
+      Object {
+        "gridArea": "meter",
+      }
+    }
+  >
+    <Meter
+      data={
+        Array [
+          Object {
+            "value": 2,
+          },
+        ]
+      }
+      max={3}
+      segmented={false}
+      small={true}
+    />
+  </div>
+</div>
+`;

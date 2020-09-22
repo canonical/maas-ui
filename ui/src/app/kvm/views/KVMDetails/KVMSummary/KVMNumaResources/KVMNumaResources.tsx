@@ -7,29 +7,29 @@ import { useDispatch, useSelector } from "react-redux";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodNumaNode } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import type { KVMResourcesCardProps } from "app/kvm/components/KVMResourcesCard";
+import type { PodResourcesCardProps } from "app/kvm/components/PodResourcesCard";
 import { sendAnalyticsEvent } from "analytics";
 import { formatBytes } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import { actions as podActions } from "app/store/pod";
 import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
-import KVMResourcesCard from "app/kvm/components/KVMResourcesCard";
+import PodResourcesCard from "app/kvm/components/PodResourcesCard";
 
 export const TRUNCATION_POINT = 4;
 
 type Props = { id: Pod["id"] };
 
 /**
- * Normalise numa_pinning data from API for use in KVMResourcesCard component.
+ * Normalise numa_pinning data from API for use in PodResourcesCard component.
  *
  * @param numaNode - the NUMA node to normalise
- * @returns {KVMResourcesCardProps}
+ * @returns {PodResourcesCardProps}
  */
 const normaliseNuma = (
   numaNode: PodNumaNode,
   podVMs: Machine[]
-): KVMResourcesCardProps => {
+): PodResourcesCardProps => {
   const { cores, interfaces, memory, node_id, vms } = numaNode;
   const { general, hugepages } = memory;
 
@@ -106,9 +106,9 @@ const KVMNumaResources = ({ id }: Props): JSX.Element => {
           {shownNumaNodes.map((numa) => {
             const kvmResourcesCardProps = normaliseNuma(numa, podVMs);
             return (
-              <KVMResourcesCard
+              <PodResourcesCard
                 className={
-                  showWideCards ? "kvm-resources-card--wide" : undefined
+                  showWideCards ? "pod-resources-card--wide" : undefined
                 }
                 key={numa.node_id}
                 {...kvmResourcesCardProps}

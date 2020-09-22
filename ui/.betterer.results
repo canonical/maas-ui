@@ -188,7 +188,7 @@ exports[`stricter compilation`] = {
       [119, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
       [172, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:3771880679": [
+    "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:3808680172": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [43, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [67, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
@@ -199,7 +199,7 @@ exports[`stricter compilation`] = {
       [156, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [160, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfigurationFields/KVMConfigurationFields.test.tsx:2293033710": [
+    "src/app/kvm/components/PodConfiguration/PodConfigurationFields/PodConfigurationFields.test.tsx:3226799621": [
       [15, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
       [40, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [83, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
@@ -216,10 +216,10 @@ exports[`stricter compilation`] = {
       [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [94, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:3148800586": [
-      [80, 6, 68, "Object is possibly \'undefined\'.", "2449301754"]
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:2780035521": [
+      [80, 6, 68, "Object is possibly \'undefined\'.", "2960886801"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:2072800584": [
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:3681430920": [
       [46, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
       [74, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],

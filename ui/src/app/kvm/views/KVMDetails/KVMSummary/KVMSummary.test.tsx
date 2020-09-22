@@ -40,7 +40,7 @@ describe("KVMSummary", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("KVMAggregateResources").exists()).toBe(true);
+    expect(wrapper.find("PodAggregateResources").exists()).toBe(true);
     expect(wrapper.find("KVMNumaResources").exists()).toBe(false);
 
     act(() => {
@@ -50,7 +50,7 @@ describe("KVMSummary", () => {
     });
     wrapper.update();
 
-    expect(wrapper.find("KVMAggregateResources").exists()).toBe(false);
+    expect(wrapper.find("PodAggregateResources").exists()).toBe(false);
     expect(wrapper.find("KVMNumaResources").exists()).toBe(true);
   });
 
