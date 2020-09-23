@@ -43,11 +43,24 @@ module.exports = {
       },
       rules: {
         "prettier/prettier": "error",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            args: "none",
+            ignoreRestSiblings: true,
+          },
+        ],
       },
       settings: {
         react: {
           version: "detect",
         },
+      },
+    },
+    {
+      files: ["**/*.js?(x)"],
+      rules: {
+        "no-unused-vars": 2,
       },
     },
   ],
