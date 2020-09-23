@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import configureStore, { MockStoreEnhanced } from "redux-mock-store";
+import configureStore, { MockStore } from "redux-mock-store";
 
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -28,7 +28,7 @@ import ComposeForm from "../ComposeForm";
 
 const mockStore = configureStore();
 
-const generateWrapper = (store: MockStoreEnhanced, pod: Pod) =>
+const generateWrapper = (store: MockStore, pod: Pod) =>
   mount(
     <Provider store={store}>
       <MemoryRouter
@@ -245,5 +245,55 @@ describe("StorageTable", () => {
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
       `Error: Only 25GB available in ${pool.name}.`
     );
+  });
+
+  it("only shows an option for local storage if pod is an RSD without iSCSI capabilities", () => {
+    const pod = podDetailsFactory({
+      capabilities: [],
+      id: 1,
+      type: "rsd",
+    });
+    const state = { ...initialState };
+    state.pod.items = [pod];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+
+    expect(wrapper.find("select[name='disks[0].location'] option").length).toBe(
+      1
+    );
+    expect(
+      wrapper
+        .find("select[name='disks[0].location'] option")
+        .at(0)
+        .prop("value")
+    ).toBe("local");
+  });
+
+  it("shows options for local and iSCSI storage if pod is an RSD with iSCSI capabilities", () => {
+    const pod = podDetailsFactory({
+      capabilities: ["iscsi_storage"],
+      id: 1,
+      type: "rsd",
+    });
+    const state = { ...initialState };
+    state.pod.items = [pod];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+
+    expect(wrapper.find("select[name='disks[0].location'] option").length).toBe(
+      2
+    );
+    expect(
+      wrapper
+        .find("select[name='disks[0].location'] option")
+        .at(0)
+        .prop("value")
+    ).toBe("local");
+    expect(
+      wrapper
+        .find("select[name='disks[0].location'] option")
+        .at(1)
+        .prop("value")
+    ).toBe("iscsi");
   });
 });

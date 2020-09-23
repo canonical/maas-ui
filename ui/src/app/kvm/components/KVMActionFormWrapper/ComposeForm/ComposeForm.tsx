@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
 
+import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
@@ -141,6 +142,21 @@ export const createStorageConstraints = (
     .join(",");
 };
 
+/**
+ * Get the default location of the first disk when form is mounted.
+ * @param pod - The pod in which to determine default disk location.
+ * @returns default disk location.
+ */
+export const getDefaultPoolLocation = (pod: Pod): string => {
+  if (pod.type === "rsd") {
+    return "local";
+  }
+  const defaultPool = pod.storage_pools.find(
+    (pool) => pool.id === pod.default_storage_pool
+  );
+  return defaultPool?.name || "";
+};
+
 type Props = { setSelectedAction: (action: string | null) => void };
 
 type RouteParams = {
@@ -206,13 +222,11 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         return available;
       }, {}),
     };
-    const defaultPool = pod.storage_pools.find(
-      (pool) => pool.id === pod.default_storage_pool
-    );
+    const defaultPoolLocation = getDefaultPoolLocation(pod);
     const defaults = {
       cores: powerType?.defaults?.cores || 1,
       disk: {
-        location: defaultPool?.name || "",
+        location: defaultPoolLocation,
         size: powerType?.defaults?.storage || 8,
         tags: [],
       },

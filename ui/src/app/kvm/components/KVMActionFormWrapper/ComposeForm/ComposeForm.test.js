@@ -27,6 +27,7 @@ import {
 import ComposeForm, {
   createInterfaceConstraints,
   createStorageConstraints,
+  getDefaultPoolLocation,
 } from "./ComposeForm";
 
 const mockStore = configureStore();
@@ -292,6 +293,26 @@ describe("ComposeForm", () => {
           otherDisk.location
         },${otherDisk.tags.join(",")})`
       );
+    });
+  });
+
+  describe("getDefaultPoolLocation", () => {
+    it("returns 'local' for RSD pods", () => {
+      const pod = podDetailsFactory({ type: "rsd" });
+      expect(getDefaultPoolLocation(pod)).toBe("local");
+    });
+
+    it("correctly returns default pool name for non-RSD pods", () => {
+      const [defaultPool, otherPool] = [
+        podStoragePoolFactory(),
+        podStoragePoolFactory(),
+      ];
+      const pod = podDetailsFactory({
+        default_storage_pool: defaultPool.id,
+        storage_pools: [defaultPool, otherPool],
+        type: "lxd",
+      });
+      expect(getDefaultPoolLocation(pod)).toBe(defaultPool.name);
     });
   });
 });

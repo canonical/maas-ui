@@ -1,5 +1,6 @@
 import {
   Button,
+  Select,
   Spinner,
   Table,
   TableCell,
@@ -65,6 +66,9 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
     const cannotHaveMultipleDisks = pod.type === "lxd";
     const disabled = cannotHaveMultipleDisks || !!composingPods.length;
 
+    // RSD VM hosts can only choose "Local" storage, or "iSCSI" (if they have the capability).
+    const isRSD = pod.type === "rsd";
+
     return (
       <>
         <div className="u-flex--between">
@@ -115,12 +119,28 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell aria-label="Location">
-                    <PoolSelect
-                      disk={disk}
-                      selectPool={(poolName: string) => {
-                        setFieldValue(`disks[${i}].location`, poolName);
-                      }}
-                    />
+                    {isRSD ? (
+                      <FormikField
+                        component={Select}
+                        name={`disks[${i}].location`}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          setFieldValue(`disks[${i}].location`, e.target.value);
+                        }}
+                        options={[
+                          { label: "Local", value: "local" },
+                          ...(pod.capabilities.includes("iscsi_storage")
+                            ? [{ label: "iSCSI", value: "iscsi" }]
+                            : []),
+                        ]}
+                      />
+                    ) : (
+                      <PoolSelect
+                        disk={disk}
+                        selectPool={(poolName: string) => {
+                          setFieldValue(`disks[${i}].location`, poolName);
+                        }}
+                      />
+                    )}
                   </TableCell>
                   <TableCell aria-label="Tags">
                     <FormikField
