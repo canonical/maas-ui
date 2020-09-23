@@ -10,9 +10,9 @@ import { actions as podActions } from "app/store/pod";
 import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
 import { useWindowTitle } from "app/base/hooks";
-import KVMAggregateResources from "./KVMAggregateResources";
+import PodAggregateResources from "app/kvm/components/PodAggregateResources";
 import KVMNumaResources from "./KVMNumaResources";
-import KVMStorage from "./KVMStorage";
+import PodStorage from "app/kvm/components/PodStorage";
 import Switch from "app/base/components/Switch";
 
 type RouteParams = {
@@ -75,9 +75,9 @@ const KVMSummary = (): JSX.Element => {
         {viewByNuma ? (
           <KVMNumaResources id={pod.id} />
         ) : (
-          <KVMAggregateResources id={pod.id} />
+          <PodAggregateResources id={pod.id} />
         )}
-        <KVMStorage id={pod.id} />
+        <PodStorage id={pod.id} />
       </>
     );
   }

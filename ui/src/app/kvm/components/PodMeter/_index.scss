@@ -1,0 +1,11 @@
+@mixin PodMeter {
+  .pod-meter {
+    display: grid;
+    grid-column-gap: $sph-inner;
+    grid-template-areas:
+      "total allocated free"
+      "meter meter meter";
+    grid-template-columns: 1fr max-content 1fr;
+    grid-template-rows: min-content;
+  }
+}

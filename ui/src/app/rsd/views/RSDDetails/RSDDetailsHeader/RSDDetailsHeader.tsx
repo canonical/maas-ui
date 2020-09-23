@@ -7,15 +7,15 @@ import { Link, useLocation } from "react-router-dom";
 import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
+import RSDActionFormWrapper from "app/rsd/components/RSDActionFormWrapper";
 import SectionHeader from "app/base/components/SectionHeader";
 
 type RouteParams = {
   id: string;
 };
 
-const KVMDetailsHeader = (): JSX.Element => {
+const RSDDetailsHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { id } = useParams<RouteParams>();
@@ -28,9 +28,9 @@ const KVMDetailsHeader = (): JSX.Element => {
     dispatch(podActions.fetch());
   }, [dispatch]);
 
-  // If path is not exactly "/kvm/<pod.id>" close the form.
+  // If path is not exactly "/rsd/<pod.id>" close the form.
   useEffect(() => {
-    if (location.pathname !== `/kvm/${id}`) {
+    if (location.pathname !== `/rsd/${id}`) {
       setSelectedAction("");
     }
   }, [id, location.pathname]);
@@ -38,7 +38,7 @@ const KVMDetailsHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        !selectedAction && location.pathname.endsWith(`/kvm/${id}`)
+        !selectedAction && location.pathname.endsWith(`/rsd/${id}`)
           ? [
               <PodDetailsActionMenu
                 key="action-dropdown"
@@ -49,7 +49,7 @@ const KVMDetailsHeader = (): JSX.Element => {
       }
       formWrapper={
         (selectedAction && (
-          <KVMActionFormWrapper
+          <RSDActionFormWrapper
             selectedAction={selectedAction}
             setSelectedAction={setSelectedAction}
           />
@@ -64,16 +64,16 @@ const KVMDetailsHeader = (): JSX.Element => {
       )}
       tabLinks={[
         {
-          active: location.pathname.endsWith(`/kvm/${id}`),
+          active: location.pathname.endsWith(`/rsd/${id}`),
           component: Link,
           label: "Resources",
-          to: `/kvm/${id}`,
+          to: `/rsd/${id}`,
         },
         {
-          active: location.pathname.endsWith(`/kvm/${id}/edit`),
+          active: location.pathname.endsWith(`/rsd/${id}/edit`),
           component: Link,
           label: "Configuration",
-          to: `/kvm/${id}/edit`,
+          to: `/rsd/${id}/edit`,
         },
       ]}
       title={pod?.name || ""}
@@ -81,4 +81,4 @@ const KVMDetailsHeader = (): JSX.Element => {
   );
 };
 
-export default KVMDetailsHeader;
+export default RSDDetailsHeader;

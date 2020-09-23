@@ -8,14 +8,14 @@ import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import Section from "app/base/components/Section";
 import PodConfiguration from "app/kvm/components/PodConfiguration";
-import KVMDetailsHeader from "./KVMDetailsHeader";
-import KVMSummary from "./KVMSummary";
+import RSDDetailsHeader from "./RSDDetailsHeader";
+import RSDSummary from "./RSDSummary";
 
 type RouteParams = {
   id: string;
 };
 
-const KVMDetails = (): JSX.Element => {
+const RSDDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
 
@@ -28,27 +28,27 @@ const KVMDetails = (): JSX.Element => {
     dispatch(podActions.get(Number(id)));
   }, [dispatch, id]);
 
-  // If KVM has been deleted, redirect to KVM list.
+  // If RSD has been deleted, redirect to RSD list.
   if (podsLoaded && !pod) {
-    return <Redirect to="/kvm" />;
+    return <Redirect to="/rsd" />;
   }
 
-  // If pod is an RSD, redirect to RSD details page.
-  if (pod?.type === "rsd") {
-    return <Redirect to={`/rsd/${id}`} />;
+  // If pod is not an RSD, redirect to KVM details page.
+  if (pod?.type !== "rsd") {
+    return <Redirect to={`/kvm/${id}`} />;
   }
 
   return (
     <Section
-      header={<KVMDetailsHeader />}
+      header={<RSDDetailsHeader />}
       headerClassName="u-no-padding--bottom"
     >
       {pod && (
         <Switch>
-          <Route exact path="/kvm/:id">
-            <KVMSummary />
+          <Route exact path="/rsd/:id">
+            <RSDSummary />
           </Route>
-          <Route exact path="/kvm/:id/edit">
+          <Route exact path="/rsd/:id/edit">
             <PodConfiguration />
           </Route>
         </Switch>
@@ -57,4 +57,4 @@ const KVMDetails = (): JSX.Element => {
   );
 };
 
-export default KVMDetails;
+export default RSDDetails;

@@ -45,7 +45,7 @@ describe("KVMNumaResources", () => {
     expect(wrapper.find("Button[data-test='show-more-numas']").exists()).toBe(
       true
     );
-    expect(wrapper.find("KVMResourcesCard").length).toBe(TRUNCATION_POINT);
+    expect(wrapper.find("PodResourcesCard").length).toBe(TRUNCATION_POINT);
 
     act(() => {
       wrapper.find("Button[data-test='show-more-numas']").simulate("click");
@@ -55,7 +55,7 @@ describe("KVMNumaResources", () => {
     expect(
       wrapper.find("Button[data-test='show-more-numas'] span").text()
     ).toBe("Show less NUMA nodes");
-    expect(wrapper.find("KVMResourcesCard").length).toBe(
+    expect(wrapper.find("PodResourcesCard").length).toBe(
       pod.numa_pinning?.length
     );
   });
@@ -76,12 +76,12 @@ describe("KVMNumaResources", () => {
     );
 
     expect(wrapper.find(".numa-resources-grid.is-wide").exists()).toBe(true);
-    expect(wrapper.find("KVMResourcesCard").length).toBe(1);
+    expect(wrapper.find("PodResourcesCard").length).toBe(1);
     expect(
       wrapper
-        .find("KVMResourcesCard")
+        .find("PodResourcesCard")
         .prop("className")
-        .includes("kvm-resources-card--wide")
+        .includes("pod-resources-card--wide")
     ).toBe(true);
   });
 
@@ -170,10 +170,10 @@ describe("KVMNumaResources", () => {
       </Provider>
     );
 
-    expect(wrapper.find("KVMResourcesCard").at(0).prop("vms")).toStrictEqual([
+    expect(wrapper.find("PodResourcesCard").at(0).prop("vms")).toStrictEqual([
       machines[0],
     ]);
-    expect(wrapper.find("KVMResourcesCard").at(1).prop("vms")).toStrictEqual([
+    expect(wrapper.find("PodResourcesCard").at(1).prop("vms")).toStrictEqual([
       machines[1],
     ]);
   });
