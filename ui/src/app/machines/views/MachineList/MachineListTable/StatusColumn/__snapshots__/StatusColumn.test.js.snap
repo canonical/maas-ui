@@ -250,12 +250,19 @@ exports[`StatusColumn renders 1`] = `
       </span>
     }
     secondary={
-      <span
-        data-test="progress-text"
-        title=""
-      >
-        
-      </span>
+      <React.Fragment>
+        <span
+          data-test="progress-text"
+          title=""
+        >
+          
+        </span>
+        <span
+          data-test="error-text"
+        >
+          
+        </span>
+      </React.Fragment>
     }
   >
     <div
@@ -437,6 +444,9 @@ exports[`StatusColumn renders 1`] = `
           <span
             data-test="progress-text"
             title=""
+          />
+          <span
+            data-test="error-text"
           />
         </div>
       </div>

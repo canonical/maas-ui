@@ -88,6 +88,7 @@ const getLabel = (
 type Props = {
   actionName?: string;
   allowUnchanged?: boolean;
+  allowAllEmpty?: boolean;
   children?: ReactNode;
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
@@ -107,6 +108,7 @@ type Props = {
 const ActionForm = ({
   actionName,
   allowUnchanged = false,
+  allowAllEmpty = false,
   children,
   cleanup,
   clearSelectedAction,
@@ -139,6 +141,7 @@ const ActionForm = ({
   return (
     <FormikForm
       allowUnchanged={allowUnchanged}
+      allowAllEmpty={allowAllEmpty}
       buttons={FormCardButtons}
       buttonsBordered={false}
       cleanup={cleanup}

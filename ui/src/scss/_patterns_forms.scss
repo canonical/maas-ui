@@ -32,7 +32,7 @@
   .p-checkbox--mixed:checked {
     + label::after {
       border-left: 0;
-      top: .3125rem;
+      top: 0.3125rem;
       transform: none;
     }
   }

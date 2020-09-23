@@ -148,6 +148,27 @@ describe("StatusColumn", () => {
         "Deploying Ubuntu 18.04 LTS"
       );
     });
+
+    it("displays an error message for broken machines", () => {
+      state.machine.items[0].error_description = "machine is on fire";
+      state.machine.items[0].status = "Broken";
+      state.machine.items[0].status_code = nodeStatus.BROKEN;
+      const store = mockStore(state);
+
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(wrapper.find("[data-test='error-text']").text()).toBe(
+        "machine is on fire"
+      );
+    });
   });
 
   describe("progress text", () => {
