@@ -22,6 +22,7 @@ exports[`FieldlessForm renders 1`] = `
     submitAppearance="positive"
   >
     <FormikForm
+      allowAllEmpty={false}
       allowUnchanged={true}
       buttons={[Function]}
       buttonsBordered={false}
@@ -47,6 +48,7 @@ exports[`FieldlessForm renders 1`] = `
         onSubmit={[Function]}
       >
         <FormikFormContent
+          allowAllEmpty={false}
           allowUnchanged={true}
           buttons={[Function]}
           buttonsBordered={false}
