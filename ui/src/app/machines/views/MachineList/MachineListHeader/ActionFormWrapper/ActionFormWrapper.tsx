@@ -10,6 +10,7 @@ import type { MachineAction } from "app/store/general/types";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
+import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
@@ -81,6 +82,8 @@ export const ActionFormWrapper = ({
           return <CommissionForm setSelectedAction={setSelectedAction} />;
         case "deploy":
           return <DeployForm setSelectedAction={setSelectedAction} />;
+        case "mark-broken":
+          return <MarkBrokenForm setSelectedAction={setSelectedAction} />;
         case "override-failed-testing":
           return <OverrideTestForm setSelectedAction={setSelectedAction} />;
         case "set-pool":

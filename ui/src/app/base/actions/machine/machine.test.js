@@ -343,7 +343,7 @@ describe("machine actions", () => {
   });
 
   it("can handle marking a machine as broken", () => {
-    expect(machine.markBroken("abc123")).toEqual({
+    expect(machine.markBroken("abc123", "machine is on fire")).toEqual({
       type: "MARK_MACHINE_BROKEN",
       meta: {
         model: "machine",
@@ -352,7 +352,9 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: "mark-broken",
-          extra: {},
+          extra: {
+            message: "machine is on fire",
+          },
           system_id: "abc123",
         },
       },

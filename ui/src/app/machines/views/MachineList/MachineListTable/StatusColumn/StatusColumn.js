@@ -136,9 +136,17 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
         </span>
       }
       secondary={
-        <span data-test="progress-text" title={getProgressText(machine)}>
-          {getProgressText(machine)}
-        </span>
+        <>
+          <span data-test="progress-text" title={getProgressText(machine)}>
+            {getProgressText(machine)}
+          </span>
+          <span data-test="error-text">
+            {machine.error_description &&
+            machine.status_code === nodeStatus.BROKEN
+              ? machine.error_description
+              : ""}
+          </span>
+        </>
       }
     />
   );

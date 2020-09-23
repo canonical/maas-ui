@@ -67,15 +67,18 @@ export const useFormikFormDisabled = ({
   allowUnchanged = false,
 }) => {
   const { initialValues, errors, values } = useFormikContext();
+  // As we delete keys from values below, we don't want to
+  // mutate the actual form values
+  const newValues = { ...values };
   let hasErrors = false;
   if (errors) {
     hasErrors = Object.keys(errors).length > 0;
   }
   if (allowAllEmpty) {
     // If all fields are allowed to be empty then remove the from the values.
-    Object.keys(values).forEach((key) => {
-      if (!values[key]) {
-        delete values[key];
+    Object.keys(newValues).forEach((key) => {
+      if (!newValues[key]) {
+        delete newValues[key];
       }
     });
   }
@@ -85,8 +88,8 @@ export const useFormikFormDisabled = ({
   let matchesInitial = false;
   // Now that fields have been removed then make sure there are some fields left
   // to compare.
-  if (Object.keys(values).length) {
-    matchesInitial = simpleObjectEquality(initialValues, values);
+  if (Object.keys(newValues).length) {
+    matchesInitial = simpleObjectEquality(initialValues, newValues);
   }
   return matchesInitial || hasErrors;
 };
