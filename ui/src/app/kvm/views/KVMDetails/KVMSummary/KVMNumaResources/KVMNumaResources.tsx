@@ -9,7 +9,6 @@ import type { Pod, PodNumaNode } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { PodResourcesCardProps } from "app/kvm/components/PodResourcesCard";
 import { sendAnalyticsEvent } from "analytics";
-import { formatBytes } from "app/utils";
 import { machine as machineActions } from "app/base/actions";
 import { actions as podActions } from "app/store/pod";
 import configSelectors from "app/store/config/selectors";
@@ -56,13 +55,8 @@ const normaliseNuma = (
     interfaces: normalisedInterfaces,
     ram: {
       general: {
-        // Convert to B for easier calculcations with hugepages
-        allocated: formatBytes(general.allocated, "MiB", {
-          binary: true,
-          convertTo: "B",
-        }).value,
-        free: formatBytes(general.free, "MiB", { binary: true, convertTo: "B" })
-          .value,
+        allocated: general.allocated,
+        free: general.free,
       },
       hugepages: normalisedHugepages,
     },
