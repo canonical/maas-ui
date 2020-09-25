@@ -81,9 +81,17 @@ exports[`CoresColumn renders 1`] = `
               onMouseOver={[Function]}
             >
               <span
-                data-test="arch"
+                style={
+                  Object {
+                    "display": "inline-block",
+                  }
+                }
               >
-                amd64
+                <span
+                  data-test="arch"
+                >
+                  amd64
+                </span>
               </span>
             </span>
           </Tooltip>

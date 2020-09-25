@@ -106,7 +106,7 @@ const PodResourcesCard = ({
         <div>
           <h4 className="p-heading--small">RAM</h4>
           <DoughnutChart
-            className="u-align--center"
+            className="pod-resources-card__ram-chart"
             label={memoryWithUnit(
               ram.general.allocated + ram.general.free + hugepageTotal
             )}

@@ -1,6 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
-import React, { useRef, useEffect, useState } from "react";
+import { Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
+import React, { useRef, useState } from "react";
 
 type Segment = {
   /**
@@ -52,20 +53,7 @@ export const DoughnutChart = ({
   segments,
   size,
 }: Props): JSX.Element => {
-  const [showTooltip, setShowTooltip] = useState(null);
-  const [tooltipStyle, setTooltipStyle] = useState(null);
-  const removeListener = useRef<() => void>(null);
-
-  useEffect(
-    () => () => {
-      // Unattach the mouse move listener if the component gets unmounted while
-      // showing the tooltip.
-      if (removeListener.current) {
-        removeListener.current();
-      }
-    },
-    []
-  );
+  const [tooltipMessage, setTooltipMessage] = useState(null);
 
   const id = useRef(`doughnut-chart-${nanoid()}`);
   const hoverIncrease = segmentHoverWidth - segmentWidth;
@@ -98,44 +86,16 @@ export const DoughnutChart = ({
         key={i}
         onMouseOver={
           tooltip
-            ? (event) => {
-                const { currentTarget } = event;
-                const bounding = event.currentTarget.getBoundingClientRect();
-                setShowTooltip(tooltip);
-                const updatePosition = (x: number, y: number) => {
-                  const html = document.querySelector("html");
-                  const offsetTop = html.scrollTop;
-                  const scrollLeft = html.scrollLeft;
-                  // Set the position of the tooltip, accounting for the width of the
-                  // segment and the page scroll.
-                  setTooltipStyle({
-                    // An additional space (10) is added to give some room from
-                    // the cursor.
-                    left: x - bounding.x + segmentWidth / 2 + 10 - scrollLeft,
-                    top: y - bounding.y + segmentWidth / 2 - offsetTop,
-                  });
-                };
-                // Set the initial position on mouse over.
-                updatePosition(event.clientX, event.clientY);
-                const mouseListener = (evt: MouseEvent) => {
-                  // Move the tooltip as the mouse moves.
-                  updatePosition(evt.pageX, evt.pageY);
-                };
-                currentTarget.addEventListener("mousemove", mouseListener);
-                // Store the remove listener.
-                removeListener.current = () => {
-                  currentTarget.removeEventListener("mousemove", mouseListener);
-                };
+            ? () => {
+                setTooltipMessage(tooltip);
               }
             : null
         }
         onMouseOut={
           tooltip
             ? () => {
-                // Hide the tooltip and clean up the mouse move listener.
-                setShowTooltip(null);
-                setTooltipStyle(null);
-                removeListener.current();
+                // Hide the tooltip.
+                setTooltipMessage(null);
               }
             : null
         }
@@ -162,63 +122,65 @@ export const DoughnutChart = ({
     );
   });
   return (
-    <div className={classNames("p-tooltip--right", className)}>
-      <style>
-        {/* Set the hover width of the segments. */}
-        {`#${id.current} .doughnut-chart__segment:hover {
+    <div
+      className={classNames("doughnut-chart", className)}
+      style={{ maxWidth: `${canvasSize}px` }}
+    >
+      <Tooltip
+        className="doughnut-chart__tooltip"
+        followMouse={true}
+        message={tooltipMessage}
+        position="right"
+      >
+        <style>
+          {/* Set the hover width of the segments. */}
+          {`#${id.current} .doughnut-chart__segment:hover {
           stroke-width: ${adjustedHoverWidth} !important;
         }`}
-      </style>
-      <svg
-        className="doughnut-chart"
-        id={id.current}
-        style={{ maxWidth: `${canvasSize}px` }}
-        viewBox={`0 0 ${canvasSize} ${canvasSize}`}
-      >
-        <mask id="myMask">
-          {/* Cover the canvas, this will be the visible area. */}
-          <rect
-            x="0"
-            y="0"
-            width={canvasSize}
-            height={canvasSize}
-            fill="white"
-          />
-          {/* Cut out the center circle so that the hover state doesn't grow inwards. */}
-          <circle
-            r={radius - segmentWidth / 2}
-            cx={canvasSize / 2}
-            cy={canvasSize / 2}
-            fill="black"
-          />
-        </mask>
-        <g mask="url(#myMask)">
-          {/* Force the group to cover the full size of the canvas, otherwise it will only mask the children (in their non-hovered state) */}
-          <rect
-            x="0"
-            y="0"
-            width={canvasSize}
-            height={canvasSize}
-            fill="transparent"
-          />
-          <g>{segmentNodes}</g>
-        </g>
-        {label ? (
-          <text
-            x={radius + adjustedHoverWidth / 2}
-            y={radius + adjustedHoverWidth / 2}
-          >
-            <tspan className="doughnut-chart__label">{label}</tspan>
-          </text>
-        ) : null}
-      </svg>
-      {showTooltip ? (
-        <div className="doughnut-chart__tooltip" style={tooltipStyle}>
-          <span className="p-tooltip__message" role="tooltip">
-            {showTooltip}
-          </span>
-        </div>
-      ) : null}
+        </style>
+        <svg
+          className="doughnut-chart__chart"
+          id={id.current}
+          viewBox={`0 0 ${canvasSize} ${canvasSize}`}
+        >
+          <mask id="myMask">
+            {/* Cover the canvas, this will be the visible area. */}
+            <rect
+              x="0"
+              y="0"
+              width={canvasSize}
+              height={canvasSize}
+              fill="white"
+            />
+            {/* Cut out the center circle so that the hover state doesn't grow inwards. */}
+            <circle
+              r={radius - segmentWidth / 2}
+              cx={canvasSize / 2}
+              cy={canvasSize / 2}
+              fill="black"
+            />
+          </mask>
+          <g mask="url(#myMask)">
+            {/* Force the group to cover the full size of the canvas, otherwise it will only mask the children (in their non-hovered state) */}
+            <rect
+              x="0"
+              y="0"
+              width={canvasSize}
+              height={canvasSize}
+              fill="transparent"
+            />
+            <g>{segmentNodes}</g>
+          </g>
+          {label ? (
+            <text
+              x={radius + adjustedHoverWidth / 2}
+              y={radius + adjustedHoverWidth / 2}
+            >
+              <tspan className="doughnut-chart__label">{label}</tspan>
+            </text>
+          ) : null}
+        </svg>
+      </Tooltip>
     </div>
   );
 };

@@ -1,7 +1,6 @@
+import { ContextualMenu } from "@canonical/react-components";
 import React from "react";
 import { Link } from "react-router-dom";
-
-import ContextualMenu from "app/base/components/ContextualMenu";
 
 type Props = {
   disabled?: boolean;
