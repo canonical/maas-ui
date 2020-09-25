@@ -7,10 +7,10 @@ type ZoneReducers = SliceCaseReducers<ZoneState>;
 
 export type ZoneSlice = GenericSlice<ZoneState, Zone, ZoneReducers>;
 
-const ZoneSlice = generateSlice<Zone, ZoneState["errors"], ZoneReducers>({
+const zoneSlice = generateSlice<Zone, ZoneState["errors"], ZoneReducers>({
   name: "zone",
 }) as ZoneSlice;
 
-export const { actions } = ZoneSlice;
+export const { actions } = zoneSlice;
 
-export default ZoneSlice.reducer;
+export default zoneSlice.reducer;

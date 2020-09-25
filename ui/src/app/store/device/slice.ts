@@ -7,12 +7,12 @@ type DeviceReducers = SliceCaseReducers<DeviceState>;
 
 export type DeviceSlice = GenericSlice<DeviceState, Device, DeviceReducers>;
 
-const DeviceSlice = generateSlice<
+const seviceSlice = generateSlice<
   Device,
   DeviceState["errors"],
   DeviceReducers
 >({ name: "device" }) as DeviceSlice;
 
-export const { actions } = DeviceSlice;
+export const { actions } = seviceSlice;
 
-export default DeviceSlice.reducer;
+export default seviceSlice.reducer;
