@@ -11,6 +11,8 @@ const FormikFormContent = ({
   allowUnchanged,
   buttons: Buttons = FormikFormButtons,
   buttonsBordered,
+  buttonsHelpLabel,
+  buttonsHelpLink,
   children,
   errors,
   initialValues,
@@ -60,6 +62,8 @@ const FormikFormContent = ({
       <div>{children}</div>
       <Buttons
         bordered={buttonsBordered}
+        helpLabel={buttonsHelpLabel}
+        helpLink={buttonsHelpLink}
         loading={saving}
         onCancel={onCancel}
         loadingLabel={savingLabel}
@@ -86,6 +90,8 @@ FormikFormContent.propTypes = {
   allowUnchanged: PropTypes.bool,
   buttons: PropTypes.func,
   buttonsBordered: PropTypes.bool,
+  buttonsHelpLabel: PropTypes.string,
+  buttonsHelpLink: PropTypes.string,
   children: PropTypes.node,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   initialValues: PropTypes.object,

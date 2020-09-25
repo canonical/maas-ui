@@ -684,9 +684,14 @@
                 </code>
             </pre>
         </div>
-        <div class="u-align--right ng-hide" data-ng-show="tabs.controllers.addController">
+        <div class="row ng-hide" data-ng-show="tabs.controllers.addController">
+            <div class="col-6">
+                <p class="u-no-margin--bottom"><a class="p-link--external" href="https://maas.io/docs/rack-controller" target="_blank">Help with adding a rack controller</a></p>
+            </div>
+            <div class="col-6 u-align--right">
                 <a href="" class="p-button--neutral"
                     data-ng-click="tabs.controllers.addController = false">Close</a>
+            </div>
         </div>
     </div>
     <nav class="p-tabs" data-ng-if="currentpage === 'machines' || currentpage === 'pools'">

@@ -12,6 +12,10 @@
     }
   }
 
+  .form-card__buttons-help {
+    flex: 1;
+  }
+
   .form-card__help {
     @extend %small-text;
     color: $color-mid-dark;
