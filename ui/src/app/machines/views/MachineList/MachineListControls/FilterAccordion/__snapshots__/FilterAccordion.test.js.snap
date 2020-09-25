@@ -21,7 +21,7 @@ exports[`FilterAccordion renders 1`] = `
       }
     >
       <Button
-        aria-controls="6a1b6667-997d-4028-9da8-f12e0a227193"
+        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
         aria-expanded="false"
         aria-haspopup="true"
         className="p-contextual-menu__toggle filter-accordion__toggle"
@@ -29,7 +29,7 @@ exports[`FilterAccordion renders 1`] = `
         onClick={[Function]}
       >
         <button
-          aria-controls="6a1b6667-997d-4028-9da8-f12e0a227193"
+          aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
           aria-expanded="false"
           aria-haspopup="true"
           className="p-button--neutral has-icon p-contextual-menu__toggle filter-accordion__toggle"
