@@ -419,6 +419,24 @@ const defaultDistroSeries = createSelector([all], (configs) =>
 );
 
 /**
+ * Returns the MAAS config for default IPMI user.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} Default IPMI user.
+ */
+const maasAutoIpmiUser = createSelector([all], (configs) =>
+  getValueFromName(configs, "maas_auto_ipmi_user")
+);
+
+/**
+ * Returns the MAAS config for the IPMI user privilege level.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} IPMI privilege level.
+ */
+const maasAutoUserPrivilegeLevel = createSelector([all], (configs) =>
+  getValueFromName(configs, "maas_auto_ipmi_user_privilege_level")
+);
+
+/**
  * Returns the MAAS config for whether the intro has been completed.
  * @param {RootState} state - The redux state.
  * @returns {Config["value"]} Whether the intro has been completed
@@ -461,6 +479,8 @@ const config = {
   loaded,
   loading,
   maasName,
+  maasAutoIpmiUser,
+  maasAutoUserPrivilegeLevel,
   networkDiscovery,
   networkDiscoveryOptions,
   ntpExternalOnly,
