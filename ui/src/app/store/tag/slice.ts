@@ -7,10 +7,10 @@ type TagReducers = SliceCaseReducers<TagState>;
 
 export type TagSlice = GenericSlice<TagState, Tag, TagReducers>;
 
-const TagSlice = generateSlice<Tag, TagState["errors"], TagReducers>({
+const tagSlice = generateSlice<Tag, TagState["errors"], TagReducers>({
   name: "tag",
 }) as TagSlice;
 
-export const { actions } = TagSlice;
+export const { actions } = tagSlice;
 
-export default TagSlice.reducer;
+export default tagSlice.reducer;
