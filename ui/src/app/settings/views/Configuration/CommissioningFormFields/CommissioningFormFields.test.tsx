@@ -4,16 +4,23 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
+import type { RootState } from "app/store/root/types";
+import {
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("CommissioningFormFields", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -30,13 +37,21 @@ describe("CommissioningFormFields", () => {
             name: "default_min_hwe_kernel",
             value: "ga-16.04-lowlatency",
           },
+          {
+            name: "maas_auto_ipmi_user",
+            value: "maas",
+          },
+          {
+            name: "maas_auto_ipmi_user_privilege_level",
+            value: "OPERATOR",
+          },
         ],
-      },
-      general: {
-        osInfo: {
+      }),
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
           loading: false,
-          data: {
+          data: osInfoFactory({
             kernels: {
               ubuntu: {
                 trusty: [
@@ -53,10 +68,10 @@ describe("CommissioningFormFields", () => {
                 ],
               },
             },
-          },
-        },
-      },
-    };
+          }),
+        }),
+      }),
+    });
   });
 
   it("updates value for default distro series", () => {
@@ -87,5 +102,37 @@ describe("CommissioningFormFields", () => {
     expect(
       wrapper.find("select[name='default_min_hwe_kernel']").props().value
     ).toBe("ga-16.04-lowlatency");
+  });
+
+  it("updates value for ipmi username", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <CommissioningForm />
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("input[name='maas_auto_ipmi_user']").props().value
+    ).toBe("maas");
+  });
+
+  it("updates value for ipmi user privilege level", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <CommissioningForm />
+      </Provider>
+    );
+
+    expect(
+      wrapper
+        .find("input[name='maas_auto_ipmi_user_privilege_level'][checked=true]")
+        .props().value
+    ).toBe("OPERATOR");
   });
 });

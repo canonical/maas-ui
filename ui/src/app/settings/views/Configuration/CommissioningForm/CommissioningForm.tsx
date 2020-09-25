@@ -4,15 +4,30 @@ import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import CommissioningFormFields from "../CommissioningFormFields";
+import Fields from "../CommissioningFormFields";
 import FormikForm from "app/base/components/FormikForm";
 
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
   default_min_hwe_kernel: Yup.string(),
+  maas_auto_ipmi_user: Yup.string().required(
+    'The username cannot be left blank. The username is "maas" by default.'
+  ),
+  maas_auto_ipmi_k_g_bmc_key: Yup.string(),
+  maas_auto_ipmi_user_privilege_level: Yup.string().matches(
+    /(ADMIN|OPERATOR|USER)/
+  ),
 });
 
-const CommissioningForm = () => {
+export type CommissioningFormValues = {
+  commissioning_distro_series: string;
+  default_min_hwe_kernel: string;
+  maas_auto_ipmi_user: string;
+  maas_auto_ipmi_k_g_bmc_key: string;
+  maas_auto_ipmi_user_privilege_level: "ADMIN" | "OPERATOR" | "USER";
+};
+
+const CommissioningForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
@@ -22,12 +37,19 @@ const CommissioningForm = () => {
   const defaultMinKernelVersion = useSelector(
     configSelectors.defaultMinKernelVersion
   );
+  const ipmiUser = useSelector(configSelectors.maasAutoIpmiUser);
+  const ipmiPrivilegeLevel = useSelector(
+    configSelectors.maasAutoUserPrivilegeLevel
+  );
 
   return (
     <FormikForm
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries,
         default_min_hwe_kernel: defaultMinKernelVersion,
+        maas_auto_ipmi_user: ipmiUser || "maas",
+        maas_auto_ipmi_k_g_bmc_key: "",
+        maas_auto_ipmi_user_privilege_level: ipmiPrivilegeLevel,
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -42,7 +64,7 @@ const CommissioningForm = () => {
       saved={saved}
       validationSchema={CommissioningSchema}
     >
-      <CommissioningFormFields />
+      <Fields />
     </FormikForm>
   );
 };
