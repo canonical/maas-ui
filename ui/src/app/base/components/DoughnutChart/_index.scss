@@ -1,5 +1,14 @@
 @mixin DoughnutChart {
-  .doughnut-chart {
+  .doughnut-chart__tooltip {
+    display: block;
+  }
+
+  .doughnut-chart__tooltip > span {
+    // Override the tooltip wrapper.
+    display: block !important;
+  }
+
+  .doughnut-chart__chart {
     // Restrict hover areas to the strokes.
     pointer-events: stroke;
   }
@@ -14,9 +23,5 @@
     fill: transparent;
     // Animate stroke size changes on hover.
     transition: stroke-width 0.3s ease;
-  }
-
-  .doughnut-chart__tooltip {
-    position: absolute;
   }
 }
