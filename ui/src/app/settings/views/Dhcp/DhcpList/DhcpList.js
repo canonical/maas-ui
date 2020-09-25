@@ -228,6 +228,8 @@ const DhcpList = () => {
           className: "u-align--right",
         },
       ]}
+      helpLabel="About DHCP"
+      helpLink="https://maas.io/docs/dhcp"
       loaded={dhcpsnippetLoaded}
       loading={dhcpsnippetLoading}
       rows={generateRows(

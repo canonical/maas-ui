@@ -33,4 +33,9 @@
       background-size: 100% $sp-x-large;
     }
   }
+
+  .settings-table__help {
+    align-items: flex-end;
+    display: flex;
+  }
 }

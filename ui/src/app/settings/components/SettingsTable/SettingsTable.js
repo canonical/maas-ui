@@ -1,4 +1,4 @@
-import { Tooltip } from "@canonical/react-components";
+import { Link as VanillaLink, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -15,6 +15,8 @@ export const SettingsTable = ({
   buttons,
   defaultSort,
   headers,
+  helpLabel,
+  helpLink,
   loaded,
   loading,
   rows,
@@ -67,6 +69,18 @@ export const SettingsTable = ({
         sortable
       />
       {loading && !loaded && <div className="settings-table__lines"></div>}
+      {helpLink && helpLabel ? (
+        <p className="u-no-margin--bottom settings-table__help">
+          <VanillaLink
+            external
+            href={helpLink}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {helpLabel}
+          </VanillaLink>
+        </p>
+      ) : null}
     </div>
   );
 };
@@ -82,6 +96,8 @@ SettingsTable.propTypes = {
   ).isRequired,
   defaultSort: PropTypes.string,
   headers: PropTypes.array,
+  helpLabel: PropTypes.string,
+  helpLink: PropTypes.string,
   loaded: PropTypes.bool,
   loading: PropTypes.bool,
   rows: PropTypes.array,

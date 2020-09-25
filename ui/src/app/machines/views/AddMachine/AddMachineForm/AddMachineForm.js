@@ -142,6 +142,8 @@ export const AddMachineForm = () => {
         <FormCard sidebar={false} title="Add machine">
           <FormikForm
             buttons={FormCardButtons}
+            buttonsHelpLabel="Help with adding machines"
+            buttonsHelpLink="https://maas.io/docs/add-machines"
             cleanup={machineActions.cleanup}
             errors={errors}
             initialValues={{
