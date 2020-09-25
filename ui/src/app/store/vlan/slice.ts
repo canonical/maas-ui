@@ -7,10 +7,10 @@ type VLANReducers = SliceCaseReducers<VLANState>;
 
 export type VLANSlice = GenericSlice<VLANState, VLAN, VLANReducers>;
 
-const VLANSlice = generateSlice<VLAN, VLANState["errors"], VLANReducers>({
+const vlanSlice = generateSlice<VLAN, VLANState["errors"], VLANReducers>({
   name: "vlan",
 }) as VLANSlice;
 
-export const { actions } = VLANSlice;
+export const { actions } = vlanSlice;
 
-export default VLANSlice.reducer;
+export default vlanSlice.reducer;
