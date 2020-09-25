@@ -1,4 +1,4 @@
-import { Card } from "@canonical/react-components";
+import { Card, ContextualMenu } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
@@ -6,7 +6,6 @@ import React from "react";
 import type { Machine } from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 import { COLOURS } from "app/base/constants";
-import ContextualMenu from "app/base/components/ContextualMenu";
 import DoughnutChart from "app/base/components/DoughnutChart";
 import PodMeter from "app/kvm/components/PodMeter";
 import { MachineListTable } from "app/machines/views/MachineList/MachineListTable/MachineListTable";
@@ -76,28 +75,26 @@ const PodResourcesCard = ({
             <span data-test="pod-resources-card-title">{title}</span>
             <ContextualMenu
               dropdownClassName="pod-machine-list-modal"
-              dropdownContent={
-                <MachineListTable
-                  hiddenColumns={[
-                    "owner",
-                    "pool",
-                    "zone",
-                    "fabric",
-                    "disks",
-                    "storage",
-                  ]}
-                  machines={vms}
-                  showActions={false}
-                  paginateLimit={5}
-                ></MachineListTable>
-              }
               hasToggleIcon
               toggleAppearance="base"
               toggleClassName="pod-resources-card__vms-button is-dense"
               toggleDisabled={vms.length === 0}
               toggleLabel={pluralize("machine", vms.length, true)}
-              position="auto"
-            />
+            >
+              <MachineListTable
+                hiddenColumns={[
+                  "owner",
+                  "pool",
+                  "zone",
+                  "fabric",
+                  "disks",
+                  "storage",
+                ]}
+                machines={vms}
+                showActions={false}
+                paginateLimit={5}
+              ></MachineListTable>
+            </ContextualMenu>
           </h5>
           <hr />
         </>
@@ -252,28 +249,26 @@ const PodResourcesCard = ({
           <h4 className="p-heading--small">Total VMs</h4>
           <ContextualMenu
             dropdownClassName="pod-machine-list-modal"
-            dropdownContent={
-              <MachineListTable
-                hiddenColumns={[
-                  "owner",
-                  "pool",
-                  "zone",
-                  "fabric",
-                  "disks",
-                  "storage",
-                ]}
-                machines={vms}
-                showActions={false}
-                paginateLimit={5}
-              ></MachineListTable>
-            }
             hasToggleIcon
             toggleAppearance="base"
             toggleClassName="pod-resources-card__vms-button is-dense"
             toggleDisabled={vms.length === 0}
             toggleLabel={`${vms.length}`}
-            position="auto"
-          />
+          >
+            <MachineListTable
+              hiddenColumns={[
+                "owner",
+                "pool",
+                "zone",
+                "fabric",
+                "disks",
+                "storage",
+              ]}
+              machines={vms}
+              showActions={false}
+              paginateLimit={5}
+            ></MachineListTable>
+          </ContextualMenu>
         </div>
       )}
     </Card>

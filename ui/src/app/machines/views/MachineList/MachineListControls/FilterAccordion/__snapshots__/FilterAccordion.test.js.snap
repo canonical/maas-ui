@@ -7,151 +7,33 @@ exports[`FilterAccordion renders 1`] = `
   <ContextualMenu
     className="filter-accordion"
     constrainPanelWidth={true}
-    dropdownContent={
-      <Accordion
-        className="filter-accordion__dropdown"
-        externallyControlled={true}
-        onExpandedChange={[Function]}
-        sections={
-          Array [
-            Object {
-              "content": <List
-                className="u-no-margin--bottom"
-                items={
-                  Array [
-                    <Button
-                      appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
-                      onClick={[Function]}
-                    >
-                      pool1
-                       
-                      (
-                      1
-                      )
-                    </Button>,
-                  ]
-                }
-              />,
-              "key": "pool",
-              "title": "Resource pool",
-            },
-            Object {
-              "content": <List
-                className="u-no-margin--bottom"
-                items={
-                  Array [
-                    <Button
-                      appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
-                      onClick={[Function]}
-                    >
-                      zone1
-                       
-                      (
-                      1
-                      )
-                    </Button>,
-                  ]
-                }
-              />,
-              "key": "zone",
-              "title": "Zone",
-            },
-            Object {
-              "content": <List
-                className="u-no-margin--bottom"
-                items={
-                  Array [
-                    <Button
-                      appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
-                      onClick={[Function]}
-                    >
-                      undefined nodes
-                       
-                      (
-                      1
-                      )
-                    </Button>,
-                  ]
-                }
-              />,
-              "key": "numa_nodes_count",
-              "title": "NUMA nodes",
-            },
-            Object {
-              "content": <List
-                className="u-no-margin--bottom"
-                items={
-                  Array [
-                    <Button
-                      appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
-                      onClick={[Function]}
-                    >
-                      Not supported
-                       
-                      (
-                      1
-                      )
-                    </Button>,
-                  ]
-                }
-              />,
-              "key": "sriov_support",
-              "title": "SR-IOV support",
-            },
-            Object {
-              "content": <List
-                className="u-no-margin--bottom"
-                items={
-                  Array [
-                    <Button
-                      appearance="base"
-                      className="u-align-text--left u-no-margin--bottom filter-accordion__item is-dense"
-                      onClick={[Function]}
-                    >
-                      100 Mbps
-                       
-                      (
-                      1
-                      )
-                    </Button>,
-                  ]
-                }
-              />,
-              "key": "link_speeds",
-              "title": "Link speed",
-            },
-          ]
-        }
-      />
-    }
     hasToggleIcon={true}
     position="left"
     toggleClassName="filter-accordion__toggle"
     toggleLabel="Filters"
   >
     <span
-      className="filter-accordion p-contextual-menu--left"
+      className="filter-accordion p-contextual-menu p-contextual-menu--left"
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
     >
       <Button
-        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+        aria-controls="6a1b6667-997d-4028-9da8-f12e0a227193"
         aria-expanded="false"
         aria-haspopup="true"
         className="p-contextual-menu__toggle filter-accordion__toggle"
         hasIcon={true}
         onClick={[Function]}
-        type="button"
       >
         <button
-          aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+          aria-controls="6a1b6667-997d-4028-9da8-f12e0a227193"
           aria-expanded="false"
           aria-haspopup="true"
           className="p-button--neutral has-icon p-contextual-menu__toggle filter-accordion__toggle"
           onClick={[Function]}
-          type="button"
         >
           <span>
             Filters

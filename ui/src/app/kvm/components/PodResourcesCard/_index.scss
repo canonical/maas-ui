@@ -2,7 +2,7 @@
   $donut-size: 6.5rem;
   $donut-width: 14px;
 
-  .pod-machine-list-modal {
+  .pod-machine-list-modal.p-contextual-menu__dropdown {
     max-width: none;
     min-width: 0;
     // Subtract small screen gutter width and card inner padding to center dropdown.

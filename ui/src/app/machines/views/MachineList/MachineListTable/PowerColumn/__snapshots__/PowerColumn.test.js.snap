@@ -93,40 +93,7 @@ exports[`PowerColumn renders 1`] = `
               ]
             }
             onToggleMenu={[Function]}
-            positionNode={
-              Object {
-                "current": <div
-                  class="p-double-row__primary-row"
-                >
-                  <div
-                    class="p-double-row__primary-row-text u-truncate"
-                    title="on"
-                  >
-                    <div
-                      class="u-upper-case--first u-truncate"
-                      data-test="power_state"
-                    >
-                      on
-                    </div>
-                  </div>
-                  <span
-                    class="p-table-menu p-table-menu--hasIcon p-contextual-menu--left"
-                  >
-                    <button
-                      aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                      type="button"
-                    >
-                      <i
-                        class="p-icon--contextual-menu p-contextual-menu__indicator"
-                      />
-                    </button>
-                  </span>
-                </div>,
-              }
-            }
+            positionNode={null}
             title="Take action:"
           >
             <ContextualMenu
@@ -148,63 +115,33 @@ exports[`PowerColumn renders 1`] = `
               }
               onToggleMenu={[Function]}
               position="left"
-              positionNode={
-                Object {
-                  "current": <div
-                    class="p-double-row__primary-row"
-                  >
-                    <div
-                      class="p-double-row__primary-row-text u-truncate"
-                      title="on"
-                    >
-                      <div
-                        class="u-upper-case--first u-truncate"
-                        data-test="power_state"
-                      >
-                        on
-                      </div>
-                    </div>
-                    <span
-                      class="p-table-menu p-table-menu--hasIcon p-contextual-menu--left"
-                    >
-                      <button
-                        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                        class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                        type="button"
-                      >
-                        <i
-                          class="p-icon--contextual-menu p-contextual-menu__indicator"
-                        />
-                      </button>
-                    </span>
-                  </div>,
-                }
-              }
+              positionNode={null}
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
             >
               <span
-                className="p-table-menu p-table-menu--hasIcon p-contextual-menu--left"
+                className="p-table-menu p-table-menu--hasIcon p-contextual-menu p-contextual-menu--left"
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
               >
                 <Button
                   appearance="base"
-                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-controls="409262b8-216b-4a54-bb0b-7ba99d184f84"
                   aria-expanded="false"
                   aria-haspopup="true"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   hasIcon={true}
                   onClick={[Function]}
-                  type="button"
                 >
                   <button
-                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-controls="409262b8-216b-4a54-bb0b-7ba99d184f84"
                     aria-expanded="false"
                     aria-haspopup="true"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     onClick={[Function]}
-                    type="button"
                   >
                     <i
                       className="p-icon--contextual-menu p-contextual-menu__indicator"

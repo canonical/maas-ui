@@ -5,7 +5,8 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
   aria-hidden="false"
   aria-label="submenu"
   className="p-contextual-menu__dropdown"
-  id="Uakgb_J5m9g-0JDMbcJqLJ"
+  id="dde80a91-64f3-4b2b-b494-717264a03b63"
+  style={null}
 >
   <div
     className="p-contextual-menu__non-interactive"
@@ -312,39 +313,7 @@ exports[`StatusColumn renders 1`] = `
               ]
             }
             onToggleMenu={[Function]}
-            positionNode={
-              Object {
-                "current": <div
-                  class="p-double-row__primary-row"
-                >
-                  <div
-                    class="p-double-row__primary-row-text u-truncate"
-                  >
-                    <span
-                      data-test="status-text"
-                      title="New"
-                    >
-                      New
-                    </span>
-                  </div>
-                  <span
-                    class="p-table-menu p-contextual-menu--left"
-                  >
-                    <button
-                      aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                      type="button"
-                    >
-                      <i
-                        class="p-icon--contextual-menu p-contextual-menu__indicator"
-                      />
-                    </button>
-                  </span>
-                </div>,
-              }
-            }
+            positionNode={null}
             title="Take action:"
           >
             <ContextualMenu
@@ -372,62 +341,33 @@ exports[`StatusColumn renders 1`] = `
               }
               onToggleMenu={[Function]}
               position="left"
-              positionNode={
-                Object {
-                  "current": <div
-                    class="p-double-row__primary-row"
-                  >
-                    <div
-                      class="p-double-row__primary-row-text u-truncate"
-                    >
-                      <span
-                        data-test="status-text"
-                        title="New"
-                      >
-                        New
-                      </span>
-                    </div>
-                    <span
-                      class="p-table-menu p-contextual-menu--left"
-                    >
-                      <button
-                        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                        class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                        type="button"
-                      >
-                        <i
-                          class="p-icon--contextual-menu p-contextual-menu__indicator"
-                        />
-                      </button>
-                    </span>
-                  </div>,
-                }
-              }
+              positionNode={null}
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
             >
               <span
-                className="p-table-menu p-contextual-menu--left"
+                className="p-table-menu p-contextual-menu p-contextual-menu--left"
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
               >
                 <Button
                   appearance="base"
-                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-controls="f546496b-c99a-4fe3-98d6-ac2838ae5889"
                   aria-expanded="false"
                   aria-haspopup="true"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   hasIcon={true}
                   onClick={[Function]}
-                  type="button"
                 >
                   <button
-                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-controls="f546496b-c99a-4fe3-98d6-ac2838ae5889"
                     aria-expanded="false"
                     aria-haspopup="true"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     onClick={[Function]}
-                    type="button"
                   >
                     <i
                       className="p-icon--contextual-menu p-contextual-menu__indicator"

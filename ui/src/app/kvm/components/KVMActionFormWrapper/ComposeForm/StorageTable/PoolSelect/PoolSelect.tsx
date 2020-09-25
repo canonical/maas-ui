@@ -1,3 +1,4 @@
+import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -9,7 +10,6 @@ import type { RootState } from "app/store/root/types";
 import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
 import { COLOURS } from "app/base/constants";
-import ContextualMenu from "app/base/components/ContextualMenu";
 import Meter from "app/base/components/Meter";
 
 type RequestMap = { [location: string]: number };
@@ -174,12 +174,13 @@ export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {
       className="kvm-pool-select"
       constrainPanelWidth
       dropdownClassName="kvm-pool-select__dropdown"
-      dropdownContent={generateDropdownContent(pod, disk, requests, selectPool)}
       hasToggleIcon
       position="left"
       toggleClassName="kvm-pool-select__toggle"
       toggleLabel={disk.location}
-    />
+    >
+      {generateDropdownContent(pod, disk, requests, selectPool)}
+    </ContextualMenu>
   );
 };
 
