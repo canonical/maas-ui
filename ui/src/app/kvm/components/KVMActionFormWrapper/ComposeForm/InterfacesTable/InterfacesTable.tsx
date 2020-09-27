@@ -204,7 +204,7 @@ export const InterfacesTable = (): JSX.Element => {
               <TableCell aria-label="Name">
                 <em>default</em>
               </TableCell>
-              <TableCell aria-label="IP address" colSpan="7">
+              <TableCell aria-label="IP address" colSpan={7}>
                 Created by hypervisor at compose time
               </TableCell>
             </TableRow>
