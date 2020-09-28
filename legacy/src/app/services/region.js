@@ -273,7 +273,9 @@ class RegionConnection {
       this.retry();
     };
     websocket.onmessage = (evt) => {
-      this.onMessage(angular.fromJson(evt.data));
+      if (evt?.data) {
+        this.onMessage(angular.fromJson(evt.data));
+      }
     };
   }
 

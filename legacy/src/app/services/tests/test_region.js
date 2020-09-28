@@ -343,6 +343,14 @@ describe("RegionConnection", function () {
       });
       expect(RegionConnection.onMessage).toHaveBeenCalledWith(sampleData);
     });
+
+    it("does not call onMessage when onmessage called with no data", function () {
+      spyOn(RegionConnection, "onMessage");
+      RegionConnection.connect();
+      RegionConnection.getWebSocket().onmessage({});
+      RegionConnection.getWebSocket().onmessage();
+      expect(RegionConnection.onMessage).not.toHaveBeenCalled();
+    });
   });
 
   describe("retry", function () {
