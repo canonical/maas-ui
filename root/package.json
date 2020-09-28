@@ -36,7 +36,7 @@
     "copy-webpack-plugin": "6.1.1",
     "css-loader": "4.3.0",
     "dotenv-flow-webpack": "1.1.0",
-    "eslint": "7.9.0",
+    "eslint": "7.10.0",
     "html-webpack-plugin": "4.5.0",
     "mini-css-extract-plugin": "0.11.2",
     "node-sass": "4.14.1",
