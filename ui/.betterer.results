@@ -333,6 +333,18 @@ exports[`stricter compilation`] = {
       [108, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "1699375473"],
       [122, 36, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1023496814"]
     ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:215157653": [
+      [6, 0, 39, "\'FormEvent\' is declared but its value is never read.", "4214660592"],
+      [89, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [93, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+    ],
+    "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/CommissionForm/CommissionForm.tsx:184858439": [
+      [105, 51, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
+      [119, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
+      [133, 27, 10, "Property \'commission\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "2592181864"],
+      [134, 14, 7, "Object is possibly \'undefined\'.", "1060875104"],
+      [153, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
+    ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/DeployForm/DeployForm.test.tsx:1717182927": [
       [99, 23, 9, "Property \'mockClear\' does not exist on type \'(eventCategory: any, eventAction: any, eventLabel: any) => void\'.", "2526230614"],
       [117, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -421,6 +433,33 @@ exports[`stricter compilation`] = {
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:42858656": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
+    ],
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2551545443": [
+      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [103, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [103, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [119, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [119, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [121, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [121, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [124, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [124, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
+      [140, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [140, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [144, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [144, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [237, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [237, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [241, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [241, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+    ],
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:3607388951": [
+      [86, 19, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
+      [120, 53, 9, "Variable \'scriptSrc\' is used before being assigned.", "1382917992"],
+      [128, 21, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
+      [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'Function\'.", "2087897566"],
+      [204, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
     "src/app/store/notification/selectors.ts:3467721382": [
       [25, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
@@ -658,5 +697,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `464`
+  value: `486`
 };

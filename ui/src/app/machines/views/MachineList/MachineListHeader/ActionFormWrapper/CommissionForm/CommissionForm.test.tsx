@@ -4,37 +4,53 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
+import type { RootState } from "app/store/root/types";
 
+import {
+  scripts as scriptsFactory,
+  machineAction as machineActionFactory,
+  machine as machineFactory,
+  generalState as generalStateFactory,
+  machineState as machineStateFactory,
+  scriptsState as scriptsStateFactory,
+  rootState as rootStateFactory,
+  machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
+  machineActionsState as machineActionsStateFactory,
+} from "testing/factories";
 import CommissionForm from "./CommissionForm";
 
 const mockStore = configureStore();
 
 describe("CommissionForm", () => {
-  let initialState;
+  let initialState: RootState;
   beforeEach(() => {
-    initialState = {
-      general: {
-        machineActions: {
-          data: [{ name: "commission", sentence: "commission" }],
-        },
-      },
-      machine: {
-        errors: {},
-        loading: false,
-        loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
-        selected: [],
-        statuses: {
-          abc123: {},
-          def456: {},
-        },
-      },
-      scripts: {
-        errors: {},
-        loading: false,
+    initialState = rootStateFactory({
+      general: generalStateFactory({
+        machineActions: machineActionsStateFactory({
+          data: [
+            machineActionFactory({
+              name: "commission",
+              sentence: "commission",
+            }),
+          ],
+        }),
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        }),
+      }),
+      scripts: scriptsStateFactory({
+        loaded: true,
+        items: [
+          scriptsFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -44,15 +60,15 @@ describe("CommissionForm", () => {
               },
             },
             type: 2,
-          },
-          {
+          }),
+          scriptsFactory({
             name: "custom-commissioning-script",
             tags: ["node"],
             type: 0,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("correctly dispatches actions to commission selected machines", () => {
