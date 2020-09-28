@@ -119,7 +119,6 @@ import ZonesManager from "./factories/zones";
 import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
 import AddDomainController from "./controllers/add_domain";
-import AddHardwareController from "./controllers/add_hardware";
 import DashboardController from "./controllers/dashboard";
 import DomainDetailsController from "./controllers/domain_details";
 import DomainsListController from "./controllers/domains_list";
@@ -142,10 +141,6 @@ import NodeEventsController from "./controllers/node_events";
 import NodeResultController from "./controllers/node_result";
 import NodeResultsController from "./controllers/node_results";
 import NodesListController from "./controllers/nodes_list";
-import PodDetailsController from "./controllers/pod_details";
-import PodsListController from "./controllers/pods_list";
-import PreferencesController from "./controllers/prefs";
-import SettingsController from "./controllers/settings";
 import SpaceDetailsController from "./controllers/space_details";
 import { SubnetDetailsController } from "./controllers/subnet_details";
 import { VLANDetailsController } from "./controllers/vlan_details";
@@ -161,14 +156,8 @@ import storageDisksPartitions from "./directives/nodedetails/storage_disks_parti
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
 import nodeDetailsSummary from "./directives/nodedetails/summary";
-import podDetailsSummary from "./directives/pod-details/summary";
-import maasMachinesTable from "./directives/machines_table";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
-import addMachine from "./directives/nodelist/add_machine";
-
-import kvmStorageDropdown from "./directives/pod-details/kvm_storage_dropdown";
 import nodesListFilter from "./directives/nodelist/nodes_list_filter";
-import maasAccordion from "./directives/accordion";
 import { maasActionButton } from "./directives/action_button";
 import { maasBootImages, maasBootImagesStatus } from "./directives/boot_images";
 import { maasCta } from "./directives/call_to_action";
@@ -204,21 +193,10 @@ import maasNavigationMobile from "./directives/navigation_mobile";
 import { maasNotifications } from "./directives/notifications";
 import { maasOsSelect } from "./directives/os_select";
 import ngPlaceholder from "./directives/placeholder";
-import { maasPodParameters } from "./directives/pod_parameters";
-import { maasCoresChart } from "./directives/cores_chart";
 import {
   maasPowerInput,
   maasPowerParameters,
 } from "./directives/power_parameters";
-import {
-  maasPrefKeys,
-  maasPrefKeysInject,
-  maasPrefKeysAdd,
-  maasPrefKey,
-  maasPrefKeyDelete,
-  maasPrefKeyCopy,
-} from "./directives/pref_keys";
-import maasProxySettings from "./directives/proxy_settings";
 import maasReleaseName from "./directives/release_name";
 import { maasReleaseOptions } from "./directives/release_options";
 import pScriptExpander from "./directives/script_expander";
@@ -421,7 +399,6 @@ MAAS.config(configureMaas)
   .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
   .controller("AddDomainController", AddDomainController)
-  .controller("AddHardwareController", AddHardwareController)
   .controller("DashboardController", DashboardController)
   .controller("DomainDetailsController", DomainDetailsController)
   .controller("DomainsListController", DomainsListController)
@@ -442,10 +419,6 @@ MAAS.config(configureMaas)
   .controller("NodeResultController", NodeResultController)
   .controller("NodeResultsController", NodeResultsController)
   .controller("NodesListController", NodesListController)
-  .controller("PodDetailsController", PodDetailsController)
-  .controller("PodsListController", PodsListController)
-  .controller("PreferencesController", PreferencesController)
-  .controller("SettingsController", SettingsController)
   .controller("SpaceDetailsController", SpaceDetailsController)
   .controller("SubnetDetailsController", SubnetDetailsController)
   .controller("VLANDetailsController", VLANDetailsController)
@@ -458,10 +431,7 @@ MAAS.config(configureMaas)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)
-  .directive("addMachine", addMachine)
-  .directive("kvmStorageDropdown", kvmStorageDropdown)
   .directive("nodesListFilter", nodesListFilter)
-  .directive("maasAccordion", maasAccordion)
   .directive("maasActionButton", maasActionButton)
   .directive("maasBootImagesStatus", maasBootImagesStatus)
   .directive("maasBootImages", maasBootImages)
@@ -488,28 +458,17 @@ MAAS.config(configureMaas)
   .directive("maasObjShowSaving", maasObjShowSaving)
   .directive("maasObjHideSaving", maasObjHideSaving)
   .directive("macAddress", macAddress)
-  .directive("maasMachinesTable", maasMachinesTable)
   .directive("maasDhcpSnippetsTable", maasDhcpSnippetsTable)
   .directive("maasNavigationDropdown", maasNavigationDropdown)
   .directive("maasNavigationMobile", maasNavigationMobile)
   .directive("maasNotifications", maasNotifications)
   .directive("maasOsSelect", maasOsSelect)
   .directive("ngPlaceholder", ngPlaceholder)
-  .directive("maasPodParameters", maasPodParameters)
-  .directive("maasCoresChart", maasCoresChart)
   .directive("maasPowerInput", maasPowerInput)
   .directive("maasPowerParameters", maasPowerParameters)
-  .directive("maasPrefKeys", maasPrefKeys)
-  .directive("maasPrefKeysInject", maasPrefKeysInject)
-  .directive("maasPrefKeysAdd", maasPrefKeysAdd)
-  .directive("maasPrefKey", maasPrefKey)
-  .directive("maasPrefKeyDelete", maasPrefKeyDelete)
-  .directive("maasPrefKeyCopy", maasPrefKeyCopy)
-  .directive("maasProxySettings", maasProxySettings)
   .directive("maasReleaseName", maasReleaseName)
   .directive("maasReleaseOptions", maasReleaseOptions)
   .directive("nodeDetailsSummary", nodeDetailsSummary)
-  .directive("podDetailsSummary", podDetailsSummary)
   .directive("pScriptExpander", pScriptExpander)
   .directive("maasScriptResultsList", maasScriptResultsList)
   .directive("maasScriptRunTime", maasScriptRunTime)

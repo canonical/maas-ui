@@ -423,52 +423,6 @@
         </div>
     </div>
 
-    <div class="page-header__dropdown row u-no-margin--top"
-        data-ng-class="{ 'u-hide': !addHardwareScope.viewable }"
-        data-ng-controller="AddHardwareController">
-        <hr />
-        <add-machine data-ng-show="showMachine()"></add-machine>
-        <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
-            <h4 class="page-header__dropdown-title">Add chassis</h4>
-            <form action="post" class="p-form p-form--stacked row">
-                <div class="col-6"
-                    data-maas-power-parameters="chassisPowerTypes"
-                    data-ng-model="chassis.power">
-                </div>
-                <div class="col-6">
-                    <div class="p-form__group row">
-                        <label for="domain2" class="p-form__label col-2">Domain</label>
-                        <div class="p-form__control col-4">
-                            <select name="domain" id="domain2"
-                                data-ng-model="chassis.domain"
-                                data-ng-options="domain as domain.name for domain in domains">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </section>
-        <section class="page-header__section col-12 ng-hide" data-ng-show="showChassis()">
-            <p class="page-header__message page-header__message--error ng-hide" data-ng-show="error">{$ error $}</p>
-            <div class="page-header__controls p-strip u-align--right u-no-padding--bottom">
-                <hr />
-                <button class="p-button--base" type="button" data-ng-click="cancel()">Cancel</button>
-                <button class="p-button--neutral"
-                    data-ng-disabled="chassisHasErrors()"
-                    data-ng-click="saveChassis(true)">Save and add another</button>
-                <button class="p-button--positive"
-                    data-ng-disabled="chassisHasErrors()"
-                    data-ng-click="saveChassis(false)">Save chassis</button>
-            </div>
-        </section>
-
-        <section class="page-header__section row" data-ng-hide="architectures.length">
-            <p class="page-header__message page-header__message--error">
-                Cannot add {$ mode $} until boot images have been imported. To fix, visit the <a href="{$ legacyURLBase $}/images">images page</a>.
-            </p>
-        </section>
-    </div>
-
     <div class="page-header__dropdown" data-ng-class="{ 'u-hide': !addDeviceScope.viewable }" data-ng-controller="AddDeviceController">
         <section class="page-header__section row">
             <hr />

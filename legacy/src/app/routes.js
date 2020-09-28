@@ -17,8 +17,6 @@ import nodesListTmpl from "./partials/nodes-list.html";
 import nodeDetailsTmpl from "./partials/node-details.html";
 import nodeEventsTmpl from "./partials/node-events.html";
 import nodeResultTmpl from "./partials/node-result.html";
-import podDetailsTmpl from "./partials/pod-details.html";
-import podsListTmpl from "./partials/pods-list.html";
 import spaceDetailsTmpl from "./partials/space-details.html";
 import subnetDetailsTmpl from "./partials/subnet-details.html";
 import vlanDetailsTmpl from "./partials/vlan-details.html";
@@ -140,34 +138,6 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     .state("nodeControllerEvents", {
       url: generateLegacyURL("/node/controller/:system_id/events"),
       redirectTo: generateLegacyURL("/controller/:system_id/events"),
-    })
-    .state("master.kvm", {
-      url: generateLegacyURL("/kvm"),
-      template: podsListTmpl,
-      controller: "PodsListController",
-    })
-    .state("master.kvmDetails", {
-      url: generateLegacyURL("/kvm/:id"),
-      template: podDetailsTmpl,
-      controller: "PodDetailsController",
-    })
-    .state("pods", {
-      url: generateLegacyURL("/pods"),
-      redirectTo: generateLegacyURL("/kvm"),
-    })
-    .state("podDetails", {
-      url: generateLegacyURL("/pod/:id"),
-      redirectTo: generateLegacyURL("/kvm/:id"),
-    })
-    .state("master.rsd", {
-      url: generateLegacyURL("/rsd"),
-      template: podsListTmpl,
-      controller: "PodsListController",
-    })
-    .state("master.rsdDetails", {
-      url: generateLegacyURL("/rsd/:id"),
-      template: podDetailsTmpl,
-      controller: "PodDetailsController",
     })
     .state("master.images", {
       url: generateLegacyURL("/images"),
