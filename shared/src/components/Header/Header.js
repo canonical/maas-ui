@@ -112,7 +112,6 @@ export const Header = ({
     {
       hidden: !showRSD,
       inHardwareMenu: true,
-      isLegacy: true,
       label: "RSD",
       url: "/rsd",
     },
