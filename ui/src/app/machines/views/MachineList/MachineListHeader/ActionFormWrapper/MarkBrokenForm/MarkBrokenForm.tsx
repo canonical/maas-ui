@@ -25,6 +25,9 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
 
   const selectedMachines = useSelector(machineSelectors.selected);
+  const markingBrokenSelected = useSelector(
+    machineSelectors.markingBrokenSelected
+  );
   const machineErrors = useSelector(machineSelectors.errors);
   const errors = Object.keys(machineErrors).length > 0 ? machineErrors : null;
 
@@ -38,6 +41,7 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
   return (
     <ActionForm
       actionName="mark-broken"
+      allowAllEmpty
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
@@ -52,9 +56,9 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
           );
         });
       }}
+      processingCount={markingBrokenSelected.length}
       selectedCount={selectedMachines.length}
       validationSchema={MarkBrokenSchema}
-      allowAllEmpty
     >
       <MarkBrokenFormFields selectedCount={selectedMachines.length} />
     </ActionForm>
