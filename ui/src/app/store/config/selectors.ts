@@ -437,6 +437,15 @@ const maasAutoUserPrivilegeLevel = createSelector([all], (configs) =>
 );
 
 /**
+ * Returns the MAAS config for the IPMI BMC key.
+ * @param {RootState} state - The redux state.
+ * @returns {Config["value"]} BMC key.
+ */
+const maasAutoIpmiKGBmcKey = createSelector([all], (configs) =>
+  getValueFromName(configs, "maas_auto_ipmi_k_g_bmc_key")
+);
+
+/**
  * Returns the MAAS config for whether the intro has been completed.
  * @param {RootState} state - The redux state.
  * @returns {Config["value"]} Whether the intro has been completed
@@ -480,6 +489,7 @@ const config = {
   loading,
   maasName,
   maasAutoIpmiUser,
+  maasAutoIpmiKGBmcKey,
   maasAutoUserPrivilegeLevel,
   networkDiscovery,
   networkDiscoveryOptions,
