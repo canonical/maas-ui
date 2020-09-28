@@ -5,7 +5,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { sendAnalyticsEvent } from "analytics";
+import * as hooks from "app/base/hooks";
+import KVMNumaResources, { TRUNCATION_POINT } from "./KVMNumaResources";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -16,11 +17,6 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import KVMNumaResources, { TRUNCATION_POINT } from "./KVMNumaResources";
-
-jest.mock("analytics", () => ({
-  sendAnalyticsEvent: jest.fn(),
-}));
 
 const mockStore = configureStore();
 
@@ -97,12 +93,17 @@ describe("KVMNumaResources", () => {
         items: [
           configFactory({
             name: "enable_analytics",
-            value: true,
+            value: false,
           }),
         ],
       }),
       pod: podStateFactory({ items: [pod] }),
     });
+    const mockSendAnalytics = jest.fn();
+    const mockUseSendAnalytics = (hooks.useSendAnalytics = jest.fn(
+      () => mockSendAnalytics
+    ));
+
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -117,7 +118,14 @@ describe("KVMNumaResources", () => {
     });
     wrapper.update();
 
-    expect(sendAnalyticsEvent).toHaveBeenCalled();
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "KVM details",
+      "Toggle expanded NUMA nodes",
+      "Show more NUMA nodes",
+    ]);
+
+    mockUseSendAnalytics.mockRestore();
   });
 
   it("correctly filters VMs dropdown to those that belong to each NUMA node", () => {

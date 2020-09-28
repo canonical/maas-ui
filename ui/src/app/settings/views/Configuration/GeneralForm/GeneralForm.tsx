@@ -5,8 +5,7 @@ import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import { sendAnalyticsEvent } from "analytics";
-import { usePrevious } from "app/base/hooks";
+import { usePrevious, useSendAnalytics } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 
@@ -44,6 +43,8 @@ const GeneralForm = (): JSX.Element => {
     }
   }, [analyticsEnabled, previousEnableAnalytics]);
 
+  const sendAnalytics = useSendAnalytics();
+
   return (
     <FormikForm
       initialValues={{
@@ -59,7 +60,7 @@ const GeneralForm = (): JSX.Element => {
       onSubmit={(values, { resetForm }) => {
         if (values.enable_analytics !== previousEnableAnalytics) {
           // Only send the analytics event if the value changes.
-          sendAnalyticsEvent(
+          sendAnalytics(
             "General configuration settings",
             values.enable_analytics ? "Turned on" : "Turned off",
             "Enable Google Analytics"

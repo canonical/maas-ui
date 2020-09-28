@@ -5,12 +5,19 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import ActionForm from "./ActionForm";
+import { rootState as rootStateFactory } from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
+let state: RootState;
 const mockStore = configureStore();
 
 describe("ActionForm", () => {
+  beforeEach(() => {
+    state = rootStateFactory();
+  });
+
   it("can show the correct submit label", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <ActionForm modelName="machine" onSubmit={jest.fn()} />
@@ -21,7 +28,7 @@ describe("ActionForm", () => {
   });
 
   it("can show the correct saving state", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <ActionForm
@@ -45,7 +52,7 @@ describe("ActionForm", () => {
   });
 
   it("runs clearSelectedAction function when processing complete", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const clearSelectedAction = jest.fn();
     const Proxy = ({ processingCount }) => (
       <Provider store={store}>
@@ -70,7 +77,7 @@ describe("ActionForm", () => {
   });
 
   it("runs onSuccess function if processing is successful", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const onSuccess = jest.fn();
     const Proxy = ({ processingCount }) => (
       <Provider store={store}>
@@ -95,7 +102,7 @@ describe("ActionForm", () => {
   });
 
   it("does not run clearSelectedAction function if errors occur while processing", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const clearSelectedAction = jest.fn();
     const Proxy = ({ errors, processingCount }) => (
       <Provider store={store}>

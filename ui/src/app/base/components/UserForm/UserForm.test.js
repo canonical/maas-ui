@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { UserForm } from "./UserForm";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -22,8 +23,7 @@ describe("UserForm", () => {
       password2: "test1234",
       username: "admin",
     };
-    state = {
-      status: {},
+    state = rootStateFactory({
       user: {
         auth: {},
         errors: {},
@@ -33,7 +33,7 @@ describe("UserForm", () => {
         saved: false,
         saving: false,
       },
-    };
+    });
   });
 
   it("can render", () => {

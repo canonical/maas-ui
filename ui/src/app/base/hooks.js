@@ -4,14 +4,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
 import * as Yup from "yup";
 
-import { sendAnalyticsEvent } from "analytics";
 import { machine as machineActions } from "app/base/actions";
-import machineSelectors from "app/store/machine/selectors";
 import { messages } from "app/base/actions";
-import { kebabToCamelCase } from "app/utils";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import generalSelectors from "app/store/general/selectors";
+import { kebabToCamelCase } from "app/utils";
+import { useCallback } from "react";
 
 /**
  * Returns previous value of a variable.
@@ -135,23 +135,58 @@ export const useWindowTitle = (title) => {
 };
 
 /**
- * Send an analytics event.
- * @param {boolean} sendCondition - Whether the analytics event should be sent.
+ * Send a google analytics event
+ * @param {string} eventCategory - The analytics category.
+ * @param {string} eventAction - The analytics action.
+ * @param {string} eventLabel - The analytics label.
+ */
+const sendAnalytics = (eventCategory, eventAction, eventLabel) => {
+  window.ga &&
+    window.ga("send", "event", eventCategory, eventAction, eventLabel);
+};
+
+/**
+ * Send an analytics event if analytics config is enabled
  * @param {string} eventCategory - The analytics category.
  * @param {string} eventAction - The analytics action.
  * @param {string} eventLabel - The analytics label.
  */
 export const useSendAnalytics = (
+  eventCategory = "",
+  eventAction = "",
+  eventLabel = ""
+) => {
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
+  return useCallback(
+    (eventCategory, eventAction, eventLabel) => {
+      if (analyticsEnabled && eventCategory && eventAction && eventLabel) {
+        sendAnalytics(eventCategory, eventAction, eventLabel);
+      }
+    },
+    [analyticsEnabled]
+  );
+};
+
+/**
+ * Send an analytics event if a condition is met
+ * @param {boolean} sendCondition - Whether an analytics event is sent.
+ * @param {string} eventCategory - The analytics category.
+ * @param {string} eventAction - The analytics action.
+ * @param {string} eventLabel - The analytics label.
+ */
+export const useSendAnalyticsWhen = (
   sendCondition,
   eventCategory,
   eventAction,
   eventLabel
 ) => {
+  const sendAnalytics = useSendAnalytics();
+
   useEffect(() => {
-    if (sendCondition && eventCategory && eventAction && eventLabel) {
-      sendAnalyticsEvent(eventCategory, eventAction, eventLabel);
+    if (sendCondition) {
+      sendAnalytics(eventCategory, eventAction, eventLabel);
     }
-  }, [sendCondition, eventCategory, eventAction, eventLabel]);
+  }, [eventCategory, eventAction, eventLabel, sendCondition, sendAnalytics]);
 };
 
 /**

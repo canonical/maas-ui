@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { sendAnalyticsEvent } from "analytics";
+import * as hooks from "app/base/hooks";
 import DeployForm from "./DeployForm";
 import type { RootState } from "app/store/root/types";
 import {
@@ -18,10 +18,6 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
-
-jest.mock("analytics", () => ({
-  sendAnalyticsEvent: jest.fn(),
-}));
 
 const mockStore = configureStore();
 
@@ -94,10 +90,6 @@ describe("DeployForm", () => {
         },
       }),
     });
-  });
-
-  afterEach(() => {
-    sendAnalyticsEvent.mockClear();
   });
 
   it("correctly dispatches actions to deploy selected machines", () => {
@@ -266,6 +258,7 @@ describe("DeployForm", () => {
   it("sends an event if cloud-init is set", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
+    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -286,6 +279,6 @@ describe("DeployForm", () => {
         userData: "test script",
       })
     );
-    expect(sendAnalyticsEvent).toHaveBeenCalled();
+    expect(useSendMock).toHaveBeenCalled();
   });
 });
