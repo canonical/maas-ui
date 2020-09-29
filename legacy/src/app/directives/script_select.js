@@ -17,6 +17,12 @@ function filterScriptsByParam(scripts, param) {
   });
 }
 
+const sortScripts = (a, b) => {
+  if (a.name > b.name) return 1;
+  if (b.name > a.name) return -1;
+  return 0;
+};
+
 /* @ngInject */
 export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
   return {
@@ -61,8 +67,9 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
             $scope.scripts.push(script);
           }
         });
+
         return {
-          data: $scope.scripts,
+          data: $scope.scripts.sort(sortScripts),
         };
       };
 
@@ -76,6 +83,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
           $scope.ngModel,
           "url"
         );
+        $scope.ngModel = $scope.ngModel.sort(sortScripts);
         $scope.onParameterChange();
         $scope.refocus();
       };
@@ -94,6 +102,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
       });
 
       $scope.onTagRemoved = () => {
+        $scope.ngModel = $scope.ngModel.sort(sortScripts);
         $scope.scriptsWithUrlParam = filterScriptsByParam(
           $scope.ngModel,
           "url"
@@ -124,7 +133,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
             script.script_type === $scope.scriptType &&
             script.for_hardware.length === 0
           ) {
-            if ($scope.scriptType === 0) {
+            if ($scope.scriptType === 0 && script.default) {
               // By default MAAS runs all custom
               // commissioning scripts in addition to all
               // builtin commissioning scripts.
@@ -139,6 +148,8 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
             }
           }
         });
+
+        $scope.ngModel = $scope.ngModel.sort(sortScripts);
 
         $scope.scriptsWithUrlParam = filterScriptsByParam(
           $scope.ngModel,

@@ -39,14 +39,21 @@ describe("maasScriptSelect", function () {
     spyOn(RegionConnection, "getWebSocket").and.returnValue(webSocket);
   }));
 
-  function makeScript(script_type, tags, for_hardware) {
+  function makeScript(
+    script_type,
+    tags,
+    for_hardware,
+    name = "script_name",
+    isDefault = true
+  ) {
     const script = {
       id: makeInteger(0, 100),
-      name: makeName("script_name"),
+      name: makeName(name),
       description: makeName("description"),
       script_type: script_type,
       tags: tags,
       for_hardware: for_hardware,
+      default: isDefault,
     };
     ScriptsManager._items.push(script);
     return script;
@@ -73,12 +80,17 @@ describe("maasScriptSelect", function () {
     return directive.find("[data-maas-script-select]");
   }
 
-  it("creates entry for commissioning scripts", function () {
+  it("creates entry for commissioning scripts, ordered alphabetically", function () {
     // Create a commissioning script to be displayed.
-    var script = makeScript(0, [], []);
+    var script = makeScript(0, [], [], "script-a");
     // Create a commissiong script which uses the for_hardware field
     // which should not be autoselected.
-    var for_hardware_script = makeScript(0, [], [makeName("for_hardware")]);
+    var for_hardware_script = makeScript(
+      0,
+      [],
+      [makeName("for_hardware")],
+      "script-b"
+    );
     // Add a test script to ensure its not shown.
     makeScript(2, [], []);
     var defer = $q.defer();
@@ -99,18 +111,19 @@ describe("maasScriptSelect", function () {
     expect(isolateScope.scripts).toEqual([script, for_hardware_script]);
   });
 
-  it("creates entry for testing scripts", function () {
+  it("creates entry for testing scripts, ordered alphabetically", function () {
     // Create a test script for user selection.
-    var script = makeScript(2, [], []);
+    var script = makeScript(2, [], [], "script-a");
     // Create a test script which uses the for_hardware field
     // which should not be autoselected.
     var for_hardware_script = makeScript(
       2,
       ["commissioning"],
-      [makeName("for_hardware")]
+      [makeName("for_hardware")],
+      "script-b"
     );
     // Create a test script which is autoselected.
-    var selected_script = makeScript(2, ["commissioning"], []);
+    var selected_script = makeScript(2, ["commissioning"], [], "script-c");
     // Commissioning script which should be ignored
     makeScript(0, [], []);
     var defer = $q.defer();

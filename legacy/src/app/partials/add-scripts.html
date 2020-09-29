@@ -1,4 +1,17 @@
-<tags-input data-ng-model="ngModel" placeholder="Select scripts" key-property="id" display-property="name" min-length=1 on-tag-adding="onTagAdding($tag)" spellcheck="false" add-from-autocomplete-only="true" on-tag-removed="onTagRemoved()" on-tag-adding="onTagAdding($tag)" on-tag-added="onTagAdded()">
+<tags-input
+  add-from-autocomplete-only="true"
+  data-ng-model="ngModel"
+  display-property="name"
+  key-property="id"
+  min-length=1
+  on-tag-added="onTagAdded()"
+  on-tag-adding="onTagAdding($tag)"
+  on-tag-adding="onTagAdding($tag)"
+  on-tag-removed="onTagRemoved()"
+  placeholder="Select scripts"
+  spellcheck="false"
+  tag-class="$tag.script_type === 0 && $tag.default ? 'default-script' : undefined"
+>
   <auto-complete source="getScripts($query)" min-length="0" load-on-down-arrow="true" load-on-focus="true" load-on-empty="true" template="script-template" max-results-to-show="1000"></auto-complete>
 </tags-input>
 

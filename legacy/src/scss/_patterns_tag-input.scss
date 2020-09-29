@@ -148,5 +148,15 @@
     display: inline-block;
     background-color: #f7f7f7;
     padding: 0 5px;
+
+    // Used to prevent removal of default commissioning scripts
+    &.default-script {
+      cursor: not-allowed;
+      opacity: 0.5;
+
+      .remove-button {
+        display: none !important;
+      }
+    }
   }
 }
