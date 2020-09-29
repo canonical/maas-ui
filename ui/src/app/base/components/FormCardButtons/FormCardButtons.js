@@ -1,10 +1,12 @@
-import { ActionButton, Button } from "@canonical/react-components";
+import { ActionButton, Button, Link } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 
 export const FormCardButtons = ({
   bordered = true,
+  helpLabel,
+  helpLink,
   loading,
   loadingLabel,
   onCancel,
@@ -23,6 +25,18 @@ export const FormCardButtons = ({
           "is-bordered": bordered,
         })}
       >
+        {helpLink && helpLabel ? (
+          <p className="u-no-margin--bottom form-card__buttons-help">
+            <Link
+              external
+              href={helpLink}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {helpLabel}
+            </Link>
+          </p>
+        ) : null}
         {onCancel && (
           <Button
             appearance="base"
@@ -71,6 +85,8 @@ export const FormCardButtons = ({
 
 FormCardButtons.propTypes = {
   bordered: PropTypes.bool,
+  helpLabel: PropTypes.string,
+  helpLink: PropTypes.string,
   loading: PropTypes.bool,
   loadingLabel: PropTypes.string,
   onCancel: PropTypes.func,

@@ -11,7 +11,7 @@ export enum ScriptType {
 
 export const scriptsHistory = extend<Model, ScriptsHistory>(model, {
   comment: null,
-  created: "Wed, 08 Jul. 2020 05:35:4",
+  created: "Wed, 08 Jul 2020 05:35:4 -0000",
   data: "test history data",
 });
 

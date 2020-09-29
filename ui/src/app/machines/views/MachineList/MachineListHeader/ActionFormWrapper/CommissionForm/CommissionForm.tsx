@@ -7,12 +7,15 @@ import {
   machine as machineActions,
   scripts as scriptActions,
 } from "app/base/actions";
+import { simpleSortByKey } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import CommissionFormFields from "./CommissionFormFields";
+import type { Scripts } from "app/store/scripts/types";
+import type { MachineAction } from "app/store/general/types";
 
-const formatScripts = (scripts) =>
+const formatScripts = (scripts: Scripts[]) =>
   scripts.map((script) => ({
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
@@ -36,13 +39,36 @@ const CommissionFormSchema = Yup.object().shape({
   ),
 });
 
-export const CommissionForm = ({ setSelectedAction }) => {
+type ScriptInput = {
+  [x: string]: { url: string };
+};
+
+export type CommissionFormValues = {
+  enableSSH: boolean;
+  skipBMCConfig: boolean;
+  skipNetworking: boolean;
+  skipStorage: boolean;
+  updateFirmware: boolean;
+  configureHBA: boolean;
+  commissioningScripts: Scripts[];
+  testingScripts: Scripts[];
+  scriptInputs: ScriptInput[];
+};
+
+type Props = {
+  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+};
+
+export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
     scriptSelectors.defaultCommissioning
+  );
+  const preselectedCommissioningSorted = preselectedCommissioningScripts.sort(
+    simpleSortByKey("name")
   );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
@@ -54,16 +80,19 @@ export const CommissionForm = ({ setSelectedAction }) => {
     testingScripts.find((script) => script.name === "smartctl-validate"),
   ].filter(Boolean);
 
-  const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
-    if (
-      !(script.name in scriptInputs) &&
-      script.parameters &&
-      script.parameters.url
-    ) {
-      scriptInputs[script.name] = { url: script.parameters.url.default };
-    }
-    return scriptInputs;
-  }, {});
+  const initialScriptInputs = urlScripts.reduce<ScriptInput>(
+    (scriptInputs, script) => {
+      if (
+        !(script.name in scriptInputs) &&
+        script.parameters &&
+        script.parameters.url
+      ) {
+        scriptInputs[script.name] = { url: script.parameters.url.default };
+      }
+      return scriptInputs;
+    },
+    {}
+  );
 
   useEffect(() => {
     dispatch(scriptActions.fetch());
@@ -83,12 +112,12 @@ export const CommissionForm = ({ setSelectedAction }) => {
         skipStorage: false,
         updateFirmware: false,
         configureHBA: false,
-        commissioningScripts: preselectedCommissioningScripts,
+        commissioningScripts: preselectedCommissioningSorted,
         testingScripts: preselectedTestingScripts,
         scriptInputs: initialScriptInputs,
       }}
       modelName="machine"
-      onSubmit={(values) => {
+      onSubmit={(values: CommissionFormValues) => {
         const {
           enableSSH,
           skipBMCConfig,
@@ -123,9 +152,7 @@ export const CommissionForm = ({ setSelectedAction }) => {
     >
       <CommissionFormFields
         preselectedTesting={formatScripts(preselectedTestingScripts)}
-        preselectedCommissioning={formatScripts(
-          preselectedCommissioningScripts
-        )}
+        preselectedCommissioning={formatScripts(preselectedCommissioningSorted)}
         commissioningScripts={formatScripts(commissioningScripts)}
         testingScripts={formatScripts(testingScripts)}
       />

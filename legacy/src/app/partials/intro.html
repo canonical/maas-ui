@@ -2,10 +2,19 @@
     <div class="row">
         <div class="col-12">
             <div class="p-card--highlighted">
-                <h4 class="p-card__title">
-                    <i data-ng-class="{ 'p-icon--success': !welcomeInError(), 'p-icon--error': welcomeInError() }"></i>
-                    Welcome to MAAS
-                </h4>
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="p-card__title">
+                            <i data-ng-class="{ 'p-icon--success': !welcomeInError(), 'p-icon--error': welcomeInError() }"></i>
+                            Welcome to MAAS
+                        </h4>
+                    </div>
+                    <div class="col-6 u-align--right">
+                        <p class="u-no-margin--bottom">
+                            <a class="p-link--external" href="https://maas.io/docs/configuration-journey" target="_blank">Help with configuring MAAS</a>
+                        </p>
+                    </div>
+                </div>
                 <hr />
                 <div class="p-card__content">
                     <maas-obj-form obj="maasName" manager="configManager" class="p-form p-form--stacked">

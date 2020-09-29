@@ -439,7 +439,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 u-align--right">
+                    <div class="col-4">
+                        <p class="u-no-margin--bottom"><a class="p-link--external" href="https://maas.io/docs/dhcp" target="_blank">About DHCP</a></p>
+                    </div>
+                    <div class="col-8 u-align--right">
                         <button class="p-button--base u-no-margin--bottom" data-ng-click="vlanDetails.closeDHCPPanel()">Cancel</button>
                         <button class="p-button--positive u-no-margin--bottom" data-ng-click="vlanDetails.enableDHCP()" data-ng-if="vlanDetails.provideDHCP && vlanDetails.MAASProvidesDHCP">
                             <span data-ng-if="vlanDetails.isProvidingDHCP">
@@ -563,6 +566,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <p class="u-no-margin--bottom"><a class="p-link--external" href="https://maas.io/docs/dhcp" target="_blank">About DHCP</a></p>
         </div>
     </section>
     <section class="p-strip" data-ng-if="!vlanDetails.showDHCPPanel">

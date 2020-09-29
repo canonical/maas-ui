@@ -138,4 +138,23 @@ describe("Header", () => {
     expect(selected.exists()).toBe(true);
     expect(selected.text()).toEqual("Subnets");
   });
+
+  it("highlights sub-urls", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        location={{
+          pathname: "/MAAS/l/machine/abc123",
+        }}
+        logout={jest.fn()}
+      />
+    );
+    const selected = wrapper.find(".p-navigation__link.is-selected");
+    expect(selected.exists()).toBe(true);
+    expect(selected.text()).toEqual("Machines");
+  });
 });

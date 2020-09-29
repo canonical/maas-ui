@@ -21,6 +21,33 @@ const useVisible = (initialValue) => {
   return [value, toggleValue];
 };
 
+const generateURL = (url, isLegacy, appendNewBase) => {
+  if (isLegacy) {
+    return generateLegacyURL(url);
+  } else if (appendNewBase) {
+    return generateNewURL(url, appendNewBase);
+  }
+  return url;
+};
+
+const isSelected = (path, link, appendNewBase) => {
+  // Use the provided highlight(s) or just use the url.
+  let highlights = link.highlight || link.url;
+  // If the provided highlights aren't an array then make them one so that we
+  // can loop over them.
+  if (!Array.isArray(highlights)) {
+    highlights = [highlights];
+  }
+  // Check if one of the highlight urls matches the current path.
+  return highlights.some(
+    (start) =>
+      // Check the full path, for both legacy/new clients as sometimes the lists
+      // are in one client and the details in the other.
+      path.startsWith(generateURL(start, true, appendNewBase)) ||
+      path.startsWith(generateURL(start, false, appendNewBase))
+  );
+};
+
 export const Header = ({
   appendNewBase = true,
   authUser,
@@ -86,12 +113,13 @@ export const Header = ({
 
   const links = [
     {
+      highlight: "/machine",
       inHardwareMenu: true,
-      isLegacy: false,
       label: "Machines",
       url: "/machines",
     },
     {
+      highlight: "/device",
       inHardwareMenu: true,
       isLegacy: true,
       label: "Devices",
@@ -99,6 +127,7 @@ export const Header = ({
     },
     {
       adminOnly: true,
+      highlight: "/controller",
       inHardwareMenu: true,
       isLegacy: true,
       label: "Controllers",
@@ -121,23 +150,25 @@ export const Header = ({
       url: "/images",
     },
     {
+      highlight: "/domain",
       isLegacy: true,
       label: "DNS",
       url: "/domains",
     },
     {
+      highlight: "/zone",
       isLegacy: true,
       label: "AZs",
       url: "/zones",
     },
     {
+      highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
       isLegacy: true,
       label: "Subnets",
       url: "/networks?by=fabric",
     },
     {
       adminOnly: true,
-      isLegacy: false,
       label: "Settings",
       url: "/settings",
     },
@@ -149,18 +180,9 @@ export const Header = ({
     // Remove the hidden items.
     .filter(({ hidden }) => !hidden);
 
-  const generateURL = (url, isLegacy) => {
-    if (isLegacy) {
-      return generateLegacyURL(url);
-    } else if (appendNewBase) {
-      return generateNewURL(url, appendNewBase);
-    }
-    return url;
-  };
-
   const generateLink = (link, linkClass = undefined) => {
     const { isLegacy, label, url } = link;
-    const linkURL = generateURL(url, isLegacy);
+    const linkURL = generateURL(url, isLegacy, appendNewBase);
 
     return generateLocalLink && !isLegacy ? (
       generateLocalLink(linkURL, label, linkClass)
@@ -188,7 +210,7 @@ export const Header = ({
     const linkItems = links.map((link) => (
       <li
         className={classNames("p-navigation__link", {
-          "is-selected": path.startsWith(generateURL(link.url, link.isLegacy)),
+          "is-selected": isSelected(path, link, appendNewBase),
           "u-hide--hardware-menu-threshold": link.inHardwareMenu,
         })}
         key={link.url}
@@ -254,7 +276,7 @@ export const Header = ({
           <li
             className={classNames("p-navigation__link", {
               "is-selected": location.pathname.startsWith(
-                generateURL("/account/prefs", false)
+                generateURL("/account/prefs", false, appendNewBase)
               ),
             })}
             role="menuitem"

@@ -92,6 +92,8 @@ export const AddChassisForm = () => {
         <FormCard sidebar={false} title="Add chassis">
           <FormikForm
             buttons={FormCardButtons}
+            buttonsHelpLabel="Help with adding chassis"
+            buttonsHelpLink="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
             cleanup={machineActions.cleanup}
             errors={errors}
             initialValues={{

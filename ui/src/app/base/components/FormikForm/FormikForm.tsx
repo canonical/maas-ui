@@ -14,6 +14,8 @@ type Props = {
   allowUnchanged?: boolean;
   Buttons?: JSX.Element;
   buttonsBordered?: boolean;
+  buttonsHelpLabel?: string;
+  buttonsHelpLink?: string;
   cleanup?: () => void;
   children?: ReactNode;
   errors?: TSFixMe;
@@ -45,6 +47,8 @@ const FormikForm = ({
   allowUnchanged,
   buttons,
   buttonsBordered = true,
+  buttonsHelpLabel,
+  buttonsHelpLink,
   cleanup,
   children,
   errors,
@@ -96,6 +100,8 @@ const FormikForm = ({
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
         buttonsBordered={buttonsBordered}
+        buttonsHelpLabel={buttonsHelpLabel}
+        buttonsHelpLink={buttonsHelpLink}
         buttons={buttons}
         errors={errors}
         initialValues={initialValues}
@@ -121,6 +127,8 @@ FormikForm.propTypes = {
   allowAllEmpty: PropTypes.bool,
   allowUnchanged: PropTypes.bool,
   buttons: PropTypes.func,
+  buttonsHelpLabel: PropTypes.string,
+  buttonsHelpLink: PropTypes.string,
   buttonsBordered: PropTypes.bool,
   cleanup: PropTypes.func,
   children: PropTypes.node,
