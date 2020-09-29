@@ -8,13 +8,20 @@ import angular from "angular";
 import NotificationsTmpl from "../partials/nodelist/notifications.html";
 
 /* @ngInject */
-export function maasNotifications(NotificationsManager, ManagerHelperService) {
+export function maasNotifications(
+  $rootScope,
+  NotificationsManager,
+  ManagerHelperService
+) {
   return {
     restrict: "E",
     template: NotificationsTmpl,
     link: function (scope, element, attrs) {
       ManagerHelperService.loadManager(scope, NotificationsManager);
-      scope.notifications = NotificationsManager.getItems();
+
+      scope.notifications = NotificationsManager.getItems(
+        scope.showReleaseNotification
+      );
       scope.dismiss = angular.bind(
         NotificationsManager,
         NotificationsManager.dismiss
@@ -48,6 +55,10 @@ export function maasNotifications(NotificationsManager, ManagerHelperService) {
         categoryNotifications.forEach((notification) => {
           scope.dismiss(notification);
         });
+      };
+
+      scope.navigateToSettings = () => {
+        $rootScope.navigateToNew("/settings");
       };
 
       scope.$watchCollection("notifications", function () {

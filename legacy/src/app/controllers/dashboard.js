@@ -61,6 +61,7 @@ function DashboardController(
   $scope.metadata = {};
   $scope.tempNotifications = [];
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
+  $scope.showReleaseNotification = true;
 
   $scope.changeTab = (tabName) => {
     $scope.currentTab = tabName;

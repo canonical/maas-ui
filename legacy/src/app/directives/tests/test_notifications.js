@@ -120,7 +120,7 @@ describe("maasNotifications", function () {
       theNotificationsManager._items = [notification];
       var dismiss = spyOn(theNotificationsManager, "dismiss");
       var directive = compileDirective();
-      directive.find("div > span > ul > li > p > a").click();
+      directive.find("button").click();
       expect(dismiss).toHaveBeenCalledWith(notification);
     });
 
@@ -155,9 +155,9 @@ describe("maasNotifications", function () {
         p_classes = p_classes.concat(matches);
       });
       expect(p_classes).toEqual([
-        "p-notification ng-scope p-notification--negative",
-        "p-notification ng-scope p-notification--caution",
-        "p-notification ng-scope",
+        "p-notification ng-scope p-notification--negative p-notification--has-action",
+        "p-notification ng-scope p-notification--caution p-notification--has-action",
+        "p-notification ng-scope p-notification--has-action",
       ]);
     });
 
