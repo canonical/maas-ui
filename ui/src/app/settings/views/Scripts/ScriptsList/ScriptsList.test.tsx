@@ -3,24 +3,25 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
+import type { RootState } from "app/store/root/types";
 
+import {
+  scripts as scriptsFactory,
+  scriptsState as scriptsStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import ScriptsList from ".";
 
 const mockStore = configureStore();
 
 describe("ScriptsList", () => {
-  let initialState;
+  let initialState: RootState;
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      scripts: {
-        loading: false,
+    initialState = rootStateFactory({
+      scripts: scriptsStateFactory({
         loaded: true,
-        errors: {},
         items: [
-          {
+          scriptsFactory({
             id: 1,
             name: "commissioning-script",
             description: "a commissioning script",
@@ -33,8 +34,8 @@ describe("ScriptsList", () => {
                 data: "",
               },
             ],
-          },
-          {
+          }),
+          scriptsFactory({
             id: 2,
             name: "testing-script",
             description: "a testing script",
@@ -47,8 +48,8 @@ describe("ScriptsList", () => {
                 data: "",
               },
             ],
-          },
-          {
+          }),
+          scriptsFactory({
             id: 3,
             name: "testing-script-2",
             description: "another testing script",
@@ -61,10 +62,10 @@ describe("ScriptsList", () => {
                 data: "",
               },
             ],
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("dispatches action to fetch scripts load", () => {
@@ -146,48 +147,21 @@ describe("ScriptsList", () => {
   });
 
   it("disables the delete button if a default script", () => {
-    const state = {
-      config: {
-        items: [],
-      },
-      scripts: {
-        loading: false,
+    const state = rootStateFactory({
+      scripts: scriptsStateFactory({
         loaded: true,
-        errors: {},
         items: [
-          {
-            id: 1,
-            name: "testing script",
-            description: "a default testing script",
+          scriptsFactory({
             default: true,
             type: 2,
-            history: [
-              {
-                id: 1,
-                comment: "a history item",
-                created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: "",
-              },
-            ],
-          },
-          {
-            id: 2,
-            name: "user script",
-            description: "a non-default user script",
+          }),
+          scriptsFactory({
             default: false,
             type: 2,
-            history: [
-              {
-                id: 1,
-                comment: "a history item",
-                created: "Tue, 02 Jul 2019 05:24:10 -0000",
-                data: "",
-              },
-            ],
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -198,11 +172,11 @@ describe("ScriptsList", () => {
       </Provider>
     );
     expect(
-      wrapper.find("TableRow").at(1).find("Button").at(1).props()["disabled"]
+      wrapper.find("TableRow").at(1).find("Button").at(1).prop("disabled")
     ).toBe(true);
 
     expect(
-      wrapper.find("TableRow").at(2).find("Button").at(1).props()["disabled"]
+      wrapper.find("TableRow").at(2).find("Button").at(1).prop("disabled")
     ).toBe(false);
   });
 

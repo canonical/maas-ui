@@ -3,6 +3,7 @@ import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import type { Dispatch } from "redux";
 
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
@@ -12,16 +13,22 @@ import ColumnToggle from "app/base/components/ColumnToggle";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import type { RootState } from "app/store/root/types";
+import type { Scripts } from "app/store/scripts/types";
+
+type Props = {
+  type?: "commissioning" | "testing";
+};
 
 const generateRows = (
-  scripts,
-  expandedId,
-  setExpandedId,
-  expandedType,
-  setExpandedType,
-  hideExpanded,
-  dispatch,
-  setDeleting
+  scripts: Scripts[],
+  expandedId: Scripts["id"],
+  setExpandedId: (id: Scripts["id"]) => void,
+  expandedType: "delete" | null,
+  setExpandedType: (expandedType: "delete" | "details") => void,
+  hideExpanded: () => void,
+  dispatch: Dispatch,
+  setDeleting: (id: Scripts["name"]) => void
 ) =>
   scripts.map((script) => {
     const expanded = expandedId === script.id;
@@ -29,7 +36,7 @@ const generateRows = (
 
     const lastHistory = script.history[0];
 
-    let scriptSrc;
+    let scriptSrc: string;
     if (lastHistory.data) {
       try {
         scriptSrc = atob(lastHistory.data);
@@ -39,7 +46,7 @@ const generateRows = (
     }
 
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
-    let uploadedOn;
+    let uploadedOn: string;
     if (lastHistory && lastHistory.created) {
       try {
         uploadedOn = format(
@@ -124,12 +131,12 @@ const generateRows = (
     };
   });
 
-const ScriptsList = ({ type = "commissioning" }) => {
+const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [expandedId, setExpandedId] = useState();
-  const [expandedType, setExpandedType] = useState();
+  const [expandedId, setExpandedId] = useState(null);
+  const [expandedType, setExpandedType] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const [deletingScript, setDeleting] = useState();
+  const [deletingScript, setDeleting] = useState(null);
 
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
@@ -137,7 +144,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
 
-  const userScripts = useSelector((state) =>
+  const userScripts = useSelector((state: RootState) =>
     scriptSelectors.search(state, searchText, type)
   );
 
@@ -159,8 +166,8 @@ const ScriptsList = ({ type = "commissioning" }) => {
   );
 
   const hideExpanded = () => {
-    setExpandedId();
-    setExpandedType();
+    setExpandedId(null);
+    setExpandedType(null);
   };
 
   useEffect(() => {
@@ -172,6 +179,7 @@ const ScriptsList = ({ type = "commissioning" }) => {
       buttons={[
         { label: "Upload script", url: `/settings/scripts/${type}/upload` },
       ]}
+      defaultSort="name"
       headers={[
         {
           content: "Script name",
