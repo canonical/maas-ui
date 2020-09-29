@@ -125,6 +125,7 @@ exports[`PoolColumn renders 1`] = `
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   hasIcon={true}
                   onClick={[Function]}
+                  type="button"
                 >
                   <button
                     aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
@@ -132,6 +133,7 @@ exports[`PoolColumn renders 1`] = `
                     aria-haspopup="true"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     onClick={[Function]}
+                    type="button"
                   >
                     <i
                       className="p-icon--contextual-menu p-contextual-menu__indicator"

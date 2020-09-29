@@ -27,6 +27,7 @@ exports[`FilterAccordion renders 1`] = `
         className="p-contextual-menu__toggle filter-accordion__toggle"
         hasIcon={true}
         onClick={[Function]}
+        type="button"
       >
         <button
           aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
@@ -34,6 +35,7 @@ exports[`FilterAccordion renders 1`] = `
           aria-haspopup="true"
           className="p-button--neutral has-icon p-contextual-menu__toggle filter-accordion__toggle"
           onClick={[Function]}
+          type="button"
         >
           <span>
             Filters
