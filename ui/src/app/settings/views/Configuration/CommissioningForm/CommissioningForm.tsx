@@ -38,6 +38,7 @@ const CommissioningForm = (): JSX.Element => {
     configSelectors.defaultMinKernelVersion
   );
   const ipmiUser = useSelector(configSelectors.maasAutoIpmiUser);
+  const bmcKey = useSelector(configSelectors.maasAutoIpmiKGBmcKey);
   const ipmiPrivilegeLevel = useSelector(
     configSelectors.maasAutoUserPrivilegeLevel
   );
@@ -48,7 +49,7 @@ const CommissioningForm = (): JSX.Element => {
         commissioning_distro_series: commissioningDistroSeries,
         default_min_hwe_kernel: defaultMinKernelVersion,
         maas_auto_ipmi_user: ipmiUser || "maas",
-        maas_auto_ipmi_k_g_bmc_key: "",
+        maas_auto_ipmi_k_g_bmc_key: bmcKey || "",
         maas_auto_ipmi_user_privilege_level: ipmiPrivilegeLevel,
       }}
       onSaveAnalytics={{
