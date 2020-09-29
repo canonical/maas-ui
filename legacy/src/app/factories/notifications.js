@@ -29,7 +29,10 @@ function NotificationsManager(RegionConnection, Manager) {
       id: notification.id,
     });
   };
-  NotificationsManager.prototype.getItems = function () {
+  NotificationsManager.prototype.getItems = function (includeRelease = false) {
+    if (includeRelease) {
+      return this._items;
+    }
     return this._items.filter(({ ident }) => ident !== "release_notification");
   };
 
