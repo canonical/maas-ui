@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { machine as machineActions } from "app/base/actions";
@@ -60,13 +60,7 @@ export const ActionFormWrapper = ({
       }, [])
     : [];
   const selectedProcessing = useSelector(machineSelectors.selectedProcessing);
-
-  // The action should be disabled if not all the selected machines can perform
-  // The selected action. When machines are processing the available actions
-  // can change, so the action should not be disabled while processing.
-  const actionDisabled =
-    !selectedProcessing.length &&
-    actionableMachineIDs.length !== selectedMachines.length;
+  const [actionDisabled, setActionDisabled] = useState(false);
 
   useEffect(() => {
     if (selectedMachines.length === 0) {
@@ -74,6 +68,20 @@ export const ActionFormWrapper = ({
       setSelectedAction(null);
     }
   }, [selectedMachines, setSelectedAction]);
+
+  useEffect(() => {
+    // The action should be disabled if not all the selected machines can perform
+    // the selected action. When machines are processing the available actions
+    // can change, so the action should not be disabled while processing.
+    const newActionDisabled =
+      !selectedProcessing.length &&
+      actionableMachineIDs.length !== selectedMachines.length;
+    setActionDisabled(newActionDisabled);
+  }, [
+    selectedProcessing.length,
+    actionableMachineIDs.length,
+    selectedMachines.length,
+  ]);
 
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
