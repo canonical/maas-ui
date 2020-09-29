@@ -44,8 +44,8 @@
     "css-loader": "4.3.0",
     "dotenv-flow-webpack": "1.1.0",
     "enzyme": "3.11.0",
-    "enzyme-to-json": "3.5.0",
-    "eslint": "7.9.0",
+    "enzyme-to-json": "3.6.0",
+    "eslint": "7.10.0",
     "eslint-plugin-react": "7.21.2",
     "html-loader-jest": "0.2.1",
     "html-webpack-plugin": "4.5.0",
@@ -82,7 +82,7 @@
     "js-cookie": "2.2.1",
     "macaroon-bakery": "0.2.1",
     "ng-tags-input": "3.2.0",
-    "single-spa-angularjs": "3.3.0",
+    "single-spa-angularjs": "4.0.0",
     "vanilla-framework": "2.19.0"
   },
   "npmpackagejsonlint": {
