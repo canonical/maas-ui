@@ -211,8 +211,8 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     // Redirect old hash routes to new routes
     if ($location.hash()) {
       navigateToLegacy($location.hash());
-    } else {
-      // fallthrough redirect machine listing
+    } else if ($location.path().startsWith(generateLegacyURL())) {
+      // This is an unknown legacy URL so redirect to the machine listing.
       navigateToNew("/machines");
     }
   });

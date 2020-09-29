@@ -3,12 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import HardwareMenu from "./HardwareMenu";
-import {
-  generateLegacyURL,
-  generateNewURL,
-  navigateToLegacy,
-  navigateToNew,
-} from "../../utils";
+import { generateLegacyURL, generateNewURL } from "../../utils";
 
 const useVisible = (initialValue) => {
   const [value, setValue] = useState(initialValue);
@@ -54,7 +49,8 @@ export const Header = ({
   completedIntro,
   debug,
   enableAnalytics,
-  generateLocalLink,
+  generateLegacyLink,
+  generateNewLink,
   location,
   logout,
   onSkip,
@@ -181,26 +177,9 @@ export const Header = ({
     .filter(({ hidden }) => !hidden);
 
   const generateLink = (link, linkClass = undefined) => {
-    const { isLegacy, label, url } = link;
-    const linkURL = generateURL(url, isLegacy, appendNewBase);
-
-    return generateLocalLink && !isLegacy ? (
-      generateLocalLink(linkURL, label, linkClass)
-    ) : (
-      <a
-        className={linkClass}
-        href={linkURL}
-        onClick={(evt) => {
-          if (isLegacy) {
-            navigateToLegacy(url, evt);
-          } else {
-            navigateToNew(url, evt);
-          }
-        }}
-      >
-        {label}
-      </a>
-    );
+    return link.isLegacy
+      ? generateLegacyLink(link, linkClass, appendNewBase)
+      : generateNewLink(link, linkClass, appendNewBase);
   };
 
   const generateNavItems = (links) => {
@@ -358,7 +337,8 @@ Header.propTypes = {
   completedIntro: PropTypes.bool,
   debug: PropTypes.bool,
   enableAnalytics: PropTypes.bool,
-  generateLocalLink: PropTypes.func,
+  generateLegacyLink: PropTypes.func.isRequired,
+  generateNewLink: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
     pathname: PropTypes.string.isRequired,
