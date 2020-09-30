@@ -5,6 +5,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import RepositoryForm from "../RepositoryForm";
+import {
+  componentsToDisableState as componentsToDisableStateFactory,
+  knownArchitecturesState as knownArchitecturesStateFactory,
+  packageRepository as packageRepositoryFactory,
+  packageRepositoryState as packageRepositoryStateFactory,
+  pocketsToDisableState as pocketsToDisableStateFactory,
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -12,69 +21,23 @@ describe("RepositoryFormFields", () => {
   let initialState;
 
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
-        componentsToDisable: {
-          data: [],
+    initialState = rootStateFactory({
+      general: generalStateFactory({
+        componentsToDisable: componentsToDisableStateFactory({
           loaded: true,
-          loading: false,
-        },
-        knownArchitectures: {
-          data: [],
+        }),
+        knownArchitectures: knownArchitecturesStateFactory({
           loaded: true,
-          loading: false,
-        },
-        pocketsToDisable: {
-          data: [],
+        }),
+        pocketsToDisable: pocketsToDisableStateFactory({
           loaded: true,
-          loading: false,
-        },
-      },
-      packagerepository: {
-        errors: {},
-        loading: false,
+        }),
+      }),
+      packagerepository: packageRepositoryStateFactory({
         loaded: true,
-        saved: false,
-        saving: false,
-        items: [
-          {
-            id: 1,
-            created: "Fri, 23 Aug. 2019 09:17:44",
-            updated: "Fri, 23 Aug. 2019 09:17:44",
-            name: "main_archive",
-            url: "http://archive.ubuntu.com/ubuntu",
-            distributions: [],
-            disabled_pockets: ["security"],
-            disabled_components: ["universe", "restricted"],
-            disable_sources: true,
-            components: [],
-            arches: ["amd64", "i386"],
-            key: "",
-            default: true,
-            enabled: true,
-          },
-          {
-            id: 2,
-            created: "Fri, 23 Aug. 2019 09:17:44",
-            updated: "Fri, 23 Aug. 2019 09:17:44",
-            name: "ports_archive",
-            url: "http://ports.ubuntu.com/ubuntu-ports",
-            distributions: [],
-            disabled_pockets: [],
-            disabled_components: [],
-            disable_sources: true,
-            components: [],
-            arches: ["armhf", "arm64", "ppc64el", "s390x"],
-            key: "",
-            default: false,
-            enabled: true,
-          },
-        ],
-      },
-    };
+        items: [packageRepositoryFactory()],
+      }),
+    });
   });
 
   it("displays disitribution and component inputs if type is repository", () => {

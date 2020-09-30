@@ -6,17 +6,28 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import AddKVMForm from "./AddKVMForm";
+import {
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  podState as podStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddKVMForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      general: {
+      }),
+      general: generalStateFactory({
         powerTypes: {
           data: [
             {
@@ -98,33 +109,19 @@ describe("AddKVMForm", () => {
           ],
           loaded: true,
         },
-      },
-      pod: {
-        items: [],
+      }),
+      pod: podStateFactory({
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-      resourcepool: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      resourcepool: resourcePoolStateFactory({
+        items: [resourcePoolFactory()],
         loaded: true,
-      },
-      zone: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      zone: zoneStateFactory({
+        items: [zoneFactory()],
         loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("fetches the necessary data on load", () => {

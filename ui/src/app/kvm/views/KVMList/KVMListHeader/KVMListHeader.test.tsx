@@ -5,20 +5,24 @@ import configureStore from "redux-mock-store";
 import * as React from "react";
 
 import KVMListHeader from "./KVMListHeader";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMListHeader", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         loaded: true,
-        loading: false,
-        items: [{ id: 1 }, { id: 2 }],
-        selected: [],
-      },
-    };
+        items: [podFactory({ id: 1 }), podFactory({ id: 2 })],
+      }),
+    });
   });
 
   afterEach(() => {

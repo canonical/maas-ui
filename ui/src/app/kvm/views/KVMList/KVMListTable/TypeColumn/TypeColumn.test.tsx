@@ -4,23 +4,28 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import TypeColumn from "./TypeColumn";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("TypeColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
-            id: 1,
-            name: "pod-1",
+          podFactory({
             type: "virsh",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays the formatted pod type", () => {

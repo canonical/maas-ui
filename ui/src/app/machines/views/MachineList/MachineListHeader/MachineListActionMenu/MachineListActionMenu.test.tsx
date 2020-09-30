@@ -5,26 +5,30 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineListActionMenu from "./MachineListActionMenu";
+import { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineAction as machineActionFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineListActionMenu", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [],
           errors: {},
           loaded: true,
           loading: false,
         },
-      },
-      machine: {
-        items: [],
-        selected: [],
-      },
-    };
+      }),
+    });
   });
 
   it("is disabled if no are machines selected", () => {
@@ -48,7 +52,7 @@ describe("MachineListActionMenu", () => {
   it("is enabled if at least one machine selected", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] },
+      machineFactory({ system_id: "a", actions: ["lifecycle1", "lifecycle2"] }),
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -70,15 +74,27 @@ describe("MachineListActionMenu", () => {
     those in which selected machines cannot perform`, () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "lifecycle1", title: "Lifecycle 1", type: "lifecycle" },
-      { name: "lifecycle2", title: "Lifecycle 2", type: "lifecycle" },
-      { name: "lifecycle3", title: "Lifecycle 3", type: "lifecycle" },
+      machineActionFactory({
+        name: "lifecycle1",
+        title: "Lifecycle 1",
+        type: "lifecycle",
+      }),
+      machineActionFactory({
+        name: "lifecycle2",
+        title: "Lifecycle 2",
+        type: "lifecycle",
+      }),
+      machineActionFactory({
+        name: "lifecycle3",
+        title: "Lifecycle 3",
+        type: "lifecycle",
+      }),
     ];
     // No machine can perform "lifecycle3" action
     state.machine.items = [
-      { system_id: "a", actions: ["lifecycle1", "lifecycle2"] },
-      { system_id: "b", actions: ["lifecycle1"] },
-      { system_id: "c", actions: ["other"] },
+      machineFactory({ system_id: "a", actions: ["lifecycle1", "lifecycle2"] }),
+      machineFactory({ system_id: "b", actions: ["lifecycle1"] }),
+      machineFactory({ system_id: "c", actions: ["other"] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -112,15 +128,23 @@ describe("MachineListActionMenu", () => {
     perform the action`, () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "on", title: "Power on...", type: "power" },
-      { name: "off", title: "Power off...", type: "power" },
-      { name: "house", title: "Power house...", type: "power" },
+      machineActionFactory({ name: "on", title: "Power on...", type: "power" }),
+      machineActionFactory({
+        name: "off",
+        title: "Power off...",
+        type: "power",
+      }),
+      machineActionFactory({
+        name: "house",
+        title: "Power house...",
+        type: "power",
+      }),
     ];
     // No machine can perform "house" action
     state.machine.items = [
-      { system_id: "a", actions: ["on", "off"] },
-      { system_id: "b", actions: ["on"] },
-      { system_id: "c", actions: ["off"] },
+      machineFactory({ system_id: "a", actions: ["on", "off"] }),
+      machineFactory({ system_id: "b", actions: ["on"] }),
+      machineFactory({ system_id: "c", actions: ["off"] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -146,15 +170,30 @@ describe("MachineListActionMenu", () => {
   it("correctly calculates number of machines that can perform each action", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "commission", title: "Commission...", type: "lifecycle" },
-      { name: "release", title: "Release...", type: "lifecycle" },
-      { name: "deploy", title: "Deploy...", type: "lifecycle" },
+      machineActionFactory({
+        name: "commission",
+        title: "Commission...",
+        type: "lifecycle",
+      }),
+      machineActionFactory({
+        name: "release",
+        title: "Release...",
+        type: "lifecycle",
+      }),
+      machineActionFactory({
+        name: "deploy",
+        title: "Deploy...",
+        type: "lifecycle",
+      }),
     ];
     // 3 commission, 2 release, 1 deploy
     state.machine.items = [
-      { system_id: "a", actions: ["commission", "release", "deploy"] },
-      { system_id: "b", actions: ["commission", "release"] },
-      { system_id: "c", actions: ["commission"] },
+      machineFactory({
+        system_id: "a",
+        actions: ["commission", "release", "deploy"],
+      }),
+      machineFactory({ system_id: "b", actions: ["commission", "release"] }),
+      machineFactory({ system_id: "c", actions: ["commission"] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -180,11 +219,21 @@ describe("MachineListActionMenu", () => {
   machine is selected`, () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "action1", title: "Action 1", type: "power" },
-      { name: "action2", title: "Action 2", type: "power" },
+      machineActionFactory({
+        name: "action1",
+        title: "Action 1",
+        type: "power",
+      }),
+      machineActionFactory({
+        name: "action2",
+        title: "Action 2",
+        type: "power",
+      }),
     ];
     // No machine can perform "lifecycle3" action
-    state.machine.items = [{ system_id: "a", actions: ["action1"] }];
+    state.machine.items = [
+      machineFactory({ system_id: "a", actions: ["action1"] }),
+    ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -208,17 +257,37 @@ describe("MachineListActionMenu", () => {
   it("groups actions by type", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "commission", title: "Commission...", type: "lifecycle" },
-      { name: "on", title: "Power on...", type: "power" },
-      { name: "off", title: "Power on...", type: "power" },
-      { name: "test", title: "Test...", type: "testing" },
-      { name: "lock", title: "Lock...", type: "lock" },
-      { name: "set-pool", title: "Set pool...", type: "misc" },
-      { name: "set-zone", title: "Set zone...", type: "misc" },
-      { name: "delete", title: "Delete...", type: "misc" },
+      machineActionFactory({
+        name: "commission",
+        title: "Commission...",
+        type: "lifecycle",
+      }),
+      machineActionFactory({ name: "on", title: "Power on...", type: "power" }),
+      machineActionFactory({
+        name: "off",
+        title: "Power on...",
+        type: "power",
+      }),
+      machineActionFactory({ name: "test", title: "Test...", type: "testing" }),
+      machineActionFactory({ name: "lock", title: "Lock...", type: "lock" }),
+      machineActionFactory({
+        name: "set-pool",
+        title: "Set pool...",
+        type: "misc",
+      }),
+      machineActionFactory({
+        name: "set-zone",
+        title: "Set zone...",
+        type: "misc",
+      }),
+      machineActionFactory({
+        name: "delete",
+        title: "Delete...",
+        type: "misc",
+      }),
     ];
     state.machine.items = [
-      {
+      machineFactory({
         system_id: "a",
         actions: [
           "commission",
@@ -230,7 +299,7 @@ describe("MachineListActionMenu", () => {
           "set-zone",
           "delete",
         ],
-      },
+      }),
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -256,9 +325,15 @@ describe("MachineListActionMenu", () => {
   it("fires setSelectedAction function on action button click", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      { name: "commission", title: "Commission...", type: "lifecycle" },
+      machineActionFactory({
+        name: "commission",
+        title: "Commission...",
+        type: "lifecycle",
+      }),
     ];
-    state.machine.items = [{ system_id: "a", actions: ["commission"] }];
+    state.machine.items = [
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+    ];
     state.machine.selected = ["a"];
     const setSelectedAction = jest.fn();
     const store = mockStore(state);

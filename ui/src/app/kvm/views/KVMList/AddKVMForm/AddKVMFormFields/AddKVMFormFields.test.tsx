@@ -5,20 +5,33 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import AddKVMForm from "../AddKVMForm";
+import {
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  podState as podStateFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddKVMFormFields", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      general: {
-        powerTypes: {
+      }),
+      general: generalStateFactory({
+        powerTypes: powerTypesStateFactory({
           data: [
-            {
+            powerTypeFactory({
               driver_type: "pod",
               name: "lxd",
               description: "LXD (virtual systems)",
@@ -59,8 +72,8 @@ describe("AddKVMFormFields", () => {
                 memory: 2048,
                 storage: 8,
               },
-            },
-            {
+            }),
+            powerTypeFactory({
               name: "virsh",
               description: "Virsh (virtual systems)",
               fields: [
@@ -93,37 +106,27 @@ describe("AddKVMFormFields", () => {
                 },
               ],
               chassis: true,
-            },
+            }),
           ],
           loaded: true,
-        },
-      },
-      pod: {
+        }),
+      }),
+      pod: podStateFactory({
         items: [],
         loaded: true,
         loading: false,
         saved: false,
         saving: false,
-      },
-      resourcepool: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      resourcepool: resourcePoolStateFactory({
+        items: [resourcePoolFactory()],
         loaded: true,
-      },
-      zone: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      zone: zoneStateFactory({
+        items: [zoneFactory()],
         loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("does not show power type fields that are scoped to nodes", async () => {

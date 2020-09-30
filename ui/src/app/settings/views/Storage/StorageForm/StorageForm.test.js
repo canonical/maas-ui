@@ -4,15 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "./StorageForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("StorageForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -39,8 +43,8 @@ describe("StorageForm", () => {
             value: false,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("dispatches an action to update config on save button click", () => {

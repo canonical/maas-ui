@@ -6,44 +6,31 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import AddChassisForm from "../AddChassisForm";
+import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
+  generalState as generalStateFactory,
+  powerTypesState as powerTypesStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddChassisFormFields", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      domain: {
-        items: [
-          {
-            id: 0,
-            name: "maas",
-          },
-        ],
+    initialState = rootStateFactory({
+      domain: domainStateFactory({
+        items: [domainFactory({ name: "maas" })],
         loaded: true,
-      },
-      general: {
-        powerTypes: {
-          data: [
-            {
-              name: "manual",
-              description: "Manual",
-              fields: [],
-              can_probe: false,
-            },
-          ],
+      }),
+      general: generalStateFactory({
+        powerTypes: powerTypesStateFactory({
           loaded: true,
-        },
-      },
-      machine: {
-        errors: {},
-        saved: false,
-        saving: false,
-      },
-    };
+        }),
+      }),
+    });
   });
 
   it("can render", () => {

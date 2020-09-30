@@ -4,24 +4,29 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import VMsColumn from "./VMsColumn";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("VMsColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
+          podFactory({
             composed_machines_count: 10,
-            id: 1,
-            name: "pod-1",
             owners_count: 5,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays the pod's machine and owner counts", () => {

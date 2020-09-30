@@ -7,37 +7,40 @@ import React from "react";
 
 import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import OverrideTestForm from "./OverrideTestForm";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  scriptResultsState as scriptResultsStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("OverrideTestForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [
             { name: "override-failed-testing", sentence: "change those pools" },
           ],
         },
-      },
-      machine: {
-        errors: {},
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          { hostname: "host1", system_id: "abc123" },
-          { hostname: "host2", system_id: "def456" },
+          machineFactory({ hostname: "host1", system_id: "abc123" }),
+          machineFactory({ hostname: "host2", system_id: "def456" }),
         ],
-        selected: [],
         statuses: {
           abc123: { settingPool: false },
           def456: { settingPool: false },
         },
-      },
-      scriptresults: {
-        errors: {},
-        loading: false,
+      }),
+      scriptresults: scriptResultsStateFactory({
         loaded: true,
         items: {
           abc123: [
@@ -51,8 +54,8 @@ describe("OverrideTestForm", () => {
             },
           ],
         },
-      },
-    };
+      }),
+    });
   });
 
   it(`displays failed tests warning without suppress tests checkbox for a single

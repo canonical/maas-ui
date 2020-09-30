@@ -5,39 +5,38 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import PodConfiguration from "./PodConfiguration";
+import { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  tagState as tagStateFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
-
-import PodConfiguration from "./PodConfiguration";
 
 const mockStore = configureStore();
 
 describe("PodConfiguration", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
-    const pods = [podFactory({ id: 1, name: "pod1" })];
-    const podState = podStateFactory({ items: pods, loaded: true });
-    initialState = {
-      config: {
-        items: [],
-      },
-      pod: podState,
-      resourcepool: {
-        items: [],
+    initialState = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, name: "pod1" })],
         loaded: true,
-      },
-      tag: {
-        items: [],
+      }),
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
-      },
-      zone: {
-        items: [],
+      }),
+      tag: tagStateFactory({
         loaded: true,
-      },
-    };
+      }),
+      zone: zoneStateFactory({
+        loaded: true,
+      }),
+    });
   });
 
   it("fetches the necessary data on load", () => {
