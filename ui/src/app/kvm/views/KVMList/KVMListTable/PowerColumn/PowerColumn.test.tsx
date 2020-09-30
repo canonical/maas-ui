@@ -7,7 +7,6 @@ import PowerColumn from "./PowerColumn";
 import {
   machine as machineFactory,
   pod as podFactory,
-  podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import type { RootState } from "app/store/root/types";
@@ -18,22 +17,14 @@ describe("PowerColumn", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      pod: podStateFactory({
-        items: [
-          podFactory({
-            name: "pod-1",
-          }),
-        ],
-      }),
-    });
+    initialState = rootStateFactory();
   });
 
   it(`shows a spinner if machines/controllers are loading and pod's host is not
     yet in state`, () => {
     const state = { ...initialState };
     state.machine.loading = true;
-    state.pod.items[0].host = "abc123";
+    state.pod.items = [podFactory({ host: "abc123", id: 1, name: "pod-1" })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -50,7 +41,7 @@ describe("PowerColumn", () => {
     machine.power_state = "on";
     machine.system_id = "abc123";
     state.machine.items = [machine];
-    state.pod.items = [{ host: "abc123", id: 1, name: "pod-1" }];
+    state.pod.items = [podFactory({ host: "abc123", id: 1, name: "pod-1" })];
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -69,7 +60,7 @@ describe("PowerColumn", () => {
     machine.power_state = "on";
     machine.system_id = "abc123";
     state.machine.items = [machine];
-    state.pod.items = [{ host: "def456", id: 1, name: "pod-1" }];
+    state.pod.items = [podFactory({ host: "def456", id: 1, name: "pod-1" })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

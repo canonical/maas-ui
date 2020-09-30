@@ -9,7 +9,11 @@ import ActionFormWrapper from "./ActionFormWrapper";
 import { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
+  machine as machineFactory,
   machineState as machineStateFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   scriptsState as scriptsStateFactory,
   scripts as scriptsFactory,
@@ -23,15 +27,20 @@ describe("ActionFormWrapper", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
-          data: [{ name: "commission", sentence: "commission" }],
-        },
+        machineActions: machineActionsStateFactory({
+          data: [
+            machineActionFactory({
+              name: "commission",
+              sentence: "commission",
+            }),
+          ],
+        }),
       }),
       machine: machineStateFactory({
         errors: {},
         items: [],
         selected: [],
-        statuses: { a: {}, b: {} },
+        statuses: { a: machineStatusFactory(), b: machineStatusFactory() },
       }),
       scripts: scriptsStateFactory({
         errors: {},
@@ -71,8 +80,8 @@ describe("ActionFormWrapper", () => {
   action`, () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);
@@ -102,17 +111,17 @@ describe("ActionFormWrapper", () => {
     can perform selected action`, async () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     state.machine.statuses = {
-      a: {
+      a: machineStatusFactory({
         commissioning: true,
-      },
-      b: {
+      }),
+      b: machineStatusFactory({
         commissioning: true,
-      },
+      }),
     };
     const store = mockStore(state);
     const wrapper = mount(
@@ -144,8 +153,8 @@ describe("ActionFormWrapper", () => {
   it("can set selected machines to those that can perform action", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);

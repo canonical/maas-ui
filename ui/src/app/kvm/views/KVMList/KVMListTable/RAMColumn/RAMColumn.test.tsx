@@ -6,6 +6,7 @@ import React from "react";
 import RAMColumn from "./RAMColumn";
 import {
   pod as podFactory,
+  podHint as podHintFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -24,12 +25,12 @@ describe("RAMColumn", () => {
             id: 1,
             memory_over_commit_ratio: 1,
             name: "pod-1",
-            total: {
+            total: podHintFactory({
               memory: 8192,
-            },
-            used: {
+            }),
+            used: podHintFactory({
               memory: 2048,
-            },
+            }),
           }),
         ],
       }),

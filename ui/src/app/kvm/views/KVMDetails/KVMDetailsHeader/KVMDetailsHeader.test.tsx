@@ -50,7 +50,7 @@ describe("KVMDetailsHeader", () => {
 
   it("displays pod name in header strip when loaded", () => {
     const state = { ...initialState };
-    state.pod.items = [{ id: 1, name: "pod-name" }];
+    state.pod.items = [podFactory({ id: 1, name: "pod-name" })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -66,7 +66,7 @@ describe("KVMDetailsHeader", () => {
 
   it("can display composed machines count", () => {
     const state = { ...initialState };
-    state.pod.items = [{ id: 1, composed_machines_count: 5 }];
+    state.pod.items = [podFactory({ id: 1, composed_machines_count: 5 })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

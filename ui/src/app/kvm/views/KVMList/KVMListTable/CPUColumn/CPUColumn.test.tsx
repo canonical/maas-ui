@@ -6,6 +6,7 @@ import React from "react";
 import CPUColumn from "./CPUColumn";
 import {
   pod as podFactory,
+  podHint as podHintFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -24,12 +25,12 @@ describe("CPUColumn", () => {
             cpu_over_commit_ratio: 1,
             id: 1,
             name: "pod-1",
-            total: {
+            total: podHintFactory({
               cores: 8,
-            },
-            used: {
+            }),
+            used: podHintFactory({
               cores: 4,
-            },
+            }),
           }),
         ],
       }),

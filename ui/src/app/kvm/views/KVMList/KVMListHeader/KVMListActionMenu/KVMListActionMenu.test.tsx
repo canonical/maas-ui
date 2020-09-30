@@ -6,7 +6,10 @@ import React from "react";
 
 import KVMListActionMenu from "./KVMListActionMenu";
 import { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  pod as podFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -41,8 +44,8 @@ describe("KVMListActionMenu", () => {
   it("is enabled if at least one KVM is selected", () => {
     const state = { ...initialState };
     state.pod.items = [
-      { id: 1, name: "pod-1", type: "lxd" },
-      { id: 2, name: "pod-2", type: "virsh" },
+      podFactory({ id: 1, name: "pod-1", type: "lxd" }),
+      podFactory({ id: 2, name: "pod-2", type: "virsh" }),
     ];
     state.pod.selected = [1];
     const store = mockStore(state);
