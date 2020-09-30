@@ -6,6 +6,11 @@ import React from "react";
 
 import MachineList from "./MachineList";
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import {
+  generalState as generalStateFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -13,12 +18,10 @@ jest.useFakeTimers();
 
 describe("MachineList", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [],
           loaded: false,
@@ -29,14 +32,10 @@ describe("MachineList", () => {
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           },
-          errors: {},
           loaded: true,
-          loading: false,
         },
-      },
-      machine: {
-        errors: null,
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
           {
@@ -166,35 +165,8 @@ describe("MachineList", () => {
             zone: {},
           },
         ],
-        selected: [],
-      },
-      resourcepool: {
-        loaded: true,
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-          {
-            id: 1,
-            name: "Backup",
-          },
-        ],
-      },
-      zone: {
-        loaded: true,
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-          {
-            id: 1,
-            name: "Backup",
-          },
-        ],
-      },
-    };
+      }),
+    });
   });
 
   afterEach(() => {

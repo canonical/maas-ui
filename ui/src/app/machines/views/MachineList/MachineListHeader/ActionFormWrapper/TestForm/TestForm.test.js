@@ -6,32 +6,38 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import TestForm from "./TestForm";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  scriptsState as scriptsStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("TestForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [{ name: "test", sentence: "test" }],
         },
-      },
-      machine: {
-        errors: {},
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
-        selected: [],
+        items: [
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      scripts: {
-        errors: {},
-        loading: false,
+      }),
+      scripts: scriptsStateFactory({
         loaded: true,
         items: [
           {
@@ -59,8 +65,8 @@ describe("TestForm", () => {
             type: 2,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("correctly dispatches actions to test selected machines", () => {

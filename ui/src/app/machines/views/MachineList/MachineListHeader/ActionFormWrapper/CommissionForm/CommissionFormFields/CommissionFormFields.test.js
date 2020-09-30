@@ -6,30 +6,36 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import CommissionForm from "../CommissionForm";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  scriptsState as scriptsStateFactory,
+  scripts as scriptsFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("CommissionForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      machine: {
-        errors: {},
-        loading: false,
+    initialState = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
-        selected: [],
+        items: [
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      scripts: {
-        errors: {},
-        loading: false,
+      }),
+      scripts: scriptsStateFactory({
         loaded: true,
         items: [
-          {
+          scriptsFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -39,8 +45,8 @@ describe("CommissionForm", () => {
               },
             },
             type: 2,
-          },
-          {
+          }),
+          scriptsFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -52,10 +58,10 @@ describe("CommissionForm", () => {
               },
             },
             type: 2,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {

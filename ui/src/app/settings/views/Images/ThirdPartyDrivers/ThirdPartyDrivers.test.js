@@ -4,20 +4,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ThirdPartyDrivers from "./ThirdPartyDrivers";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ThirdPartyDrivers", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
-        items: [],
-      },
-      general: {},
-    };
+    initialState = rootStateFactory();
   });
 
   it("displays a spinner if config is loading", () => {

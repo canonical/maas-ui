@@ -6,30 +6,48 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import ActionFormWrapper from "./ActionFormWrapper";
+import { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineStatus as machineStatusFactory,
+  rootState as rootStateFactory,
+  scriptsState as scriptsStateFactory,
+  scripts as scriptsFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ActionFormWrapper", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
-        machineActions: {
-          data: [{ name: "commission", sentence: "commission" }],
-        },
-      },
-      machine: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
+        machineActions: machineActionsStateFactory({
+          data: [
+            machineActionFactory({
+              name: "commission",
+              sentence: "commission",
+            }),
+          ],
+        }),
+      }),
+      machine: machineStateFactory({
         errors: {},
         items: [],
         selected: [],
-        statuses: { a: {}, b: {} },
-      },
-      scripts: {
+        statuses: { a: machineStatusFactory(), b: machineStatusFactory() },
+      }),
+      scripts: scriptsStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          {
+          scriptsFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -39,8 +57,8 @@ describe("ActionFormWrapper", () => {
               },
             },
             type: 2,
-          },
-          {
+          }),
+          scriptsFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -52,18 +70,18 @@ describe("ActionFormWrapper", () => {
               },
             },
             type: 2,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it(`displays a warning if not all selected machines can perform selected
   action`, () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);
@@ -93,17 +111,17 @@ describe("ActionFormWrapper", () => {
     can perform selected action`, async () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     state.machine.statuses = {
-      a: {
+      a: machineStatusFactory({
         commissioning: true,
-      },
-      b: {
+      }),
+      b: machineStatusFactory({
         commissioning: true,
-      },
+      }),
     };
     const store = mockStore(state);
     const wrapper = mount(
@@ -135,8 +153,8 @@ describe("ActionFormWrapper", () => {
   it("can set selected machines to those that can perform action", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "a", actions: ["commission"] },
-      { system_id: "b", actions: [] },
+      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
     const store = mockStore(state);

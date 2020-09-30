@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "../StorageForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -12,9 +16,8 @@ describe("StorageFormFields", () => {
   let initialState;
 
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -29,8 +32,8 @@ describe("StorageFormFields", () => {
             ],
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a warning if blank storage layout chosen", async () => {

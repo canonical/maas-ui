@@ -5,27 +5,22 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import RepositoryAdd from "./RepositoryAdd";
+import {
+  packageRepositoryState as packageRepositoryStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("RepositoryAdd", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      packagerepository: {
-        loading: false,
+    initialState = rootStateFactory({
+      packagerepository: packageRepositoryStateFactory({
         loaded: true,
-        items: [],
-      },
-      general: {
-        componentsToDisable: {},
-        knownArchitectures: {},
-        pocketsToDisable: {},
-      },
-    };
+      }),
+    });
   });
 
   it("can display a repository add form with type ppa", () => {

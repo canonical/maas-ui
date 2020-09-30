@@ -6,20 +6,24 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import DeleteForm from "./DeleteForm";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DeleteForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          { id: 1, name: "pod-1", type: "lxd" },
-          { id: 2, name: "pod-2", type: "virsh" },
+          podFactory({ id: 1, name: "pod-1", type: "lxd" }),
+          podFactory({ id: 2, name: "pod-2", type: "virsh" }),
         ],
-        selected: [],
-        errors: {},
         statuses: {
           1: {
             deleting: false,
@@ -30,8 +34,8 @@ describe("DeleteForm", () => {
             refreshing: false,
           },
         },
-      },
-    };
+      }),
+    });
   });
 
   it("correctly dispatches actions to delete selected KVMs", () => {

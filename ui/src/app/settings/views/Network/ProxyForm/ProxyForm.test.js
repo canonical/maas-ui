@@ -4,17 +4,21 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
 
-import { reduceInitialState } from "testing/utils";
 import ProxyForm from "./ProxyForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { reduceInitialState } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("ProxyForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -30,8 +34,8 @@ describe("ProxyForm", () => {
             value: false,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

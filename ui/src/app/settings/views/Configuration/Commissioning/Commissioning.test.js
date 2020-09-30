@@ -4,16 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import Commissioning from "./Commissioning";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Commissioning", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "commissioning_distro_series",
@@ -26,7 +29,7 @@ describe("Commissioning", () => {
             choices: [],
           },
         ],
-      },
+      }),
       general: {
         osInfo: {
           loading: false,
@@ -34,7 +37,7 @@ describe("Commissioning", () => {
           data: {},
         },
       },
-    };
+    });
   });
 
   it("displays a spinner if config is loading", () => {

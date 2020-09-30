@@ -5,60 +5,30 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import RepositoryEdit from "./RepositoryEdit";
+import {
+  packageRepository as packageRepositoryFactory,
+  packageRepositoryState as packageRepositoryStateFactory,
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("RepositoryEdit", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      packagerepository: {
-        loading: false,
+    initialState = rootStateFactory({
+      general: generalStateFactory(),
+      packagerepository: packageRepositoryStateFactory({
         loaded: true,
         items: [
-          {
+          packageRepositoryFactory({
             id: 1,
-            created: "Fri, 23 Aug. 2019 09:17:44",
-            updated: "Fri, 23 Aug. 2019 09:17:44",
-            name: "main_archive",
-            url: "http://archive.ubuntu.com/ubuntu",
-            distributions: [],
-            disabled_pockets: ["security"],
-            disabled_components: ["universe", "restricted"],
-            disable_sources: true,
-            components: [],
-            arches: ["amd64", "i386"],
-            key: "",
-            default: true,
-            enabled: true,
-          },
-          {
-            id: 2,
-            created: "Fri, 23 Aug. 2019 09:17:44",
-            updated: "Fri, 23 Aug. 2019 09:17:44",
-            name: "ports_archive",
-            url: "http://ports.ubuntu.com/ubuntu-ports",
-            distributions: [],
-            disabled_pockets: [],
-            disabled_components: [],
-            disable_sources: true,
-            components: [],
-            arches: ["armhf", "arm64", "ppc64el", "s390x"],
-            key: "",
-            default: true,
-            enabled: true,
-          },
+          }),
         ],
-      },
-      general: {
-        componentsToDisable: {},
-        knownArchitectures: {},
-        pocketsToDisable: {},
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {

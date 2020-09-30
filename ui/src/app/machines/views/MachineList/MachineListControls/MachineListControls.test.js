@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineListControls, { DEBOUNCE_INTERVAL } from "./MachineListControls";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -13,16 +14,9 @@ jest.useFakeTimers();
 
 describe("MachineListControls", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      machine: {
-        errors: null,
-        loading: false,
-        loaded: true,
-        items: [],
-        selected: [],
-      },
-    };
+    initialState = rootStateFactory();
   });
 
   afterEach(() => {
