@@ -6,28 +6,33 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import FieldlessForm from "./FieldlessForm";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("FieldlessForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      machine: {
-        errors: {},
-        loading: false,
+    initialState = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
-          },
+          }),
         ],
         selected: [],
         statuses: {
           abc123: {},
         },
-      },
-      general: {
+      }),
+      general: generalStateFactory({
         machineActions: {
           data: [
             { name: "abort", sentence: "abort" },
@@ -43,8 +48,8 @@ describe("FieldlessForm", () => {
             { name: "unlock", sentence: "unlock" },
           ],
         },
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {

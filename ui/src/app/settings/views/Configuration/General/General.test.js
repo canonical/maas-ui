@@ -4,16 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import General from "./General";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("General", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "maas_name",
@@ -24,8 +27,8 @@ describe("General", () => {
             value: true,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

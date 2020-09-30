@@ -6,59 +6,39 @@ import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
 
 import RepositoryForm from "./RepositoryForm";
+import {
+  componentsToDisableState as componentsToDisableStateFactory,
+  knownArchitecturesState as knownArchitecturesStateFactory,
+  packageRepository as packageRepositoryFactory,
+  packageRepositoryState as packageRepositoryStateFactory,
+  pocketsToDisableState as pocketsToDisableStateFactory,
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("RepositoryForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
-        componentsToDisable: {
-          data: [],
+    initialState = rootStateFactory({
+      general: generalStateFactory({
+        componentsToDisable: componentsToDisableStateFactory({
           loaded: true,
-          loading: false,
-        },
-        knownArchitectures: {
-          data: [],
+        }),
+        knownArchitectures: knownArchitecturesStateFactory({
           loaded: true,
-          loading: false,
-        },
-        pocketsToDisable: {
-          data: [],
+        }),
+        pocketsToDisable: pocketsToDisableStateFactory({
           loaded: true,
-          loading: false,
-        },
-      },
-      packagerepository: {
-        errors: null,
-        loading: false,
+        }),
+      }),
+      packagerepository: packageRepositoryStateFactory({
         loaded: true,
-        saving: false,
-        saved: false,
-        items: [
-          {
-            id: 1,
-            created: "Fri, 23 Aug. 2019 09:17:44",
-            updated: "Fri, 23 Aug. 2019 09:17:44",
-            name: "main_archive",
-            url: "http://archive.ubuntu.com/ubuntu",
-            distributions: [],
-            disabled_pockets: ["security"],
-            disabled_components: ["universe", "restricted"],
-            disable_sources: true,
-            components: [],
-            arches: ["amd64", "i386"],
-            key: "",
-            default: true,
-            enabled: true,
-          },
-        ],
-      },
-    };
+        items: [packageRepositoryFactory()],
+      }),
+    });
   });
 
   it(`dispatches actions to fetch repos, components to disable,

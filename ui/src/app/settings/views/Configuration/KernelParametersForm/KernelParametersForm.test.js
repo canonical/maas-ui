@@ -4,24 +4,27 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import KernelParametersForm from "./KernelParametersForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KernelParametersForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "kernel_opts",
             value: "foo",
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("sets kernel_opts value", () => {

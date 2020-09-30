@@ -6,51 +6,53 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import RepositoriesList from "./RepositoriesList";
+import {
+  packageRepository as packageRepositoryFactory,
+  packageRepositoryState as packageRepositoryStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("RepositoriesList", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      packagerepository: {
-        loading: false,
+    initialState = rootStateFactory({
+      packagerepository: packageRepositoryStateFactory({
         loaded: true,
         items: [
-          {
+          packageRepositoryFactory({
             id: 1,
             name: "main_archive",
             url: "http://archive.ubuntu.com/ubuntu",
             default: true,
             enabled: true,
-          },
-          {
+          }),
+          packageRepositoryFactory({
             id: 2,
             name: "ports_archive",
             url: "http://ports.ubuntu.com/ubuntu-ports",
             default: true,
             enabled: true,
-          },
-          {
+          }),
+          packageRepositoryFactory({
             id: 3,
             name: "extra_archive",
             url: "http://maas.io",
             default: false,
             enabled: true,
-          },
-          {
+          }),
+          packageRepositoryFactory({
             id: 4,
             name: "secret_archive",
             url: "http://www.website.com",
             default: false,
             enabled: false,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {

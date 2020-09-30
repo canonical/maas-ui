@@ -5,31 +5,34 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import TagForm from "../TagForm";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("TagFormFields", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      machine: {
+    initialState = rootStateFactory({
+      machine: machineStateFactory({
         errors: {},
         loading: false,
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
+        items: [
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
         selected: [],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      tag: {
-        errors: {},
-        loading: false,
-        loaded: true,
-        items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("fetches tags on mount", () => {

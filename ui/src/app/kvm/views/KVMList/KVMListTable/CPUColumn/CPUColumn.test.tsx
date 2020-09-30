@@ -4,16 +4,23 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import CPUColumn from "./CPUColumn";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("CPUColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
+          podFactory({
             cpu_over_commit_ratio: 1,
             id: 1,
             name: "pod-1",
@@ -23,10 +30,10 @@ describe("CPUColumn", () => {
             used: {
               cores: 4,
             },
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can display correct cpu core information without overcommit", () => {

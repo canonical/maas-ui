@@ -4,15 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import DnsForm from "./DnsForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DnsForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -30,8 +34,8 @@ describe("DnsForm", () => {
           { name: "dns_trusted_acl", value: "" },
           { name: "upstream_dns", value: "" },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

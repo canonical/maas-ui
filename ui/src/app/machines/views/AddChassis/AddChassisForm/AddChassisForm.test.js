@@ -6,27 +6,31 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import AddChassisForm from "./AddChassisForm";
+import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
+  generalState as generalStateFactory,
+  powerTypesState as powerTypesStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddChassisForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      domain: {
+    initialState = rootStateFactory({
+      domain: domainStateFactory({
         items: [
-          {
-            id: 0,
+          domainFactory({
             name: "maas",
-          },
+          }),
         ],
         loaded: true,
-      },
-      general: {
-        powerTypes: {
+      }),
+      general: generalStateFactory({
+        powerTypes: powerTypesStateFactory({
           data: [
             {
               name: "manual",
@@ -125,14 +129,9 @@ describe("AddChassisForm", () => {
             },
           ],
           loaded: true,
-        },
-      },
-      machine: {
-        errors: {},
-        saved: false,
-        saving: false,
-      },
-    };
+        }),
+      }),
+    });
   });
 
   it("fetches the necessary data on load if not already loaded", () => {

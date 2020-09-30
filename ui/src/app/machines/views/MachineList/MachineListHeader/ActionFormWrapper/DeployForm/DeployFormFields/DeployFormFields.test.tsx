@@ -6,15 +6,27 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import DeployForm from "../DeployForm";
-import type { TSFixMe } from "app/base/types";
+import { RootState } from "app/store/root/types";
+import {
+  authState as authStateFactory,
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {
-  let initialState: TSFixMe;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "default_osystem",
@@ -28,8 +40,8 @@ describe("DeployFormFields", () => {
         errors: {},
         loaded: true,
         loading: false,
-      },
-      general: {
+      }),
+      general: generalStateFactory({
         defaultMinHweKernel: {
           data: "",
           errors: {},
@@ -74,29 +86,27 @@ describe("DeployFormFields", () => {
           loaded: true,
           loading: false,
         },
-      },
-      machine: {
-        errors: {},
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
-          },
-          {
+          }),
+          machineFactory({
             system_id: "def456",
-          },
+          }),
         ],
         selected: [],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
-      },
-      user: {
-        auth: {
+      }),
+      user: userStateFactory({
+        auth: authStateFactory({
           saved: false,
-          user: {
+          user: userFactory({
             email: "test@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -104,16 +114,11 @@ describe("DeployFormFields", () => {
             last_name: "",
             sshkeys_count: 1,
             username: "admin",
-          },
-        },
-        errors: {},
-        items: [],
+          }),
+        }),
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-    };
+      }),
+    });
   });
 
   it("correctly sets operating system to default", () => {

@@ -5,26 +5,28 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineListActionMenu from "./MachineListActionMenu";
+import { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineListActionMenu", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [],
           errors: {},
           loaded: true,
           loading: false,
         },
-      },
-      machine: {
-        items: [],
-        selected: [],
-      },
-    };
+      }),
+    });
   });
 
   it("is disabled if no are machines selected", () => {

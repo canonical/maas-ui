@@ -6,30 +6,39 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import ActionFormWrapper from "./ActionFormWrapper";
+import { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  scriptsState as scriptsStateFactory,
+  scripts as scriptsFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ActionFormWrapper", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [{ name: "commission", sentence: "commission" }],
         },
-      },
-      machine: {
+      }),
+      machine: machineStateFactory({
         errors: {},
         items: [],
         selected: [],
         statuses: { a: {}, b: {} },
-      },
-      scripts: {
+      }),
+      scripts: scriptsStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          {
+          scriptsFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -39,8 +48,8 @@ describe("ActionFormWrapper", () => {
               },
             },
             type: 2,
-          },
-          {
+          }),
+          scriptsFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -52,10 +61,10 @@ describe("ActionFormWrapper", () => {
               },
             },
             type: 2,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it(`displays a warning if not all selected machines can perform selected

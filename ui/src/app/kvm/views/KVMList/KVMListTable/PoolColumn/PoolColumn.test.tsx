@@ -4,40 +4,50 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import PoolColumn from "./PoolColumn";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("PoolColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
-            id: 1,
+          podFactory({
             name: "pod-1",
             pool: 1,
             zone: 1,
-          },
+          }),
         ],
-      },
-      resourcepool: {
+      }),
+      resourcepool: resourcePoolStateFactory({
         items: [
-          {
+          resourcePoolFactory({
             id: 1,
             name: "swimming-pool",
-          },
+          }),
         ],
-      },
-      zone: {
+      }),
+      zone: zoneStateFactory({
         items: [
-          {
+          zoneFactory({
             id: 1,
             name: "alone-zone",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can display the pod's resource pool and zone", () => {

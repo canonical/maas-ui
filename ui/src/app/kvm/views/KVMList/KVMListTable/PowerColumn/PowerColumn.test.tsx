@@ -3,36 +3,30 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { machine as machineFactory } from "testing/factories";
 import PowerColumn from "./PowerColumn";
+import {
+  machine as machineFactory,
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("PowerColumn", () => {
-  let initialState;
-  const machine = machineFactory();
+  let initialState: RootState;
 
   beforeEach(() => {
-    initialState = {
-      controller: {
-        loaded: true,
-        loading: false,
-        items: [],
-      },
-      machine: {
-        loaded: true,
-        loading: false,
-        items: [],
-      },
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
-            id: 1,
+          podFactory({
             name: "pod-1",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it(`shows a spinner if machines/controllers are loading and pod's host is not
@@ -52,6 +46,7 @@ describe("PowerColumn", () => {
 
   it("can display the pod's host power information", () => {
     const state = { ...initialState };
+    const machine = machineFactory();
     machine.power_state = "on";
     machine.system_id = "abc123";
     state.machine.items = [machine];
@@ -70,6 +65,7 @@ describe("PowerColumn", () => {
 
   it("displays 'Unknown' if pod's host cannot be found", () => {
     const state = { ...initialState };
+    const machine = machineFactory();
     machine.power_state = "on";
     machine.system_id = "abc123";
     state.machine.items = [machine];

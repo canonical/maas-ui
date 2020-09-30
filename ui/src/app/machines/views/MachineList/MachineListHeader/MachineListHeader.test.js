@@ -6,17 +6,25 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import MachineListHeader from "./MachineListHeader";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineListHeader", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         osInfo: {
           data: {
             osystems: [["ubuntu", "Ubuntu"]],
@@ -28,7 +36,6 @@ describe("MachineListHeader", () => {
         },
         machineActions: {
           data: [],
-          errors: {},
           loaded: true,
           loading: false,
         },
@@ -37,42 +44,31 @@ describe("MachineListHeader", () => {
             rsd: false,
           },
         },
-      },
-      messages: {
-        items: [],
-      },
-      machine: {
-        errors: {},
+      }),
+      machine: machineStateFactory({
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
-        selected: [],
+        items: [
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      resourcepool: {
+      }),
+      resourcepool: resourcePoolStateFactory({
         errors: {},
         loaded: false,
         items: [
-          { id: 0, name: "default" },
-          { id: 1, name: "other" },
+          resourcePoolFactory({ id: 0, name: "default" }),
+          resourcePoolFactory({ id: 1, name: "other" }),
         ],
-      },
-      zone: {
+      }),
+      zone: zoneStateFactory({
         loaded: true,
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-          {
-            id: 1,
-            name: "Backup",
-          },
-        ],
-      },
-    };
+        items: [zoneFactory()],
+      }),
+    });
   });
 
   it("displays a loader if machines have not loaded", () => {

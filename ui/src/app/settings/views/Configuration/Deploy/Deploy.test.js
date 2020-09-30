@@ -4,20 +4,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import Deploy from "./Deploy";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Deploy", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
-        osInfo: {},
-      },
-    };
+    initialState = rootStateFactory();
   });
 
   it("loads", () => {

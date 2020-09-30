@@ -5,35 +5,32 @@ import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import KVMDetails from "./KVMDetails";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMDetails", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      messages: {
-        items: [],
-      },
-      notification: {
-        items: [],
-      },
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          {
+          podFactory({
             id: 1,
             name: "pod-1",
             composed_machines_count: 10,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("redirects to KVM list if pods have loaded but pod is not in state", () => {

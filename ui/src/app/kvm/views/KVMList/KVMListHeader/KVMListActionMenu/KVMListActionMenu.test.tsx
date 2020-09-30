@@ -5,18 +5,16 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import KVMListActionMenu from "./KVMListActionMenu";
+import { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMListActionMenu", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
-        items: [],
-        selected: [],
-      },
-    };
+    initialState = rootStateFactory();
   });
 
   it("is disabled with tooltip if no KVMs are selected", () => {

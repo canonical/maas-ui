@@ -4,16 +4,23 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import RAMColumn from "./RAMColumn";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("RAMColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         items: [
-          {
+          podFactory({
             id: 1,
             memory_over_commit_ratio: 1,
             name: "pod-1",
@@ -23,10 +30,10 @@ describe("RAMColumn", () => {
             used: {
               memory: 2048,
             },
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can display correct RAM information without overcommit", () => {

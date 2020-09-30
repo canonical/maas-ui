@@ -4,15 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("SyslogForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -20,8 +24,8 @@ describe("SyslogForm", () => {
             value: "",
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

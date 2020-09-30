@@ -7,6 +7,10 @@ import configureStore from "redux-mock-store";
 
 import ScriptsUpload from "./ScriptsUpload";
 import readScript from "./readScript";
+import {
+  scriptsState as scriptsStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -24,18 +28,13 @@ const createFile = (name, size, type, contents = "") => {
 
 describe("ScriptsUpload", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      scripts: {
-        loading: false,
+    initialState = rootStateFactory({
+      scripts: scriptsStateFactory({
         loaded: true,
-        errors: {},
-        items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("accepts files of text mimetype", async () => {

@@ -5,49 +5,31 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import Pools from "./Pools";
+import {
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Pools", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    initialState = rootStateFactory({
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
-        items: [],
-      },
-      resourcepool: {
-        errors: {},
-        loaded: true,
-        items: [
-          {
-            id: 0,
-            name: "default",
-            description: "default",
-            is_default: true,
-            permissions: [],
-          },
-          {
-            id: 1,
-            name: "Backup",
-            description: "A backup pool",
-            is_default: false,
-            permissions: [],
-          },
-        ],
-      },
-    };
+        items: [resourcePoolFactory({ name: "default" })],
+      }),
+    });
   });
 
   it("displays a loading component if pools are loading", () => {
     const state = { ...initialState };
     state.resourcepool.loading = true;
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
@@ -55,21 +37,15 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
   it("disables the edit button without permissions", () => {
     const state = { ...initialState };
+    state.resourcepool.items = [resourcePoolFactory({ permissions: [] })];
     const store = mockStore(state);
-    state.resourcepool.items = [
-      {
-        id: 0,
-        name: "default",
-        description: "default",
-        is_default: true,
-        permissions: [],
-      },
-    ];
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
@@ -77,21 +53,15 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Button").first().props().disabled).toBe(true);
   });
 
   it("enables the edit button with correct permissions", () => {
     const state = { ...initialState };
+    state.resourcepool.items = [resourcePoolFactory({ permissions: ["edit"] })];
     const store = mockStore(state);
-    state.resourcepool.items = [
-      {
-        id: 0,
-        name: "default",
-        description: "default",
-        is_default: true,
-        permissions: ["edit"],
-      },
-    ];
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
@@ -99,6 +69,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Button").first().props().disabled).toBe(false);
   });
 
@@ -122,6 +93,7 @@ describe("Pools", () => {
         </MemoryRouter>
       </Provider>
     );
+
     let row = wrapper.find("MainTable").prop("rows")[0];
     expect(row.expanded).toBe(false);
     // Click on the delete button:

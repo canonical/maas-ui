@@ -4,11 +4,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import PodConfiguration from "../PodConfiguration";
 import {
   pod as podFactory,
   podState as podStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  tagState as tagStateFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
-import PodConfiguration from "../PodConfiguration";
 
 const mockStore = configureStore();
 
@@ -16,25 +20,18 @@ describe("PodConfigurationFields", () => {
   let initialState;
 
   beforeEach(() => {
-    const podState = podStateFactory({ items: [], loaded: true });
-    initialState = {
-      config: {
-        items: [],
-      },
-      pod: podState,
-      resourcepool: {
-        items: [],
+    initialState = rootStateFactory({
+      pod: podStateFactory({ items: [], loaded: true }),
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
-      },
-      tag: {
-        items: [],
+      }),
+      tag: tagStateFactory({
         loaded: true,
-      },
-      zone: {
-        items: [],
+      }),
+      zone: zoneStateFactory({
         loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("correctly sets initial values for virsh pods", () => {
