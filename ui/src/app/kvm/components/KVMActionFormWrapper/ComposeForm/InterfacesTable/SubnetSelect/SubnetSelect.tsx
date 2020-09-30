@@ -1,6 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { ContextualMenu } from "@canonical/react-components";
 import { useParams } from "react-router";
+import { useSelector } from "react-redux";
+import React from "react";
+import type { MouseEventHandler } from "react";
 
 import type { InterfaceField } from "../../ComposeForm";
 import type { Fabric } from "app/store/fabric/types";
@@ -16,7 +18,6 @@ import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
 import { groupAsMap } from "app/utils";
 import { getPxeIconClass } from "../InterfacesTable";
-import ContextualMenu from "app/base/components/ContextualMenu";
 
 type Props = {
   iface: InterfaceField;
@@ -28,7 +29,7 @@ export type MenuLink =
   | {
       children: JSX.Element;
       className: string;
-      onClick: Props["selectSubnet"];
+      onClick: MouseEventHandler;
     };
 
 /**
@@ -51,7 +52,7 @@ const filterSubnetsBySpace = (subnets: Subnet[], space: Space): Subnet[] => {
  * @param {Fabric[]} fabrics - Fabrics in state.
  * @param {PodDetails} pod - Pod used to determine PXE state.
  * @param {Function} selectSubnet - Function to run on link click.
- * @returns {MenuLink[]} Subnet links for select dropdown.
+ * @returns Subnet links for select dropdown.
  */
 const generateLinks = (
   subnets: Subnet[],

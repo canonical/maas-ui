@@ -1,4 +1,10 @@
-import { Accordion, Button, List, Spinner } from "@canonical/react-components";
+import {
+  Accordion,
+  Button,
+  ContextualMenu,
+  List,
+  Spinner,
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -12,7 +18,6 @@ import {
 } from "app/machines/search";
 import { getMachineValue, formatSpeedUnits } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
-import ContextualMenu from "app/base/components/ContextualMenu";
 
 const filterOrder = [
   "status",
@@ -157,24 +162,23 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
     <ContextualMenu
       className="filter-accordion"
       constrainPanelWidth
-      dropdownContent={
-        machinesLoaded ? (
-          <Accordion
-            className="filter-accordion__dropdown"
-            expanded={expandedSection}
-            externallyControlled
-            onExpandedChange={setExpandedSection}
-            sections={sections}
-          />
-        ) : (
-          <Spinner text="Loading..." />
-        )
-      }
       hasToggleIcon
       position="left"
       toggleClassName="filter-accordion__toggle"
       toggleLabel="Filters"
-    />
+    >
+      {machinesLoaded ? (
+        <Accordion
+          className="filter-accordion__dropdown"
+          expanded={expandedSection}
+          externallyControlled
+          onExpandedChange={setExpandedSection}
+          sections={sections}
+        />
+      ) : (
+        <Spinner text="Loading..." />
+      )}
+    </ContextualMenu>
   );
 };
 

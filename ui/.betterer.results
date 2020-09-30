@@ -140,15 +140,15 @@ exports[`stricter compilation`] = {
       [135, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
       [154, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.tsx:52017625": [
-      [73, 47, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
-      [144, 8, 71, "Argument of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => false | 1 | -1\' is not assignable to parameter of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => number\'.\\n  Type \'number | boolean\' is not assignable to type \'number\'.\\n    Type \'boolean\' is not assignable to type \'number\'.", "998825862"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.tsx:3897379124": [
+      [74, 47, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
+      [145, 8, 71, "Argument of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => false | 1 | -1\' is not assignable to parameter of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => number\'.\\n  Type \'number | boolean\' is not assignable to type \'number\'.\\n    Type \'boolean\' is not assignable to type \'number\'.", "998825862"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.test.tsx:2575738810": [
       [104, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [199, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.tsx:169625597": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.tsx:3572166510": [
       [59, 27, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [60, 30, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [63, 41, 4, "Object is possibly \'undefined\'.", "2088098233"],
@@ -173,9 +173,9 @@ exports[`stricter compilation`] = {
       [223, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [234, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:4197161610": [
-      [138, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
-      [192, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:2726615451": [
+      [137, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
+      [191, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
     ],
     "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:3808680172": [
       [17, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -394,13 +394,13 @@ exports[`stricter compilation`] = {
       [252, 11, 5, "Object is of type \'unknown\'.", "173192470"],
       [256, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.tsx:2770138234": [
-      [35, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
-      [36, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
-      [51, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
-      [52, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
-      [76, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"],
-      [87, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4020685210"]
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListActionMenu/MachineListActionMenu.tsx:2025862623": [
+      [34, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
+      [35, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
+      [50, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
+      [51, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
+      [75, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"],
+      [86, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4020685210"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:3604363126": [
       [75, 24, 4, "Argument of type \'null\' is not assignable to parameter of type \'MachineAction\'.", "2087897566"],
@@ -690,5 +690,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `493`
+  value: `487`
 };
