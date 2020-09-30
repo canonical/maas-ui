@@ -88,45 +88,7 @@ exports[`PoolColumn renders 1`] = `
               ]
             }
             onToggleMenu={[Function]}
-            positionNode={
-              Object {
-                "current": <div
-                  aria-label="Pool"
-                  class="p-double-row__primary-row"
-                >
-                  <div
-                    class="p-double-row__primary-row-text u-truncate"
-                    title="default"
-                  >
-                    <span
-                      data-test="pool"
-                    >
-                      <a
-                        class="p-link--soft"
-                        href="/pools"
-                      >
-                        default
-                      </a>
-                    </span>
-                  </div>
-                  <span
-                    class="p-table-menu p-contextual-menu--left"
-                  >
-                    <button
-                      aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                      type="button"
-                    >
-                      <i
-                        class="p-icon--contextual-menu p-contextual-menu__indicator"
-                      />
-                    </button>
-                  </span>
-                </div>,
-              }
-            }
+            positionNode={null}
             title="Change pool:"
           >
             <ContextualMenu
@@ -143,50 +105,17 @@ exports[`PoolColumn renders 1`] = `
               }
               onToggleMenu={[Function]}
               position="left"
-              positionNode={
-                Object {
-                  "current": <div
-                    aria-label="Pool"
-                    class="p-double-row__primary-row"
-                  >
-                    <div
-                      class="p-double-row__primary-row-text u-truncate"
-                      title="default"
-                    >
-                      <span
-                        data-test="pool"
-                      >
-                        <a
-                          class="p-link--soft"
-                          href="/pools"
-                        >
-                          default
-                        </a>
-                      </span>
-                    </div>
-                    <span
-                      class="p-table-menu p-contextual-menu--left"
-                    >
-                      <button
-                        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                        class="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                        type="button"
-                      >
-                        <i
-                          class="p-icon--contextual-menu p-contextual-menu__indicator"
-                        />
-                      </button>
-                    </span>
-                  </div>,
-                }
-              }
+              positionNode={null}
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
             >
               <span
-                className="p-table-menu p-contextual-menu--left"
+                className="p-table-menu p-contextual-menu p-contextual-menu--left"
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
               >
                 <Button
                   appearance="base"

@@ -13,14 +13,16 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
     .kvm-subnet-select__dropdown {
       max-width: none;
       min-width: 0;
-      width: calc(#{$ratio-multiplier} * (#{$padding-multiplier}) + #{$pxe-col-compensation});
+      width: calc(
+        #{$ratio-multiplier} * (#{$padding-multiplier}) + #{$pxe-col-compensation}
+      ) !important;
 
       @media only screen and (max-width: $breakpoint-medium) {
         width: auto;
       }
     }
 
-    .kvm-subnet-select__toggle {
+    .kvm-subnet-select__toggle.has-icon {
       align-items: center;
       display: flex;
       justify-content: space-between;
@@ -50,7 +52,9 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
 
         // Subnet
         &:nth-child(1) {
-          width: calc(#{percentage($subnet-col-ratio / $ratio-total)} - #{2 * $sph-inner--small});
+          width: calc(
+            #{percentage($subnet-col-ratio / $ratio-total)} - #{2 * $sph-inner--small}
+          );
         }
 
         // Fabric

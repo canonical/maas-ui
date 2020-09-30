@@ -10,3 +10,7 @@ jest.mock("@reduxjs/toolkit", () => {
     nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
   };
 });
+
+jest.mock("uuid/v4", () => {
+  return jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ");
+});

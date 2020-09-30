@@ -62,7 +62,7 @@ const DoubleRow = ({
               links={menuLinks}
               title={menuTitle}
               onToggleMenu={onToggleMenu}
-              positionNode={parent}
+              positionNode={parent.current}
             />
           ) : null}
         </div>
