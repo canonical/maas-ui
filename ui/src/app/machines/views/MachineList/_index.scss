@@ -3,6 +3,10 @@
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
   $grouped-machines-indentation: $box-size + $sph-inner - $checkbox-offset; // Checkbox + label - offset
 
+  .machine-list {
+    margin-bottom: 0;
+  }
+
   .machine-list--grouped .machine-list__machine {
     border: 0;
     position: relative;

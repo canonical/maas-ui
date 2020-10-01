@@ -1,11 +1,4 @@
-import {
-  Button,
-  Col,
-  Input,
-  MainTable,
-  Row,
-  Strip,
-} from "@canonical/react-components";
+import { Button, Input, MainTable, Strip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import classNames from "classnames";
@@ -753,40 +746,38 @@ export const MachineListTable = ({
   ];
 
   return (
-    <Row>
-      <Col size={12}>
-        <MainTable
-          className={classNames("p-table-expanding--light", "machine-list", {
-            "machine-list--grouped": grouping !== "none",
-          })}
-          headers={filterColumns(headers, hiddenColumns, showActions)}
-          paginate={paginateLimit}
-          rows={
-            grouping === "none"
-              ? generateRows({
-                  machines,
-                  selectedIDs,
-                  hiddenColumns,
-                  ...rowProps,
-                })
-              : generateGroupRows({
-                  groups,
-                  handleGroupCheckbox,
-                  hiddenGroups,
-                  selectedIDs,
-                  setHiddenGroups,
-                  hiddenColumns,
-                  ...rowProps,
-                })
-          }
-        />
-        {filter && machines.length === 0 ? (
-          <Strip rowClassName="u-align--center">
-            <span>No machines match the search criteria.</span>
-          </Strip>
-        ) : null}
-      </Col>
-    </Row>
+    <>
+      <MainTable
+        className={classNames("p-table-expanding--light", "machine-list", {
+          "machine-list--grouped": grouping !== "none",
+        })}
+        headers={filterColumns(headers, hiddenColumns, showActions)}
+        paginate={paginateLimit}
+        rows={
+          grouping === "none"
+            ? generateRows({
+                machines,
+                selectedIDs,
+                hiddenColumns,
+                ...rowProps,
+              })
+            : generateGroupRows({
+                groups,
+                handleGroupCheckbox,
+                hiddenGroups,
+                selectedIDs,
+                setHiddenGroups,
+                hiddenColumns,
+                ...rowProps,
+              })
+        }
+      />
+      {filter && machines.length === 0 ? (
+        <Strip rowClassName="u-align--center">
+          <span>No machines match the search criteria.</span>
+        </Strip>
+      ) : null}
+    </>
   );
 };
 

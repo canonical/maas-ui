@@ -38,6 +38,12 @@
     flex-direction: column;
   }
 
+  .u-flex--column-x-small {
+    @media only screen and (max-width: $breakpoint-x-small) {
+      flex-direction: column;
+    }
+  }
+
   .u-flex--wrap {
     display: flex;
     flex-wrap: wrap;

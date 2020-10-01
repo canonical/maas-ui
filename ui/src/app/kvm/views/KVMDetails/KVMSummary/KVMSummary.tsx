@@ -50,9 +50,9 @@ const KVMSummary = (): JSX.Element => {
           </Code>
         </div>
         <hr className="u-sv1" />
-        <div className="u-flex--between">
+        <div className="u-flex--between u-flex--column-x-small">
           <h4 className="u-sv1">Resources</h4>
-          {pod.numa_pinning && (
+          {pod.numa_pinning && pod.numa_pinning.length >= 1 && (
             <Switch
               checked={viewByNuma}
               className="p-switch--inline-label"
