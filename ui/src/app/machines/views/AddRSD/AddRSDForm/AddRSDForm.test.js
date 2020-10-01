@@ -6,42 +6,30 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import AddRSDForm from "./AddRSDForm";
+import {
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddRSDForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      pod: {
-        items: [],
+    initialState = rootStateFactory({
+      resourcepool: resourcePoolStateFactory({
+        items: [resourcePoolFactory()],
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-      resourcepool: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      zone: zoneStateFactory({
+        items: [zoneFactory()],
         loaded: true,
-      },
-      zone: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
-        loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("fetches the necessary data on load", () => {

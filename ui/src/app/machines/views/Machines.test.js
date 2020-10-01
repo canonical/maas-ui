@@ -5,48 +5,24 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { nodeStatus, scriptStatus } from "app/base/enum";
-import { routerState as routerStateFactory } from "testing/factories";
 import Machines from "./Machines";
+import { nodeStatus, scriptStatus } from "app/base/enum";
+import {
+  generalState as generalStateFactory,
+  machineState as machineStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  routerState as routerStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Machines", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      domain: {
-        items: [],
-      },
-      general: {
-        architectures: {
-          data: [],
-          loaded: false,
-          loading: false,
-        },
-        defaultMinHweKernel: {
-          data: "",
-          loaded: false,
-          loading: false,
-        },
-        hweKernels: {
-          data: [],
-          loaded: false,
-          loading: false,
-        },
-        machineActions: {
-          data: [],
-          loaded: false,
-          loading: false,
-        },
-        navigationOptions: {
-          data: {},
-          loaded: false,
-          loading: false,
-        },
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         osInfo: {
           data: {
             osystems: [["ubuntu", "Ubuntu"]],
@@ -56,23 +32,13 @@ describe("Machines", () => {
           loaded: true,
           loading: false,
         },
-        powerTypes: {
-          data: [],
-          loaded: false,
-          loading: false,
-        },
         version: {
           data: "2.8.0",
           loaded: true,
           loading: false,
         },
-      },
-      messages: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
           {
@@ -111,6 +77,7 @@ describe("Machines", () => {
             storage_test_status: {
               status: scriptStatus.PASSED,
             },
+
             testing_status: {
               status: scriptStatus.PASSED,
             },
@@ -160,17 +127,12 @@ describe("Machines", () => {
             zone: {},
           },
         ],
-        selected: [],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      notification: {
-        items: [],
-      },
-      resourcepool: {
-        errors: {},
+      }),
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [
           {
@@ -188,12 +150,9 @@ describe("Machines", () => {
             permissions: [],
           },
         ],
-      },
+      }),
       router: routerStateFactory(),
-      zone: {
-        items: [],
-      },
-    };
+    });
   });
 
   it("correctly routes to machine list", () => {

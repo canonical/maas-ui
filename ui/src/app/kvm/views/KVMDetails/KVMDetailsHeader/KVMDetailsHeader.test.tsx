@@ -5,26 +5,33 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
+import {
+  pod as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("KVMDetailsHeader", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
+    initialState = rootStateFactory({
+      pod: podStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          {
+          podFactory({
             id: 1,
             name: "pod-1",
             composed_machines_count: 10,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if pods are loading", () => {
@@ -43,7 +50,7 @@ describe("KVMDetailsHeader", () => {
 
   it("displays pod name in header strip when loaded", () => {
     const state = { ...initialState };
-    state.pod.items = [{ id: 1, name: "pod-name" }];
+    state.pod.items = [podFactory({ id: 1, name: "pod-name" })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -59,7 +66,7 @@ describe("KVMDetailsHeader", () => {
 
   it("can display composed machines count", () => {
     const state = { ...initialState };
-    state.pod.items = [{ id: 1, composed_machines_count: 5 }];
+    state.pod.items = [podFactory({ id: 1, composed_machines_count: 5 })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import React from "react";
 
+import KVMListTable from "./KVMListTable";
+import { nodeStatus } from "app/base/enum";
 import {
   controllerState as controllerStateFactory,
   generalState as generalStateFactory,
@@ -19,13 +21,13 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { nodeStatus } from "app/base/enum";
-import KVMListTable from "./KVMListTable";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("KVMListTable", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
     const pods = [
       podFactory({ pool: 1, zone: 1 }),

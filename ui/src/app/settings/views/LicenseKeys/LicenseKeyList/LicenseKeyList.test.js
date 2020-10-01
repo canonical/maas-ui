@@ -5,20 +5,23 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LicenseKeyList from ".";
+import {
+  generalState as generalStateFactory,
+  licenseKeys as licenseKeysFactory,
+  licenseKeysState as licenseKeysStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("LicenseKeyList", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [],
-      },
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         osInfo: {
           loaded: true,
-          loading: false,
           data: {
             osystems: [
               ["ubuntu", "Ubuntu"],
@@ -30,25 +33,12 @@ describe("LicenseKeyList", () => {
             ],
           },
         },
-      },
-      licensekeys: {
-        loading: false,
+      }),
+      licensekeys: licenseKeysStateFactory({
         loaded: true,
-        errors: {},
-        items: [
-          {
-            osystem: "windows",
-            distro_series: "win2012",
-            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
-          },
-          {
-            osystem: "windows",
-            distro_series: "win2019",
-            license_key: "XXXXX-XXXXX-XXXXX-XXXXX-AAABBB",
-          },
-        ],
-      },
-    };
+        items: [licenseKeysFactory()],
+      }),
+    });
   });
 
   it("dispatches action to fetch license keys on load", () => {

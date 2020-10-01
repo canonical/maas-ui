@@ -4,24 +4,27 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ThirdPartyDriversForm from "./ThirdPartyDriversForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ThirdPartyDriversForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "enable_third_party_drivers",
             value: true,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {

@@ -1,6 +1,5 @@
+import { ContextualMenu } from "@canonical/react-components";
 import React from "react";
-
-import ContextualMenu from "app/base/components/ContextualMenu";
 
 type Props = { setSelectedAction: (action: string | null) => void };
 

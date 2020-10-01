@@ -4,16 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import VMWareForm from "./VMWareForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("VMWareForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
-        loaded: true,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "vcenter_server",
@@ -32,8 +35,8 @@ describe("VMWareForm", () => {
             value: "my datacenter",
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {

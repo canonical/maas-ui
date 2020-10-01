@@ -25,5 +25,11 @@ const reactLifecycles = singleSpaReact({
 });
 
 export const { bootstrap } = reactLifecycles;
-export const { mount } = reactLifecycles;
+export const mount = (props) => {
+  // When the app is mounted there needs to be a history change so that
+  // react-router updates with the new url. This is requried when navigating
+  // between the new/legacy clients.
+  window.history.replaceState(null, null, window.location.pathname);
+  return reactLifecycles.mount(props);
+};
 export const { unmount } = reactLifecycles;

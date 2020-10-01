@@ -121,9 +121,20 @@ export const App = () => {
         completedIntro={completedIntro && authUser && authUser.completed_intro}
         debug={debug}
         enableAnalytics={analyticsEnabled}
-        generateLocalLink={(url, label, linkClass) => (
-          <Link className={linkClass} to={url}>
-            {label}
+        generateLegacyLink={(link, linkClass, appendNewBase) => (
+          <a
+            className={linkClass}
+            href={link.url}
+            onClick={(evt) => {
+              navigateToLegacy(link.url, evt);
+            }}
+          >
+            {link.label}
+          </a>
+        )}
+        generateNewLink={(link, linkClass, appendNewBase) => (
+          <Link className={linkClass} to={link.url}>
+            {link.label}
           </Link>
         )}
         location={location}

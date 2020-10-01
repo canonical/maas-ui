@@ -5,8 +5,10 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
+  generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 import { MachineListTable } from "./MachineListTable";
 import { nodeStatus, scriptStatus } from "app/base/enum";
@@ -146,8 +148,8 @@ describe("MachineListTable", () => {
         zone: {},
       }),
     ];
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [],
           loaded: false,
@@ -162,7 +164,7 @@ describe("MachineListTable", () => {
           loaded: true,
           loading: false,
         },
-      },
+      }),
       machine: machineStateFactory({
         loaded: true,
         items: machines,
@@ -193,7 +195,7 @@ describe("MachineListTable", () => {
           },
         ],
       },
-    };
+    });
   });
 
   afterEach(() => {

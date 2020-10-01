@@ -6,26 +6,29 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import AddMachineForm from "../AddMachineForm";
+import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
+  generalState as generalStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddMachineFormFields", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      domain: {
-        items: [
-          {
-            id: 0,
-            name: "maas",
-          },
-        ],
+    initialState = rootStateFactory({
+      domain: domainStateFactory({
+        items: [domainFactory()],
         loaded: true,
-      },
-      general: {
+      }),
+      general: generalStateFactory({
         architectures: {
           data: ["amd64/generic"],
           loaded: true,
@@ -51,30 +54,16 @@ describe("AddMachineFormFields", () => {
           ],
           loaded: true,
         },
-      },
-      machine: {
-        saved: false,
-        saving: false,
-      },
-      resourcepool: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      resourcepool: resourcePoolStateFactory({
+        items: [resourcePoolFactory()],
         loaded: true,
-      },
-      zone: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
+      }),
+      zone: zoneStateFactory({
+        items: [zoneFactory()],
         loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("correctly sets minimum kernel to default", () => {

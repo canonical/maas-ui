@@ -4,14 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import WindowsForm from "./WindowsForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("WindowsForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loading: false,
         loaded: true,
         items: [
@@ -20,8 +25,8 @@ describe("WindowsForm", () => {
             value: "127.0.0.1",
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {

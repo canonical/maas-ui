@@ -92,7 +92,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/r/machines"
+              href="/machines"
               onClick={[Function]}
             >
               Machines
@@ -104,7 +104,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/devices"
+              href="/devices"
               onClick={[Function]}
             >
               Devices
@@ -116,7 +116,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/controllers"
+              href="/controllers"
               onClick={[Function]}
             >
               Controllers
@@ -128,7 +128,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/r/kvm"
+              href="/kvm"
               onClick={[Function]}
             >
               KVM
@@ -140,7 +140,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/images"
+              href="/images"
               onClick={[Function]}
             >
               Images
@@ -152,7 +152,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/domains"
+              href="/domains"
               onClick={[Function]}
             >
               DNS
@@ -164,7 +164,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/zones"
+              href="/zones"
               onClick={[Function]}
             >
               AZs
@@ -176,7 +176,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/l/networks?by=fabric"
+              href="/networks?by=fabric"
               onClick={[Function]}
             >
               Subnets
@@ -188,7 +188,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/r/settings"
+              href="/settings"
               onClick={[Function]}
             >
               Settings
@@ -204,7 +204,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
-              href="/MAAS/r/account/prefs"
+              href="/account/prefs"
               onClick={[Function]}
             >
               koala

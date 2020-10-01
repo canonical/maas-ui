@@ -4,15 +4,19 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NtpForm from "./NtpForm";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("NtpForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        loading: false,
+    initialState = rootStateFactory({
+      config: configStateFactory({
         loaded: true,
         items: [
           {
@@ -21,8 +25,8 @@ describe("NtpForm", () => {
           },
           { name: "ntp_servers", value: "" },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

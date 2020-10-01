@@ -75,7 +75,6 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
           <h4>Storage configuration</h4>
           <Button
             className="u-hide--medium u-hide--large"
-            disabled={disabled}
             hasIcon
             onClick={addDisk}
             type="button"

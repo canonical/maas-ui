@@ -1,10 +1,9 @@
-import { Tooltip } from "@canonical/react-components";
+import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
-import ContextualMenu from "app/base/components/ContextualMenu";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";

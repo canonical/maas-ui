@@ -6,36 +6,37 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import TagForm from "./TagForm";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("TagForm", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      general: {
+    initialState = rootStateFactory({
+      general: generalStateFactory({
         machineActions: {
           data: [{ name: "tag", sentence: "tag" }],
         },
-      },
-      machine: {
-        errors: {},
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
-        items: [{ system_id: "abc123" }, { system_id: "def456" }],
-        selected: [],
+        items: [
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
+        ],
         statuses: {
           abc123: {},
           def456: {},
         },
-      },
-      tag: {
-        errors: {},
-        loading: false,
-        loaded: true,
-        items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("correctly dispatches actions to tag selected machines", () => {

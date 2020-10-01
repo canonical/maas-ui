@@ -1,9 +1,7 @@
-import { Button } from "@canonical/react-components";
+import { Button, ContextualMenu } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React from "react";
 import classNames from "classnames";
-
-import ContextualMenu from "app/base/components/ContextualMenu";
 
 const TableMenu = ({ className, links, title, onToggleMenu, positionNode }) => {
   return (

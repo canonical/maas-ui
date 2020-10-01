@@ -6,26 +6,29 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import AddMachineForm from "./AddMachineForm";
+import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
+  generalState as generalStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("AddMachine", () => {
   let initialState;
+
   beforeEach(() => {
-    initialState = {
-      config: {
-        items: [{ name: "maas_name", value: "MAAS" }],
-      },
-      domain: {
-        items: [
-          {
-            id: 0,
-            name: "maas",
-          },
-        ],
+    initialState = rootStateFactory({
+      domain: domainStateFactory({
+        items: [domainFactory({ name: "maas" })],
         loaded: true,
-      },
-      general: {
+      }),
+      general: generalStateFactory({
         architectures: {
           data: ["amd64/generic"],
           loaded: true,
@@ -66,31 +69,20 @@ describe("AddMachine", () => {
           ],
           loaded: true,
         },
-      },
-      machine: {
-        errors: {},
-        saved: false,
-        saving: false,
-      },
-      resourcepool: {
+      }),
+      resourcepool: resourcePoolStateFactory({
+        items: [resourcePoolFactory({ name: "default" })],
+        loaded: true,
+      }),
+      zone: zoneStateFactory({
         items: [
-          {
-            id: 0,
+          zoneFactory({
             name: "default",
-          },
+          }),
         ],
         loaded: true,
-      },
-      zone: {
-        items: [
-          {
-            id: 0,
-            name: "default",
-          },
-        ],
-        loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("fetches the necessary data on load if not already loaded", () => {

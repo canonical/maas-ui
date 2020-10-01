@@ -5,28 +5,26 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import NameColumn from "./NameColumn";
+import {
+  pod as podFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("NameColumn", () => {
-  let initialState;
+  let initialState: RootState;
+
   beforeEach(() => {
-    initialState = {
-      pod: {
-        items: [
-          {
-            id: 1,
-            name: "pod-1",
-          },
-        ],
-        selected: [],
-      },
-    };
+    initialState = rootStateFactory();
   });
 
   it("can display a link to details page", () => {
     const state = { ...initialState };
+    state.pod.items = [podFactory({ id: 1, name: "pod-1" })];
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
@@ -34,14 +32,17 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Link").text()).toBe("pod-1");
     expect(wrapper.find("Link").props().to).toBe("/kvm/1");
   });
 
   it("sets checkbox to checked if pod is selected", () => {
     const state = { ...initialState };
+    state.pod.items = [podFactory({ id: 1, name: "pod-1" })];
     state.pod.selected = [1];
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -51,6 +52,7 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Input").prop("checked")).toBe(true);
   });
 });
