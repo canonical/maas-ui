@@ -46,6 +46,29 @@ function MasterController(
         }
         debug={debug}
         enableAnalytics={window.CONFIG.enable_analytics}
+        generateNewLink={(link, linkClass, appendNewBase) => (
+          <a
+            className={linkClass}
+            href={link.url}
+            target="_self"
+            onClick={(evt) => {
+              navigateToNew(link.url, evt);
+            }}
+          >
+            {link.label}
+          </a>
+        )}
+        generateLegacyLink={(link, linkClass, appendNewBase) => (
+          <a
+            className={linkClass}
+            href={generateLegacyURL(link.url)}
+            onClick={(evt) => {
+              evt.preventDefault();
+            }}
+          >
+            {link.label}
+          </a>
+        )}
         location={window.location}
         logout={() => {
           localStorage.clear();

@@ -4,6 +4,16 @@ import React from "react";
 import { Header } from "./Header";
 
 describe("Header", () => {
+  let generateURL;
+
+  beforeEach(() => {
+    generateURL = (link, linkClass, appendNewBase) => (
+      <a className={linkClass} href={link.url} onClick={jest.fn}>
+        {link.label}
+      </a>
+    );
+  });
+
   afterEach(() => {
     jest.resetModules();
   });
@@ -16,6 +26,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/",
         }}
@@ -29,6 +41,8 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={null}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/",
         }}
@@ -46,6 +60,8 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/",
         }}
@@ -67,6 +83,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={false}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/",
         }}
@@ -89,6 +107,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/MAAS/r/settings",
         }}
@@ -108,6 +128,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/MAAS/l/devices",
         }}
@@ -127,6 +149,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           search: "?by=fabric",
           pathname: "/MAAS/l/networks",
@@ -147,6 +171,8 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
         location={{
           pathname: "/MAAS/l/machine/abc123",
         }}
