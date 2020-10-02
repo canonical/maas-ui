@@ -6,10 +6,11 @@ import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { sendAnalyticsEvent } from "analytics";
-import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
+  configState as configStateFactory,
   pod as podFactory,
+  podNumaNode as podNumaNodeFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -22,16 +23,12 @@ jest.mock("analytics", () => ({
 const mockStore = configureStore();
 
 describe("KVMSummary", () => {
-  let initialState: RootState;
-
-  beforeEach(() => {
-    initialState = rootStateFactory({
-      pod: podStateFactory({ items: [podFactory({ id: 1 })] }),
+  it("can view resources by NUMA node if pod includes data on at least one node", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, numa_pinning: [podNumaNodeFactory()] })],
+      }),
     });
-  });
-
-  it("can view resources by NUMA node", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -40,6 +37,7 @@ describe("KVMSummary", () => {
         </MemoryRouter>
       </Provider>
     );
+    expect(wrapper.find("input[data-test='numa-switch']").exists()).toBe(true);
     expect(wrapper.find("PodAggregateResources").exists()).toBe(true);
     expect(wrapper.find("KVMNumaResources").exists()).toBe(false);
 
@@ -55,13 +53,19 @@ describe("KVMSummary", () => {
   });
 
   it("can send an analytics event when toggling NUMA node view if analytics enabled", () => {
-    const state = { ...initialState };
-    state.config.items = [
-      configFactory({
-        name: "enable_analytics",
-        value: true,
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "enable_analytics",
+            value: true,
+          }),
+        ],
       }),
-    ];
+      pod: podStateFactory({
+        items: [podFactory({ id: 1 })],
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

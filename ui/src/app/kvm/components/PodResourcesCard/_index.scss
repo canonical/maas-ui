@@ -2,9 +2,10 @@
   $donut-size: 6.5rem;
   $donut-width: 14px;
 
-  .pod-machine-list-modal.p-contextual-menu__dropdown {
+  .pod-machine-list-modal {
     max-width: none;
     min-width: 0;
+    padding: $spv-inner--x-small $sph-inner--small;
     // Subtract small screen gutter width and card inner padding to center dropdown.
     width: calc(
       100vw - #{(map-get($grid-gutter-widths, small) + $sph-inner) * 2}
@@ -22,6 +23,11 @@
     .cores-col,
     .ram-col {
       width: 5rem;
+    }
+
+    // Overwrite overflow: hidden here where there's no checkbox and width is static.
+    td:first-child .p-double-row__primary-row-text {
+      overflow: inherit !important;
     }
 
     @media only screen and (min-width: $breakpoint-x-small) {
@@ -47,16 +53,16 @@
     td {
       &:nth-child(1) {
         padding-left: 0;
-        width: 30%;
+        width: 50%;
       }
 
       &:nth-child(2) {
-        width: 35%;
+        width: 6.25rem;
       }
 
       &:nth-child(3) {
         padding-right: 0;
-        width: 35%;
+        width: 50%;
       }
     }
 
