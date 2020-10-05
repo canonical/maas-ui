@@ -17,7 +17,7 @@ const createFile = (name, size, type, contents = "") => {
   Reflect.defineProperty(file, "size", {
     get() {
       return size;
-    }
+    },
   });
   return file;
 };
@@ -27,21 +27,21 @@ describe("ScriptsUpload", () => {
   beforeEach(() => {
     initialState = {
       config: {
-        items: []
+        items: [],
       },
       scripts: {
         loading: false,
         loaded: true,
         errors: {},
-        items: []
-      }
+        items: [],
+      },
     };
   });
 
-  it("accepts files of text mimetype", async () => {
+  it("accepts files of any mimetype", async () => {
     const store = mockStore(initialState);
 
-    const files = [createFile("foo.sh", 2000, "text/script")];
+    const files = [createFile("foo.sh", 2000, "")];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -55,7 +55,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
@@ -79,36 +79,11 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
     expect(wrapper.text()).toContain("foo.sh (2000 bytes) ready for upload");
-  });
-
-  it("displays an error if a file with a non text mimetype is uploaded", async () => {
-    const store = mockStore(initialState);
-    const files = [createFile("foo.jpg", 200, "image/jpg")];
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: () => {},
-        persist: () => {}
-      });
-    });
-
-    expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "Invalid filetype, please try again."
-    );
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
@@ -127,7 +102,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
@@ -140,7 +115,7 @@ describe("ScriptsUpload", () => {
     const store = mockStore(initialState);
     const files = [
       createFile("foo.sh", 1000, "text/script"),
-      createFile("bar.sh", 1000, "text/script")
+      createFile("bar.sh", 1000, "text/script"),
     ];
 
     const wrapper = mount(
@@ -155,7 +130,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
@@ -171,7 +146,7 @@ describe("ScriptsUpload", () => {
       callback({
         name: "foo",
         script: contents,
-        hasMetadata: true
+        hasMetadata: true,
       });
     });
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
@@ -188,7 +163,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
@@ -200,8 +175,8 @@ describe("ScriptsUpload", () => {
       { type: "CLEANUP_SCRIPTS" },
       {
         payload: { contents, type: "testing" },
-        type: "UPLOAD_SCRIPT"
-      }
+        type: "UPLOAD_SCRIPT",
+      },
     ]);
   });
 
@@ -212,7 +187,7 @@ describe("ScriptsUpload", () => {
       callback({
         name: "foo",
         script: contents,
-        hasMetadata: false
+        hasMetadata: false,
       });
     });
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
@@ -229,7 +204,7 @@ describe("ScriptsUpload", () => {
       wrapper.find("input").simulate("change", {
         target: { files },
         preventDefault: () => {},
-        persist: () => {}
+        persist: () => {},
       });
     });
 
@@ -241,8 +216,8 @@ describe("ScriptsUpload", () => {
       { type: "CLEANUP_SCRIPTS" },
       {
         payload: { contents, type: "testing", name: "foo" },
-        type: "UPLOAD_SCRIPT"
-      }
+        type: "UPLOAD_SCRIPT",
+      },
     ]);
   });
 });
