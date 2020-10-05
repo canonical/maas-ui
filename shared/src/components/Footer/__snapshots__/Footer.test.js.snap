@@ -39,19 +39,9 @@ exports[`Footer renders 1`] = `
         >
           <a
             className="p-footer__link"
-            href="https://maas.io/docs/release-notes"
+            href="/MAAS/docs/maas-documentation-25.html"
           >
-            View release notes
-          </a>
-        </li>
-        <li
-          className="p-inline-list__item"
-        >
-          <a
-            className="p-footer__link"
-            href="https://maas.io/docs/"
-          >
-            View documentation
+            Local documentation
           </a>
         </li>
         <li
