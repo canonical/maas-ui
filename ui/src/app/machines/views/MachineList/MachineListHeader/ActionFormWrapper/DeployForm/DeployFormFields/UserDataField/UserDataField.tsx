@@ -61,8 +61,6 @@ export const UserDataField = (): JSX.Element => {
     isDragAccept,
     isDragReject,
   } = useDropzone({
-    accept:
-      "text/*, application/x-csh, application/x-sh, application/x-shellscript, application/json, application/ld+json, application/x-yaml",
     maxSize: MAX_SIZE_BYTES,
     multiple: false,
     noClick: true,
