@@ -38,10 +38,10 @@ describe("ScriptsUpload", () => {
     };
   });
 
-  it("accepts files of text mimetype", async () => {
+  it("accepts files of any mimetype", async () => {
     const store = mockStore(initialState);
 
-    const files = [createFile("foo.sh", 2000, "text/script")];
+    const files = [createFile("foo.sh", 2000, "")];
 
     const wrapper = mount(
       <Provider store={store}>
@@ -60,31 +60,6 @@ describe("ScriptsUpload", () => {
     });
 
     expect(wrapper.text()).toContain("foo.sh (2000 bytes) ready for upload");
-  });
-
-  it("displays an error if a file with a non text mimetype is uploaded", async () => {
-    const store = mockStore(initialState);
-    const files = [createFile("foo.jpg", 200, "image/jpg")];
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: () => {},
-        persist: () => {},
-      });
-    });
-
-    expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "foo.jpg: File type must be text/*, application/x-csh, application/x-sh, application/x-shellscript"
-    );
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
