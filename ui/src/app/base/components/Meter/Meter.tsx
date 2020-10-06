@@ -1,8 +1,8 @@
+import { useListener } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { useOnWindowResize } from "app/base/hooks";
 import { COLOURS } from "app/base/constants";
 
 export const DEFAULT_FILLED_COLORS = [
@@ -72,11 +72,11 @@ const Meter = ({
     }
   }, [maximum, segmented]);
 
-  useOnWindowResize(() => {
-    if (segmented) {
-      updateWidths(el, maximum, setSegmentWidth);
-    }
-  });
+  const onResize = useCallback(() => {
+    updateWidths(el, maximum, setSegmentWidth);
+  }, [el, maximum, setSegmentWidth]);
+
+  useListener(window, onResize, "resize", true, segmented);
 
   return (
     <div
