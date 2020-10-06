@@ -6,13 +6,14 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import SetPoolForm from "../SetPoolForm";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("SetPoolFormFields", () => {
   let state;
   beforeEach(() => {
-    state = {
+    state = rootStateFactory({
       machine: {
         errors: {},
         loading: false,
@@ -38,7 +39,7 @@ describe("SetPoolFormFields", () => {
           { id: 1, name: "pool-1" },
         ],
       },
-    };
+    });
   });
 
   it("shows a select if select pool radio chosen", async () => {
