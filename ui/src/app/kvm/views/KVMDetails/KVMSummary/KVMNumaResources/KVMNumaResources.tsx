@@ -8,10 +8,9 @@ import type { Machine } from "app/store/machine/types";
 import type { Pod, PodNumaNode } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { PodResourcesCardProps } from "app/kvm/components/PodResourcesCard";
-import { sendAnalyticsEvent } from "analytics";
 import { machine as machineActions } from "app/base/actions";
+import { useSendAnalytics } from "app/base/hooks";
 import { actions as podActions } from "app/store/pod";
-import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
 import PodResourcesCard from "app/kvm/components/PodResourcesCard";
 
@@ -73,8 +72,9 @@ const KVMNumaResources = ({ id }: Props): JSX.Element => {
   const podVMs = useSelector((state: RootState) =>
     podSelectors.getVMs(state, pod)
   );
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const [expanded, setExpanded] = useState(false);
+
+  const sendAnalytics = useSendAnalytics();
 
   useEffect(() => {
     dispatch(machineActions.fetch());
@@ -118,13 +118,11 @@ const KVMNumaResources = ({ id }: Props): JSX.Element => {
               hasIcon
               onClick={() => {
                 setExpanded(!expanded);
-                if (analyticsEnabled) {
-                  sendAnalyticsEvent(
-                    "KVM details",
-                    "Toggle expanded NUMA nodes",
-                    expanded ? "Show less NUMA nodes" : "Show more NUMA nodes"
-                  );
-                }
+                sendAnalytics(
+                  "KVM details",
+                  "Toggle expanded NUMA nodes",
+                  expanded ? "Show less NUMA nodes" : "Show more NUMA nodes"
+                );
               }}
             >
               {expanded ? (

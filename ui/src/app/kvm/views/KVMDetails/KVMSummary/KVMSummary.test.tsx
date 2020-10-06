@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { sendAnalyticsEvent } from "analytics";
+import * as hooks from "app/base/hooks";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -15,10 +15,6 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import KVMSummary from "./KVMSummary";
-
-jest.mock("analytics", () => ({
-  sendAnalyticsEvent: jest.fn(),
-}));
 
 const mockStore = configureStore();
 
@@ -66,6 +62,8 @@ describe("KVMSummary", () => {
         items: [podFactory({ id: 1 })],
       }),
     });
+
+    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -82,7 +80,8 @@ describe("KVMSummary", () => {
     });
     wrapper.update();
 
-    expect(sendAnalyticsEvent).toHaveBeenCalled();
+    expect(useSendMock).toHaveBeenCalled();
+    useSendMock.mockRestore();
   });
 
   it("can display the power address", () => {

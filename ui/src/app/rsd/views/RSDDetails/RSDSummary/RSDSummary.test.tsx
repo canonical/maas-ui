@@ -11,10 +11,6 @@ import {
 } from "testing/factories";
 import RSDSummary from "./RSDSummary";
 
-jest.mock("analytics", () => ({
-  sendAnalyticsEvent: jest.fn(),
-}));
-
 const mockStore = configureStore();
 
 describe("RSDSummary", () => {
