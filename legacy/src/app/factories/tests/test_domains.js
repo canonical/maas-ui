@@ -6,14 +6,14 @@
 
 import { makeInteger, makeName } from "testing/utils";
 
-describe("DomainsManager", function() {
+describe("DomainsManager", function () {
   // Load the MAAS module.
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the DomainsManager.
   var DomainsManager, RegionConnection;
   var $q, $rootScope;
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function ($injector) {
     DomainsManager = $injector.get("DomainsManager");
     RegionConnection = $injector.get("RegionConnection");
     $q = $injector.get("$q");
@@ -24,7 +24,7 @@ describe("DomainsManager", function() {
   function makeDomain(id, selected) {
     var domain = {
       name: makeName("name"),
-      authoritative: true
+      authoritative: true,
     };
     if (angular.isDefined(id)) {
       domain.id = id;
@@ -42,24 +42,24 @@ describe("DomainsManager", function() {
     return domain;
   }
 
-  it("set requires attributes", function() {
+  it("set requires attributes", function () {
     expect(DomainsManager._pk).toBe("id");
     expect(DomainsManager._handler).toBe("domain");
   });
 
-  describe("getDefaultDomain", function() {
-    it("returns null when no domains", function() {
+  describe("getDefaultDomain", function () {
+    it("returns null when no domains", function () {
       expect(DomainsManager.getDefaultDomain()).toBe(null);
     });
 
-    it("getDefaultDomain returns domain with is_default", function() {
+    it("getDefaultDomain returns domain with is_default", function () {
       var zero = makeDomain(0);
       DomainsManager._items.push(makeDomain());
       DomainsManager._items.push(zero);
       expect(DomainsManager.getDefaultDomain()).toBe(zero);
     });
 
-    it("getDefaultDomain returns first domain otherwise", function() {
+    it("getDefaultDomain returns first domain otherwise", function () {
       var i;
       for (i = 0; i < 3; i++) {
         DomainsManager._items.push(makeDomain());
@@ -68,8 +68,8 @@ describe("DomainsManager", function() {
     });
   });
 
-  describe("setDefault", function() {
-    it("calls set_default for domain", function() {
+  describe("setDefault", function () {
+    it("calls set_default for domain", function () {
       var scope = $rootScope.$new();
       var defer = $q.defer();
       var promise = defer.promise;
@@ -77,25 +77,24 @@ describe("DomainsManager", function() {
       spyOn(DomainsManager, "reloadItems");
       var domain_id = makeInteger(0, 100);
       var record = {
-        id: domain_id
+        id: domain_id,
       };
       DomainsManager.setDefault(record);
-      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "domain.set_default",
-        { domain: domain_id }
-      );
+      expect(
+        RegionConnection.callMethod
+      ).toHaveBeenCalledWith("domain.set_default", { domain: domain_id });
       defer.resolve(record);
       scope.$digest();
       expect(DomainsManager.reloadItems).toHaveBeenCalled();
     });
   });
 
-  describe("createDNSRecord", function() {
-    it("calls create_address_record for A record", function() {
+  describe("createDNSRecord", function () {
+    it("calls create_address_record for A record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "A",
-        rrdata: "192.168.0.1"
+        rrdata: "192.168.0.1",
       };
       DomainsManager.createDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -104,11 +103,11 @@ describe("DomainsManager", function() {
       );
     });
 
-    it("calls create_address_record for AAAA record", function() {
+    it("calls create_address_record for AAAA record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "AAAA",
-        rrdata: "2001:db8:1"
+        rrdata: "2001:db8:1",
       };
       DomainsManager.createDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -117,24 +116,24 @@ describe("DomainsManager", function() {
       );
     });
 
-    it("converts rrdata into list for A and AAAA", function() {
+    it("converts rrdata into list for A and AAAA", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "AAAA",
-        rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1"
+        rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1",
       };
       DomainsManager.createDNSRecord(record);
       expect(record.ip_addresses).toEqual([
         "2001:db8::1",
         "10.0.0.1",
-        "127.0.0.1"
+        "127.0.0.1",
       ]);
     });
 
-    it("calls create_dnsdata for other types", function() {
+    it("calls create_dnsdata for other types", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
-        rrtype: "SRV"
+        rrtype: "SRV",
       };
       DomainsManager.createDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -144,37 +143,37 @@ describe("DomainsManager", function() {
     });
   });
 
-  describe("deleteDNSRecord", function() {
-    it("calls delete_dnsresource for A record", function() {
+  describe("deleteDNSRecord", function () {
+    it("calls delete_address_record for A record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "A",
-        rrdata: "192.168.0.1"
+        rrdata: "192.168.0.1",
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "domain.delete_dnsresource",
+        "domain.delete_address_record",
         record
       );
     });
 
-    it("calls delete_dnsresource for AAAA record", function() {
+    it("calls delete_address_record for AAAA record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "AAAA",
-        rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1"
+        rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1",
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "domain.delete_dnsresource",
+        "domain.delete_address_record",
         record
       );
     });
 
-    it("calls update_dnsdata for other types", function() {
+    it("calls update_dnsdata for other types", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
-        rrtype: "SRV"
+        rrtype: "SRV",
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
@@ -184,12 +183,12 @@ describe("DomainsManager", function() {
     });
   });
 
-  describe("getDomainByName", function() {
-    it("returns null when no domains", function() {
+  describe("getDomainByName", function () {
+    it("returns null when no domains", function () {
       expect(DomainsManager.getDomainByName("meh")).toBe(null);
     });
 
-    it("getDefaultDomain returns named domain", function() {
+    it("getDefaultDomain returns named domain", function () {
       var zero = makeDomain(0);
       DomainsManager._items.push(makeDomain(1));
       DomainsManager._items.push(zero);
@@ -199,7 +198,7 @@ describe("DomainsManager", function() {
       expect(DomainsManager.getDomainByName(ours.name)).toBe(ours);
     });
 
-    it("getDefaultDomain returns null when not found", function() {
+    it("getDefaultDomain returns null when not found", function () {
       var i;
       for (i = 0; i < 3; i++) {
         DomainsManager._items.push(makeDomain());
