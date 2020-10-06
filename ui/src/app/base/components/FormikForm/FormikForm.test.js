@@ -7,19 +7,28 @@ import React from "react";
 import { Provider } from "react-redux";
 import * as Yup from "yup";
 
-import { useSendAnalytics } from "app/base/hooks";
 import FormikForm from "./FormikForm";
+import * as hooks from "app/base/hooks";
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
-jest.mock("app/base/hooks");
 
 describe("FormikForm", () => {
-  afterEach(() => {
-    jest.resetAllMocks();
+  let state;
+  beforeEach(() => {
+    state = rootStateFactory({
+      config: configStateFactory({
+        items: [configFactory({ name: "analytics_enabled", value: false })],
+      }),
+    });
   });
 
   it("can render", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
@@ -37,7 +46,7 @@ describe("FormikForm", () => {
   });
 
   it("can redirect when saved", () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
@@ -60,7 +69,7 @@ describe("FormikForm", () => {
     const cleanup = jest.fn(() => ({
       type: "CLEANUP",
     }));
-    const store = mockStore({});
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
@@ -85,7 +94,8 @@ describe("FormikForm", () => {
       category: "Settings",
       label: "Form",
     };
-    const store = mockStore({});
+    const useSendMock = jest.spyOn(hooks, "useSendAnalyticsWhen");
+    const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
@@ -102,17 +112,18 @@ describe("FormikForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(useSendAnalytics).toHaveBeenCalled();
-    expect(useSendAnalytics.mock.calls[0]).toEqual([
+    expect(useSendMock).toHaveBeenCalled();
+    expect(useSendMock.mock.calls[0]).toEqual([
       true,
       eventData.category,
       eventData.action,
       eventData.label,
     ]);
+    useSendMock.mockRestore();
   });
 
   it("can reset form on save if resetOnSave is true", async () => {
-    const store = mockStore({});
+    const store = mockStore(state);
     const initialValues = {
       val1: "initial",
     };

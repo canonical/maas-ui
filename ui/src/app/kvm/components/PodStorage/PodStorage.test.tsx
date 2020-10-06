@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import { sendAnalyticsEvent } from "analytics";
+import * as hooks from "app/base/hooks";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -15,10 +15,6 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import PodStorage, { TRUNCATION_POINT } from "./PodStorage";
-
-jest.mock("analytics", () => ({
-  sendAnalyticsEvent: jest.fn(),
-}));
 
 const mockStore = configureStore();
 
@@ -107,12 +103,17 @@ describe("PodStorage", () => {
       id: 1,
       storage_pools: pools,
     });
+    const mockSendAnalytics = jest.fn();
+    const mockUseSendAnalytics = (hooks.useSendAnalytics = jest.fn(
+      () => mockSendAnalytics
+    ));
+
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
           configFactory({
             name: "enable_analytics",
-            value: true,
+            value: false,
           }),
         ],
       }),
@@ -132,6 +133,13 @@ describe("PodStorage", () => {
     });
     wrapper.update();
 
-    expect(sendAnalyticsEvent).toHaveBeenCalled();
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "KVM details",
+      "Toggle expanded storage pools",
+      "Show more storage pools",
+    ]);
+
+    mockUseSendAnalytics.mockRestore();
   });
 });

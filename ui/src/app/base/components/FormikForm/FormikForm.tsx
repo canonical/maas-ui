@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import type { ReactNode } from "react";
 import React, { useEffect } from "react";
 
-import { useSendAnalytics } from "app/base/hooks";
+import { useSendAnalyticsWhen } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import FormikFormContent from "app/base/components/FormikFormContent";
 
@@ -72,7 +72,7 @@ const FormikForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
 
-  useSendAnalytics(
+  useSendAnalyticsWhen(
     saved,
     onSaveAnalytics.category,
     onSaveAnalytics.action,
