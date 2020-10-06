@@ -67,7 +67,10 @@ function DomainsManager(RegionConnection, Manager) {
   DomainsManager.prototype.deleteDNSRecord = function(record) {
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
-      return RegionConnection.callMethod("domain.delete_dnsresource", record);
+      return RegionConnection.callMethod(
+        "domain.delete_address_record",
+        record
+      );
     } else {
       return RegionConnection.callMethod("domain.delete_dnsdata", record);
     }
