@@ -7,9 +7,8 @@ import {
   general as generalActions,
   machine as machineActions,
 } from "app/base/actions";
-import { sendAnalyticsEvent } from "analytics";
+import { useSendAnalytics } from "app/base/hooks";
 import ActionForm from "app/base/components/ActionForm";
-import configSelectors from "app/store/config/selectors";
 import DeployFormFields from "./DeployFormFields";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -50,7 +49,6 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     generalSelectors.osInfo.get
   );
   const deployingSelected = useSelector(machineSelectors.deployingSelected);
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -74,6 +72,8 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   ) {
     initialRelease = default_release;
   }
+
+  const sendAnalytics = useSendAnalytics();
 
   return (
     <ActionForm
@@ -100,8 +100,8 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
           hwe_kernel: values.kernel,
           ...(hasUserData && { user_data: values.userData }),
         };
-        if (analyticsEnabled && hasUserData) {
-          sendAnalyticsEvent(
+        if (hasUserData) {
+          sendAnalytics(
             "Machine list deploy form",
             "Has cloud-init config",
             "Cloud-init user data"

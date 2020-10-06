@@ -300,4 +300,35 @@ describe("DeployFormFields", () => {
     wrapper.update();
     expect(wrapper.find("FormikField[name='userData']").exists()).toBe(true);
   });
+
+  it("resets kernel selection on OS/release change", async () => {
+    const state = { ...initialState };
+    state.general.osInfo.data.default_release = "bionic";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Default release is Ubuntu 18.04. Change kernel to non-default.
+    await act(async () => {
+      wrapper
+        .find("Select[name='kernel']")
+        .simulate("change", { target: { name: "kernel", value: "ga-18.04" } });
+    });
+    wrapper.update();
+    // Change release to Ubuntu 20.04.
+    await act(async () => {
+      wrapper.find("Select[name='release']").simulate("change", {
+        target: { name: "release", value: "ubuntu/focal" },
+      });
+    });
+    wrapper.update();
+    // Previous kernel selection should be cleared.
+    expect(wrapper.find("Select[name='kernel']").prop("value")).toBe("");
+  });
 });

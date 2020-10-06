@@ -145,7 +145,7 @@ describe("DomainsManager", function () {
   });
 
   describe("deleteDNSRecord", function () {
-    it("calls delete_dnsresource for A record", function () {
+    it("calls delete_address_record for A record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "A",
@@ -153,12 +153,12 @@ describe("DomainsManager", function () {
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "domain.delete_dnsresource",
+        "domain.delete_address_record",
         record
       );
     });
 
-    it("calls delete_dnsresource for AAAA record", function () {
+    it("calls delete_address_record for AAAA record", function () {
       spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "AAAA",
@@ -166,7 +166,7 @@ describe("DomainsManager", function () {
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
-        "domain.delete_dnsresource",
+        "domain.delete_address_record",
         record
       );
     });

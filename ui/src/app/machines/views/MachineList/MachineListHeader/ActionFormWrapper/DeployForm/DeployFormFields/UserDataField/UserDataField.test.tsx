@@ -167,8 +167,8 @@ describe("DeployFormFields", () => {
     jest.clearAllMocks();
   });
 
-  it("accepts files of text mimetype", async () => {
-    const files = [createFile("foo.sh", 2000, "text/script")];
+  it("accepts files of any mimetype", async () => {
+    const files = [createFile("foo.sh", 2000, "")];
     await act(async () => {
       wrapper.find("UserDataField input[type='file']").simulate("change", {
         target: { files },
@@ -177,19 +177,6 @@ describe("DeployFormFields", () => {
     wrapper.update();
     expect(wrapper.find("FormikField[name='userData']").prop("error")).toEqual(
       null
-    );
-  });
-
-  it("displays an error if a file with a non text mimetype is uploaded", async () => {
-    const files = [createFile("foo.jpg", 200, "image/jpg")];
-    await act(async () => {
-      wrapper.find("UserDataField input[type='file']").simulate("change", {
-        target: { files },
-      });
-    });
-    wrapper.update();
-    expect(wrapper.find("FormikField[name='userData']").prop("error")).toEqual(
-      "File type must be text/*, application/x-csh, application/x-sh, application/x-shellscript, application/json, application/ld+json, application/x-yaml"
     );
   });
 

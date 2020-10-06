@@ -54,6 +54,7 @@ export const DeployFormFields = (): JSX.Element => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleChange(e);
                 const value = e.target.value;
+                setFieldValue("kernel", "");
                 if (
                   allReleaseOptions[value] &&
                   allReleaseOptions[value].length
@@ -75,6 +76,7 @@ export const DeployFormFields = (): JSX.Element => {
               options={releaseOptions}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
+                setFieldValue("kernel", "");
                 if (e.target.value !== "bionic") {
                   setFieldValue("installKVM", false);
                 }
