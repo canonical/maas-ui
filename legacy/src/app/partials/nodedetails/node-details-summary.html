@@ -1,7 +1,10 @@
 <!-- Notifications -->
 <section class="p-strip u-no-padding--bottom">
     <div class="row">
-        <div class="p-notification--negative" data-ng-if="node.power_state === 'error'">
+        <div
+            class="p-notification--negative"
+            data-ng-if="node.power_state === 'error' && node.events && node.events.length > 0"
+        >
             <p class="p-notification__response">
                 <span class="p-notification__status">Error:</span> {$ getEventText(node.events[0]) $}. <a href="{$ legacyURLBase $}/machine/{$ node.system_id $}?area=events">See all events</a>.
             </p>
