@@ -6,13 +6,14 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import SetPoolForm from "./SetPoolForm";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("SetPoolForm", () => {
   let state;
   beforeEach(() => {
-    state = {
+    state = rootStateFactory({
       general: {
         machineActions: {
           data: [{ name: "set-pool", sentence: "change those pools" }],
@@ -43,7 +44,7 @@ describe("SetPoolForm", () => {
           { id: 1, name: "pool-1" },
         ],
       },
-    };
+    });
   });
 
   it("correctly dispatches actions to set pools of selected machines", () => {

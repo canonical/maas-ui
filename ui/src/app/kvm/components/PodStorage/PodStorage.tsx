@@ -3,13 +3,12 @@ import pluralize from "pluralize";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { sendAnalyticsEvent } from "analytics";
+import { useSendAnalytics } from "app/base/hooks";
+import PodMeter from "app/kvm/components/PodMeter";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import configSelectors from "app/store/config/selectors";
 import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
-import PodMeter from "app/kvm/components/PodMeter";
 
 export const TRUNCATION_POINT = 3;
 
@@ -19,8 +18,8 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const [expanded, setExpanded] = useState(false);
+  const sendAnalytics = useSendAnalytics();
 
   if (!!pod) {
     const sortedPools = [...pod.storage_pools].sort((a, b) => {
@@ -89,15 +88,13 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
               hasIcon
               onClick={() => {
                 setExpanded(!expanded);
-                if (analyticsEnabled) {
-                  sendAnalyticsEvent(
-                    `${pod.type === "rsd" ? "RSD" : "KVM"} details`,
-                    "Toggle expanded storage pools",
-                    expanded
-                      ? "Show less storage pools"
-                      : "Show more storage pools"
-                  );
-                }
+                sendAnalytics(
+                  `${pod.type === "rsd" ? "RSD" : "KVM"} details`,
+                  "Toggle expanded storage pools",
+                  expanded
+                    ? "Show less storage pools"
+                    : "Show more storage pools"
+                );
               }}
             >
               {expanded ? (

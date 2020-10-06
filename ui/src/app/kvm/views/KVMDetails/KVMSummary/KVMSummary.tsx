@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
-import { sendAnalyticsEvent } from "analytics";
-import type { RootState } from "app/store/root/types";
-import { actions as podActions } from "app/store/pod";
-import configSelectors from "app/store/config/selectors";
-import podSelectors from "app/store/pod/selectors";
-import { useWindowTitle } from "app/base/hooks";
-import PodAggregateResources from "app/kvm/components/PodAggregateResources";
 import KVMNumaResources from "./KVMNumaResources";
-import PodStorage from "app/kvm/components/PodStorage";
 import Switch from "app/base/components/Switch";
+import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
+import PodAggregateResources from "app/kvm/components/PodAggregateResources";
+import PodStorage from "app/kvm/components/PodStorage";
+import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
+import type { RootState } from "app/store/root/types";
 
 type RouteParams = {
   id: string;
@@ -25,12 +23,13 @@ const KVMSummary = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const [viewByNuma, setViewByNuma] = useStorageState(
     localStorage,
     `viewPod${id}ByNuma`,
     false
   );
+
+  const sendAnalytics = useSendAnalytics();
 
   useWindowTitle(`KVM ${`${pod?.name} ` || ""} details`);
 
@@ -61,13 +60,11 @@ const KVMSummary = (): JSX.Element => {
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 const checked = evt.target.checked;
                 setViewByNuma(checked);
-                if (analyticsEnabled) {
-                  sendAnalyticsEvent(
-                    "KVM details",
-                    "Toggle NUMA view",
-                    checked ? "View by NUMA node" : "View aggregate"
-                  );
-                }
+                sendAnalytics(
+                  "KVM details",
+                  "Toggle NUMA view",
+                  checked ? "View by NUMA node" : "View aggregate"
+                );
               }}
             />
           )}

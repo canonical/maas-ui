@@ -6,13 +6,14 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import SetZoneForm from "./SetZoneForm";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("SetZoneForm", () => {
   let state;
   beforeEach(() => {
-    state = {
+    state = rootStateFactory({
       general: {
         machineActions: {
           data: [{ name: "set-zone", sentence: "set-zone" }],
@@ -42,7 +43,7 @@ describe("SetZoneForm", () => {
           { id: 1, name: "zone-1" },
         ],
       },
-    };
+    });
   });
 
   it("correctly dispatches actions to set zones of selected machines", () => {
