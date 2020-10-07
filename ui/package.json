@@ -106,6 +106,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.21.3",
     "eslint-plugin-react-hooks": "4.1.2",
+    "jest-fetch-mock": "3.0.3",
     "mock-socket": "9.0.3",
     "node-sass": "4.14.1",
     "npm-package-json-lint": "5.1.0",
