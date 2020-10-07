@@ -126,6 +126,9 @@ function NodeDetailsController(
   $scope.deployOptions = {
     installKVM: false,
   };
+  $scope.markBrokenOptions = {
+    message: "",
+  };
   $scope.commissioningSelection = [];
   $scope.testSelection = [];
   $scope.release = {
@@ -1034,6 +1037,8 @@ function NodeDetailsController(
       extra.erase = $scope.release.options.enableDiskErasing;
       extra.secure_erase = $scope.release.options.secureErase;
       extra.quick_erase = $scope.release.options.quickErase;
+    } else if ($scope.action.option.name === "mark-broken") {
+      extra.message = $scope.markBrokenOptions.message;
     } else if (
       $scope.action.option.name === "delete" &&
       $scope.type_name === "controller" &&
