@@ -1,10 +1,12 @@
-import { makeUIURL, login } from "../../utils";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
+
+import { login } from "../../utils";
 
 context("User list", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(makeUIURL("/settings/users"));
+    cy.visit(generateNewURL("/settings/users"));
   });
 
   afterEach(() => {
