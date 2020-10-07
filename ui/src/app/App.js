@@ -13,7 +13,12 @@ import {
 import { getCookie } from "app/utils";
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import { Footer, Header, navigateToLegacy } from "@maas-ui/maas-ui-shared";
+import {
+  Footer,
+  generateLegacyURL,
+  Header,
+  navigateToLegacy,
+} from "@maas-ui/maas-ui-shared";
 import { status as statusActions } from "app/base/actions";
 import { websocket } from "./base/actions";
 import authSelectors from "app/store/auth/selectors";
@@ -124,7 +129,7 @@ export const App = () => {
         generateLegacyLink={(link, linkClass, appendNewBase) => (
           <a
             className={linkClass}
-            href={link.url}
+            href={generateLegacyURL(link.url)}
             onClick={(evt) => {
               navigateToLegacy(link.url, evt);
             }}
