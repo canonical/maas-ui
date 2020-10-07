@@ -59,6 +59,7 @@ export const DeployFormFields = () => {
             onChange={(e) => {
               handleChange(e);
               const value = e.target.value;
+              setFieldValue("kernel", "");
               if (allReleaseOptions[value] && allReleaseOptions[value].length) {
                 setFieldValue("release", allReleaseOptions[value][0].value);
               }
@@ -75,6 +76,7 @@ export const DeployFormFields = () => {
             options={releaseOptions}
             onChange={(e) => {
               handleChange(e);
+              setFieldValue("kernel", "");
               if (e.target.value !== "bionic") {
                 setFieldValue("installKVM", false);
               }
