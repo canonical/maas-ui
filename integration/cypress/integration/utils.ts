@@ -1,6 +1,5 @@
+import { BASENAME } from "@maas-ui/maas-ui-shared";
 import { customAlphabet } from "nanoid";
-
-import { BASENAME, REACT_BASENAME } from "@maas-ui/maas-ui-shared";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
@@ -22,7 +21,3 @@ export const generateMac = () =>
   );
 
 export const generateEmail = () => `${nanoid()}@example.com`;
-
-export const makeUIURL = (path: string) => {
-  return [BASENAME, REACT_BASENAME, path].join(path.startsWith("/") ? "" : "/");
-};
