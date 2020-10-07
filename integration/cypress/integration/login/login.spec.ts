@@ -1,8 +1,8 @@
-import { makeUIURL } from "../utils";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 context("Login page", () => {
   beforeEach(() => {
-    cy.visit(makeUIURL("/"));
+    cy.visit(generateNewURL("/"));
   });
 
   it("is disabled by default", () => {
@@ -33,5 +33,13 @@ context("Login page", () => {
     cy.get("input[name='username']").type("username");
     cy.get("input[name='password']").type("password{enter}");
     cy.get(".p-notification--negative").should("exist");
+  });
+
+  it("logs in and redirects to the machine list", () => {
+    cy.get("button").should("have.attr", "disabled", "disabled");
+    cy.get("input[name='username']").type("admin");
+    cy.get("input[name='password']").type("test");
+    cy.get("button[type='submit']").click();
+    cy.location("pathname").should("eq", generateNewURL("/machines"));
   });
 });
