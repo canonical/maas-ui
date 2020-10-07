@@ -49,7 +49,7 @@ function MasterController(
         generateNewLink={(link, linkClass, appendNewBase) => (
           <a
             className={linkClass}
-            href={link.url}
+            href={generateNewURL(link.url)}
             target="_self"
             onClick={(evt) => {
               navigateToNew(link.url, evt);

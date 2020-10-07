@@ -12,11 +12,11 @@ import { actions as podActions } from "app/store/pod";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as subnetActions } from "app/store/subnet";
 import {
-  fabric as fabricActions,
   general as generalActions,
   messages as messagesActions,
 } from "app/base/actions";
 import { actions as domainActions } from "app/store/domain";
+import { actions as fabricActions } from "app/store/fabric";
 import { actions as spaceActions } from "app/store/space";
 import { actions as vlanActions } from "app/store/vlan";
 import { actions as zoneActions } from "app/store/zone";

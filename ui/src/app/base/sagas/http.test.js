@@ -88,6 +88,17 @@ describe("http sagas", () => {
           .put({ type: "LOGIN_ERROR", error })
           .run();
       });
+
+      it("encodes special characters", () => {
+        api.auth.login({
+          username: "ko&ala",
+          password: "gum%tree",
+        });
+        expect(global.fetch).toHaveBeenCalled();
+        expect(global.fetch.mock.calls[0][1].body.toString()).toBe(
+          "username=ko%26ala&password=gum%25tree"
+        );
+      });
     });
 
     describe("externalLogin", () => {

@@ -1,7 +1,7 @@
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
-import { usePrevious } from "app/base/hooks";
 import {
   filtersToQueryString,
   filtersToString,

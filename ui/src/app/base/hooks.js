@@ -2,6 +2,7 @@ import { notificationTypes } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Yup from "yup";
 
 import { machine as machineActions } from "app/base/actions";
@@ -12,19 +13,6 @@ import machineSelectors from "app/store/machine/selectors";
 import generalSelectors from "app/store/general/selectors";
 import { kebabToCamelCase } from "app/utils";
 import { useCallback } from "react";
-
-/**
- * Returns previous value of a variable.
- * @param {*} value - Current value.
- * @returns {*} Previous value.
- */
-export const usePrevious = (value) => {
-  const ref = useRef(value);
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-};
 
 /**
  * Combines formik validation errors and errors returned from server
@@ -305,44 +293,6 @@ export const useAllPowerParameters = (powerTypes) =>
       }, {}),
     [powerTypes]
   );
-
-export const THROTTLE_DELAY = 100;
-
-/**
- * Handle window resize events.
- * @param {Function} callback - The function to call when the window resizes.
- */
-export const useOnWindowResize = (callback) => {
-  const storedCallback = useRef(callback);
-  const timeout = useRef();
-  const lastCall = useRef(Date.now());
-  useEffect(() => {
-    // Clean up the previous listener:
-    window.removeEventListener("resize", storedCallback.current);
-    // Store the callback for the cleanup method.
-    storedCallback.current = () => {
-      if (Date.now() - lastCall.current >= THROTTLE_DELAY) {
-        // This is after the throttle delay so call the callback and reset
-        // the timer.
-        clearTimeout(timeout.current);
-        callback();
-        lastCall.current = Date.now();
-        timeout.current = null;
-      } else if (!timeout.current) {
-        // Set a timeout to call the callback if the window is not resized
-        // after the delay time.
-        timeout.current = setTimeout(() => {
-          callback();
-        }, THROTTLE_DELAY);
-      }
-    };
-    window.addEventListener("resize", storedCallback.current);
-    return () => {
-      clearTimeout(timeout.current);
-      window.removeEventListener("resize", storedCallback.current);
-    };
-  }, [callback]);
-};
 
 /**
  * Handle checking when a value has cycled from false to true.
