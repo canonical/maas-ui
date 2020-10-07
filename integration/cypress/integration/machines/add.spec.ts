@@ -1,6 +1,7 @@
 import { customAlphabet } from "nanoid";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { generateMac, makeUIURL, login } from "../utils";
+import { generateMac, login } from "../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
@@ -8,7 +9,7 @@ context("Machine add", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(makeUIURL("/machines/add"));
+    cy.visit(generateNewURL("/machines/add"));
   });
 
   afterEach(() => {

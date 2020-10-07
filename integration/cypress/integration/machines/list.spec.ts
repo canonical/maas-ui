@@ -1,10 +1,12 @@
-import { makeUIURL, login } from "../utils";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
+
+import { login } from "../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(makeUIURL("/machines"));
+    cy.visit(generateNewURL("/machines"));
   });
 
   afterEach(() => {
