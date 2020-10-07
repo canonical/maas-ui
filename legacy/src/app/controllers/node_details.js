@@ -1383,11 +1383,17 @@ function NodeDetailsController(
 
   // Return the nice text for the given event.
   $scope.getEventText = function (event) {
-    var text = event.type.description;
-    if (angular.isString(event.description) && event.description.length > 0) {
-      text += " - " + event.description;
+    if (event) {
+      const text = [];
+      if (event.type?.description) {
+        text.push(event.type.description);
+      }
+      if (event.description) {
+        text.push(event.description);
+      }
+      return text.join(" - ");
     }
-    return text;
+    return "";
   };
 
   $scope.getPowerEventError = function () {
