@@ -16,7 +16,7 @@
     <li class="p-list__item" data-ng-if="node.show_os_info"><span class="muted-label">OS:</span> <span data-maas-release-name="node.osystem + '/' + node.distro_series"></span></li>
     <li class="p-list__item"><span class="muted-label">Domain:</span> {$ header.domain.selected.name $}</li>
     <li class="p-list__item"><span class="muted-label">Zone:</span> {$ summary.zone.selected.name $}</li>
-    <li class="p-list__item" data-ng-if="node.power_type"><span class="muted-label">Power type:</span> {$ node.power_type $}</li>
+    <li class="p-list__item" data-ng-if="node.power_type"><span class="muted-label">Power type:</span> {$ power.type.description || node.power_type $}</li>
   </ul>
 </div>
 <footer>

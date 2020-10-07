@@ -193,7 +193,7 @@
         <a ng-click="openEditConfig()" ng-if="canEdit()">Power type&nbsp;&rsaquo;</a>
         <span class="p-text--muted" ng-if="!canEdit()">Power type</span>
       </div>
-      <span title="{$ node.power_type $}">{$ node.power_type $}</span>
+      <span title="{$ node.power_type $}">{$ power.type.description || node.power_type $}</span>
     </div>
     <div class="u-text-overflow">
       <div>
