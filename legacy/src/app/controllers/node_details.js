@@ -5,7 +5,11 @@
  */
 import angular from "angular";
 
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
+import {
+  extractPowerType,
+  generateLegacyURL,
+  generateNewURL,
+} from "@maas-ui/maas-ui-shared";
 import { HardwareType, NodeTypes } from "../enum";
 
 // Convert MiB to GiB value if over 1024 and round to 4 significant figures.
@@ -430,9 +434,14 @@ function NodeDetailsController(
     }
 
     $scope.power.type = null;
+    $scope.power.typeDisplay = null;
     for (let i = 0; i < $scope.power_types.length; i++) {
       if ($scope.node.power_type === $scope.power_types[i].name) {
         $scope.power.type = $scope.power_types[i];
+        $scope.power.typeDisplay = extractPowerType(
+          $scope.power.type.description,
+          $scope.node.power_type
+        );
         break;
       }
     }
