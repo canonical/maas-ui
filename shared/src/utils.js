@@ -37,3 +37,19 @@ export const navigateToLegacy = (route, evt) => {
 export const navigateToNew = (route, evt) => {
   navigate(generateNewURL(route), evt);
 };
+
+/**
+ * Get the formatted power type from a power type description.
+ * @param {String} description - A power type description.
+ * @param {String} powerType - A power type.
+ * @return {String} The formatted power type or the original power type key.
+ */
+export const extractPowerType = (description, powerType) => {
+  if (!description) {
+    return powerType;
+  }
+  const position = description.toLowerCase().indexOf(powerType.toLowerCase());
+  return position === -1
+    ? powerType
+    : description.substring(position, position + powerType.length);
+};

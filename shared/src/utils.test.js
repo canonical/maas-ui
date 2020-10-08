@@ -1,4 +1,5 @@
 import {
+  extractPowerType,
   generateBaseURL,
   generateLegacyURL,
   generateNewURL,
@@ -88,6 +89,24 @@ describe("utils", () => {
       navigateToNew("/machines", { button: 0, metaKey: true, preventDefault });
       expect(pushState).not.toHaveBeenCalled();
       expect(preventDefault).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("extractPowerType", () => {
+    it("can extract a power type from a description", () => {
+      expect(extractPowerType("The OpenBMC Power Driver", "openbmc")).toBe(
+        "OpenBMC"
+      );
+    });
+
+    it("handles no matching power type", () => {
+      expect(extractPowerType("Open BMC Power Driver", "openbmc")).toBe(
+        "openbmc"
+      );
+    });
+
+    it("handles no description", () => {
+      expect(extractPowerType(null, "openbmc")).toBe("openbmc");
     });
   });
 });
