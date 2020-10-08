@@ -1,3 +1,4 @@
+import { enableFetchMocks } from "jest-fetch-mock";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -14,3 +15,5 @@ jest.mock("@reduxjs/toolkit", () => {
 jest.mock("uuid/v4", () => {
   return jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ");
 });
+
+enableFetchMocks();

@@ -33,8 +33,7 @@
             data-ng-show="header.editing || header.editing_domain"
             data-ng-model="header.domain.selected"
             data-ng-options="domain as domain.name for domain in header.domain.options"
-          >
-          </select>
+          ></select>
         </h1>
         <button
           class="p-button--base u-no-margin--top ng-hide"
@@ -187,7 +186,7 @@
                         <div
                           data-maas-os-select="osinfo"
                           data-ng-model="osSelection"
-                          style="width: 100%;"
+                          style="width: 100%"
                         ></div>
                       </div>
                     </div>
@@ -225,7 +224,7 @@
                   <div class="u-space-between">
                     <div class="u-align--right">
                       <div
-                        data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test'"
+                        data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test' && action.option.name !== 'mark-broken'"
                       >
                         <button
                           class="p-button--base"
@@ -267,10 +266,6 @@
                           <span
                             data-ng-if="action.option.name === 'exit-rescue-mode'"
                             >Exit rescue mode</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'mark-broken'"
-                            >Mark {$ type_name $}</span
                           >
                           <span data-ng-if="action.option.name === 'mark-fixed'"
                             >Mark {$ type_name $}</span
@@ -348,6 +343,51 @@
                   set-default-values="setDefaultValues"
                 ></span>
               </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="u-no-margin--top row ng-hide"
+        data-ng-if="action.option.name === 'mark-broken'"
+        data-ng-hide="isActionError()"
+      >
+        <div class="page-header__section col-12">
+          <form class="p-form">
+            <div class="row">
+              <div class="col-4">
+                <div class="p-form__group p-form-validation">
+                  <label class="p-form__label" for="broken-comment"
+                    >Add error description to machine</label
+                  >
+                  <input
+                    name="comment"
+                    id="broken-comment"
+                    type="text"
+                    data-ng-model="markBrokenOptions.message"
+                  />
+                </div>
+              </div>
+              <div class="col-5">
+                <p class="p-form__help">
+                  The error description will be visible under the status of each
+                  machine in the machine listing. It will be removed when the
+                  machine is marked as fixed.
+                </p>
+              </div>
+            </div>
+            <div class="u-align--right p-form">
+              <button class="p-button--base" data-ng-click="actionCancel()">
+                Cancel
+              </button>
+              <button
+                class="u-no-margin--top"
+                data-ng-class="p-button--positive"
+                data-ng-click="actionGo('nodes')"
+                data-ng-hide="hasActionsFailed('nodes')"
+              >
+                <span>Mark machine</span>
+              </button>
             </div>
           </form>
         </div>
@@ -727,9 +767,9 @@
                   data-ng-model="summary.architecture.selected"
                   data-ng-options="arch for arch in summary.architecture.options"
                 >
-                  <option value="" disabled="disabled"
-                    >{$ getArchitecturePlaceholder() $}</option
-                  >
+                  <option value="" disabled="disabled">
+                    {$ getArchitecturePlaceholder() $}
+                  </option>
                 </select>
               </div>
             </div>
@@ -792,9 +832,9 @@
                   data-ng-model="summary.pool.selected"
                   data-ng-options="pool as pool.name for pool in summary.pool.options"
                 >
-                  <option value="" disabled="disabled"
-                    >Choose a resource pool</option
-                  >
+                  <option value="" disabled="disabled">
+                    Choose a resource pool
+                  </option>
                 </select>
               </div>
             </div>
@@ -1631,14 +1671,14 @@
                       </div>
                     </div>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(interface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="interface.vlan && interface.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(interface.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -1720,8 +1760,7 @@
                         name="fabric"
                         data-ng-model="newBridgeInterface.fabric"
                         data-ng-options="fabric as fabric.name for fabric in fabrics"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row u-vertically-center">
@@ -1731,8 +1770,7 @@
                         name="vlan"
                         data-ng-model="newBridgeInterface.vlan"
                         data-ng-options="vlan as getVLANText(vlan) for vlan in vlans | filterVLANNotOnFabric:newBridgeInterface.fabric.vlan_ids"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row u-vertically-center">
@@ -1747,8 +1785,9 @@
                         <option
                           value=""
                           data-ng-hide="newBridgeInterface.type === 'alias'"
-                          >Unconfigured</option
                         >
+                          Unconfigured
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -1765,8 +1804,7 @@
                         data-ng-model="newBridgeInterface.mode"
                         data-ng-change="modeChanged(newBridgeInterface)"
                         data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:newBridgeInterface"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -1797,7 +1835,7 @@
                   <h3 class="p-heading--five">Advanced options</h3>
                   <div
                     class="p-form__group row u-vertically-center"
-                    style="min-height: 2.5rem;"
+                    style="min-height: 2.5rem"
                   >
                     <label for="stp" class="p-form__label col-2">
                       STP
@@ -2192,14 +2230,14 @@
                       </div>
                     </div>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(interface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="interface.vlan && interface.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(interface.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -2476,14 +2514,14 @@
                       </div>
                     </div>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(interface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="interface.vlan && interface.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(interface.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -2665,14 +2703,14 @@
                       </div>
                     </div>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(editInterface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="editInterface.vlan && editInterface.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(editInterface.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -2705,9 +2743,7 @@
                 <div class="col-6">
                   <div class="p-form__group row">
                     <label class="p-form__label col-2">Name</label>
-                    <div class="p-form__control col-4">
-                      {$ getAddName() $}
-                    </div>
+                    <div class="p-form__control col-4">{$ getAddName() $}</div>
                   </div>
                   <div class="p-form__group row">
                     <label for="type" class="p-form__label col-2">Type</label>
@@ -2720,13 +2756,15 @@
                         <option
                           value="alias"
                           data-ng-show="canAddAlias(newInterface.parent)"
-                          >Alias</option
                         >
+                          Alias
+                        </option>
                         <option
                           value="vlan"
                           data-ng-show="canAddVLAN(newInterface.parent)"
-                          >VLAN</option
                         >
+                          VLAN
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -2754,8 +2792,7 @@
                         data-ng-model="newInterface.parent.fabric"
                         data-ng-options="fabric as fabric.name for fabric in fabrics"
                         disabled="disabled"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -2769,8 +2806,7 @@
                         data-ng-model="newInterface.vlan"
                         data-ng-options="vlan as getVLANText(vlan) for vlan in vlans"
                         disabled="disabled"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -2784,8 +2820,7 @@
                         data-ng-model="newInterface.vlan"
                         data-ng-change="vlanChanged(newInterface)"
                         data-ng-options="vlan as getVLANText(vlan) for vlan in vlans | removeDefaultVLAN | filterByFabric:newInterface.parent.fabric | filterByUnusedForInterface:newInterface.parent:originalInterfaces"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row">
@@ -2802,8 +2837,9 @@
                         <option
                           value=""
                           data-ng-hide="newInterface.type === 'alias'"
-                          >Unconfigured</option
                         >
+                          Unconfigured
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -2820,8 +2856,7 @@
                         data-ng-model="newInterface.mode"
                         data-ng-change="modeChanged(newInterface)"
                         data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:newInterface"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -3072,7 +3107,7 @@
                           <h3 class="p-heading--five">Advanced options</h3>
                           <div
                             class="p-form__group row u-vertically-center"
-                            style="min-height: 2.5rem;"
+                            style="min-height: 2.5rem"
                           >
                             <label for="stp" class="p-form__label col-2">
                               STP
@@ -3174,8 +3209,7 @@
                                 ng-change="handleEditBondMode(editInterface.bond_mode)"
                                 ng-model="editInterface.bond_mode"
                                 ng-options="mode[0] as mode[1] for mode in bondOptions.modes"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div
@@ -3194,8 +3228,7 @@
                                 class="p-form-validation__input"
                                 data-ng-model="editInterface.bond_xmit_hash_policy"
                                 data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies"
-                              >
-                              </select>
+                              ></select>
                               <p
                                 class="p-form-validation__message"
                                 data-ng-if="showLACPRate() && modeAndPolicyCompliant()"
@@ -3217,8 +3250,7 @@
                                 name="lacp-rate"
                                 data-ng-model="editInterface.bond_lacp_rate"
                                 data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div class="p-form__group row">
@@ -3258,8 +3290,7 @@
                                 data-ng-model="editInterface.fabric"
                                 data-ng-options="fabric as fabric.name for fabric in fabrics"
                                 data-ng-change="updateVLAN(editInterface)"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div class="p-form__group row u-vertically-center">
@@ -3269,8 +3300,7 @@
                                 name="vlan"
                                 data-ng-model="editInterface.vlan"
                                 data-ng-options="vlan as getVLANText(vlan) for vlan in vlans | filterVLANNotOnFabric:editInterface.fabric.vlan_ids"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div class="p-form__group row u-vertically-center">
@@ -3285,8 +3315,9 @@
                                 <option
                                   value=""
                                   data-ng-hide="editInterface.type === 'alias'"
-                                  >Unconfigured</option
                                 >
+                                  Unconfigured
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -3303,8 +3334,7 @@
                                 data-ng-model="editInterface.mode"
                                 data-ng-change="modeChanged(editInterface)"
                                 data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:editInterface"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div
@@ -3751,14 +3781,14 @@
                       </span>
                     </span>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(parent.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="parent.vlan && parent.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(parent.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -3968,14 +3998,14 @@
                       </div>
                     </div>
                   </td>
-                  <td style="overflow: visible;">
+                  <td style="overflow: visible">
                     {$ getDHCPStatus(interface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
                       ng-if="interface.vlan && interface.vlan.relay_vlan"
-                      style="margin-left: 0.25rem;"
+                      style="margin-left: 0.25rem"
                     >
-                      <i class="p-icon--information" style="width: 0.875rem;"
+                      <i class="p-icon--information" style="width: 0.875rem"
                         >{$ getDHCPStatus(interface.vlan, true) $}</i
                       >
                       <span class="p-tooltip__message"
@@ -4013,8 +4043,7 @@
                         name="bond-mode"
                         data-ng-model="newBondInterface.bond_mode"
                         data-ng-options="mode[0] as mode[1] for mode in bondOptions.modes"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -4031,8 +4060,7 @@
                         class="p-form-validation__input"
                         data-ng-model="newBondInterface.bond_xmit_hash_policy"
                         data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies"
-                      >
-                      </select>
+                      ></select>
                       <p
                         class="p-form-validation__message"
                         data-ng-if="showLACPRate() && modeAndPolicyCompliant()"
@@ -4051,8 +4079,7 @@
                         name="lacp-rate"
                         data-ng-model="newBondInterface.bond_lacp_rate"
                         data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row">
@@ -4091,8 +4118,7 @@
                         name="fabric"
                         data-ng-model="newBondInterface.fabric"
                         data-ng-options="fabric as fabric.name for fabric in fabrics"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row u-vertically-center">
@@ -4102,8 +4128,7 @@
                         name="vlan"
                         data-ng-model="newBondInterface.vlan"
                         data-ng-options="vlan as getVLANText(vlan) for vlan in vlans | filterVLANNotOnFabric:newBondInterface.fabric.vlan_ids"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div class="p-form__group row u-vertically-center">
@@ -4118,8 +4143,9 @@
                         <option
                           value=""
                           data-ng-hide="newBondInterface.type === 'alias'"
-                          >Unconfigured</option
                         >
+                          Unconfigured
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -4136,8 +4162,7 @@
                         data-ng-model="newBondInterface.mode"
                         data-ng-change="modeChanged(newBondInterface)"
                         data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:newBondInterface"
-                      >
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div
@@ -4297,9 +4322,7 @@
                     <i class="p-icon--spinner is-light u-animation--spin"></i>
                     &nbsp; Saving bond
                   </span>
-                  <span data-ng-if="!isSaving">
-                    Save bond
-                  </span>
+                  <span data-ng-if="!isSaving"> Save bond </span>
                 </button>
               </div>
             </div>
@@ -4629,7 +4652,10 @@
                 </td>
                 <td class="p-double-row">
                   <div class="p-double-row__rows-container">
-                    <div class="p-double-row__main-row u-truncate" aria-label="Fabric">
+                    <div
+                      class="p-double-row__main-row u-truncate"
+                      aria-label="Fabric"
+                    >
                       <span
                         data-ng-if="!isEditing(interface)"
                         title="{$ interface.fabric.name || 'Disconnected' $}"
@@ -4780,14 +4806,14 @@
                     </div>
                   </div>
                 </td>
-                <td style="overflow: visible;">
+                <td style="overflow: visible">
                   {$ getDHCPStatus(interface.vlan) $}
                   <span
                     class="p-tooltip--btm-right"
                     ng-if="interface.vlan && interface.vlan.relay_vlan"
-                    style="margin-left: 0.25rem;"
+                    style="margin-left: 0.25rem"
                   >
-                    <i class="p-icon--information" style="width: 0.875rem;"
+                    <i class="p-icon--information" style="width: 0.875rem"
                       >{$ getDHCPStatus(interface.vlan, true) $}</i
                     >
                     <span class="p-tooltip__message"
@@ -4981,13 +5007,15 @@
                                 <option
                                   value="alias"
                                   data-ng-show="canAddAlias(newInterface.parent)"
-                                  >Alias</option
                                 >
+                                  Alias
+                                </option>
                                 <option
                                   value="vlan"
                                   data-ng-show="canAddVLAN(newInterface.parent)"
-                                  >VLAN</option
                                 >
+                                  VLAN
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -5015,8 +5043,7 @@
                                 data-ng-model="newInterface.parent.fabric"
                                 data-ng-options="fabric as fabric.name for fabric in fabrics"
                                 disabled="disabled"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div
@@ -5030,8 +5057,7 @@
                                 data-ng-model="newInterface.vlan"
                                 data-ng-options="vlan as getVLANText(vlan) for vlan in vlans"
                                 disabled="disabled"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div
@@ -5045,8 +5071,7 @@
                                 data-ng-model="newInterface.vlan"
                                 data-ng-change="vlanChanged(newInterface)"
                                 data-ng-options="vlan as getVLANText(vlan) for vlan in vlans | removeDefaultVLAN | filterByFabric:newInterface.parent.fabric | filterByUnusedForInterface:newInterface.parent:originalInterfaces"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div class="p-form__group">
@@ -5063,8 +5088,9 @@
                                 <option
                                   value=""
                                   data-ng-hide="newInterface.type === 'alias'"
-                                  >Unconfigured</option
                                 >
+                                  Unconfigured
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -5081,8 +5107,7 @@
                                 data-ng-model="newInterface.mode"
                                 data-ng-change="modeChanged(newInterface)"
                                 data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:newInterface"
-                              >
-                              </select>
+                              ></select>
                             </div>
                           </div>
                           <div
@@ -5322,9 +5347,7 @@
                   </div>
                   <div class="p-double-row__rows-container--checkbox">
                     <div class="p-double-row__main-row">
-                      <div title="{$ member.name $}">
-                        {$ member.name $}
-                      </div>
+                      <div title="{$ member.name $}">{$ member.name $}</div>
                     </div>
                     <div class="p-double-row__muted-row">
                       <div title="{$ member.mac_address $}">
@@ -5333,9 +5356,7 @@
                     </div>
                   </div>
                 </td>
-                <td aria-label="Boot interface">
-                  &nbsp;
-                </td>
+                <td aria-label="Boot interface">&nbsp;</td>
                 <td
                   class="p-table__col--status p-double-row"
                   aria-label="Link and interface speed"
@@ -5406,21 +5427,11 @@
                     >
                   </div>
                 </td>
-                <td class="p-double-row">
-                  &nbsp;
-                </td>
-                <td class="p-double-row">
-                  &nbsp;
-                </td>
-                <td class="p-double-row">
-                  &nbsp;
-                </td>
-                <td class="p-double-row">
-                  &nbsp;
-                </td>
-                <td class="p-double-row">
-                  &nbsp;
-                </td>
+                <td class="p-double-row">&nbsp;</td>
+                <td class="p-double-row">&nbsp;</td>
+                <td class="p-double-row">&nbsp;</td>
+                <td class="p-double-row">&nbsp;</td>
+                <td class="p-double-row">&nbsp;</td>
               </tr>
               <tr ng-if="false" ng-repeat-end></tr>
 
@@ -5439,19 +5450,19 @@
                             id="bond-create"
                             disabled="disabled"
                             checked
-                            style="margin-top: 0.5rem;"
+                            style="margin-top: 0.5rem"
                           />
                           <label for="bond-create"></label>
                           <span
                             data-ng-class="{ 'is-error': isInterfaceNameInvalid(newBondInterface) }"
-                            style="padding-left: 2rem;"
+                            style="padding-left: 2rem"
                           >
                             <input
                               type="text"
                               name="name"
                               class="editible p-form-validation__input u-no-margin--bottom"
                               data-ng-model="newBondInterface.name"
-                              style="width: 82%;"
+                              style="width: 82%"
                             />
                           </span>
                         </td>
@@ -5512,8 +5523,7 @@
                               name="bond-mode"
                               data-ng-model="newBondInterface.mode"
                               data-ng-options="mode[0] as mode[1] for mode in bondOptions.modes"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div class="p-form__group">
@@ -5557,8 +5567,7 @@
                               name="lacp-rate"
                               data-ng-model="newBondInterface.bond_lacp_rate"
                               data-ng-options="rate[0] as rate[1] for rate in bondOptions.lacp_rates"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div
@@ -5573,8 +5582,7 @@
                               name="xmit-hash-policy"
                               data-ng-model="newBondInterface.bond_xmit_hash_policy"
                               data-ng-options="xmit[0] as xmit[1] for xmit in bondOptions.xmit_hash_policies"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                       </div>
@@ -5719,7 +5727,7 @@
                         </div>
                         <div
                           class="p-form__group u-no-margin--top row u-vertically-center"
-                          style="min-height: 2.5rem;"
+                          style="min-height: 2.5rem"
                         >
                           <label class="p-form__label col-2">Tags</label>
                           <div class="p-form__control col-4 tags--inline">
@@ -5741,8 +5749,7 @@
                               data-ng-model="newInterface.fabric"
                               data-ng-change="fabricChanged(newInterface)"
                               data-ng-options="fabric as fabric.name for fabric in fabrics"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div class="p-form__group row u-no-margin--top">
@@ -5754,8 +5761,7 @@
                               name="vlan"
                               data-ng-model="newInterface.vlan"
                               data-ng-options="vlan as getVLANText(vlan) for vlan in vlans"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div class="p-form__group row u-no-margin--top">
@@ -5772,8 +5778,9 @@
                               <option
                                 value=""
                                 data-ng-hide="newInterface.type === 'alias'"
-                                >Unconfigured</option
                               >
+                                Unconfigured
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -5790,8 +5797,7 @@
                               data-ng-model="newInterface.mode"
                               data-ng-change="modeChanged(newInterface)"
                               data-ng-options="mode.mode as mode.text for mode in modes | filterLinkModes:newInterface"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div
@@ -5852,8 +5858,7 @@
                               name="ip-assignment"
                               data-ng-model="newInterface.ip_assignment"
                               data-ng-options="assignment.name as assignment.text for assignment in ipAssignments"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div
@@ -5870,8 +5875,7 @@
                               data-ng-model="newInterface.subnet"
                               data-ng-change="subnetChanged(newInterface)"
                               data-ng-options="subnet as getSubnetText(subnet) for subnet in subnets"
-                            >
-                            </select>
+                            ></select>
                           </div>
                         </div>
                         <div
@@ -6133,7 +6137,7 @@
                 class="p-notification--caution is-subtle"
                 data-ng-if="newLayout.id !== 'lvm' && newLayout.id !== 'vmfs6' && newLayout.id !== 'blank'"
               >
-                <p class="p-notification__response" style="margin-left: -1rem;">
+                <p class="p-notification__response" style="margin-left: -1rem">
                   <strong
                     >Are you sure you want to change the storage layout to {$
                     newLayout.id $}?</strong
@@ -6334,9 +6338,7 @@
     <div class="row">
       <div class="col-12">
         <div class="p-notification" data-ng-if="!node.events.length">
-          <p class="p-notification__response">
-            No events found.
-          </p>
+          <p class="p-notification__response">No events found.</p>
         </div>
         <table data-ng-if="node.events.length">
           <thead>
@@ -6414,9 +6416,7 @@
               class="p-notification"
               data-ng-if="logOutput === null || logOutput === ''"
             >
-              <p class="p-notification__response">
-                No logs found.
-              </p>
+              <p class="p-notification__response">No logs found.</p>
             </div>
           </div>
         </div>

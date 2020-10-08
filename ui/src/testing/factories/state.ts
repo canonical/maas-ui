@@ -93,6 +93,7 @@ export const dhcpSnippetState = define<DHCPSnippetState>({
 
 export const fabricState = define<FabricState>({
   ...defaultState,
+  errors: null,
 });
 
 export const licenseKeysState = define<LicenseKeysState>({
