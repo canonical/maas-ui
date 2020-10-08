@@ -138,6 +138,15 @@ describe("maasNotifications", function () {
       expect(dismiss).not.toHaveBeenCalledWith(notifications[3]);
     });
 
+    it("does not display a dismiss all link if none can be dismissed", () => {
+      theNotificationsManager._items = [
+        exampleAdditionalNotification,
+        { ...exampleAdditionalNotification, id: 5 },
+      ];
+      const directive = compileDirective();
+      expect(directive.find('[data-test="dismiss-all"]').length).toBe(0);
+    });
+
     it("adjusts class according to category", function () {
       theNotificationsManager._items = exampleNotifications;
       var directive = compileDirective();
