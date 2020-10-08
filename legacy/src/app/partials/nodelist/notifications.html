@@ -61,7 +61,10 @@
               ></i>
             </small> </a
           >&nbsp;&nbsp;
-          <a data-test="dismiss-all" ng-click="dismissCategory(category)"
+          <a
+            data-test="dismiss-all"
+            ng-click="dismissCategory(category)"
+            ng-if="dismissable(notifications)"
             >Dismiss all</a
           >
         </p>

@@ -38,6 +38,8 @@ const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
           notifications.length
         )}`;
 
+  const dismissable = notifications.some(({ dismissable }) => !!dismissable);
+
   return (
     <div className="p-notification--group">
       {notifications.length > 1 ? (
@@ -62,13 +64,15 @@ const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
               ></i>
             </small>
           </Button>
-          <Button
-            appearance="link"
-            className="p-notification__action u-nudge-right"
-            onClick={() => dismissAll(notifications, dispatch)}
-          >
-            Dismiss all
-          </Button>
+          {dismissable ? (
+            <Button
+              appearance="link"
+              className="p-notification__action u-nudge-right"
+              onClick={() => dismissAll(notifications, dispatch)}
+            >
+              Dismiss all
+            </Button>
+          ) : null}
         </Notification>
       ) : null}
       {((groupOpen && notifications.length > 1) ||

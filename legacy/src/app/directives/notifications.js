@@ -57,6 +57,9 @@ export function maasNotifications(
         });
       };
 
+      scope.dismissable = (notifications) =>
+        notifications.some(({ dismissable }) => !!dismissable);
+
       scope.navigateToSettings = () => {
         $rootScope.navigateToNew("/settings");
       };
