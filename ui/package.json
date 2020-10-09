@@ -60,7 +60,7 @@
     "standalone": "REACT_APP_STANDALONE=true react-scripts start",
     "start": "REACT_APP_STANDALONE=false react-app-rewired start",
     "serve": "yarn run start",
-    "build": "REACT_APP_STANDALONE=false react-app-rewired build --profile && rm -rf dist && mv build dist",
+    "build": "REACT_APP_STANDALONE=false react-app-rewired build && rm -rf dist && mv build dist",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
