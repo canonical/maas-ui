@@ -8,6 +8,7 @@ machine.fetch = () => {
     meta: {
       model: "machine",
       method: "list",
+      subsequentLimit: 100,
     },
     payload: {
       params: { limit: 25 },

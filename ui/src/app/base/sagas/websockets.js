@@ -173,6 +173,10 @@ export function* handleBatch({ request_id, result }) {
       deleteBatchRequest(request_id);
       // Set the next batch to start at the last id we received.
       let nextBatch = { ...batchRequest };
+      if (nextBatch?.meta?.subsequentLimit) {
+        batchRequest.payload.params.limit = nextBatch.meta.subsequentLimit;
+        delete nextBatch.meta.subsequentLimit;
+      }
       nextBatch.payload.params.start = result[result.length - 1].id;
       // Send the new request.
       yield put(nextBatch);
