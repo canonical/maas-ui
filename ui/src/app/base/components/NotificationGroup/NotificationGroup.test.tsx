@@ -92,6 +92,30 @@ describe("NotificationGroup", () => {
     );
   });
 
+  it("does not display a dismiss all link if none can be dismissed", () => {
+    const notifications = [
+      notificationFactory({ dismissable: false }),
+      notificationFactory({ dismissable: false }),
+    ];
+    const state = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notifications,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NotificationGroup notifications={notifications} type="negative" />
+      </Provider>
+    );
+
+    expect(
+      wrapper
+        .findWhere((n) => n.name() === "Button" && n.text() === "Dismiss all")
+        .exists()
+    ).toBe(false);
+  });
+
   it("can dismiss multiple notifications", () => {
     const notifications = [
       notificationFactory({ dismissable: true }),
