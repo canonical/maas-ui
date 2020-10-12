@@ -38,7 +38,7 @@
     "dotenv-flow-webpack": "1.1.0",
     "eslint": "7.10.0",
     "html-webpack-plugin": "4.5.0",
-    "mini-css-extract-plugin": "0.11.3",
+    "mini-css-extract-plugin": "1.0.0",
     "node-sass": "4.14.1",
     "npm-package-json-lint": "5.1.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
