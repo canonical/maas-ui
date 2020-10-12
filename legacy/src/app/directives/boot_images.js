@@ -61,7 +61,7 @@ export function maasBootImages(
 
   /* @ngInject */
   function BootImagesController($scope) {
-    const DEFAULT_RELEASE = "bionic";
+    const DEFAULT_RELEASE_NAME = "bionic";
     const DEFAULT_ARCH = "amd64";
 
     $scope.loading = true;
@@ -254,10 +254,13 @@ export function maasBootImages(
     };
 
     // Select the default images that should be selected. Current
-    // defaults are '18.04 LTS' and 'amd64'.
+    // defaults are '20.04 LTS' and 'amd64'.
     $scope.selectDefaults = () => {
+      const defaultReleaseName =
+        $scope.bootResources?.ubuntu?.commissioning_series ||
+        DEFAULT_RELEASE_NAME;
       const defaultRelease = $scope.source.releases.find(
-        (release) => release.name === DEFAULT_RELEASE
+        (release) => release.name === defaultReleaseName
       );
       const defaultArch = $scope.source.arches.find(
         (arch) => arch.name === DEFAULT_ARCH
