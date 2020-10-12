@@ -35,15 +35,10 @@ export const Footer = ({ enableAnalytics, debug, maasName, version }) => {
           <ul className="p-inline-list--middot">
             <li className="p-inline-list__item">
               <a
-                href={`https://maas.io/docs/release-notes`}
+                href={`/MAAS/docs/maas-documentation-25.html`}
                 className="p-footer__link"
               >
-                View release notes
-              </a>
-            </li>
-            <li className="p-inline-list__item">
-              <a href={`https://maas.io/docs/`} className="p-footer__link">
-                View documentation
+                Local documentation
               </a>
             </li>
             <li className="p-inline-list__item">
