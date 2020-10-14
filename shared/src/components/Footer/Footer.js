@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
+import { BASENAME } from "../../utils";
+
 export const Footer = ({ enableAnalytics, debug, maasName, version }) => {
   useEffect(() => {
     if (!debug && enableAnalytics && version) {
@@ -35,7 +37,7 @@ export const Footer = ({ enableAnalytics, debug, maasName, version }) => {
           <ul className="p-inline-list--middot">
             <li className="p-inline-list__item">
               <a
-                href={`/MAAS/docs/maas-documentation-25.html`}
+                href={`${BASENAME}/docs/maas-documentation-25.html`}
                 className="p-footer__link"
               >
                 Local documentation
