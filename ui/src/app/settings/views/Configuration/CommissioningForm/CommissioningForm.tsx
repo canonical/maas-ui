@@ -10,9 +10,13 @@ import FormikForm from "app/base/components/FormikForm";
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
   default_min_hwe_kernel: Yup.string(),
-  maas_auto_ipmi_user: Yup.string().required(
-    'The username cannot be left blank. The username is "maas" by default.'
-  ),
+  maas_auto_ipmi_user: Yup.string()
+    .required(
+      'The username cannot be left blank. The username is "maas" by default.'
+    )
+    .min(3, "The username must be 3 characters or more")
+    .max(16, "The username must be 16 characters or less.")
+    .matches(/^\S*$/, "The username may not contain spaces"),
   maas_auto_ipmi_k_g_bmc_key: Yup.string(),
   maas_auto_ipmi_user_privilege_level: Yup.string().matches(
     /(ADMIN|OPERATOR|USER)/
