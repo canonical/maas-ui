@@ -59,8 +59,11 @@
           <td class="p-table__cell--fabric" title="{$ getFabricName(iface) $}">
             {$ getFabricName(iface) $}
           </td>
-          <td class="p-table__cell--dhcp" style="overflow: visible;" title="{$ getDHCPStatus(iface) $}">
-            {$ getDHCPStatus(iface) $}
+          <td
+            class="p-table__cell--dhcp"
+            ng-style="{ 'overflow': isRelayed(iface) ? 'visible' : 'hidden' }"
+          >
+            <span title="{$ getDHCPStatus(iface) $}">{$ getDHCPStatus(iface) $}</span>
             <span class="p-tooltip--btm-right" ng-if="isRelayed(iface)" style="margin-left: .25rem;">
                 <i class="p-icon--information" style="width: .875rem;">{$ getDHCPStatus(iface, true) $}</i>
                 <span class="p-tooltip__message">{$ getDHCPStatus(iface, true) $}</span>
