@@ -6,7 +6,7 @@
             data-ng-if="node.power_state === 'error' && node.events && node.events.length > 0"
         >
             <p class="p-notification__response">
-                <span class="p-notification__status">Error:</span> {$ getEventText(node.events[0]) $}. <a href="{$ legacyURLBase $}/machine/{$ node.system_id $}?area=events">See all events</a>.
+                <span class="p-notification__status">Error:</span> {$ getEventText(node.events[0]) $}. <a href="{$ legacyURLBase $}/{$ type_name $}/{$ node.system_id $}?area=events">See all events</a>.
             </p>
         </div>
         <div data-ng-if="canEdit()">
