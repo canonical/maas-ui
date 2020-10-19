@@ -339,7 +339,6 @@ describe("NodeDetailsController", function () {
       ResourcePoolsManager,
       FabricsManager,
       VLANsManager,
-      MachinesManager,
       PodsManager,
       ScriptsManager,
     ]);
@@ -382,11 +381,15 @@ describe("NodeDetailsController", function () {
   });
 
   it("doesnt call setActiveItem if node is loaded", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
     spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
     MachinesManager._activeItem = node;
 
+    getItemDefer.resolve(node);
     defer.resolve();
     $rootScope.$digest();
 
@@ -396,10 +399,13 @@ describe("NodeDetailsController", function () {
   });
 
   it("calls setActiveItem if node is not active", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
     spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
 
+    getItemDefer.resolve(node);
     defer.resolve();
     $rootScope.$digest();
 
@@ -407,7 +413,12 @@ describe("NodeDetailsController", function () {
   });
 
   it("sets node and loaded once setActiveItem resolves", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
+    getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
+
     expect($scope.node).toBe(node);
     expect($scope.loaded).toBe(true);
   });
@@ -426,15 +437,19 @@ describe("NodeDetailsController", function () {
     expect($scope.type_name_title).toBe("Machine");
   });
 
-  it("fetches pod details if node has a pod", function() {
+  it("fetches pod details if node has a pod", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
     node.pod = { id: 1 };
     MachinesManager._activeItem = node;
     spyOn(PodsManager, "getItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
 
+    getItemDefer.resolve(node);
     defer.resolve();
     $rootScope.$digest();
+
     expect(PodsManager.getItem).toHaveBeenCalledWith(node.pod.id);
   });
 
@@ -457,6 +472,9 @@ describe("NodeDetailsController", function () {
   });
 
   it("updateServices sets $scope.services when node is loaded", function () {
+    const getItemDefer = $q.defer();
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
+
     spyOn(ControllersManager, "getServices").and.returnValue([
       { status: "running", name: "rackd" },
     ]);
@@ -470,6 +488,7 @@ describe("NodeDetailsController", function () {
     ControllersManager._activeItem = node;
 
     defer.resolve();
+    getItemDefer.resolve(node);
     $rootScope.$digest();
 
     expect($scope.node).toBe(node);
@@ -482,6 +501,9 @@ describe("NodeDetailsController", function () {
   });
 
   it("loads node actions", function () {
+    const getItemDefer = $q.defer();
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
+
     spyOn(ControllersManager, "setActiveItem").and.returnValue(
       $q.defer().promise
     );
@@ -501,7 +523,9 @@ describe("NodeDetailsController", function () {
     ControllersManager._activeItem = myNode;
     loadManagersDefer.resolve();
     loadItemsDefer.resolve();
+    getItemDefer.resolve(myNode);
     $rootScope.$digest();
+
     expect(GeneralManager.isDataLoaded.calls.count()).toBe(2);
     expect(GeneralManager.isDataLoaded).toHaveBeenCalledWith(
       "rack_controller_actions"
@@ -512,11 +536,20 @@ describe("NodeDetailsController", function () {
   });
 
   it("title is updated once setActiveItem resolves", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
+    getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
+
     expect($rootScope.title).toBe(node.fqdn);
   });
 
   it("summary section placed in edit mode if architecture blank", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
+    getItemDefer.resolve(node);
     node.architecture = "";
     node.permissions = ["edit"];
     GeneralManager._data.power_types.data = [{}];
@@ -544,7 +577,12 @@ describe("NodeDetailsController", function () {
   });
 
   it("summary section is updated once setActiveItem resolves", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
+    getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
+
     expect($scope.summary.zone.selected).toBe(
       ZonesManager.getItemFromList(node.zone.id)
     );
@@ -560,9 +598,14 @@ describe("NodeDetailsController", function () {
   });
 
   it("power section edit mode if power_type blank for a machine", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
+    getItemDefer.resolve(node);
     GeneralManager._data.power_types.data = [{}];
     node.permissions = ["edit"];
     makeControllerResolveSetActiveItem();
+
     expect($scope.power.editing).toBe(true);
   });
 
@@ -580,6 +623,9 @@ describe("NodeDetailsController", function () {
   });
 
   it("starts watching once setActiveItem resolves", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
     var setActiveDefer = $q.defer();
     spyOn(MachinesManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
@@ -592,6 +638,7 @@ describe("NodeDetailsController", function () {
 
     defer.resolve();
     $rootScope.$digest();
+    getItemDefer.resolve(node);
     setActiveDefer.resolve(node);
     $rootScope.$digest();
 
@@ -631,6 +678,9 @@ describe("NodeDetailsController", function () {
   });
 
   it("updates $scope.devices", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
     var setActiveDefer = $q.defer();
     spyOn(MachinesManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
@@ -679,6 +729,7 @@ describe("NodeDetailsController", function () {
 
     defer.resolve();
     $rootScope.$digest();
+    getItemDefer.resolve(node);
     setActiveDefer.resolve(node);
     $rootScope.$digest();
 
@@ -719,10 +770,14 @@ describe("NodeDetailsController", function () {
   });
 
   it("updates $scope.actions", function () {
+    const getItemDefer = $q.defer();
+    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+
     var setActiveDefer = $q.defer();
     spyOn(MachinesManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
     );
+
     var loadManagersDefer = $q.defer();
     var loadItemsDefer = $q.defer();
     makeController(loadManagersDefer, loadItemsDefer);
@@ -737,6 +792,7 @@ describe("NodeDetailsController", function () {
     ];
     loadManagersDefer.resolve();
     $rootScope.$digest();
+    getItemDefer.resolve(node);
     setActiveDefer.resolve(node);
     $rootScope.$digest();
     // loadItems normally sets loaded to true and sets data to the items

@@ -391,8 +391,13 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
     var method = this._handler + ".get";
     var params = {};
     params[this._pk] = pk_value;
-    return RegionConnection.callMethod(method, params).then(function(item) {
-      self._replaceItem(item);
+    return RegionConnection.callMethod(method, params).then(function (item) {
+      self._loaded = true;
+      if (self._items.length === 0) {
+        self._items.push(item);
+      } else {
+        self._replaceItem(item);
+      }
       return item;
     });
   };
