@@ -3171,4 +3171,17 @@ describe("NodeDetailsController", function () {
       expect(getPodNumaID(node3, pod)).toEqual(null);
     });
   });
+
+  it(`returns the id of the only NUMA node of a pod, even if it has not
+    specifically pinned the VM`, () => {
+    const node = { pod: { id: 1, name: "pod1" }, system_id: "abc123" };
+    const pod = {
+      id: 1,
+      name: "pod1",
+      numa_pinning: [
+        { node_id: 1, vms: [] }, // VM is not pinned here
+      ],
+    };
+    expect(getPodNumaID(node, pod)).toEqual(1);
+  });
 });

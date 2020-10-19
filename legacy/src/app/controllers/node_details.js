@@ -46,6 +46,11 @@ export const getRanges = (array) => {
 
 export const getPodNumaID = (node, pod) => {
   if (pod.numa_pinning) {
+    // If there is only one NUMA node on the VM host, then the VM must be
+    // aligned on that node even if it isn't specifically pinned.
+    if (pod.numa_pinning.length === 1) {
+      return pod.numa_pinning[0].node_id;
+    }
     const podNuma = pod.numa_pinning.find((numa) =>
       numa.vms.some((vm) => vm.system_id === node.system_id)
     );
