@@ -52,16 +52,6 @@
     }
   }
 
-  // XXX Footer link fix
-  // Issue: https://github.com/vanilla-framework/vanilla-framework/issues/1500
-  .p-footer__link {
-    color: $color-link;
-
-    &::after {
-      color: $color-dark;
-    }
-  }
-
   body {
     background-color: $color-light;
   }
@@ -177,20 +167,6 @@
 
   .col-12 {
     width: 100%;
-  }
-
-  // Can be removed when the settings section is updated
-  .errorlist {
-    list-style: none;
-    display: inline-block;
-    margin-left: 0;
-  }
-
-  // Sidebar selected state
-  .sidebar__second-level .is-active {
-    background: transparent url("../assets/images/89c10794-remove.svg") top
-      $sp-small right $sp-large no-repeat;
-    background-size: 12px;
   }
 
   // Checkbox height is not needed
