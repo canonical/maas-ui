@@ -173,6 +173,15 @@ export function* handleBatch({ request_id, result }) {
       deleteBatchRequest(request_id);
       // Set the next batch to start at the last id we received.
       let nextBatch = { ...batchRequest };
+      // If the action has a subsequentLimit then we need to raise the limit
+      // after the first request.
+      if (nextBatch?.meta?.subsequentLimit) {
+        // Set the limit to the subsequentLimit value.
+        batchRequest.payload.params.limit = nextBatch.meta.subsequentLimit;
+        // Remove the subsequentLimit attribute as we've already raised the
+        // limit and further actions should remain at this value.
+        delete nextBatch.meta.subsequentLimit;
+      }
       nextBatch.payload.params.start = result[result.length - 1].id;
       // Send the new request.
       yield put(nextBatch);

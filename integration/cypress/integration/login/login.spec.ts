@@ -1,8 +1,13 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
 context("Login page", () => {
   beforeEach(() => {
     cy.visit(generateNewURL("/"));
+  });
+
+  afterEach(() => {
+    cy.clearCookie("skipintro");
+    cy.clearCookie("skipsetupintro");
   });
 
   it("is disabled by default", () => {
@@ -35,7 +40,24 @@ context("Login page", () => {
     cy.get(".p-notification--negative").should("exist");
   });
 
+  it("logs in and redirects to the intro", () => {
+    cy.get("input[name='username']").type("admin");
+    cy.get("input[name='password']").type("test");
+    cy.get("button[type='submit']").click();
+    cy.location("pathname").should("eq", generateLegacyURL("/intro"));
+  });
+
+  it("logs in and redirects to the user intro", () => {
+    // Skip the first intro.
+    cy.setCookie("skipsetupintro", "true");
+    cy.get("input[name='username']").type("admin");
+    cy.get("input[name='password']").type("test");
+    cy.get("button[type='submit']").click();
+    cy.location("pathname").should("eq", generateLegacyURL("/intro/user"));
+  });
+
   it("logs in and redirects to the machine list", () => {
+    cy.setCookie("skipintro", "true");
     cy.get("button").should("have.attr", "disabled", "disabled");
     cy.get("input[name='username']").type("admin");
     cy.get("input[name='password']").type("test");

@@ -46,6 +46,11 @@ export const getRanges = (array) => {
 
 export const getPodNumaID = (node, pod) => {
   if (pod.numa_pinning) {
+    // If there is only one NUMA node on the VM host, then the VM must be
+    // aligned on that node even if it isn't specifically pinned.
+    if (pod.numa_pinning.length === 1) {
+      return pod.numa_pinning[0].node_id;
+    }
     const podNuma = pod.numa_pinning.find((numa) =>
       numa.vms.some((vm) => vm.system_id === node.system_id)
     );
@@ -1717,7 +1722,7 @@ function NodeDetailsController(
     $rootScope.page = "devices";
   } else {
     $scope.nodesManager = MachinesManager;
-    page_managers = [MachinesManager, PodsManager, ScriptsManager];
+    page_managers = [PodsManager, ScriptsManager];
     $scope.isController = false;
     $scope.isDevice = false;
     $scope.type_name = "machine";
@@ -1739,46 +1744,50 @@ function NodeDetailsController(
       FabricsManager,
       VLANsManager,
     ].concat(page_managers)
-  ).then(function () {
-    // Possibly redirected from another controller that already had
-    // this node set to active. Only call setActiveItem if not already
-    // the activeItem.
-    var activeNode = $scope.nodesManager.getActiveItem();
-    if (
-      angular.isObject(activeNode) &&
-      activeNode.system_id === $stateParams.system_id
-    ) {
-      nodeLoaded(activeNode);
+  ).then(() => {
+    // only fetch a single machine, rather than entire machine list
+    $scope.nodesManager.getItem($stateParams.system_id).then((node) => {
+      // Possibly redirected from another controller that already had
+      // this node set to active. Only call setActiveItem if not already
+      // the activeItem.
+      var activeNode = $scope.nodesManager.getActiveItem();
+      if (
+        angular.isObject(activeNode) &&
+        activeNode.system_id === node.system_id
+      ) {
+        nodeLoaded(activeNode);
 
-      // Set flag for RSD navigation item.
-      if (!$rootScope.showRSDLink) {
-        GeneralManager.getNavigationOptions().then(
-          (res) => ($rootScope.showRSDLink = res.rsd)
-        );
-      }
-    } else {
-      $scope.nodesManager.setActiveItem($stateParams.system_id).then(
-        function (node) {
-          nodeLoaded(node);
-          if (angular.isObject($scope.node.vlan)) {
-            if (
-              localStorage.getItem(
-                `hideHighAvailabilityNotification-${$scope.node.vlan.id}`
-              )
-            ) {
-              $scope.hideHighAvailabilityNotification = true;
-            }
-          }
-        },
-        function (error) {
-          ErrorService.raiseError(error);
+        // Set flag for RSD navigation item.
+        if (!$rootScope.showRSDLink) {
+          GeneralManager.getNavigationOptions().then(
+            (res) => ($rootScope.showRSDLink = res.rsd)
+          );
         }
-      );
-      activeNode = $scope.nodesManager.getActiveItem();
-    }
-    if ($scope.isDevice && activeNode) {
-      $scope.ip_assignment = activeNode.ip_assignment;
-    }
+      } else {
+        $scope.nodesManager.setActiveItem($stateParams.system_id).then(
+          function (node) {
+            nodeLoaded(node);
+            if (angular.isObject($scope.node.vlan)) {
+              if (
+                localStorage.getItem(
+                  `hideHighAvailabilityNotification-${$scope.node.vlan.id}`
+                )
+              ) {
+                $scope.hideHighAvailabilityNotification = true;
+              }
+            }
+          },
+          function (error) {
+            ErrorService.raiseError(error);
+          }
+        );
+        activeNode = $scope.nodesManager.getActiveItem();
+      }
+      if ($scope.isDevice && activeNode) {
+        $scope.ip_assignment = activeNode.ip_assignment;
+      }
+    });
+
     // Handle updating the area when the browser navigates back/forward.
     $scope.$on("$locationChangeStart", () => {
       $scope.section.area = angular.isString($location?.search()?.area)

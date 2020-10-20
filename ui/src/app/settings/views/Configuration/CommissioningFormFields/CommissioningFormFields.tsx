@@ -88,7 +88,7 @@ const CommissioningFormFields = (): JSX.Element => {
         name="maas_auto_ipmi_k_g_bmc_key"
         type="password"
       />
-      <h6 className="u-sv1">MAAS generated IPMI user privilege level</h6>
+      <p className="u-sv1">MAAS generated IPMI user privilege level</p>
       <FormikField
         name="maas_auto_ipmi_user_privilege_level"
         value="ADMIN"

@@ -109,7 +109,7 @@ export const Header = ({
 
   const links = [
     {
-      highlight: "/machine",
+      highlight: ["/machine", "/pool"],
       inHardwareMenu: true,
       label: "Machines",
       url: "/machines",
