@@ -7,7 +7,7 @@ import * as Yup from "yup";
 
 import { actions as repositoryActions } from "app/store/packagerepository";
 import { general as generalActions } from "app/base/actions";
-import { getRepoDisplayName } from "../utils";
+import { getRepoDisplayName } from "app/store/packagerepository/utils";
 import { RepositoryShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";

@@ -1,11 +1,14 @@
 import { generateBaseSelectors } from "app/store/utils";
+import { getRepoDisplayName } from "./utils";
 import type {
   PackageRepository,
   PackageRepositoryState,
 } from "app/store/packagerepository/types";
 
 const searchFunction = (repo: PackageRepository, term: string) =>
-  repo.name.includes(term) || repo.url.includes(term);
+  getRepoDisplayName(repo).includes(term) ||
+  repo.name.includes(term) ||
+  repo.url.includes(term);
 
 const selectors = generateBaseSelectors<
   PackageRepositoryState,
