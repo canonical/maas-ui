@@ -2,7 +2,7 @@ import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 import { login } from "../../utils";
 
-context("User list", () => {
+context("Settings - User list", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");

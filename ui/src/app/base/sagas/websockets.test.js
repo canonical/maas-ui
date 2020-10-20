@@ -306,6 +306,39 @@ describe("websocket sagas", () => {
       .run();
   });
 
+  it("can modify the limit of subsequent batch messages", () => {
+    const response = {
+      request_id: 99,
+      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
+    };
+    return expectSaga(handleBatch, response)
+      .provide([
+        [
+          call(getBatchRequest, 99),
+          {
+            type: "FETCH_TEST",
+            meta: {
+              model: "test",
+              method: "test.list",
+              type: MESSAGE_TYPES.REQUEST,
+              subsequentLimit: 100,
+            },
+            payload: { params: { limit: 5 } },
+          },
+        ],
+      ])
+      .put({
+        type: "FETCH_TEST",
+        meta: {
+          model: "test",
+          method: "test.list",
+          type: MESSAGE_TYPES.REQUEST,
+        },
+        payload: { params: { limit: 100, start: 15 } },
+      })
+      .run();
+  });
+
   it("can dispatch the complete action when receiving the last batch", () => {
     const response = {
       request_id: 99,

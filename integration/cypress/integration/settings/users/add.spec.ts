@@ -5,7 +5,7 @@ import { generateEmail, login } from "../../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
-context("User add", () => {
+context("Settings - User add", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
