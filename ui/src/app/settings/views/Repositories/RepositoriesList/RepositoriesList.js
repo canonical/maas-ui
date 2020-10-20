@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";
-import { getRepoDisplayName } from "../utils";
+import { getRepoDisplayName } from "app/store/packagerepository/utils";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";

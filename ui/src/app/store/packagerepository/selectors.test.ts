@@ -103,4 +103,18 @@ describe("packagerepository selectors", () => {
       items[1],
     ]);
   });
+
+  it("can search by display name", () => {
+    const items = [
+      packageRepositoryFactory({ name: "main_archive", default: true }),
+      packageRepositoryFactory({ url: "www.main.com" }),
+      packageRepositoryFactory(),
+    ];
+    const state = rootStateFactory({
+      packagerepository: packageRepositoryStateFactory({
+        items,
+      }),
+    });
+    expect(packagerepository.search(state, "Ubuntu")).toEqual([items[0]]);
+  });
 });
