@@ -1,5 +1,6 @@
 {
   "baseUrl": "http://localhost:8400",
+  "ignoreTestFiles": "**/no-users/*",
   "video": false,
   "projectId": "gp2cox"
 }
