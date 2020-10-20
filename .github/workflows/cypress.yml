@@ -28,7 +28,7 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: cypress/integration/no-users/login.spec.ts
+          spec: "**/no-users/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
           working-directory: integration
       - name: Create MAAS admin
@@ -44,9 +44,4 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: cypress/screenshots
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: cypress-videos
-          path: cypress/videos
+          path: integration/cypress/screenshots

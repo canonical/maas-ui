@@ -41,8 +41,8 @@ context("Login page", () => {
   });
 
   it("logs in and redirects to the intro", () => {
-    cy.get("input[name='username']").type("admin");
-    cy.get("input[name='password']").type("test");
+    cy.get("input[name='username']").type(Cypress.env("username"));
+    cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateLegacyURL("/intro"));
   });
@@ -50,8 +50,8 @@ context("Login page", () => {
   it("logs in and redirects to the user intro", () => {
     // Skip the first intro.
     cy.setCookie("skipsetupintro", "true");
-    cy.get("input[name='username']").type("admin");
-    cy.get("input[name='password']").type("test");
+    cy.get("input[name='username']").type(Cypress.env("username"));
+    cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateLegacyURL("/intro/user"));
   });
@@ -59,8 +59,8 @@ context("Login page", () => {
   it("logs in and redirects to the machine list", () => {
     cy.setCookie("skipintro", "true");
     cy.get("button").should("have.attr", "disabled", "disabled");
-    cy.get("input[name='username']").type("admin");
-    cy.get("input[name='password']").type("test");
+    cy.get("input[name='username']").type(Cypress.env("username"));
+    cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateNewURL("/machines"));
   });

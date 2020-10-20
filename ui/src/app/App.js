@@ -47,6 +47,9 @@ export const App = () => {
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
   const debug = process.env.NODE_ENV === "development";
+  // the skipintro cookie is set by Cypress to make integration testing easier
+  const skipIntro = getCookie("skipintro");
+  const skipSetupIntro = getCookie("skipsetupintro");
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -71,9 +74,6 @@ export const App = () => {
   }, [dispatch, connected]);
 
   useEffect(() => {
-    // the skipintro cookie is set by Cypress to make integration testing easier
-    const skipIntro = getCookie("skipintro");
-    const skipSetupIntro = getCookie("skipsetupintro");
     if (!skipIntro && configLoaded) {
       // Explicitly check that completedIntro is false so that it doesn't redirect
       // if the config isn't defined yet.
@@ -83,7 +83,7 @@ export const App = () => {
         navigateToLegacy("/intro/user");
       }
     }
-  }, [authUser, completedIntro, configLoaded]);
+  }, [authUser, completedIntro, configLoaded, skipIntro, skipSetupIntro]);
 
   let content;
   if (authLoading || connecting || authenticating) {
@@ -127,7 +127,10 @@ export const App = () => {
       <Header
         appendNewBase={false}
         authUser={authUser}
-        completedIntro={completedIntro && authUser && authUser.completed_intro}
+        completedIntro={
+          (completedIntro && authUser && authUser.completed_intro) ||
+          !!skipIntro
+        }
         debug={debug}
         enableAnalytics={analyticsEnabled}
         generateLegacyLink={(link, linkClass, appendNewBase) => (
