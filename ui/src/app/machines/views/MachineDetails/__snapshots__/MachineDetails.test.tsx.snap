@@ -1,0 +1,410 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachineDetails renders 1`] = `
+<MachineDetails>
+  <Section
+    header={<MachineHeader />}
+    headerClassName="u-no-padding--bottom"
+  >
+    <div
+      className="section"
+    >
+      <Strip
+        className="section__header u-no-padding--bottom"
+        element="header"
+        shallow={true}
+      >
+        <header
+          className="section__header u-no-padding--bottom p-strip is-shallow"
+        >
+          <Row>
+            <div
+              className="row"
+            >
+              <Col
+                size="12"
+              >
+                <div
+                  className="col-12"
+                >
+                  <MachineHeader>
+                    <SectionHeader
+                      loading={true}
+                      title=""
+                    >
+                      <div
+                        className="u-flex--between u-flex--wrap"
+                      >
+                        <ul
+                          className="p-inline-list"
+                        >
+                          <li
+                            className="p-inline-list__item p-heading--four"
+                            data-test="section-header-title"
+                          />
+                          <li
+                            className="p-inline-list__item last-item u-text--light"
+                          >
+                            <Spinner
+                              className="u-no-padding u-no-margin"
+                              inline={true}
+                              text="Loading..."
+                            >
+                              <span
+                                className="u-no-padding u-no-margin p-spinner p-text--default p-spinner--inline"
+                              >
+                                <i
+                                  className="p-icon--spinner u-animation--spin"
+                                />
+                                <span
+                                  className="p-icon__text"
+                                >
+                                  Loading...
+                                </span>
+                              </span>
+                            </Spinner>
+                          </li>
+                        </ul>
+                      </div>
+                    </SectionHeader>
+                  </MachineHeader>
+                </div>
+              </Col>
+            </div>
+          </Row>
+        </header>
+      </Strip>
+      <Strip
+        element="main"
+        includeCol={false}
+        rowClassName="section__content-wrapper"
+        shallow={true}
+      >
+        <main
+          className="p-strip is-shallow"
+        >
+          <Row
+            className="section__content-wrapper"
+          >
+            <div
+              className="section__content-wrapper row"
+            >
+              <Col
+                className="section__content"
+                size={12}
+              >
+                <div
+                  className="section__content col-12"
+                >
+                  <NotificationList>
+                    <NotificationGroup
+                      key="caution"
+                      notifications={
+                        Array [
+                          Object {
+                            "admins": true,
+                            "category": "warning",
+                            "created": "Wed, 08 Jul. 2020 05:35:4",
+                            "dismissable": true,
+                            "id": 11,
+                            "ident": null,
+                            "message": "Testing notification",
+                            "updated": "Wed, 08 Jul. 2020 05:35:4",
+                            "user": Object {
+                              "completed_intro": true,
+                              "email": "email1@example.com",
+                              "global_permissions": Array [
+                                "machine_create",
+                              ],
+                              "id": 12,
+                              "is_superuser": true,
+                              "last_name": "Full Name jr.",
+                              "sshkeys_count": 3,
+                              "username": "user1",
+                            },
+                            "users": true,
+                          },
+                          Object {
+                            "admins": true,
+                            "category": "warning",
+                            "created": "Wed, 08 Jul. 2020 05:35:4",
+                            "dismissable": true,
+                            "id": 13,
+                            "ident": null,
+                            "message": "Testing notification",
+                            "updated": "Wed, 08 Jul. 2020 05:35:4",
+                            "user": Object {
+                              "completed_intro": true,
+                              "email": "email2@example.com",
+                              "global_permissions": Array [
+                                "machine_create",
+                              ],
+                              "id": 14,
+                              "is_superuser": true,
+                              "last_name": "Full Name jr.",
+                              "sshkeys_count": 3,
+                              "username": "user2",
+                            },
+                            "users": true,
+                          },
+                          Object {
+                            "admins": true,
+                            "category": "warning",
+                            "created": "Wed, 08 Jul. 2020 05:35:4",
+                            "dismissable": true,
+                            "id": 15,
+                            "ident": null,
+                            "message": "Testing notification",
+                            "updated": "Wed, 08 Jul. 2020 05:35:4",
+                            "user": Object {
+                              "completed_intro": true,
+                              "email": "email3@example.com",
+                              "global_permissions": Array [
+                                "machine_create",
+                              ],
+                              "id": 16,
+                              "is_superuser": true,
+                              "last_name": "Full Name jr.",
+                              "sshkeys_count": 3,
+                              "username": "user3",
+                            },
+                            "users": true,
+                          },
+                          Object {
+                            "admins": true,
+                            "category": "warning",
+                            "created": "Wed, 08 Jul. 2020 05:35:4",
+                            "dismissable": true,
+                            "id": 17,
+                            "ident": null,
+                            "message": "Testing notification",
+                            "updated": "Wed, 08 Jul. 2020 05:35:4",
+                            "user": Object {
+                              "completed_intro": true,
+                              "email": "email4@example.com",
+                              "global_permissions": Array [
+                                "machine_create",
+                              ],
+                              "id": 18,
+                              "is_superuser": true,
+                              "last_name": "Full Name jr.",
+                              "sshkeys_count": 3,
+                              "username": "user4",
+                            },
+                            "users": true,
+                          },
+                          Object {
+                            "admins": true,
+                            "category": "warning",
+                            "created": "Wed, 08 Jul. 2020 05:35:4",
+                            "dismissable": true,
+                            "id": 19,
+                            "ident": null,
+                            "message": "Testing notification",
+                            "updated": "Wed, 08 Jul. 2020 05:35:4",
+                            "user": Object {
+                              "completed_intro": true,
+                              "email": "email5@example.com",
+                              "global_permissions": Array [
+                                "machine_create",
+                              ],
+                              "id": 20,
+                              "is_superuser": true,
+                              "last_name": "Full Name jr.",
+                              "sshkeys_count": 3,
+                              "username": "user5",
+                            },
+                            "users": true,
+                          },
+                        ]
+                      }
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--group"
+                      >
+                        <Notification
+                          type="caution"
+                        >
+                          <div
+                            className="p-notification--caution"
+                          >
+                            <p
+                              className="p-notification__response"
+                            >
+                              <Button
+                                appearance="link"
+                                aria-label="5 caution, click to open messages."
+                                onClick={[Function]}
+                              >
+                                <button
+                                  aria-label="5 caution, click to open messages."
+                                  className="p-button--link"
+                                  onClick={[Function]}
+                                >
+                                  <span
+                                    className="p-notification__status"
+                                    data-test="notification-count"
+                                  >
+                                    5 Warnings
+                                  </span>
+                                  <small>
+                                    <i
+                                      className="p-icon--expand"
+                                    />
+                                  </small>
+                                </button>
+                              </Button>
+                              <Button
+                                appearance="link"
+                                className="p-notification__action u-nudge-right"
+                                onClick={[Function]}
+                              >
+                                <button
+                                  className="p-button--link p-notification__action u-nudge-right"
+                                  onClick={[Function]}
+                                >
+                                  Dismiss all
+                                </button>
+                              </Button>
+                            </p>
+                          </div>
+                        </Notification>
+                      </div>
+                    </NotificationGroup>
+                    <Notification
+                      close={[Function]}
+                      data-test="message"
+                      key="6"
+                      timeout={5000}
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--caution"
+                        data-test="message"
+                      >
+                        <p
+                          className="p-notification__response"
+                        >
+                          Test message
+                        </p>
+                        <button
+                          aria-label="Close notification"
+                          className="p-icon--close"
+                          onClick={[Function]}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Notification>
+                    <Notification
+                      close={[Function]}
+                      data-test="message"
+                      key="7"
+                      timeout={5000}
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--caution"
+                        data-test="message"
+                      >
+                        <p
+                          className="p-notification__response"
+                        >
+                          Test message
+                        </p>
+                        <button
+                          aria-label="Close notification"
+                          className="p-icon--close"
+                          onClick={[Function]}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Notification>
+                    <Notification
+                      close={[Function]}
+                      data-test="message"
+                      key="8"
+                      timeout={5000}
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--caution"
+                        data-test="message"
+                      >
+                        <p
+                          className="p-notification__response"
+                        >
+                          Test message
+                        </p>
+                        <button
+                          aria-label="Close notification"
+                          className="p-icon--close"
+                          onClick={[Function]}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Notification>
+                    <Notification
+                      close={[Function]}
+                      data-test="message"
+                      key="9"
+                      timeout={5000}
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--caution"
+                        data-test="message"
+                      >
+                        <p
+                          className="p-notification__response"
+                        >
+                          Test message
+                        </p>
+                        <button
+                          aria-label="Close notification"
+                          className="p-icon--close"
+                          onClick={[Function]}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Notification>
+                    <Notification
+                      close={[Function]}
+                      data-test="message"
+                      key="10"
+                      timeout={5000}
+                      type="caution"
+                    >
+                      <div
+                        className="p-notification--caution"
+                        data-test="message"
+                      >
+                        <p
+                          className="p-notification__response"
+                        >
+                          Test message
+                        </p>
+                        <button
+                          aria-label="Close notification"
+                          className="p-icon--close"
+                          onClick={[Function]}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Notification>
+                  </NotificationList>
+                </div>
+              </Col>
+            </div>
+          </Row>
+        </main>
+      </Strip>
+    </div>
+  </Section>
+</MachineDetails>
+`;

@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
 
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import OverrideTestForm from "./OverrideTestForm";
 import {
   generalState as generalStateFactory,
@@ -125,7 +124,7 @@ describe("OverrideTestForm", () => {
     );
     expect(
       wrapper.find('[data-test-id="failed-results-message"] a').props().href
-    ).toBe(generateLegacyURL(`/machine/abc123`));
+    ).toBe("/machine/abc123");
   });
 
   it("displays message for multiple machines with failed tests", () => {
