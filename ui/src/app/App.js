@@ -38,6 +38,7 @@ export const App = () => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
+  const configLoaded = useSelector(configSelectors.loaded);
   const authLoading = useSelector(authSelectors.loading);
   const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
   const version = useSelector(generalSelectors.version.get);
@@ -69,17 +70,20 @@ export const App = () => {
     }
   }, [dispatch, connected]);
 
-  // the skipintro cookie is set by Cypress to make integration testing easier
-  const skipIntro = getCookie("skipintro");
-  if (!skipIntro) {
-    // Explicitly check that completedIntro is false so that it doesn't redirect
-    // if the config isn't defined yet.
-    if (completedIntro === false) {
-      navigateToLegacy("/intro");
-    } else if (authUser && !authUser.completed_intro) {
-      navigateToLegacy("/intro/user");
+  useEffect(() => {
+    // the skipintro cookie is set by Cypress to make integration testing easier
+    const skipIntro = getCookie("skipintro");
+    const skipSetupIntro = getCookie("skipsetupintro");
+    if (!skipIntro && configLoaded) {
+      // Explicitly check that completedIntro is false so that it doesn't redirect
+      // if the config isn't defined yet.
+      if (configLoaded && !completedIntro && !skipSetupIntro) {
+        navigateToLegacy("/intro");
+      } else if (authUser && !authUser.completed_intro) {
+        navigateToLegacy("/intro/user");
+      }
     }
-  }
+  }, [authUser, completedIntro, configLoaded]);
 
   let content;
   if (authLoading || connecting || authenticating) {

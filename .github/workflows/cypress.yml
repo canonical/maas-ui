@@ -15,17 +15,31 @@ jobs:
           sudo snap install maas-test-db --channel=latest/edge
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
-      - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Install Cypress
+        uses: cypress-io/github-action@master
+        with:
+          runTests: false
       - name: Build shared
         run: |
           sudo apt install yarn
           yarn build-shared
-      - uses: cypress-io/github-action@master
+      - name: Run Cypress tests without a user
+        uses: cypress-io/github-action@master
         with:
-          working-directory: integration
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
+          install: false
+          spec: cypress/integration/no-users/login.spec.ts
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          working-directory: integration
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Run Cypress tests with a user
+        uses: cypress-io/github-action@master
+        with:
+          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/no-users/*"
+          install: false
+          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          working-directory: integration
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
