@@ -9,8 +9,8 @@ export const login = () => {
     url: `${BASENAME}/accounts/login/`,
     form: true,
     body: {
-      username: "admin",
-      password: "test",
+      username: Cypress.env("username"),
+      password: Cypress.env("password"),
     },
   });
 };
