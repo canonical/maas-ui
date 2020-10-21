@@ -93,7 +93,6 @@ import DiscoveriesManager from "./factories/discoveries";
 import DomainsManager from "./factories/domains";
 import EventsManagerFactory from "./factories/events";
 import FabricsManager from "./factories/fabrics";
-import { getBakery } from "./directives/login"; // TODO: move to factories
 import GeneralManager from "./factories/general";
 import IPRangesManager from "./factories/ipranges";
 import MachinesManager from "./factories/machines";
@@ -176,7 +175,6 @@ import maasEnter from "./directives/enter";
 import { maasErrorOverlay } from "./directives/error_overlay";
 import maasErrorToggle from "./directives/error_toggle";
 import maasIpRanges from "./directives/ipranges";
-import { externalLogin } from "./directives/login";
 import {
   maasObjForm,
   maasObjFieldGroup,
@@ -362,7 +360,6 @@ MAAS.config(configureMaas)
   .factory("EventsManagerFactory", EventsManagerFactory)
   .factory("FabricsManager", FabricsManager)
   .factory("GeneralManager", GeneralManager)
-  .factory("getBakery", getBakery)
   .factory("IPRangesManager", IPRangesManager)
   .factory("MachinesManager", MachinesManager)
   .factory("NodeResultsManagerFactory", NodeResultsManagerFactory)
@@ -448,7 +445,6 @@ MAAS.config(configureMaas)
   .directive("maasErrorOverlay", maasErrorOverlay)
   .directive("maasErrorToggle", maasErrorToggle)
   .directive("maasIpRanges", maasIpRanges)
-  .directive("externalLogin", externalLogin)
   .directive("maasObjForm", maasObjForm)
   .directive("maasObjFieldGroup", maasObjFieldGroup)
   .directive("maasObjField", maasObjField)

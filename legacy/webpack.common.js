@@ -6,7 +6,7 @@ const DotenvFlow = require("dotenv-flow-webpack");
 
 module.exports = {
   entry: {
-    maas: ["babel-polyfill", "macaroon-bakery", "./src/app/entry.js"],
+    maas: ["babel-polyfill", "./src/app/entry.js"],
   },
   output: {
     path: path.resolve(__dirname, "./dist"),

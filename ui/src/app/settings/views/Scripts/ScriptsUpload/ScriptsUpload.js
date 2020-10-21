@@ -2,6 +2,7 @@ import { Form, Row } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
+import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
@@ -22,7 +23,9 @@ const ScriptsUpload = ({ type }) => {
   const [savedScript, setSavedScript] = useState();
   const [script, setScript] = useState();
   const dispatch = useDispatch();
+  const history = useHistory();
   const title = `Upload ${type} script`;
+  const listLocation = `/settings/scripts/${type}`;
 
   useWindowTitle(title);
 
@@ -94,7 +97,7 @@ const ScriptsUpload = ({ type }) => {
 
   if (saved) {
     // The script was successfully uploaded so redirect to the scripts list.
-    return <Redirect to={`/settings/scripts/${type}`} />;
+    return <Redirect to={listLocation} />;
   }
 
   return (
@@ -144,6 +147,7 @@ const ScriptsUpload = ({ type }) => {
           )}
 
           <FormCardButtons
+            onCancel={() => history.push({ pathname: listLocation })}
             submitDisabled={acceptedFiles.length === 0}
             submitLabel="Upload script"
           />

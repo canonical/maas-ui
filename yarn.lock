@@ -11292,14 +11292,7 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-macaroon-bakery@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/macaroon-bakery/-/macaroon-bakery-0.2.1.tgz#36721d337801ea77f7aee507d7c744c0e7b8940a"
-  integrity sha512-9AfMjGWVkAbzYzycMghP+5g/tgkl5Rwx27eWUMjWAHuyWw8AQXV5kukWY4rFmrxX+dWDbatrIfqjsnLaEtFoXQ==
-  dependencies:
-    macaroon "^3.0.3"
-
-macaroon@^3.0.3, macaroon@^3.0.4:
+macaroon@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/macaroon/-/macaroon-3.0.4.tgz#dac1a4b17cd973c1000703f40b19bdbb1d6191ce"
   integrity sha512-Tja2jvupseKxltPZbu5RPSz2Pgh6peYA3O46YCTcYL8PI1VqtGwDqRhGfP8pows26xx9wTiygk+en62Bq+Y8JA==
