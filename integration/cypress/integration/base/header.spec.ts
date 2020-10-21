@@ -87,11 +87,15 @@ context("Header", () => {
   });
 
   it("navigates to preferences", () => {
-    cy.get(".p-navigation__link a:contains(admin)").click();
+    cy.get(
+      `.p-navigation__link a:contains(${Cypress.env("username")})`
+    ).click();
     cy.location("pathname").should(
       "eq",
       generateNewURL("/account/prefs/details")
     );
-    cy.get(".p-navigation__link.is-selected a").contains("admin");
+    cy.get(".p-navigation__link.is-selected a").contains(
+      Cypress.env("username")
+    );
   });
 });
