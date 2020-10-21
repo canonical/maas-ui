@@ -11,11 +11,12 @@ import {
   licenseKeysState as licenseKeysStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("LicenseKeyList", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
@@ -52,11 +53,8 @@ describe("LicenseKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(store.getActions()).toEqual([
-      {
-        type: "FETCH_LICENSE_KEYS",
-      },
-    ]);
+    expect(
+      store.getActions().some((action) => action.type === "FETCH_LICENSE_KEYS")
+    ).toBe(true);
   });
 });
