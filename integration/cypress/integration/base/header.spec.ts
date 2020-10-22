@@ -46,12 +46,6 @@ context("Header", () => {
     cy.get(".p-navigation__link.is-selected a").contains("KVM");
   });
 
-  it("navigates to rsd", () => {
-    cy.get(".p-navigation__link a:contains(RSD)").click();
-    cy.location("pathname").should("eq", generateNewURL("/rsd"));
-    cy.get(".p-navigation__link.is-selected a").contains("RSD");
-  });
-
   it("navigates to images", () => {
     cy.get(".p-navigation__link a:contains(Images)").click();
     cy.location("pathname").should("eq", generateLegacyURL("/images"));
