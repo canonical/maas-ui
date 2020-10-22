@@ -1,6 +1,7 @@
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Spinner, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import React, { useEffect } from "react";
 import * as Sentry from "@sentry/browser";
 
@@ -28,7 +29,18 @@ import Routes from "app/Routes";
 import Section from "app/base/components/Section";
 import status from "app/store/status/selectors";
 
-export const App = () => {
+declare global {
+  interface Window {
+    legacyWS: WebSocket;
+  }
+}
+
+type LinkType = {
+  label: string;
+  url: string;
+};
+
+export const App = (): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
   const authUser = useSelector(authSelectors.get);
@@ -47,10 +59,22 @@ export const App = () => {
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
   const debug = process.env.NODE_ENV === "development";
+  const previousAuthenticated = usePrevious(authenticated, false);
+  // the skipintro cookie is set by Cypress to make integration testing easier
+  const skipIntro = getCookie("skipintro");
+  const skipSetupIntro = getCookie("skipsetupintro");
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
   }, [dispatch]);
+
+  useEffect(() => {
+    // When a user logs out the redux store is reset so the authentication
+    // info needs to be fetched again to know if external auth is being used.
+    if (previousAuthenticated && !authenticated) {
+      dispatch(statusActions.checkAuthenticated());
+    }
+  }, [authenticated, dispatch, previousAuthenticated]);
 
   useEffect(() => {
     if (authenticated) {
@@ -71,9 +95,6 @@ export const App = () => {
   }, [dispatch, connected]);
 
   useEffect(() => {
-    // the skipintro cookie is set by Cypress to make integration testing easier
-    const skipIntro = getCookie("skipintro");
-    const skipSetupIntro = getCookie("skipsetupintro");
     if (!skipIntro && configLoaded) {
       // Explicitly check that completedIntro is false so that it doesn't redirect
       // if the config isn't defined yet.
@@ -83,9 +104,9 @@ export const App = () => {
         navigateToLegacy("/intro/user");
       }
     }
-  }, [authUser, completedIntro, configLoaded]);
+  }, [authUser, completedIntro, configLoaded, skipIntro, skipSetupIntro]);
 
-  let content;
+  let content: JSX.Element;
   if (authLoading || connecting || authenticating) {
     content = (
       <Section
@@ -127,10 +148,17 @@ export const App = () => {
       <Header
         appendNewBase={false}
         authUser={authUser}
-        completedIntro={completedIntro && authUser && authUser.completed_intro}
+        completedIntro={
+          (completedIntro && authUser && authUser.completed_intro) ||
+          !!skipIntro
+        }
         debug={debug}
         enableAnalytics={analyticsEnabled}
-        generateLegacyLink={(link, linkClass, appendNewBase) => (
+        generateLegacyLink={(
+          link: LinkType,
+          linkClass: string,
+          _appendNewBase: boolean
+        ) => (
           <a
             className={linkClass}
             href={generateLegacyURL(link.url)}
@@ -141,7 +169,11 @@ export const App = () => {
             {link.label}
           </a>
         )}
-        generateNewLink={(link, linkClass, appendNewBase) => (
+        generateNewLink={(
+          link: LinkType,
+          linkClass: string,
+          _appendNewBase: boolean
+        ) => (
           <Link className={linkClass} to={link.url}>
             {link.label}
           </Link>

@@ -1,6 +1,16 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
+    "src/app/App.test.tsx:4181464368": [
+      [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"],
+      [149, 4, 36, "Object is possibly \'null\'.", "1039669632"],
+      [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
+    ],
+    "src/app/App.tsx:3872899616": [
+      [21, 7, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/multipass/code/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"],
+      [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
+      [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:224588637": [
       [42, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [42, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
@@ -338,6 +348,9 @@ exports[`stricter compilation`] = {
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:42858656": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
+    ],
+    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3551628603": [
+      [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
     ],
     "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2551545443": [
       [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],

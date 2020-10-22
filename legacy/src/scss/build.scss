@@ -28,6 +28,7 @@
 @import "patterns_cta";
 @import "patterns_code";
 @import "patterns_icons";
+@import "patterns_navigation";
 @import "patterns_numa";
 @import "patterns_page-header";
 @import "patterns_tabs";
@@ -52,6 +53,7 @@
 @include maas-b-links;
 @include maas-action-button;
 @include maas-icons;
+@include maas-navigation;
 @include maas-numa-card;
 @include maas-page-header;
 @include maas-tabs;

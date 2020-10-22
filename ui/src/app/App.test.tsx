@@ -1,120 +1,37 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import React from "react";
+import type { RootState } from "app/store/root/types";
 
 import { App } from "./App";
-import { routerState as routerStateFactory } from "testing/factories";
+import {
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  navigationOptions as navigationOptionsFactory,
+  navigationOptionsState as navigationOptionsStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { status as statusActions } from "app/base/actions";
 
 const mockStore = configureStore();
 
 describe("App", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
+    state = rootStateFactory({
+      config: configStateFactory({
         items: [{ name: "completed_intro", value: true }],
-      },
-      general: {
-        architectures: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        componentsToDisable: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        defaultMinHweKernel: {
-          data: "",
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        hweKernels: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        knownArchitectures: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        machineActions: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        navigationOptions: {
-          data: {},
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        osInfo: {
-          data: {},
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        pocketsToDisable: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        powerTypes: {
-          data: [],
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-        version: {
-          data: "",
-          errors: {},
-          loaded: false,
-          loading: false,
-        },
-      },
-      machine: {
-        errors: {},
-        items: [],
-        loaded: false,
-        loading: false,
-      },
-      messages: {
-        items: [],
-      },
-      notification: {
-        items: [],
-      },
-      router: routerStateFactory(),
-      status: {},
-      user: {
-        auth: {
-          loading: false,
-          user: {
-            completed_intro: true,
-            email: "test@example.com",
-            global_permissions: ["machine_create"],
-            id: 1,
-            is_superuser: true,
-            last_name: "",
-            sshkeys_count: 0,
-            username: "admin",
-          },
-        },
-      },
-    };
+      }),
+      general: generalStateFactory({
+        navigationOptions: navigationOptionsStateFactory({
+          data: navigationOptionsFactory,
+        }),
+      }),
+    });
   });
 
   it("renders routes if logged in", () => {
@@ -253,5 +170,31 @@ describe("App", () => {
       </Provider>
     );
     expect(wrapper.find("Header").prop("showRSD")).toBe(false);
+  });
+
+  it("fetches the auth details again when logging out", () => {
+    state.status.authenticated = true;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+    ).toBe(1);
+    state.status.authenticated = false;
+    act(() => {
+      store.dispatch(statusActions.logout());
+    });
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+    ).toBe(2);
   });
 });

@@ -7,7 +7,10 @@ import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
-import { licensekeys as licenseKeysActions } from "app/base/actions";
+import {
+  general as generalActions,
+  licensekeys as licenseKeysActions,
+} from "app/base/actions";
 import generalSelectors from "app/store/general/selectors";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
 
@@ -107,6 +110,7 @@ const LicenseKeyList = () => {
 
   useEffect(() => {
     dispatch(licenseKeysActions.fetch());
+    dispatch(generalActions.fetchOsInfo());
   }, [dispatch]);
 
   const addBtnDisabled = osystems.length === 0;

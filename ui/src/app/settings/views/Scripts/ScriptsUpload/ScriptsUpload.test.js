@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload from "./ScriptsUpload";
@@ -195,5 +195,53 @@ describe("ScriptsUpload", () => {
         type: "UPLOAD_SCRIPT",
       },
     ]);
+  });
+
+  it("can cancel and return to the commissioning list", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/settings/scripts/commissioning/upload" },
+          ]}
+        >
+          <ScriptsUpload type="commissioning" />
+          <Route
+            path="*"
+            render={(props) => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    expect(location.pathname).toBe("/settings/scripts/commissioning");
+  });
+
+  it("can cancel and return to the testing list", () => {
+    let location;
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/scripts/testing/upload" }]}
+        >
+          <ScriptsUpload type="testing" />
+          <Route
+            path="*"
+            render={(props) => {
+              location = props.location;
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    expect(location.pathname).toBe("/settings/scripts/testing");
   });
 });

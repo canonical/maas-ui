@@ -109,6 +109,7 @@ export const api = {
           if (!responseOk) {
             throw body;
           }
+          return body;
         });
     },
     update: (key, csrftoken) => {

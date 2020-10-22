@@ -17,6 +17,7 @@ function MasterController(
   $transitions,
   $window,
   $http,
+  $cookies,
   ErrorService
 ) {
   const debug = process.env.NODE_ENV === "development";
@@ -25,6 +26,8 @@ function MasterController(
   $rootScope.newURLBase = generateNewURL();
   $rootScope.navigateToLegacy = navigateToLegacy;
   $rootScope.navigateToNew = navigateToNew;
+  // the skipintro cookie is set by Cypress to make integration testing easier
+  const skipIntro = $cookies.get("skipintro");
 
   const renderHeader = () => {
     const headerNode = document.querySelector("#header");
@@ -42,7 +45,8 @@ function MasterController(
       <Header
         authUser={current_user}
         completedIntro={
-          completed_intro && current_user && current_user.completed_intro
+          (completed_intro && current_user && current_user.completed_intro) ||
+          !!skipIntro
         }
         debug={debug}
         enableAnalytics={window.CONFIG.enable_analytics}
