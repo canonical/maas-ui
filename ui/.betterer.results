@@ -44,7 +44,7 @@ exports[`stricter compilation`] = {
       [75, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
-      [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/multipass/code/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
+      [4, 52, 25, "Cannot find module \'@maas-ui/maas-ui-shared\' or its corresponding type declarations.", "1778274862"]
     ],
     "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
       [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
@@ -239,6 +239,15 @@ exports[`stricter compilation`] = {
       [55, 68, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [62, 23, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [66, 48, 4, "Object is possibly \'undefined\'.", "2088098233"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineDetails.tsx:1571476111": [
+      [25, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineHeader/MachineHeader.tsx:373422406": [
+      [22, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineSummary/MachineSummary.tsx:176262547": [
+      [24, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/ActionFormWrapper.tsx:3720550160": [
       [55, 12, 7, "Object is possibly \'undefined\'.", "1060875104"],
@@ -453,7 +462,7 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:1321822561": [
+    "src/testing/factories/state.ts:4101357281": [
       [230, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
       [309, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
       [311, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
@@ -606,5 +615,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `444`
+  value: `447`
 };
