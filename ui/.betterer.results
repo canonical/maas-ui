@@ -1,6 +1,16 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
+    "src/app/App.test.tsx:4181464368": [
+      [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"],
+      [149, 4, 36, "Object is possibly \'null\'.", "1039669632"],
+      [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
+    ],
+    "src/app/App.tsx:3872899616": [
+      [21, 7, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/multipass/code/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"],
+      [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
+      [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:224588637": [
       [42, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [42, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
@@ -443,7 +453,7 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:4101357281": [
+    "src/testing/factories/state.ts:1321822561": [
       [230, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
       [309, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
       [311, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
@@ -596,5 +606,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `446`
+  value: `444`
 };

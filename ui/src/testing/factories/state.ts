@@ -261,10 +261,10 @@ export const generalState = define<GeneralState>({
 export const statusState = define<StatusState>({
   authenticated: false,
   authenticating: false,
-  authenticationError: () => ({}),
+  authenticationError: null,
   connected: false,
   connecting: false,
-  error: () => ({}),
+  error: null,
   externalAuthURL: "http://example.com/auth",
   externalLoginURL: "http://example.com/login",
   noUsers: false,
