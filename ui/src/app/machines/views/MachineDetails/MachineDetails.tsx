@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import React, { useEffect } from "react";
@@ -30,8 +30,11 @@ const MachineDetails = (): JSX.Element => {
     <Section header={<MachineHeader />} headerClassName="u-no-padding--bottom">
       {machine && (
         <Switch>
-          <Route exact path="/machine/:id">
+          <Route exact path="/machine/:id/summary">
             <MachineSummary />
+          </Route>
+          <Route exact path="/machine/:id">
+            <Redirect to={`/machine/${id}/summary`} />
           </Route>
         </Switch>
       )}

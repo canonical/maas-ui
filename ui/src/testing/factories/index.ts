@@ -51,6 +51,8 @@ export { domain } from "./domain";
 export {
   device,
   machine,
+  machineDetails,
+  machineDevice,
   controller,
   pod,
   podDetails,

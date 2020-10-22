@@ -19,7 +19,7 @@ const MachineSummary = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
 
-  useWindowTitle(`machine ${`${machine?.fqdn} ` || ""} details`);
+  useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} details`);
 
   useEffect(() => {
     dispatch(machineActions.get(id));
