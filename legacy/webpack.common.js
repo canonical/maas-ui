@@ -9,7 +9,6 @@ module.exports = {
     maas: ["babel-polyfill", "./src/app/entry.js"],
   },
   output: {
-    path: path.resolve(__dirname, "./dist"),
     library: "maas-ui-legacy",
     libraryTarget: "umd",
     filename: "main.js",
