@@ -14,7 +14,7 @@
   },
   "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
   "scripts": {
-    "build": "NODE_ENV=production webpack -p --config webpack.prod.js",
+    "build": "NODE_ENV=production webpack --progress --config webpack.prod.js",
     "build-dev": "NODE_ENV=development webpack --config webpack.dev.js",
     "clean": "rm -rf node_modules dist",
     "clean-build": "rm -rf dist",
@@ -62,7 +62,7 @@
     "react-dom": "16.14.0",
     "sass-loader": "10.0.3",
     "webpack": "4.44.2",
-    "webpack-cli": "3.3.12",
+    "webpack-cli": "4.1.0",
     "webpack-dev-server": "3.11.0",
     "webpack-merge": "5.2.0"
   },

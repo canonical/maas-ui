@@ -6,7 +6,7 @@
   "scripts": {
     "start": "GIT_SHA=`git rev-parse --short HEAD` webpack-dev-server --host 0.0.0.0 --port 8404 --config webpack.dev.js",
     "serve": "yarn start",
-    "build": "GIT_SHA=`git rev-parse --short HEAD` webpack --config webpack.prod.js -p",
+    "build": "GIT_SHA=`git rev-parse --short HEAD` webpack --config webpack.prod.js --progress",
     "clean": "rm -rf dist node_modules",
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
@@ -44,7 +44,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "sass-loader": "10.0.3",
     "webpack": "4.44.2",
-    "webpack-cli": "3.3.12",
+    "webpack-cli": "4.1.0",
     "webpack-dev-server": "3.11.0",
     "webpack-merge": "5.2.0"
   },

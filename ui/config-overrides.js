@@ -18,6 +18,7 @@ module.exports = {
             enforce: true,
           },
         },
+        chunks: "all",
       },
     };
     config.plugins = config.plugins.filter(
