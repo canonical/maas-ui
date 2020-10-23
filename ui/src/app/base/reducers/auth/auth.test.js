@@ -57,7 +57,7 @@ describe("auth", () => {
     });
   });
 
-  it("should correctly reduce CHANGE_AUTH_USER_PASSWORD_START", () => {
+  it("should correctly reduce auth/changePasswordStart", () => {
     expect(
       auth(
         {
@@ -68,7 +68,7 @@ describe("auth", () => {
         },
         {
           payload: { password: "pass1" },
-          type: "CHANGE_AUTH_USER_PASSWORD_START",
+          type: "auth/changePasswordStart",
         }
       )
     ).toStrictEqual({
@@ -79,7 +79,7 @@ describe("auth", () => {
     });
   });
 
-  it("should correctly reduce CHANGE_AUTH_USER_PASSWORD_ERROR", () => {
+  it("should correctly reduce auth/changePasswordError", () => {
     expect(
       auth(
         {
@@ -90,7 +90,7 @@ describe("auth", () => {
         },
         {
           error: { password: "Passwords don't match" },
-          type: "CHANGE_AUTH_USER_PASSWORD_ERROR",
+          type: "auth/changePasswordError",
         }
       )
     ).toStrictEqual({
@@ -102,7 +102,7 @@ describe("auth", () => {
     });
   });
 
-  it("should correctly reduce CHANGE_AUTH_USER_PASSWORD_SUCCESS", () => {
+  it("should correctly reduce auth/changePasswordSuccess", () => {
     expect(
       auth(
         {
@@ -113,7 +113,7 @@ describe("auth", () => {
           },
         },
         {
-          type: "CHANGE_AUTH_USER_PASSWORD_SUCCESS",
+          type: "auth/changePasswordSuccess",
         }
       )
     ).toStrictEqual({
@@ -194,7 +194,7 @@ describe("auth", () => {
     });
   });
 
-  it("should correctly reduce CLEANUP_AUTH_USER", () => {
+  it("reduces auth/cleanup", () => {
     expect(
       auth(
         {
@@ -205,7 +205,7 @@ describe("auth", () => {
           },
         },
         {
-          type: "CLEANUP_AUTH_USER",
+          type: "auth/cleanup",
         }
       )
     ).toStrictEqual({
