@@ -4,7 +4,7 @@
   "description": "SingleSPA app which registers maas-ui-legacy and maas-ui apps.",
   "main": "src/root-application.js",
   "scripts": {
-    "start": "GIT_SHA=`git rev-parse --short HEAD` webpack-dev-server --host 0.0.0.0 --port 8404 --config webpack.dev.js",
+    "start": "GIT_SHA=`git rev-parse --short HEAD` webpack serve --host 0.0.0.0 --port 8404 --config webpack.dev.js",
     "serve": "yarn start",
     "build": "GIT_SHA=`git rev-parse --short HEAD` webpack --config webpack.prod.js --progress",
     "clean": "rm -rf dist node_modules",
