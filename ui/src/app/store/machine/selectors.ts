@@ -56,7 +56,7 @@ const processing = (state: RootState): Machine["system_id"][] =>
  */
 const selectedProcessing = createSelector(
   [selectedIDs, processing],
-  (selectedIDs, processing) =>
+  (selectedIDs: Machine["system_id"][], processing: Machine["system_id"][]) =>
     processing.filter((id) => selectedIDs.includes(id))
 );
 
@@ -66,7 +66,7 @@ const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } = {};
 ACTIONS.forEach(({ status }) => {
   statusSelectors[status] = createSelector(
     [defaultSelectors.all, statuses],
-    (machines, statuses) =>
+    (machines: Machine[], statuses: MachineStatuses) =>
       machines.filter(
         ({ system_id }) => statuses[system_id][status as keyof MachineStatus]
       )
@@ -96,7 +96,7 @@ const search = createSelector(
       selectedIDs,
     }),
   ],
-  (items, { terms, selectedIDs }) => {
+  (items: Machine[], { terms, selectedIDs }) => {
     if (!terms) {
       return items;
     }
@@ -111,7 +111,7 @@ const search = createSelector(
  */
 const selected = createSelector(
   [defaultSelectors.all, selectedIDs],
-  (machines, selectedIDs) =>
+  (machines: Machine[], selectedIDs: Machine["system_id"][]) =>
     selectedIDs.map((id) =>
       machines.find((machine) => id === machine.system_id)
     )

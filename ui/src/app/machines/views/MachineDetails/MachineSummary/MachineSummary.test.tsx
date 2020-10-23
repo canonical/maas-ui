@@ -24,7 +24,7 @@ describe("MachineSummary", () => {
     });
   });
 
-  it("displays a spinner if pods are loading", () => {
+  it("displays a spinner if machines are loading", () => {
     state.machine.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
