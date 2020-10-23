@@ -1,11 +1,13 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
   machine as machineFactory,
+  machineDetails as machineDetailsFactory,
+  machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -19,22 +21,31 @@ describe("MachineHeader", () => {
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
+        loaded: true,
         items: [machineFactory({ system_id: "abc123" })],
       }),
     });
   });
 
-  it("renders", () => {
+  it("includes a tab for instances if machine has any", () => {
+    state.machine.items[0] = machineDetailsFactory({
+      devices: [machineDeviceFactory()],
+      system_id: "abc123",
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader />
+          <Route
+            exact
+            path="/machine/:id"
+            component={() => <MachineHeader />}
+          />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("MachineHeader")).toMatchSnapshot();
+    expect(wrapper.find(".p-tabs__item").at(1).text()).toBe("Instances");
   });
 });

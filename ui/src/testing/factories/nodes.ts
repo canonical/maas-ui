@@ -2,7 +2,11 @@ import { define, extend, random } from "cooky-cutter";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
-import type { Machine } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineDetails,
+  MachineDevice,
+} from "app/store/machine/types";
 import type {
   Pod,
   PodDetails,
@@ -118,6 +122,15 @@ export const machine = extend<BaseNode, Machine>(node, {
   testing_status: testStatus,
   vlan: null,
   zone: modelRef,
+});
+
+export const machineDetails = extend<Machine, MachineDetails>(machine, {
+  devices: () => [],
+});
+
+export const machineDevice = define<MachineDevice>({
+  fqdn: "device.maas",
+  interfaces: () => [],
 });
 
 export const controller = extend<BaseNode, Controller>(node, {

@@ -13,9 +13,39 @@ export type Vlan = Model & {
   fabric_name: string;
 };
 
+export type NetworkInterface = Model & {
+  children: string[];
+  enabled: boolean;
+  firmware_version: string;
+  interface_speed: number;
+  is_boot: boolean;
+  link_connected: boolean;
+  link_speed: number;
+  links: TSFixMe[];
+  mac_address: string;
+  name: number;
+  numa_node: number;
+  params: string;
+  parents: string[];
+  product: string;
+  sriov_max_vf: number;
+  tags: string[];
+  vendor: string;
+  vlan_id: number;
+};
+
+export type MachineDevice = {
+  fqdn: string;
+  interfaces: NetworkInterface[];
+};
+
 export type PowerState = "on" | "off" | "unknown" | "error";
 
-export type Machine = BaseNode & {
+// BaseMachine is returned from the server when using "machine.list", and is
+// used in the machine list. This type is missing some properties due to an
+// optimisation on the backend to reduce the amount of database queries on list
+// pages.
+export type BaseMachine = BaseNode & {
   commissioning_status: TestStatus;
   extra_macs: string[];
   fabrics: string[];
@@ -39,6 +69,17 @@ export type Machine = BaseNode & {
   vlan: Vlan | null;
   zone: ModelRef;
 };
+
+// MachineDetails is returned from the server when using "machine.get", and is
+// used in the machine details pages. This type contains all possible properties
+// of a machine model.
+export type MachineDetails = BaseMachine & {
+  devices: MachineDevice[];
+};
+
+// Depending on where the user has navigated in the app, machines in state can
+// either be of type BaseMachine or MachineDetails.
+export type Machine = BaseMachine | MachineDetails;
 
 export type MachineStatus = {
   aborting: boolean;

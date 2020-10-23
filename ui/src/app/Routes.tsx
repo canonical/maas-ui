@@ -10,7 +10,7 @@ import Preferences from "app/preferences/views/Preferences";
 import RSD from "app/rsd/views/RSD";
 import Settings from "app/settings/views/Settings";
 
-const Routes = () => (
+const Routes = (): JSX.Element => (
   <Switch>
     <Route exact path="/">
       <Redirect to="/machines" />
@@ -40,7 +40,6 @@ const Routes = () => (
       )}
     />
     <Route
-      exact
       path={["/machine/:id"]}
       render={() => (
         <ErrorBoundary>
