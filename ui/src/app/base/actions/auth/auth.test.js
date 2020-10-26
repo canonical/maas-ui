@@ -25,7 +25,7 @@ describe("base actions", () => {
   });
 
   it("creates an action for an admin changing a user's password", () => {
-    expect(auth.changePassword({ password: "pass1" })).toEqual({
+    expect(auth.adminChangePassword({ password: "pass1" })).toEqual({
       type: "auth/adminChangePassword",
       meta: {
         model: "user",
