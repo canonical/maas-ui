@@ -12,6 +12,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import type { RouteParams } from "app/base/types";
 import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -53,10 +54,6 @@ export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
   return pod.boot_vlans?.includes(vlan.id)
     ? "p-icon--success"
     : "p-icon--error";
-};
-
-type RouteParams = {
-  id: string;
 };
 
 export const InterfacesTable = (): JSX.Element => {

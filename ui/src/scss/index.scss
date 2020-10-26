@@ -107,8 +107,8 @@
 @include StoragePopover;
 
 // machines
+@import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineList";
-@import "~app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";

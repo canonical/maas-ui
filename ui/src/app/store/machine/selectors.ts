@@ -118,15 +118,18 @@ const selected = createSelector(
 );
 
 /**
- * Returns failed script results for selected machines.
+ * Returns failed script results for given machines.
  * @param {RootState} state - The redux state.
- * @returns {ScriptResults} Script results by selected machine key.
+ * @returns {ScriptResults} Script results by given machine key.
  */
 const failedScriptResults = createSelector(
-  [scriptresults.all, selectedIDs],
-  (scriptresults, selectedIDs) =>
+  [
+    scriptresults.all,
+    (_: RootState, machineIDs: Machine["system_id"][]) => machineIDs,
+  ],
+  (scriptresults, machineIDs) =>
     Object.keys(scriptresults)
-      .filter((key) => selectedIDs.includes(key))
+      .filter((key) => machineIDs.includes(key))
       .reduce<ScriptResults>((obj, key) => {
         obj[key] = scriptresults[key];
         return obj;

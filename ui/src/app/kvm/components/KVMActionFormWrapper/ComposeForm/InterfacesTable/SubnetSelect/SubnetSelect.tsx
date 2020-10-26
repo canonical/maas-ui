@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import type { MouseEventHandler } from "react";
 
+import type { RouteParams } from "app/base/types";
 import type { InterfaceField } from "../../ComposeForm";
 import type { Fabric } from "app/store/fabric/types";
 import type { PodDetails } from "app/store/pod/types";
@@ -80,10 +81,6 @@ const generateLinks = (
       onClick: () => selectSubnet(subnet.id),
     };
   });
-
-type RouteParams = {
-  id: string;
-};
 
 export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
   const { id } = useParams<RouteParams>();

@@ -16,10 +16,10 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
-import ActionFormWrapper from "./ActionFormWrapper";
+import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import AddHardware from "./AddHardwareMenu";
-import MachineListActionMenu from "./MachineListActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import TakeActionMenu from "app/machines/components/TakeActionMenu";
 
 const getMachineCount = (
   machines: Machine[],
@@ -99,7 +99,7 @@ export const MachineListHeader = ({
           disabled={selectedMachines.length > 0}
           key="add-hardware"
         />,
-        <MachineListActionMenu
+        <TakeActionMenu
           key="machine-list-action-menu"
           setSelectedAction={setAction}
         />,

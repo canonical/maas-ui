@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
 
+import type { RouteParams } from "app/base/types";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
@@ -158,10 +159,6 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = { setSelectedAction: (action: string | null) => void };
-
-type RouteParams = {
-  id: string;
-};
 
 const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();

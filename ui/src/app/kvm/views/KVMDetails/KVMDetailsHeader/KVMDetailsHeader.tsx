@@ -4,16 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
+import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
-
-type RouteParams = {
-  id: string;
-};
 
 const KVMDetailsHeader = (): JSX.Element => {
   const dispatch = useDispatch();

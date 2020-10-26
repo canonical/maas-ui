@@ -166,7 +166,7 @@ describe("machine selectors", () => {
     expect(machine.settingPoolSelected(state)).toStrictEqual([items[2]]);
   });
 
-  it("returns failed script results for selected machines", () => {
+  it("returns failed script results for given machines", () => {
     const scriptResults = {
       foo: [scriptResultFactory()],
       bar: [scriptResultFactory()],
@@ -180,14 +180,13 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items,
-        selected: ["foo", "bar"],
       }),
       scriptresults: scriptResultsStateFactory({
         items: scriptResultsFactory(scriptResults),
       }),
     });
 
-    expect(machine.failedScriptResults(state)).toEqual({
+    expect(machine.failedScriptResults(state, ["foo", "bar"])).toEqual({
       foo: scriptResults.foo,
       bar: scriptResults.bar,
     });

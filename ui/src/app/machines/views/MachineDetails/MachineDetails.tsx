@@ -1,18 +1,16 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
+import type { RouteParams } from "app/base/types";
 import { machine as machineActions } from "app/base/actions";
 import MachineHeader from "./MachineHeader";
 import machineSelectors from "app/store/machine/selectors";
 import MachineSummary from "./MachineSummary";
 import Section from "app/base/components/Section";
+import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
-
-type RouteParams = {
-  id: string;
-};
 
 const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -21,13 +19,30 @@ const MachineDetails = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const machinesLoaded = useSelector(machineSelectors.loaded);
+  const [selectedAction, setSelectedAction] = useState<MachineAction | null>(
+    null
+  );
 
   useEffect(() => {
     dispatch(machineActions.get(id));
   }, [dispatch, id]);
 
+  // If machine has been deleted, redirect to machine list.
+  if (machinesLoaded && !machine) {
+    return <Redirect to="/machines" />;
+  }
+
   return (
-    <Section header={<MachineHeader />} headerClassName="u-no-padding--bottom">
+    <Section
+      header={
+        <MachineHeader
+          selectedAction={selectedAction}
+          setSelectedAction={setSelectedAction}
+        />
+      }
+      headerClassName="u-no-padding--bottom"
+    >
       {machine && (
         <Switch>
           <Route exact path="/machine/:id/summary">

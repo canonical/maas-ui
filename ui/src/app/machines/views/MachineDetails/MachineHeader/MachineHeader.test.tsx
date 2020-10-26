@@ -41,7 +41,12 @@ describe("MachineHeader", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <MachineHeader />}
+            component={() => (
+              <MachineHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
           />
         </MemoryRouter>
       </Provider>

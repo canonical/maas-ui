@@ -282,12 +282,7 @@ describe("machine actions", () => {
   });
 
   it("can create a failed script results action", () => {
-    expect(
-      machine.fetchFailedScriptResults([
-        { system_id: 0, name: "machine0" },
-        { system_id: 1, name: "machine1" },
-      ])
-    ).toEqual({
+    expect(machine.fetchFailedScriptResults([0, 1])).toEqual({
       meta: {
         method: "get_latest_failed_testing_script_results",
         model: "machine",
@@ -303,7 +298,7 @@ describe("machine actions", () => {
 
   it("can create a suppress script results action", () => {
     expect(
-      machine.suppressScriptResults({ system_id: 0, name: "machine0" }, [
+      machine.suppressScriptResults(0, [
         { id: 0, name: "script0" },
         { id: 2, name: "script2" },
       ])

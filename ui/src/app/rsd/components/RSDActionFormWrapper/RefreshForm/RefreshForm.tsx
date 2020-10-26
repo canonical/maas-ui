@@ -2,16 +2,13 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import type { RouteParams } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
 type Props = {
   setSelectedAction: (action: string | null) => void;
-};
-
-type RouteParams = {
-  id: string;
 };
 
 const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {

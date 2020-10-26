@@ -20,11 +20,13 @@ describe("MachineDetails", () => {
     state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineFactory({ system_id: "abc123" })],
+        loaded: true,
       }),
     });
   });
 
-  it("renders", () => {
+  it(`redirects to machine list if machines have loaded but machine is not in
+    state`, () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -35,6 +37,7 @@ describe("MachineDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("MachineDetails")).toMatchSnapshot();
+    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find("Redirect").props().to).toBe("/machines");
   });
 });

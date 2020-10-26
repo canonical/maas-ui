@@ -2,82 +2,102 @@ import { createNextState } from "@reduxjs/toolkit";
 
 export const ACTIONS = [
   {
+    name: "abort",
     status: "aborting",
     type: "ABORT_MACHINE",
   },
   {
+    name: "acquire",
     status: "acquiring",
     type: "ACQUIRE_MACHINE",
   },
   {
+    name: "check-power",
     status: "checkingPower",
     type: "CHECK_MACHINE_POWER",
   },
   {
+    name: "commission",
     status: "commissioning",
     type: "COMMISSION_MACHINE",
   },
   {
+    name: "delete",
     status: "deleting",
     type: "DELETE_MACHINE",
   },
   {
+    name: "deploy",
     status: "deploying",
     type: "DEPLOY_MACHINE",
   },
   {
+    name: "rescue-mode",
     status: "enteringRescueMode",
     type: "MACHINE_RESCUE_MODE",
   },
   {
+    name: "exit-rescue-mode",
     status: "exitingRescueMode",
     type: "MACHINE_EXIT_RESCUE_MODE",
   },
   {
+    name: "lock",
     status: "locking",
     type: "LOCK_MACHINE",
   },
   {
+    name: "mark-broken",
     status: "markingBroken",
     type: "MARK_MACHINE_BROKEN",
   },
   {
+    name: "mark-fixed",
     status: "markingFixed",
     type: "MARK_MACHINE_FIXED",
   },
   {
+    name: "override-failed-testing",
     status: "overridingFailedTesting",
     type: "MACHINE_OVERRIDE_FAILED_TESTING",
   },
   {
+    name: "release",
     status: "releasing",
     type: "RELEASE_MACHINE",
   },
   {
+    name: "set-pool",
     status: "settingPool",
     type: "SET_MACHINE_POOL",
   },
   {
+    name: "set-zone",
     status: "settingZone",
     type: "SET_MACHINE_ZONE",
   },
   {
+    name: "tag",
     status: "tagging",
     type: "TAG_MACHINE",
   },
   {
+    name: "test",
     status: "testing",
     type: "TEST_MACHINE",
   },
   {
+    name: "off",
     status: "turningOff",
     type: "TURN_MACHINE_OFF",
   },
   {
+    name: "on",
     status: "turningOn",
-    type: "TURN_MACHINE_ON_ERROR",
+    type: "TURN_MACHINE_ON",
   },
   {
+    name: "unlock",
     status: "unlocking",
     type: "UNLOCK_MACHINE",
   },

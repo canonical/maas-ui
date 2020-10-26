@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
 
+import type { RouteParams } from "app/base/types";
 import PodConfigurationFields from "./PodConfigurationFields";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -43,10 +44,6 @@ export type PodConfigurationValues = {
   tags: Pod["tags"];
   type: Pod["type"];
   zone: Pod["zone"];
-};
-
-type RouteParams = {
-  id: string;
 };
 
 const PodConfiguration = (): JSX.Element => {
