@@ -1,0 +1,50 @@
+@mixin MachineSummary {
+  .machine-summary__cards {
+    @extend %full-span-grid;
+    grid:
+      [row1-start] "overview-card overview-card overview-card overview-card" min-content [row1-end]
+      [row2-start] "system-card numa-card network-card network-card" min-content [row2-end]
+      / 1fr 1fr 1fr 1fr;
+
+    @media only screen and (max-width: $breakpoint-x-large) {
+      grid:
+        [row1-start] "overview-card overview-card overview-card" min-content [row1-end]
+        [row2-start] "system-card network-card network-card" max-content [row2-end]
+        [row3-start] "numa-card network-card network-card" min-content [row3-end]
+        / 1fr 1fr 1fr;
+    }
+
+    @media only screen and (max-width: $breakpoint-large) {
+      grid:
+        [row1-start] "overview-card overview-card" min-content [row1-end]
+        [row2-start] "network-card network-card" min-content [row2-end]
+        [row3-start] "system-card numa-card" min-content [row3-end]
+        / 1fr 1fr;
+    }
+
+    @media only screen and (max-width: $breakpoint-medium) {
+      grid:
+        [row1-start] "overview-card" min-content [row1-end]
+        [row2-start] "network-card" min-content [row2-end]
+        [row3-start] "system-card" min-content [row3-end]
+        [row4-start] "numa-card" min-content [row4-end]
+        / 1fr;
+    }
+  }
+
+  .machine-summary__overview-card {
+    grid-area: overview-card;
+  }
+
+  .machine-summary__system-card {
+    grid-area: system-card;
+  }
+
+  .machine-summary__numa-card {
+    grid-area: numa-card;
+  }
+
+  .machine-summary__network-card {
+    grid-area: network-card;
+  }
+}
