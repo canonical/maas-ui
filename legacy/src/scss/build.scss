@@ -28,7 +28,8 @@
 @import "patterns_cta";
 @import "patterns_code";
 @import "patterns_icons";
-@import "patterns_navigation";
+// Load the navigation pattern from the ui workspace.
+@import "../../../ui/src/scss/patterns_navigation";
 @import "patterns_numa";
 @import "patterns_page-header";
 @import "patterns_tabs";
