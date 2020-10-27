@@ -2,7 +2,7 @@ import { extend } from "cooky-cutter";
 
 import { model } from "./model";
 import type { Model } from "app/store/types/model";
-import type { User, UserWithPassword } from "app/store/user/types";
+import type { User } from "app/store/user/types";
 
 const globalPermissions = () => ["machine_create"];
 
@@ -17,9 +17,4 @@ export const user = extend<Model, User>(model, {
   sshkeys_count: 3,
   username: (i: number) => `user${i}`,
   machines_count: 1,
-});
-
-export const userWithPassword = extend<User, UserWithPassword>(user, {
-  password1: "pass",
-  password2: "pass",
 });

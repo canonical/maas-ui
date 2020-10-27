@@ -6,9 +6,10 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { UserForm } from "./UserForm";
+import type { UserWithPassword } from "./UserForm";
 import { RootState } from "app/store/root/types";
 import {
-  userWithPassword as userFactory,
+  user as userFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -16,9 +17,11 @@ const mockStore = configureStore();
 
 describe("UserForm", () => {
   let state: RootState;
+  let user: UserWithPassword;
 
   beforeEach(() => {
     state = rootStateFactory();
+    user = { password1: "pass123", password2: "pass123", ...userFactory() };
   });
 
   it("can render", () => {
@@ -27,7 +30,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -41,7 +44,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +63,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -74,17 +77,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm
-            user={userFactory({
-              email: "old@example.com",
-              id: 808,
-              is_superuser: true,
-              last_name: "Miss Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin",
-            })}
-          />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,17 +123,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm
-            user={userFactory({
-              email: "old@example.com",
-              id: 808,
-              is_superuser: true,
-              last_name: "Miss Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin",
-            })}
-          />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -184,17 +167,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm
-            user={userFactory({
-              email: "old@example.com",
-              id: 808,
-              is_superuser: true,
-              last_name: "Miss Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin",
-            })}
-          />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -207,7 +180,7 @@ describe("UserForm", () => {
         passwordConfirm: "test1234",
         username: "admin",
       },
-      { password: "test1234", passwordConfirm: "teset1234" },
+      { password: "test1234", passwordConfirm: "test1234" },
       true
     );
 
@@ -255,7 +228,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -301,7 +274,7 @@ describe("UserForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -317,7 +290,7 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={userFactory()} />
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );

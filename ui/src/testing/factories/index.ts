@@ -97,6 +97,6 @@ export { sslKey } from "./sslkey";
 export { subnet, subnetStatistics, subnetStatisticsRange } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
-export { user, userWithPassword } from "./user";
+export { user } from "./user";
 export { vlan } from "./vlan";
 export { zone } from "./zone";

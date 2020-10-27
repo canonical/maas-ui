@@ -600,10 +600,10 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [15, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/user/types.ts:4086529682": [
+    "src/app/store/user/types.ts:3473477916": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [22, 9, 8, "RegExp match", "1152173309"],
-      [32, 9, 8, "RegExp match", "1152173309"]
+      [17, 9, 8, "RegExp match", "1152173309"],
+      [27, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/utils/slice.ts:2958040001": [
       [12, 13, 8, "RegExp match", "1152173309"],

@@ -12,7 +12,7 @@ import FormCard from "app/base/components/FormCard";
 import BaseUserForm from "app/base/components/UserForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
 
-type UserWithPassword = User & {
+export type UserWithPassword = User & {
   password1: string;
   password2: string;
 };
