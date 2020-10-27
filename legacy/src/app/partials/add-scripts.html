@@ -3,7 +3,7 @@
   data-ng-model="ngModel"
   display-property="name"
   key-property="id"
-  min-length=1
+  min-length="1"
   on-tag-added="onTagAdded()"
   on-tag-adding="onTagAdding($tag)"
   on-tag-adding="onTagAdding($tag)"
@@ -12,15 +12,34 @@
   spellcheck="false"
   tag-class="$tag.script_type === 0 && $tag.default ? 'default-script' : undefined"
 >
-  <auto-complete source="getScripts($query)" min-length="0" load-on-down-arrow="true" load-on-focus="true" load-on-empty="true" template="script-template" max-results-to-show="1000"></auto-complete>
+  <auto-complete
+    source="getScripts($query)"
+    min-length="0"
+    load-on-down-arrow="true"
+    load-on-focus="true"
+    load-on-empty="true"
+    template="script-template"
+    max-results-to-show="1000"
+  ></auto-complete>
 </tags-input>
 
 <div data-ng-repeat="script in scriptsWithUrlParam">
   <div class="p-form__group">
-    <label class="p-form__label" for="script-url-{$ script.id $}">For <strong>{$ script.name $}</strong> script, use URL(s)</label>
+    <label class="p-form__label" for="script-url-{$ script.id $}"
+      >For <strong>{$ script.name $}</strong> script, use URL(s)</label
+    >
     <div class="p-form__control">
-      <input type="text" name="script-url-{$ script.id $}" id="script-url-{$ script.id $}" data-ng-model="script.parameters[script.paramName].value" data-ng-change="onParameterChange()" data-ng-required="script.parameters[script.paramName].required">
-      <p class="p-form-help-text" style="max-width: 100%">{$ script.parameters[script.paramName].description $}</p>
+      <input
+        type="text"
+        name="script-url-{$ script.id $}"
+        id="script-url-{$ script.id $}"
+        data-ng-model="script.parameters[script.paramName].value"
+        data-ng-change="onParameterChange()"
+        data-ng-required="script.parameters[script.paramName].required"
+      />
+      <p class="p-form-help-text" style="max-width: 100%">
+        {$ script.parameters[script.paramName].description $}
+      </p>
     </div>
   </div>
 </div>

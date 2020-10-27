@@ -567,11 +567,12 @@ describe("NodeResultsManagerFactory", function () {
       spyOn(manager, "isLoaded").and.returnValue(true);
       spyOn(RegionConnection, "callMethod");
       manager.destroy();
-      expect(
-        RegionConnection.callMethod
-      ).toHaveBeenCalledWith(manager._handler + ".clear", {
-        system_id: node.system_id,
-      });
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        manager._handler + ".clear",
+        {
+          system_id: node.system_id,
+        }
+      );
     });
   });
 
