@@ -216,11 +216,11 @@
                                 <div class="row">
                                     <ul class="p-inline-list--settings u-no-margin--left u-no-padding--left u-no-margin--top">
                                         <li class="p-inline-list__item col-3">
-                                            <input type="radio" name="pool-action" id="pool-select" data-ng-model="tabs[tab].poolAction" value="select-pool" checked="checked"></input>
+                                            <input type="radio" name="pool-action" id="pool-select" data-ng-model="tabs[tab].poolAction" value="select-pool" checked="checked" />
                                             <label for="pool-select" style="padding-top: 0.6rem">Select pool</label>
                                         </li>
                                         <li class="p-inline-list__item">
-                                            <input type="radio" name="pool-action" id="pool-create" data-ng-model="tabs[tab].poolAction" value="create-pool"></input>
+                                            <input type="radio" name="pool-action" id="pool-create" data-ng-model="tabs[tab].poolAction" value="create-pool" />
                                             <label for="pool-create" style="padding-top: 0.6rem">Create pool</label>
                                         </li>
                                     </ul>
@@ -236,7 +236,7 @@
                                 <div class="row ng-hide" data-ng-show="tabs[tab].poolAction === 'create-pool'">
                                     <div class="col-5 p-form__group">
                                         <label class="col-2" for="{$ tab $}-pool4">Pool name</label>
-                                        <input class="col-3" type="text" name="new-pool" id="{$ tab $}-pool4" data-ng-model="tabs[tab].newPool.name"></input>
+                                        <input class="col-3" type="text" name="new-pool" id="{$ tab $}-pool4" data-ng-model="tabs[tab].newPool.name" />
                                     </div>
                                 </div>
                             </div>
@@ -641,7 +641,7 @@
                     Are you sure you want to {$ tabs.controllers.actionOption.name $} <span data-ng-pluralize count="tabs.controllers.selectedItems.length" when="{'one': 'this controller', 'other': 'these controllers'}"></span>?
                 </div>
                 <div class="col-4 u-align--right">
-                    <button type="button" p-button--base" data-ng-click="actionCancel('controllers')">No</button>
+                    <button type="button" class="p-button--base" data-ng-click="actionCancel('controllers')">No</button>
                     <button class="p-button--negative" data-ng-click="actionGo('controllers')">Yes</button>
                 </div>
             </div>
@@ -867,7 +867,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
                         <maas-obj-field
                           ng-if="tabs.pools.isPoolAction(pool, 'edit')"
                           type="text" key="name" disable-label="true" subtle="false"
-                          placeholder="Name (required)" disable-row="true">
+                          placeholder="Name (required)" disable-row="true"></maas-obj-field>
                       </td>
                       <td data-ng-switch on="pool.machine_total_count" class="p-table__cell col-2" aria-label="Machine count">
                       <span data-ng-switch-when="0"> Empty pool</span>
@@ -1020,20 +1020,21 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
         <form class="p-search-box">
             <div class="p-form-validation"
                 data-ng-class="{ 'is-error': !tabs.switches.searchValid }">
-            <input
-                type="search" placeholder="Search switches"
-                class="p-search-box__input p-form-validation__input"
-                data-ng-model="tabs.switches.search"
-                data-ng-change="updateFilters('switches')"
-                data-ng-disabled="tabs.switches.actionOption" />
-            <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
-                data-ng-show="tabs.switches.search.length > 0"
-                data-ng-click="clearSearch('switches')">
-                <i class="p-icon--close"></i>
-            </button>
-            <button type="submit" class="p-search-box__button" alt="search">
-                <i class="p-icon--search"></i>
-            </button>
+                <input
+                    type="search" placeholder="Search switches"
+                    class="p-search-box__input p-form-validation__input"
+                    data-ng-model="tabs.switches.search"
+                    data-ng-change="updateFilters('switches')"
+                    data-ng-disabled="tabs.switches.actionOption" />
+                <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"
+                    data-ng-show="tabs.switches.search.length > 0"
+                    data-ng-click="clearSearch('switches')">
+                    <i class="p-icon--close"></i>
+                </button>
+                <button type="submit" class="p-search-box__button" alt="search">
+                    <i class="p-icon--search"></i>
+                </button>
+            </div>
         </form>
         <maas-switches-table id="switches-listing" search="tabs.switches.search" ng-disabled="hasActionsInProgress('switches')"
             switch-has-error="!supportsAction($switch_, 'switches')" on-listing-change="onNodeListingChanged($switches, 'switches')"

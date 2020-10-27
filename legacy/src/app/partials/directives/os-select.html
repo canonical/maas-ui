@@ -1,27 +1,27 @@
 <div class="row">
   <div class="col-3">
     <label class="p-form__label">OS</label>
-      <select
+    <select
         name="os"
         data-ng-model="ngModel.osystem"
         data-ng-change="selectedOSChanged()"
         data-ng-disabled="maasOsSelect.osystems.length <= 1"
         data-ng-options="os[0] as os[1] disable when installKVMSelectedAndNotUbuntu(os) for os in maasOsSelect.osystems"
       >
-      </select>
-    </div>
-    <div class="col-3">
+    </select>
+  </div>
+  <div class="col-3">
     <label class="p-form__label">Release</label>
-      <select
+    <select
         name="release"
         data-ng-model="ngModel.release"
         data-ng-change="selectedReleaseChanged()"
         data-ng-disabled="maasOsSelect.releases.length <= 1"
         data-ng-options="release[0] as release[1] disable when osOutdated(release, deployOptions) for release in releases"
       >
-      </select>
-    </div>
-    <div class="col-3">
+    </select>
+  </div>
+  <div class="col-3">
     <label class="p-form__label">Kernel</label>
       <select
         name="hwe_kernel"
@@ -31,6 +31,5 @@
       >
         <option value="">No minimum kernel</option>
       </select>
-    </div>
   </div>
 </div>

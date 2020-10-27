@@ -80,7 +80,7 @@
             <div class="p-form__group u-align--right">
                 <button type="submit" class="p-button--positive" data-ng-disabled="!canImportKeys()" data-ng-click="importKeys()">Import</button>
             </div>
+            <p data-ng-if="add.error" class="p-form-validation__message"><strong>Error:</strong> {$ add.error $}</p>
+        </form>
     </div>
-    <p data-ng-if="add.error" class="p-form-validation__message"><strong>Error:</strong> {$ add.error $}</p>
-    </form>
 </div>
