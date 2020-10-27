@@ -48,14 +48,14 @@
                         <span data-ng-if="filesystemMode === 'unmount'">Unmounting {$ filesystem.name $}</span>
                         <span data-ng-if="filesystemMode === 'delete'">Removing {$ filesystem.name $}</span>
                     </h2>
-                    <button class="p-button--close" data-ng-click="filesystemCancel()"><span class="p-icon--close">Cancel</span></button>
+                    <button type="button" class="p-button--close" data-ng-click="filesystemCancel()"><span class="p-icon--close">Cancel</span></button>
                 </div>
                 <div data-ng-if="filesystemMode !== null && filesystemMode !== 'multi'" data-ng-class="{ 'is-active': filesystemMode !== null && filesystemMode !== 'multi' }">
                     <div class="p-space-between" data-ng-if="filesystemMode === 'unmount'">
                         <p><span class="p-icon--warning">Warning:</span> Are you sure you want to unmount this filesystem?</p>
                         <div class="p-space-between__align-right">
-                            <button class="p-button--base  u-width--auto" type="button" data-ng-click="filesystemCancel()">Cancel</button>
-                            <button class="p-button--neutral  u-width--auto" data-ng-click="filesystemConfirmUnmount(filesystem)">Unmount</button>
+                            <button type="button" class="p-button--base u-width--auto" type="button" data-ng-click="filesystemCancel()">Cancel</button>
+                            <button type="button" class="p-button--neutral u-width--auto" data-ng-click="filesystemConfirmUnmount(filesystem)">Unmount</button>
                         </div>
                     </div>
                     <div data-ng-if="filesystemMode === 'delete'" class="p-space-between">
