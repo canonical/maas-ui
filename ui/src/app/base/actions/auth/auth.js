@@ -11,7 +11,7 @@ auth.fetch = () => {
 };
 
 auth.changePassword = (params) => ({
-  type: "CHANGE_AUTH_USER_PASSWORD",
+  type: "auth/changePassword",
   meta: {
     model: "user",
     method: "change_password",
@@ -21,8 +21,20 @@ auth.changePassword = (params) => ({
   },
 });
 
+// Change a user's password as an admin
+auth.adminChangePassword = (params) => ({
+  type: "auth/adminChangePassword",
+  meta: {
+    model: "user",
+    method: "admin_change_password",
+  },
+  payload: {
+    params,
+  },
+});
+
 auth.cleanup = () => ({
-  type: "CLEANUP_AUTH_USER",
+  type: "auth/cleanup",
 });
 
 export default auth;

@@ -1,3 +1,4 @@
+const { BASENAME } = require("@maas-ui/maas-ui-shared");
 const { merge } = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
@@ -11,6 +12,7 @@ module.exports = merge(common, {
     host: "0.0.0.0",
     compress: true,
     public: "0.0.0.0:8400",
+    publicPath: BASENAME,
     sockPath: "/sockjs-legacy",
     writeToDisk: true,
   },
