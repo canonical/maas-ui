@@ -14,11 +14,6 @@ export type User = Model & {
   username: string;
 };
 
-export type UserWithPassword = User & {
-  password1: string;
-  password2: string;
-};
-
 export type AuthState = {
   errors: TSFixMe;
   loaded: boolean;

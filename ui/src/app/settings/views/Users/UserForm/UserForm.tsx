@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 import { auth as authActions } from "app/base/actions";
 import { actions as userActions } from "app/store/user";
-import type { UserWithPassword } from "app/store/user/types";
+import type { User } from "app/store/user/types";
 import userSelectors from "app/store/user/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
@@ -11,6 +11,11 @@ import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import BaseUserForm from "app/base/components/UserForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+
+type UserWithPassword = User & {
+  password1: string;
+  password2: string;
+};
 
 type PropTypes = {
   user: UserWithPassword;
