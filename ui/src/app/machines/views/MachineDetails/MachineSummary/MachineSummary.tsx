@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import React, { useEffect } from "react";
@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { machine as machineActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
+import SystemCard from "./SystemCard";
 import type { RootState } from "app/store/root/types";
 
 type RouteParams = {
@@ -29,7 +30,14 @@ const MachineSummary = (): JSX.Element => {
     return <Spinner text="Loading" />;
   }
 
-  return <>{machine.fqdn}</>;
+  return (
+    <div className="machine-summary__cards">
+      <Card className="machine-summary__overview-card">Overview</Card>
+      <SystemCard id={id} />
+      <Card className="machine-summary__numa-card">Numa</Card>
+      <Card className="machine-summary__network-card">Network</Card>
+    </div>
+  );
 };
 
 export default MachineSummary;

@@ -145,7 +145,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   installation_status: 3,
   interfaces: () => [],
   license_key: "",
-  metadata: {
+  metadata: () => ({
     cpu_model: "Intel(R) Xeon(R) CPU E5620",
     system_vendor: "QEMU",
     system_product: "Standard PC (Q35 + ICH9, 2009)",
@@ -159,17 +159,17 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
     chassis_vendor: "QEMU",
     chassis_type: "Other",
     chassis_version: "pc-q35-5.1",
-  },
+  }),
   min_hwe_kernel: "",
   node_type: 0,
   numa_nodes: () => [],
   on_network: false,
   power_bmc_node_count: 3,
-  power_parameters: {
+  power_parameters: () => ({
     password: "",
     power_address: "192.168.1.1:8000",
     instance_name: "test",
-  },
+  }),
   show_os_info: false,
   special_filesystems: () => [],
   storage_layout_issues: () => [],
