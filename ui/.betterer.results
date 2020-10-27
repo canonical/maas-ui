@@ -379,11 +379,11 @@ exports[`stricter compilation`] = {
       [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'Function\'.", "2087897566"],
       [204, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
-    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:3782100980": [
-      [91, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [146, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [200, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [262, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
+    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:623142700": [
+      [84, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [129, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [173, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [235, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
     ],
     "src/app/store/notification/selectors.ts:3467721382": [
       [25, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
