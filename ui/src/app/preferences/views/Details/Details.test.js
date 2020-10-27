@@ -65,9 +65,7 @@ describe("Details", () => {
     wrapper.unmount();
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
-    expect(actions.some((action) => action.type === "CLEANUP_AUTH_USER")).toBe(
-      true
-    );
+    expect(actions.some((action) => action.type === "auth/cleanup")).toBe(true);
   });
 
   it("can update the user", () => {
@@ -161,9 +159,9 @@ describe("Details", () => {
     );
     const changePassword = store
       .getActions()
-      .find((action) => action.type === "CHANGE_AUTH_USER_PASSWORD");
+      .find((action) => action.type === "auth/changePassword");
     expect(changePassword).toEqual({
-      type: "CHANGE_AUTH_USER_PASSWORD",
+      type: "auth/changePassword",
       payload: {
         params: {
           old_password: "test1",

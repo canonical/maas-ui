@@ -11,16 +11,19 @@ const auth = createNextState(
         draft.auth.loaded = true;
         draft.auth.user = action.payload;
         break;
-      case "CHANGE_AUTH_USER_PASSWORD_START":
+      case "auth/changePasswordStart":
+      case "auth/adminChangePasswordStart":
         draft.auth.saved = false;
         draft.auth.saving = true;
         break;
-      case "CHANGE_AUTH_USER_PASSWORD_ERROR":
+      case "auth/changePasswordError":
+      case "auth/adminChangePasswordError":
         draft.auth.errors = action.error;
         draft.auth.saved = false;
         draft.auth.saving = false;
         break;
-      case "CHANGE_AUTH_USER_PASSWORD_SUCCESS":
+      case "auth/changePasswordSuccess":
+      case "auth/adminChangePasswordSuccess":
         draft.auth.errors = {};
         draft.auth.saved = true;
         draft.auth.saving = false;
@@ -35,7 +38,7 @@ const auth = createNextState(
           draft.auth.user = action.payload;
         }
         break;
-      case "CLEANUP_AUTH_USER":
+      case "auth/cleanup":
         draft.auth.errors = {};
         draft.auth.saved = false;
         draft.auth.saving = false;
