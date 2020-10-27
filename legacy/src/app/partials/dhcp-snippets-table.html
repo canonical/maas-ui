@@ -14,11 +14,13 @@
   </thead>
   <tbody>
     <tr data-ng-if="snippets.length === 0" role="row">
-      <td colspan="5">
-        No DHCP snippets available
-      </td>
+      <td colspan="5">No DHCP snippets available</td>
     </tr>
-    <tr data-ng-repeat="snippet in snippets track by snippet.id" data-ng-class="{ 'is-active': editSnippet === snippet || deleteSnippet === snippet }" role="row">
+    <tr
+      data-ng-repeat="snippet in snippets track by snippet.id"
+      data-ng-class="{ 'is-active': editSnippet === snippet || deleteSnippet === snippet }"
+      role="row"
+    >
       <td aria-label="Name" data-ng-if="editSnippet !== snippet">
         {$ snippet.name $}
       </td>
@@ -34,45 +36,112 @@
           <span data-ng-if="!snippet.enabled">No</span>
         </div>
       </td>
-      <td data-ng-if="editSnippet !== snippet">
-        {$ snippet.description $}
-      </td>
+      <td data-ng-if="editSnippet !== snippet">{$ snippet.description $}</td>
       <td data-ng-if="editSnippet !== snippet">
         <div class="u-align--right">
-          <button aria-label="Edit {$ snippet.name $}" data-ng-click="toggleMenu(); snippetEnterEdit(snippet)" class="p-button--base is-small u-no-margin--right">
+          <button
+            aria-label="Edit {$ snippet.name $}"
+            data-ng-click="toggleMenu(); snippetEnterEdit(snippet)"
+            class="p-button--base is-small u-no-margin--right"
+          >
             <i class="p-icon--edit">Edit</i>
           </button>
-          <button data-ng-if="allowDelete" aria-label="Remove {$ snippet.name $}" data-ng-click="toggleMenu(); snippetEnterRemove(snippet)" class="p-button--base is-small">
+          <button
+            data-ng-if="allowDelete"
+            aria-label="Remove {$ snippet.name $}"
+            data-ng-click="toggleMenu(); snippetEnterRemove(snippet)"
+            class="p-button--base is-small"
+          >
             <i class="p-icon--delete">Remove</i>
           </button>
         </div>
       </td>
       <td class="p-table-expanding__panel" data-ng-if="editSnippet === snippet">
-        <maas-obj-form obj="editSnippet" manager="snippetsManager" manager-method="updateItem" table-form="true" save-on-blur="false" after-save="snippetExitEdit">
-          <maas-obj-field type="text" key="name" placeholder="Name" label="Snippet name"></maas-obj-field>
-          <maas-obj-field type="options" key="type" placeholder="Select type" label="Type"
-            options="type for type in snippetTypes"></maas-obj-field>
-          <maas-obj-field type="options" key="subnet" placeholder="Choose subnet" label="Applies to" options="subnet.id as getSubnetName(subnet) for subnet in subnets" data-ng-if="editSnippet.$maasForm.getValue('type') === 'Subnet'"></maas-obj-field>
-          <maas-obj-field type="options" key="node" placeholder="Choose node" label="Applies to" options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)" data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'" input-class="u-no-margin--bottom"></maas-obj-field>
+        <maas-obj-form
+          obj="editSnippet"
+          manager="snippetsManager"
+          manager-method="updateItem"
+          table-form="true"
+          save-on-blur="false"
+          after-save="snippetExitEdit"
+        >
+          <maas-obj-field
+            type="text"
+            key="name"
+            placeholder="Name"
+            label="Snippet name"
+          ></maas-obj-field>
+          <maas-obj-field
+            type="options"
+            key="type"
+            placeholder="Select type"
+            label="Type"
+            options="type for type in snippetTypes"
+          ></maas-obj-field>
+          <maas-obj-field
+            type="options"
+            key="subnet"
+            placeholder="Choose subnet"
+            label="Applies to"
+            options="subnet.id as getSubnetName(subnet) for subnet in subnets"
+            data-ng-if="editSnippet.$maasForm.getValue('type') === 'Subnet'"
+          ></maas-obj-field>
+          <maas-obj-field
+            type="options"
+            key="node"
+            placeholder="Choose node"
+            label="Applies to"
+            options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+            data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'"
+            input-class="u-no-margin--bottom"
+          ></maas-obj-field>
           <div class="u-no-margin--top">
             <div class="row u-hide u-show--small">
               <div class="col-12">
-                <h2 data-ng-click="snippetExitEdit(snippet)" class="u-float--left">Editing {$ snippet.name $}</h2>
-                <button data-ng-click="snippetExitEdit(snippet)" class="p-icon--close u-float--right"></button>
+                <h2
+                  data-ng-click="snippetExitEdit(snippet)"
+                  class="u-float--left"
+                >
+                  Editing {$ snippet.name $}
+                </h2>
+                <button
+                  data-ng-click="snippetExitEdit(snippet)"
+                  class="p-icon--close u-float--right"
+                ></button>
               </div>
             </div>
             <div class="row u-no-margin--top">
               <div class="col-12">
                 <div data-ng-if="windowWidth <= 772">
-                  <maas-obj-field type="text" key="name" placeholder="Name" label="Name"></maas-obj-field>
-                  <maas-obj-field type="options" key="type" placeholder="Select type" label="Select type"
-                    options="type for type in snippetTypes"></maas-obj-field>
-                  <maas-obj-field type="options" key="subnet" placeholder="Choose subnet" label="Choose subnet"
+                  <maas-obj-field
+                    type="text"
+                    key="name"
+                    placeholder="Name"
+                    label="Name"
+                  ></maas-obj-field>
+                  <maas-obj-field
+                    type="options"
+                    key="type"
+                    placeholder="Select type"
+                    label="Select type"
+                    options="type for type in snippetTypes"
+                  ></maas-obj-field>
+                  <maas-obj-field
+                    type="options"
+                    key="subnet"
+                    placeholder="Choose subnet"
+                    label="Choose subnet"
                     options="subnet.id as getSubnetName(subnet) for subnet in subnets"
-                    data-ng-if="editSnippet.$maasForm.getValue('type') === 'Subnet'"></maas-obj-field>
-                  <maas-obj-field type="options" key="node" placeholder="Choose node" label="Choose node"
+                    data-ng-if="editSnippet.$maasForm.getValue('type') === 'Subnet'"
+                  ></maas-obj-field>
+                  <maas-obj-field
+                    type="options"
+                    key="node"
+                    placeholder="Choose node"
+                    label="Choose node"
                     options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
-                    data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'"></maas-obj-field>
+                    data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'"
+                  ></maas-obj-field>
                 </div>
               </div>
             </div>
@@ -80,10 +149,26 @@
               <div class="p-strip is-shallow">
                 <div class="p-form__group dhcp-checkbox">
                   <label for="newEnabled" class="p-form__label">Enabled</label>
-                  <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="newEnabled" data-ng-model="newSnippet.data.enabled" data-ng-disabled="newSnippet.saving" checked>
-                  <label for="newEnabled" class="dhcp-checkbox__label"><!-- needed to achieve desired layout --></label>
+                  <input
+                    type="checkbox"
+                    name="enabled"
+                    class="onoffswitch-checkbox"
+                    id="newEnabled"
+                    data-ng-model="newSnippet.data.enabled"
+                    data-ng-disabled="newSnippet.saving"
+                    checked
+                  />
+                  <label for="newEnabled" class="dhcp-checkbox__label"
+                    ><!-- needed to achieve desired layout --></label
+                  >
                 </div>
-                <maas-obj-field type="textarea" key="value" placeholder="Custom DHCP snippet" label="Description" rows="15">
+                <maas-obj-field
+                  type="textarea"
+                  key="value"
+                  placeholder="Custom DHCP snippet"
+                  label="Description"
+                  rows="15"
+                >
                 </maas-obj-field>
               </div>
             </div>
@@ -94,29 +179,61 @@
               </div>
               <div class="col-4">
                 <div class="u-align--right">
-                  <button class="p-button--base u-no-margin--top" data-ng-click="snippetExitEdit(snippet)"
-                    type="button">Cancel</button>
-                  <button class="p-button--positive u-no-margin--top" maas-obj-save>Save snippet</button>
+                  <button
+                    class="p-button--base u-no-margin--top"
+                    data-ng-click="snippetExitEdit(snippet)"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="p-button--positive u-no-margin--top"
+                    maas-obj-save
+                  >
+                    Save snippet
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </maas-obj-form>
       </td>
-      <td class="p-table-expanding__panel" data-ng-if="deleteSnippet === snippet">
+      <td
+        class="p-table-expanding__panel"
+        data-ng-if="deleteSnippet === snippet"
+      >
         <div class="row u-hide u-show--small">
-          <h2 data-ng-click="snippetExitRemove(snippet)" class="u-float--left">Removing {$ snippet.name $}</h2>
-          <button data-ng-click="snippetExitRemove(snippet)" class="p-icon--close u-float--right"></button>
+          <h2 data-ng-click="snippetExitRemove(snippet)" class="u-float--left">
+            Removing {$ snippet.name $}
+          </h2>
+          <button
+            data-ng-click="snippetExitRemove(snippet)"
+            class="p-icon--close u-float--right"
+          ></button>
         </div>
         <hr />
         <div class="row u-no-margin--top u-equal-height">
           <div class="col-6 u-vertically-center">
-            <p><i class="p-icon--warning">Warning:</i> Are you sure you want to remove this snippet?</p>
+            <p>
+              <i class="p-icon--warning">Warning:</i> Are you sure you want to
+              remove this snippet?
+            </p>
           </div>
           <div class="col-6">
             <div class="u-align--right">
-              <button class="p-button--base" type="button" data-ng-click="snippetExitRemove(snippet)">Cancel</button>
-              <button class="p-button--negative" data-ng-click="snippetConfirmRemove(snippet)">Remove</button>
+              <button
+                class="p-button--base"
+                type="button"
+                data-ng-click="snippetExitRemove(snippet)"
+              >
+                Cancel
+              </button>
+              <button
+                class="p-button--negative"
+                data-ng-click="snippetConfirmRemove(snippet)"
+              >
+                Remove
+              </button>
             </div>
           </div>
         </div>
@@ -124,33 +241,104 @@
     </tr>
     <tr class="is-active" data-ng-if="newSnippet && allowAddNew" role="row">
       <td class="p-table-expanding__panel">
-        <maas-obj-form obj="newSnippet" manager="snippetsManager" manager-method="createItem" table-form="true"
-          save-on-blur="false" after-save="snippetAddCancel">
+        <maas-obj-form
+          obj="newSnippet"
+          manager="snippetsManager"
+          manager-method="createItem"
+          table-form="true"
+          save-on-blur="false"
+          after-save="snippetAddCancel"
+        >
           <div class="row u-hide u-show--small">
-            <h2 data-ng-click="snippetAddCancel()" class="u-float--left">Adding snippet</h2>
-            <button data-ng-click="snippetAddCancel()" class="p-icon--close u-float--right"></button>
+            <h2 data-ng-click="snippetAddCancel()" class="u-float--left">
+              Adding snippet
+            </h2>
+            <button
+              type="button"
+              data-ng-click="snippetAddCancel()"
+              class="p-icon--close u-float--right"
+            ></button>
           </div>
           <div class="row u-no-margin--top u-equal-height">
-            <maas-obj-field type="text" key="name" placeholder="Name" label="Snippet name" class="u-no-margin--top"></maas-obj-field>
-            <maas-obj-field type="options" key="type" class="u-no-margin--top" placeholder="Select type" label="Type" options="type for type in snippetTypes"></maas-obj-field>
-            <maas-obj-field type="options" key="subnet" placeholder="Choose subnet" label="Applies to" class="u-no-margin--top" options="subnet.id as getSubnetName(subnet) for subnet in subnets" data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'"></maas-obj-field>
-            <maas-obj-field type="options" key="node" placeholder="Choose node" label="Applies to" class="u-no-margin--top" options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)" data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'"></maas-obj-field>
+            <maas-obj-field
+              type="text"
+              key="name"
+              placeholder="Name"
+              label="Snippet name"
+              class="u-no-margin--top"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="type"
+              class="u-no-margin--top"
+              placeholder="Select type"
+              label="Type"
+              options="type for type in snippetTypes"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="subnet"
+              placeholder="Choose subnet"
+              label="Applies to"
+              class="u-no-margin--top"
+              options="subnet.id as getSubnetName(subnet) for subnet in subnets"
+              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="node"
+              placeholder="Choose node"
+              label="Applies to"
+              class="u-no-margin--top"
+              options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'"
+            ></maas-obj-field>
             <div class="p-form__group dhcp-checkbox">
               <label for="newEnabled" class="p-form__label">Enabled</label>
-              <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="newEnabled" data-ng-model="newSnippet.data.enabled" data-ng-disabled="newSnippet.saving" checked>
-              <label for="newEnabled" class="dhcp-checkbox__label"><!-- needed to achieve desired layout --></label>
+              <input
+                type="checkbox"
+                name="enabled"
+                class="onoffswitch-checkbox"
+                id="newEnabled"
+                data-ng-model="newSnippet.data.enabled"
+                data-ng-disabled="newSnippet.saving"
+                checked
+              />
+              <label for="newEnabled" class="dhcp-checkbox__label"
+                ><!-- needed to achieve desired layout --></label
+              >
             </div>
           </div>
           <div class="row u-no-margin--top" data-ng-if="windowWidth <= 772">
-            <maas-obj-field type="text" key="name" placeholder="Name" label="Name"></maas-obj-field>
-            <maas-obj-field type="options" key="type" placeholder="Select type" label="Select type"
-              options="type for type in snippetTypes"></maas-obj-field>
-            <maas-obj-field type="options" key="subnet" placeholder="Choose subnet" label="Choose subnet"
+            <maas-obj-field
+              type="text"
+              key="name"
+              placeholder="Name"
+              label="Name"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="type"
+              placeholder="Select type"
+              label="Select type"
+              options="type for type in snippetTypes"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="subnet"
+              placeholder="Choose subnet"
+              label="Choose subnet"
               options="subnet.id as getSubnetName(subnet) for subnet in subnets"
-              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'"></maas-obj-field>
-            <maas-obj-field type="options" key="node" placeholder="Choose node" label="Choose node"
+              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Subnet'"
+            ></maas-obj-field>
+            <maas-obj-field
+              type="options"
+              key="node"
+              placeholder="Choose node"
+              label="Choose node"
               options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
-              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'">
+              data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'"
+            >
             </maas-obj-field>
             <dl>
               <dt>
@@ -158,9 +346,19 @@
               </dt>
               <dd>
                 <div class="onoffswitch">
-                  <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="newEnabled"
-                    data-ng-model="newSnippet.data.enabled" data-ng-disabled="newSnippet.saving" checked>
-                  <label class="onoffswitch-label u-no-margin--top" for="newEnabled">
+                  <input
+                    type="checkbox"
+                    name="enabled"
+                    class="onoffswitch-checkbox"
+                    id="newEnabled"
+                    data-ng-model="newSnippet.data.enabled"
+                    data-ng-disabled="newSnippet.saving"
+                    checked
+                  />
+                  <label
+                    class="onoffswitch-label u-no-margin--top"
+                    for="newEnabled"
+                  >
                     <span class="onoffswitch-inner"></span>
                     <span class="onoffswitch-switch"></span>
                   </label>
@@ -168,16 +366,28 @@
               </dd>
             </dl>
           </div>
-          <maas-obj-field type="textarea" key="value" placeholder="Custom DHCP snippet" label="Description"></maas-obj-field>
+          <maas-obj-field
+            type="textarea"
+            key="value"
+            placeholder="Custom DHCP snippet"
+            label="Description"
+          ></maas-obj-field>
           <div class="row u-no-margin--top">
             <hr />
             <div class="u-float--left">
               <maas-obj-errors></maas-obj-errors>
             </div>
             <div class="u-align--right">
-              <button class="p-button--base u-no-margin--top" type="button"
-                data-ng-click="snippetAddCancel()">Cancel</button>
-              <button class="p-button--positive u-no-margin--top" maas-obj-save>Save snippet</button>
+              <button
+                class="p-button--base u-no-margin--top"
+                type="button"
+                data-ng-click="snippetAddCancel()"
+              >
+                Cancel
+              </button>
+              <button class="p-button--positive u-no-margin--top" maas-obj-save>
+                Save snippet
+              </button>
             </div>
           </div>
         </maas-obj-form>
@@ -187,16 +397,25 @@
 </table>
 <div class="row" data-ng-if="allowAddNew">
   <div class="u-align--right">
-    <button class="p-button--neutral" data-ng-disabled="editing" data-ng-if="!newSnippet" data-ng-click="editing || snippetAdd()">Add custom snippet</button>
+    <button
+      class="p-button--neutral"
+      data-ng-disabled="editing"
+      data-ng-if="!newSnippet"
+      data-ng-click="editing || snippetAdd()"
+    >
+      Add custom snippet
+    </button>
   </div>
 </div>
 <ul class="p-inline-list--middot">
   <li class="p-inline-list__item" data-ng-if="!hideAllSnippetsLink">
-    <a href="{$ BASENAME $}{$ REACT_BASENAME $}/settings/dhcp">All snippets: Settings > DHCP snippets</a>
+    <a href="{$ BASENAME $}{$ REACT_BASENAME $}/settings/dhcp"
+      >All snippets: Settings > DHCP snippets</a
+    >
   </li>
   <li class="p-inline-list__item">
-    <a class="p-link--external"
-      href="https://maas.io/docs/dhcp"
-      target="_blank">About DHCP snippets</a>
+    <a class="p-link--external" href="https://maas.io/docs/dhcp" target="_blank"
+      >About DHCP snippets</a
+    >
   </li>
 </ul>

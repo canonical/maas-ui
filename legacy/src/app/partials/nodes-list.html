@@ -405,7 +405,7 @@
                             Are you sure you want to {$ tabs[tab].actionOption.name $} <span data-ng-pluralize count="tabs[tab].selectedItems.length" when="{'one': 'this machine', 'other': 'these machines'}"></span>?
                         </div>
                         <div class="u-align--right">
-                            <button class="p-button--base" data-ng-click="actionCancel(tab)">No</button>
+                            <button type="button" class="p-button--base" data-ng-click="actionCancel(tab)">No</button>
                             <button class="p-button--negative" data-ng-click="actionGo(tab)">Yes</button>
                         </div>
                     </div>
@@ -519,7 +519,7 @@
                 <span class="p-icon--error">Error:</span> {$ error $}
             </div>
             <div class="u-align--right">
-                <button class="p-button--base" data-ng-click="cancel()">Cancel</button>
+                <button type="button" class="p-button--base" data-ng-click="cancel()">Cancel</button>
                 <button class="p-button--neutral"
                     data-ng-class="{ disabled: deviceHasError() }"
                     data-ng-click="save(true)">Save and add another</button>
@@ -641,7 +641,7 @@
                     Are you sure you want to {$ tabs.controllers.actionOption.name $} <span data-ng-pluralize count="tabs.controllers.selectedItems.length" when="{'one': 'this controller', 'other': 'these controllers'}"></span>?
                 </div>
                 <div class="col-4 u-align--right">
-                    <button class="p-button--base" data-ng-click="actionCancel('controllers')">No</button>
+                    <button type="button" p-button--base" data-ng-click="actionCancel('controllers')">No</button>
                     <button class="p-button--negative" data-ng-click="actionGo('controllers')">Yes</button>
                 </div>
             </div>
