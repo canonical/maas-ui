@@ -7,7 +7,7 @@
     data-test="single-notification"
     ng-if="notifications.length == 1"
   >
-    <ul class="p-list u-no-margin--bottom" ng-class="{ 'is-open' : shown }">
+    <ul class="p-list u-no-margin--bottom" ng-class="{ 'is-open': shown }">
       <li
         class="p-notification"
         ng-class="{ [categoryClasses[notification.category]]: true, 'p-notification--has-action' : notification.dismissable }"
@@ -57,7 +57,10 @@
             ></span>
             <small>
               <i
-                ng-class="{ 'p-icon--expand': !shown, 'p-icon--collapse': shown }"
+                ng-class="{
+                  'p-icon--expand': !shown,
+                  'p-icon--collapse': shown
+                }"
               ></i>
             </small> </a
           >&nbsp;&nbsp;
@@ -73,7 +76,7 @@
         <li
           class="p-list__item"
           ng-repeat="notification in notifications"
-          ng-class="{ 'p-notification--has-action' : notification.dismissable }"
+          ng-class="{ 'p-notification--has-action': notification.dismissable }"
         >
           <p class="p-notification__response">
             <span

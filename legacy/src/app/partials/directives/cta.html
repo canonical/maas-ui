@@ -9,7 +9,9 @@
     data-ng-disabled="disabled"
   >
     <span>{$ getTitle() $}</span>
-    <i class="p-icon--contextual-menu p-contextual-menu__indicator is-light"></i>
+    <i
+      class="p-icon--contextual-menu p-contextual-menu__indicator is-light"
+    ></i>
   </button>
   <div
     class="p-contextual-menu__dropdown p-cta-dropdown"
@@ -18,7 +20,10 @@
     aria-label="submenu"
     data-ng-show="shown"
   >
-    <span class="p-contextual-menu__group" data-ng-repeat="type in getActionTypes()">
+    <span
+      class="p-contextual-menu__group"
+      data-ng-repeat="type in getActionTypes()"
+    >
       <button
         class="p-contextual-menu__link u-flex--space-between"
         data-ng-repeat="select in maasCta | filter:{ type: type }"

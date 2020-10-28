@@ -729,7 +729,7 @@
   </section>
 
   <section data-ng-if="section.area === 'summary'">
-    <node-details-summary />
+    <node-details-summary></node-details-summary>
   </section>
 
   <section class="p-strip" data-ng-if="section.area === 'instances'">
@@ -1526,7 +1526,11 @@
                   >
                     <div class="p-double-row__icon-container">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         <span
                           aria-describedby="not-connected-tooltip"
@@ -1544,7 +1548,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed < interface.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -1555,7 +1562,10 @@
                           >
                         </span>
                         <i
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed === interface.interface_speed
+                          "
                           class="p-icon--placeholder"
                         >
                         </i>
@@ -1563,7 +1573,11 @@
                     </div>
                     <div class="p-double-row__rows-container--icon">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         {$ formatSpeedUnits(interface.link_speed) $}/{$
                         formatSpeedUnits(interface.interface_speed) $}
@@ -1573,7 +1587,10 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                      ng-class="{
+                        'show-warning':
+                          getInterfaceNumaNodes(interface).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -2049,7 +2066,11 @@
                   >
                     <div class="p-double-row__icon-container">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         <span
                           aria-describedby="not-connected-tooltip"
@@ -2067,7 +2088,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed < interface.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -2079,14 +2103,21 @@
                         </span>
                         <i
                           class="p-icon--placeholder"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed === interface.interface_speed
+                          "
                         >
                         </i>
                       </span>
                     </div>
                     <div class="p-double-row__rows-container--icon">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         {$ formatSpeedUnits(interface.link_speed) $}/{$
                         formatSpeedUnits(interface.interface_speed) $}
@@ -2096,7 +2127,10 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                      ng-class="{
+                        'show-warning':
+                          getInterfaceNumaNodes(interface).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -2330,7 +2364,11 @@
                   >
                     <div class="p-double-row__icon-container">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         <span
                           aria-describedby="not-connected-tooltip"
@@ -2348,7 +2386,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed < interface.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -2360,14 +2401,21 @@
                         </span>
                         <i
                           class="p-icon--placeholder"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed === interface.interface_speed
+                          "
                         >
                         </i>
                       </span>
                     </div>
                     <div class="p-double-row__rows-container--icon">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         {$ formatSpeedUnits(interface.link_speed) $}/{$
                         formatSpeedUnits(interface.interface_speed) $}
@@ -2377,7 +2425,10 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                      ng-class="{
+                        'show-warning':
+                          getInterfaceNumaNodes(interface).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -2608,7 +2659,11 @@
                   >
                     <div class="p-double-row__icon-container">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         <span
                           aria-describedby="not-connected-tooltip"
@@ -2626,7 +2681,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed < interface.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -2645,7 +2703,11 @@
                     </div>
                     <div class="p-double-row__rows-container--icon">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         {$ formatSpeedUnits(interface.link_speed) $}/{$
                         formatSpeedUnits(interface.interface_speed) $}
@@ -2655,7 +2717,10 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                      ng-class="{
+                        'show-warning':
+                          getInterfaceNumaNodes(interface).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -2738,7 +2803,9 @@
                     {$ getDHCPStatus(editInterface.vlan) $}
                     <span
                       class="p-tooltip--btm-right"
-                      ng-if="editInterface.vlan && editInterface.vlan.relay_vlan"
+                      ng-if="
+                        editInterface.vlan && editInterface.vlan.relay_vlan
+                      "
                       style="margin-left: 0.25rem"
                     >
                       <i class="p-icon--information" style="width: 0.875rem"
@@ -3045,7 +3112,7 @@
                             disable-label="false"
                             placeholder="Disconnected"
                             placeholder-enabled="true"
-                            on-change="fabricChangedForm"
+                            on-change="(fabricChangedForm)"
                             options="fabric as fabric.name for fabric in fabrics"
                             label-width="2"
                             label-width-tablet="2"
@@ -3058,7 +3125,7 @@
                             label="VLAN"
                             disable-label="false"
                             data-ng-show="!isController && editInterface.$maasForm.getValue('fabric')"
-                            on-change="vlanChangedForm"
+                            on-change="(vlanChangedForm)"
                             options="vlan as getVLANText(vlan) for vlan in vlans | removeDefaultVLANIfVLAN:interface.type | filterByFabric:editInterface.$maasForm.getValue('fabric')"
                             label-width="2"
                             label-width-tablet="2"
@@ -3074,7 +3141,7 @@
                             placeholder-enabled="true"
                             disable-label="false"
                             data-ng-show="!isController && editInterface.$maasForm.getValue('fabric')"
-                            on-change="subnetChangedForm"
+                            on-change="(subnetChangedForm)"
                             options="subnet as getSubnetText(subnet) for subnet in subnets | filterByVLAN:editInterface.$maasForm.getValue('vlan')"
                             label-width="2"
                             label-width-tablet="2"
@@ -3090,7 +3157,7 @@
                             placeholder-enabled="true"
                             data-ng-init="editInterface.subnet = editInterface.defaultSubnet"
                             data-ng-if="!isController && editInterface.$maasForm.getValue('ip_assignment') === 'static'"
-                            on-change="subnetChangedForm"
+                            on-change="(subnetChangedForm)"
                             disable-label="false"
                             options="subnet as getSubnetText(subnet) for subnet in subnets"
                             label-width="2"
@@ -3105,7 +3172,7 @@
                             disable-label="false"
                             data-ng-if="!isController && editInterface.$maasForm.getValue('fabric') && !isLinkModeDisabled(editInterface.$maasForm)"
                             options="mode.mode as mode.text for mode in modes | filterLinkModes:editInterface.$maasForm"
-                            on-change="modeChangedForm"
+                            on-change="(modeChangedForm)"
                             label-width="2"
                             label-width-tablet="2"
                             input-width="4"
@@ -3732,7 +3799,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(parent) && parent.link_speed < parent.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(parent) &&
+                            parent.link_speed < parent.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -3744,7 +3814,10 @@
                         </span>
                         <i
                           class="p-icon--placeholder"
-                          ng-if="isInterfaceConnected(parent) && parent.link_speed === parent.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(parent) &&
+                            parent.link_speed === parent.interface_speed
+                          "
                         >
                         </i>
                       </span>
@@ -3759,7 +3832,9 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(parent).length > 1 }"
+                      ng-class="{
+                        'show-warning': getInterfaceNumaNodes(parent).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -3885,7 +3960,11 @@
                   >
                     <div class="p-double-row__icon-container">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         <span
                           aria-describedby="not-connected-tooltip"
@@ -3903,7 +3982,10 @@
                         <span
                           aria-describedby="link-speed-tooltip"
                           class="p-tooltip--top-left"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed < interface.interface_speed
+                          "
                         >
                           <i class="p-icon--warning"></i>
                           <span
@@ -3915,14 +3997,21 @@
                         </span>
                         <i
                           class="p-icon--placeholder"
-                          ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed"
+                          ng-if="
+                            isInterfaceConnected(interface) &&
+                            interface.link_speed === interface.interface_speed
+                          "
                         >
                         </i>
                       </span>
                     </div>
                     <div class="p-double-row__rows-container--icon">
                       <span
-                        ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                        ng-if="
+                          !isBond(interface) &&
+                          !isBridge(interface) &&
+                          !isVLAN(interface)
+                        "
                       >
                         {$ formatSpeedUnits(interface.link_speed) $}/{$
                         formatSpeedUnits(interface.interface_speed) $}
@@ -3932,7 +4021,10 @@
                   <td aria-label="Type, NUMA node" class="p-double-row">
                     <div
                       class="p-tooltip--top-left numa-tooltip"
-                      ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                      ng-class="{
+                        'show-warning':
+                          getInterfaceNumaNodes(interface).length > 1
+                      }"
                     >
                       <div class="p-double-row__rows-container">
                         <div
@@ -4517,7 +4609,9 @@
                   </div>
                 </td>
                 <td
-                  ng-if="isShowingDeleteConfirm() && isInterfaceSelected(interface)"
+                  ng-if="
+                    isShowingDeleteConfirm() && isInterfaceSelected(interface)
+                  "
                 >
                   <div class="row">
                     <hr />
@@ -4560,10 +4654,13 @@
               <tr
                 class="p-table--is-not-device"
                 ng-class="{
-                                    'disabled': isDisabled(),
-                                    'is-active': isInterfaceSelected(interface) && (!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)),
-                                    'noEdit': cannotEditInterface(interface)
-                                }"
+                  disabled: isDisabled(),
+                  'is-active':
+                    isInterfaceSelected(interface) &&
+                    (!isAllNetworkingDisabled() ||
+                      isLimitedEditingAllowed(interface)),
+                  noEdit: cannotEditInterface(interface)
+                }"
                 ng-if="!isDevice"
               >
                 <td
@@ -4623,7 +4720,11 @@
                 >
                   <div class="p-double-row__icon-container">
                     <span
-                      ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                      ng-if="
+                        !isBond(interface) &&
+                        !isBridge(interface) &&
+                        !isVLAN(interface)
+                      "
                     >
                       <span
                         aria-describedby="not-connected-tooltip"
@@ -4641,7 +4742,10 @@
                       <span
                         aria-describedby="link-speed-tooltip"
                         class="p-tooltip--top-left"
-                        ng-if="isInterfaceConnected(interface) && interface.link_speed < interface.interface_speed"
+                        ng-if="
+                          isInterfaceConnected(interface) &&
+                          interface.link_speed < interface.interface_speed
+                        "
                       >
                         <i class="p-icon--warning"></i>
                         <span
@@ -4653,14 +4757,21 @@
                       </span>
                       <i
                         class="p-icon--placeholder"
-                        ng-if="isInterfaceConnected(interface) && interface.link_speed === interface.interface_speed"
+                        ng-if="
+                          isInterfaceConnected(interface) &&
+                          interface.link_speed === interface.interface_speed
+                        "
                       >
                       </i>
                     </span>
                   </div>
                   <div class="p-double-row__rows-container--icon">
                     <span
-                      ng-if="!isBond(interface) && !isBridge(interface) && !isVLAN(interface)"
+                      ng-if="
+                        !isBond(interface) &&
+                        !isBridge(interface) &&
+                        !isVLAN(interface)
+                      "
                     >
                       {$ formatSpeedUnits(interface.link_speed) $}/{$
                       formatSpeedUnits(interface.interface_speed) $}
@@ -4670,7 +4781,10 @@
                 <td aria-label="Type, NUMA node" class="p-double-row">
                   <div
                     class="p-tooltip--top-left numa-tooltip"
-                    ng-class="{ 'show-warning': getInterfaceNumaNodes(interface).length > 1 }"
+                    ng-class="{
+                      'show-warning':
+                        getInterfaceNumaNodes(interface).length > 1
+                    }"
                   >
                     <div class="p-double-row__rows-container">
                       <div class="p-double-row__main-row">
@@ -5238,7 +5352,7 @@
                               label-width="2"
                               input-width="5"
                               data-ng-if="editInterface.$maasForm.getValue('ip_assignment') === 'static'"
-                              on-change="subnetChangedForm"
+                              on-change="(subnetChangedForm)"
                               disable-label="false"
                               options="subnet as getSubnetText(subnet) for subnet in subnets"
                             ></maas-obj-field>
@@ -5394,7 +5508,11 @@
 
               <tr
                 class="p-table--is-not-device indented-border"
-                ng-if="interface.members && interface.members.length > 0 && interface.type !== 'alias'"
+                ng-if="
+                  interface.members &&
+                  interface.members.length > 0 &&
+                  interface.type !== 'alias'
+                "
                 ng-repeat="member in interface.members"
               >
                 <td class="p-double-row" aria-label="Name">
@@ -5435,7 +5553,10 @@
                       <span
                         aria-describedby="link-speed-tooltip"
                         class="p-tooltip--top-left"
-                        ng-if="isInterfaceConnected(member) && member.link_speed < member.interface_speed"
+                        ng-if="
+                          isInterfaceConnected(member) &&
+                          member.link_speed < member.interface_speed
+                        "
                       >
                         <i class="p-icon--warning"></i>
                         <span
@@ -5446,7 +5567,10 @@
                         >
                       </span>
                       <i
-                        ng-if="isInterfaceConnected(member) && member.link_speed === member.interface_speed"
+                        ng-if="
+                          isInterfaceConnected(member) &&
+                          member.link_speed === member.interface_speed
+                        "
                         class="p-icon--placeholder"
                       ></i>
                     </span>
@@ -5461,7 +5585,9 @@
                 <td aria-label="Type, NUMA node" class="p-double-row">
                   <div
                     class="p-tooltip--top-left numa-tooltip"
-                    ng-class="{ 'show-warning': getInterfaceNumaNodes(member).length > 1 }"
+                    ng-class="{
+                      'show-warning': getInterfaceNumaNodes(member).length > 1
+                    }"
                   >
                     <div class="p-double-row__rows-container">
                       <div class="p-double-row__main-row">
@@ -5987,7 +6113,11 @@
                       newInterface.errorMsg $}
                     </div>
                     <div class="u-align--right">
-                      <button type="button" class="p-button--base" data-ng-click="cancel()">
+                      <button
+                        type="button"
+                        class="p-button--base"
+                        data-ng-click="cancel()"
+                      >
                         Cancel
                       </button>
                       <button

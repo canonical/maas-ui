@@ -413,7 +413,7 @@ export function SubnetDetailsController(
       [$scope.subnet.cidr]
     );
 
-    $scope.$watch("subnetManager.getActiveItem()", function(activeItem) {
+    $scope.$watch("subnetManager.getActiveItem()", function (activeItem) {
       if (!activeItem) {
         // Show an error if the current subnet is removed.
         ErrorService.raiseError(`No subnet with pk: ${$scope.subnet.id}`);

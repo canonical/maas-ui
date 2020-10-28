@@ -3,10 +3,18 @@
 </header>
 <div class="p-card__content">
   <ul class="p-list">
-    <li class="p-list__item u-no-margin--top" data-ng-if="node.owner"><span class="muted-label">Owner:</span> {$ node.owner $}</li>
-    <li class="p-list__item u-no-margin--top" data-ng-if="!node.owner"><span class="muted-label">Owner:</span> <span>(unassigned)</span></li>
-    <li class="p-list__item u-no-margin--top"><span class="muted-label">Domain:</span> {$ header.domain.selected.name $}</li>
-    <li class="p-list__item u-no-margin--top"><span class="muted-label">Zone:</span> {$ summary.zone.selected.name $}</li>
+    <li class="p-list__item u-no-margin--top" data-ng-if="node.owner">
+      <span class="muted-label">Owner:</span> {$ node.owner $}
+    </li>
+    <li class="p-list__item u-no-margin--top" data-ng-if="!node.owner">
+      <span class="muted-label">Owner:</span> <span>(unassigned)</span>
+    </li>
+    <li class="p-list__item u-no-margin--top">
+      <span class="muted-label">Domain:</span> {$ header.domain.selected.name $}
+    </li>
+    <li class="p-list__item u-no-margin--top">
+      <span class="muted-label">Zone:</span> {$ summary.zone.selected.name $}
+    </li>
   </ul>
 </div>
 <footer class="p-card__footer">
