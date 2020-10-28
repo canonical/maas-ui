@@ -1,13 +1,13 @@
 import type { Model, ModelRef } from "app/store/types/model";
 
-type TestResult = -1 | 0 | 1;
+type TestResult = -1 | 0 | 1 | 2 | 3;
 
 export type TestStatus = {
   status: TestResult;
-  pending: TestResult;
-  running: TestResult;
-  passed: TestResult;
-  failed: TestResult;
+  pending: number;
+  running: number;
+  passed: number;
+  failed: number;
 };
 
 /**

@@ -3,15 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import React, { useEffect } from "react";
 
-import type { RouteParams } from "app/base/types";
+import NumaCard from "./NumaCard";
+import OverviewCard from "./OverviewCard";
+import SystemCard from "./SystemCard";
 import { machine as machineActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
+import type { RouteParams } from "app/base/types";
+import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
-import NumaCard from "./NumaCard";
-import SystemCard from "./SystemCard";
 import type { RootState } from "app/store/root/types";
 
-const MachineSummary = (): JSX.Element => {
+type Props = {
+  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+};
+
+const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const machine = useSelector((state: RootState) =>
@@ -30,7 +36,7 @@ const MachineSummary = (): JSX.Element => {
 
   return (
     <div className="machine-summary__cards">
-      <Card className="machine-summary__overview-card">Overview</Card>
+      <OverviewCard id={id} setSelectedAction={setSelectedAction} />
       <SystemCard id={id} />
       <NumaCard id={id} />
       <Card className="machine-summary__network-card">Network</Card>

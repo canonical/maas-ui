@@ -3,15 +3,18 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import TestFormFields from "./TestFormFields";
 import {
   machine as machineActions,
   scripts as scriptActions,
 } from "app/base/actions";
+import ActionForm from "app/base/components/ActionForm";
+import { HardwareType } from "app/base/enum";
 import { useMachineActionForm } from "app/machines/hooks";
+import { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
-import ActionForm from "app/base/components/ActionForm";
-import TestFormFields from "./TestFormFields";
+import { Scripts } from "app/store/scripts/types";
 
 const TestFormSchema = Yup.object().shape({
   enableSSH: Yup.boolean(),
@@ -28,7 +31,23 @@ const TestFormSchema = Yup.object().shape({
   urls: Yup.object(),
 });
 
-export const TestForm = ({ setSelectedAction }) => {
+export type FormValues = {
+  enableSSH: boolean;
+  scripts: Scripts[];
+  scriptInputs: {
+    "internet-connectivity": { url: string };
+  };
+};
+
+type Props = {
+  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  hardwareType?: HardwareType;
+};
+
+export const TestForm = ({
+  setSelectedAction,
+  hardwareType,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const scripts = useSelector(scriptSelectors.testing);
@@ -40,9 +59,15 @@ export const TestForm = ({ setSelectedAction }) => {
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
   }));
-  const preselected = [
-    formattedScripts.find((script) => script.name === "smartctl-validate"),
-  ].filter(Boolean);
+
+  const preselected = hardwareType
+    ? formattedScripts.filter(
+        (script) => script?.hardware_type === hardwareType
+      )
+    : [
+        formattedScripts.find((script) => script.name === "smartctl-validate"),
+      ].filter(Boolean);
+
   const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
     if (
       !(script.name in scriptInputs) &&
@@ -72,7 +97,7 @@ export const TestForm = ({ setSelectedAction }) => {
       }}
       loaded={scriptsLoaded}
       modelName="machine"
-      onSubmit={(values) => {
+      onSubmit={(values: FormValues) => {
         const { enableSSH, scripts, scriptInputs } = values;
         machinesToAction.forEach((machine) => {
           dispatch(
@@ -86,7 +111,7 @@ export const TestForm = ({ setSelectedAction }) => {
         });
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction}
+      selectedCount={machinesToAction.length}
       validationSchema={TestFormSchema}
     >
       <TestFormFields preselected={preselected} scripts={formattedScripts} />

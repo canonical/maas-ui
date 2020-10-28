@@ -75,9 +75,10 @@ export type MachineActionName =
 
 export type MachineAction = {
   name: MachineActionName;
-  sentence: string;
-  title: string;
-  type: string;
+  sentence?: string;
+  title?: string;
+  type?: string;
+  hardwareType?: number;
 };
 
 export type MachineActionsState = {

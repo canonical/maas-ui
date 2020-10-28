@@ -22,7 +22,7 @@ import type { Model } from "app/store/types/model";
 import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
 import { model, modelRef } from "./model";
 
-const testStatus = define<TestStatus>({
+export const testStatus = define<TestStatus>({
   status: 0,
   pending: 0,
   running: 0,

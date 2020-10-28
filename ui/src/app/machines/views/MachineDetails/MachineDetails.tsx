@@ -55,7 +55,7 @@ const MachineDetails = (): JSX.Element => {
       {machine && (
         <Switch>
           <Route exact path="/machine/:id/summary">
-            <MachineSummary />
+            <MachineSummary setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id">
             <Redirect to={`/machine/${id}/summary`} />

@@ -6,13 +6,19 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import TestForm from "./TestForm";
+import { HardwareType } from "app/base/enum";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  scripts as scriptsFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
+import { ScriptType } from "testing/factories/scripts";
+import { Scripts } from "app/store/scripts/types";
 
 const mockStore = configureStore();
 
@@ -22,9 +28,9 @@ describe("TestForm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
+        machineActions: machineActionsStateFactory({
           data: [{ name: "test", sentence: "test" }],
-        },
+        }),
       }),
       machine: machineStateFactory({
         loaded: true,
@@ -33,14 +39,14 @@ describe("TestForm", () => {
           machineFactory({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
       scripts: scriptsStateFactory({
         loaded: true,
         items: [
-          {
+          scriptsFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -50,8 +56,8 @@ describe("TestForm", () => {
               },
             },
             type: 2,
-          },
-          {
+          }),
+          scriptsFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -63,13 +69,13 @@ describe("TestForm", () => {
               },
             },
             type: 2,
-          },
+          }),
         ],
       }),
     });
   });
 
-  it("correctly dispatches actions to test selected machines", () => {
+  it("dispatches actions to test selected machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
@@ -143,7 +149,49 @@ describe("TestForm", () => {
     ]);
   });
 
-  it("correctly dispatches action to test machine from details view", () => {
+  it.only("prepopulates scripts of a given hardwareType", () => {
+    const state = { ...initialState };
+    const networkScript = scriptsFactory({
+      hardware_type: HardwareType.Network,
+      type: ScriptType.Testing,
+    });
+
+    state.scripts.items = [
+      networkScript,
+      scriptsFactory({
+        hardware_type: HardwareType.Cpu,
+        type: ScriptType.Testing,
+      }),
+      scriptsFactory({
+        hardware_type: HardwareType.Memory,
+        type: ScriptType.Testing,
+      }),
+    ];
+
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TestForm
+            setSelectedAction={jest.fn()}
+            hardwareType={HardwareType.Network}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // An equality assertion can't be made here as preselected scripts have
+    // a 'displayName' added
+    const preselected: Scripts[] = wrapper
+      .find("TestFormFields")
+      .prop("preselected");
+    expect(preselected[0].id).toEqual(networkScript.id);
+    expect(preselected.length).toEqual(1);
+  });
+
+  it("dispatches an action to test machine from details view", () => {
     const state = { ...initialState };
     state.machine.active = "abc123";
     state.machine.selected = [];

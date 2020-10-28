@@ -9,7 +9,7 @@
   .p-grid-list__label {
     color: $color-mid-dark;
     text-align: right;
-    
+
     &:not(:nth-last-child(2)) {
       margin-bottom: $spv-outer--small-scaleable;
     }
@@ -21,5 +21,10 @@
     &:not(:last-child) {
       margin-bottom: $spv-outer--small-scaleable;
     }
+  }
+
+  .p-inline-list__item--compact {
+    @include vf-inline-list-item;
+    margin-right: $sph-inner--small;
   }
 }

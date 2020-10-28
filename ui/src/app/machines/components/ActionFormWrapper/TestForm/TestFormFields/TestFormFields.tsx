@@ -2,11 +2,23 @@ import { Col, Row } from "@canonical/react-components";
 import React from "react";
 import { useFormikContext } from "formik";
 
+import type { FormValues } from "../TestForm";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+import { Scripts } from "app/store/scripts/types";
 
-export const TestFormFields = ({ preselected, scripts }) => {
-  const { handleChange, setFieldValue, values } = useFormikContext();
+type ScriptsDisplay = Scripts & { displayName: string };
+type Props = {
+  preselected: ScriptsDisplay[];
+  scripts: Scripts[];
+};
+export const TestFormFields = ({
+  preselected,
+  scripts,
+}: Props): JSX.Element => {
+  const { handleChange, setFieldValue, values } = useFormikContext<
+    FormValues
+  >();
   const urlScriptsSelected = values.scripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );

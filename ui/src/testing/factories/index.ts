@@ -62,6 +62,7 @@ export {
   podHint,
   podNumaNode,
   podStoragePool,
+  testStatus,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
 export { fabric } from "./fabric";

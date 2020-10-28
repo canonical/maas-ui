@@ -107,7 +107,12 @@ export const ActionFormWrapper = ({
         case "tag":
           return <TagForm setSelectedAction={setSelectedAction} />;
         case "test":
-          return <TestForm setSelectedAction={setSelectedAction} />;
+          return (
+            <TestForm
+              hardwareType={selectedAction.hardwareType}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         default:
           return (
             <FieldlessForm
