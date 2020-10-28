@@ -28,14 +28,14 @@ const NumaCard = ({ id }: Props): JSX.Element => {
     content = (
       <>
         <strong className="p-muted-heading u-sv1">
-          {numaNodes.length} NUMA {pluralize("node", numaNodes.length)}
+          {pluralize("NUMA node", numaNodes.length, true)}
         </strong>
         <hr />
         {numaNodes.length ? (
           <List
             className="u-no-margin--bottom"
             items={numaNodes.map((numaNode, i) => ({
-              className: "p-numa",
+              className: "numa-card",
               content: (
                 <NumaCardDetails
                   isLast={i === numaNodes.length - 1}
