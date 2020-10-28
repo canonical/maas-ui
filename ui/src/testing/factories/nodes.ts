@@ -1,4 +1,4 @@
-import { define, extend, random } from "cooky-cutter";
+import { define, extend, random, sequence } from "cooky-cutter";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
@@ -6,6 +6,7 @@ import type {
   Machine,
   MachineDetails,
   MachineDevice,
+  MachineNumaNode,
 } from "app/store/machine/types";
 import type {
   Pod,
@@ -122,6 +123,13 @@ export const machine = extend<BaseNode, Machine>(node, {
   testing_status: testStatus,
   vlan: null,
   zone: modelRef,
+});
+
+export const machineNumaNode = define<MachineNumaNode>({
+  cores: () => [],
+  hugepages_set: () => [],
+  index: sequence,
+  memory: 256,
 });
 
 export const machineDetails = extend<Machine, MachineDetails>(machine, {

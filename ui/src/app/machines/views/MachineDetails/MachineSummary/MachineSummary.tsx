@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { machine as machineActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
+import NumaCard from "./NumaCard";
 import SystemCard from "./SystemCard";
 import type { RootState } from "app/store/root/types";
 
@@ -34,7 +35,7 @@ const MachineSummary = (): JSX.Element => {
     <div className="machine-summary__cards">
       <Card className="machine-summary__overview-card">Overview</Card>
       <SystemCard id={id} />
-      <Card className="machine-summary__numa-card">Numa</Card>
+      <NumaCard id={id} />
       <Card className="machine-summary__network-card">Network</Card>
     </div>
   );

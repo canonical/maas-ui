@@ -53,6 +53,7 @@ export {
   machine,
   machineDetails,
   machineDevice,
+  machineNumaNode,
   controller,
   pod,
   podDetails,
