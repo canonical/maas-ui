@@ -62,6 +62,7 @@
 @import "~app/base/components/ColumnToggle";
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FormCard";
+@import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
 @import "~app/base/components/Popover";
@@ -71,6 +72,7 @@
 @include ColumnToggle;
 @include DoughnutChart;
 @include FormCard;
+@include LabelledList;
 @include Login;
 @include Meter;
 @include Popover;
@@ -108,7 +110,9 @@
 @import "~app/machines/views/MachineList";
 @import "~app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
+@import "~app/machines/views/MachineDetails/MachineSummary";
 @include MachineList;
+@include MachineSummary;
 @include MarkBrokenFormFields;
 @include FilterAccordion;
 

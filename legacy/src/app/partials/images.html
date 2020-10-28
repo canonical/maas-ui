@@ -1,51 +1,65 @@
 <!-- Header strip -->
 <header class="p-strip--light is-shallow u-no-padding--bottom page-header">
-    <div class="row">
-        <div class="col-12">
-            <div class="u-flex--space-between">
+  <div class="row">
+    <div class="col-12">
+      <div class="u-flex--space-between">
+        <!-- Title -->
+        <ul class="p-inline-list">
+          <li
+            class="p-inline-list__item p-heading--four"
+            data-test="section-header-title"
+          >
+            Images
+          </li>
+          <li class="p-inline-list__item" ng-if="loading">
+            <span
+              ><i class="p-icon--spinner u-animation--spin"></i>
+              Loading...</span
+            >
+          </li>
+          <li class="p-inline-list__item p-text--muted" ng-if="!loading">
+            <maas-boot-images-status></maas-boot-images-status>
+          </li>
+        </ul>
 
-                <!-- Title -->
-                <ul class="p-inline-list">
-                    <li class="p-inline-list__item p-heading--four" data-test="section-header-title">
-                        Images
-                    </li>
-                    <li class="p-inline-list__item" ng-if="loading">
-                        <span><i class="p-icon--spinner u-animation--spin"></i> Loading...</span>
-                    </li>
-                    <li class="p-inline-list__item p-text--muted" ng-if="!loading">
-                        <maas-boot-images-status></maas-boot-images-status>
-                    </li>
-                </ul>
-
-                <!-- Actions -->
-                <maas-obj-form class="page-header__controls--images" obj="autoImport" manager="configManager" inline="true">
-                    <maas-obj-field
-                        type="onoffswitch"
-                        key="value"
-                        label="Automatically sync images"
-                        label-info="Enables automatic image updates (sync). The region controller
+        <!-- Actions -->
+        <maas-obj-form
+          class="page-header__controls--images"
+          obj="autoImport"
+          manager="configManager"
+          inline="true"
+        >
+          <maas-obj-field
+            type="onoffswitch"
+            key="value"
+            label="Automatically sync images"
+            label-info="Enables automatic image updates (sync). The region controller
 will check for new images every hour and automatically sync
 them, if available, from the stream configured below.
 Syncing at the rack controller level occurs every 5 minutes and
 cannot be disabled."
-                        label-info-icon="help"
-                        label-class="u-no-padding--top"
-                    ></maas-obj-field>
-                </maas-obj-form>
-            </div>
-        </div>
+            label-info-icon="help"
+            label-class="u-no-padding--top"
+          ></maas-obj-field>
+        </maas-obj-form>
+      </div>
     </div>
+  </div>
 </header>
 <section class="p-strip">
-    <div class="row" data-ng-if="autoImport && !autoImport.value">
-        <div class="col-12">
-            <div class="p-notification--caution">
-                <p class="p-notification__response">Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.</p>
-            </div>
-        </div>
+  <div class="row" data-ng-if="autoImport && !autoImport.value">
+    <div class="col-12">
+      <div class="p-notification--caution">
+        <p class="p-notification__response">
+          Automatic image updates are disabled. This may mean that images won't
+          be automatically updated and receive the latest package versions and
+          security fixes.
+        </p>
+      </div>
     </div>
-    <div class="row">
-        <maas-notifications></maas-notifications>
-    </div>
-    <maas-boot-images></maas-boot-images>
+  </div>
+  <div class="row">
+    <maas-notifications></maas-notifications>
+  </div>
+  <maas-boot-images></maas-boot-images>
 </section>

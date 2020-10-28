@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelledList  renders 1`] = `
+<List
+  className="p-list--labelled"
+  items={
+    Array [
+      <React.Fragment>
+        <div
+          className="p-list__item-label"
+        >
+          Item
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          Value
+        </div>
+      </React.Fragment>,
+    ]
+  }
+/>
+`;
