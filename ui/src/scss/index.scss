@@ -111,9 +111,11 @@
 @import "~app/machines/views/MachineList/MachineListHeader/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @import "~app/machines/views/MachineDetails/MachineSummary";
+@import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @include MachineList;
 @include MachineSummary;
 @include MarkBrokenFormFields;
+@include NumaCard;
 @include FilterAccordion;
 
 // preferences

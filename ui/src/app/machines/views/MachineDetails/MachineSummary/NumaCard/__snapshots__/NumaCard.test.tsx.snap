@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumaCard renders with numa nodes 1`] = `
+<NumaCard
+  id="abc123"
+>
+  <div
+    className="machine-summary__numa-card"
+  >
+    <Card>
+      <div
+        className="p-card"
+      >
+        <div
+          className="p-card__content"
+        >
+          <strong
+            className="p-muted-heading u-sv1"
+          >
+            1
+             NUMA 
+            node
+          </strong>
+          <hr />
+          <List
+            className="u-no-margin--bottom"
+            items={
+              Array [
+                Object {
+                  "className": "p-numa",
+                  "content": <NumaCardDetails
+                    isLast={true}
+                    machineId="abc123"
+                    numaNode={
+                      Object {
+                        "cores": Array [],
+                        "hugepages_set": Array [],
+                        "index": 2,
+                        "memory": 256,
+                      }
+                    }
+                    showExpanded={true}
+                  />,
+                },
+              ]
+            }
+          >
+            <ul
+              className="p-list u-no-margin--bottom p-list"
+            >
+              <li
+                className="p-numa p-list__item"
+                key="0"
+              >
+                <NumaCardDetails
+                  isLast={true}
+                  machineId="abc123"
+                  numaNode={
+                    Object {
+                      "cores": Array [],
+                      "hugepages_set": Array [],
+                      "index": 2,
+                      "memory": 256,
+                    }
+                  }
+                  showExpanded={true}
+                >
+                  <span>
+                    Node 
+                    2
+                  </span>
+                  <LabelledList
+                    items={
+                      Array [
+                        Object {
+                          "label": "CPU cores",
+                          "value": <React.Fragment>
+                            <span>
+                              0
+                            </span>
+                          </React.Fragment>,
+                        },
+                        Object {
+                          "label": "Memory",
+                          "value": "256 MiB",
+                        },
+                        Object {
+                          "label": "Storage",
+                          "value": "0 B over 0 disks",
+                        },
+                        Object {
+                          "label": "Network",
+                          "value": "0 interfaces",
+                        },
+                      ]
+                    }
+                  >
+                    <List
+                      className="p-list--labelled"
+                      items={
+                        Array [
+                          <React.Fragment>
+                            <div
+                              className="p-list__item-label"
+                            >
+                              CPU cores
+                            </div>
+                            <div
+                              className="p-list__item-value"
+                            >
+                              <React.Fragment>
+                                <span>
+                                  0
+                                </span>
+                              </React.Fragment>
+                            </div>
+                          </React.Fragment>,
+                          <React.Fragment>
+                            <div
+                              className="p-list__item-label"
+                            >
+                              Memory
+                            </div>
+                            <div
+                              className="p-list__item-value"
+                            >
+                              256 MiB
+                            </div>
+                          </React.Fragment>,
+                          <React.Fragment>
+                            <div
+                              className="p-list__item-label"
+                            >
+                              Storage
+                            </div>
+                            <div
+                              className="p-list__item-value"
+                            >
+                              0 B over 0 disks
+                            </div>
+                          </React.Fragment>,
+                          <React.Fragment>
+                            <div
+                              className="p-list__item-label"
+                            >
+                              Network
+                            </div>
+                            <div
+                              className="p-list__item-value"
+                            >
+                              0 interfaces
+                            </div>
+                          </React.Fragment>,
+                        ]
+                      }
+                    >
+                      <ul
+                        className="p-list p-list--labelled p-list"
+                      >
+                        <li
+                          className="p-list__item"
+                          key="0"
+                        >
+                          <div
+                            className="p-list__item-label"
+                          >
+                            CPU cores
+                          </div>
+                          <div
+                            className="p-list__item-value"
+                          >
+                            <span>
+                              0
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          className="p-list__item"
+                          key="1"
+                        >
+                          <div
+                            className="p-list__item-label"
+                          >
+                            Memory
+                          </div>
+                          <div
+                            className="p-list__item-value"
+                          >
+                            256 MiB
+                          </div>
+                        </li>
+                        <li
+                          className="p-list__item"
+                          key="2"
+                        >
+                          <div
+                            className="p-list__item-label"
+                          >
+                            Storage
+                          </div>
+                          <div
+                            className="p-list__item-value"
+                          >
+                            0 B over 0 disks
+                          </div>
+                        </li>
+                        <li
+                          className="p-list__item"
+                          key="3"
+                        >
+                          <div
+                            className="p-list__item-label"
+                          >
+                            Network
+                          </div>
+                          <div
+                            className="p-list__item-value"
+                          >
+                            0 interfaces
+                          </div>
+                        </li>
+                      </ul>
+                    </List>
+                  </LabelledList>
+                </NumaCardDetails>
+              </li>
+            </ul>
+          </List>
+        </div>
+      </div>
+    </Card>
+  </div>
+</NumaCard>
+`;
