@@ -51,7 +51,7 @@ const NumaCardDetails = ({
         <span>Node {numaNode.index}</span>
       ) : (
         <button
-          className={classNames("p-numa__button", {
+          className={classNames("numa-card__button", {
             "is-open": isExpanded,
           })}
           onClick={() => setIsExpanded(!isExpanded)}
@@ -82,25 +82,22 @@ const NumaCardDetails = ({
             },
             {
               label: "Storage",
-              value: `${totalStorage.value} ${totalStorage.unit} over ${
-                numaDisks.length
-              } ${pluralize("disk", numaDisks.length)}`,
+              value: `${totalStorage.value} ${
+                totalStorage.unit
+              } over ${pluralize("disk", numaDisks.length, true)}`,
             },
             {
               label: "Network",
-              value: `${numaInterfaces.length} ${pluralize(
-                "interface",
-                numaInterfaces.length
-              )}`,
+              value: pluralize("interface", numaInterfaces.length, true),
             },
           ]}
         />
       ) : (
-        <span className="p-numa__collapsed-details">
-          {numaNode.cores.length} {pluralize("core", numaNode.cores.length)},
+        <span className="numa-card__collapsed-details">
+          {pluralize("core", numaNode.cores.length, true)},{" "}
           {`${formattedMemory.value} ${formattedMemory.unit}`},<br />
-          {totalStorage.value} {totalStorage.unit}, {numaInterfaces.length}{" "}
-          {pluralize("interface", numaInterfaces.length)}
+          {totalStorage.value} {totalStorage.unit},{" "}
+          {pluralize("interface", numaInterfaces.length, true)}
         </span>
       )}
       {isLast ? null : (

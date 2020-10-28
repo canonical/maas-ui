@@ -17,9 +17,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
           <strong
             className="p-muted-heading u-sv1"
           >
-            1
-             NUMA 
-            node
+            1 NUMA node
           </strong>
           <hr />
           <List
@@ -27,7 +25,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
             items={
               Array [
                 Object {
-                  "className": "p-numa",
+                  "className": "numa-card",
                   "content": <NumaCardDetails
                     isLast={true}
                     machineId="abc123"
@@ -49,7 +47,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
               className="p-list u-no-margin--bottom p-list"
             >
               <li
-                className="p-numa p-list__item"
+                className="numa-card p-list__item"
                 key="0"
               >
                 <NumaCardDetails

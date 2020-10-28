@@ -48,8 +48,8 @@ describe("NumaCardDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".p-numa__button").exists()).toBe(false);
-    expect(wrapper.find(".p-numa__collapsed-details").exists()).toBe(false);
+    expect(wrapper.find(".numa-card__button").exists()).toBe(false);
+    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(false);
     expect(wrapper.find("NumaCard")).toMatchSnapshot();
   });
 
@@ -64,8 +64,8 @@ describe("NumaCardDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".p-numa__button").exists()).toBe(true);
-    expect(wrapper.find(".p-numa__collapsed-details").exists()).toBe(true);
+    expect(wrapper.find(".numa-card__button").exists()).toBe(true);
+    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(true);
   });
 
   it("can be expanded", () => {
@@ -79,9 +79,9 @@ describe("NumaCardDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(".p-numa__button").simulate("click");
+    wrapper.find(".numa-card__button").simulate("click");
     expect(wrapper.find("LabelledList").exists()).toBe(true);
-    expect(wrapper.find(".p-numa__collapsed-details").exists()).toBe(false);
+    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(false);
   });
 
   it("shows a border if it is not the last item", () => {
