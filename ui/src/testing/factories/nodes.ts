@@ -3,6 +3,8 @@ import { define, extend, random, sequence } from "cooky-cutter";
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type {
+  Event,
+  EventType,
   Machine,
   MachineDetails,
   MachineDevice,
@@ -130,6 +132,18 @@ export const machineNumaNode = define<MachineNumaNode>({
   hugepages_set: () => [],
   index: sequence,
   memory: 256,
+});
+
+export const machineEventType = extend<Model, EventType>(model, {
+  description: "Script",
+  level: "info",
+  name: "SCRIPT_DID_NOT_COMPLETE",
+});
+
+export const machineEvent = extend<Model, Event>(model, {
+  created: "Mon, 19 Oct. 2020 07:04:37",
+  description: "smartctl-validate on name-VZJoCN timed out",
+  type: machineEventType,
 });
 
 export const machineDetails = extend<Machine, MachineDetails>(machine, {
