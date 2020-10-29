@@ -181,6 +181,7 @@ describe("CommissionForm", () => {
 
   it("correctly dispatches action to commission machine from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(

@@ -169,6 +169,13 @@ const machine = createNextState(
         draft.saved = true;
         draft.saving = false;
         break;
+      case "SET_ACTIVE_MACHINE_SUCCESS":
+        draft.active = action.payload?.system_id || null;
+        break;
+      case "SET_ACTIVE_MACHINE_ERROR":
+        draft.errors = action.error;
+        draft.active = null;
+        break;
       case "ADD_MACHINE_CHASSIS_ERROR":
       case "FETCH_MACHINE_ERROR":
       case "GET_MACHINE_ERROR":
@@ -237,6 +244,7 @@ const machine = createNextState(
     }
   },
   {
+    active: null,
     errors: {},
     items: [],
     loaded: false,

@@ -1,31 +1,15 @@
 import machine from "./machine";
-
-const STATUSES = {
-  aborting: false,
-  acquiring: false,
-  checkingPower: false,
-  commissioning: false,
-  deleting: false,
-  deploying: false,
-  enteringRescueMode: false,
-  exitingRescueMode: false,
-  locking: false,
-  markingBroken: false,
-  markingFixed: false,
-  overridingFailedTesting: false,
-  releasing: false,
-  settingPool: false,
-  settingZone: false,
-  tagging: false,
-  testing: false,
-  turningOff: false,
-  turningOn: false,
-  unlocking: false,
-};
+import {
+  machine as machineFactory,
+  machineDetails as machineDetailsFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+} from "testing/factories";
 
 describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(machine(undefined, {})).toEqual({
+      active: null,
       errors: {},
       items: [],
       loaded: false,
@@ -38,585 +22,445 @@ describe("machine reducer", () => {
   });
 
   it("should correctly reduce FETCH_MACHINE_START", () => {
+    const initialState = machineStateFactory({ loading: false });
+
     expect(
-      machine(undefined, {
+      machine(initialState, {
         type: "FETCH_MACHINE_START",
       })
-    ).toEqual({
-      errors: {},
-      items: [],
-      loaded: false,
-      loading: true,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {},
-    });
+    ).toEqual(
+      machineStateFactory({
+        loading: true,
+      })
+    );
   });
 
   it("should correctly reduce FETCH_MACHINE_SUCCESS", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, hostname: "node1" }],
-          loaded: false,
-          loading: true,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {
-            abc: STATUSES,
-          },
-        },
-        {
-          type: "FETCH_MACHINE_SUCCESS",
-          payload: [
-            { id: 1, hostname: "node1-newname", system_id: "abc" },
-            { id: 2, hostname: "node2", system_id: "def" },
-          ],
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [
-        { id: 1, hostname: "node1-newname", system_id: "abc" },
-        { id: 2, hostname: "node2", system_id: "def" },
-      ],
+    const initialState = machineStateFactory({
+      items: [],
       loading: true,
       loaded: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {
-        abc: STATUSES,
-        def: STATUSES,
-      },
+      statuses: {},
     });
+    const fetchedMachines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+
+    expect(
+      machine(initialState, {
+        type: "FETCH_MACHINE_SUCCESS",
+        payload: fetchedMachines,
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: fetchedMachines,
+        loading: true,
+        loaded: false,
+        statuses: {
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        },
+      })
+    );
   });
 
   it("should correctly reduce FETCH_MACHINE_COMPLETE", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: true,
-          saved: false,
-          saving: false,
-          selected: [],
-        },
-        {
-          type: "FETCH_MACHINE_COMPLETE",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [],
-      loading: false,
-      loaded: true,
-      saved: false,
-      saving: false,
-      selected: [],
+    const initialState = machineStateFactory({
+      loaded: false,
+      loading: true,
     });
+
+    expect(machine(initialState, { type: "FETCH_MACHINE_COMPLETE" })).toEqual(
+      machineStateFactory({
+        loaded: true,
+        loading: false,
+      })
+    );
   });
 
   it("should correctly reduce FETCH_MACHINE_ERROR", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-        },
-        {
-          error: "Could not fetch machines",
-          type: "FETCH_MACHINE_ERROR",
-        }
-      )
-    ).toEqual({
-      errors: "Could not fetch machines",
-      items: [],
+    const initialState = machineStateFactory({
+      errors: null,
       loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
+      loading: true,
     });
+
+    expect(
+      machine(initialState, {
+        error: "Could not fetch machines",
+        type: "FETCH_MACHINE_ERROR",
+      })
+    ).toEqual(
+      machineStateFactory({
+        errors: "Could not fetch machines",
+        loaded: false,
+        loading: false,
+      })
+    );
   });
 
   it("should correctly reduce GET_MACHINE_START", () => {
+    const initialState = machineStateFactory({ loading: false });
+
     expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: true,
-          saving: false,
-          selected: [],
-        },
-        {
-          type: "GET_MACHINE_START",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [],
-      loaded: false,
-      loading: true,
-      saved: true,
-      saving: false,
-      selected: [],
-    });
+      machine(initialState, {
+        type: "GET_MACHINE_START",
+      })
+    ).toEqual(machineStateFactory({ loading: true }));
   });
 
   it("should correctly reduce GET_MACHINE_ERROR", () => {
+    const initialState = machineStateFactory({ errors: null, loading: true });
+
     expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true,
-          selected: [],
-        },
-        {
-          error: { system_id: "id was not supplied" },
-          type: "GET_MACHINE_ERROR",
-        }
-      )
-    ).toEqual({
-      errors: { system_id: "id was not supplied" },
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-    });
+      machine(initialState, {
+        error: { system_id: "id was not supplied" },
+        type: "GET_MACHINE_ERROR",
+      })
+    ).toEqual(
+      machineStateFactory({
+        errors: { system_id: "id was not supplied" },
+        loading: false,
+      })
+    );
   });
 
   it("should update if machine exists on GET_MACHINE_SUCCESS", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1", system_id: "abc" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { abc: STATUSES },
-        },
-        {
-          payload: { id: 1, name: "machine1-newname", system_id: "abc" },
-          type: "GET_MACHINE_SUCCESS",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [{ id: 1, name: "machine1-newname", system_id: "abc" }],
-      loaded: false,
+    const initialState = machineStateFactory({
+      items: [machineFactory({ system_id: "abc123", name: "machine1" })],
       loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
       statuses: {
-        abc: STATUSES,
+        abc123: machineStatusFactory(),
       },
     });
+    const updatedMachine = machineDetailsFactory({
+      system_id: "abc123",
+      name: "machine1-newname",
+    });
+
+    expect(
+      machine(initialState, {
+        payload: updatedMachine,
+        type: "GET_MACHINE_SUCCESS",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [updatedMachine],
+        loading: false,
+        statuses: {
+          abc123: machineStatusFactory(),
+        },
+      })
+    );
   });
 
   it("should correctly reduce GET_MACHINE_SUCCESS", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          payload: { id: 2, name: "machine2", system_id: "abc" },
-          type: "GET_MACHINE_SUCCESS",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [
-        { id: 1, name: "machine1" },
-        { id: 2, name: "machine2", system_id: "abc" },
-      ],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
+    const initialState = machineStateFactory({
+      items: [machineFactory({ system_id: "abc123" })],
+      loading: true,
       statuses: {
-        abc: STATUSES,
+        abc123: machineStatusFactory(),
       },
     });
+    const newMachine = machineDetailsFactory({ system_id: "def456" });
+
+    expect(
+      machine(initialState, {
+        payload: newMachine,
+        type: "GET_MACHINE_SUCCESS",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [...initialState.items, newMachine],
+        loading: false,
+        statuses: {
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        },
+      })
+    );
+  });
+
+  it("should correctly reduce SET_ACTIVE_MACHINE_SUCCESS", () => {
+    const initialState = machineStateFactory({ active: null });
+
+    expect(
+      machine(initialState, {
+        payload: machineDetailsFactory({ system_id: "abc123" }),
+        type: "SET_ACTIVE_MACHINE_SUCCESS",
+      })
+    ).toEqual(machineStateFactory({ active: "abc123" }));
+  });
+
+  it("should correctly reduce SET_ACTIVE_MACHINE_ERROR", () => {
+    const initialState = machineStateFactory({
+      active: "abc123",
+      errors: null,
+    });
+
+    expect(
+      machine(initialState, {
+        error: "Machine does not exist",
+        type: "SET_ACTIVE_MACHINE_ERROR",
+      })
+    ).toEqual(
+      machineStateFactory({ active: null, errors: "Machine does not exist" })
+    );
   });
 
   it("should correctly reduce CREATE_MACHINE_START", () => {
+    const initialState = machineStateFactory({ saved: true, saving: false });
+
     expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: true,
-          saving: false,
-          selected: [],
-        },
-        {
-          type: "CREATE_MACHINE_START",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: true,
-      selected: [],
-    });
+      machine(initialState, {
+        type: "CREATE_MACHINE_START",
+      })
+    ).toEqual(
+      machineStateFactory({
+        saved: false,
+        saving: true,
+      })
+    );
   });
 
   it("should correctly reduce CREATE_MACHINE_ERROR", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: true,
-          selected: [],
-        },
-        {
-          error: { name: "name already exists" },
-          type: "CREATE_MACHINE_ERROR",
-        }
-      )
-    ).toEqual({
-      errors: { name: "name already exists" },
-      items: [],
-      loaded: false,
-      loading: false,
+    const initialState = machineStateFactory({
+      errors: null,
       saved: false,
-      saving: false,
-      selected: [],
+      saving: true,
     });
+
+    expect(
+      machine(initialState, {
+        error: { name: "name already exists" },
+        type: "CREATE_MACHINE_ERROR",
+      })
+    ).toEqual(
+      machineStateFactory({
+        errors: { name: "name already exists" },
+        saved: false,
+        saving: false,
+      })
+    );
   });
 
   it("should update if machine exists on CREATE_MACHINE_NOTIFY", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1", system_id: "abc" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: { abc: STATUSES },
-        },
-        {
-          payload: { id: 1, name: "machine1-newname", system_id: "abc" },
-          type: "CREATE_MACHINE_NOTIFY",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [{ id: 1, name: "machine1-newname", system_id: "abc" }],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {
-        abc: STATUSES,
-      },
+    const initialState = machineStateFactory({
+      items: [machineFactory({ id: 1, name: "machine1", system_id: "abc123" })],
+      statuses: { abc123: machineStatusFactory() },
     });
+    const updatedMachine = machineFactory({
+      id: 1,
+      name: "machine1-newname",
+      system_id: "abc123",
+    });
+
+    expect(
+      machine(initialState, {
+        payload: updatedMachine,
+        type: "CREATE_MACHINE_NOTIFY",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [updatedMachine],
+        statuses: {
+          abc123: machineStatusFactory(),
+        },
+      })
+    );
   });
 
   it("should correctly reduce CREATE_MACHINE_NOTIFY", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [{ id: 1, name: "machine1" }],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-          statuses: {},
-        },
-        {
-          payload: { id: 2, name: "machine2", system_id: "abc" },
-          type: "CREATE_MACHINE_NOTIFY",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [
-        { id: 1, name: "machine1" },
-        { id: 2, name: "machine2", system_id: "abc" },
-      ],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {
-        abc: STATUSES,
-      },
+    const initialState = machineStateFactory({
+      items: [machineFactory({ id: 1, system_id: "abc123" })],
+      statuses: { abc123: machineStatusFactory() },
     });
+    const newMachine = machineFactory({ id: 2, system_id: "def456" });
+
+    expect(
+      machine(initialState, {
+        payload: newMachine,
+        type: "CREATE_MACHINE_NOTIFY",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [...initialState.items, newMachine],
+        statuses: {
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        },
+      })
+    );
   });
 
   it("should correctly reduce DELETE_MACHINE_NOTIFY", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [
-            { id: 1, system_id: "abc" },
-            { id: 2, system_id: "def" },
-          ],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: ["abc"],
-          statuses: { abc: {} },
-        },
-        {
-          payload: "abc",
-          type: "DELETE_MACHINE_NOTIFY",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [{ id: 2, system_id: "def" }],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
-      statuses: {},
+    const initialState = machineStateFactory({
+      items: [
+        machineFactory({ system_id: "abc123" }),
+        machineFactory({ system_id: "def456" }),
+      ],
+      selected: ["abc123"],
+      statuses: {
+        abc123: machineStatusFactory(),
+        def456: machineStatusFactory(),
+      },
     });
+
+    expect(
+      machine(initialState, {
+        payload: "abc123",
+        type: "DELETE_MACHINE_NOTIFY",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [initialState.items[1]],
+        selected: [],
+        statuses: { def456: machineStatusFactory() },
+      })
+    );
   });
 
   it("should correctly reduce UPDATE_MACHINE_NOTIFY", () => {
-    expect(
-      machine(
-        {
-          errors: {},
-          items: [
-            { id: 1, hostname: "node1" },
-            { id: 2, hostname: "node2" },
-          ],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-        },
-        {
-          payload: {
-            id: 1,
-            hostname: "node1v2",
-          },
-          type: "UPDATE_MACHINE_NOTIFY",
-        }
-      )
-    ).toEqual({
-      errors: {},
+    const initialState = machineStateFactory({
       items: [
-        { id: 1, hostname: "node1v2" },
-        { id: 2, hostname: "node2" },
+        machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+        machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
       ],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: [],
     });
+    const updatedMachine = machineFactory({
+      id: 1,
+      system_id: "abc123",
+      hostname: "node1v2",
+    });
+
+    expect(
+      machine(initialState, {
+        payload: updatedMachine,
+        type: "UPDATE_MACHINE_NOTIFY",
+      })
+    ).toEqual(
+      machineStateFactory({
+        items: [updatedMachine, initialState.items[1]],
+      })
+    );
   });
 
   it("should correctly reduce CHECK_MACHINE_POWER_ERROR", () => {
-    expect(
-      machine(
-        {
-          errors: null,
-          items: [],
-          loaded: false,
-          loading: true,
-          selected: [],
-          statuses: { abc: { checkingPower: true } },
-        },
-        {
-          meta: {
-            item: {
-              system_id: "abc",
-            },
-          },
-          type: "CHECK_MACHINE_POWER_ERROR",
-          error: "Uh oh!",
-        }
-      )
-    ).toEqual({
-      errors: "Uh oh!",
-      loading: true,
-      loaded: false,
-      items: [],
-      selected: [],
-      statuses: { abc: { checkingPower: false } },
+    const initialState = machineStateFactory({
+      statuses: { abc123: machineStatusFactory({ checkingPower: true }) },
     });
+
+    expect(
+      machine(initialState, {
+        meta: {
+          item: {
+            system_id: "abc123",
+          },
+        },
+        type: "CHECK_MACHINE_POWER_ERROR",
+        error: "Uh oh!",
+      })
+    ).toEqual(
+      machineStateFactory({
+        errors: "Uh oh!",
+        statuses: { abc123: machineStatusFactory({ checkingPower: false }) },
+      })
+    );
   });
 
   it("should correctly reduce SET_SELECTED_MACHINES", () => {
+    const initialState = machineStateFactory({ selected: [] });
+
     expect(
-      machine(
-        {
-          errors: {},
-          items: [
-            { system_id: "abcde", hostname: "node1" },
-            { system_id: "fghij", hostname: "node2" },
-          ],
-          loaded: false,
-          loading: false,
-          saved: false,
-          saving: false,
-          selected: [],
-        },
-        {
-          payload: ["abcde", "fghij"],
-          type: "SET_SELECTED_MACHINES",
-        }
-      )
-    ).toEqual({
-      errors: {},
-      items: [
-        { system_id: "abcde", hostname: "node1" },
-        { system_id: "fghij", hostname: "node2" },
-      ],
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      selected: ["abcde", "fghij"],
-    });
+      machine(initialState, {
+        payload: ["abcde", "fghij"],
+        type: "SET_SELECTED_MACHINES",
+      })
+    ).toEqual(
+      machineStateFactory({
+        selected: ["abcde", "fghij"],
+      })
+    );
   });
 
   describe("SET_MACHINE_POOL", () => {
     it("should correctly reduce SET_MACHINE_POOL_START", () => {
-      expect(
-        machine(
-          {
-            errors: "Uh oh",
-            statuses: {
-              abc: {
-                settingPool: false,
-              },
-            },
-          },
-          {
-            meta: {
-              item: {
-                system_id: "abc",
-              },
-            },
-            type: "SET_MACHINE_POOL_START",
-          }
-        )
-      ).toEqual({
-        errors: {},
-        statuses: {
-          abc: {
-            settingPool: true,
-          },
-        },
+      const initialState = machineStateFactory({
+        statuses: { abc123: machineStatusFactory({ settingPool: false }) },
       });
+
+      expect(
+        machine(initialState, {
+          meta: {
+            item: {
+              system_id: "abc123",
+            },
+          },
+          type: "SET_MACHINE_POOL_START",
+        })
+      ).toEqual(
+        machineStateFactory({
+          statuses: {
+            abc123: machineStatusFactory({
+              settingPool: true,
+            }),
+          },
+        })
+      );
     });
 
     it("should correctly reduce SET_MACHINE_POOL_SUCCESS", () => {
-      expect(
-        machine(
-          {
-            statuses: {
-              abc: {
-                settingPool: true,
-              },
-            },
-          },
-          {
-            meta: {
-              item: {
-                system_id: "abc",
-              },
-            },
-            type: "SET_MACHINE_POOL_SUCCESS",
-          }
-        )
-      ).toEqual({
-        statuses: {
-          abc: {
-            settingPool: false,
-          },
-        },
+      const initialState = machineStateFactory({
+        statuses: { abc123: machineStatusFactory({ settingPool: true }) },
       });
+
+      expect(
+        machine(initialState, {
+          meta: {
+            item: {
+              system_id: "abc123",
+            },
+          },
+          type: "SET_MACHINE_POOL_SUCCESS",
+        })
+      ).toEqual(
+        machineStateFactory({
+          statuses: {
+            abc123: machineStatusFactory({
+              settingPool: false,
+            }),
+          },
+        })
+      );
     });
 
     it("should correctly reduce SET_MACHINE_POOL_ERROR", () => {
-      expect(
-        machine(
-          {
-            errors: null,
-            statuses: {
-              abc: {
-                settingPool: false,
-              },
-            },
-          },
-          {
-            meta: {
-              item: {
-                system_id: "abc",
-              },
-            },
-            error: "Uh oh",
-            type: "SET_MACHINE_POOL_ERROR",
-          }
-        )
-      ).toEqual({
-        errors: "Uh oh",
-        statuses: {
-          abc: {
-            settingPool: false,
-          },
-        },
+      const initialState = machineStateFactory({
+        errors: null,
+        statuses: { abc123: machineStatusFactory({ settingPool: true }) },
       });
+
+      expect(
+        machine(initialState, {
+          meta: {
+            item: {
+              system_id: "abc123",
+            },
+          },
+          error: "Uh oh",
+          type: "SET_MACHINE_POOL_ERROR",
+        })
+      ).toEqual(
+        machineStateFactory({
+          errors: "Uh oh",
+          statuses: {
+            abc123: machineStatusFactory({
+              settingPool: false,
+            }),
+          },
+        })
+      );
     });
   });
 });

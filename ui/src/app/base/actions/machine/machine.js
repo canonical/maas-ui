@@ -29,6 +29,20 @@ machine.get = (system_id) => {
   };
 };
 
+machine.setActive = (system_id) => {
+  return {
+    type: "SET_ACTIVE_MACHINE",
+    meta: {
+      model: "machine",
+      method: "set_active",
+    },
+    payload: {
+      // Server unsets active item if primary key (system_id) is not sent.
+      params: system_id ? { system_id } : null,
+    },
+  };
+};
+
 machine.create = (params) => {
   return {
     type: "CREATE_MACHINE",

@@ -20,6 +20,14 @@ const defaultSelectors = generateBaseSelectors<
 >("machine", "system_id");
 
 /**
+ * Returns currently active machine's system_id.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine["system_id"]} Active machine system_id.
+ */
+const activeID = (state: RootState): Machine["system_id"] | null =>
+  state.machine.active;
+
+/**
  * Returns selected machine system_ids.
  * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"][]} Selected machine system_ids.
@@ -105,6 +113,17 @@ const search = createSelector(
 );
 
 /**
+ * Returns currently active machine.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine} Active machine.
+ */
+const active = createSelector(
+  [defaultSelectors.all, activeID],
+  (machines: Machine[], activeID: Machine["system_id"] | null) =>
+    machines.find((machine) => activeID === machine.system_id)
+);
+
+/**
  * Returns selected machines.
  * @param {RootState} state - The redux state.
  * @returns {Machine[]} Selected machines.
@@ -142,6 +161,8 @@ const selectors = {
   abortingSelected: statusSelectors["abortingSelected"],
   acquiring: statusSelectors["acquiring"],
   acquiringSelected: statusSelectors["acquiringSelected"],
+  active,
+  activeID,
   checkingPower: statusSelectors["checkingPower"],
   checkingPowerSelected: statusSelectors["checkingPowerSelected"],
   commissioning: statusSelectors["commissioning"],

@@ -125,6 +125,7 @@ Object {
     "loading": false,
   },
   "machine": Object {
+    "active": null,
     "errors": Object {},
     "items": Array [],
     "loaded": false,

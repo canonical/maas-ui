@@ -70,7 +70,7 @@ describe("FieldlessForm", () => {
     expect(wrapper.find("FieldlessForm")).toMatchSnapshot();
   });
 
-  it("can unset the selected action on selected machines", () => {
+  it("can unset the selected action", () => {
     const state = { ...initialState };
     state.machine.items = [{ system_id: "a", actions: ["release"] }];
     state.machine.selected = ["a"];
@@ -156,6 +156,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch abort action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -239,6 +240,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch acquire action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -323,6 +325,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch delete action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -411,6 +414,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch exit rescue mode action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -497,6 +501,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch lock action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -581,6 +586,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch mark fixed action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -665,6 +671,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power off action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -749,6 +756,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power on action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -833,6 +841,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch release action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -917,6 +926,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch unlock action from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(

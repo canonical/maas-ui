@@ -190,6 +190,7 @@ describe("DeployForm", () => {
 
   it("correctly dispatches action to deploy machine from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(

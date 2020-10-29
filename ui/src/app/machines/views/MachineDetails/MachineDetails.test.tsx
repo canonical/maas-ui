@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import React from "react";
 
@@ -22,6 +22,38 @@ describe("MachineDetails", () => {
         items: [machineFactory({ system_id: "abc123" })],
         loaded: true,
       }),
+    });
+  });
+
+  it("dispatches an action to set the machine as active", () => {
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/machine/:id"
+            component={() => <MachineDetails />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      store.getActions().find((action) => action.type === "SET_ACTIVE_MACHINE")
+    ).toEqual({
+      meta: {
+        method: "set_active",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+      type: "SET_ACTIVE_MACHINE",
     });
   });
 

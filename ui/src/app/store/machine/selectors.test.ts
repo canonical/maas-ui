@@ -57,6 +57,26 @@ describe("machine selectors", () => {
     expect(machine.saved(state)).toEqual(true);
   });
 
+  it("can get the active machine's system ID", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        active: "abc123",
+      }),
+    });
+    expect(machine.activeID(state)).toEqual("abc123");
+  });
+
+  it("can get the active machine", () => {
+    const activeMachine = machineFactory();
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        active: activeMachine.system_id,
+        items: [activeMachine],
+      }),
+    });
+    expect(machine.active(state)).toEqual(activeMachine);
+  });
+
   it("can get the errors state", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -77,17 +97,6 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.getById(state, "909")).toStrictEqual(items[1]);
-  });
-
-  it("can get the error state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        errors: "Uh oh!",
-        items: [],
-        loaded: true,
-      }),
-    });
-    expect(machine.errors(state)).toEqual("Uh oh!");
   });
 
   it("can get the machine statuses", () => {
