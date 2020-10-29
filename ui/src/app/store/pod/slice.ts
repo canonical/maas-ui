@@ -55,6 +55,7 @@ export type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
 
 const podSlice = generateSlice<Pod, PodState["errors"], PodReducers>({
   initialState: {
+    active: null,
     selected: [],
     statuses: {},
   } as PodState,
@@ -129,6 +130,31 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers>({
         state.statuses[pod.id] = DEFAULT_STATUSES;
       }
       state.loading = false;
+    },
+    setActive: {
+      prepare: (id: Pod["id"] | null) => ({
+        meta: {
+          model: "pod",
+          method: "set_active",
+        },
+        payload: {
+          // Server unsets active pod if primary key (id) is not sent.
+          params: id === null ? null : { id },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setActiveError: (
+      state: PodState,
+      action: PayloadAction<PodState["errors"]>
+    ) => {
+      state.active = null;
+      state.errors = action.payload;
+    },
+    setActiveSuccess: (state: PodState, action: PayloadAction<Pod | null>) => {
+      state.active = action.payload?.id || null;
     },
     createNotify: (state: PodState, action) => {
       // In the event that the server erroneously attempts to create an existing machine,

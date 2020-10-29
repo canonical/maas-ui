@@ -41,11 +41,28 @@ const rsds = (state: RootState): Pod[] =>
 const selectedIDs = (state: RootState): number[] => state.pod.selected;
 
 /**
+ * Returns active pod id.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod["id"]} Active pod id.
+ */
+const activeID = (state: RootState): number | null => state.pod.active;
+
+/**
  * Returns pod statuses.
  * @param {RootState} state - The redux state.
  * @returns {PodStatuses} Pod statuses.
  */
 const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
+
+/**
+ * Returns active pod.
+ * @param {RootState} state - The redux state.
+ * @returns {Pod} Active pod.
+ */
+const active = createSelector(
+  [defaultSelectors.all, activeID],
+  (pods, activeID) => pods.find((pod) => pod.id === activeID)
+);
 
 /**
  * Returns all selected pods.
@@ -203,6 +220,8 @@ const refreshingSelected = createSelector(
 
 const selectors = {
   ...defaultSelectors,
+  active,
+  activeID,
   composing,
   composingSelected,
   deleting,
