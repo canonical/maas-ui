@@ -70,7 +70,7 @@ function DomainsManager(RegionConnection, Manager) {
         record
       ).then((resp) => updateAddressRecord(record));
     } else {
-      updateAddressRecord(record);
+      return updateAddressRecord(record);
     }
   };
 
