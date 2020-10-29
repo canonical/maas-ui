@@ -5,8 +5,8 @@ import React from "react";
 import type { TSFixMe } from "app/base/types";
 
 type Props = {
-  buttons?: JSX.Element[];
-  formWrapper?: JSX.Element;
+  buttons?: JSX.Element[] | null;
+  formWrapper?: JSX.Element | null;
   loading?: boolean;
   subtitle?: TSFixMe;
   tabLinks?: TSFixMe[];

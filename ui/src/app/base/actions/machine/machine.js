@@ -58,7 +58,7 @@ machine.setSelected = (machineIDs) => {
   };
 };
 
-machine.fetchFailedScriptResults = (machines) => ({
+machine.fetchFailedScriptResults = (machineIDs) => ({
   type: "FETCH_FAILED_SCRIPT_RESULTS",
   meta: {
     model: "machine",
@@ -66,12 +66,12 @@ machine.fetchFailedScriptResults = (machines) => ({
   },
   payload: {
     params: {
-      system_ids: machines.map((machine) => machine.system_id),
+      system_ids: machineIDs,
     },
   },
 });
 
-machine.suppressScriptResults = (machine, scripts) => ({
+machine.suppressScriptResults = (machineID, scripts) => ({
   type: "SET_SCRIPT_RESULT_SUPPRESSED",
   meta: {
     model: "machine",
@@ -79,7 +79,7 @@ machine.suppressScriptResults = (machine, scripts) => ({
   },
   payload: {
     params: {
-      system_id: machine.system_id,
+      system_id: machineID,
       script_result_ids: scripts.map((script) => script.id),
     },
   },

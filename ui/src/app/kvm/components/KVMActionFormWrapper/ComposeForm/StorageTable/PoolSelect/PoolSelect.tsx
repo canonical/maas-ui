@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import type { RouteParams } from "app/base/types";
 import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -146,10 +147,6 @@ const generateDropdownContent = (
       })}
     </>
   );
-};
-
-type RouteParams = {
-  id: string;
 };
 
 export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {

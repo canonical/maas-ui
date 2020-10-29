@@ -51,8 +51,30 @@ export type KnownArchitecturesState = {
   loading: boolean;
 };
 
+export type MachineActionName =
+  | "abort"
+  | "acquire"
+  | "check-power"
+  | "commission"
+  | "delete"
+  | "deploy"
+  | "exit-rescue-mode"
+  | "lock"
+  | "mark-broken"
+  | "mark-fixed"
+  | "off"
+  | "on"
+  | "override-failed-testing"
+  | "release"
+  | "rescue-mode"
+  | "set-pool"
+  | "set-zone"
+  | "tag"
+  | "test"
+  | "unlock";
+
 export type MachineAction = {
-  name: string;
+  name: MachineActionName;
   sentence: string;
   title: string;
   type: string;

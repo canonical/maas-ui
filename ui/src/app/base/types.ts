@@ -4,3 +4,7 @@ export type Sort = {
   direction: "ascending" | "descending" | "none";
   key: string;
 };
+
+export type RouteParams = {
+  id: string;
+};

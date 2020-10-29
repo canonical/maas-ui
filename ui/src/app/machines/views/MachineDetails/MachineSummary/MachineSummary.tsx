@@ -3,16 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import React, { useEffect } from "react";
 
+import type { RouteParams } from "app/base/types";
 import { machine as machineActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import NumaCard from "./NumaCard";
 import SystemCard from "./SystemCard";
 import type { RootState } from "app/store/root/types";
-
-type RouteParams = {
-  id: string;
-};
 
 const MachineSummary = (): JSX.Element => {
   const dispatch = useDispatch();

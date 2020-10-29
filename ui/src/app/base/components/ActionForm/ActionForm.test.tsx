@@ -16,6 +16,17 @@ describe("ActionForm", () => {
     state = rootStateFactory();
   });
 
+  it("shows a spinner if form has not fully loaded", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ActionForm loaded={false} modelName="machine" onSubmit={jest.fn()} />
+      </Provider>
+    );
+
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
   it("can show the correct submit label", () => {
     const store = mockStore(state);
     const wrapper = mount(

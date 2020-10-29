@@ -1,3 +1,4 @@
+import { Spinner, Strip } from "@canonical/react-components";
 import type { ReactNode } from "react";
 import React, { useState } from "react";
 
@@ -95,6 +96,7 @@ type Props = {
   disabled?: boolean;
   errors?: { [x: string]: TSFixMe };
   initialValues?: { [x: string]: TSFixMe };
+  loaded?: boolean;
   loading?: boolean;
   modelName: string;
   onSubmit: (...args: unknown[]) => void;
@@ -115,6 +117,7 @@ const ActionForm = ({
   disabled,
   errors,
   initialValues = {},
+  loaded = true,
   loading,
   modelName,
   onSubmit,
@@ -138,40 +141,47 @@ const ActionForm = ({
     () => setProcessing(false)
   );
 
+  if (loaded) {
+    return (
+      <FormikForm
+        allowUnchanged={allowUnchanged}
+        allowAllEmpty={allowAllEmpty}
+        buttons={FormCardButtons}
+        buttonsBordered={false}
+        cleanup={cleanup}
+        disabled={disabled}
+        errors={formattedErrors}
+        initialValues={initialValues}
+        loading={loading}
+        onCancel={clearSelectedAction}
+        onSaveAnalytics={{
+          action: actionName,
+          category: "Take action form",
+          label: getLabel(modelName, actionName),
+        }}
+        onSubmit={(...args) => {
+          onSubmit(...args);
+          setProcessing(true);
+        }}
+        saving={processing}
+        savingLabel={`${getLabel(
+          modelName,
+          actionName,
+          selectedCount,
+          processingCount
+        )}...`}
+        submitAppearance={submitAppearance}
+        submitLabel={getLabel(modelName, actionName, selectedCount)}
+        validationSchema={validationSchema}
+      >
+        {children}
+      </FormikForm>
+    );
+  }
   return (
-    <FormikForm
-      allowUnchanged={allowUnchanged}
-      allowAllEmpty={allowAllEmpty}
-      buttons={FormCardButtons}
-      buttonsBordered={false}
-      cleanup={cleanup}
-      disabled={disabled}
-      errors={formattedErrors}
-      initialValues={initialValues}
-      loading={loading}
-      onCancel={clearSelectedAction}
-      onSaveAnalytics={{
-        action: actionName,
-        category: "Take action form",
-        label: getLabel(modelName, actionName),
-      }}
-      onSubmit={(...args) => {
-        onSubmit(...args);
-        setProcessing(true);
-      }}
-      saving={processing}
-      savingLabel={`${getLabel(
-        modelName,
-        actionName,
-        selectedCount,
-        processingCount
-      )}...`}
-      submitAppearance={submitAppearance}
-      submitLabel={getLabel(modelName, actionName, selectedCount)}
-      validationSchema={validationSchema}
-    >
-      {children}
-    </FormikForm>
+    <Strip>
+      <Spinner text="Loading..." />
+    </Strip>
   );
 };
 
