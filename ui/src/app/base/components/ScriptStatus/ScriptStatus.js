@@ -27,7 +27,11 @@ const ScriptStatus = ({
     case scriptStatus.FAILED_APPLYING_NETCONF:
     case scriptStatus.FAILED_INSTALLING: {
       return (
-        <Tooltip message="Machine has failed tests." position={tooltipPosition}>
+        <Tooltip
+          message="Machine has failed tests."
+          position={tooltipPosition}
+          positionElementClassName="p-double-row__tooltip-inner"
+        >
           <i className="p-icon--error is-inline" />
           {children}
         </Tooltip>
@@ -39,6 +43,7 @@ const ScriptStatus = ({
         <Tooltip
           message="Machine has tests that have timed out."
           position={tooltipPosition}
+          positionElementClassName="p-double-row__tooltip-inner"
         >
           <i className="p-icon--timed-out is-inline" />
           {children}
