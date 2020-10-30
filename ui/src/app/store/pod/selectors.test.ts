@@ -140,6 +140,26 @@ describe("pod selectors", () => {
     expect(pod.selectedRSDs(state)).toEqual([items[0]]);
   });
 
+  it("can get the active pod id", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        active: 1,
+      }),
+    });
+    expect(pod.activeID(state)).toEqual(1);
+  });
+
+  it("can get the active pod", () => {
+    const activePod = podFactory();
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        active: activePod.id,
+        items: [activePod],
+      }),
+    });
+    expect(pod.active(state)).toEqual(activePod);
+  });
+
   it("can get the errors state", () => {
     const state = rootStateFactory({
       pod: podStateFactory({

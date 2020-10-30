@@ -110,6 +110,21 @@ describe("pod actions", () => {
     });
   });
 
+  it("can create an action for setting an active pod", () => {
+    expect(actions.setActive(1)).toEqual({
+      type: "pod/setActive",
+      meta: {
+        model: "pod",
+        method: "set_active",
+      },
+      payload: {
+        params: {
+          id: 1,
+        },
+      },
+    });
+  });
+
   it("can create an action for pods cleanup", () => {
     expect(actions.cleanup()).toEqual({
       type: "pod/cleanup",

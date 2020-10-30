@@ -23,6 +23,13 @@ const RSDDetails = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(podActions.get(Number(id)));
+    // Set RSD as active to ensure all RSD data is sent from the server.
+    dispatch(podActions.setActive(Number(id)));
+
+    // Unset active RSD on cleanup.
+    return () => {
+      dispatch(podActions.setActive(null));
+    };
   }, [dispatch, id]);
 
   // If RSD has been deleted, redirect to RSD list.
