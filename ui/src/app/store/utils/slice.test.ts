@@ -427,6 +427,7 @@ describe("slice", () => {
       expect(
         slice.reducer(podState, slice.actions.refreshStart({ item: pods[0] }))
       ).toEqual({
+        active: null,
         errors: null,
         items: pods,
         loaded: false,
@@ -454,6 +455,7 @@ describe("slice", () => {
           slice.actions.refreshSuccess({ item: pods[0], payload: updatedPod })
         )
       ).toEqual({
+        active: null,
         errors: null,
         items: [updatedPod],
         loaded: false,
@@ -483,6 +485,7 @@ describe("slice", () => {
           })
         )
       ).toEqual({
+        active: null,
         errors: "You dun goofed",
         items: pods,
         loaded: false,
