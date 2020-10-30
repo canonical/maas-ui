@@ -50,8 +50,7 @@ function DomainsManager(RegionConnection, Manager) {
     }
   };
 
-  // Update a DNS record.
-  DomainsManager.prototype.updateDNSRecord = function (record) {
+  const updateAddressRecord = (record) => {
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
       return RegionConnection.callMethod(
@@ -60,6 +59,18 @@ function DomainsManager(RegionConnection, Manager) {
       );
     } else {
       return RegionConnection.callMethod("domain.update_dnsdata", record);
+    }
+  };
+
+  // Update a DNS record.
+  DomainsManager.prototype.updateDNSRecord = (record) => {
+    if (record.previous_name !== record.name) {
+      return RegionConnection.callMethod(
+        "domain.update_dnsresource",
+        record
+      ).then((resp) => updateAddressRecord(record));
+    } else {
+      return updateAddressRecord(record);
     }
   };
 
