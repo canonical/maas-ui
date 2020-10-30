@@ -114,6 +114,7 @@ export type PodStatuses = {
 };
 
 export type PodState = {
+  active: number | null;
   selected: Pod["id"][];
   statuses: PodStatuses;
 } & GenericState<Pod, TSFixMe>;

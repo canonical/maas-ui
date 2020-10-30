@@ -23,6 +23,13 @@ const KVMDetails = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(podActions.get(Number(id)));
+    // Set KVM as active to ensure all KVM data is sent from the server.
+    dispatch(podActions.setActive(Number(id)));
+
+    // Unset active KVM on cleanup.
+    return () => {
+      dispatch(podActions.setActive(null));
+    };
   }, [dispatch, id]);
 
   // If KVM has been deleted, redirect to KVM list.
