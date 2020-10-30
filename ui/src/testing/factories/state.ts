@@ -129,6 +129,7 @@ export const machineStatuses = define<MachineStatuses>({
 
 export const machineState = define<MachineState>({
   ...defaultState,
+  active: null,
   selected: () => [],
   statuses: () => ({}),
 });

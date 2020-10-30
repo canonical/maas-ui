@@ -292,6 +292,7 @@ export type MachineStatuses = {
 };
 
 export type MachineState = {
+  active: string | null;
   errors: TSFixMe;
   items: Machine[];
   loaded: boolean;

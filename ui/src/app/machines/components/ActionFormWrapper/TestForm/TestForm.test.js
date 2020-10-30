@@ -145,6 +145,7 @@ describe("TestForm", () => {
 
   it("correctly dispatches action to test machine from details view", () => {
     const state = { ...initialState };
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(

@@ -26,6 +26,13 @@ const MachineDetails = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(machineActions.get(id));
+    // Set machine as active to ensure all machine data is sent from the server.
+    dispatch(machineActions.setActive(id));
+
+    // Unset active machine on cleanup.
+    return () => {
+      dispatch(machineActions.setActive(null));
+    };
   }, [dispatch, id]);
 
   // If machine has been deleted, redirect to machine list.

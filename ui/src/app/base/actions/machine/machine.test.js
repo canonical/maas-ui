@@ -28,6 +28,19 @@ describe("machine actions", () => {
     });
   });
 
+  it("can set an active machine", () => {
+    expect(machine.setActive("abc123")).toEqual({
+      type: "SET_ACTIVE_MACHINE",
+      meta: {
+        model: "machine",
+        method: "set_active",
+      },
+      payload: {
+        params: { system_id: "abc123" },
+      },
+    });
+  });
+
   it("can handle creating machines", () => {
     expect(
       machine.create({ name: "machine1", description: "a machine" })

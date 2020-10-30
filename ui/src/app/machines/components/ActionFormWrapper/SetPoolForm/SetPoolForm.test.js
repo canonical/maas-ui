@@ -131,6 +131,7 @@ describe("SetPoolForm", () => {
   });
 
   it("correctly dispatches action to set machine pool from details view", () => {
+    state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
