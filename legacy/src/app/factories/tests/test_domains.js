@@ -144,6 +144,70 @@ describe("DomainsManager", function () {
     });
   });
 
+  describe("updateDNSRecord", () => {
+    it("calls update_address_record for A record", () => {
+      spyOn(RegionConnection, "callMethod");
+      var record = {
+        rrtype: "A",
+        rrdata: "192.168.0.1",
+      };
+      DomainsManager.updateDNSRecord(record);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "domain.update_address_record",
+        record
+      );
+    });
+
+    it("calls update_address_record for AAAA record", () => {
+      spyOn(RegionConnection, "callMethod");
+      var record = {
+        rrtype: "AAAA",
+        rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1",
+      };
+      DomainsManager.updateDNSRecord(record);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "domain.update_address_record",
+        record
+      );
+    });
+
+    it("calls update_dnsdata for other types", () => {
+      spyOn(RegionConnection, "callMethod");
+      var record = {
+        rrtype: "SRV",
+      };
+      DomainsManager.updateDNSRecord(record);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "domain.update_dnsdata",
+        record
+      );
+    });
+
+    it("calls update_dnsresource and update_address_record for A record name changes", () => {
+      var scope = $rootScope.$new();
+      var defer = $q.defer();
+      var promise = defer.promise;
+      spyOn(RegionConnection, "callMethod").and.returnValue(promise);
+      const record = {
+        name: "new-name",
+        previous_name: "old-name",
+        rrtype: "A",
+        rrdata: "192.168.0.1",
+      };
+      DomainsManager.updateDNSRecord(record);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "domain.update_dnsresource",
+        record
+      );
+      defer.resolve(record);
+      scope.$digest();
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "domain.update_address_record",
+        record
+      );
+    });
+  });
+
   describe("deleteDNSRecord", function () {
     it("calls delete_address_record for A record", function () {
       spyOn(RegionConnection, "callMethod");
