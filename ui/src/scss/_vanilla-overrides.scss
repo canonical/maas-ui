@@ -69,12 +69,3 @@ input[type="radio"] {
     margin: 0;
   }
 }
-
-// 20-10-2020 Caleb: ModularTable.scss in react-components v0.13.0 includes
-// styling that overrides .u-hide behaviour in tables. This overrides that
-// override so that expanding tables still get the normal .u-hide behaviour.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3337
-.p-table-expanding th.u-hide,
-.p-table-expanding td.u-hide {
-  display: none !important;
-}

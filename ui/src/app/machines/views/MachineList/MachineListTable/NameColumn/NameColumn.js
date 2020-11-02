@@ -66,6 +66,7 @@ const generateIPAddresses = (machine) => {
             </ul>
           </>
         }
+        positionElementClassName="p-double-row__tooltip-inner"
       >
         {ipAddressesLine}
       </Tooltip>

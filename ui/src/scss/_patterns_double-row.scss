@@ -41,4 +41,8 @@
   [class*="p-double-row"] .p-table-menu {
     margin-left: $sph-inner--small / 2;
   }
+
+  .p-double-row__tooltip-inner {
+    display: inline !important;
+  }
 }
