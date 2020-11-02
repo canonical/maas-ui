@@ -1,6 +1,6 @@
 @mixin MachineSummary {
   .machine-summary__cards {
-    @extend %full-span-grid;
+    @extend %base-grid;
     grid:
       [row1-start] "overview-card overview-card overview-card overview-card" min-content [row1-end]
       [row2-start] "system-card numa-card network-card network-card" min-content [row2-end]

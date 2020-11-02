@@ -9,6 +9,7 @@ import type {
   MachineDetails,
   MachineDevice,
   MachineNumaNode,
+  NetworkInterface,
 } from "app/store/machine/types";
 import type {
   Pod,
@@ -146,6 +147,34 @@ export const machineEvent = extend<Model, Event>(model, {
   type: machineEventType,
 });
 
+export const machineInterface = extend<Model, NetworkInterface>(model, {
+  children: () => [],
+  discovered: () => [],
+  enabled: true,
+  firmware_version: "1.0.0",
+  interface_speed: 10000,
+  is_boot: true,
+  link_connected: true,
+  link_speed: 10000,
+  links: () => [],
+  mac_address: "00.00.00.00.00.00",
+  name: (i: number) => `eth${i}`,
+  numa_node: 0,
+  params: "",
+  parents: () => [],
+  product: "Product",
+  sriov_max_vf: 0,
+  tags: () => [],
+  type: "physical",
+  vendor: "Vendor",
+  vlan_id: 5001,
+});
+
+export const machineDevice = define<MachineDevice>({
+  fqdn: "device.maas",
+  interfaces: () => [],
+});
+
 export const machineDetails = extend<Machine, MachineDetails>(machine, {
   bios_boot_method: "uefi",
   bmc: 190,
@@ -198,11 +227,6 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   supported_filesystems: () => [],
   swap_size: null,
   updated: "Fri, 23 Oct. 2020 05:24:41",
-});
-
-export const machineDevice = define<MachineDevice>({
-  fqdn: "device.maas",
-  interfaces: () => [],
 });
 
 export const controller = extend<BaseNode, Controller>(node, {

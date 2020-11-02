@@ -28,22 +28,22 @@ export type NetworkInterface = Model & {
   children: string[];
   discovered?: DiscoveredIP[]; // Only shown when machine is in ephemeral state.
   enabled: boolean;
-  firmware_version: string;
+  firmware_version: string | null;
   interface_speed: number;
   is_boot: boolean;
   link_connected: boolean;
   link_speed: number;
   links: NetworkLink[];
   mac_address: string;
-  name: number;
+  name: string;
   numa_node: number;
   params: string;
   parents: string[];
-  product: string;
+  product: string | null;
   sriov_max_vf: number;
   tags: string[];
   type: string;
-  vendor: string;
+  vendor: string | null;
   vlan_id: number;
 };
 
