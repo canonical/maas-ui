@@ -6,16 +6,12 @@ import { useParams } from "react-router";
 
 import type { RouteParams } from "app/base/types";
 import { general as generalActions } from "app/base/actions";
+import { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
-
-type SetSelectedAction = (
-  action: MachineAction | null,
-  deselect?: boolean
-) => void;
 
 const getTakeActionLinks = (
   actionOptions: MachineAction[],

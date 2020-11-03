@@ -158,7 +158,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
                       setSelectedAction(
                         {
                           name: "test",
-                          hardwareType: HardwareType.Cpu,
+                          formProps: { hardwareType: HardwareType.Cpu },
                         },
                         false
                       );

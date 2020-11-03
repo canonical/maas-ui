@@ -14,11 +14,13 @@ import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import { HardwareType } from "app/base/enum";
 
+export type SelectedAction = {
+  name: MachineAction["name"];
+  formProps?: { hardwareType: HardwareType };
+};
+
 export type SetSelectedAction = (
-  action:
-    | MachineAction
-    | (MachineAction & { hardwareType: HardwareType })
-    | null,
+  action: SelectedAction | null,
   deselect?: boolean
 ) => void;
 
