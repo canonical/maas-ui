@@ -89,6 +89,9 @@ describe("machine utils", () => {
 
   describe("useIsRackControllerConnected", () => {
     it("handles a connected state", () => {
+      state.general.powerTypes = powerTypesStateFactory({
+        data: [powerTypeFactory()],
+      });
       const store = mockStore(state);
       const { result } = renderHook(() => useIsRackControllerConnected(), {
         wrapper: generateWrapper(store),
