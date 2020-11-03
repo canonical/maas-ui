@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 
-import { SetSelectedAction } from "../../MachineSummary";
+import type { SetSelectedAction } from "../../MachineSummary";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineDetails } from "app/store/machine/types";
 import { HardwareType } from "app/base/enum";
@@ -14,33 +14,33 @@ type Props = {
   setSelectedAction: SetSelectedAction;
 };
 
+const hasTestsRun = (machine: MachineDetails, scriptType: string) => {
+  const testObj = machine[`${scriptType}_test_status`];
+  return (
+    testObj.passed + testObj.pending + testObj.running + testObj.failed > 0
+  );
+};
+
+// Get the subtext for the CPU card. Only nodes commissioned after
+// MAAS 2.4 will have the CPU speed.
+const getCPUSubtext = (machine: MachineDetails) => {
+  let text = "Unknown";
+
+  if (machine.cpu_count) {
+    text = pluralize("core", machine.cpu_count, true);
+  }
+  if (machine.cpu_speed) {
+    const speedText =
+      machine.cpu_speed > 1000
+        ? `${machine.cpu_speed / 1000} GHz`
+        : `${machine.cpu_speed} MHz`;
+    text += `, ${speedText}`;
+  }
+  return text;
+};
+
 const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
-
-  const hasTestsRun = (machine: MachineDetails, scriptType: string) => {
-    const testObj = machine[`${scriptType}_test_status`];
-    return (
-      testObj.passed + testObj.pending + testObj.running + testObj.failed > 0
-    );
-  };
-
-  // Get the subtext for the CPU card. Only nodes commissioned after
-  // MAAS 2.4 will have the CPU speed.
-  const getCPUSubtext = (machine: MachineDetails) => {
-    let text = "Unknown";
-
-    if (machine.cpu_count) {
-      text = pluralize("core", machine.cpu_count, true);
-    }
-    if (machine.cpu_speed) {
-      const speedText =
-        machine.cpu_speed > 1000
-          ? `${machine.cpu_speed / 1000} GHz`
-          : `${machine.cpu_speed} MHz`;
-      text += `, ${speedText}`;
-    }
-    return text;
-  };
 
   const testsTabUrl = `/machine/${machine.system_id}/tests`;
 
@@ -62,7 +62,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
       <div className="overview-card__cpu-tests u-flex--vertically">
         <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
           {machine.cpu_test_status.passed ? (
-            <li className="p-inline-list__item--compact">
+            <li className="p-inline-list__item">
               <Button
                 className="p-button--link"
                 element={Link}
@@ -83,7 +83,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
 
           {machine.cpu_test_status.pending + machine.cpu_test_status.running >
           0 ? (
-            <li className="p-inline-list__item--compact">
+            <li className="p-inline-list__item">
               <Button
                 className="p-button--link"
                 element={Link}
@@ -104,7 +104,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
           ) : null}
 
           {machine.cpu_test_status.failed > 0 ? (
-            <li className="p-inline-list__item--compact">
+            <li className="p-inline-list__item">
               <Button
                 className="p-button--link"
                 element={Link}
@@ -124,7 +124,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
           ) : null}
 
           {hasTestsRun(machine, "cpu") ? (
-            <li className="p-inline-list__item--compact">
+            <li className="p-inline-list__item">
               <Button
                 className="p-button--link"
                 element={Link}
@@ -141,7 +141,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
               </Button>
             </li>
           ) : (
-            <li className="p-inline-list__item--compact">
+            <li className="p-inline-list__item">
               <span className="p-tooltip--top-left">
                 <Tooltip
                   message={

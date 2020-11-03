@@ -12,9 +12,13 @@ import type { RouteParams } from "app/base/types";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
+import { HardwareType } from "app/base/enum";
 
 export type SetSelectedAction = (
-  action: MachineAction | null,
+  action:
+    | MachineAction
+    | (MachineAction & { hardwareType: HardwareType })
+    | null,
   deselect?: boolean
 ) => void;
 

@@ -150,7 +150,7 @@ describe("TestForm", () => {
     ]);
   });
 
-  it.only("prepopulates scripts of a given hardwareType", () => {
+  it("prepopulates scripts of a given hardwareType", () => {
     const state = { ...initialState };
     const networkScript = scriptsFactory({
       hardware_type: HardwareType.Network,

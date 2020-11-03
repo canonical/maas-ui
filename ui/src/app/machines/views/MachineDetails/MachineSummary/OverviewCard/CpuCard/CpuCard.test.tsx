@@ -26,8 +26,7 @@ describe("CpuCard", () => {
   });
 
   it("renders the cpu subtext", () => {
-    const machine = machineDetailsFactory();
-    machine.cpu_speed = 2000;
+    const machine = machineDetailsFactory({ cpu_speed: 2000 });
     state.machine.items = [machine];
 
     const store = mockStore(state);
@@ -47,8 +46,7 @@ describe("CpuCard", () => {
   });
 
   it("renders the cpu subtext for slow machines", () => {
-    const machine = machineDetailsFactory();
-    machine.cpu_speed = 200;
+    const machine = machineDetailsFactory({ cpu_speed: 200 });
     state.machine.items = [machine];
 
     const store = mockStore(state);

@@ -22,9 +22,4 @@
       margin-bottom: $spv-outer--small-scaleable;
     }
   }
-
-  .p-inline-list__item--compact {
-    @include vf-inline-list-item;
-    margin-right: $sph-inner--small;
-  }
 }

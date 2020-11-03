@@ -7,27 +7,34 @@ type Props = {
   machine: MachineDetails;
 };
 
+const isVM = (machine: MachineDetails) => {
+  if (machine.tags?.includes("virtual")) {
+    return true;
+  }
+  const vmPowerTypes = ["lxd", "virsh", "vmware"];
+  return vmPowerTypes.includes(machine.power_type);
+};
+
+const showFailedTestsWarning = (machine: MachineDetails) => {
+  switch (machine.status_code) {
+    case nodeStatus.COMMISSIONING:
+    case nodeStatus.TESTING:
+      return false;
+  }
+
+  return (
+    machine.testing_status.status === scriptStatus.FAILED ||
+    machine.testing_status.status === scriptStatus.FAILED_INSTALLING ||
+    machine.testing_status.status === scriptStatus.DEGRADED ||
+    machine.testing_status.status === scriptStatus.TIMEDOUT
+  );
+};
+
 const StatusCard = ({ machine }: Props): JSX.Element => {
-  const isVM = machine.tags?.includes("virtual");
-  const showFailedTestsWarning = () => {
-    switch (machine.status_code) {
-      case nodeStatus.COMMISSIONING:
-      case nodeStatus.TESTING:
-        return false;
-    }
-
-    return (
-      machine.testing_status.status === scriptStatus.FAILED ||
-      scriptStatus.FAILED_INSTALLING ||
-      scriptStatus.DEGRADED ||
-      scriptStatus.TIMEDOUT
-    );
-  };
-
   return (
     <div className="overview-card__status">
       <strong className="p-muted-heading">
-        {isVM ? "Virtual Machine Status" : "Machine Status"}
+        {isVM(machine) ? "Virtual Machine Status" : "Machine Status"}
       </strong>
 
       <h4 className="u-no-margin--bottom" data-test="locked">
@@ -45,7 +52,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
         </p>
       ) : null}
 
-      {showFailedTestsWarning() ? (
+      {showFailedTestsWarning(machine) ? (
         <div
           className="overview-card__test-warning u-flex-bottom"
           data-test="failed-test-warning"

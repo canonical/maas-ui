@@ -78,7 +78,6 @@ export type MachineAction = {
   sentence?: string;
   title?: string;
   type?: string;
-  hardwareType?: number;
 };
 
 export type MachineActionsState = {
