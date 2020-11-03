@@ -62,7 +62,18 @@ describe("MachineNotifications", () => {
   });
 
   it("can display a power error", () => {
-    state.machine.items[0].power_state = "error";
+    state.machine.items = [
+      machineFactory({
+        architecture: "amd64",
+        events: [
+          machineEventFactory({
+            description: "machine timed out",
+          }),
+        ],
+        power_state: "error",
+        system_id: "abc123",
+      }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -82,9 +93,7 @@ describe("MachineNotifications", () => {
         .findWhere(
           (n) =>
             n.name() === "Notification" &&
-            n
-              .text()
-              .includes("Script - smartctl-validate on name-VZJoCN timed out")
+            n.text().includes("Script - machine timed out")
         )
         .exists()
     ).toBe(true);
