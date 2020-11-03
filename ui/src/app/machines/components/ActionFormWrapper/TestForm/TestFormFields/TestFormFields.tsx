@@ -37,7 +37,7 @@ export const TestFormFields = ({
           initialSelected={preselected}
           label="Tests"
           name="tests"
-          onTagsUpdate={(selectedScripts) =>
+          onTagsUpdate={(selectedScripts: Scripts[]) =>
             setFieldValue("scripts", selectedScripts)
           }
           placeholder="Select scripts"
@@ -55,7 +55,7 @@ export const TestFormFields = ({
               </span>
             }
             name={`scriptInputs[${script.name}].url`}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
               setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
             }}

@@ -19,11 +19,12 @@ import {
 } from "testing/factories";
 import { ScriptType } from "testing/factories/scripts";
 import { Scripts } from "app/store/scripts/types";
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("TestForm", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({

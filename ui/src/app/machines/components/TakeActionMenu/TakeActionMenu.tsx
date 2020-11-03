@@ -12,10 +12,15 @@ import type { Machine } from "app/store/machine/types";
 import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 
+type SetSelectedAction = (
+  action: MachineAction | null,
+  deselect?: boolean
+) => void;
+
 const getTakeActionLinks = (
   actionOptions: MachineAction[],
   machines: Machine[],
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void
+  setSelectedAction: SetSelectedAction
 ) => {
   const initGroups = [
     { type: "lifecycle", items: [] },
@@ -62,7 +67,7 @@ const getTakeActionLinks = (
 };
 
 type Props = {
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {

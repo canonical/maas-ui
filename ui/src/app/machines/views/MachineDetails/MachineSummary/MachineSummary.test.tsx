@@ -32,7 +32,7 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary />
+          <MachineSummary setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -46,7 +46,7 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary />
+          <MachineSummary setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

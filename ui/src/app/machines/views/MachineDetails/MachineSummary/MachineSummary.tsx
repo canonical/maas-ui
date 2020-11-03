@@ -13,8 +13,13 @@ import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
+export type SetSelectedAction = (
+  action: MachineAction | null,
+  deselect?: boolean
+) => void;
+
 type Props = {
-  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {

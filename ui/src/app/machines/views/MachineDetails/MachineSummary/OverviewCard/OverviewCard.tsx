@@ -4,14 +4,14 @@ import React from "react";
 
 import CpuCard from "./CpuCard";
 import StatusCard from "./StatusCard";
-import type { MachineAction } from "app/store/general/types";
+import type { SetSelectedAction } from "../MachineSummary";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];
-  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {

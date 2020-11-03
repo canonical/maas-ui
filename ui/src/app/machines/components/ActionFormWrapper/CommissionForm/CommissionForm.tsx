@@ -57,7 +57,7 @@ export type CommissionFormValues = {
 };
 
 type Props = {
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
 };
 
 export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {

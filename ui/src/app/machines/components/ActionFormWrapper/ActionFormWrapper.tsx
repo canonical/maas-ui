@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
+import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import { machine as machineActions } from "app/base/actions";
 import type { RouteParams } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
@@ -44,7 +45,7 @@ const getErrorSentence = (action: MachineAction, count: number) => {
 
 type Props = {
   selectedAction: MachineAction;
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 export const ActionFormWrapper = ({

@@ -14,11 +14,12 @@ import {
   scriptsState as scriptsStateFactory,
   scripts as scriptsFactory,
 } from "testing/factories";
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("TestForm", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({

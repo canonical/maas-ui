@@ -40,7 +40,7 @@ export type FormValues = {
 };
 
 type Props = {
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
   hardwareType?: HardwareType;
 };
 

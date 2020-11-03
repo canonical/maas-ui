@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 
+import { SetSelectedAction } from "../../MachineSummary";
 import { useSendAnalytics } from "app/base/hooks";
-import type { MachineAction } from "app/store/general/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { HardwareType } from "app/base/enum";
 
 type Props = {
   machine: MachineDetails;
-  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => {

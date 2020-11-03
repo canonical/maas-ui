@@ -12,7 +12,6 @@ import {
 } from "testing/factories";
 import CpuCard from "./CpuCard";
 import type { RootState } from "app/store/root/types";
-import { scriptStatus } from "app/base/enum";
 
 const mockStore = configureStore();
 
