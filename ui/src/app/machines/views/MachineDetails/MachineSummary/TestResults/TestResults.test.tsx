@@ -10,62 +10,21 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-import CpuCard from "./CpuCard";
+import TestResults from "./TestResults";
 import type { RootState } from "app/store/root/types";
+import { HardwareType } from "app/base/enum";
 
 const mockStore = configureStore();
 
-describe("CpuCard", () => {
+describe("TestResults", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [],
-      }),
+      machine: machineStateFactory(),
     });
   });
 
-  it("renders the cpu subtext", () => {
-    const machine = machineDetailsFactory({ cpu_speed: 2000 });
-    state.machine.items = [machine];
-
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='cpu-subtext']").text()).toEqual(
-      `${machine.cpu_count} core, 2 GHz`
-    );
-  });
-
-  it("renders the cpu subtext for slow machines", () => {
-    const machine = machineDetailsFactory({ cpu_speed: 200 });
-    state.machine.items = [machine];
-
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='cpu-subtext']").text()).toEqual(
-      `${machine.cpu_count} core, 200 MHz`
-    );
-  });
-
-  it("renders a link with a count of passed tests", () => {
+  it("renders a link with a count of passed cpu tests", () => {
     const machine = machineDetailsFactory();
     machine.cpu_test_status = testStatusFactory({
       passed: 2,
@@ -78,7 +37,11 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <TestResults
+            machine={machine}
+            hardwareType={HardwareType.Cpu}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -88,9 +51,9 @@ describe("CpuCard", () => {
     ).toEqual("2");
   });
 
-  it("renders a link with a count of pending and running tests", () => {
+  it("renders a link with a count of pending and running memory tests", () => {
     const machine = machineDetailsFactory();
-    machine.cpu_test_status = testStatusFactory({
+    machine.memory_test_status = testStatusFactory({
       running: 1,
       pending: 2,
     });
@@ -102,7 +65,11 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <TestResults
+            machine={machine}
+            hardwareType={HardwareType.Memory}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -112,9 +79,9 @@ describe("CpuCard", () => {
     ).toEqual("3");
   });
 
-  it("renders a link with a count of failed tests", () => {
+  it("renders a link with a count of failed storage tests", () => {
     const machine = machineDetailsFactory();
-    machine.cpu_test_status = testStatusFactory({
+    machine.storage_test_status = testStatusFactory({
       failed: 5,
     });
     state.machine.items = [machine];
@@ -125,7 +92,11 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <TestResults
+            machine={machine}
+            hardwareType={HardwareType.Storage}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -148,7 +119,11 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <TestResults
+            machine={machine}
+            hardwareType={HardwareType.Cpu}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -158,9 +133,9 @@ describe("CpuCard", () => {
     ).toContain("View results");
   });
 
-  it("renders a test cpu link if no tests run", () => {
+  it("renders a test network link if no tests run", () => {
     const machine = machineDetailsFactory();
-    machine.cpu_test_status = testStatusFactory();
+    machine.network_test_status = testStatusFactory();
     state.machine.items = [machine];
 
     const store = mockStore(state);
@@ -169,13 +144,17 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <TestResults
+            machine={machine}
+            hardwareType={HardwareType.Network}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
 
     expect(
       wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
-    ).toContain("Test cpu");
+    ).toContain("Test network");
   });
 });
