@@ -1,6 +1,7 @@
 import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
 import classNames from "classnames";
 import React from "react";
+import type { ReactNode } from "react";
 
 import type { TSFixMe } from "app/base/types";
 
@@ -8,9 +9,26 @@ type Props = {
   buttons?: JSX.Element[] | null;
   formWrapper?: JSX.Element | null;
   loading?: boolean;
-  subtitle?: TSFixMe;
+  subtitle?: ReactNode | ReactNode[];
   tabLinks?: TSFixMe[];
   title: string;
+};
+
+const generateSubtitle = (subtitle: Props["subtitle"]) => {
+  const items = (Array.isArray(subtitle) ? subtitle : [subtitle]).filter(
+    Boolean
+  );
+  return items.map((item, i) => (
+    <li
+      className={classNames("p-inline-list__item u-text--light", {
+        "last-item": i === items.length - 1,
+      })}
+      data-test="section-header-subtitle"
+      key={i}
+    >
+      {item}
+    </li>
+  ));
 };
 
 const SectionHeader = ({
@@ -31,19 +49,16 @@ const SectionHeader = ({
           >
             {title}
           </li>
-          {(loading || subtitle) && (
+          {loading ? (
             <li className="p-inline-list__item last-item u-text--light">
-              {subtitle && !loading && (
-                <span data-test="section-header-subtitle">{subtitle}</span>
-              )}
-              {loading && (
-                <Spinner
-                  className="u-no-padding u-no-margin"
-                  inline
-                  text="Loading..."
-                />
-              )}
+              <Spinner
+                className="u-no-padding u-no-margin"
+                inline
+                text="Loading..."
+              />
             </li>
+          ) : (
+            generateSubtitle(subtitle)
           )}
         </ul>
         {buttons?.length && (
