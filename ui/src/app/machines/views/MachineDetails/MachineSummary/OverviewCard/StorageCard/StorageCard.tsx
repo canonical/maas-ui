@@ -124,37 +124,35 @@ const StorageCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
             </li>
           ) : (
             <li className="p-inline-list__item">
-              <span className="p-tooltip--top-left">
-                <Tooltip
-                  message={
-                    !machine.actions.includes("test")
-                      ? "Machine cannot run tests at this time."
-                      : null
-                  }
-                  position={"top-left"}
+              <Tooltip
+                message={
+                  !machine.actions.includes("test")
+                    ? "Machine cannot run tests at this time."
+                    : null
+                }
+                position={"top-left"}
+              >
+                <Button
+                  className="p-button--link"
+                  disabled={!machine.actions.includes("test")}
+                  onClick={() => {
+                    setSelectedAction(
+                      {
+                        name: "test",
+                        formProps: { hardwareType: HardwareType.Storage },
+                      },
+                      false
+                    );
+                    sendAnalytics(
+                      "Machine details",
+                      "Test storage",
+                      "Machine summary tab"
+                    );
+                  }}
                 >
-                  <Button
-                    className="p-button--link"
-                    disabled={!machine.actions.includes("test")}
-                    onClick={() => {
-                      setSelectedAction(
-                        {
-                          name: "test",
-                          formProps: { hardwareType: HardwareType.Storage },
-                        },
-                        false
-                      );
-                      sendAnalytics(
-                        "Machine details",
-                        "Test storage",
-                        "Machine summary tab"
-                      );
-                    }}
-                  >
-                    Test storage...
-                  </Button>
-                </Tooltip>
-              </span>
+                  Test storage...
+                </Button>
+              </Tooltip>
             </li>
           )}
         </ul>
