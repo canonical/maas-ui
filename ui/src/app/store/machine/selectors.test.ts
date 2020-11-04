@@ -109,6 +109,18 @@ describe("machine selectors", () => {
     expect(machine.statuses(state)).toStrictEqual(statuses);
   });
 
+  it("can get the statuses for a machine", () => {
+    const machineStatuses = machineStatusFactory();
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        statuses: machineStatusesFactory({
+          abc123: machineStatuses,
+        }),
+      }),
+    });
+    expect(machine.getStatuses(state, "abc123")).toStrictEqual(machineStatuses);
+  });
+
   it("can get machines that are processing", () => {
     const statuses = machineStatusesFactory({
       abc123: machineStatusFactory({ testing: true }),

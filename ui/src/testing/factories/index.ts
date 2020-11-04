@@ -55,6 +55,7 @@ export {
   machineDevice,
   machineEvent,
   machineEventType,
+  machineInterface,
   machineNumaNode,
   controller,
   pod,

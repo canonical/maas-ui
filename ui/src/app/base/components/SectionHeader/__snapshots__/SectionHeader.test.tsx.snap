@@ -15,13 +15,11 @@ exports[`SectionHeader can render 1`] = `
         Title
       </li>
       <li
-        className="p-inline-list__item last-item u-text--light"
+        className="p-inline-list__item u-text--light last-item"
+        data-test="section-header-subtitle"
+        key="0"
       >
-        <span
-          data-test="section-header-subtitle"
-        >
-          Subtitle
-        </span>
+        Subtitle
       </li>
     </ul>
   </div>
