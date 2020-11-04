@@ -91,6 +91,17 @@ ACTIONS.forEach(({ status }) => {
 });
 
 /**
+ * Get the statuses for a machine.
+ * @param state - The redux state.
+ * @param id - A machine's system id.
+ * @returns The machine's statuses
+ */
+const getStatuses = createSelector(
+  [statuses, (_state: RootState, id: Machine["system_id"]) => id],
+  (allStatuses, id) => allStatuses[id]
+);
+
+/**
  * Get machines that match terms.
  * @param {RootState} state - The redux state.
  * @param {String} terms - The terms to match against.
@@ -176,6 +187,7 @@ const selectors = {
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   failedScriptResults,
+  getStatuses,
   locking: statusSelectors["locking"],
   lockingSelected: statusSelectors["lockingSelected"],
   markingBroken: statusSelectors["markingBroken"],

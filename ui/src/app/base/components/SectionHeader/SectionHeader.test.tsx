@@ -23,6 +23,15 @@ describe("SectionHeader", () => {
     );
   });
 
+  it("can have multiple subtitle elements", () => {
+    const wrapper = shallow(
+      <SectionHeader title="Title" subtitle={["Subtitle1", "Subtitle2"]} />
+    );
+    expect(wrapper.find("[data-test='section-header-subtitle']").length).toBe(
+      2
+    );
+  });
+
   it("shows a spinner instead of subtitle if loading", () => {
     const wrapper = shallow(
       <SectionHeader title="Title" subtitle="Subtitle" loading />
