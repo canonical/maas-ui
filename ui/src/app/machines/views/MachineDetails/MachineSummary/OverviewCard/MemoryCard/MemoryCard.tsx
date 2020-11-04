@@ -116,37 +116,35 @@ const MemoryCard = ({ machine, setSelectedAction }: Props): JSX.Element => {
             </li>
           ) : (
             <li className="p-inline-list__item">
-              <span className="p-tooltip--top-left">
-                <Tooltip
-                  message={
-                    !machine.actions.includes("test")
-                      ? "Machine cannot run tests at this time."
-                      : null
-                  }
-                  position={"top-left"}
+              <Tooltip
+                message={
+                  !machine.actions.includes("test")
+                    ? "Machine cannot run tests at this time."
+                    : null
+                }
+                position={"top-left"}
+              >
+                <Button
+                  className="p-button--link"
+                  disabled={!machine.actions.includes("test")}
+                  onClick={() => {
+                    setSelectedAction(
+                      {
+                        name: "test",
+                        formProps: { hardwareType: HardwareType.Memory },
+                      },
+                      false
+                    );
+                    sendAnalytics(
+                      "Machine details",
+                      "Test memory",
+                      "Machine summary tab"
+                    );
+                  }}
                 >
-                  <Button
-                    className="p-button--link"
-                    disabled={!machine.actions.includes("test")}
-                    onClick={() => {
-                      setSelectedAction(
-                        {
-                          name: "test",
-                          formProps: { hardwareType: HardwareType.Memory },
-                        },
-                        false
-                      );
-                      sendAnalytics(
-                        "Machine details",
-                        "Test memory",
-                        "Machine summary tab"
-                      );
-                    }}
-                  >
-                    Test memory...
-                  </Button>
-                </Tooltip>
-              </span>
+                  Test memory...
+                </Button>
+              </Tooltip>
             </li>
           )}
         </ul>
