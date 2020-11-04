@@ -1,8 +1,9 @@
-import { Card, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import React, { useEffect } from "react";
 
+import NetworkCard from "./NetworkCard";
 import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
@@ -51,7 +52,7 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
       <OverviewCard id={id} setSelectedAction={setSelectedAction} />
       <SystemCard id={id} />
       <NumaCard id={id} />
-      <Card className="machine-summary__network-card">Network</Card>
+      <NetworkCard id={id} />
     </div>
   );
 };
