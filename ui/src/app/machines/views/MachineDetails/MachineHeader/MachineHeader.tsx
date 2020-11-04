@@ -70,7 +70,7 @@ const MachineHeader = ({
         <>
           {machine.locked ? (
             <Tooltip
-              className="section__header-icon"
+              className="u-nudge-left--small"
               message="This machine is locked. You have to unlock it to perform any actions."
               position="btm-left"
             >
@@ -80,7 +80,7 @@ const MachineHeader = ({
           {machine.status}
         </>,
         <>
-          <span className="section__header-icon">
+          <span className="u-nudge-left--small">
             <Icon
               name={`power-${checkingPower ? "checking" : machine.power_state}`}
             />
