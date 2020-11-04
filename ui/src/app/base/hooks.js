@@ -184,7 +184,12 @@ export const useSendAnalyticsWhen = (
  * @param {String} noneMessage - The message to display if there are no items.
  * @param {Function} onClick - A function to call when the item is clicked.
  */
-export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
+export const useMachineActions = (
+  systemId,
+  actions,
+  noneMessage = null,
+  onClick = null
+) => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(
     generalSelectors.machineActions.get
@@ -193,32 +198,34 @@ export const useMachineActions = (systemId, actions, noneMessage, onClick) => {
     machineSelectors.getById(state, systemId)
   );
   let actionLinks = [];
-  actions.forEach((action) => {
-    if (machine.actions.includes(action)) {
-      let actionLabel = action;
-      generalMachineActions.forEach((machineAction) => {
-        if (machineAction.name === action) {
-          actionLabel = machineAction.title;
-        }
-      });
+  if (machine) {
+    actions.forEach((action) => {
+      if (machine.actions.includes(action)) {
+        let actionLabel = action;
+        generalMachineActions.forEach((machineAction) => {
+          if (machineAction.name === action) {
+            actionLabel = machineAction.title;
+          }
+        });
 
-      actionLinks.push({
-        children: actionLabel,
-        onClick: () => {
-          const actionMethod = kebabToCamelCase(action);
-          dispatch(machineActions[actionMethod](systemId));
-          onClick && onClick();
+        actionLinks.push({
+          children: actionLabel,
+          onClick: () => {
+            const actionMethod = kebabToCamelCase(action);
+            dispatch(machineActions[actionMethod](systemId));
+            onClick && onClick();
+          },
+        });
+      }
+    });
+    if (actionLinks.length === 0 && noneMessage) {
+      return [
+        {
+          children: noneMessage,
+          disabled: true,
         },
-      });
+      ];
     }
-  });
-  if (actionLinks.length === 0 && noneMessage) {
-    return [
-      {
-        children: noneMessage,
-        disabled: true,
-      },
-    ];
   }
   return actionLinks;
 };

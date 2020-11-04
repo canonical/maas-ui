@@ -129,10 +129,119 @@ describe("MachineHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".p-icon--power-checking").exists()).toBe(true);
+    expect(wrapper.find(".p-icon--spinner").exists()).toBe(true);
     expect(wrapper.find("[data-test='machine-header-power']").text()).toBe(
       "Checking power"
     );
+  });
+
+  describe("power menu", () => {
+    it("can dispatch the power on action", () => {
+      state.machine.items[0].actions = ["on"];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <Route
+              exact
+              path="/machine/:id"
+              component={() => (
+                <MachineHeader
+                  selectedAction={null}
+                  setSelectedAction={jest.fn()}
+                />
+              )}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      // Open the power menu dropdown
+      wrapper.find("TableMenu Button").simulate("click");
+      // Click the "Power on" link
+      wrapper
+        .find("TableMenu .p-contextual-menu__link")
+        .at(0)
+        .simulate("click");
+
+      expect(
+        store.getActions().some((action) => action.type === "TURN_MACHINE_ON")
+      ).toBe(true);
+    });
+
+    it("can dispatch the power off action", () => {
+      state.machine.items[0].actions = ["off"];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <Route
+              exact
+              path="/machine/:id"
+              component={() => (
+                <MachineHeader
+                  selectedAction={null}
+                  setSelectedAction={jest.fn()}
+                />
+              )}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      // Open the power menu dropdown
+      wrapper.find("TableMenu Button").simulate("click");
+      // Click the "Power off" link
+      wrapper
+        .find("TableMenu .p-contextual-menu__link")
+        .at(0)
+        .simulate("click");
+
+      expect(
+        store.getActions().some((action) => action.type === "TURN_MACHINE_OFF")
+      ).toBe(true);
+    });
+
+    it("can dispatch the check power action", () => {
+      state.machine.items[0].actions = [];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <Route
+              exact
+              path="/machine/:id"
+              component={() => (
+                <MachineHeader
+                  selectedAction={null}
+                  setSelectedAction={jest.fn()}
+                />
+              )}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      // Open the power menu dropdown
+      wrapper.find("TableMenu Button").simulate("click");
+      // Click the "Check power" link
+      wrapper
+        .find("TableMenu .p-contextual-menu__link")
+        .at(0)
+        .simulate("click");
+
+      expect(
+        store
+          .getActions()
+          .some((action) => action.type === "CHECK_MACHINE_POWER")
+      ).toBe(true);
+    });
   });
 
   it("includes a tab for instances if machine has any", () => {
