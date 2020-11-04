@@ -5,6 +5,7 @@ import React from "react";
 import CpuCard from "./CpuCard";
 import MemoryCard from "./MemoryCard";
 import StatusCard from "./StatusCard";
+import StorageCard from "./StorageCard";
 import type { SetSelectedAction } from "../MachineSummary";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -33,6 +34,7 @@ const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
         <StatusCard machine={machine} />
         <CpuCard machine={machine} setSelectedAction={setSelectedAction} />
         <MemoryCard machine={machine} setSelectedAction={setSelectedAction} />
+        <StorageCard machine={machine} setSelectedAction={setSelectedAction} />
       </div>
     );
   }
