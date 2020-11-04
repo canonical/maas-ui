@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { SelectedAction, SetSelectedAction } from "../MachineSummary";
 import type { RouteParams } from "app/base/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { machine as machineActions } from "app/base/actions";
@@ -10,12 +11,11 @@ import machineSelectors from "app/store/machine/selectors";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import SectionHeader from "app/base/components/SectionHeader";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
-import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  selectedAction: MachineAction | null;
-  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+  selectedAction: SelectedAction | null;
+  setSelectedAction: SetSelectedAction;
 };
 
 const MachineHeader = ({

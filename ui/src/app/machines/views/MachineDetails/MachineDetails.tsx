@@ -8,9 +8,8 @@ import { machine as machineActions } from "app/base/actions";
 import MachineHeader from "./MachineHeader";
 import MachineNotifications from "./MachineNotifications";
 import machineSelectors from "app/store/machine/selectors";
-import MachineSummary from "./MachineSummary";
+import MachineSummary, { SelectedAction } from "./MachineSummary";
 import Section from "app/base/components/Section";
-import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 
 const MachineDetails = (): JSX.Element => {
@@ -21,7 +20,7 @@ const MachineDetails = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
   const machinesLoaded = useSelector(machineSelectors.loaded);
-  const [selectedAction, setSelectedAction] = useState<MachineAction | null>(
+  const [selectedAction, setSelectedAction] = useState<SelectedAction | null>(
     null
   );
 

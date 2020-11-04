@@ -16,6 +16,7 @@ import type { RootState } from "app/store/root/types";
 
 export type SelectedAction = {
   name: MachineAction["name"];
+  sentence?: MachineAction["sentence"];
   formProps?: { hardwareType: HardwareType };
 };
 

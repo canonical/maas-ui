@@ -30,7 +30,9 @@ describe("TestForm", () => {
     initialState = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [{ name: "test", sentence: "test" }],
+          data: [
+            { name: "test", sentence: "test", type: "test", title: "test" },
+          ],
         }),
       }),
       machine: machineStateFactory({

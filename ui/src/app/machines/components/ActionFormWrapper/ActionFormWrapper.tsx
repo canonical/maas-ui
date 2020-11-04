@@ -12,7 +12,6 @@ import type {
 import { machine as machineActions } from "app/base/actions";
 import type { RouteParams } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { MachineAction } from "app/store/general/types";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
@@ -23,7 +22,7 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
-const getErrorSentence = (action: MachineAction, count: number) => {
+const getErrorSentence = (action: SelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
