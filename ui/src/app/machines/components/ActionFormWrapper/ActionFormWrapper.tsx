@@ -5,10 +5,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
+import type {
+  SelectedAction,
+  SetSelectedAction,
+} from "app/machines/views/MachineDetails/MachineSummary";
 import { machine as machineActions } from "app/base/actions";
 import type { RouteParams } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { MachineAction } from "app/store/general/types";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
@@ -19,7 +22,7 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
-const getErrorSentence = (action: MachineAction, count: number) => {
+const getErrorSentence = (action: SelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
@@ -43,8 +46,8 @@ const getErrorSentence = (action: MachineAction, count: number) => {
 };
 
 type Props = {
-  selectedAction: MachineAction;
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  selectedAction: SelectedAction;
+  setSelectedAction: SetSelectedAction;
 };
 
 export const ActionFormWrapper = ({
@@ -107,7 +110,12 @@ export const ActionFormWrapper = ({
         case "tag":
           return <TagForm setSelectedAction={setSelectedAction} />;
         case "test":
-          return <TestForm setSelectedAction={setSelectedAction} />;
+          return (
+            <TestForm
+              setSelectedAction={setSelectedAction}
+              {...selectedAction.formProps}
+            />
+          );
         default:
           return (
             <FieldlessForm

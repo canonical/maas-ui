@@ -31,7 +31,6 @@ describe("ActionFormWrapper", () => {
           data: [
             machineActionFactory({
               name: "commission",
-              sentence: "commission",
             }),
           ],
         }),
@@ -93,9 +92,6 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             selectedAction={{
               name: "commission",
-              sentence: "commissioned",
-              title: "Commission...",
-              type: "lifecycle",
             }}
             setSelectedAction={jest.fn()}
           />
@@ -132,9 +128,6 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             selectedAction={{
               name: "commission",
-              sentence: "commissioned",
-              title: "Commission...",
-              type: "lifecycle",
             }}
             setSelectedAction={jest.fn()}
           />
@@ -166,9 +159,6 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             selectedAction={{
               name: "commission",
-              sentence: "commissioned",
-              title: "Commission...",
-              type: "lifecycle",
             }}
             setSelectedAction={jest.fn()}
           />

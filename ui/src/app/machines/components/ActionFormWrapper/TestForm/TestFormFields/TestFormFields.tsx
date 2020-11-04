@@ -2,11 +2,23 @@ import { Col, Row } from "@canonical/react-components";
 import React from "react";
 import { useFormikContext } from "formik";
 
+import type { FormValues } from "../TestForm";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+import { Scripts } from "app/store/scripts/types";
 
-export const TestFormFields = ({ preselected, scripts }) => {
-  const { handleChange, setFieldValue, values } = useFormikContext();
+type ScriptsDisplay = Scripts & { displayName: string };
+type Props = {
+  preselected: ScriptsDisplay[];
+  scripts: Scripts[];
+};
+export const TestFormFields = ({
+  preselected,
+  scripts,
+}: Props): JSX.Element => {
+  const { handleChange, setFieldValue, values } = useFormikContext<
+    FormValues
+  >();
   const urlScriptsSelected = values.scripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );
@@ -25,7 +37,7 @@ export const TestFormFields = ({ preselected, scripts }) => {
           initialSelected={preselected}
           label="Tests"
           name="tests"
-          onTagsUpdate={(selectedScripts) =>
+          onTagsUpdate={(selectedScripts: Scripts[]) =>
             setFieldValue("scripts", selectedScripts)
           }
           placeholder="Select scripts"
@@ -43,7 +55,7 @@ export const TestFormFields = ({ preselected, scripts }) => {
               </span>
             }
             name={`scriptInputs[${script.name}].url`}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
               setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
             }}

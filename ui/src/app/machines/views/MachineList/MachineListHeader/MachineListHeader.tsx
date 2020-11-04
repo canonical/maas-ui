@@ -10,6 +10,7 @@ import {
   getCurrentFilters,
   toggleFilter,
 } from "app/machines/search";
+import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import { machine as machineActions } from "app/base/actions";
 import machineSelectors from "app/store/machine/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -50,7 +51,7 @@ type Props = {
   searchFilter?: string;
   selectedAction?: MachineAction;
   setSearchFilter: (filter: string) => void;
-  setSelectedAction: (action: MachineAction) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 export const MachineListHeader = ({

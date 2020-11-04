@@ -9,15 +9,17 @@ import TestForm from "../TestForm";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   scriptsState as scriptsStateFactory,
   scripts as scriptsFactory,
 } from "testing/factories";
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 
 describe("TestForm", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
@@ -28,8 +30,8 @@ describe("TestForm", () => {
           machineFactory({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
       scripts: scriptsStateFactory({
@@ -72,7 +74,7 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <TestForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <TestForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

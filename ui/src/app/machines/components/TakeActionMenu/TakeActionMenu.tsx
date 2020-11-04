@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 
 import type { RouteParams } from "app/base/types";
 import { general as generalActions } from "app/base/actions";
+import { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -15,7 +16,7 @@ import type { RootState } from "app/store/root/types";
 const getTakeActionLinks = (
   actionOptions: MachineAction[],
   machines: Machine[],
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void
+  setSelectedAction: SetSelectedAction
 ) => {
   const initGroups = [
     { type: "lifecycle", items: [] },
@@ -62,7 +63,7 @@ const getTakeActionLinks = (
 };
 
 type Props = {
-  setSelectedAction: (action: MachineAction, deselect?: boolean) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {

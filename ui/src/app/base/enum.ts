@@ -65,3 +65,11 @@ export const scriptStatus = {
   APPLYING_NETCONF: 10,
   FAILED_APPLYING_NETCONF: 11,
 };
+
+export enum HardwareType {
+  Node = 0,
+  Cpu = 1,
+  Memory = 2,
+  Storage = 3,
+  Network = 4,
+}
