@@ -24,6 +24,7 @@ type Props = {
 
 export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const machineErrors = useSelector(machineSelectors.errors);
   const errors = Object.keys(machineErrors).length > 0 ? machineErrors : null;
   const { machinesToAction, processingCount } = useMachineActionForm(
@@ -48,6 +49,11 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
         comment: "",
       }}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Mark broken",
+      }}
       onSubmit={(values: MarkBrokenFormValues) => {
         machinesToAction.forEach((machine) => {
           dispatch(

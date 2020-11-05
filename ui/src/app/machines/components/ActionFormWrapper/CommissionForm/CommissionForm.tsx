@@ -62,6 +62,7 @@ type Props = {
 
 export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
@@ -119,6 +120,11 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
       }}
       loaded={scriptsLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Commission",
+      }}
       onSubmit={(values: CommissionFormValues) => {
         const {
           enableSSH,

@@ -11,6 +11,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   machine as machineFactory,
+  machineAction as machineActionFactory,
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -25,12 +26,12 @@ describe("MarkBrokenForm", () => {
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
           data: [
-            {
+            machineActionFactory({
               name: "mark-broken",
               title: "Mark broken",
               sentence: "marked broken",
               type: "testing",
-            },
+            }),
           ],
         }),
       }),

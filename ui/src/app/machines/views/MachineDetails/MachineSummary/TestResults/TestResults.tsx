@@ -44,7 +44,7 @@ const TestResults = ({
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
-                  "Storage tests passed link",
+                  `${capitaliseFirst(scriptType)} tests passed link`,
                   "Machine summary tab"
                 )
               }

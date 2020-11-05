@@ -7,16 +7,16 @@ import React from "react";
 import type { RootState } from "app/store/root/types";
 
 import {
-  scripts as scriptsFactory,
-  machineAction as machineActionFactory,
-  machine as machineFactory,
   generalState as generalStateFactory,
+  machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
-  scriptsState as scriptsStateFactory,
-  rootState as rootStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
-  machineActionsState as machineActionsStateFactory,
+  rootState as rootStateFactory,
+  scripts as scriptsFactory,
+  scriptsState as scriptsStateFactory,
 } from "testing/factories";
 import CommissionForm from "./CommissionForm";
 
@@ -31,7 +31,7 @@ describe("CommissionForm", () => {
           data: [
             machineActionFactory({
               name: "commission",
-              sentence: "commission",
+              title: "Commission",
             }),
           ],
         }),

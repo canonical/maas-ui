@@ -41,6 +41,7 @@ type Props = {
 
 export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
@@ -52,6 +53,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     generalSelectors.defaultMinHweKernel.loaded
   );
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
+  const sendAnalytics = useSendAnalytics();
   const { machinesToAction, processingCount } = useMachineActionForm("deploy");
 
   useEffect(() => {
@@ -77,8 +79,6 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
     initialRelease = default_release;
   }
 
-  const sendAnalytics = useSendAnalytics();
-
   return (
     <ActionForm
       actionName="deploy"
@@ -95,6 +95,11 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
       }}
       loaded={defaultMinHweKernelLoaded && osInfoLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Deploy",
+      }}
       onSubmit={(values: DeployFormValues) => {
         const hasUserData =
           values.includeUserData && values.userData && values.userData !== "";

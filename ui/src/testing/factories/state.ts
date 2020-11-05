@@ -221,6 +221,7 @@ export const knownArchitecturesState = define<KnownArchitecturesState>({
 
 export const machineActionsState = define<MachineActionsState>({
   ...defaultGeneralState,
+  data: () => [],
 });
 
 export const navigationOptionsState = define<NavigationOptionsState>({

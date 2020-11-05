@@ -5,7 +5,10 @@ import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { Provider } from "react-redux";
 
-import { machine as machineFactory } from "testing/factories";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+} from "testing/factories";
 import { TSFixMe } from "app/base/types";
 import DeployForm from "../../DeployForm";
 
@@ -61,7 +64,7 @@ describe("DeployFormFields", () => {
         loaded: true,
         loading: false,
       },
-      general: {
+      general: generalStateFactory({
         defaultMinHweKernel: {
           data: "",
           errors: {},
@@ -106,7 +109,7 @@ describe("DeployFormFields", () => {
           loaded: true,
           loading: false,
         },
-      },
+      }),
       machine: {
         errors: {},
         loading: false,
@@ -147,11 +150,7 @@ describe("DeployFormFields", () => {
     wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DeployForm
-            processing={false}
-            setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
-          />
+          <DeployForm setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

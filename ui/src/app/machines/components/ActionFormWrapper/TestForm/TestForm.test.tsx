@@ -10,11 +10,12 @@ import { HardwareType } from "app/base/enum";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
-  scripts as scriptsFactory,
+  machineAction as machineActionFactory,
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
+  scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
 import { ScriptType } from "testing/factories/scripts";
@@ -30,9 +31,7 @@ describe("TestForm", () => {
     initialState = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [
-            { name: "test", sentence: "test", type: "test", title: "test" },
-          ],
+          data: [machineActionFactory({ name: "test", title: "Test" })],
         }),
       }),
       machine: machineStateFactory({
