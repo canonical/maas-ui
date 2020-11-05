@@ -46,7 +46,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
 
     <TestResults
       machine={machine}
-      hardwareType={HardwareType.Cpu}
+      hardwareType={HardwareType.CPU}
       setSelectedAction={setSelectedAction}
     />
   </>

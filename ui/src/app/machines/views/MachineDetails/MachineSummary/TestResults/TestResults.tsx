@@ -15,11 +15,7 @@ type Props = {
   setSelectedAction: SetSelectedAction;
 };
 
-const getScriptType = (hardwareType: HardwareType) =>
-  HardwareType[hardwareType].toLowerCase();
-
-const hasTestsRun = (machine: MachineDetails, hardwareType: HardwareType) => {
-  const scriptType = getScriptType(hardwareType);
+const hasTestsRun = (machine: MachineDetails, scriptType: string) => {
   const testObj = machine[`${scriptType}_test_status`];
   return (
     testObj.passed + testObj.pending + testObj.running + testObj.failed > 0
@@ -34,7 +30,7 @@ const TestResults = ({
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/tests`;
-  const scriptType = getScriptType(hardwareType);
+  const scriptType = HardwareType[hardwareType].toLowerCase();
 
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
@@ -102,7 +98,7 @@ const TestResults = ({
           </li>
         ) : null}
 
-        {hasTestsRun(machine, hardwareType) ? (
+        {hasTestsRun(machine, scriptType) ? (
           <li className="p-inline-list__item">
             <Button
               className="p-button--link"
@@ -147,7 +143,7 @@ const TestResults = ({
                   );
                 }}
               >
-                {`Test ${scriptType}…`}
+                {`Test ${HardwareType[hardwareType]}…`}
               </Button>
             </Tooltip>
           </li>

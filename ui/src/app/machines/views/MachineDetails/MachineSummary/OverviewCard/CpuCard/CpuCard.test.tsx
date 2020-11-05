@@ -176,6 +176,6 @@ describe("CpuCard", () => {
 
     expect(
       wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
-    ).toContain("Test cpu");
+    ).toContain("Test CPU");
   });
 });
