@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import React, { Fragment, useEffect } from "react";
 
+import NetworkCardTable from "./NetworkCardTable";
+import { SetSelectedAction } from "../MachineSummary";
+import TestResults from "../TestResults";
+import { HardwareType } from "app/base/enum";
 import { actions as fabricActions } from "app/store/fabric";
-import { actions as vlanActions } from "app/store/vlan";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import vlanSelectors from "app/store/vlan/selectors";
 import type { Machine, NetworkInterface } from "app/store/machine/types";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
 import type { RootState } from "app/store/root/types";
-import NetworkCardTable from "./NetworkCardTable";
 
 type InterfaceGroup = {
   firmwareVersion: string;
@@ -21,6 +24,7 @@ type InterfaceGroup = {
 
 type Props = {
   id: Machine["system_id"];
+  setSelectedAction: SetSelectedAction;
 };
 
 /**
@@ -92,7 +96,7 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
   return sortedGroups;
 };
 
-const NetworkCard = ({ id }: Props): JSX.Element => {
+const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -144,6 +148,12 @@ const NetworkCard = ({ id }: Props): JSX.Element => {
           Information about tagged traffic can be seen in the{" "}
           <Link to={`/machine/${id}/network`}>Network tab</Link>.
         </span>
+
+        <TestResults
+          machine={machine}
+          hardwareType={HardwareType.Network}
+          setSelectedAction={setSelectedAction}
+        />
       </>
     );
   } else {
