@@ -52,7 +52,7 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
       <OverviewCard id={id} setSelectedAction={setSelectedAction} />
       <SystemCard id={id} />
       <NumaCard id={id} />
-      <NetworkCard id={id} />
+      <NetworkCard id={id} setSelectedAction={setSelectedAction} />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   vlanState as vlanStateFactory,
+  testStatus as testStatusFactory,
 } from "testing/factories";
 import NetworkCard from "./NetworkCard";
 import type { RootState } from "app/store/root/types";
@@ -39,7 +40,9 @@ describe("NetworkCard", () => {
           <Route
             exact
             path="/machine/abc123/summary"
-            component={() => <NetworkCard id="abc123" />}
+            component={() => (
+              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -79,7 +82,9 @@ describe("NetworkCard", () => {
           <Route
             exact
             path="/machine/abc123/summary"
-            component={() => <NetworkCard id="abc123" />}
+            component={() => (
+              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -144,7 +149,9 @@ describe("NetworkCard", () => {
           <Route
             exact
             path="/machine/abc123/summary"
-            component={() => <NetworkCard id="abc123" />}
+            component={() => (
+              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -154,5 +161,133 @@ describe("NetworkCard", () => {
     expect(wrapper.find("Table").at(1).find("tbody TableRow").length).toBe(3);
     expect(wrapper.find("Table").at(2).find("tbody TableRow").length).toBe(2);
     expect(wrapper.find("Table").at(3).find("tbody TableRow").length).toBe(1);
+  });
+
+  describe("test results", () => {
+    it("renders a link with a count of passed tests", () => {
+      const machine = machineDetailsFactory({
+        system_id: "abc123",
+      });
+
+      machine.network_test_status = testStatusFactory({
+        passed: 2,
+      });
+      state.machine.items = [machine];
+
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(
+        wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      ).toEqual("2");
+    });
+
+    it("renders a link with a count of pending and running tests", () => {
+      const machine = machineDetailsFactory({
+        system_id: "abc123",
+      });
+
+      machine.network_test_status = testStatusFactory({
+        running: 1,
+        pending: 2,
+      });
+      state.machine.items = [machine];
+
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(
+        wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      ).toEqual("3");
+    });
+
+    it("renders a link with a count of failed tests", () => {
+      const machine = machineDetailsFactory({
+        system_id: "abc123",
+      });
+      machine.network_test_status = testStatusFactory({
+        failed: 5,
+      });
+      state.machine.items = [machine];
+
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(
+        wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      ).toEqual("5");
+    });
+
+    it("renders a results link", () => {
+      const machine = machineDetailsFactory({
+        system_id: "abc123",
+      });
+      machine.network_test_status = testStatusFactory({
+        failed: 5,
+      });
+      state.machine.items = [machine];
+
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(
+        wrapper.find("[data-test='tests']").childAt(1).find("Button").text()
+      ).toContain("View results");
+    });
+
+    it("renders a test storage link if no tests run", () => {
+      const machine = machineDetailsFactory({
+        system_id: "abc123",
+      });
+      machine.network_test_status = testStatusFactory();
+      state.machine.items = [machine];
+
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      expect(
+        wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      ).toContain("Test network");
+    });
   });
 });
