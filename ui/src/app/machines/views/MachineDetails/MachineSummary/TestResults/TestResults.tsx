@@ -30,7 +30,7 @@ const TestResults = ({
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/tests`;
-  const scriptType = HardwareType[hardwareType].toLowerCase();
+  const scriptType = HardwareType[hardwareType]?.toLowerCase();
 
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
@@ -143,7 +143,9 @@ const TestResults = ({
                   );
                 }}
               >
-                {`Test ${HardwareType[hardwareType]}…`}
+                {hardwareType === HardwareType.CPU
+                  ? "Test CPU…"
+                  : `Test ${scriptType}…`}
               </Button>
             </Tooltip>
           </li>

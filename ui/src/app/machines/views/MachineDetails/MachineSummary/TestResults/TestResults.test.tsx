@@ -39,7 +39,7 @@ describe("TestResults", () => {
         >
           <TestResults
             machine={machine}
-            hardwareType={HardwareType.Cpu}
+            hardwareType={HardwareType.CPU}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -121,7 +121,7 @@ describe("TestResults", () => {
         >
           <TestResults
             machine={machine}
-            hardwareType={HardwareType.Cpu}
+            hardwareType={HardwareType.CPU}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>

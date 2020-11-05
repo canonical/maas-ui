@@ -287,7 +287,7 @@ describe("NetworkCard", () => {
 
       expect(
         wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
-      ).toContain("Test Network");
+      ).toContain("Test network");
     });
   });
 });
