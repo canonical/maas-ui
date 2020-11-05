@@ -162,7 +162,7 @@ describe("TestForm", () => {
     state.scripts.items = [
       networkScript,
       scriptsFactory({
-        hardware_type: HardwareType.Cpu,
+        hardware_type: HardwareType.CPU,
         type: ScriptType.Testing,
       }),
       scriptsFactory({
