@@ -2,13 +2,15 @@ import { Icon, Tooltip } from "@canonical/react-components";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { SelectedAction, SetSelectedAction } from "../MachineSummary";
 import { machine as machineActions } from "app/base/actions";
+import { useMachineActions } from "app/base/hooks";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import machineSelectors from "app/store/machine/selectors";
 import SectionHeader from "app/base/components/SectionHeader";
+import TableMenu from "app/base/components/TableMenu";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import type { RootState } from "app/store/root/types";
 import type { RouteParams } from "app/base/types";
@@ -32,7 +34,8 @@ const MachineHeader = ({
   const statuses = useSelector((state: RootState) =>
     machineSelectors.getStatuses(state, id)
   );
-  const checkingPower = statuses?.checkingPower;
+  const powerMenuRef = useRef<HTMLSpanElement>(null);
+  const powerMenuLinks = useMachineActions(id, ["off", "on"]);
 
   useEffect(() => {
     dispatch(machineActions.get(id));
@@ -44,6 +47,7 @@ const MachineHeader = ({
 
   const { devices, fqdn, system_id } = machine;
   const urlBase = `/machine/${system_id}`;
+  const checkingPower = statuses?.checkingPower;
 
   return (
     <SectionHeader
@@ -81,13 +85,31 @@ const MachineHeader = ({
         </>,
         <>
           <span className="u-nudge-left--small">
-            <Icon
-              name={`power-${checkingPower ? "checking" : machine.power_state}`}
+            <i
+              className={
+                checkingPower
+                  ? "p-icon--spinner u-animation--spin"
+                  : `p-icon--power-${machine.power_state}`
+              }
             />
           </span>
-          <span data-test="machine-header-power">
+          <span data-test="machine-header-power" ref={powerMenuRef}>
             {checkingPower ? "Checking power" : `Power ${machine.power_state}`}
           </span>
+          <TableMenu
+            className="u-nudge-right--small"
+            links={[
+              ...powerMenuLinks,
+              {
+                children: "Check power",
+                onClick: () => {
+                  dispatch(machineActions.checkPower(system_id));
+                },
+              },
+            ]}
+            positionNode={powerMenuRef?.current}
+            title="Take action:"
+          />
         </>,
       ]}
       tabLinks={[
