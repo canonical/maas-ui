@@ -33,4 +33,13 @@ describe("FormikFormContent", () => {
     );
     expect(wrapper.find("Notification").text()).toEqual("Error:Uh oh!");
   });
+
+  it("can be inline", () => {
+    const wrapper = mount(
+      <Formik initialValues={{}}>
+        <FormikFormContent inline>Content</FormikFormContent>
+      </Formik>
+    );
+    expect(wrapper.find("Form").prop("inline")).toBe(true);
+  });
 });

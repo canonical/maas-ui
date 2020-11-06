@@ -15,6 +15,7 @@ const FormikFormContent = ({
   buttonsHelpLink,
   children,
   errors,
+  inline,
   initialValues,
   loading,
   onCancel,
@@ -53,15 +54,16 @@ const FormikFormContent = ({
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form inline={inline} onSubmit={handleSubmit}>
       {nonFieldError && (
         <Notification type="negative" status="Error:">
           {nonFieldError}
         </Notification>
       )}
-      <div>{children}</div>
+      {children}
       <Buttons
         bordered={buttonsBordered}
+        cancelDisabled={saving}
         helpLabel={buttonsHelpLabel}
         helpLink={buttonsHelpLink}
         loading={saving}
@@ -94,6 +96,7 @@ FormikFormContent.propTypes = {
   buttonsHelpLink: PropTypes.string,
   children: PropTypes.node,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  inline: PropTypes.bool,
   initialValues: PropTypes.object,
   loading: PropTypes.bool,
   onCancel: PropTypes.func,

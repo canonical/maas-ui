@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 
 import { auth as authActions } from "app/base/actions";
@@ -22,6 +23,7 @@ type PropTypes = {
 };
 
 export const UserForm = ({ user }: PropTypes): JSX.Element => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);
   const [savingUser, setSaving] = useState();
@@ -45,6 +47,7 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
         cleanup={userActions.cleanup}
         includeUserType
         submitLabel="Save user"
+        onCancel={() => history.goBack()}
         onSaveAnalytics={{
           action: "Saved",
           category: "Users settings",

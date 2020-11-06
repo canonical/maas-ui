@@ -165,4 +165,23 @@ describe("FormikForm", () => {
     wrapper.update();
     expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
   });
+
+  it("can be inline", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <FormikForm
+            initialValues={{}}
+            onSubmit={jest.fn()}
+            validationSchema={{}}
+            inline
+          >
+            Content
+          </FormikForm>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikFormContent").prop("inline")).toBe(true);
+  });
 });

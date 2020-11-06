@@ -463,4 +463,40 @@ describe("machine reducer", () => {
       );
     });
   });
+
+  it("should correctly reduce UPDATE_MACHINE_START", () => {
+    const initialState = machineStateFactory({ saved: true, saving: false });
+
+    expect(
+      machine(initialState, {
+        type: "UPDATE_MACHINE_START",
+      })
+    ).toEqual(
+      machineStateFactory({
+        saved: false,
+        saving: true,
+      })
+    );
+  });
+
+  it("should correctly reduce CREATE_MACHINE_ERROR", () => {
+    const initialState = machineStateFactory({
+      errors: {},
+      loading: true,
+      saving: true,
+    });
+
+    expect(
+      machine(initialState, {
+        error: "Uh oh",
+        type: "CREATE_MACHINE_ERROR",
+      })
+    ).toEqual(
+      machineStateFactory({
+        errors: "Uh oh",
+        loading: false,
+        saving: false,
+      })
+    );
+  });
 });

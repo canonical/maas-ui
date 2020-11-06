@@ -5,10 +5,13 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
+  generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import MachineHeader from "./MachineHeader";
@@ -269,5 +272,46 @@ describe("MachineHeader", () => {
       </Provider>
     );
     expect(wrapper.find(".p-tabs__item").at(1).text()).toBe("Instances");
+  });
+
+  it("hides the subtitle when editing the name", () => {
+    state = rootStateFactory({
+      general: generalStateFactory({
+        powerTypes: powerTypesStateFactory({
+          data: [powerTypeFactory()],
+        }),
+      }),
+      machine: machineStateFactory({
+        loaded: true,
+        items: [
+          machineDetailsFactory({
+            locked: false,
+            permissions: ["edit"],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/machine/:id"
+            component={() => (
+              <MachineHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Button.machine-name--editable").simulate("click");
+    expect(wrapper.find("SectionHeader").prop("subtitle")).toBe(null);
   });
 });

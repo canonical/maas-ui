@@ -76,9 +76,9 @@ exports[`FieldlessForm renders 1`] = `
               className=""
               onSubmit={[Function]}
             >
-              <div />
               <FormCardButtons
                 bordered={false}
+                cancelDisabled={false}
                 loading={false}
                 loadingLabel="Releasing machine..."
                 onCancel={[Function]}
