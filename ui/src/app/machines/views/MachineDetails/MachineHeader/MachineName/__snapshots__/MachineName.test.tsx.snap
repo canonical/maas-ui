@@ -1,0 +1,371 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachineName can display the form 1`] = `
+<FormikForm
+  initialValues={
+    Object {
+      "domain": 106,
+      "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+    }
+  }
+  inline={true}
+  onCancel={[Function]}
+  onSaveAnalytics={
+    Object {
+      "action": "Saved",
+      "category": "Machine details header",
+      "label": "name",
+    }
+  }
+  onSubmit={[Function]}
+  saved={false}
+  saving={false}
+  validationSchema={
+    ObjectSchema {
+      "_blacklist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "_conditions": Array [],
+      "_defaultDefault": [Function],
+      "_deps": Array [],
+      "_excludedEdges": Array [],
+      "_exclusive": Object {},
+      "_mutate": undefined,
+      "_nodes": Array [
+        "domain",
+        "hostname",
+      ],
+      "_options": Object {
+        "abortEarly": true,
+        "recursive": true,
+      },
+      "_type": "object",
+      "_typeError": [Function],
+      "_whitelist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "fields": Object {
+        "domain": StringSchema {
+          "_blacklist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {},
+          "_mutate": undefined,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "tests": Array [],
+          "transforms": Array [
+            [Function],
+          ],
+          "type": "string",
+        },
+        "hostname": StringSchema {
+          "_blacklist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {
+            "matches": false,
+            "max": true,
+            "required": true,
+          },
+          "_mutate": undefined,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": RefSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "tests": Array [
+            [Function],
+            [Function],
+            [Function],
+          ],
+          "transforms": Array [
+            [Function],
+          ],
+          "type": "string",
+        },
+      },
+      "tests": Array [],
+      "transforms": Array [
+        [Function],
+      ],
+      "type": "object",
+    }
+  }
+>
+  <Formik
+    initialValues={
+      Object {
+        "domain": 106,
+        "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+      }
+    }
+    onSubmit={[Function]}
+    validationSchema={
+      ObjectSchema {
+        "_blacklist": RefSet {
+          "list": Set {},
+          "refs": Map {},
+        },
+        "_conditions": Array [],
+        "_defaultDefault": [Function],
+        "_deps": Array [],
+        "_excludedEdges": Array [],
+        "_exclusive": Object {},
+        "_mutate": undefined,
+        "_nodes": Array [
+          "domain",
+          "hostname",
+        ],
+        "_options": Object {
+          "abortEarly": true,
+          "recursive": true,
+        },
+        "_type": "object",
+        "_typeError": [Function],
+        "_whitelist": RefSet {
+          "list": Set {},
+          "refs": Map {},
+        },
+        "fields": Object {
+          "domain": StringSchema {
+            "_blacklist": RefSet {
+              "list": Set {},
+              "refs": Map {},
+            },
+            "_conditions": Array [],
+            "_deps": Array [],
+            "_exclusive": Object {},
+            "_mutate": undefined,
+            "_options": Object {
+              "abortEarly": true,
+              "recursive": true,
+            },
+            "_type": "string",
+            "_typeError": [Function],
+            "_whitelist": RefSet {
+              "list": Set {},
+              "refs": Map {},
+            },
+            "tests": Array [],
+            "transforms": Array [
+              [Function],
+            ],
+            "type": "string",
+          },
+          "hostname": StringSchema {
+            "_blacklist": RefSet {
+              "list": Set {},
+              "refs": Map {},
+            },
+            "_conditions": Array [],
+            "_deps": Array [],
+            "_exclusive": Object {
+              "matches": false,
+              "max": true,
+              "required": true,
+            },
+            "_mutate": undefined,
+            "_options": Object {
+              "abortEarly": true,
+              "recursive": true,
+            },
+            "_type": "string",
+            "_typeError": [Function],
+            "_whitelist": RefSet {
+              "list": Set {},
+              "refs": Map {},
+            },
+            "tests": Array [
+              [Function],
+              [Function],
+              [Function],
+            ],
+            "transforms": Array [
+              [Function],
+            ],
+            "type": "string",
+          },
+        },
+        "tests": Array [],
+        "transforms": Array [
+          [Function],
+        ],
+        "type": "object",
+      }
+    }
+  >
+    <FormikFormContent
+      buttonsBordered={true}
+      initialValues={
+        Object {
+          "domain": 106,
+          "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+        }
+      }
+      inline={true}
+      onCancel={[Function]}
+      saved={false}
+      saving={false}
+    >
+      <Form
+        inline={true}
+        onSubmit={[Function]}
+      >
+        <form
+          className="p-form p-form--inline"
+          onSubmit={[Function]}
+        >
+          <MachineNameFields
+            saving={false}
+          >
+            <FormikField
+              className="machine-name__hostname"
+              disabled={false}
+              name="hostname"
+              required={true}
+              style={
+                Object {
+                  "width": "69.7ch",
+                }
+              }
+              takeFocus={true}
+              type="text"
+              wrapperClassName="u-nudge-left--small"
+            >
+              <Input
+                className="machine-name__hostname"
+                disabled={false}
+                error={null}
+                id="Uakgb_J5m9g-0JDMbcJqLJ"
+                name="hostname"
+                onBlur={[Function]}
+                onChange={[Function]}
+                required={true}
+                style={
+                  Object {
+                    "width": "69.7ch",
+                  }
+                }
+                takeFocus={true}
+                type="text"
+                value="test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE"
+                wrapperClassName="u-nudge-left--small"
+              >
+                <Field
+                  className="u-nudge-left--small"
+                  error={null}
+                  forId="Uakgb_J5m9g-0JDMbcJqLJ"
+                  labelFirst={true}
+                  required={true}
+                >
+                  <div
+                    className="p-form__group p-form-validation u-nudge-left--small"
+                  >
+                    <div
+                      className="p-form__control u-clearfix"
+                    >
+                      <input
+                        className="p-form-validation__input machine-name__hostname"
+                        disabled={false}
+                        id="Uakgb_J5m9g-0JDMbcJqLJ"
+                        name="hostname"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        style={
+                          Object {
+                            "width": "69.7ch",
+                          }
+                        }
+                        type="text"
+                        value="test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE"
+                      />
+                    </div>
+                  </div>
+                </Field>
+              </Input>
+            </FormikField>
+            .
+            <Spinner
+              className="u-width--auto"
+              inline={true}
+            >
+              <span
+                className="u-width--auto p-spinner p-text--default p-spinner--inline"
+              >
+                <i
+                  className="p-icon--spinner u-animation--spin"
+                />
+              </span>
+            </Spinner>
+          </MachineNameFields>
+          <FormikFormButtons
+            bordered={true}
+            cancelDisabled={false}
+            loading={false}
+            onCancel={[Function]}
+            submitDisabled={true}
+            submitLabel="Save"
+            success={false}
+          >
+            <div>
+              <Button
+                appearance="base"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <button
+                  className="p-button--base"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </Button>
+              <ActionButton
+                appearance="positive"
+                className="u-no-margin--bottom"
+                disabled={true}
+                loading={false}
+                success={false}
+                type="submit"
+              >
+                <button
+                  className="u-no-margin--bottom p-action-button p-button--positive is-disabled"
+                  disabled={true}
+                  type="submit"
+                >
+                  Save
+                </button>
+              </ActionButton>
+            </div>
+          </FormikFormButtons>
+        </form>
+      </Form>
+    </FormikFormContent>
+  </Formik>
+</FormikForm>
+`;

@@ -110,11 +110,13 @@
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineList";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
+@import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NetworkCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
 @include MachineList;
+@include MachineName;
 @include MachineSummary;
 @include MarkBrokenFormFields;
 @include NetworkCard;

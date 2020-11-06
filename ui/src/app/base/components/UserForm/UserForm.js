@@ -2,7 +2,6 @@ import { Button } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import authSelectors from "app/store/auth/selectors";
@@ -56,6 +55,7 @@ export const UserForm = ({
   cleanup,
   includeCurrentPassword,
   includeUserType,
+  onCancel,
   onSave,
   onSaveAnalytics,
   onUpdateFields,
@@ -64,7 +64,6 @@ export const UserForm = ({
   user,
 }) => {
   const editing = !!user;
-  const history = useHistory();
   const [passwordVisible, showPassword] = useState(!editing);
   const saving = useSelector(userSelectors.saving);
   const saved = useSelector(userSelectors.saved);
@@ -101,7 +100,7 @@ export const UserForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={initialValues}
-      onCancel={() => history.goBack()}
+      onCancel={onCancel}
       onSaveAnalytics={onSaveAnalytics}
       onSubmit={(values, { resetForm }) => {
         const params = {
@@ -215,6 +214,7 @@ UserForm.propTypes = {
   cleanup: PropTypes.func,
   includeCurrentPassword: PropTypes.bool,
   includeUserType: PropTypes.bool,
+  onCancel: PropTypes.func,
   onSave: PropTypes.func.isRequired,
   onSaveAnalytics: PropTypes.shape({
     category: PropTypes.string,

@@ -2,12 +2,13 @@ import { Icon, Tooltip } from "@canonical/react-components";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { SelectedAction, SetSelectedAction } from "../MachineSummary";
 import { machine as machineActions } from "app/base/actions";
 import { useMachineActions } from "app/base/hooks";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
+import MachineName from "./MachineName";
 import machineSelectors from "app/store/machine/selectors";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
@@ -24,6 +25,7 @@ const MachineHeader = ({
   selectedAction,
   setSelectedAction,
 }: Props): JSX.Element => {
+  const [editingName, setEditingName] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { id } = useParams<RouteParams>();
@@ -45,7 +47,7 @@ const MachineHeader = ({
     return <SectionHeader loading title="" />;
   }
 
-  const { devices, fqdn, system_id } = machine;
+  const { devices, system_id } = machine;
   const urlBase = `/machine/${system_id}`;
   const checkingPower = statuses?.checkingPower;
 
@@ -70,48 +72,54 @@ const MachineHeader = ({
         ) : null
       }
       loading={loading}
-      subtitle={[
-        <>
-          {machine.locked ? (
-            <Tooltip
-              className="u-nudge-left--small"
-              message="This machine is locked. You have to unlock it to perform any actions."
-              position="btm-left"
-            >
-              <Icon name="locked" />
-            </Tooltip>
-          ) : null}
-          {machine.status}
-        </>,
-        <>
-          <span className="u-nudge-left--small">
-            <i
-              className={
-                checkingPower
-                  ? "p-icon--spinner u-animation--spin"
-                  : `p-icon--power-${machine.power_state}`
-              }
-            />
-          </span>
-          <span data-test="machine-header-power" ref={powerMenuRef}>
-            {checkingPower ? "Checking power" : `Power ${machine.power_state}`}
-          </span>
-          <TableMenu
-            className="u-nudge-right--small"
-            links={[
-              ...powerMenuLinks,
-              {
-                children: "Check power",
-                onClick: () => {
-                  dispatch(machineActions.checkPower(system_id));
-                },
-              },
-            ]}
-            positionNode={powerMenuRef?.current}
-            title="Take action:"
-          />
-        </>,
-      ]}
+      subtitle={
+        editingName
+          ? null
+          : [
+              <>
+                {machine.locked ? (
+                  <Tooltip
+                    className="u-nudge-left--small"
+                    message="This machine is locked. You have to unlock it to perform any actions."
+                    position="btm-left"
+                  >
+                    <Icon name="locked" />
+                  </Tooltip>
+                ) : null}
+                {machine.status}
+              </>,
+              <>
+                <span className="u-nudge-left--small">
+                  <i
+                    className={
+                      checkingPower
+                        ? "p-icon--spinner u-animation--spin"
+                        : `p-icon--power-${machine.power_state}`
+                    }
+                  />
+                </span>
+                <span data-test="machine-header-power" ref={powerMenuRef}>
+                  {checkingPower
+                    ? "Checking power"
+                    : `Power ${machine.power_state}`}
+                </span>
+                <TableMenu
+                  className="u-nudge-right--small"
+                  links={[
+                    ...powerMenuLinks,
+                    {
+                      children: "Check power",
+                      onClick: () => {
+                        dispatch(machineActions.checkPower(system_id));
+                      },
+                    },
+                  ]}
+                  positionNode={powerMenuRef?.current}
+                  title="Take action:"
+                />
+              </>,
+            ]
+      }
       tabLinks={[
         {
           active: pathname.startsWith(`${urlBase}/summary`),
@@ -172,7 +180,13 @@ const MachineHeader = ({
           to: `${urlBase}/configuration`,
         },
       ]}
-      title={fqdn}
+      title={
+        <MachineName
+          editingName={editingName}
+          id={id}
+          setEditingName={setEditingName}
+        />
+      }
     />
   );
 };

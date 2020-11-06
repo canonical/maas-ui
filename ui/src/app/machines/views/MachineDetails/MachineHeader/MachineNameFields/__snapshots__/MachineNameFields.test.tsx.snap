@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachineNameFields displays the fields 1`] = `
+<MachineNameFields>
+  <FormikField
+    className="machine-name__hostname"
+    name="hostname"
+    required={true}
+    style={
+      Object {
+        "width": "0ch",
+      }
+    }
+    takeFocus={true}
+    type="text"
+    wrapperClassName="u-nudge-left--small"
+  >
+    <Input
+      className="machine-name__hostname"
+      error={null}
+      id="Uakgb_J5m9g-0JDMbcJqLJ"
+      name="hostname"
+      onBlur={[Function]}
+      onChange={[Function]}
+      required={true}
+      style={
+        Object {
+          "width": "0ch",
+        }
+      }
+      takeFocus={true}
+      type="text"
+      value=""
+      wrapperClassName="u-nudge-left--small"
+    >
+      <Field
+        className="u-nudge-left--small"
+        error={null}
+        forId="Uakgb_J5m9g-0JDMbcJqLJ"
+        labelFirst={true}
+        required={true}
+      >
+        <div
+          className="p-form__group p-form-validation u-nudge-left--small"
+        >
+          <div
+            className="p-form__control u-clearfix"
+          >
+            <input
+              className="p-form-validation__input machine-name__hostname"
+              id="Uakgb_J5m9g-0JDMbcJqLJ"
+              name="hostname"
+              onBlur={[Function]}
+              onChange={[Function]}
+              style={
+                Object {
+                  "width": "0ch",
+                }
+              }
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </Field>
+    </Input>
+  </FormikField>
+  .
+  <FormikField
+    component={[Function]}
+    name="domain"
+    options={Array []}
+    required={true}
+    wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+  >
+    <Select
+      error={null}
+      id="Uakgb_J5m9g-0JDMbcJqLJ"
+      name="domain"
+      onBlur={[Function]}
+      onChange={[Function]}
+      options={Array []}
+      required={true}
+      value=""
+      wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+    >
+      <Field
+        className="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+        error={null}
+        forId="Uakgb_J5m9g-0JDMbcJqLJ"
+        isSelect={true}
+        required={true}
+      >
+        <div
+          className="p-form__group p-form-validation u-no-margin--left u-nudge-right--small u-nudge-left--small"
+        >
+          <div
+            className="p-form__control u-clearfix"
+          >
+            <div
+              className="p-form-validation__select-wrapper"
+            >
+              <select
+                className="p-form-validation__input"
+                id="Uakgb_J5m9g-0JDMbcJqLJ"
+                name="domain"
+                onBlur={[Function]}
+                onChange={[Function]}
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </Field>
+    </Select>
+  </FormikField>
+</MachineNameFields>
+`;

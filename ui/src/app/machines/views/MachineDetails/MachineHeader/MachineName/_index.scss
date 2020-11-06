@@ -1,0 +1,22 @@
+@mixin MachineName {
+  button.machine-name--editable {
+    @extend %vf-heading-4;
+    margin-bottom: 0;
+    padding: 0 $spv-inner--large;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: transparent;
+      cursor: text;
+      outline: 1px solid $color-mid-light;
+    }
+  }
+
+  [type="text"].machine-name__hostname {
+    @extend %vf-heading-4;
+    box-sizing: content-box;
+    min-width: 3rem;
+    padding: calc(#{$sp-xx-small} - 1px) $spv-inner--large;
+  }
+}

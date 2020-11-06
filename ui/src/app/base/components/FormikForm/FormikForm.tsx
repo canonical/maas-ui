@@ -20,6 +20,7 @@ type Props = {
   children?: ReactNode;
   errors?: TSFixMe;
   initialValues: TSFixMe;
+  inline?: boolean;
   loading?: boolean;
   onCancel?: () => void;
   onSaveAnalytics?: {
@@ -52,6 +53,7 @@ const FormikForm = ({
   cleanup,
   children,
   errors,
+  inline,
   initialValues,
   loading,
   onCancel,
@@ -104,6 +106,7 @@ const FormikForm = ({
         buttonsHelpLink={buttonsHelpLink}
         buttons={buttons}
         errors={errors}
+        inline={inline}
         initialValues={initialValues}
         onCancel={onCancel}
         onValuesChanged={onValuesChanged}
@@ -134,6 +137,7 @@ FormikForm.propTypes = {
   children: PropTypes.node,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   initialValues: PropTypes.object.isRequired,
+  inline: PropTypes.bool,
   onCancel: PropTypes.func,
   onSaveAnalytics: PropTypes.shape({
     category: PropTypes.string,
