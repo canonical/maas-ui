@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 
 import CpuCard from "./CpuCard";
+import DetailsCard from "./DetailsCard";
 import MemoryCard from "./MemoryCard";
 import StatusCard from "./StatusCard";
 import StorageCard from "./StorageCard";
@@ -35,6 +36,7 @@ const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
         <CpuCard machine={machine} setSelectedAction={setSelectedAction} />
         <MemoryCard machine={machine} setSelectedAction={setSelectedAction} />
         <StorageCard machine={machine} setSelectedAction={setSelectedAction} />
+        <DetailsCard machine={machine} />
       </div>
     );
   }

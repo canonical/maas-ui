@@ -45,9 +45,14 @@ export const navigateToNew = (route, evt) => {
  * @return {String} The formatted power type or the original power type key.
  */
 export const extractPowerType = (description, powerType) => {
+  if (!powerType) {
+    return null;
+  }
+
   if (!description) {
     return powerType;
   }
+
   const position = description.toLowerCase().indexOf(powerType.toLowerCase());
   return position === -1
     ? powerType
