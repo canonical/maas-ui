@@ -69,7 +69,7 @@ export const useCanEdit = (
   );
 };
 
-export const getPodNumaID = (machine: Machine, pod: Pod): number => {
+export const getPodNumaID = (machine: Machine, pod: Pod): number | null => {
   if (pod?.numa_pinning) {
     // If there is only one NUMA node on the VM host, then the VM must be
     // aligned on that node even if it isn't specifically pinned.

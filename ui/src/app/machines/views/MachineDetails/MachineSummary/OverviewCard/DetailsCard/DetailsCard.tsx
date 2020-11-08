@@ -28,7 +28,8 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
   const powerTypes = useSelector(generalSelectors.powerTypes.get);
 
   const configTabUrl = `/machine/${machine.system_id}/configuration`;
-  const podNumaID = getPodNumaID(machine, pod);
+  const podNumaID = pod ? getPodNumaID(machine, pod) : null;
+
   const powerTypeDescription = powerTypes.find(
     (powerType) => powerType.name === machine.power_type
   )?.description;

@@ -105,7 +105,7 @@ describe("DetailsCard", () => {
       id: 1,
       name: "pod-1",
       type: "lxd",
-      numa_pinning: null,
+      numa_pinning: [],
     });
 
     state.machine.items = [machine];

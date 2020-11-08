@@ -221,10 +221,6 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2435825133": [
       [18, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PoolColumn/PoolColumn.tsx:2880885888": [
-      [16, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973346775"],
-      [19, 33, 15, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "2973147829"]
-    ],
     "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:259372828": [
       [17, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
@@ -352,17 +348,20 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:2502469861": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
     ],
-    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:2985488462": [
+    "src/app/machines/views/MachineDetails/MachineSummary/OverviewCard/DetailsCard/DetailsCard.tsx:1301901847": [
+      [4, 33, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/Users/kit/src/canonical/local/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:26357444": [
       [18, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [37, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [52, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [57, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [58, 10, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [74, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [75, 16, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [80, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [95, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [120, 14, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "1236122734"]
+      [50, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [55, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [56, 10, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [70, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [71, 16, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [76, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [89, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [112, 14, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "1236122734"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:539216384": [
       [104, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
@@ -575,9 +574,9 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [11, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:193241885": [
+    "src/app/store/machine/types.ts:612274196": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [295, 9, 8, "RegExp match", "1152173309"]
+      [296, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/notification/types.ts:2586887406": [
       [1, 13, 8, "RegExp match", "1152173309"],
