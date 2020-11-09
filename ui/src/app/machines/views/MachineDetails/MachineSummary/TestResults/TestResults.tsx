@@ -37,9 +37,7 @@ const TestResults = ({
       <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
         {machine[`${scriptType}_test_status`].passed ? (
           <li className="p-inline-list__item">
-            <Button
-              className="p-button--link"
-              element={Link}
+            <Link
               to={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
@@ -51,7 +49,7 @@ const TestResults = ({
             >
               <Icon name={ICONS.success} />
               {machine[`${scriptType}_test_status`].passed}
-            </Button>
+            </Link>
           </li>
         ) : null}
 
@@ -59,9 +57,7 @@ const TestResults = ({
           machine[`${scriptType}_test_status`].running >
         0 ? (
           <li className="p-inline-list__item">
-            <Button
-              className="p-button--link"
-              element={Link}
+            <Link
               to={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
@@ -74,15 +70,13 @@ const TestResults = ({
               <Icon name={"pending"} />
               {machine[`${scriptType}_test_status`].pending +
                 machine[`${scriptType}_test_status`].running}
-            </Button>
+            </Link>
           </li>
         ) : null}
 
         {machine[`${scriptType}_test_status`].failed > 0 ? (
           <li className="p-inline-list__item">
-            <Button
-              className="p-button--link"
-              element={Link}
+            <Link
               to={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
@@ -94,15 +88,13 @@ const TestResults = ({
             >
               <Icon name={ICONS.error} />
               {machine[`${scriptType}_test_status`].failed}
-            </Button>
+            </Link>
           </li>
         ) : null}
 
         {hasTestsRun(machine, scriptType) ? (
           <li className="p-inline-list__item">
-            <Button
-              className="p-button--link"
-              element={Link}
+            <Link
               to={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
@@ -113,7 +105,7 @@ const TestResults = ({
               }
             >
               View results&nbsp;&rsaquo;
-            </Button>
+            </Link>
           </li>
         ) : (
           <li className="p-inline-list__item">

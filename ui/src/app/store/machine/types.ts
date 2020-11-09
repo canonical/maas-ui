@@ -194,6 +194,7 @@ export type BaseMachine = BaseNode & {
   owner: string;
   physical_disk_count: number;
   pod?: ModelRef;
+  pool: ModelRef;
   power_state: PowerState;
   power_type: string;
   pxe_mac_vendor: string;

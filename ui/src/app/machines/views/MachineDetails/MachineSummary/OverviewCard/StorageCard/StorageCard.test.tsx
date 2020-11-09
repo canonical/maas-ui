@@ -42,7 +42,7 @@ describe("StorageCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
     ).toEqual("2");
   });
 
@@ -66,7 +66,7 @@ describe("StorageCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
     ).toEqual("3");
   });
 
@@ -89,7 +89,7 @@ describe("StorageCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
     ).toEqual("5");
   });
 
@@ -112,7 +112,7 @@ describe("StorageCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(1).find("Button").text()
+      wrapper.find("[data-test='tests']").childAt(1).find("Link").text()
     ).toContain("View results");
   });
 
