@@ -25,23 +25,22 @@ exports[`stricter compilation`] = {
       [132, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [132, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:2395460442": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:131207891": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [132, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
-      [135, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+      [133, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
+      [136, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/DoughnutChart/DoughnutChart.tsx:1593454831": [
       [86, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "2109816907"],
       [89, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
-      [93, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "4228750763"],
-      [131, 8, 7, "Type \'null\' is not assignable to type \'string | undefined\'.", "1236122734"]
+      [93, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "4228750763"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:181765042": [
-      [75, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:1590075926": [
+      [77, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
       [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
@@ -63,7 +62,7 @@ exports[`stricter compilation`] = {
       [31, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [33, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
     ],
-    "src/app/base/components/SectionHeader/SectionHeader.tsx:2959761336": [
+    "src/app/base/components/SectionHeader/SectionHeader.tsx:1865526444": [
       [73, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
     ],
     "src/app/base/components/TagSelector/TagSelector.test.tsx:846439984": [
@@ -126,7 +125,7 @@ exports[`stricter compilation`] = {
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:2310736176": [
       [170, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"],
       [182, 55, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
-      [212, 8, 7, "Type \'false | \\"There are no available subnets on this KVM\'s attached VLANs.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
+      [212, 8, 7, "Type \'false | \\"There are no available subnets on this KVM\'s attached VLANs.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.test.tsx:240374162": [
       [105, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
@@ -168,7 +167,7 @@ exports[`stricter compilation`] = {
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:3772185569": [
       [134, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
-      [188, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"]
+      [188, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
     ],
     "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:512155228": [
       [99, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
@@ -324,23 +323,27 @@ exports[`stricter compilation`] = {
       [39, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
       [54, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
       [55, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
-      [86, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"],
+      [86, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"],
       [97, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/hooks.tsx:935926977": [
+    "src/app/machines/hooks.tsx:3635236711": [
       [45, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 54 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 54 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
       [45, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
       [45, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [50, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
+      [49, 11, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineDetails.tsx:3514974960": [
-      [27, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
-      [29, 28, 9, "Property \'setActive\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1891567915"],
-      [33, 30, 9, "Property \'setActive\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1891567915"]
+    "src/app/machines/views/MachineDetails/MachineDetails.tsx:3279249408": [
+      [28, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
+      [30, 28, 9, "Property \'setActive\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1891567915"],
+      [34, 30, 9, "Property \'setActive\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1891567915"]
     ],
-    "src/app/machines/views/MachineDetails/MachineHeader/MachineHeader.tsx:914617473": [
-      [40, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
-      [105, 42, 10, "Property \'checkPower\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "953482588"]
+    "src/app/machines/views/MachineDetails/MachineHeader/MachineHeader.tsx:1822163510": [
+      [42, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
+      [112, 48, 10, "Property \'checkPower\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "953482588"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/FilesystemsTable.tsx:1521910028": [
+      [64, 27, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
+      [73, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/MachineSummary.tsx:2439231865": [
       [42, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"]
@@ -349,9 +352,9 @@ exports[`stricter compilation`] = {
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/OverviewCard/DetailsCard/DetailsCard.tsx:1301901847": [
-      [4, 33, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/Users/kit/src/canonical/local/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
+      [4, 33, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
-    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:26357444": [
+    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:247086798": [
       [18, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [37, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [50, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
@@ -360,8 +363,7 @@ exports[`stricter compilation`] = {
       [70, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [71, 16, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [76, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [89, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [112, 14, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "1236122734"]
+      [89, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:539216384": [
       [104, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
@@ -574,9 +576,9 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [11, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:612274196": [
+    "src/app/store/machine/types.ts:1016460159": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [296, 9, 8, "RegExp match", "1152173309"]
+      [293, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/notification/types.ts:2586887406": [
       [1, 13, 8, "RegExp match", "1152173309"],

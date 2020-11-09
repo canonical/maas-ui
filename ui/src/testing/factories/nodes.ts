@@ -3,13 +3,16 @@ import { define, extend, random, sequence } from "cooky-cutter";
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type {
+  Disk,
   Event,
   EventType,
+  Filesystem,
   Machine,
   MachineDetails,
   MachineDevice,
   MachineNumaNode,
   NetworkInterface,
+  Partition,
 } from "app/store/machine/types";
 import type {
   Pod,
@@ -145,6 +148,49 @@ export const machineEvent = extend<Model, Event>(model, {
   created: "Mon, 19 Oct. 2020 07:04:37",
   description: "smartctl-validate on name-VZJoCN timed out",
   type: machineEventType,
+});
+
+export const machineFilesystem = extend<Model, Filesystem>(model, {
+  fstype: "fat32",
+  label: "efi",
+  mount_options: "abc",
+  mount_point: "/boot/efi",
+  used_for: "fat32 formatted filesystem mounted at /boot/efi",
+});
+
+export const machinePartition = extend<Model, Partition>(model, {
+  filesystem: null,
+  name: "sda-part1",
+  path: "/dev/disk/by-dname/sda-part1",
+  size_human: "100 GB",
+  size: 100000000000,
+  tags: () => [],
+  type: "partition",
+  used_for: "fat32 formatted filesystem mounted at /boot/efi",
+});
+
+export const machineDisk = extend<Model, Disk>(model, {
+  is_boot: true,
+  name: "sda",
+  tags: () => [],
+  type: "physical",
+  path: "/dev/disk/by-dname/sda",
+  size: 100000000000,
+  size_human: "100 GB",
+  used_size: 40000000000,
+  used_size_human: "40 GB",
+  available_size: 60000000000,
+  available_size_human: "600 GB",
+  block_size: 512,
+  model: "QEMU HARDDISK",
+  serial: "lxd_root",
+  firmware_version: "2.5+",
+  partition_table_type: "GPT",
+  used_for: "GPT partitioned with 2 partitions",
+  filesystem: null,
+  partitions: () => [],
+  numa_node: 0,
+  test_status: 0,
 });
 
 export const machineInterface = extend<Model, NetworkInterface>(model, {
