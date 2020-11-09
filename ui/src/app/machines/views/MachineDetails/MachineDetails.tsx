@@ -8,6 +8,7 @@ import { machine as machineActions } from "app/base/actions";
 import MachineHeader from "./MachineHeader";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import machineSelectors from "app/store/machine/selectors";
+import MachineStorage from "./MachineStorage";
 import MachineSummary, { SelectedAction } from "./MachineSummary";
 import Section from "app/base/components/Section";
 import type { RootState } from "app/store/root/types";
@@ -55,6 +56,9 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/summary">
             <SummaryNotifications id={id} />
             <MachineSummary setSelectedAction={setSelectedAction} />
+          </Route>
+          <Route exact path="/machine/:id/storage">
+            <MachineStorage />
           </Route>
           <Route exact path="/machine/:id">
             <Redirect to={`/machine/${id}/summary`} />

@@ -41,7 +41,7 @@ type BaseSelectors<
     // The provided state.
     RootState,
     // The provided parameter (id).
-    I[K],
+    I[K] | undefined | null,
     // The result (an item or null).
     I | null,
     // The computation function to select an item.
@@ -102,8 +102,11 @@ export const generateBaseSelectors = <
       (items as Array<I>).filter((item) => searchFunction(item, term))
   );
   const getById = createSelector(
-    [all, (_state: RootState, id: I[K]) => id],
+    [all, (_state: RootState, id: I[K] | null | undefined = null) => id],
     (items, id) => {
+      if (!id) {
+        return null;
+      }
       return (items as Array<I>).find((item) => item[indexKey] === id) || null;
     }
   );

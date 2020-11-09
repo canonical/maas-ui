@@ -11,7 +11,7 @@ type Props = {
   loading?: boolean;
   subtitle?: ReactNode | ReactNode[];
   tabLinks?: TSFixMe[];
-  title: string;
+  title: ReactNode;
 };
 
 const generateSubtitle = (subtitle: Props["subtitle"]) => {

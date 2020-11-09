@@ -47,26 +47,23 @@ export type NetworkInterface = Model & {
   vlan_id: number;
 };
 
-export type Filesystem = {
+export type Filesystem = Model & {
   fstype: string;
   label: string;
   mount_options: string | null;
   mount_point: string;
-  uuid: string;
+  used_for: string;
 };
 
 export type Partition = Model & {
-  bootable: boolean;
-  device_id: number;
   filesystem: Filesystem | null;
+  name: string;
   path: string;
-  resource_uri: string;
+  size_human: string;
   size: number;
-  system_id: string;
   tags: string[];
   type: string;
   used_for: string;
-  uuid: string;
 };
 
 export type Disk = Model & {
@@ -194,6 +191,7 @@ export type BaseMachine = BaseNode & {
   owner: string;
   physical_disk_count: number;
   pod?: ModelRef;
+  pool: ModelRef;
   power_state: PowerState;
   power_type: string;
   pxe_mac_vendor: string;
