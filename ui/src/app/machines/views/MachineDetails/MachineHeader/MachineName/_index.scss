@@ -16,7 +16,10 @@
   [type="text"].machine-name__hostname {
     @extend %vf-heading-4;
     box-sizing: content-box;
+    margin-bottom: -1px;
     min-width: 3rem;
-    padding: calc(#{$sp-xx-small} - 1px) $spv-inner--large;
+    // Remove 2px to account for the top and bottom borders.
+    padding: calc(#{$sp-xx-small} - 2px) $spv-inner--large
+      calc(#{$sp-xx-small} + 1px);
   }
 }

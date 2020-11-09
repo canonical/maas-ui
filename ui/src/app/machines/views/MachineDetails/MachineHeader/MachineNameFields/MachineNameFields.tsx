@@ -24,13 +24,14 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
         disabled={saving}
         name="hostname"
         required={true}
-        style={{ width: `${values.hostname.length * 0.85}ch` }}
+        style={{ width: `${values.hostname.length}ch` }}
         takeFocus
         wrapperClassName="u-nudge-left--small"
       />
-      .
+      <span>.</span>
       {domainsLoaded ? (
         <FormikField
+          className="u-no-margin--bottom"
           component={Select}
           disabled={saving}
           name="domain"

@@ -6,6 +6,8 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
+  domain as domainFactory,
+  domainState as domainStateFactory,
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -21,8 +23,12 @@ const mockStore = configureStore();
 
 describe("MachineName", () => {
   let state: RootState;
+  const domain = domainFactory({ id: 99 });
   beforeEach(() => {
     state = rootStateFactory({
+      domain: domainStateFactory({
+        items: [domain],
+      }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
           data: [powerTypeFactory()],
@@ -32,6 +38,7 @@ describe("MachineName", () => {
         loaded: true,
         items: [
           machineDetailsFactory({
+            domain,
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",

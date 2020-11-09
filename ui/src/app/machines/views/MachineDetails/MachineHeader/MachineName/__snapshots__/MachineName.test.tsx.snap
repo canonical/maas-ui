@@ -4,7 +4,7 @@ exports[`MachineName can display the form 1`] = `
 <FormikForm
   initialValues={
     Object {
-      "domain": 106,
+      "domain": 99,
       "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
     }
   }
@@ -117,7 +117,7 @@ exports[`MachineName can display the form 1`] = `
   <Formik
     initialValues={
       Object {
-        "domain": 106,
+        "domain": 99,
         "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
       }
     }
@@ -220,7 +220,7 @@ exports[`MachineName can display the form 1`] = `
       buttonsBordered={true}
       initialValues={
         Object {
-          "domain": 106,
+          "domain": 99,
           "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
         }
       }
@@ -247,7 +247,7 @@ exports[`MachineName can display the form 1`] = `
               required={true}
               style={
                 Object {
-                  "width": "69.7ch",
+                  "width": "82ch",
                 }
               }
               takeFocus={true}
@@ -265,7 +265,7 @@ exports[`MachineName can display the form 1`] = `
                 required={true}
                 style={
                   Object {
-                    "width": "69.7ch",
+                    "width": "82ch",
                   }
                 }
                 takeFocus={true}
@@ -295,7 +295,7 @@ exports[`MachineName can display the form 1`] = `
                         onChange={[Function]}
                         style={
                           Object {
-                            "width": "69.7ch",
+                            "width": "82ch",
                           }
                         }
                         type="text"
@@ -306,7 +306,9 @@ exports[`MachineName can display the form 1`] = `
                 </Field>
               </Input>
             </FormikField>
-            .
+            <span>
+              .
+            </span>
             <Spinner
               className="u-width--auto"
               inline={true}
@@ -332,12 +334,13 @@ exports[`MachineName can display the form 1`] = `
             <div>
               <Button
                 appearance="base"
+                className="u-no-margin--bottom"
                 disabled={false}
                 onClick={[Function]}
                 type="button"
               >
                 <button
-                  className="p-button--base"
+                  className="p-button--base u-no-margin--bottom"
                   disabled={false}
                   onClick={[Function]}
                   type="button"

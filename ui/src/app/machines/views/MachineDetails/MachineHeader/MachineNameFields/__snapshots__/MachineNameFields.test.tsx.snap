@@ -65,8 +65,11 @@ exports[`MachineNameFields displays the fields 1`] = `
       </Field>
     </Input>
   </FormikField>
-  .
+  <span>
+    .
+  </span>
   <FormikField
+    className="u-no-margin--bottom"
     component={[Function]}
     name="domain"
     options={Array []}
@@ -74,6 +77,7 @@ exports[`MachineNameFields displays the fields 1`] = `
     wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
   >
     <Select
+      className="u-no-margin--bottom"
       error={null}
       id="Uakgb_J5m9g-0JDMbcJqLJ"
       name="domain"
@@ -101,7 +105,7 @@ exports[`MachineNameFields displays the fields 1`] = `
               className="p-form-validation__select-wrapper"
             >
               <select
-                className="p-form-validation__input"
+                className="p-form-validation__input u-no-margin--bottom"
                 id="Uakgb_J5m9g-0JDMbcJqLJ"
                 name="domain"
                 onBlur={[Function]}

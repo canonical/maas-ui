@@ -15,6 +15,7 @@ export const FormikFormButtons = ({
       {onCancel ? (
         <Button
           appearance="base"
+          className="u-no-margin--bottom"
           disabled={cancelDisabled}
           onClick={onCancel}
           type="button"
