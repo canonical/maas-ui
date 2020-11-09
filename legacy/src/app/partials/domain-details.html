@@ -176,7 +176,7 @@
             <maas-obj-field
               subtle="false"
               type="text"
-              key="ttl"
+              key="address_ttl"
               label="TTL"
               placeholder="TTL in seconds (optional)"
               label-width="2"
@@ -507,8 +507,9 @@
                   <maas-obj-field
                     label="TTL"
                     type="text"
-                    key="ttl"
+                    key="address_ttl"
                     placeholder="TTL (default: 30)"
+                    value="{$ row.ttl $}"
                   ></maas-obj-field>
                 </div>
               </div>
