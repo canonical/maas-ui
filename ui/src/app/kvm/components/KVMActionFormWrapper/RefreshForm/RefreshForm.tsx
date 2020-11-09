@@ -14,6 +14,7 @@ type Props = {
 const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
+  const activePod = useSelector(podSelectors.active);
   const errors = useSelector(podSelectors.errors);
   const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
     (kvm) => kvm.id
@@ -30,6 +31,11 @@ const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {
       clearSelectedAction={() => setSelectedAction(null)}
       errors={errors}
       modelName="KVM"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `KVM ${activePod ? "details" : "list"} action form`,
+        label: "Refresh",
+      }}
       onSubmit={() => {
         kvmsToRefresh.forEach((podID) => {
           dispatch(podActions.refresh(podID));

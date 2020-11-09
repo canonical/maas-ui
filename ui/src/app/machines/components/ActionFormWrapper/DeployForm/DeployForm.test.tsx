@@ -13,11 +13,13 @@ import {
   configState as configStateFactory,
   defaultMinHweKernelState as defaultMinHweKerelStateFactory,
   generalState as generalStateFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
   machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -47,6 +49,14 @@ describe("DeployForm", () => {
         defaultMinHweKernel: defaultMinHweKerelStateFactory({
           data: "ga-18.04",
           loaded: true,
+        }),
+        machineActions: machineActionsStateFactory({
+          data: [
+            machineActionFactory({
+              name: "deploy",
+              title: "Deploy",
+            }),
+          ],
         }),
         osInfo: osInfoStateFactory({
           data: {
@@ -338,10 +348,13 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("sends an event if cloud-init is set", () => {
+  it("sends an analytics event with cloud-init user data set", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
-    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
+    const mockSendAnalytics = jest.fn();
+    const mockUseSendAnalytics = (hooks.useSendAnalytics = jest.fn(
+      () => mockSendAnalytics
+    ));
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -352,6 +365,7 @@ describe("DeployForm", () => {
         </MemoryRouter>
       </Provider>
     );
+
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         includeUserData: true,
@@ -362,6 +376,13 @@ describe("DeployForm", () => {
         userData: "test script",
       })
     );
-    expect(useSendMock).toHaveBeenCalled();
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine list deploy form",
+      "Has cloud-init config",
+      "Cloud-init user data",
+    ]);
+    mockUseSendAnalytics.mockRestore();
   });
 });

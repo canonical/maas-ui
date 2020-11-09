@@ -59,6 +59,7 @@ const OverrideTestFormSchema = Yup.object().shape({
 
 export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
   const { machinesToAction, processingCount } = useMachineActionForm(
@@ -88,6 +89,11 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       loaded={scriptResultsLoaded}
       loading={!scriptResultsLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Override failed tests",
+      }}
       onSubmit={(values) => {
         const { suppressResults } = values;
         machinesToAction.forEach((machine) => {

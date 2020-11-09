@@ -24,6 +24,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
     description: "",
     name: "",
   });
+  const activeMachine = useSelector(machineSelectors.active);
   const machineErrors = useSelector(machineSelectors.errors);
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
@@ -55,6 +56,11 @@ export const SetPoolForm = ({ setSelectedAction }) => {
       initialValues={initialValues}
       loaded={resourcePoolsLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Set pool",
+      }}
       onSubmit={(values) => {
         if (values.poolSelection === "create") {
           dispatch(

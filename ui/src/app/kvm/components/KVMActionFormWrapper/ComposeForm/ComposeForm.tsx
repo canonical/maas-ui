@@ -312,6 +312,11 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
           zone: `${zones[0]?.id}` || "",
         }}
         modelName="machine"
+        onSaveAnalytics={{
+          action: "Submit",
+          category: "KVM details action form",
+          label: "Compose",
+        }}
         onSubmit={(values: ComposeFormValues) => {
           // Remove any errors before dispatching compose action.
           dispatch(cleanup());

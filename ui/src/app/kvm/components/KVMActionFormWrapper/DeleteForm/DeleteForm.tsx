@@ -14,6 +14,7 @@ type Props = {
 const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
+  const activePod = useSelector(podSelectors.active);
   const errors = useSelector(podSelectors.errors);
   const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
     (kvm) => kvm.id
@@ -29,6 +30,11 @@ const DeleteForm = ({ setSelectedAction }: Props): JSX.Element => {
       clearSelectedAction={() => setSelectedAction(null)}
       errors={errors}
       modelName="KVM"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `KVM ${activePod ? "details" : "list"} action form`,
+        label: "Delete",
+      }}
       onSubmit={() => {
         kvmsToDelete.forEach((kvmID) => {
           dispatch(podActions.delete(kvmID));

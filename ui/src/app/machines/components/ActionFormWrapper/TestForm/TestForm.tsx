@@ -49,6 +49,7 @@ export const TestForm = ({
   hardwareType,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
@@ -97,6 +98,11 @@ export const TestForm = ({
       }}
       loaded={scriptsLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Test",
+      }}
       onSubmit={(values: FormValues) => {
         const { enableSSH, scripts, scriptInputs } = values;
         machinesToAction.forEach((machine) => {

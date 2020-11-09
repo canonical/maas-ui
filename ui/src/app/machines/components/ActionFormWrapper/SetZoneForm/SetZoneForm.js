@@ -18,6 +18,7 @@ const SetZoneSchema = Yup.object().shape({
 
 export const SetZoneForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
@@ -47,6 +48,11 @@ export const SetZoneForm = ({ setSelectedAction }) => {
       initialValues={{ zone: "" }}
       loaded={zonesLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Set zone",
+      }}
       onSubmit={(values) => {
         const zone = zones.find((zone) => zone.name === values.zone);
         machinesToAction.forEach((machine) => {

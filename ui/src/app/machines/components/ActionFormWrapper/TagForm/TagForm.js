@@ -25,6 +25,7 @@ const TagFormSchema = Yup.object().shape({
 
 export const TagForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const [initialValues, setInitialValues] = useState({ tags: [] });
   const errors = useSelector(machineSelectors.errors);
   const tagsLoaded = useSelector(tagSelectors.loaded);
@@ -49,6 +50,11 @@ export const TagForm = ({ setSelectedAction }) => {
       initialValues={initialValues}
       loaded={tagsLoaded}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Tag",
+      }}
       onSubmit={(values) => {
         if (values.tags && values.tags.length) {
           machinesToAction.forEach((machine) => {

@@ -9,6 +9,8 @@ import FieldlessForm from "./FieldlessForm";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -33,21 +35,24 @@ describe("FieldlessForm", () => {
         },
       }),
       general: generalStateFactory({
-        machineActions: {
+        machineActions: machineActionsStateFactory({
           data: [
-            { name: "abort", sentence: "abort" },
-            { name: "acquire", sentence: "acquire" },
-            { name: "delete", sentence: "delete" },
-            { name: "exit-rescue-mode", sentence: "exit-rescue-mode" },
-            { name: "lock", sentence: "lock" },
-            { name: "mark-fixed", sentence: "mark-fixed" },
-            { name: "off", sentence: "off" },
-            { name: "on", sentence: "on" },
-            { name: "release", sentence: "release" },
-            { name: "rescue-mode", sentence: "rescue-mode" },
-            { name: "unlock", sentence: "unlock" },
+            machineActionFactory({ name: "abort", title: "Abort" }),
+            machineActionFactory({ name: "acquire", title: "Acquire" }),
+            machineActionFactory({ name: "delete", title: "Delete" }),
+            machineActionFactory({
+              name: "exit-rescue-mode",
+              title: "Exit rescue mode",
+            }),
+            machineActionFactory({ name: "lock", title: "Lock" }),
+            machineActionFactory({ name: "mark-fixed", title: "Mark fixed" }),
+            machineActionFactory({ name: "off", title: "Power off" }),
+            machineActionFactory({ name: "on", title: "Power on" }),
+            machineActionFactory({ name: "release", title: "Release" }),
+            machineActionFactory({ name: "rescue-mode", title: "Rescue mode" }),
+            machineActionFactory({ name: "unlock", title: "Unlock" }),
           ],
-        },
+        }),
       }),
     });
   });

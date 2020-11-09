@@ -8,6 +8,8 @@ import React from "react";
 import SetPoolForm from "./SetPoolForm";
 import {
   machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   generalState as generalStateFactory,
   resourcePool as resourcePoolFactory,
@@ -22,9 +24,15 @@ describe("SetPoolForm", () => {
   beforeEach(() => {
     state = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
-          data: [{ name: "set-pool", sentence: "change those pools" }],
-        },
+        machineActions: machineActionsStateFactory({
+          data: [
+            machineActionFactory({
+              name: "set-pool",
+              sentence: "change those pools",
+              title: "Set pool",
+            }),
+          ],
+        }),
       }),
       machine: machineStateFactory({
         errors: {},
