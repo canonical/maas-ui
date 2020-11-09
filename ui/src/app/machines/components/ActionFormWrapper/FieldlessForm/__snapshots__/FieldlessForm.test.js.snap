@@ -16,6 +16,13 @@ exports[`FieldlessForm renders 1`] = `
     clearSelectedAction={[Function]}
     errors={Object {}}
     modelName="machine"
+    onSaveAnalytics={
+      Object {
+        "action": "Submit",
+        "category": "Machine list action form",
+        "label": "release",
+      }
+    }
     onSubmit={[Function]}
     processingCount={0}
     selectedCount={0}
@@ -32,12 +39,13 @@ exports[`FieldlessForm renders 1`] = `
       onCancel={[Function]}
       onSaveAnalytics={
         Object {
-          "action": "release",
-          "category": "Take action form",
-          "label": "Release machine",
+          "action": "Submit",
+          "category": "Machine list action form",
+          "label": "release",
         }
       }
       onSubmit={[Function]}
+      saved={false}
       saving={false}
       savingLabel="Releasing machine..."
       submitAppearance="positive"
@@ -55,6 +63,7 @@ exports[`FieldlessForm renders 1`] = `
           errors=""
           initialValues={Object {}}
           onCancel={[Function]}
+          saved={false}
           saving={false}
           savingLabel="Releasing machine..."
           submitAppearance="positive"
@@ -76,6 +85,7 @@ exports[`FieldlessForm renders 1`] = `
                 submitAppearance="positive"
                 submitDisabled={false}
                 submitLabel="Release machine"
+                success={false}
               >
                 <div
                   className="form-card__buttons"
@@ -101,6 +111,7 @@ exports[`FieldlessForm renders 1`] = `
                     className=""
                     disabled={false}
                     loading={false}
+                    success={false}
                     type="submit"
                   >
                     <button

@@ -9,6 +9,8 @@ import TagForm from "./TagForm";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
@@ -22,9 +24,9 @@ describe("TagForm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
-          data: [{ name: "tag", sentence: "tag" }],
-        },
+        machineActions: machineActionsStateFactory({
+          data: [machineActionFactory({ name: "tag", title: "Tag" })],
+        }),
       }),
       machine: machineStateFactory({
         loaded: true,

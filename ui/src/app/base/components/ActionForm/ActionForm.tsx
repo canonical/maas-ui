@@ -1,8 +1,8 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import type { ReactNode } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import type { TSFixMe } from "app/base/types";
+import type { AnalyticsEvent, TSFixMe } from "app/base/types";
 import { useProcessing } from "app/base/hooks";
 import { formatErrors } from "app/utils";
 import FormikForm from "app/base/components/FormikForm";
@@ -99,6 +99,7 @@ type Props = {
   loaded?: boolean;
   loading?: boolean;
   modelName: string;
+  onSaveAnalytics?: AnalyticsEvent;
   onSubmit: (...args: unknown[]) => void;
   onSuccess?: () => void;
   processingCount?: number;
@@ -120,6 +121,7 @@ const ActionForm = ({
   loaded = true,
   loading,
   modelName,
+  onSaveAnalytics,
   onSubmit,
   onSuccess,
   processingCount,
@@ -128,18 +130,27 @@ const ActionForm = ({
   validationSchema,
 }: Props): JSX.Element => {
   const [processing, setProcessing] = useState(false);
+  const [saved, setSaved] = useState(false);
   const formattedErrors = formatErrors(errors);
 
   useProcessing(
     processingCount,
     () => {
       setProcessing(false);
+      setSaved(true);
       onSuccess && onSuccess();
-      clearSelectedAction && clearSelectedAction();
     },
     errors && Object.keys(errors).length > 0,
     () => setProcessing(false)
   );
+
+  // Clearing the selected action is moved into its own effect so that `saved`
+  // can be set before the component unmounts. This triggers analytics being sent.
+  useEffect(() => {
+    if (saved && clearSelectedAction) {
+      clearSelectedAction();
+    }
+  }, [clearSelectedAction, saved]);
 
   if (loaded) {
     return (
@@ -154,15 +165,12 @@ const ActionForm = ({
         initialValues={initialValues}
         loading={loading}
         onCancel={clearSelectedAction}
-        onSaveAnalytics={{
-          action: actionName,
-          category: "Take action form",
-          label: getLabel(modelName, actionName),
-        }}
+        onSaveAnalytics={onSaveAnalytics}
         onSubmit={(...args) => {
           onSubmit(...args);
           setProcessing(true);
         }}
+        saved={saved}
         saving={processing}
         savingLabel={`${getLabel(
           modelName,

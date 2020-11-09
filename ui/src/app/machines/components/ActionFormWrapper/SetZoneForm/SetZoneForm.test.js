@@ -7,9 +7,11 @@ import React from "react";
 
 import SetZoneForm from "./SetZoneForm";
 import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
   generalState as generalStateFactory,
+  machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineState as machineStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
@@ -22,9 +24,9 @@ describe("SetZoneForm", () => {
   beforeEach(() => {
     state = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
-          data: [{ name: "set-zone", sentence: "set-zone" }],
-        },
+        machineActions: machineActionsStateFactory({
+          data: [machineActionFactory({ name: "set-zone", title: "Set zone" })],
+        }),
       }),
       machine: machineStateFactory({
         errors: {},

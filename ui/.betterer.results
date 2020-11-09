@@ -7,7 +7,7 @@ exports[`stricter compilation`] = {
       [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
     ],
     "src/app/App.tsx:3872899616": [
-      [21, 7, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/Users/kit/src/canonical/local/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"],
+      [21, 7, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"],
       [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
       [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
@@ -25,14 +25,14 @@ exports[`stricter compilation`] = {
       [132, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [132, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:1503436556": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:2395460442": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [130, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
-      [133, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+      [132, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
+      [135, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/DoughnutChart/DoughnutChart.tsx:1593454831": [
       [86, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "2109816907"],
@@ -44,7 +44,7 @@ exports[`stricter compilation`] = {
       [75, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
-      [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/Users/kit/src/canonical/local/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
+      [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
     "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
       [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
@@ -86,7 +86,7 @@ exports[`stricter compilation`] = {
       [214, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:2755544058": [
-      [1, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [1, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [37, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [38, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [39, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -106,7 +106,7 @@ exports[`stricter compilation`] = {
       [226, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
       [228, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:527913969": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1415357288": [
       [138, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [138, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [138, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -114,7 +114,7 @@ exports[`stricter compilation`] = {
       [215, 8, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
       [263, 34, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
       [272, 19, 5, "Variable \'error\' is used before being assigned.", "165548477"],
-      [314, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+      [319, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:3478481718": [
       [94, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
@@ -246,36 +246,36 @@ exports[`stricter compilation`] = {
       [130, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "2065603965"],
       [144, 36, 11, "Property \'setSelected\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1023496814"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2858846500": [
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:1854654149": [
       [106, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [110, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
       [201, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [205, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:1892825711": [
-      [121, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
-      [135, 27, 10, "Property \'commission\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "2592181864"],
-      [155, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:343946748": [
+      [127, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
+      [141, 27, 10, "Property \'commission\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "2592181864"],
+      [161, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:1194028480": [
-      [139, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [140, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [210, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [211, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [257, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [258, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
-      [306, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [307, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"],
-      [355, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [356, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:2511798015": [
+      [149, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [150, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
+      [220, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [221, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
+      [267, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [268, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
+      [316, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [317, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"],
+      [354, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"],
+      [369, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [370, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:2382076300": [
-      [97, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
-      [115, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1121484462"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:2753772467": [
+      [102, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"],
+      [120, 34, 6, "Property \'deploy\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "1121484462"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:2053903631": [
-      [116, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"],
-      [150, 12, 10, "Type \'{ processing: boolean; setProcessing: Mock<any, any>; setSelectedAction: Mock<any, any>; }\' is not assignable to type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.\\n  Property \'processing\' does not exist on type \'IntrinsicAttributes & Pick<Props, \\"setSelectedAction\\"> & Pick<InferProps<{ setSelectedAction: Validator<(...args: any[]) => any>; }>, never> & Pick<...>\'.", "3107157038"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:3711365735": [
+      [119, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"]
     ],
     "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:3781897231": [
       [19, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
@@ -286,29 +286,29 @@ exports[`stricter compilation`] = {
       [67, 4, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
       [100, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
-    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.test.tsx:2328625110": [
-      [63, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [64, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"],
-      [118, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [119, 8, 11, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "942845580"],
-      [163, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [164, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"]
+    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.test.tsx:982499928": [
+      [64, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [65, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"],
+      [119, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [120, 8, 11, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "942845580"],
+      [164, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [165, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"]
     ],
-    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.tsx:4230109469": [
-      [50, 6, 8, "Type \'(values: MarkBrokenFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'MarkBrokenFormValues\'.", "1301647696"],
-      [53, 27, 10, "Property \'markBroken\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "3004692879"]
+    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.tsx:2501300585": [
+      [56, 6, 8, "Type \'(values: MarkBrokenFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'MarkBrokenFormValues\'.", "1301647696"],
+      [59, 27, 10, "Property \'markBroken\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "3004692879"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:3774525721": [
-      [95, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [99, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [216, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [220, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:3219855266": [
+      [94, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [98, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
+      [215, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [219, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:739278699": [
-      [76, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"],
-      [99, 6, 8, "Type \'(values: FormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'FormValues\'.", "1301647696"],
-      [103, 27, 4, "Property \'test\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "2087956275"],
-      [116, 22, 11, "Type \'({ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined)[]\' is not assignable to type \'ScriptsDisplay[]\'.\\n  Type \'{ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined\' is not assignable to type \'ScriptsDisplay\'.\\n    Type \'undefined\' is not assignable to type \'ScriptsDisplay\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:215573987": [
+      [77, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"],
+      [105, 6, 8, "Type \'(values: FormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'FormValues\'.", "1301647696"],
+      [109, 27, 4, "Property \'test\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "2087956275"],
+      [122, 22, 11, "Type \'({ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined)[]\' is not assignable to type \'ScriptsDisplay[]\'.\\n  Type \'{ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined\' is not assignable to type \'ScriptsDisplay\'.\\n    Type \'undefined\' is not assignable to type \'ScriptsDisplay\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"]
     ],
     "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:2594365837": [
       [77, 8, 4, "Type \'\\"lifecycle1\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
@@ -331,11 +331,11 @@ exports[`stricter compilation`] = {
       [86, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | undefined\'.\\n  Type \'false\' is not assignable to type \'string | undefined\'.", "1236122734"],
       [97, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/hooks.tsx:3635236711": [
+    "src/app/machines/hooks.tsx:935926977": [
       [45, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 54 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 54 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
       [45, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
       [45, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [49, 11, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
+      [50, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
     "src/app/machines/views/MachineDetails/MachineDetails.tsx:3514974960": [
       [27, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
@@ -352,7 +352,7 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:2502469861": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
     ],
-    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:4182062532": [
+    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:2985488462": [
       [18, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [37, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [52, 15, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
@@ -511,18 +511,18 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:3687536065": [
-      [232, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [311, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
-      [313, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
-      [318, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:1886719305": [
+      [233, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
+      [312, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
+      [314, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
+      [319, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/types.ts:2567213908": [
+    "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/auth/selectors.ts:1742453516": [

@@ -28,6 +28,7 @@ const fieldlessActions = [
 
 export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
   const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
   const { machinesToAction, processingCount } = useMachineActionForm(
     selectedAction.name
@@ -41,6 +42,11 @@ export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
       modelName="machine"
+      onSaveAnalytics={{
+        action: "Submit",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: selectedAction.name,
+      }}
       onSubmit={() => {
         if (fieldlessActions.includes(selectedAction.name)) {
           const actionMethod = kebabToCamelCase(selectedAction.name);

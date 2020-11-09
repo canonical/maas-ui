@@ -8,3 +8,9 @@ export type Sort = {
 export type RouteParams = {
   id: string;
 };
+
+export type AnalyticsEvent = {
+  action: string;
+  category: string;
+  label: string;
+};
