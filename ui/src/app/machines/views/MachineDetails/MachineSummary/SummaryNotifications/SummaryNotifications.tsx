@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -34,12 +33,15 @@ const formatEventText = (event: Event) => {
   return text.join(" - ");
 };
 
-const SummaryNotifications = ({ id }: Props): JSX.Element => {
+const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
   const architectures = useSelector(generalSelectors.architectures.get);
+  const architecturesLoaded = useSelector(
+    generalSelectors.architectures.loaded
+  );
   const hasUsableArchitectures = architectures.length > 0;
   const canEdit = useCanEdit(machine, true);
   const isRackControllerConnected = useIsRackControllerConnected();
@@ -52,8 +54,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that events don't exist on the base machine type).
-  if (!machine || !("events" in machine)) {
-    return <Spinner />;
+  if (!machine || !("events" in machine) || !architecturesLoaded) {
+    return null;
   }
 
   return (

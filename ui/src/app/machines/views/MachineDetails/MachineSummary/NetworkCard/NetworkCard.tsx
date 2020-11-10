@@ -144,11 +144,10 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
             <NetworkCardTable interfaces={group.interfaces} />
           </Fragment>
         ))}
-        <span>
+        <p>
           Information about tagged traffic can be seen in the{" "}
           <Link to={`/machine/${id}/network`}>Network tab</Link>.
-        </span>
-
+        </p>
         <TestResults
           machine={machine}
           hardwareType={HardwareType.Network}

@@ -114,39 +114,6 @@
       }
     }
 
-    @media only screen and (max-width: $breakpoint-x-large) {
-      grid:
-        [row1-start] "cpu cpu cpu memory memory memory storage storage storage" min-content [row1-end]
-        [row2-start] "cpu-tests cpu-tests cpu-tests memory-tests memory-tests memory-tests storage-tests storage-tests storage-tests" min-content [row2-end]
-        [row3-start] "status status details details details details details details details" min-content [row3-end]
-        [row4-start] "status test-warning test-warning test-warning test-warning test-warning test-warning test-warning" min-content [row4-end]
-        / 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-
-      .overview-card__cpu {
-        padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
-      }
-
-      .overview-card__cpu-tests {
-        padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
-        &::after {
-          content: none;
-        }
-      }
-
-      .overview-card__overview {
-        @include pseudo-border(top);
-        padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
-        &::before {
-          right: -#{map-get($grid-gutter-widths, large)};
-        }
-      }
-
-      .overview-card__test-warning {
-        @include pseudo-border(top);
-        padding: $spv-inner--large $sph-inner $spv-inner--large 0;
-      }
-    }
-
     @media only screen and (max-width: $breakpoint-large) {
       grid:
         [row1-start] "status cpu" min-content [row1-end]
@@ -252,5 +219,12 @@
         }
       }
     }
+  }
+
+  .overview-card__placeholder {
+    align-items: center;
+    display: flex;
+    height: 10rem;
+    justify-content: center;
   }
 }

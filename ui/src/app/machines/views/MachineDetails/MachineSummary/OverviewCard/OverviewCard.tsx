@@ -28,7 +28,11 @@ const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
   // TypeScript know we're using the right union type (otherwise it will
   // complain that metadata doesn't exist on the base machine type).
   if (!machine || !("metadata" in machine)) {
-    content = <Spinner />;
+    content = (
+      <div className="overview-card__placeholder">
+        <Spinner />
+      </div>
+    );
   } else {
     content = (
       <div className="overview-card">

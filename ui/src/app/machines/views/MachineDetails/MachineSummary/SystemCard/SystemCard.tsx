@@ -25,8 +25,6 @@ const SystemCard = ({ id }: Props): JSX.Element => {
   } else {
     content = (
       <>
-        <strong className="p-muted-heading u-sv1">System</strong>
-        <hr />
         <LabelledList
           items={[
             {
@@ -82,7 +80,13 @@ const SystemCard = ({ id }: Props): JSX.Element => {
     );
   }
 
-  return <Card className="machine-summary__system-card">{content}</Card>;
+  return (
+    <Card className="machine-summary__system-card">
+      <strong className="p-muted-heading u-sv1">System</strong>
+      <hr />
+      {content}
+    </Card>
+  );
 };
 
 export default SystemCard;

@@ -32,36 +32,40 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
   return (
-    <div className="overview-card__status">
-      <strong className="p-muted-heading">
-        {isVM(machine) ? "Virtual Machine Status" : "Machine Status"}
-      </strong>
+    <>
+      <div className="overview-card__status">
+        <strong className="p-muted-heading">
+          {isVM(machine) ? "Virtual Machine Status" : "Machine Status"}
+        </strong>
 
-      <h4 className="u-no-margin--bottom" data-test="locked">
-        {machine.locked ? (
-          <i className="p-icon--locked" ng-if="node.locked">
-            Locked:{" "}
-          </i>
+        <h4 className="u-no-margin--bottom" data-test="locked">
+          {machine.locked ? (
+            <i className="p-icon--locked" ng-if="node.locked">
+              Locked:{" "}
+            </i>
+          ) : null}
+          {machine.status}
+        </h4>
+
+        {machine.show_os_info ? (
+          <p className="p-text--muted" data-test="os-info">
+            {`${machine.osystem}/${machine.distro_series}`}
+          </p>
         ) : null}
-        {machine.status}
-      </h4>
-
-      {machine.show_os_info ? (
-        <p className="p-text--muted" data-test="os-info">
-          {`${machine.osystem}/${machine.distro_series}`}
-        </p>
-      ) : null}
-
+      </div>
       {showFailedTestsWarning(machine) ? (
         <div
           className="overview-card__test-warning u-flex-bottom"
           data-test="failed-test-warning"
         >
-          <i className="p-icon--warning">Warning:</i> Some tests failed, use
-          with caution.
+          <i className="p-icon--warning">Warning:</i>
+          <span className="u-nudge-right--x-small">
+            {" "}
+            Some tests failed, use with caution.
+          </span>
         </div>
       ) : null}
-    </div>
+    </>
   );
 };
 

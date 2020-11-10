@@ -48,7 +48,9 @@ const TestResults = ({
               }
             >
               <Icon name={ICONS.success} />
-              {machine[`${scriptType}_test_status`].passed}
+              <span className="u-nudge-right--x-small">
+                {machine[`${scriptType}_test_status`].passed}
+              </span>
             </Link>
           </li>
         ) : null}
@@ -68,8 +70,10 @@ const TestResults = ({
               }
             >
               <Icon name={"pending"} />
-              {machine[`${scriptType}_test_status`].pending +
-                machine[`${scriptType}_test_status`].running}
+              <span className="u-nudge-right--x-small">
+                {machine[`${scriptType}_test_status`].pending +
+                  machine[`${scriptType}_test_status`].running}
+              </span>
             </Link>
           </li>
         ) : null}
@@ -87,7 +91,9 @@ const TestResults = ({
               }
             >
               <Icon name={ICONS.error} />
-              {machine[`${scriptType}_test_status`].failed}
+              <span className="u-nudge-right--x-small">
+                {machine[`${scriptType}_test_status`].failed}
+              </span>
             </Link>
           </li>
         ) : null}
