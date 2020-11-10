@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import type { RouteParams } from "app/base/types";
 import { machine as machineActions } from "app/base/actions";
 import MachineHeader from "./MachineHeader";
-import MachineNotifications from "./MachineNotifications";
+import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import machineSelectors from "app/store/machine/selectors";
 import MachineStorage from "./MachineStorage";
 import MachineSummary, { SelectedAction } from "./MachineSummary";
@@ -51,10 +51,10 @@ const MachineDetails = (): JSX.Element => {
       }
       headerClassName="u-no-padding--bottom"
     >
-      <MachineNotifications />
       {machine && (
         <Switch>
           <Route exact path="/machine/:id/summary">
+            <SummaryNotifications id={id} />
             <MachineSummary setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id/storage">

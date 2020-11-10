@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachineNotifications can render 1`] = `
+<MachineNotifications
+  notifications={
+    Array [
+      Object {
+        "active": true,
+        "content": "Editing is currently disabled because no rack controller is currently connected to the region.",
+        "status": "Error:",
+        "type": "negative",
+      },
+    ]
+  }
+>
+  <section
+    className="p-strip u-no-padding--top u-no-padding--bottom"
+  >
+    <div
+      className="row"
+    >
+      <Notification
+        key="0"
+        status="Error:"
+        type="negative"
+      >
+        <div
+          className="p-notification--negative"
+        >
+          <p
+            className="p-notification__response"
+          >
+            <span
+              className="p-notification__status"
+            >
+              Error:
+            </span>
+            Editing is currently disabled because no rack controller is currently connected to the region.
+          </p>
+        </div>
+      </Notification>
+    </div>
+  </section>
+</MachineNotifications>
+`;
