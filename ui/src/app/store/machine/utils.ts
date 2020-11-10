@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { general as generalActions } from "app/base/actions";
+import { nodeStatus } from "app/base/enum";
 import generalSelectors from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
 import { Pod } from "../pod/types";
@@ -68,6 +69,33 @@ export const useCanEdit = (
     (ignoreRackControllerConnection || isRackControllerConnected)
   );
 };
+
+/**
+ * Check whether a machine's status allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's status allows storage configuration.
+ */
+export const isMachineStorageConfigurable = (
+  machine?: Machine | null
+): boolean =>
+  !!machine &&
+  [nodeStatus.READY, nodeStatus.ALLOCATED].includes(machine.status_code);
+
+/**
+ * Check whether a machine's OS allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS allows storage configuration.
+ */
+export const canOsSupportStorageConfig = (machine?: Machine | null): boolean =>
+  !!machine && ["centos", "rhel", "ubuntu"].includes(machine.osystem);
+
+/**
+ * Check whether a machine's OS supports bcache and ZFS.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS supports bcache and ZFS.
+ */
+export const canOsSupportBcacheZFS = (machine?: Machine | null): boolean =>
+  !!machine && machine.osystem === "ubuntu";
 
 export const getPodNumaID = (machine: Machine, pod: Pod): number | null => {
   if (pod?.numa_pinning) {

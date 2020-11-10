@@ -50,4 +50,9 @@
       margin-left: $spv-outer--small;
     }
   }
+
+  .p-notification + .p-notification,
+  [class^="p-notification--"] + [class^="p-notification--"] {
+    margin-top: 0;
+  }
 }
