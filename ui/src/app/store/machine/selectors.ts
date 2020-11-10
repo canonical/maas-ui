@@ -3,7 +3,6 @@ import { createSelector, Selector } from "@reduxjs/toolkit";
 import { generateBaseSelectors } from "app/store/utils";
 import { ACTIONS } from "app/base/reducers/machine/machine";
 import filterNodes from "app/machines/filter-nodes";
-import scriptresults from "app/store/scriptresults/selectors";
 import type {
   Machine,
   MachineState,
@@ -11,7 +10,6 @@ import type {
   MachineStatuses,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import type { ScriptResults } from "app/store/scriptresults/types";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -147,25 +145,6 @@ const selected = createSelector(
     )
 );
 
-/**
- * Returns failed script results for given machines.
- * @param {RootState} state - The redux state.
- * @returns {ScriptResults} Script results by given machine key.
- */
-const failedScriptResults = createSelector(
-  [
-    scriptresults.all,
-    (_: RootState, machineIDs: Machine["system_id"][]) => machineIDs,
-  ],
-  (scriptresults, machineIDs) =>
-    Object.keys(scriptresults)
-      .filter((key) => machineIDs.includes(key))
-      .reduce<ScriptResults>((obj, key) => {
-        obj[key] = scriptresults[key];
-        return obj;
-      }, {})
-);
-
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -186,7 +165,6 @@ const selectors = {
   enteringRescueModeSelected: statusSelectors["enteringRescueModeSelected"],
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
-  failedScriptResults,
   getStatuses,
   locking: statusSelectors["locking"],
   lockingSelected: statusSelectors["lockingSelected"],

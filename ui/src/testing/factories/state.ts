@@ -283,7 +283,6 @@ export const resourcePoolState = define<ResourcePoolState>({
 
 export const scriptResultsState = define<ScriptResultsState>({
   ...defaultState,
-  items: () => ({}),
 });
 
 export const serviceState = define<ServiceState>({

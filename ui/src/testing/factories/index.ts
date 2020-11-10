@@ -94,8 +94,8 @@ export { packageRepository } from "./packagerepository";
 export { resourcePool } from "./resourcepool";
 export {
   scriptResult,
-  scriptResultResult,
   scriptResults,
+  scriptResultResult,
 } from "./scriptresults";
 export { scripts } from "./scripts";
 export { service } from "./service";

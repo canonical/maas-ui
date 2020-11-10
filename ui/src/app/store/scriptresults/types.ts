@@ -23,15 +23,22 @@ export type ScriptResult = Model & {
   tags: string;
 };
 
+// Script results are keyed by machine id
 export type ScriptResults = {
-  [x: string]: ScriptResult[];
+  id: string;
+  results: ScriptResult[];
 };
 
 export type ScriptResultsState = {
   errors: TSFixMe;
-  items: ScriptResults;
+  items: ScriptResults[];
   loaded: boolean;
   loading: boolean;
   saved: boolean;
   saving: boolean;
+};
+
+// response from server
+export type ScriptResultsResponse = {
+  [x: string]: ScriptResult[];
 };

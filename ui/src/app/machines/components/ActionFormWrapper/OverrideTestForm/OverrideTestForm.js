@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { machine as machineActions } from "app/base/actions";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
-import scriptresultsSelectors from "app/store/scriptresults/selectors";
+import scriptResultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 
@@ -61,15 +61,17 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const errors = useSelector(machineSelectors.errors);
-  const scriptResultsLoaded = useSelector(scriptresultsSelectors.loaded);
+  const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const { machinesToAction, processingCount } = useMachineActionForm(
     "override-failed-testing"
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);
-  const failedScriptResults = useSelector((state) =>
-    machineSelectors.failedScriptResults(state, machineIDs)
+  const scriptResults = useSelector((state) =>
+    scriptResultsSelectors.getByIds(state, machineIDs)
   );
-  const numFailedTests = Object.values(failedScriptResults)?.flat().length || 0;
+
+  const numFailedTests =
+    scriptResults.reduce((acc, curr) => acc + curr.results.length, 0) || 0;
 
   useEffect(() => {
     dispatch(machineActions.fetchFailedScriptResults(machinesToAction));
@@ -101,11 +103,14 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         });
         if (suppressResults) {
           machinesToAction.forEach((machine) => {
-            if (machine.system_id in failedScriptResults) {
+            const resultsForMachine = scriptResults.find(
+              (result) => result.id === machine.system_id
+            );
+            if (resultsForMachine) {
               dispatch(
                 machineActions.suppressScriptResults(
                   machine.system_id,
-                  failedScriptResults[machine.system_id]
+                  resultsForMachine.results
                 )
               );
             }
