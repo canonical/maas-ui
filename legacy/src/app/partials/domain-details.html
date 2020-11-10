@@ -174,9 +174,20 @@
               input-width="4"
             ></maas-obj-field>
             <maas-obj-field
+              data-ng-if="newObject.$maasForm.getValue('rrtype') === 'A' || newObject.$maasForm.getValue('rrtype') === 'AAAA'"
               subtle="false"
               type="text"
-              key="{$ newObject.$maasForm.getValue('rrtype') === 'A' || newObject.$maasForm.getValue('rrtype') === 'AAAA' ? 'address_ttl' : 'ttl' $}"
+              key="address_ttl"
+              label="TTL"
+              placeholder="TTL in seconds (optional)"
+              label-width="2"
+              input-width="4"
+            ></maas-obj-field>
+            <maas-obj-field
+              data-ng-if="newObject.$maasForm.getValue('rrtype') !== 'A' && newObject.$maasForm.getValue('rrtype') !== 'AAAA'"
+              subtle="false"
+              type="text"
+              key="ttl"
               label="TTL"
               placeholder="TTL in seconds (optional)"
               label-width="2"

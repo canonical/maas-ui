@@ -157,17 +157,11 @@ export function maasObjForm(JSONService) {
 
   // Called by maas-obj-field to place field in edit mode.
   MAASFormController.prototype.startEditingField = function (key) {
-    if (!this.fields || !this.fields[key]) {
-      return;
-    }
     this.fields[key].editing = true;
   };
 
   // Called by maas-obj-field to end edit mode for the field.
   MAASFormController.prototype.stopEditingField = function (key, value) {
-    if (!this.fields || !this.fields[key]) {
-      return;
-    }
     var field = this.fields[key];
 
     // Do nothing if not save on blur.
