@@ -1,13 +1,13 @@
 import { shallow } from "enzyme";
 import React from "react";
 
-import { Header } from "./Header";
+import { GenerateLinkType, Header } from "./Header";
 
 describe("Header", () => {
-  let generateURL;
+  let generateURL: GenerateLinkType;
 
   beforeEach(() => {
-    generateURL = (link, linkClass, appendNewBase) => (
+    generateURL = (link, linkClass, _appendNewBase) => (
       <a className={linkClass} href={link.url} onClick={jest.fn}>
         {link.label}
       </a>
@@ -22,15 +22,18 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={true}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/",
-        }}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -43,9 +46,11 @@ describe("Header", () => {
         authUser={null}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/",
-        }}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -57,14 +62,17 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/",
-        }}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
         logout={logout}
       />
     );
@@ -79,15 +87,18 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={false}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/",
-        }}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -103,15 +114,18 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={true}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/MAAS/r/settings",
-        }}
+        location={
+          {
+            pathname: "/MAAS/r/settings",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -124,15 +138,18 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={true}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/MAAS/l/devices",
-        }}
+        location={
+          {
+            pathname: "/MAAS/l/devices",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -145,16 +162,19 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={true}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          search: "?by=fabric",
-          pathname: "/MAAS/l/networks",
-        }}
+        location={
+          {
+            search: "?by=fabric",
+            pathname: "/MAAS/l/networks",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );
@@ -167,15 +187,18 @@ describe("Header", () => {
     const wrapper = shallow(
       <Header
         authUser={{
+          id: 99,
           is_superuser: true,
           username: "koala",
         }}
         completedIntro={true}
         generateLegacyLink={generateURL}
         generateNewLink={generateURL}
-        location={{
-          pathname: "/MAAS/l/machine/abc123",
-        }}
+        location={
+          {
+            pathname: "/MAAS/l/machine/abc123",
+          } as Location
+        }
         logout={jest.fn()}
       />
     );

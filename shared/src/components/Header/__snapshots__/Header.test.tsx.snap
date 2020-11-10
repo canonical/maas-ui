@@ -20,7 +20,6 @@ exports[`Header renders 1`] = `
             href="/MAAS/l/dashboard"
           >
             <svg
-              alt=""
               className="p-navigation__image"
               height="25.2"
               viewBox="545.3 412.6 100 25.2"

@@ -8,7 +8,7 @@ import {
 } from "./utils";
 
 describe("utils", () => {
-  let pushState;
+  let pushState: jest.SpyInstance;
 
   beforeEach(() => {
     pushState = jest.spyOn(window.history, "pushState");
@@ -72,21 +72,30 @@ describe("utils", () => {
 
     it("prevents default if this is a normal click", () => {
       const preventDefault = jest.fn();
-      navigateToNew("/machines", { button: 0, preventDefault });
+      let mouseEvent = new MouseEvent("click", { button: 0 });
+      mouseEvent.preventDefault = preventDefault;
+      navigateToNew("/machines", mouseEvent);
       expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/r/machines");
       expect(preventDefault).toHaveBeenCalled();
     });
 
     it("does not navigate if this not a left click", () => {
       const preventDefault = jest.fn();
-      navigateToNew("/machines", { button: 1, preventDefault });
+      let mouseEvent: MouseEvent = new MouseEvent("click", { button: 1 });
+      mouseEvent.preventDefault = preventDefault;
+      navigateToNew("/machines", mouseEvent);
       expect(pushState).not.toHaveBeenCalled();
       expect(preventDefault).not.toHaveBeenCalled();
     });
 
     it("does not navigate if a modifier key is pressed", () => {
       const preventDefault = jest.fn();
-      navigateToNew("/machines", { button: 0, metaKey: true, preventDefault });
+      let mouseEvent: MouseEvent = new MouseEvent("click", {
+        button: 0,
+        metaKey: true,
+      });
+      mouseEvent.preventDefault = preventDefault;
+      navigateToNew("/machines", mouseEvent);
       expect(pushState).not.toHaveBeenCalled();
       expect(preventDefault).not.toHaveBeenCalled();
     });

@@ -1,7 +1,18 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
+import type { GenerateNavLink, NavItem, ToggleVisible } from "../types";
 
-export const HardwareMenu = ({ generateLink, links, toggleHardwareMenu }) => {
+type Props = {
+  generateLink: GenerateNavLink;
+  links: NavItem[];
+  toggleHardwareMenu: ToggleVisible;
+};
+
+export const HardwareMenu = ({
+  generateLink,
+  links,
+  toggleHardwareMenu,
+}: Props) => {
   const wrapperRef = useRef(null);
   const handleClickOutsideRef = useRef(null);
 
@@ -14,11 +25,13 @@ export const HardwareMenu = ({ generateLink, links, toggleHardwareMenu }) => {
         true
       );
     }
-    handleClickOutsideRef.current = (event) => {
+    handleClickOutsideRef.current = (event: React.MouseEvent<HTMLElement>) => {
       if (
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target) &&
-        !event.target.className.includes("hardware-menu__toggle")
+        !(event.target as HTMLElement).className.includes(
+          "hardware-menu__toggle"
+        )
       ) {
         toggleHardwareMenu(event);
       }
@@ -36,7 +49,7 @@ export const HardwareMenu = ({ generateLink, links, toggleHardwareMenu }) => {
 
   return (
     <ul className="p-subnav__items" ref={wrapperRef}>
-      {links.map((link) => (
+      {links.map((link: NavItem) => (
         // eslint-disable-next-line
         <li
           key={link.url}
@@ -44,7 +57,7 @@ export const HardwareMenu = ({ generateLink, links, toggleHardwareMenu }) => {
             toggleHardwareMenu(event, false);
           }}
         >
-          {generateLink(link, "p-subnav__item", toggleHardwareMenu)}
+          {generateLink(link, "p-subnav__item")}
         </li>
       ))}
     </ul>

@@ -19,7 +19,7 @@
     "serve-ui-standalone": "yarn build-root-css && cd ../ui && BROWSER=none PORT=8401 yarn run standalone",
     "start": "yarn build-shared && concurrently \"yarn serve-apps\" \"yarn serve-base-wait\"",
     "start-ui": "concurrently \"yarn serve-ui-standalone\" \"yarn watch-shared\" \"yarn serve-ui-proxy\"",
-    "watch-shared": "cd ../shared && yarn watch"
+    "watch-shared": "cd ../shared && concurrently \"yarn watch\" \"yarn watch-declaration\""
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "1.3.1",

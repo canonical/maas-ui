@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import React, { useEffect, useRef } from "react";
 import * as Yup from "yup";
+import type { UsabillaLive } from "@maas-ui/maas-ui-shared";
 
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
@@ -12,7 +13,7 @@ import FormikForm from "app/base/components/FormikForm";
 
 declare global {
   interface Window {
-    usabilla_live: (type: string, trigger: string) => void;
+    usabilla_live: UsabillaLive;
   }
 }
 

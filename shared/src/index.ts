@@ -11,3 +11,5 @@ export {
   navigateToNew,
   REACT_BASENAME,
 } from "./utils";
+export type { Route } from "./utils";
+export type { UsabillaLive } from "./types";

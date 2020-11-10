@@ -1,18 +1,22 @@
+import React from "react";
+
 export const BASENAME = process.env.BASENAME;
 export const LEGACY_BASENAME = process.env.LEGACY_BASENAME;
 export const REACT_BASENAME = process.env.REACT_BASENAME;
 
-export const generateLegacyURL = (route) =>
+export type Route = string;
+
+export const generateLegacyURL = (route?: Route) =>
   `${BASENAME}${LEGACY_BASENAME}${route || ""}`;
 
-export const generateNewURL = (route, appendBase = true) =>
+export const generateNewURL = (route?: Route, appendBase = true) =>
   `${appendBase ? BASENAME : ""}${REACT_BASENAME}${route || ""}`;
 
-export const generateBaseURL = (route) => `${BASENAME}${route || ""}`;
+export const generateBaseURL = (route?: Route) => `${BASENAME}${route || ""}`;
 
-const pushRoute = (route) => window.history.pushState(null, null, route);
+const pushRoute = (route: Route) => window.history.pushState(null, null, route);
 
-const navigate = (route, evt) => {
+const navigate = (route: Route, evt?: MouseEvent | React.MouseEvent) => {
   if (evt) {
     // Handle ctrl/command/middle clicking etc. the links to open in a new tab.
     // Inspired by how this is handled in react-router:
@@ -30,21 +34,27 @@ const navigate = (route, evt) => {
   }
 };
 
-export const navigateToLegacy = (route, evt) => {
+export const navigateToLegacy = (
+  route?: Route,
+  evt?: MouseEvent | React.MouseEvent
+) => {
   navigate(generateLegacyURL(route), evt);
 };
 
-export const navigateToNew = (route, evt) => {
+export const navigateToNew = (
+  route?: Route,
+  evt?: MouseEvent | React.MouseEvent
+) => {
   navigate(generateNewURL(route), evt);
 };
 
 /**
  * Get the formatted power type from a power type description.
- * @param {String} description - A power type description.
- * @param {String} powerType - A power type.
- * @return {String} The formatted power type or the original power type key.
+ * @param description - A power type description.
+ * @param powerType - A power type.
+ * @return The formatted power type or the original power type key.
  */
-export const extractPowerType = (description, powerType) => {
+export const extractPowerType = (description: string, powerType: string) => {
   if (!powerType) {
     return null;
   }
