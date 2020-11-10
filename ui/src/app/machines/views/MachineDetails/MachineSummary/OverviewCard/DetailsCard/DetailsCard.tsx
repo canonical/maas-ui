@@ -34,7 +34,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
     (powerType) => powerType.name === machine.power_type
   )?.description;
   const powerTypeDisplay = extractPowerType(
-    powerTypeDescription,
+    powerTypeDescription || "",
     machine.power_type
   );
 

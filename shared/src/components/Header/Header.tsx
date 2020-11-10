@@ -1,13 +1,51 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import type { Location as HistoryLocation } from "history";
 
 import HardwareMenu from "./HardwareMenu";
 import { generateLegacyURL, generateNewURL } from "../../utils";
+import type { GenerateNavLink, NavItem, ToggleVisible } from "./types";
+import type { LocationListener, UnregisterCallback } from "history";
+import type { ReactNode } from "react";
+import type { TSFixMe } from "../../types";
 
-const useVisible = (initialValue) => {
+export type LinkType = {
+  label: string;
+  url: string;
+};
+
+export type GenerateLinkType = (
+  link: LinkType,
+  linkClass: string,
+  appendNewBase: boolean
+) => ReactNode;
+
+type Props = {
+  appendNewBase?: boolean;
+  authUser?: {
+    id: number;
+    is_superuser?: boolean;
+    username: string;
+  };
+  completedIntro?: boolean;
+  debug?: boolean;
+  enableAnalytics?: boolean;
+  generateLegacyLink: GenerateLinkType;
+  generateNewLink: GenerateLinkType;
+  location: Location | HistoryLocation;
+  logout: () => void;
+  onSkip?: () => void;
+  rootScope?: TSFixMe;
+  showRSD?: boolean;
+  urlChange?: (listener: LocationListener) => UnregisterCallback;
+  uuid?: string;
+  version?: string;
+};
+
+const useVisible = (initialValue: boolean): [boolean, ToggleVisible] => {
   const [value, setValue] = useState(initialValue);
-  const toggleValue = (evt, preventDefault = true) => {
+  const toggleValue = (evt: React.MouseEvent, preventDefault = true) => {
     if (preventDefault) {
       evt.preventDefault();
     }
@@ -16,7 +54,11 @@ const useVisible = (initialValue) => {
   return [value, toggleValue];
 };
 
-const generateURL = (url, isLegacy, appendNewBase) => {
+const generateURL = (
+  url: NavItem["url"],
+  isLegacy: NavItem["isLegacy"],
+  appendNewBase: boolean
+) => {
   if (isLegacy) {
     return generateLegacyURL(url);
   } else if (appendNewBase) {
@@ -25,7 +67,7 @@ const generateURL = (url, isLegacy, appendNewBase) => {
   return url;
 };
 
-const isSelected = (path, link, appendNewBase) => {
+const isSelected = (path: string, link: NavItem, appendNewBase: boolean) => {
   // Use the provided highlight(s) or just use the url.
   let highlights = link.highlight || link.url;
   // If the provided highlights aren't an array then make them one so that we
@@ -59,12 +101,12 @@ export const Header = ({
   urlChange,
   uuid,
   version,
-}) => {
+}: Props) => {
   const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
   const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
 
   useEffect(() => {
-    let unlisten;
+    let unlisten: UnregisterCallback;
     if (!debug && enableAnalytics && uuid && version && authUser) {
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -72,18 +114,22 @@ export const Header = ({
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s),
           dl = l !== "dataLayer" ? "&l=" + l : "";
+        // @ts-ignore
         j.async = true;
         const src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        // @ts-ignore
         j.src = src;
         if (document.querySelectorAll(`script[src="${src}"]`).length === 0) {
           f.parentNode.insertBefore(j, f);
         }
       })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
 
+      // @ts-ignore
       window.ga =
         window.ga ||
         function () {
           (window.ga.q = window.ga.q || []).push(arguments);
+          return window.ga;
         };
       window.ga.l = +new Date();
       window.ga("create", "UA-1018242-63", "auto", {
@@ -107,7 +153,7 @@ export const Header = ({
     };
   }, [debug, enableAnalytics, uuid, version, authUser, rootScope, urlChange]);
 
-  const links = [
+  const links: NavItem[] = [
     {
       highlight: ["/machine", "/pool"],
       inHardwareMenu: true,
@@ -176,13 +222,16 @@ export const Header = ({
     // Remove the hidden items.
     .filter(({ hidden }) => !hidden);
 
-  const generateLink = (link, linkClass = undefined) => {
+  const generateLink: GenerateNavLink = (
+    link: NavItem,
+    linkClass = undefined
+  ) => {
     return link.isLegacy
       ? generateLegacyLink(link, linkClass, appendNewBase)
       : generateNewLink(link, linkClass, appendNewBase);
   };
 
-  const generateNavItems = (links) => {
+  const generateNavItems = (links: NavItem[]) => {
     const hardwareLinks = links.filter((link) => link.inHardwareMenu);
     const path = location.pathname + location.search;
 
@@ -294,7 +343,6 @@ export const Header = ({
                   width="100"
                   height="25.2"
                   viewBox="545.3 412.6 100 25.2"
-                  alt=""
                   className="p-navigation__image"
                 >
                   <title>MAAS logo</title>

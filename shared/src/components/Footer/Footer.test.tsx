@@ -1,16 +1,16 @@
 import { shallow } from "enzyme";
+import MockDate from "mockdate";
 import React from "react";
 
 import { Footer } from "./Footer";
 
 describe("Footer", () => {
   beforeEach(() => {
-    const mockDate = new Date(2020, 1, 1, 0, 0, 0);
-    jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+    MockDate.set("2020-01-01");
   });
 
   afterEach(() => {
-    jest.resetModules();
+    MockDate.reset();
   });
 
   it("renders", () => {

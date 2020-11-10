@@ -153,7 +153,7 @@ export const App = (): JSX.Element => {
           !!skipIntro
         }
         debug={debug}
-        enableAnalytics={analyticsEnabled}
+        enableAnalytics={Boolean(analyticsEnabled)}
         generateLegacyLink={(
           link: LinkType,
           linkClass: string,
@@ -188,15 +188,15 @@ export const App = (): JSX.Element => {
         }}
         showRSD={navigationOptions.rsd}
         urlChange={history.listen}
-        uuid={uuid}
+        uuid={uuid + ""}
         version={version}
       />
       {content}
       {maasName && version && (
         <Footer
           debug={debug}
-          enableAnalytics={analyticsEnabled}
-          maasName={maasName}
+          enableAnalytics={Boolean(analyticsEnabled)}
+          maasName={maasName + ""}
           version={version}
         />
       )}
