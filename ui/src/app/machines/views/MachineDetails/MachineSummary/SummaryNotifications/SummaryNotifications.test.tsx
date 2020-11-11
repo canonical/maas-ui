@@ -26,6 +26,7 @@ describe("SummaryNotifications", () => {
       general: generalStateFactory({
         architectures: architecturesStateFactory({
           data: ["amd64"],
+          loaded: true,
         }),
         powerTypes: powerTypesStateFactory({
           data: [powerTypeFactory()],
@@ -142,6 +143,7 @@ describe("SummaryNotifications", () => {
   it("can display a boot images error", () => {
     state.general.architectures = architecturesStateFactory({
       data: [],
+      loaded: true,
     });
     const store = mockStore(state);
     const wrapper = mount(

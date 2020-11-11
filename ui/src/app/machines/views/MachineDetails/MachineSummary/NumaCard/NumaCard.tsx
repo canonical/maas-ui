@@ -16,7 +16,8 @@ const NumaCard = ({ id }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  let content: JSX.Element;
+  let numaNodeString = "NUMA node";
+  let content: JSX.Element | null;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
@@ -25,35 +26,32 @@ const NumaCard = ({ id }: Props): JSX.Element => {
     content = <Spinner />;
   } else {
     const numaNodes = machine.numa_nodes;
-    content = (
-      <>
-        <strong className="p-muted-heading u-sv1">
-          {pluralize("NUMA node", numaNodes.length, true)}
-        </strong>
-        <hr />
-        {numaNodes.length ? (
-          <List
-            className="u-no-margin--bottom"
-            items={numaNodes.map((numaNode, i) => ({
-              className: "numa-card",
-              content: (
-                <NumaCardDetails
-                  isLast={i === numaNodes.length - 1}
-                  machineId={id}
-                  numaNode={numaNode}
-                  showExpanded={numaNodes.length <= 2}
-                />
-              ),
-            }))}
-          />
-        ) : null}
-      </>
-    );
+    numaNodeString = pluralize("NUMA node", numaNodes.length, true);
+    content = numaNodes.length ? (
+      <List
+        className="u-no-margin--bottom"
+        items={numaNodes.map((numaNode, i) => ({
+          className: "numa-card",
+          content: (
+            <NumaCardDetails
+              isLast={i === numaNodes.length - 1}
+              machineId={id}
+              numaNode={numaNode}
+              showExpanded={numaNodes.length <= 2}
+            />
+          ),
+        }))}
+      />
+    ) : null;
   }
 
   return (
     <div className="machine-summary__numa-card">
-      <Card>{content}</Card>
+      <Card>
+        <strong className="p-muted-heading u-sv1">{numaNodeString}</strong>
+        <hr />
+        {content}
+      </Card>
     </div>
   );
 };

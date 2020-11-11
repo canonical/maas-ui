@@ -71,12 +71,20 @@
     padding-right: $sph-inner--small !important;
   }
 
+  .u-nudge-left--x-small {
+    padding-right: $sp-x-small !important;
+  }
+
   .u-nudge-right {
     padding-left: $sph-inner !important;
   }
 
   .u-nudge-right--small {
     padding-left: $sph-inner--small !important;
+  }
+
+  .u-nudge-right--x-small {
+    padding-left: $sp-x-small !important;
   }
 
   .u-text--light {
