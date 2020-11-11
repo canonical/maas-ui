@@ -49,6 +49,7 @@ export type NetworkInterface = Model & {
 
 export type Filesystem = Model & {
   fstype: string;
+  is_format_fstype: boolean;
   label: string;
   mount_options: string | null;
   mount_point: string;
@@ -75,7 +76,13 @@ export type Disk = Model & {
   is_boot: boolean;
   model: string;
   name: string;
-  numa_node: number;
+  numa_node?: number;
+  numa_nodes?: number[];
+  parent?: {
+    id: number;
+    uuid: string;
+    type: string;
+  };
   partition_table_type: string;
   partitions: Partition[] | null;
   path: string;

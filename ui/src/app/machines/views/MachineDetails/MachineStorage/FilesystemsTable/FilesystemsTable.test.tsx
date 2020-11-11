@@ -14,7 +14,7 @@ describe("FilesystemsTable", () => {
       <FilesystemsTable disks={[]} specialFilesystems={[]} />
     );
 
-    expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
+    expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
       "No filesystems defined."
     );
   });

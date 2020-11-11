@@ -152,6 +152,7 @@ export const machineEvent = extend<Model, Event>(model, {
 
 export const machineFilesystem = extend<Model, Filesystem>(model, {
   fstype: "fat32",
+  is_format_fstype: true,
   label: "efi",
   mount_options: "abc",
   mount_point: "/boot/efi",
