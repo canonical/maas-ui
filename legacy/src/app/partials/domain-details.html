@@ -96,7 +96,13 @@
                             placeholder="Data"
                             label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field
+                            data-ng-if="newObject.$maasForm.getValue('rrtype') === 'A' || newObject.$maasForm.getValue('rrtype') === 'AAAA'"
                             subtle="false" type="text" key="address_ttl" label="TTL"
+                            placeholder="TTL in seconds (optional)"
+                            label-width="2" input-width="4"></maas-obj-field>
+                        <maas-obj-field
+                            data-ng-if="newObject.$maasForm.getValue('rrtype') !== 'A' && newObject.$maasForm.getValue('rrtype') !== 'AAAA'"
+                            subtle="false" type="text" key="ttl" label="TTL"
                             placeholder="TTL in seconds (optional)"
                             label-width="2" input-width="4"></maas-obj-field>
                         <maas-obj-field type="hidden" key="domain" value="{$ domain.id $}" />
@@ -271,7 +277,9 @@
                                 <maas-obj-field label="Data" type="text" key="rrdata" placeholder="Data"></maas-obj-field>
                             </div>
                             <div class="col-4">
-                                <maas-obj-field label="TTL" type="text" key="address_ttl" placeholder="TTL (default: 30)" value="{$ row.ttl $}"></maas-obj-field>
+                                <maas-obj-field label="TTL" type="text"
+                                    key="{$ row.rrtype === 'A' || row.rrtype === 'AAAA' ? 'address_ttl' : 'ttl' $}"
+                                    placeholder="TTL (default: 30)" value="{$ row.ttl $}"></maas-obj-field>
                             </div>
                         </div>
                         <div class="row">
