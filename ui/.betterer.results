@@ -6,7 +6,7 @@ exports[`stricter compilation`] = {
       [149, 4, 36, "Object is possibly \'null\'.", "1039669632"],
       [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
     ],
-    "src/app/App.tsx:1875413120": [
+    "src/app/App.tsx:2048624384": [
       [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
       [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
