@@ -30,7 +30,7 @@ export const DeployFormFields = (): JSX.Element => {
     generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =
-    values.oSystem === "ubuntu" && values.release === "bionic";
+    values.oSystem === "ubuntu" && ["bionic", "focal"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
 
   return (
@@ -77,7 +77,7 @@ export const DeployFormFields = (): JSX.Element => {
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 setFieldValue("kernel", "");
-                if (e.target.value !== "bionic") {
+                if (!["bionic", "focal"].includes(e.target.value)) {
                   setFieldValue("installKVM", false);
                 }
               }}
@@ -105,31 +105,43 @@ export const DeployFormFields = (): JSX.Element => {
             <FormikField
               disabled={!canBeKVMHost || noImages}
               label={
-                <>
-                  Register as MAAS KVM host (Ubuntu 18.04 LTS required).{" "}
-                  <a
-                    className="p-link--external"
-                    href="https://maas.io/docs/kvm-introduction"
-                  >
-                    Read more
-                  </a>
-                </>
+                <ul className="p-inline-list u-no-margin--bottom">
+                  <li className="p-inline-list__item">
+                    Register as MAAS KVM host.
+                  </li>
+                  <li className="p-inline-list__item">
+                    <a
+                      className="p-link--external"
+                      href="https://maas.io/docs/kvm-introduction"
+                    >
+                      Read more
+                    </a>
+                  </li>
+                </ul>
               }
               name="installKVM"
               type="checkbox"
             />
+            <p className="p-form-help-text" style={{ paddingLeft: "2rem" }}>
+              Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
+              supported.
+            </p>
             <FormikField
               disabled={noImages}
               label={
-                <>
-                  Cloud-init user-data&hellip;{" "}
-                  <a
-                    className="p-link--external"
-                    href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
-                  >
-                    Read more
-                  </a>
-                </>
+                <ul className="p-inline-list u-no-margin--bottom">
+                  <li className="p-inline-list__item">
+                    Cloud-init user-data&hellip;
+                  </li>
+                  <li className="p-inline-list__item">
+                    <a
+                      className="p-link--external"
+                      href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+                    >
+                      Read more
+                    </a>
+                  </li>
+                </ul>
               }
               name="includeUserData"
               type="checkbox"

@@ -15,7 +15,7 @@ function KVMDeployOSBlacklist() {
     "ubuntu/cosmic",
     "ubuntu/disco",
     "ubuntu/eoan",
-    "ubuntu/focal",
+    "ubuntu/groovy",
   ];
 }
 

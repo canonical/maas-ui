@@ -928,13 +928,7 @@ function NodeDetailsController(
       ) {
         extra.hwe_kernel = $scope.osSelection.hwe_kernel;
       }
-      let installKVM = $scope.deployOptions.installKVM;
-      // KVM pod deployment required bionic.
-      if (installKVM) {
-        extra.osystem = "ubuntu";
-        extra.distro_series = "bionic";
-      }
-      extra.install_kvm = installKVM;
+      extra.install_kvm = $scope.deployOptions.installKVM;
 
       // cloud-config
       const userData = $scope.deployOptions.userData;
