@@ -99,6 +99,8 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - name: Build
+        run: yarn build
       - name: Pipe betterer results to results.txt
         run: |
           set -o pipefail
