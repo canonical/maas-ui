@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import type { RouteParams } from "app/base/types";
 import { machine as machineActions } from "app/base/actions";
 import MachineHeader from "./MachineHeader";
+import StorageNotifications from "./MachineStorage/StorageNotifications";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import machineSelectors from "app/store/machine/selectors";
 import MachineStorage from "./MachineStorage";
@@ -58,6 +59,7 @@ const MachineDetails = (): JSX.Element => {
             <MachineSummary setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id/storage">
+            <StorageNotifications id={id} />
             <MachineStorage />
           </Route>
           <Route exact path="/machine/:id">

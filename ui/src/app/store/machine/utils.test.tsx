@@ -15,10 +15,14 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { nodeStatus } from "app/base/enum";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 import {
+  canOsSupportBcacheZFS,
+  canOsSupportStorageConfig,
+  isMachineStorageConfigurable,
   useCanEdit,
   useHasInvalidArchitecture,
   useIsRackControllerConnected,
@@ -152,6 +156,57 @@ describe("machine utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(true);
+    });
+  });
+
+  describe("isMachineStorageConfigurable", () => {
+    it("handles a machine in a configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.READY })
+        )
+      ).toBe(true);
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.ALLOCATED })
+        )
+      ).toBe(true);
+    });
+
+    it("handles a machine in a non-configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.NEW })
+        )
+      ).toBe(false);
+    });
+  });
+
+  describe("canOsSupportBcacheZFS", () => {
+    it("handles a machine that supports bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "ubuntu" }))).toBe(
+        true
+      );
+    });
+
+    it("handles a machine that does not support bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "centos" }))).toBe(
+        false
+      );
+    });
+  });
+
+  describe("canOsSupportStorageConfig", () => {
+    it("handles a machine that supports configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "ubuntu" }))
+      ).toBe(true);
+    });
+
+    it("handles a machine that does not support configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
+      ).toBe(false);
     });
   });
 });
