@@ -1,5 +1,6 @@
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
+import type { Machine } from "../machine/types";
 
 export type ScriptResultResult = {
   name: string;
@@ -25,7 +26,7 @@ export type ScriptResult = Model & {
 
 // Script results are keyed by machine id
 export type ScriptResults = {
-  id: string;
+  id: Machine["system_id"];
   results: ScriptResult[];
 };
 

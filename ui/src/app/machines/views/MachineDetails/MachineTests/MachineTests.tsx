@@ -19,7 +19,7 @@ const MachineTests = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
 
-  useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} tests`);
+  useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
   const results = useSelector((state: RootState) =>
     scriptResultsSelectors.getByIds(state, [id])

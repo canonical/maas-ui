@@ -29,6 +29,7 @@ describe("script results reducer", () => {
 
   it("reduces getSuccess", () => {
     const newScriptResult = scriptResultFactory();
+    const newScriptResult2 = scriptResultFactory();
 
     const scriptResultsState = scriptResultsStateFactory({
       items: [],
@@ -40,11 +41,15 @@ describe("script results reducer", () => {
         scriptResultsState,
         actions.getSuccess({
           machine1: [newScriptResult],
+          machine2: [newScriptResult2],
         })
       )
     ).toEqual(
       scriptResultsStateFactory({
-        items: [{ id: "machine1", results: [newScriptResult] }],
+        items: [
+          { id: "machine1", results: [newScriptResult] },
+          { id: "machine2", results: [newScriptResult2] },
+        ],
         loading: false,
       })
     );

@@ -1,12 +1,12 @@
 import { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import {
+import type {
   ScriptResultsResponse,
   ScriptResults,
   ScriptResultsState,
 } from "./types";
+import type { Machine } from "../machine/types";
 import { generateSlice, GenericSlice } from "../utils";
-import { Machine } from "../machine/types";
 
 type Reducers = SliceCaseReducers<ScriptResultsState>;
 
@@ -54,18 +54,19 @@ const scriptResultsSlice = generateSlice<
       state: ScriptResultsState,
       action: PayloadAction<ScriptResultsResponse>
     ) => {
-      const result = action.payload;
-      const machineId = Object.keys(result)[0];
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: ScriptResults) => draftItem.id === machineId
-      );
-      console.log(result);
-      if (i !== -1) {
-        state.items[i] = { id: machineId, results: result[machineId] };
-      } else {
-        state.items.push({ id: machineId, results: result[machineId] });
+      const results = action.payload;
+
+      for (const [machineId, result] of Object.entries(results)) {
+        // If the item already exists, update it, otherwise
+        // add it to the store.
+        const i = state.items.findIndex(
+          (draftItem: ScriptResults) => draftItem.id === machineId
+        );
+        if (i !== -1) {
+          state.items[i] = { id: machineId, results: result };
+        } else {
+          state.items.push({ id: machineId, results: result });
+        }
       }
       state.loading = false;
     },
