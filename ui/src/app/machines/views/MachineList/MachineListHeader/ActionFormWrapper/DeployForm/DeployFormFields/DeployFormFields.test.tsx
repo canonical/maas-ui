@@ -57,6 +57,7 @@ describe("DeployFormFields", () => {
             releases: [
               ["centos/centos66", "CentOS 6"],
               ["centos/centos70", "CentOS 7"],
+              ["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
               ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
               ["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"'],
             ],
@@ -76,6 +77,10 @@ describe("DeployFormFields", () => {
                 focal: [
                   ["ga-20.04", "focal (ga-20.04)"],
                   ["ga-20.04-lowlatency", "focal (ga-20.04-lowlatency)"],
+                ],
+                xenial: [
+                  ["ga-16.04", "xenial (ga-16.04)"],
+                  ["ga-16.04-lowlatency", "xenial (ga-16.04-lowlatency)"],
                 ],
               },
             },
@@ -171,8 +176,9 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("disables KVM checkbox with warning if not Ubuntu 18.04", async () => {
+  it("disables KVM checkbox if not Ubuntu 18.04 or 20.04", async () => {
     const state = { ...initialState };
+    state.general.osInfo.data.default_release = "xenial";
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -190,6 +196,15 @@ describe("DeployFormFields", () => {
       wrapper
         .find("select[name='release']")
         .simulate("change", { target: { name: "release", value: "bionic" } });
+    });
+    wrapper.update();
+    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+      false
+    );
+    await act(async () => {
+      wrapper
+        .find("select[name='release']")
+        .simulate("change", { target: { name: "release", value: "focal" } });
     });
     wrapper.update();
     expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
