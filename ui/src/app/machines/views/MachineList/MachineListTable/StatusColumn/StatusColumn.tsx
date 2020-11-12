@@ -9,8 +9,10 @@ import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
-import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import { useFormattedOS } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
@@ -41,14 +43,14 @@ const failedScriptStatuses = [
   scriptStatus.TIMEDOUT,
 ];
 
-const getProgressText = (machine) => {
+const getProgressText = (machine: Machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return machine.status_message;
   }
   return "";
 };
 
-const getStatusIcon = (machine) => {
+const getStatusIcon = (machine: Machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return (
       <Spinner
@@ -73,15 +75,20 @@ const getStatusIcon = (machine) => {
   return "";
 };
 
-export const StatusColumn = ({ onToggleMenu, systemId }) => {
-  const machine = useSelector((state) =>
+type Props = {
+  onToggleMenu?: (systemId: string, open: boolean) => void;
+  systemId: string;
+};
+
+export const StatusColumn = ({
+  onToggleMenu,
+  systemId,
+}: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const osReleases = useSelector((state) =>
-    generalSelectors.osInfo.getOsReleases(state, machine.osystem)
-  );
+  const formattedOS = useFormattedOS(machine);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
-
   const actionLinks = useMachineActions(systemId, [
     "abort",
     "acquire",
@@ -98,6 +105,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
     "unlock",
   ]);
 
+  const statusText = getStatusText(machine, formattedOS);
   const menuLinks = [
     actionLinks,
     [
@@ -105,7 +113,7 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
         children: "See logs",
         element: "a",
         href: generateLegacyURL(`/machine/${systemId}?area=logs`),
-        onClick: (evt) => {
+        onClick: (evt: React.MouseEvent) => {
           navigateToLegacy(`/machine/${systemId}?area=logs`, evt);
         },
       },
@@ -113,43 +121,43 @@ export const StatusColumn = ({ onToggleMenu, systemId }) => {
         children: "See events",
         element: "a",
         href: generateLegacyURL(`/machine/${systemId}?area=events`),
-        onClick: (evt) => {
+        onClick: (evt: React.MouseEvent) => {
           navigateToLegacy(`/machine/${systemId}?area=events`, evt);
         },
       },
     ],
   ];
 
-  return (
-    <DoubleRow
-      icon={getStatusIcon(machine)}
-      iconSpace={true}
-      menuLinks={onToggleMenu && menuLinks}
-      menuTitle="Take action:"
-      onToggleMenu={toggleMenu}
-      primary={
-        <span
-          data-test="status-text"
-          title={getStatusText(machine, osReleases)}
-        >
-          {getStatusText(machine, osReleases)}
-        </span>
-      }
-      secondary={
-        <>
-          <span data-test="progress-text" title={getProgressText(machine)}>
-            {getProgressText(machine)}
+  if (machine) {
+    return (
+      <DoubleRow
+        icon={getStatusIcon(machine)}
+        iconSpace={true}
+        menuLinks={onToggleMenu && menuLinks}
+        menuTitle="Take action:"
+        onToggleMenu={toggleMenu}
+        primary={
+          <span data-test="status-text" title={statusText}>
+            {statusText}
           </span>
-          <span data-test="error-text">
-            {machine.error_description &&
-            machine.status_code === nodeStatus.BROKEN
-              ? machine.error_description
-              : ""}
-          </span>
-        </>
-      }
-    />
-  );
+        }
+        secondary={
+          <>
+            <span data-test="progress-text" title={getProgressText(machine)}>
+              {getProgressText(machine)}
+            </span>
+            <span data-test="error-text">
+              {machine.error_description &&
+              machine.status_code === nodeStatus.BROKEN
+                ? machine.error_description
+                : ""}
+            </span>
+          </>
+        }
+      />
+    );
+  }
+  return null;
 };
 
 StatusColumn.propTypes = {

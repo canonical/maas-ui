@@ -106,6 +106,7 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
 export const machine = extend<BaseNode, Machine>(node, {
   commissioning_status: testStatus,
   description: "a test machine",
+  error_description: "",
   extra_macs,
   fabrics,
   has_logs: false,

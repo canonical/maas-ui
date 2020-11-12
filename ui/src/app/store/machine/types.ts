@@ -189,6 +189,7 @@ export type PowerState = "on" | "off" | "unknown" | "error";
 // pages.
 export type BaseMachine = BaseNode & {
   commissioning_status: TestStatus;
+  error_description: string;
   extra_macs: string[];
   fabrics: string[];
   has_logs: boolean;

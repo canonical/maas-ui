@@ -55,7 +55,10 @@ const getSortValue = (
       return "unknown";
     case "os":
       if (kvmHost && kvmHost.osystem in osReleases) {
-        return getStatusText(kvmHost, osReleases[kvmHost.osystem]);
+        return getStatusText(
+          kvmHost,
+          `${kvmHost.osystem}/${kvmHost.distro_series}`
+        );
       }
       return "unknown";
     case "pool":

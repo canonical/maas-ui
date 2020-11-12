@@ -1,6 +1,9 @@
+import type { Controller } from "app/store/controller/types";
+import type { Device } from "app/store/device/types";
+import type { Machine } from "app/store/machine/types";
 import type { Model, ModelRef } from "app/store/types/model";
 
-type TestResult = -1 | 0 | 1 | 2 | 3;
+export type TestResult = -1 | 0 | 1 | 2 | 3;
 
 export type TestStatus = {
   status: TestResult;
@@ -73,3 +76,5 @@ export type BaseNode = SimpleNode & {
   status_code: number;
   storage_test_status: TestStatus;
 };
+
+export type Node = Controller | Device | Machine;
