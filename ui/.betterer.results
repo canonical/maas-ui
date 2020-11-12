@@ -7,7 +7,6 @@ exports[`stricter compilation`] = {
       [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
     ],
     "src/app/App.tsx:2048624384": [
-      [21, 7, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"],
       [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
       [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
@@ -41,9 +40,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/base/components/FormikForm/FormikForm.tsx:1590075926": [
       [77, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
-    ],
-    "src/app/base/components/LegacyLink/LegacyLink.tsx:2706551295": [
-      [4, 52, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
     "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
       [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
@@ -341,7 +337,7 @@ exports[`stricter compilation`] = {
       [42, 28, 3, "Property \'get\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "193411891"],
       [112, 48, 10, "Property \'checkPower\' does not exist on type \'{ fetch: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { model: any; method: string; }>; create: ActionCreatorWithPreparedPayload<[params?: any], { params: any; }, string, never, { ...; }>; update: ActionCreatorWithPreparedPayload<...>; delete: ActionCreatorWithPreparedPayload<......\'.", "953482588"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/FilesystemsTable.tsx:1521910028": [
+    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/FilesystemsTable.tsx:1626600482": [
       [64, 27, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
       [73, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
     ],
@@ -350,9 +346,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:2502469861": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineSummary/OverviewCard/DetailsCard/DetailsCard.tsx:2883346391": [
-      [4, 33, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:3588892375": [
       [18, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
@@ -389,9 +382,6 @@ exports[`stricter compilation`] = {
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:42858656": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
-    ],
-    "src/app/settings/views/Configuration/GeneralForm/GeneralForm.tsx:227377903": [
-      [5, 34, 25, "Could not find a declaration file for module \'@maas-ui/maas-ui-shared\'. \'/home/caleb/Projects/maas-ui/shared/dist/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/maas-ui__maas-ui-shared\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@maas-ui/maas-ui-shared\';\`", "1778274862"]
     ],
     "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3551628603": [
       [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
@@ -519,7 +509,7 @@ exports[`stricter compilation`] = {
       [233, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
       [312, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
       [314, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
-      [319, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
+      [319, 2, 6, "Type \'null\' is not assignable to type \'\\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -579,9 +569,9 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [11, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:1016460159": [
+    "src/app/store/machine/types.ts:1575244389": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [293, 9, 8, "RegExp match", "1152173309"]
+      [300, 9, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/notification/types.ts:2586887406": [
       [1, 13, 8, "RegExp match", "1152173309"],
