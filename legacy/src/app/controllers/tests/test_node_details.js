@@ -1221,8 +1221,8 @@ describe("NodeDetailsController", function () {
       $scope.action.option = {
         name: "deploy",
       };
-      $scope.osSelection.osystem = "debian";
-      $scope.osSelection.release = "etch";
+      $scope.osSelection.osystem = "ubuntu";
+      $scope.osSelection.release = "focal";
       $scope.deployOptions.installKVM = true;
       $scope.actionGo();
       // When deploying KVM, coerce the distro to ubuntu/bionic.
@@ -1231,7 +1231,7 @@ describe("NodeDetailsController", function () {
         "deploy",
         {
           osystem: "ubuntu",
-          distro_series: "bionic",
+          distro_series: "focal",
           install_kvm: true,
         }
       );
