@@ -17,7 +17,7 @@ import { config as configSelectors } from "app/settings/selectors";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import { status } from "app/base/selectors";
 import { status as statusActions } from "app/base/actions";
-import { useLocation, useRouter } from "app/base/hooks";
+import { useLocation, usePrevious, useRouter } from "app/base/hooks";
 import { websocket } from "./base/actions";
 import Login from "app/base/components/Login";
 import Routes from "app/Routes";
@@ -42,10 +42,19 @@ export const App = () => {
   const dispatch = useDispatch();
   const basename = process.env.REACT_APP_BASENAME;
   const debug = process.env.NODE_ENV === "development";
+  const previousAuthenticated = usePrevious(authenticated, false);
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
   }, [dispatch]);
+
+  useEffect(() => {
+    // When a user logs out the redux store is reset so the authentication
+    // info needs to be fetched again to know if external auth is being used.
+    if (previousAuthenticated && !authenticated) {
+      dispatch(statusActions.checkAuthenticated());
+    }
+  }, [authenticated, dispatch, previousAuthenticated]);
 
   useEffect(() => {
     if (authenticated) {

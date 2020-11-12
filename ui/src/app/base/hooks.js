@@ -42,8 +42,8 @@ export const useLocation = () => {
  * @param {*} value - Current value.
  * @returns {*} Previous value.
  */
-export const usePrevious = (value) => {
-  const ref = useRef(value);
+export const usePrevious = (value, setInitial = true) => {
+  const ref = useRef(setInitial ? value : undefined);
   useEffect(() => {
     ref.current = value;
   }, [value]);
