@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -5,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { App } from "./App";
+import { status as statusActions } from "app/base/actions";
 
 const mockStore = configureStore();
 
@@ -251,5 +253,31 @@ describe("App", () => {
       </Provider>
     );
     expect(wrapper.find("Header").prop("showRSD")).toBe(false);
+  });
+
+  it("fetches the auth details again when logging out", () => {
+    state.status.authenticated = true;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+    ).toBe(1);
+    state.status.authenticated = false;
+    act(() => {
+      store.dispatch(statusActions.logout());
+    });
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+    ).toBe(2);
   });
 });
