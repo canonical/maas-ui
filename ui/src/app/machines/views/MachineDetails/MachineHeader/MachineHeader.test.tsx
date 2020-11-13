@@ -170,7 +170,7 @@ describe("MachineHeader", () => {
         .simulate("click");
 
       expect(
-        store.getActions().some((action) => action.type === "TURN_MACHINE_ON")
+        store.getActions().some((action) => action.type === "machine/on")
       ).toBe(true);
     });
 
@@ -205,7 +205,7 @@ describe("MachineHeader", () => {
         .simulate("click");
 
       expect(
-        store.getActions().some((action) => action.type === "TURN_MACHINE_OFF")
+        store.getActions().some((action) => action.type === "machine/off")
       ).toBe(true);
     });
 
@@ -242,7 +242,7 @@ describe("MachineHeader", () => {
       expect(
         store
           .getActions()
-          .some((action) => action.type === "CHECK_MACHINE_POWER")
+          .some((action) => action.type === "machine/checkPower")
       ).toBe(true);
     });
   });

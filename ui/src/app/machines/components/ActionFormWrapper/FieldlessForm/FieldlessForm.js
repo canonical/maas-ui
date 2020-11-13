@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { kebabToCamelCase } from "app/utils";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import ActionForm from "app/base/components/ActionForm";

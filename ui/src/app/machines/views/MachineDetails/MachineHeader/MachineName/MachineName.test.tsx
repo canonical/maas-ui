@@ -15,7 +15,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import MachineName from "./MachineName";
 import type { RootState } from "app/store/root/types";
 
@@ -163,7 +163,7 @@ describe("MachineName", () => {
     state.machine.saved = true;
     act(() => {
       // Fire something so that the store gets updated.
-      store.dispatch(machineActions.update());
+      store.dispatch(machineActions.update(machineDetailsFactory()));
     });
     expect(setEditingName).toHaveBeenCalledWith(false);
   });

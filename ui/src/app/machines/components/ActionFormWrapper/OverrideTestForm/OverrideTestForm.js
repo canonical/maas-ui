@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as scriptResultsActions } from "app/store/scriptresults";

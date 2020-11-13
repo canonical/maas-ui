@@ -155,10 +155,10 @@ describe("DeployForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
       {
-        type: "DEPLOY_MACHINE",
+        type: "machine/deploy",
         meta: {
           model: "machine",
           method: "action",
@@ -177,7 +177,7 @@ describe("DeployForm", () => {
         },
       },
       {
-        type: "DEPLOY_MACHINE",
+        type: "machine/deploy",
         meta: {
           model: "machine",
           method: "action",
@@ -227,10 +227,10 @@ describe("DeployForm", () => {
     );
 
     expect(
-      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
       {
-        type: "DEPLOY_MACHINE",
+        type: "machine/deploy",
         meta: {
           model: "machine",
           method: "action",
@@ -275,10 +275,10 @@ describe("DeployForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
       {
-        type: "DEPLOY_MACHINE",
+        type: "machine/deploy",
         meta: {
           model: "machine",
           method: "action",
@@ -324,10 +324,10 @@ describe("DeployForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "DEPLOY_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
       {
-        type: "DEPLOY_MACHINE",
+        type: "machine/deploy",
         meta: {
           model: "machine",
           method: "action",

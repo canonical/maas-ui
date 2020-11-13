@@ -126,7 +126,7 @@ Object {
   },
   "machine": Object {
     "active": null,
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

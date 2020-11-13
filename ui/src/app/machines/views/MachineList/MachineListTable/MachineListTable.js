@@ -18,9 +18,9 @@ import RamColumn from "./RamColumn";
 import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
+import { actions as machineActions } from "app/store/machine";
 import {
   general as generalActions,
-  machine as machineActions,
   scripts as scriptActions,
 } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";

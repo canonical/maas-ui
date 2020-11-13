@@ -161,9 +161,9 @@ describe("ZoneColumn", () => {
       wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     expect(
-      store.getActions().find((action) => action.type === "SET_MACHINE_ZONE")
+      store.getActions().find((action) => action.type === "machine/setZone")
     ).toEqual({
-      type: "SET_MACHINE_ZONE",
+      type: "machine/setZone",
       meta: {
         model: "machine",
         method: "action",

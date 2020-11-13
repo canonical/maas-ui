@@ -5,10 +5,8 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import AddMachineFormFields from "../AddMachineFormFields";
-import {
-  general as generalActions,
-  machine as machineActions,
-} from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
+import { general as generalActions } from "app/base/actions";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";

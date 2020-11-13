@@ -69,7 +69,7 @@ describe("MarkBrokenForm", () => {
 
     expect(store.getActions()).toStrictEqual([
       {
-        type: "MARK_MACHINE_BROKEN",
+        type: "machine/markBroken",
         meta: {
           model: "machine",
           method: "action",
@@ -85,7 +85,7 @@ describe("MarkBrokenForm", () => {
         },
       },
       {
-        type: "MARK_MACHINE_BROKEN",
+        type: "machine/markBroken",
         meta: {
           model: "machine",
           method: "action",
@@ -124,7 +124,7 @@ describe("MarkBrokenForm", () => {
 
     expect(store.getActions()).toStrictEqual([
       {
-        type: "MARK_MACHINE_BROKEN",
+        type: "machine/markBroken",
         meta: {
           model: "machine",
           method: "action",
@@ -169,7 +169,7 @@ describe("MarkBrokenForm", () => {
 
     expect(store.getActions()).toStrictEqual([
       {
-        type: "MARK_MACHINE_BROKEN",
+        type: "machine/markBroken",
         meta: {
           model: "machine",
           method: "action",

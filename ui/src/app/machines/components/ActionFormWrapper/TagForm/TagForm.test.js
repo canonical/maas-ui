@@ -86,10 +86,10 @@ describe("TagForm", () => {
         })
     );
     expect(
-      store.getActions().filter((action) => action.type === "TAG_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/tag")
     ).toStrictEqual([
       {
-        type: "TAG_MACHINE",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",
@@ -105,7 +105,7 @@ describe("TagForm", () => {
         },
       },
       {
-        type: "TAG_MACHINE",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",
@@ -152,10 +152,10 @@ describe("TagForm", () => {
     );
 
     expect(
-      store.getActions().filter((action) => action.type === "TAG_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/tag")
     ).toStrictEqual([
       {
-        type: "TAG_MACHINE",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",

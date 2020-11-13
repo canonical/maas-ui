@@ -181,7 +181,7 @@ describe("DhcpForm", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "FETCH_MACHINE")).toBe(
+    expect(actions.some((action) => action.type === "machine/fetch")).toBe(
       true
     );
     expect(actions.some((action) => action.type === "device/fetch")).toBe(true);

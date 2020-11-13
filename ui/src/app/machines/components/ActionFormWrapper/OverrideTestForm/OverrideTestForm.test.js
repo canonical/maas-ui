@@ -173,10 +173,10 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "MACHINE_OVERRIDE_FAILED_TESTING")
+        .filter((action) => action.type === "machine/overrideFailedTesting")
     ).toStrictEqual([
       {
-        type: "MACHINE_OVERRIDE_FAILED_TESTING",
+        type: "machine/overrideFailedTesting",
         meta: {
           model: "machine",
           method: "action",
@@ -190,7 +190,7 @@ describe("OverrideTestForm", () => {
         },
       },
       {
-        type: "MACHINE_OVERRIDE_FAILED_TESTING",
+        type: "machine/overrideFailedTesting",
         meta: {
           model: "machine",
           method: "action",
@@ -228,7 +228,7 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "SET_SCRIPT_RESULT_SUPPRESSED")
+        .filter((action) => action.type === "machine/suppressScriptResults")
     ).toStrictEqual([
       {
         meta: {
@@ -241,7 +241,7 @@ describe("OverrideTestForm", () => {
             system_id: "abc123",
           },
         },
-        type: "SET_SCRIPT_RESULT_SUPPRESSED",
+        type: "machine/suppressScriptResults",
       },
     ]);
   });
@@ -275,10 +275,10 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "MACHINE_OVERRIDE_FAILED_TESTING")
+        .filter((action) => action.type === "machine/overrideFailedTesting")
     ).toStrictEqual([
       {
-        type: "MACHINE_OVERRIDE_FAILED_TESTING",
+        type: "machine/overrideFailedTesting",
         meta: {
           model: "machine",
           method: "action",
@@ -323,7 +323,7 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "SET_SCRIPT_RESULT_SUPPRESSED")
+        .filter((action) => action.type === "machine/suppressScriptResults")
     ).toStrictEqual([
       {
         meta: {
@@ -336,7 +336,7 @@ describe("OverrideTestForm", () => {
             system_id: "abc123",
           },
         },
-        type: "SET_SCRIPT_RESULT_SUPPRESSED",
+        type: "machine/suppressScriptResults",
       },
     ]);
   });

@@ -375,7 +375,7 @@ describe("MachineList", () => {
     );
     wrapper.find("Notification button").props().onClick();
     expect(
-      store.getActions().some((action) => action.type === "CLEANUP_MACHINE")
+      store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
   });
 

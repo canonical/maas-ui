@@ -73,7 +73,7 @@ describe("KVMListTable", () => {
     const expectedActions = [
       "controller/fetch",
       "FETCH_GENERAL_OSINFO",
-      "FETCH_MACHINE",
+      "machine/fetch",
       "pod/fetch",
       "resourcepool/fetch",
       "zone/fetch",

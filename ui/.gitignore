@@ -18,6 +18,7 @@ yarn.lock
 
 # misc
 *.swp
+*.fuse*
 .DS_Store
 .env.development.local
 .env.local

@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import React, { useEffect, useState } from "react";
 
 import type { RouteParams } from "app/base/types";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import MachineHeader from "./MachineHeader";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import StorageNotifications from "./MachineStorage/StorageNotifications";

@@ -1,6 +1,6 @@
 import { call } from "redux-saga/effects";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 
 /**

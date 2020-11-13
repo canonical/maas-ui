@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import React, { useEffect, useRef, useState } from "react";
 
 import { SelectedAction, SetSelectedAction } from "../MachineSummary";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useMachineActions } from "app/base/hooks";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import MachineName from "./MachineName";

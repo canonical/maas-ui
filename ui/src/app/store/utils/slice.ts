@@ -276,11 +276,15 @@ export const generateSlice = <
  * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  */
-type StatusHandlers<S extends StatusStateTypes, I extends S["items"][0]> = {
+export type StatusHandlers<
+  S extends StatusStateTypes,
+  I extends S["items"][0]
+> = {
+  method?: string;
   status: string;
   statusKey: string;
   // A method to convert the args for the inital action into payload params.
-  prepare: (...args: unknown[]) => unknown;
+  prepare: (...args: TSFixMe[]) => unknown;
   // The handler for when there is an error.
   error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The initial handler.
@@ -315,10 +319,10 @@ export const generateStatusHandlers = <
   handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
     // The initial handler.
     collection[status.status] = {
-      prepare: (...args: unknown[]) => ({
+      prepare: (...args: TSFixMe[]) => ({
         meta: {
           model: modelName,
-          method: status.status,
+          method: status.method || status.status,
         },
         payload: {
           params: status.prepare(...args),
@@ -365,9 +369,13 @@ export const generateStatusHandlers = <
       ) => {
         // Call the reducer handler if supplied.
         status.success && status.success(state, action);
-        state.statuses[String(action.meta.item[indexKey])][
-          status.statusKey
-        ] = false;
+        const statusItem = state.statuses[String(action.meta.item[indexKey])];
+        // Sometimes the server will respond with "machine/deleteNotify"
+        // before "machine/deleteSuccess", which removes the machine
+        // system_id from statuses so check the item exists, to be safe.
+        if (statusItem) {
+          statusItem[status.statusKey] = false;
+        }
       },
     };
     // The handler for when there is an error.
