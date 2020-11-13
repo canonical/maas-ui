@@ -25,6 +25,7 @@ import type {
 import type { Model } from "app/store/types/model";
 import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
 import { model, modelRef } from "./model";
+import { NodeStatus } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,
@@ -97,7 +98,7 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
   osystem: "ubuntu",
   other_test_status: testStatus,
   pool: modelRef,
-  status: "Allocated",
+  status: NodeStatus.ALLOCATED,
   status_message: "",
   status_code: 10,
   storage_test_status: testStatus,

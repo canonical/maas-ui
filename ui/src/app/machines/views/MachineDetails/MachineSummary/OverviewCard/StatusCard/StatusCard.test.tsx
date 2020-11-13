@@ -13,6 +13,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import StatusCard from "./StatusCard";
+import { NodeStatus } from "app/store/types/node";
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
@@ -34,7 +35,7 @@ describe("StatusCard", () => {
 
   it("renders a locked machine", () => {
     const machine = machineDetailsFactory();
-    machine.status = "Testing";
+    machine.status = NodeStatus.TESTING;
     machine.locked = true;
     const store = mockStore(state);
 

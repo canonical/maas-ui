@@ -18,6 +18,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import { nodeStatus } from "app/base/enum";
+import { NodeStatus } from "app/store/types/node";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
@@ -28,6 +29,7 @@ import {
   useCanEdit,
   useFormattedOS,
   useHasInvalidArchitecture,
+  useIsAllNetworkingDisabled,
   useIsRackControllerConnected,
 } from "./utils";
 
@@ -255,6 +257,48 @@ describe("machine utils", () => {
       expect(
         canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
       ).toBe(false);
+    });
+  });
+
+  describe("useIsAllNetworkingDisabled", () => {
+    it("is disabled when machine is not editable", () => {
+      machine = machineFactory({
+        permissions: [],
+        system_id: "abc123",
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is disabled when there is no machine", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(null), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is disabled when the machine has the wrong status", () => {
+      machine = machineFactory({
+        status: NodeStatus.DEPLOYING,
+        system_id: "abc123",
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("can be not disabled", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
     });
   });
 });
