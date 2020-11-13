@@ -5,8 +5,11 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import {
+  generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import StatusCard from "./StatusCard";
@@ -18,13 +21,18 @@ describe("StatusCard", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory(),
+        }),
+      }),
       machine: machineStateFactory({
         items: [],
       }),
     });
   });
 
-  it("renders a locked machine and status", () => {
+  it("renders a locked machine", () => {
     const machine = machineDetailsFactory();
     machine.status = "Testing";
     machine.locked = true;
@@ -40,9 +48,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='locked']").text()).toEqual(
-      "Locked: Testing"
-    );
+    expect(wrapper.find("[data-test='locked']").exists()).toEqual(true);
   });
 
   it("renders os info", () => {
@@ -50,6 +56,9 @@ describe("StatusCard", () => {
     machine.osystem = "ubuntu";
     machine.distro_series = "focal";
     machine.show_os_info = true;
+    state.general.osInfo.data = osInfoFactory({
+      releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
+    });
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -63,7 +72,7 @@ describe("StatusCard", () => {
     );
 
     expect(wrapper.find("[data-test='os-info']").text()).toEqual(
-      "ubuntu/focal"
+      "Ubuntu 20.04 LTS"
     );
   });
 

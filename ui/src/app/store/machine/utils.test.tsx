@@ -11,6 +11,8 @@ import {
   machine as machineFactory,
   machineEvent as machineEventFactory,
   machineState as machineStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
@@ -24,6 +26,7 @@ import {
   canOsSupportStorageConfig,
   isMachineStorageConfigurable,
   useCanEdit,
+  useFormattedOS,
   useHasInvalidArchitecture,
   useIsRackControllerConnected,
 } from "./utils";
@@ -52,6 +55,9 @@ describe("machine utils", () => {
       general: generalStateFactory({
         architectures: architecturesStateFactory({
           data: ["amd64"],
+        }),
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory(),
         }),
         powerTypes: powerTypesStateFactory({
           data: [powerTypeFactory()],
@@ -110,6 +116,48 @@ describe("machine utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useFormattedOS", () => {
+    it("handles null case", () => {
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(null), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("");
+    });
+
+    it("handles Ubuntu releases", () => {
+      state.machine.items[0].osystem = "ubuntu";
+      state.machine.items[0].distro_series = "focal";
+      state.general.osInfo.data = osInfoFactory({
+        releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
+      });
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("Ubuntu 20.04 LTS");
+    });
+
+    it("handles non-Ubuntu releases", () => {
+      state.machine.items[0].osystem = "centos";
+      state.machine.items[0].distro_series = "centos70";
+      state.general.osInfo.data = osInfoFactory({
+        releases: [["centos/centos70", "CentOS 7"]],
+      });
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("CentOS 7");
     });
   });
 

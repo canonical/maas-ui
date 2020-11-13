@@ -6,19 +6,38 @@ import React from "react";
 
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { StatusColumn } from "./StatusColumn";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import type { TestResult } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  generalState as generalStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("StatusColumn", () => {
-  let state;
+  let state: RootState;
+  let machine: Machine;
+
   beforeEach(() => {
-    state = {
-      general: {
-        machineActions: {
-          data: [],
-        },
-        osInfo: {
-          data: {
+    machine = machineFactory({
+      actions: [],
+      distro_series: "bionic",
+      osystem: "ubuntu",
+      status: "New",
+      status_code: 0,
+      status_message: "",
+      system_id: "abc123",
+    });
+    state = rootStateFactory({
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory({
             osystems: [
               ["centos", "CentOS"],
               ["ubuntu", "Ubuntu"],
@@ -28,32 +47,19 @@ describe("StatusColumn", () => {
               ["ubuntu/xenial", 'Ubuntu 16.04 LTS "Xenial Xerus"'],
               ["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"'],
             ],
-          },
+          }),
           errors: {},
           loaded: true,
           loading: false,
-        },
-      },
-      machine: {
-        items: [
-          {
-            actions: [],
-            distro_series: "bionic",
-            osystem: "ubuntu",
-            status: "New",
-            status_code: 0,
-            status_message: "",
-            testing_status: {
-              status: scriptStatus.NONE,
-            },
-            system_id: "abc123",
-          },
-        ],
+        }),
+      }),
+      machine: machineStateFactory({
+        items: [machine],
         errors: {},
         loaded: true,
         loading: false,
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -72,8 +78,8 @@ describe("StatusColumn", () => {
 
   describe("status text", () => {
     it("displays the machine's status if not deploying or deployed", () => {
-      state.machine.items[0].status = "New";
-      state.machine.items[0].status_code = nodeStatus.NEW;
+      machine.status = "New";
+      machine.status_code = nodeStatus.NEW;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -89,10 +95,10 @@ describe("StatusColumn", () => {
     });
 
     it("displays the short-form of Ubuntu release if deployed", () => {
-      state.machine.items[0].status = "Deployed";
-      state.machine.items[0].status_code = nodeStatus.DEPLOYED;
-      state.machine.items[0].osystem = "ubuntu";
-      state.machine.items[0].distro_series = "bionic";
+      machine.status = "Deployed";
+      machine.status_code = nodeStatus.DEPLOYED;
+      machine.osystem = "ubuntu";
+      machine.distro_series = "bionic";
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -110,10 +116,10 @@ describe("StatusColumn", () => {
     });
 
     it("displays the full OS and release if non-Ubuntu deployed", () => {
-      state.machine.items[0].status = "Deployed";
-      state.machine.items[0].status_code = nodeStatus.DEPLOYED;
-      state.machine.items[0].osystem = "centos";
-      state.machine.items[0].distro_series = "centos70";
+      machine.status = "Deployed";
+      machine.status_code = nodeStatus.DEPLOYED;
+      machine.osystem = "centos";
+      machine.distro_series = "centos70";
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -129,10 +135,10 @@ describe("StatusColumn", () => {
     });
 
     it("displays 'Deploying OS release' if machine is deploying", () => {
-      state.machine.items[0].status = "Deploying";
-      state.machine.items[0].status_code = nodeStatus.DEPLOYING;
-      state.machine.items[0].osystem = "ubuntu";
-      state.machine.items[0].distro_series = "bionic";
+      machine.status = "Deploying";
+      machine.status_code = nodeStatus.DEPLOYING;
+      machine.osystem = "ubuntu";
+      machine.distro_series = "bionic";
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -150,9 +156,9 @@ describe("StatusColumn", () => {
     });
 
     it("displays an error message for broken machines", () => {
-      state.machine.items[0].error_description = "machine is on fire";
-      state.machine.items[0].status = "Broken";
-      state.machine.items[0].status_code = nodeStatus.BROKEN;
+      machine.error_description = "machine is on fire";
+      machine.status = "Broken";
+      machine.status_code = nodeStatus.BROKEN;
       const store = mockStore(state);
 
       const wrapper = mount(
@@ -173,9 +179,9 @@ describe("StatusColumn", () => {
 
   describe("progress text", () => {
     it("displays the machine's status_message if in a transient state", () => {
-      state.machine.items[0].status = "Testing";
-      state.machine.items[0].status_code = nodeStatus.TESTING;
-      state.machine.items[0].status_message = "2 of 6 tests complete";
+      machine.status = "Testing";
+      machine.status_code = nodeStatus.TESTING;
+      machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -194,9 +200,9 @@ describe("StatusColumn", () => {
 
     it(`does not display the machine's status_message if
       not in a transient state`, () => {
-      state.machine.items[0].status = "Allocated";
-      state.machine.items[0].status_code = nodeStatus.ALLOCATED;
-      state.machine.items[0].status_message = "This machine is allocated";
+      machine.status = "Allocated";
+      machine.status_code = nodeStatus.ALLOCATED;
+      machine.status_message = "This machine is allocated";
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -214,8 +220,8 @@ describe("StatusColumn", () => {
 
   describe("status icon", () => {
     it("shows a spinner if machine is in a transient state", () => {
-      state.machine.items[0].status = "Commissioning";
-      state.machine.items[0].status_code = nodeStatus.COMMISSIONING;
+      machine.status = "Commissioning";
+      machine.status_code = nodeStatus.COMMISSIONING;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -232,9 +238,9 @@ describe("StatusColumn", () => {
 
     it(`shows a warning and tooltip if machine has failed tests and is not in a
       state where the warning should be hidden`, () => {
-      state.machine.items[0].status = "Allocated";
-      state.machine.items[0].status_code = nodeStatus.ALLOCATED;
-      state.machine.items[0].testing_status.status = scriptStatus.FAILED;
+      machine.status = "Allocated";
+      machine.status_code = nodeStatus.ALLOCATED;
+      machine.testing_status.status = scriptStatus.FAILED as TestResult;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -252,7 +258,7 @@ describe("StatusColumn", () => {
   });
 
   it("can show a menu with all possible options", () => {
-    state.machine.items[0].actions = [
+    machine.actions = [
       "abort",
       "acquire",
       "commission",
