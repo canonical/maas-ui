@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { machine as machineActions } from "app/base/actions";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as scriptResultsActions } from "app/store/scriptresults";
 import scriptResultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
@@ -74,8 +75,10 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
     scriptResults.reduce((acc, curr) => acc + curr.results.length, 0) || 0;
 
   useEffect(() => {
-    dispatch(machineActions.fetchFailedScriptResults(machinesToAction));
-  }, [dispatch, machinesToAction]);
+    if (!scriptResultsLoaded) {
+      dispatch(scriptResultsActions.get(machineIDs));
+    }
+  }, [dispatch, scriptResultsLoaded, machineIDs]);
 
   return (
     <ActionForm

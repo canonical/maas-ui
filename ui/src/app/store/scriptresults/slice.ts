@@ -69,6 +69,7 @@ const scriptResultsSlice = generateSlice<
         }
       }
       state.loading = false;
+      state.loaded = true;
     },
   },
 }) as ScriptResultsSlice;
