@@ -258,7 +258,10 @@ class RegionConnection {
       websocket.onopen = () => onopen();
     }
     websocket.onerror = (evt) => {
-      this.log.error("WebSocket error: ", evt);
+      if (this.getWebSocket().readyState === WebSocket.OPEN) {
+        // Only show an error to the user if there's an issue while it's open.
+        this.log.warn("WebSocket error: ", evt);
+      }
       angular.forEach(this.handlers.error, (func) => {
         func(evt);
       });
