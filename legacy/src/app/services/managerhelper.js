@@ -79,6 +79,11 @@ function ManagerHelperService($q, $timeout, ErrorService, RegionConnection) {
       } else {
         throw new Error("Unknown manager type: " + manager._type);
       }
+    },
+    function (error) {
+      // If there's an error with the connection then handle it with the error
+      // service.
+      ErrorService.raiseError(error);
     });
     return defer.promise;
   };
