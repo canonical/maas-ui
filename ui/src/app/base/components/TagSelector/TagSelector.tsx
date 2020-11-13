@@ -3,7 +3,7 @@ import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
-type Tag = {
+export type Tag = {
   id: number;
   name: string;
   displayName?: string;

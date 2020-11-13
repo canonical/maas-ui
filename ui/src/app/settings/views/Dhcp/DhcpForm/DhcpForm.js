@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { actions as controllerActions } from "app/store/controller";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import { actions as subnetActions } from "app/store/subnet";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import { DhcpSnippetShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";

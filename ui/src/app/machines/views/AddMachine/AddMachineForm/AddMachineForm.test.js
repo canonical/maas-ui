@@ -157,9 +157,9 @@ describe("AddMachine", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "machine/create")
     ).toStrictEqual({
-      type: "CREATE_MACHINE",
+      type: "machine/create",
       meta: {
         method: "create",
         model: "machine",
@@ -225,9 +225,9 @@ describe("AddMachine", () => {
 
     // Expect the power_id param to be removed when action is dispatched.
     expect(
-      store.getActions().find((action) => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "machine/create")
     ).toStrictEqual({
-      type: "CREATE_MACHINE",
+      type: "machine/create",
       meta: {
         method: "create",
         model: "machine",
@@ -283,9 +283,9 @@ describe("AddMachine", () => {
 
     // Expect the empty extra mac to be filtered out
     expect(
-      store.getActions().find((action) => action.type === "CREATE_MACHINE")
+      store.getActions().find((action) => action.type === "machine/create")
     ).toStrictEqual({
-      type: "CREATE_MACHINE",
+      type: "machine/create",
       meta: {
         method: "create",
         model: "machine",

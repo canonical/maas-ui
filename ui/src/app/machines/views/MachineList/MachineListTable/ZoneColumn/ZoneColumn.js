@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 import { useToggleMenu } from "app/machines/hooks";

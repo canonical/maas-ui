@@ -11,7 +11,7 @@ import {
   toggleFilter,
 } from "app/machines/search";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";

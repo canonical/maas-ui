@@ -122,10 +122,10 @@ describe("CommissionForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "COMMISSION_MACHINE")
+        .filter((action) => action.type === "machine/commission")
     ).toStrictEqual([
       {
-        type: "COMMISSION_MACHINE",
+        type: "machine/commission",
         meta: {
           model: "machine",
           method: "action",
@@ -151,7 +151,7 @@ describe("CommissionForm", () => {
         },
       },
       {
-        type: "COMMISSION_MACHINE",
+        type: "machine/commission",
         meta: {
           model: "machine",
           method: "action",
@@ -217,10 +217,10 @@ describe("CommissionForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "COMMISSION_MACHINE")
+        .filter((action) => action.type === "machine/commission")
     ).toStrictEqual([
       {
-        type: "COMMISSION_MACHINE",
+        type: "machine/commission",
         meta: {
           model: "machine",
           method: "action",

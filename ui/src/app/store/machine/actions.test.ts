@@ -1,9 +1,9 @@
-import machine from "./machine";
+import { actions } from "./slice";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
-    expect(machine.fetch()).toEqual({
-      type: "FETCH_MACHINE",
+    expect(actions.fetch()).toEqual({
+      type: "machine/fetch",
       meta: {
         model: "machine",
         method: "list",
@@ -16,8 +16,8 @@ describe("machine actions", () => {
   });
 
   it("can get machines", () => {
-    expect(machine.get("abc123")).toEqual({
-      type: "GET_MACHINE",
+    expect(actions.get("abc123")).toEqual({
+      type: "machine/get",
       meta: {
         model: "machine",
         method: "get",
@@ -29,8 +29,8 @@ describe("machine actions", () => {
   });
 
   it("can set an active machine", () => {
-    expect(machine.setActive("abc123")).toEqual({
-      type: "SET_ACTIVE_MACHINE",
+    expect(actions.setActive("abc123")).toEqual({
+      type: "machine/setActive",
       meta: {
         model: "machine",
         method: "set_active",
@@ -43,9 +43,9 @@ describe("machine actions", () => {
 
   it("can handle creating machines", () => {
     expect(
-      machine.create({ name: "machine1", description: "a machine" })
+      actions.create({ name: "machine1", description: "a machine" })
     ).toEqual({
-      type: "CREATE_MACHINE",
+      type: "machine/create",
       meta: {
         model: "machine",
         method: "create",
@@ -60,8 +60,8 @@ describe("machine actions", () => {
   });
 
   it("can handle setting the pool", () => {
-    expect(machine.setPool("abc123", 909)).toEqual({
-      type: "SET_MACHINE_POOL",
+    expect(actions.setPool("abc123", 909)).toEqual({
+      type: "machine/setPool",
       meta: {
         model: "machine",
         method: "action",
@@ -79,8 +79,8 @@ describe("machine actions", () => {
   });
 
   it("can handle setting the zone", () => {
-    expect(machine.setZone("abc123", 909)).toEqual({
-      type: "SET_MACHINE_ZONE",
+    expect(actions.setZone("abc123", 909)).toEqual({
+      type: "machine/setZone",
       meta: {
         model: "machine",
         method: "action",
@@ -98,8 +98,8 @@ describe("machine actions", () => {
   });
 
   it("can handle turning on the machine", () => {
-    expect(machine.on("abc123")).toEqual({
-      type: "TURN_MACHINE_ON",
+    expect(actions.on("abc123")).toEqual({
+      type: "machine/on",
       meta: {
         model: "machine",
         method: "action",
@@ -115,8 +115,8 @@ describe("machine actions", () => {
   });
 
   it("can handle turning off the machine", () => {
-    expect(machine.off("abc123")).toEqual({
-      type: "TURN_MACHINE_OFF",
+    expect(actions.off("abc123")).toEqual({
+      type: "machine/off",
       meta: {
         model: "machine",
         method: "action",
@@ -132,8 +132,8 @@ describe("machine actions", () => {
   });
 
   it("can handle checking the machine power", () => {
-    expect(machine.checkPower("abc123")).toEqual({
-      type: "CHECK_MACHINE_POWER",
+    expect(actions.checkPower("abc123")).toEqual({
+      type: "machine/checkPower",
       meta: {
         model: "machine",
         method: "check_power",
@@ -147,8 +147,8 @@ describe("machine actions", () => {
   });
 
   it("can handle acquiring a machine", () => {
-    expect(machine.acquire("abc123")).toEqual({
-      type: "ACQUIRE_MACHINE",
+    expect(actions.acquire("abc123")).toEqual({
+      type: "machine/acquire",
       meta: {
         model: "machine",
         method: "action",
@@ -164,8 +164,8 @@ describe("machine actions", () => {
   });
 
   it("can handle releasing a machine", () => {
-    expect(machine.release("abc123")).toEqual({
-      type: "RELEASE_MACHINE",
+    expect(actions.release("abc123")).toEqual({
+      type: "machine/release",
       meta: {
         model: "machine",
         method: "action",
@@ -186,8 +186,8 @@ describe("machine actions", () => {
       distro_series: "bionic",
       install_kvm: false,
     };
-    expect(machine.deploy("abc123", extra)).toEqual({
-      type: "DEPLOY_MACHINE",
+    expect(actions.deploy("abc123", extra)).toEqual({
+      type: "machine/deploy",
       meta: {
         model: "machine",
         method: "action",
@@ -203,8 +203,8 @@ describe("machine actions", () => {
   });
 
   it("can handle aborting a machine", () => {
-    expect(machine.abort("abc123")).toEqual({
-      type: "ABORT_MACHINE",
+    expect(actions.abort("abc123")).toEqual({
+      type: "machine/abort",
       meta: {
         model: "machine",
         method: "action",
@@ -221,7 +221,7 @@ describe("machine actions", () => {
 
   it("can handle commissioning a machine", () => {
     expect(
-      machine.commission(
+      actions.commission(
         "abc123",
         true,
         false,
@@ -259,13 +259,13 @@ describe("machine actions", () => {
           system_id: "abc123",
         },
       },
-      type: "COMMISSION_MACHINE",
+      type: "machine/commission",
     });
   });
 
   it("can handle testing a machine", () => {
     expect(
-      machine.test(
+      actions.test(
         "abc123",
         [
           { id: 0, name: "test0" },
@@ -275,7 +275,7 @@ describe("machine actions", () => {
         { "test-0": { url: "www.url.com" } }
       )
     ).toEqual({
-      type: "TEST_MACHINE",
+      type: "machine/test",
       meta: {
         model: "machine",
         method: "action",
@@ -294,24 +294,9 @@ describe("machine actions", () => {
     });
   });
 
-  it("can create a failed script results action", () => {
-    expect(machine.fetchFailedScriptResults([0, 1])).toEqual({
-      meta: {
-        method: "get_latest_failed_testing_script_results",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          system_ids: [0, 1],
-        },
-      },
-      type: "FETCH_FAILED_SCRIPT_RESULTS",
-    });
-  });
-
   it("can create a suppress script results action", () => {
     expect(
-      machine.suppressScriptResults(0, [
+      actions.suppressScriptResults(0, [
         { id: 0, name: "script0" },
         { id: 2, name: "script2" },
       ])
@@ -326,13 +311,13 @@ describe("machine actions", () => {
           system_id: 0,
         },
       },
-      type: "SET_SCRIPT_RESULT_SUPPRESSED",
+      type: "machine/suppressScriptResults",
     });
   });
 
   it("can putting a machine into rescue mode", () => {
-    expect(machine.rescueMode("abc123")).toEqual({
-      type: "MACHINE_RESCUE_MODE",
+    expect(actions.rescueMode("abc123")).toEqual({
+      type: "machine/rescueMode",
       meta: {
         model: "machine",
         method: "action",
@@ -348,8 +333,8 @@ describe("machine actions", () => {
   });
 
   it("can handle making a machine exit rescue mode", () => {
-    expect(machine.exitRescueMode("abc123")).toEqual({
-      type: "MACHINE_EXIT_RESCUE_MODE",
+    expect(actions.exitRescueMode("abc123")).toEqual({
+      type: "machine/exitRescueMode",
       meta: {
         model: "machine",
         method: "action",
@@ -365,8 +350,8 @@ describe("machine actions", () => {
   });
 
   it("can handle marking a machine as broken", () => {
-    expect(machine.markBroken("abc123", "machine is on fire")).toEqual({
-      type: "MARK_MACHINE_BROKEN",
+    expect(actions.markBroken("abc123", "machine is on fire")).toEqual({
+      type: "machine/markBroken",
       meta: {
         model: "machine",
         method: "action",
@@ -384,8 +369,8 @@ describe("machine actions", () => {
   });
 
   it("can handle marking a machine as fixed", () => {
-    expect(machine.markFixed("abc123")).toEqual({
-      type: "MARK_MACHINE_FIXED",
+    expect(actions.markFixed("abc123")).toEqual({
+      type: "machine/markFixed",
       meta: {
         model: "machine",
         method: "action",
@@ -401,8 +386,8 @@ describe("machine actions", () => {
   });
 
   it("can handle overriding failed testing on a machine", () => {
-    expect(machine.overrideFailedTesting("abc123")).toEqual({
-      type: "MACHINE_OVERRIDE_FAILED_TESTING",
+    expect(actions.overrideFailedTesting("abc123")).toEqual({
+      type: "machine/overrideFailedTesting",
       meta: {
         model: "machine",
         method: "action",
@@ -418,8 +403,8 @@ describe("machine actions", () => {
   });
 
   it("can handle locking a machine", () => {
-    expect(machine.lock("abc123")).toEqual({
-      type: "LOCK_MACHINE",
+    expect(actions.lock("abc123")).toEqual({
+      type: "machine/lock",
       meta: {
         model: "machine",
         method: "action",
@@ -435,8 +420,8 @@ describe("machine actions", () => {
   });
 
   it("can handle unlocking a machine", () => {
-    expect(machine.unlock("abc123")).toEqual({
-      type: "UNLOCK_MACHINE",
+    expect(actions.unlock("abc123")).toEqual({
+      type: "machine/unlock",
       meta: {
         model: "machine",
         method: "action",
@@ -452,8 +437,8 @@ describe("machine actions", () => {
   });
 
   it("can handle deleting a machine", () => {
-    expect(machine.delete("abc123")).toEqual({
-      type: "DELETE_MACHINE",
+    expect(actions.delete("abc123")).toEqual({
+      type: "machine/delete",
       meta: {
         model: "machine",
         method: "action",
@@ -469,27 +454,25 @@ describe("machine actions", () => {
   });
 
   it("can handle tagging a machine", () => {
-    expect(machine.tag("abc123", [{ name: "tag1" }, { name: "tag2" }])).toEqual(
-      {
-        type: "TAG_MACHINE",
-        meta: {
-          model: "machine",
-          method: "action",
+    expect(actions.tag("abc123", ["tag1", "tag2"])).toEqual({
+      type: "machine/tag",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: "tag",
+          extra: { tags: ["tag1", "tag2"] },
+          system_id: "abc123",
         },
-        payload: {
-          params: {
-            action: "tag",
-            extra: { tags: ["tag1", "tag2"] },
-            system_id: "abc123",
-          },
-        },
-      }
-    );
+      },
+    });
   });
 
   it("can handle cleaning machines", () => {
-    expect(machine.cleanup()).toEqual({
-      type: "CLEANUP_MACHINE",
+    expect(actions.cleanup()).toEqual({
+      type: "machine/cleanup",
     });
   });
 });

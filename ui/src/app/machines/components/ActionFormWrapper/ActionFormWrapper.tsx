@@ -9,7 +9,7 @@ import type {
   SelectedAction,
   SetSelectedAction,
 } from "app/machines/views/MachineDetails/MachineSummary";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import type { RouteParams } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import CommissionForm from "./CommissionForm";

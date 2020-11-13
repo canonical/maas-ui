@@ -545,9 +545,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: ["abc123"],
       });
     });
@@ -582,9 +582,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: [],
       });
     });
@@ -619,9 +619,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: ["abc123", "ghi789"],
       });
     });
@@ -656,9 +656,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: ["def456"],
       });
     });
@@ -722,9 +722,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: ["abc123", "def456", "ghi789"],
       });
     });
@@ -759,9 +759,9 @@ describe("MachineListTable", () => {
       expect(
         store
           .getActions()
-          .find((action) => action.type === "SET_SELECTED_MACHINES")
+          .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
-        type: "SET_SELECTED_MACHINES",
+        type: "machine/setSelected",
         payload: [],
       });
     });

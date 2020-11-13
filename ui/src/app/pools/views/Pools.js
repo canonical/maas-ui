@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";

@@ -12,10 +12,8 @@ import RAMColumn from "./RAMColumn";
 import StorageColumn from "./StorageColumn";
 import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
-import {
-  general as generalActions,
-  machine as machineActions,
-} from "app/base/actions";
+import { general as generalActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";

@@ -152,9 +152,9 @@ describe("PoolColumn", () => {
       wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
     });
     expect(
-      store.getActions().find((action) => action.type === "SET_MACHINE_POOL")
+      store.getActions().find((action) => action.type === "machine/setPool")
     ).toEqual({
-      type: "SET_MACHINE_POOL",
+      type: "machine/setPool",
       meta: {
         model: "machine",
         method: "action",

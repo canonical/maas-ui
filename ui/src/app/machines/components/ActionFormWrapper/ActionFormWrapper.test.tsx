@@ -170,11 +170,9 @@ describe("ActionFormWrapper", () => {
       .simulate("click");
 
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "SET_SELECTED_MACHINES")
+      store.getActions().find((action) => action.type === "machine/setSelected")
     ).toStrictEqual({
-      type: "SET_SELECTED_MACHINES",
+      type: "machine/setSelected",
       payload: ["a"],
     });
   });

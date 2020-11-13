@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { formatErrors } from "app/utils";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import MachineListControls from "./MachineListControls";

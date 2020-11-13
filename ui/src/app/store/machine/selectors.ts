@@ -1,7 +1,7 @@
 import { createSelector, Selector } from "@reduxjs/toolkit";
 
 import { generateBaseSelectors } from "app/store/utils";
-import { ACTIONS } from "app/base/reducers/machine/machine";
+import { ACTIONS } from "app/store/machine/slice";
 import filterNodes from "app/machines/filter-nodes";
 import type {
   Machine,

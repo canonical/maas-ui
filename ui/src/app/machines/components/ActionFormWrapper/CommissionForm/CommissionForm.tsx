@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import {
-  machine as machineActions,
-  scripts as scriptActions,
-} from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
+import { scripts as scriptActions } from "app/base/actions";
 import { useMachineActionForm } from "app/machines/hooks";
 import { simpleSortByKey } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";

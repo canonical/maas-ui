@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
 import type { MachineAction } from "app/store/general/types";

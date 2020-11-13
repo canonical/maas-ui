@@ -3,10 +3,8 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
-import {
-  general as generalActions,
-  machine as machineActions,
-} from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
+import { general as generalActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";

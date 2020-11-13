@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as tagActions } from "app/store/tag";
@@ -58,7 +58,12 @@ export const TagForm = ({ setSelectedAction }) => {
       onSubmit={(values) => {
         if (values.tags && values.tags.length) {
           machinesToAction.forEach((machine) => {
-            dispatch(machineActions.tag(machine.system_id, values.tags));
+            dispatch(
+              machineActions.tag(
+                machine.system_id,
+                values.tags.map((tag) => tag.name)
+              )
+            );
           });
         }
         setInitialValues(values);

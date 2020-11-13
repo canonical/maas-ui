@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as zoneActions } from "app/store/zone";

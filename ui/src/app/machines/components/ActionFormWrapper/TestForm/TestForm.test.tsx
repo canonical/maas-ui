@@ -104,10 +104,10 @@ describe("TestForm", () => {
         })
     );
     expect(
-      store.getActions().filter((action) => action.type === "TEST_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/test")
     ).toStrictEqual([
       {
-        type: "TEST_MACHINE",
+        type: "machine/test",
         meta: {
           model: "machine",
           method: "action",
@@ -128,7 +128,7 @@ describe("TestForm", () => {
         },
       },
       {
-        type: "TEST_MACHINE",
+        type: "machine/test",
         meta: {
           model: "machine",
           method: "action",
@@ -225,10 +225,10 @@ describe("TestForm", () => {
         })
     );
     expect(
-      store.getActions().filter((action) => action.type === "TEST_MACHINE")
+      store.getActions().filter((action) => action.type === "machine/test")
     ).toStrictEqual([
       {
-        type: "TEST_MACHINE",
+        type: "machine/test",
         meta: {
           model: "machine",
           method: "action",

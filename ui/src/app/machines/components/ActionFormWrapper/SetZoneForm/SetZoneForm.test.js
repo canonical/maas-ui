@@ -75,10 +75,10 @@ describe("SetZoneForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "SET_MACHINE_ZONE")
+      store.getActions().filter((action) => action.type === "machine/setZone")
     ).toStrictEqual([
       {
-        type: "SET_MACHINE_ZONE",
+        type: "machine/setZone",
         meta: {
           model: "machine",
           method: "action",
@@ -94,7 +94,7 @@ describe("SetZoneForm", () => {
         },
       },
       {
-        type: "SET_MACHINE_ZONE",
+        type: "machine/setZone",
         meta: {
           model: "machine",
           method: "action",
@@ -136,10 +136,10 @@ describe("SetZoneForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "SET_MACHINE_ZONE")
+      store.getActions().filter((action) => action.type === "machine/setZone")
     ).toStrictEqual([
       {
-        type: "SET_MACHINE_ZONE",
+        type: "machine/setZone",
         meta: {
           model: "machine",
           method: "action",

@@ -101,10 +101,10 @@ describe("SetPoolForm", () => {
       })
     );
     expect(
-      store.getActions().filter((action) => action.type === "SET_MACHINE_POOL")
+      store.getActions().filter((action) => action.type === "machine/setPool")
     ).toStrictEqual([
       {
-        type: "SET_MACHINE_POOL",
+        type: "machine/setPool",
         meta: {
           model: "machine",
           method: "action",
@@ -120,7 +120,7 @@ describe("SetPoolForm", () => {
         },
       },
       {
-        type: "SET_MACHINE_POOL",
+        type: "machine/setPool",
         meta: {
           model: "machine",
           method: "action",
@@ -165,10 +165,10 @@ describe("SetPoolForm", () => {
     );
 
     expect(
-      store.getActions().filter((action) => action.type === "SET_MACHINE_POOL")
+      store.getActions().filter((action) => action.type === "machine/setPool")
     ).toStrictEqual([
       {
-        type: "SET_MACHINE_POOL",
+        type: "machine/setPool",
         meta: {
           model: "machine",
           method: "action",

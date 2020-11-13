@@ -140,10 +140,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "ABORT_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/abort")
     ).toStrictEqual([
       {
-        type: "ABORT_MACHINE",
+        type: "machine/abort",
         meta: {
           model: "machine",
           method: "action",
@@ -185,10 +185,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "ABORT_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/abort")
     ).toStrictEqual([
       {
-        type: "ABORT_MACHINE",
+        type: "machine/abort",
         meta: {
           model: "machine",
           method: "action",
@@ -224,10 +224,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "ACQUIRE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/acquire")
     ).toStrictEqual([
       {
-        type: "ACQUIRE_MACHINE",
+        type: "machine/acquire",
         meta: {
           model: "machine",
           method: "action",
@@ -270,10 +270,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "ACQUIRE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/acquire")
     ).toStrictEqual([
       {
-        type: "ACQUIRE_MACHINE",
+        type: "machine/acquire",
         meta: {
           model: "machine",
           method: "action",
@@ -309,10 +309,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "DELETE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/delete")
     ).toStrictEqual([
       {
-        type: "DELETE_MACHINE",
+        type: "machine/delete",
         meta: {
           model: "machine",
           method: "action",
@@ -355,10 +355,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "DELETE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/delete")
     ).toStrictEqual([
       {
-        type: "DELETE_MACHINE",
+        type: "machine/delete",
         meta: {
           model: "machine",
           method: "action",
@@ -396,12 +396,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store
-        .getActions()
-        .filter(({ type }) => type === "MACHINE_EXIT_RESCUE_MODE")
+      store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
     ).toStrictEqual([
       {
-        type: "MACHINE_EXIT_RESCUE_MODE",
+        type: "machine/exitRescueMode",
         meta: {
           model: "machine",
           method: "action",
@@ -444,12 +442,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store
-        .getActions()
-        .filter(({ type }) => type === "MACHINE_EXIT_RESCUE_MODE")
+      store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
     ).toStrictEqual([
       {
-        type: "MACHINE_EXIT_RESCUE_MODE",
+        type: "machine/exitRescueMode",
         meta: {
           model: "machine",
           method: "action",
@@ -485,10 +481,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "LOCK_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/lock")
     ).toStrictEqual([
       {
-        type: "LOCK_MACHINE",
+        type: "machine/lock",
         meta: {
           model: "machine",
           method: "action",
@@ -531,10 +527,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "LOCK_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/lock")
     ).toStrictEqual([
       {
-        type: "LOCK_MACHINE",
+        type: "machine/lock",
         meta: {
           model: "machine",
           method: "action",
@@ -570,10 +566,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "MARK_MACHINE_FIXED")
+      store.getActions().filter(({ type }) => type === "machine/markFixed")
     ).toStrictEqual([
       {
-        type: "MARK_MACHINE_FIXED",
+        type: "machine/markFixed",
         meta: {
           model: "machine",
           method: "action",
@@ -616,10 +612,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "MARK_MACHINE_FIXED")
+      store.getActions().filter(({ type }) => type === "machine/markFixed")
     ).toStrictEqual([
       {
-        type: "MARK_MACHINE_FIXED",
+        type: "machine/markFixed",
         meta: {
           model: "machine",
           method: "action",
@@ -655,10 +651,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "TURN_MACHINE_OFF")
+      store.getActions().filter(({ type }) => type === "machine/off")
     ).toStrictEqual([
       {
-        type: "TURN_MACHINE_OFF",
+        type: "machine/off",
         meta: {
           model: "machine",
           method: "action",
@@ -701,10 +697,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "TURN_MACHINE_OFF")
+      store.getActions().filter(({ type }) => type === "machine/off")
     ).toStrictEqual([
       {
-        type: "TURN_MACHINE_OFF",
+        type: "machine/off",
         meta: {
           model: "machine",
           method: "action",
@@ -740,10 +736,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "TURN_MACHINE_ON")
+      store.getActions().filter(({ type }) => type === "machine/on")
     ).toStrictEqual([
       {
-        type: "TURN_MACHINE_ON",
+        type: "machine/on",
         meta: {
           model: "machine",
           method: "action",
@@ -786,10 +782,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "TURN_MACHINE_ON")
+      store.getActions().filter(({ type }) => type === "machine/on")
     ).toStrictEqual([
       {
-        type: "TURN_MACHINE_ON",
+        type: "machine/on",
         meta: {
           model: "machine",
           method: "action",
@@ -825,10 +821,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "RELEASE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/release")
     ).toStrictEqual([
       {
-        type: "RELEASE_MACHINE",
+        type: "machine/release",
         meta: {
           model: "machine",
           method: "action",
@@ -871,10 +867,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "RELEASE_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/release")
     ).toStrictEqual([
       {
-        type: "RELEASE_MACHINE",
+        type: "machine/release",
         meta: {
           model: "machine",
           method: "action",
@@ -910,10 +906,10 @@ describe("FieldlessForm", () => {
 
     act(() => wrapper.find("Formik").props().onSubmit());
     expect(
-      store.getActions().filter(({ type }) => type === "UNLOCK_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/unlock")
     ).toStrictEqual([
       {
-        type: "UNLOCK_MACHINE",
+        type: "machine/unlock",
         meta: {
           model: "machine",
           method: "action",
@@ -956,10 +952,10 @@ describe("FieldlessForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit());
 
     expect(
-      store.getActions().filter(({ type }) => type === "UNLOCK_MACHINE")
+      store.getActions().filter(({ type }) => type === "machine/unlock")
     ).toStrictEqual([
       {
-        type: "UNLOCK_MACHINE",
+        type: "machine/unlock",
         meta: {
           model: "machine",
           method: "action",

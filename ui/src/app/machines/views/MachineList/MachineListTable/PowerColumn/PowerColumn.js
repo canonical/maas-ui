@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 import { getPowerIcon } from "app/utils";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";

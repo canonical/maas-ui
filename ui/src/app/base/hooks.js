@@ -5,7 +5,7 @@ import { useFormikContext } from "formik";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Yup from "yup";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { messages } from "app/base/actions";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";

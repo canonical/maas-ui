@@ -42,7 +42,7 @@ describe("MachineDetails", () => {
     );
 
     expect(
-      store.getActions().find((action) => action.type === "SET_ACTIVE_MACHINE")
+      store.getActions().find((action) => action.type === "machine/setActive")
     ).toEqual({
       meta: {
         method: "set_active",
@@ -53,7 +53,7 @@ describe("MachineDetails", () => {
           system_id: "abc123",
         },
       },
-      type: "SET_ACTIVE_MACHINE",
+      type: "machine/setActive",
     });
   });
 

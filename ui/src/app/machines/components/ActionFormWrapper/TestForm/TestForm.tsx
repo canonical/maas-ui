@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import TestFormFields from "./TestFormFields";
-import {
-  machine as machineActions,
-  scripts as scriptActions,
-} from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
+import { scripts as scriptActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import { HardwareType } from "app/base/enum";
 import { useMachineActionForm } from "app/machines/hooks";

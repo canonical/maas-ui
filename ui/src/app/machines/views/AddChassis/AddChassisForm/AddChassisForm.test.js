@@ -217,9 +217,9 @@ describe("AddChassisForm", () => {
 
     // Expect the power_id param to be removed when action is dispatched.
     expect(
-      store.getActions().find((action) => action.type === "ADD_MACHINE_CHASSIS")
+      store.getActions().find((action) => action.type === "machine/addChassis")
     ).toStrictEqual({
-      type: "ADD_MACHINE_CHASSIS",
+      type: "machine/addChassis",
       payload: {
         params: {
           chassis_type: "vmware",

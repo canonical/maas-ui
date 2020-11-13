@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { useToggleMenu } from "app/machines/hooks";

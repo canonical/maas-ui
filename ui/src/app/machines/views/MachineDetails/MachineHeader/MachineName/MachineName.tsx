@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 
 import { actions as domainActions } from "app/store/domain";
-import { machine as machineActions } from "app/base/actions";
+import { actions as machineActions } from "app/store/machine";
 import { useCanEdit } from "app/store/machine/utils";
 import domainSelectors from "app/store/domain/selectors";
 import FormikForm from "app/base/components/FormikForm";
