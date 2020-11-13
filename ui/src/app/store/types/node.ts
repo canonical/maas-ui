@@ -28,30 +28,31 @@ export type SimpleNode = Model & {
   tags: string[];
 };
 
-type NodeStatus =
-  | "New"
-  | "Commissioning"
-  | "Failed commissioning"
-  | "Missing"
-  | "Ready"
-  | "Reserved"
-  | "Allocated"
-  | "Deploying"
-  | "Deployed"
-  | "Retired"
-  | "Broken"
-  | "Failed deployment"
-  | "Releasing"
-  | "Releasing failed"
-  | "Disk erasing"
-  | "Failed disk erasing"
-  | "Rescue mode"
-  | "Entering rescue mode"
-  | "Failed to enter rescue mode"
-  | "Exiting rescue mode"
-  | "Failed to exit rescue mode"
-  | "Testing"
-  | "Failed testing";
+export enum NodeStatus {
+  ALLOCATED = "Allocated",
+  BROKEN = "Broken",
+  COMMISSIONING = "Commissioning",
+  DEPLOYED = "Deployed",
+  DEPLOYING = "Deploying",
+  DISK_ERASING = "Disk erasing",
+  ENTERING_RESCUE_MODE = "Entering rescue mode",
+  EXITING_RESCUE_MODE = "Exiting rescue mode",
+  FAILED_COMMISSIONING = "Failed commissioning",
+  FAILED_DEPLOYMENT = "Failed deployment",
+  FAILED_DISK_ERASING = "Failed disk erasing",
+  FAILED_ENTERING_RESCUE_MODE = "Failed to enter rescue mode",
+  FAILED_EXITING_RESCUE_MODE = "Failed to exit rescue mode",
+  FAILED_RELEASING = "Releasing failed",
+  FAILED_TESTING = "Failed testing",
+  MISSING = "Missing",
+  NEW = "New",
+  READY = "Ready",
+  RELEASING = "Releasing",
+  RESCUE_MODE = "Rescue mode",
+  RESERVED = "Reserved",
+  RETIRED = "Retired",
+  TESTING = "Testing",
+}
 
 /**
  * BaseNode represents the intersection of Machines and Controllers

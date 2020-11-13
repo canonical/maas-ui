@@ -8,6 +8,7 @@ import type { Machine } from "app/store/machine/types";
 import { Pod } from "app/store/pod/types";
 import { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
+import { NodeStatus } from "app/store/types/node";
 
 /**
  * Check if a machine has an invalid architecture.
@@ -144,4 +145,25 @@ export const getPodNumaID = (machine: Machine, pod: Pod): number | null => {
     }
   }
   return null;
+};
+
+/**
+ * Check if the networking information can be edited.
+ * @return Wether networking is disabled.
+ */
+export const useIsAllNetworkingDisabled = (
+  machine?: Machine | null
+): boolean => {
+  const canEdit = useCanEdit(machine, true);
+  return (
+    !canEdit ||
+    !machine ||
+    ![
+      NodeStatus.NEW,
+      NodeStatus.READY,
+      NodeStatus.FAILED_TESTING,
+      NodeStatus.ALLOCATED,
+      NodeStatus.BROKEN,
+    ].includes(machine.status)
+  );
 };
