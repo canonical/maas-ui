@@ -395,10 +395,10 @@ export const useTableSort = (sortValueGetter, initialSort) => {
       if (direction === "none") {
         return 0;
       }
-      if (sortA < sortB) {
+      if (sortA < sortB || sortA === null) {
         return direction === "descending" ? -1 : 1;
       }
-      if (sortA > sortB) {
+      if (sortA > sortB || sortB === null) {
         return direction === "descending" ? 1 : -1;
       }
       return 0;

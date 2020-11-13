@@ -16,7 +16,7 @@ const getSortValue = (
 
 type Props = { storageDevices: StorageDevice[] };
 
-const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
+const UsedStorageTable = ({ storageDevices }: Props): JSX.Element => {
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
     direction: "descending",
@@ -111,8 +111,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
             ),
           },
           {
-            className: "u-align--right",
-            content: <TableHeader>Actions</TableHeader>,
+            content: <TableHeader>Used for</TableHeader>,
           },
         ]}
         rows={sortedStorageDevices.map((storageDevice) => {
@@ -202,19 +201,25 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   />
                 ),
               },
-              { content: "" },
+              {
+                content: (
+                  <span data-test="used-for">
+                    {storageDevice.usedFor || "—"}
+                  </span>
+                ),
+              },
             ],
             key: storageDevice.id,
           };
         })}
       />
       {sortedStorageDevices.length === 0 && (
-        <div className="u-nudge-right--small" data-test="no-available">
-          No available disks or partitions.
+        <div className="u-nudge-right--small" data-test="no-used">
+          No disk or partition has been fully utilised.
         </div>
       )}
     </>
   );
 };
 
-export default AvailableStorageTable;
+export default UsedStorageTable;
