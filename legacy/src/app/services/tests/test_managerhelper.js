@@ -19,10 +19,11 @@ describe("ManagerHelperService", function() {
   }));
 
   // Load the ManagerHelperService.
-  var ManagerHelperService, RegionConnection;
-  beforeEach(inject(function($injector) {
+  var ManagerHelperService, RegionConnection, ErrorService;
+  beforeEach(inject(function ($injector) {
     ManagerHelperService = $injector.get("ManagerHelperService");
     RegionConnection = $injector.get("RegionConnection");
+    ErrorService = $injector.get("ErrorService");
   }));
 
   // Makes a fake manager.
@@ -266,8 +267,23 @@ describe("ManagerHelperService", function() {
     });
   });
 
-  describe("loadManagers", function() {
-    it("calls loadManager for all managers", function(done) {
+  describe("loadManager - error", function () {
+    it("calls ErrorService.raiseError", function () {
+      spyOn(ErrorService, "raiseError");
+      const deferred = $q.defer()
+      spyOn(RegionConnection, "defaultConnect").and.returnValue(
+        deferred.promise
+      );
+      var manager = makeManager("poll");
+      ManagerHelperService.loadManager($scope, manager);
+      deferred.reject();
+      $scope.$digest();
+      expect(ErrorService.raiseError).toHaveBeenCalled();
+    });
+  });
+
+  describe("loadManagers", function () {
+    it("calls loadManager for all managers", function (done) {
       var managers = [makeManager(), makeManager()];
       var defers = [$q.defer(), $q.defer()];
       var i = 0;
