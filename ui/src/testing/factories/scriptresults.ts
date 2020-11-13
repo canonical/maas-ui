@@ -4,8 +4,8 @@ import { model } from "./model";
 import type { Model } from "app/store/types/model";
 import type {
   ScriptResult,
-  ScriptResultResult,
   ScriptResults,
+  ScriptResultResult,
 } from "app/store/scriptresults/types";
 
 export const scriptResultResult = define<ScriptResultResult>({
@@ -31,5 +31,6 @@ export const scriptResult = extend<Model, ScriptResult>(model, {
 });
 
 export const scriptResults = define<ScriptResults>({
-  testResult: array(scriptResult),
+  id: "foo",
+  results: array(scriptResult),
 });

@@ -4,9 +4,6 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResults as scriptResultsFactory,
-  scriptResultsState as scriptResultsStateFactory,
 } from "testing/factories";
 import machine from "./selectors";
 
@@ -185,31 +182,5 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.settingPoolSelected(state)).toStrictEqual([items[2]]);
-  });
-
-  it("returns failed script results for given machines", () => {
-    const scriptResults = {
-      foo: [scriptResultFactory()],
-      bar: [scriptResultFactory()],
-      baz: [scriptResultFactory()],
-    };
-    const items = [
-      machineFactory({ system_id: "foo" }),
-      machineFactory({ system_id: "bar" }),
-      machineFactory(),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items,
-      }),
-      scriptresults: scriptResultsStateFactory({
-        items: scriptResultsFactory(scriptResults),
-      }),
-    });
-
-    expect(machine.failedScriptResults(state, ["foo", "bar"])).toEqual({
-      foo: scriptResults.foo,
-      bar: scriptResults.bar,
-    });
   });
 });

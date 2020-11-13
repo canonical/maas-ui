@@ -43,18 +43,21 @@ describe("OverrideTestForm", () => {
       }),
       scriptresults: scriptResultsStateFactory({
         loaded: true,
-        items: {
-          abc123: [
-            {
-              id: 1,
-              name: "script1",
-            },
-            {
-              id: 2,
-              name: "script2",
-            },
-          ],
-        },
+        items: [
+          {
+            id: "abc123",
+            results: [
+              {
+                id: 1,
+                name: "script1",
+              },
+              {
+                id: 2,
+                name: "script2",
+              },
+            ],
+          },
+        ],
       }),
     });
   });
@@ -63,7 +66,7 @@ describe("OverrideTestForm", () => {
     machine with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
-    state.scriptresults.items = {};
+    state.scriptresults.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -87,7 +90,7 @@ describe("OverrideTestForm", () => {
     machines with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
-    state.scriptresults.items = {};
+    state.scriptresults.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

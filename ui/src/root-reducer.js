@@ -8,7 +8,6 @@ import {
   licensekeys,
   machine,
   messages,
-  scriptresults,
   scripts,
   status,
 } from "./app/base/reducers";
@@ -23,6 +22,7 @@ import notification from "app/store/notification";
 import packagerepository from "app/store/packagerepository";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
+import scriptresults from "app/store/scriptresults";
 import service from "app/store/service";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
