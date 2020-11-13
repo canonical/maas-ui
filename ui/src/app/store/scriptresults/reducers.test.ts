@@ -51,6 +51,7 @@ describe("script results reducer", () => {
           { id: "machine2", results: [newScriptResult2] },
         ],
         loading: false,
+        loaded: true,
       })
     );
   });

@@ -40,6 +40,7 @@ const scriptResultsSlice = generateSlice<
       },
     },
     getStart: (state: ScriptResultsState, _action: PayloadAction<null>) => {
+      state.loaded = false;
       state.loading = true;
     },
     getError: (
@@ -47,6 +48,7 @@ const scriptResultsSlice = generateSlice<
       action: PayloadAction<ScriptResultsState["errors"]>
     ) => {
       state.errors = action.payload;
+      state.loaded = false;
       state.loading = false;
       state.saving = false;
     },
