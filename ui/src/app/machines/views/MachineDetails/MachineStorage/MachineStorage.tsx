@@ -1,9 +1,10 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import React from "react";
 
-import { useWindowTitle } from "app/base/hooks";
+import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Partition } from "app/store/machine/types";
@@ -35,6 +36,7 @@ export const storageDeviceInUse = (
 const MachineStorage = (): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
+  const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -55,6 +57,29 @@ const MachineStorage = (): JSX.Element => {
           <h4>Available disks and partitions</h4>
           <AvailableStorageTable disks={machine.disks} />
         </Strip>
+        <p>
+          Learn more about deploying{" "}
+          <a
+            className="p-link--external"
+            data-test="docs-footer-link"
+            href="https://maas.io/docs/images"
+            onClick={() =>
+              sendAnalytics(
+                "Machine storage",
+                "Click link to MAAS docs",
+                "Windows"
+              )
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Windows
+          </a>
+        </p>
+        <p>
+          Change the default layout in{" "}
+          <Link to="/settings/storage">Settings &rsaquo; Storage</Link>
+        </p>
       </>
     );
   }
