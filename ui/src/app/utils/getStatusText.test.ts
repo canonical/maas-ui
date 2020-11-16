@@ -1,11 +1,12 @@
 import { nodeStatus } from "app/base/enum";
 import { machine as machineFactory } from "testing/factories";
 import { getStatusText } from "./getStatusText";
+import { NodeStatus } from "app/store/types/node";
 
 describe("getStatusText", () => {
   it("displays the machine's status if not deploying or deployed", () => {
     const machine = machineFactory({
-      status: "New",
+      status: NodeStatus.NEW,
       status_code: nodeStatus.NEW,
     });
     expect(getStatusText(machine, "Ubuntu 18.04 LTS")).toEqual("New");
