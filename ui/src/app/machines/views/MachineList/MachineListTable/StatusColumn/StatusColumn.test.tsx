@@ -9,6 +9,7 @@ import { StatusColumn } from "./StatusColumn";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { TestResult } from "app/store/types/node";
+import { NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -29,7 +30,7 @@ describe("StatusColumn", () => {
       actions: [],
       distro_series: "bionic",
       osystem: "ubuntu",
-      status: "New",
+      status: NodeStatus.NEW,
       status_code: 0,
       status_message: "",
       system_id: "abc123",
@@ -78,7 +79,7 @@ describe("StatusColumn", () => {
 
   describe("status text", () => {
     it("displays the machine's status if not deploying or deployed", () => {
-      machine.status = "New";
+      machine.status = NodeStatus.NEW;
       machine.status_code = nodeStatus.NEW;
       const store = mockStore(state);
       const wrapper = mount(
@@ -95,7 +96,7 @@ describe("StatusColumn", () => {
     });
 
     it("displays the short-form of Ubuntu release if deployed", () => {
-      machine.status = "Deployed";
+      machine.status = NodeStatus.DEPLOYED;
       machine.status_code = nodeStatus.DEPLOYED;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
@@ -116,7 +117,7 @@ describe("StatusColumn", () => {
     });
 
     it("displays the full OS and release if non-Ubuntu deployed", () => {
-      machine.status = "Deployed";
+      machine.status = NodeStatus.DEPLOYED;
       machine.status_code = nodeStatus.DEPLOYED;
       machine.osystem = "centos";
       machine.distro_series = "centos70";
@@ -135,7 +136,7 @@ describe("StatusColumn", () => {
     });
 
     it("displays 'Deploying OS release' if machine is deploying", () => {
-      machine.status = "Deploying";
+      machine.status = NodeStatus.DEPLOYING;
       machine.status_code = nodeStatus.DEPLOYING;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
@@ -157,7 +158,7 @@ describe("StatusColumn", () => {
 
     it("displays an error message for broken machines", () => {
       machine.error_description = "machine is on fire";
-      machine.status = "Broken";
+      machine.status = NodeStatus.BROKEN;
       machine.status_code = nodeStatus.BROKEN;
       const store = mockStore(state);
 
@@ -179,7 +180,7 @@ describe("StatusColumn", () => {
 
   describe("progress text", () => {
     it("displays the machine's status_message if in a transient state", () => {
-      machine.status = "Testing";
+      machine.status = NodeStatus.TESTING;
       machine.status_code = nodeStatus.TESTING;
       machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
@@ -200,7 +201,7 @@ describe("StatusColumn", () => {
 
     it(`does not display the machine's status_message if
       not in a transient state`, () => {
-      machine.status = "Allocated";
+      machine.status = NodeStatus.ALLOCATED;
       machine.status_code = nodeStatus.ALLOCATED;
       machine.status_message = "This machine is allocated";
       const store = mockStore(state);
@@ -220,7 +221,7 @@ describe("StatusColumn", () => {
 
   describe("status icon", () => {
     it("shows a spinner if machine is in a transient state", () => {
-      machine.status = "Commissioning";
+      machine.status = NodeStatus.COMMISSIONING;
       machine.status_code = nodeStatus.COMMISSIONING;
       const store = mockStore(state);
       const wrapper = mount(
@@ -238,7 +239,7 @@ describe("StatusColumn", () => {
 
     it(`shows a warning and tooltip if machine has failed tests and is not in a
       state where the warning should be hidden`, () => {
-      machine.status = "Allocated";
+      machine.status = NodeStatus.ALLOCATED;
       machine.status_code = nodeStatus.ALLOCATED;
       machine.testing_status.status = scriptStatus.FAILED as TestResult;
       const store = mockStore(state);
