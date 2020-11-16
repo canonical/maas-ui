@@ -5,7 +5,9 @@ import { general as generalActions } from "app/base/actions";
 import { nodeStatus } from "app/base/enum";
 import generalSelectors from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
-import { Pod } from "../pod/types";
+import { Pod } from "app/store/pod/types";
+import { RootState } from "app/store/root/types";
+import type { Host } from "app/store/types/host";
 
 /**
  * Check if a machine has an invalid architecture.
@@ -68,6 +70,36 @@ export const useCanEdit = (
     !machine.locked &&
     (ignoreRackControllerConnection || isRackControllerConnected)
   );
+};
+
+/**
+ * Format a node's OS and release into human-readable text.
+ * @param node - A node object.
+ * @returns Formatted OS string.
+ */
+export const useFormattedOS = (node?: Host | null): string => {
+  const dispatch = useDispatch();
+  const osReleases = useSelector((state: RootState) =>
+    generalSelectors.osInfo.getOsReleases(state, node?.osystem)
+  );
+
+  useEffect(() => {
+    dispatch(generalActions.fetchOsInfo());
+  }, [dispatch]);
+
+  if (!node || !node.osystem || !node.distro_series) {
+    return "";
+  }
+
+  const machineRelease = osReleases.find(
+    (release) => release.value === node.distro_series
+  );
+  if (machineRelease) {
+    return node.osystem === "ubuntu"
+      ? machineRelease.label.split('"')[0].trim()
+      : machineRelease.label;
+  }
+  return `${node.osystem}/${node.distro_series}`;
 };
 
 /**

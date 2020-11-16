@@ -1,7 +1,8 @@
 import React from "react";
 
-import type { MachineDetails } from "app/store/machine/types";
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import type { MachineDetails } from "app/store/machine/types";
+import { useFormattedOS } from "app/store/machine/utils";
 
 type Props = {
   machine: MachineDetails;
@@ -31,6 +32,8 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 };
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
+  const formattedOS = useFormattedOS(machine);
+
   return (
     <>
       <div className="overview-card__status">
@@ -38,18 +41,18 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
           {isVM(machine) ? "Virtual Machine Status" : "Machine Status"}
         </strong>
 
-        <h4 className="u-no-margin--bottom" data-test="locked">
-          {machine.locked ? (
-            <i className="p-icon--locked" ng-if="node.locked">
-              Locked:{" "}
+        <h4 className="u-no-margin--bottom">
+          {machine.locked && (
+            <i className="p-icon--locked is-inline" data-test="locked">
+              Locked
             </i>
-          ) : null}
+          )}
           {machine.status}
         </h4>
 
         {machine.show_os_info ? (
-          <p className="p-text--muted" data-test="os-info">
-            {`${machine.osystem}/${machine.distro_series}`}
+          <p className="u-text--muted" data-test="os-info">
+            {formattedOS}
           </p>
         ) : null}
       </div>
