@@ -54,7 +54,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
     saved,
     dhcpsnippetActions.cleanup,
     `${savingDhcp} ${editing ? "updated" : "added"} successfully.`,
-    setSaving
+    () => setSaving(null)
   );
 
   useEffect(() => {

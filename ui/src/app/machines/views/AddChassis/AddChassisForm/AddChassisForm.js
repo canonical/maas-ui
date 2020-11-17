@@ -62,7 +62,7 @@ export const AddChassisForm = () => {
     machineSaved,
     machineActions.cleanup,
     `Attempting to add machines from ${savingChassis}.`,
-    setSavingChassis
+    () => setSavingChassis(false)
   );
 
   const ChassisSchema = usePowerParametersSchema(

@@ -93,7 +93,7 @@ const LicenseKeyList = () => {
     saved,
     licenseKeysActions.cleanup,
     `License key ${title} removed successfully.`,
-    setDeleting
+    () => setDeleting(null)
   );
 
   useAddMessage(

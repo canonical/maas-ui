@@ -85,7 +85,7 @@ export const Repositories = () => {
     saved,
     repositoryActions.cleanup,
     `${deletedRepo} removed successfully.`,
-    setDeletedRepo
+    () => setDeletedRepo(null)
   );
 
   // Fetch repositories on load

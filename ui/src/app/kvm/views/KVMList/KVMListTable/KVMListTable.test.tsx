@@ -150,7 +150,7 @@ describe("KVMListTable", () => {
     expect(
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
-      key: "",
+      key: null,
       direction: "none",
     });
   });

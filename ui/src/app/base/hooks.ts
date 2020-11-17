@@ -1,25 +1,30 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 import { notificationTypes } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useFormikContext } from "formik";
+import type { MenuLink } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenuDropdown/ContextualMenuDropdown";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { useFormikContext } from "formik";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as machineActions } from "app/store/machine";
 import { messages } from "app/base/actions";
+import type { TSFixMe } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";
-import machineSelectors from "app/store/machine/selectors";
 import generalSelectors from "app/store/general/selectors";
+import type { PowerField, PowerType } from "app/store/general/types";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { kebabToCamelCase } from "app/utils";
-import { useCallback } from "react";
 
 /**
  * Combines formik validation errors and errors returned from server
  * for use in formik forms.
- * @param {Object} errors - The errors object in redux state.
+ * @param errors - The errors object in redux state.
  */
-export const useFormikErrors = (errors) => {
+export const useFormikErrors = (errors: TSFixMe): void => {
   const { setFieldError, setFieldTouched, values } = useFormikContext();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
@@ -30,7 +35,7 @@ export const useFormikErrors = (errors) => {
       !simpleObjectEquality(errors, previousErrors)
     ) {
       Object.keys(errors).forEach((field) => {
-        let errorString;
+        let errorString: string;
         if (Array.isArray(errors[field])) {
           errorString = errors[field].join(" ");
         } else {
@@ -46,15 +51,18 @@ export const useFormikErrors = (errors) => {
 /**
  * Returns whether a formik form should be disabled, given the current state
  * of the form.
- * @param {Object} allowAllEmpty - Whether all fields are allowed to be empty.
- * @param {Object} allowUnchanged - Whether the form is enabled even when unchanged.
- * @returns {Boolean} Form is disabled.
+ * @param allowAllEmpty - Whether all fields are allowed to be empty.
+ * @param allowUnchanged - Whether the form is enabled even when unchanged.
+ * @returns Form is disabled.
  */
 export const useFormikFormDisabled = ({
   allowAllEmpty = false,
   allowUnchanged = false,
-}) => {
-  const { initialValues, errors, values } = useFormikContext();
+}: {
+  allowAllEmpty: boolean;
+  allowUnchanged: boolean;
+}): boolean => {
+  const { initialValues, errors, values } = useFormikContext<TSFixMe>();
   // As we delete keys from values below, we don't want to
   // mutate the actual form values
   const newValues = { ...values };
@@ -84,20 +92,20 @@ export const useFormikFormDisabled = ({
 
 /**
  * Add a message in response to a state change e.g. when something is created.
- * @param {Boolean} addCondition - Whether the message should be added.
- * @param {Function} cleanup - A cleanup action to fire.
- * @param {String} message - The message to be displayed.
- * @param {Function} onMessageAdded - A function to call once the message has
+ * @param addCondition - Whether the message should be added.
+ * @param cleanup - A cleanup action to fire.
+ * @param message - The message to be displayed.
+ * @param onMessageAdded - A function to call once the message has
                                       been displayed.
- * @param {String} messageType - The notification type.
+ * @param messageType - The notification type.
  */
 export const useAddMessage = (
-  addCondition,
-  cleanup,
-  message,
-  onMessageAdded,
-  messageType = notificationTypes.INFORMATION
-) => {
+  addCondition: boolean,
+  cleanup: () => { type: string; payload?: undefined },
+  message: string,
+  onMessageAdded: () => void,
+  messageType: notificationTypes = notificationTypes.INFORMATION
+): void => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -111,9 +119,9 @@ export const useAddMessage = (
 
 /**
  * Set the browser window title.
- * @param {String} title - The title to set.
+ * @param title - The title to set.
  */
-export const useWindowTitle = (title) => {
+export const useWindowTitle = (title?: string): void => {
   const maasName = useSelector(configSelectors.maasName);
   const maasNamePart = maasName ? `${maasName} ` : "";
   const titlePart = title ? `${title} | ` : "";
@@ -124,29 +132,35 @@ export const useWindowTitle = (title) => {
 
 /**
  * Send a google analytics event
- * @param {string} eventCategory - The analytics category.
- * @param {string} eventAction - The analytics action.
- * @param {string} eventLabel - The analytics label.
+ * @param eventCategory - The analytics category.
+ * @param eventAction - The analytics action.
+ * @param eventLabel - The analytics label.
  */
-const sendAnalytics = (eventCategory, eventAction, eventLabel) => {
-  window.ga &&
-    window.ga("send", "event", eventCategory, eventAction, eventLabel);
-};
-
-/**
- * Send an analytics event if analytics config is enabled
- * @param {string} eventCategory - The analytics category.
- * @param {string} eventAction - The analytics action.
- * @param {string} eventLabel - The analytics label.
- */
-export const useSendAnalytics = (
+const sendAnalytics = (
   eventCategory = "",
   eventAction = "",
   eventLabel = ""
 ) => {
+  window.ga &&
+    window.ga("send", "event", eventCategory, eventAction, eventLabel);
+};
+
+export type SendAnalytics = (
+  eventCategory: string,
+  eventAction: string,
+  eventLabel: string
+) => void;
+
+/**
+ * Send an analytics event if analytics config is enabled
+ * @param eventCategory - The analytics category.
+ * @param eventAction - The analytics action.
+ * @param eventLabel - The analytics label.
+ */
+export const useSendAnalytics = (): SendAnalytics => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   return useCallback(
-    (eventCategory, eventAction, eventLabel) => {
+    (eventCategory?, eventAction?, eventLabel?) => {
       if (analyticsEnabled && eventCategory && eventAction && eventLabel) {
         sendAnalytics(eventCategory, eventAction, eventLabel);
       }
@@ -163,11 +177,11 @@ export const useSendAnalytics = (
  * @param {string} eventLabel - The analytics label.
  */
 export const useSendAnalyticsWhen = (
-  sendCondition,
-  eventCategory,
-  eventAction,
-  eventLabel
-) => {
+  sendCondition: boolean,
+  eventCategory?: string,
+  eventAction?: string,
+  eventLabel?: string
+): void => {
   const sendAnalytics = useSendAnalytics();
 
   useEffect(() => {
@@ -179,25 +193,25 @@ export const useSendAnalyticsWhen = (
 
 /**
  * Generate menu items for the available actins on a machine.
- * @param {String} systemId - The system id for a machine.
- * @param {Array} actions - The actions to generate menu items for.
- * @param {String} noneMessage - The message to display if there are no items.
- * @param {Function} onClick - A function to call when the item is clicked.
+ * @param systemId - The system id for a machine.
+ * @param actions - The actions to generate menu items for.
+ * @param noneMessage - The message to display if there are no items.
+ * @param onClick - A function to call when the item is clicked.
  */
 export const useMachineActions = (
-  systemId,
-  actions,
-  noneMessage = null,
-  onClick = null
-) => {
+  systemId: Machine["system_id"],
+  actions: string[],
+  noneMessage: string | null = null,
+  onClick: () => void | null = null
+): MenuLink[] => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(
     generalSelectors.machineActions.get
   );
-  const machine = useSelector((state) =>
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  let actionLinks = [];
+  const actionLinks: MenuLink[] = [];
   if (machine) {
     actions.forEach((action) => {
       if (machine.actions.includes(action)) {
@@ -232,11 +246,13 @@ export const useMachineActions = (
 
 /**
  * Simple hook for visibility toggles.
- * @param {Bool} initialValue - initial toggle value.
+ * @param initialValue - initial toggle value.
  */
-export const useVisible = (initialValue) => {
+export const useVisible = (
+  initialValue: boolean
+): [boolean, (evt: React.MouseEvent) => void] => {
   const [value, setValue] = useState(initialValue);
-  const toggleValue = (evt) => {
+  const toggleValue = (evt: React.MouseEvent) => {
     evt.preventDefault();
     setValue(!value);
   };
@@ -246,15 +262,17 @@ export const useVisible = (initialValue) => {
 /**
  * Returns a Yup validation schema with dynamically generated power parameters
  * schema, depending on the selected power type in the form.
- * @param {Object} powerType - Power type selected in the form.
- * @param {Function} generateSchemaFunc - Schema generation function.
- * @returns {Object} Yup validation schema with power parameters.
+ * @param powerType - Power type selected in the form.
+ * @param generateSchemaFunc - Schema generation function.
+ * @returns Yup validation schema with power parameters.
  */
 export const usePowerParametersSchema = (
-  powerType,
-  generateSchemaFunc,
+  powerType: PowerType,
+  generateSchemaFunc: (
+    parametersSchema: Yup.ObjectSchemaDefinition<TSFixMe>
+  ) => TSFixMe,
   chassis = false
-) => {
+): TSFixMe => {
   const [Schema, setSchema] = useState(generateSchemaFunc({}));
 
   useEffect(() => {
@@ -284,10 +302,14 @@ export const usePowerParametersSchema = (
  * power types. Used to initialise Formik forms so React doesn't complain about
  * unexpected values. Parameters should be trimmed to only relevant parameters
  * on form submit.
- * @param {Array} powerTypes - Power types to collate parameters from.
- * @returns {Object} All possible power parameters from given power types.
+ * @param powerTypes - Power types to collate parameters from.
+ * @returns All possible power parameters from given power types.
  */
-export const useAllPowerParameters = (powerTypes) =>
+export const useAllPowerParameters = (
+  powerTypes: PowerType[]
+): {
+  [x: string]: PowerField["default"];
+} =>
   useMemo(
     () =>
       powerTypes.reduce((parameters, powerType) => {
@@ -303,10 +325,10 @@ export const useAllPowerParameters = (powerTypes) =>
 
 /**
  * Handle checking when a value has cycled from false to true.
- * @param {boolean} value - The value to check.
- * @param {() => void} onCycled - The function to call when the value changes from false to true.
+ * @param value - The value to check.
+ * @param onCycled - The function to call when the value changes from false to true.
  */
-const useCycled = (value, onCycled) => {
+const useCycled = (value: boolean, onCycled: () => void) => {
   const previousValue = useRef(value);
   useEffect(() => {
     if (value && !previousValue.current) {
@@ -320,17 +342,17 @@ const useCycled = (value, onCycled) => {
 
 /**
  * Handle displaying action progress for batched actions.
- * @param {number} processingCount - The number of items currently being processed.
- * @param {() => void} onComplete - The function to call when all the items have been processed.
- * @param {boolean} hasErrors - Whether there are any item errors in state.
- * @param {() => void} onError - The function to call when an error occurs.
+ * @param processingCount - The number of items currently being processed.
+ * @param onComplete - The function to call when all the items have been processed.
+ * @param hasErrors - Whether there are any item errors in state.
+ * @param onError - The function to call when an error occurs.
  */
 export const useProcessing = (
-  processingCount,
-  onComplete,
+  processingCount: number,
+  onComplete: () => void,
   hasErrors = false,
-  onError
-) => {
+  onError: () => void
+): void => {
   const processingStarted = useRef(false);
   if (processingStarted.current === false && processingCount > 0) {
     processingStarted.current = true;
@@ -352,29 +374,42 @@ export const useProcessing = (
   });
 };
 
-/**
- * @typedef {object} TableSort
- * @property {Sort} currentSort - The current sort key and direction.
- * @property {function} sortRows - The function that sorts table rows.
- * @property {(newSortKey: Sort["key"]) => void} updateSort - The function used to update current sort.
- */
+type SortValueGetter<I, K extends string> = (
+  sortKey: K,
+  storageDevice: I,
+  ...args: unknown[]
+) => unknown;
+
+type Sort<K> = {
+  key: K;
+  direction: "ascending" | "descending" | "none";
+};
+
+type UseTableSort<I, K extends string> = {
+  currentSort: Sort<K>;
+  sortRows: (items: I[], ...args: unknown[]) => I[];
+  updateSort: (newSort: K) => void;
+};
 
 /**
  * Handle sorting in tables.
- * @param {function} sortValueGetter - The function that determines what value to use when comparing row objects.
- * @param {Sort} initialSort - The initial sort key and direction on table render.
- * @returns {TableSort} The properties and helper functions to use in table sorting.
+ * @param sortValueGetter - The function that determines what value to use when comparing row objects.
+ * @param initialSort - The initial sort key and direction on table render.
+ * @returns The properties and helper functions to use in table sorting.
  */
-export const useTableSort = (sortValueGetter, initialSort) => {
+export const useTableSort = <I, K extends string>(
+  sortValueGetter: SortValueGetter<I, K>,
+  initialSort: Sort<K>
+): UseTableSort<I, K> => {
   const [currentSort, setCurrentSort] = useState(initialSort);
 
   // Update current sort depending on whether the same sort key was clicked.
-  const updateSort = (newSortKey) => {
+  const updateSort = (newSortKey: K) => {
     const { key, direction } = currentSort;
 
     if (newSortKey === key) {
       if (direction === "ascending") {
-        setCurrentSort({ key: "", direction: "none" });
+        setCurrentSort({ key: null, direction: "none" });
       } else {
         setCurrentSort({ key, direction: "ascending" });
       }
@@ -385,10 +420,10 @@ export const useTableSort = (sortValueGetter, initialSort) => {
 
   // Sort rows according to sortValueGetter. Additional arguments will need to be
   // passed to both the sortValueGetter and sortRows functions.
-  const sortRows = (items, ...args) => {
+  const sortRows = (items: I[], ...args: unknown[]): I[] => {
     const { key, direction } = currentSort;
 
-    const sortFunctionGenerator = (itemA, itemB) => {
+    const sortFunctionGenerator = (itemA: I, itemB: I) => {
       const sortA = sortValueGetter(key, itemA, ...args);
       const sortB = sortValueGetter(key, itemB, ...args);
 
@@ -404,7 +439,7 @@ export const useTableSort = (sortValueGetter, initialSort) => {
       return 0;
     };
 
-    return [...items].sort(sortFunctionGenerator, ...args);
+    return [...items].sort(sortFunctionGenerator);
   };
 
   return { currentSort, sortRows, updateSort };

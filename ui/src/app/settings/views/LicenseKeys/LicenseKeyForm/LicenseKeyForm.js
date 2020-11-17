@@ -44,7 +44,7 @@ export const LicenseKeyForm = ({ licenseKey }) => {
     saved,
     licenseKeysActions.cleanup,
     `${savingLicenseKey} ${editing ? "updated" : "added"} successfully.`,
-    setSaving
+    () => setSaving(null)
   );
 
   useEffect(() => {

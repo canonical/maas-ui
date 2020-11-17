@@ -83,11 +83,8 @@ export const AddKVMForm = (): JSX.Element => {
 
   useWindowTitle("Add KVM");
 
-  useAddMessage(
-    podSaved,
-    cleanup,
-    `${savingPod} added successfully.`,
-    setSavingPod
+  useAddMessage(podSaved, cleanup, `${savingPod} added successfully.`, () =>
+    setSavingPod(false)
   );
 
   const AddKVMSchema = usePowerParametersSchema(

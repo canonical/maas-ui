@@ -37,7 +37,7 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
     saved,
     userActions.cleanup,
     `${savingUser} ${editing ? "updated" : "added"} successfully.`,
-    setSaving
+    () => setSaving(null)
   );
 
   return (

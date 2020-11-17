@@ -58,7 +58,7 @@ export const AddRSDForm = () => {
     podSaved,
     podActions.cleanup,
     `${savingPod} added successfully.`,
-    setSavingPod
+    () => setSavingPod(false)
   );
 
   let errors = "";

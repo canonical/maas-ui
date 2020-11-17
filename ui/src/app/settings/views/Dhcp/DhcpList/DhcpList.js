@@ -177,7 +177,7 @@ const DhcpList = () => {
     saved && deletingName,
     dhcpsnippetActions.cleanup,
     `${deletingName} removed successfully.`,
-    setDeleting
+    () => setDeleting(null)
   );
 
   const hideExpanded = () => {

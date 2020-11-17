@@ -29,7 +29,7 @@ export const PoolForm = ({ pool }) => {
     saved,
     poolActions.cleanup,
     `${savingPool} ${pool ? "updated" : "added"} successfully.`,
-    setSaving
+    () => setSaving(null)
   );
 
   let initialValues;
