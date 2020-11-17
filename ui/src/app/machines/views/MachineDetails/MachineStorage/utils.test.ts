@@ -331,5 +331,22 @@ describe("Machine storage utils", () => {
       expect(filesystems[1].mountPoint).toBe("/partition-fs/path");
       expect(filesystems[2].mountPoint).toBe("/special-fs/path");
     });
+
+    it("can separate out cache sets", () => {
+      const disks = [
+        diskFactory({
+          name: "cache0",
+          type: "cache-set",
+        }),
+        diskFactory({
+          name: "not-a-cache-set",
+          type: "physical",
+        }),
+      ];
+      const { cacheSets } = separateStorageData(disks);
+
+      expect(cacheSets.length).toBe(1);
+      expect(cacheSets[0].name).toBe("cache0");
+    });
   });
 });

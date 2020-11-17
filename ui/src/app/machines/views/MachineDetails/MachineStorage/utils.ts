@@ -38,6 +38,8 @@ export const formatType = (
   }
 
   switch (typeToFormat) {
+    case "cache-set":
+      return "Cache set";
     case "iscsi":
       return "ISCSI";
     case "lvm-vg":
@@ -168,7 +170,9 @@ export const separateStorageData = (
     (data: SeparatedDiskData, disk: Disk) => {
       const normalisedDisk = normaliseStorageDevice(disk);
 
-      if (storageDeviceInUse(disk)) {
+      if (disk.type === "cache-set") {
+        data.cacheSets.push(normalisedDisk);
+      } else if (storageDeviceInUse(disk)) {
         data.used.push(normalisedDisk);
       } else {
         data.available.push(normalisedDisk);
@@ -204,7 +208,7 @@ export const separateStorageData = (
 
       return data;
     },
-    { available: [], filesystems: [], used: [] }
+    { available: [], cacheSets: [], filesystems: [], used: [] }
   );
 
   if (specialFilesystems.length > 0) {

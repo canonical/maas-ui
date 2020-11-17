@@ -323,13 +323,13 @@ exports[`stricter compilation`] = {
       [45, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
       [49, 11, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2917642452": [
-      [46, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2924641761": [
+      [80, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/utils.ts:2833644018": [
-      [144, 44, 20, "Object is possibly \'undefined\'.", "861603158"],
-      [178, 30, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
-      [195, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
+    "src/app/machines/views/MachineDetails/MachineStorage/utils.ts:3111838099": [
+      [146, 44, 20, "Object is possibly \'undefined\'.", "861603158"],
+      [182, 30, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
+      [199, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:2502469861": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
