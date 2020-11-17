@@ -2,67 +2,28 @@ import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
+import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import {
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
-import { MIN_PARTITION_SIZE } from "../MachineStorage";
+import { separateStorageData } from "../utils";
 import AvailableStorageTable from "./AvailableStorageTable";
 
 describe("AvailableStorageTable", () => {
   it("can show an empty message", () => {
-    const wrapper = mount(<AvailableStorageTable disks={[]} />);
+    const wrapper = mount(<AvailableStorageTable storageDevices={[]} />);
 
     expect(wrapper.find("[data-test='no-available']").text()).toBe(
       "No available disks or partitions."
     );
   });
 
-  it("correctly filters available disks", () => {
-    const [availableDisk, unavailableDisk] = [
-      diskFactory({
-        available_size: MIN_PARTITION_SIZE + 1,
-        name: "available-disk",
-      }),
-      diskFactory({ available_size: 0, name: "unavailable-disk" }),
-    ];
-    const wrapper = mount(
-      <AvailableStorageTable disks={[availableDisk, unavailableDisk]} />
-    );
-
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
-    expect(wrapper.find("tbody TableRow DoubleRow").at(0).prop("primary")).toBe(
-      "available-disk"
-    );
-  });
-
-  it("correctly filters available partitions", () => {
-    const [availablePartition, unavailablePartition] = [
-      partitionFactory({
-        filesystem: fsFactory({ mount_point: "" }),
-        name: "available-partition",
-      }),
-      partitionFactory({
-        filesystem: fsFactory({ mount_point: "/path" }),
-        name: "unavailable-partition",
-      }),
-    ];
-    const disk = diskFactory({
-      available_size: 0,
-      partitions: [availablePartition, unavailablePartition],
-    });
-    const wrapper = mount(<AvailableStorageTable disks={[disk]} />);
-
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
-    expect(wrapper.find("[data-test='name']").at(0).prop("primary")).toBe(
-      "available-partition"
-    );
-  });
-
   it("shows boot status for physical disks", () => {
     const disks = [diskFactory({ is_boot: true, type: "physical" })];
-    const wrapper = mount(<AvailableStorageTable disks={disks} />);
+    const { available } = separateStorageData(disks);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='boot'] .p-icon--tick").exists()).toBe(
       true
@@ -71,7 +32,8 @@ describe("AvailableStorageTable", () => {
 
   it("correctly shows type of physical disks", () => {
     const disks = [diskFactory({ type: "physical" })];
-    const wrapper = mount(<AvailableStorageTable disks={disks} />);
+    const { available } = separateStorageData(disks);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
       "Physical"
@@ -79,16 +41,19 @@ describe("AvailableStorageTable", () => {
   });
 
   it("correctly shows type of partitions", () => {
-    const disk = diskFactory({
-      available_size: 0,
-      partitions: [
-        partitionFactory({
-          filesystem: fsFactory({ mount_point: "" }),
-          type: "partition",
-        }),
-      ],
-    });
-    const wrapper = mount(<AvailableStorageTable disks={[disk]} />);
+    const disks = [
+      diskFactory({
+        available_size: 0,
+        partitions: [
+          partitionFactory({
+            filesystem: fsFactory({ mount_point: "" }),
+            type: "partition",
+          }),
+        ],
+      }),
+    ];
+    const { available } = separateStorageData(disks);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
       "Partition"
@@ -99,7 +64,8 @@ describe("AvailableStorageTable", () => {
     const disks = [
       diskFactory({ available_size: MIN_PARTITION_SIZE + 1, type: "lvm-vg" }),
     ];
-    const wrapper = mount(<AvailableStorageTable disks={disks} />);
+    const { available } = separateStorageData(disks);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
       "Volume group"
@@ -115,7 +81,8 @@ describe("AvailableStorageTable", () => {
         type: "virtual",
       }),
     ];
-    const wrapper = mount(<AvailableStorageTable disks={[parent, child]} />);
+    const { available } = separateStorageData([parent, child]);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
       "Logical volume"
@@ -131,7 +98,8 @@ describe("AvailableStorageTable", () => {
         type: "virtual",
       }),
     ];
-    const wrapper = mount(<AvailableStorageTable disks={[parent, child]} />);
+    const { available } = separateStorageData([parent, child]);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
       "RAID 0"
@@ -147,7 +115,8 @@ describe("AvailableStorageTable", () => {
         type: "lvm-vg",
       }),
     ];
-    const wrapper = mount(<AvailableStorageTable disks={disks} />);
+    const { available } = separateStorageData(disks);
+    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
 
     expect(wrapper.find("[data-test='numa-warning']").prop("message")).toBe(
       "This volume is spread over multiple NUMA nodes which may cause suboptimal performance."
@@ -158,11 +127,12 @@ describe("AvailableStorageTable", () => {
     const disks = [
       diskFactory({ available_size: MIN_PARTITION_SIZE + 1, tags: ["tag-1"] }),
     ];
+    const { available } = separateStorageData(disks);
     const wrapper = mount(
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
-        <AvailableStorageTable disks={disks} />
+        <AvailableStorageTable storageDevices={available} />
       </MemoryRouter>
     );
 

@@ -6,13 +6,12 @@ import {
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
+import { separateStorageData } from "../utils";
 import FilesystemsTable from "./FilesystemsTable";
 
 describe("FilesystemsTable", () => {
   it("can show an empty message", () => {
-    const wrapper = mount(
-      <FilesystemsTable disks={[]} specialFilesystems={[]} />
-    );
+    const wrapper = mount(<FilesystemsTable filesystems={[]} />);
 
     expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
       "No filesystems defined."
@@ -27,9 +26,8 @@ describe("FilesystemsTable", () => {
         partitions: [],
       }),
     ];
-    const wrapper = mount(
-      <FilesystemsTable disks={disks} specialFilesystems={[]} />
-    );
+    const { filesystems } = separateStorageData(disks);
+    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("disk-fs");
     expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
@@ -49,9 +47,8 @@ describe("FilesystemsTable", () => {
         ],
       }),
     ];
-    const wrapper = mount(
-      <FilesystemsTable disks={disks} specialFilesystems={[]} />
-    );
+    const { filesystems } = separateStorageData(disks);
+    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
       "partition-fs"
@@ -65,9 +62,8 @@ describe("FilesystemsTable", () => {
     const specialFilesystems = [
       fsFactory({ mount_point: "/special-fs/path", fstype: "tmpfs" }),
     ];
-    const wrapper = mount(
-      <FilesystemsTable disks={[]} specialFilesystems={specialFilesystems} />
-    );
+    const { filesystems } = separateStorageData([], specialFilesystems);
+    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("—");
     expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
