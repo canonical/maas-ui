@@ -104,7 +104,7 @@ export const AddMachineForm = () => {
     machineSaved,
     machineActions.cleanup,
     `${savingMachine} added successfully.`,
-    setSavingMachine
+    () => setSavingMachine(false)
   );
 
   const MachineSchema = usePowerParametersSchema(

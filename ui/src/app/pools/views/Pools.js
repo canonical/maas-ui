@@ -106,7 +106,7 @@ const Pools = () => {
     saved,
     resourcePoolActions.cleanup,
     `${deletingPool} removed successfully.`,
-    setDeleting
+    () => setDeleting(null)
   );
 
   useEffect(() => {

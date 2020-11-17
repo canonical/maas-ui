@@ -59,7 +59,7 @@ export const RepositoryForm = ({ type, repository }) => {
     repositoriesSaved,
     repositoryActions.cleanup,
     `${savedRepo} ${repository ? "updated" : "added"} successfully.`,
-    setSavedRepo
+    () => setSavedRepo(null)
   );
 
   // Fetch data if not all loaded.

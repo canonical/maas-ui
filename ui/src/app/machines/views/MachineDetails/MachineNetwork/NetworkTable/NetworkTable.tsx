@@ -8,8 +8,12 @@ import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
-const getSortValue = (sortKey: keyof NetworkInterface, nic: NetworkInterface) =>
-  nic[sortKey];
+// TODO: update the sortKey type with the correct values once sorting is
+// implemented in this component.
+const getSortValue = (
+  sortKey: keyof NetworkInterface | string,
+  nic: NetworkInterface
+) => nic[sortKey];
 
 type Props = { systemId: Machine["system_id"] };
 

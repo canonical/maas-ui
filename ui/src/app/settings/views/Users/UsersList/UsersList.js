@@ -137,7 +137,7 @@ const Users = () => {
     saved,
     userActions.cleanup,
     `${deletingUser} removed successfully.`,
-    setDeleting
+    () => setDeleting(null)
   );
 
   useEffect(() => {

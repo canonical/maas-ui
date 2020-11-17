@@ -65,11 +65,8 @@ export const AddRSDForm = (): JSX.Element => {
 
   useWindowTitle("Add RSD");
 
-  useAddMessage(
-    podSaved,
-    cleanup,
-    `${savingRSD} added successfully.`,
-    setSavingRSD
+  useAddMessage(podSaved, cleanup, `${savingRSD} added successfully.`, () =>
+    setSavingRSD("")
   );
 
   const errors = formatErrors(podErrors);
