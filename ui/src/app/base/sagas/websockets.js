@@ -347,8 +347,8 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
   let params = payload ? payload.params : null;
   const { method, model } = meta;
   // If method is 'list' and data has loaded/is loading, do not fetch again
-  // unless this is fetching a new batch.
-  if (method.endsWith("list") && (!params || !params.start)) {
+  // unless this is fetching a new batch, unless 'nocache' is specified
+  if (method.endsWith("list") && (!params || !params.start) && !meta?.nocache) {
     if (isLoaded(model)) {
       return;
     }

@@ -10,6 +10,7 @@ import type { GeneralState } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type { MachineState } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
+import type { NodeResultState } from "app/store/noderesult/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState } from "app/store/pod/types";
@@ -39,6 +40,7 @@ export type RootState = {
   licensekeys: LicenseKeysState;
   machine: MachineState;
   messages: MessageState;
+  noderesult: NodeResultState;
   notification: NotificationState;
   packagerepository: PackageRepositoryState;
   pod: PodState;

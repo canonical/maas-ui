@@ -58,9 +58,6 @@ exports[`stricter compilation`] = {
       [31, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [33, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
     ],
-    "src/app/base/components/SectionHeader/SectionHeader.tsx:1865526444": [
-      [73, 16, 3, "Type \'string | number | null\' is not assignable to type \'string | number | undefined\'.\\n  Type \'null\' is not assignable to type \'string | number | undefined\'.", "193424690"]
-    ],
     "src/app/base/components/TagSelector/TagSelector.test.tsx:846439984": [
       [6, 6, 4, "Variable \'tags\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2087952548"],
       [21, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
@@ -81,7 +78,7 @@ exports[`stricter compilation`] = {
       [214, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1489314622": [
-      [1, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [1, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [37, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [38, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [39, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -419,9 +416,12 @@ exports[`stricter compilation`] = {
     "src/app/store/general/selectors/machineActions.test.ts:3658604617": [
       [89, 10, 4, "Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: string; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'string\' is not assignable to type \'MachineActionName\'.", "2087377941"]
     ],
-    "src/app/store/machine/slice.ts:10489408": [
-      [302, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'{ errors: any; items: ({ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; ... 41 more ...; zone: { ...; }; } | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean; s...\' is missing the following properties from type \'{ active: string | null; errors: any; items: ({ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; ... 42 more ...; zone: { ...; }; } | { ...; })[]; ... 5 more ...; statuses: { ...; }; }\': active, selected, statuses", "4102082497"],
-      [304, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'MachineState\': errors, items, loaded, loading, and 2 more.", "1433951465"]
+    "src/app/store/machine/slice.ts:2364558725": [
+      [302, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, selected, statuses", "4102082497"],
+      [306, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Machine, any>\': errors, items, loaded, loading, and 2 more.", "1433951465"]
+    ],
+    "src/app/store/noderesult/slice.ts:1885676869": [
+      [55, 4, 10, "Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }> | CaseReducerWithPrepare<NodeResultState, PayloadAction<any, string, any, any>>\'.\\n  Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }>\'.\\n    Types of parameters \'action\' and \'action\' are incompatible.\\n      Type \'{ payload: any; type: string; }\' is not assignable to type \'PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n        Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.", "2529327088"]
     ],
     "src/app/store/notification/selectors.ts:3467721382": [
       [25, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
@@ -429,9 +429,9 @@ exports[`stricter compilation`] = {
     "src/app/store/pod/reducers.test.ts:25266970": [
       [77, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"]
     ],
-    "src/app/store/pod/slice.ts:995813338": [
-      [55, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'{ errors: any; items: ({ id: number; architectures: string[]; available: { cores: number; local_storage: number; local_storage_gb: string; memory: number; memory_gb: string; }; capabilities: string[]; ... 24 more ...; zone: number; } | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is missing the following properties from type \'{ active: number | null; selected: number[]; statuses: { [x: number]: { composing: boolean; deleting: boolean; refreshing: boolean; }; }; errors: any; items: ({ id: number; architectures: string[]; available: { ...; }; ... 25 more ...; zone: number; } | { ...; })[]; loaded: boolean; loading: boolean; saved: boolean;...\': active, selected, statuses", "1022550047"],
-      [56, 16, 71, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'PodState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Pod, any>\': errors, items, loaded, loading, and 2 more.", "3283281399"]
+    "src/app/store/pod/slice.ts:1150649699": [
+      [55, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Pod, any>>\' is missing the following properties from type \'WritableDraft<PodState>\': active, selected, statuses", "1022550047"],
+      [57, 16, 71, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'PodState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Pod, any>\': errors, items, loaded, loading, and 2 more.", "3283281399"]
     ],
     "src/app/store/resourcepool/actions.test.ts:9201512": [
       [71, 52, 24, "Expected 1 arguments, but got 2.", "3295119724"]
@@ -471,28 +471,28 @@ exports[`stricter compilation`] = {
       [197, 11, 5, "Variable \'state\' implicitly has an \'any\' type.", "195031250"],
       [205, 13, 5, "Variable \'state\' implicitly has an \'any\' type.", "195031250"]
     ],
-    "src/app/store/user/slice.ts:88241433": [
-      [9, 59, 12, "Type \'SliceCaseReducers<UserState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'{ errors: any; items: { id: number; completed_intro: boolean; email: string; global_permissions: string[]; is_local: boolean; is_superuser: boolean; last_name: string; last_login: string; machines_count: number; sshkeys_count: number; username: string; }[]; loaded: boolean; loading: boolean; saved: boolean; saving: ...\' but required in type \'{ auth: { errors: any; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; user: { id: number; completed_intro: boolean; email: string; global_permissions: string[]; is_local: boolean; ... 5 more ...; username: string; }; }; ... 5 more ...; saving: boolean; }\'.", "1934442805"]
+    "src/app/store/user/slice.ts:951706592": [
+      [9, 59, 12, "Type \'SliceCaseReducers<UserState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
     ],
-    "src/app/store/utils/slice.test.ts:1988551168": [
-      [250, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'{ errors: unknown; items: ({ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; ... 41 more ...; zone: { ...; }; } | ... 20 more ... | { ...; })[]; loaded: boolean; loading: bool...\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'({ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; tags: string[]; ... 40 more ...; zone: { ...; }; } | ... 20 more ... | { ...; })[]\' is not assignable to type \'Token[]\'.\\n            Type \'{ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; tags: string[]; ... 40 more ...; zone: { ...; }; } | ... 20 more ... | { ...; }\' is not assignable to type \'Token\'.\\n              Type \'{ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; tags: string[]; ... 40 more ...; zone: { ...; }; }\' is not assignable to type \'Token\'.\\n                Type \'{ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; tags: string[]; ... 40 more ...; zone: { ...; }; }\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
-      [256, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
-      [270, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'{ errors: unknown; items: ({ id: number; actions: string[]; domain: { id: number; name: string; }; hostname: string; fqdn: string; link_type: string; node_type_display: string; permissions: string[]; system_id: string; ... 41 more ...; zone: { ...; }; } | ... 20 more ... | { ...; })[]; loaded: boolean; loading: bool...\' is not assignable to type \'TokenState\'.", "3510326721"],
-      [394, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
-      [395, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "662888088"],
-      [396, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "368191931"],
-      [397, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "678288096"]
+    "src/app/store/utils/slice.test.ts:1198843864": [
+      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
+      [258, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
+      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.", "3510326721"],
+      [399, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
+      [400, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "662888088"],
+      [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "368191931"],
+      [402, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "678288096"]
     ],
-    "src/app/store/utils/slice.ts:237729359": [
-      [162, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [202, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [240, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [254, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [259, 2, 181, "Type \'Slice<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>, \\"machine\\" | ... 21 more ... | \\"zone\\">\' is not assignable to type \'Slice<GenericState<I, E>, R, \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"notification\\" | ... 12 more ... | \\"zone\\">\'.\\n  The types returned by \'reducer(...)\' are incompatible between these types.\\n    Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n      Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.", "3918538176"],
-      [265, 4, 8, "Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup: (state: Generi...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n  Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup: (state: Generi...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n    Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup: (state: Generi...\' is not assignable to type \'SliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\'.\\n      Property \'fetchStart\' is incompatible with index signature.\\n        Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: Draft<E>; items: Draft<I>[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n                Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n                  Types of property \'errors\' are incompatible.\\n                    Type \'null\' is not assignable to type \'E\'.\\n                      \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "2838615652"],
-      [352, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.", "3883490613"],
-      [371, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.", "3883490613"],
-      [395, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ [x: string]: { aborting: boolean; acquiring: boolean; applyingStorageLayout: boolean; checkingPower: boolean; commissioning: boolean; deleting: boolean; deploying: boolean; enteringRescueMode: boolean; ... 12 more ...; unlocking: boolean; }; } | { ...; }\'.", "3883490613"]
+    "src/app/store/utils/slice.ts:4209978183": [
+      [166, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [206, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [244, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [255, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [260, 2, 181, "Type \'Slice<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>, \\"machine\\" | ... 22 more ... | \\"zone\\">\' is not assignable to type \'Slice<GenericState<I, E>, R, \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | ... 13 more ... | \\"zone\\">\'.\\n  The types returned by \'reducer(...)\' are incompatible between these types.\\n    Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n      Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.", "3918538176"],
+      [266, 4, 8, "Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n  Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n    Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'SliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\'.\\n      Property \'fetchStart\' is incompatible with index signature.\\n        Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }> | WritableDraft<{ errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                  Types of property \'errors\' are incompatible.\\n                    Type \'null\' is not assignable to type \'E\'.\\n                      \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "2838615652"],
+      [353, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [372, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [396, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"]
     ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
@@ -506,11 +506,11 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:2660496186": [
       [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:3487124000": [
-      [234, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [312, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2158674347"],
-      [314, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<PoorMansUnknown>, string>\'.", "2087809207"],
-      [319, 2, 6, "Type \'null\' is not assignable to type \'\\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<PoorMansUnknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:3923575803": [
+      [235, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
+      [317, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2158674347"],
+      [319, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2087809207"],
+      [324, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -524,29 +524,29 @@ exports[`no TSFixMe types`] = {
       [1, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/config/types.ts:1539107873": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [11, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/controller/types.ts:3342242320": [
+    "src/app/store/config/types.ts:4138985665": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [13, 9, 8, "RegExp match", "1152173309"]
+      [11, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/device/types.ts:2870407164": [
+    "src/app/store/controller/types.ts:3920578608": [
       [2, 13, 8, "RegExp match", "1152173309"],
-      [19, 9, 8, "RegExp match", "1152173309"]
+      [13, 54, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/dhcpsnippet/types.ts:2041796238": [
-      [4, 13, 8, "RegExp match", "1152173309"],
-      [24, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/device/types.ts:2393841436": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [19, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/domain/types.ts:2438698325": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [16, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/dhcpsnippet/types.ts:3769834766": [
+      [5, 13, 8, "RegExp match", "1152173309"],
+      [24, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/fabric/types.ts:1013745005": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [14, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/domain/types.ts:2417784725": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [16, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/fabric/types.ts:693854797": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [14, 46, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/selectors/utils.ts:4114489802": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -566,96 +566,104 @@ exports[`no TSFixMe types`] = {
       [166, 9, 8, "RegExp match", "1152173309"],
       [175, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/licensekeys/types.ts:2257386395": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [11, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/licensekeys/types.ts:2302677435": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:4161201506": [
+    "src/app/store/machine/types.ts:3534572008": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [305, 25, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/noderesult/selectors.ts:2110253132": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [302, 9, 8, "RegExp match", "1152173309"]
+      [57, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/notification/types.ts:2586887406": [
+    "src/app/store/noderesult/types.ts:3402346236": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [28, 9, 8, "RegExp match", "1152173309"]
+      [43, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/packagerepository/types.ts:3950087859": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [20, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/notification/types.ts:3327433646": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [28, 58, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/packagerepository/types.ts:2816846035": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [20, 68, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/pod/types.ts:251284093": [
       [2, 13, 8, "RegExp match", "1152173309"],
       [119, 21, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/resourcepool/types.ts:4045616415": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [15, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/resourcepool/types.ts:2790999903": [
+      [1, 13, 8, "RegExp match", "1152173309"],
+      [15, 58, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scriptresults/selectors.ts:2575868080": [
       [3, 13, 8, "RegExp match", "1152173309"],
       [52, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresults/types.ts:276248988": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [33, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scripts/types.ts:2264904018": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [15, 14, 8, "RegExp match", "1152173309"],
-      [20, 14, 8, "RegExp match", "1152173309"],
-      [52, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/service/types.ts:3748751936": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [10, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/space/types.ts:3394511147": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [13, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/sshkey/types.ts:2805027575": [
+    "src/app/store/scriptresults/types.ts:3922382396": [
       [2, 13, 8, "RegExp match", "1152173309"],
-      [19, 9, 8, "RegExp match", "1152173309"]
+      [33, 60, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sslkey/types.ts:518217640": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [13, 9, 8, "RegExp match", "1152173309"]
+    "src/app/store/scripts/types.ts:3956382354": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [16, 14, 8, "RegExp match", "1152173309"],
+      [21, 14, 8, "RegExp match", "1152173309"],
+      [52, 48, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/service/types.ts:1265104096": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [10, 48, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/space/types.ts:2063576235": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [13, 44, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sshkey/types.ts:4098552279": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [19, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sslkey/types.ts:2644033832": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [13, 46, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/status/types.ts:3358556468": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [5, 22, 8, "RegExp match", "1152173309"],
       [8, 8, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/subnet/types.ts:587705301": [
+    "src/app/store/subnet/types.ts:2671265173": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [46, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/tag/types.ts:790258888": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [13, 40, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/token/types.ts:2001195164": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [15, 44, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/user/types.ts:3113131478": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [46, 9, 8, "RegExp match", "1152173309"]
+      [18, 9, 8, "RegExp match", "1152173309"],
+      [28, 22, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/tag/types.ts:2533761736": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [13, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/token/types.ts:4281996604": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [15, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/user/types.ts:3473477916": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [17, 9, 8, "RegExp match", "1152173309"],
-      [27, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/utils/slice.ts:237729359": [
+    "src/app/store/utils/slice.ts:4209978183": [
       [12, 13, 8, "RegExp match", "1152173309"],
-      [140, 23, 8, "RegExp match", "1152173309"],
-      [180, 23, 8, "RegExp match", "1152173309"],
-      [286, 20, 8, "RegExp match", "1152173309"],
-      [321, 24, 8, "RegExp match", "1152173309"]
+      [144, 23, 8, "RegExp match", "1152173309"],
+      [184, 23, 8, "RegExp match", "1152173309"],
+      [287, 20, 8, "RegExp match", "1152173309"],
+      [322, 24, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/vlan/types.ts:2757450993": [
+    "src/app/store/vlan/types.ts:2480104305": [
+      [2, 13, 8, "RegExp match", "1152173309"],
+      [21, 42, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/zone/types.ts:3483169305": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [21, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/zone/types.ts:80244761": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [14, 9, 8, "RegExp match", "1152173309"]
+      [14, 42, 8, "RegExp match", "1152173309"]
     ]
   }`
 };

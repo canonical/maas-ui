@@ -138,6 +138,14 @@ Object {
   "messages": Object {
     "items": Array [],
   },
+  "noderesult": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "notification": Object {
     "errors": null,
     "items": Array [],
