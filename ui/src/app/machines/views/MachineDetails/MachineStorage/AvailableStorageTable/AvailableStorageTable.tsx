@@ -1,13 +1,15 @@
-import { MainTable, Tooltip } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import React from "react";
-import type { ReactNode } from "react";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
-import { formatBytes } from "app/utils";
+import BootStatus from "../BootStatus";
+import NumaNodes from "../NumaNodes";
+import TagLinks from "../TagLinks";
+import TestStatus from "../TestStatus";
 import type { NormalisedStorageDevice as StorageDevice } from "../types";
-import { formatTags, formatTestStatus, formatType } from "../MachineStorage";
+import { formatSize, formatType } from "../utils";
 
 const getSortValue = (
   sortKey: keyof StorageDevice,
@@ -116,16 +118,6 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
           },
         ]}
         rows={sortedStorageDevices.map((storageDevice) => {
-          const size = formatBytes(storageDevice.size, "B");
-          let boot: ReactNode = "—";
-          if (storageDevice.type === "physical") {
-            boot = storageDevice.boot ? (
-              <i className="p-icon--tick"></i>
-            ) : (
-              <i className="p-icon--close"></i>
-            );
-          }
-
           return {
             columns: [
               {
@@ -150,7 +142,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                 content: (
                   <DoubleRow
                     data-test="boot"
-                    primary={boot}
+                    primary={<BootStatus storageDevice={storageDevice} />}
                     primaryClassName="u-align--center"
                   />
                 ),
@@ -159,7 +151,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                 content: (
                   <DoubleRow
                     data-test="size"
-                    primary={`${size.value} ${size.unit}`}
+                    primary={formatSize(storageDevice.size)}
                   />
                 ),
               },
@@ -172,19 +164,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                       storageDevice.parentType
                     )}
                     secondary={
-                      <>
-                        {storageDevice.numaNodes.length > 1 && (
-                          <Tooltip
-                            data-test="numa-warning"
-                            message={
-                              "This volume is spread over multiple NUMA nodes which may cause suboptimal performance."
-                            }
-                          >
-                            <i className="p-icon--warning is-inline"></i>
-                          </Tooltip>
-                        )}
-                        <span>{storageDevice.numaNodes.join(", ")}</span>
-                      </>
+                      <NumaNodes numaNodes={storageDevice.numaNodes} />
                     }
                   />
                 ),
@@ -194,11 +174,9 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   <DoubleRow
                     data-test="health"
                     primary={
-                      storageDevice.type === "physical"
-                        ? formatTestStatus(storageDevice.testStatus)
-                        : "—"
+                      <TestStatus testStatus={storageDevice.testStatus} />
                     }
-                    secondary={formatTags(storageDevice.tags)}
+                    secondary={<TagLinks tags={storageDevice.tags} />}
                   />
                 ),
               },

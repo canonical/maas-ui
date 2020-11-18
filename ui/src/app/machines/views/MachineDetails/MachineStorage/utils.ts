@@ -1,10 +1,57 @@
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import type { Disk, Filesystem, Partition } from "app/store/machine/types";
+import { formatBytes } from "app/utils";
 import type {
   NormalisedFilesystem,
   NormalisedStorageDevice,
   SeparatedDiskData,
 } from "./types";
+
+/**
+ * Formats a storage device's size for use in tables.
+ * @param size - the size of the storage device in bytes.
+ * @returns formatted size string.
+ */
+export const formatSize = (size: number | null): string => {
+  const formatted = !!size && formatBytes(size, "B");
+  return formatted ? `${formatted.value} ${formatted.unit}` : "—";
+};
+
+/**
+ * Formats a storage device's type for use in tables.
+ * @param type - the type of the storage device
+ * @param parentType - the type of the storage device's parent, if applicable
+ * @returns formatted type string
+ */
+export const formatType = (
+  type: NormalisedStorageDevice["type"],
+  parentType?: NormalisedStorageDevice["parentType"]
+): string => {
+  let typeToFormat = type;
+  if (type === "virtual" && !!parentType) {
+    if (parentType === "lvm-vg") {
+      return "Logical volume";
+    } else if (parentType.includes("raid-")) {
+      return `RAID ${parentType.split("-")[1]}`;
+    }
+    typeToFormat = parentType;
+  }
+
+  switch (typeToFormat) {
+    case "iscsi":
+      return "ISCSI";
+    case "lvm-vg":
+      return "Volume group";
+    case "partition":
+      return "Partition";
+    case "physical":
+      return "Physical";
+    case "virtual":
+      return "Virtual";
+    default:
+      return type;
+  }
+};
 
 /**
  * Returns whether a storage device has a mounted filesystem. If a filesystem is

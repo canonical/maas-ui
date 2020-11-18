@@ -1,8 +1,8 @@
 import { MainTable } from "@canonical/react-components";
 import React from "react";
 
-import { formatBytes } from "app/utils";
 import { NormalisedFilesystem } from "../types";
+import { formatSize } from "../utils";
 
 type Props = { filesystems: NormalisedFilesystem[] };
 
@@ -38,12 +38,11 @@ const FilesystemsTable = ({ filesystems }: Props): JSX.Element => {
           },
         ]}
         rows={filesystems.map((fs) => {
-          const size = fs.size && formatBytes(fs.size, "B");
           return {
             columns: [
               { content: fs.name || "—" },
               {
-                content: size ? `${size.value} ${size.unit}` : "—",
+                content: formatSize(fs.size),
               },
               { content: fs.fstype },
               { content: fs.mountPoint },
