@@ -5,6 +5,8 @@ import {
   machinePartition as partitionFactory,
 } from "testing/factories";
 import {
+  formatSize,
+  formatType,
   hasMountedFilesystem,
   normaliseFilesystem,
   normaliseStorageDevice,
@@ -13,6 +15,44 @@ import {
 } from "./utils";
 
 describe("Machine storage utils", () => {
+  describe("formatSize", () => {
+    it("handles null case", () => {
+      expect(formatSize(null)).toBe("—");
+      expect(formatSize(0)).toBe("—");
+    });
+
+    it("can format size", () => {
+      expect(formatSize(100)).toBe("100 B");
+      expect(formatSize(10000)).toBe("10 KB");
+    });
+  });
+
+  describe("formatType", () => {
+    it("handles physical disks", () => {
+      expect(formatType("physical")).toBe("Physical");
+    });
+
+    it("handles partitions", () => {
+      expect(formatType("partition")).toBe("Partition");
+    });
+
+    it("handles volume groups", () => {
+      expect(formatType("lvm-vg")).toBe("Volume group");
+    });
+
+    it("handles logical volumes", () => {
+      expect(formatType("virtual", "lvm-vg")).toBe("Logical volume");
+    });
+
+    it("handles RAIDs", () => {
+      expect(formatType("virtual", "raid-0")).toBe("RAID 0");
+    });
+
+    it("handles ISCSIs", () => {
+      expect(formatType("iscsi")).toBe("ISCSI");
+    });
+  });
+
   describe("hasMountedFilesystem", () => {
     it("handles null case", () => {
       expect(hasMountedFilesystem(null)).toBe(false);
