@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 
@@ -25,10 +26,4 @@ export type AuthState = {
 
 export type UserState = {
   auth: AuthState;
-  errors: TSFixMe;
-  items: User[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+} & GenericState<User, TSFixMe>;

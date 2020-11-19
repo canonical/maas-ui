@@ -132,10 +132,11 @@ describe("controller reducer", () => {
 
     it("reduces updateNotify", () => {
       const initialState = controllerStateFactory({
-        items: [controllerFactory()],
+        items: [controllerFactory({ system_id: "abc123" })],
       });
       const updatedController = controllerFactory({
         id: initialState.items[0].id,
+        system_id: initialState.items[0].system_id,
         hostname: "updated-reducers",
       });
 
@@ -186,15 +187,15 @@ describe("controller reducer", () => {
 
     it("reduces deleteNotify", () => {
       const [deleteController, keepController] = [
-        controllerFactory(),
-        controllerFactory(),
+        controllerFactory({ system_id: "abc123" }),
+        controllerFactory({ system_id: "def456" }),
       ];
       const initialState = controllerStateFactory({
         items: [deleteController, keepController],
       });
 
       expect(
-        reducers(initialState, actions.deleteNotify(deleteController.id))
+        reducers(initialState, actions.deleteNotify(deleteController.system_id))
       ).toEqual(controllerStateFactory({ items: [keepController] }));
     });
 

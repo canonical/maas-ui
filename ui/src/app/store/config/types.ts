@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 
 export type ConfigChoice = [string | number, string];
@@ -8,11 +9,4 @@ export type Config = {
   choices?: ConfigChoice[];
 };
 
-export type ConfigState = {
-  errors: TSFixMe;
-  items: Config[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type ConfigState = GenericState<Config, TSFixMe>;

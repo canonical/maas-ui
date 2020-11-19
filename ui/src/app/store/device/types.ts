@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { ModelRef } from "app/store/types/model";
 import type { SimpleNode } from "app/store/types/node";
 import type { TSFixMe } from "app/base/types";
@@ -16,11 +17,4 @@ export type Device = SimpleNode & {
   zone: ModelRef;
 };
 
-export type DeviceState = {
-  errors: TSFixMe;
-  items: Device[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type DeviceState = GenericState<Device, TSFixMe>;

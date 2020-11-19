@@ -7,7 +7,13 @@ type SpaceReducers = SliceCaseReducers<SpaceState>;
 
 export type SpaceSlice = GenericSlice<SpaceState, Space, SpaceReducers>;
 
-const spaceSlice = generateSlice<Space, SpaceState["errors"], SpaceReducers>({
+const spaceSlice = generateSlice<
+  Space,
+  SpaceState["errors"],
+  SpaceReducers,
+  "id"
+>({
+  indexKey: "id",
   name: "space",
 }) as SpaceSlice;
 

@@ -300,8 +300,10 @@ export type MachineSlice = GenericSlice<MachineState, Machine, MachineReducers>;
 const machineSlice = generateSlice<
   Machine,
   MachineState["errors"],
-  MachineReducers
+  MachineReducers,
+  "system_id"
 >({
+  indexKey: "system_id",
   initialState: {
     active: null,
     selected: [],
@@ -488,7 +490,7 @@ const machineSlice = generateSlice<
     },
     setActiveError: (
       state: MachineState,
-      action: PayloadAction<MachineState["errors"]>
+      action: PayloadAction<MachineState["errors"][0]>
     ) => {
       state.active = null;
       state.errors = action.payload;

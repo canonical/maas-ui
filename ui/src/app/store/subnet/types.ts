@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -43,11 +44,4 @@ export type Subnet = Model & {
   vlan: number;
 };
 
-export type SubnetState = {
-  errors: TSFixMe;
-  items: Subnet[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type SubnetState = GenericState<Subnet, TSFixMe>;

@@ -23,8 +23,10 @@ export type NotificationSlice = GenericSlice<
 const notificationSlice = generateSlice<
   Notification,
   NotificationState["errors"],
-  NotificationReducers
+  NotificationReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "notification",
   reducers: {
     dismiss: {

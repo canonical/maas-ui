@@ -10,8 +10,10 @@ export type FabricSlice = GenericSlice<FabricState, Fabric, FabricReducers>;
 const fabricSlice = generateSlice<
   Fabric,
   FabricState["errors"],
-  FabricReducers
+  FabricReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "fabric",
 }) as FabricSlice;
 

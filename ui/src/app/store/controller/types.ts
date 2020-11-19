@@ -1,4 +1,5 @@
 import type { BaseNode } from "app/store/types/node";
+import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 
 export type Controller = BaseNode & {
@@ -10,11 +11,4 @@ export type Controller = BaseNode & {
   version: string;
 };
 
-export type ControllerState = {
-  errors: TSFixMe;
-  items: Controller[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type ControllerState = GenericState<Controller, TSFixMe>;

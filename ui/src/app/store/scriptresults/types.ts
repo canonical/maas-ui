@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 import type { Machine } from "../machine/types";
@@ -30,14 +31,7 @@ export type ScriptResults = {
   results: ScriptResult[];
 };
 
-export type ScriptResultsState = {
-  errors: TSFixMe;
-  items: ScriptResults[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type ScriptResultsState = GenericState<ScriptResults, TSFixMe>;
 
 // response from server
 export type ScriptResultsResponse = {

@@ -14,8 +14,10 @@ export type PackageRepositorySlice = GenericSlice<
 const packageRepositorySlice = generateSlice<
   PackageRepository,
   PackageRepositoryState["errors"],
-  PackageRepositoryReducers
+  PackageRepositoryReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "packagerepository",
 }) as PackageRepositorySlice;
 

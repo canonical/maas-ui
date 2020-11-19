@@ -10,8 +10,10 @@ export type SubnetSlice = GenericSlice<SubnetState, Subnet, SubnetReducers>;
 const subnetSlice = generateSlice<
   Subnet,
   SubnetState["errors"],
-  SubnetReducers
+  SubnetReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "subnet",
 }) as SubnetSlice;
 

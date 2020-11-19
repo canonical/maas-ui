@@ -14,8 +14,10 @@ export type DHCPSnippetSlice = GenericSlice<
 const dhcpSnippetSlice = generateSlice<
   DHCPSnippet,
   DHCPSnippetState["errors"],
-  DHCPSnippetReducers
+  DHCPSnippetReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "dhcpsnippet",
 }) as DHCPSnippetSlice;
 

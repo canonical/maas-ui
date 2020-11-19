@@ -7,7 +7,8 @@ type UserReducers = SliceCaseReducers<UserState>;
 
 export type UserSlice = GenericSlice<UserState, User, UserReducers>;
 
-const userSlice = generateSlice<User, UserState["errors"], UserReducers>({
+const userSlice = generateSlice<User, UserState["errors"], UserReducers, "id">({
+  indexKey: "id",
   initialState: {
     auth: {},
   } as UserState,

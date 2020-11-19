@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 
@@ -12,11 +13,4 @@ export type ResourcePool = Model & {
   updated: string;
 };
 
-export type ResourcePoolState = {
-  errors: TSFixMe;
-  items: ResourcePool[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type ResourcePoolState = GenericState<ResourcePool, TSFixMe>;

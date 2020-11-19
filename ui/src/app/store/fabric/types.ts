@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -11,11 +12,4 @@ export type Fabric = Model & {
   vlan_ids: number[];
 };
 
-export type FabricState = {
-  errors: TSFixMe;
-  items: Fabric[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type FabricState = GenericState<Fabric, TSFixMe>;
