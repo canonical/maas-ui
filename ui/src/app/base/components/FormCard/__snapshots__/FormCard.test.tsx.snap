@@ -16,8 +16,11 @@ exports[`FormCard  renders 1`] = `
       </h4>
     </Col>
     <Col
+      data-test="content"
       size={7}
-    />
+    >
+      Content
+    </Col>
   </Row>
 </Card>
 `;

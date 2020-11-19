@@ -273,6 +273,7 @@ export type Machine = BaseMachine | MachineDetails;
 export type MachineStatus = {
   aborting: boolean;
   acquiring: boolean;
+  applyingStorageLayout: boolean;
   checkingPower: boolean;
   commissioning: boolean;
   deleting: boolean;

@@ -115,6 +115,18 @@ export const isMachineStorageConfigurable = (
   [nodeStatus.READY, nodeStatus.ALLOCATED].includes(machine.status_code);
 
 /**
+ * Check whether a machine's storage can be edited based on permissions and the
+ * machine's status.
+ * @param machine - A machine object.
+ * @returns Whether the machine's storage can be edited.
+ */
+export const useCanEditStorage = (machine: Machine | null): boolean => {
+  const canEdit = useCanEdit(machine);
+  const machineStorageConfigurable = isMachineStorageConfigurable(machine);
+  return canEdit && machineStorageConfigurable;
+};
+
+/**
  * Check whether a machine's OS allows storage configuration.
  * @param machine - A machine object.
  * @returns Whether the machine's OS allows storage configuration.
