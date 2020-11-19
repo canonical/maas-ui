@@ -7,6 +7,8 @@ import React from "react";
 import * as hooks from "app/base/hooks";
 import {
   machineDetails as machineDetailsFactory,
+  machineDisk as diskFactory,
+  machineFilesystem as fsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -32,7 +34,85 @@ describe("MachineStorage", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
+  it("renders a list of cache sets if any exist", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [diskFactory({ name: "quiche-cache", type: "cache-set" })],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machine/abc123/storage", key: "testKey" },
+          ]}
+        >
+          <Route
+            exact
+            path="/machine/:id/storage"
+            component={() => <MachineStorage />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("CacheSetsTable").exists()).toBe(true);
+    expect(wrapper.find("CacheSetsTable [data-test='name']").at(0).text()).toBe(
+      "quiche-cache"
+    );
+  });
+
+  it("renders a list of datastores if any exist", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            system_id: "abc123",
+            disks: [
+              diskFactory({
+                filesystem: fsFactory({
+                  fstype: "vmfs6",
+                  mount_point: "/path",
+                }),
+                name: "datastore1",
+                size: 100,
+              }),
+            ],
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machine/abc123/storage", key: "testKey" },
+          ]}
+        >
+          <Route
+            exact
+            path="/machine/:id/storage"
+            component={() => <MachineStorage />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("DatastoresTable").exists()).toBe(true);
+    expect(
+      wrapper.find("DatastoresTable [data-test='name']").at(0).text()
+    ).toBe("datastore1");
   });
 
   it("sends an analytics event when clicking on the MAAS docs footer link", () => {

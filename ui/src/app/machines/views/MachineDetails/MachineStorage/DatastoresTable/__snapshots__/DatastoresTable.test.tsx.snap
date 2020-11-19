@@ -1,0 +1,259 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatastoresTable renders 1`] = `
+<DatastoresTable
+  datastores={
+    Array [
+      Object {
+        "fstype": "vmfs6",
+        "id": 1,
+        "mountOptions": "abc",
+        "mountPoint": "/vmfs/volumes/datastore",
+        "name": "im-a-datastore",
+        "size": 100,
+      },
+    ]
+  }
+>
+  <MainTable
+    defaultSort="name"
+    defaultSortDirection="ascending"
+    headers={
+      Array [
+        Object {
+          "content": "Name",
+          "sortKey": "name",
+        },
+        Object {
+          "content": "Filesystem",
+          "sortKey": "fstype",
+        },
+        Object {
+          "content": "Size",
+          "sortKey": "size",
+        },
+        Object {
+          "content": "Mount point",
+          "sortKey": "mountPoint",
+        },
+        Object {
+          "className": "u-align--right",
+          "content": "Actions",
+        },
+      ]
+    }
+    rows={
+      Array [
+        Object {
+          "columns": Array [
+            Object {
+              "content": <span
+                data-test="name"
+              >
+                im-a-datastore
+              </span>,
+            },
+            Object {
+              "content": <span
+                data-test="type"
+              >
+                VMFS6
+              </span>,
+            },
+            Object {
+              "content": <span
+                data-test="size"
+              >
+                100 B
+              </span>,
+            },
+            Object {
+              "content": <span
+                data-test="mount-point"
+              >
+                /vmfs/volumes/datastore
+              </span>,
+            },
+            Object {
+              "className": "u-align--right",
+              "content": "",
+            },
+          ],
+          "key": 1,
+          "sortData": Object {
+            "mountPoint": "/vmfs/volumes/datastore",
+            "name": "im-a-datastore",
+            "size": 100,
+          },
+        },
+      ]
+    }
+    sortable={true}
+  >
+    <Table
+      className="p-main-table"
+      sortable={true}
+    >
+      <table
+        className="p-main-table p-table--sortable"
+        role="grid"
+      >
+        <thead>
+          <TableRow>
+            <tr
+              role="row"
+            >
+              <TableHeader
+                key="0"
+                onClick={[Function]}
+                sort="ascending"
+              >
+                <th
+                  aria-sort="ascending"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Name
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="1"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Filesystem
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="2"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Size
+                </th>
+              </TableHeader>
+              <TableHeader
+                key="3"
+                onClick={[Function]}
+                sort="none"
+              >
+                <th
+                  aria-sort="none"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Mount point
+                </th>
+              </TableHeader>
+              <TableHeader
+                className="u-align--right"
+                key="4"
+                onClick={[Function]}
+              >
+                <th
+                  aria-sort="none"
+                  className="u-align--right"
+                  onClick={[Function]}
+                  role="columnheader"
+                >
+                  Actions
+                </th>
+              </TableHeader>
+            </tr>
+          </TableRow>
+        </thead>
+        <tbody>
+          <TableRow
+            key="1"
+          >
+            <tr
+              role="row"
+            >
+              <TableCell
+                key="0"
+              >
+                <td
+                  aria-hidden={false}
+                  className=""
+                  role="gridcell"
+                >
+                  <span
+                    data-test="name"
+                  >
+                    im-a-datastore
+                  </span>
+                </td>
+              </TableCell>
+              <TableCell
+                key="1"
+              >
+                <td
+                  aria-hidden={false}
+                  className=""
+                  role="gridcell"
+                >
+                  <span
+                    data-test="type"
+                  >
+                    VMFS6
+                  </span>
+                </td>
+              </TableCell>
+              <TableCell
+                key="2"
+              >
+                <td
+                  aria-hidden={false}
+                  className=""
+                  role="gridcell"
+                >
+                  <span
+                    data-test="size"
+                  >
+                    100 B
+                  </span>
+                </td>
+              </TableCell>
+              <TableCell
+                key="3"
+              >
+                <td
+                  aria-hidden={false}
+                  className=""
+                  role="gridcell"
+                >
+                  <span
+                    data-test="mount-point"
+                  >
+                    /vmfs/volumes/datastore
+                  </span>
+                </td>
+              </TableCell>
+              <TableCell
+                className="u-align--right"
+                key="4"
+              >
+                <td
+                  aria-hidden={false}
+                  className="u-align--right"
+                  role="gridcell"
+                />
+              </TableCell>
+            </tr>
+          </TableRow>
+        </tbody>
+      </table>
+    </Table>
+  </MainTable>
+</DatastoresTable>
+`;

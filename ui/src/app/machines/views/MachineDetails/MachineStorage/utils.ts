@@ -1,10 +1,61 @@
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import type { Disk, Filesystem, Partition } from "app/store/machine/types";
+import { formatBytes } from "app/utils";
 import type {
   NormalisedFilesystem,
   NormalisedStorageDevice,
   SeparatedDiskData,
 } from "./types";
+
+/**
+ * Formats a storage device's size for use in tables.
+ * @param size - the size of the storage device in bytes.
+ * @returns formatted size string.
+ */
+export const formatSize = (size: number | null): string => {
+  const formatted = !!size && formatBytes(size, "B");
+  return formatted ? `${formatted.value} ${formatted.unit}` : "—";
+};
+
+/**
+ * Formats a storage device's type for use in tables.
+ * @param type - the type of the storage device
+ * @param parentType - the type of the storage device's parent, if applicable
+ * @returns formatted type string
+ */
+export const formatType = (
+  type: NormalisedStorageDevice["type"],
+  parentType?: NormalisedStorageDevice["parentType"]
+): string => {
+  let typeToFormat = type;
+  if (type === "virtual" && !!parentType) {
+    if (parentType === "lvm-vg") {
+      return "Logical volume";
+    } else if (parentType.includes("raid-")) {
+      return `RAID ${parentType.split("-")[1]}`;
+    }
+    typeToFormat = parentType;
+  }
+
+  switch (typeToFormat) {
+    case "cache-set":
+      return "Cache set";
+    case "iscsi":
+      return "ISCSI";
+    case "lvm-vg":
+      return "Volume group";
+    case "partition":
+      return "Partition";
+    case "physical":
+      return "Physical";
+    case "virtual":
+      return "Virtual";
+    case "vmfs6":
+      return "VMFS6";
+    default:
+      return type;
+  }
+};
 
 /**
  * Returns whether a storage device has a mounted filesystem. If a filesystem is
@@ -14,7 +65,9 @@ import type {
  */
 export const hasMountedFilesystem = (
   storageDevice: Disk | Partition | null
-): boolean => !!storageDevice?.filesystem?.mount_point;
+): boolean =>
+  !!storageDevice?.filesystem?.mount_point &&
+  storageDevice?.filesystem?.mount_point !== "RESERVED";
 
 /**
  * Returns whether a storage device is currently in use.
@@ -121,16 +174,26 @@ export const separateStorageData = (
     (data: SeparatedDiskData, disk: Disk) => {
       const normalisedDisk = normaliseStorageDevice(disk);
 
-      if (storageDeviceInUse(disk)) {
+      if (disk.type === "cache-set") {
+        data.cacheSets.push(normalisedDisk);
+      } else if (storageDeviceInUse(disk)) {
         data.used.push(normalisedDisk);
       } else {
         data.available.push(normalisedDisk);
       }
 
       if (hasMountedFilesystem(disk)) {
-        data.filesystems.push(
-          normaliseFilesystem(disk.filesystem, disk.name, disk.size)
+        const normalisedFilesystem = normaliseFilesystem(
+          disk.filesystem,
+          disk.name,
+          disk.size
         );
+
+        if (disk.filesystem?.fstype === "vmfs6") {
+          data.datastores.push(normalisedFilesystem);
+        } else {
+          data.filesystems.push(normalisedFilesystem);
+        }
       }
 
       if (disk.partitions && disk.partitions.length > 0) {
@@ -157,7 +220,7 @@ export const separateStorageData = (
 
       return data;
     },
-    { available: [], filesystems: [], used: [] }
+    { available: [], cacheSets: [], datastores: [], filesystems: [], used: [] }
   );
 
   if (specialFilesystems.length > 0) {
