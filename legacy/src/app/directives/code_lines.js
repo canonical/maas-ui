@@ -40,7 +40,7 @@ function maasCodeLines() {
             (insert +=
               newLine +
               '<span class="p-code-numbered__line">' +
-              line +
+              line + "\n" +
               "</span>")
         );
         insert += "</code>";
