@@ -19,8 +19,10 @@ export type ScriptResultsSlice = GenericSlice<
 const scriptResultsSlice = generateSlice<
   ScriptResults,
   ScriptResultsState["errors"],
-  Reducers
+  Reducers,
+  "id"
 >({
+  indexKey: "id",
   name: "scriptresults",
   reducers: {
     get: {

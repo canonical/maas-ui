@@ -9,8 +9,12 @@ export type DomainSlice = GenericSlice<DomainState, Domain, DomainReducers>;
 const domainSlice = generateSlice<
   Domain,
   DomainState["errors"],
-  DomainReducers
->({ name: "domain" }) as DomainSlice;
+  DomainReducers,
+  "id"
+>({
+  indexKey: "id",
+  name: "domain",
+}) as DomainSlice;
 
 export const { actions } = domainSlice;
 

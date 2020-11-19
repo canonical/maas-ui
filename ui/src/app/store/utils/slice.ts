@@ -99,13 +99,17 @@ export const genericInitialState = {
 export const generateSlice = <
   I extends CommonStateTypes["items"][0],
   E extends CommonStateTypes["errors"],
-  R extends SliceCaseReducers<GenericState<I, E>>
+  R extends SliceCaseReducers<GenericState<I, E>>,
+  // A model key as a reference to the supplied state item.
+  K extends keyof I
 >({
   name,
+  indexKey,
   initialState,
   reducers,
 }: {
   name: keyof CommonStates;
+  indexKey: K;
   initialState?: GenericState<I, E>;
   reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
 }): Slice<GenericState<I, E>, R, typeof name> => {
@@ -169,7 +173,7 @@ export const generateSlice = <
       // existing model, due to a race condition etc., ensure we update instead
       // of creating duplicates.
       const existingIdx = state.items.findIndex(
-        (existingItem: I) => existingItem.id === action.payload.id
+        (existingItem: I) => existingItem[indexKey] === action.payload[indexKey]
       );
       if (existingIdx !== -1) {
         state.items[existingIdx] = action.payload;
@@ -206,7 +210,7 @@ export const generateSlice = <
     },
     updateNotify: (state: GenericState<I, E>, action: PayloadAction<I>) => {
       for (const i in state.items) {
-        if (state.items[i].id === action.payload.id) {
+        if (state.items[i][indexKey] === action.payload[indexKey]) {
           state.items[i] = action.payload;
         }
       }
@@ -214,7 +218,7 @@ export const generateSlice = <
     delete: {
       // Slices that use a different key e.g. system_id should overwrite this
       // action and reducer.
-      prepare: (id: I["id"]) => ({
+      prepare: (id: I[K]) => ({
         meta: {
           model: name,
           method: "delete",
@@ -242,12 +246,9 @@ export const generateSlice = <
       state.saved = true;
       state.saving = false;
     },
-    deleteNotify: (
-      state: GenericState<I, E>,
-      action: PayloadAction<I["id"]>
-    ) => {
+    deleteNotify: (state: GenericState<I, E>, action: PayloadAction<I[K]>) => {
       const index = state.items.findIndex(
-        (item: I) => item.id === action.payload
+        (item: I) => item[indexKey] === action.payload
       );
       state.items.splice(index, 1);
     },

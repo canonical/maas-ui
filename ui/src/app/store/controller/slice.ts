@@ -14,8 +14,10 @@ export type ControllerSlice = GenericSlice<
 const controllerSlice = generateSlice<
   Controller,
   ControllerState["errors"],
-  ControllerReducers
+  ControllerReducers,
+  "system_id"
 >({
+  indexKey: "system_id",
   name: "controller",
 }) as ControllerSlice;
 

@@ -53,7 +53,8 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
 
 export type PodSlice = GenericSlice<PodState, Pod, PodReducers>;
 
-const podSlice = generateSlice<Pod, PodState["errors"], PodReducers>({
+const podSlice = generateSlice<Pod, PodState["errors"], PodReducers, "id">({
+  indexKey: "id",
   initialState: {
     active: null,
     selected: [],

@@ -14,8 +14,10 @@ export type ResourcePoolSlice = GenericSlice<
 const resourcePoolSlice = generateSlice<
   ResourcePool,
   ResourcePoolState["errors"],
-  ResourcePoolReducers
+  ResourcePoolReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "resourcepool",
   reducers: {
     createWithMachines: {

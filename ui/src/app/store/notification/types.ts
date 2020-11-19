@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 import type { User } from "app/store/user/types";
@@ -25,11 +26,4 @@ export type Notification = Model & {
   dismissable: boolean;
 };
 
-export type NotificationState = {
-  errors: TSFixMe;
-  items: Notification[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type NotificationState = GenericState<Notification, TSFixMe>;

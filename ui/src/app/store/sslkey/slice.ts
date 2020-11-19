@@ -10,8 +10,10 @@ export type SSLKeySlice = GenericSlice<SSLKeyState, SSLKey, SSLKeyReducers>;
 const sslKeySlice = generateSlice<
   SSLKey,
   SSLKeyState["errors"],
-  SSLKeyReducers
+  SSLKeyReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "sslkey",
 }) as SSLKeySlice;
 

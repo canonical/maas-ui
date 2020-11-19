@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -17,11 +18,4 @@ export type PackageRepository = Model & {
   url: string;
 };
 
-export type PackageRepositoryState = {
-  errors: TSFixMe;
-  items: PackageRepository[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type PackageRepositoryState = GenericState<PackageRepository, TSFixMe>;

@@ -22,6 +22,7 @@ describe("slice", () => {
 
     beforeEach(() => {
       slice = generateSlice({
+        indexKey: "id",
         name: "token",
       });
     });
@@ -246,6 +247,7 @@ describe("slice", () => {
   describe("additional reducers", () => {
     it("can reduce a custom reducer", () => {
       const slice = generateSlice({
+        indexKey: "id",
         name: "token",
         reducers: {
           custom: (state: TokenState, _action: PayloadAction<undefined>) => {
@@ -266,6 +268,7 @@ describe("slice", () => {
 
     it("can overwrite a base reducer", () => {
       const slice = generateSlice({
+        indexKey: "id",
         name: "token",
         reducers: {
           fetchError: (state: TokenState, action: PayloadAction<string>) => {
@@ -292,6 +295,7 @@ describe("slice", () => {
 
     beforeEach(() => {
       slice = generateSlice({
+        indexKey: "id",
         name: "token",
       });
     });
@@ -390,6 +394,7 @@ describe("slice", () => {
         ]
       );
       slice = generateSlice({
+        indexKey: "id",
         name: "pod",
         reducers: {
           refresh: statusHandlers.refresh,

@@ -7,7 +7,13 @@ type TokenReducers = SliceCaseReducers<TokenState>;
 
 export type TokenSlice = GenericSlice<TokenState, Token, TokenReducers>;
 
-const tokenSlice = generateSlice<Token, TokenState["errors"], TokenReducers>({
+const tokenSlice = generateSlice<
+  Token,
+  TokenState["errors"],
+  TokenReducers,
+  "id"
+>({
+  indexKey: "id",
   name: "token",
 }) as TokenSlice;
 

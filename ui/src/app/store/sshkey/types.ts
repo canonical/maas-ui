@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { User } from "app/store/user/types";
 import type { TSFixMe } from "app/base/types";
@@ -16,11 +17,4 @@ export type SSHKey = Model & {
   user: User["id"];
 };
 
-export type SSHKeyState = {
-  errors: TSFixMe;
-  items: SSHKey[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type SSHKeyState = GenericState<SSHKey, TSFixMe>;

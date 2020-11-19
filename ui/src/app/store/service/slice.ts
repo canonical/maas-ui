@@ -10,8 +10,10 @@ export type ServiceSlice = GenericSlice<ServiceState, Service, ServiceReducers>;
 const serviceSlice = generateSlice<
   Service,
   ServiceState["errors"],
-  ServiceReducers
+  ServiceReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "service",
 }) as ServiceSlice;
 

@@ -10,8 +10,12 @@ export type DeviceSlice = GenericSlice<DeviceState, Device, DeviceReducers>;
 const seviceSlice = generateSlice<
   Device,
   DeviceState["errors"],
-  DeviceReducers
->({ name: "device" }) as DeviceSlice;
+  DeviceReducers,
+  "system_id"
+>({
+  indexKey: "system_id",
+  name: "device",
+}) as DeviceSlice;
 
 export const { actions } = seviceSlice;
 

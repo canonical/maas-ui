@@ -1,4 +1,5 @@
 import type { Device } from "app/store/device/types";
+import type { GenericState } from "app/store/types/state";
 import type { Host } from "app/store/types/host";
 import type { Model } from "app/store/types/model";
 import type { Subnet } from "app/store/subnet/types";
@@ -21,11 +22,4 @@ export type DHCPSnippet = Model & {
   value: string;
 };
 
-export type DHCPSnippetState = {
-  errors: TSFixMe;
-  items: DHCPSnippet[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type DHCPSnippetState = GenericState<DHCPSnippet, TSFixMe>;

@@ -19,8 +19,10 @@ export type SSHKeySlice = GenericSlice<SSHKeyState, SSHKey, SSHKeyReducers>;
 const sshKeySlice = generateSlice<
   SSHKey,
   SSHKeyState["errors"],
-  SSHKeyReducers
+  SSHKeyReducers,
+  "id"
 >({
+  indexKey: "id",
   name: "sshkey",
   reducers: {
     import: {

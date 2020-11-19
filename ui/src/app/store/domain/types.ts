@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -13,11 +14,4 @@ export type Domain = Model & {
   is_default: boolean;
 };
 
-export type DomainState = {
-  errors: TSFixMe;
-  items: Domain[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type DomainState = GenericState<Domain, TSFixMe>;

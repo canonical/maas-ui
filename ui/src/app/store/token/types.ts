@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -12,11 +13,4 @@ export type Token = Model & {
   secret: string;
 };
 
-export type TokenState = {
-  errors: TSFixMe;
-  items: Token[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type TokenState = GenericState<Token, TSFixMe>;

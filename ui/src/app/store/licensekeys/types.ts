@@ -1,3 +1,4 @@
+import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
 import type { TSFixMe } from "app/base/types";
 
@@ -8,11 +9,4 @@ export type LicenseKeys = Model & {
   resource_uri: string;
 };
 
-export type LicenseKeysState = {
-  errors: TSFixMe;
-  items: LicenseKeys[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type LicenseKeysState = GenericState<LicenseKeys, TSFixMe>;
