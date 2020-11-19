@@ -103,6 +103,7 @@ export const licenseKeysState = define<LicenseKeysState>({
 export const machineStatus = define<MachineStatus>({
   aborting: false,
   acquiring: false,
+  applyingStorageLayout: false,
   checkingPower: false,
   commissioning: false,
   deleting: false,

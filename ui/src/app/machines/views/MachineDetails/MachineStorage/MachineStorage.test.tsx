@@ -6,10 +6,15 @@ import React from "react";
 
 import * as hooks from "app/base/hooks";
 import {
+  generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import MachineStorage from "./MachineStorage";
@@ -113,6 +118,46 @@ describe("MachineStorage", () => {
     expect(
       wrapper.find("DatastoresTable [data-test='name']").at(0).text()
     ).toBe("datastore1");
+  });
+
+  it("renders storage layout dropdown if machine's storage can be edited", () => {
+    const state = rootStateFactory({
+      general: generalStateFactory({
+        powerTypes: powerTypesStateFactory({
+          data: [powerTypeFactory()],
+        }),
+      }),
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            locked: false,
+            permissions: ["edit"],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machine/abc123/storage", key: "testKey" },
+          ]}
+        >
+          <Route
+            exact
+            path="/machine/:id/storage"
+            component={() => <MachineStorage />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("ChangeStorageLayout").exists()).toBe(true);
   });
 
   it("sends an analytics event when clicking on the MAAS docs footer link", () => {

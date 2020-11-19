@@ -232,6 +232,34 @@ describe("machine utils", () => {
     });
   });
 
+  describe("useCanEditStorage", () => {
+    it("handles a machine with editable storage", () => {
+      const machine = machineFactory({
+        locked: false,
+        status_code: nodeStatus.READY,
+        permissions: ["edit"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("handles a machine without editable storage", () => {
+      const machine = machineFactory({
+        locked: false,
+        status_code: nodeStatus.NEW,
+        permissions: ["edit"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+  });
+
   describe("canOsSupportBcacheZFS", () => {
     it("handles a machine that supports bcache and ZFS", () => {
       expect(canOsSupportBcacheZFS(machineFactory({ osystem: "ubuntu" }))).toBe(

@@ -27,6 +27,10 @@ export const ACTIONS = [
     status: "acquiring",
   },
   {
+    name: "apply-storage-layout",
+    status: "applyingStorageLayout",
+  },
+  {
     name: "check-power",
     status: "checkingPower",
   },
@@ -103,6 +107,7 @@ export const ACTIONS = [
 const DEFAULT_STATUSES = {
   aborting: false,
   acquiring: false,
+  applyingStorageLayout: false,
   checkingPower: false,
   commissioning: false,
   deleting: false,
@@ -132,6 +137,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   // Overrides for reducers that don't take a payload.
   abort: WithPrepare;
   acquire: WithPrepare;
+  applyStorageLayout: WithPrepare;
   checkPower: WithPrepare;
   commission: WithPrepare;
   delete: WithPrepare;
@@ -174,6 +180,16 @@ const statusHandlers = generateStatusHandlers<
       }),
     };
     switch (action.name) {
+      case "apply-storage-layout":
+        handler.method = "apply_storage_layout";
+        handler.prepare = (
+          systemId: Machine["system_id"],
+          storageLayout: string
+        ) => ({
+          storage_layout: storageLayout,
+          system_id: systemId,
+        });
+        break;
       case "check-power":
         handler.method = "check_power";
         handler.prepare = (systemId: Machine["system_id"]) => ({
@@ -305,6 +321,10 @@ const machineSlice = generateSlice<
     acquireStart: statusHandlers.acquireStart,
     acquireSuccess: statusHandlers.acquireSuccess,
     acquireError: statusHandlers.acquireError,
+    applyStorageLayout: statusHandlers.applyStorageLayout,
+    applyStorageLayoutStart: statusHandlers.applyStorageLayoutStart,
+    applyStorageLayoutSuccess: statusHandlers.applyStorageLayoutSuccess,
+    applyStorageLayoutError: statusHandlers.applyStorageLayoutError,
     checkPower: statusHandlers.checkPower,
     checkPowerStart: statusHandlers.checkPowerStart,
     checkPowerSuccess: statusHandlers.checkPowerSuccess,

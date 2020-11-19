@@ -7,10 +7,12 @@ import React from "react";
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
+import { useCanEditStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { separateStorageData } from "./utils";
 import AvailableStorageTable from "./AvailableStorageTable";
 import CacheSetsTable from "./CacheSetsTable";
+import ChangeStorageLayout from "./ChangeStorageLayout";
 import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
@@ -22,6 +24,7 @@ const MachineStorage = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const canEditStorage = useCanEditStorage(machine);
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
@@ -36,6 +39,7 @@ const MachineStorage = (): JSX.Element => {
 
     return (
       <>
+        {canEditStorage && <ChangeStorageLayout id={machine.system_id} />}
         <Strip shallow>
           {datastores.length > 0 ? (
             <>

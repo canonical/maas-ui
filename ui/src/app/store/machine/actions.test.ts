@@ -470,6 +470,22 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle applying a machine's storage layout", () => {
+    expect(actions.applyStorageLayout("abc123", "blank")).toEqual({
+      type: "machine/applyStorageLayout",
+      meta: {
+        model: "machine",
+        method: "apply_storage_layout",
+      },
+      payload: {
+        params: {
+          storage_layout: "blank",
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(actions.cleanup()).toEqual({
       type: "machine/cleanup",
