@@ -348,5 +348,30 @@ describe("Machine storage utils", () => {
       expect(cacheSets.length).toBe(1);
       expect(cacheSets[0].name).toBe("cache0");
     });
+
+    it("can separate out datastores", () => {
+      const disks = [
+        diskFactory({
+          filesystem: fsFactory({
+            fstype: "vmfs6",
+            mount_point: "/vmfs/volumes/datastore",
+          }),
+          name: "im-a-datastore",
+          partitions: [],
+        }),
+        diskFactory({
+          filesystem: fsFactory({
+            fstype: "fat32",
+            mount_point: "/",
+          }),
+          name: "not-a-datastore",
+          partitions: [],
+        }),
+      ];
+      const { datastores } = separateStorageData(disks);
+
+      expect(datastores.length).toBe(1);
+      expect(datastores[0].mountPoint).toBe("/vmfs/volumes/datastore");
+    });
   });
 });

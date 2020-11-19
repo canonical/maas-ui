@@ -11,6 +11,7 @@ import type { RootState } from "app/store/root/types";
 import { separateStorageData } from "./utils";
 import AvailableStorageTable from "./AvailableStorageTable";
 import CacheSetsTable from "./CacheSetsTable";
+import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
 
@@ -25,16 +26,28 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (machine && "disks" in machine && "special_filesystems" in machine) {
-    const { available, cacheSets, filesystems, used } = separateStorageData(
-      machine.disks,
-      machine.special_filesystems
-    );
+    const {
+      available,
+      cacheSets,
+      datastores,
+      filesystems,
+      used,
+    } = separateStorageData(machine.disks, machine.special_filesystems);
 
     return (
       <>
         <Strip shallow>
-          <h4>Filesystems</h4>
-          <FilesystemsTable filesystems={filesystems} />
+          {datastores.length > 0 ? (
+            <>
+              <h4>Datastores</h4>
+              <DatastoresTable datastores={datastores} />
+            </>
+          ) : (
+            <>
+              <h4>Filesystems</h4>
+              <FilesystemsTable filesystems={filesystems} />
+            </>
+          )}
         </Strip>
         {cacheSets.length > 0 && (
           <Strip shallow>
