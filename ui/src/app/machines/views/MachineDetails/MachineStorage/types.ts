@@ -27,6 +27,7 @@ export type NormalisedStorageDevice = {
 
 export type SeparatedDiskData = {
   available: NormalisedStorageDevice[];
+  cacheSets: NormalisedStorageDevice[];
   filesystems: NormalisedFilesystem[];
   used: NormalisedStorageDevice[];
 };
