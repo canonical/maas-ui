@@ -50,6 +50,8 @@ export const formatType = (
       return "Physical";
     case "virtual":
       return "Virtual";
+    case "vmfs6":
+      return "VMFS6";
     default:
       return type;
   }
@@ -63,7 +65,9 @@ export const formatType = (
  */
 export const hasMountedFilesystem = (
   storageDevice: Disk | Partition | null
-): boolean => !!storageDevice?.filesystem?.mount_point;
+): boolean =>
+  !!storageDevice?.filesystem?.mount_point &&
+  storageDevice?.filesystem?.mount_point !== "RESERVED";
 
 /**
  * Returns whether a storage device is currently in use.
@@ -179,9 +183,17 @@ export const separateStorageData = (
       }
 
       if (hasMountedFilesystem(disk)) {
-        data.filesystems.push(
-          normaliseFilesystem(disk.filesystem, disk.name, disk.size)
+        const normalisedFilesystem = normaliseFilesystem(
+          disk.filesystem,
+          disk.name,
+          disk.size
         );
+
+        if (disk.filesystem?.fstype === "vmfs6") {
+          data.datastores.push(normalisedFilesystem);
+        } else {
+          data.filesystems.push(normalisedFilesystem);
+        }
       }
 
       if (disk.partitions && disk.partitions.length > 0) {
@@ -208,7 +220,7 @@ export const separateStorageData = (
 
       return data;
     },
-    { available: [], cacheSets: [], filesystems: [], used: [] }
+    { available: [], cacheSets: [], datastores: [], filesystems: [], used: [] }
   );
 
   if (specialFilesystems.length > 0) {
