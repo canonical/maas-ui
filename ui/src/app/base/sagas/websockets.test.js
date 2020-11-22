@@ -142,6 +142,23 @@ describe("websocket sagas", () => {
     expect(saga.next().done).toBe(true);
   });
 
+  it("fetches list methods if no-cache is set", () => {
+    const action = {
+      type: "FETCH_TEST",
+      meta: {
+        model: "test",
+        method: "test.list",
+        type: MESSAGE_TYPES.REQUEST,
+        nocache: true,
+      },
+    };
+    const previous = sendMessage(socketClient, action);
+    previous.next();
+    const saga = sendMessage(socketClient, action);
+    // The saga should not have finished.
+    expect(saga.next().done).toBe(false);
+  });
+
   it("allows batch messages even if data has already been fetched", () => {
     const action = {
       type: "FETCH_TEST",

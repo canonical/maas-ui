@@ -7,8 +7,8 @@ import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
-import { actions as scriptResultsActions } from "app/store/scriptresults";
-import scriptResultsSelectors from "app/store/scriptresults/selectors";
+import { actions as nodeResultActions } from "app/store/noderesult";
+import nodeResultSelectors from "app/store/noderesult/selectors";
 
 const MachineTests = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -18,19 +18,33 @@ const MachineTests = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
-  const results = useSelector((state: RootState) =>
-    scriptResultsSelectors.getByIds(state, [id])
+  const result = useSelector((state: RootState) =>
+    nodeResultSelectors.get(state, id)
+  );
+
+  const loading = useSelector((state: RootState) =>
+    nodeResultSelectors.loading(state)
   );
 
   useEffect(() => {
-    dispatch(scriptResultsActions.get([id]));
-  }, [dispatch, id]);
+    if (!result && !loading) {
+      dispatch(nodeResultActions.get(id));
+    }
+  }, [dispatch, result, loading, id]);
 
-  if (results) {
-    return <>{results.map((result) => result.results[0].name)}</>;
+  if (result) {
+    const testResults = result.results.filter(
+      (result) => result.result_type === 2
+    );
+    return (
+      <ul>
+        {testResults.map((result) => (
+          <li key={result.id}>{result.name}</li>
+        ))}
+      </ul>
+    );
   }
   return <Spinner text="Loading..." />;
 };
