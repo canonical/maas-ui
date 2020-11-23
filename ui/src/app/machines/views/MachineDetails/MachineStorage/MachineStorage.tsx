@@ -52,7 +52,10 @@ const MachineStorage = (): JSX.Element => {
           ) : (
             <>
               <h4>Filesystems</h4>
-              <FilesystemsTable filesystems={filesystems} />
+              <FilesystemsTable
+                editable={canEditStorage}
+                filesystems={filesystems}
+              />
             </>
           )}
         </Strip>

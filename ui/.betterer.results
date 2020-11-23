@@ -1,437 +1,441 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.test.tsx:4181464368": [
-      [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"],
-      [149, 4, 36, "Object is possibly \'null\'.", "1039669632"],
-      [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
+    "src/app/App.test.tsx:3744146010": [
+      [33, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"],
+      [152, 4, 36, "Object is possibly \'null\'.", "1039669632"],
+      [165, 4, 36, "Object is possibly \'null\'.", "1039669632"]
     ],
-    "src/app/App.tsx:2048624384": [
-      [188, 17, 17, "Object is possibly \'null\'.", "2133029343"],
-      [193, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:491251433": [
+      [189, 17, 17, "Object is possibly \'null\'.", "2133029343"],
+      [194, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.test.tsx:1298071622": [
-      [53, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [53, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [67, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [81, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [81, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [92, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [106, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [106, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [117, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
-      [117, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [132, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [132, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/base/components/ActionForm/ActionForm.test.tsx:3253444044": [
+      [56, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [56, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [70, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [84, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [84, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [95, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [109, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [109, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [120, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
+      [120, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [135, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [135, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:131207891": [
-      [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [133, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
-      [136, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+    "src/app/base/components/ActionForm/ActionForm.tsx:2207355091": [
+      [18, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [22, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [25, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [25, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
+      [27, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
+      [135, 39, 6, "Argument of type \'{ [x: string]: any; } | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
+      [138, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
-    "src/app/base/components/DoughnutChart/DoughnutChart.tsx:1593454831": [
-      [86, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "2109816907"],
-      [89, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
-      [93, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "4228750763"]
+    "src/app/base/components/DoughnutChart/DoughnutChart.tsx:3302461445": [
+      [87, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "2109816907"],
+      [90, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
+      [94, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<SVGCircleElement, MouseEvent>) => void) | undefined\'.", "4228750763"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:1590075926": [
-      [77, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:3512906486": [
+      [79, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:122297593": [
-      [26, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
-      [31, 8, 12, "Object is possibly \'null\'.", "148512008"],
-      [40, 43, 12, "Object is possibly \'null\'.", "148512008"]
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:4238047801": [
+      [28, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
+      [33, 8, 12, "Object is possibly \'null\'.", "148512008"],
+      [42, 43, 12, "Object is possibly \'null\'.", "148512008"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.test.tsx:1660683172": [
-      [70, 47, 5, "Property \'close\' does not exist on type \'HTMLAttributes\'.", "176908083"]
+    "src/app/base/components/NotificationList/NotificationList.test.tsx:2497242062": [
+      [73, 47, 5, "Property \'close\' does not exist on type \'HTMLAttributes\'.", "176908083"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.tsx:2864091683": [
-      [56, 21, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
-      [57, 12, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
-      [62, 29, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"]
+    "src/app/base/components/NotificationList/NotificationList.tsx:2768681539": [
+      [58, 21, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
+      [59, 12, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
+      [64, 29, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"]
     ],
-    "src/app/base/components/Popover/Popover.tsx:3393439963": [
+    "src/app/base/components/Popover/Popover.tsx:3747607323": [
       [31, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [33, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
     ],
-    "src/app/base/components/TagSelector/TagSelector.test.tsx:846439984": [
-      [6, 6, 4, "Variable \'tags\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2087952548"],
-      [21, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [33, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [47, 15, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+    "src/app/base/components/TagSelector/TagSelector.test.tsx:4012752186": [
+      [7, 6, 4, "Variable \'tags\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2087952548"],
+      [22, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [34, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
       [48, 15, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [60, 26, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [64, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [78, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [92, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [105, 25, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [109, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [128, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [148, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [167, 18, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [185, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "705384789"],
-      [186, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "3084210389"],
-      [214, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
+      [49, 15, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [61, 26, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [65, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [79, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [93, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [106, 25, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [110, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [129, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [149, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [168, 18, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [186, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "705384789"],
+      [187, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "3084210389"],
+      [215, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
-    "src/app/base/components/TagSelector/TagSelector.tsx:1489314622": [
-      [1, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
-      [37, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
-      [38, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
-      [39, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
-      [40, 2, 4, "Binding element \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [41, 2, 10, "Binding element \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
-      [47, 16, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [48, 24, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [72, 7, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [74, 28, 11, "Parameter \'selectedTag\' implicitly has an \'any\' type.", "602387422"],
-      [76, 10, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [104, 2, 10, "Parameter \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
-      [169, 22, 15, "Parameter \'newSelectedTags\' implicitly has an \'any\' type.", "466117233"],
-      [170, 45, 1, "Parameter \'a\' implicitly has an \'any\' type.", "177604"],
-      [170, 48, 1, "Parameter \'b\' implicitly has an \'any\' type.", "177607"],
-      [178, 30, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
-      [181, 7, 18, "Object is possibly \'null\'.", "3262475232"],
-      [226, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
-      [228, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
+    "src/app/base/components/TagSelector/TagSelector.tsx:2456091220": [
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm install @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
+      [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
+      [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
+      [41, 2, 4, "Binding element \'tags\' implicitly has an \'any\' type.", "2087952548"],
+      [42, 2, 10, "Binding element \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
+      [48, 16, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
+      [49, 24, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
+      [73, 7, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
+      [75, 28, 11, "Parameter \'selectedTag\' implicitly has an \'any\' type.", "602387422"],
+      [77, 10, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
+      [105, 2, 10, "Parameter \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
+      [170, 22, 15, "Parameter \'newSelectedTags\' implicitly has an \'any\' type.", "466117233"],
+      [171, 45, 1, "Parameter \'a\' implicitly has an \'any\' type.", "177604"],
+      [171, 48, 1, "Parameter \'b\' implicitly has an \'any\' type.", "177607"],
+      [179, 30, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
+      [182, 7, 18, "Object is possibly \'null\'.", "3262475232"],
+      [227, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
+      [229, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1415357288": [
-      [138, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [138, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [138, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [138, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [215, 8, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
-      [263, 34, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
-      [272, 19, 5, "Variable \'error\' is used before being assigned.", "165548477"],
-      [319, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:606591330": [
+      [141, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [141, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [141, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [141, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [218, 8, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
+      [266, 34, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
+      [275, 19, 5, "Variable \'error\' is used before being assigned.", "165548477"],
+      [322, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:3478481718": [
-      [94, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
-      [112, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
-      [126, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
-      [174, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
-      [196, 6, 5, "Object is of type \'unknown\'.", "173192470"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:148629756": [
+      [97, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
+      [115, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [129, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [177, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [199, 6, 5, "Object is of type \'unknown\'.", "173192470"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:2310736176": [
-      [170, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"],
-      [182, 55, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
-      [212, 8, 7, "Type \'false | \\"There are no available subnets on this KVM\'s attached VLANs.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:1015133008": [
+      [174, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"],
+      [186, 55, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
+      [216, 8, 7, "Type \'false | \\"There are no available subnets on this KVM\'s attached VLANs.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.test.tsx:240374162": [
-      [105, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
-      [135, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
-      [154, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.test.tsx:2119988850": [
+      [109, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [139, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.", "195037722"],
+      [158, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.tsx:611013454": [
-      [75, 47, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
-      [142, 8, 71, "Argument of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => false | 1 | -1\' is not assignable to parameter of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => number\'.\\n  Type \'number | boolean\' is not assignable to type \'number\'.\\n    Type \'boolean\' is not assignable to type \'number\'.", "998825862"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.tsx:2241193092": [
+      [78, 47, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
+      [145, 8, 71, "Argument of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => false | 1 | -1\' is not assignable to parameter of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => number\'.\\n  Type \'number | boolean\' is not assignable to type \'number\'.\\n    Type \'boolean\' is not assignable to type \'number\'.", "998825862"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.test.tsx:2575738810": [
-      [104, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [199, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.test.tsx:1857316240": [
+      [107, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
+      [202, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.tsx:525495828": [
-      [60, 27, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [61, 30, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [64, 41, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [64, 54, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [65, 41, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [66, 37, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [67, 35, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [75, 31, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [76, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [83, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [83, 62, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [86, 49, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [89, 17, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [137, 56, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [160, 8, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
-      [161, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
-      [163, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.tsx:4228007390": [
+      [63, 27, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [64, 30, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [67, 41, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [67, 54, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [68, 41, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [69, 37, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [70, 35, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [78, 31, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [79, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [86, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [86, 62, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [89, 49, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [92, 17, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [140, 56, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [163, 8, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
+      [164, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
+      [166, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.test.tsx:1348646753": [
-      [158, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [188, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [223, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [234, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.test.tsx:1979034219": [
+      [161, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
+      [191, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
+      [226, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
+      [237, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:3772185569": [
-      [134, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
-      [188, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:563267937": [
+      [138, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
+      [192, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
     ],
-    "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:512155228": [
-      [99, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [103, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
-      [155, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [159, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
+    "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:3217674102": [
+      [102, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [106, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
+      [158, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [162, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/components/PodConfiguration/PodConfigurationFields/PodConfigurationFields.test.tsx:2368988330": [
-      [19, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [37, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [80, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/components/PodConfiguration/PodConfigurationFields/PodConfigurationFields.test.tsx:64795914": [
+      [21, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [39, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [82, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/components/PodStorage/PodStorage.test.tsx:1980022262": [
-      [106, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/kvm/components/PodStorage/PodStorage.test.tsx:62490294": [
+      [108, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:9765032": [
-      [16, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [36, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:2704367784": [
+      [18, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [38, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:4283049524": [
-      [76, 6, 68, "Object is possibly \'undefined\'.", "2960886801"],
-      [102, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources/KVMNumaResources.test.tsx:3694586612": [
+      [78, 6, 68, "Object is possibly \'undefined\'.", "2960886801"],
+      [104, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:1194877294": [
-      [40, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
-      [76, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
+    "src/app/kvm/views/KVMDetails/KVMSummary/KVMSummary.test.tsx:3527176782": [
+      [42, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
+      [78, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:2118393864": [
-      [23, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [132, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMFormFields/AddKVMFormFields.test.tsx:2158186728": [
+      [25, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [134, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:1158651717": [
-      [16, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [32, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [46, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [62, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [79, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [96, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [112, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:3920621093": [
+      [18, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
+      [34, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [48, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [64, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [81, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [98, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
+      [114, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:4064608059": [
-      [33, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"],
-      [52, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | null | undefined\'.\\n  Type \'\\"\\"\' is not assignable to type \'Element | null | undefined\'.", "3453098368"]
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:3843200603": [
+      [35, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"],
+      [54, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | null | undefined\'.\\n  Type \'\\"\\"\' is not assignable to type \'Element | null | undefined\'.", "3453098368"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:1019937661": [
-      [98, 6, 88, "Object is possibly \'undefined\'.", "465871270"],
-      [331, 6, 98, "Object is possibly \'undefined\'.", "1041189900"],
-      [353, 6, 98, "Object is possibly \'undefined\'.", "1041189900"]
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:3419954839": [
+      [101, 6, 88, "Object is possibly \'undefined\'.", "465871270"],
+      [334, 6, 98, "Object is possibly \'undefined\'.", "1041189900"],
+      [356, 6, 98, "Object is possibly \'undefined\'.", "1041189900"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:904938602": [
-      [18, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
+    "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:1196566218": [
+      [20, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:259372828": [
-      [17, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
+    "src/app/kvm/views/KVMList/KVMListTable/PowerColumn/PowerColumn.tsx:2915918780": [
+      [19, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover/StoragePopover.tsx:984922973": [
-      [44, 34, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [45, 42, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [46, 37, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [46, 50, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [47, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [50, 35, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [55, 44, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [55, 68, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [62, 23, 4, "Object is possibly \'undefined\'.", "2088098233"],
-      [66, 48, 4, "Object is possibly \'undefined\'.", "2088098233"]
+    "src/app/kvm/views/KVMList/KVMListTable/StorageColumn/StoragePopover/StoragePopover.tsx:2669312087": [
+      [45, 34, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [46, 42, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [47, 37, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [47, 50, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [48, 38, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [51, 35, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [56, 44, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [56, 68, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [63, 23, 4, "Object is possibly \'undefined\'.", "2088098233"],
+      [67, 48, 4, "Object is possibly \'undefined\'.", "2088098233"]
     ],
-    "src/app/machines/components/ActionFormWrapper/ActionFormWrapper.tsx:508975523": [
-      [65, 26, 17, "Argument of type \'string\' is not assignable to parameter of type \'never\'.", "936314937"],
-      [100, 29, 17, "Type \'SetSelectedAction\' is not assignable to type \'(action?: MachineAction | null | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | null | undefined\' is not assignable to type \'SelectedAction | null\'.\\n      Type \'undefined\' is not assignable to type \'SelectedAction | null\'.", "167402512"],
-      [130, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "2065603965"]
+    "src/app/machines/components/ActionFormWrapper/ActionFormWrapper.tsx:4255646153": [
+      [68, 26, 17, "Argument of type \'string\' is not assignable to parameter of type \'never\'.", "936314937"],
+      [103, 29, 17, "Type \'SetSelectedAction\' is not assignable to type \'(action?: MachineAction | null | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | null | undefined\' is not assignable to type \'SelectedAction | null\'.\\n      Type \'undefined\' is not assignable to type \'SelectedAction | null\'.", "167402512"],
+      [133, 2, 656, "Type \'Element | null\' is not assignable to type \'Element\'.\\n  Type \'null\' is not assignable to type \'Element\'.", "2065603965"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:3586090581": [
-      [106, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [110, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [201, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [205, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2508956927": [
+      [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [113, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
+      [204, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [208, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:2806013369": [
-      [125, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
-      [159, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:1032464947": [
+      [128, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
+      [162, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:2761251503": [
-      [149, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [150, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [220, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [221, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [267, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [268, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
-      [316, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [317, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"],
-      [354, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"],
-      [369, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [370, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:765558469": [
+      [152, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [153, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
+      [223, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [224, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; installKVM: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
+      [270, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [271, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
+      [319, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [320, 8, 22, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"],
+      [357, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"],
+      [372, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [373, 8, 21, "Argument of type \'{ includeUserData: boolean; installKVM: boolean; kernel: string; oSystem: string; release: string; userData: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:3882112758": [
-      [100, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:2493669916": [
+      [103, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:3711365735": [
-      [119, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:1594062349": [
+      [122, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:3781897231": [
-      [19, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
-      [21, 4, 16, "Object is possibly \'null\'.", "4019370437"],
-      [26, 20, 23, "Argument of type \'\\"Reading file aborted.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2851093748"],
-      [30, 20, 21, "Argument of type \'\\"Error reading file.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2974791143"],
-      [53, 18, 6, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "1168132398"],
-      [67, 4, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
-      [100, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:282943439": [
+      [21, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
+      [23, 4, 16, "Object is possibly \'null\'.", "4019370437"],
+      [28, 20, 23, "Argument of type \'\\"Reading file aborted.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2851093748"],
+      [32, 20, 21, "Argument of type \'\\"Error reading file.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2974791143"],
+      [55, 18, 6, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "1168132398"],
+      [69, 4, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
+      [102, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
-    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.test.tsx:627031960": [
-      [64, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [65, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"],
-      [119, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [120, 8, 11, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "942845580"],
-      [164, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [165, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"]
+    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.test.tsx:1530015442": [
+      [67, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [68, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"],
+      [122, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [123, 8, 11, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "942845580"],
+      [167, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [168, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"]
     ],
-    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.tsx:1152133955": [
-      [56, 6, 8, "Type \'(values: MarkBrokenFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'MarkBrokenFormValues\'.", "1301647696"]
+    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.tsx:1088456105": [
+      [59, 6, 8, "Type \'(values: MarkBrokenFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'MarkBrokenFormValues\'.", "1301647696"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:790781938": [
-      [94, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [98, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [215, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [219, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:803180952": [
+      [97, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [101, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
+      [218, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [222, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:1408042022": [
-      [75, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"],
-      [103, 6, 8, "Type \'(values: FormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'FormValues\'.", "1301647696"],
-      [120, 22, 11, "Type \'({ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined)[]\' is not assignable to type \'ScriptsDisplay[]\'.\\n  Type \'{ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined\' is not assignable to type \'ScriptsDisplay\'.\\n    Type \'undefined\' is not assignable to type \'ScriptsDisplay\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:1601481196": [
+      [78, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"],
+      [106, 6, 8, "Type \'(values: FormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'FormValues\'.", "1301647696"],
+      [123, 22, 11, "Type \'({ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined)[]\' is not assignable to type \'ScriptsDisplay[]\'.\\n  Type \'{ displayName: string; id: number; apply_configured_networking: boolean; default: boolean; description: string; destructive: boolean; for_hardware: string[]; hardware_type_name: \\"Node\\" | \\"CPU\\" | \\"Memory\\" | \\"Storage\\" | \\"Network\\"; ... 15 more ...; type: number; } | undefined\' is not assignable to type \'ScriptsDisplay\'.\\n    Type \'undefined\' is not assignable to type \'ScriptsDisplay\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"]
     ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:2594365837": [
-      [77, 8, 4, "Type \'\\"lifecycle1\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [82, 8, 4, "Type \'\\"lifecycle2\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [87, 8, 4, "Type \'\\"lifecycle3\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [137, 8, 4, "Type \'\\"house\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [222, 8, 4, "Type \'\\"action1\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [227, 8, 4, "Type \'\\"action2\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
-      [317, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [318, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [319, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+    "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:478824359": [
+      [80, 8, 4, "Type \'\\"lifecycle1\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
+      [85, 8, 4, "Type \'\\"lifecycle2\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
+      [90, 8, 4, "Type \'\\"lifecycle3\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
+      [140, 8, 4, "Type \'\\"house\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
+      [225, 8, 4, "Type \'\\"action1\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
+      [230, 8, 4, "Type \'\\"action2\\"\' is not assignable to type \'\\"on\\" | \\"off\\" | \\"abort\\" | \\"acquire\\" | \\"check-power\\" | \\"commission\\" | \\"delete\\" | \\"deploy\\" | \\"exit-rescue-mode\\" | \\"lock\\" | \\"mark-broken\\" | \\"mark-fixed\\" | \\"override-failed-testing\\" | ... 11 more ... | undefined\'.", "2087876002"],
       [320, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [321, 11, 5, "Object is of type \'unknown\'.", "173192470"]
+      [321, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [322, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [323, 11, 5, "Object is of type \'unknown\'.", "173192470"],
+      [324, 11, 5, "Object is of type \'unknown\'.", "173192470"]
     ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:3204147639": [
-      [38, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
-      [39, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
-      [54, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
-      [55, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
-      [86, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"],
-      [97, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
+    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:3299274039": [
+      [40, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
+      [41, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
+      [56, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
+      [57, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
+      [88, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"],
+      [99, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/hooks.tsx:2784797846": [
-      [45, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 53 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 53 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
-      [45, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [45, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [49, 11, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
+    "src/app/machines/hooks.tsx:3979753974": [
+      [47, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 53 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 53 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
+      [47, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [47, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [51, 11, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:3471234751": [
-      [76, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [76, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:2084328255": [
+      [78, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [78, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.test.tsx:487685193": [
-      [22, 6, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"]
+    "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.test.tsx:3978506563": [
+      [25, 6, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:361710552": [
-      [171, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/AddSpecialFilesystem/AddSpecialFilesystem.test.tsx:191907492": [
+      [46, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [47, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "3144942680"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/utils.ts:4107166857": [
-      [150, 44, 20, "Object is possibly \'undefined\'.", "861603158"],
-      [186, 10, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
-      [211, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
+    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:76605336": [
+      [173, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:2502469861": [
-      [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
+    "src/app/machines/views/MachineDetails/MachineStorage/utils.ts:1385649737": [
+      [152, 44, 20, "Object is possibly \'undefined\'.", "861603158"],
+      [188, 10, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
+      [213, 16, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
     ],
-    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:3588892375": [
-      [18, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [37, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [51, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [57, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [58, 10, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [73, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [74, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [80, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [94, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
+    "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:152685935": [
+      [36, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
     ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1526432394": [
-      [104, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
-      [125, 12, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.", "167402512"],
-      [130, 42, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
+    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:2959660279": [
+      [20, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [39, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [53, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [59, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [60, 10, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [75, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [76, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [82, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
+      [96, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
     ],
-    "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:1086569600": [
-      [90, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
+    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:434322272": [
+      [107, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
+      [128, 12, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.", "167402512"],
+      [133, 42, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/rsd/components/RSDActionFormWrapper/DeleteForm/DeleteForm.test.tsx:4288871559": [
-      [40, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [40, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [91, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [91, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:2902929152": [
+      [92, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
     ],
-    "src/app/rsd/components/RSDActionFormWrapper/RefreshForm/RefreshForm.test.tsx:2757849859": [
-      [40, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [40, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [91, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [91, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/rsd/components/RSDActionFormWrapper/DeleteForm/DeleteForm.test.tsx:3894467335": [
+      [42, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [42, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [93, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [93, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/rsd/views/RSDList/AddRSDForm/AddRSDForm.test.tsx:2475074294": [
-      [70, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [71, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; power_pass: string; power_user: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "244873512"]
+    "src/app/rsd/components/RSDActionFormWrapper/RefreshForm/RefreshForm.test.tsx:1209210755": [
+      [42, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [42, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [93, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [93, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:42858656": [
-      [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
+    "src/app/rsd/views/RSDList/AddRSDForm/AddRSDForm.test.tsx:27993334": [
+      [72, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [73, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; power_pass: string; power_user: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "244873512"]
     ],
-    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3551628603": [
-      [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
+    "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:3169156074": [
+      [90, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [95, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2551545443": [
-      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [103, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [103, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [119, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [119, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [121, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [121, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:1882910801": [
+      [28, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
+    ],
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:253010761": [
+      [104, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [104, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [106, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [106, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [122, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [122, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
       [124, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [124, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
-      [140, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [140, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [144, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [144, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [237, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [237, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [241, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [241, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+      [124, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [127, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [127, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
+      [143, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [143, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [147, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [147, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [240, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [240, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [244, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [244, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:3607388951": [
-      [86, 19, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
-      [120, 53, 9, "Variable \'scriptSrc\' is used before being assigned.", "1382917992"],
-      [128, 21, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
-      [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'Function\'.", "2087897566"],
-      [204, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:2816048067": [
+      [87, 19, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
+      [121, 53, 9, "Variable \'scriptSrc\' is used before being assigned.", "1382917992"],
+      [129, 21, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
+      [164, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'Function\'.", "2087897566"],
+      [205, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
-    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:623142700": [
-      [84, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [129, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [173, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [235, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
+    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:3509668198": [
+      [87, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [132, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [176, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [238, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
     ],
-    "src/app/store/general/selectors/machineActions.test.ts:3658604617": [
-      [89, 10, 4, "Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: string; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'string\' is not assignable to type \'MachineActionName\'.", "2087377941"]
+    "src/app/store/general/selectors/machineActions.test.ts:3573821059": [
+      [90, 10, 4, "Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: string; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: string; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'string\' is not assignable to type \'MachineActionName\'.", "2087377941"]
     ],
-    "src/app/store/machine/slice.ts:2364558725": [
-      [302, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, selected, statuses", "4102082497"],
-      [306, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Machine, any>\': errors, items, loaded, loading, and 2 more.", "1433951465"]
+    "src/app/store/machine/slice.ts:2067121244": [
+      [324, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, selected, statuses", "4102082497"],
+      [328, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Machine, any>\': errors, items, loaded, loading, and 2 more.", "1433951465"]
     ],
-    "src/app/store/noderesult/slice.ts:1885676869": [
-      [55, 4, 10, "Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }> | CaseReducerWithPrepare<NodeResultState, PayloadAction<any, string, any, any>>\'.\\n  Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }>\'.\\n    Types of parameters \'action\' and \'action\' are incompatible.\\n      Type \'{ payload: any; type: string; }\' is not assignable to type \'PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n        Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.", "2529327088"]
+    "src/app/store/noderesult/slice.ts:2700398629": [
+      [57, 4, 10, "Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }> | CaseReducerWithPrepare<NodeResultState, PayloadAction<any, string, any, any>>\'.\\n  Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<NodeResultState, { payload: any; type: string; }>\'.\\n    Types of parameters \'action\' and \'action\' are incompatible.\\n      Type \'{ payload: any; type: string; }\' is not assignable to type \'PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n        Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.", "2529327088"]
     ],
-    "src/app/store/notification/selectors.ts:3467721382": [
-      [25, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
+    "src/app/store/notification/selectors.ts:3079939596": [
+      [26, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
     ],
-    "src/app/store/pod/reducers.test.ts:25266970": [
-      [77, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"]
+    "src/app/store/pod/reducers.test.ts:4078104144": [
+      [78, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"]
     ],
-    "src/app/store/pod/slice.ts:1150649699": [
-      [55, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Pod, any>>\' is missing the following properties from type \'WritableDraft<PodState>\': active, selected, statuses", "1022550047"],
-      [57, 16, 71, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'PodState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Pod, any>\': errors, items, loaded, loading, and 2 more.", "3283281399"]
+    "src/app/store/pod/slice.ts:1931012521": [
+      [56, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Pod, any>>\' is missing the following properties from type \'WritableDraft<PodState>\': active, selected, statuses", "1022550047"],
+      [58, 16, 71, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'PodState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ active: null; selected: never[]; statuses: {}; }\' is missing the following properties from type \'GenericState<Pod, any>\': errors, items, loaded, loading, and 2 more.", "3283281399"]
     ],
     "src/app/store/resourcepool/actions.test.ts:9201512": [
       [71, 52, 24, "Expected 1 arguments, but got 2.", "3295119724"]
@@ -471,28 +475,28 @@ exports[`stricter compilation`] = {
       [197, 11, 5, "Variable \'state\' implicitly has an \'any\' type.", "195031250"],
       [205, 13, 5, "Variable \'state\' implicitly has an \'any\' type.", "195031250"]
     ],
-    "src/app/store/user/slice.ts:951706592": [
-      [9, 59, 12, "Type \'SliceCaseReducers<UserState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
+    "src/app/store/user/slice.ts:2225428906": [
+      [10, 59, 12, "Type \'SliceCaseReducers<UserState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
     ],
-    "src/app/store/utils/slice.test.ts:1198843864": [
-      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
-      [258, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
-      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<User | Notification | Device | Subnet | BaseMachine | Controller | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.", "3510326721"],
-      [399, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
-      [400, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "662888088"],
-      [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "368191931"],
-      [402, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "678288096"]
+    "src/app/store/utils/slice.test.ts:4111103378": [
+      [253, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
+      [259, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
+      [274, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Subnet | User | Notification | DHCPSnippet | Domain | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.", "3510326721"],
+      [400, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
+      [401, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "662888088"],
+      [402, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "368191931"],
+      [403, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "678288096"]
     ],
-    "src/app/store/utils/slice.ts:4209978183": [
-      [166, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [206, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [244, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [255, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
-      [260, 2, 181, "Type \'Slice<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>, \\"machine\\" | ... 22 more ... | \\"zone\\">\' is not assignable to type \'Slice<GenericState<I, E>, R, \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | ... 13 more ... | \\"zone\\">\'.\\n  The types returned by \'reducer(...)\' are incompatible between these types.\\n    Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n      Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.", "3918538176"],
-      [266, 4, 8, "Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n  Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n    Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'SliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\'.\\n      Property \'fetchStart\' is incompatible with index signature.\\n        Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }> | WritableDraft<{ errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                  Types of property \'errors\' are incompatible.\\n                    Type \'null\' is not assignable to type \'E\'.\\n                      \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "2838615652"],
-      [353, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
-      [372, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
-      [396, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"]
+    "src/app/store/utils/slice.ts:3280477229": [
+      [167, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [207, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [245, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [256, 6, 12, "Type \'null\' is not assignable to type \'E\'.\\n  \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "1158883607"],
+      [261, 2, 181, "Type \'Slice<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>, \\"machine\\" | ... 22 more ... | \\"zone\\">\' is not assignable to type \'Slice<GenericState<I, E>, R, \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | ... 13 more ... | \\"zone\\">\'.\\n  The types returned by \'reducer(...)\' are incompatible between these types.\\n    Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.\\n      Type \'{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.", "3918538176"],
+      [267, 4, 8, "Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n  Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<...>>\'.\\n    Type \'{ fetch: { prepare: () => { meta: { model: \\"machine\\" | \\"tag\\" | \\"pod\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"domain\\" | \\"fabric\\" | \\"licensekeys\\" | \\"noderesult\\" | \\"notification\\" | \\"packagerepository\\" | ... 11 more ... | \\"zone\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup:...\' is not assignable to type \'SliceCaseReducers<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\'.\\n      Property \'fetchStart\' is incompatible with index signature.\\n        Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; } | { errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }> | WritableDraft<{ errors: E; items: I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                Type \'WritableDraft<{ errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n                  Types of property \'errors\' are incompatible.\\n                    Type \'null\' is not assignable to type \'E\'.\\n                      \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "2838615652"],
+      [354, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [373, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [397, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"]
     ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
@@ -503,14 +507,14 @@ exports[`stricter compilation`] = {
     "src/app/utils/someNotAll.ts:3892711037": [
       [7, 2, 71, "Type \'number | boolean\' is not assignable to type \'boolean\'.\\n  Type \'number\' is not assignable to type \'boolean\'.", "1467649629"]
     ],
-    "src/testing/factories/notification.ts:2660496186": [
-      [10, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
+    "src/testing/factories/notification.ts:945808506": [
+      [12, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:3923575803": [
-      [235, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [317, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2158674347"],
-      [319, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2087809207"],
-      [324, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:1470307036": [
+      [237, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
+      [319, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2158674347"],
+      [321, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2087809207"],
+      [326, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -520,36 +524,36 @@ exports[`no TSFixMe types`] = {
     "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/auth/selectors.ts:1742453516": [
-      [1, 13, 8, "RegExp match", "1152173309"],
+    "src/app/store/auth/selectors.ts:2825037004": [
+      [0, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/config/types.ts:4138985665": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [11, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/controller/types.ts:3920578608": [
+    "src/app/store/config/types.ts:2243720459": [
       [2, 13, 8, "RegExp match", "1152173309"],
-      [13, 54, 8, "RegExp match", "1152173309"]
+      [12, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/device/types.ts:2393841436": [
+    "src/app/store/controller/types.ts:2161878618": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [19, 46, 8, "RegExp match", "1152173309"]
+      [14, 54, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/dhcpsnippet/types.ts:3769834766": [
-      [5, 13, 8, "RegExp match", "1152173309"],
-      [24, 56, 8, "RegExp match", "1152173309"]
+    "src/app/store/device/types.ts:2514806262": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [20, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/domain/types.ts:2417784725": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [16, 46, 8, "RegExp match", "1152173309"]
+    "src/app/store/dhcpsnippet/types.ts:1876114564": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [25, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/fabric/types.ts:693854797": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [14, 46, 8, "RegExp match", "1152173309"]
+    "src/app/store/domain/types.ts:3251056735": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [17, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/general/selectors/utils.ts:4114489802": [
-      [1, 13, 8, "RegExp match", "1152173309"],
+    "src/app/store/fabric/types.ts:746969223": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [15, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/general/selectors/utils.ts:1977532362": [
+      [0, 13, 8, "RegExp match", "1152173309"],
       [5, 31, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/types.ts:1563597444": [
@@ -566,104 +570,104 @@ exports[`no TSFixMe types`] = {
       [166, 9, 8, "RegExp match", "1152173309"],
       [175, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/licensekeys/types.ts:2302677435": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [11, 56, 8, "RegExp match", "1152173309"]
+    "src/app/store/licensekeys/types.ts:4095108657": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [12, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:3534572008": [
+    "src/app/store/machine/types.ts:494976385": [
       [4, 13, 8, "RegExp match", "1152173309"],
-      [305, 25, 8, "RegExp match", "1152173309"]
+      [307, 25, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/noderesult/selectors.ts:2110253132": [
+    "src/app/store/noderesult/selectors.ts:3260337324": [
+      [6, 13, 8, "RegExp match", "1152173309"],
+      [59, 34, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/noderesult/types.ts:2482787868": [
+      [4, 13, 8, "RegExp match", "1152173309"],
+      [45, 9, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/notification/types.ts:475719844": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [57, 34, 8, "RegExp match", "1152173309"]
+      [29, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/noderesult/types.ts:3402346236": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [43, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/notification/types.ts:3327433646": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [28, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/packagerepository/types.ts:2816846035": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [20, 68, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/pod/types.ts:251284093": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [119, 21, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/resourcepool/types.ts:2790999903": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [15, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scriptresults/selectors.ts:2575868080": [
+    "src/app/store/packagerepository/types.ts:223419801": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [52, 34, 8, "RegExp match", "1152173309"]
+      [21, 68, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresults/types.ts:3922382396": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [33, 60, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scripts/types.ts:3956382354": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [16, 14, 8, "RegExp match", "1152173309"],
-      [21, 14, 8, "RegExp match", "1152173309"],
-      [52, 48, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/service/types.ts:1265104096": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [10, 48, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/space/types.ts:2063576235": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [13, 44, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/sshkey/types.ts:4098552279": [
+    "src/app/store/pod/types.ts:1538849015": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [19, 46, 8, "RegExp match", "1152173309"]
+      [120, 21, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sslkey/types.ts:2644033832": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [13, 46, 8, "RegExp match", "1152173309"]
+    "src/app/store/resourcepool/types.ts:1682108053": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [16, 58, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scriptresults/selectors.ts:23899312": [
+      [6, 13, 8, "RegExp match", "1152173309"],
+      [54, 34, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scriptresults/types.ts:1844911068": [
+      [5, 13, 8, "RegExp match", "1152173309"],
+      [35, 60, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/scripts/types.ts:3885399320": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [17, 14, 8, "RegExp match", "1152173309"],
+      [22, 14, 8, "RegExp match", "1152173309"],
+      [53, 48, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/service/types.ts:270479210": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [11, 48, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/space/types.ts:1637461793": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [14, 44, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sshkey/types.ts:2512593693": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [20, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/sslkey/types.ts:1546661026": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [14, 46, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/status/types.ts:3358556468": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [5, 22, 8, "RegExp match", "1152173309"],
       [8, 8, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/subnet/types.ts:2671265173": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [46, 46, 8, "RegExp match", "1152173309"]
+    "src/app/store/subnet/types.ts:2296558495": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [47, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/tag/types.ts:790258888": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [13, 40, 8, "RegExp match", "1152173309"]
+    "src/app/store/tag/types.ts:2730381634": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [14, 40, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/token/types.ts:2001195164": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [15, 44, 8, "RegExp match", "1152173309"]
+    "src/app/store/token/types.ts:1779512214": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [16, 44, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/user/types.ts:3113131478": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [18, 9, 8, "RegExp match", "1152173309"],
-      [28, 22, 8, "RegExp match", "1152173309"]
+    "src/app/store/user/types.ts:315374108": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [19, 9, 8, "RegExp match", "1152173309"],
+      [29, 22, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/utils/slice.ts:4209978183": [
+    "src/app/store/utils/slice.ts:3280477229": [
       [12, 13, 8, "RegExp match", "1152173309"],
-      [144, 23, 8, "RegExp match", "1152173309"],
-      [184, 23, 8, "RegExp match", "1152173309"],
-      [287, 20, 8, "RegExp match", "1152173309"],
-      [322, 24, 8, "RegExp match", "1152173309"]
+      [145, 23, 8, "RegExp match", "1152173309"],
+      [185, 23, 8, "RegExp match", "1152173309"],
+      [288, 20, 8, "RegExp match", "1152173309"],
+      [323, 24, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/vlan/types.ts:2480104305": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [21, 42, 8, "RegExp match", "1152173309"]
+    "src/app/store/vlan/types.ts:334580859": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [22, 42, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/zone/types.ts:3483169305": [
-      [1, 13, 8, "RegExp match", "1152173309"],
-      [14, 42, 8, "RegExp match", "1152173309"]
+    "src/app/store/zone/types.ts:122131539": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [15, 42, 8, "RegExp match", "1152173309"]
     ]
   }`
 };

@@ -285,6 +285,7 @@ export type MachineStatus = {
   locking: boolean;
   markingBroken: boolean;
   markingFixed: boolean;
+  mountingSpecial: boolean;
   overridingFailedTesting: boolean;
   releasing: boolean;
   settingPool: boolean;

@@ -115,6 +115,7 @@ export const machineStatus = define<MachineStatus>({
   locking: false,
   markingBroken: false,
   markingFixed: false,
+  mountingSpecial: false,
   overridingFailedTesting: false,
   releasing: false,
   settingPool: false,

@@ -1,20 +1,32 @@
 import React from "react";
 
 import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import { separateStorageData } from "../utils";
 
 import FilesystemsTable from "./FilesystemsTable";
 
 import {
+  machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
+
+const mockStore = configureStore();
 
 describe("FilesystemsTable", () => {
   it("can show an empty message", () => {
-    const wrapper = mount(<FilesystemsTable filesystems={[]} />);
+    const wrapper = mount(
+      <FilesystemsTable editable={false} filesystems={[]} />
+    );
 
     expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
       "No filesystems defined."
@@ -30,7 +42,9 @@ describe("FilesystemsTable", () => {
       }),
     ];
     const { filesystems } = separateStorageData(disks);
-    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
+    const wrapper = mount(
+      <FilesystemsTable editable={false} filesystems={filesystems} />
+    );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("disk-fs");
     expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
@@ -51,7 +65,9 @@ describe("FilesystemsTable", () => {
       }),
     ];
     const { filesystems } = separateStorageData(disks);
-    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
+    const wrapper = mount(
+      <FilesystemsTable editable={false} filesystems={filesystems} />
+    );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
       "partition-fs"
@@ -66,11 +82,44 @@ describe("FilesystemsTable", () => {
       fsFactory({ mount_point: "/special-fs/path", fstype: "tmpfs" }),
     ];
     const { filesystems } = separateStorageData([], specialFilesystems);
-    const wrapper = mount(<FilesystemsTable filesystems={filesystems} />);
+    const wrapper = mount(
+      <FilesystemsTable editable={false} filesystems={filesystems} />
+    );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("—");
     expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
       "/special-fs/path"
     );
+  });
+
+  it("can show an add special filesystem form if storage is editable", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machine/abc123/storage", key: "testKey" },
+          ]}
+        >
+          <Route
+            exact
+            path="/machine/:id/storage"
+            component={() => <FilesystemsTable editable filesystems={[]} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("button[data-test='add-special-fs-button']").simulate("click");
+
+    expect(wrapper.find("AddSpecialFilesystem").exists()).toBe(true);
   });
 });
