@@ -1,7 +1,9 @@
-import type { GenericState } from "app/store/types/state";
-import type { Model } from "app/store/types/model";
-import type { TSFixMe } from "app/base/types";
 import type { Machine } from "../machine/types";
+
+import type { Model } from "app/store/types/model";
+import type { GenericState } from "app/store/types/state";
+
+import type { TSFixMe } from "app/base/types";
 
 export type ScriptResultResult = {
   name: string;

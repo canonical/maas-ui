@@ -1,15 +1,17 @@
+import React from "react";
+
 import { Col, Input, Row, Select, Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import type { PodConfigurationValues } from "../PodConfiguration";
+
+import FormikField from "app/base/components/FormikField";
+import TagSelector from "app/base/components/TagSelector";
 import { formatHostType } from "app/kvm/utils";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import tagSelectors from "app/store/tag/selectors";
 import zoneSelectors from "app/store/zone/selectors";
-import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
 
 type Props = { showHostType?: boolean };
 

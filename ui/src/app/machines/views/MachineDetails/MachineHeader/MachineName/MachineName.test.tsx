@@ -1,10 +1,14 @@
-import { act } from "react-dom/test-utils";
+import React from "react";
+
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
 
+import MachineName from "./MachineName";
+
+import { actions as machineActions } from "app/store/machine";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -15,8 +19,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { actions as machineActions } from "app/store/machine";
-import MachineName from "./MachineName";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

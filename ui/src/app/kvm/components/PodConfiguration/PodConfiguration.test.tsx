@@ -1,12 +1,13 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
 
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
 import PodConfiguration from "./PodConfiguration";
-import { RootState } from "app/store/root/types";
+
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -15,6 +16,8 @@ import {
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

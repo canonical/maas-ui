@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
+import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "..";
-import { capitaliseFirst } from "app/utils";
-import { useSendAnalytics } from "app/base/hooks";
-import type { MachineDetails } from "app/store/machine/types";
+
 import { HardwareType } from "app/base/enum";
+import { useSendAnalytics } from "app/base/hooks";
+import { capitaliseFirst } from "app/utils";
+
+import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;

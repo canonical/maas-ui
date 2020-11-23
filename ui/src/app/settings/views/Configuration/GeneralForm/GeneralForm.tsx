@@ -1,15 +1,16 @@
-import { Link } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
 import React, { useEffect, useRef } from "react";
-import * as Yup from "yup";
-import type { UsabillaLive } from "@maas-ui/maas-ui-shared";
 
-import { config as configActions } from "app/settings/actions";
-import configSelectors from "app/store/config/selectors";
-import { useSendAnalytics } from "app/base/hooks";
+import { Link } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { UsabillaLive } from "@maas-ui/maas-ui-shared";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useSendAnalytics } from "app/base/hooks";
+import { config as configActions } from "app/settings/actions";
+import configSelectors from "app/store/config/selectors";
 
 declare global {
   interface Window {

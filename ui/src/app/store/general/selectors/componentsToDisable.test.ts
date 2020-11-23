@@ -1,10 +1,11 @@
+import componentsToDisable from "./componentsToDisable";
+
 import {
   componentToDisable as componentToDisableFactory,
   componentsToDisableState as componentsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import componentsToDisable from "./componentsToDisable";
 
 describe("componentsToDisable selectors", () => {
   describe("get", () => {

@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { extractPowerType } from "@maas-ui/maas-ui-shared";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { general as generalActions } from "app/base/actions";
 import { useSendAnalytics } from "app/base/hooks";
 import generalSelectors from "app/store/general/selectors";
-import type { MachineDetails } from "app/store/machine/types";
 import { getPodNumaID, useCanEdit } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

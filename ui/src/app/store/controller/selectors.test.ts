@@ -1,9 +1,10 @@
+import controller from "./selectors";
+
 import {
   rootState as rootStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
 } from "testing/factories";
-import controller from "./selectors";
 
 describe("controller selectors", () => {
   it("can get all items", () => {

@@ -1,11 +1,13 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
 
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
 import TestForm from "./TestForm";
+
 import { HardwareType } from "app/base/enum";
 import {
   generalState as generalStateFactory,
@@ -19,8 +21,9 @@ import {
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
 import { ScriptType } from "testing/factories/scripts";
-import { Scripts } from "app/store/scripts/types";
+
 import { RootState } from "app/store/root/types";
+import { Scripts } from "app/store/scripts/types";
 
 const mockStore = configureStore();
 

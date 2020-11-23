@@ -1,8 +1,10 @@
 import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
-import type { VLAN } from "app/store/vlan/types";
+
 import type { Model } from "app/store/types/model";
+
+import type { VLAN } from "app/store/vlan/types";
 
 export const vlan = extend<Model, VLAN>(model, {
   created: "Thu, 13 Feb. 2020 14:56:05",

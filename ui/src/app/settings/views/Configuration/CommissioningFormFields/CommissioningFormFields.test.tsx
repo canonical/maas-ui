@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
 import React from "react";
+
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
-import type { RootState } from "app/store/root/types";
+
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -12,6 +13,8 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

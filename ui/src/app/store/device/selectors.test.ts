@@ -1,9 +1,10 @@
+import device from "./selectors";
+
 import {
   rootState as rootStateFactory,
   device as deviceFactory,
   deviceState as deviceStateFactory,
 } from "testing/factories";
-import device from "./selectors";
 
 describe("device selectors", () => {
   it("can get all items", () => {

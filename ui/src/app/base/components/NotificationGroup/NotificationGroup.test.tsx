@@ -1,15 +1,16 @@
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import NotificationGroup from "./NotificationGroup";
 
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import NotificationGroup from "./NotificationGroup";
 
 const mockStore = configureStore();
 

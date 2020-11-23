@@ -1,13 +1,15 @@
-import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
+import { Notification } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
+
 import { messages as messageActions } from "app/base/actions";
-import { actions as notificationActions } from "app/store/notification";
 import NotificationGroup from "app/base/components/NotificationGroup";
 import messageSelectors from "app/store/message/selectors";
+import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
-import type { Dispatch } from "redux";
+
 import type { Message } from "app/store/message/types";
 
 const generateMessages = (messages: Message[], dispatch: Dispatch) =>

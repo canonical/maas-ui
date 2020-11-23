@@ -1,24 +1,26 @@
+import React, { useEffect } from "react";
+
 import { Col, Input, MainTable, Row } from "@canonical/react-components";
 import classNames from "classnames";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import TableHeader from "app/base/components/TableHeader";
+import { useTableSort } from "app/base/hooks";
 import CPUColumn from "app/kvm/views/KVMList/KVMListTable/CPUColumn";
 import NameColumn from "app/kvm/views/KVMList/KVMListTable/NameColumn";
 import PoolColumn from "app/kvm/views/KVMList/KVMListTable/PoolColumn";
 import RAMColumn from "app/kvm/views/KVMList/KVMListTable/RAMColumn";
 import StorageColumn from "app/kvm/views/KVMList/KVMListTable/StorageColumn";
 import VMsColumn from "app/kvm/views/KVMList/KVMListTable/VMsColumn";
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
 import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
+
+import type { Pod } from "app/store/pod/types";
+import type { ResourcePool } from "app/store/resourcepool/types";
 
 const getSortValue = (
   sortKey: keyof Pod | "cpu" | "pool" | "ram" | "storage",

@@ -1,8 +1,9 @@
+import type { Model, ModelRef } from "app/store/types/model";
 import type { BaseNode, TestStatus } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
-import type { Model, ModelRef } from "app/store/types/model";
-import type { Subnet } from "app/store/subnet/types";
+
 import type { TSFixMe } from "app/base/types";
+import type { Subnet } from "app/store/subnet/types";
 
 export type IpAddresses = {
   ip: string;

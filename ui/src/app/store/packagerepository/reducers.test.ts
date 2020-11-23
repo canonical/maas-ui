@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("packagerepository reducer", () => {
   it("should return the initial state", () => {

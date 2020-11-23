@@ -1,5 +1,7 @@
-import { generateBaseSelectors } from "app/store/utils";
 import { getRepoDisplayName } from "./utils";
+
+import { generateBaseSelectors } from "app/store/utils";
+
 import type {
   PackageRepository,
   PackageRepositoryState,

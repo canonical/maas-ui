@@ -1,9 +1,10 @@
+import resourcepool from "./selectors";
+
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import resourcepool from "./selectors";
 
 describe("resourcepool selectors", () => {
   it("can get all items", () => {

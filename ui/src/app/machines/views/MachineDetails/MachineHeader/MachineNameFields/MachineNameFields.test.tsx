@@ -1,17 +1,20 @@
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
 
+import MachineNameFields from "./MachineNameFields";
+
+import FormikForm from "app/base/components/FormikForm";
 import {
   domainState as domainStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import FormikForm from "app/base/components/FormikForm";
-import MachineNameFields from "./MachineNameFields";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

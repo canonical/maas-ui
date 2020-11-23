@@ -1,6 +1,8 @@
-import type { Model } from "app/store/types/model";
-import type { TSFixMe } from "app/base/types";
 import type { Machine, NetworkInterface } from "../machine/types";
+
+import type { Model } from "app/store/types/model";
+
+import type { TSFixMe } from "app/base/types";
 
 export type NodeScriptResult = {
   name: string;

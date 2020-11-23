@@ -1,10 +1,12 @@
-import { MainTable } from "@canonical/react-components";
 import React from "react";
+
+import { MainTable } from "@canonical/react-components";
+
+import type { NormalisedStorageDevice as StorageDevice } from "../types";
+import { formatSize } from "../utils";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
-import { formatSize } from "../utils";
-import type { NormalisedStorageDevice as StorageDevice } from "../types";
 
 const getSortValue = (
   sortKey: keyof StorageDevice,

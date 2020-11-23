@@ -1,9 +1,12 @@
-import { mount } from "enzyme";
 import React from "react";
 
-import { machineDisk as diskFactory } from "testing/factories";
+import { mount } from "enzyme";
+
 import { normaliseStorageDevice } from "../utils";
+
 import NumaNodes from "./NumaNodes";
+
+import { machineDisk as diskFactory } from "testing/factories";
 
 describe("NumaNodes", () => {
   it("can show a single numa node", () => {

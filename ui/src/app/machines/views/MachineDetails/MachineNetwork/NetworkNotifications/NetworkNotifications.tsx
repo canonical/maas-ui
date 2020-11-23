@@ -1,11 +1,13 @@
-import { useSelector } from "react-redux";
 import React from "react";
 
-import { useIsAllNetworkingDisabled } from "app/store/machine/utils";
+import { useSelector } from "react-redux";
+
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import machineSelectors from "app/store/machine/selectors";
-import type { RootState } from "app/store/root/types";
+import { useIsAllNetworkingDisabled } from "app/store/machine/utils";
+
 import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];

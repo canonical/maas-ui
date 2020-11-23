@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("zone reducer", () => {
   it("returns the initial state", () => {

@@ -1,19 +1,22 @@
-import { Redirect, Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import React, { useEffect, useState } from "react";
 
-import type { RouteParams } from "app/base/types";
-import { actions as machineActions } from "app/store/machine";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { Redirect, Route, Switch } from "react-router-dom";
+
 import MachineHeader from "./MachineHeader";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
-import StorageNotifications from "./MachineStorage/StorageNotifications";
-import SummaryNotifications from "./MachineSummary/SummaryNotifications";
-import machineSelectors from "app/store/machine/selectors";
 import MachineStorage from "./MachineStorage";
-import MachineTests from "./MachineTests";
+import StorageNotifications from "./MachineStorage/StorageNotifications";
 import MachineSummary, { SelectedAction } from "./MachineSummary";
+import SummaryNotifications from "./MachineSummary/SummaryNotifications";
+import MachineTests from "./MachineTests";
+
 import Section from "app/base/components/Section";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+
+import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 const MachineDetails = (): JSX.Element => {

@@ -1,15 +1,18 @@
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import SystemCard from "./SystemCard";
 
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import SystemCard from "./SystemCard";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

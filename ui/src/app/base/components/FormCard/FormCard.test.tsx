@@ -1,8 +1,10 @@
-import { shallow } from "enzyme";
 import React from "react";
 
-import { COL_SIZES } from "app/base/constants";
+import { shallow } from "enzyme";
+
 import FormCard from "./FormCard";
+
+import { COL_SIZES } from "app/base/constants";
 
 describe("FormCard ", () => {
   it("renders", () => {

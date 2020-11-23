@@ -1,8 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import NotificationGroupNotification from "./Notification";
 
 import {
   authState as authStateFactory,
@@ -14,9 +17,9 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { NotificationIdent } from "app/store/notification/types";
-import NotificationGroupNotification from "./Notification";
+
 import type { ConfigState } from "app/store/config/types";
+import { NotificationIdent } from "app/store/notification/types";
 import type { UserState } from "app/store/user/types";
 
 const mockStore = configureStore();

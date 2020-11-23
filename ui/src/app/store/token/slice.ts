@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Token, TokenState } from "./types";
 
 type TokenReducers = SliceCaseReducers<TokenState>;

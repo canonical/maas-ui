@@ -1,16 +1,18 @@
+import React, { useEffect } from "react";
+
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { RouteParams } from "app/base/types";
 import { general as generalActions } from "app/base/actions";
 import { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+
+import type { RouteParams } from "app/base/types";
 import type { MachineAction } from "app/store/general/types";
+import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 const getTakeActionLinks = (

@@ -1,18 +1,22 @@
+import React, { Fragment, useEffect } from "react";
+
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import React, { Fragment, useEffect } from "react";
 
-import NetworkCardTable from "./NetworkCardTable";
 import { SetSelectedAction } from "../MachineSummary";
 import TestResults from "../TestResults";
+
+import NetworkCardTable from "./NetworkCardTable";
+
 import { HardwareType } from "app/base/enum";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, NetworkInterface } from "app/store/machine/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
+
+import type { Machine, NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type InterfaceGroup = {

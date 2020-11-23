@@ -1,4 +1,5 @@
 import { generateBaseSelectors } from "app/store/utils";
+
 import type { Fabric, FabricState } from "app/store/fabric/types";
 
 const searchFunction = (fabric: Fabric, term: string) =>

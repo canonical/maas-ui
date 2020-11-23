@@ -1,7 +1,8 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import { Button, Input } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
-import React, { useEffect, useRef, useState } from "react";
 
 export type Tag = {
   id: number;

@@ -1,8 +1,10 @@
 import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
-import type { Fabric } from "app/store/fabric/types";
+
 import type { Model } from "app/store/types/model";
+
+import type { Fabric } from "app/store/fabric/types";
 
 export const fabric = extend<Model, Fabric>(model, {
   class_type: "10g",

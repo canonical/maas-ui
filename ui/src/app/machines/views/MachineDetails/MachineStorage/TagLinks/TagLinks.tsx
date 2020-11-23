@@ -1,8 +1,10 @@
 import React from "react";
+
 import { Link } from "react-router-dom";
 
-import { filtersToQueryString } from "app/machines/search";
 import type { NormalisedStorageDevice } from "../types";
+
+import { filtersToQueryString } from "app/machines/search";
 
 type Props = { tags: NormalisedStorageDevice["tags"] };
 

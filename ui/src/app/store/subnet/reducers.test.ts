@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("subnet reducer", () => {
   it("should return the initial state", () => {

@@ -1,14 +1,18 @@
+import React from "react";
+
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import React from "react";
+
+import type { SetSelectedAction } from "../MachineSummary";
 
 import CpuCard from "./CpuCard";
 import DetailsCard from "./DetailsCard";
 import MemoryCard from "./MemoryCard";
 import StatusCard from "./StatusCard";
 import StorageCard from "./StorageCard";
-import type { SetSelectedAction } from "../MachineSummary";
+
 import machineSelectors from "app/store/machine/selectors";
+
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

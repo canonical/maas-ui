@@ -1,4 +1,5 @@
 import { generateBaseSelectors } from "app/store/utils";
+
 import type { Device, DeviceState } from "app/store/device/types";
 
 const searchFunction = (device: Device, term: string) =>

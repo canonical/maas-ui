@@ -1,14 +1,17 @@
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import React from "react";
 
 import PowerColumn from "./PowerColumn";
+
 import {
   machine as machineFactory,
   pod as podFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

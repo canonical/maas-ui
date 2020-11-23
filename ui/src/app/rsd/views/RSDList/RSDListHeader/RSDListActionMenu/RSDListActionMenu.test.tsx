@@ -1,15 +1,17 @@
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import RSDListActionMenu from "./RSDListActionMenu";
 
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import RSDListActionMenu from "./RSDListActionMenu";
 
 const mockStore = configureStore();
 

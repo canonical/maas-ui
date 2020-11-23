@@ -1,12 +1,14 @@
-import { mount } from "enzyme";
 import React from "react";
+
+import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import * as hooks from "app/base/hooks";
 import KVMNumaResources, { TRUNCATION_POINT } from "./KVMNumaResources";
+
+import * as hooks from "app/base/hooks";
 import {
   config as configFactory,
   configState as configStateFactory,

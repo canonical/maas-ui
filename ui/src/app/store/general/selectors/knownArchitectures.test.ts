@@ -1,10 +1,11 @@
+import knownArchitectures from "./knownArchitectures";
+
 import {
   generalState as generalStateFactory,
   knownArchitecture as knownArchitectureFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import knownArchitectures from "./knownArchitectures";
 
 describe("knownArchitectures selectors", () => {
   describe("get", () => {

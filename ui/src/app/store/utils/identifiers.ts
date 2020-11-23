@@ -1,6 +1,7 @@
-import { NotificationIdent } from "app/store/notification/types";
 import type { Host } from "app/store/types/host";
+
 import type { Machine } from "app/store/machine/types";
+import { NotificationIdent } from "app/store/notification/types";
 import type { Notification } from "app/store/notification/types";
 
 /**

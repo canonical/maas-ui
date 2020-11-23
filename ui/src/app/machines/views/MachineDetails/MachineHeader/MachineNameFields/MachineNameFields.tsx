@@ -1,11 +1,13 @@
-import { Select, Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import { useFormikContext } from "formik";
 import React from "react";
 
-import domainSelectors from "app/store/domain/selectors";
-import FormikField from "app/base/components/FormikField";
+import { Select, Spinner } from "@canonical/react-components";
+import { useFormikContext } from "formik";
+import { useSelector } from "react-redux";
+
 import type { FormValues } from "../MachineName/MachineName";
+
+import FormikField from "app/base/components/FormikField";
+import domainSelectors from "app/store/domain/selectors";
 
 type Props = {
   saving?: boolean;

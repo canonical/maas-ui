@@ -1,10 +1,12 @@
 import React from "react";
-import configureStore from "redux-mock-store";
+
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import KVMDetails from "./KVMDetails";
+
 import {
   pod as podFactory,
   podState as podStateFactory,

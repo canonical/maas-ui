@@ -1,12 +1,14 @@
-import { Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import classNames from "classnames";
-import pluralize from "pluralize";
 import React, { useState } from "react";
 
-import { formatBytes, getRanges } from "app/utils";
+import { Spinner } from "@canonical/react-components";
+import classNames from "classnames";
+import pluralize from "pluralize";
+import { useSelector } from "react-redux";
+
 import LabelledList from "app/base/components/LabelledList";
 import machineSelectors from "app/store/machine/selectors";
+import { formatBytes, getRanges } from "app/utils";
+
 import type { Machine, MachineNumaNode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

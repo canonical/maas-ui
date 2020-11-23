@@ -1,9 +1,10 @@
+import packagerepository from "./selectors";
+
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import packagerepository from "./selectors";
 
 describe("packagerepository selectors", () => {
   it("can get repository items", () => {

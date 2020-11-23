@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Subnet, SubnetState } from "./types";
 
 type SubnetReducers = SliceCaseReducers<SubnetState>;

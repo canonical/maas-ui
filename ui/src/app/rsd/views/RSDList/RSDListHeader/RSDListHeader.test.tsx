@@ -1,15 +1,17 @@
+import * as React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import * as React from "react";
+
+import RSDListHeader from "./RSDListHeader";
 
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import RSDListHeader from "./RSDListHeader";
 
 const mockStore = configureStore();
 

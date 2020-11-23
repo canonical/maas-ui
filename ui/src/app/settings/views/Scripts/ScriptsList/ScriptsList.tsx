@@ -1,18 +1,19 @@
+import React, { useEffect, useState } from "react";
+
 import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
 import { scripts as scriptActions } from "app/base/actions";
-import scriptSelectors from "app/store/scripts/selectors";
 import ColumnToggle from "app/base/components/ColumnToggle";
-import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import { useWindowTitle, useAddMessage } from "app/base/hooks";
+import SettingsTable from "app/settings/components/SettingsTable";
+import scriptSelectors from "app/store/scripts/selectors";
+
 import type { RootState } from "app/store/root/types";
 import type { Scripts } from "app/store/scripts/types";
 

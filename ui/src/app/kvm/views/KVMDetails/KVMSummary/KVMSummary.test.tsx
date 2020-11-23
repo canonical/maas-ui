@@ -1,9 +1,12 @@
-import { mount } from "enzyme";
 import React from "react";
+
+import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
+
+import KVMSummary from "./KVMSummary";
 
 import * as hooks from "app/base/hooks";
 import {
@@ -14,7 +17,6 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import KVMSummary from "./KVMSummary";
 
 const mockStore = configureStore();
 

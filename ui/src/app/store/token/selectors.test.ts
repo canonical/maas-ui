@@ -1,9 +1,10 @@
+import token from "./selectors";
+
 import {
   rootState as rootStateFactory,
   token as tokenFactory,
   tokenState as tokenStateFactory,
 } from "testing/factories";
-import token from "./selectors";
 
 describe("token selectors", () => {
   describe("all", () => {

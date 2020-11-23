@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("controller reducer", () => {
   it("should return the initial state", () => {

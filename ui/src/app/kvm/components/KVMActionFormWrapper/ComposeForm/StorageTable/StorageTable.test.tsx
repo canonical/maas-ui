@@ -1,12 +1,13 @@
-import { act } from "react-dom/test-utils";
-import { mount } from "enzyme";
 import React from "react";
-import { MemoryRouter, Route } from "react-router-dom";
+
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore, { MockStore } from "redux-mock-store";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import ComposeForm from "../ComposeForm";
+
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -24,7 +25,9 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import ComposeForm from "../ComposeForm";
+
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

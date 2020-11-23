@@ -1,14 +1,16 @@
+import React, { useState } from "react";
+
 import { Button, Card, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { useSendAnalytics } from "app/base/hooks";
 import PodMeter from "app/kvm/components/PodMeter";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
+
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 export const TRUNCATION_POINT = 3;
 

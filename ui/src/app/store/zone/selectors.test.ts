@@ -1,9 +1,10 @@
+import zone from "./selectors";
+
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import zone from "./selectors";
 
 describe("zone selectors", () => {
   it("can get all items", () => {

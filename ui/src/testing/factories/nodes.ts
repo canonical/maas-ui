@@ -1,5 +1,15 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
+import { model, modelRef } from "./model";
+
+import type { Model } from "app/store/types/model";
+import {
+  BaseNode,
+  SimpleNode,
+  TestStatus,
+  NodeStatus,
+} from "app/store/types/node";
+
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type {
@@ -22,10 +32,6 @@ import type {
   PodNumaNode,
   PodStoragePool,
 } from "app/store/pod/types";
-import type { Model } from "app/store/types/model";
-import { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
-import { model, modelRef } from "./model";
-import { NodeStatus } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,

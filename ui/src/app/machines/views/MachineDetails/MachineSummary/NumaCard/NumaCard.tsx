@@ -1,10 +1,13 @@
-import { Card, List, Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import pluralize from "pluralize";
 import React from "react";
 
+import { Card, List, Spinner } from "@canonical/react-components";
+import pluralize from "pluralize";
+import { useSelector } from "react-redux";
+
 import NumaCardDetails from "./NumaCardDetails";
+
 import machineSelectors from "app/store/machine/selectors";
+
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

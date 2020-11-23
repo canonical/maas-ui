@@ -1,17 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import { auth as authActions } from "app/base/actions";
-import { actions as userActions } from "app/store/user";
-import type { User } from "app/store/user/types";
-import userSelectors from "app/store/user/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { UserShape } from "app/base/proptypes";
-import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
-import BaseUserForm from "app/base/components/UserForm";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import BaseUserForm from "app/base/components/UserForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { UserShape } from "app/base/proptypes";
+import { actions as userActions } from "app/store/user";
+import userSelectors from "app/store/user/selectors";
+
+import type { User } from "app/store/user/types";
 
 export type UserWithPassword = User & {
   password1: string;

@@ -1,11 +1,12 @@
 import React from "react";
+
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import ErrorBoundary from "app/base/components/ErrorBoundary";
-import KVM from "app/kvm/views/KVM";
-import Machines from "app/machines/views/Machines";
-import MachineDetails from "app/machines/views/MachineDetails";
 import NotFound from "app/base/views/NotFound";
+import KVM from "app/kvm/views/KVM";
+import MachineDetails from "app/machines/views/MachineDetails";
+import Machines from "app/machines/views/Machines";
 import Preferences from "app/preferences/views/Preferences";
 import RSD from "app/rsd/views/RSD";
 import Settings from "app/settings/views/Settings";

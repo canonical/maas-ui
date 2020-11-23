@@ -1,3 +1,5 @@
+import pod from "./selectors";
+
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -7,7 +9,6 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import pod from "./selectors";
 
 describe("pod selectors", () => {
   it("can get all items", () => {

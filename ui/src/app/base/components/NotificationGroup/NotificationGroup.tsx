@@ -1,17 +1,20 @@
+import React from "react";
+
+import { Button, Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React from "react";
 import { useDispatch } from "react-redux";
-import { Button, Notification } from "@canonical/react-components";
 import type { Dispatch } from "redux";
 
-import { capitaliseFirst } from "app/utils";
+import NotificationGroupNotification from "./Notification";
+
 import { useVisible } from "app/base/hooks";
 import { actions as notificationActions } from "app/store/notification";
-import NotificationGroupNotification from "./Notification";
-import type { Notification as NotificationType } from "app/store/notification/types";
+import { capitaliseFirst } from "app/utils";
+
 import type { MessageType } from "app/store/message/types";
+import type { Notification as NotificationType } from "app/store/notification/types";
 
 const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
   notifications.forEach((notification) => {

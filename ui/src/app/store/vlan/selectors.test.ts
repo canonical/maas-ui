@@ -1,9 +1,10 @@
+import vlan from "./selectors";
+
 import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import vlan from "./selectors";
 
 describe("vlan selectors", () => {
   it("can get all items", () => {

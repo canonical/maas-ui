@@ -1,14 +1,16 @@
-import { Button } from "@canonical/react-components";
 import React, { useEffect, useState } from "react";
+
+import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import KVMListActionMenu from "./KVMListActionMenu";
+
+import SectionHeader from "app/base/components/SectionHeader";
+import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import { getVMHostCount } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
-import KVMListActionMenu from "./KVMListActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
 
 const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();

@@ -1,7 +1,9 @@
 import { extend } from "cooky-cutter";
 
 import { model } from "./model";
+
 import type { Model } from "app/store/types/model";
+
 import type { PackageRepository } from "app/store/packagerepository/types";
 
 export const packageRepository = extend<Model, PackageRepository>(model, {

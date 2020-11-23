@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("space reducer", () => {
   it("should return the initial state", () => {

@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { generateBaseSelectors } from "app/store/utils";
 import configSelectors from "app/store/config/selectors";
+import { generateBaseSelectors } from "app/store/utils";
+
 import {
   NotificationIdent,
   ReleaseNotificationPaths,

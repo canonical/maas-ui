@@ -1,10 +1,12 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
-import type { RootState } from "app/store/root/types";
+
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import CommissionForm from "./CommissionForm";
 
 import {
   generalState as generalStateFactory,
@@ -18,7 +20,8 @@ import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
-import CommissionForm from "./CommissionForm";
+
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

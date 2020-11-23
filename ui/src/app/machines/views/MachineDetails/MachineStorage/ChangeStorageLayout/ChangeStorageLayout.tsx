@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
+
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormCard from "app/base/components/FormCard";
@@ -8,6 +9,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

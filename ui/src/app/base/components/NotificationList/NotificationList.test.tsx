@@ -1,8 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import NotificationList from "./NotificationList";
 
 import {
   config as configFactory,
@@ -15,8 +18,8 @@ import {
   rootState as rootStateFactory,
   routerState as routerStateFactory,
 } from "testing/factories";
+
 import { NotificationIdent } from "app/store/notification/types";
-import NotificationList from "./NotificationList";
 import type { Notification } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 

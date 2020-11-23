@@ -1,17 +1,20 @@
+import React from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { RouteParams } from "app/base/types";
 import type { ComposeFormValues, DiskField } from "../../ComposeForm";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+
+import Meter from "app/base/components/Meter";
+import { COLOURS } from "app/base/constants";
 import podSelectors from "app/store/pod/selectors";
 import { formatBytes } from "app/utils";
-import { COLOURS } from "app/base/constants";
-import Meter from "app/base/components/Meter";
+
+import type { RouteParams } from "app/base/types";
+import type { PodDetails } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 type RequestMap = { [location: string]: number };
 

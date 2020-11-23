@@ -1,10 +1,12 @@
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
 
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
 import PodConfiguration from "../PodConfiguration";
+
 import {
   pod as podFactory,
   podState as podStateFactory,

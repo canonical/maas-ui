@@ -1,10 +1,12 @@
-import { Spinner, Textarea } from "@canonical/react-components";
-import { FileRejection, useDropzone } from "react-dropzone";
-import { useFormikContext } from "formik";
-import classNames from "classnames";
 import React, { useState } from "react";
 
+import { Spinner, Textarea } from "@canonical/react-components";
+import classNames from "classnames";
+import { useFormikContext } from "formik";
+import { FileRejection, useDropzone } from "react-dropzone";
+
 import { DeployFormValues } from "../../DeployForm";
+
 import FormikField from "app/base/components/FormikField";
 
 const MAX_SIZE_BYTES = 2000000; // 2MB

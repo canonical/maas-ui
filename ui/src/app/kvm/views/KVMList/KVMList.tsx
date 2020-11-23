@@ -1,11 +1,13 @@
 import React from "react";
+
 import { Route, Switch } from "react-router-dom";
 
-import { useWindowTitle } from "app/base/hooks";
 import AddKVMForm from "./AddKVMForm";
 import KVMListHeader from "./KVMListHeader";
 import KVMListTable from "./KVMListTable";
+
 import Section from "app/base/components/Section";
+import { useWindowTitle } from "app/base/hooks";
 
 const KVMList = (): JSX.Element => {
   useWindowTitle("KVM");

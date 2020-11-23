@@ -1,17 +1,11 @@
+import React, { useEffect, useState } from "react";
+
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
-import type {
-  SelectedAction,
-  SetSelectedAction,
-} from "app/machines/views/MachineDetails/MachineSummary";
-import { actions as machineActions } from "app/store/machine";
-import type { RouteParams } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
@@ -21,6 +15,15 @@ import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
+
+import { useMachineActionForm } from "app/machines/hooks";
+import type {
+  SelectedAction,
+  SetSelectedAction,
+} from "app/machines/views/MachineDetails/MachineSummary";
+import { actions as machineActions } from "app/store/machine";
+
+import type { RouteParams } from "app/base/types";
 
 const getErrorSentence = (action: SelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);

@@ -1,13 +1,14 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
 
-import * as hooks from "app/base/hooks";
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
 import DeployForm from "./DeployForm";
-import type { RootState } from "app/store/root/types";
+
+import * as hooks from "app/base/hooks";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -21,6 +22,8 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

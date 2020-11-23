@@ -1,9 +1,10 @@
+import reducers, { actions } from "./slice";
+
 import {
   machine as machineFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("resourcePool reducer", () => {
   it("should return the initial state", () => {

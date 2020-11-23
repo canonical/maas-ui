@@ -1,8 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import StorageNotifications from "./StorageNotifications";
 
 import { nodeStatus } from "app/base/enum";
 import {
@@ -11,7 +14,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import StorageNotifications from "./StorageNotifications";
+
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

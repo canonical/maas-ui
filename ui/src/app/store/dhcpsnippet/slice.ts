@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { DHCPSnippet, DHCPSnippetState } from "./types";
 
 type DHCPSnippetReducers = SliceCaseReducers<DHCPSnippetState>;

@@ -1,40 +1,43 @@
-import { Spinner, Strip } from "@canonical/react-components";
 import React, { useCallback, useEffect, useState } from "react";
+
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
+
+import ComposeFormFields from "./ComposeFormFields";
+import InterfacesTable from "./InterfacesTable";
+import StorageTable from "./StorageTable";
+
+import {
+  general as generalActions,
+  messages as messagesActions,
+} from "app/base/actions";
+import ActionForm from "app/base/components/ActionForm";
+import { actions as domainActions } from "app/store/domain";
+import domainSelectors from "app/store/domain/selectors";
+import { actions as fabricActions } from "app/store/fabric";
+import fabricSelectors from "app/store/fabric/selectors";
+import generalSelectors from "app/store/general/selectors";
+import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { actions as spaceActions } from "app/store/space";
+import spaceSelectors from "app/store/space/selectors";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
+import { actions as zoneActions } from "app/store/zone";
+import zoneSelectors from "app/store/zone/selectors";
+import { formatBytes } from "app/utils";
 
 import type { RouteParams } from "app/base/types";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
-import { actions as podActions } from "app/store/pod";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import { actions as subnetActions } from "app/store/subnet";
-import {
-  general as generalActions,
-  messages as messagesActions,
-} from "app/base/actions";
-import { actions as domainActions } from "app/store/domain";
-import { actions as fabricActions } from "app/store/fabric";
-import { actions as spaceActions } from "app/store/space";
-import { actions as vlanActions } from "app/store/vlan";
-import { actions as zoneActions } from "app/store/zone";
-import domainSelectors from "app/store/domain/selectors";
-import fabricSelectors from "app/store/fabric/selectors";
-import generalSelectors from "app/store/general/selectors";
-import podSelectors from "app/store/pod/selectors";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import spaceSelectors from "app/store/space/selectors";
-import subnetSelectors from "app/store/subnet/selectors";
-import vlanSelectors from "app/store/vlan/selectors";
-import zoneSelectors from "app/store/zone/selectors";
-import { formatBytes } from "app/utils";
-import ActionForm from "app/base/components/ActionForm";
-import ComposeFormFields from "./ComposeFormFields";
-import InterfacesTable from "./InterfacesTable";
-import StorageTable from "./StorageTable";
 
 export type Disk = {
   location: string;

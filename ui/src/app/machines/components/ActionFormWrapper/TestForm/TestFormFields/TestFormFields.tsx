@@ -1,10 +1,13 @@
-import { Col, Row } from "@canonical/react-components";
 import React from "react";
+
+import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { FormValues } from "../TestForm";
+
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+
 import { Scripts } from "app/store/scripts/types";
 
 type ScriptsDisplay = Scripts & { displayName: string };

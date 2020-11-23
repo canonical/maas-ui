@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("token reducer", () => {
   it("should return the initial state", () => {

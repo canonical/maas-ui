@@ -1,7 +1,9 @@
 import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
+
 import type { Model } from "app/store/types/model";
+
 import type { ResourcePool } from "app/store/resourcepool/types";
 
 export const resourcePool = extend<Model, ResourcePool>(model, {

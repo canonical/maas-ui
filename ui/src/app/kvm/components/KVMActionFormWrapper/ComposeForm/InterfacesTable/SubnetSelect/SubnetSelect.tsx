@@ -1,24 +1,27 @@
-import { ContextualMenu } from "@canonical/react-components";
-import { useParams } from "react-router";
-import { useSelector } from "react-redux";
 import React from "react";
 import type { MouseEventHandler } from "react";
 
-import type { RouteParams } from "app/base/types";
+import { ContextualMenu } from "@canonical/react-components";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+
 import type { InterfaceField } from "../../ComposeForm";
-import type { Fabric } from "app/store/fabric/types";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { Space } from "app/store/space/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { VLAN } from "app/store/vlan/types";
+import { getPxeIconClass } from "../InterfacesTable";
+
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
 import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
 import { groupAsMap } from "app/utils";
-import { getPxeIconClass } from "../InterfacesTable";
+
+import type { RouteParams } from "app/base/types";
+import type { Fabric } from "app/store/fabric/types";
+import type { PodDetails } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
+import type { Space } from "app/store/space/types";
+import type { Subnet } from "app/store/subnet/types";
+import type { VLAN } from "app/store/vlan/types";
 
 type Props = {
   iface: InterfaceField;

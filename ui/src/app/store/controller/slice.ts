@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Controller, ControllerState } from "./types";
 
 type ControllerReducers = SliceCaseReducers<ControllerState>;

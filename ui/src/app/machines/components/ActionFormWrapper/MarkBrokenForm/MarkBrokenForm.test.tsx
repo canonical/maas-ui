@@ -1,12 +1,13 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
 
+import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
 import MarkBrokenForm from "./MarkBrokenForm";
-import { RootState } from "app/store/root/types";
+
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
@@ -16,6 +17,8 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
+
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

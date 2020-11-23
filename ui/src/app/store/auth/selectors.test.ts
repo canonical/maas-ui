@@ -1,10 +1,11 @@
+import auth from "./selectors";
+
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import auth from "./selectors";
 
 describe("auth", () => {
   it("can get the current user details", () => {

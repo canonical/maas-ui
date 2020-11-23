@@ -1,14 +1,16 @@
-import PropTypes from "prop-types";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { Notification } from "@canonical/react-components";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { isReleaseNotification } from "app/store/utils";
-import { MessageType } from "app/store/message/types";
-import { actions as notificationActions } from "app/store/notification";
 import authSelectors from "app/store/auth/selectors";
+import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
+import { isReleaseNotification } from "app/store/utils";
+
+import { MessageType } from "app/store/message/types";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 

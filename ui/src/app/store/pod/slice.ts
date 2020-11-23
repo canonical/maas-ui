@@ -4,9 +4,10 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import type { Pod, PodState } from "./types";
+
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import type { GenericItemMeta, GenericSlice } from "app/store/utils";
-import type { Pod, PodState } from "./types";
 
 export const DEFAULT_STATUSES = {
   composing: false,

@@ -1,7 +1,9 @@
 import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
+
 import type { Model } from "app/store/types/model";
+
 import type { SSLKey } from "app/store/sslkey/types";
 
 export const sslKey = extend<Model, SSLKey>(model, {

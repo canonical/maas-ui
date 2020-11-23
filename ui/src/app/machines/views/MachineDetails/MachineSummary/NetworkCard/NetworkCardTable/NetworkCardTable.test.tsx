@@ -1,8 +1,11 @@
+import React from "react";
+
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import NetworkCardTable from "./NetworkCardTable";
 
 import {
   fabric as fabricFactory,
@@ -10,7 +13,7 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
-import NetworkCardTable from "./NetworkCardTable";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

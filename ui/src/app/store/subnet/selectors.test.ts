@@ -1,10 +1,11 @@
+import subnet from "./selectors";
+
 import {
   podDetails as podDetailsFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import subnet from "./selectors";
 
 describe("subnet selectors", () => {
   it("can get all items", () => {

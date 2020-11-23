@@ -1,15 +1,17 @@
-import { mount } from "enzyme";
 import React from "react";
+
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
+
+import RSDSummary from "./RSDSummary";
 
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import RSDSummary from "./RSDSummary";
 
 const mockStore = configureStore();
 

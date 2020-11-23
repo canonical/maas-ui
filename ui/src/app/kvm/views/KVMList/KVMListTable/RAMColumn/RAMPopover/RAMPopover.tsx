@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
 import React from "react";
 
-import { formatBytes } from "app/utils";
+import PropTypes from "prop-types";
+
 import Popover from "app/base/components/Popover";
+import { formatBytes } from "app/utils";
 
 type Props = {
   allocated: number;

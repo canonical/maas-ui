@@ -1,9 +1,10 @@
+import architectures from "./architectures";
+
 import {
   generalState as generalStateFactory,
   architecturesState as architecturesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import architectures from "./architectures";
 
 describe("architectures selectors", () => {
   describe("get", () => {

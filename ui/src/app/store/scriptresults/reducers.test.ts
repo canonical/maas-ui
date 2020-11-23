@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   scriptResult as scriptResultFactory,
   scriptResultsState as scriptResultsStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("script results reducer", () => {
   it("returns the initial state", () => {

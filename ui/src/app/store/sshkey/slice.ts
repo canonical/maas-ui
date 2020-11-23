@@ -5,8 +5,10 @@ import type {
 } from "@reduxjs/toolkit";
 
 import { generateSlice } from "../utils";
-import type { GenericSlice } from "app/store/utils";
+
 import type { KeySource, SSHKey, SSHKeyState } from "./types";
+
+import type { GenericSlice } from "app/store/utils";
 
 type SSHKeyReducers = SliceCaseReducers<SSHKeyState> & {
   // Overrides for reducers that don't take a payload.
