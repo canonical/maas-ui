@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+
 import { Spinner, Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import {
@@ -7,7 +9,6 @@ import {
   navigateToLegacy,
 } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 

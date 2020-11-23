@@ -1,5 +1,6 @@
-import { Input } from "@canonical/react-components";
 import React from "react";
+
+import { Input } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

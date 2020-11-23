@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useSelector } from "react-redux";
 
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";

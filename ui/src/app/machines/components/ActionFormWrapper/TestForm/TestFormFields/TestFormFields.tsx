@@ -1,6 +1,7 @@
+import React from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import React from "react";
 
 import type { FormValues } from "../TestForm";
 

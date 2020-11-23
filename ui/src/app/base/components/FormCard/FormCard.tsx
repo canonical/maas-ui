@@ -1,7 +1,8 @@
-import { Card, Col, Row } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import React from "react";
 import type { ReactNode } from "react";
+
+import { Card, Col, Row } from "@canonical/react-components";
+import PropTypes from "prop-types";
 
 import { COL_SIZES } from "app/base/constants";
 

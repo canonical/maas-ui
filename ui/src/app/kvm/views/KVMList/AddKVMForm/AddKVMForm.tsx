@@ -1,5 +1,6 @@
-import { Spinner } from "@canonical/react-components";
 import React, { useCallback, useEffect, useState } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";

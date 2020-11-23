@@ -1,7 +1,8 @@
-import { List } from "@canonical/react-components";
-import classNames from "classnames";
 import React from "react";
 import type { ReactNode } from "react";
+
+import { List } from "@canonical/react-components";
+import classNames from "classnames";
 
 type LabelledListItem = {
   label: ReactNode;

@@ -1,6 +1,7 @@
+import React from "react";
+
 import { Card, List, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import NumaCardDetails from "./NumaCardDetails";

@@ -1,7 +1,8 @@
+import React, { useEffect, useRef } from "react";
+
 import { Link } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { UsabillaLive } from "@maas-ui/maas-ui-shared";
-import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 

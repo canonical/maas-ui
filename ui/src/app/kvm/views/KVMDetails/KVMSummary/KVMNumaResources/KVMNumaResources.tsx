@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from "react";
+
 import { Button, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useSendAnalytics } from "app/base/hooks";

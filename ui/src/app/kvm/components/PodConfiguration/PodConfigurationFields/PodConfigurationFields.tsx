@@ -1,6 +1,7 @@
+import React from "react";
+
 import { Col, Input, Row, Select, Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import type { PodConfigurationValues } from "../PodConfiguration";

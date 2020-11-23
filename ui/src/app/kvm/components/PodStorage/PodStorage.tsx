@@ -1,6 +1,7 @@
+import React, { useState } from "react";
+
 import { Button, Card, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { useSendAnalytics } from "app/base/hooks";

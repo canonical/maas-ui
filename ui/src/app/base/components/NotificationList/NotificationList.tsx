@@ -1,5 +1,6 @@
-import { Notification } from "@canonical/react-components";
 import React, { useEffect } from "react";
+
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 

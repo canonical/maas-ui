@@ -1,5 +1,6 @@
-import { Icon, Tooltip } from "@canonical/react-components";
 import React, { useEffect, useRef, useState } from "react";
+
+import { Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";

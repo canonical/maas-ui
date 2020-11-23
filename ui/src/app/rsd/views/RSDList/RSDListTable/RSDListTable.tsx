@@ -1,6 +1,7 @@
+import React, { useEffect } from "react";
+
 import { Col, Input, MainTable, Row } from "@canonical/react-components";
 import classNames from "classnames";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import TableHeader from "app/base/components/TableHeader";

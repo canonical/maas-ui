@@ -1,7 +1,8 @@
+import React, { useState } from "react";
+
 import { Spinner, Textarea } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
-import React, { useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 
 import { DeployFormValues } from "../../DeployForm";

@@ -1,6 +1,7 @@
-import { ContextualMenu } from "@canonical/react-components";
 import React from "react";
 import type { MouseEventHandler } from "react";
+
+import { ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 

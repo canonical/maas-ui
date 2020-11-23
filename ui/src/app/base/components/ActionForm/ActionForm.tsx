@@ -1,6 +1,7 @@
-import { Spinner, Strip } from "@canonical/react-components";
 import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
+
+import { Spinner, Strip } from "@canonical/react-components";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";

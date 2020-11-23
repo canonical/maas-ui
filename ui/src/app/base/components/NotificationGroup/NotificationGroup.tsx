@@ -1,8 +1,9 @@
+import React from "react";
+
 import { Button, Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React from "react";
 import { useDispatch } from "react-redux";
 import type { Dispatch } from "redux";
 

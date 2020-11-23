@@ -1,5 +1,6 @@
-import pluralize from "pluralize";
 import React from "react";
+
+import pluralize from "pluralize";
 
 import type { SetSelectedAction } from "../../MachineSummary";
 import TestResults from "../../TestResults";

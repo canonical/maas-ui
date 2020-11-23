@@ -1,7 +1,8 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import { useListener } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { COLOURS } from "app/base/constants";
 

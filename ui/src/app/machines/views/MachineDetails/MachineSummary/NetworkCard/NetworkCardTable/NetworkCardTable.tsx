@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Table,
   TableCell,
@@ -5,7 +7,6 @@ import {
   TableRow,
   Tooltip,
 } from "@canonical/react-components";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import fabricSelectors from "app/store/fabric/selectors";

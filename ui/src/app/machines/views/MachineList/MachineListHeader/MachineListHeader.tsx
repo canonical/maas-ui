@@ -1,7 +1,8 @@
+import React, { useEffect } from "react";
+
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 

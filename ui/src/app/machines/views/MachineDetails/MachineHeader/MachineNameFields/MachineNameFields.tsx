@@ -1,6 +1,7 @@
+import React from "react";
+
 import { Select, Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import type { FormValues } from "../MachineName/MachineName";

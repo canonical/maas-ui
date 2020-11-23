@@ -1,5 +1,6 @@
-import { ContextualMenu } from "@canonical/react-components";
 import React from "react";
+
+import { ContextualMenu } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 type Props = {

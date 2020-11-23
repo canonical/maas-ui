@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
 import React from "react";
+
+import PropTypes from "prop-types";
 
 import Popover from "app/base/components/Popover";
 import { formatBytes } from "app/utils";

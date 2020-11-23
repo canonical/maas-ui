@@ -60,6 +60,11 @@ module.exports = {
           {
             pathGroups: [
               {
+                pattern: "react",
+                group: "external",
+                position: "before",
+              },
+              {
                 pattern: "**/types",
                 group: "internal",
                 position: "after",
@@ -69,6 +74,7 @@ module.exports = {
                 group: "internal",
               },
             ],
+            "pathGroupsExcludedImportTypes": ["react"],
             "newlines-between": "always",
             alphabetize: {
               order: "asc",

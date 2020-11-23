@@ -1,5 +1,6 @@
-import { Card, Spinner } from "@canonical/react-components";
 import React, { Fragment, useEffect } from "react";
+
+import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

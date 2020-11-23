@@ -1,5 +1,6 @@
-import { MainTable } from "@canonical/react-components";
 import React from "react";
+
+import { MainTable } from "@canonical/react-components";
 
 import { NormalisedFilesystem } from "../types";
 import { formatSize, formatType } from "../utils";

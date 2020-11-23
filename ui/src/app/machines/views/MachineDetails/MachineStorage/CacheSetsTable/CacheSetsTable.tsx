@@ -1,5 +1,6 @@
-import { MainTable } from "@canonical/react-components";
 import React from "react";
+
+import { MainTable } from "@canonical/react-components";
 
 import type { NormalisedStorageDevice as StorageDevice } from "../types";
 import { formatSize } from "../utils";

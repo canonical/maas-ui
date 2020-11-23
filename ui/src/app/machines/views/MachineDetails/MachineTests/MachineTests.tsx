@@ -1,5 +1,6 @@
-import { Spinner } from "@canonical/react-components";
 import React, { useEffect } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 

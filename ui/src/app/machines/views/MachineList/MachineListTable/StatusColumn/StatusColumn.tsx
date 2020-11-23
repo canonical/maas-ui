@@ -1,7 +1,8 @@
+import React from "react";
+
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import PropTypes from "prop-types";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";

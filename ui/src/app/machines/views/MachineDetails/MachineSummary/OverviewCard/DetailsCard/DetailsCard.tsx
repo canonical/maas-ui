@@ -1,5 +1,6 @@
-import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import React, { useEffect } from "react";
+
+import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

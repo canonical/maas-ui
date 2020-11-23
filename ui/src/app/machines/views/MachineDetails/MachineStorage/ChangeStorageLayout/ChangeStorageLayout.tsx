@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
+
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormCard from "app/base/components/FormCard";

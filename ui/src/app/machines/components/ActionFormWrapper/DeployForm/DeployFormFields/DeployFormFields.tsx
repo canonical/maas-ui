@@ -1,7 +1,8 @@
+import React, { useState } from "react";
+
 import { Col, Notification, Row, Select } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

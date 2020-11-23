@@ -1,7 +1,8 @@
-import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
-import classNames from "classnames";
 import React from "react";
 import type { ReactNode } from "react";
+
+import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
+import classNames from "classnames";
 
 import type { TSFixMe } from "app/base/types";
 

@@ -1,7 +1,8 @@
-import { Link } from "@canonical/react-components";
-import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import React from "react";
 import type { ReactNode } from "react";
+
+import { Link } from "@canonical/react-components";
+import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 
 type Props = {
   children: ReactNode;

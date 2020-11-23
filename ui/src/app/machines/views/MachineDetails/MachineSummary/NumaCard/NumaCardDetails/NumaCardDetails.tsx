@@ -1,7 +1,8 @@
+import React, { useState } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import LabelledList from "app/base/components/LabelledList";

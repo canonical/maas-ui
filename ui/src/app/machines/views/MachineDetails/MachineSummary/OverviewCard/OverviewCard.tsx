@@ -1,5 +1,6 @@
-import { Card, Spinner } from "@canonical/react-components";
 import React from "react";
+
+import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { SetSelectedAction } from "../MachineSummary";
