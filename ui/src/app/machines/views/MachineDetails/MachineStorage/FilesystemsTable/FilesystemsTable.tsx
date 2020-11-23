@@ -8,11 +8,14 @@ import { formatSize } from "../utils";
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 type Props = {
-  editable: boolean;
+  canEditStorage: boolean;
   filesystems: NormalisedFilesystem[];
 };
 
-const FilesystemsTable = ({ editable, filesystems }: Props): JSX.Element => {
+const FilesystemsTable = ({
+  canEditStorage,
+  filesystems,
+}: Props): JSX.Element => {
   const [addSpecialFormOpen, setAddSpecialFormOpen] = useState<boolean>(false);
 
   const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
@@ -79,7 +82,7 @@ const FilesystemsTable = ({ editable, filesystems }: Props): JSX.Element => {
           No filesystems defined.
         </p>
       )}
-      {editable && !addSpecialFormOpen && (
+      {canEditStorage && !addSpecialFormOpen && (
         <Tooltip message="Create a tmpfs or ramfs filesystem.">
           <Button
             appearance="neutral"

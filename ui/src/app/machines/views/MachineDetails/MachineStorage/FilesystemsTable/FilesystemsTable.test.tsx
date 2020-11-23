@@ -25,7 +25,7 @@ const mockStore = configureStore();
 describe("FilesystemsTable", () => {
   it("can show an empty message", () => {
     const wrapper = mount(
-      <FilesystemsTable editable={false} filesystems={[]} />
+      <FilesystemsTable canEditStorage={false} filesystems={[]} />
     );
 
     expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
@@ -43,7 +43,7 @@ describe("FilesystemsTable", () => {
     ];
     const { filesystems } = separateStorageData(disks);
     const wrapper = mount(
-      <FilesystemsTable editable={false} filesystems={filesystems} />
+      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("disk-fs");
@@ -66,7 +66,7 @@ describe("FilesystemsTable", () => {
     ];
     const { filesystems } = separateStorageData(disks);
     const wrapper = mount(
-      <FilesystemsTable editable={false} filesystems={filesystems} />
+      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
@@ -83,7 +83,7 @@ describe("FilesystemsTable", () => {
     ];
     const { filesystems } = separateStorageData([], specialFilesystems);
     const wrapper = mount(
-      <FilesystemsTable editable={false} filesystems={filesystems} />
+      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("—");
@@ -92,7 +92,7 @@ describe("FilesystemsTable", () => {
     );
   });
 
-  it("can show an add special filesystem form if storage is editable", () => {
+  it("can show an add special filesystem form if storage can be edited", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -112,7 +112,9 @@ describe("FilesystemsTable", () => {
           <Route
             exact
             path="/machine/:id/storage"
-            component={() => <FilesystemsTable editable filesystems={[]} />}
+            component={() => (
+              <FilesystemsTable canEditStorage filesystems={[]} />
+            )}
           />
         </MemoryRouter>
       </Provider>

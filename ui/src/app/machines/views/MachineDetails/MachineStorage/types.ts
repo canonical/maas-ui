@@ -10,6 +10,7 @@ export type NormalisedFilesystem = {
 };
 
 export type NormalisedStorageDevice = {
+  actions: string[];
   boot: boolean | null;
   firmware: string | null;
   id: number;

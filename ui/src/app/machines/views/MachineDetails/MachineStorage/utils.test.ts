@@ -1,4 +1,5 @@
 import {
+  canBePartitioned,
   formatSize,
   formatType,
   hasMountedFilesystem,
@@ -134,6 +135,60 @@ describe("Machine storage utils", () => {
     });
   });
 
+  describe("canBePartitioned", () => {
+    it("handles physical disks with available space", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        type: "physical",
+      });
+      expect(canBePartitioned(disk)).toBe(true);
+    });
+
+    it("handles partitions", () => {
+      const partition = partitionFactory({ type: "partition" });
+      expect(canBePartitioned(partition)).toBe(false);
+    });
+
+    it("handles formatted disks", () => {
+      const disk = diskFactory({ filesystem: fsFactory({ fstype: "fat32" }) });
+      expect(canBePartitioned(disk)).toBe(false);
+    });
+
+    it("handles volume groups", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        type: "lvm-vg",
+      });
+      expect(canBePartitioned(disk)).toBe(false);
+    });
+
+    it("handles logical volumes", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        parent: {
+          id: 1,
+          type: "lvm-vg",
+          uuid: "abc123",
+        },
+        type: "virtual",
+      });
+      expect(canBePartitioned(disk)).toBe(false);
+    });
+
+    it("handles bcaches", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        parent: {
+          id: 1,
+          type: "bcache",
+          uuid: "abc123",
+        },
+        type: "virtual",
+      });
+      expect(canBePartitioned(disk)).toBe(false);
+    });
+  });
+
   describe("normaliseFilesystem", () => {
     it("can normalise a filesystem", () => {
       const filesystem = fsFactory();
@@ -156,6 +211,7 @@ describe("Machine storage utils", () => {
         test_status: 0,
       });
       expect(normaliseStorageDevice(disk)).toStrictEqual({
+        actions: ["addPartition"],
         boot: disk.is_boot,
         firmware: disk.firmware_version,
         id: disk.id,
@@ -179,6 +235,7 @@ describe("Machine storage utils", () => {
         type: "lvm-vg",
       });
       expect(normaliseStorageDevice(disk)).toStrictEqual({
+        actions: [],
         boot: disk.is_boot,
         firmware: disk.firmware_version,
         id: disk.id,
@@ -207,6 +264,7 @@ describe("Machine storage utils", () => {
         type: "virtual",
       });
       expect(normaliseStorageDevice(disk)).toStrictEqual({
+        actions: [],
         boot: disk.is_boot,
         firmware: disk.firmware_version,
         id: disk.id,
@@ -226,6 +284,7 @@ describe("Machine storage utils", () => {
     it("can normalise a partition", () => {
       const partition = partitionFactory();
       expect(normaliseStorageDevice(partition)).toStrictEqual({
+        actions: [],
         boot: null,
         firmware: null,
         id: partition.id,
