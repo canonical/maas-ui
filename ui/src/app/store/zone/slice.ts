@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Zone, ZoneState } from "./types";
 
 type ZoneReducers = SliceCaseReducers<ZoneState>;

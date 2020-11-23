@@ -1,20 +1,23 @@
 import { Icon, Tooltip } from "@canonical/react-components";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { SelectedAction, SetSelectedAction } from "../MachineSummary";
-import { actions as machineActions } from "app/store/machine";
-import { useMachineActions } from "app/base/hooks";
-import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
+
 import MachineName from "./MachineName";
-import machineSelectors from "app/store/machine/selectors";
+
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
+import { useMachineActions } from "app/base/hooks";
+import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+
 import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   selectedAction: SelectedAction | null;

@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Fabric, FabricState } from "./types";
 
 type FabricReducers = SliceCaseReducers<FabricState>;

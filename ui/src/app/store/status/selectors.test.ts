@@ -1,8 +1,9 @@
+import status from "./selectors";
+
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
-import status from "./selectors";
 
 describe("status", () => {
   it("can get the connected status", () => {

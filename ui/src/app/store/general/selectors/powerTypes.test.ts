@@ -1,10 +1,11 @@
+import powerTypes from "./powerTypes";
+
 import {
   generalState as generalStateFactory,
   powerTypesState as powerTypesStateFactory,
   powerType as powerTypeFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import powerTypes from "./powerTypes";
 
 describe("powerTypes selectors", () => {
   describe("get", () => {

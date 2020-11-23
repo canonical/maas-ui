@@ -1,9 +1,10 @@
 import { mount } from "enzyme";
+import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import React from "react";
 
 import OSColumn from "./OSColumn";
+
 import { nodeStatus } from "app/base/enum";
 import {
   controllerState as controllerStateFactory,
@@ -14,6 +15,7 @@ import {
   pod as podFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

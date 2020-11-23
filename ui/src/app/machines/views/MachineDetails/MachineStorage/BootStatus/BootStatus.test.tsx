@@ -1,9 +1,11 @@
 import { mount } from "enzyme";
 import React from "react";
 
-import { machineDisk as diskFactory } from "testing/factories";
 import { normaliseStorageDevice } from "../utils";
+
 import BootStatus from "./BootStatus";
+
+import { machineDisk as diskFactory } from "testing/factories";
 
 describe("BootStatus", () => {
   it("shows boot status for boot disks", () => {

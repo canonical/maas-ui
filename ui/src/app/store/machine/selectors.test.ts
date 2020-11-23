@@ -1,3 +1,5 @@
+import machine from "./selectors";
+
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -5,7 +7,6 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import machine from "./selectors";
 
 describe("machine selectors", () => {
   it("can get all items", () => {

@@ -1,10 +1,11 @@
+import reducers, { actions } from "./slice";
+
 import {
   pod as podFactory,
   podDetails as podDetailsFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("pod reducer", () => {
   it("returns the initial state", () => {

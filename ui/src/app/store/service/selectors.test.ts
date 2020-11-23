@@ -1,9 +1,10 @@
+import service from "./selectors";
+
 import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import service from "./selectors";
 
 describe("service selectors", () => {
   it("can get all items", () => {

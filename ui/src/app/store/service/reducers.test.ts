@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("service reducer", () => {
   it("should return the initial state", () => {

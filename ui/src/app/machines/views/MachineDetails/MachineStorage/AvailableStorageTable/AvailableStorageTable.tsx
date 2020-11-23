@@ -1,15 +1,16 @@
 import { MainTable } from "@canonical/react-components";
 import React from "react";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
 import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
 import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
 import type { NormalisedStorageDevice as StorageDevice } from "../types";
 import { formatSize, formatType } from "../utils";
+
+import DoubleRow from "app/base/components/DoubleRow";
+import TableHeader from "app/base/components/TableHeader";
+import { useTableSort } from "app/base/hooks";
 
 const getSortValue = (
   sortKey: keyof StorageDevice,

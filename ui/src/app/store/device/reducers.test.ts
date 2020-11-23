@@ -1,5 +1,6 @@
-import { device as deviceFactory } from "testing/factories";
 import reducers, { actions } from "./";
+
+import { device as deviceFactory } from "testing/factories";
 
 describe("device reducer", () => {
   it("should return the initial state", () => {

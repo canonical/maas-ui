@@ -12,19 +12,22 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { RouteParams } from "app/base/types";
 import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { VLAN } from "app/store/vlan/types";
+
+import SubnetSelect from "./SubnetSelect";
+
+import FormikField from "app/base/components/FormikField";
+import TableActions from "app/base/components/TableActions";
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
 import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
-import FormikField from "app/base/components/FormikField";
-import SubnetSelect from "./SubnetSelect";
-import TableActions from "app/base/components/TableActions";
+
+import type { RouteParams } from "app/base/types";
+import type { PodDetails } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
+import type { VLAN } from "app/store/vlan/types";
 
 /**
  * Generate a new InterfaceField with a given id.

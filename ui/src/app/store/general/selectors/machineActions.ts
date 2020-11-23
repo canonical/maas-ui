@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { generateGeneralSelector } from "./utils";
+
 import type { MachineAction } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 

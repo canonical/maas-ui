@@ -1,9 +1,10 @@
+import scripts from "./selectors";
+
 import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import scripts from "./selectors";
 
 describe("scripts selectors", () => {
   describe("all", () => {

@@ -1,17 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 
-import { actions as machineActions } from "app/store/machine";
+import DeployFormFields from "./DeployFormFields";
+
 import { general as generalActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
-import DeployFormFields from "./DeployFormFields";
 import generalSelectors from "app/store/general/selectors";
-import type { MachineAction } from "app/store/general/types";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+
+import type { MachineAction } from "app/store/general/types";
 
 const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),

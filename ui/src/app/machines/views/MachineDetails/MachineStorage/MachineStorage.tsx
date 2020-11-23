@@ -1,21 +1,23 @@
 import { Spinner, Strip } from "@canonical/react-components";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import React from "react";
 
-import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
-import machineSelectors from "app/store/machine/selectors";
-import { useCanEditStorage } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { separateStorageData } from "./utils";
 import AvailableStorageTable from "./AvailableStorageTable";
 import CacheSetsTable from "./CacheSetsTable";
 import ChangeStorageLayout from "./ChangeStorageLayout";
 import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
+import { separateStorageData } from "./utils";
+
+import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
+import machineSelectors from "app/store/machine/selectors";
+import { useCanEditStorage } from "app/store/machine/utils";
+
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 const MachineStorage = (): JSX.Element => {
   const params = useParams<RouteParams>();

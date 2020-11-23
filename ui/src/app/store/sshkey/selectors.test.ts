@@ -1,9 +1,10 @@
+import sshkey from "./selectors";
+
 import {
   rootState as rootStateFactory,
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
 } from "testing/factories";
-import sshkey from "./selectors";
 
 describe("sshkey selectors", () => {
   describe("all", () => {

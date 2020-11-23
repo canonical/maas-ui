@@ -1,8 +1,7 @@
 import classNames from "classnames";
 import React, { useRef } from "react";
-import usePortal from "react-useportal";
-
 import type { ReactNode } from "react";
+import usePortal from "react-useportal";
 
 type Props = {
   children: ReactNode;

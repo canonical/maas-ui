@@ -1,9 +1,10 @@
+import config from "./selectors";
+
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import config from "./selectors";
 
 describe("config selectors", () => {
   describe("all", () => {

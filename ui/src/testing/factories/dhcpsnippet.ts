@@ -1,11 +1,13 @@
 import { array, extend } from "cooky-cutter";
 
 import { model } from "./model";
+
+import type { Model } from "app/store/types/model";
+
 import type {
   DHCPSnippet,
   DHCPSnippetHistory,
 } from "app/store/dhcpsnippet/types";
-import type { Model } from "app/store/types/model";
 
 export const dhcpSnippetHistory = extend<Model, DHCPSnippetHistory>(model, {
   created: "Wed, 08 Jul. 2020 05:35:4",

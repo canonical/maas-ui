@@ -1,9 +1,12 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
+import NetworkNotifications from "./NetworkNotifications";
+
+import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
@@ -14,8 +17,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import NetworkNotifications from "./NetworkNotifications";
-import { NodeStatus } from "app/store/types/node";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

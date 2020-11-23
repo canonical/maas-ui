@@ -1,5 +1,5 @@
-import pluralize from "pluralize";
 import { Col, Row } from "@canonical/react-components";
+import pluralize from "pluralize";
 import React from "react";
 
 import FormikField from "app/base/components/FormikField";

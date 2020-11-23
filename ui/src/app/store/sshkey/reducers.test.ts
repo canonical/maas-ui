@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("sshkey reducer", () => {
   it("should return the initial state", () => {

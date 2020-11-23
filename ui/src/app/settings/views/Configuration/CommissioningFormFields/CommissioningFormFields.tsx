@@ -1,14 +1,16 @@
 import { Link, Select, Tooltip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import React from "react";
+import { useSelector } from "react-redux";
 
 import type { CommissioningFormValues } from "../CommissioningForm";
-import configSelectors from "app/store/config/selectors";
+
 import FormikField from "app/base/components/FormikField";
+import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
-import { RootState } from "app/store/root/types";
+
 import { TSFixMe } from "app/base/types";
+import { RootState } from "app/store/root/types";
 
 const CommissioningFormFields = (): JSX.Element => {
   const formikProps = useFormikContext<CommissioningFormValues>();

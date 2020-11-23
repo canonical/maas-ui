@@ -4,6 +4,8 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import ChangeStorageLayout from "./ChangeStorageLayout";
+
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -11,7 +13,6 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import ChangeStorageLayout from "./ChangeStorageLayout";
 
 const mockStore = configureStore();
 

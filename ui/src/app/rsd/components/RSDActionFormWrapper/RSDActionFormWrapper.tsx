@@ -1,8 +1,9 @@
 import React from "react";
 
-import ComposeForm from "app/kvm/components/KVMActionFormWrapper/ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
+
+import ComposeForm from "app/kvm/components/KVMActionFormWrapper/ComposeForm";
 
 type Props = {
   selectedAction: string;

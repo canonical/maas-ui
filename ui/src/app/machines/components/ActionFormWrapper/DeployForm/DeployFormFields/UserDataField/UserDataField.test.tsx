@@ -1,16 +1,18 @@
-import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
 import { mount, ReactWrapper } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import DeployForm from "../../DeployForm";
 
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
 } from "testing/factories";
+
 import { TSFixMe } from "app/base/types";
-import DeployForm from "../../DeployForm";
 
 const mockStore = configureStore();
 

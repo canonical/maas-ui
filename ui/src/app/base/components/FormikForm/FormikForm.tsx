@@ -1,13 +1,14 @@
 import { Formik } from "formik";
-import { Redirect } from "react-router";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import type { ReactNode } from "react";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router";
 
-import { useSendAnalyticsWhen } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
 import FormikFormContent from "app/base/components/FormikFormContent";
+import { useSendAnalyticsWhen } from "app/base/hooks";
+
+import type { TSFixMe } from "app/base/types";
 
 type Props = {
   allowAllEmpty?: boolean;

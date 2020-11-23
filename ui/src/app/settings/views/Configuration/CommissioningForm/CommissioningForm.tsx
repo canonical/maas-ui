@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import Fields from "../CommissioningFormFields";
+
+import FormikForm from "app/base/components/FormikForm";
 import { config as configActions } from "app/settings/actions";
 import configSelectors from "app/store/config/selectors";
-import Fields from "../CommissioningFormFields";
-import FormikForm from "app/base/components/FormikForm";
 
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),

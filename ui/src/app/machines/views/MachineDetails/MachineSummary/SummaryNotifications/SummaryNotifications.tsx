@@ -1,19 +1,20 @@
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { general as generalActions } from "app/base/actions";
+import LegacyLink from "app/base/components/LegacyLink";
+import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
+import generalSelectors from "app/store/general/selectors";
+import machineSelectors from "app/store/machine/selectors";
 import {
   useCanEdit,
   useHasInvalidArchitecture,
   useIsRackControllerConnected,
 } from "app/store/machine/utils";
-import generalSelectors from "app/store/general/selectors";
-import LegacyLink from "app/base/components/LegacyLink";
-import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
-import machineSelectors from "app/store/machine/selectors";
-import type { RootState } from "app/store/root/types";
+
 import type { Event, Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];

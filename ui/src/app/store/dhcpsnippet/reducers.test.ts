@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("dhcpSnippet reducer", () => {
   it("should return the initial state", () => {

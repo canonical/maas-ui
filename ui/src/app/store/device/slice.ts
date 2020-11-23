@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Device, DeviceState } from "./types";
 
 type DeviceReducers = SliceCaseReducers<DeviceState>;

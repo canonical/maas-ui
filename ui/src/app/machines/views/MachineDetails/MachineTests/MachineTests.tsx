@@ -1,14 +1,15 @@
 import { Spinner } from "@canonical/react-components";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import React, { useEffect } from "react";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { RootState } from "app/store/root/types";
 import { actions as nodeResultActions } from "app/store/noderesult";
 import nodeResultSelectors from "app/store/noderesult/selectors";
+
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 const MachineTests = (): JSX.Element => {
   const dispatch = useDispatch();

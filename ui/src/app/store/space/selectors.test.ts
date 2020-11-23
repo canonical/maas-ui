@@ -1,9 +1,10 @@
+import space from "./selectors";
+
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import space from "./selectors";
 
 describe("space selectors", () => {
   it("can get all items", () => {

@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import type { RouteParams } from "app/base/types";
-import type { RootState } from "app/store/root/types";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
-import Section from "app/base/components/Section";
-import PodConfiguration from "app/kvm/components/PodConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
 import KVMSummary from "./KVMSummary";
+
+import Section from "app/base/components/Section";
+import PodConfiguration from "app/kvm/components/PodConfiguration";
+import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
+
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();

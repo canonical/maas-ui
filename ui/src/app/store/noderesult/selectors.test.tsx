@@ -1,3 +1,5 @@
+import selectors from "./selectors";
+
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -5,7 +7,6 @@ import {
   nodeResult as nodeResultFactory,
   nodeResultState as nodeResultStateFactory,
 } from "testing/factories";
-import selectors from "./selectors";
 
 describe("nodeResults selectors", () => {
   it("returns all node results", () => {

@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Space, SpaceState } from "./types";
 
 type SpaceReducers = SliceCaseReducers<SpaceState>;

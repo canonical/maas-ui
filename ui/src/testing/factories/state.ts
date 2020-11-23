@@ -1,17 +1,31 @@
-import { array, define } from "cooky-cutter";
 import type { RouterState } from "connected-react-router";
+import { array, define } from "cooky-cutter";
 import { Location } from "history";
 
 import { message } from "./message";
 import { notification } from "./notification";
 import { user } from "./user";
-import type { AuthState, UserState } from "app/store/user/types";
+
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
 import type { FabricState } from "app/store/fabric/types";
+import type {
+  ArchitecturesState,
+  ComponentsToDisableState,
+  DefaultMinHweKernelState,
+  GeneralState,
+  HWEKernelsState,
+  KnownArchitecturesState,
+  MachineActionsState,
+  NavigationOptionsState,
+  OSInfoState,
+  PocketsToDisableState,
+  PowerTypesState,
+  VersionState,
+} from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type {
   MachineState,
@@ -35,22 +49,9 @@ import type { StatusState } from "app/store/status/types";
 import type { SubnetState } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
+import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
 import type { ZoneState } from "app/store/zone/types";
-import type {
-  ArchitecturesState,
-  ComponentsToDisableState,
-  DefaultMinHweKernelState,
-  GeneralState,
-  HWEKernelsState,
-  KnownArchitecturesState,
-  MachineActionsState,
-  NavigationOptionsState,
-  OSInfoState,
-  PocketsToDisableState,
-  PowerTypesState,
-  VersionState,
-} from "app/store/general/types";
 
 const defaultState = {
   errors: () => ({}),

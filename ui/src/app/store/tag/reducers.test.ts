@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("tag reducer", () => {
   it("returns the initial state", () => {

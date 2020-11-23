@@ -1,17 +1,18 @@
 import { Spinner, Tooltip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import React from "react";
-import PropTypes from "prop-types";
-
 import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
-import { getStatusText } from "app/utils";
+import PropTypes from "prop-types";
+import React from "react";
+import { useSelector } from "react-redux";
+
+import DoubleRow from "app/base/components/DoubleRow";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
-import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
+import { getStatusText } from "app/utils";
+
+import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 // Node statuses for which the failed test warning is not shown.

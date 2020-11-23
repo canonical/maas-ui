@@ -1,7 +1,8 @@
 import React from "react";
 
-import { scriptStatus } from "app/base/enum";
 import type { NormalisedStorageDevice } from "../types";
+
+import { scriptStatus } from "app/base/enum";
 
 type Props = { testStatus: NormalisedStorageDevice["testStatus"] };
 

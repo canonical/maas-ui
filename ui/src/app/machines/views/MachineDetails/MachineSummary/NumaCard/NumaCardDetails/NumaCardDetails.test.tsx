@@ -1,8 +1,10 @@
 import { mount } from "enzyme";
+import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import NumaCardDetails from "./NumaCardDetails";
 
 import {
   machineDetails as machineDetailsFactory,
@@ -10,7 +12,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import NumaCardDetails from "./NumaCardDetails";
+
 import type { MachineNumaNode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

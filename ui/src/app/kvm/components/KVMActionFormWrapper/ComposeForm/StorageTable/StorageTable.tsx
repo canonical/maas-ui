@@ -13,14 +13,17 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { RouteParams } from "app/base/types";
 import type { Disk, ComposeFormValues } from "../ComposeForm";
-import type { RootState } from "app/store/root/types";
-import podSelectors from "app/store/pod/selectors";
-import FormikField from "app/base/components/FormikField";
+
 import PoolSelect from "./PoolSelect";
+
+import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
 import TagSelector from "app/base/components/TagSelector";
+import podSelectors from "app/store/pod/selectors";
+
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = { defaultDisk: Disk };
 

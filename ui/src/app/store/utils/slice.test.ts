@@ -4,6 +4,8 @@ import {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import { generateSlice, generateStatusHandlers } from "app/store/utils";
+import type { GenericSlice } from "app/store/utils";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
@@ -11,8 +13,7 @@ import {
   podState as podStateFactory,
   podStatus as podStatusFactory,
 } from "testing/factories";
-import { generateSlice, generateStatusHandlers } from "app/store/utils";
-import type { GenericSlice } from "app/store/utils";
+
 import type { Pod, PodState } from "app/store/pod/types";
 import type { Token, TokenState } from "app/store/token/types";
 

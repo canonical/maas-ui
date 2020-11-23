@@ -1,9 +1,10 @@
+import dhcpsnippet from "./selectors";
+
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import dhcpsnippet from "./selectors";
 
 describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {

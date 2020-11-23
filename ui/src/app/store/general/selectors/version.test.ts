@@ -1,9 +1,10 @@
+import version from "./version";
+
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
 } from "testing/factories";
-import version from "./version";
 
 describe("version selectors", () => {
   describe("get", () => {

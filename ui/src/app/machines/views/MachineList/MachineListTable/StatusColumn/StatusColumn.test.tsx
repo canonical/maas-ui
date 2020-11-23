@@ -1,13 +1,12 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import { StatusColumn } from "./StatusColumn";
 
 import { nodeStatus, scriptStatus } from "app/base/enum";
-import { StatusColumn } from "./StatusColumn";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 import type { TestResult } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -18,6 +17,9 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

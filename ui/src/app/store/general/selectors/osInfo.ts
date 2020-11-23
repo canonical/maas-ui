@@ -4,13 +4,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { generateGeneralSelector } from "./utils";
-import type { RootState } from "app/store/root/types";
+
 import type {
   OSInfo,
   OSInfoOsKernelEntry,
   OSInfoOSystem,
   OSInfoRelease,
 } from "app/store/general/types";
+import type { RootState } from "app/store/root/types";
 
 const generalSelectors = generateGeneralSelector<"osInfo">("osInfo");
 

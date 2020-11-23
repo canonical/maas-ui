@@ -1,9 +1,11 @@
+import { mount } from "enzyme";
 import React from "react";
 import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
-import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import PodStorage, { TRUNCATION_POINT } from "./PodStorage";
 
 import * as hooks from "app/base/hooks";
 import {
@@ -14,7 +16,6 @@ import {
   podStoragePool as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import PodStorage, { TRUNCATION_POINT } from "./PodStorage";
 
 const mockStore = configureStore();
 

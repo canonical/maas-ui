@@ -1,13 +1,15 @@
 import { mount } from "enzyme";
 import React from "react";
 
+import { separateStorageData } from "../utils";
+
+import FilesystemsTable from "./FilesystemsTable";
+
 import {
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
-import { separateStorageData } from "../utils";
-import FilesystemsTable from "./FilesystemsTable";
 
 describe("FilesystemsTable", () => {
   it("can show an empty message", () => {

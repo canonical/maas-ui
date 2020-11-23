@@ -1,9 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { RootState } from "app/store/root/types";
-import type { TSFixMe } from "app/base/types";
-import { NodeResults } from "./types";
 import { Machine } from "../machine/types";
+
+import { NodeResults } from "./types";
+
+import type { TSFixMe } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 /**
  * Returns list of all node results.

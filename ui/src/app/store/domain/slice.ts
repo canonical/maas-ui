@@ -1,5 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
+
 import { generateSlice, GenericSlice } from "../utils";
+
 import { Domain, DomainState } from "./types";
 
 type DomainReducers = SliceCaseReducers<DomainState>;

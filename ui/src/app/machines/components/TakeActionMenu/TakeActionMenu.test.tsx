@@ -1,17 +1,19 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import TakeActionMenu from "./TakeActionMenu";
-import { RootState } from "app/store/root/types";
+
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineAction as machineActionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

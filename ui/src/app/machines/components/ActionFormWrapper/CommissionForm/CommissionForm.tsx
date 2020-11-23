@@ -3,16 +3,18 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as machineActions } from "app/store/machine";
+import CommissionFormFields from "./CommissionFormFields";
+
 import { scripts as scriptActions } from "app/base/actions";
+import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
-import { simpleSortByKey } from "app/utils";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
-import ActionForm from "app/base/components/ActionForm";
-import CommissionFormFields from "./CommissionFormFields";
-import type { Scripts } from "app/store/scripts/types";
+import { simpleSortByKey } from "app/utils";
+
 import type { MachineAction } from "app/store/general/types";
+import type { Scripts } from "app/store/scripts/types";
 
 const formatScripts = (scripts: Scripts[]) =>
   scripts.map((script) => ({

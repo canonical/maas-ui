@@ -1,9 +1,10 @@
+import tag from "./selectors";
+
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import tag from "./selectors";
 
 describe("tag selectors", () => {
   it("can get all items", () => {

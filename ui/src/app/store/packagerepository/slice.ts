@@ -1,6 +1,7 @@
 import { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { generateSlice, GenericSlice } from "../utils";
+
 import { PackageRepository, PackageRepositoryState } from "./types";
 
 type PackageRepositoryReducers = SliceCaseReducers<PackageRepositoryState>;

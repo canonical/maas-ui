@@ -1,5 +1,5 @@
-import type { RootState } from "app/store/root/types";
 import type { Message } from "app/store/message/types";
+import type { RootState } from "app/store/root/types";
 
 /**
  * Get the global messages.

@@ -1,15 +1,17 @@
-import React from "react";
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
-import { MemoryRouter, Route } from "react-router-dom";
+import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
+
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
 import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

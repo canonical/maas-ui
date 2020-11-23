@@ -1,7 +1,8 @@
-import type { GenericState } from "app/store/types/state";
 import type { Model } from "app/store/types/model";
-import type { User } from "app/store/user/types";
+import type { GenericState } from "app/store/types/state";
+
 import type { TSFixMe } from "app/base/types";
+import type { User } from "app/store/user/types";
 
 export type KeySource = {
   auth_id: string;

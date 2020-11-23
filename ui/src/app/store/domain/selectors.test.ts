@@ -1,9 +1,10 @@
+import domain from "./selectors";
+
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import domain from "./selectors";
 
 describe("domain selectors", () => {
   it("can get all items", () => {

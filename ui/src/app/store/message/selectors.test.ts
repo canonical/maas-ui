@@ -1,9 +1,10 @@
+import messages from "./selectors";
+
 import {
   message as messageFactory,
   messageState as messageStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import messages from "./selectors";
 
 describe("messages", () => {
   it("can get all messages", () => {

@@ -1,7 +1,9 @@
 import { define, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
+
 import type { Model } from "app/store/types/model";
+
 import type { SSHKey, KeySource } from "app/store/sshkey/types";
 
 export const keySource = define<KeySource>({

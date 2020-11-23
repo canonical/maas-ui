@@ -1,8 +1,8 @@
 import { Input } from "@canonical/react-components";
+import { nanoid } from "@reduxjs/toolkit";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useRef } from "react";
-import { nanoid } from "@reduxjs/toolkit";
 
 import type { TSFixMe } from "app/base/types";
 

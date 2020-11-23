@@ -1,10 +1,11 @@
+import hweKernels from "./hweKernels";
+
 import {
   generalState as generalStateFactory,
   hweKernelsState as hweKernelsStateFactory,
   hweKernel as hweKernelFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import hweKernels from "./hweKernels";
 
 describe("hweKernels selectors", () => {
   describe("get", () => {

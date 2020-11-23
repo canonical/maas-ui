@@ -1,8 +1,9 @@
 import { mount } from "enzyme";
 import React from "react";
 
-import { scriptStatus } from "app/base/enum";
 import TestStatus from "./TestStatus";
+
+import { scriptStatus } from "app/base/enum";
 
 describe("TestStatus", () => {
   it("can show passed test status", () => {

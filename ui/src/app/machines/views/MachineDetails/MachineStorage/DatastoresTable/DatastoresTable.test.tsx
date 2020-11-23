@@ -1,12 +1,14 @@
 import { mount } from "enzyme";
 import React from "react";
 
+import { normaliseFilesystem } from "../utils";
+
+import DatastoresTable from "./DatastoresTable";
+
 import {
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
 } from "testing/factories";
-import { normaliseFilesystem } from "../utils";
-import DatastoresTable from "./DatastoresTable";
 
 describe("DatastoresTable", () => {
   it("renders", () => {

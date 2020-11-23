@@ -1,9 +1,10 @@
+import fabric from "./selectors";
+
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import fabric from "./selectors";
 
 describe("fabric selectors", () => {
   it("can get all items", () => {

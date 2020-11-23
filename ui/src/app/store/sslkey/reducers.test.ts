@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("sslkey reducer", () => {
   it("should return the initial state", () => {

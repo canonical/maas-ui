@@ -1,5 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
+
 import { generateBaseSelectors } from "app/store/utils";
+
 import type {
   LicenseKeys,
   LicenseKeysState,

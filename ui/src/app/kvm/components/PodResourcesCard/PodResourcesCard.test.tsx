@@ -1,8 +1,9 @@
 import { shallow } from "enzyme";
 import React from "react";
 
-import { machine as machineFactory } from "testing/factories";
 import PodResourcesCard from "./PodResourcesCard";
+
+import { machine as machineFactory } from "testing/factories";
 
 describe("PodResourcesCard", () => {
   it("can be given a title", () => {

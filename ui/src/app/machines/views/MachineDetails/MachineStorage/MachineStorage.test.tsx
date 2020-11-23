@@ -1,8 +1,11 @@
 import { mount } from "enzyme";
+import React from "react";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import MachineStorage from "./MachineStorage";
 
 import * as hooks from "app/base/hooks";
 import {
@@ -17,8 +20,6 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import MachineStorage from "./MachineStorage";
-import { act } from "react-dom/test-utils";
 
 const mockStore = configureStore();
 

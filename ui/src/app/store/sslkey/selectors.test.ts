@@ -1,9 +1,10 @@
+import sslkey from "./selectors";
+
 import {
   rootState as rootStateFactory,
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
 } from "testing/factories";
-import sslkey from "./selectors";
 
 describe("sslkey selectors", () => {
   describe("all", () => {

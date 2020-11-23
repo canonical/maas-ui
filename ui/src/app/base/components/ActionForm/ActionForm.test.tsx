@@ -1,11 +1,13 @@
-import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 import ActionForm from "./ActionForm";
+
 import { rootState as rootStateFactory } from "testing/factories";
+
 import type { RootState } from "app/store/root/types";
 
 let state: RootState;

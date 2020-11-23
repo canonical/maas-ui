@@ -1,10 +1,15 @@
 import { Button } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import pluralize from "pluralize";
+import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import AddHardware from "./AddHardwareMenu";
+
+import SectionHeader from "app/base/components/SectionHeader";
+import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
+import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import {
   filtersToString,
   getCurrentFilters,
@@ -13,14 +18,11 @@ import {
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
-import type { Machine } from "app/store/machine/types";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+
 import type { MachineAction } from "app/store/general/types";
-import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
-import AddHardware from "./AddHardwareMenu";
-import SectionHeader from "app/base/components/SectionHeader";
-import TakeActionMenu from "app/machines/components/TakeActionMenu";
+import type { Machine } from "app/store/machine/types";
 
 const getMachineCount = (
   machines: Machine[],

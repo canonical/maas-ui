@@ -1,10 +1,11 @@
+import pocketsToDisable from "./pocketsToDisable";
+
 import {
   generalState as generalStateFactory,
   pocketToDisable as pocketToDisableFactory,
   pocketsToDisableState as pocketsToDisableStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import pocketsToDisable from "./pocketsToDisable";
 
 describe("pocketsToDisable selectors", () => {
   describe("get", () => {

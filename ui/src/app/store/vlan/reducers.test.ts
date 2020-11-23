@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("vlan reducer", () => {
   describe("initial", () => {

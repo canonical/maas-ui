@@ -8,9 +8,10 @@ import {
   ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { RootState } from "app/store/root/types";
 import type { GenericState } from "app/store/types/state";
+
 import type { TSFixMe } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 export type GenericItemMeta<I> = {
   item: I;

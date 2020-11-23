@@ -1,18 +1,21 @@
 import { Col, Notification, Row, Select } from "@canonical/react-components";
 import classNames from "classnames";
-import React, { useState } from "react";
 import { useFormikContext } from "formik";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { DeployFormValues } from "../DeployForm";
+
+import UserDataField from "./UserDataField";
+
+import FormikField from "app/base/components/FormikField";
+import LegacyLink from "app/base/components/LegacyLink";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
-import FormikField from "app/base/components/FormikField";
 import generalSelectors from "app/store/general/selectors";
+
 import type { RootState } from "app/store/root/types";
-import LegacyLink from "app/base/components/LegacyLink";
-import UserDataField from "./UserDataField";
 
 export const DeployFormFields = (): JSX.Element => {
   const [userDataVisible, setUserDataVisible] = useState(false);

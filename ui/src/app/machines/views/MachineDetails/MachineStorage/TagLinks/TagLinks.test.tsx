@@ -2,9 +2,11 @@ import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
-import { machineDisk as diskFactory } from "testing/factories";
 import { normaliseStorageDevice } from "../utils";
+
 import TagLinks from "./TagLinks";
+
+import { machineDisk as diskFactory } from "testing/factories";
 
 describe("TagLinks", () => {
   it("shows links to filter machine list by storage tag", () => {

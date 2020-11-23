@@ -1,8 +1,9 @@
 import React from "react";
 
 import { nodeStatus, scriptStatus } from "app/base/enum";
-import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
+
+import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;

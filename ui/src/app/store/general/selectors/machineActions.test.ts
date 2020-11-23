@@ -1,10 +1,11 @@
+import machineActions from "./machineActions";
+
 import {
   generalState as generalStateFactory,
   machineActionsState as machineActionsStateFactory,
   machineAction as machineActionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import machineActions from "./machineActions";
 
 describe("machineActions selectors", () => {
   describe("get", () => {

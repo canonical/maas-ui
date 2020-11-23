@@ -1,15 +1,17 @@
 import { mount } from "enzyme";
+import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
+
+import MachineSummary from "./MachineSummary";
 
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import MachineSummary from "./MachineSummary";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

@@ -4,8 +4,9 @@ import {
   Selector,
 } from "@reduxjs/toolkit";
 
-import type { RootState } from "app/store/root/types";
 import type { CommonStates, CommonStateTypes } from "app/store/utils";
+
+import type { RootState } from "app/store/root/types";
 
 /**
  * @template I - A model item type e.g. DHCPSnippet

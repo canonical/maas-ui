@@ -1,7 +1,9 @@
 import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
+
 import type { Model } from "app/store/types/model";
+
 import type { Zone } from "app/store/zone/types";
 
 export const zone = extend<Model, Zone>(model, {

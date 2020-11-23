@@ -3,12 +3,13 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import React from "react";
 
-import type { Machine } from "app/store/machine/types";
-import { formatBytes } from "app/utils";
-import { COLOURS } from "app/base/constants";
 import DoughnutChart from "app/base/components/DoughnutChart";
+import { COLOURS } from "app/base/constants";
 import PodMeter from "app/kvm/components/PodMeter";
 import { MachineListTable } from "app/machines/views/MachineList/MachineListTable/MachineListTable";
+import { formatBytes } from "app/utils";
+
+import type { Machine } from "app/store/machine/types";
 
 type ChartValues = {
   allocated: number;

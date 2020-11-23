@@ -1,8 +1,9 @@
+import reducers, { actions } from "./slice";
+
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
 } from "testing/factories";
-import reducers, { actions } from "./slice";
 
 describe("domain reducer", () => {
   it("should return the initial state", () => {

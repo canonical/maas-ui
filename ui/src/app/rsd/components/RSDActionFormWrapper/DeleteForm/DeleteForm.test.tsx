@@ -1,9 +1,11 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import React from "react";
+import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import DeleteForm from "./DeleteForm";
 
 import {
   pod as podFactory,
@@ -12,7 +14,6 @@ import {
   podStatuses as podStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import DeleteForm from "./DeleteForm";
 
 const mockStore = configureStore();
 

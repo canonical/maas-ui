@@ -1,10 +1,11 @@
 import { mount } from "enzyme";
+import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import React from "react";
 
-import type { RootState } from "app/store/root/types";
+import RSDListTable from "./RSDListTable";
+
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -14,7 +15,8 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import RSDListTable from "./RSDListTable";
+
+import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

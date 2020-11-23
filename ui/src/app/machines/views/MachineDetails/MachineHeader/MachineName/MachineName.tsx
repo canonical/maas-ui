@@ -1,16 +1,18 @@
 import { Button, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as domainActions } from "app/store/domain";
-import { actions as machineActions } from "app/store/machine";
-import { useCanEdit } from "app/store/machine/utils";
-import domainSelectors from "app/store/domain/selectors";
-import FormikForm from "app/base/components/FormikForm";
 import MachineNameFields from "../MachineNameFields";
+
+import FormikForm from "app/base/components/FormikForm";
+import { actions as domainActions } from "app/store/domain";
+import domainSelectors from "app/store/domain/selectors";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { useCanEdit } from "app/store/machine/utils";
+
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

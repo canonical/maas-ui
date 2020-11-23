@@ -1,9 +1,3 @@
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import {
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
-  machinePartition as partitionFactory,
-} from "testing/factories";
 import {
   formatSize,
   formatType,
@@ -13,6 +7,13 @@ import {
   separateStorageData,
   storageDeviceInUse,
 } from "./utils";
+
+import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import {
+  machineDisk as diskFactory,
+  machineFilesystem as fsFactory,
+  machinePartition as partitionFactory,
+} from "testing/factories";
 
 describe("Machine storage utils", () => {
   describe("formatSize", () => {

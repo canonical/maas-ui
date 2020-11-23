@@ -1,4 +1,5 @@
 import { generateBaseSelectors } from "app/store/utils";
+
 import type { User, UserState } from "app/store/user/types";
 
 const searchFunction = (user: User, term: string) =>

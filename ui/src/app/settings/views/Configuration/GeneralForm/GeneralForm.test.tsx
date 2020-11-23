@@ -3,12 +3,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import GeneralForm from "./GeneralForm";
+
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import GeneralForm from "./GeneralForm";
+
 import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();

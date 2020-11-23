@@ -1,9 +1,10 @@
+import licensekeys from "./selectors";
+
 import {
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import licensekeys from "./selectors";
 
 describe("licensekeys selectors", () => {
   describe("all", () => {

@@ -1,9 +1,11 @@
 import { mount } from "enzyme";
 import React from "react";
 
-import { machineDisk as diskFactory } from "testing/factories";
 import { separateStorageData } from "../utils";
+
 import CacheSetsTable from "./CacheSetsTable";
+
+import { machineDisk as diskFactory } from "testing/factories";
 
 describe("CacheSetsTable", () => {
   it("can show what the cache set is being used for", () => {

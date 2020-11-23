@@ -1,14 +1,16 @@
 import { mount } from "enzyme";
 import React from "react";
 
+import { separateStorageData } from "../utils";
+
+import AvailableStorageTable from "./AvailableStorageTable";
+
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import {
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
-import { separateStorageData } from "../utils";
-import AvailableStorageTable from "./AvailableStorageTable";
 
 describe("AvailableStorageTable", () => {
   it("can show an empty message", () => {

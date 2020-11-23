@@ -1,10 +1,11 @@
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import AddKVMForm from "../AddKVMForm";
+
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,

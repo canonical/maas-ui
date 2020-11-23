@@ -2,9 +2,11 @@ import pluralize from "pluralize";
 import React from "react";
 
 import type { SetSelectedAction } from "../../MachineSummary";
-import type { MachineDetails } from "app/store/machine/types";
-import { HardwareType } from "app/base/enum";
 import TestResults from "../../TestResults";
+
+import { HardwareType } from "app/base/enum";
+
+import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;

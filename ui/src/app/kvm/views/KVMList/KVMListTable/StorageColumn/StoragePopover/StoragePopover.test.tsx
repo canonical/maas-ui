@@ -1,8 +1,9 @@
 import { mount } from "enzyme";
 import React from "react";
 
-import { podStoragePool as podStoragePoolFactory } from "testing/factories";
 import StoragePopover from "./StoragePopover";
+
+import { podStoragePool as podStoragePoolFactory } from "testing/factories";
 
 describe("StoragePopover", () => {
   const body = document.querySelector("body");

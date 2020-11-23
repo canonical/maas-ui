@@ -1,9 +1,11 @@
+import { TSFixMe } from "@canonical/react-components";
 import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import CommissioningForm from "./CommissioningForm";
+
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -11,8 +13,8 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
 import type { RootState } from "app/store/root/types";
-import { TSFixMe } from "@canonical/react-components";
 
 const mockStore = configureStore();
 
