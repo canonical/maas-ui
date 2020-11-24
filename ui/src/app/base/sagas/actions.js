@@ -40,9 +40,11 @@ export function* createPoolWithMachines(
 }
 
 // Sagas to be handled by the websocket channel.
-export default [
+const handlers = [
   {
     action: "resourcepool/createWithMachines",
     method: createPoolWithMachines,
   },
 ];
+
+export default handlers;
