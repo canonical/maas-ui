@@ -39,7 +39,7 @@ const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
 );
 
 /**
- * Returns all preselected commissioning scripts 
+ * Returns all preselected commissioning scripts
  * @param {RootState} state - Redux state
  * @returns scripts - Commissioning scripts
  *
@@ -47,9 +47,7 @@ const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
 const preselectedCommissioning = createSelector(
   [commissioning],
   (commissioningItems: Scripts[]): Scripts[] =>
-    commissioningItems.filter(
-      (item) => !item.tags.includes("noauto")
-    )
+    commissioningItems.filter((item) => !item.tags.includes("noauto"))
 );
 
 /**

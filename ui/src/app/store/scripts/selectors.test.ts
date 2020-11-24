@@ -67,7 +67,7 @@ describe("scripts selectors", () => {
       ];
       const nonPreselectedItems = [
         scriptsFactory({ type: 0, tags: ["noauto"] }),
-      ]
+      ];
       const state = rootStateFactory({
         scripts: scriptsStateFactory({
           items: [...preselectedItems, ...nonPreselectedItems],
