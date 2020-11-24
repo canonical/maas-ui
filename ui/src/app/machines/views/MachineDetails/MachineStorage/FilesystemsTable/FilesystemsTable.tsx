@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { MainTable } from "@canonical/react-components";
+import { Button, MainTable, Tooltip } from "@canonical/react-components";
 
 import { NormalisedFilesystem } from "../types";
 import { formatSize } from "../utils";
 
-type Props = { filesystems: NormalisedFilesystem[] };
+import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
-const FilesystemsTable = ({ filesystems }: Props): JSX.Element => {
+type Props = {
+  editable: boolean;
+  filesystems: NormalisedFilesystem[];
+};
+
+const FilesystemsTable = ({ editable, filesystems }: Props): JSX.Element => {
+  const [addSpecialFormOpen, setAddSpecialFormOpen] = useState<boolean>(false);
+
+  const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
+
   return (
     <>
       <MainTable
         defaultSort="name"
         defaultSortDirection="ascending"
+        expanding={true}
         headers={[
           {
             content: "Name",
@@ -65,9 +75,23 @@ const FilesystemsTable = ({ filesystems }: Props): JSX.Element => {
         sortable
       />
       {filesystems.length === 0 && (
-        <div className="u-nudge-right--small" data-test="no-filesystems">
+        <p className="u-nudge-right--small u-sv1" data-test="no-filesystems">
           No filesystems defined.
-        </div>
+        </p>
+      )}
+      {editable && !addSpecialFormOpen && (
+        <Tooltip message="Create a tmpfs or ramfs filesystem.">
+          <Button
+            appearance="neutral"
+            data-test="add-special-fs-button"
+            onClick={() => setAddSpecialFormOpen(true)}
+          >
+            Add special filesystem
+          </Button>
+        </Tooltip>
+      )}
+      {addSpecialFormOpen && (
+        <AddSpecialFilesystem closeForm={closeAddSpecialForm} />
       )}
     </>
   );

@@ -69,6 +69,10 @@ export const ACTIONS = [
     status: "markingFixed",
   },
   {
+    name: "mount-special",
+    status: "mountingSpecial",
+  },
+  {
     name: "override-failed-testing",
     status: "overridingFailedTesting",
   },
@@ -119,6 +123,7 @@ const DEFAULT_STATUSES = {
   locking: false,
   markingBroken: false,
   markingFixed: false,
+  mountingSpecial: false,
   overridingFailedTesting: false,
   releasing: false,
   settingPool: false,
@@ -151,6 +156,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   lock: WithPrepare;
   markBroken: WithPrepare;
   markFixed: WithPrepare;
+  mountSpecial: WithPrepare;
   overrideFailedTesting: WithPrepare;
   release: WithPrepare;
   setPool: WithPrepare;
@@ -251,6 +257,20 @@ const statusHandlers = generateStatusHandlers<
           action: action.name,
           extra,
           system_id: systemId,
+        });
+        break;
+      case "mount-special":
+        handler.method = "mount_special";
+        handler.prepare = (params: {
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          systemId: Machine["system_id"];
+        }) => ({
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          system_id: params.systemId,
         });
         break;
       case "set-pool":
@@ -363,6 +383,10 @@ const machineSlice = generateSlice<
     markFixedStart: statusHandlers.markFixedStart,
     markFixedSuccess: statusHandlers.markFixedSuccess,
     markFixedError: statusHandlers.markFixedError,
+    mountSpecial: statusHandlers.mountSpecial,
+    mountSpecialStart: statusHandlers.mountSpecialStart,
+    mountSpecialSuccess: statusHandlers.mountSpecialSuccess,
+    mountSpecialError: statusHandlers.mountSpecialError,
     overrideFailedTesting: statusHandlers.overrideFailedTesting,
     overrideFailedTestingStart: statusHandlers.overrideFailedTestingStart,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTestingSuccess,

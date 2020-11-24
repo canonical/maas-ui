@@ -486,6 +486,31 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle mounting a special filesystem", () => {
+    expect(
+      actions.mountSpecial({
+        filesystemType: "tmpfs",
+        mountOptions: "noexec,size=1024k",
+        mountPoint: "/path",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/mountSpecial",
+      meta: {
+        model: "machine",
+        method: "mount_special",
+      },
+      payload: {
+        params: {
+          fstype: "tmpfs",
+          mount_options: "noexec,size=1024k",
+          mount_point: "/path",
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(actions.cleanup()).toEqual({
       type: "machine/cleanup",
