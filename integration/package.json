@@ -15,9 +15,9 @@
     "concurrently": "5.3.0",
     "cypress": "5.6.0",
     "dotenv-flow": "3.2.0",
-    "nanoid": "3.1.16",
+    "nanoid": "3.1.18",
     "npm-package-json-lint": "5.1.0",
-    "start-server-and-test": "1.11.5"
+    "start-server-and-test": "1.11.6"
   },
   "npmpackagejsonlint": {
     "rules": {
