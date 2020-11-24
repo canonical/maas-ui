@@ -65,7 +65,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
-    scriptSelectors.defaultCommissioning
+    scriptSelectors.preselectedCommissioning
   );
   const preselectedCommissioningSorted = preselectedCommissioningScripts.sort(
     simpleSortByKey("name")
