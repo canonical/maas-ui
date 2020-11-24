@@ -94,7 +94,9 @@ cd maas-ui
 
 ### Edit local config
 
-By default maas-ui will connect to `karura.internal` which requires Canonical VPN access. If you wish to develop against a different MAAS then you can create a local env:
+By default maas-ui will connect to `bolla.internal` which requires Canonical VPN access. Bolla runs on MAAS edge, which is the latest development version available.
+
+If you wish to develop against a different MAAS then you can create a local env:
 
 ```shell
 touch proxy/.env.local
