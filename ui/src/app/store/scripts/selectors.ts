@@ -39,17 +39,15 @@ const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
 );
 
 /**
- * Returns all default commissioning scripts
+ * Returns all preselected commissioning scripts
  * @param {RootState} state - Redux state
  * @returns scripts - Commissioning scripts
  *
  */
-const defaultCommissioning = createSelector(
+const preselectedCommissioning = createSelector(
   [commissioning],
   (commissioningItems: Scripts[]): Scripts[] =>
-    commissioningItems.filter(
-      (item) => item.default === true && !item.tags.includes("noauto")
-    )
+    commissioningItems.filter((item) => !item.tags.includes("noauto"))
 );
 
 /**
@@ -89,16 +87,16 @@ const testingWithUrl = createSelector([testing], (testScripts) =>
 /**
  * Get scripts that match a term.
  * @param {RootState} state - The redux state.
- * @param {String} term - The term to match against.
- * @param {String} type - The type of script.
- * @returns {Scripts[]} A filtered list of scripts.
+ * @param term - The term to match against.
+ * @param type - The type of script.
+ * @returns A filtered list of scripts.
  */
 const search = createSelector(
   [
     defaultSelectors.all,
     (_state: RootState, term: string, type: string) => ({ term, type }),
   ],
-  (scriptItems, { term, type }) => {
+  (scriptItems, { term, type }): Scripts[] => {
     const scripts = scriptItems.filter(
       (item: Scripts) =>
         item.type === SCRIPT_TYPES[type.toUpperCase() as ScriptTypeName]
@@ -116,7 +114,7 @@ const search = createSelector(
 const scripts = {
   ...defaultSelectors,
   commissioning,
-  defaultCommissioning,
+  preselectedCommissioning,
   hasErrors,
   search,
   testing,
