@@ -109,7 +109,7 @@ jobs:
         env:
           CI: true
       - name: Upload betterer results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: betterer-report
           path: results.txt
