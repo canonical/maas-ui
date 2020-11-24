@@ -2,9 +2,10 @@ import { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 
 describe("generateCheckboxHandlers", () => {
   const onChange = jest.fn();
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
-    number
-  >((newIDs) => onChange(newIDs));
+  const {
+    handleGroupCheckbox,
+    handleRowCheckbox,
+  } = generateCheckboxHandlers<number>((newIDs) => onChange(newIDs));
 
   describe("handleGroupCheckbox", () => {
     it("correctly runs onChange with all ids in a group if none already selected", () => {

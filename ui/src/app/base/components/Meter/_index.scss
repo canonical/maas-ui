@@ -18,7 +18,7 @@
   .p-meter__label {
     display: flex;
     justify-content: space-between;
-    margin-bottom: -#{$sp-unit * .25};
+    margin-bottom: -#{$sp-unit * 0.25};
     padding-top: $sp-unit * 0.5;
   }
 
@@ -36,13 +36,13 @@
   }
 
   .p-meter--small {
-    margin-bottom: $sp-unit * 1.75;;
-    padding-top: $sp-unit * .75;
+    margin-bottom: $sp-unit * 1.75;
+    padding-top: $sp-unit * 0.75;
 
     .p-meter__bar {
       border-radius: $meter-height--small;
       height: $meter-height--small;
-      margin-bottom: $sp-unit * .75;
+      margin-bottom: $sp-unit * 0.75;
     }
 
     .p-meter__label {
