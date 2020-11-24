@@ -850,6 +850,116 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle setting a boot disk", () => {
+    expect(
+      actions.setBootDisk({
+        blockId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/setBootDisk",
+      meta: {
+        model: "machine",
+        method: "set_boot_disk",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle updating a disk", () => {
+    expect(
+      actions.updateDisk({
+        blockId: 1,
+        filesystemType: "fat32",
+        mountOptions: "noexec",
+        mountPoint: "/path",
+        name: "disk1",
+        systemId: "abc123",
+        tags: ["tag1", "tag2"],
+      })
+    ).toEqual({
+      type: "machine/updateDisk",
+      meta: {
+        model: "machine",
+        method: "update_disk",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          fstype: "fat32",
+          mount_options: "noexec",
+          mount_point: "/path",
+          name: "disk1",
+          system_id: "abc123",
+          tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle updating a filesystem", () => {
+    expect(
+      actions.updateFilesystem({
+        blockId: 1,
+        filesystemType: "fat32",
+        mountOptions: "noexec",
+        mountPoint: "/path",
+        partitionID: 2,
+        systemId: "abc123",
+        tags: ["tag1", "tag2"],
+      })
+    ).toEqual({
+      type: "machine/updateFilesystem",
+      meta: {
+        model: "machine",
+        method: "update_filesystem",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          fstype: "fat32",
+          mount_options: "noexec",
+          mount_point: "/path",
+          partition_id: 2,
+          system_id: "abc123",
+          tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle updating a VMFS datastore", () => {
+    expect(
+      actions.updateVmfsDatastore({
+        addBlockDeviceIDs: [1, 2],
+        addPartitionIDs: [3, 4],
+        name: "datastore1",
+        systemId: "abc123",
+        vmfsDatastoreId: 5,
+      })
+    ).toEqual({
+      type: "machine/updateVmfsDatastore",
+      meta: {
+        model: "machine",
+        method: "update_vmfs_datastore",
+      },
+      payload: {
+        params: {
+          add_block_devices: [1, 2],
+          add_partitions: [3, 4],
+          name: "datastore1",
+          system_id: "abc123",
+          vmfs_datastore_id: 5,
+        },
+      },
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(actions.cleanup()).toEqual({
       type: "machine/cleanup",

@@ -129,6 +129,10 @@ export const ACTIONS = [
     status: "releasing",
   },
   {
+    name: "set-boot-disk",
+    status: "settingBootDisk",
+  },
+  {
     name: "set-pool",
     status: "settingPool",
   },
@@ -160,6 +164,18 @@ export const ACTIONS = [
     name: "unmount-special",
     status: "unmountingSpecial",
   },
+  {
+    name: "update-disk",
+    status: "updatingDisk",
+  },
+  {
+    name: "update-filesystem",
+    status: "updatingFilesystem",
+  },
+  {
+    name: "update-vmfs-datastore",
+    status: "updatingVMFSDatastore",
+  },
 ];
 
 const DEFAULT_STATUSES = {
@@ -190,6 +206,7 @@ const DEFAULT_STATUSES = {
   mountingSpecial: false,
   overridingFailedTesting: false,
   releasing: false,
+  settingBootDisk: false,
   settingPool: false,
   settingZone: false,
   tagging: false,
@@ -198,6 +215,9 @@ const DEFAULT_STATUSES = {
   turningOn: false,
   unlocking: false,
   unmountingSpecial: false,
+  updatingDisk: false,
+  updatingFilesystem: false,
+  updatingVmfsDatastore: false,
 };
 
 type WithPrepare = {
@@ -236,6 +256,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   mountSpecial: WithPrepare;
   overrideFailedTesting: WithPrepare;
   release: WithPrepare;
+  setBootDisk: WithPrepare;
   setPool: WithPrepare;
   setZone: WithPrepare;
   suppressScriptResults: WithPrepare;
@@ -245,6 +266,9 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   on: WithPrepare;
   unlock: WithPrepare;
   unmountSpecial: WithPrepare;
+  updateDisk: WithPrepare;
+  updateFilesystem: WithPrepare;
+  updateVmfsDatastore: WithPrepare;
 };
 
 const statusHandlers = generateStatusHandlers<
@@ -537,6 +561,16 @@ const statusHandlers = generateStatusHandlers<
           system_id: params.systemId,
         });
         break;
+      case "set-boot-disk":
+        handler.method = "set_boot_disk";
+        handler.prepare = (params: {
+          blockId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          block_id: params.blockId,
+          system_id: params.systemId,
+        });
+        break;
       case "set-pool":
         handler.prepare = (systemId: Machine["system_id"], poolId) => ({
           action: action.name,
@@ -584,6 +618,62 @@ const statusHandlers = generateStatusHandlers<
         }) => ({
           mount_point: params.mountPoint,
           system_id: params.systemId,
+        });
+        break;
+      case "update-disk":
+        handler.method = "update_disk";
+        handler.prepare = (params: {
+          blockId: number;
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          name: string;
+          systemId: Machine["system_id"];
+          tags: string[];
+        }) => ({
+          block_id: params.blockId,
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          name: params.name,
+          system_id: params.systemId,
+          tags: params.tags,
+        });
+        break;
+      case "update-filesystem":
+        handler.method = "update_filesystem";
+        handler.prepare = (params: {
+          blockId: number;
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          partitionID: number;
+          systemId: Machine["system_id"];
+          tags: string[];
+        }) => ({
+          block_id: params.blockId,
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          partition_id: params.partitionID,
+          system_id: params.systemId,
+          tags: params.tags,
+        });
+        break;
+      case "update-vmfs-datastore":
+        handler.method = "update_vmfs_datastore";
+        handler.prepare = (params: {
+          addBlockDeviceIDs: number[];
+          addPartitionIDs: number[];
+          name: string;
+          systemId: Machine["system_id"];
+          vmfsDatastoreId: number;
+        }) => ({
+          add_block_devices: params.addBlockDeviceIDs,
+          add_partitions: params.addPartitionIDs,
+          name: params.name,
+          system_id: params.systemId,
+          vmfs_datastore_id: params.vmfsDatastoreId,
         });
         break;
     }
@@ -717,6 +807,10 @@ const machineSlice = generateSlice<
     rescueModeStart: statusHandlers.rescueModeStart,
     rescueModeSuccess: statusHandlers.rescueModeSuccess,
     rescueModeError: statusHandlers.rescueModeError,
+    setBootDisk: statusHandlers.setBootDisk,
+    setBootDiskStart: statusHandlers.setBootDiskStart,
+    setBootDiskSuccess: statusHandlers.setBootDiskSuccess,
+    setBootDiskError: statusHandlers.setBootDiskError,
     setPool: statusHandlers.setPool,
     setPoolStart: statusHandlers.setPoolStart,
     setPoolSuccess: statusHandlers.setPoolSuccess,
@@ -749,6 +843,18 @@ const machineSlice = generateSlice<
     unmountSpecialStart: statusHandlers.unmountSpecialStart,
     unmountSpecialSuccess: statusHandlers.unmountSpecialSuccess,
     unmountSpecialError: statusHandlers.unmountSpecialError,
+    updateDisk: statusHandlers.updateDisk,
+    updateDiskStart: statusHandlers.updateDiskStart,
+    updateDiskSuccess: statusHandlers.updateDiskSuccess,
+    updateDiskError: statusHandlers.updateDiskError,
+    updateFilesystem: statusHandlers.updateFilesystem,
+    updateFilesystemStart: statusHandlers.updateFilesystemStart,
+    updateFilesystemSuccess: statusHandlers.updateFilesystemSuccess,
+    updateFilesystemError: statusHandlers.updateFilesystemError,
+    updateVmfsDatastore: statusHandlers.updateVmfsDatastore,
+    updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastoreStart,
+    updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastoreSuccess,
+    updateVmfsDatastoreError: statusHandlers.updateVmfsDatastoreError,
     fetch: {
       prepare: () => ({
         meta: {
