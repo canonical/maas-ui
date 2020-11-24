@@ -41,6 +41,34 @@ export const ACTIONS = [
     status: "commissioning",
   },
   {
+    name: "create-bcache",
+    status: "creatingBcache",
+  },
+  {
+    name: "create-cache-set",
+    status: "creatingCacheSet",
+  },
+  {
+    name: "create-logical-volume",
+    status: "creatingLogicalVolume",
+  },
+  {
+    name: "create-partition",
+    status: "creatingPartition",
+  },
+  {
+    name: "create-raid",
+    status: "creatingRaid",
+  },
+  {
+    name: "create-vmfs-datastore",
+    status: "creatingVmfsDatastore",
+  },
+  {
+    name: "create-volume-group",
+    status: "creatingVolumeGroup",
+  },
+  {
     name: "delete",
     status: "deleting",
   },
@@ -115,6 +143,13 @@ const DEFAULT_STATUSES = {
   acquiring: false,
   applyingStorageLayout: false,
   checkingPower: false,
+  creatingBcache: false,
+  creatingCacheSet: false,
+  creatingLogicalVolume: false,
+  creatingPartition: false,
+  creatingRaid: false,
+  creatingVmfsDatastore: false,
+  creatingVolumeGroup: false,
   commissioning: false,
   deleting: false,
   deploying: false,
@@ -147,6 +182,13 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   applyStorageLayout: WithPrepare;
   checkPower: WithPrepare;
   commission: WithPrepare;
+  createBcache: WithPrepare;
+  createCacheSet: WithPrepare;
+  createLogicalVolume: WithPrepare;
+  createPartition: WithPrepare;
+  createRaid: WithPrepare;
+  createVmfsDatastore: WithPrepare;
+  createVolumeGroup: WithPrepare;
   delete: WithPrepare;
   deploy: WithPrepare;
   fetchComplete: CaseReducer<MachineState, PayloadAction<void>>;
@@ -204,13 +246,6 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
-      case "mark-broken":
-        handler.prepare = (systemId: Machine["system_id"], message) => ({
-          action: action.name,
-          extra: { message },
-          system_id: systemId,
-        });
-        break;
       case "commission":
         handler.prepare = (
           systemId: Machine["system_id"],
@@ -252,10 +287,149 @@ const statusHandlers = generateStatusHandlers<
           };
         };
         break;
+      case "create-bcache":
+        handler.method = "create_bcache";
+        handler.prepare = (params: {
+          blockId: number;
+          cacheMode: string;
+          cacheSetId: number;
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          name: string;
+          partitionId: number;
+          systemId: Machine["system_id"];
+          tags: string[];
+        }) => ({
+          block_id: params.blockId,
+          cache_mode: params.cacheMode,
+          cache_set: params.cacheSetId,
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          name: params.name,
+          partition_id: params.partitionId,
+          system_id: params.systemId,
+          tags: params.tags,
+        });
+        break;
+      case "create-cache-set":
+        handler.method = "create_cache_set";
+        handler.prepare = (params: {
+          blockId: number;
+          partitionId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          block_id: params.blockId,
+          partition_id: params.partitionId,
+          system_id: params.systemId,
+        });
+        break;
+      case "create-logical-volume":
+        handler.method = "create_logical_volume";
+        handler.prepare = (params: {
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          name: string;
+          size: number;
+          systemId: Machine["system_id"];
+          tags: string[];
+          volumeGroupId: number;
+        }) => ({
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          name: params.name,
+          size: params.size,
+          system_id: params.systemId,
+          tags: params.tags,
+          volume_group_id: params.volumeGroupId,
+        });
+        break;
+      case "create-partition":
+        handler.method = "create_partition";
+        handler.prepare = (params: {
+          blockId: number;
+          filesystemType: string;
+          mountOptions: string;
+          mountPoint: string;
+          partitionSize: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          block_id: params.blockId,
+          fstype: params.filesystemType,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          partition_size: params.partitionSize,
+          system_id: params.systemId,
+        });
+        break;
+      case "create-raid":
+        handler.method = "create_raid";
+        handler.prepare = (params: {
+          blockDeviceIDs: number[];
+          level: number;
+          mountOptions: string;
+          mountPoint: string;
+          name: string;
+          partitionIDs: number[];
+          spareBlockDeviceIDs: number[];
+          sparePartitionIDs: number[];
+          systemId: Machine["system_id"];
+          tags: string[];
+        }) => ({
+          block_devices: params.blockDeviceIDs,
+          level: params.level,
+          mount_options: params.mountOptions,
+          mount_point: params.mountPoint,
+          name: params.name,
+          partitions: params.partitionIDs,
+          spare_devices: params.spareBlockDeviceIDs,
+          spare_partitions: params.sparePartitionIDs,
+          system_id: params.systemId,
+          tags: params.tags,
+        });
+        break;
+      case "create-vmfs-datastore":
+        handler.method = "create_vmfs_datastore";
+        handler.prepare = (params: {
+          blockDeviceIDs: number[];
+          name: string;
+          partitionIDs: number[];
+          systemId: Machine["system_id"];
+        }) => ({
+          block_devices: params.blockDeviceIDs,
+          name: params.name,
+          partitions: params.partitionIDs,
+          system_id: params.systemId,
+        });
+        break;
+      case "create-volume-group":
+        handler.method = "create_volume_group";
+        handler.prepare = (params: {
+          blockDeviceIDs: number[];
+          name: string;
+          partitionIDs: number[];
+          systemId: Machine["system_id"];
+        }) => ({
+          block_devices: params.blockDeviceIDs,
+          name: params.name,
+          partitions: params.partitionIDs,
+          system_id: params.systemId,
+        });
+        break;
       case "deploy":
         handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
           action: action.name,
           extra,
+          system_id: systemId,
+        });
+        break;
+      case "mark-broken":
+        handler.prepare = (systemId: Machine["system_id"], message) => ({
+          action: action.name,
+          extra: { message },
           system_id: systemId,
         });
         break;
@@ -287,6 +461,15 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
+      case "tag":
+        handler.prepare = (systemId: Machine["system_id"], tags: string[]) => ({
+          action: action.name,
+          extra: {
+            tags,
+          },
+          system_id: systemId,
+        });
+        break;
       case "test":
         handler.prepare = (
           systemId: Machine["system_id"],
@@ -299,15 +482,6 @@ const statusHandlers = generateStatusHandlers<
             enable_ssh: enableSSH,
             script_input: scriptInputs,
             testing_scripts: scripts && scripts.map((script) => script.id),
-          },
-          system_id: systemId,
-        });
-        break;
-      case "tag":
-        handler.prepare = (systemId: Machine["system_id"], tags: string[]) => ({
-          action: action.name,
-          extra: {
-            tags,
           },
           system_id: systemId,
         });
@@ -355,6 +529,34 @@ const machineSlice = generateSlice<
     commissionStart: statusHandlers.commissionStart,
     commissionSuccess: statusHandlers.commissionSuccess,
     commissionError: statusHandlers.commissionError,
+    createBcache: statusHandlers.createBcache,
+    createBcacheStart: statusHandlers.createBcacheStart,
+    createBcacheSuccess: statusHandlers.createBcacheSuccess,
+    createBcacheError: statusHandlers.createBcacheError,
+    createCacheSet: statusHandlers.createCacheSet,
+    createCacheSetStart: statusHandlers.createCacheSetStart,
+    createCacheSetSuccess: statusHandlers.createCacheSetSuccess,
+    createCacheSetError: statusHandlers.createCacheSetError,
+    createLogicalVolume: statusHandlers.createLogicalVolume,
+    createLogicalVolumeStart: statusHandlers.createLogicalVolumeStart,
+    createLogicalVolumeSuccess: statusHandlers.createLogicalVolumeSuccess,
+    createLogicalVolumeError: statusHandlers.createLogicalVolumeError,
+    createPartition: statusHandlers.createPartition,
+    createPartitionStart: statusHandlers.createPartitionStart,
+    createPartitionSuccess: statusHandlers.createPartitionSuccess,
+    createPartitionError: statusHandlers.createPartitionError,
+    createRaid: statusHandlers.createRaid,
+    createRaidStart: statusHandlers.createRaidStart,
+    createRaidSuccess: statusHandlers.createRaidSuccess,
+    createRaidError: statusHandlers.createRaidError,
+    createVmfsDatastore: statusHandlers.createVmfsDatastore,
+    createVmfsDatastoreStart: statusHandlers.createVmfsDatastoreStart,
+    createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastoreSuccess,
+    createVmfsDatastoreError: statusHandlers.createVmfsDatastoreError,
+    createVolumeGroup: statusHandlers.createVolumeGroup,
+    createVolumeGroupStart: statusHandlers.createVolumeGroupStart,
+    createVolumeGroupSuccess: statusHandlers.createVolumeGroupSuccess,
+    createVolumeGroupError: statusHandlers.createVolumeGroupError,
     delete: statusHandlers.delete,
     deleteStart: statusHandlers.deleteStart,
     deleteSuccess: statusHandlers.deleteSuccess,
@@ -363,10 +565,6 @@ const machineSlice = generateSlice<
     deployStart: statusHandlers.deployStart,
     deploySuccess: statusHandlers.deploySuccess,
     deployError: statusHandlers.deployError,
-    rescueMode: statusHandlers.rescueMode,
-    rescueModeStart: statusHandlers.rescueModeStart,
-    rescueModeSuccess: statusHandlers.rescueModeSuccess,
-    rescueModeError: statusHandlers.rescueModeError,
     exitRescueMode: statusHandlers.exitRescueMode,
     exitRescueModeStart: statusHandlers.exitRescueModeStart,
     exitRescueModeSuccess: statusHandlers.exitRescueModeSuccess,
@@ -395,6 +593,10 @@ const machineSlice = generateSlice<
     releaseStart: statusHandlers.releaseStart,
     releaseSuccess: statusHandlers.releaseSuccess,
     releaseError: statusHandlers.releaseError,
+    rescueMode: statusHandlers.rescueMode,
+    rescueModeStart: statusHandlers.rescueModeStart,
+    rescueModeSuccess: statusHandlers.rescueModeSuccess,
+    rescueModeError: statusHandlers.rescueModeError,
     setPool: statusHandlers.setPool,
     setPoolStart: statusHandlers.setPoolStart,
     setPoolSuccess: statusHandlers.setPoolSuccess,
