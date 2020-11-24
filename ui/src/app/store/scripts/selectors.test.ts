@@ -59,20 +59,22 @@ describe("scripts selectors", () => {
     });
   });
 
-  describe("defaultCommissioning", () => {
-    it("returns all default commissioning scripts", () => {
-      const items = [
+  describe("preselected", () => {
+    it("returns all preselected commissioning scripts", () => {
+      const preselectedItems = [
         scriptsFactory({ type: 0, default: true }),
         scriptsFactory({ type: 0, default: false }),
-        scriptsFactory({ type: 0, tags: ["noauto"] }),
       ];
+      const nonPreselectedItems = [
+        scriptsFactory({ type: 0, tags: ["noauto"] }),
+      ]
       const state = rootStateFactory({
         scripts: scriptsStateFactory({
-          items,
+          items: [...preselectedItems, ...nonPreselectedItems],
         }),
       });
 
-      expect(scripts.defaultCommissioning(state)).toEqual([items[0]]);
+      expect(scripts.preselectedCommissioning(state)).toEqual(preselectedItems);
     });
   });
 
