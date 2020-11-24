@@ -286,6 +286,11 @@ export type MachineStatus = {
   creatingVolumeGroup: boolean;
   commissioning: boolean;
   deleting: boolean;
+  deletingCacheSet: boolean;
+  deletingDisk: boolean;
+  deletingFilesystem: boolean;
+  deletingPartition: boolean;
+  deletingVolumeGroup: boolean;
   deploying: boolean;
   enteringRescueMode: boolean;
   exitingRescueMode: boolean;
@@ -302,6 +307,7 @@ export type MachineStatus = {
   turningOff: boolean;
   turningOn: boolean;
   unlocking: boolean;
+  unmountingSpecial: boolean;
 };
 
 export type MachineStatuses = {
