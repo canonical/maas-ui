@@ -7,10 +7,9 @@ import type { Dispatch } from "redux";
 import { messages as messageActions } from "app/base/actions";
 import NotificationGroup from "app/base/components/NotificationGroup";
 import messageSelectors from "app/store/message/selectors";
+import type { Message } from "app/store/message/types";
 import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
-
-import type { Message } from "app/store/message/types";
 
 const generateMessages = (messages: Message[], dispatch: Dispatch) =>
   messages.map(({ id, message, temporary, type }) => (

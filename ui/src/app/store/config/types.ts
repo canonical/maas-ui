@@ -1,6 +1,5 @@
-import type { GenericState } from "app/store/types/state";
-
 import type { TSFixMe } from "app/base/types";
+import type { GenericState } from "app/store/types/state";
 
 export type ConfigChoice = [string | number, string];
 

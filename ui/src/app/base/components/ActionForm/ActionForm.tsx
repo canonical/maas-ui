@@ -6,9 +6,8 @@ import { Spinner, Strip } from "@canonical/react-components";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useProcessing } from "app/base/hooks";
-import { formatErrors } from "app/utils";
-
 import type { AnalyticsEvent, TSFixMe } from "app/base/types";
+import { formatErrors } from "app/utils";
 
 const getLabel = (
   modelName: string,

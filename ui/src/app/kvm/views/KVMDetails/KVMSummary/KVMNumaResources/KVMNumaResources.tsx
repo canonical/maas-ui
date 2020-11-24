@@ -9,10 +9,9 @@ import { useSendAnalytics } from "app/base/hooks";
 import type { PodResourcesCardProps } from "app/kvm/components/PodResourcesCard";
 import PodResourcesCard from "app/kvm/components/PodResourcesCard";
 import { actions as machineActions } from "app/store/machine";
+import type { Machine } from "app/store/machine/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-
-import type { Machine } from "app/store/machine/types";
 import type { Pod, PodNumaNode } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 

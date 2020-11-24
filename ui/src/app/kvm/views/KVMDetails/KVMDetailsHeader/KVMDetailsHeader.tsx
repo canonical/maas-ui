@@ -6,12 +6,11 @@ import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import type { RouteParams } from "app/base/types";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-
-import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMDetailsHeader = (): JSX.Element => {

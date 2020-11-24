@@ -1,6 +1,5 @@
-import { generateBaseSelectors } from "app/store/utils";
-
 import type { SSHKey, SSHKeyState } from "app/store/sshkey/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (sshkey: SSHKey, term: string) =>
   sshkey.display.includes(term);

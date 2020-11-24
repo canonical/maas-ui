@@ -7,9 +7,8 @@ import controllerSelectors from "app/store/controller/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import { useFormattedOS } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
-import { getStatusText } from "app/utils";
-
 import type { RootState } from "app/store/root/types";
+import { getStatusText } from "app/utils";
 
 type Props = { id: number };
 

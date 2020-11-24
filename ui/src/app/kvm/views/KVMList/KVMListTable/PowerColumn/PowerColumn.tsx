@@ -6,9 +6,8 @@ import DoubleRow from "app/base/components/DoubleRow";
 import controllerSelectors from "app/store/controller/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
-import { capitaliseFirst, getPowerIcon } from "app/utils";
-
 import type { RootState } from "app/store/root/types";
+import { capitaliseFirst, getPowerIcon } from "app/utils";
 
 type Props = { id: number };
 

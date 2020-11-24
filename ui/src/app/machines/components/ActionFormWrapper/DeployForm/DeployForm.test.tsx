@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import DeployForm from "./DeployForm";
 
 import * as hooks from "app/base/hooks";
+import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -22,8 +23,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

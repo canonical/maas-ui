@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import OSColumn from "./OSColumn";
 
 import { nodeStatus } from "app/base/enum";
+import type { RootState } from "app/store/root/types";
 import {
   controllerState as controllerStateFactory,
   generalState as generalStateFactory,
@@ -16,8 +17,6 @@ import {
   pod as podFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

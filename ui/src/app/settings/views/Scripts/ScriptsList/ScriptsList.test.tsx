@@ -7,13 +7,12 @@ import configureStore from "redux-mock-store";
 
 import ScriptsList from ".";
 
+import type { RootState } from "app/store/root/types";
 import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

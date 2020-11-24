@@ -13,10 +13,9 @@ import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 
 import Section from "app/base/components/Section";
+import type { RouteParams } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-
-import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 const MachineDetails = (): JSX.Element => {

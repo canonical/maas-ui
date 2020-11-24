@@ -2,13 +2,12 @@ import { array, define, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-
 import type {
   NodeResult,
   NodeResults,
   NodeScriptResult,
 } from "app/store/noderesult/types";
+import type { Model } from "app/store/types/model";
 
 export const nodeScriptResult = define<NodeScriptResult>({
   name: "test name",

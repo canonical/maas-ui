@@ -6,14 +6,13 @@ import configureStore from "redux-mock-store";
 
 import CPUColumn from "./CPUColumn";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podHint as podHintFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

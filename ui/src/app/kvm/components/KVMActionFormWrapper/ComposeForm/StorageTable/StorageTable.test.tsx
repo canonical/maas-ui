@@ -8,6 +8,8 @@ import configureStore, { MockStore } from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -25,9 +27,6 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

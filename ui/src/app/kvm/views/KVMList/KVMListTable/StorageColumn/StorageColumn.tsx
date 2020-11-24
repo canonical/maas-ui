@@ -6,9 +6,8 @@ import StoragePopover from "./StoragePopover";
 
 import Meter from "app/base/components/Meter";
 import podSelectors from "app/store/pod/selectors";
-import { formatBytes } from "app/utils";
-
 import type { RootState } from "app/store/root/types";
+import { formatBytes } from "app/utils";
 
 type Props = { id: number };
 

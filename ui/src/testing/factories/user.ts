@@ -3,7 +3,6 @@ import { extend } from "cooky-cutter";
 import { model } from "./model";
 
 import type { Model } from "app/store/types/model";
-
 import type { User } from "app/store/user/types";
 
 const globalPermissions = () => ["machine_create"];

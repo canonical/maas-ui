@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import StatusCard from "./StatusCard";
 
+import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
@@ -16,8 +17,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

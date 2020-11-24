@@ -7,7 +7,6 @@ import type { FormValues } from "../TestForm";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
-
 import { Scripts } from "app/store/scripts/types";
 
 type ScriptsDisplay = Scripts & { displayName: string };
@@ -19,11 +18,9 @@ export const TestFormFields = ({
   preselected,
   scripts,
 }: Props): JSX.Element => {
-  const {
-    handleChange,
-    setFieldValue,
-    values,
-  } = useFormikContext<FormValues>();
+  const { handleChange, setFieldValue, values } = useFormikContext<
+    FormValues
+  >();
   const urlScriptsSelected = values.scripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );

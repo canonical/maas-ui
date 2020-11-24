@@ -3,9 +3,8 @@ import type { ReactNode } from "react";
 
 import Meter from "app/base/components/Meter";
 import Popover from "app/base/components/Popover";
-import { formatBytes } from "app/utils";
-
 import type { Pod } from "app/store/pod/types";
+import { formatBytes } from "app/utils";
 
 type Props = {
   children: ReactNode;

@@ -8,14 +8,13 @@ import configureStore from "redux-mock-store";
 import MachineNameFields from "./MachineNameFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

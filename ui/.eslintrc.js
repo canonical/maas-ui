@@ -65,11 +65,6 @@ module.exports = {
                 position: "before",
               },
               {
-                pattern: "**/types",
-                group: "internal",
-                position: "after",
-              },
-              {
                 pattern: "~/app",
                 group: "internal",
               },

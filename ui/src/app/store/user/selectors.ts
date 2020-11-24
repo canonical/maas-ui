@@ -1,6 +1,5 @@
-import { generateBaseSelectors } from "app/store/utils";
-
 import type { User, UserState } from "app/store/user/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (user: User, term: string) =>
   user.username.includes(term) ||

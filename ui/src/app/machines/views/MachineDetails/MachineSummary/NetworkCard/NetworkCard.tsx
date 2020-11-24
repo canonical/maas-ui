@@ -13,11 +13,10 @@ import { HardwareType } from "app/base/enum";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-
 import type { Machine, NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
 
 type InterfaceGroup = {
   firmwareVersion: string;

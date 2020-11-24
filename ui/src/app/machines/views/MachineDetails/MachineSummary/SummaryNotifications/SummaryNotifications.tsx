@@ -8,13 +8,12 @@ import LegacyLink from "app/base/components/LegacyLink";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
+import type { Event, Machine } from "app/store/machine/types";
 import {
   useCanEdit,
   useHasInvalidArchitecture,
   useIsRackControllerConnected,
 } from "app/store/machine/utils";
-
-import type { Event, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

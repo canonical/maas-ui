@@ -12,9 +12,8 @@ import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useWindowTitle, useAddMessage } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
-import scriptSelectors from "app/store/scripts/selectors";
-
 import type { RootState } from "app/store/root/types";
+import scriptSelectors from "app/store/scripts/selectors";
 import type { Scripts } from "app/store/scripts/types";
 
 type Props = {

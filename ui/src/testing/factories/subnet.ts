@@ -2,13 +2,12 @@ import { array, define, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-
 import type {
   Subnet,
   SubnetStatistics,
   SubnetStatisticsRange,
 } from "app/store/subnet/types";
+import type { Model } from "app/store/types/model";
 
 export const subnetStatisticsRange = define<SubnetStatisticsRange>({
   end: "172.16.2.1",

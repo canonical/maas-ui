@@ -10,11 +10,10 @@ import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
-import { useFormattedOS } from "app/store/machine/utils";
-import { getStatusText } from "app/utils";
-
 import type { Machine } from "app/store/machine/types";
+import { useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { getStatusText } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [

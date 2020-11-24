@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import KVMListTable from "./KVMListTable";
 
 import { nodeStatus } from "app/base/enum";
+import type { RootState } from "app/store/root/types";
 import {
   controllerState as controllerStateFactory,
   generalState as generalStateFactory,
@@ -23,8 +24,6 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

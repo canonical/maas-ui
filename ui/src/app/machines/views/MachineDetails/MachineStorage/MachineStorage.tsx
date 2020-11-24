@@ -14,10 +14,9 @@ import UsedStorageTable from "./UsedStorageTable";
 import { separateStorageData } from "./utils";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
+import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
 import { useCanEditStorage } from "app/store/machine/utils";
-
-import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 const MachineStorage = (): JSX.Element => {

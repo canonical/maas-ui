@@ -4,6 +4,8 @@ import {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import type { Pod, PodState } from "app/store/pod/types";
+import type { Token, TokenState } from "app/store/token/types";
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import type { GenericSlice } from "app/store/utils";
 import {
@@ -13,9 +15,6 @@ import {
   podState as podStateFactory,
   podStatus as podStatusFactory,
 } from "testing/factories";
-
-import type { Pod, PodState } from "app/store/pod/types";
-import type { Token, TokenState } from "app/store/token/types";
 
 describe("slice", () => {
   describe("base reducers", () => {

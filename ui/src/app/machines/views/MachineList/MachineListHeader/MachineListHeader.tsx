@@ -17,13 +17,12 @@ import {
   toggleFilter,
 } from "app/machines/search";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
+import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-
-import type { MachineAction } from "app/store/general/types";
-import type { Machine } from "app/store/machine/types";
 
 const getMachineCount = (
   machines: Machine[],

@@ -21,11 +21,9 @@ const PodConfigurationFields = ({
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const allTags = useSelector(tagSelectors.all);
   const zones = useSelector(zoneSelectors.all);
-  const {
-    initialValues,
-    setFieldValue,
-    values,
-  } = useFormikContext<PodConfigurationValues>();
+  const { initialValues, setFieldValue, values } = useFormikContext<
+    PodConfigurationValues
+  >();
   // Tags in state is an array of objects
   const allTagsSorted = [...allTags].sort((a, b) =>
     a.name.localeCompare(b.name)

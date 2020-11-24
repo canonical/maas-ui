@@ -7,9 +7,8 @@ import configureStore from "redux-mock-store";
 
 import ActionForm from "./ActionForm";
 
-import { rootState as rootStateFactory } from "testing/factories";
-
 import type { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
 
 let state: RootState;
 const mockStore = configureStore();

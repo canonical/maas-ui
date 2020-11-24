@@ -17,13 +17,18 @@ import VMsColumn from "./VMsColumn";
 import { general as generalActions } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import type { TSFixMe } from "app/base/types";
 import { actions as controllerActions } from "app/store/controller";
+import type { Controller } from "app/store/controller/types";
 import generalSelectors from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
+import type { Machine } from "app/store/machine/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
+import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
 import {
   generateCheckboxHandlers,
@@ -31,12 +36,6 @@ import {
   someInArray,
   someNotAll,
 } from "app/utils";
-
-import type { TSFixMe } from "app/base/types";
-import type { Controller } from "app/store/controller/types";
-import type { Machine } from "app/store/machine/types";
-import type { Pod } from "app/store/pod/types";
-import type { ResourcePool } from "app/store/resourcepool/types";
 
 const getSortValue = (
   sortKey: keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage",

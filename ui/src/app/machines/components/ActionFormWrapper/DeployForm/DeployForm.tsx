@@ -11,10 +11,9 @@ import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
 import generalSelectors from "app/store/general/selectors";
+import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-
-import type { MachineAction } from "app/store/general/types";
 
 const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),

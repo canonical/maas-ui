@@ -7,14 +7,13 @@ import configureStore from "redux-mock-store";
 
 import NumaCard from "./NumaCard";
 
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineNumaNode as machineNumaNodeFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

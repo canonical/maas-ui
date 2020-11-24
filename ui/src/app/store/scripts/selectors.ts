@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { generateBaseSelectors } from "app/store/utils";
-
 import type { RootState } from "app/store/root/types";
 import type { Scripts, ScriptsState } from "app/store/scripts/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 enum SCRIPT_TYPES {
   COMMISSIONING = 0,

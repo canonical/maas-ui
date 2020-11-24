@@ -9,12 +9,11 @@ import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
-import podSelectors from "app/store/pod/selectors";
-import { formatBytes } from "app/utils";
-
 import type { RouteParams } from "app/base/types";
+import podSelectors from "app/store/pod/selectors";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { formatBytes } from "app/utils";
 
 type RequestMap = { [location: string]: number };
 

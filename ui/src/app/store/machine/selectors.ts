@@ -2,8 +2,6 @@ import { createSelector, Selector } from "@reduxjs/toolkit";
 
 import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/store/machine/slice";
-import { generateBaseSelectors } from "app/store/utils";
-
 import type {
   Machine,
   MachineState,
@@ -11,6 +9,7 @@ import type {
   MachineStatuses,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
