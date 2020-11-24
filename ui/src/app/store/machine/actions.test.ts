@@ -486,25 +486,209 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle mounting a special filesystem", () => {
+  it("can handle creating a bcache", () => {
     expect(
-      actions.mountSpecial({
-        filesystemType: "tmpfs",
-        mountOptions: "noexec,size=1024k",
+      actions.createBcache({
+        blockId: 1,
+        cacheMode: "WRITEBACK",
+        cacheSetId: 2,
+        filesystemType: "fat32",
+        mountOptions: "size=1024k",
         mountPoint: "/path",
+        name: "bcache1",
+        partitionId: 3,
         systemId: "abc123",
+        tags: ["tag1", "tag2"],
       })
     ).toEqual({
-      type: "machine/mountSpecial",
+      type: "machine/createBcache",
       meta: {
         model: "machine",
-        method: "mount_special",
+        method: "create_bcache",
       },
       payload: {
         params: {
-          fstype: "tmpfs",
-          mount_options: "noexec,size=1024k",
+          block_id: 1,
+          cache_mode: "WRITEBACK",
+          cache_set: 2,
+          fstype: "fat32",
+          mount_options: "size=1024k",
           mount_point: "/path",
+          name: "bcache1",
+          partition_id: 3,
+          system_id: "abc123",
+          tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle creating a cache set", () => {
+    expect(
+      actions.createCacheSet({
+        blockId: 1,
+        partitionId: 2,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createCacheSet",
+      meta: {
+        model: "machine",
+        method: "create_cache_set",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          partition_id: 2,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a logical volume", () => {
+    expect(
+      actions.createLogicalVolume({
+        filesystemType: "fat32",
+        mountOptions: "noexec",
+        mountPoint: "/path",
+        name: "logical-volume",
+        size: 1000,
+        systemId: "abc123",
+        tags: ["tag1", "tag2"],
+        volumeGroupId: 1,
+      })
+    ).toEqual({
+      type: "machine/createLogicalVolume",
+      meta: {
+        model: "machine",
+        method: "create_logical_volume",
+      },
+      payload: {
+        params: {
+          fstype: "fat32",
+          mount_options: "noexec",
+          mount_point: "/path",
+          name: "logical-volume",
+          size: 1000,
+          system_id: "abc123",
+          tags: ["tag1", "tag2"],
+          volume_group_id: 1,
+        },
+      },
+    });
+  });
+
+  it("can handle creating a partition", () => {
+    expect(
+      actions.createPartition({
+        blockId: 1,
+        filesystemType: "fat32",
+        mountOptions: "noexec",
+        mountPoint: "/path",
+        partitionSize: 1000,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createPartition",
+      meta: {
+        model: "machine",
+        method: "create_partition",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          fstype: "fat32",
+          mount_options: "noexec",
+          mount_point: "/path",
+          partition_size: 1000,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a RAID", () => {
+    expect(
+      actions.createRaid({
+        blockDeviceIDs: [1, 2],
+        level: 3,
+        mountOptions: "noexec",
+        mountPoint: "/path",
+        name: "raid1",
+        partitionIDs: [4, 5],
+        spareBlockDeviceIDs: [6, 7],
+        sparePartitionIDs: [8, 9],
+        systemId: "abc123",
+        tags: ["tag1", "tag2"],
+      })
+    ).toEqual({
+      type: "machine/createRaid",
+      meta: {
+        model: "machine",
+        method: "create_raid",
+      },
+      payload: {
+        params: {
+          block_devices: [1, 2],
+          level: 3,
+          mount_options: "noexec",
+          mount_point: "/path",
+          name: "raid1",
+          partitions: [4, 5],
+          spare_devices: [6, 7],
+          spare_partitions: [8, 9],
+          system_id: "abc123",
+          tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle creating a VMFS datastore", () => {
+    expect(
+      actions.createVmfsDatastore({
+        blockDeviceIDs: [1, 2],
+        name: "datastore1",
+        partitionIDs: [3, 4],
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createVmfsDatastore",
+      meta: {
+        model: "machine",
+        method: "create_vmfs_datastore",
+      },
+      payload: {
+        params: {
+          block_devices: [1, 2],
+          name: "datastore1",
+          partitions: [3, 4],
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a volume group", () => {
+    expect(
+      actions.createVolumeGroup({
+        blockDeviceIDs: [1, 2],
+        name: "vg1",
+        partitionIDs: [3, 4],
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createVolumeGroup",
+      meta: {
+        model: "machine",
+        method: "create_volume_group",
+      },
+      payload: {
+        params: {
+          block_devices: [1, 2],
+          name: "vg1",
+          partitions: [3, 4],
           system_id: "abc123",
         },
       },

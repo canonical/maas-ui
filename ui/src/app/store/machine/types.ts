@@ -277,6 +277,13 @@ export type MachineStatus = {
   acquiring: boolean;
   applyingStorageLayout: boolean;
   checkingPower: boolean;
+  creatingBcache: boolean;
+  creatingCacheSet: boolean;
+  creatingLogicalVolume: boolean;
+  creatingPartition: boolean;
+  creatingRaid: boolean;
+  creatingVmfsDatastore: boolean;
+  creatingVolumeGroup: boolean;
   commissioning: boolean;
   deleting: boolean;
   deploying: boolean;
