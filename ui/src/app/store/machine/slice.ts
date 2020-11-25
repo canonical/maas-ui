@@ -73,6 +73,26 @@ export const ACTIONS = [
     status: "deleting",
   },
   {
+    name: "delete-cache-set",
+    status: "deletingCacheSet",
+  },
+  {
+    name: "delete-disk",
+    status: "deletingDisk",
+  },
+  {
+    name: "delete-filesystem",
+    status: "deletingFilesystem",
+  },
+  {
+    name: "delete-partition",
+    status: "deletingPartition",
+  },
+  {
+    name: "delete-volume-group",
+    status: "deletingVolumeGroup",
+  },
+  {
     name: "deploy",
     status: "deploying",
   },
@@ -136,6 +156,10 @@ export const ACTIONS = [
     name: "unlock",
     status: "unlocking",
   },
+  {
+    name: "unmount-special",
+    status: "unmountingSpecial",
+  },
 ];
 
 const DEFAULT_STATUSES = {
@@ -152,6 +176,11 @@ const DEFAULT_STATUSES = {
   creatingVolumeGroup: false,
   commissioning: false,
   deleting: false,
+  deletingCacheSet: false,
+  deletingDisk: false,
+  deletingFilesystem: false,
+  deletingPartition: false,
+  deletingVolumeGroup: false,
   deploying: false,
   enteringRescueMode: false,
   exitingRescueMode: false,
@@ -168,6 +197,7 @@ const DEFAULT_STATUSES = {
   turningOff: false,
   turningOn: false,
   unlocking: false,
+  unmountingSpecial: false,
 };
 
 type WithPrepare = {
@@ -190,6 +220,11 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   createVmfsDatastore: WithPrepare;
   createVolumeGroup: WithPrepare;
   delete: WithPrepare;
+  deleteCacheSet: WithPrepare;
+  deleteDisk: WithPrepare;
+  deleteFilesystem: WithPrepare;
+  deletePartition: WithPrepare;
+  deleteVolumeGroup: WithPrepare;
   deploy: WithPrepare;
   fetchComplete: CaseReducer<MachineState, PayloadAction<void>>;
   getStart: CaseReducer<MachineState, PayloadAction<void>>;
@@ -209,6 +244,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   off: WithPrepare;
   on: WithPrepare;
   unlock: WithPrepare;
+  unmountSpecial: WithPrepare;
 };
 
 const statusHandlers = generateStatusHandlers<
@@ -419,6 +455,60 @@ const statusHandlers = generateStatusHandlers<
           system_id: params.systemId,
         });
         break;
+      case "delete-cache-set":
+        handler.method = "delete_cache_set";
+        handler.prepare = (params: {
+          cacheSetId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          cache_set_id: params.cacheSetId,
+          system_id: params.systemId,
+        });
+        break;
+      case "delete-disk":
+        handler.method = "delete_disk";
+        handler.prepare = (params: {
+          blockId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          block_id: params.blockId,
+          system_id: params.systemId,
+        });
+        break;
+      case "delete-filesystem":
+        handler.method = "delete_filesystem";
+        handler.prepare = (params: {
+          blockDeviceId: number;
+          filesystemId: number;
+          partitionId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          blockdevice_id: params.blockDeviceId,
+          filesystem_id: params.filesystemId,
+          partition_id: params.partitionId,
+          system_id: params.systemId,
+        });
+        break;
+      case "delete-partition":
+        handler.method = "delete_partition";
+        handler.prepare = (params: {
+          partitionId: number;
+          systemId: Machine["system_id"];
+        }) => ({
+          partition_id: params.partitionId,
+          system_id: params.systemId,
+        });
+        break;
+      case "delete-volume-group":
+        handler.method = "delete_volume_group";
+        handler.prepare = (params: {
+          systemId: Machine["system_id"];
+          volumeGroupId: number;
+        }) => ({
+          system_id: params.systemId,
+          volume_group_id: params.volumeGroupId,
+        });
+        break;
       case "deploy":
         handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
           action: action.name,
@@ -484,6 +574,16 @@ const statusHandlers = generateStatusHandlers<
             testing_scripts: scripts && scripts.map((script) => script.id),
           },
           system_id: systemId,
+        });
+        break;
+      case "unmount-special":
+        handler.method = "unmount_special";
+        handler.prepare = (params: {
+          mountPoint: string;
+          systemId: Machine["system_id"];
+        }) => ({
+          mount_point: params.mountPoint,
+          system_id: params.systemId,
         });
         break;
     }
@@ -561,6 +661,26 @@ const machineSlice = generateSlice<
     deleteStart: statusHandlers.deleteStart,
     deleteSuccess: statusHandlers.deleteSuccess,
     deleteError: statusHandlers.deleteError,
+    deleteCacheSet: statusHandlers.deleteCacheSet,
+    deleteCacheSetStart: statusHandlers.deleteCacheSetStart,
+    deleteCacheSetSuccess: statusHandlers.deleteCacheSetSuccess,
+    deleteCacheSetError: statusHandlers.deleteCacheSetError,
+    deleteDisk: statusHandlers.deleteDisk,
+    deleteDiskStart: statusHandlers.deleteDiskStart,
+    deleteDiskSuccess: statusHandlers.deleteDiskSuccess,
+    deleteDiskError: statusHandlers.deleteDiskError,
+    deleteFilesystem: statusHandlers.deleteFilesystem,
+    deleteFilesystemStart: statusHandlers.deleteFilesystemStart,
+    deleteFilesystemSuccess: statusHandlers.deleteFilesystemSuccess,
+    deleteFilesystemError: statusHandlers.deleteFilesystemError,
+    deletePartition: statusHandlers.deletePartition,
+    deletePartitionStart: statusHandlers.deletePartitionStart,
+    deletePartitionSuccess: statusHandlers.deletePartitionSuccess,
+    deletePartitionError: statusHandlers.deletePartitionError,
+    deleteVolumeGroup: statusHandlers.deleteVolumeGroup,
+    deleteVolumeGroupStart: statusHandlers.deleteVolumeGroupStart,
+    deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroupSuccess,
+    deleteVolumeGroupError: statusHandlers.deleteVolumeGroupError,
     deploy: statusHandlers.deploy,
     deployStart: statusHandlers.deployStart,
     deploySuccess: statusHandlers.deploySuccess,
@@ -625,6 +745,10 @@ const machineSlice = generateSlice<
     unlockStart: statusHandlers.unlockStart,
     unlockSuccess: statusHandlers.unlockSuccess,
     unlockError: statusHandlers.unlockError,
+    unmountSpecial: statusHandlers.unmountSpecial,
+    unmountSpecialStart: statusHandlers.unmountSpecialStart,
+    unmountSpecialSuccess: statusHandlers.unmountSpecialSuccess,
+    unmountSpecialError: statusHandlers.unmountSpecialError,
     fetch: {
       prepare: () => ({
         meta: {

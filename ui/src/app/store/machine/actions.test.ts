@@ -695,6 +695,161 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle deleting a cache set", () => {
+    expect(
+      actions.deleteCacheSet({
+        cacheSetId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deleteCacheSet",
+      meta: {
+        model: "machine",
+        method: "delete_cache_set",
+      },
+      payload: {
+        params: {
+          cache_set_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a disk", () => {
+    expect(
+      actions.deleteDisk({
+        blockId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deleteDisk",
+      meta: {
+        model: "machine",
+        method: "delete_disk",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a filesystem", () => {
+    expect(
+      actions.deleteFilesystem({
+        blockDeviceId: 1,
+        filesystemId: 2,
+        partitionId: 3,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deleteFilesystem",
+      meta: {
+        model: "machine",
+        method: "delete_filesystem",
+      },
+      payload: {
+        params: {
+          blockdevice_id: 1,
+          filesystem_id: 2,
+          partition_id: 3,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a partition", () => {
+    expect(
+      actions.deletePartition({
+        partitionId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deletePartition",
+      meta: {
+        model: "machine",
+        method: "delete_partition",
+      },
+      payload: {
+        params: {
+          partition_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a volume group", () => {
+    expect(
+      actions.deleteVolumeGroup({
+        systemId: "abc123",
+        volumeGroupId: 1,
+      })
+    ).toEqual({
+      type: "machine/deleteVolumeGroup",
+      meta: {
+        model: "machine",
+        method: "delete_volume_group",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+          volume_group_id: 1,
+        },
+      },
+    });
+  });
+
+  it("can handle mounting a special filesystem", () => {
+    expect(
+      actions.mountSpecial({
+        filesystemType: "tmpfs",
+        mountOptions: "noexec,size=1024k",
+        mountPoint: "/path",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/mountSpecial",
+      meta: {
+        model: "machine",
+        method: "mount_special",
+      },
+      payload: {
+        params: {
+          fstype: "tmpfs",
+          mount_options: "noexec,size=1024k",
+          mount_point: "/path",
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle unmounting a special filesystem", () => {
+    expect(
+      actions.unmountSpecial({
+        mountPoint: "/path",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/unmountSpecial",
+      meta: {
+        model: "machine",
+        method: "unmount_special",
+      },
+      payload: {
+        params: {
+          mount_point: "/path",
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle cleaning machines", () => {
     expect(actions.cleanup()).toEqual({
       type: "machine/cleanup",

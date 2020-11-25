@@ -116,6 +116,11 @@ export const machineStatus = define<MachineStatus>({
   creatingVolumeGroup: false,
   commissioning: false,
   deleting: false,
+  deletingCacheSet: false,
+  deletingDisk: false,
+  deletingFilesystem: false,
+  deletingPartition: false,
+  deletingVolumeGroup: false,
   deploying: false,
   enteringRescueMode: false,
   exitingRescueMode: false,
@@ -132,6 +137,7 @@ export const machineStatus = define<MachineStatus>({
   turningOff: false,
   turningOn: false,
   unlocking: false,
+  unmountingSpecial: false,
 });
 
 export const machineStatuses = define<MachineStatuses>({
