@@ -21,9 +21,8 @@ import PoolSelect from "./PoolSelect";
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
 import TagSelector from "app/base/components/TagSelector";
-import podSelectors from "app/store/pod/selectors";
-
 import type { RouteParams } from "app/base/types";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
 type Props = { defaultDisk: Disk };

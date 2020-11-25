@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import NumaCardDetails from "./NumaCardDetails";
 
 import machineSelectors from "app/store/machine/selectors";
-
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

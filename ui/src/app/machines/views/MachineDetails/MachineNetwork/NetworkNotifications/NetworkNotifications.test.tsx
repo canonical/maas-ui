@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import NetworkNotifications from "./NetworkNotifications";
 
+import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
@@ -18,8 +19,6 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

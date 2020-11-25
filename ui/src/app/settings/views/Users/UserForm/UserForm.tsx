@@ -11,7 +11,6 @@ import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
 import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
-
 import type { User } from "app/store/user/types";
 
 export type UserWithPassword = User & {

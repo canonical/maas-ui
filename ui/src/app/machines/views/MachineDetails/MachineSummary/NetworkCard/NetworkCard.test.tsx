@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import NetworkCard from "./NetworkCard";
 
+import type { RootState } from "app/store/root/types";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -16,8 +17,6 @@ import {
   vlanState as vlanStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

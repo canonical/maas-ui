@@ -5,9 +5,8 @@ import { useSelector } from "react-redux";
 import DoubleRow from "app/base/components/DoubleRow";
 import podSelectors from "app/store/pod/selectors";
 import poolSelectors from "app/store/resourcepool/selectors";
-import zoneSelectors from "app/store/zone/selectors";
-
 import type { RootState } from "app/store/root/types";
+import zoneSelectors from "app/store/zone/selectors";
 
 type Props = { id: number };
 

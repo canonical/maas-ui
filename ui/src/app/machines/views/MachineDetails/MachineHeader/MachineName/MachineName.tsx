@@ -12,9 +12,8 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import { useCanEdit } from "app/store/machine/utils";
-
 import type { Machine } from "app/store/machine/types";
+import { useCanEdit } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

@@ -19,15 +19,14 @@ import SubnetSelect from "./SubnetSelect";
 
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
+import type { RouteParams } from "app/base/types";
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
+import type { PodDetails } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import vlanSelectors from "app/store/vlan/selectors";
-
-import type { RouteParams } from "app/base/types";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 import type { VLAN } from "app/store/vlan/types";
 
 /**

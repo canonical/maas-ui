@@ -7,13 +7,12 @@ import type {
 
 import type { Machine, MachineState } from "./types";
 
+import type { ScriptResult } from "app/store/scriptresults/types";
+import type { Scripts } from "app/store/scripts/types";
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import type { GenericSlice } from "app/store/utils";
 import type { StatusHandlers } from "app/store/utils/slice";
 import { kebabToCamelCase } from "app/utils";
-
-import type { ScriptResult } from "app/store/scriptresults/types";
-import type { Scripts } from "app/store/scripts/types";
 
 export type ScriptInput = {
   [x: string]: { url: string };

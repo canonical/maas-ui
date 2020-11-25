@@ -6,12 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import { general as generalActions } from "app/base/actions";
+import type { RouteParams } from "app/base/types";
 import { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
 import generalSelectors from "app/store/general/selectors";
-import machineSelectors from "app/store/machine/selectors";
-
-import type { RouteParams } from "app/base/types";
 import type { MachineAction } from "app/store/general/types";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

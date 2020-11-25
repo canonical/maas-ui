@@ -7,14 +7,13 @@ import configureStore from "redux-mock-store";
 
 import LicenseKeyList from ".";
 
+import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

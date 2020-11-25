@@ -7,14 +7,13 @@ import configureStore from "redux-mock-store";
 
 import TakeActionMenu from "./TakeActionMenu";
 
+import { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineAction as machineActionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

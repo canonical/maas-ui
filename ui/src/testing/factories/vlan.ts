@@ -3,7 +3,6 @@ import { extend, random } from "cooky-cutter";
 import { model } from "./model";
 
 import type { Model } from "app/store/types/model";
-
 import type { VLAN } from "app/store/vlan/types";
 
 export const vlan = extend<Model, VLAN>(model, {

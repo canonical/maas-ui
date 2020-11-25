@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import { App } from "./App";
 
 import { status as statusActions } from "app/base/actions";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -16,8 +17,6 @@ import {
   navigationOptionsState as navigationOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

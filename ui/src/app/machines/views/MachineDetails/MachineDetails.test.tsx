@@ -7,13 +7,12 @@ import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
 
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

@@ -8,6 +8,8 @@ import configureStore from "redux-mock-store";
 import { StatusColumn } from "./StatusColumn";
 
 import { nodeStatus, scriptStatus } from "app/base/enum";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import type { TestResult } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -18,9 +20,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

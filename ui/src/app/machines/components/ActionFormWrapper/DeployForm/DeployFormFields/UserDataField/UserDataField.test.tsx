@@ -8,12 +8,11 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../../DeployForm";
 
+import { TSFixMe } from "app/base/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
 } from "testing/factories";
-
-import { TSFixMe } from "app/base/types";
 
 const mockStore = configureStore();
 

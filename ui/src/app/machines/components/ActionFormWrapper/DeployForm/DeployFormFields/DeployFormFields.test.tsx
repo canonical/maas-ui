@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
 
+import { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,
@@ -19,8 +20,6 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-
-import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

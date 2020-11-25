@@ -9,6 +9,8 @@ import configureStore from "redux-mock-store";
 import TestForm from "./TestForm";
 
 import { HardwareType } from "app/base/enum";
+import { RootState } from "app/store/root/types";
+import { Scripts } from "app/store/scripts/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -21,9 +23,6 @@ import {
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
 import { ScriptType } from "testing/factories/scripts";
-
-import { RootState } from "app/store/root/types";
-import { Scripts } from "app/store/scripts/types";
 
 const mockStore = configureStore();
 

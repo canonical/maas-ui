@@ -1,6 +1,5 @@
-import { generateBaseSelectors } from "app/store/utils";
-
 import type { Controller, ControllerState } from "app/store/controller/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (controller: Controller, term: string) =>
   controller.fqdn.includes(term);

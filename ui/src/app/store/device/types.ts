@@ -1,8 +1,7 @@
+import type { TSFixMe } from "app/base/types";
 import type { ModelRef } from "app/store/types/model";
 import type { SimpleNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
-
-import type { TSFixMe } from "app/base/types";
 
 export type Device = SimpleNode & {
   extra_macs: string[];

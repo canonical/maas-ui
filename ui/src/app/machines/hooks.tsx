@@ -2,10 +2,9 @@ import { useCallback } from "react";
 
 import { useSelector } from "react-redux";
 
+import type { MachineActionName } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
-
-import type { MachineActionName } from "app/store/general/types";
 import type { Machine } from "app/store/machine/types";
 
 /**

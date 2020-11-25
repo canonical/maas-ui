@@ -7,12 +7,11 @@ import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

@@ -6,13 +6,12 @@ import configureStore from "redux-mock-store";
 
 import PowerColumn from "./PowerColumn";
 
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   pod as podFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

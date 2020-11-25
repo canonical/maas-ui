@@ -8,10 +8,9 @@ import MarkBrokenFormFields from "./MarkBrokenFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-
-import type { MachineAction } from "app/store/general/types";
 
 const MarkBrokenSchema = Yup.object().shape({
   comment: Yup.string(),

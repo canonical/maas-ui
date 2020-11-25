@@ -17,7 +17,9 @@ import {
   usePowerParametersSchema,
   useWindowTitle,
 } from "app/base/hooks";
+import type { TSFixMe } from "app/base/types";
 import generalSelectors from "app/store/general/selectors";
+import type { PowerType } from "app/store/general/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -25,9 +27,6 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import { formatErrors, formatPowerParameters } from "app/utils";
-
-import type { TSFixMe } from "app/base/types";
-import type { PowerType } from "app/store/general/types";
 
 const generateAddKVMSchema = (
   parametersSchema: Yup.ObjectSchemaDefinition<TSFixMe>
