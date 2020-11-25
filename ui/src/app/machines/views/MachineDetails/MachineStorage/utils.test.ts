@@ -190,15 +190,34 @@ describe("Machine storage utils", () => {
   });
 
   describe("normaliseFilesystem", () => {
-    it("can normalise a filesystem", () => {
+    it("can normalise a mounted filesystem", () => {
       const filesystem = fsFactory();
-      expect(normaliseFilesystem(filesystem, "fs-name", 1000)).toStrictEqual({
+      const disk = diskFactory({ filesystem });
+      expect(normaliseFilesystem(filesystem, disk)).toStrictEqual({
+        actions: ["remove"],
         fstype: filesystem.fstype,
         id: filesystem.id,
         mountOptions: filesystem.mount_options,
         mountPoint: filesystem.mount_point,
-        name: "fs-name",
-        size: 1000,
+        name: disk.name,
+        parentId: disk.id,
+        parentType: disk.type,
+        size: disk.size,
+      });
+    });
+
+    it("can normalise a special filesystem", () => {
+      const filesystem = fsFactory();
+      expect(normaliseFilesystem(filesystem)).toStrictEqual({
+        actions: ["remove"],
+        fstype: filesystem.fstype,
+        id: filesystem.id,
+        mountOptions: filesystem.mount_options,
+        mountPoint: filesystem.mount_point,
+        name: null,
+        parentId: null,
+        parentType: null,
+        size: null,
       });
     });
   });

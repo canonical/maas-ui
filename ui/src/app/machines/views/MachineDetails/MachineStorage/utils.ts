@@ -132,16 +132,22 @@ export const canBePartitioned = (storageDevice: Disk | Partition): boolean => {
  */
 export const normaliseFilesystem = (
   filesystem: Filesystem,
-  name?: string,
-  size?: number
-): NormalisedFilesystem => ({
-  fstype: filesystem.fstype,
-  id: filesystem.id,
-  mountPoint: filesystem.mount_point,
-  mountOptions: filesystem.mount_options,
-  name: name || null,
-  size: size || null,
-});
+  parent?: Disk | Partition
+): NormalisedFilesystem => {
+  const actions = ["remove"];
+
+  return {
+    actions,
+    fstype: filesystem.fstype,
+    id: filesystem.id,
+    mountOptions: filesystem.mount_options,
+    mountPoint: filesystem.mount_point,
+    name: parent?.name || null,
+    parentId: parent?.id || null,
+    parentType: parent?.type || null,
+    size: parent?.size || null,
+  };
+};
 
 /**
  * Normalises storage device for use in available/used disk and partition tables.
@@ -217,11 +223,7 @@ export const separateStorageData = (
       }
 
       if (hasMountedFilesystem(disk)) {
-        const normalisedFilesystem = normaliseFilesystem(
-          disk.filesystem,
-          disk.name,
-          disk.size
-        );
+        const normalisedFilesystem = normaliseFilesystem(disk.filesystem, disk);
 
         if (disk.filesystem?.fstype === "vmfs6") {
           data.datastores.push(normalisedFilesystem);
@@ -242,11 +244,7 @@ export const separateStorageData = (
 
           if (hasMountedFilesystem(partition)) {
             data.filesystems.push(
-              normaliseFilesystem(
-                partition.filesystem,
-                partition.name,
-                partition.size
-              )
+              normaliseFilesystem(partition.filesystem, partition)
             );
           }
         });

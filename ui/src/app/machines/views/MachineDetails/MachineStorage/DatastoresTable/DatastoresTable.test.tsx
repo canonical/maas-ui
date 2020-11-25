@@ -22,11 +22,7 @@ describe("DatastoresTable", () => {
       partitions: [],
       size: 100,
     });
-    const normalised = normaliseFilesystem(
-      disk.filesystem,
-      disk.name,
-      disk.size
-    );
+    const normalised = normaliseFilesystem(disk.filesystem, disk);
     const wrapper = mount(<DatastoresTable datastores={[normalised]} />);
 
     expect(wrapper).toMatchSnapshot();

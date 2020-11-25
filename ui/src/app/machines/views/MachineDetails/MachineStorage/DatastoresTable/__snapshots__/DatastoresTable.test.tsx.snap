@@ -5,11 +5,16 @@ exports[`DatastoresTable renders 1`] = `
   datastores={
     Array [
       Object {
+        "actions": Array [
+          "remove",
+        ],
         "fstype": "vmfs6",
         "id": 1,
         "mountOptions": "abc",
         "mountPoint": "/vmfs/volumes/datastore",
         "name": "im-a-datastore",
+        "parentId": 2,
+        "parentType": "physical",
         "size": 100,
       },
     ]

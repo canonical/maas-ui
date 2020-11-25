@@ -1,11 +1,14 @@
 import type { Filesystem } from "app/store/machine/types";
 
 export type NormalisedFilesystem = {
+  actions: string[];
   fstype: Filesystem["fstype"];
   id: Filesystem["id"];
   mountOptions: Filesystem["mount_options"];
   mountPoint: Filesystem["mount_point"];
   name: string | null;
+  parentId: number | null;
+  parentType: string | null;
   size: number | null;
 };
 

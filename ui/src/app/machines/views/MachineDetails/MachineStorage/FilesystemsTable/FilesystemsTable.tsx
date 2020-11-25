@@ -1,31 +1,75 @@
 import React, { useState } from "react";
 
 import { Button, MainTable, Tooltip } from "@canonical/react-components";
+import { useDispatch } from "react-redux";
 
+import ActionConfirm from "../ActionConfirm";
 import type { NormalisedFilesystem } from "../types";
 import { formatSize } from "../utils";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
+import TableMenu from "app/base/components/TableMenu";
+import { actions as machineActions } from "app/store/machine";
+import type { Machine, MachineStatus } from "app/store/machine/types";
+
+type Expanded = {
+  content: "removeFilesystem";
+  id: number;
+};
+
 type Props = {
   canEditStorage: boolean;
   filesystems: NormalisedFilesystem[];
+  systemId: Machine["system_id"];
+};
+
+/**
+ * Generate the actions that a given filesystem can perform.
+ * @param filesystem - the filesystem to check.
+ * @param setExpanded - function to set the expanded table row and content.
+ * @returns list of action links.
+ */
+const getActionLinks = (
+  filesystem: NormalisedFilesystem,
+  setExpanded: (expanded: Expanded) => void
+) => {
+  const actionLinks = [];
+
+  if (filesystem.actions.includes("remove")) {
+    actionLinks.push({
+      children: "Remove filesystem...",
+      onClick: () => {
+        setExpanded({
+          content: "removeFilesystem",
+          id: filesystem.id,
+        });
+      },
+    });
+  }
+
+  return actionLinks;
 };
 
 const FilesystemsTable = ({
   canEditStorage,
   filesystems,
+  systemId,
 }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const [addSpecialFormOpen, setAddSpecialFormOpen] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
 
   const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
+  const closeExpanded = () => setExpanded(null);
 
   return (
     <>
       <MainTable
+        className="p-table-expanding--light"
         defaultSort="name"
         defaultSortDirection="ascending"
-        expanding={true}
+        expanding
         headers={[
           {
             content: "Name",
@@ -52,7 +96,33 @@ const FilesystemsTable = ({
           },
         ]}
         rows={filesystems.map((fs) => {
+          const actionLinks = getActionLinks(fs, setExpanded);
+          let removeAction: { payload: unknown; type: string };
+          let removeStatusKey: keyof MachineStatus;
+
+          if (fs.parentType === null) {
+            removeAction = machineActions.unmountSpecial({
+              mountPoint: fs.mountPoint,
+              systemId,
+            });
+            removeStatusKey = "unmountingSpecial";
+          } else if (fs.parentType === "partition") {
+            removeAction = machineActions.deletePartition({
+              partitionId: fs.parentId,
+              systemId,
+            });
+            removeStatusKey = "deletingPartition";
+          } else {
+            removeAction = machineActions.deleteFilesystem({
+              blockId: fs.parentId,
+              filesystemId: fs.id,
+              systemId,
+            });
+            removeStatusKey = "deletingFilesystem";
+          }
+
           return {
+            className: expanded?.id === fs.id ? "p-table__row is-active" : null,
             columns: [
               { content: fs.name || "—" },
               {
@@ -62,10 +132,37 @@ const FilesystemsTable = ({
               { content: fs.mountPoint },
               { content: fs.mountOptions },
               {
-                content: "",
                 className: "u-align--right",
+                content: (
+                  <TableMenu
+                    disabled={!canEditStorage || actionLinks.length === 0}
+                    links={actionLinks}
+                    position="right"
+                    title="Take action:"
+                  />
+                ),
               },
             ],
+            expanded: expanded?.id === fs.id,
+            expandedContent: expanded?.content && (
+              <div className="u-flex--grow">
+                {expanded.content === "removeFilesystem" && (
+                  <ActionConfirm
+                    closeExpanded={closeExpanded}
+                    confirmLabel="Remove"
+                    message="Are you sure you want to remove this filesystem?"
+                    onConfirm={() => dispatch(removeAction)}
+                    onSaveAnalytics={{
+                      action: "Remove filesystem",
+                      category: "Machine storage",
+                      label: "Remove",
+                    }}
+                    statusKey={removeStatusKey}
+                    systemId={systemId}
+                  />
+                )}
+              </div>
+            ),
             key: fs.id,
             sortData: {
               mountPoint: fs.mountPoint,
@@ -94,7 +191,10 @@ const FilesystemsTable = ({
         </Tooltip>
       )}
       {addSpecialFormOpen && (
-        <AddSpecialFilesystem closeForm={closeAddSpecialForm} />
+        <AddSpecialFilesystem
+          closeForm={closeAddSpecialForm}
+          systemId={systemId}
+        />
       )}
     </>
   );

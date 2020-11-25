@@ -2,13 +2,13 @@ import React from "react";
 
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { separateStorageData } from "../utils";
+import { normaliseFilesystem } from "../utils";
 
 import FilesystemsTable from "./FilesystemsTable";
 
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -23,9 +23,25 @@ import {
 const mockStore = configureStore();
 
 describe("FilesystemsTable", () => {
+  let state: RootState;
+
+  beforeEach(() => {
+    state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+  });
+
   it("can show an empty message", () => {
+    const store = mockStore(state);
     const wrapper = mount(
-      <FilesystemsTable canEditStorage={false} filesystems={[]} />
+      <Provider store={store}>
+        <FilesystemsTable canEditStorage filesystems={[]} systemId="abc123" />
+      </Provider>
     );
 
     expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
@@ -34,16 +50,22 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show filesystems associated with disks", () => {
-    const disks = [
-      diskFactory({
-        filesystem: fsFactory({ mount_point: "/disk-fs/path" }),
-        name: "disk-fs",
-        partitions: [],
-      }),
-    ];
-    const { filesystems } = separateStorageData(disks);
+    const store = mockStore(state);
+    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+    const disk = diskFactory({
+      filesystem,
+      name: "disk-fs",
+      partitions: [],
+    });
+    const normalised = normaliseFilesystem(filesystem, disk);
     const wrapper = mount(
-      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
+      <Provider store={store}>
+        <FilesystemsTable
+          canEditStorage
+          filesystems={[normalised]}
+          systemId="abc123"
+        />
+      </Provider>
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("disk-fs");
@@ -53,20 +75,21 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show filesystems associated with partitions", () => {
-    const disks = [
-      diskFactory({
-        filesystem: null,
-        partitions: [
-          partitionFactory({
-            filesystem: fsFactory({ mount_point: "/partition-fs/path" }),
-            name: "partition-fs",
-          }),
-        ],
-      }),
-    ];
-    const { filesystems } = separateStorageData(disks);
+    const store = mockStore(state);
+    const filesystem = fsFactory({ mount_point: "/partition-fs/path" });
+    const partition = partitionFactory({
+      filesystem,
+      name: "partition-fs",
+    });
+    const normalised = normaliseFilesystem(filesystem, partition);
     const wrapper = mount(
-      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
+      <Provider store={store}>
+        <FilesystemsTable
+          canEditStorage
+          filesystems={[normalised]}
+          systemId="abc123"
+        />
+      </Provider>
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
@@ -78,12 +101,20 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show special filesystems", () => {
-    const specialFilesystems = [
-      fsFactory({ mount_point: "/special-fs/path", fstype: "tmpfs" }),
-    ];
-    const { filesystems } = separateStorageData([], specialFilesystems);
+    const store = mockStore(state);
+    const specialFilesystem = fsFactory({
+      mount_point: "/special-fs/path",
+      fstype: "tmpfs",
+    });
+    const filesystem = normaliseFilesystem(specialFilesystem);
     const wrapper = mount(
-      <FilesystemsTable canEditStorage={false} filesystems={filesystems} />
+      <Provider store={store}>
+        <FilesystemsTable
+          canEditStorage
+          filesystems={[filesystem]}
+          systemId="abc123"
+        />
+      </Provider>
     );
 
     expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("—");
@@ -93,35 +124,41 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show an add special filesystem form if storage can be edited", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/storage", key: "testKey" },
-          ]}
-        >
-          <Route
-            exact
-            path="/machine/:id/storage"
-            component={() => (
-              <FilesystemsTable canEditStorage filesystems={[]} />
-            )}
-          />
-        </MemoryRouter>
+        <FilesystemsTable canEditStorage filesystems={[]} systemId="abc123" />
       </Provider>
     );
 
     wrapper.find("button[data-test='add-special-fs-button']").simulate("click");
 
     expect(wrapper.find("AddSpecialFilesystem").exists()).toBe(true);
+  });
+
+  it("can show an action to remove a filesystem", () => {
+    const store = mockStore(state);
+    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+    const disk = diskFactory({ filesystem });
+    const normalised = normaliseFilesystem(filesystem, disk);
+    const wrapper = mount(
+      <Provider store={store}>
+        <FilesystemsTable
+          canEditStorage
+          filesystems={[normalised]}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+
+    expect(wrapper.find("ContextualMenuDropdown Button").at(0).text()).toBe(
+      "Remove filesystem..."
+    );
+
+    wrapper.find("ContextualMenuDropdown button").at(0).simulate("click");
+
+    expect(wrapper.find("ActionConfirm").exists()).toBe(true);
   });
 });

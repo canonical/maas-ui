@@ -38,6 +38,7 @@ TableMenu.propTypes = {
     ])
   ),
   onToggleMenu: PropTypes.func,
+  position: PropTypes.oneOf(["center", "left", "right"]),
   positionNode: PropTypes.object,
   title: PropTypes.string,
 };
