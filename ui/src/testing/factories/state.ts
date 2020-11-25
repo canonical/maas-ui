@@ -130,6 +130,7 @@ export const machineStatus = define<MachineStatus>({
   mountingSpecial: false,
   overridingFailedTesting: false,
   releasing: false,
+  settingBootDisk: false,
   settingPool: false,
   settingZone: false,
   tagging: false,
@@ -138,6 +139,9 @@ export const machineStatus = define<MachineStatus>({
   turningOn: false,
   unlocking: false,
   unmountingSpecial: false,
+  updatingDisk: false,
+  updatingFilesystem: false,
+  updatingVmfsDatastore: false,
 });
 
 export const machineStatuses = define<MachineStatuses>({

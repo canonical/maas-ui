@@ -299,6 +299,7 @@ export type MachineStatus = {
   mountingSpecial: boolean;
   overridingFailedTesting: boolean;
   releasing: boolean;
+  settingBootDisk: boolean;
   settingPool: boolean;
   settingZone: boolean;
   tagging: boolean;
@@ -307,6 +308,9 @@ export type MachineStatus = {
   turningOn: boolean;
   unlocking: boolean;
   unmountingSpecial: boolean;
+  updatingDisk: boolean;
+  updatingFilesystem: boolean;
+  updatingVmfsDatastore: boolean;
 };
 
 export type MachineStatuses = {
