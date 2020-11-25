@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import TakeActionMenu from "./TakeActionMenu";
 
 import { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -77,25 +78,28 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       machineActionFactory({
-        name: "lifecycle1",
+        name: NodeActions.ON,
         title: "Lifecycle 1",
         type: "lifecycle",
       }),
       machineActionFactory({
-        name: "lifecycle2",
+        name: NodeActions.OFF,
         title: "Lifecycle 2",
         type: "lifecycle",
       }),
       machineActionFactory({
-        name: "lifecycle3",
+        name: NodeActions.ABORT,
         title: "Lifecycle 3",
         type: "lifecycle",
       }),
     ];
     // No machine can perform "lifecycle3" action
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["lifecycle1", "lifecycle2"] }),
-      machineFactory({ system_id: "b", actions: ["lifecycle1"] }),
+      machineFactory({
+        system_id: "a",
+        actions: [NodeActions.ON, NodeActions.OFF],
+      }),
+      machineFactory({ system_id: "b", actions: [NodeActions.ON] }),
       machineFactory({ system_id: "c", actions: ["other"] }),
     ];
     state.machine.selected = ["a", "b", "c"];
@@ -111,13 +115,13 @@ describe("TakeActionMenu", () => {
     );
     wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
     expect(wrapper.find("button.p-contextual-menu__link").length).toBe(3);
-    expect(wrapper.find("[data-test='action-title-lifecycle1']").text()).toBe(
+    expect(wrapper.find("[data-test='action-title-on']").text()).toBe(
       "Lifecycle 1"
     );
-    expect(wrapper.find("[data-test='action-title-lifecycle2']").text()).toBe(
+    expect(wrapper.find("[data-test='action-title-off']").text()).toBe(
       "Lifecycle 2"
     );
-    expect(wrapper.find("[data-test='action-title-lifecycle3']").text()).toBe(
+    expect(wrapper.find("[data-test='action-title-abort']").text()).toBe(
       "Lifecycle 3"
     );
     // Lifecycle 3 action displays, but is disabled
@@ -130,23 +134,30 @@ describe("TakeActionMenu", () => {
     perform the action`, () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
-      machineActionFactory({ name: "on", title: "Power on...", type: "power" }),
       machineActionFactory({
-        name: "off",
+        name: NodeActions.ON,
+        title: "Power on...",
+        type: "power",
+      }),
+      machineActionFactory({
+        name: NodeActions.OFF,
         title: "Power off...",
         type: "power",
       }),
       machineActionFactory({
-        name: "house",
+        name: NodeActions.ABORT,
         title: "Power house...",
         type: "power",
       }),
     ];
     // No machine can perform "house" action
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["on", "off"] }),
-      machineFactory({ system_id: "b", actions: ["on"] }),
-      machineFactory({ system_id: "c", actions: ["off"] }),
+      machineFactory({
+        system_id: "a",
+        actions: [NodeActions.ON, NodeActions.OFF],
+      }),
+      machineFactory({ system_id: "b", actions: [NodeActions.ON] }),
+      machineFactory({ system_id: "c", actions: [NodeActions.OFF] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -173,17 +184,17 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       machineActionFactory({
-        name: "commission",
+        name: NodeActions.COMMISSION,
         title: "Commission...",
         type: "lifecycle",
       }),
       machineActionFactory({
-        name: "release",
+        name: NodeActions.RELEASE,
         title: "Release...",
         type: "lifecycle",
       }),
       machineActionFactory({
-        name: "deploy",
+        name: NodeActions.DEPLOY,
         title: "Deploy...",
         type: "lifecycle",
       }),
@@ -192,10 +203,17 @@ describe("TakeActionMenu", () => {
     state.machine.items = [
       machineFactory({
         system_id: "a",
-        actions: ["commission", "release", "deploy"],
+        actions: [
+          NodeActions.COMMISSION,
+          NodeActions.RELEASE,
+          NodeActions.DEPLOY,
+        ],
       }),
-      machineFactory({ system_id: "b", actions: ["commission", "release"] }),
-      machineFactory({ system_id: "c", actions: ["commission"] }),
+      machineFactory({
+        system_id: "b",
+        actions: [NodeActions.COMMISSION, NodeActions.RELEASE],
+      }),
+      machineFactory({ system_id: "c", actions: [NodeActions.COMMISSION] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);
@@ -222,19 +240,19 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       machineActionFactory({
-        name: "action1",
+        name: NodeActions.ON,
         title: "Action 1",
         type: "power",
       }),
       machineActionFactory({
-        name: "action2",
+        name: NodeActions.OFF,
         title: "Action 2",
         type: "power",
       }),
     ];
     // No machine can perform "lifecycle3" action
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["action1"] }),
+      machineFactory({ system_id: "a", actions: [NodeActions.ON] }),
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -248,42 +266,52 @@ describe("TakeActionMenu", () => {
       </Provider>
     );
     wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
-    expect(wrapper.find("[data-test='action-title-action1']").text()).toBe(
+    expect(wrapper.find("[data-test='action-title-on']").text()).toBe(
       "Action 1"
     );
-    expect(wrapper.find("[data-test='action-count-action1']").exists()).toBe(
-      false
-    );
+    expect(wrapper.find("[data-test='action-count-on']").exists()).toBe(false);
   });
 
   it("groups actions by type", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       machineActionFactory({
-        name: "commission",
+        name: NodeActions.COMMISSION,
         title: "Commission...",
         type: "lifecycle",
       }),
-      machineActionFactory({ name: "on", title: "Power on...", type: "power" }),
       machineActionFactory({
-        name: "off",
+        name: NodeActions.ON,
         title: "Power on...",
         type: "power",
       }),
-      machineActionFactory({ name: "test", title: "Test...", type: "testing" }),
-      machineActionFactory({ name: "lock", title: "Lock...", type: "lock" }),
       machineActionFactory({
-        name: "set-pool",
+        name: NodeActions.OFF,
+        title: "Power on...",
+        type: "power",
+      }),
+      machineActionFactory({
+        name: NodeActions.TEST,
+        title: "Test...",
+        type: "testing",
+      }),
+      machineActionFactory({
+        name: NodeActions.LOCK,
+        title: "Lock...",
+        type: "lock",
+      }),
+      machineActionFactory({
+        name: NodeActions.SET_POOL,
         title: "Set pool...",
         type: "misc",
       }),
       machineActionFactory({
-        name: "set-zone",
+        name: NodeActions.SET_ZONE,
         title: "Set zone...",
         type: "misc",
       }),
       machineActionFactory({
-        name: "delete",
+        name: NodeActions.DELETE,
         title: "Delete...",
         type: "misc",
       }),
@@ -292,14 +320,14 @@ describe("TakeActionMenu", () => {
       machineFactory({
         system_id: "a",
         actions: [
-          "commission",
-          "on",
-          "off",
-          "test",
-          "lock",
-          "set-pool",
-          "set-zone",
-          "delete",
+          NodeActions.COMMISSION,
+          NodeActions.ON,
+          NodeActions.OFF,
+          NodeActions.TEST,
+          NodeActions.LOCK,
+          NodeActions.SET_POOL,
+          NodeActions.SET_ZONE,
+          NodeActions.DELETE,
         ],
       }),
     ];
@@ -328,13 +356,13 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.general.machineActions.data = [
       machineActionFactory({
-        name: "commission",
+        name: NodeActions.COMMISSION,
         title: "Commission...",
         type: "lifecycle",
       }),
     ];
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
     ];
     state.machine.selected = ["a"];
     const setSelectedAction = jest.fn();

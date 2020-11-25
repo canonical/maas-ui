@@ -17,6 +17,8 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("SetPoolForm", () => {
@@ -27,7 +29,7 @@ describe("SetPoolForm", () => {
         machineActions: machineActionsStateFactory({
           data: [
             machineActionFactory({
-              name: "set-pool",
+              name: NodeActions.SET_POOL,
               sentence: "change those pools",
               title: "Set pool",
             }),
@@ -111,7 +113,7 @@ describe("SetPoolForm", () => {
         },
         payload: {
           params: {
-            action: "set-pool",
+            action: NodeActions.SET_POOL,
             extra: {
               pool_id: 1,
             },
@@ -127,7 +129,7 @@ describe("SetPoolForm", () => {
         },
         payload: {
           params: {
-            action: "set-pool",
+            action: NodeActions.SET_POOL,
             extra: {
               pool_id: 1,
             },
@@ -175,7 +177,7 @@ describe("SetPoolForm", () => {
         },
         payload: {
           params: {
-            action: "set-pool",
+            action: NodeActions.SET_POOL,
             extra: {
               pool_id: 1,
             },

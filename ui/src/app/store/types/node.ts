@@ -54,6 +54,29 @@ export enum NodeStatus {
   TESTING = "Testing",
 }
 
+export enum NodeActions {
+  ABORT = "abort",
+  ACQUIRE = "acquire",
+  COMMISSION = "commission",
+  DELETE = "delete",
+  DEPLOY = "deploy",
+  EXIT_RESCUE_MODE = "exit-rescue-mode",
+  IMPORT_IMAGES = "import-images",
+  LOCK = "lock",
+  MARK_BROKEN = "mark-broken",
+  MARK_FIXED = "mark-fixed",
+  OFF = "off",
+  ON = "on",
+  OVERRIDE_FAILED_TESTING = "override-failed-testing",
+  RELEASE = "release",
+  RESCUE_MODE = "rescue-mode",
+  SET_POOL = "set-pool",
+  SET_ZONE = "set-zone",
+  TAG = "tag",
+  TEST = "test",
+  UNLOCK = "unlock",
+}
+
 /**
  * BaseNode represents the intersection of Machines and Controllers
  */

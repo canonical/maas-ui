@@ -11,6 +11,8 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import SetPoolFormFields from "./SetPoolFormFields";
 
+import { NodeActions } from "app/store/types/node";
+
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
   name: Yup.string().required("Resource pool required"),
@@ -32,7 +34,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
   const errors =
     Object.keys(machineErrors).length > 0 ? machineErrors : poolErrors;
   const { machinesToAction, processingCount } = useMachineActionForm(
-    "set-pool"
+    NodeActions.SET_POOL
   );
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
-      actionName="set-pool"
+      actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}

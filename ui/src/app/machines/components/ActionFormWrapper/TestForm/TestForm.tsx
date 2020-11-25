@@ -15,6 +15,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
 import { Scripts } from "app/store/scripts/types";
+import { NodeActions } from "app/store/types/node";
 
 const TestFormSchema = Yup.object().shape({
   enableSSH: Yup.boolean(),
@@ -54,7 +55,9 @@ export const TestForm = ({
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
-  const { machinesToAction, processingCount } = useMachineActionForm("test");
+  const { machinesToAction, processingCount } = useMachineActionForm(
+    NodeActions.TEST
+  );
 
   const formattedScripts = scripts.map((script) => ({
     ...script,
@@ -86,7 +89,7 @@ export const TestForm = ({
 
   return (
     <ActionForm
-      actionName="test"
+      actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

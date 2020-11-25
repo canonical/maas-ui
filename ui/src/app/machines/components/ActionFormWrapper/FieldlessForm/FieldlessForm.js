@@ -8,22 +8,24 @@ import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import ActionForm from "app/base/components/ActionForm";
 
+import { NodeActions } from "app/store/types/node";
+
 // List of machine actions that do not require any extra parameters sent through
 // the websocket apart from machine system id. All other actions will have
 // their own form components.
 const fieldlessActions = [
-  "abort",
-  "acquire",
-  "delete",
-  "exit-rescue-mode",
-  "lock",
-  "mark-broken",
-  "mark-fixed",
-  "off",
-  "on",
-  "release",
-  "rescue-mode",
-  "unlock",
+  NodeActions.ABORT,
+  NodeActions.ACQUIRE,
+  NodeActions.DELETE,
+  NodeActions.EXIT_RESCUE_MODE,
+  NodeActions.LOCK,
+  NodeActions.MARK_BROKEN,
+  NodeActions.MARK_FIXED,
+  NodeActions.OFF,
+  NodeActions.ON,
+  NodeActions.RELEASE,
+  NodeActions.RESCUE_MODE,
+  NodeActions.UNLOCK,
 ];
 
 export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
@@ -58,7 +60,7 @@ export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
       processingCount={processingCount}
       selectedCount={machinesToAction.length}
       submitAppearance={
-        selectedAction.name === "delete" ? "negative" : "positive"
+        selectedAction.name === NodeActions.DELETE ? "negative" : "positive"
       }
     />
   );

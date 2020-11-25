@@ -13,6 +13,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import { getStatusText } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
@@ -91,19 +92,19 @@ export const StatusColumn = ({
   const formattedOS = useFormattedOS(machine);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
   const actionLinks = useMachineActions(systemId, [
-    "abort",
-    "acquire",
-    "commission",
-    "deploy",
-    "exit-rescue-mode",
-    "lock",
-    "mark-broken",
-    "mark-fixed",
-    "override-failed-testing",
-    "release",
-    "rescue-mode",
-    "test",
-    "unlock",
+    NodeActions.ABORT,
+    NodeActions.ACQUIRE,
+    NodeActions.COMMISSION,
+    NodeActions.DEPLOY,
+    NodeActions.EXIT_RESCUE_MODE,
+    NodeActions.LOCK,
+    NodeActions.MARK_BROKEN,
+    NodeActions.MARK_FIXED,
+    NodeActions.OVERRIDE_FAILED_TESTING,
+    NodeActions.RELEASE,
+    NodeActions.RESCUE_MODE,
+    NodeActions.TEST,
+    NodeActions.UNLOCK,
   ]);
 
   const statusText = getStatusText(machine, formattedOS);

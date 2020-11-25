@@ -17,6 +17,7 @@ import {
   PowerType,
   Version,
 } from "app/store/general/types";
+import { NodeActions } from "app/store/types/node";
 
 export const architecture = define<Architecture>("amd64");
 
@@ -29,7 +30,7 @@ export const hweKernel = define<HWEKernel>(["ga-18.04", "bionic"]);
 export const knownArchitecture = define<KnownArchitecture>("amd64");
 
 export const machineAction = define<MachineAction>({
-  name: "commission",
+  name: NodeActions.COMMISSION,
   sentence: "commissioned",
   title: "Commission...",
   type: "lifecycle",

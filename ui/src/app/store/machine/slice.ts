@@ -9,6 +9,7 @@ import type { Machine, MachineState } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresults/types";
 import type { Scripts } from "app/store/scripts/types";
+import { NodeActions } from "app/store/types/node";
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import type { GenericSlice } from "app/store/utils";
 import type { StatusHandlers } from "app/store/utils/slice";
@@ -20,11 +21,11 @@ export type ScriptInput = {
 
 export const ACTIONS = [
   {
-    name: "abort",
+    name: NodeActions.ABORT,
     status: "aborting",
   },
   {
-    name: "acquire",
+    name: NodeActions.ACQUIRE,
     status: "acquiring",
   },
   {
@@ -36,7 +37,7 @@ export const ACTIONS = [
     status: "checkingPower",
   },
   {
-    name: "commission",
+    name: NodeActions.COMMISSION,
     status: "commissioning",
   },
   {
@@ -68,7 +69,7 @@ export const ACTIONS = [
     status: "creatingVolumeGroup",
   },
   {
-    name: "delete",
+    name: NodeActions.DELETE,
     status: "deleting",
   },
   {
@@ -92,27 +93,27 @@ export const ACTIONS = [
     status: "deletingVolumeGroup",
   },
   {
-    name: "deploy",
+    name: NodeActions.DEPLOY,
     status: "deploying",
   },
   {
-    name: "rescue-mode",
+    name: NodeActions.RESCUE_MODE,
     status: "enteringRescueMode",
   },
   {
-    name: "exit-rescue-mode",
+    name: NodeActions.EXIT_RESCUE_MODE,
     status: "exitingRescueMode",
   },
   {
-    name: "lock",
+    name: NodeActions.LOCK,
     status: "locking",
   },
   {
-    name: "mark-broken",
+    name: NodeActions.MARK_BROKEN,
     status: "markingBroken",
   },
   {
-    name: "mark-fixed",
+    name: NodeActions.MARK_FIXED,
     status: "markingFixed",
   },
   {
@@ -120,11 +121,11 @@ export const ACTIONS = [
     status: "mountingSpecial",
   },
   {
-    name: "override-failed-testing",
+    name: NodeActions.OVERRIDE_FAILED_TESTING,
     status: "overridingFailedTesting",
   },
   {
-    name: "release",
+    name: NodeActions.RELEASE,
     status: "releasing",
   },
   {
@@ -132,31 +133,31 @@ export const ACTIONS = [
     status: "settingBootDisk",
   },
   {
-    name: "set-pool",
+    name: NodeActions.SET_POOL,
     status: "settingPool",
   },
   {
-    name: "set-zone",
+    name: NodeActions.SET_ZONE,
     status: "settingZone",
   },
   {
-    name: "tag",
+    name: NodeActions.TAG,
     status: "tagging",
   },
   {
-    name: "test",
+    name: NodeActions.TEST,
     status: "testing",
   },
   {
-    name: "off",
+    name: NodeActions.OFF,
     status: "turningOff",
   },
   {
-    name: "on",
+    name: NodeActions.ON,
     status: "turningOn",
   },
   {
-    name: "unlock",
+    name: NodeActions.UNLOCK,
     status: "unlocking",
   },
   {
@@ -305,7 +306,7 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
-      case "commission":
+      case NodeActions.COMMISSION:
         handler.prepare = (
           systemId: Machine["system_id"],
           enableSSH: boolean,
@@ -532,14 +533,14 @@ const statusHandlers = generateStatusHandlers<
           volume_group_id: params.volumeGroupId,
         });
         break;
-      case "deploy":
+      case NodeActions.DEPLOY:
         handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
           action: action.name,
           extra,
           system_id: systemId,
         });
         break;
-      case "mark-broken":
+      case NodeActions.MARK_BROKEN:
         handler.prepare = (systemId: Machine["system_id"], message) => ({
           action: action.name,
           extra: { message },
@@ -570,21 +571,21 @@ const statusHandlers = generateStatusHandlers<
           system_id: params.systemId,
         });
         break;
-      case "set-pool":
+      case NodeActions.SET_POOL:
         handler.prepare = (systemId: Machine["system_id"], poolId) => ({
           action: action.name,
           extra: { pool_id: poolId },
           system_id: systemId,
         });
         break;
-      case "set-zone":
+      case NodeActions.SET_ZONE:
         handler.prepare = (systemId: Machine["system_id"], zoneId) => ({
           action: action.name,
           extra: { zone_id: zoneId },
           system_id: systemId,
         });
         break;
-      case "tag":
+      case NodeActions.TAG:
         handler.prepare = (systemId: Machine["system_id"], tags: string[]) => ({
           action: action.name,
           extra: {
@@ -593,7 +594,7 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
-      case "test":
+      case NodeActions.TEST:
         handler.prepare = (
           systemId: Machine["system_id"],
           scripts: Scripts[],

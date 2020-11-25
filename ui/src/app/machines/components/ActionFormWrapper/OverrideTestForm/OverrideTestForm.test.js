@@ -16,6 +16,8 @@ import {
   scriptResultsState as scriptResultsStateFactory,
 } from "testing/factories";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("OverrideTestForm", () => {
@@ -26,7 +28,10 @@ describe("OverrideTestForm", () => {
       general: generalStateFactory({
         machineActions: {
           data: [
-            { name: "override-failed-testing", sentence: "change those pools" },
+            {
+              name: NodeActions.OVERRIDE_FAILED_TESTING,
+              sentence: "change those pools",
+            },
           ],
         },
       }),
@@ -183,7 +188,7 @@ describe("OverrideTestForm", () => {
         },
         payload: {
           params: {
-            action: "override-failed-testing",
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
             system_id: "abc123",
           },
@@ -197,7 +202,7 @@ describe("OverrideTestForm", () => {
         },
         payload: {
           params: {
-            action: "override-failed-testing",
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
             system_id: "def456",
           },
@@ -285,7 +290,7 @@ describe("OverrideTestForm", () => {
         },
         payload: {
           params: {
-            action: "override-failed-testing",
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
             system_id: "abc123",
           },

@@ -7,6 +7,8 @@ import React from "react";
 
 import { PoolColumn } from "./PoolColumn";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("PoolColumn", () => {
@@ -25,7 +27,7 @@ describe("PoolColumn", () => {
             system_id: "abc123",
             pool: { id: 0, name: "default" },
             description: "Firmware old",
-            actions: ["set-pool"],
+            actions: [NodeActions.SET_POOL],
           },
         ],
       },
@@ -161,7 +163,7 @@ describe("PoolColumn", () => {
       },
       payload: {
         params: {
-          action: "set-pool",
+          action: NodeActions.SET_POOL,
           extra: {
             pool_id: 1,
           },

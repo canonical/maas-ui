@@ -10,6 +10,7 @@ import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import TagFormFields from "./TagFormFields";
+import { NodeActions } from "app/store/types/node";
 
 const TagFormSchema = Yup.object().shape({
   tags: Yup.array()
@@ -29,7 +30,9 @@ export const TagForm = ({ setSelectedAction }) => {
   const [initialValues, setInitialValues] = useState({ tags: [] });
   const errors = useSelector(machineSelectors.errors);
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const { machinesToAction, processingCount } = useMachineActionForm("tag");
+  const { machinesToAction, processingCount } = useMachineActionForm(
+    NodeActions.TAG
+  );
 
   const formErrors = { ...errors };
   if (formErrors && formErrors.name) {
@@ -43,7 +46,7 @@ export const TagForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
-      actionName="tag"
+      actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={formErrors}

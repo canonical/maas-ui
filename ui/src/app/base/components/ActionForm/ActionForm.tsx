@@ -7,6 +7,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useProcessing } from "app/base/hooks";
 import type { AnalyticsEvent, TSFixMe } from "app/base/types";
+import { NodeActions } from "app/store/types/node";
 import { formatErrors } from "app/utils";
 
 const getLabel = (
@@ -30,57 +31,57 @@ const getLabel = (
   }
 
   switch (actionName) {
-    case "abort":
+    case NodeActions.ABORT:
       return `${processing ? "Aborting" : "Abort"} actions for ${modelString}`;
-    case "acquire":
+    case NodeActions.ACQUIRE:
       return `${processing ? "Acquiring" : "Acquire"} ${modelString}`;
-    case "commission":
+    case NodeActions.COMMISSION:
       return `${
         processing ? "Starting" : "Start"
       } commissioning for ${modelString}`;
     case "compose":
       return `${processing ? "Composing" : "Compose"} ${modelString}`;
-    case "delete":
+    case NodeActions.DELETE:
       return `${processing ? "Deleting" : "Delete"} ${modelString}`;
-    case "deploy":
+    case NodeActions.DEPLOY:
       return `${
         processing ? "Starting" : "Start"
       } deployment for ${modelString}`;
-    case "exit-rescue-mode":
+    case NodeActions.EXIT_RESCUE_MODE:
       return `${
         processing ? "Exiting" : "Exit"
       } rescue mode for ${modelString}`;
-    case "lock":
+    case NodeActions.LOCK:
       return `${processing ? "Locking" : "Lock"} ${modelString}`;
-    case "on":
+    case NodeActions.ON:
       return `${processing ? "Powering" : "Power"} on ${modelString}`;
-    case "off":
+    case NodeActions.OFF:
       return `${processing ? "Powering" : "Power"} off ${modelString}`;
-    case "mark-broken":
+    case NodeActions.MARK_BROKEN:
       return `${processing ? "Marking" : "Mark"} ${modelString} broken`;
-    case "mark-fixed":
+    case NodeActions.MARK_FIXED:
       return `${processing ? "Marking" : "Mark"} ${modelString} fixed`;
-    case "override-failed-testing":
+    case NodeActions.OVERRIDE_FAILED_TESTING:
       return `${
         processing ? "Overriding" : "Override"
       } failed tests for ${modelString}`;
-    case "release":
+    case NodeActions.RELEASE:
       return `${processing ? "Releasing" : "Release"} ${modelString}`;
     case "refresh":
       return `${processing ? "Refreshing" : "Refresh"} ${modelString}`;
-    case "rescue-mode":
+    case NodeActions.RESCUE_MODE:
       return `${
         processing ? "Entering" : "Enter"
       } rescue mode for ${modelString}`;
-    case "set-pool":
+    case NodeActions.SET_POOL:
       return `${processing ? "Setting" : "Set"} pool for ${modelString}`;
-    case "set-zone":
+    case NodeActions.SET_ZONE:
       return `${processing ? "Setting" : "Set"} zone for ${modelString}`;
-    case "tag":
+    case NodeActions.TAG:
       return `${processing ? "Tagging" : "Tag"} ${modelString}`;
-    case "test":
+    case NodeActions.TEST:
       return `${processing ? "Starting" : "Start"} tests for ${modelString}`;
-    case "unlock":
+    case NodeActions.UNLOCK:
       return `${processing ? "Unlocking" : "Unlock"} ${modelString}`;
     default:
       return `${processing ? "Processing" : "Process"} ${modelString}`;

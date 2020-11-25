@@ -6,6 +6,7 @@ import React from "react";
 
 import { machine as machineFactory } from "testing/factories";
 import { PowerColumn } from "./PowerColumn";
+import { NodeActions } from "app/store/types/node";
 
 const mockStore = configureStore();
 
@@ -82,7 +83,7 @@ describe("PowerColumn", () => {
   });
 
   it("can show a menu item to turn a machine on", () => {
-    state.machine.items[0].actions = ["on"];
+    state.machine.items[0].actions = [NodeActions.ON];
     state.machine.items[0].power_state = "off";
     const store = mockStore(state);
 
@@ -104,7 +105,7 @@ describe("PowerColumn", () => {
   });
 
   it("can show a menu item to turn a machine off", () => {
-    state.machine.items[0].actions = ["off"];
+    state.machine.items[0].actions = [NodeActions.OFF];
     const store = mockStore(state);
 
     const wrapper = mount(

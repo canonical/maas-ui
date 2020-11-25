@@ -8,6 +8,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
+import { NodeActions } from "app/store/types/node";
 
 export const PowerColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
@@ -21,8 +22,8 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
 
   const menuLinks = [];
 
-  const hasOnAction = machine.actions.includes("on");
-  const hasOffAction = machine.actions.includes("off");
+  const hasOnAction = machine.actions.includes(NodeActions.ON);
+  const hasOffAction = machine.actions.includes(NodeActions.OFF);
   const powerState = machine.power_state;
   if (hasOnAction && powerState !== "on") {
     menuLinks.push({

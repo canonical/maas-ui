@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
+import { NodeActions } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import ActionForm from "app/base/components/ActionForm";
@@ -23,7 +24,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const { machinesToAction, processingCount } = useMachineActionForm(
-    "set-zone"
+    NodeActions.SET_POOL
   );
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
-      actionName="set-zone"
+      actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}

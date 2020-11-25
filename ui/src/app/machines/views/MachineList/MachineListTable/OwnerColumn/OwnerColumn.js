@@ -8,6 +8,8 @@ import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
+import { NodeActions } from "app/store/types/node";
+
 export const OwnerColumn = ({ onToggleMenu, systemId }) => {
   const [updating, setUpdating] = useState(null);
   const machine = useSelector((state) =>
@@ -20,7 +22,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
 
   const menuLinks = useMachineActions(
     systemId,
-    ["acquire", "release"],
+    [NodeActions.ACQUIRE, NodeActions.RELEASE],
     "No owner actions available",
     () => {
       setUpdating(machine.status);
