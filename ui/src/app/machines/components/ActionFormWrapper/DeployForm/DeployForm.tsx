@@ -56,7 +56,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const sendAnalytics = useSendAnalytics();
   const { machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.DELETE
+    NodeActions.DEPLOY
   );
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
-      actionName={NodeActions.DELETE}
+      actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
