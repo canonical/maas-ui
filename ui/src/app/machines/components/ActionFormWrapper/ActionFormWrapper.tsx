@@ -23,24 +23,25 @@ import type {
   SetSelectedAction,
 } from "app/machines/views/MachineDetails/MachineSummary";
 import { actions as machineActions } from "app/store/machine";
+import { NodeActions } from "app/store/types/node";
 
 const getErrorSentence = (action: SelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
-    case "exit-rescue-mode":
+    case NodeActions.EXIT_RESCUE_MODE:
       return `${machineString} cannot exit rescue mode`;
-    case "lock":
+    case NodeActions.LOCK:
       return `${machineString} cannot be locked`;
-    case "override-failed-testing":
+    case NodeActions.OVERRIDE_FAILED_TESTING:
       return `Cannot override failed tests on ${machineString}`;
-    case "rescue-mode":
+    case NodeActions.RESCUE_MODE:
       return `${machineString} cannot be put in rescue mode`;
-    case "set-pool":
+    case NodeActions.SET_POOL:
       return `Cannot set pool of ${machineString}`;
-    case "set-zone":
+    case NodeActions.SET_ZONE:
       return `Cannot set zone of ${machineString}`;
-    case "unlock":
+    case NodeActions.UNLOCK:
       return `${machineString} cannot be unlocked`;
     default:
       return `${machineString} cannot be ${action.sentence}`;
@@ -97,21 +98,21 @@ export const ActionFormWrapper = ({
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
-        case "commission":
+        case NodeActions.COMMISSION:
           return <CommissionForm setSelectedAction={setSelectedAction} />;
-        case "deploy":
+        case NodeActions.DEPLOY:
           return <DeployForm setSelectedAction={setSelectedAction} />;
-        case "mark-broken":
+        case NodeActions.MARK_BROKEN:
           return <MarkBrokenForm setSelectedAction={setSelectedAction} />;
-        case "override-failed-testing":
+        case NodeActions.OVERRIDE_FAILED_TESTING:
           return <OverrideTestForm setSelectedAction={setSelectedAction} />;
-        case "set-pool":
+        case NodeActions.SET_POOL:
           return <SetPoolForm setSelectedAction={setSelectedAction} />;
-        case "set-zone":
+        case NodeActions.SET_ZONE:
           return <SetZoneForm setSelectedAction={setSelectedAction} />;
-        case "tag":
+        case NodeActions.TAG:
           return <TagForm setSelectedAction={setSelectedAction} />;
-        case "test":
+        case NodeActions.TEST:
           return (
             <TestForm
               setSelectedAction={setSelectedAction}

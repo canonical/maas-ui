@@ -14,6 +14,7 @@ import generalSelectors from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { NodeActions } from "app/store/types/node";
 
 const DeploySchema = Yup.object().shape({
   oSystem: Yup.string().required("OS is required"),
@@ -54,7 +55,9 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   );
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const sendAnalytics = useSendAnalytics();
-  const { machinesToAction, processingCount } = useMachineActionForm("deploy");
+  const { machinesToAction, processingCount } = useMachineActionForm(
+    NodeActions.DELETE
+  );
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -81,7 +84,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
-      actionName="deploy"
+      actionName={NodeActions.DELETE}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

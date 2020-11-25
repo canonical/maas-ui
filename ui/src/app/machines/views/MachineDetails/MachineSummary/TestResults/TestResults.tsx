@@ -8,6 +8,7 @@ import type { SetSelectedAction } from "..";
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineDetails } from "app/store/machine/types";
+import { NodeActions } from "app/store/types/node";
 import { capitaliseFirst } from "app/utils";
 
 type Props = {
@@ -118,7 +119,7 @@ const TestResults = ({
           <li className="p-inline-list__item">
             <Tooltip
               message={
-                !machine.actions.includes("test")
+                !machine.actions.includes(NodeActions.TEST)
                   ? "Machine cannot run tests at this time."
                   : null
               }
@@ -126,11 +127,11 @@ const TestResults = ({
             >
               <Button
                 className="p-button--link"
-                disabled={!machine.actions.includes("test")}
+                disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setSelectedAction(
                     {
-                      name: "test",
+                      name: NodeActions.TEST,
                       formProps: { hardwareType: hardwareType },
                     },
                     false

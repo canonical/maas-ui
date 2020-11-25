@@ -6,6 +6,8 @@ import React from "react";
 
 import { OwnerColumn } from "./OwnerColumn";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("OwnerColumn", () => {
@@ -18,8 +20,8 @@ describe("OwnerColumn", () => {
       general: {
         machineActions: {
           data: [
-            { name: "acquire", title: "Acquire..." },
-            { name: "release", title: "Release..." },
+            { name: NodeActions.ACQUIRE, title: "Acquire..." },
+            { name: NodeActions.RELEASE, title: "Release..." },
           ],
         },
       },
@@ -87,7 +89,7 @@ describe("OwnerColumn", () => {
   });
 
   it("can show a menu item to acquire a machine", () => {
-    state.machine.items[0].actions = ["acquire"];
+    state.machine.items[0].actions = [NodeActions.ACQUIRE];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -106,7 +108,7 @@ describe("OwnerColumn", () => {
   });
 
   it("can show a menu item to release a machine", () => {
-    state.machine.items[0].actions = ["release"];
+    state.machine.items[0].actions = [NodeActions.RELEASE];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

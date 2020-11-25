@@ -17,6 +17,8 @@ import {
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("MachineListHeader", () => {
@@ -264,7 +266,7 @@ describe("MachineListHeader", () => {
       wrapper
         .find("TakeActionMenu")
         .props()
-        .setSelectedAction({ name: "set-pool" })
+        .setSelectedAction({ name: NodeActions.SET_POOL })
     );
     expect(setSearchFilter).toHaveBeenCalledWith("in:(selected)");
   });

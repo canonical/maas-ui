@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import Machines from "./Machines";
+import { NodeActions } from "app/store/types/node";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import {
   generalState as generalStateFactory,
@@ -334,7 +335,7 @@ describe("Machines", () => {
       wrapper
         .find("TakeActionMenu")
         .props()
-        .setSelectedAction({ name: "set-pool" })
+        .setSelectedAction({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);

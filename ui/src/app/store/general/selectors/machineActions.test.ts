@@ -1,5 +1,6 @@
 import machineActions from "./machineActions";
 
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineActionsState as machineActionsStateFactory,
@@ -67,19 +68,19 @@ describe("machineActions selectors", () => {
   it("can return actions by name", () => {
     const data = [
       {
-        name: "commission",
+        name: NodeActions.COMMISSION,
         title: "Commission...",
         sentence: "commissioned",
         type: "lifecycle",
       },
       {
-        name: "acquire",
+        name: NodeActions.ACQUIRE,
         title: "Acquire...",
         sentence: "acquired",
         type: "lifecycle",
       },
       {
-        name: "deploy",
+        name: NodeActions.DEPLOY,
         title: "Deploy...",
         sentence: "deployed",
         type: "lifecycle",
@@ -92,8 +93,8 @@ describe("machineActions selectors", () => {
         }),
       }),
     });
-    expect(machineActions.getByName(state, "acquire")).toStrictEqual({
-      name: "acquire",
+    expect(machineActions.getByName(state, NodeActions.ACQUIRE)).toStrictEqual({
+      name: NodeActions.ACQUIRE,
       title: "Acquire...",
       sentence: "acquired",
       type: "lifecycle",

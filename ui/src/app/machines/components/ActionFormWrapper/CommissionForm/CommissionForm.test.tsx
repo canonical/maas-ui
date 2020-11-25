@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import CommissionForm from "./CommissionForm";
 
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -32,7 +33,7 @@ describe("CommissionForm", () => {
         machineActions: machineActionsStateFactory({
           data: [
             machineActionFactory({
-              name: "commission",
+              name: NodeActions.COMMISSION,
               title: "Commission",
             }),
           ],
@@ -134,7 +135,7 @@ describe("CommissionForm", () => {
         },
         payload: {
           params: {
-            action: "commission",
+            action: NodeActions.COMMISSION,
             extra: {
               enable_ssh: true,
               skip_bmc_config: true,
@@ -160,7 +161,7 @@ describe("CommissionForm", () => {
         },
         payload: {
           params: {
-            action: "commission",
+            action: NodeActions.COMMISSION,
             extra: {
               enable_ssh: true,
               skip_bmc_config: true,
@@ -229,7 +230,7 @@ describe("CommissionForm", () => {
         },
         payload: {
           params: {
-            action: "commission",
+            action: NodeActions.COMMISSION,
             extra: {
               enable_ssh: true,
               skip_bmc_config: true,

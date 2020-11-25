@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import SetZoneForm from "./SetZoneForm";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -25,7 +26,12 @@ describe("SetZoneForm", () => {
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [machineActionFactory({ name: "set-zone", title: "Set zone" })],
+          data: [
+            machineActionFactory({
+              name: NodeActions.SET_ZONE,
+              title: "Set zone",
+            }),
+          ],
         }),
       }),
       machine: machineStateFactory({
@@ -85,7 +91,7 @@ describe("SetZoneForm", () => {
         },
         payload: {
           params: {
-            action: "set-zone",
+            action: NodeActions.SET_ZONE,
             extra: {
               zone_id: 1,
             },
@@ -101,7 +107,7 @@ describe("SetZoneForm", () => {
         },
         payload: {
           params: {
-            action: "set-zone",
+            action: NodeActions.SET_ZONE,
             extra: {
               zone_id: 1,
             },
@@ -146,7 +152,7 @@ describe("SetZoneForm", () => {
         },
         payload: {
           params: {
-            action: "set-zone",
+            action: NodeActions.SET_ZONE,
             extra: {
               zone_id: 1,
             },

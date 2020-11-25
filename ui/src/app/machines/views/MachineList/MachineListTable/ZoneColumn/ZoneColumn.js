@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { NodeActions } from "app/store/types/node";
 import zoneSelectors from "app/store/zone/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
@@ -35,7 +36,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
   const zones = useSelector(zoneSelectors.all);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
   let zoneLinks = zones.filter((zone) => zone.id !== machine.zone.id);
-  if (machine.actions.includes("set-zone")) {
+  if (machine.actions.includes(NodeActions.SET_ZONE)) {
     if (zoneLinks.length !== 0) {
       zoneLinks = zoneLinks.map((zone) => ({
         children: zone.name,

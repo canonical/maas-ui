@@ -1,4 +1,5 @@
 import type { TSFixMe } from "app/base/types";
+import type { NodeActions } from "app/store/types/node";
 
 export type Architecture = string;
 
@@ -51,27 +52,7 @@ export type KnownArchitecturesState = {
   loading: boolean;
 };
 
-export type MachineActionName =
-  | "abort"
-  | "acquire"
-  | "check-power"
-  | "commission"
-  | "delete"
-  | "deploy"
-  | "exit-rescue-mode"
-  | "lock"
-  | "mark-broken"
-  | "mark-fixed"
-  | "off"
-  | "on"
-  | "override-failed-testing"
-  | "release"
-  | "rescue-mode"
-  | "set-pool"
-  | "set-zone"
-  | "tag"
-  | "test"
-  | "unlock";
+export type MachineActionName = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
 
 export type MachineAction = {
   name: MachineActionName;

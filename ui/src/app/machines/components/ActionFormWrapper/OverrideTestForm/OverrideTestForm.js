@@ -14,6 +14,8 @@ import scriptResultsSelectors from "app/store/scriptresults/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 
+import { NodeActions } from "app/store/types/node";
+
 const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
   if (numFailedTests > 0) {
@@ -64,7 +66,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const { machinesToAction, processingCount } = useMachineActionForm(
-    "override-failed-testing"
+    NodeActions.OVERRIDE_FAILED_TESTING
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);
   const scriptResults = useSelector((state) =>
@@ -82,7 +84,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
-      actionName="override-failed-testing"
+      actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

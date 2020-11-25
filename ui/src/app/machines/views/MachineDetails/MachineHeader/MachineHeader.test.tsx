@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import MachineHeader from "./MachineHeader";
 
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -142,7 +143,7 @@ describe("MachineHeader", () => {
 
   describe("power menu", () => {
     it("can dispatch the power on action", () => {
-      state.machine.items[0].actions = ["on"];
+      state.machine.items[0].actions = [NodeActions.ON];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -177,7 +178,7 @@ describe("MachineHeader", () => {
     });
 
     it("can dispatch the power off action", () => {
-      state.machine.items[0].actions = ["off"];
+      state.machine.items[0].actions = [NodeActions.OFF];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>

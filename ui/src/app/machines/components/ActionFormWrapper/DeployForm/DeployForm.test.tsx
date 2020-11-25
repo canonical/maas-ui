@@ -10,6 +10,7 @@ import DeployForm from "./DeployForm";
 
 import * as hooks from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -55,7 +56,7 @@ describe("DeployForm", () => {
         machineActions: machineActionsStateFactory({
           data: [
             machineActionFactory({
-              name: "deploy",
+              name: NodeActions.DEPLOY,
               title: "Deploy",
             }),
           ],
@@ -167,7 +168,7 @@ describe("DeployForm", () => {
         },
         payload: {
           params: {
-            action: "deploy",
+            action: NodeActions.DEPLOY,
             extra: {
               osystem: "ubuntu",
               distro_series: "bionic",
@@ -186,7 +187,7 @@ describe("DeployForm", () => {
         },
         payload: {
           params: {
-            action: "deploy",
+            action: NodeActions.DEPLOY,
             extra: {
               osystem: "ubuntu",
               distro_series: "bionic",
@@ -239,7 +240,7 @@ describe("DeployForm", () => {
         },
         payload: {
           params: {
-            action: "deploy",
+            action: NodeActions.DEPLOY,
             extra: {
               osystem: "ubuntu",
               distro_series: "bionic",
@@ -287,7 +288,7 @@ describe("DeployForm", () => {
         },
         payload: {
           params: {
-            action: "deploy",
+            action: NodeActions.DEPLOY,
             extra: {
               osystem: "ubuntu",
               distro_series: "bionic",
@@ -336,7 +337,7 @@ describe("DeployForm", () => {
         },
         payload: {
           params: {
-            action: "deploy",
+            action: NodeActions.DEPLOY,
             extra: {
               osystem: "ubuntu",
               distro_series: "bionic",

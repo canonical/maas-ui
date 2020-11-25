@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import ActionFormWrapper from "./ActionFormWrapper";
 
 import { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -32,7 +33,7 @@ describe("ActionFormWrapper", () => {
         machineActions: machineActionsStateFactory({
           data: [
             machineActionFactory({
-              name: "commission",
+              name: NodeActions.COMMISSION,
             }),
           ],
         }),
@@ -81,7 +82,7 @@ describe("ActionFormWrapper", () => {
   action`, () => {
     const state = { ...initialState };
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
@@ -93,7 +94,7 @@ describe("ActionFormWrapper", () => {
         >
           <ActionFormWrapper
             selectedAction={{
-              name: "commission",
+              name: NodeActions.COMMISSION,
             }}
             setSelectedAction={jest.fn()}
           />
@@ -109,7 +110,7 @@ describe("ActionFormWrapper", () => {
     can perform selected action`, async () => {
     const state = { ...initialState };
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
@@ -129,7 +130,7 @@ describe("ActionFormWrapper", () => {
         >
           <ActionFormWrapper
             selectedAction={{
-              name: "commission",
+              name: NodeActions.COMMISSION,
             }}
             setSelectedAction={jest.fn()}
           />
@@ -148,7 +149,7 @@ describe("ActionFormWrapper", () => {
   it("can set selected machines to those that can perform action", () => {
     const state = { ...initialState };
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["commission"] }),
+      machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
     ];
     state.machine.selected = ["a", "b"];
@@ -160,7 +161,7 @@ describe("ActionFormWrapper", () => {
         >
           <ActionFormWrapper
             selectedAction={{
-              name: "commission",
+              name: NodeActions.COMMISSION,
             }}
             setSelectedAction={jest.fn()}
           />

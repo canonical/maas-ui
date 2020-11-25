@@ -11,6 +11,7 @@ import { useMachineActionForm } from "app/machines/hooks";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { NodeActions } from "app/store/types/node";
 
 const MarkBrokenSchema = Yup.object().shape({
   comment: Yup.string(),
@@ -30,7 +31,7 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
   const machineErrors = useSelector(machineSelectors.errors);
   const errors = Object.keys(machineErrors).length > 0 ? machineErrors : null;
   const { machinesToAction, processingCount } = useMachineActionForm(
-    "mark-broken"
+    NodeActions.MARK_BROKEN
   );
 
   useEffect(
@@ -42,7 +43,7 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
-      actionName="mark-broken"
+      actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

@@ -11,6 +11,7 @@ import TestForm from "./TestForm";
 import { HardwareType } from "app/base/enum";
 import { RootState } from "app/store/root/types";
 import { Scripts } from "app/store/scripts/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -33,7 +34,9 @@ describe("TestForm", () => {
     initialState = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [machineActionFactory({ name: "test", title: "Test" })],
+          data: [
+            machineActionFactory({ name: NodeActions.TEST, title: "Test" }),
+          ],
         }),
       }),
       machine: machineStateFactory({
@@ -116,7 +119,7 @@ describe("TestForm", () => {
         },
         payload: {
           params: {
-            action: "test",
+            action: NodeActions.TEST,
             extra: {
               enable_ssh: true,
               testing_scripts: state.scripts.items.map((script) => script.id),
@@ -137,7 +140,7 @@ describe("TestForm", () => {
         },
         payload: {
           params: {
-            action: "test",
+            action: NodeActions.TEST,
             extra: {
               enable_ssh: true,
               testing_scripts: state.scripts.items.map((script) => script.id),
@@ -237,7 +240,7 @@ describe("TestForm", () => {
         },
         payload: {
           params: {
-            action: "test",
+            action: NodeActions.TEST,
             extra: {
               enable_ssh: true,
               testing_scripts: state.scripts.items.map((script) => script.id),

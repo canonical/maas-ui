@@ -7,6 +7,8 @@ import React from "react";
 
 import { ZoneColumn } from "./ZoneColumn";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("ZoneColumn", () => {
@@ -25,7 +27,7 @@ describe("ZoneColumn", () => {
             system_id: "abc123",
             zone: { name: "zone-north", id: 0 },
             spaces: ["management"],
-            actions: ["set-zone"],
+            actions: [NodeActions.SET_ZONE],
           },
         ],
       },
@@ -170,7 +172,7 @@ describe("ZoneColumn", () => {
       },
       payload: {
         params: {
-          action: "set-zone",
+          action: NodeActions.SET_ZONE,
           extra: {
             zone_id: 1,
           },

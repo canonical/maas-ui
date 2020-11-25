@@ -15,6 +15,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { NodeActions } from "app/store/types/node";
 
 const mockStore = configureStore();
 
@@ -25,7 +26,7 @@ describe("TagForm", () => {
     initialState = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [machineActionFactory({ name: "tag", title: "Tag" })],
+          data: [machineActionFactory({ name: NodeActions.TAG, title: "Tag" })],
         }),
       }),
       machine: machineStateFactory({
@@ -96,7 +97,7 @@ describe("TagForm", () => {
         },
         payload: {
           params: {
-            action: "tag",
+            action: NodeActions.TAG,
             extra: {
               tags: ["tag1", "tag2"],
             },
@@ -112,7 +113,7 @@ describe("TagForm", () => {
         },
         payload: {
           params: {
-            action: "tag",
+            action: NodeActions.TAG,
             extra: {
               tags: ["tag1", "tag2"],
             },
@@ -162,7 +163,7 @@ describe("TagForm", () => {
         },
         payload: {
           params: {
-            action: "tag",
+            action: NodeActions.TAG,
             extra: {
               tags: ["tag1", "tag2"],
             },

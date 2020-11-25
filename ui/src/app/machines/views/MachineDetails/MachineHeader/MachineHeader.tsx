@@ -18,6 +18,7 @@ import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 
 type Props = {
   selectedAction: SelectedAction | null;
@@ -40,7 +41,10 @@ const MachineHeader = ({
     machineSelectors.getStatuses(state, id)
   );
   const powerMenuRef = useRef<HTMLSpanElement>(null);
-  const powerMenuLinks = useMachineActions(id, ["off", "on"]);
+  const powerMenuLinks = useMachineActions(id, [
+    NodeActions.OFF,
+    NodeActions.ON,
+  ]);
 
   useEffect(() => {
     dispatch(machineActions.get(id));

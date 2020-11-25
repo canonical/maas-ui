@@ -33,7 +33,7 @@ export const useToggleMenu = (
  * processing machines.
  */
 export const useMachineActionForm = (
-  actionName: MachineActionName
+  actionName: MachineActionName | "check-power"
 ): {
   machinesToAction: Machine[];
   processingCount: number;

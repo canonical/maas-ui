@@ -11,7 +11,7 @@ import { nodeStatus, scriptStatus } from "app/base/enum";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { TestResult } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
+import { NodeActions, NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -262,19 +262,19 @@ describe("StatusColumn", () => {
 
   it("can show a menu with all possible options", () => {
     machine.actions = [
-      "abort",
-      "acquire",
-      "commission",
-      "deploy",
-      "exit-rescue-mode",
-      "lock",
-      "mark-broken",
-      "mark-fixed",
-      "override-failed-testing",
-      "release",
-      "rescue-mode",
-      "test",
-      "unlock",
+      NodeActions.ABORT,
+      NodeActions.ACQUIRE,
+      NodeActions.COMMISSION,
+      NodeActions.DEPLOY,
+      NodeActions.EXIT_RESCUE_MODE,
+      NodeActions.LOCK,
+      NodeActions.MARK_BROKEN,
+      NodeActions.MARK_FIXED,
+      NodeActions.OVERRIDE_FAILED_TESTING,
+      NodeActions.RELEASE,
+      NodeActions.RESCUE_MODE,
+      NodeActions.TEST,
+      NodeActions.UNLOCK,
     ];
     const store = mockStore(state);
     const wrapper = mount(

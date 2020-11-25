@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import MarkBrokenForm from "./MarkBrokenForm";
 
 import { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
@@ -29,7 +30,7 @@ describe("MarkBrokenForm", () => {
         machineActions: machineActionsStateFactory({
           data: [
             machineActionFactory({
-              name: "mark-broken",
+              name: NodeActions.MARK_BROKEN,
               title: "Mark broken",
               sentence: "marked broken",
               type: "testing",
@@ -78,7 +79,7 @@ describe("MarkBrokenForm", () => {
         },
         payload: {
           params: {
-            action: "mark-broken",
+            action: NodeActions.MARK_BROKEN,
             extra: {
               message: "machine is on fire",
             },
@@ -94,7 +95,7 @@ describe("MarkBrokenForm", () => {
         },
         payload: {
           params: {
-            action: "mark-broken",
+            action: NodeActions.MARK_BROKEN,
             extra: {
               message: "machine is on fire",
             },
@@ -133,7 +134,7 @@ describe("MarkBrokenForm", () => {
         },
         payload: {
           params: {
-            action: "mark-broken",
+            action: NodeActions.MARK_BROKEN,
             extra: {
               message: "",
             },
@@ -178,7 +179,7 @@ describe("MarkBrokenForm", () => {
         },
         payload: {
           params: {
-            action: "mark-broken",
+            action: NodeActions.MARK_BROKEN,
             extra: {
               message: "machine is on fire",
             },

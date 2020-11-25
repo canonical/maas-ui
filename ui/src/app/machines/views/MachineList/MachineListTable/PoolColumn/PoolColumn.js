@@ -10,6 +10,8 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
 
+import { NodeActions } from "app/store/types/node";
+
 export const PoolColumn = ({ onToggleMenu, systemId }) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState(null);
@@ -20,7 +22,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
 
   let poolLinks = resourcePools.filter((pool) => pool.id !== machine.pool.id);
-  if (machine.actions.includes("set-pool")) {
+  if (machine.actions.includes(NodeActions.SET_POOL)) {
     if (poolLinks.length !== 0) {
       poolLinks = poolLinks.map((pool) => ({
         children: pool.name,

@@ -14,6 +14,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
 import type { Scripts } from "app/store/scripts/types";
+import { NodeActions } from "app/store/types/node";
 import { simpleSortByKey } from "app/utils";
 
 const formatScripts = (scripts: Scripts[]) =>
@@ -75,7 +76,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
   const { machinesToAction, processingCount } = useMachineActionForm(
-    "commission"
+    NodeActions.COMMISSION
   );
 
   const preselectedTestingScripts = [
@@ -102,7 +103,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
-      actionName="commission"
+      actionName={NodeActions.COMMISSION}
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

@@ -1,5 +1,7 @@
 import { actions } from "./slice";
 
+import { NodeActions } from "app/store/types/node";
+
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
     expect(actions.fetch()).toEqual({
@@ -68,7 +70,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "set-pool",
+          action: NodeActions.SET_POOL,
           extra: {
             pool_id: 909,
           },
@@ -87,7 +89,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "set-zone",
+          action: NodeActions.SET_ZONE,
           extra: {
             zone_id: 909,
           },
@@ -106,7 +108,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "on",
+          action: NodeActions.ON,
           extra: {},
           system_id: "abc123",
         },
@@ -123,7 +125,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "off",
+          action: NodeActions.OFF,
           extra: {},
           system_id: "abc123",
         },
@@ -155,7 +157,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "acquire",
+          action: NodeActions.ACQUIRE,
           extra: {},
           system_id: "abc123",
         },
@@ -172,7 +174,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "release",
+          action: NodeActions.RELEASE,
           extra: {},
           system_id: "abc123",
         },
@@ -194,7 +196,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "deploy",
+          action: NodeActions.DEPLOY,
           extra,
           system_id: "abc123",
         },
@@ -211,7 +213,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "abort",
+          action: NodeActions.ABORT,
           extra: {},
           system_id: "abc123",
         },
@@ -246,7 +248,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "commission",
+          action: NodeActions.COMMISSION,
           extra: {
             enable_ssh: true,
             skip_bmc_config: false,
@@ -282,7 +284,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "test",
+          action: NodeActions.TEST,
           extra: {
             enable_ssh: true,
             script_input: { "test-0": { url: "www.url.com" } },
@@ -324,7 +326,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "rescue-mode",
+          action: NodeActions.RESCUE_MODE,
           extra: {},
           system_id: "abc123",
         },
@@ -341,7 +343,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "exit-rescue-mode",
+          action: NodeActions.EXIT_RESCUE_MODE,
           extra: {},
           system_id: "abc123",
         },
@@ -358,7 +360,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "mark-broken",
+          action: NodeActions.MARK_BROKEN,
           extra: {
             message: "machine is on fire",
           },
@@ -377,7 +379,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "mark-fixed",
+          action: NodeActions.MARK_FIXED,
           extra: {},
           system_id: "abc123",
         },
@@ -394,7 +396,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "override-failed-testing",
+          action: NodeActions.OVERRIDE_FAILED_TESTING,
           extra: {},
           system_id: "abc123",
         },
@@ -411,7 +413,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "lock",
+          action: NodeActions.LOCK,
           extra: {},
           system_id: "abc123",
         },
@@ -428,7 +430,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "unlock",
+          action: NodeActions.UNLOCK,
           extra: {},
           system_id: "abc123",
         },
@@ -445,7 +447,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "delete",
+          action: NodeActions.DELETE,
           extra: {},
           system_id: "abc123",
         },
@@ -462,7 +464,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          action: "tag",
+          action: NodeActions.TAG,
           extra: { tags: ["tag1", "tag2"] },
           system_id: "abc123",
         },

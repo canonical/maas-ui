@@ -15,6 +15,8 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
+import { NodeActions } from "app/store/types/node";
+
 const mockStore = configureStore();
 
 describe("FieldlessForm", () => {
@@ -37,20 +39,32 @@ describe("FieldlessForm", () => {
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
           data: [
-            machineActionFactory({ name: "abort", title: "Abort" }),
-            machineActionFactory({ name: "acquire", title: "Acquire" }),
-            machineActionFactory({ name: "delete", title: "Delete" }),
+            machineActionFactory({ name: NodeActions.ABORT, title: "Abort" }),
             machineActionFactory({
-              name: "exit-rescue-mode",
+              name: NodeActions.ACQUIRE,
+              title: "Acquire",
+            }),
+            machineActionFactory({ name: NodeActions.DELETE, title: "Delete" }),
+            machineActionFactory({
+              name: NodeActions.EXIT_RESCUE_MODE,
               title: "Exit rescue mode",
             }),
-            machineActionFactory({ name: "lock", title: "Lock" }),
-            machineActionFactory({ name: "mark-fixed", title: "Mark fixed" }),
-            machineActionFactory({ name: "off", title: "Power off" }),
-            machineActionFactory({ name: "on", title: "Power on" }),
-            machineActionFactory({ name: "release", title: "Release" }),
-            machineActionFactory({ name: "rescue-mode", title: "Rescue mode" }),
-            machineActionFactory({ name: "unlock", title: "Unlock" }),
+            machineActionFactory({ name: NodeActions.LOCK, title: "Lock" }),
+            machineActionFactory({
+              name: NodeActions.MARK_FIXED,
+              title: "Mark fixed",
+            }),
+            machineActionFactory({ name: NodeActions.OFF, title: "Power off" }),
+            machineActionFactory({ name: NodeActions.ON, title: "Power on" }),
+            machineActionFactory({
+              name: NodeActions.RELEASE,
+              title: "Release",
+            }),
+            machineActionFactory({
+              name: NodeActions.RESCUE_MODE,
+              title: "Rescue mode",
+            }),
+            machineActionFactory({ name: NodeActions.UNLOCK, title: "Unlock" }),
           ],
         }),
       }),
@@ -66,7 +80,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "release" }}
+            selectedAction={{ name: NodeActions.RELEASE }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -77,7 +91,7 @@ describe("FieldlessForm", () => {
 
   it("can unset the selected action", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "a", actions: ["release"] }];
+    state.machine.items = [{ system_id: "a", actions: [NodeActions.RELEASE] }];
     state.machine.selected = ["a"];
     state.machine.statuses = { a: {} };
     const store = mockStore(state);
@@ -88,7 +102,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "release" }}
+            selectedAction={{ name: NodeActions.RELEASE }}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -101,7 +115,9 @@ describe("FieldlessForm", () => {
 
   it("displays a negative submit button if selected action is delete", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["delete"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.DELETE] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const setSelectedAction = jest.fn();
@@ -111,7 +127,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "delete" }}
+            selectedAction={{ name: NodeActions.DELETE }}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -122,7 +138,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch abort action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["abort"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.ABORT] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -131,7 +149,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "abort" }}
+            selectedAction={{ name: NodeActions.ABORT }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -150,7 +168,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "abort",
+            action: NodeActions.ABORT,
             extra: {},
             system_id: "abc123",
           },
@@ -174,7 +192,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "abort" }}
+                selectedAction={{ name: NodeActions.ABORT }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -195,7 +213,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "abort",
+            action: NodeActions.ABORT,
             extra: {},
             system_id: "abc123",
           },
@@ -206,7 +224,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch acquire action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["acquire"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.ACQUIRE] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -215,7 +235,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "acquire" }}
+            selectedAction={{ name: NodeActions.ACQUIRE }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -234,7 +254,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "acquire",
+            action: NodeActions.ACQUIRE,
             extra: {},
             system_id: "abc123",
           },
@@ -258,7 +278,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "acquire" }}
+                selectedAction={{ name: NodeActions.ACQUIRE }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -280,7 +300,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "acquire",
+            action: NodeActions.ACQUIRE,
             extra: {},
             system_id: "abc123",
           },
@@ -291,7 +311,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch delete action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["delete"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.DELETE] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -300,7 +322,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "delete" }}
+            selectedAction={{ name: NodeActions.DELETE }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -319,7 +341,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "delete",
+            action: NodeActions.DELETE,
             extra: {},
             system_id: "abc123",
           },
@@ -343,7 +365,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "delete" }}
+                selectedAction={{ name: NodeActions.DELETE }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -365,7 +387,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "delete",
+            action: NodeActions.DELETE,
             extra: {},
             system_id: "abc123",
           },
@@ -377,7 +399,7 @@ describe("FieldlessForm", () => {
   it("can dispatch exit rescue mode action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: ["exit-rescue-mode"] },
+      { system_id: "abc123", actions: [NodeActions.EXIT_RESCUE_MODE] },
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -387,7 +409,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "exit-rescue-mode" }}
+            selectedAction={{ name: NodeActions.EXIT_RESCUE_MODE }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -406,7 +428,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "exit-rescue-mode",
+            action: NodeActions.EXIT_RESCUE_MODE,
             extra: {},
             system_id: "abc123",
           },
@@ -430,7 +452,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "exit-rescue-mode" }}
+                selectedAction={{ name: NodeActions.EXIT_RESCUE_MODE }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -452,7 +474,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "exit-rescue-mode",
+            action: NodeActions.EXIT_RESCUE_MODE,
             extra: {},
             system_id: "abc123",
           },
@@ -463,7 +485,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch lock action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["lock"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.LOCK] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -472,7 +496,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "lock" }}
+            selectedAction={{ name: NodeActions.LOCK }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -491,7 +515,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "lock",
+            action: NodeActions.LOCK,
             extra: {},
             system_id: "abc123",
           },
@@ -515,7 +539,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "lock" }}
+                selectedAction={{ name: NodeActions.LOCK }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -537,7 +561,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "lock",
+            action: NodeActions.LOCK,
             extra: {},
             system_id: "abc123",
           },
@@ -548,7 +572,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch mark fixed action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["mark-fixed"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.MARK_FIXED] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -557,7 +583,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "mark-fixed" }}
+            selectedAction={{ name: NodeActions.MARK_FIXED }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -576,7 +602,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "mark-fixed",
+            action: NodeActions.MARK_FIXED,
             extra: {},
             system_id: "abc123",
           },
@@ -600,7 +626,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "mark-fixed" }}
+                selectedAction={{ name: NodeActions.MARK_FIXED }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -622,7 +648,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "mark-fixed",
+            action: NodeActions.MARK_FIXED,
             extra: {},
             system_id: "abc123",
           },
@@ -633,7 +659,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power off action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["off"] }];
+    state.machine.items = [{ system_id: "abc123", actions: [NodeActions.OFF] }];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -642,7 +668,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "off" }}
+            selectedAction={{ name: NodeActions.OFF }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -661,7 +687,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "off",
+            action: NodeActions.OFF,
             extra: {},
             system_id: "abc123",
           },
@@ -685,7 +711,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "off" }}
+                selectedAction={{ name: NodeActions.OFF }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -707,7 +733,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "off",
+            action: NodeActions.OFF,
             extra: {},
             system_id: "abc123",
           },
@@ -718,7 +744,7 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power on action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["on"] }];
+    state.machine.items = [{ system_id: "abc123", actions: [NodeActions.ON] }];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -727,7 +753,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "on" }}
+            selectedAction={{ name: NodeActions.ON }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -746,7 +772,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "on",
+            action: NodeActions.ON,
             extra: {},
             system_id: "abc123",
           },
@@ -770,7 +796,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "on" }}
+                selectedAction={{ name: NodeActions.ON }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -792,7 +818,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "on",
+            action: NodeActions.ON,
             extra: {},
             system_id: "abc123",
           },
@@ -803,7 +829,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch release action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["release"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.RELEASE] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -812,7 +840,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "release" }}
+            selectedAction={{ name: NodeActions.RELEASE }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -831,7 +859,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "release",
+            action: NodeActions.RELEASE,
             extra: {},
             system_id: "abc123",
           },
@@ -855,7 +883,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "release" }}
+                selectedAction={{ name: NodeActions.RELEASE }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -877,7 +905,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "release",
+            action: NodeActions.RELEASE,
             extra: {},
             system_id: "abc123",
           },
@@ -888,7 +916,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch unlock action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: ["unlock"] }];
+    state.machine.items = [
+      { system_id: "abc123", actions: [NodeActions.UNLOCK] },
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -897,7 +927,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: "unlock" }}
+            selectedAction={{ name: NodeActions.UNLOCK }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -916,7 +946,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "unlock",
+            action: NodeActions.UNLOCK,
             extra: {},
             system_id: "abc123",
           },
@@ -940,7 +970,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                selectedAction={{ name: "unlock" }}
+                selectedAction={{ name: NodeActions.UNLOCK }}
                 setSelectedAction={jest.fn()}
               />
             )}
@@ -962,7 +992,7 @@ describe("FieldlessForm", () => {
         },
         payload: {
           params: {
-            action: "unlock",
+            action: NodeActions.UNLOCK,
             extra: {},
             system_id: "abc123",
           },
