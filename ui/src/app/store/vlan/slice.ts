@@ -1,8 +1,9 @@
-import { SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { generateSlice, GenericSlice } from "../utils";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
-import { VLAN, VLANState } from "./types";
+import type { VLAN, VLANState } from "./types";
 
 type VLANReducers = SliceCaseReducers<VLANState>;
 

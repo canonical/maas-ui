@@ -6,8 +6,8 @@ import { general as generalActions } from "app/base/actions";
 import { nodeStatus } from "app/base/enum";
 import generalSelectors from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
-import { Pod } from "app/store/pod/types";
-import { RootState } from "app/store/root/types";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { NodeStatus } from "app/store/types/node";
 

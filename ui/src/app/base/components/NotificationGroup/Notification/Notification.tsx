@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import authSelectors from "app/store/auth/selectors";
-import { MessageType } from "app/store/message/types";
+import type { MessageType } from "app/store/message/types";
 import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
 import type { Notification as NotificationType } from "app/store/notification/types";

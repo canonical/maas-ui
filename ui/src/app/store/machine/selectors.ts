@@ -1,4 +1,5 @@
-import { createSelector, Selector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 
 import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/store/machine/slice";

@@ -9,7 +9,7 @@ import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
 
-import { HardwareType } from "app/base/enum";
+import type { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import type { MachineAction } from "app/store/general/types";

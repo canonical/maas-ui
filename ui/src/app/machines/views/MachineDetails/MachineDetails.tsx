@@ -8,7 +8,8 @@ import MachineHeader from "./MachineHeader";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachineStorage from "./MachineStorage";
 import StorageNotifications from "./MachineStorage/StorageNotifications";
-import MachineSummary, { SelectedAction } from "./MachineSummary";
+import type { SelectedAction } from "./MachineSummary";
+import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 

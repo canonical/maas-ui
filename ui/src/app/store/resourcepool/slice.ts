@@ -1,9 +1,10 @@
-import { SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { Machine } from "../machine/types";
-import { generateSlice, GenericSlice } from "../utils";
+import type { Machine } from "../machine/types";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
-import { ResourcePool, ResourcePoolState } from "./types";
+import type { ResourcePool, ResourcePoolState } from "./types";
 
 type ResourcePoolReducers = SliceCaseReducers<ResourcePoolState>;
 

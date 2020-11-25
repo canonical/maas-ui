@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 
 import MarkBrokenForm from "./MarkBrokenForm";
 
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,

@@ -4,7 +4,7 @@ import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { SetSelectedAction } from "../MachineSummary";
+import type { SetSelectedAction } from "../MachineSummary";
 import TestResults from "../TestResults";
 
 import NetworkCardTable from "./NetworkCardTable";

@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { Spinner, Textarea } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
-import { FileRejection, useDropzone } from "react-dropzone";
+import type { FileRejection } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 
-import { DeployFormValues } from "../../DeployForm";
+import type { DeployFormValues } from "../../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
 

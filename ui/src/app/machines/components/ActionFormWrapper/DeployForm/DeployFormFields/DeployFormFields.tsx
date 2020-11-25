@@ -6,7 +6,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { DeployFormValues } from "../DeployForm";
+import type { DeployFormValues } from "../DeployForm";
 
 import UserDataField from "./UserDataField";
 

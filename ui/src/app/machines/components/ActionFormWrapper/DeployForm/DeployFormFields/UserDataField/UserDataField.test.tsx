@@ -1,6 +1,7 @@
 import React from "react";
 
-import { mount, ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,7 +9,7 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../../DeployForm";
 
-import { TSFixMe } from "app/base/types";
+import type { TSFixMe } from "app/base/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,

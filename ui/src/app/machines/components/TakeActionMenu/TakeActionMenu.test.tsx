@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import TakeActionMenu from "./TakeActionMenu";
 
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,

@@ -1,7 +1,8 @@
-import { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
-import { generateSlice, GenericSlice } from "../utils";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
 import type {
   ScriptResultsResponse,

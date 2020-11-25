@@ -1,10 +1,11 @@
-import { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { generateSlice, GenericItemMeta, GenericSlice } from "../utils";
+import type { GenericItemMeta, GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
 import type { NodeResult, NodeResults, NodeResultState } from "./types";
 
-import { Machine } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 
 type NodeResultReducers = SliceCaseReducers<NodeResultState>;
 

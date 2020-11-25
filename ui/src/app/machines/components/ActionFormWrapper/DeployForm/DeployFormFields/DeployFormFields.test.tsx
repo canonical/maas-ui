@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
 
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,

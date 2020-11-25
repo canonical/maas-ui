@@ -4,7 +4,7 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import { AddKVMFormValues } from "../AddKVMForm";
+import type { AddKVMFormValues } from "../AddKVMForm";
 
 import FormikField from "app/base/components/FormikField";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";

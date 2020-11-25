@@ -1,4 +1,4 @@
-import { PackageRepository } from "./types";
+import type { PackageRepository } from "./types";
 
 /**
  * Map repositories to names.

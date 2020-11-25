@@ -1,5 +1,4 @@
-import {
-  createSlice,
+import type {
   CaseReducer,
   Draft,
   PayloadAction,
@@ -7,6 +6,7 @@ import {
   SliceCaseReducers,
   ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type { TSFixMe } from "app/base/types";
 import type { RootState } from "app/store/root/types";

@@ -1,8 +1,9 @@
-import { SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { generateSlice, GenericSlice } from "../utils";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
-import { Domain, DomainState } from "./types";
+import type { Domain, DomainState } from "./types";
 
 type DomainReducers = SliceCaseReducers<DomainState>;
 
