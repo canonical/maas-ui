@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,

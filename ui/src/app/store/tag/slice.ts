@@ -1,8 +1,9 @@
-import { SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { generateSlice, GenericSlice } from "../utils";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
-import { Tag, TagState } from "./types";
+import type { Tag, TagState } from "./types";
 
 type TagReducers = SliceCaseReducers<TagState>;
 

@@ -1,6 +1,6 @@
 import { array, define } from "cooky-cutter";
 
-import {
+import type {
   Architecture,
   ComponentToDisable,
   DefaultMinHweKernel,

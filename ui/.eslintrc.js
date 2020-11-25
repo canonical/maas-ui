@@ -53,6 +53,7 @@ module.exports = {
             ignoreRestSiblings: true,
           },
         ],
+        "@typescript-eslint/consistent-type-imports": 2,
         "import/namespace": "off",
         "import/no-named-as-default": 0,
         "import/order": [
@@ -69,7 +70,7 @@ module.exports = {
                 group: "internal",
               },
             ],
-            "pathGroupsExcludedImportTypes": ["react"],
+            pathGroupsExcludedImportTypes: ["react"],
             "newlines-between": "always",
             alphabetize: {
               order: "asc",

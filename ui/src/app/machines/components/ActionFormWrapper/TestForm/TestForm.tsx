@@ -8,13 +8,13 @@ import TestFormFields from "./TestFormFields";
 
 import { scripts as scriptActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
-import { HardwareType } from "app/base/enum";
+import type { HardwareType } from "app/base/enum";
 import { useMachineActionForm } from "app/machines/hooks";
-import { MachineAction } from "app/store/general/types";
+import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import scriptSelectors from "app/store/scripts/selectors";
-import { Scripts } from "app/store/scripts/types";
+import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
 
 const TestFormSchema = Yup.object().shape({

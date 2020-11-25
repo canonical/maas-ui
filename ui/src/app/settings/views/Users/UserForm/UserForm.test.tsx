@@ -9,7 +9,7 @@ import configureStore from "redux-mock-store";
 import { UserForm } from "./UserForm";
 import type { UserWithPassword } from "./UserForm";
 
-import { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
 import {
   user as userFactory,
   rootState as rootStateFactory,

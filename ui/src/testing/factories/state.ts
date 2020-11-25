@@ -1,6 +1,6 @@
 import type { RouterState } from "connected-react-router";
 import { array, define } from "cooky-cutter";
-import { Location } from "history";
+import type { Location } from "history";
 
 import { message } from "./message";
 import { notification } from "./notification";

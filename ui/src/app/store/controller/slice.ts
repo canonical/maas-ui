@@ -1,8 +1,9 @@
-import { SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { generateSlice, GenericSlice } from "../utils";
+import type { GenericSlice } from "../utils";
+import { generateSlice } from "../utils";
 
-import { Controller, ControllerState } from "./types";
+import type { Controller, ControllerState } from "./types";
 
 type ControllerReducers = SliceCaseReducers<ControllerState>;
 

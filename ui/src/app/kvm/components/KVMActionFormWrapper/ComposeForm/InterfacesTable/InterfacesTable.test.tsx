@@ -4,7 +4,8 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
-import configureStore, { MockStoreEnhanced } from "redux-mock-store";
+import type { MockStoreEnhanced } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 

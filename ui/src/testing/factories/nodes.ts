@@ -25,12 +25,8 @@ import type {
   PodStoragePool,
 } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
-import {
-  BaseNode,
-  SimpleNode,
-  TestStatus,
-  NodeStatus,
-} from "app/store/types/node";
+import type { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
+import { NodeStatus } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,

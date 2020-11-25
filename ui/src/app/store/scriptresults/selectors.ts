@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { Machine } from "../machine/types";
+import type { Machine } from "../machine/types";
 
-import { ScriptResults } from "./types";
+import type { ScriptResults } from "./types";
 
 import type { TSFixMe } from "app/base/types";
 import type { RootState } from "app/store/root/types";

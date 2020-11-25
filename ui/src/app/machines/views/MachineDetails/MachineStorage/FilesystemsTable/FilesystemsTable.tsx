@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Button, MainTable, Tooltip } from "@canonical/react-components";
 
-import { NormalisedFilesystem } from "../types";
+import type { NormalisedFilesystem } from "../types";
 import { formatSize } from "../utils";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
