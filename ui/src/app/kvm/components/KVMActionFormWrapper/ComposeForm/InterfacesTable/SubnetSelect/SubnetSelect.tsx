@@ -8,20 +8,19 @@ import { useParams } from "react-router";
 import type { InterfaceField } from "../../ComposeForm";
 import { getPxeIconClass } from "../InterfacesTable";
 
-import fabricSelectors from "app/store/fabric/selectors";
-import podSelectors from "app/store/pod/selectors";
-import spaceSelectors from "app/store/space/selectors";
-import subnetSelectors from "app/store/subnet/selectors";
-import vlanSelectors from "app/store/vlan/selectors";
-import { groupAsMap } from "app/utils";
-
 import type { RouteParams } from "app/base/types";
+import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
+import podSelectors from "app/store/pod/selectors";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import spaceSelectors from "app/store/space/selectors";
 import type { Space } from "app/store/space/types";
+import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
+import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
+import { groupAsMap } from "app/utils";
 
 type Props = {
   iface: InterfaceField;

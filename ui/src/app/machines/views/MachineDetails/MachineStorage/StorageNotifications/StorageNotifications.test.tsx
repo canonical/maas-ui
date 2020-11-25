@@ -8,15 +8,14 @@ import configureStore from "redux-mock-store";
 import StorageNotifications from "./StorageNotifications";
 
 import { nodeStatus } from "app/base/enum";
+import type { MachineDetails } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

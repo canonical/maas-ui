@@ -7,6 +7,9 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
+import { NotificationIdent } from "app/store/notification/types";
+import type { Notification } from "app/store/notification/types";
+import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -18,10 +21,6 @@ import {
   rootState as rootStateFactory,
   routerState as routerStateFactory,
 } from "testing/factories";
-
-import { NotificationIdent } from "app/store/notification/types";
-import type { Notification } from "app/store/notification/types";
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

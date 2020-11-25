@@ -1,7 +1,6 @@
+import type { TSFixMe } from "app/base/types";
 import type { BaseNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
-
-import type { TSFixMe } from "app/base/types";
 
 export type Controller = BaseNode & {
   last_image_sync: string;

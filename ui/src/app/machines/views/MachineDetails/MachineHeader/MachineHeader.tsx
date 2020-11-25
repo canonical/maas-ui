@@ -12,12 +12,11 @@ import MachineName from "./MachineName";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
+import type { RouteParams } from "app/base/types";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-
-import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

@@ -2,9 +2,8 @@ import { array, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-
 import type { Scripts, ScriptsHistory } from "app/store/scripts/types";
+import type { Model } from "app/store/types/model";
 
 export enum ScriptType {
   Commissioning = 0,

@@ -18,6 +18,8 @@ import {
 } from "./utils";
 
 import { nodeStatus } from "app/base/enum";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
@@ -31,9 +33,6 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

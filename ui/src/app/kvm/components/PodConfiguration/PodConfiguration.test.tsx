@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import PodConfiguration from "./PodConfiguration";
 
+import { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -16,8 +17,6 @@ import {
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

@@ -11,19 +11,18 @@ import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useWindowTitle } from "app/base/hooks";
+import type { RouteParams } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import { formatErrors } from "app/utils";
-
-import type { RouteParams } from "app/base/types";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 
 const PodConfigurationSchema = Yup.object().shape({
   cpu_over_commit_ratio: Yup.number().required("CPU overcommit ratio required"),

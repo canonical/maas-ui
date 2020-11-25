@@ -10,10 +10,9 @@ import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import type { RouteParams } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-
-import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({

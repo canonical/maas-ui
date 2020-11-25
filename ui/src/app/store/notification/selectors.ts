@@ -1,8 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import configSelectors from "app/store/config/selectors";
-import { generateBaseSelectors } from "app/store/utils";
-
 import {
   NotificationIdent,
   ReleaseNotificationPaths,
@@ -12,6 +10,7 @@ import type {
   NotificationState,
 } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
+import { generateBaseSelectors } from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   NotificationState,

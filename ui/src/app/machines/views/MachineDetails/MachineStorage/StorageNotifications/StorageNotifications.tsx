@@ -4,14 +4,13 @@ import { useSelector } from "react-redux";
 
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 import {
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
   isMachineStorageConfigurable,
   useCanEdit,
 } from "app/store/machine/utils";
-
-import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

@@ -15,7 +15,6 @@ import LegacyLink from "app/base/components/LegacyLink";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
-
 import type { RootState } from "app/store/root/types";
 
 export const DeployFormFields = (): JSX.Element => {

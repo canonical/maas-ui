@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import ActionForm from "app/base/components/ActionForm";
+import type { RouteParams } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-
-import type { RouteParams } from "app/base/types";
 
 type Props = {
   setSelectedAction: (action: string | null) => void;

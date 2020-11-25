@@ -7,9 +7,8 @@ import type { SetSelectedAction } from "..";
 
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
-import { capitaliseFirst } from "app/utils";
-
 import type { MachineDetails } from "app/store/machine/types";
+import { capitaliseFirst } from "app/utils";
 
 type Props = {
   machine: MachineDetails;

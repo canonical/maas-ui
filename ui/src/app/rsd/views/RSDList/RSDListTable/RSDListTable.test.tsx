@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import RSDListTable from "./RSDListTable";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -16,8 +17,6 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

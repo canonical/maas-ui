@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import MarkBrokenForm from "./MarkBrokenForm";
 
+import { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
@@ -17,8 +18,6 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
-
-import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

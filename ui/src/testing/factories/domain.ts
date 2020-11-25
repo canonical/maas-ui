@@ -2,9 +2,8 @@ import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-
 import type { Domain } from "app/store/domain/types";
+import type { Model } from "app/store/types/model";
 
 export const domain = extend<Model, Domain>(model, {
   created: "Wed, 08 Jul. 2020 05:35:4",

@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 import LabelledList from "app/base/components/LabelledList";
 import machineSelectors from "app/store/machine/selectors";
-
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 

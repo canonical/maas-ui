@@ -10,12 +10,11 @@ import {
 import { useSelector } from "react-redux";
 
 import fabricSelectors from "app/store/fabric/selectors";
-import vlanSelectors from "app/store/vlan/selectors";
-import { formatSpeedUnits } from "app/utils";
-
 import type { Fabric } from "app/store/fabric/types";
 import type { NetworkInterface } from "app/store/machine/types";
+import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
+import { formatSpeedUnits } from "app/utils";
 
 /**
  * Returns the name of an interface's fabric.

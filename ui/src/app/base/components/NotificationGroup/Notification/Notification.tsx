@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import authSelectors from "app/store/auth/selectors";
+import { MessageType } from "app/store/message/types";
 import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
-import { isReleaseNotification } from "app/store/utils";
-
-import { MessageType } from "app/store/message/types";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
+import { isReleaseNotification } from "app/store/utils";
 
 type Props = {
   id: NotificationType["id"];

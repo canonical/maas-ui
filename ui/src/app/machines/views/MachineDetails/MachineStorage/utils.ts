@@ -5,9 +5,8 @@ import type {
 } from "./types";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { formatBytes } from "app/utils";
-
 import type { Disk, Filesystem, Partition } from "app/store/machine/types";
+import { formatBytes } from "app/utils";
 
 /**
  * Formats a storage device's size for use in tables.

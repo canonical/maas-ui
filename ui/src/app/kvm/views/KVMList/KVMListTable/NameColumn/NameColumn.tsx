@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import podSelectors from "app/store/pod/selectors";
-
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 

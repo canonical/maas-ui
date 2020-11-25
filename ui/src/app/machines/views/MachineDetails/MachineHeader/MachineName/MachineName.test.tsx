@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 import MachineName from "./MachineName";
 
 import { actions as machineActions } from "app/store/machine";
+import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -19,8 +20,6 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

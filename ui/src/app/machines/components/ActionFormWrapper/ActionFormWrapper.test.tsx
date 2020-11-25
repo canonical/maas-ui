@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import ActionFormWrapper from "./ActionFormWrapper";
 
+import { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -19,8 +20,6 @@ import {
   scriptsState as scriptsStateFactory,
   scripts as scriptsFactory,
 } from "testing/factories";
-
-import { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

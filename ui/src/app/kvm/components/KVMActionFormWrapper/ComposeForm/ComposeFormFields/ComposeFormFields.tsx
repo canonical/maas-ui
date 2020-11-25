@@ -7,10 +7,9 @@ import type { ComposeFormDefaults } from "../ComposeForm";
 
 import FormikField from "app/base/components/FormikField";
 import domainSelectors from "app/store/domain/selectors";
+import type { Pod } from "app/store/pod/types";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import zoneSelectors from "app/store/zone/selectors";
-
-import type { Pod } from "app/store/pod/types";
 
 type Props = {
   architectures: Pod["architectures"];

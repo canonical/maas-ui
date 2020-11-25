@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
 
+import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -20,8 +21,6 @@ import {
   scripts as scriptsFactory,
   scriptsState as scriptsStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

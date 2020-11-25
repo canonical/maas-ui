@@ -7,13 +7,12 @@ import configureStore from "redux-mock-store";
 
 import RSDDetailsHeader from "./RSDDetailsHeader";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-import type { RootState } from "app/store/root/types";
 
 const mockStore = configureStore();
 

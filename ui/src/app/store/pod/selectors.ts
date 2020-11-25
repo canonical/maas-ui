@@ -1,14 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import controller from "app/store/controller/selectors";
-import machine from "app/store/machine/selectors";
-import type { Host } from "app/store/types/host";
-import { generateBaseSelectors } from "app/store/utils";
-
 import type { Controller } from "app/store/controller/types";
+import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodState } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import type { Host } from "app/store/types/host";
+import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 

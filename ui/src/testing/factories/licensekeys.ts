@@ -2,9 +2,8 @@ import { extend } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-
 import type { LicenseKeys } from "app/store/licensekeys/types";
+import type { Model } from "app/store/types/model";
 
 export const licenseKeys = extend<Model, LicenseKeys>(model, {
   distro_series: "win2012",
