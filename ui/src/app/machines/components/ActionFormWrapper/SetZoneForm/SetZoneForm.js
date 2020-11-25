@@ -24,7 +24,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const { machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.SET_POOL
+    NodeActions.SET_ZONE
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
-      actionName={NodeActions.SET_POOL}
+      actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
       errors={errors}
