@@ -344,6 +344,7 @@ exports[`StatusColumn renders 1`] = `
               positionNode={null}
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+              toggleDisabled={false}
             >
               <span
                 className="p-table-menu p-contextual-menu p-contextual-menu--left"
@@ -359,6 +360,7 @@ exports[`StatusColumn renders 1`] = `
                   aria-expanded="false"
                   aria-haspopup="true"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                  disabled={false}
                   hasIcon={true}
                   onClick={[Function]}
                   type="button"
@@ -368,6 +370,7 @@ exports[`StatusColumn renders 1`] = `
                     aria-expanded="false"
                     aria-haspopup="true"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                    disabled={false}
                     onClick={[Function]}
                     type="button"
                   >

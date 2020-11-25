@@ -52,7 +52,7 @@ const MachineStorage = (): JSX.Element => {
             <>
               <h4>Filesystems</h4>
               <FilesystemsTable
-                editable={canEditStorage}
+                canEditStorage={canEditStorage}
                 filesystems={filesystems}
               />
             </>
@@ -66,7 +66,11 @@ const MachineStorage = (): JSX.Element => {
         )}
         <Strip shallow>
           <h4>Available disks and partitions</h4>
-          <AvailableStorageTable storageDevices={available} />
+          <AvailableStorageTable
+            canEditStorage={canEditStorage}
+            storageDevices={available}
+            systemId={id}
+          />
         </Strip>
         <Strip shallow>
           <h4>Used disks and partitions</h4>

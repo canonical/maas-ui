@@ -97,6 +97,33 @@ export const storageDeviceInUse = (
 };
 
 /**
+ * Returns whether a storage device can be partitioned.
+ * @param storageDevice - the storage device to check.
+ * @returns whether the storage device can be partitioned.
+ */
+export const canBePartitioned = (storageDevice: Disk | Partition): boolean => {
+  if (
+    ["lvm-vg", "partition"].includes(storageDevice.type) ||
+    !!storageDevice.filesystem?.fstype ||
+    !("available_size" in storageDevice)
+  ) {
+    return false;
+  }
+
+  if (
+    "parent" in storageDevice &&
+    storageDevice.type === "virtual" &&
+    ["bcache", "lvm-vg"].includes(storageDevice.parent?.type || "")
+  ) {
+    return false;
+  }
+
+  // TODO: This does not take into account space that needs to be reserved.
+  // https://github.com/canonical-web-and-design/MAAS-squad/issues/2274
+  return storageDevice.available_size >= MIN_PARTITION_SIZE;
+};
+
+/**
  * Normalises a filesystem for use in the filesystems table.
  * @param filesystem - the base filesystem object.
  * @param name - the name to give the filesystem.
@@ -139,7 +166,13 @@ export const normaliseStorageDevice = (
     numaNodes = storageDevice.numa_nodes;
   }
 
+  const actions: NormalisedStorageDevice["actions"] = [];
+  if (canBePartitioned(storageDevice)) {
+    actions.push("addPartition");
+  }
+
   return {
+    actions,
     boot: "is_boot" in storageDevice ? storageDevice.is_boot : null,
     firmware:
       "firmware_version" in storageDevice

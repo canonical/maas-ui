@@ -1,6 +1,8 @@
 import React from "react";
 
 import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 import { separateStorageData } from "../utils";
 
@@ -8,93 +10,73 @@ import AvailableStorageTable from "./AvailableStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import {
+  machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
-  machinePartition as partitionFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
+
+const mockStore = configureStore();
 
 describe("AvailableStorageTable", () => {
   it("can show an empty message", () => {
-    const wrapper = mount(<AvailableStorageTable storageDevices={[]} />);
+    const wrapper = mount(
+      <AvailableStorageTable
+        canEditStorage
+        storageDevices={[]}
+        systemId="abc123"
+      />
+    );
 
     expect(wrapper.find("[data-test='no-available']").text()).toBe(
       "No available disks or partitions."
     );
   });
 
-  it("correctly shows type of physical disks", () => {
-    const disks = [diskFactory({ type: "physical" })];
-    const { available } = separateStorageData(disks);
-    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
-
-    expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
-      "Physical"
+  it("disables action dropdown if storage cannot be edited", () => {
+    const disk = diskFactory({ available_size: MIN_PARTITION_SIZE + 1 });
+    const { available } = separateStorageData([disk]);
+    const wrapper = mount(
+      <AvailableStorageTable
+        canEditStorage={false}
+        storageDevices={available}
+        systemId="abc123"
+      />
     );
+
+    expect(wrapper.find("TableMenu").at(0).prop("disabled")).toBe(true);
   });
 
-  it("correctly shows type of partitions", () => {
-    const disks = [
-      diskFactory({
-        available_size: 0,
-        partitions: [
-          partitionFactory({
-            filesystem: fsFactory({ mount_point: "" }),
-            type: "partition",
-          }),
-        ],
+  it("can open the add partition form if disk can be partitioned", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      type: "physical",
+    });
+    const { available } = separateStorageData([disk]);
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
       }),
-    ];
-    const { available } = separateStorageData(disks);
-    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
-
-    expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
-      "Partition"
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable
+          canEditStorage
+          storageDevices={available}
+          systemId="abc123"
+        />
+      </Provider>
     );
-  });
 
-  it("correctly shows type of volume groups", () => {
-    const disks = [
-      diskFactory({ available_size: MIN_PARTITION_SIZE + 1, type: "lvm-vg" }),
-    ];
-    const { available } = separateStorageData(disks);
-    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("ContextualMenuDropdown button").at(0).simulate("click");
 
-    expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
-      "Volume group"
-    );
-  });
-
-  it("correctly shows type of logical volumes", () => {
-    const [parent, child] = [
-      diskFactory({ available_size: 0, id: 1, type: "lvm-vg" }),
-      diskFactory({
-        available_size: MIN_PARTITION_SIZE + 1,
-        parent: { id: 1, type: "lvm-vg", uuid: "abc" },
-        type: "virtual",
-      }),
-    ];
-    const { available } = separateStorageData([parent, child]);
-    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
-
-    expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
-      "Logical volume"
-    );
-  });
-
-  it("correctly shows type of RAIDs", () => {
-    const [parent, child] = [
-      diskFactory({ available_size: 0, id: 1, type: "raid-0" }),
-      diskFactory({
-        available_size: MIN_PARTITION_SIZE + 1,
-        parent: { id: 1, type: "raid-0", uuid: "abc" },
-        type: "virtual",
-      }),
-    ];
-    const { available } = separateStorageData([parent, child]);
-    const wrapper = mount(<AvailableStorageTable storageDevices={available} />);
-
-    expect(wrapper.find("[data-test='type']").at(0).prop("primary")).toBe(
-      "RAID 0"
-    );
+    expect(wrapper.find("AddPartition").exists()).toBe(true);
   });
 });

@@ -411,9 +411,9 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "create_partition";
         handler.prepare = (params: {
           blockId: number;
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
+          filesystemType?: string;
+          mountOptions?: string;
+          mountPoint?: string;
           partitionSize: number;
           systemId: Machine["system_id"];
         }) => ({

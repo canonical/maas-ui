@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { MainTable } from "@canonical/react-components";
 
@@ -9,18 +9,63 @@ import TestStatus from "../TestStatus";
 import type { NormalisedStorageDevice as StorageDevice } from "../types";
 import { formatSize, formatType } from "../utils";
 
+import AddPartition from "./AddPartition";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
+import TableMenu from "app/base/components/TableMenu";
 import { useTableSort } from "app/base/hooks";
+import type { Machine } from "app/store/machine/types";
+
+type Expanded = {
+  content: "addPartition";
+  id: number;
+};
+
+type Props = {
+  canEditStorage: boolean;
+  storageDevices: StorageDevice[];
+  systemId: Machine["system_id"];
+};
+
+/**
+ * Generate the actions that a given storage device can perform.
+ * @param storageDevice - the storage device to check.
+ * @param setExpanded - function to set the expanded table row and content.
+ * @returns list of action links.
+ */
+const getActionLinks = (
+  storageDevice: StorageDevice,
+  setExpanded: (expanded: Expanded) => void
+) => {
+  const actionLinks = [];
+
+  if (storageDevice.actions.includes("addPartition")) {
+    actionLinks.push({
+      children: "Add partition...",
+      onClick: () => {
+        setExpanded({
+          content: "addPartition",
+          id: storageDevice.id,
+        });
+      },
+    });
+  }
+
+  return actionLinks;
+};
 
 const getSortValue = (
   sortKey: keyof StorageDevice,
   storageDevice: StorageDevice
 ) => storageDevice[sortKey];
 
-type Props = { storageDevices: StorageDevice[] };
-
-const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
+const AvailableStorageTable = ({
+  canEditStorage,
+  storageDevices,
+  systemId,
+}: Props): JSX.Element => {
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
     direction: "descending",
@@ -28,16 +73,19 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
   // TODO: update useTableSort to TS with generics
   // https://github.com/canonical-web-and-design/maas-ui/issues/1869
   const sortedStorageDevices = sortRows(storageDevices) as StorageDevice[];
+  const closeExpanded = () => setExpanded(null);
 
   return (
     <>
       <MainTable
+        className="p-table-expanding--light"
         defaultSort="name"
         defaultSortDirection="ascending"
+        expanding
         headers={[
           {
             content: (
-              <>
+              <div>
                 <TableHeader
                   currentSort={currentSort}
                   onClick={() => updateSort("name")}
@@ -46,12 +94,12 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   Name
                 </TableHeader>
                 <TableHeader>Serial</TableHeader>
-              </>
+              </div>
             ),
           },
           {
             content: (
-              <>
+              <div>
                 <TableHeader
                   currentSort={currentSort}
                   onClick={() => updateSort("model")}
@@ -60,7 +108,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   Model
                 </TableHeader>
                 <TableHeader>Firmware</TableHeader>
-              </>
+              </div>
             ),
           },
           {
@@ -88,7 +136,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
           },
           {
             content: (
-              <>
+              <div>
                 <TableHeader
                   currentSort={currentSort}
                   onClick={() => updateSort("type")}
@@ -97,12 +145,12 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   Type
                 </TableHeader>
                 <TableHeader>NUMA node</TableHeader>
-              </>
+              </div>
             ),
           },
           {
             content: (
-              <>
+              <div>
                 <TableHeader
                   currentSort={currentSort}
                   onClick={() => updateSort("testStatus")}
@@ -111,7 +159,7 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   Health
                 </TableHeader>
                 <TableHeader>Tags</TableHeader>
-              </>
+              </div>
             ),
           },
           {
@@ -120,7 +168,13 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
           },
         ]}
         rows={sortedStorageDevices.map((storageDevice) => {
+          const actionLinks = getActionLinks(storageDevice, setExpanded);
+
           return {
+            className:
+              expanded?.id === storageDevice.id
+                ? "p-table__row is-active"
+                : null,
             columns: [
               {
                 content: (
@@ -141,11 +195,11 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                 ),
               },
               {
+                className: "u-align--center",
                 content: (
                   <DoubleRow
                     data-test="boot"
                     primary={<BootStatus storageDevice={storageDevice} />}
-                    primaryClassName="u-align--center"
                   />
                 ),
               },
@@ -182,8 +236,30 @@ const AvailableStorageTable = ({ storageDevices }: Props): JSX.Element => {
                   />
                 ),
               },
-              { content: "" },
+              {
+                className: "u-align--right",
+                content: (
+                  <TableMenu
+                    disabled={!canEditStorage || actionLinks.length === 0}
+                    links={actionLinks}
+                    position="right"
+                    title="Take action:"
+                  />
+                ),
+              },
             ],
+            expanded: expanded?.id === storageDevice.id,
+            expandedContent: expanded?.content ? (
+              <div className="u-flex--grow">
+                {expanded.content === "addPartition" && (
+                  <AddPartition
+                    closeExpanded={closeExpanded}
+                    diskId={storageDevice.id}
+                    systemId={systemId}
+                  />
+                )}
+              </div>
+            ) : null,
             key: storageDevice.id,
           };
         })}
