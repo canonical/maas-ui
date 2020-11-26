@@ -3,16 +3,15 @@ import React, { useEffect } from "react";
 import { Col, Row, Select } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import type { RouteParams } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
@@ -25,13 +24,16 @@ const AddSpecialFilesystemSchema = Yup.object().shape({
 
 type Props = {
   closeForm: () => void;
+  systemId: Machine["system_id"];
 };
 
-export const AddSpecialFilesystem = ({ closeForm }: Props): JSX.Element => {
+export const AddSpecialFilesystem = ({
+  closeForm,
+  systemId,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams<RouteParams>();
   const { mountingSpecial } = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, id)
+    machineSelectors.getStatuses(state, systemId)
   );
   const previousMountingSpecial = usePrevious(mountingSpecial);
   const saved = !mountingSpecial && previousMountingSpecial;
@@ -66,7 +68,7 @@ export const AddSpecialFilesystem = ({ closeForm }: Props): JSX.Element => {
             filesystemType: values.filesystemType,
             mountOptions: values.mountOptions,
             mountPoint: values.mountPoint,
-            systemId: id,
+            systemId,
           };
           dispatch(machineActions.mountSpecial(params));
         }}

@@ -54,6 +54,7 @@ const MachineStorage = (): JSX.Element => {
               <FilesystemsTable
                 canEditStorage={canEditStorage}
                 filesystems={filesystems}
+                systemId={id}
               />
             </>
           )}

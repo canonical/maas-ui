@@ -502,9 +502,9 @@ const statusHandlers = generateStatusHandlers<
       case "delete-filesystem":
         handler.method = "delete_filesystem";
         handler.prepare = (params: {
-          blockDeviceId: number;
+          blockDeviceId?: number;
           filesystemId: number;
-          partitionId: number;
+          partitionId?: number;
           systemId: Machine["system_id"];
         }) => ({
           blockdevice_id: params.blockDeviceId,

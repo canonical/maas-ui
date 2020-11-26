@@ -2,7 +2,6 @@ import React from "react";
 
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
@@ -30,17 +29,7 @@ describe("AddSpecialFilesystem", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/storage", key: "testKey" },
-          ]}
-        >
-          <Route
-            exact
-            path="/machine/:id/storage"
-            component={() => <AddSpecialFilesystem closeForm={jest.fn()} />}
-          />
-        </MemoryRouter>
+        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
       </Provider>
     );
 
