@@ -20,6 +20,7 @@ yarn.lock
 *.swp
 *.fuse*
 .DS_Store
+.eslintcache
 .env.development.local
 .env.local
 .env.production.local
