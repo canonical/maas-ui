@@ -10,7 +10,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { TSFixMe } from "app/base/types";
 import type { RootState } from "app/store/root/types";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -36,6 +36,12 @@ type StatusStates = Pick<RootState, "machine" | "pod">;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
+
+// Models on the root state that contain event errors.
+type EventErrorStates = Pick<RootState, "machine">;
+
+// Models that contain event errors.
+type EventErrorStateTypes = EventErrorStates[keyof EventErrorStates];
 
 /**
  * The type of the generic reducers.
@@ -85,16 +91,67 @@ export const genericInitialState = {
 };
 
 /**
+ * A method to update the event errors for a model
+ * @template S - The model state type e.g. DHCPSnippetState.
+ * @template I - A model that is used as an array of items on the provided
+ *               state e.g. DHCPSnippet
+ * @template K - A model key e.g. "id"
+ */
+export const updateErrors = <
+  S extends EventErrorStateTypes,
+  I extends S["items"][0],
+  K extends keyof I
+>(
+  state: S,
+  action: {
+    payload: S["eventErrors"][0]["error"];
+    type: string;
+    meta: GenericItemMeta<I>;
+    error?: boolean;
+  } | null,
+  event: string | null,
+  indexKey: K
+): S => {
+  // If no action and event have been provided then clean up the errors.
+  if (!action && !event) {
+    state.eventErrors = [];
+    return state;
+  }
+  const item = action?.meta?.item;
+  const metaId = item ? item[indexKey] : null;
+  // Clean any existing errors that match the event and machine.
+  const newErrors = (state.eventErrors as Array<
+    EventError<I, S["eventErrors"][0]["error"], K>
+  >).reduce((allErrors, errorItem) => {
+    if (errorItem.event !== event || errorItem.id !== metaId) {
+      allErrors.push(errorItem);
+    }
+    return allErrors;
+  }, []);
+  // Set the new error.
+  newErrors.push({
+    error: action.payload,
+    event,
+    id: metaId,
+  });
+  // Replace the event errors with the cleaned/updated list.
+  state.eventErrors = newErrors;
+  return state;
+};
+
+/**
  * A utility to generate a slice for a model.
  * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template E - The type of the errors for a model's state.
  * @template R - The type of the model's reducers.
- * @param {string} name - The name of the model that matches the name in MAAS.
- * @param {object} initialState - Any additional initial state that doesn't
- *                                exist on all models.
- * @param {object} reducers - Additional reducers or overrides for
- *                            base reducers.
+ * @param name - The name of the model that matches the name in MAAS.
+ * @param indexKey - The key used to index a model e.g. "system_id".
+ * @param initialState - Any additional initial state that doesn't
+ *                       exist on all models.
+ * @param reducers - Additional reducers or overrides for
+ *                   base reducers.
+ * @param setErrors - A function to update eventErrors.
  */
 export const generateSlice = <
   I extends CommonStateTypes["items"][0],
@@ -107,11 +164,17 @@ export const generateSlice = <
   indexKey,
   initialState,
   reducers,
+  setErrors,
 }: {
   name: keyof CommonStates;
   indexKey: K;
   initialState?: GenericState<I, E>;
   reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
+  setErrors?: (
+    state: GenericState<I, E>,
+    action: PayloadAction<E>,
+    event: string
+  ) => GenericState<I, E>;
 }): Slice<GenericState<I, E>, R, typeof name> => {
   // The base reducers are common for all models.
   const baseReducers = {
@@ -134,6 +197,9 @@ export const generateSlice = <
     },
     fetchError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
       state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "fetch");
+      }
       state.loading = false;
     },
     fetchSuccess: (state: GenericState<I, E>, action: PayloadAction<I[]>) => {
@@ -161,6 +227,9 @@ export const generateSlice = <
     },
     createError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
       state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "create");
+      }
       state.saving = false;
     },
     createSuccess: (state: GenericState<I, E>) => {
@@ -201,6 +270,9 @@ export const generateSlice = <
     },
     updateError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
       state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "update");
+      }
       state.saving = false;
     },
     updateSuccess: (state: GenericState<I, E>) => {
@@ -239,6 +311,9 @@ export const generateSlice = <
     },
     deleteError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
       state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "delete");
+      }
       state.saving = false;
     },
     deleteSuccess: (state: GenericState<I, E>) => {
@@ -254,6 +329,9 @@ export const generateSlice = <
     },
     cleanup: (state: GenericState<I, E>) => {
       state.errors = null;
+      if (setErrors) {
+        state = setErrors(state, null, null);
+      }
       state.saved = false;
       state.saving = false;
     },
@@ -302,10 +380,11 @@ export type StatusHandlers<
  * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template K - A model key e.g. "id"
- * @param {string} name - The name of the model that matches the name in MAAS.
- * @param {string} indexKey - The key used to index a model e.g. "id"
+ * @param name - The name of the model that matches the name in MAAS.
+ * @param indexKey - The key used to index a model e.g. "id"
  *                            or "system_id".
- * @param {StatusHandlers[]} handlers - A collection of status handlers.
+ * @param handlers - A collection of status handlers.
+ * @param setErrors - A function to update eventErrors.
  */
 export const generateStatusHandlers = <
   S extends StatusStateTypes,
@@ -315,7 +394,12 @@ export const generateStatusHandlers = <
 >(
   modelName: string,
   indexKey: K,
-  handlers: StatusHandlers<S, I>[]
+  handlers: StatusHandlers<S, I>[],
+  setErrors?: (
+    state: Draft<S>,
+    action: PayloadAction<S["errors"]>,
+    event: string
+  ) => Draft<S>
 ): SliceCaseReducers<S> =>
   handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
     // The initial handler.
@@ -394,6 +478,9 @@ export const generateStatusHandlers = <
         // Call the reducer handler if supplied.
         status.error && status.error(state, action);
         state.errors = action.payload;
+        if (setErrors) {
+          state = setErrors(state, action, status.status);
+        }
         state.statuses[String(action.meta.item[indexKey])][
           status.statusKey
         ] = false;

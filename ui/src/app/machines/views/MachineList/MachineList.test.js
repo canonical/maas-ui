@@ -398,4 +398,21 @@ describe("MachineList", () => {
       "No machines match the search criteria."
     );
   });
+
+  it("cleans up when unmounting", () => {
+    const store = mockStore(initialState);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineList setSearchFilter={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+    expect(
+      store.getActions().some((action) => action.type === "machine/cleanup")
+    ).toBe(true);
+  });
 });

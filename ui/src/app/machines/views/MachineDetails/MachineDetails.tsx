@@ -39,6 +39,8 @@ const MachineDetails = (): JSX.Element => {
     // Unset active machine on cleanup.
     return () => {
       dispatch(machineActions.setActive(null));
+      // Clean up any machine errors etc. when closing the details.
+      dispatch(machineActions.cleanup());
     };
   }, [dispatch, id]);
 

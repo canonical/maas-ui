@@ -51,11 +51,10 @@ export const TestForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const errors = useSelector(machineSelectors.errors);
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.TEST
   );
 

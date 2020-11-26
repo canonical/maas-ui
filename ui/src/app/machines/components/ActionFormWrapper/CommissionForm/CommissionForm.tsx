@@ -64,7 +64,6 @@ type Props = {
 export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const errors = useSelector(machineSelectors.errors);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
@@ -75,7 +74,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.COMMISSION
   );
 

@@ -1,7 +1,9 @@
 import machine from "./selectors";
 
+import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -183,5 +185,114 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.settingPoolSelected(state)).toStrictEqual([items[2]]);
+  });
+
+  it("can get all event errors", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory(),
+      machineEventErrorFactory(),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(machine.eventErrors(state)).toStrictEqual(machineEventErrors);
+  });
+
+  it("can get event errors for a machine", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123" }),
+      machineEventErrorFactory(),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(machine.eventErrorsForIds(state, "abc123")).toStrictEqual([
+      machineEventErrors[0],
+    ]);
+  });
+
+  it("can get event errors for a machine and a provided event", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
+      machineEventErrorFactory({ event: NodeActions.TAG }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(machine.eventErrorsForIds(state, "abc123")).toStrictEqual([
+      machineEventErrors[0],
+    ]);
+  });
+
+  it("can get event errors for a machine and no event", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123", event: null }),
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
+      machineEventErrorFactory({ event: null }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(machine.eventErrorsForIds(state, "abc123", null)).toStrictEqual([
+      machineEventErrors[0],
+    ]);
+  });
+
+  it("can get event errors for multiple machines", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123" }),
+      machineEventErrorFactory({ id: "def456" }),
+      machineEventErrorFactory(),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(
+      machine.eventErrorsForIds(state, ["abc123", "def456"])
+    ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
+  });
+
+  it("can get event errors for multiple machines and a provided event", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
+      machineEventErrorFactory({ id: "def456", event: NodeActions.TAG }),
+      machineEventErrorFactory({ event: NodeActions.TAG }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(
+      machine.eventErrorsForIds(state, ["abc123", "def456"], NodeActions.TAG)
+    ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
+  });
+
+  it("can get event errors for multiple machines and no event", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123", event: null }),
+      machineEventErrorFactory({ id: "def456", event: null }),
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
+      machineEventErrorFactory({ id: "def456", event: NodeActions.TAG }),
+      machineEventErrorFactory({ event: null }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(
+      machine.eventErrorsForIds(state, ["abc123", "def456"], null)
+    ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
   });
 });

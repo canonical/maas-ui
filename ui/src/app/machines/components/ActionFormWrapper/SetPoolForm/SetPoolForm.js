@@ -27,15 +27,16 @@ export const SetPoolForm = ({ setSelectedAction }) => {
     name: "",
   });
   const activeMachine = useSelector(machineSelectors.active);
-  const machineErrors = useSelector(machineSelectors.errors);
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
+  const {
+    errors: machineErrors,
+    machinesToAction,
+    processingCount,
+  } = useMachineActionForm(NodeActions.SET_POOL);
   const errors =
-    Object.keys(machineErrors).length > 0 ? machineErrors : poolErrors;
-  const { machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.SET_POOL
-  );
+    Object.keys(machineErrors || {}).length > 0 ? machineErrors : poolErrors;
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());

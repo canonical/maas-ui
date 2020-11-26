@@ -10,9 +10,13 @@ import type { Machine, MachineState } from "./types";
 import type { ScriptResult } from "app/store/scriptresults/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
-import { generateSlice, generateStatusHandlers } from "app/store/utils";
+import {
+  generateSlice,
+  generateStatusHandlers,
+  updateErrors,
+} from "app/store/utils";
 import type { GenericSlice } from "app/store/utils";
-import type { StatusHandlers } from "app/store/utils/slice";
+import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
 import { kebabToCamelCase } from "app/utils";
 
 export type ScriptInput = {
@@ -270,6 +274,26 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   updateFilesystem: WithPrepare;
   updateVmfsDatastore: WithPrepare;
 };
+
+/**
+ * Wrap the updateError call so that the call is made with the correct generics.
+ */
+const setErrors = (
+  state: MachineState,
+  action: {
+    payload: MachineState["errors"];
+    type: string;
+    meta: GenericItemMeta<Machine>;
+    error?: boolean;
+  },
+  event: string
+): MachineState =>
+  updateErrors<MachineState, Machine, "system_id">(
+    state,
+    action,
+    event,
+    "system_id"
+  );
 
 const statusHandlers = generateStatusHandlers<
   MachineState,
@@ -678,7 +702,8 @@ const statusHandlers = generateStatusHandlers<
         break;
     }
     return handler;
-  })
+  }),
+  setErrors
 ) as MachineReducers;
 
 export type MachineSlice = GenericSlice<MachineState, Machine, MachineReducers>;
@@ -909,9 +934,14 @@ const machineSlice = generateSlice<
     },
     getError: (
       state: MachineState,
-      action: PayloadAction<MachineState["errors"]>
+      action: PayloadAction<
+        MachineState["errors"],
+        string,
+        GenericItemMeta<Machine>
+      >
     ) => {
       state.errors = action.payload;
+      state = setErrors(state, action, "get");
       state.loading = false;
       state.saving = false;
     },
@@ -948,10 +978,15 @@ const machineSlice = generateSlice<
     },
     setActiveError: (
       state: MachineState,
-      action: PayloadAction<MachineState["errors"][0]>
+      action: PayloadAction<
+        MachineState["errors"][0],
+        string,
+        GenericItemMeta<Machine>
+      >
     ) => {
       state.active = null;
       state.errors = action.payload;
+      state = setErrors(state, action, "setActive");
     },
     setActiveSuccess: (
       state: MachineState,
@@ -988,9 +1023,14 @@ const machineSlice = generateSlice<
     },
     addChassisError: (
       state: MachineState,
-      action: PayloadAction<MachineState["errors"]>
+      action: PayloadAction<
+        MachineState["errors"],
+        string,
+        GenericItemMeta<Machine>
+      >
     ) => {
       state.errors = action.payload;
+      state = setErrors(state, action, "addChassis");
       state.loading = false;
       state.saving = false;
     },
@@ -1039,6 +1079,7 @@ const machineSlice = generateSlice<
       delete state.statuses[action.payload];
     },
   },
+  setErrors,
 }) as MachineSlice;
 
 export const { actions } = machineSlice;

@@ -96,7 +96,7 @@ type Props = {
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
   disabled?: boolean;
-  errors?: { [x: string]: TSFixMe };
+  errors?: { [x: string]: TSFixMe } | null;
   initialValues?: { [x: string]: TSFixMe };
   loaded?: boolean;
   loading?: boolean;

@@ -2,7 +2,7 @@ import type { TSFixMe } from "app/base/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { BaseNode, TestStatus } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 
 export type IpAddresses = {
   ip: string;
@@ -319,6 +319,7 @@ export type MachineStatuses = {
 
 export type MachineState = {
   active: string | null;
+  eventErrors: EventError<Machine, TSFixMe, "system_id">[];
   selected: Machine["system_id"][];
   statuses: MachineStatuses;
 } & GenericState<Machine, TSFixMe>;

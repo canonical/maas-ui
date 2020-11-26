@@ -1,5 +1,5 @@
 import type { RouterState } from "connected-react-router";
-import { array, define } from "cooky-cutter";
+import { array, define, random } from "cooky-cutter";
 import type { Location } from "history";
 
 import { message } from "./message";
@@ -28,6 +28,7 @@ import type {
 } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type {
+  Machine,
   MachineState,
   MachineStatus,
   MachineStatuses,
@@ -49,6 +50,7 @@ import type { StatusState } from "app/store/status/types";
 import type { SubnetState } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
+import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
 import type { ZoneState } from "app/store/zone/types";
@@ -148,9 +150,18 @@ export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,
 });
 
+export const machineEventError = define<
+  EventError<Machine, MachineState["errors"], "system_id">
+>({
+  id: random().toString(),
+  error: "Uh oh",
+  event: "tag",
+});
+
 export const machineState = define<MachineState>({
   ...defaultState,
   active: null,
+  eventErrors: () => [],
   selected: () => [],
   statuses: () => ({}),
 });

@@ -146,6 +146,56 @@ const selected = createSelector(
     )
 );
 
+/**
+ * Select the event errors for all machines.
+ * @param state - The redux state.
+ * @returns The event errors.
+ */
+const eventErrors = (state: RootState): MachineState["eventErrors"] =>
+  state.machine.eventErrors;
+
+/**
+ * Select the event errors for a machine or machines.
+ * @param ids - A machine's system ID or array of IDs.
+ * @param event - A machine action event.
+ * @returns The event errors for the machine.
+ */
+const eventErrorsForIds = createSelector(
+  [
+    eventErrors,
+    (
+      _state: RootState,
+      ids: Machine["system_id"] | Machine["system_id"][],
+      event?: string | null
+    ) => ({
+      ids,
+      event,
+    }),
+  ],
+  (errors: MachineState["eventErrors"][0][], { ids, event }) => {
+    if (!errors || !ids) {
+      return [];
+    }
+    // If a single id has been provided then turn into an array to operate over.
+    const idArray = Array.isArray(ids) ? ids : [ids];
+    return errors.reduce<MachineState["eventErrors"][0][]>((matches, error) => {
+      let match = false;
+      const matchesId = !!error.id && idArray.includes(error.id);
+      // If an event has been provided as `null` then filter for errors with
+      // a null event.
+      if (event || event === null) {
+        match = matchesId && error.event === event;
+      } else {
+        match = matchesId;
+      }
+      if (match) {
+        matches.push(error);
+      }
+      return matches;
+    }, []);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -164,6 +214,8 @@ const selectors = {
   deployingSelected: statusSelectors["deployingSelected"],
   enteringRescueMode: statusSelectors["enteringRescueMode"],
   enteringRescueModeSelected: statusSelectors["enteringRescueModeSelected"],
+  eventErrors,
+  eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   getStatuses,

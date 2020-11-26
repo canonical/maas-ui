@@ -2,6 +2,7 @@ import type { Machine, NetworkInterface } from "../machine/types";
 
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
+import type { GenericState } from "app/store/types/state";
 
 export type NodeScriptResult = {
   name: string;
@@ -41,14 +42,7 @@ export type NodeResults = {
   results: NodeResult[];
 };
 
-export type NodeResultState = {
-  errors: TSFixMe;
-  items: NodeResults[];
-  loaded: boolean;
-  loading: boolean;
-  saved: boolean;
-  saving: boolean;
-};
+export type NodeResultState = GenericState<NodeResults, TSFixMe>;
 
 // response from server
 export type NodeResultResponse = {

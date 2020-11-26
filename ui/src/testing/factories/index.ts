@@ -15,6 +15,7 @@ export {
   licenseKeysState,
   locationState,
   machineActionsState,
+  machineEventError,
   machineState,
   machineStatus,
   machineStatuses,

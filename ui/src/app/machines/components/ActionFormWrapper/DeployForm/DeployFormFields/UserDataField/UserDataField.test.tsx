@@ -114,7 +114,7 @@ describe("DeployFormFields", () => {
         },
       }),
       machine: {
-        errors: {},
+        errors: null,
         loading: false,
         loaded: true,
         items: machines,

@@ -15,7 +15,7 @@ describe("SetPoolFormFields", () => {
   beforeEach(() => {
     state = rootStateFactory({
       machine: {
-        errors: {},
+        errors: null,
         loading: false,
         loaded: true,
         items: [
