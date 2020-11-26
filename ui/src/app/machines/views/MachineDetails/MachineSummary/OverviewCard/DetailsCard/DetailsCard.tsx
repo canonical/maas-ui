@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { Col, Row, SearchBox } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
 
 import FilterAccordion from "./FilterAccordion";
 import GroupSelect from "./GroupSelect";

@@ -1,7 +1,6 @@
 import { Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
-import React from "react";
 
 import FormikField from "app/base/components/FormikField";
 

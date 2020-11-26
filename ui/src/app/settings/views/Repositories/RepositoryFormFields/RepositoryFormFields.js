@@ -1,7 +1,6 @@
 import { Col, List, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import React from "react";
 
 import generalSelectors from "app/store/general/selectors";
 import FormikField from "app/base/components/FormikField";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import type { SetSelectedAction } from "../../MachineSummary";
 import TestResults from "../../TestResults";
 

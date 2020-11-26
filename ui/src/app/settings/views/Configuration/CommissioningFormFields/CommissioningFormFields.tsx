@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Link, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";

@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
 
 import { getPowerIcon } from "app/utils";
 import { actions as machineActions } from "app/store/machine";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 

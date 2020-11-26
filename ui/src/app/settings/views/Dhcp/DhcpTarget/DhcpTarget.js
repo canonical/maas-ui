@@ -1,6 +1,5 @@
 import { Spinner } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
 
 import { useDhcpTarget } from "app/settings/hooks";
 import LegacyLink from "app/base/components/LegacyLink";

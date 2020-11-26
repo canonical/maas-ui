@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import React from "react";
 
 import MachineListControls, { DEBOUNCE_INTERVAL } from "./MachineListControls";
 import { rootState as rootStateFactory } from "testing/factories";
