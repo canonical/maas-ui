@@ -12,7 +12,7 @@ exports[`NameColumn renders 1`] = `
         className="has-inline-label keep-label-opacity"
         id="abc123"
         label={
-          <ForwardRef
+          <ForwardRef(Link)
             to="/undefined/abc123"
           >
             <strong
@@ -24,7 +24,7 @@ exports[`NameColumn renders 1`] = `
               .
               example
             </small>
-          </ForwardRef>
+          </ForwardRef(Link)>
         }
         onChange={[MockFunction]}
         type="checkbox"
@@ -51,7 +51,7 @@ exports[`NameColumn renders 1`] = `
               className="has-inline-label keep-label-opacity"
               id="abc123"
               label={
-                <ForwardRef
+                <ForwardRef(Link)
                   to="/undefined/abc123"
                 >
                   <strong
@@ -63,7 +63,7 @@ exports[`NameColumn renders 1`] = `
                     .
                     example
                   </small>
-                </ForwardRef>
+                </ForwardRef(Link)>
               }
               onChange={[MockFunction]}
               type="checkbox"
@@ -73,7 +73,7 @@ exports[`NameColumn renders 1`] = `
                 className="u-no-margin--bottom machine-list--inline-input"
                 forId="abc123"
                 label={
-                  <ForwardRef
+                  <ForwardRef(Link)
                     to="/undefined/abc123"
                   >
                     <strong
@@ -85,7 +85,7 @@ exports[`NameColumn renders 1`] = `
                       .
                       example
                     </small>
-                  </ForwardRef>
+                  </ForwardRef(Link)>
                 }
                 labelFirst={false}
               >

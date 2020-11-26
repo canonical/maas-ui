@@ -20,12 +20,12 @@ exports[`PoolColumn renders 1`] = `
       <span
         data-test="pool"
       >
-        <ForwardRef
+        <ForwardRef(Link)
           className="p-link--soft"
           to="/pools"
         >
           default
-        </ForwardRef>
+        </ForwardRef(Link)>
       </span>
     }
     primaryAriaLabel="Pool"
