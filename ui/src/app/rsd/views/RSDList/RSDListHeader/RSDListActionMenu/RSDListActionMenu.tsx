@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 

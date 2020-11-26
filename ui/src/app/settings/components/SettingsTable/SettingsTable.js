@@ -2,6 +2,7 @@ import { Link as VanillaLink, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import React from "react";
 
 import {
   Button,

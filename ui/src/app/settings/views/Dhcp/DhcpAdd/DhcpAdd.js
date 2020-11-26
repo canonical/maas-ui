@@ -1,3 +1,5 @@
+import React from "react";
+
 import DhcpForm from "../DhcpForm";
 
 export const DhcpAdd = () => {

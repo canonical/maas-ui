@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { Link } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";

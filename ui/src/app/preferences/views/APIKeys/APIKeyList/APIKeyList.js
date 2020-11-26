@@ -1,6 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";

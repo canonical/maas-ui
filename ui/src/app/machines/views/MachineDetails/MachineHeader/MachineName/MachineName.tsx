@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";

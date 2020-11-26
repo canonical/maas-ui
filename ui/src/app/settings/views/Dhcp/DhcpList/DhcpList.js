@@ -2,7 +2,7 @@ import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useWindowTitle } from "app/base/hooks";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { actions as controllerActions } from "app/store/controller";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";

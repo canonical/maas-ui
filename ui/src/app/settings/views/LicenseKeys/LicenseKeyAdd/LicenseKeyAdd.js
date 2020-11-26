@@ -1,3 +1,5 @@
+import React from "react";
+
 import LicenseKeyForm from "../LicenseKeyForm";
 
 export const LicenseKeyAdd = () => {

@@ -1,6 +1,6 @@
 import { Col, Spinner, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 
 import { config as configActions } from "app/settings/actions";

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import machineSelectors from "app/store/machine/selectors";

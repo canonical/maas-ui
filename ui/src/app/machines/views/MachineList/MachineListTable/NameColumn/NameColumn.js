@@ -1,8 +1,7 @@
-import React from "react";
-
 import { Tooltip } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import PropTypes from "prop-types";
+import React from "react";
 import { useSelector } from "react-redux";
 
 import machineSelectors from "app/store/machine/selectors";

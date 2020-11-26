@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";

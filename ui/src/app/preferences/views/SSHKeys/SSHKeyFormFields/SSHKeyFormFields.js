@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import React from "react";
 
 import FormikField from "app/base/components/FormikField";
 

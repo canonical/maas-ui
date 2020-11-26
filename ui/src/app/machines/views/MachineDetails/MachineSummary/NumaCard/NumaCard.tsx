@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Card, List, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";

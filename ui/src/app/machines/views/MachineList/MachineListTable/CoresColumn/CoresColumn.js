@@ -1,6 +1,6 @@
-import React from "react";
 import { Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import React from "react";
 import PropTypes from "prop-types";
 
 import DoubleRow from "app/base/components/DoubleRow";

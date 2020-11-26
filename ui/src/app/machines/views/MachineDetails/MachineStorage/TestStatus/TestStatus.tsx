@@ -1,3 +1,5 @@
+import React from "react";
+
 import type { NormalisedStorageDevice } from "../types";
 
 import { scriptStatus } from "app/base/enum";

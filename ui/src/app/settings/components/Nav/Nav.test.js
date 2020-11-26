@@ -1,5 +1,6 @@
 import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import React from "react";
 
 import { Nav } from "./Nav";
 

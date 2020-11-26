@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-
 import { Form, Row } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useState } from "react";
 
 import readScript from "./readScript";
 import { messages } from "app/base/actions";

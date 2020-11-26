@@ -1,4 +1,5 @@
 import { mount } from "enzyme";
+import React from "react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";

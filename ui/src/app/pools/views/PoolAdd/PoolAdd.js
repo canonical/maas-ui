@@ -1,3 +1,5 @@
+import React from "react";
+
 import PoolForm from "../PoolForm";
 
 export const PoolAdd = () => {

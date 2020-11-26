@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-
 import { Button, Input, MainTable, Strip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import classNames from "classnames";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
 import { actions as userActions } from "app/store/user";

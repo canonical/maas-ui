@@ -1,5 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import React from "react";
 
 import statusSelectors from "app/store/status/selectors";
 import UserForm from "../UserForm";

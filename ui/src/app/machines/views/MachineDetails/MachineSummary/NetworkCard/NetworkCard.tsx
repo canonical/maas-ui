@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
