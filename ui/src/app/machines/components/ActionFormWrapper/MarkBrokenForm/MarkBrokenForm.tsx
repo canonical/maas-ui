@@ -28,9 +28,7 @@ type Props = {
 export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const machineErrors = useSelector(machineSelectors.errors);
-  const errors = Object.keys(machineErrors).length > 0 ? machineErrors : null;
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.MARK_BROKEN
   );
 

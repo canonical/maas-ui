@@ -43,7 +43,6 @@ type Props = {
 export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const errors = useSelector(machineSelectors.errors);
   const defaultMinHweKernel = useSelector(
     generalSelectors.defaultMinHweKernel.get
   );
@@ -55,7 +54,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   );
   const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
   const sendAnalytics = useSendAnalytics();
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.DEPLOY
   );
 

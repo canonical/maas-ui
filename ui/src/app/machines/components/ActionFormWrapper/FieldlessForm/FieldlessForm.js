@@ -31,8 +31,7 @@ const fieldlessActions = [
 export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const errors = useSelector(machineSelectors.errors);
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     selectedAction.name
   );
 

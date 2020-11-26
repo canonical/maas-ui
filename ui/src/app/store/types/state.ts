@@ -1,3 +1,9 @@
+export type EventError<I, E, K extends keyof I> = {
+  id: I[K] | null;
+  error: E;
+  event: string | null;
+};
+
 export type GenericState<I, E> = {
   errors: E;
   items: I[];

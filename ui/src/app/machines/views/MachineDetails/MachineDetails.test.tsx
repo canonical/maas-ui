@@ -74,4 +74,25 @@ describe("MachineDetails", () => {
     expect(wrapper.find("Redirect").exists()).toBe(true);
     expect(wrapper.find("Redirect").props().to).toBe("/machines");
   });
+
+  it("cleans up when unmounting", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/machine/:id"
+            component={() => <MachineDetails />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+    expect(
+      store.getActions().some((action) => action.type === "machine/cleanup")
+    ).toBe(true);
+  });
 });

@@ -63,9 +63,8 @@ const OverrideTestFormSchema = Yup.object().shape({
 export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const errors = useSelector(machineSelectors.errors);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.OVERRIDE_FAILED_TESTING
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);

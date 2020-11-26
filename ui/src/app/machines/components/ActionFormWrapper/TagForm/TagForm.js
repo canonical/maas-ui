@@ -28,9 +28,8 @@ export const TagForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const [initialValues, setInitialValues] = useState({ tags: [] });
-  const errors = useSelector(machineSelectors.errors);
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const { machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.TAG
   );
 

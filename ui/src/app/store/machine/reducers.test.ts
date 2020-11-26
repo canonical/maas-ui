@@ -3,6 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
@@ -85,6 +86,13 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         errors: "Could not fetch machines",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Could not fetch machines",
+            event: "fetch",
+            id: null,
+          }),
+        ],
         loaded: false,
         loading: false,
       })
@@ -110,6 +118,13 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         errors: { system_id: "id was not supplied" },
+        eventErrors: [
+          machineEventErrorFactory({
+            error: { system_id: "id was not supplied" },
+            event: "get",
+            id: null,
+          }),
+        ],
         loading: false,
       })
     );
@@ -181,7 +196,17 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, actions.setActiveError("Machine does not exist"))
     ).toEqual(
-      machineStateFactory({ active: null, errors: "Machine does not exist" })
+      machineStateFactory({
+        active: null,
+        errors: "Machine does not exist",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Machine does not exist",
+            event: "setActive",
+            id: null,
+          }),
+        ],
+      })
     );
   });
 
@@ -211,6 +236,13 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         errors: { name: "name already exists" },
+        eventErrors: [
+          machineEventErrorFactory({
+            error: { name: "name already exists" },
+            event: "create",
+            id: null,
+          }),
+        ],
         saved: false,
         saving: false,
       })
@@ -324,6 +356,13 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         errors: "Uh oh!",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Uh oh!",
+            event: "checkPower",
+            id: "abc123",
+          }),
+        ],
         items: machines,
         statuses: { abc123: machineStatusFactory({ checkingPower: false }) },
       })
@@ -420,6 +459,13 @@ describe("machine reducer", () => {
       ).toEqual(
         machineStateFactory({
           errors: "Uh oh",
+          eventErrors: [
+            machineEventErrorFactory({
+              error: "Uh oh",
+              event: "setPool",
+              id: "abc123",
+            }),
+          ],
           items: machines,
           statuses: {
             abc123: machineStatusFactory({
@@ -451,6 +497,13 @@ describe("machine reducer", () => {
     expect(reducers(initialState, actions.createError("Uh oh"))).toEqual(
       machineStateFactory({
         errors: "Uh oh",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Uh oh",
+            event: "create",
+            id: null,
+          }),
+        ],
         saving: false,
       })
     );

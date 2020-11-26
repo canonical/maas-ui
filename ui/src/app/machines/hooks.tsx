@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import type { MachineActionName } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineState } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
 /**
  * Create a callback for toggling the menu
@@ -35,6 +36,7 @@ export const useToggleMenu = (
 export const useMachineActionForm = (
   actionName: MachineActionName | "check-power"
 ): {
+  errors: MachineState["eventErrors"][0]["error"];
   machinesToAction: Machine[];
   processingCount: number;
 } => {
@@ -47,6 +49,19 @@ export const useMachineActionForm = (
     machineSelectors[activeMachine ? action.status : `${action.status}Selected`]
   ) as Machine[];
   const machinesToAction = activeMachine ? [activeMachine] : selectedMachines;
-
-  return { machinesToAction, processingCount: processingMachines.length };
+  const errors = useSelector((state: RootState) =>
+    machineSelectors.eventErrorsForIds(
+      state,
+      machinesToAction.map(({ system_id }) => system_id),
+      actionName
+    )
+  );
+  return {
+    // The form expects only one error. This will be the case if we are acting
+    // on the selected machine, but in the case of the machine list we presume
+    // that the same error will be returned for all machines.
+    errors: errors[0]?.error,
+    machinesToAction,
+    processingCount: processingMachines.length,
+  };
 };

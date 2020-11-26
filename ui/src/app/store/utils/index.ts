@@ -1,6 +1,6 @@
 export { isMachine, isReleaseNotification } from "./identifiers";
 export { generateBaseSelectors } from "./selectors";
-export { generateSlice, generateStatusHandlers } from "./slice";
+export { generateSlice, generateStatusHandlers, updateErrors } from "./slice";
 export type {
   CommonStates,
   CommonStateTypes,
