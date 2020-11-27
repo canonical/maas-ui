@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { LicenseKeyForm } from "./LicenseKeyForm";
-import { unmountComponentAtNode } from "react-dom";
 
 const mockStore = configureStore();
 
