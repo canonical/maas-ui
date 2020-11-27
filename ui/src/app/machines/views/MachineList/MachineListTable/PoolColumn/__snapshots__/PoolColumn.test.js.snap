@@ -20,12 +20,12 @@ exports[`PoolColumn renders 1`] = `
       <span
         data-test="pool"
       >
-        <ForwardRef(Link)
+        <Link
           className="p-link--soft"
           to="/pools"
         >
           default
-        </ForwardRef(Link)>
+        </Link>
       </span>
     }
     primaryAriaLabel="Pool"
@@ -120,7 +120,6 @@ exports[`PoolColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
-                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
                   aria-expanded="false"
                   aria-haspopup="true"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
@@ -130,7 +129,6 @@ exports[`PoolColumn renders 1`] = `
                   type="button"
                 >
                   <button
-                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
                     aria-expanded="false"
                     aria-haspopup="true"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"

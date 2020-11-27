@@ -18,7 +18,6 @@ exports[`MachineNameFields displays the fields 1`] = `
     <Input
       className="machine-name__hostname"
       error={null}
-      id="Uakgb_J5m9g-0JDMbcJqLJ"
       name="hostname"
       onBlur={[Function]}
       onChange={[Function]}
@@ -36,7 +35,6 @@ exports[`MachineNameFields displays the fields 1`] = `
       <Field
         className="u-nudge-left--small"
         error={null}
-        forId="Uakgb_J5m9g-0JDMbcJqLJ"
         labelFirst={true}
         required={true}
       >
@@ -48,7 +46,6 @@ exports[`MachineNameFields displays the fields 1`] = `
           >
             <input
               className="p-form-validation__input machine-name__hostname"
-              id="Uakgb_J5m9g-0JDMbcJqLJ"
               name="hostname"
               onBlur={[Function]}
               onChange={[Function]}
@@ -79,7 +76,6 @@ exports[`MachineNameFields displays the fields 1`] = `
     <Select
       className="u-no-margin--bottom"
       error={null}
-      id="Uakgb_J5m9g-0JDMbcJqLJ"
       name="domain"
       onBlur={[Function]}
       onChange={[Function]}
@@ -91,7 +87,6 @@ exports[`MachineNameFields displays the fields 1`] = `
       <Field
         className="u-no-margin--left u-nudge-right--small u-nudge-left--small"
         error={null}
-        forId="Uakgb_J5m9g-0JDMbcJqLJ"
         isSelect={true}
         required={true}
       >
@@ -106,7 +101,6 @@ exports[`MachineNameFields displays the fields 1`] = `
             >
               <select
                 className="p-form-validation__input u-no-margin--bottom"
-                id="Uakgb_J5m9g-0JDMbcJqLJ"
                 name="domain"
                 onBlur={[Function]}
                 onChange={[Function]}

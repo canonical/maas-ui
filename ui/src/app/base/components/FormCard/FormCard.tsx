@@ -1,4 +1,3 @@
-import React from "react";
 import type { ReactNode } from "react";
 
 import { Card, Col, Row } from "@canonical/react-components";

@@ -10,7 +10,7 @@ import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
-jest.useFakeTimers();
+jest.useFakeTimers("modern");
 
 describe("MachineListControls", () => {
   let initialState;
