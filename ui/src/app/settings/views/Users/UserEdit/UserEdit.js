@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { Notification } from "@canonical/react-components";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 

@@ -1,7 +1,7 @@
 import { Tooltip } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 
 import machineSelectors from "app/store/machine/selectors";
@@ -133,4 +133,4 @@ NameColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(NameColumn);
+export default memo(NameColumn);

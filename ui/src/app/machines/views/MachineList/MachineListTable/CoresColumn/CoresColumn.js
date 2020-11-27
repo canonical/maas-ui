@@ -1,6 +1,6 @@
 import { Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -44,4 +44,4 @@ CoresColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(CoresColumn);
+export default memo(CoresColumn);

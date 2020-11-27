@@ -1,5 +1,3 @@
-import React from "react";
-
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";

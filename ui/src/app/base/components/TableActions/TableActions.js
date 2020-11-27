@@ -1,7 +1,6 @@
 import { Button, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React from "react";
 
 import CopyButton from "app/base/components/CopyButton";
 

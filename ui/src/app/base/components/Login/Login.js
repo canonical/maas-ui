@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { status as statusActions } from "app/base/actions";
 import statusSelectors from "app/store/status/selectors";

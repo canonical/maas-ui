@@ -1,7 +1,7 @@
 import { Notification } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAddMessage } from "app/base/hooks";
 import { actions as userActions } from "app/store/user";

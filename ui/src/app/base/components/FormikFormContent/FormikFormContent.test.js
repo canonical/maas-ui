@@ -1,6 +1,5 @@
 import { mount } from "enzyme";
 import { Formik } from "formik";
-import React from "react";
 
 import FormikFormContent from "./FormikFormContent";
 

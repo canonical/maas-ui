@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import machineSelectors from "app/store/machine/selectors";
@@ -31,4 +31,4 @@ StorageColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(StorageColumn);
+export default memo(StorageColumn);

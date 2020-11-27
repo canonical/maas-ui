@@ -1,5 +1,4 @@
 import { Input, Select } from "@canonical/react-components";
-import React from "react";
 
 import FormikField from "app/base/components/FormikField";
 

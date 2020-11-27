@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Tooltip } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";

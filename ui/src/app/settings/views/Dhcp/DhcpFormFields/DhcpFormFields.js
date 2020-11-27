@@ -7,7 +7,6 @@ import {
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React from "react";
 
 import controllerSelectors from "app/store/controller/selectors";
 import deviceSelectors from "app/store/device/selectors";

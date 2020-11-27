@@ -2,7 +2,6 @@ import { act } from "react-dom/test-utils";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
-import React from "react";
 import { Provider } from "react-redux";
 
 import AddMachineForm from "../AddMachineForm";

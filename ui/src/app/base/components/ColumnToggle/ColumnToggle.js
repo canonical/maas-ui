@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 const ColumnToggle = ({ isExpanded, label, onClose, onOpen }) => {
   const buttonNode = useRef(null);

@@ -1,7 +1,6 @@
 import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Textarea } from "@canonical/react-components";
-import React from "react";
 
 import FormikField from "./FormikField";
 

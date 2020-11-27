@@ -3,7 +3,6 @@ import configureStore from "redux-mock-store";
 import { Field } from "formik";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
-import React from "react";
 import { Provider } from "react-redux";
 import * as Yup from "yup";
 

@@ -1,6 +1,6 @@
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { actions as machineActions } from "app/store/machine";
@@ -89,4 +89,4 @@ ZoneColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(ZoneColumn);
+export default memo(ZoneColumn);

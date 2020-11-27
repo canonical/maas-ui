@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";

@@ -1,5 +1,4 @@
 import { Col, Row, Select } from "@canonical/react-components";
-import React from "react";
 import { useSelector } from "react-redux";
 
 import resourcePoolSelectors from "app/store/resourcepool/selectors";

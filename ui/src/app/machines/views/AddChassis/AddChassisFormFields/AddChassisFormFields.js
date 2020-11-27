@@ -1,5 +1,4 @@
 import { Col, Row, Select } from "@canonical/react-components";
-import React from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 

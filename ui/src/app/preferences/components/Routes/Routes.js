@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Redirect, Switch, useRouteMatch } from "react-router-dom";
 
 import AddSSHKey from "app/preferences/views/SSHKeys/AddSSHKey";

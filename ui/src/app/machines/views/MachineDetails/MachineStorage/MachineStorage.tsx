@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";

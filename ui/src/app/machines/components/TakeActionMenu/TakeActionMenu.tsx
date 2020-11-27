@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";

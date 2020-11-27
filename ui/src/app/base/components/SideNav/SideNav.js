@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React from "react";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
 const _generateSection = (section, location, match) => {

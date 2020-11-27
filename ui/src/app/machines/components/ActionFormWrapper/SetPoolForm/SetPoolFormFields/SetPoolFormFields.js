@@ -1,7 +1,6 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import React from "react";
 
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 

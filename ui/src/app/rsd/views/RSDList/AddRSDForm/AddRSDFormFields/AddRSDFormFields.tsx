@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Col, Row, Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 

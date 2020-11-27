@@ -2,7 +2,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -79,4 +79,4 @@ PoolColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(PoolColumn);
+export default memo(PoolColumn);

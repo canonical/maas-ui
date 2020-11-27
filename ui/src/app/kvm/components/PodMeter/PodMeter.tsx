@@ -1,5 +1,3 @@
-import React from "react";
-
 import Meter from "app/base/components/Meter";
 
 type Props = {

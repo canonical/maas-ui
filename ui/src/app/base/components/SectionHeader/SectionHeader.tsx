@@ -1,4 +1,3 @@
-import React from "react";
 import type { ReactNode } from "react";
 
 import { Col, Row, Spinner, Tabs } from "@canonical/react-components";

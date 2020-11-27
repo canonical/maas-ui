@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import React from "react";
 
 import { useWindowTitle } from "app/base/hooks";
 import Section from "app/base/components/Section";

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 

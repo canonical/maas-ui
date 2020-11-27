@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import machineSelectors from "app/store/machine/selectors";
@@ -32,4 +32,4 @@ DisksColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(DisksColumn);
+export default memo(DisksColumn);

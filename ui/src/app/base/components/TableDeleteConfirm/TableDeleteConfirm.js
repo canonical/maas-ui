@@ -1,6 +1,5 @@
 import { Button, Col, Row } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
 
 import { COL_SIZES } from "app/base/constants";
 

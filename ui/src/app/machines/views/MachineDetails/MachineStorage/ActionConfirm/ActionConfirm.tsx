@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
