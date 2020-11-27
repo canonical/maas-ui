@@ -65,7 +65,7 @@ describe("FormikForm", () => {
     expect(wrapper.find("Redirect").exists()).toBe(true);
   });
 
-  it("can clean up when unmounted", () => {
+  it("can clean up when unmounted", async () => {
     const cleanup = jest.fn(() => ({
       type: "CLEANUP",
     }));
@@ -84,7 +84,11 @@ describe("FormikForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(store.getActions()).toEqual([{ type: "CLEANUP" }]);
   });
 

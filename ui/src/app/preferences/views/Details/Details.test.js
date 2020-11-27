@@ -53,7 +53,7 @@ describe("Details", () => {
     expect(wrapper.find("Details").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -62,7 +62,11 @@ describe("Details", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
     expect(actions.some((action) => action.type === "auth/cleanup")).toBe(true);

@@ -144,7 +144,7 @@ describe("RepositoryForm", () => {
     expect(component.find("h4").text()).toBe("Edit PPA");
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -156,7 +156,11 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(store.getActions()).toEqual([
       {
         type: "packagerepository/cleanup",
