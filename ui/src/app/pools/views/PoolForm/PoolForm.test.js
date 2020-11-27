@@ -42,7 +42,7 @@ describe("PoolForm", () => {
     expect(wrapper.find("PoolForm").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -52,7 +52,10 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
 
     expect(store.getActions()[0]).toEqual(actions.cleanup());
   });

@@ -40,7 +40,7 @@ describe("UserForm", () => {
     expect(wrapper.find("UserForm").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -50,7 +50,10 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(store.getActions()).toEqual([
       {
         type: "user/cleanup",

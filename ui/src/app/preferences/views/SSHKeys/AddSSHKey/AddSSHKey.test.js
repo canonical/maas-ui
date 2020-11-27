@@ -37,7 +37,7 @@ describe("AddSSHKey", () => {
     expect(wrapper.find("AddSSHKey").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -46,7 +46,11 @@ describe("AddSSHKey", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(
       store.getActions().some((action) => action.type === "sshkey/cleanup")
     ).toBe(true);

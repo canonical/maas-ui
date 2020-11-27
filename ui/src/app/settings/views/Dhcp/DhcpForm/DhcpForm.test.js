@@ -58,7 +58,7 @@ describe("DhcpForm", () => {
     expect(wrapper.find("DhcpForm").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -67,7 +67,11 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(
       store.getActions().some((action) => action.type === "dhcpsnippet/cleanup")
     ).toBe(true);

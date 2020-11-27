@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import React from "react";
 
 import { LicenseKeyForm } from "./LicenseKeyForm";
+import { unmountComponentAtNode } from "react-dom";
 
 const mockStore = configureStore();
 
@@ -56,8 +57,9 @@ describe("LicenseKeyForm", () => {
     expect(wrapper.find("LicenseKeyForm").exists()).toBe(true);
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(state);
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
@@ -65,7 +67,10 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
 
     expect(
       store
