@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -399,7 +400,7 @@ describe("MachineList", () => {
     );
   });
 
-  it("cleans up when unmounting", () => {
+  it("cleans up when unmounting", async () => {
     const store = mockStore(initialState);
     const wrapper = mount(
       <Provider store={store}>
@@ -410,7 +411,11 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
+
+    act(() => {
+      wrapper.unmount();
+    });
+
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
