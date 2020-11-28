@@ -47,6 +47,7 @@ const RSDListHeader = (): JSX.Element => {
                 Add RSD
               </Button>,
               <RSDListActionMenu
+                data-test="action-menu"
                 key="action-dropdown"
                 setSelectedAction={setSelectedAction}
               />,

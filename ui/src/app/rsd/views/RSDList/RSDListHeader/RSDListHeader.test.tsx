@@ -82,17 +82,17 @@ describe("RSDListHeader", () => {
       pod: podStateFactory({ items: [podFactory()], loaded: true }),
     });
     const store = mockStore(state);
-    const setSelectedAction = jest.fn();
-    jest
-      .spyOn(React, "useState")
-      .mockImplementation(() => ["", setSelectedAction]);
-    mount(
+
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/rsd", key: "testKey" }]}>
           <RSDListHeader />
         </MemoryRouter>
       </Provider>
     );
-    expect(setSelectedAction).toHaveBeenCalledWith(null);
+
+    expect(
+      wrapper.find('[data-test="action-menu"] button').prop("disabled")
+    ).toBe(true);
   });
 });

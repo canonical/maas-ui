@@ -47,6 +47,7 @@ const KVMListHeader = (): JSX.Element => {
             Add KVM
           </Button>,
           <KVMListActionMenu
+            data-test="action-menu"
             key="action-dropdown"
             setSelectedAction={setSelectedAction}
           />,
